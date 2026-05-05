@@ -634,3 +634,25 @@ Still **MINTED** under **Kirsten**.
 
 **Running tally:** 6 of 14 done. 8 remaining.
 
+
+### 🧑 Governor
+
+Approve: Move QR 2024OSCAR_20260330_31. Execute for QR 2024OSCAR_20260330_31 only.
+
+
+### 🤖 Autopilot
+
+Still **MINTED** under **Kirsten**.
+
+
+### 🤖 Autopilot
+
+**`2024OSCAR_20260330_31`** ✅ Transferred Kirsten → Gary.
+
+**Running tally:** 7 of 14 done. 7 remaining.
+
+
+### 🧑 Governor
+
+Approve: Move QR 2024OSCAR_20260330_18. Execute for QR 2024OSCAR_20260330_18 only.
+
