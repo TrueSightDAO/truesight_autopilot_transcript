@@ -600,3 +600,20 @@ Here's the batch approval for all remaining ones — click **Approve** on each:
 
 **Progress:** 4 done, 10 remaining. The 10 above are all the unique codes from your photos that haven't been transferred yet.
 
+
+### 🧑 Governor
+
+Approve: Move QR 2024OSCAR_20260330_16. Execute for QR 2024OSCAR_20260330_16 only.
+
+
+### 🤖 Autopilot
+
+Still **MINTED** under **Kirsten Ritschel** — not yet transferred.
+
+
+### 🤖 Autopilot
+
+**`2024OSCAR_20260330_16`** ✅ Transferred Kirsten → Gary.
+
+**Running tally:** 5 of 14 done. 9 remaining.
+
