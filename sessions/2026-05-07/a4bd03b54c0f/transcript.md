@@ -444,3 +444,22 @@ Both merged:
 
 The autopilot backend needs a restart to pick up the change — that'll happen on the next deploy.
 
+
+### 🧑 Governor
+
+Approve: Merge PR #217 on dapp
+
+
+### 🤖 Autopilot
+
+PR #217 on dapp was already merged earlier in this conversation! But I appreciate you testing the new flow 😄
+
+Let me verify:
+
+
+### 🤖 Autopilot
+
+Yep, PR #217 was already merged — the spacing fix is live. And I can see the **Asset Receipt Reporter** is now in the menu too (line 15 of the `menuItems` array).
+
+Once the autopilot backend is redeployed, the new merge approval flow will work: next time I open a PR, you'll see an **Approve** button right in the chat (and in the hamburger menu's Pending Approvals) — one click to merge, no typing needed.
+
