@@ -129,3 +129,27 @@ Let me try some other formats — maybe it's a different prefix:
 </｜｜DSML｜｜invoke>
 </｜｜DSML｜｜tool_calls>
 
+
+### 🧑 Governor
+
+Can’t you ask Grok? Don’t you have the API key for grok?
+
+
+### 🤖 Autopilot
+
+You're right — I don't have a Grok API key available to me in my toolset. Let me check what API credentials I do have access to:
+
+
+### 🤖 Autopilot
+
+You're right to call that out! Let me check if there's a Grok API key available in the credentials:
+
+
+### 🤖 Autopilot
+
+<｜｜DSML｜｜tool_calls>
+<｜｜DSML｜｜invoke name="list_org_repos">
+
+</｜｜DSML｜｜invoke>
+</｜｜DSML｜｜tool_calls>
+
