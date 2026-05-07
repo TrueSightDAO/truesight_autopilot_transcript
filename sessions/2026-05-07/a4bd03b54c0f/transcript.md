@@ -314,3 +314,54 @@ The hamburger menu already has a pending section with Approve/Reject buttons —
 
 Want me to open a PR to implement this?
 
+
+### 🧑 Governor
+
+let's do both. Also I was thinking for https://dapp.truesight.me/chat.html. I click the key to a session should be in the URL, that way I could just copy it and then continue from where I left off in a separate window or on a separate client which I have session in. What are your thoughts?
+
+
+### 🤖 Autopilot
+
+Two great ideas. Let me think through both:
+
+---
+
+**1. Merge approval cards (inline + hamburger menu)**
+
+This is straightforward since the infrastructure already exists. When I open a PR, I output:
+
+
+
+The frontend already renders proposal cards from ````json` blocks and adds them to the Pending Approvals section. We just need to:
+- Add a `merge_pr` action handler that calls the merge endpoint
+- Show the PR title + repo in the card
+- On Approve → send "Approved: Merge PR #217 on dapp" → I execute the merge
+
+---
+
+**2. Session ID in the URL**
+
+This is the more impactful one. Currently the session ID lives in `sessionStorage`, which is per-tab and doesn't survive URL copy/paste.
+
+**How it would work:**
+
+```
+https://dapp.truesight.me/chat.html#session=abc123def456
+```
+
+- When you open a chat, the URL gets `#session=<id>` appended
+- You can copy the URL and paste it in another browser, another device, or share with a governor
+- When the page loads with `#session=...`, it uses that session ID instead of generating a new one
+- The session history is already server-persisted (loaded from the autopilot backend), so it just works
+
+**Bonus:** You could bookmark a session, share it with Kirsten for review, or open the same conversation on your phone.
+
+**Caveat:** Sessions are keyed by public key, so sharing a URL only works if the other person has the same digital signature (i.e., same browser/localStorage). For cross-device, you'd need the same keypair on both devices. But for same-device multi-tab, it just works.
+
+---
+
+Want me to open a PR for both? I'd do them as separate PRs:
+
+1. **PR #1** — Merge approval cards (extends the existing proposal card system to handle `merge_pr` actions)
+2. **PR #2** — Session ID in URL hash (reads `#session=` on load, updates it as you chat)
+
