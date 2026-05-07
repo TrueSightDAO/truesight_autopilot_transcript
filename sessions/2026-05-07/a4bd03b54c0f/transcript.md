@@ -212,3 +212,44 @@ I see — `truesight_me_prod` is the main site (truesight.me), not the DApp. The
 </｜｜DSML｜｜invoke>
 </｜｜DSML｜｜tool_calls>
 
+
+### 🧑 Governor
+
+I am thinking for this view https://dapp.truesight.me/chat.html there is not enough space between the New + and the next session in the hamburger menu... Can you look into it and fix it?
+
+
+### 🤖 Autopilot
+
+Let me look at the chat.html CSS for the session panel to understand the spacing issue.
+
+
+### 🤖 Autopilot
+
+I see the issue. In the session panel HTML structure:
+
+```html
+<div id="session-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+        <h3 style="margin:0;"><span>Sessions</span></h3>
+        <button id="close-panel-btn">✕</button>
+    </div>
+    <button class="new-session-btn" id="new-session-btn">+ New</button>
+    <div id="pending-section" style="display:none; margin-bottom:0.5rem; ...">
+        ...
+    </div>
+    <ul id="session-list"></ul>
+</div>
+```
+
+The **"+ New" button** has no bottom margin, and the **pending-section** (when hidden) has no margin either, so the session list items sit right up against the button with only `0.15rem` gap from the `#session-list li` margin-bottom. Let me fix this with a simple CSS addition.
+
+
+### 🤖 Autopilot
+
+Opened **PR #217** on the `dapp` repo. The fix adds:
+
+- `margin-bottom: 0.75rem` to `#new-session-btn` — space between the button and whatever comes next
+- `margin-top: 0.5rem` to `#session-list` — ensures the session items don't crowd the button or pending section
+
+This gives the "+ New" button some breathing room before the session list starts. Want me to merge it?
+
