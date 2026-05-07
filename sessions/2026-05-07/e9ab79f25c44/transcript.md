@@ -127,3 +127,30 @@ fetch(CACHE_URL, { cache: 'no-cache' })
 1. Adds `<script src="./scripts/dao_members_cache.js">` to `chat.html`
 2. Removes the `no-cache` from the inline fallback (or adds a timeout)
 
+
+### 🧑 Governor
+
+yes, please do so and then once you are done can you share with me the approval dialogue to approve the PR or the link to go merge the PR
+
+
+### 🤖 Autopilot
+
+Let me first check the current state of things to make sure I understand the full picture before opening the fix.
+
+
+### 🤖 Autopilot
+
+Good. Now let me open the fix PR:
+
+
+### 🤖 Autopilot
+
+Here's the PR: **https://github.com/TrueSightDAO/dapp/pull/214**
+
+It makes two changes:
+
+1. **`chat.html`** — adds `<script src="./scripts/dao_members_cache.js">` before `tdg_balance.js` so the shared session-memoized cache is available, avoiding the slow inline fetch path
+2. **`tdg_balance.js`** — adds a 5-second `AbortController` timeout to the inline GitHub raw fetch, so if it hangs, it falls through to GAS instead of leaving "Loading…" stuck forever
+
+You can review and merge it at the link above. Want me to submit a DAO contribution for this work once it's merged?
+
