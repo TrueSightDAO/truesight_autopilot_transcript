@@ -545,3 +545,22 @@ Opened **PR #10** on `truesight_autopilot`. This adds a `deploy_autopilot` tool 
 
 Once this is merged and deployed (manually one last time), I'll be able to redeploy myself on command. Want me to merge it?
 
+
+### 🧑 Governor
+
+make sure to merge PR of the latest version of yourself once you are done
+
+
+### 🤖 Autopilot
+
+Merged. Now I need to deploy this version of myself manually one last time so the new `deploy_autopilot` tool is available for future self-upgrades.
+
+Could you run this from your Mac?
+
+```bash
+cd /path/to/truesight_autopilot
+./scripts/deploy.sh
+```
+
+Once that's done, I'll be able to redeploy myself autonomously — just say "redeploy yourself" and I'll SSH in, pull the latest code, restart, and verify health.
+
