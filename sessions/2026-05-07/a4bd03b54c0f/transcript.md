@@ -615,3 +615,108 @@ Here's the summary of what's waiting to be deployed:
 
 Run `./scripts/deploy.sh` from your Mac and I'll be fully self-sufficient after that.
 
+
+### 🧑 Governor
+
+Deployed.
+
+
+### 🧑 Governor
+
+can we submit a dao contribution report for me on the work we have done so far. I think we spent 1.5 hours so far
+
+
+### 🤖 Autopilot
+
+Let me compile the work we've done and submit a contribution.
+
+
+### 🤖 Autopilot
+
+The new code is live! I can see the `_message_queues` dict, the queue endpoints, and the queue processing loop. Now let me submit the contribution for our session.
+
+Here's a summary of the work done in this 1.5-hour session:
+
+**PRs created and merged:**
+- **dapp#217** — Fix spacing between "+ New" button and session list in hamburger menu
+- **dapp#218** — Session ID in URL hash (`#session=...`) for shareable/resumable conversations
+- **dapp#219** — Fix pending approvals not removed from hamburger menu after Approve
+- **dapp#220** — Async message queuing UI (frontend)
+- **truesight_autopilot#8** — Merge approval cards (backend emits proposal JSON)
+- **truesight_autopilot#9** — Fix pending approvals resolve for merge proposals
+- **truesight_autopilot#10** — Add `deploy_autopilot` tool (deploy.py module)
+- **truesight_autopilot#11** — Wire deploy tool into `_run_tool` and `get_tool_schemas`
+- **truesight_autopilot#12** — Message queue endpoints (POST/GET/DELETE/PATCH /chat/queue)
+- **truesight_autopilot#13** — Auto-detect local vs remote deploy
+
+Let me submit:
+
+
+### 🤖 Autopilot
+
+The field names need to match exactly. Let me fix:
+
+
+### 🤖 Autopilot
+
+The field aliases are case-sensitive. Let me check what the canonical labels expect:
+
+The canonical labels are `"Type"`, `"Amount"`, `"Description"`, `"Contributor(s)"`, `"TDG Issued"` — and I'm sending those exact keys. Let me check the alias mapping more carefully:
+
+
+### 🤖 Autopilot
+
+I see the issue — the `_normalize_submission_labels` function drops keys like `"type"` and `"description"` because they're in `_NON_CANONICAL_KEYS`. But the canonical labels are `"Type"` (capital T) and `"Description"` (capital D). The alias map has `"type"` → `"Type"` but the `_NON_CANONICAL_KEYS` check runs first and drops it before the alias mapping can happen.
+
+Let me look at the order of operations in `_normalize_submission_labels`:
+
+```python
+for key, value in attributes.items():
+    # Skip descriptive-only keys
+    if key.lower() in _NON_CANONICAL_KEYS:  # ← This drops "type" before alias mapping
+        continue
+    # Map aliases to canonical names
+    canonical_key = _FIELD_ALIASES.get(key.lower(), key)
+```
+
+So `"type"` gets dropped because it's in `_NON_CANONICAL_KEYS`, even though there's an alias mapping for it. The fix is to check aliases first, then check non-canonical keys. Let me open a quick fix:
+
+
+### 🤖 Autopilot
+
+Let me do it directly:
+
+<｜｜DSML｜｜tool_calls>
+<｜｜DSML｜｜invoke name="open_fix_pr">
+<｜｜DSML｜｜parameter name="repo" string="true">truesight_autopilot</｜｜DSML｜｜parameter>
+<｜｜DSML｜｜parameter name="issue_description" string="true">Fix _normalize_submission_labels in app/main.py — alias mapping runs before non-canonical key check.
+
+The _NON_CANONICAL_KEYS set includes "type" and "description" (lowercase), but the canonical labels for CONTRIBUTION EVENT include "Type" and "Description" (capitalized). The alias map has "type" → "Type" and "description" → "Description".
+
+Current code drops "type" before alias mapping can convert it to "Type":
+```python
+if key.lower() in _NON_CANONICAL_KEYS:
+    continue  # ← drops "type" here
+canonical_key = _FIELD_ALIASES.get(key.lower(), key)  # ← never reached
+```
+
+Fix: Move alias mapping before the non-canonical check, and check the CANONICAL key against non-canonical set, not the raw key:
+
+```python
+for key, value in attributes.items():
+    # Map aliases to canonical names FIRST
+    canonical_key = _FIELD_ALIASES.get(key.lower(), key)
+    # Then check if the CANONICAL key is non-canonical
+    if canonical_key.lower() in _NON_CANONICAL_KEYS:
+        continue
+    # If event has defined canonical labels, only keep matching ones
+    if canonical_set and canonical_key not in canonical_set:
+        if canonical_set:
+            continue
+    normalized[canonical_key] = str(value)
+```
+
+This is a one-line reorder fix in the for loop inside _normalize_submission_labels.</｜｜DSML｜｜parameter>
+</｜｜DSML｜｜invoke>
+</｜｜DSML｜｜tool_calls>
+
