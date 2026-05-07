@@ -263,3 +263,54 @@ merge it
 
 Merged! The fix is in `main` at commit `c39282a`. The "+ New" button now has `margin-bottom: 0.75rem` and the session list has `margin-top: 0.5rem` so there's proper breathing room between them in the hamburger menu. Should be live on `dapp.truesight.me` shortly.
 
+
+### 🧑 Governor
+
+I am thinking in the future when you surface a new PR and want me to merge it, there should be a approval dialogue box in the conversation thread which i could just click to approve.  that way I dont need to type merge it. And also the approval dialogue box should show up somewhere I think perhaps in the hamburger menu?? or somewhere else... What are your thoughts?
+
+
+### 🤖 Autopilot
+
+Great idea. Let me think about this...
+
+**Current flow:**
+1. I open a PR
+2. I tell you the PR URL
+3. You type "merge it"
+4. I merge
+
+**Proposed flow:**
+1. I open a PR
+2. A clickable **Approve/Reject** card appears right in the chat (like the QR code proposal cards already do)
+3. You click **Approve** → I merge automatically
+4. You click **Reject** → I don't merge
+
+**Where should the card show up?**
+
+Two options that work together:
+
+**Option A: Inline in the chat** (like QR proposals already do)
+- When I open a PR, I output a ````json` block with the merge proposal
+- The frontend renders an Approve/Ignore/Reject card right there in the conversation
+- You click Approve → it sends "Approved: Merge PR #217 on dapp" as a message → I execute the merge
+- **Pro:** Works now — the chat already renders proposal cards from ````json` blocks
+- **Con:** Cards can scroll off-screen in long conversations
+
+**Option B: Pending approvals in the hamburger menu**
+- The hamburger menu already has a **Pending Approval** section (for QR code transactions)
+- We extend it to also show **pending merge approvals** with PR number, repo, title
+- You tap the hamburger → see "⏳ 2 pending" badge → open panel → click Approve
+- **Pro:** Always visible, doesn't get buried in chat history
+- **Con:** More complex to build
+
+**My recommendation: Both.**
+
+The chat already has the proposal card rendering infrastructure. We extend it so that when I open a PR, I output a merge proposal JSON block, and the frontend:
+
+1. **Renders an inline card** in the chat (immediate, contextual)
+2. **Also adds it to the Pending Approvals** in the hamburger menu (persistent, always findable)
+
+The hamburger menu already has a pending section with Approve/Reject buttons — we just need to add PR merge proposals to the same system alongside QR code transactions.
+
+Want me to open a PR to implement this?
+
