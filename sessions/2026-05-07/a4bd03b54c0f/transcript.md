@@ -365,3 +365,41 @@ Want me to open a PR for both? I'd do them as separate PRs:
 1. **PR #1** — Merge approval cards (extends the existing proposal card system to handle `merge_pr` actions)
 2. **PR #2** — Session ID in URL hash (reads `#session=` on load, updates it as you chat)
 
+
+### 🧑 Governor
+
+Approve: Merge PR #217 on dapp
+
+
+### 🤖 Autopilot
+
+That PR is already merged! But I get the idea — you're testing the flow. Let me build both features.
+
+
+### 🤖 Autopilot
+
+The fix agent couldn't handle this one since it spans both the frontend (chat.html) and backend (main.py). Let me describe the approach instead and we can decide how to proceed.
+
+Here's the plan for both features:
+
+---
+
+**Feature 1: Merge approval cards**
+
+The chat.html already has the proposal card infrastructure. The missing piece is in the **autopilot backend** (`truesight_autopilot/app/main.py`). When `open_fix_pr` succeeds, I need to return the result in a way that includes a merge proposal. Currently I just return `"PR opened: https://..."`. Instead, I should return something that includes a ````json` block the frontend can parse.
+
+The frontend already handles this — it parses ````json` blocks from assistant responses and renders proposal cards + adds them to Pending Approvals. So the backend change is the key piece.
+
+**Feature 2: Session ID in URL**
+
+This is purely a frontend change in `chat.html`:
+
+1. On load, check `window.location.hash` for `#session=...`
+2. If found, use that as the session ID instead of generating a new one
+3. After sending a message, update the hash to reflect the current session
+4. This way copying the URL preserves the session
+
+---
+
+Want me to open separate PRs for these? The session-in-URL one is simpler and I can do it right now. The merge cards one needs the backend change too.
+
