@@ -19,5 +19,12 @@
     "summary": "Add async message queuing UI to chat.html so the governor can type and send while the autopilot is thinking.\n\n**Changes needed in chat.html:**\n\n1. **Queue indicator bar** \u2014 Add a small bar above the i",
     "action": "merge_pr",
     "created_at": "2026-05-07T03:57:59Z"
+  },
+  {
+    "title": "Merge PR #13 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Make deploy_autopilot tool auto-detect whether it's running on the EC2 or remotely.\n\nCurrently deploy.py always tries SSH (paramiko), which fails when running on the EC2 itself because the SSH key doe",
+    "action": "merge_pr",
+    "created_at": "2026-05-07T04:03:33Z"
   }
 ]
