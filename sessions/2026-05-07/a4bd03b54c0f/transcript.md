@@ -10,82 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — the dropdown menu is rendered by `menu.js`. Let me check that file.
-
-
-### 🤖 Autopilot
-
-Found it. The dropdown menu in `menu.js` is a **static list** — it doesn't auto-discover pages. The `[ASSET RECEIPT EVENT]` page (`report_asset_receipt.html`) is simply **not listed** in the `menuItems` array.
-
-The menu has sections like `'Inventory & ledger'` where it would belong. Let me check if the HTML page exists:
-
-
-### 🤖 Autopilot
-
-The page exists at `report_asset_receipt.html` — it's just not listed in the dropdown menu. I'll open a PR to add it.
-
-
-### 🤖 Autopilot
-
-There you go. The **Asset Receipt Reporter** page (`report_asset_receipt.html`) exists and works fine — it just wasn't listed in the `menuItems` array in `menu.js`. I've opened **PR #216** to add it to the **Inventory & ledger** section of the dropdown.
-
-Once that's merged and deployed, you'll see it in the menu between "Inventory Expense Reporter" and "Inventory Movement Reporter."
-
-
-### 🧑 Governor
-
-can you merge it?
-
-
-### 🤖 Autopilot
-
-Let me check the PR status first.
-
-
-### 🤖 Autopilot
-
-The PR is a draft — let me check its current state.
-
-
-### 🤖 Autopilot
-
-The PR looks good — the entry is added. It's currently a draft PR. Per my rules, I need to stop at PR creation unless explicitly told to merge. You've told me to merge, so let me do that.
-
-
-### 🤖 Autopilot
-
-I can't merge via the API directly with my available tools. Let me mark it ready for review and merge via the GitHub API.
-
-Actually, I don't have a tool to merge PRs directly. Let me check if I can use the GitHub API through the available tools.
-
-I don't have a direct merge tool available. However, I can tell you the PR is ready at **https://github.com/TrueSightDAO/dapp/pull/216** — it's a simple one-line addition to `menu.js` adding the "Asset Receipt Reporter" entry in the Inventory & ledger section.
-
-You can merge it right from the GitHub UI:
-1. Go to https://github.com/TrueSightDAO/dapp/pull/216
-2. Click the dropdown arrow on the **"Ready for review"** / **"Merge"** button
-3. Select **"Squash and merge"** or **"Rebase and merge"**
-4. Confirm
-
-Once merged, the change will be live on `dapp.truesight.me` after the next deploy. You'll see **"Asset Receipt Reporter"** in the dropdown under **Inventory & ledger**.
-
-
-### 🧑 Governor
-
-are you able to build a tool for yourself to allow yourself to merge it?
-
-
-### 🤖 Autopilot
-
-Yes, I can build that! Let me add a merge PR tool to my own codebase.
-
-
-### 🤖 Autopilot
-
-Let me look at the current tool definitions to understand how they're registered.
-
-
-### 🤖 Autopilot
-
 Now let me look at the GitHub client to see if it already has merge capability:
 
 
@@ -611,4 +535,45 @@ So to answer your questions:
 - Each queued message gets its own response thread in the conversation
 
 This is a significant frontend + backend change. Want me to open a PR for it?
+
+
+### 🧑 Governor
+
+Go ahead and give it a shot. By the way I have upgraded your deployment ability...
+
+
+### 🤖 Autopilot
+
+Let me verify the deploy worked by checking the health endpoint and seeing if the new tools are available:
+
+
+### 🤖 Autopilot
+
+I can see the code on `main` has the `_resolve_pending` fix (line checks both `qr_code` and `title`) and the `open_fix_pr` handler calls `_add_pending`. But I notice the `deploy_autopilot` tool is **not wired into `_run_tool`** — there's no `if func_name == "deploy_autopilot"` handler. The PR #10 only added the `app/tools/deploy.py` file but didn't wire it into the main dispatch. Let me fix that:
+
+
+### 🤖 Autopilot
+
+Now for the message queuing feature. Let me open that PR too:
+
+
+### 🤖 Autopilot
+
+The fix agent couldn't handle the full scope. Let me break it into smaller pieces — first the backend queue endpoints, then the frontend.
+
+
+### 🤖 Autopilot
+
+Now the frontend piece:
+
+
+### 🤖 Autopilot
+
+Three PRs open:
+
+1. **truesight_autopilot#11** — Wire the `deploy_autopilot` tool into `_run_tool` and `get_tool_schemas` (so I can actually self-deploy)
+2. **truesight_autopilot#12** — Backend message queue endpoints (`POST/GET/DELETE/PATCH /chat/queue`)
+3. **dapp#220** — Frontend queuing UI (queue bar, non-blocking send, edit/delete)
+
+Want me to merge them?
 
