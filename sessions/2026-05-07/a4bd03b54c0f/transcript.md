@@ -526,3 +526,22 @@ The restart is safe — systemd handles it gracefully, sessions are persisted to
 
 Alternatively, if you want me to do it from here, I'd need an SSH tool added to my toolset. Want me to add that?
 
+
+### 🧑 Governor
+
+add it.
+
+
+### 🤖 Autopilot
+
+Opened **PR #10** on `truesight_autopilot`. This adds a `deploy_autopilot` tool that:
+
+1. SSHes into the EC2 using `paramiko`
+2. Runs `git pull` to get the latest code
+3. Installs dependencies
+4. Restarts the systemd service
+5. Checks the health endpoint to confirm it's back up
+6. Logs the deploy to Edgar
+
+Once this is merged and deployed (manually one last time), I'll be able to redeploy myself on command. Want me to merge it?
+
