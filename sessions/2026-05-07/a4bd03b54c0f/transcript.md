@@ -463,3 +463,81 @@ Yep, PR #217 was already merged — the spacing fix is live. And I can see the *
 
 Once the autopilot backend is redeployed, the new merge approval flow will work: next time I open a PR, you'll see an **Approve** button right in the chat (and in the hamburger menu's Pending Approvals) — one click to merge, no typing needed.
 
+
+### 🧑 Governor
+
+by the way, I noticed the approval dialogue box is still showing under the hamburger menu once I can clicked approved in the conversation thread... can we figure out how to fix it?
+
+
+### 🤖 Autopilot
+
+Good catch. The issue is that when you click **Approve** in the chat, it calls `removePendingProposal()` which tells the server to resolve it, but the hamburger menu's pending list doesn't refresh immediately after. Let me look at the flow.
+
+
+### 🤖 Autopilot
+
+I see the issue. When you click **Approve** on a proposal card in the chat, it:
+
+1. Calls `removePendingProposal(proposal)` — which tells the server to resolve it
+2. Sets `inputEl.value = msg` and calls `sendMessage()` — which sends a new message
+
+The problem is that `removePendingProposal` calls `updatePendingUIFromServer()` which fetches the pending list from the server. But the server's `/pending/resolve` endpoint uses `qr_code` as the key to resolve. For merge PR proposals, there's no `qr_code` — only a `title` like "Merge PR #218 on dapp". So the server can't find the pending item to remove it.
+
+Let me look at the server-side resolve logic:
+
+
+### 🤖 Autopilot
+
+Found both issues. Let me trace the flow:
+
+**Problem 1: `_resolve_pending` only matches by `qr_code`**
+
+In `main.py`:
+```python
+def _resolve_pending(public_key: str, qr_code: str, resolution: str) -> None:
+    items = _load_pending(public_key)
+    items = [p for p in items if p.get("qr_code") != qr_code]
+```
+
+And in `chat.html`:
+```javascript
+async function removePendingProposal(p) {
+    var key = p.qr_code || p.title || '';
+    await fetch(API_BASE_URL + '/pending/resolve', {
+        body: JSON.stringify({ qr_code: key, action: 'approved' })
+    });
+```
+
+For merge proposals, `p.qr_code` is empty, so it falls back to `p.title` (e.g. "Merge PR #218 on dapp"). But the server only checks `qr_code` field, not `title`. So the pending item never gets removed.
+
+**Problem 2: `_add_pending` doesn't store merge_pr proposals**
+
+```python
+def _add_pending(public_key: str, proposal: dict) -> None:
+    items = _load_pending(public_key)
+    key = proposal.get("qr_code", "") or proposal.get("title", "")
+    if key and not any(p.get("qr_code") == key or p.get("title") == key for p in items):
+        items.append({
+            ...
+            "action": proposal.get("action", "submit_contribution"),
+```
+
+The `open_fix_pr` handler in `_run_tool` doesn't call `_add_pending` for merge proposals — it only does for QR code submissions. So the merge proposal never gets persisted to the pending list at all.
+
+Let me fix both the backend and frontend.
+
+
+### 🤖 Autopilot
+
+Now the frontend side — the `removePendingProposal` sends `qr_code` as the key, but for merge proposals the key is actually the title. Let me fix the frontend to send the right key:
+
+
+### 🤖 Autopilot
+
+Two PRs to fix the pending approvals issue:
+
+1. **truesight_autopilot#9** — Server-side: `_resolve_pending` now matches against both `qr_code` AND `title` fields, and `open_fix_pr` persists merge proposals to the pending list
+2. **dapp#219** — Frontend: ensures the right key is sent for merge proposals
+
+Want me to merge them?
+
