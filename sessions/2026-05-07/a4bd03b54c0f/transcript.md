@@ -403,3 +403,28 @@ This is purely a frontend change in `chat.html`:
 
 Want me to open separate PRs for these? The session-in-URL one is simpler and I can do it right now. The merge cards one needs the backend change too.
 
+
+### 🧑 Governor
+
+yes. go for it
+
+
+### 🤖 Autopilot
+
+Let me start with the session-in-URL feature since it's purely frontend.
+
+
+### 🤖 Autopilot
+
+Now for the merge approval cards — this needs the backend change in `truesight_autopilot`:
+
+
+### 🤖 Autopilot
+
+Two PRs open:
+
+1. **dapp#218** — Session ID in URL hash (`chat.html#session=...`)
+2. **truesight_autopilot#8** — Merge approval cards (backend emits ````json` proposal when opening PRs)
+
+Both are ready for review. Want me to merge them?
+
