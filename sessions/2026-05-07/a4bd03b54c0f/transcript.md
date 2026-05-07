@@ -253,3 +253,13 @@ Opened **PR #217** on the `dapp` repo. The fix adds:
 
 This gives the "+ New" button some breathing room before the session list starts. Want me to merge it?
 
+
+### 🧑 Governor
+
+merge it
+
+
+### 🤖 Autopilot
+
+Merged! The fix is in `main` at commit `c39282a`. The "+ New" button now has `margin-bottom: 0.75rem` and the session list has `margin-top: 0.5rem` so there's proper breathing room between them in the hamburger menu. Should be live on `dapp.truesight.me` shortly.
+
