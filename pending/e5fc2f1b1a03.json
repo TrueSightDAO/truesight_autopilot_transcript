@@ -12,5 +12,12 @@
     "summary": "Add message queue endpoints to support async queuing while the autopilot is processing.\n\nAdd three new endpoints to app/main.py:\n\n1. **POST /chat/queue** \u2014 Accepts a signed message (same auth as /chat",
     "action": "merge_pr",
     "created_at": "2026-05-07T03:56:01Z"
+  },
+  {
+    "title": "Merge PR #220 on dapp",
+    "qr_code": "",
+    "summary": "Add async message queuing UI to chat.html so the governor can type and send while the autopilot is thinking.\n\n**Changes needed in chat.html:**\n\n1. **Queue indicator bar** \u2014 Add a small bar above the i",
+    "action": "merge_pr",
+    "created_at": "2026-05-07T03:57:59Z"
   }
 ]
