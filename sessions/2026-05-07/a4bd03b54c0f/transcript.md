@@ -10,33 +10,6 @@
 
 ### 🤖 Autopilot
 
-The code is merged into `main` — I can see **"Asset Receipt Reporter"** is in the `menuItems` array. The issue is that `dapp.truesight.me` is deployed from the **`truesight_me_prod`** repo, not the `dapp` repo directly. Let me check:
-
-
-### 🤖 Autopilot
-
-I see — `truesight_me_prod` is the main site (truesight.me), not the DApp. The DApp at `dapp.truesight.me` is deployed from the `dapp` repo directly via GitHub Pages. Let me check how the DApp is deployed:
-
-<｜｜DSML｜｜tool_calls>
-<｜｜DSML｜｜invoke name="read_repo_file">
-<｜｜DSML｜｜parameter name="repo" string="true">dapp</｜｜DSML｜｜parameter>
-<｜｜DSML｜｜parameter name="path" string="true">.github/workflows/deploy.yml</｜｜DSML｜｜parameter>
-</｜｜DSML｜｜invoke>
-</｜｜DSML｜｜tool_calls>
-
-
-### 🧑 Governor
-
-I am thinking for this view https://dapp.truesight.me/chat.html there is not enough space between the New + and the next session in the hamburger menu... Can you look into it and fix it?
-
-
-### 🤖 Autopilot
-
-Let me look at the chat.html CSS for the session panel to understand the spacing issue.
-
-
-### 🤖 Autopilot
-
 I see the issue. In the session panel HTML structure:
 
 ```html
@@ -600,4 +573,45 @@ Since the autopilot is already running ON the EC2, it should use subprocess to r
 This is simpler, faster, and doesn't require SSH keys on the server.</｜｜DSML｜｜parameter>
 </｜｜DSML｜｜invoke>
 </｜｜DSML｜｜tool_calls>
+
+
+### 🧑 Governor
+
+I think you should probably detect if you are deploying to your own server or deploying remotely isnt it?
+
+
+### 🤖 Autopilot
+
+You're right. The deploy tool should be smart about it:
+
+- **If running on EC2** (detect by checking if `/opt/truesight_autopilot` exists or if the hostname matches) → use `subprocess` locally
+- **If running locally** (developer's Mac) → use `paramiko` SSH to the EC2
+
+Let me fix it properly:
+
+
+### 🤖 Autopilot
+
+Now let me merge and deploy:
+
+
+### 🤖 Autopilot
+
+Now let me try to deploy — since I'm running on the EC2, the new auto-detect logic should use local subprocess:
+
+
+### 🤖 Autopilot
+
+As expected — the old code is still running (no auto-detect yet). The new code with the fix is merged but not deployed. You'll need to run `./scripts/deploy.sh` from your Mac one more time to get all these fixes onto the EC2. After that, I'll be able to self-deploy using local subprocess.
+
+Here's the summary of what's waiting to be deployed:
+
+| PR | What | Status |
+|---|---|---|
+| #11 | Wire `deploy_autopilot` into `_run_tool` | Merged, not deployed |
+| #12 | Message queue endpoints (POST/GET/DELETE/PATCH /chat/queue) | Merged, not deployed |
+| #13 | Auto-detect local vs remote deploy | Merged, not deployed |
+| dapp#220 | Frontend queuing UI | Merged, live on dapp.truesight.me |
+
+Run `./scripts/deploy.sh` from your Mac and I'll be fully self-sufficient after that.
 
