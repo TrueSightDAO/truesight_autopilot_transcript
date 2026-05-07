@@ -62,3 +62,68 @@ If your key isn't in that list, you need to get your email verified so the cache
 
 **Want me to open a fix PR** to make the "Loading…" state timeout gracefully (e.g. show a fallback message after 5 seconds instead of hanging forever)?
 
+
+### 🧑 Governor
+
+It finally resolved... why did it have to hit the GAS?
+
+
+### 🤖 Autopilot
+
+Good question. Let me trace exactly why it fell through to GAS.
+
+The cache fetch logic in `tdg_balance.js` does this:
+
+```js
+fetchFromCache(publicKey)
+  .catch(function() { return fetchFromGas(publicKey); })
+```
+
+And `fetchFromCache` tries two paths:
+
+1. **`window.DaoMembersCache.findByPublicKey(publicKey)`** — a shared session-memoized helper. If that's not loaded on the page, it falls through to...
+2. **Inline fetch of `dao_members.json`** from GitHub raw — then iterates all contributors looking for your public key.
+
+If **either** of those throws an error, it falls back to GAS.
+
+Let me check whether `DaoMembersCache` is loaded on `chat.html`:
+
+
+### 🤖 Autopilot
+
+Now check if `chat.html` actually loads `dao_members_cache.js`:
+
+Looking at the `<script>` tags in `chat.html`:
+
+```html
+<script src="./menu.js?v=20260430"></script>
+<script src="./tdg_balance.js"></script>
+<script src="./scripts/edgar_payload_helper.js"></script>
+```
+
+**No `dao_members_cache.js` is loaded on chat.html.** So `window.DaoMembersCache` is `undefined`, and the code falls through to the inline fetch path. Let me check what happened there:
+
+```js
+// In tdg_balance.js, fetchFromCache inline path:
+fetch(CACHE_URL, { cache: 'no-cache' })
+  .then(function(r) {
+    if (!r.ok) throw new Error('cache HTTP ' + r.status);
+    return r.json();
+  })
+```
+
+**Here's the likely culprit:** `{ cache: 'no-cache' }` — this sends a `Cache-Control: no-cache` header which forces a **revalidation with the origin server**. GitHub raw can sometimes respond slowly or with a stale-while-revalidate delay, especially on the first hit from a local dev environment.
+
+**Why it hit GAS:**
+
+1. `DaoMembersCache` not loaded → skip shared path
+2. Inline fetch to GitHub raw with `no-cache` → **timed out or threw** (maybe a CORS issue from `localhost`, or the request just took too long)
+3. `.catch()` → fell through to GAS
+4. GAS eventually responded → badge rendered
+
+**The root cause:** `chat.html` doesn't include `dao_members_cache.js`, so `tdg_balance.js` has to do its own raw fetch — and the `no-cache` directive makes it slower/more fragile than necessary.
+
+**Want me to open a PR that:**
+1. Adds `<script src="./scripts/dao_members_cache.js">` to `chat.html`
+2. Removes the `no-cache` from the inline fallback (or adds a timeout)
+
