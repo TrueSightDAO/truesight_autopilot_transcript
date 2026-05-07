@@ -428,3 +428,19 @@ Two PRs open:
 
 Both are ready for review. Want me to merge them?
 
+
+### 🧑 Governor
+
+merge them.
+
+
+### 🤖 Autopilot
+
+Both merged:
+
+- **dapp#218** — Session ID in URL hash. Now you can copy the URL from `https://dapp.truesight.me/chat.html#session=abc123` and paste it in another tab to continue the same conversation.
+
+- **truesight_autopilot#8** — Merge approval cards. Next time I open a PR, I'll output a ````json` proposal block and you'll see an **Approve/Ignore/Reject** card right in the chat (plus it'll show up in the hamburger menu's Pending Approvals). Click Approve and I'll merge it without you having to type a word.
+
+The autopilot backend needs a restart to pick up the change — that'll happen on the next deploy.
+
