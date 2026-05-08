@@ -104,3 +104,60 @@ Now I have a clear picture. Let me check the column layout — I need to confirm
 </｜｜DSML｜｜invoke>
 </｜｜DSML｜｜tool_calls>
 
+
+### 🧑 Governor
+
+Stop investigating column layouts — you have enough. Here is everything you need:
+
+- Column **AU** = sum of logged warmup sends per row (numeric, populated by `sync_email_agent_followup.py` via `Email Agent Follow Up` tab).
+- Column **AV** = sum of logged follow-up sends per row (same source).
+- The `Email Agent Follow Up` tab has a `last_send_at` timestamp column you can read to compute "warmup sent > 14 days ago".
+- Status column is column **A** of the `Hit List` tab.
+- The new `warmup-aged-out` subcommand should mirror the structure of the existing `email-to-warmup` subcommand in `scripts/hit_list_promote_status.py` — same gspread/dotenv loaders, same `--limit` + `--dry-run` flags, plus a new `--age-days` (default 14).
+- Default `--limit 10`, default `--age-days 14`.
+- Predicate to advance a row: status == `AI: Warm up prospect` AND AU >= 1 AND AV == 0 AND most-recent warmup send timestamp older than `--age-days` days.
+- Target status to write: `Manager Follow-up`.
+
+**Now open the two draft PRs using `open_fix_pr`. No more reads. Both must be DRAFT.**
+
+PR 1 — repo `go_to_market`:
+- Add `warmup-aged-out` subcommand to `scripts/hit_list_promote_status.py` with the predicate above.
+- Add a workflow step (commented-out / `if: false` initially so Gary opts in) at `:40 * * * *` in `.github/workflows/hit_list_status_promote.yml`.
+- Title: `feat(hit_list): warmup-aged-out promotion to Manager Follow-up`
+- Body must include: rationale ("78 stores stuck in Warm-up, 26 over-warmed, no aged-out path"), the 14-day default with reasoning, the AU>=1 / AV==0 guard so we never promote a row that never got a warmup, and a TODO note that the workflow step is gated until first dry-run output is reviewed.
+
+PR 2 — repo `agentic_ai_context`:
+- Update `HIT_LIST_STATE_MACHINE.md`:
+  - TL;DR section — add the new transition.
+  - Mermaid chart — add `Warmup --> ManagerFollowup: aged-out (>14d, no reply, AU>=1)`.
+  - "From `AI: Warm up prospect`" transitions table — add a third row for the aged-out trigger.
+  - Cron schedule table — add a `:40` row for the new workflow step.
+  - Anti-patterns — replace "stays as Warmup forever" with the new aged-out behaviour.
+- Title: `docs(hit_list): document Warm-up → Manager Follow-up aged-out transition`
+- Body: short, links to PR 1.
+
+If `open_fix_pr` lacks repo write access for either repo, **also** open a third draft PR to `truesight_autopilot` extending the allowlist or adding the missing capability.
+
+Output the PR URLs only. Do not summarise the diffs.
+
+
+### 🤖 Autopilot
+
+Let me open both draft PRs now.
+
+
+### 🤖 Autopilot
+
+As I suspected — `open_fix_pr` doesn't have `go_to_market` in its allowed repo list. I need to extend the autopilot first. Let me check the current allowlist.
+
+
+### 🤖 Autopilot
+
+<｜｜DSML｜｜tool_calls>
+<｜｜DSML｜｜invoke name="read_repo_file">
+<｜｜DSML｜｜parameter name="path" string="true">open_fix_pr.py</｜｜DSML｜｜parameter>
+<｜｜DSML｜｜parameter name="ref" string="true">main</｜｜DSML｜｜parameter>
+<｜｜DSML｜｜parameter name="repo" string="true">truesight_autopilot</｜｜DSML｜｜parameter>
+</｜｜DSML｜｜invoke>
+</｜｜DSML｜｜tool_calls>
+
