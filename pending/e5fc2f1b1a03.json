@@ -40,5 +40,12 @@
     "summary": "Extend scan_qr_from_file in app/tools/qr_scanner.py with a Grok vision fallback.\n\nCurrent behavior: scan_qr_from_file uses pyzbar then zbarimg. If both find nothing, it returns \"no_code_found\". It has",
     "action": "merge_pr",
     "created_at": "2026-05-08T20:53:42Z"
+  },
+  {
+    "title": "Merge PR #17 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add a `read_local_file` tool to read local text files (like .env, google_credentials.json) that are gitignored and not on GitHub.\n\nChanges needed in 3 files:\n\n1. **app/tools/fs_tools.py** \u2014 Add a new ",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T21:19:35Z"
   }
 ]
