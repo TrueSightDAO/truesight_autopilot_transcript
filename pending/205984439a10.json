@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Merge PR #103 on agentic_ai_context",
+    "qr_code": "",
+    "summary": "## Update `HIT_LIST_STATE_MACHINE.md` to document Warm-up \u2192 Manager Follow-up aged-out transition\n\n### What changed\nA new `warmup-aged-out` subcommand in `go_to_market/scripts/hit_list_promote_status.",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T21:37:03Z"
+  }
+]
