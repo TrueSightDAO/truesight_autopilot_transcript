@@ -33,5 +33,12 @@
     "summary": "## Problem\nWhen a user attaches an image file in chat.html, the attachment preview shows only the filename and size \u2014 no thumbnail. Worse, if the page is refreshed (accidental navigation, browser refr",
     "action": "merge_pr",
     "created_at": "2026-05-07T04:35:35Z"
+  },
+  {
+    "title": "Merge PR #16 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Extend scan_qr_from_file in app/tools/qr_scanner.py with a Grok vision fallback.\n\nCurrent behavior: scan_qr_from_file uses pyzbar then zbarimg. If both find nothing, it returns \"no_code_found\". It has",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T20:53:42Z"
   }
 ]
