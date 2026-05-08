@@ -61,5 +61,12 @@
     "summary": "## Bug: Grok vision fallback in scan_qr_from_file produces weak QR readings\n\n### Root Cause 1 \u2014 Short inline prompt instead of full _QR_NAMING_CONTEXT\nIn `app/tools/qr_scanner.py`, the Grok fallback b",
     "action": "merge_pr",
     "created_at": "2026-05-08T22:05:52Z"
+  },
+  {
+    "title": "Merge PR #26 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix the Grok fallback in scan_qr_from_file with three changes:\n\n1. **app/grok_client.py line 131**: Change `\"detail\": \"low\"` to `\"detail\": \"high\"` \u2014 low resolution makes small QR text unreadable.\n\n2. ",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T22:47:29Z"
   }
 ]
