@@ -12,5 +12,12 @@
     "summary": "## Add `go_to_market` to `allowed_repos` in `app/config.py`\n\nThe `open_fix_pr` tool's allowlist at `app/config.py:34` lists `market_research` (the local clone name) but the canonical GitHub repo is `T",
     "action": "merge_pr",
     "created_at": "2026-05-08T21:39:43Z"
+  },
+  {
+    "title": "Merge PR #21 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "## feat(chat): default draft PRs + raise tool-round cap from 5 to 15 (configurable)\n\nThis is the autopilot self-improvement PR Gary asked for \u2014 addresses two friction points discovered in the 2026-05-",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T21:52:09Z"
   }
 ]
