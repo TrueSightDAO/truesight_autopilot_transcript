@@ -263,3 +263,48 @@ No prose, no diff summary.
 merged: 2133ca084fe7a33ef4597989c5b85a314aa01727
 extension: https://github.com/TrueSightDAO/truesight_autopilot/pull/21
 
+
+### 🧑 Governor
+
+Two actions, in order, both authorized by governor Gary Teh:
+
+## Action 1: Merge PR #21
+
+Use `merge_pr` to squash-merge `TrueSightDAO/truesight_autopilot#21`. It has 2 surgical edits (github_client.py + main.py), mergeStateStatus is CLEAN. I (governor Gary) authorize the merge.
+
+## Action 2: Deploy production
+
+Use `deploy_autopilot` to roll the merged code out to the EC2 production instance. After the tool call, the new MAX_TOOL_ROUNDS default (15) and draft-by-default `open_fix_pr` will be live.
+
+## Output
+
+Reply with ONLY two lines:
+```
+merged: <merge sha>
+deploy: <status JSON or summary>
+```
+
+No prose.
+
+
+### 🧑 Governor
+
+Re-run `deploy_autopilot` now. The previous attempt failed with `NameError: name 'paramiko' is not defined`. The local instance has been restarted with that import bug patched, so this call should succeed via SSH to the EC2 host (truesight-autopilot, ~/.ssh/agentic_ai_github/id_ed25519).
+
+After deploy_autopilot returns, output ONLY:
+```
+deploy: <status from tool result>
+```
+
+No prose.
+
+
+### 🤖 Autopilot
+
+<｜｜DSML｜｜tool_calls>
+<｜｜DSML｜｜invoke name="read_repo_file">
+<｜｜DSML｜｜parameter name="repo" string="true">truesight_autopilot</｜｜DSML｜｜parameter>
+<｜｜DSML｜｜parameter name="path" string="true">deploy.py</｜｜DSML｜｜parameter>
+</｜｜DSML｜｜invoke>
+</｜｜DSML｜｜tool_calls>
+
