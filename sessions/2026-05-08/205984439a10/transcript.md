@@ -161,3 +161,42 @@ As I suspected — `open_fix_pr` doesn't have `go_to_market` in its allowed repo
 </｜｜DSML｜｜invoke>
 </｜｜DSML｜｜tool_calls>
 
+
+### 🧑 Governor
+
+PR #103 was opened but is incomplete (only +1 line) and not draft — that is fine, treat it as the doc placeholder. Root cause of the `go_to_market` failure: the allowlist in `app/config.py:34` of `truesight_autopilot` lists the **local clone name** `market_research`, but the **actual GitHub repo** is `go_to_market`. PROJECT_INDEX.md flags this mismatch explicitly: "GitHub (automation source): TrueSightDAO/go_to_market — clone name may differ locally (content_schedule, etc.)".
+
+**Open exactly one more PR — a self-extension PR — using `open_fix_pr` against `truesight_autopilot`.**
+
+Required edit: in `app/config.py`, in the `allowed_repos` list, **add `"go_to_market"` to the list** (do NOT remove `market_research` — keep it for back-compat). The relevant snippet you'd be touching:
+
+```
+    allowed_repos: list[str] = [
+        "dapp", "tokenomics", "truesight_me", "truesight_me_prod",
+        "agroverse_shop", "agroverse_shop_prod", "dao_client",
+        "market_research", "sentiment_importer", "truesight_autopilot",
+        "agentic_ai_context",
+    ]
+```
+
+becomes:
+
+```
+    allowed_repos: list[str] = [
+        "dapp", "tokenomics", "truesight_me", "truesight_me_prod",
+        "agroverse_shop", "agroverse_shop_prod", "dao_client",
+        "market_research", "go_to_market", "sentiment_importer",
+        "truesight_autopilot", "agentic_ai_context",
+    ]
+```
+
+Title: `fix(allowlist): add go_to_market to allowed_repos`
+Body: short — explain that `market_research` is the local clone name but the canonical GitHub repo is `go_to_market` (per PROJECT_INDEX.md), so the autopilot was unable to open fix PRs against the hit-list automation. Note that after this merges + redeploys, the `feat(hit_list): warmup-aged-out` change can be opened against `go_to_market` in a follow-up turn.
+
+Output ONLY the PR URL on a single line. No explanation, no diff summary.
+
+
+### 🤖 Autopilot
+
+https://github.com/TrueSightDAO/truesight_autopilot/pull/19
+
