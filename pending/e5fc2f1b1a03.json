@@ -47,5 +47,12 @@
     "summary": "Add a `read_local_file` tool to read local text files (like .env, google_credentials.json) that are gitignored and not on GitHub.\n\nChanges needed in 3 files:\n\n1. **app/tools/fs_tools.py** \u2014 Add a new ",
     "action": "merge_pr",
     "created_at": "2026-05-08T21:19:35Z"
+  },
+  {
+    "title": "Merge PR #18 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add Gemini vision fallback to QR scanner (after Grok fallback)\n\n## What needs to change\n\n### 1. Create `app/gemini_client.py` \u2014 new file\nModeled after `app/grok_client.py`. Create a Gemini vision clie",
+    "action": "merge_pr",
+    "created_at": "2026-05-08T21:23:03Z"
   }
 ]
