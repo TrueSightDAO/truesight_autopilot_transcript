@@ -200,3 +200,66 @@ Output ONLY the PR URL on a single line. No explanation, no diff summary.
 
 https://github.com/TrueSightDAO/truesight_autopilot/pull/19
 
+
+### 🧑 Governor
+
+Two actions, both authorized — execute them in order:
+
+## Action 1: Merge PR #19
+
+Use `merge_pr` to merge `TrueSightDAO/truesight_autopilot#19` (squash). It is a 1-line allowlist fix that adds `go_to_market` to `allowed_repos` in `app/config.py`. I (governor Gary Teh) explicitly authorize this merge.
+
+## Action 2: Open ONE bundled self-improvement PR via `open_fix_pr` against `truesight_autopilot`
+
+Title: `feat(chat): default draft PRs + raise tool-round cap from 5 to 15 (configurable)`
+
+The PR must include exactly two file edits, no others. Both are surgical — do not rewrite anything else.
+
+### Edit 1 — `app/github_client.py`, around line 175
+
+Currently:
+```python
+            pr = repo.create_pull(title=title, body=body, head=head, base=base)
+```
+
+Change to:
+```python
+            pr = repo.create_pull(title=title, body=body, head=head, base=base, draft=draft)
+```
+
+…and propagate a `draft: bool = True` parameter through the enclosing function signature so callers can override it. Default to `True` so chat-driven fix PRs are always opened as drafts (matches Gary's standing instruction). Pass through to PyGithub's `create_pull(draft=...)`.
+
+### Edit 2 — `app/main.py`, lines 719 and 839
+
+Currently each line reads:
+```python
+        MAX_TOOL_ROUNDS = 5
+```
+
+Change BOTH occurrences to:
+```python
+        MAX_TOOL_ROUNDS = int(os.getenv("CHAT_MAX_TOOL_ROUNDS", "15"))
+```
+
+Add `import os` at the top of the file if it isn't already imported (it likely is — preserve existing imports either way).
+
+### PR body
+
+Short and factual. Lead with: this is the autopilot self-improvement PR Gary asked for — addresses two friction points discovered in the 2026-05-08 hit-list-fix attempt. (1) `open_fix_pr` opened non-draft PRs which contradicts the standing draft-by-default convention; (2) the 5-round tool-call cap forced shallow PRs on multi-file fixes — bumping to 15 (env-overridable as `CHAT_MAX_TOOL_ROUNDS`) gives complex fixes room to land in one shot. Note that WebSockets were considered but ruled out as orthogonal — the cap is a logic-layer termination, not a transport-layer issue.
+
+### Output
+
+Reply with ONLY two lines:
+```
+merged: <PR #19 merge sha or status>
+extension: <new PR URL>
+```
+
+No prose, no diff summary.
+
+
+### 🤖 Autopilot
+
+merged: 2133ca084fe7a33ef4597989c5b85a314aa01727
+extension: https://github.com/TrueSightDAO/truesight_autopilot/pull/21
+
