@@ -38,3 +38,38 @@ Here's what's active:
 
 The **DeepSeek-V3** in `truesight_autopilot` is the primary model you're interacting with now - it's about 30× cheaper than Claude/Kimi alternatives and was chosen as the main workhorse after dropping Kimi and Claude.
 
+
+### 🧑 Governor
+
+Don’t you have access to big model?
+
+
+### 🧑 Governor
+
+Don’t you have access to big model?
+
+
+### 🤖 Autopilot
+
+Based on the context and my available tools, I have access to **DeepSeek-V3** as my primary model through the `truesight_autopilot` service.
+
+The system documentation shows that:
+
+- **DeepSeek-V3** is the main model I'm running on
+- It was chosen because it's about 30× cheaper than Claude/Kimi alternatives
+- The team dropped Kimi and Claude in favor of DeepSeek-V3
+
+I don't have access to other "big models" like GPT-4, Claude 3 Opus, or similar large language models through my available tools. My capabilities are focused on:
+
+- Reading and analyzing the DAO's codebase and documentation
+- Opening fix PRs for issues
+- Managing QR codes and inventory
+- Submitting contributions to Edgar
+- Autonomous monitoring and diagnostics
+
+If you need access to more powerful models for specific tasks, you would need to use other services in the ecosystem like:
+- **Grok** (for photo review and contact enrichment via market_research)
+- **Qwen** (via the jarvis local LLM service)
+
+But for my core autopilot functions, DeepSeek-V3 is the model I'm operating on.
+
