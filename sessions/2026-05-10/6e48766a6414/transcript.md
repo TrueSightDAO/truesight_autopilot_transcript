@@ -80,3 +80,84 @@ Based on the workspace context, here's the current state of the TrueSight DAO:
 
 The DAO is in active operation with multiple production services, automated workflows, and clear operational procedures. The system is mature with comprehensive documentation and active development across all core areas.
 
+
+### 🧑 Governor
+
+Who are the people in the DAO?
+
+
+### 🧑 Governor
+
+Who are the people in the DAO?
+
+
+### 🤖 Autopilot
+
+Based on the context files, here are the key people in the TrueSight DAO:
+
+## **Core Contributors & Governors**
+
+### **Gary Teh** 
+- **Primary Governor** - The main decision-maker and operator
+- **Email:** `garyjob@agroverse.shop`
+- **Roles:** 
+  - DAO governance and strategic direction
+  - Agroverse e-commerce operations
+  - Financial management and ledger oversight
+  - Partner relationships and retail onboarding
+
+### **Kirsten Ritschel**
+- **Fund Handler/Manager** - Manages inventory and assets at San Francisco location
+- **Ship-to Address:** `TrueTech Inc, 1423 Hayes St, San Francisco, CA 94117-1425, United States`
+- **Roles:**
+  - Inventory management and repackaging operations
+  - Asset custody and tracking
+  - Local operations coordination
+
+### **Matheus Reis**
+- **Brazil Operations Manager** - Manages DAO inventory and purchases in Brazil
+- **Location:** Ilhéus, Bahia, Brazil area
+- **Roles:**
+  - Brazilian BRL purchases for DAO inventory
+  - Supply chain coordination (Brazil→US)
+  - Local warehouse management
+  - Oscar-adjacent origin operations
+
+## **Operational Team**
+
+### **Field Agents**
+- **Role:** Store discovery and data collection via DApp
+- **Process:** Submit store locations through `stores_nearby.html` which triggers Google Places analysis and Hit List population
+- **Automation:** AI photo review and contact enrichment workflows
+
+### **AI Agents**
+- **truesight_autopilot** - Autonomous SRE and developer assistant
+- **Edgar (sentiment_importer)** - DAO API and webhook processing
+- **Various automation scripts** - Hit List processing, email drafting, inventory sync
+
+## **Partner Network**
+
+### **Retail Partners**
+- **Status:** Stores progressing through outreach protocol stages
+- **Stages:** Research → Shortlisted → Contacted → Manager Follow-up → Meeting Scheduled → Partnered
+- **Current Focus:** Holistic wellness retailers, metaphysical shops, wellness centers
+
+### **Farm Partners**
+- **Oscar (Bahia, Brazil)** - Primary cacao source, Correios shipments tracked
+- **Other Brazilian farms** - Integrated into supply chain
+
+## **Supporting Infrastructure**
+
+### **Technical Contributors**
+- **GitHub repository maintainers** across 11+ active repos
+- **Automation developers** for CI/CD workflows
+- **Systems administrators** for production deployments
+
+### **Service Providers**
+- **Google Workspace** - Sheets, Apps Scripts, Gmail integration
+- **GitHub Actions** - Automated workflows and deployments
+- **AWS** - EC2 hosting for truesight_autopilot
+- **Various APIs** - Google Maps, Grok, Stripe, EasyPost
+
+The DAO operates with a lean core team (Gary, Kirsten, Matheus) supported by extensive automation and a growing network of retail and farm partners. The human-in-the-loop approach ensures quality control while AI agents handle repetitive tasks and data processing.
+
