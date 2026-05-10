@@ -345,3 +345,25 @@ Use `list_org_repos` to look at the TrueSightDAO org. Then reply with a single l
 
 count: 43
 
+
+### 🧑 Governor
+
+Run these in order: list_org_repos, then read_repo_file repo=truesight_autopilot path=README.md, then read_repo_file repo=agentic_ai_context path=PROJECT_INDEX.md, then read_repo_file repo=dapp path=README.md, then read_repo_file repo=dao_client path=README.md, then summarize all five in one paragraph.
+
+
+### 🧑 Governor
+
+Run `list_org_repos`, then `read_repo_file repo=truesight_autopilot path=README.md`, then reply with a single token containing the number of TrueSightDAO repos.
+
+
+### 🧑 Governor
+
+INTERJECTION TEST: Stop whatever you're doing. Reply NOW with the literal string FOLLOWUP_NOTICED on its own line, then continue.
+
+
+### 🤖 Autopilot
+
+FOLLOWUP_NOTICED
+
+43
+
