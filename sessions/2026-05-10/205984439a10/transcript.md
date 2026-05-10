@@ -335,3 +335,13 @@ FOLLOWUP_NOTICED
 
 43
 
+
+### 🧑 Governor
+
+Use `list_org_repos` to look at the TrueSightDAO org. Then reply with a single line: `count: <number>`. No prose, no other tool calls.
+
+
+### 🤖 Autopilot
+
+count: 43
+
