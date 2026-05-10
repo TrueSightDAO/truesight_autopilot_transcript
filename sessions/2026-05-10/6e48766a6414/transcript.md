@@ -83,145 +83,249 @@ The DAO is in active operation with multiple production services, automated work
 
 ### 🧑 Governor
 
-How do you suggest we prioritize and tackle this challenges?
+Who are the people in the DAO?
 
 
 ### 🧑 Governor
 
-How do you suggest we prioritize and tackle this challenges?
+Who are the people in the DAO?
 
 
 ### 🤖 Autopilot
 
-Based on Dr Manhattan's strategic perspective and the DAO's mission to "restore 10,000 hectares of Amazon rainforest," here's how I suggest we prioritize and tackle the challenges:
+Based on the context files, here are the key people in the TrueSight DAO:
 
-## **Strategic Prioritization Framework**
+## **Core Contributors & Governors**
 
-### **1. Mission-First Triage**
-Evaluate every challenge through this lens: *"Does this directly advance rainforest restoration, or is it a necessary enabler?"*
+### **Gary Teh** 
+- **Primary Governor** - The main decision-maker and operator
+- **Email:** `garyjob@agroverse.shop`
+- **Roles:** 
+  - DAO governance and strategic direction
+  - Agroverse e-commerce operations
+  - Financial management and ledger oversight
+  - Partner relationships and retail onboarding
 
-**Tier 1: Direct Mission Impact**
-- **Supply chain reliability** - Without consistent Brazil→US cacao flow, we can't scale reforestation funding
-- **Retail partner expansion** - More partners = more ceremonial cacao sales = more rainforest restoration capital
-- **Unit cost optimization** - Lower costs = more margin for restoration per kilogram sold
+### **Kirsten Ritschel**
+- **Fund Handler/Manager** - Manages inventory and assets at San Francisco location
+- **Ship-to Address:** `TrueTech Inc, 1423 Hayes St, San Francisco, CA 94117-1425, United States`
+- **Roles:**
+  - Inventory management and repackaging operations
+  - Asset custody and tracking
+  - Local operations coordination
 
-**Tier 2: Critical Enablers** 
-- **DAO governance & participation** - Needed for sustainable decision-making as we scale
-- **Infrastructure reliability** - Edgar, autopilot, and core services must be rock-solid
-- **Financial operations** - Ledger accuracy, payment processing, and capital allocation
+### **Matheus Reis**
+- **Brazil Operations Manager** - Manages DAO inventory and purchases in Brazil
+- **Location:** Ilhéus, Bahia, Brazil area
+- **Roles:**
+  - Brazilian BRL purchases for DAO inventory
+  - Supply chain coordination (Brazil→US)
+  - Local warehouse management
+  - Oscar-adjacent origin operations
 
-**Tier 3: Growth Accelerators**
-- **Marketing & community** - Amplifies impact but depends on Tier 1&2 being solid
-- **New features/tools** - Only after foundations are stable
+## **Operational Team**
 
-### **2. Systems Coherence Check**
-Before tackling any challenge, ask:
-- *"Does this solution strengthen or fragment the network?"*
-- *"What second-order effects might this have across other projects?"*
-- *"Can this be documented in agentic_ai_context for future coherence?"*
+### **Field Agents**
+- **Role:** Store discovery and data collection via DApp
+- **Process:** Submit store locations through `stores_nearby.html` which triggers Google Places analysis and Hit List population
+- **Automation:** AI photo review and contact enrichment workflows
 
-## **Suggested Attack Plan**
+### **AI Agents**
+- **truesight_autopilot** - Autonomous SRE and developer assistant
+- **Edgar (sentiment_importer)** - DAO API and webhook processing
+- **Various automation scripts** - Hit List processing, email drafting, inventory sync
 
-### **Phase 1: Fortify Foundations (Next 30-60 Days)**
+## **Partner Network**
 
-**1. Supply Chain & Inventory**
-- **Priority**: HIGH - Directly blocks mission progress
-- **Actions**:
-  - Audit current Brazil→US pipeline bottlenecks
-  - Stabilize Matheus's BRL purchasing workflow
-  - Implement automated inventory forecasting
-  - Document supply chain costs in ledger for transparency
+### **Retail Partners**
+- **Status:** Stores progressing through outreach protocol stages
+- **Stages:** Research → Shortlisted → Contacted → Manager Follow-up → Meeting Scheduled → Partnered
+- **Current Focus:** Holistic wellness retailers, metaphysical shops, wellness centers
 
-**2. Infrastructure Reliability**
-- **Priority**: HIGH - System-wide dependency
-- **Actions**:
-  - Complete truesight_autopilot monitoring for all critical services
-  - Implement automated failover for Edgar (sentiment_importer)
-  - Establish clear incident response protocols
-  - Document all service dependencies
+### **Farm Partners**
+- **Oscar (Bahia, Brazil)** - Primary cacao source, Correios shipments tracked
+- **Other Brazilian farms** - Integrated into supply chain
 
-**3. Financial Operations**
-- **Priority**: HIGH - Enables everything else
-- **Actions**:
-  - Complete double-entry ledger adoption for all transactions
-  - Automate invoice processing and GitHub archiving
-  - Implement regular financial health checks
-  - Create clear capital allocation framework
+## **Supporting Infrastructure**
 
-### **Phase 2: Accelerate Growth (60-90 Days)**
+### **Technical Contributors**
+- **GitHub repository maintainers** across 11+ active repos
+- **Automation developers** for CI/CD workflows
+- **Systems administrators** for production deployments
 
-**1. Retail Partner Onboarding**
-- **Priority**: HIGH - Direct revenue/impact multiplier
-- **Actions**:
-  - Scale the automated onboarding workflow (dao_client)
-  - Target 5-10 high-potential retail partners
-  - Create partner success metrics and support
-  - Document partner playbook for replication
+### **Service Providers**
+- **Google Workspace** - Sheets, Apps Scripts, Gmail integration
+- **GitHub Actions** - Automated workflows and deployments
+- **AWS** - EC2 hosting for truesight_autopilot
+- **Various APIs** - Google Maps, Grok, Stripe, EasyPost
 
-**2. DAO Participation**
-- **Priority**: MEDIUM - Needed for sustainable governance
-- **Actions**:
-  - Simplify contributor onboarding (auth.py flow)
-  - Create clear contribution pathways for different skill levels
-  - Implement regular governance updates
-  - Develop proposal templates for common initiatives
+The DAO operates with a lean core team (Gary, Kirsten, Matheus) supported by extensive automation and a growing network of retail and farm partners. The human-in-the-loop approach ensures quality control while AI agents handle repetitive tasks and data processing.
 
-**3. Content & Community**
-- **Priority**: MEDIUM - Amplifies all other efforts
-- **Actions**:
-  - Execute CMO's partner outreach strategy
-  - Scale newsletter and community communication
-  - Create impact reporting (hectares restored progress)
-  - Develop educational content about mission connection
 
-### **Phase 3: Scale & Optimize (90+ Days)**
+### 🧑 Governor
 
-**1. Advanced Analytics**
-- **Priority**: MEDIUM - Data-driven decisions
-- **Actions**:
-  - Implement comprehensive metrics dashboard
-  - Track key mission KPIs (hectares, partners, revenue)
-  - Create predictive models for supply/demand
-  - Optimize marketing ROI
+What are the key challenges of the DAO?
 
-**2. System Integration**
-- **Priority**: LOW - Efficiency gains
-- **Actions**:
-  - Explore TrueChain activation if TDG on-chain settlement viable
-  - Integrate more automated workflows
-  - Develop advanced AI capabilities for operations
-  - Create unified API across all services
 
-## **Key Principles for Execution**
+### 🤖 Autopilot
 
-### **1. Document Everything**
-- All decisions, processes, and learnings go in `agentic_ai_context`
-- Create runbooks for recurring operations
-- Maintain single source of truth
+Based on the context files, here are the key challenges facing the TrueSight DAO:
 
-### **2. Measure What Matters**
-- **Primary**: Hectares of rainforest restored
-- **Secondary**: Retail partners, cacao volume, revenue
-- **Tertiary**: DAO participants, proposal activity, system uptime
+## **Strategic & Mission Challenges**
 
-### **3. Maintain Optionality**
-- Avoid over-committing to single solutions
-- Keep infrastructure modular and replaceable
-- Preserve trust and community above short-term gains
+### **Mission Execution Gap**
+- **Mission:** Restore 10,000 hectares of Amazon rainforest to "heal the world with love"
+- **Challenge:** Current operations focus on ceremonial cacao supply chain and retail, but the direct connection to rainforest restoration isn't clearly articulated in daily operations
+- **Gap:** Need to bridge the gap between cacao commerce and actual rainforest restoration metrics
 
-### **4. Delegate Strategically**
-- **Marketing**: Follow CMO Seth Godin's principles
-- **Technical**: Use autopilot and fix PR workflow
-- **Operations**: Document and automate where possible
+### **Growth vs. Sustainability Tension**
+- **Challenge:** Balancing rapid network growth (more partners, more transactions) with long-term sustainability
+- **Risk:** Scaling too quickly could overwhelm supply chain, quality control, or governance systems
+- **Need:** Clear metrics and KPIs to measure "growth" beyond just transaction volume
 
-## **Immediate Next Steps**
+## **Operational & Supply Chain Challenges**
 
-1. **Conduct Systems Audit**: Identify current bottlenecks across all Tier 1 areas
-2. **Establish Metrics Dashboard**: Start tracking the key KPIs immediately
-3. **Create 90-Day Roadmap**: Break down Phase 1 into specific, assignable tasks
-4. **Document Current State**: Ensure all context is up-to-date in `agentic_ai_context`
+### **International Logistics Complexity**
+- **Brazil→US Freight:** Every movement between Matheus (Ilhéus, Brazil) and Kirsten (San Francisco) requires complex international freight
+- **Cost Structure:** 13+ line items including air freight, customs, FDA processing, duties, bonds
+- **Risk:** Single point of failure in international supply chain; currency fluctuations (BRL→USD)
 
-This approach ensures we're always working on what most directly advances our mission while building a sustainable, coherent system that can scale effectively.
+### **Inventory Management Across Locations**
+- **Multi-location Tracking:** Inventory split between Brazil (Matheus) and US (Kirsten) with different managers
+- **Unit Cost Economics:** Need to track landed costs, processing costs, and conversion ratios (beans→nibs→mass)
+- **Challenge:** Real-time visibility across international boundaries and different ledgers
 
-Would you like me to help create a detailed 90-day execution plan for any specific area, or shall we start with the systems audit?
+### **Processing Cost Volatility**
+- **Brazilian Processing:** Costs vary by facility (Martinus, Santos, Fazenda Capela Velha) and process type
+- **WhatsApp Integration:** Processing cost updates come via WhatsApp chats requiring manual extraction
+- **Risk:** Inconsistent cost data affects pricing and profitability calculations
+
+## **Technology & Infrastructure Challenges**
+
+### **System Fragmentation**
+- **11+ Active Repositories:** dapp, tokenomics, dao_client, truesight_me, agroverse_shop, market_research, sentiment_importer, etc.
+- **Integration Complexity:** Multiple systems (Rails, Node.js, Python, Google Apps Scripts) that need to communicate
+- **Risk:** Technical debt and maintenance overhead from fragmented architecture
+
+### **Automation vs. Human-in-the-Loop Balance**
+- **Current State:** Heavy reliance on human oversight (Gary, Kirsten, Matheus) for critical decisions
+- **Automation Gaps:** Many workflows still require manual intervention (QR processing, partner outreach, inventory movements)
+- **Challenge:** Scaling requires more automation, but critical decisions need human judgment
+
+### **TrueChain Implementation Status**
+- **Designed but Not Running:** Private blockchain for audit trail is complete but no active validators
+- **Strategic Question:** Is TrueChain necessary for current operations, or is it premature complexity?
+- **Resource Allocation:** Development effort spent on TrueChain vs. immediate operational needs
+
+## **Marketing & Growth Challenges**
+
+### **Partner Acquisition Scalability**
+- **Current Process:** Manual partner discovery, outreach, and onboarding
+- **Human-in-the-Loop:** Gary must approve every partner interaction
+- **Bottleneck:** Growth limited by Gary's availability for partner decisions
+
+### **Smallest Viable Audience Definition**
+- **CMO Challenge:** Need to clearly define the "smallest group that can sustain the change"
+- **Targeting:** Balancing wellness/metaphysical shops with broader retail distribution
+- **Risk:** Diluting focus by pursuing too many partner types simultaneously
+
+### **Content & Community Building**
+- **Newsletter:** Automated but needs human oversight for content quality
+- **Community Engagement:** Limited mechanisms for partner-to-partner interaction
+- **Challenge:** Building a true "tribe" around ceremonial cacao beyond transactional relationships
+
+## **Governance & Decision-Making Challenges**
+
+### **Centralized Decision Making**
+- **Single Governor:** Gary Teh is the primary decision-maker for most strategic choices
+- **Bottleneck Risk:** Network growth limited by one person's bandwidth
+- **Need:** More distributed governance while maintaining strategic coherence
+
+### **Proposal System Maturity**
+- **GitHub Proposals:** Technical but limited participation
+- **Realms Integration:** Browser-required, not well-integrated into daily workflows
+- **Challenge:** Making governance accessible and meaningful to broader participant base
+
+### **Metrics & Performance Tracking**
+- **Missing KPIs:** No clear metrics for "success" beyond transaction volume
+- **Impact Measurement:** Difficulty tracking progress toward 10,000 hectare restoration goal
+- **Need:** Dashboard and reporting systems that connect operations to mission
+
+## **Financial & Economic Challenges**
+
+### **Double-Entry Accounting Complexity**
+- **Manual Processes:** Many ledger entries still require manual creation and verification
+- **Cross-Ledger Reconciliation:** Managing inventory across multiple AGLs and the main ledger
+- **Risk:** Errors in double-entry accounting can cascade through financial reporting
+
+### **Pricing Strategy**
+- **Cost-Plus vs. Value-Based:** Need to balance landed costs with market positioning
+- **Category Pricing:** Different multipliers for different cacao categories
+- **Challenge:** Communicating premium pricing justification to partners and consumers
+
+### **Capital Requirements**
+- **Inventory Investment:** Significant capital tied up in international inventory
+- **Growth Capital:** Need funding for partner onboarding, marketing, and infrastructure
+- **Challenge:** Balancing operational cash flow with growth investment
+
+## **Priority Challenges to Address**
+
+1. **Supply Chain Reliability** - Stabilize Brazil→US operations and reduce freight complexity
+2. **Governance Distribution** - Reduce Gary's bottleneck while maintaining strategic direction
+3. **Mission Metrics** - Define and track progress toward rainforest restoration
+4. **System Integration** - Reduce fragmentation across 11+ repositories
+5. **Partner Onboarding Automation** - Scale partner acquisition without losing quality control
+
+The DAO faces classic startup scaling challenges compounded by international operations, mission-driven complexity, and the need to balance automation with human judgment. Success will depend on prioritizing challenges that directly enable the mission while building sustainable operational systems.
+
+
+### 🧑 Governor
+
+Regarding the progress, matrix can you not see that the Hectares restored is reported on the Agroverse landing page
+
+
+### 🤖 Autopilot
+
+You're absolutely right - I apologize for missing that. Let me check the Agroverse context to understand how hectares restored is being tracked and reported.
+
+
+### 🤖 Autopilot
+
+You're absolutely right, and I apologize for missing that! Looking at the Agroverse landing page HTML, I can see there **is** clear progress tracking and metrics being displayed. The mission section shows:
+
+## **Current Progress Metrics (Live on Agroverse.shop):**
+
+### **Key Statistics Being Tracked:**
+- **186+** Grower network
+- **134+** Trees planted (dynamically updated)
+- **0.134+** Hectares restored (dynamically updated)
+
+### **How It Works:**
+The page has JavaScript that fetches real-time data from:
+```
+https://script.google.com/macros/s/AKfycbzHDqxI4lWlDcl6AnAhZxw7kbOp4exPPk5GFgdwqJuAfMva_00q8eIMFOAzAYIlxVRH/exec
+```
+
+### **The Conversion Formula:**
+- **1 bag sold = 1 tree planted**
+- **1000 trees = 1 hectare restored**
+
+This means the metrics are directly tied to actual sales performance, creating a clear connection between commerce and conservation impact.
+
+### **What This Changes About My Assessment:**
+
+1. **Mission Metrics ARE Tracked** - The hectares restored metric is live and public
+2. **Direct Business Impact** - Every sale contributes to the 10,000 hectare goal
+3. **Transparency** - The data is updated in real-time via Google Apps Script
+4. **Progress is Visible** - Customers can see the impact of their purchases
+
+This actually addresses one of the key challenges I identified - the "missing KPIs" are not missing at all. They're actively tracked and displayed, which means:
+
+**The DAO has a working model for mission-driven commerce where:**
+- Business operations directly support the environmental mission
+- Progress is transparent and measurable
+- Customers can see the impact of their participation
+- The connection between cacao sales and forest restoration is clear and immediate
+
+Thank you for the correction - this is actually a significant strength of the current operation that I overlooked. The challenge now is more about scaling this model to reach the 10,000 hectare goal faster, rather than lacking metrics altogether.
 
