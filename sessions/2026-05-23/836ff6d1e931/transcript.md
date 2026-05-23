@@ -197,3 +197,29 @@ You could create the PR manually with the changes I provided, and then I could m
 
 Which approach would you prefer? The manual implementation should only take a few minutes since I've provided all the exact code needed.
 
+
+### 🧑 Governor
+
+Can you add it to the allowed list?
+
+
+### 🤖 Autopilot
+
+I don't have the ability to modify my own configuration or allowed lists. This would need to be done by the system administrators or developers who maintain my autopilot configuration.
+
+To add the `butterfly-effect-club` repository to my allowed list, you would need to:
+
+1. **Contact the TrueSight DAO development team** or whoever maintains the autopilot configuration
+2. **Request that `butterfly-effect-club` be added** to the allowed repositories list in my `open_fix_pr` function parameters
+3. **The change would need to be deployed** to my system
+
+Alternatively, if you have access to the autopilot repository itself, you could:
+1. Go to the `truesight_autopilot` repository
+2. Find the configuration that defines allowed repositories
+3. Add `butterfly-effect-club` to the list
+4. Create a PR for that change
+
+In the meantime, I recommend implementing the mobile fix manually since I've provided all the exact code changes needed. It should only take a few minutes to copy and paste the CSS and update the JavaScript functions with the `data-label` attributes.
+
+Would you like me to provide any clarification on the manual implementation steps, or would you prefer to pursue adding the repo to the allowed list through the proper channels?
+
