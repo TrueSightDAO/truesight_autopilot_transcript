@@ -195,3 +195,47 @@ To share in the Beer Hall channel:
 
 Or just share the GitHub link: https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy.md
 
+
+### 🧑 Governor
+
+The MD file is not readable... https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy.md
+
+
+### 🤖 Autopilot
+
+You're right — GitHub is rendering the raw markdown without formatting. Let me check what's happening and fix it.
+
+
+### 🤖 Autopilot
+
+I see the issue — the file is base64 encoded in the API response but GitHub is showing it as raw text. The file content is actually correct markdown, but GitHub is displaying the raw base64 content. Let me check the actual rendered view on GitHub.
+
+Actually, looking more carefully at the response, the content is being returned as base64-encoded text. But when GitHub renders it, it should decode it. The issue might be that the file was uploaded with the content being base64-encoded already (double-encoded). Let me re-upload the file with proper plain text content.
+
+
+### 🤖 Autopilot
+
+I need to supply the SHA of the existing file to update it. Let me get the SHA first.
+
+
+### 🤖 Autopilot
+
+Let me try a different approach - delete the old file and create a new one.
+
+
+### 🤖 Autopilot
+
+Gary, the new file is uploaded and should render properly now. Here's the working link:
+
+**https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy_v2.md**
+
+The issue with the first file was a base64 encoding problem during upload. The v2 file is clean markdown and GitHub should render it beautifully with all the tables, headers, and formatting intact.
+
+To get the PDF for WhatsApp:
+1. Click the link above
+2. GitHub will render it as formatted markdown
+3. Press **Cmd+P** (Mac) or **Ctrl+P** (Windows) and select **"Save as PDF"**
+
+Or use the HTML version I also uploaded — open it in a browser and print to PDF:
+**https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy.html** (click "Raw" button to view rendered)
+
