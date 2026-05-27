@@ -70,3 +70,37 @@ Based on the context, I am authorized to:
 
 **What do you need me to do with sentiment_importer?** Fix a bug, deploy a change, or investigate an issue?
 
+
+### 🧑 Governor
+
+What are the list of repos you have editing rights for?
+
+
+### 🤖 Autopilot
+
+Based on the tools I have access to, here are the **TrueSightDAO repos** I can read code from and open fix PRs for:
+
+| # | Repo | Purpose |
+|---|------|---------|
+| 1 | **dapp_beta** | DApp (beta) — signatures, voting, scanner, expenses |
+| 2 | **dapp_prod** | DApp (production) — fork of dapp_beta |
+| 3 | **tokenomics** | Tokenomics scripts, Google Apps Scripts, schema |
+| 4 | **truesight_me** | TrueSight DAO static site (beta) |
+| 5 | **truesight_me_prod** | truesight.me (production) |
+| 6 | **agroverse_shop** | Agroverse e-commerce (beta) |
+| 7 | **agroverse_shop_prod** | agroverse.shop (production) |
+| 8 | **dao_client** | Python CLI for Edgar contributions |
+| 9 | **market_research** | Content, physical stores, hit list scripts |
+| 10 | **sentiment_importer** | **Edgar** — Rails DAO API, Sidekiq workers |
+| 11 | **truesight_autopilot** | My own codebase — governor chat + autonomous SRE |
+| 12 | **.github** | Org-level assets, PDF archives |
+| 13 | **agentic_ai_context** | This context repo |
+| 14 | **agroverse-inventory** | Published inventory JSON snapshots |
+| 15 | **dao_protocol** | DAO protocol definitions |
+
+**In short: all 15 TrueSightDAO repos.** I can read any file, open fix PRs, and (for `truesight_autopilot`) deploy to EC2.
+
+For `sentiment_importer` specifically, I can also deploy via `./deploy.sh` to the two production hosts (`seni_ror_new` + `seni_sk_new`), though that requires SSH access which I'd need you to facilitate.
+
+What would you like me to work on?
+
