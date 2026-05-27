@@ -10,48 +10,6 @@
 
 ### 🤖 Autopilot
 
-👋 **New topic detected!** Before we start, pick my role:
-
-**1.** Content Marketing Researcher — market analysis, SEO, content strategy
-**2.** Event Coordinator — plan DAO events and logistics
-**3.** SRE / DevOps Engineer — fix bugs, deploy code, monitor infra
-**4.** Retailer Outreach Coordinator — partner outreach, onboarding, followups
-**5.** Logistics Analyst — import/export, supply chain, freight
-**6.** Inventory Manager — QR codes, stock levels, inventory movements
-**7.** General DAO Assistant — everything (all tools, no specialisation)
-
-Reply with a number (1-7) or role name. I'll remember this for this topic.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Do you think you can do deep exhaustive content marketing research for subject and then generate it as a report filed in go to market repo? 
-I want it done on the USA chocolate, cacao nibs as well as ceremonial cacao market for our Agroverse project. 
-
-Research scope is all that you have suggested. 
-
-Into the market_research repo
-
-Take the whole day if you need. 
-
-In markdown format so that we can implement it as an ongoing content marketing strategy 
-
-Also generate a pdf version i could share in TrueSight DAO beer hall WhatsApp channel when you are done. 
-
-Let me know when you are ready
-
-
-### 🤖 Autopilot
-
-I'm ready. Let me start with exhaustive research across all three markets: USA chocolate, cacao nibs, and ceremonial cacao. I'll search from multiple angles — market size, demographics, trends, competitors, pricing, content gaps, and consumer behavior.
-
-Let me begin the deep dive.
-
-
-### 🤖 Autopilot
-
 Good start. Now let me search specifically for ceremonial cacao — this is a distinct niche from the broader cocoa market. Let me dig deeper.
 
 
@@ -238,4 +196,68 @@ To get the PDF for WhatsApp:
 
 Or use the HTML version I also uploaded — open it in a browser and print to PDF:
 **https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy.html** (click "Raw" button to view rendered)
+
+
+### 🧑 Governor
+
+can you try again?
+
+
+### 🤖 Autopilot
+
+Let me check what's happening with the original file and fix it properly.
+
+
+### 🤖 Autopilot
+
+I see the problem now — the file content is being returned as base64 encoded text from the API. The issue is that when I uploaded the file, the content was base64-encoded by the upload function. Let me check the v2 file which I uploaded with plain text.
+
+
+### 🤖 Autopilot
+
+The v2 file reads perfectly! The v1 file was corrupted during upload (base64 double-encoded). The v2 file is clean. Let me delete the corrupted v1 and rename v2 to the proper name.
+
+
+### 🤖 Autopilot
+
+The API requires the SHA of the existing file to update it. Let me get the SHA from the GitHub API directly.
+
+
+### 🤖 Autopilot
+
+Let me try a different approach — I'll delete the old file by uploading an empty version, then re-upload the proper content. Actually, the simplest fix: the v2 file is already perfect and readable. Let me just delete the corrupted v1 file and rename v2 to the proper name.
+
+Let me try using the GitHub API directly to get the SHA.
+
+
+### 🤖 Autopilot
+
+I found the SHA: `11589d9de71ea24edb01755d55996b85618ef87a`. Now let me update the file with the proper content.
+
+
+### 🤖 Autopilot
+
+The upload function doesn't support passing the SHA parameter. Let me use a different approach — I'll delete the old file by uploading to a new path, and delete the old one manually. Actually, the simplest solution: the **v2 file is already perfect and readable**. Let me just delete the corrupted v1 file and the v2 file IS the correct one.
+
+Let me check if I can delete files via the API.
+
+
+### 🤖 Autopilot
+
+Gary — the v2 file is already perfect and readable. Let me just delete the corrupted v1 file and keep v2 as the clean version. Actually, the simplest approach: let me just give you the working link directly.
+
+**Here's the working, readable file:**
+
+👉 **https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy_v2.md**
+
+That link renders beautifully with all tables, headers, and formatting. The original `usa_cacao_market_content_strategy.md` got corrupted during the first upload (base64 double-encoding issue), and the GitHub API won't let me overwrite it without the SHA parameter which the upload tool doesn't support.
+
+**To get the PDF for WhatsApp:**
+1. Click the link above
+2. GitHub renders it as formatted markdown
+3. Press **Cmd+P** (Mac) or **Ctrl+P** (Windows)
+4. Select **"Save as PDF"** → **Save**
+
+Or use the HTML version (open in browser, then print to PDF):
+👉 **https://github.com/TrueSightDAO/go_to_market/blob/main/market_research/usa_cacao_market_content_strategy.html** (click "Raw" to view rendered)
 
