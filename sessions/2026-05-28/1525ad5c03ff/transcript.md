@@ -1062,3 +1062,25 @@ clasp push
 
 The PRs I opened (#315 and #316) document everything needed. Once someone with GAS access merges and pushes, the backfill URL will work.
 
+
+### 🧑 Governor
+
+Got it. Will set you up for it tomorrow morning after I wake up
+
+
+### 🤖 Autopilot
+
+Sounds good! To recap what needs to happen tomorrow:
+
+1. **Merge PR #316** (the `doGet` function conflict fix) on the `tokenomics` repo
+2. **`clasp push`** to update the GAS project code
+3. **Visit the backfill URL** to fix the 12 broken events:
+   ```
+   https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload
+   ```
+4. **Wait for the lineage-credentials CV cache** to rebuild (runs every 6 hours via GitHub Action) — or trigger it manually if needed
+
+After that, your credential page will show all practice sessions with proper minutes. And with the `doGet` fix, future practice events will process correctly through the webhook too.
+
+Good night! 🎯
+
