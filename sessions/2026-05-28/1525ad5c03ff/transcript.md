@@ -234,3 +234,54 @@ So we're all set! Here's the summary:
 
 The fix is live. The dropdowns should now load in ~50-150ms instead of 1-3 seconds.
 
+
+### 🧑 Governor
+
+I am ok so long Trade-off: dao_members.json only includes contributors who have completed email verification (have a public key). Newly added  are basically folks whom I have included in 
+
+https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=0#gid=0
+"Contributors contact information"
+
+
+### 🤖 Autopilot
+
+Let me check that sheet to see who's there vs who's in `dao_members.json`.
+
+
+### 🤖 Autopilot
+
+Right, I see the issue now. The Contributors sheet has **hundreds** of names — far more than the 12 in `dao_members.json`. The `dao_members.json` only contains people who have completed the full email verification flow (registered a public key). The GAS `?recipients=true` endpoint returns **all** names from this sheet.
+
+So the trade-off is real: with the current fix, the dropdown will only show ~12 verified contributors instead of the full list. That's a problem for the inventory movement page where you need to select any recipient, not just verified ones.
+
+Let me revert this approach and think of a better solution. The right fix is to **publish the full contributors list to the treasury-cache** alongside `dao_members.json`, so it's CDN-served but includes everyone.
+
+Actually, wait — let me re-read the code more carefully. The `loadRecipients()` function in `report_inventory_movement.html` already has a treasury-cache pattern for managers (`getManagersFromTreasuryCache()`). The same pattern could be used for recipients if we add a `contributors` array to `dao_offchain_treasury.json`.
+
+But that requires changes on the GAS publisher side. A simpler interim fix would be to add a `contributors` array to the existing `dao_members.json` (it already has all the names) — but as we've seen, it only has 12 verified ones.
+
+Let me open a follow-up PR that adds a proper recipients list to the treasury-cache JSON, so both the full list and CDN speed are achieved.
+
+Actually, let me first check what the GAS `?recipients=true` actually returns to understand the full scope.
+
+
+### 🤖 Autopilot
+
+OK, so the GAS `?recipients=true` returns **~260 contributors** with `{key, name}` pairs. The `dao_members.json` only has **12 verified contributors**. That's a massive gap.
+
+The current PR #4 would only show 12 names instead of 260 — that's not acceptable. I need to revert this and do the proper fix: publish the full contributors list to the treasury-cache.
+
+Let me open a new PR that reverts the change and instead adds a proper CDN-cached recipients list.
+
+
+### 🤖 Autopilot
+
+PR #5 is open to revert the change. The issue is clear:
+
+- **`dao_members.json`** has **12 contributors** (only those who completed email verification with a public key)
+- **GAS `?recipients=true`** has **~260 contributors** (everyone from the Contributors sheet)
+
+The real fix needs to happen on the **publisher side** — the GAS script that generates `dao_offchain_treasury.json` needs to also include a `contributors` array with all names from the Contributors sheet. Then the DApp can read from the CDN cache and get both speed AND completeness.
+
+Want me to merge the revert PR #5?
+
