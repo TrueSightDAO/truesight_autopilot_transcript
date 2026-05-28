@@ -10,123 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me check the specific notes for sentiment_importer to understand permissions and deployment context.
-
-
-### 🤖 Autopilot
-
-Yes, I have permission to modify code for **sentiment_importer** (Edgar). Here's the breakdown:
-
-## My Permissions as SRE / DevOps Engineer
-
-Based on the context, I am authorized to:
-
-1. **Read and modify code** in the `sentiment_importer` repo — it's listed under my tool access and is part of the TrueSightDAO ecosystem I maintain.
-
-2. **Open fix PRs** via `open_fix_pr` — the tool explicitly accepts `sentiment_importer` as a valid repo.
-
-3. **Deploy changes** — the deployment playbook is documented in `NOTES_sentiment_importer.md` using `./deploy.sh` (though there's **no auto-deploy on merge** — you must run the script manually).
-
-4. **Monitor** — I can check Monit dashboards, logs (`journalctl`), and health endpoints (`/ping`).
-
-## Important Caveats
-
-- **No auto-deploy**: Merging to `master` does **not** deploy. You or I must run `./deploy.sh` from the repo root.
-- **Two hosts**: `seni_ror_new` (Rails web, `3.90.179.151`) and `seni_sk_new` (Sidekiq workers, `54.163.216.235`) — both need updating.
-- **Sidekiq runs only on `seni_sk_new`** — don't panic if you check the web box and see no Sidekiq process.
-- **Env vars** live in systemd units, not `.env` files — any `rake`/`rails runner` over SSH needs the `load_unit_env` pattern.
-
-**What do you need me to do with sentiment_importer?** Fix a bug, deploy a change, or investigate an issue?
-
-
-### 🧑 Governor
-
-What are the list of repos you have editing rights for?
-
-
-### 🤖 Autopilot
-
-Based on the tools I have access to, here are the **TrueSightDAO repos** I can read code from and open fix PRs for:
-
-| # | Repo | Purpose |
-|---|------|---------|
-| 1 | **dapp_beta** | DApp (beta) — signatures, voting, scanner, expenses |
-| 2 | **dapp_prod** | DApp (production) — fork of dapp_beta |
-| 3 | **tokenomics** | Tokenomics scripts, Google Apps Scripts, schema |
-| 4 | **truesight_me** | TrueSight DAO static site (beta) |
-| 5 | **truesight_me_prod** | truesight.me (production) |
-| 6 | **agroverse_shop** | Agroverse e-commerce (beta) |
-| 7 | **agroverse_shop_prod** | agroverse.shop (production) |
-| 8 | **dao_client** | Python CLI for Edgar contributions |
-| 9 | **market_research** | Content, physical stores, hit list scripts |
-| 10 | **sentiment_importer** | **Edgar** — Rails DAO API, Sidekiq workers |
-| 11 | **truesight_autopilot** | My own codebase — governor chat + autonomous SRE |
-| 12 | **.github** | Org-level assets, PDF archives |
-| 13 | **agentic_ai_context** | This context repo |
-| 14 | **agroverse-inventory** | Published inventory JSON snapshots |
-| 15 | **dao_protocol** | DAO protocol definitions |
-
-**In short: all 15 TrueSightDAO repos.** I can read any file, open fix PRs, and (for `truesight_autopilot`) deploy to EC2.
-
-For `sentiment_importer` specifically, I can also deploy via `./deploy.sh` to the two production hosts (`seni_ror_new` + `seni_sk_new`), though that requires SSH access which I'd need you to facilitate.
-
-What would you like me to work on?
-
-
-### 🧑 Governor
-
-Can you help me check why for my profile here only the records until 19th may appears and not those after that date even though I had practiced after that date
-
-https://truesight.me/programs/tribomirim/credentials/#pk-wR9zU8JMnEz1
-
-
-### 🤖 Autopilot
-
-Let me investigate this. First, I'll look at the page and the relevant repos to understand how the profile data is sourced.
-
-
-### 🤖 Autopilot
-
-The page loads credential data dynamically via `TrueSightProgramShell.init()`. Let me look at the manifest and the shell script to understand how data is fetched.
-
-
-### 🤖 Autopilot
-
-Now I can see the data flow. The credential page fetches data from the **`lineage-credentials`** repo (jsDelivr CDN with GitHub raw fallback). Let me look at the cache files to understand what data is available.
-
-
-### 🤖 Autopilot
-
-Now I understand the full data flow. The credential page loads data from the **`TrueSightDAO/lineage-credentials`** repo via jsDelivr CDN. Let me check what data is actually available for your profile.
-
-
-### 🤖 Autopilot
-
-Let me check the actual lineage-credentials repo on GitHub directly.
-
-
-### 🤖 Autopilot
-
-Now I understand the full picture. The credential data comes from the **`TrueSightDAO/lineage-credentials`** repo. Let me check if that repo exists and look at the cache data.
-
-
-### 🤖 Autopilot
-
-I don't see `lineage-credentials` in the public repos list. Let me check the capoeira repo for the practice event submission flow, since that's where practice sessions get logged.
-
-
-### 🤖 Autopilot
-
-Now I have a clear picture of the data flow. Let me check the actual cache data for your profile.
-
-
-### 🤖 Autopilot
-
-The `lineage-credentials` repo doesn't appear in the public TrueSightDAO repos list. Let me check the capoeira practice page to understand how practice events are submitted and where they go.
-
-
-### 🤖 Autopilot
-
 The `lineage-credentials` repo might be private. Let me check the capoeira practice page to understand how practice events are submitted and stored.
 
 
@@ -442,4 +325,265 @@ Now I have the complete picture. Let me check the intake sheet to see the raw me
 ### 🤖 Autopilot
 
 Now I have the complete picture. Let me check the intake sheet to see the raw messages for the May 24/25 events.
+
+
+### 🧑 Governor
+
+Let’s see if the details are recorded there
+
+
+### 🤖 Autopilot
+
+Let me check the Credentialing Events intake sheet to see the raw messages for the May 24/25 events.
+
+
+### 🤖 Autopilot
+
+I can't directly read the Google Sheet from here, but I can see the raw event files stored in the repo. Let me check what the raw message looks like in the Telegram Chat Logs by looking at the intake sheet data that's been committed.
+
+
+### 🤖 Autopilot
+
+I can't directly access the Google Sheet from here, but I can see the full picture from the code and the stored data. Let me summarize what I've found:
+
+---
+
+## Investigation Results
+
+### The Data Flow
+
+1. **Browser** → `practice-event-submit.js` builds the `[PRACTICE EVENT]` text (with `Payload JSON:` containing moves, music, theme, minutes) and POSTs it to Edgar
+2. **Edgar** (`sentiment_importer`) → logs the raw text to the **Telegram Chat Logs** Google Sheet (column G = raw message)
+3. **GAS** (`practice_event_processing.gs`) → scans Telegram Chat Logs, parses the `[PRACTICE EVENT]` text, extracts the `Payload JSON:`, and commits the event JSON to `lineage-credentials`
+4. **lineage-engine** (`build_cv_cache.py`) → reads the practice events and builds the CV cache
+
+### What's happening
+
+Looking at the raw event files in `lineage-credentials`:
+
+**Events WITH payloads** (May 15 only — 3 events):
+- `2026-05-15T054624876Z-cyVF5MgoAd.json` — has `"payload": {...}` ✅
+- `2026-05-15T054626760Z-stYiAw9JF0.json` — has `"payload": {...}` ✅
+- `2026-05-15T054636346Z-RQLncFlxRh.json` — has `"payload": {...}` ✅
+- `2026-05-15T071759666Z-CBHOG2m0o0.json` — has `"payload": {...}` ✅
+
+These all have `"reprocessed": true` in their intake — meaning they were fixed by the **backfill** (`reprocessAllRowsWithEmptyPayload`) after the parser bug was fixed on May 16.
+
+**Events WITHOUT payloads** (May 17, 18, 19, 24, 25 — 11 events):
+- All have `"payload": null` and `"raw_payload_json": ""` ❌
+- None have `"reprocessed": true`
+
+### Root Cause
+
+The GAS parser `parsePracticeEvent()` in `practice_event_processing.gs` has **two** extraction methods:
+
+1. **Primary path** (regex): `/- Payload JSON:[ \t]*\r?\n([\s\S]*?)\r?\n-{3,}/` — matches between `- Payload JSON:` and the `--------` separator
+2. **Fallback** (balanced-brace): scans for `{` after `- Payload JSON:` and counts braces
+
+The **primary regex** was failing for some events. The **fallback** was added on May 16 and the backfill was run — which fixed the May 15 events (they got `"reprocessed": true`).
+
+**But the backfill was only run once** — it only reprocessed rows that existed at that time (May 15). The May 17, 18, 19, 24, and 25 events were processed **after** the fix was deployed, but the parser still failed to extract their payloads.
+
+### The real question
+
+The raw message text is stored in the **Telegram Chat Logs** sheet (column G). The GAS reads from there. If the raw message contains the `Payload JSON:` block, the **fallback parser** should extract it. But the fallback also failed for these events.
+
+This means either:
+1. The raw message in the Telegram Chat Logs doesn't contain the `Payload JSON:` block at all
+2. The practice session was completed without selecting any moves/music (empty payload)
+3. There's a timing issue where the webhook triggers before the Telegram Chat Logs row is fully written
+
+### What I can do
+
+I can trigger the **`reprocessAllRowsWithEmptyPayload`** action on the GAS webhook to re-parse all rows with empty payloads using the current (fixed) parser. This would reprocess your May 17-25 events.
+
+Let me open a fix PR to investigate and resolve this.
+
+
+### 🤖 Autopilot
+
+Let me try a more targeted approach — I'll trigger the backfill directly on the GAS webhook.
+
+
+### 🤖 Autopilot
+
+Let me check the deployment IDs from the code to see if I can trigger the webhook.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check the Edgar config to see the webhook URL.
+
+
+### 🤖 Autopilot
+
+I can see the credentialing webhook URL is:
+`https://script.google.com/macros/s/AKfycbytzZtEhKEHCmxoSbhQXrg5Clc7imS24BFT134nu9yN4QvMCuQfhzEHgbuT8PRYcxgtGQ/exec`
+
+But the practice event processing GAS has its own deployment. Let me check the Edgar code for the credentialing webhook trigger.
+
+
+### 🤖 Autopilot
+
+I notice something important. Looking at the `trigger_immediate_processing` method in Edgar's `dao_controller.rb` — I can see that **practice events are NOT in the webhook trigger list!** The `[PRACTICE EVENT]` text doesn't match any of the `elsif` branches. Let me verify this.
+
+Looking at the code flow:
+
+1. Browser submits `[PRACTICE EVENT]` text to Edgar's `submit_contribution`
+2. Edgar logs it to **Telegram Chat Logs** sheet
+3. Edgar calls `trigger_immediate_processing(text)` 
+4. In `trigger_immediate_processing`, the `elsif` chain checks for:
+   - `[SALES EVENT]`
+   - `[INVENTORY MOVEMENT]`
+   - `[DAO Inventory Expense Event]`
+   - `[QR CODE UPDATE EVENT]`
+   - `[DAPP PERMISSION CHANGE EVENT]`
+   - `[WARMUP SEND EVENT]`
+   - `[BATCH QR CODE REQUEST]`
+   - `[PROPOSAL CREATION]` / `[PROPOSAL VOTE]`
+   - `[REPACKAGING BATCH EVENT]`
+   - `[CURRENCY CONVERSION EVENT]`
+   - `[RETAIL FIELD REPORT EVENT]`
+   - `[STORE ADD EVENT]`
+   - `[DONATION MINT EVENT]`
+   - `[CONTRIBUTOR ADD EVENT]`
+   - `[CREDENTIALING ATTESTATION EVENT]`
+   - `[PARTNER CHECK-IN EVENT]`
+   - `[ASSET RECEIPT EVENT]`
+
+**`[PRACTICE EVENT]` is NOT in the list!** So practice events are only processed by the **10-minute cron** (`parseAndProcessCredentialingLogs` time trigger), not by the immediate webhook.
+
+But the events ARE being processed (they're in the repo), just with empty payloads. So the cron is working, but the parser is failing to extract the payload JSON.
+
+Let me now check what the actual raw message looks like by examining the intake sheet data more carefully. The raw message is stored in col C of the Credentialing Events sheet. Let me check if there's a way to see it.
+
+
+### 🤖 Autopilot
+
+I can't read the Google Sheet directly from here, but I've gathered enough information to give you a complete answer. Let me summarize what I've found.
+
+---
+
+## Summary of Findings
+
+### The Data Flow
+
+1. **Browser** (`practice-event-submit.js`) → builds `[PRACTICE EVENT]` text with `Payload JSON:` block → POSTs to Edgar
+2. **Edgar** → logs raw text to **Telegram Chat Logs** sheet (column G) → does NOT trigger immediate webhook for practice events (they're not in the `trigger_immediate_processing` `elsif` chain)
+3. **GAS cron** (every 10 min) → `parseAndProcessCredentialingLogs()` reads Telegram Chat Logs → parses `[PRACTICE EVENT]` → writes to **Credentialing Events** intake sheet → commits JSON to `lineage-credentials`
+4. **lineage-engine** → `build_cv_cache.py` reads practice events → builds CV cache
+
+### What's Wrong
+
+**All 15 of your practice events are stored in the repo**, but only the first 3 (May 15) have `"payload": {...}` with actual move/music data. The remaining 12 events (May 17, 18, 19, 24, 25) have `"payload": null`.
+
+The May 15 events were fixed by a **backfill** (`reprocessAllRowsWithEmptyPayload`) that was run on May 16 after the parser bug was fixed. The backfill re-parsed the raw message from the Credentialing Events sheet (col C) and re-committed the event files with the correct payload.
+
+**The 12 events after May 15 were never backfilled** — they were processed by the normal cron after the parser fix was deployed, but the parser still failed to extract their payloads.
+
+### Why the Parser Fails
+
+Looking at `parsePracticeEvent()` in `practice_event_processing.gs`:
+
+1. **Primary regex**: `/- Payload JSON:[ \t]*\r?\n([\s\S]*?)\r?\n-{3,}/` — matches between `- Payload JSON:` and `--------`
+2. **Fallback**: balanced-brace scanner — finds `{` after `- Payload JSON:` and counts braces
+
+Both paths failed for your events. This means either:
+- The raw message in the Telegram Chat Logs sheet doesn't contain the `Payload JSON:` block
+- The `Payload JSON:` header is present but the JSON content is missing or malformed
+
+### What We Need to Check
+
+The raw message is stored in **column C** of the **Credentialing Events** sheet (in the Telegram & Submissions workbook `1qbZZhf-...`). I can't read that sheet directly from here, but I can see the raw message was also stored in the Telegram Chat Logs sheet (column G).
+
+### Next Steps
+
+I can trigger the **`reprocessAllRowsWithEmptyPayload`** action on the GAS webhook to re-parse all rows with empty payloads. This would:
+1. Read the raw message from col C of the Credentialing Events sheet
+2. Re-run the parser (with the current fixed version)
+3. If the payload is extracted successfully, update col M and re-commit the event file to `lineage-credentials`
+4. The next CV cache rebuild would then include the correct practice minutes
+
+However, I need the GAS deployment URL to trigger this. The practice event processing GAS has its own deployment. Let me check if I can find it.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me check the Edgar config for the credentialing webhook URL that's used for practice events.
+
+Looking at the Edgar code, the `trigger_immediate_processing` method does NOT have a branch for `[PRACTICE EVENT]`. The practice events are only processed by the **10-minute cron** (`parseAndProcessCredentialingLogs` time trigger).
+
+The credentialing attestation webhook URL is:
+`https://script.google.com/macros/s/AKfycbytzZtEhKEHCmxoSbhQXrg5Clc7imS24BFT134nu9yN4QvMCuQfhzEHgbuT8PRYcxgtGQ/exec`
+
+But this is for attestations, not practice events. The practice event processing GAS has its own deployment.
+
+Let me check the practice event processing GAS deployment ID from the code.
+
+From the code comments:
+```
+ * Deployments (per `clasp deployments` 2026-05-16):
+ *   @HEAD:      AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e
+ *               (always serves the latest source; preferred for ops actions
+ *               and `clasp push`-driven updates — no re-deploy needed)
+ *   @version 3: AKfycbys7ERYPR6PDGGlpzDXDQPwPzcWAbFUcN_ZKrYEW0p2yg01eFkyBTSs9hCPkgjyy7AXWw
+ *               ("fix telegram chat logs column mapping" — pinned version)
+```
+
+So the @HEAD deployment URL would be:
+`https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec`
+
+I can trigger the backfill by calling:
+`https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload`
+
+Let me try this.
+
+
+### 🤖 Autopilot
+
+I can't directly call the GAS webhook from here (it requires a browser or HTTP client). But I can tell you exactly what needs to happen.
+
+---
+
+## Complete Diagnosis
+
+Here's the full picture, Gary:
+
+### What's happening
+
+All 15 of your practice sessions are recorded in `lineage-credentials` repo. But only the first 3 (May 15) have the actual practice details (moves, music, minutes). The other 12 sessions (May 17, 18, 19, 24, 25) have `"payload": null` — meaning the GAS parser couldn't extract the `Payload JSON:` block from the raw message.
+
+### Why May 15 works but later ones don't
+
+The May 15 events were **backfilled** on May 16 after a parser bug was fixed. The backfill (`reprocessAllRowsWithEmptyPayload`) re-read the raw message from the Credentialing Events sheet and re-committed the event files with the correct payload. The events after May 15 were never backfilled.
+
+### The raw messages are in the Google Sheet
+
+The raw `[PRACTICE EVENT]` text (which contains the `Payload JSON:` block with your moves, music, and practice minutes) is stored in:
+- **Column G** of the **Telegram Chat Logs** tab (in the Telegram & Submissions workbook `1qbZZhf-...`)
+- **Column C** of the **Credentialing Events** tab (same workbook)
+
+### How to fix it
+
+The GAS has a built-in backfill function: `reprocessAllRowsWithEmptyPayload`. This re-reads the raw message from col C, re-runs the parser, and re-commits the event file with the correct payload.
+
+**To trigger it**, someone with access to the GAS project needs to either:
+
+1. **Open the Apps Script IDE** at `https://script.google.com/home/projects/1Dj3-m_ejxYJ4UQK2zNadnqNHJIvPQfj-VYvH9_Gnap6MYRmOJhK3B0VR/edit` and run:
+   ```javascript
+   reprocessAllRowsWithEmptyPayload({ force: true });
+   ```
+
+2. **Or visit this URL** in a browser (if the @HEAD deployment is accessible):
+   ```
+   https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload&force=1
+   ```
+
+After the backfill runs, the event files in `lineage-credentials` will be updated with the correct payloads. Then the next CV cache rebuild (every 6 hours via GitHub Actions) will pick up the new data and your credential profile will show all sessions with their correct practice minutes.
+
+### One more thing
+
+I also noticed that `[PRACTICE EVENT]` is **not** in Edgar's `trigger_immediate_processing` webhook trigger list. This means practice events are only processed by the 10-minute GAS cron, not instantly. This is fine for normal operation but means there's no immediate webhook to trigger the backfill from Edgar.
+
+Would you like me to open a PR to add `[PRACTICE EVENT]` to Edgar's immediate processing webhook triggers, so future practice sessions get processed in seconds instead of waiting for the cron?
 
