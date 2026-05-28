@@ -10,13 +10,6 @@
 
 ### 🤖 Autopilot
 
-The git history for both pages shows the most recent commit touching them was `07a2b018` (May 12) — a cache-busting commit that only bumped `menu.js` and `notifications.js` versions. Neither page's actual HTML was modified in that commit.
-
-Let me look further back to find when the contributor/recipient loading was changed to use GAS instead of the JSON cache.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Here's what I found from the git history:
 
 ---
@@ -156,4 +149,23 @@ PR #4 is open. Here's a summary of what it does:
 3. The speed improvement (50-150ms vs 1-3s) is worth this minor gap
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+you are merging it to dapp_beta right?
+
+
+### 🤖 Autopilot
+
+Yes, that's correct — PR #4 is on **dapp_beta**, not dapp_prod. Let me merge it now.
+
+
+### 🤖 Autopilot
+
+Merged! Commit `50479ef8` on `dapp_beta`. The fix is live on the beta DApp — the contributor/recipient dropdowns will now load from the GitHub CDN cache instead of hitting GAS, so they should feel instant (~50-150ms) instead of the 1-3 second cold-start wait.
+
+Want me to deploy the latest autopilot as well?
 
