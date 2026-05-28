@@ -186,3 +186,78 @@ Your **garyjob** profile itself is sparse. In a market where recruiters spend 6 
 
 In a market where AI is eating the middle, the people who survive are the ones who build things that *move atoms, not just bits.* You're doing both.
 
+
+### 🧑 Governor
+
+I noticed someone from TikTok on the recruiting site bike dance, actually reaching out to me earlier this month on LinkedIn I was actually surprised. I totally defected my LinkedIn profile recently actually not recently the past two years ago.
+
+
+### 🤖 Autopilot
+
+Interesting — let me look at your LinkedIn profile as it stands now and see what they saw.
+
+
+### 🤖 Autopilot
+
+That's the problem right there. The LinkedIn profile that comes up for "Gary Teh" is **not you** — it's a different Gary Teh (General Manager at Fu Hao Manufacturing, Penang). Your actual LinkedIn isn't surfacing at all in search.
+
+Let me find yours.
+
+
+### 🤖 Autopilot
+
+Found you — `garyjob` on LinkedIn. Let me see what your profile actually looks like.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Here's what happened:
+
+---
+
+## What TikTok (Bike Dance) Saw
+
+Your LinkedIn profile (`garyjob`) has **2,954 followers** and **500+ connections** — that's not a neglected profile by any measure. They found you through:
+
+- **Activity** — you're engaging with posts from Jason Calacanis, GaryVee, Startup Grind speakers. You shared a photo with GaryVee at Natural Products Expo. That puts you in the algorithmic feed of people who follow those circles.
+- **"Nobody" title** — your headline literally says "Nobody" under Sunmint. That's either ironic or deflective, but to a recruiter it reads as "intriguing person who doesn't need to flex titles."
+- **2,954 followers** with a bare "About" section and a "Nobody" headline is itself a signal — it says you have influence without trying.
+
+## The Irony
+
+You said you "defected" (neglected) your profile for two years, yet:
+
+- **2,954 followers** — that's more than most active posters
+- **Recent activity** — you're still liking and sharing posts regularly
+- **You're showing up in feeds** — GaryVee, Natural Products Expo, Startup Grind — these are high-visibility events
+- **A recruiter from TikTok Bike Dance reached out** — that's a real inbound, unsolicited
+
+A truly neglected profile would have 42 connections and zero activity. Yours is *lightly curated neglect* — which, counterintuitively, can be more attractive than an over-polished one. It signals "I'm busy building, not hunting."
+
+## The Real Weakness (If You Care)
+
+The profile has **zero substance** about what you actually do:
+
+| Field | What It Shows |
+|-------|--------------|
+| **Headline** | "Nobody" at Sunmint |
+| **About** | N/A |
+| **Experience** | All company names redacted/hidden, all descriptions N/A |
+| **Education** | NUS 2003-2008 (15+ years ago) |
+
+A recruiter has to piece together from your *activity feed* that you're in cacao, DAOs, Web3, supply chain. The profile itself tells them nothing.
+
+**The Bike Dance recruiter reached out *despite* the profile, not because of it.** They saw your activity (GaryVee, Expo, cacao roasting) and inferred enough to take a shot.
+
+---
+
+## What I'd Suggest (If You Want More of Those Inbounds)
+
+Just 3 quick edits, 15 minutes total:
+
+1. **Headline** → `Building TrueSight DAO | Supply chain infrastructure for ethical cacao`
+2. **About** → 3 sentences: what the DAO does, what you've built (50+ repos, real inventory tracking, retailer network), and that you're hiring
+3. **Pin one post** to the top of your profile — the GaryVee photo or the cacao roasting video. Something that shows the *physical* side of what you do.
+
+Right now your profile is a black box with a strong gravitational field (2.9K followers, high-engagement activity). Opening the box even a crack would turn those trickle-in inbounds into a steady stream.
+
