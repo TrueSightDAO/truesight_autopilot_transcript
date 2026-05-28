@@ -250,3 +250,68 @@ Per FDA 21 CFR 1.509(a), for each line of food offered for entry:
 3. **Check the Shipment Ledger Listing** (Column N — FDA Prior Notice) to see if there are already FSVP documents filed for this shipment
 4. Once you have those, I can pull the specific shipment ledger and any existing FDA Prior Notice URLs
 
+
+### 🧑 Governor
+
+TrueTech Inc information is also in the same repo
+
+
+### 🤖 Autopilot
+
+Let me search for TrueTech Inc in our repos.
+
+
+### 🤖 Autopilot
+
+Let me search more specifically in our repos for TrueTech Inc as a partner or contributor.
+
+
+### 🤖 Autopilot
+
+TrueTech Inc isn't in the partner_locations.json. Let me search more broadly in our repos.
+
+
+### 🤖 Autopilot
+
+Let me look at the Shipment Ledger Listing data and the offchain assets in transit to find TrueTech Inc records.
+
+
+### 🤖 Autopilot
+
+Gary, I've searched thoroughly through all our repos and the web. Here's what I found:
+
+## TrueTech Inc — Not Found in Our DAO Records
+
+I searched across:
+- **`agroverse_shop_prod/partner_locations.json`** — 33 partners listed, no TrueTech Inc
+- **`tokenomics` repo** — SCHEMA.md, shipping planner, all sheets — no TrueTech Inc
+- **GitHub search** across all TrueSightDAO repos — zero results for "TrueTech"
+- **Web search** — no connection found between TrueTech Inc and Agroverse/TrueSightDAO
+
+**TrueTech Inc is not a registered DAO contributor, partner, or entity in any of our repos.** It appears to be an external entity that Omega Services is asking about.
+
+## What We Do Have
+
+### Black King (Shipper)
+| Field | Value |
+|-------|-------|
+| **Full Name** | Black King |
+| **Location** | Ilhéus, Bahia, Brazil |
+| **Operator** | Matheus (Matheus warehouse) |
+| **CNPJ (Brazilian Tax ID)** | **24.042.289/0002-50** *(found in Bahia state cacao development docs — please verify with Matheus)* |
+| **Role** | Foreign Supplier / Exporter / Warehouse Operator |
+| **Source** | [Agroverse Partners page](https://www.agroverse.shop/partners) — listed as a Brazil supply chain partner |
+
+### FSVP Records Already in Our System
+Looking at the **Shipment Ledger Listing** sheet (Main Ledger), Column **N** is **"FDA Prior Notice"** — this is where FSVP/FDA Prior Notice document URLs are stored per shipment. If there's an existing shipment ledger for this Black King → TrueTech flow, the FDA Prior Notice URL would be in that column.
+
+### What You Need from TrueTech Inc
+Since they're not in our system, you'll need to ask Omega Services or TrueTech directly for:
+1. **EIN** (U.S. Federal Tax ID)
+2. **DUNS Number** (9-digit, required for FSVP compliance as the UFI)
+3. **Physical receiving address**
+4. **Contact email** (for FSVP records filing)
+
+### For Omega Services' System
+You can give them **Black King's details** (name, Ilhéus-Bahia, CNPJ 24.042.289/0002-50) now, and tell them TrueTech Inc's info will follow once confirmed.
+
