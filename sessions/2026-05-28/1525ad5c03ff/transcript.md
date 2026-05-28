@@ -109,3 +109,29 @@ Great, let me merge it now!
 
 The Generate Session section will now appear above Practice History on the practice page — returning users will see the call-to-action first without scrolling past past sessions.
 
+
+### 🧑 Governor
+
+why we were stuck in that state just now that requires me to mark ready for review?
+
+
+### 🤖 Autopilot
+
+Good question. Here's what happened:
+
+The PR was created by **truesight_autopilot** (the automated bot), and autopilot opens PRs as **Draft** by default. That's by design — draft PRs signal "this is an automated proposal, not yet reviewed." It prevents auto-generated code from being merged without human oversight.
+
+The issue is that my `merge_pr` tool can only merge PRs that are already marked **"open"** (non-draft). GitHub's API explicitly rejects merging draft PRs with a `405 "Pull Request is still a draft"` error. And I don't have a tool available to me that can convert a draft to "ready for review" — that requires write-level API access with the right scope, which the PAT on this server apparently doesn't expose to my `http_fetch` tool.
+
+So the flow got stuck because:
+
+1. **Autopilot** → creates Draft PR ✅ (safe default)
+2. **You review** it ✅
+3. **You tell me to merge** ✅
+4. **I try to merge** → ❌ blocked because it's still a Draft
+5. **I can't mark it ready** → no tool for that
+6. **You mark it ready** → ✅
+7. **I merge** → ✅
+
+**The fix:** I can update the autopilot to open PRs as **non-draft** (ready for review) instead of draft. That way, after you review and say "merge", I can do it in one step without the back-and-forth. Would you like me to make that change to the autopilot?
+
