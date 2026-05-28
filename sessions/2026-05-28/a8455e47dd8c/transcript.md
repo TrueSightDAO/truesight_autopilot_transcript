@@ -474,3 +474,44 @@ Here's the content ready to paste into Google Docs (or any editor) for PDF expor
 
 Want me to go ahead and commit a markdown version of this to the `fda_fsvp` repo so it's stored alongside the other FSVP docs? Then you can just open it in Google Docs → Download as PDF in about 30 seconds.
 
+
+### 🧑 Governor
+
+I see. Perhaps generate a text blurb with all the details that I can just copy and then paste in the WhatsApp channel?
+
+
+### 🤖 Autopilot
+
+Sure, here's a clean text blurb you can copy-paste straight into WhatsApp:
+
+---
+
+**SHIPPER / CONSIGNEE PROFILE for Omega Services**
+
+**SHIPPER (Exporter):**
+Trade Name: BLACK KING
+Legal Name: MATHEUS REIS PEREIRA
+Entity Type: Empresário Individual (Brazil)
+CNPJ: 50.042.585/0001-80
+DUNS: 628340898
+FDA FFR: 19088052616
+Address: Av. Tancredo Neves, 4900, Quadra H, Casa 9, Nossa Senhora da Vitória, Ilhéus, BA 45655-650, Brazil
+Contact: Matheus Reis Pereira — theus.reis.ssa@gmail.com / +55 73 99109-0002
+Products: Cacao nibs, cacao mass, cacao molasses, cacao tea, cacao husk, ceremonial cacao, caramelized cacao
+FSVP Status: ✅ VALID (reg 2024-09-07, exp 2026-12-31) — written assurance & supplier evaluation on file
+
+**CONSIGNEE (Importer):**
+Legal Name: TRUETECH INC
+Entity Type: C Corporation (Delaware)
+EIN: 88-3411514
+CBP Importer #: 88-341151400
+DUNS: 119035208
+FDA FFR: 12202640780
+FDA Registration: ✅ VALID (created 2023-10-09, exp 2026-12-31)
+Delivery Address: 1423 Hayes St, San Francisco, CA 94117, USA
+Officer: Zhiwen Teh (Gary Teh), President — garyjob@truesight.me
+Customs Broker: Magic Custom Brokers (Michelle Francis)
+Freight Forwarder: Seacoast Logistics (Graziela Vedana, Igor Vidovic)
+
+**FSVP:** TrueTech Inc is the FSVP importer of record. Black King has written assurance & supplier evaluation on file. All source docs in TrueSightDAO/fda_fsvp repo under suppliers/black_king/.
+
