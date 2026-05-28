@@ -10,43 +10,6 @@
 
 ### 🤖 Autopilot
 
-👋 **New topic detected!** Before we start, pick my role:
-
-**1.** Content Marketing Researcher — market analysis, SEO, content strategy
-**2.** Event Coordinator — plan DAO events and logistics
-**3.** SRE / DevOps Engineer — fix bugs, deploy code, monitor infra
-**4.** Retailer Outreach Coordinator — partner outreach, onboarding, followups
-**5.** Logistics Analyst — import/export, supply chain, freight
-**6.** Inventory Manager — QR codes, stock levels, inventory movements
-**7.** General DAO Assistant — everything (all tools, no specialisation)
-
-Reply with a number (1-7) or role name. I'll remember this for this topic.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Could you check against the FSVP records to help answer this question from omega services 
-
-The shipper is black king and the receiver is TrueTech inc 
-
-the pallets will go through the handling process to be ready for shipment. Afterwards, we will align loading and shipping dates.
-A priori, could you inform us of the shipper and consignee details so that we can leave them in our system? Include the importer’s TAX ID.
-
-
-### 🤖 Autopilot
-
-Let me start by reading the relevant context files to understand the supply chain and FSVP records.
-
-
-### 🤖 Autopilot
-
-Now let me look up the FSVP records and the specific entities mentioned — Black King (shipper) and TrueTech Inc (receiver/consignee).
-
-
-### 🤖 Autopilot
-
 Now let me search for the specific entities — Black King and TrueTech Inc — in our DAO records.
 
 
@@ -314,4 +277,78 @@ Since they're not in our system, you'll need to ask Omega Services or TrueTech d
 
 ### For Omega Services' System
 You can give them **Black King's details** (name, Ilhéus-Bahia, CNPJ 24.042.289/0002-50) now, and tell them TrueTech Inc's info will follow once confirmed.
+
+
+### 🧑 Governor
+
+Look for the details in this repo 
+
+https://github.com/TrueSightDAO/fda_fsvp
+
+
+### 🤖 Autopilot
+
+There it is! Let me read the entity profiles.
+
+
+### 🤖 Autopilot
+
+Now let me also grab the Black King entity profile for the complete picture.
+
+
+### 🤖 Autopilot
+
+There it all is, Gary. Here's the complete picture from the **`fda_fsvp`** repo:
+
+---
+
+## ✅ Complete Info for Omega Services
+
+### Shipper: Black King (Matheus Reis Pereira)
+
+| Field | Value |
+|-------|-------|
+| **Trade Name** | BLACK KING |
+| **Legal Name** | MATHEUS REIS PEREIRA |
+| **Entity Type** | Empresário Individual (Micro Enterprise, Simples Nacional) |
+| **CNPJ** | **50.042.585/0001-80** *(not the one I found earlier — this is the correct one from our FSVP records)* |
+| **DUNS** | 628340898 |
+| **FDA FFR Number** | 19088052616 |
+| **Address** | Avenida Tancredo Neves, 4900, Quadra H, Casa 9, Nossa Senhora da Vitória, Ilhéus, BA 45655-650, Brazil |
+| **Contact** | Matheus Reis Pereira — theus.reis.ssa@gmail.com / +55 73 99109-0002 |
+| **FSVP Status** | ✅ **VALID** (registered 2024-09-07, expires 2026-12-31) |
+| **Products** | cacao nibs, cacao mass, cacao molasses, cacao tea, cacao husk, ceremonial cacao, caramelized cacao |
+
+### Consignee / Importer: TrueTech Inc
+
+| Field | Value |
+|-------|-------|
+| **Legal Name** | **TRUETECH INC** |
+| **Entity Type** | C Corporation (Delaware) |
+| **EIN** | **88-3411514** |
+| **CBP Importer of Record #** | **88-341151400** |
+| **DUNS** | **119035208** |
+| **FDA FFR Number** | **12202640780** |
+| **FDA Registration** | ✅ VALID (created 2023-10-09, expires 2026-12-31) |
+| **Registered Address (DE)** | 8 The Green, Ste A, Dover, DE 19901 |
+| **CBP Physical Address** | 3041 Taraval St, San Francisco, CA 94116-2106 |
+| **Recent Address (2025)** | 1968 South Coast Highway #4616, Laguna Beach, CA 92651 |
+| **Officer** | Zhiwen Teh (Gary Teh) — garyjob@truesight.me |
+| **Customs Broker** | Magic Custom Brokers (Michelle Francis) |
+| **Freight Forwarder** | Seacoast Logistics (Graziela Vedana, Igor Vidovic) |
+
+### FSVP Status
+- **TrueTech Inc** is the FSVP importer of record for all suppliers in the Agroverse network
+- **Black King** has **written assurance** and **supplier evaluation** on file — fully compliant
+- Source documents (FDA Prior Notices, evaluations, site visit reports, commercial invoices) are all committed in the repo under `suppliers/black_king/`
+
+### What to Tell Omega Services
+
+You can give them everything they need right now:
+
+> **Shipper:** Black King (Matheus Reis Pereira), CNPJ 50.042.585/0001-80, Ilhéus-BA, Brazil
+> **Consignee:** TrueTech Inc, EIN 88-3411514, DUNS 119035208, FDA FFR 12202640780
+> **FSVP:** Fully compliant — written assurance and supplier evaluation on file for Black King
+
+The earlier CNPJ I found (24.042.289/0002-50) was a different entity — the correct one from our official FSVP records is **50.042.585/0001-80**.
 
