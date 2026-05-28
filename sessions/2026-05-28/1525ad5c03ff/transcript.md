@@ -10,118 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have a complete understanding of the system. Let me check the actual practice events stored for Gary Teh in the lineage-credentials repo.
-
-
-### 🤖 Autopilot
-
-Now I can see the issue clearly. Let me check what the latest events look like.
-
-
-### 🤖 Autopilot
-
-Now I can see the issue clearly. Let me check the CV cache file to see what's actually being served.
-
-
-### 🤖 Autopilot
-
-The file is too large to read directly. Let me check the index to see when the cache was last built.
-
-
-### 🧑 Governor
-
-How is progress
-
-
-### 🤖 Autopilot
-
-I've now gathered all the information needed to give you a complete answer. Here's the full diagnosis:
-
----
-
-## Why your profile only shows records until May 19th
-
-**Root cause: The practice events after May 19th exist in the raw data, but they have `"payload": null` — meaning they lack the structured practice details (moves practiced, music played, total practice minutes).**
-
-Here's the evidence:
-
-### What's stored in the raw data
-
-Your practice events are stored at:
-`lineage-credentials/programs/capoeira-tribo-mirim/pk-wR9zU8JMnEz1/practice/`
-
-Files present (15 total):
-| Date | File |
-|------|------|
-| May 15 | 3 files |
-| May 17 | 2 files |
-| May 18 | 1 file |
-| **May 19** | **3 files** |
-| **May 24** | **1 file** |
-| **May 25** | **3 files** |
-
-So events **do exist** for May 24 and May 25. But look at the payload field:
-
-- **May 19 events** — have `"payload": { "theme": "...", "moves_practiced": [...], "music_played": [...], "total_practice_minutes": ... }` ✅
-- **May 24 & 25 events** — have `"payload": null` and `"raw_payload_json": ""` ❌
-
-### How the credential page works
-
-The credential page at `truesight.me/programs/tribomirim/credentials/#pk-wR9zU8JMnEz1` loads data from `lineage-credentials/_cache/cv/gary-teh.json`. This cache is built by `lineage-engine/scripts/build_cv_cache.py`, which:
-
-1. Reads raw practice events from `programs/capoeira-tribo-mirim/pk-*/practice/*.json`
-2. Aggregates them into per-program records with `practice_count`, `total_practice_minutes`, and `recent_events`
-3. **Only includes events that have a valid `payload`** — because the `total_practice_minutes` is derived from `payload.total_practice_minutes`
-
-Since the May 24 and May 25 events have `payload: null`, they contribute **0 practice minutes** and may not be rendered in the "Recent events" list on the credential page.
-
-### Why are the payloads null?
-
-Looking at the practice event submission flow in `practice-event-submit.js`:
-
-```javascript
-const payload = {
-  theme: session.theme || '',
-  moves_practiced: moves,
-  music_played: music,
-  total_practice_minutes: totalMin,
-};
-const payloadJson = JSON.stringify(payload, null, 2);
-```
-
-The payload is embedded in the `[PRACTICE EVENT]` text that gets signed and submitted to Edgar. The **Edgar backend** (sentiment_importer) receives this text, and the **GAS (Google Apps Script) event processor** is supposed to parse the `Payload JSON:` block from the text and store it as the `payload` field in the JSON file.
-
-**The issue is in the GAS event processor** — it's not correctly parsing the `Payload JSON:` block from the practice event submissions for those later sessions. This could be because:
-
-1. The practice session was completed without selecting any moves/music (empty payload)
-2. A change in the practice page format broke the GAS parser
-3. The session was submitted via a different path that didn't include the payload
-
-### What you can do
-
-1. **Check your browser's localStorage** — open `capoeira.agroverse.shop/practice.html`, open DevTools → Application → Local Storage, and look for `capoeira_session_history`. The sessions from May 24/25 should be there with their move/music details.
-
-2. **The credential cache rebuilds every 6 hours** via a GitHub Action in the `lineage-credentials` repo. Even if the payload issue is fixed, the cache needs to rebuild to reflect the new data.
-
-3. **If you still have the practice page open** from those sessions, you could try re-submitting them — the `backfillUnsent()` function in `practice-event-submit.js` scans localStorage for sessions without `submitted_at` and re-submits them.
-
-Would you like me to open a fix PR to investigate the GAS event processor to ensure payloads are properly parsed from practice event submissions?
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Can you check the Google sheet where these records are initially written to as well as when the Jsons are generated from after reading from the Google sheet to see what’s up
-
-
-### 🤖 Autopilot
-
-I can investigate the Google Sheets side. Let me look at the Edgar (sentiment_importer) code that processes practice event submissions and writes to the sheet, and the GAS (Google Apps Script) that reads from the sheet and generates the JSON files.
-
-
-### 🤖 Autopilot
-
 Now let me look at the GAS (Google Apps Script) that processes practice events — this is where the payload parsing happens and where the JSON files are generated.
 
 
@@ -1126,6 +1014,43 @@ Here's what it proposes:
 3. **Progressive difficulty within each session** — the 4-6 selected moves will be ordered Beginner → Intermediate → Advanced, so each session has a natural warm-up-to-peak arc
 
 The natural consequence is that over multiple sessions, you'll automatically progress from Beginner moves → Intermediate → Advanced without needing to manually select a difficulty bias.
+
+Good night! 🎯
+
+
+### 🧑 Governor
+
+I am thinking for this page https://capoeira.agroverse.shop/practice.html
+
+The Generate Session  should be above your practice history... Right now it requires alot of scrolling to get there
+
+
+### 🤖 Autopilot
+
+Good point. Let me look at the current HTML structure to understand the layout.
+
+
+### 🤖 Autopilot
+
+I see the issue. The current order is:
+
+1. **History Summary** (takes up a lot of space with the past sessions dashboard)
+2. **Generator Section** (Generate Session button + session card)
+
+The history section is first, so returning users have to scroll past all their past sessions to get to the Generate button. The fix is simple — swap the order so the generator is above the history.
+
+
+### 🤖 Autopilot
+
+Done! PR #33 is open: https://github.com/TrueSightDAO/capoeira/pull/33
+
+It's a simple one-line swap in the HTML — moving the `#generate-section` above `#history-summary-section`. The JavaScript logic all uses element IDs so it doesn't care about DOM order.
+
+So now you have **three PRs** to review in the morning:
+
+1. **PR #32** — Progressive move cycling (remove difficulty bias, round-robin through all moves)
+2. **PR #33** — Swap layout order (Generate Session above Practice History)
+3. **PR #316** (tokenomics) — Fix the `doGet` function conflict so the backfill URL works
 
 Good night! 🎯
 
