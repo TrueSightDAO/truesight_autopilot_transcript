@@ -10,26 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me try to read the CV file directly from the raw GitHub URL.
-
-
-### 🤖 Autopilot
-
-The file seems large. Let me check the lineage-engine repo to understand how practice events flow into the cache.
-
-
-### 🤖 Autopilot
-
-Now let me check the capoeira repo to understand how practice events are submitted and stored.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. Let me check the lineage-engine's build_cv_cache to understand how practice events are aggregated.
-
-
-### 🤖 Autopilot
-
 Now I have a complete understanding of the system. Let me check the actual practice events stored for Gary Teh in the lineage-credentials repo.
 
 
@@ -1063,4 +1043,22 @@ https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQH
 ```
 
 And it will backfill all 12 broken events.
+
+
+### 🧑 Governor
+
+Can you not clasp push and deploy?
+
+
+### 🤖 Autopilot
+
+I don't have the `clasp` CLI or the service account credentials to push to the GAS project from this server. That requires someone with access to the Google Apps Script project (script ID: `1Dj3-m_ejxYJ4UQK2zNadnqNHJIvPQfj-VYvH9_Gnap6MYRmOJhK3B0VR`) to run:
+
+```bash
+cd $TEMP && clasp clone 1Dj3-m_ejxYJ4UQK2zNadnqNHJIvPQfj-VYvH9_Gnap6MYRmOJhK3B0VR
+cp practice_event_processing.gs $TEMP/Code.js
+clasp push
+```
+
+The PRs I opened (#315 and #316) document everything needed. Once someone with GAS access merges and pushes, the backfill URL will work.
 
