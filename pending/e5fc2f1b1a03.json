@@ -1,75 +1,5 @@
 [
   {
-    "title": "Merge PR #11 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Wire the deploy_autopilot tool into _run_tool and get_tool_schemas so I can actually use it.\n\nThe deploy.py module was added in PR #10 but never connected to the main dispatch. Need three changes:\n\n1.",
-    "action": "merge_pr",
-    "created_at": "2026-05-07T03:54:02Z"
-  },
-  {
-    "title": "Merge PR #12 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add message queue endpoints to support async queuing while the autopilot is processing.\n\nAdd three new endpoints to app/main.py:\n\n1. **POST /chat/queue** \u2014 Accepts a signed message (same auth as /chat",
-    "action": "merge_pr",
-    "created_at": "2026-05-07T03:56:01Z"
-  },
-  {
-    "title": "Merge PR #220 on dapp",
-    "qr_code": "",
-    "summary": "Add async message queuing UI to chat.html so the governor can type and send while the autopilot is thinking.\n\n**Changes needed in chat.html:**\n\n1. **Queue indicator bar** \u2014 Add a small bar above the i",
-    "action": "merge_pr",
-    "created_at": "2026-05-07T03:57:59Z"
-  },
-  {
-    "title": "Merge PR #13 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Make deploy_autopilot tool auto-detect whether it's running on the EC2 or remotely.\n\nCurrently deploy.py always tries SSH (paramiko), which fails when running on the EC2 itself because the SSH key doe",
-    "action": "merge_pr",
-    "created_at": "2026-05-07T04:03:33Z"
-  },
-  {
-    "title": "Merge PR #221 on dapp",
-    "qr_code": "",
-    "summary": "## Problem\nWhen a user attaches an image file in chat.html, the attachment preview shows only the filename and size \u2014 no thumbnail. Worse, if the page is refreshed (accidental navigation, browser refr",
-    "action": "merge_pr",
-    "created_at": "2026-05-07T04:35:35Z"
-  },
-  {
-    "title": "Merge PR #16 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Extend scan_qr_from_file in app/tools/qr_scanner.py with a Grok vision fallback.\n\nCurrent behavior: scan_qr_from_file uses pyzbar then zbarimg. If both find nothing, it returns \"no_code_found\". It has",
-    "action": "merge_pr",
-    "created_at": "2026-05-08T20:53:42Z"
-  },
-  {
-    "title": "Merge PR #17 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add a `read_local_file` tool to read local text files (like .env, google_credentials.json) that are gitignored and not on GitHub.\n\nChanges needed in 3 files:\n\n1. **app/tools/fs_tools.py** \u2014 Add a new ",
-    "action": "merge_pr",
-    "created_at": "2026-05-08T21:19:35Z"
-  },
-  {
-    "title": "Merge PR #18 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add Gemini vision fallback to QR scanner (after Grok fallback)\n\n## What needs to change\n\n### 1. Create `app/gemini_client.py` \u2014 new file\nModeled after `app/grok_client.py`. Create a Gemini vision clie",
-    "action": "merge_pr",
-    "created_at": "2026-05-08T21:23:03Z"
-  },
-  {
-    "title": "Merge PR #23 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "## Bug: Grok vision fallback in scan_qr_from_file produces weak QR readings\n\n### Root Cause 1 \u2014 Short inline prompt instead of full _QR_NAMING_CONTEXT\nIn `app/tools/qr_scanner.py`, the Grok fallback b",
-    "action": "merge_pr",
-    "created_at": "2026-05-08T22:05:52Z"
-  },
-  {
-    "title": "Merge PR #26 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix the Grok fallback in scan_qr_from_file with three changes:\n\n1. **app/grok_client.py line 131**: Change `\"detail\": \"low\"` to `\"detail\": \"high\"` \u2014 low resolution makes small QR text unreadable.\n\n2. ",
-    "action": "merge_pr",
-    "created_at": "2026-05-08T22:47:29Z"
-  },
-  {
     "title": "Merge PR #315 on tokenomics",
     "qr_code": "",
     "summary": "## Backfill practice event payloads for pk-wR9zU8JMnEz1 (gary-teh)\n\n### Problem\n12 practice events from May 17\u201325, 2026 for practitioner pk-wR9zU8JMnEz1 (gary-teh) were committed to lineage-credential",
@@ -89,5 +19,12 @@
     "summary": "## Progressive move cycling: remove difficulty bias, cycle through all moves\n\n### Problem\nThe current session generator has two issues:\n\n1. **Moves don't cycle through all available moves before repea",
     "action": "merge_pr",
     "created_at": "2026-05-28T07:29:39Z"
+  },
+  {
+    "title": "Merge PR #33 on capoeira",
+    "qr_code": "",
+    "summary": "## Swap order: move Generate Session above Practice History\n\n### Problem\nThe Practice History section (past sessions dashboard) appears before the Generate Session section. For returning users with ma",
+    "action": "merge_pr",
+    "created_at": "2026-05-28T19:47:00Z"
   }
 ]
