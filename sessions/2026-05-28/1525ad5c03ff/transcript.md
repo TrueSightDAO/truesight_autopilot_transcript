@@ -451,3 +451,79 @@ Now, regarding the **Telegram attachment** — it's a JPG image (65KB) but it's 
 
 If it's the AWS billing statement or case correspondence, I can save it into the **Cypher-Defense repo** under `docs/aws-reports/attachments/` or `docs/incidents/` once I know what it is.
 
+
+### 🧑 Governor
+
+Its basically this Correspondence
+Reply
+
+nelanco
+
+Thu May 28 2026
+13:20:10 GMT-0700 (Pacific Daylight Time)
+Ok. Will await your response to the billing concerns. Thanks
+
+Amazon Web Services
+
+Wed May 27 2026
+12:06:23 GMT-0700 (Pacific Daylight Time)
+Was this response helpful? Click here to rate:
+
+Translate
+Hello Gary,
+
+Thank you for completing the required remediation steps to secure your AWS account. 
+
+I see that our service team placed restrictions on your account because of this security event. I’ve asked them to remove the restrictions.
+
+We will start reviewing your billing concerns after the restrictions on the account have been removed and all unauthorized resources have been terminated.
+
+I will reply to this case with an update after the service team gives me more information.
+
+Customers are responsible for maintaining the security of their account under the AWS Shared Responsibility Model.
+
+For more information about the AWS Shared Responsibility Model, see the following link:
+https://aws.amazon.com/compliance/shared-responsibility-model/ 
+
+We value your feedback. Please share your experience by rating this and other correspondences in the AWS Support Center. You can rate a correspondence by selecting the stars in the top right corner of the correspondence.
+
+Best regards,
+Robert  .
+Amazon Web Services
+
+
+### 🤖 Autopilot
+
+Got it — that's the screenshot of the AWS Support case thread. Let me save this into the Cypher-Defense repo as a record of the correspondence.
+
+
+### 🤖 Autopilot
+
+I see there's already a `docs/aws-reports/` directory with existing case files. Let me save this correspondence as a new dated file. Since the image is a screenshot, I'll save it as an attachment and also create a markdown log of the correspondence.
+
+First, let me upload the image to the attachments folder, then create the log entry.
+
+
+### 🤖 Autopilot
+
+I can't read the binary directly, but I can upload it via the GitHub API with base64 encoding. Let me use the `upload_file_to_github` tool — it handles base64 automatically.
+
+
+### 🤖 Autopilot
+
+Now let me also create a markdown log entry documenting this correspondence.
+
+
+### 🤖 Autopilot
+
+Done! Here's what I saved to the **Cypher-Defense** repo:
+
+1. **📄 Correspondence log** → `docs/aws-reports/2026-05-28-case-177613748700177-billing-dispute-response.md`
+2. **🖼️ Screenshot** → `docs/aws-reports/attachments/2026-05-28-case-177613748700177-correspondence-screenshot.jpg`
+
+Both are on the `master` branch. You can view them at:
+- https://github.com/TrueSightDAO/Cypher-Defense/blob/master/docs/aws-reports/2026-05-28-case-177613748700177-billing-dispute-response.md
+- https://github.com/TrueSightDAO/Cypher-Defense/blob/master/docs/aws-reports/attachments/2026-05-28-case-177613748700177-correspondence-screenshot.jpg
+
+**Quick summary of where things stand:** AWS Support (Robert) has confirmed your remediation steps are complete and is working on removing the account restrictions. They'll review the billing dispute after that's done. Your reply of "Ok. Will await..." is on record. Just keep an eye on the case for their next update.
+
