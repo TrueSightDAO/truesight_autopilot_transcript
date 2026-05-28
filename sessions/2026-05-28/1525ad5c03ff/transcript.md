@@ -697,3 +697,49 @@ The `allContributors` array is fetched fresh every page load with no localStorag
 
 Want me to open a fix PR for this?
 
+
+### 🧑 Governor
+
+why is it not pulling from the JSON cache on Github like it used to?
+
+
+### 🤖 Autopilot
+
+Great question. Let me check what changed. Looking at the code flow:
+
+The **identity lookup** uses `DaoMembersCache` which fetches from:
+```
+https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json
+```
+
+But the **contributor list** (`loadContributors()`) fetches from:
+```javascript
+const res = await fetch(`${DAO_FORMS_ENDPOINT}?recipients=true`);
+```
+
+That's the **Google Apps Script** endpoint, not the GitHub JSON cache. So the contributor names for the dropdown are always fetched from GAS, not from the cached JSON.
+
+Let me check if `dao_members.json` on the treasury-cache repo actually contains the contributor names/keys that could be used instead.
+
+
+### 🤖 Autopilot
+
+Now I see the issue clearly. The `dao_members.json` cache on GitHub only has **12 contributors** (the ones who have registered digital signatures). But the GAS endpoint returns **~250 contributor names** — that's the full list of everyone in the DAO's contributor spreadsheet, including people who haven't registered signatures yet.
+
+So the reason it's **not pulling from the JSON cache** is that the JSON cache doesn't have the full contributor list — it only has the 12 people with registered public keys. The GAS endpoint is the source of truth for the full contributor dropdown.
+
+**But the real question is: why is it slow?** Let me check the GAS endpoint more carefully — maybe it's doing a slow spreadsheet read.
+
+
+### 🤖 Autopilot
+
+OK, so the GAS endpoint itself is fast from my end (~200ms). The issue is that the page **doesn't use the JSON cache for the contributor list** — it only uses `dao_members.json` for the **identity lookup** (verifying your public key). The contributor dropdown comes from a **separate GAS call** that reads the full spreadsheet.
+
+The reason it was probably faster before is that the GAS endpoint used to be pre-warmed by frequent use, or there was a caching layer. Now it might be hitting cold starts.
+
+The fix would be to **publish the full contributor list to the treasury-cache JSON** (like `dao_members.json` does for registered members) so the page can pull it from GitHub's CDN instead of hitting GAS. But that requires changes on the GAS publisher side.
+
+A simpler frontend fix would be to **cache the GAS response in localStorage** after the first fetch, so subsequent page loads within the same session (or even same day) are instant.
+
+Want me to open a fix PR for the frontend caching approach?
+
