@@ -10,38 +10,6 @@
 
 ### 🤖 Autopilot
 
-👋 **New topic detected!** Before we start, pick my role:
-
-**1.** Content Marketing Researcher — market analysis, SEO, content strategy
-**2.** Event Coordinator — plan DAO events and logistics
-**3.** SRE / DevOps Engineer — fix bugs, deploy code, monitor infra
-**4.** Retailer Outreach Coordinator — partner outreach, onboarding, followups
-**5.** Logistics Analyst — import/export, supply chain, freight
-**6.** Inventory Manager — QR codes, stock levels, inventory movements
-**7.** General DAO Assistant — everything (all tools, no specialisation)
-
-Reply with a number (1-7) or role name. I'll remember this for this topic.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-do you have permission to modify code for sentiment_importer?
-
-
-### 🤖 Autopilot
-
-Let me check the context files to understand my permissions and the sentiment_importer repo.
-
-
-### 🤖 Autopilot
-
-Let me check the specific governance and permission files for the sentiment_importer repo.
-
-
-### 🤖 Autopilot
-
 Now let me check the specific notes for sentiment_importer to understand permissions and deployment context.
 
 
@@ -240,4 +208,84 @@ Now I can see the issue clearly. Let me check the CV cache file to see what's ac
 ### 🤖 Autopilot
 
 The file is too large to read directly. Let me check the index to see when the cache was last built.
+
+
+### 🧑 Governor
+
+How is progress
+
+
+### 🤖 Autopilot
+
+I've now gathered all the information needed to give you a complete answer. Here's the full diagnosis:
+
+---
+
+## Why your profile only shows records until May 19th
+
+**Root cause: The practice events after May 19th exist in the raw data, but they have `"payload": null` — meaning they lack the structured practice details (moves practiced, music played, total practice minutes).**
+
+Here's the evidence:
+
+### What's stored in the raw data
+
+Your practice events are stored at:
+`lineage-credentials/programs/capoeira-tribo-mirim/pk-wR9zU8JMnEz1/practice/`
+
+Files present (15 total):
+| Date | File |
+|------|------|
+| May 15 | 3 files |
+| May 17 | 2 files |
+| May 18 | 1 file |
+| **May 19** | **3 files** |
+| **May 24** | **1 file** |
+| **May 25** | **3 files** |
+
+So events **do exist** for May 24 and May 25. But look at the payload field:
+
+- **May 19 events** — have `"payload": { "theme": "...", "moves_practiced": [...], "music_played": [...], "total_practice_minutes": ... }` ✅
+- **May 24 & 25 events** — have `"payload": null` and `"raw_payload_json": ""` ❌
+
+### How the credential page works
+
+The credential page at `truesight.me/programs/tribomirim/credentials/#pk-wR9zU8JMnEz1` loads data from `lineage-credentials/_cache/cv/gary-teh.json`. This cache is built by `lineage-engine/scripts/build_cv_cache.py`, which:
+
+1. Reads raw practice events from `programs/capoeira-tribo-mirim/pk-*/practice/*.json`
+2. Aggregates them into per-program records with `practice_count`, `total_practice_minutes`, and `recent_events`
+3. **Only includes events that have a valid `payload`** — because the `total_practice_minutes` is derived from `payload.total_practice_minutes`
+
+Since the May 24 and May 25 events have `payload: null`, they contribute **0 practice minutes** and may not be rendered in the "Recent events" list on the credential page.
+
+### Why are the payloads null?
+
+Looking at the practice event submission flow in `practice-event-submit.js`:
+
+```javascript
+const payload = {
+  theme: session.theme || '',
+  moves_practiced: moves,
+  music_played: music,
+  total_practice_minutes: totalMin,
+};
+const payloadJson = JSON.stringify(payload, null, 2);
+```
+
+The payload is embedded in the `[PRACTICE EVENT]` text that gets signed and submitted to Edgar. The **Edgar backend** (sentiment_importer) receives this text, and the **GAS (Google Apps Script) event processor** is supposed to parse the `Payload JSON:` block from the text and store it as the `payload` field in the JSON file.
+
+**The issue is in the GAS event processor** — it's not correctly parsing the `Payload JSON:` block from the practice event submissions for those later sessions. This could be because:
+
+1. The practice session was completed without selecting any moves/music (empty payload)
+2. A change in the practice page format broke the GAS parser
+3. The session was submitted via a different path that didn't include the payload
+
+### What you can do
+
+1. **Check your browser's localStorage** — open `capoeira.agroverse.shop/practice.html`, open DevTools → Application → Local Storage, and look for `capoeira_session_history`. The sessions from May 24/25 should be there with their move/music details.
+
+2. **The credential cache rebuilds every 6 hours** via a GitHub Action in the `lineage-credentials` repo. Even if the payload issue is fixed, the cache needs to rebuild to reflect the new data.
+
+3. **If you still have the practice page open** from those sessions, you could try re-submitting them — the `backfillUnsent()` function in `practice-event-submit.js` scans localStorage for sessions without `submitted_at` and re-submits them.
+
+Would you like me to open a fix PR to investigate the GAS event processor to ensure payloads are properly parsed from practice event submissions?
 
