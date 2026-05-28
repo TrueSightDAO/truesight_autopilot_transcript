@@ -374,3 +374,110 @@ merge it
 
 Merged! Commit `cf1957ef` on `dapp_beta`. The notification badge should now be fully visible without getting cut off by the page borders. GitHub Pages will auto-deploy the change.
 
+
+### 🧑 Governor
+
+I am thinking for sentiment_importer fo https://edgar.truesight.me/ .dropdown-menu that section about DAO, till claim Governance tokens, those are outdated... We should just drop them. Thoughts?
+
+
+### 🤖 Autopilot
+
+Let me check what the current dropdown menu looks like on Edgar.
+
+
+### 🤖 Autopilot
+
+I see the page — it's the market overview page. But you mentioned a `.dropdown-menu` section about "DAO" and "Claim Governance Tokens". Let me check the application layout to find the dropdown menu.
+
+
+### 🤖 Autopilot
+
+The `sentiment_importer` repo is private. Let me check the default branch.
+
+
+### 🤖 Autopilot
+
+Now I can see the full dropdown menu. The "Your DAO" section has these items:
+
+1. **Hunt for Bounties** → `bounties_path`
+2. **Vote on Governance Grants** → `vote_path`
+3. **Invite your Friends** → `generate_invite_referral_program_index_path`
+4. **Contribute in Other Ways** → `dao_index_path`
+5. **Claim Governance Tokens** → `submit_contribution_url`
+
+You're right — these are outdated. The DAO's contribution/identity/governance model has moved entirely to the DApp (`dapp.truesight.me`). The Edgar site is now primarily a market research/news analysis platform.
+
+I agree — we should drop the entire "Your DAO" section. It's dead links that lead to pages that no longer exist or redirect to the DApp anyway. The "What's Happening" section (World Dashboard, AI Analysis, Large Sell Offs) is the actual value of Edgar today.
+
+Let me open a PR to remove it.
+
+
+### 🤖 Autopilot
+
+Let me try again directly.
+
+
+### 🤖 Autopilot
+
+Let me check what's happening — the sentiment_importer repo is private. Let me check if the PAT has access.
+
+
+### 🤖 Autopilot
+
+Good, I can read it. The fix agent may be failing because the repo is private. Let me try a different approach — I'll create the PR manually by uploading the fixed file.
+
+
+### 🤖 Autopilot
+
+The fix agent is failing because the repo is private and the tool might not have write access. Let me try a different approach — I'll create a branch and upload the fixed file directly.
+
+
+### 🤖 Autopilot
+
+Need to create the branch first. Let me get the SHA of the latest commit on master.
+
+
+### 🤖 Autopilot
+
+Branch created. Now upload the fixed file.
+
+
+### 🤖 Autopilot
+
+Need to get the SHA of the existing file first.
+
+
+### 🤖 Autopilot
+
+Got the SHA: `eb4bd0769bb0116afca0e779c16c4dffcfc664cd`. Now let me upload the fixed file with the SHA.
+
+
+### 🤖 Autopilot
+
+The `upload_file_to_github` tool doesn't support passing a SHA. Let me use the raw GitHub API directly.
+
+
+### 🤖 Autopilot
+
+File committed to the branch. Now let me create a PR from this branch.
+
+
+### 🤖 Autopilot
+
+PR #1079 is open on `sentiment_importer`. Here's the summary:
+
+## PR #1079 — Remove outdated "Your DAO" section from Edgar's dropdown menu
+
+**What changed:** Removed the entire "Your DAO" section (sub-header + 5 links + divider) from `app/views/layouts/_logged_in.html.erb`.
+
+**Before:** The dropdown had 3 sections:
+1. **Your DAO** — Hunt for Bounties, Vote on Governance Grants, Invite your Friends, Contribute in Other Ways, Claim Governance Tokens *(all dead links)*
+2. **What's Happening** — World Dashboard, AI Analysis, Large Sell Offs *(still relevant)*
+3. **Manage Your Account** — My Profile, Settings, etc. *(still relevant)*
+
+**After:** The dropdown starts directly with **What's Happening**, followed by **Manage Your Account** and **Administrators Only**. The DAO section is gone.
+
+**Why:** All DAO functionality (bounties, governance voting, contributions, token claims) has moved to the DApp at `dapp.truesight.me`. Edgar is now primarily a market research platform — the "Your DAO" links just lead to 404s or stale pages.
+
+Want me to merge it?
+
