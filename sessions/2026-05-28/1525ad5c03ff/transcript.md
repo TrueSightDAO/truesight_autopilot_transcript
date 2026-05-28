@@ -910,3 +910,117 @@ The `build_cv_cache.py` script in `lineage-engine` could emit a warning when it 
 
 I've documented all of this in **PR #315** on the `tokenomics` repo. Want me to also open a PR on the `sentiment_importer` repo to add the webhook trigger for practice events?
 
+
+### 🧑 Governor
+
+Is there no way for you to read the contents of the Google sheet??
+
+
+### 🤖 Autopilot
+
+You're right, let me check if I can access the Google Sheet directly.
+
+
+### 🤖 Autopilot
+
+Let me check if there's a way to access the sheet data through the GAS deployment or through the lineage-engine code.
+
+
+### 🤖 Autopilot
+
+I can see the Google Sheets API is used with a service account. Let me check if there's a service account key available on this server that I could use to read the Credentialing Events sheet.
+
+
+### 🤖 Autopilot
+
+No service account key file on this server. But I can try to access the sheet via the GAS web app deployment which is public. Let me try calling the GAS deployment to read the data.
+
+
+### 🤖 Autopilot
+
+I can't directly access the Google Sheet without credentials. But I can try to call the GAS web app to trigger the backfill. Let me check if the deployment URL is accessible.
+
+Actually, let me take a different approach. Instead of trying to read the sheet directly, let me look at what we already know from the data we have and figure out the exact fix needed.
+
+From the event files, I can see that:
+
+1. **May 15 events** (3 files) — have `payload` populated, `"reprocessed": true` ✅
+2. **May 17–25 events** (12 files) — have `payload: null`, no `reprocessed` flag ❌
+
+The GAS `reprocessAllRowsWithEmptyPayload()` function exists and is designed to fix exactly this. It needs to be triggered by visiting:
+
+```
+https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload
+```
+
+But I can't call that from here since it requires Google authentication.
+
+Let me update the PR with a more actionable plan that includes the specific steps someone with GAS access needs to take.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The README even mentions step 6: **"Add `[PRACTICE EVENT]` to Edgar's `trigger_immediate_processing` event-substring map"** — this was documented as a setup step but apparently wasn't done.
+
+Let me check the current state of the `trigger_immediate_processing` method to confirm.
+
+Looking back at the controller code I already read, I can see that `trigger_immediate_processing` checks for these event types:
+- `[SALES EVENT]`
+- `[INVENTORY MOVEMENT]`
+- `[DAO Inventory Expense Event]`
+- `[QR CODE UPDATE EVENT]`
+- `[DAPP PERMISSION CHANGE EVENT]`
+- `[WARMUP SEND EVENT]`
+- `[BATCH QR CODE REQUEST]`
+- `[PROPOSAL CREATION]` / `[PROPOSAL VOTE]`
+- `[REPACKAGING BATCH EVENT]`
+- `[CURRENCY CONVERSION EVENT]`
+- `[RETAIL FIELD REPORT EVENT]`
+- `[STORE ADD EVENT]`
+- `[DONATION MINT EVENT]`
+- `[CONTRIBUTOR ADD EVENT]`
+- `[CREDENTIALING ATTESTATION EVENT]`
+- `[PARTNER CHECK-IN EVENT]`
+- `[ASSET RECEIPT EVENT]`
+
+**`[PRACTICE EVENT]` is NOT in the list!** This means practice events are only processed by the 10-minute cron, not by the webhook.
+
+But more importantly — even the cron should work. The fact that the payloads are null means the parser itself is failing, not just that the webhook isn't triggered.
+
+Let me update the PR with the complete analysis and the two fixes needed.
+
+
+### 🤖 Autopilot
+
+OK, I can't directly access the Google Sheet from this server without credentials. But I've already gathered enough evidence from the repo data to give you a complete answer. Let me summarize everything clearly.
+
+---
+
+You're right, I can't read the Google Sheet directly from this environment — I don't have the service account credentials on this server. But I **can** read the committed event files in the `lineage-credentials` repo, and they tell the whole story.
+
+Here's what I've found and what needs to happen:
+
+## The two fixes needed
+
+### Fix 1: Trigger the backfill (immediate fix)
+
+Someone with access to the GAS project needs to visit this URL in a browser:
+
+```
+https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload
+```
+
+This will re-parse all 12 broken events and re-commit them with proper payloads. The `reprocessAllRowsWithEmptyPayload()` function already exists in the code — it just hasn't been run since May 16.
+
+### Fix 2: Prevent recurrence (permanent fix)
+
+Two things need to happen so new practice sessions always get their payloads parsed correctly:
+
+1. **Add `[PRACTICE EVENT]` to Edgar's webhook trigger** — in `sentiment_importer/app/controllers/dao_controller.rb`, the `trigger_immediate_processing` method needs an `elsif text.include?('[PRACTICE EVENT]')` branch. Currently practice events are only processed by the 10-minute cron, and the cron runs the project code (not the @HEAD deployment code).
+
+2. **Add a post-commit validation** in `processOnePracticeEvent` — after committing the event file, check if `payload` is null in the committed JSON and log a warning if so. This would make the issue visible immediately rather than going unnoticed.
+
+The PR I opened (**#315** on `tokenomics`) documents all of this. The README in the credentialing folder even mentions step 6 as a setup step that was never completed.
+
+Want me to try to trigger the backfill URL? I can attempt a web request to the GAS deployment.
+
