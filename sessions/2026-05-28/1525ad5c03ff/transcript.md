@@ -178,3 +178,40 @@ The $2,285.59 bill is **~2.3x the normal $1,000**. There are two possibilities:
 
 Would you like me to draft a reply to Cory, or dig deeper into the AWS billing for that account?
 
+
+### 🧑 Governor
+
+I was thinking perhaps we could open a case with the AWS staff directly to dispute the charges on the NELANCO account what are your thougths?
+
+
+### 🤖 Autopilot
+
+That makes sense — but let me clarify which account we're talking about.
+
+From the emails, the AWS account being billed $2,285.59 is **UX.app's AWS account** (`767697632458`), not the **Nelanco** account. The April incident (leaked root key, unauthorized EC2 launches) happened on that UX.app account.
+
+Let me check what the Nelanco account looks like to see if there's anything relevant there too.
+
+
+### 🤖 Autopilot
+
+Good — now I see the full picture. Here's my thinking:
+
+---
+
+**The Nelanco account ($656/mo)** looks clean — EC2, RDS, ELB, VPC — all normal infrastructure costs. No anomalies there.
+
+**The account Cory is flagging** is the **UX.app AWS account** (`767697632458`), not Nelanco. That's where the April incident happened — leaked root keys, unauthorized EC2 launches for outbound abuse.
+
+So if you want to dispute charges, it would be with **AWS Support on UX.app's account** (the `767697632458` account), not Nelanco. But here's the thing — **you're not the account owner of that AWS account**. Wayne and Cory at UX.app are. AWS Trust & Safety would need to hear from them directly.
+
+**My recommendation:**
+
+1. **Reply to Cory** and explain: the $2,285.59 spike is almost certainly because AWS hasn't yet applied the credit for the April hacked usage (unauthorized EC2 instances from the leaked root key). The normal baseline was ~$1,000, and the extra ~$1,285 is the fraudulent compute.
+
+2. **Cory/Wayne should open the AWS Support case** since it's their account. They can reference the existing AWS Trust & Safety case (`11760736376-1` from the incident doc) and ask for the fraudulent charges to be credited.
+
+3. **If you want to help them**, we could draft the dispute text for them — I can put together a clear summary referencing the April incident, the case ID, and the specific unauthorized activity (root key `[REDACTED:AWS_ACCESS_KEY]`, IP `45.61.128.156`, imported key pair `buatbelisdfgmsobilbaim`, unauthorized EC2 in us-west-2).
+
+Would you like me to draft a reply to Cory with that context and a suggested dispute text they can use with AWS Support?
+
