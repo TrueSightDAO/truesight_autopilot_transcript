@@ -82,5 +82,12 @@
     "summary": "## Fix: doGet function conflict between practice_event_processing.gs and program_admin_endpoint.gs\n\n### Root cause of the null payload issue\nBoth `practice_event_processing.gs` and `program_admin_endp",
     "action": "merge_pr",
     "created_at": "2026-05-28T03:05:05Z"
+  },
+  {
+    "title": "Merge PR #32 on capoeira",
+    "qr_code": "",
+    "summary": "## Progressive move cycling: remove difficulty bias, cycle through all moves\n\n### Problem\nThe current session generator has two issues:\n\n1. **Moves don't cycle through all available moves before repea",
+    "action": "merge_pr",
+    "created_at": "2026-05-28T07:29:39Z"
   }
 ]
