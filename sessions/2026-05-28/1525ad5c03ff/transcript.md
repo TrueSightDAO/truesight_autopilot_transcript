@@ -378,3 +378,27 @@ Thank you for your assistance.
 
 Want me to save this as a document somewhere, or send it to you via email?
 
+
+### 🧑 Governor
+
+Can you provide the URL link that I should navigate to to file the dispute with what you just generated?
+
+
+### 🤖 Autopilot
+
+Sure! Here's the direct link to file the billing dispute:
+
+**https://console.aws.amazon.com/support/home#/case/create?issueType=customer-service&serviceCode=billing&categoryCode=other**
+
+Once you're logged into the **Nelanco AWS account** (`767697632458`), that link should take you directly to the **Account and Billing Support** case creation form. You can paste the dispute text I drafted above in the description field.
+
+Alternatively, if that direct link doesn't work, you can navigate manually:
+1. Go to **https://console.aws.amazon.com/**
+2. Click **Support Center** (top-right)
+3. Click **Create case**
+4. Select **Account and Billing Support**
+5. Select **Other Account and Billing Issues**
+6. Paste the dispute text
+
+Let me know if you need me to save the dispute text as a file or email it to you for reference!
+
