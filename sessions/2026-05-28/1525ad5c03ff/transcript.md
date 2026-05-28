@@ -10,123 +10,6 @@
 
 ### 🤖 Autopilot
 
-👋 **New topic detected!** Before we start, pick my role:
-
-**1.** Content Marketing Researcher — market analysis, SEO, content strategy
-**2.** Event Coordinator — plan DAO events and logistics
-**3.** SRE / DevOps Engineer — fix bugs, deploy code, monitor infra
-**4.** Retailer Outreach Coordinator — partner outreach, onboarding, followups
-**5.** Logistics Analyst — import/export, supply chain, freight
-**6.** Inventory Manager — QR codes, stock levels, inventory movements
-**7.** General DAO Assistant — everything (all tools, no specialisation)
-
-Reply with a number (1-7) or role name. I'll remember this for this topic.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-try merging https://github.com/TrueSightDAO/capoeira/pull/33
-
-
-### 🤖 Autopilot
-
-Let me check on that PR first.
-
-
-### 🤖 Autopilot
-
-PR #33 is **open** (not yet merged). Merging it now as instructed.
-
-
-### 🤖 Autopilot
-
-PR #33 is still in **Draft** status, so GitHub won't allow merging it directly. Would you like me to:
-
-1. **Mark it as ready for review** (convert from draft to open), then merge?
-2. Or do you want to review it first before I proceed?
-
-Let me know, Gary!
-
-
-### 🧑 Governor
-
-I already reviewed it
-
-
-### 🤖 Autopilot
-
-Got it — I'll mark it as ready for review and then merge it.
-
-Let me check if I can mark it ready via the API. I'll use the PR's details to do that.
-
-
-### 🤖 Autopilot
-
-The direct API token isn't available to me, but the `merge_pr` tool has the right credentials. Unfortunately it can't convert a draft to ready. Let me try marking it ready via the GitHub API with the tool's underlying auth.
-
-Actually, let me check if there's a way to handle this. The `merge_pr` tool itself has the PAT — but it only does merge. Let me see if I can use the PR's URL to mark it ready.
-
-Let me try the GitHub API endpoint for marking a draft PR as ready for review.
-
-
-### 🤖 Autopilot
-
-I can see it's a draft. Let me mark it as ready for review using the GitHub API endpoint for that.
-
-
-### 🤖 Autopilot
-
-The correct endpoint is `PATCH /repos/{owner}/{repo}/pulls/{pull_number}` — marking a draft as ready is done by sending a PATCH with `draft: false`. Let me try that.
-
-
-### 🤖 Autopilot
-
-The unauthenticated fetch can read but not write. The `merge_pr` tool has the PAT but only does merge operations. Unfortunately, I don't have a tool that can mark a draft PR as ready for review.
-
-Gary, could you please **mark PR #33 as ready for review** on GitHub? You can do this on the PR page at https://github.com/TrueSightDAO/capoeira/pull/33 — there should be a "Ready for review" button. Once it's out of draft status, I'll merge it immediately.
-
-
-### 🧑 Governor
-
-I marked it as ready
-
-
-### 🤖 Autopilot
-
-Great, let me merge it now!
-
-
-### 🤖 Autopilot
-
-**PR #33 merged!** 🚀
-
-- **Repo:** `TrueSightDAO/capoeira`
-- **Title:** Swap order: move Generate Session above Practice History
-- **Merge SHA:** `62f7069da0e5fa9c0a898846af4ed37daaff635b`
-- **Method:** Squash
-
-The Generate Session section will now appear above Practice History on the practice page — returning users will see the call-to-action first without scrolling past past sessions.
-
-
-### 🧑 Governor
-
-Regarding the recent case in cypher_def, seems we just got a new email in my inbox forwarded from wayne's email account. And his colleague from UX.app also just emailed me. what are your thoughts?
-
-
-### 🤖 Autopilot
-
-Let me check what's in your inbox to see these emails.
-
-
-### 🤖 Autopilot
-
-Let me read the full thread to understand the context.
-
-
-### 🤖 Autopilot
-
 Let me also check what's in the `cypher_def` context to understand the full picture.
 
 
@@ -742,4 +625,45 @@ The fix would be to **publish the full contributor list to the treasury-cache JS
 A simpler frontend fix would be to **cache the GAS response in localStorage** after the first fetch, so subsequent page loads within the same session (or even same day) are instant.
 
 Want me to open a fix PR for the frontend caching approach?
+
+
+### 🧑 Governor
+
+NOticing this issue with the https://dapp.truesight.me/report_inventory_movement.html warehouse managers and recipients list as well
+
+
+### 🤖 Autopilot
+
+Let me check that page too.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Both the **Warehouse Manager** and **Recipient** dropdowns on this page use the same GAS endpoint:
+
+```javascript
+// Managers
+const res = await fetch(`${DAO_FORMS_BASE}?list=true`);
+
+// Recipients
+const res = await fetch(`${DAO_FORMS_BASE}?recipients=true`);
+```
+
+Where `DAO_FORMS_BASE` is:
+```
+https://script.google.com/macros/s/AKfycbztpV3TUIRn3ftNW1aGHAKw32OBJrp_p1Pr9mMAttoyWFZyQgBRPU2T6eGhkmJtz7xV/exec
+```
+
+**Same root cause as the contributor list** — it's the same Google Apps Script cold-start problem. The page actually has a **treasury-cache** fallback for managers (lines ~920-960), but the **recipients list** has no cache — it always hits GAS.
+
+Here's what happens on page load:
+1. `loadManagers()` → tries treasury-cache first, falls back to GAS `?list=true`
+2. `loadRecipients()` → **always** hits GAS `?recipients=true` (no cache)
+3. `loadAllCurrencies()` → tries treasury-cache, falls back to GAS `?all_currencies=true`
+
+So the **recipients** list is the slowest because it has no caching at all. And if the treasury-cache fails for managers, that's two GAS calls back-to-back.
+
+Want me to open a fix PR that:
+1. **Caches the recipients list in localStorage** (same approach as the contributor list fix)
+2. Also caches the manager list in localStorage as a fallback if treasury-cache fails
 
