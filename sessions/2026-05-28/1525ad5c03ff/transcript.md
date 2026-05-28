@@ -622,3 +622,78 @@ Could you upload the actual JPG manually to that path? Or I can save the markdow
 
 **https://github.com/TrueSightDAO/Cypher-Defense/blob/master/docs/aws-reports/2026-05-28-case-177613748700177-billing-dispute-response.md**
 
+
+### 🧑 Governor
+
+No worries. Can you figure out why the list of contributor names are taking so long ot load here https://dapp.truesight.me/report_contribution.html
+
+
+### 🤖 Autopilot
+
+Let me check the page and see what's going on.
+
+
+### 🤖 Autopilot
+
+Now I can see the issue. The contributor loading is done by the `loadContributors()` function which calls:
+
+```javascript
+const res = await fetch(`${DAO_FORMS_ENDPOINT}?recipients=true`);
+```
+
+That endpoint is:
+```
+https://script.google.com/macros/s/AKfycbztpV3TUIRn3ftNW1aGHAKw32OBJrp_p1Pr9mMAttoyWFZyQgBRPU2T6eGhkmJtz7xV/exec?recipients=true
+```
+
+This is a **Google Apps Script** web app. Let me test how slow it is.
+
+
+### 🤖 Autopilot
+
+The response came back fine from my end, but the issue is likely on the **client side** in the browser. Let me check the `dao_members_cache.js` script that's loaded — it's used for the initial identity lookup and might also be involved.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Here's my analysis:
+
+---
+
+## Root Cause: Slow Contributor List Loading
+
+The contributor list is loaded via `loadContributors()` which calls:
+
+```
+https://script.google.com/macros/s/AKfycbztpV3TUIRn3ftNW1aGHAKw32OBJrp_p1Pr9mMAttoyWFZyQgBRPU2T6eGhkmJtz7xV/exec?recipients=true
+```
+
+This is a **Google Apps Script** web app that returns **~250 contributor names**. The response itself is fast (~200ms from my test), but the **perceived slowness** in the browser is likely due to one or more of these issues:
+
+### 1. GAS cold-start latency
+Google Apps Script has a well-known **cold-start problem** — if the script hasn't been accessed recently, the first request can take **3–10 seconds** while Google spins up a container. This is the most likely culprit.
+
+### 2. The contributor dropdown only renders after the identity lookup completes
+Looking at the flow:
+1. Page loads → verifies digital signature via `DaoMembersCache.findByPublicKey()` (fetches `dao_members.json` from GitHub raw)
+2. **Only after** identity is verified does it call `loadContributors()` → fetch the GAS endpoint
+3. Then it renders the dropdown
+
+So the user sees "Verifying your digital signature..." first, then the form appears, then the contributor list loads. If the GAS endpoint has a cold start, that's an additional delay on top of the identity check.
+
+### 3. No caching of the contributor list
+The `allContributors` array is fetched fresh every page load with no localStorage or sessionStorage caching.
+
+### Suggested fixes:
+
+**Quick wins (no code change needed):**
+- The GAS endpoint could be "warmed" by a cron job hitting it periodically
+
+**Code-level fixes I can implement:**
+
+1. **Cache contributors in localStorage** — after first fetch, store them with a timestamp so subsequent page loads within, say, 15 minutes use the cache instantly
+2. **Load contributors in parallel** with the identity check instead of waiting for it to finish
+3. **Show a loading state** in the dropdown itself so the user knows it's working
+
+Want me to open a fix PR for this?
+
