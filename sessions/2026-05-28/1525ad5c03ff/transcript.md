@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me check the actual CV data for your profile (gary-teh) to see what practice events are recorded.
-
-
-### 🤖 Autopilot
-
-The file seems empty or too large. Let me check the aliases file to understand the pk-hash mapping.
-
-
-### 🤖 Autopilot
-
-Good, so `pk-wR9zU8JMnEz1` maps to `gary-teh`. Now let me look at the CV data file for Gary Teh. The previous read returned empty — let me check the raw file.
-
-
-### 🤖 Autopilot
-
 Let me try to read the CV file directly from the raw GitHub URL.
 
 
@@ -1023,4 +1008,59 @@ Two things need to happen so new practice sessions always get their payloads par
 The PR I opened (**#315** on `tokenomics`) documents all of this. The README in the credentialing folder even mentions step 6 as a setup step that was never completed.
 
 Want me to try to trigger the backfill URL? I can attempt a web request to the GAS deployment.
+
+
+### 🧑 Governor
+
+Getting this error {"status":"error","message":"Unknown action: reprocessAllRowsWithEmptyPayload"}
+
+
+### 🤖 Autopilot
+
+That means the @HEAD deployment doesn't have the latest code pushed to it. The `reprocessAllRowsWithEmptyPayload` function exists in the source file but hasn't been deployed. Let me check which deployment has it.
+
+The code says:
+- **@HEAD**: `AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e` — "always serves the latest source"
+- **@version 3**: `AKfycbys7ERYPR6PDGGlpzDXDQPwPzcWAbFUcN_ZKrYEW0p2yg01eFkyBTSs9hCPkgjyy7AXWw` — "fix telegram chat logs column mapping"
+
+But the @HEAD is returning "Unknown action" which means the code on the server doesn't match the source file. The code needs to be pushed via `clasp push` first.
+
+Let me check if there's a way to push it.
+
+
+### 🤖 Autopilot
+
+I see — the `program_admin_endpoint.gs` has its own `doGet` that handles actions like `list_sheet_editors`, `process_attestation_events`, etc. And it returns `"Unknown action"` for anything it doesn't recognize.
+
+The issue is that **both files** (`practice_event_processing.gs` and `program_admin_endpoint.gs`) define a `doGet` function. In Google Apps Script, when you have two files with the same function, the **last one loaded wins**. Since `program_admin_endpoint.gs` is loaded after `practice_event_processing.gs`, its `doGet` overrides the one from `practice_event_processing.gs`.
+
+So when you hit the deployment URL with `?action=reprocessAllRowsWithEmptyPayload`, it hits `program_admin_endpoint.gs`'s `doGet`, which doesn't know about that action.
+
+This is the root cause! The `practice_event_processing.gs` has the `reprocessAllRowsWithEmptyPayload` action handler, but it's being shadowed by `program_admin_endpoint.gs`'s `doGet`.
+
+The fix is to **merge the two `doGet` functions** into one that handles actions from both files, or rename one to avoid the conflict.
+
+Let me update the PR with this finding.
+
+
+### 🤖 Autopilot
+
+Found it. The issue is a **function name collision** in the GAS project.
+
+Both `practice_event_processing.gs` and `program_admin_endpoint.gs` define a `doGet(e)` function. In Google Apps Script, when two files define the same function, **the last one alphabetically wins** — `program_admin_endpoint.gs` (p) loads after `practice_event_processing.gs` (p), so its `doGet` overrides the one from `practice_event_processing.gs`.
+
+This means:
+- `?action=reprocessAllRowsWithEmptyPayload` → hits `program_admin_endpoint.gs`'s `doGet` → returns `"Unknown action"`
+- `?action=parseAndProcessCredentialingLogs` → also unreachable via web
+- Only `program_admin_endpoint.gs`'s actions work (`list_sheet_editors`, `process_attestation_events`, etc.)
+
+The 10-minute **cron trigger** still works because it calls `parseAndProcessCredentialingLogs()` directly by function name, not through `doGet`. But the cron processes new events with whatever parser code is deployed — and since the balanced-brace fallback was added to the source but the `doGet` conflict prevents the webhook from working, new events only get processed by the cron (every 10 min) and the backfill function can never be triggered.
+
+I've opened **PR #316** with the fix — merging the two `doGet` functions into one dispatcher. Once that's merged and `clasp push`'d, you'll be able to visit:
+
+```
+https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload
+```
+
+And it will backfill all 12 broken events.
 
