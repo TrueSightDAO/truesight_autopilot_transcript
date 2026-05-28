@@ -112,26 +112,69 @@ The Generate Session section will now appear above Practice History on the pract
 
 ### 🧑 Governor
 
-why we were stuck in that state just now that requires me to mark ready for review?
+Regarding the recent case in cypher_def, seems we just got a new email in my inbox forwarded from wayne's email account. And his colleague from UX.app also just emailed me. what are your thoughts?
 
 
 ### 🤖 Autopilot
 
-Good question. Here's what happened:
+Let me check what's in your inbox to see these emails.
 
-The PR was created by **truesight_autopilot** (the automated bot), and autopilot opens PRs as **Draft** by default. That's by design — draft PRs signal "this is an automated proposal, not yet reviewed." It prevents auto-generated code from being merged without human oversight.
 
-The issue is that my `merge_pr` tool can only merge PRs that are already marked **"open"** (non-draft). GitHub's API explicitly rejects merging draft PRs with a `405 "Pull Request is still a draft"` error. And I don't have a tool available to me that can convert a draft to "ready for review" — that requires write-level API access with the right scope, which the PAT on this server apparently doesn't expose to my `http_fetch` tool.
+### 🤖 Autopilot
 
-So the flow got stuck because:
+Let me read the full thread to understand the context.
 
-1. **Autopilot** → creates Draft PR ✅ (safe default)
-2. **You review** it ✅
-3. **You tell me to merge** ✅
-4. **I try to merge** → ❌ blocked because it's still a Draft
-5. **I can't mark it ready** → no tool for that
-6. **You mark it ready** → ✅
-7. **I merge** → ✅
 
-**The fix:** I can update the autopilot to open PRs as **non-draft** (ready for review) instead of draft. That way, after you review and say "merge", I can do it in one step without the back-and-forth. Would you like me to make that change to the autopilot?
+### 🤖 Autopilot
+
+Let me also check what's in the `cypher_def` context to understand the full picture.
+
+
+### 🤖 Autopilot
+
+Now let me check the Cypher-Defense context for the AWS incident.
+
+
+### 🤖 Autopilot
+
+Let me look at the Cypher-Defense repo on GitHub to understand the context.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the AWS account to see current billing.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my analysis, Gary:
+
+---
+
+**My thoughts on the situation:**
+
+### The two emails
+
+1. **Wayne's forwarding confirmation** (May 27) — Wayne set up email forwarding from `wayne@ux.app` to your `garyjob@agroverse.shop`. This is the "forwarded from Wayne's account" you mentioned. It's a legitimate Google forwarding setup — you'd need to click the confirmation link to activate it.
+
+2. **Cory Councilman (cory@ux.app)** — He's Wayne's colleague at UX.app. He emailed you today (May 28) flagging that **AWS is billing $2,285.59** this month vs. the usual ~$1,000. He's asking: *"Did they not credit us back for the hacked usage, or are these valid charges?"*
+
+### The context
+
+From the **Cypher-Defense incident doc** (April 13), the AWS account `767697632458` had a **root access key leak** — someone used leaked credentials (`[REDACTED:AWS_ACCESS_KEY]`) from IP `45.61.128.156` to import an SSH key and launch EC2 instances for outbound abuse (RDP scanning on port 3389). That's the "hacked usage" Cory is referring to.
+
+### My take
+
+The $2,285.59 bill is **~2.3x the normal $1,000**. There are two possibilities:
+
+1. **AWS didn't fully credit the fraudulent usage** — The April incident involved unauthorized EC2 instances. If AWS only partially credited or the credit hasn't posted yet, the bill would be inflated.
+2. **These are valid charges** — Legitimate usage genuinely increased (more instances, data transfer, etc.).
+
+**What I'd recommend:**
+
+- **Check the AWS billing console** for credits/refunds posted against the account `767697632458` (UX.app's account, not ours). Look for any "Credit" line items or AWS Trust & Safety adjustments.
+- **Compare service-by-service** — is the spike in EC2 (which would suggest the hacked usage wasn't credited) or in another service?
+- **Reply to Cory** with what you know: the April incident involved unauthorized EC2 launches, and if AWS hasn't applied the credit yet, that would explain the delta (~$1,285 over baseline).
+
+Would you like me to draft a reply to Cory, or dig deeper into the AWS billing for that account?
 
