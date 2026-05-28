@@ -47,5 +47,12 @@
     "summary": "## Problem\n\nThe contributor/recipient dropdowns on `report_contribution.html` and `report_inventory_movement.html` call the GAS `?recipients=true` endpoint, which has a 1-3 second cold-start latency. ",
     "action": "merge_pr",
     "created_at": "2026-05-28T21:03:15Z"
+  },
+  {
+    "title": "Merge PR #7 on dapp_beta",
+    "qr_code": "",
+    "summary": "## Problem\n\nThe notification badge (red pill with count) on the bell icon in the top-right corner is being visually cut off by the outer page borders. The badge is positioned at `top: -4px; right: -4p",
+    "action": "merge_pr",
+    "created_at": "2026-05-28T21:15:11Z"
   }
 ]
