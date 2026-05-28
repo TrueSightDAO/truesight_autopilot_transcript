@@ -1084,3 +1084,48 @@ After that, your credential page will show all practice sessions with proper min
 
 Good night! 🎯
 
+
+### 🧑 Governor
+
+Before I head to bed I noticed when I use the capoeira experience somehow it doesn’t cycle through all the moves before it finally cycles back. I am also thinking why even bother allowing users to select the level, it should just progressively get more advanced cycling through all the moves before eventually cycling back. Have a look at it. I am heading to bed now. Create a PR that I could review in the morning
+
+
+### 🤖 Autopilot
+
+Let me look at the capoeira practice page to understand the current move selection logic.
+
+
+### 🤖 Autopilot
+
+Now let me look at the session generator to understand the move selection logic.
+
+
+### 🤖 Autopilot
+
+Now let me look at the moves data to understand the full move set.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the themes to understand the issue.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me open the PR with the proposed changes.
+
+
+### 🤖 Autopilot
+
+Done! PR #32 is open on the `capoeira` repo for you to review in the morning: https://github.com/TrueSightDAO/capoeira/pull/32
+
+Here's what it proposes:
+
+1. **Remove the difficulty bias selector** — no more "Beginner-friendly / Balanced / Intermediate / Advanced" dropdown
+2. **Round-robin move cycling** — instead of weighted random selection, the generator will always pick the **least-practiced move** from the chosen theme first. This guarantees you cycle through every move before any move repeats
+3. **Progressive difficulty within each session** — the 4-6 selected moves will be ordered Beginner → Intermediate → Advanced, so each session has a natural warm-up-to-peak arc
+
+The natural consequence is that over multiple sessions, you'll automatically progress from Beginner moves → Intermediate → Advanced without needing to manually select a difficulty bias.
+
+Good night! 🎯
+
