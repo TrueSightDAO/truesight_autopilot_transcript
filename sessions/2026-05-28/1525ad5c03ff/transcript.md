@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me look at the GAS (Google Apps Script) that processes practice events — this is where the payload parsing happens and where the JSON files are generated.
-
-
-### 🤖 Autopilot
-
 Now I have the complete picture. Let me also check the Telegram Chat Logs sheet to see what the raw messages look like for your May 24/25 sessions.
 
 
@@ -1053,4 +1048,54 @@ So now you have **three PRs** to review in the morning:
 3. **PR #316** (tokenomics) — Fix the `doGet` function conflict so the backfill URL works
 
 Good night! 🎯
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+looks good to me. Go ahead and merge PR#33
+
+By the way, I have gotten deepseek to review the other two PRs and already merge them
+
+
+### 🤖 Autopilot
+
+Let me merge PR #33.
+
+
+### 🤖 Autopilot
+
+PR #33 is still open. Let me merge it.
+
+
+### 🤖 Autopilot
+
+The PR branch looks good — Generator Section is now before History Summary. Let me merge it.
+
+
+### 🤖 Autopilot
+
+I don't have a GitHub token on this server to merge via API. Let me check if the autopilot can handle the merge.
+
+
+### 🤖 Autopilot
+
+The autopilot server isn't reachable right now. Let me try to merge the PR directly via the GitHub API.
+
+
+### 🤖 Autopilot
+
+I can't merge via API without a GitHub token on this server. But the PR is approved by you (Gary), so let me just note that it's ready to merge. You can merge it directly on GitHub at:
+
+**https://github.com/TrueSightDAO/capoeira/pull/33**
+
+The change is straightforward — just swapped the two `<section>` elements so Generate Session appears above Practice History. Once merged, the page will deploy automatically (it's hosted on GitHub Pages / Cloudflare Pages).
+
+Also, great to hear DeepSeek already reviewed and merged PRs #32 and #316! So the remaining action items are:
+
+1. ✅ **PR #32** (progressive move cycling) — merged by DeepSeek
+2. ✅ **PR #316** (doGet function conflict fix) — merged by DeepSeek
+3. ⏳ **PR #33** (layout swap) — approved by you, just needs the merge button clicked
+4. ⏳ **Trigger the backfill URL** — after PR #316 is `clasp push`'d to the GAS project
 
