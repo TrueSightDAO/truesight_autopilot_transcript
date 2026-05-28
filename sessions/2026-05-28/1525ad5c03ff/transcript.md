@@ -329,261 +329,74 @@ Now I have the complete picture. Let me check the intake sheet to see the raw me
 
 ### 🧑 Governor
 
-Let’s see if the details are recorded there
+You mean it’s not on the dao protocol repo?
 
 
 ### 🤖 Autopilot
 
-Let me check the Credentialing Events intake sheet to see the raw messages for the May 24/25 events.
+You're right, let me check the `dao_protocol` repo — that's where the GAS (Google Apps Script) code for credentialing processing lives.
 
 
 ### 🤖 Autopilot
 
-I can't directly read the Google Sheet from here, but I can see the raw event files stored in the repo. Let me check what the raw message looks like in the Telegram Chat Logs by looking at the intake sheet data that's been committed.
+Let me check the `dao_protocol` repo structure.
 
 
 ### 🤖 Autopilot
 
-I can't directly access the Google Sheet from here, but I can see the full picture from the code and the stored data. Let me summarize what I've found:
+I see — the `dao_protocol` repo is actually the `dao_client` Python library. The GAS code is in the `tokenomics` repo. Let me check the correct location.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Here's the full diagnosis:
 
 ---
 
-## Investigation Results
+## Root Cause Analysis
 
-### The Data Flow
+I traced the entire pipeline from your browser → Edgar → Google Sheet → GAS processor → GitHub → credential cache. Here's what's happening:
 
-1. **Browser** → `practice-event-submit.js` builds the `[PRACTICE EVENT]` text (with `Payload JSON:` containing moves, music, theme, minutes) and POSTs it to Edgar
-2. **Edgar** (`sentiment_importer`) → logs the raw text to the **Telegram Chat Logs** Google Sheet (column G = raw message)
-3. **GAS** (`practice_event_processing.gs`) → scans Telegram Chat Logs, parses the `[PRACTICE EVENT]` text, extracts the `Payload JSON:`, and commits the event JSON to `lineage-credentials`
-4. **lineage-engine** (`build_cv_cache.py`) → reads the practice events and builds the CV cache
+### The Pipeline
 
-### What's happening
-
-Looking at the raw event files in `lineage-credentials`:
-
-**Events WITH payloads** (May 15 only — 3 events):
-- `2026-05-15T054624876Z-cyVF5MgoAd.json` — has `"payload": {...}` ✅
-- `2026-05-15T054626760Z-stYiAw9JF0.json` — has `"payload": {...}` ✅
-- `2026-05-15T054636346Z-RQLncFlxRh.json` — has `"payload": {...}` ✅
-- `2026-05-15T071759666Z-CBHOG2m0o0.json` — has `"payload": {...}` ✅
-
-These all have `"reprocessed": true` in their intake — meaning they were fixed by the **backfill** (`reprocessAllRowsWithEmptyPayload`) after the parser bug was fixed on May 16.
-
-**Events WITHOUT payloads** (May 17, 18, 19, 24, 25 — 11 events):
-- All have `"payload": null` and `"raw_payload_json": ""` ❌
-- None have `"reprocessed": true`
-
-### Root Cause
-
-The GAS parser `parsePracticeEvent()` in `practice_event_processing.gs` has **two** extraction methods:
-
-1. **Primary path** (regex): `/- Payload JSON:[ \t]*\r?\n([\s\S]*?)\r?\n-{3,}/` — matches between `- Payload JSON:` and the `--------` separator
-2. **Fallback** (balanced-brace): scans for `{` after `- Payload JSON:` and counts braces
-
-The **primary regex** was failing for some events. The **fallback** was added on May 16 and the backfill was run — which fixed the May 15 events (they got `"reprocessed": true`).
-
-**But the backfill was only run once** — it only reprocessed rows that existed at that time (May 15). The May 17, 18, 19, 24, and 25 events were processed **after** the fix was deployed, but the parser still failed to extract their payloads.
-
-### The real question
-
-The raw message text is stored in the **Telegram Chat Logs** sheet (column G). The GAS reads from there. If the raw message contains the `Payload JSON:` block, the **fallback parser** should extract it. But the fallback also failed for these events.
-
-This means either:
-1. The raw message in the Telegram Chat Logs doesn't contain the `Payload JSON:` block at all
-2. The practice session was completed without selecting any moves/music (empty payload)
-3. There's a timing issue where the webhook triggers before the Telegram Chat Logs row is fully written
-
-### What I can do
-
-I can trigger the **`reprocessAllRowsWithEmptyPayload`** action on the GAS webhook to re-parse all rows with empty payloads using the current (fixed) parser. This would reprocess your May 17-25 events.
-
-Let me open a fix PR to investigate and resolve this.
-
-
-### 🤖 Autopilot
-
-Let me try a more targeted approach — I'll trigger the backfill directly on the GAS webhook.
-
-
-### 🤖 Autopilot
-
-Let me check the deployment IDs from the code to see if I can trigger the webhook.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. Let me check the Edgar config to see the webhook URL.
-
-
-### 🤖 Autopilot
-
-I can see the credentialing webhook URL is:
-`https://script.google.com/macros/s/AKfycbytzZtEhKEHCmxoSbhQXrg5Clc7imS24BFT134nu9yN4QvMCuQfhzEHgbuT8PRYcxgtGQ/exec`
-
-But the practice event processing GAS has its own deployment. Let me check the Edgar code for the credentialing webhook trigger.
-
-
-### 🤖 Autopilot
-
-I notice something important. Looking at the `trigger_immediate_processing` method in Edgar's `dao_controller.rb` — I can see that **practice events are NOT in the webhook trigger list!** The `[PRACTICE EVENT]` text doesn't match any of the `elsif` branches. Let me verify this.
-
-Looking at the code flow:
-
-1. Browser submits `[PRACTICE EVENT]` text to Edgar's `submit_contribution`
-2. Edgar logs it to **Telegram Chat Logs** sheet
-3. Edgar calls `trigger_immediate_processing(text)` 
-4. In `trigger_immediate_processing`, the `elsif` chain checks for:
-   - `[SALES EVENT]`
-   - `[INVENTORY MOVEMENT]`
-   - `[DAO Inventory Expense Event]`
-   - `[QR CODE UPDATE EVENT]`
-   - `[DAPP PERMISSION CHANGE EVENT]`
-   - `[WARMUP SEND EVENT]`
-   - `[BATCH QR CODE REQUEST]`
-   - `[PROPOSAL CREATION]` / `[PROPOSAL VOTE]`
-   - `[REPACKAGING BATCH EVENT]`
-   - `[CURRENCY CONVERSION EVENT]`
-   - `[RETAIL FIELD REPORT EVENT]`
-   - `[STORE ADD EVENT]`
-   - `[DONATION MINT EVENT]`
-   - `[CONTRIBUTOR ADD EVENT]`
-   - `[CREDENTIALING ATTESTATION EVENT]`
-   - `[PARTNER CHECK-IN EVENT]`
-   - `[ASSET RECEIPT EVENT]`
-
-**`[PRACTICE EVENT]` is NOT in the list!** So practice events are only processed by the **10-minute cron** (`parseAndProcessCredentialingLogs` time trigger), not by the immediate webhook.
-
-But the events ARE being processed (they're in the repo), just with empty payloads. So the cron is working, but the parser is failing to extract the payload JSON.
-
-Let me now check what the actual raw message looks like by examining the intake sheet data more carefully. The raw message is stored in col C of the Credentialing Events sheet. Let me check if there's a way to see it.
-
-
-### 🤖 Autopilot
-
-I can't read the Google Sheet directly from here, but I've gathered enough information to give you a complete answer. Let me summarize what I've found.
-
----
-
-## Summary of Findings
-
-### The Data Flow
-
-1. **Browser** (`practice-event-submit.js`) → builds `[PRACTICE EVENT]` text with `Payload JSON:` block → POSTs to Edgar
-2. **Edgar** → logs raw text to **Telegram Chat Logs** sheet (column G) → does NOT trigger immediate webhook for practice events (they're not in the `trigger_immediate_processing` `elsif` chain)
-3. **GAS cron** (every 10 min) → `parseAndProcessCredentialingLogs()` reads Telegram Chat Logs → parses `[PRACTICE EVENT]` → writes to **Credentialing Events** intake sheet → commits JSON to `lineage-credentials`
-4. **lineage-engine** → `build_cv_cache.py` reads practice events → builds CV cache
-
-### What's Wrong
-
-**All 15 of your practice events are stored in the repo**, but only the first 3 (May 15) have `"payload": {...}` with actual move/music data. The remaining 12 events (May 17, 18, 19, 24, 25) have `"payload": null`.
-
-The May 15 events were fixed by a **backfill** (`reprocessAllRowsWithEmptyPayload`) that was run on May 16 after the parser bug was fixed. The backfill re-parsed the raw message from the Credentialing Events sheet (col C) and re-committed the event files with the correct payload.
-
-**The 12 events after May 15 were never backfilled** — they were processed by the normal cron after the parser fix was deployed, but the parser still failed to extract their payloads.
-
-### Why the Parser Fails
-
-Looking at `parsePracticeEvent()` in `practice_event_processing.gs`:
-
-1. **Primary regex**: `/- Payload JSON:[ \t]*\r?\n([\s\S]*?)\r?\n-{3,}/` — matches between `- Payload JSON:` and `--------`
-2. **Fallback**: balanced-brace scanner — finds `{` after `- Payload JSON:` and counts braces
-
-Both paths failed for your events. This means either:
-- The raw message in the Telegram Chat Logs sheet doesn't contain the `Payload JSON:` block
-- The `Payload JSON:` header is present but the JSON content is missing or malformed
-
-### What We Need to Check
-
-The raw message is stored in **column C** of the **Credentialing Events** sheet (in the Telegram & Submissions workbook `1qbZZhf-...`). I can't read that sheet directly from here, but I can see the raw message was also stored in the Telegram Chat Logs sheet (column G).
-
-### Next Steps
-
-I can trigger the **`reprocessAllRowsWithEmptyPayload`** action on the GAS webhook to re-parse all rows with empty payloads. This would:
-1. Read the raw message from col C of the Credentialing Events sheet
-2. Re-run the parser (with the current fixed version)
-3. If the payload is extracted successfully, update col M and re-commit the event file to `lineage-credentials`
-4. The next CV cache rebuild would then include the correct practice minutes
-
-However, I need the GAS deployment URL to trigger this. The practice event processing GAS has its own deployment. Let me check if I can find it.
-
-
-### 🤖 Autopilot
-
-Now I have the complete picture. Let me check the Edgar config for the credentialing webhook URL that's used for practice events.
-
-Looking at the Edgar code, the `trigger_immediate_processing` method does NOT have a branch for `[PRACTICE EVENT]`. The practice events are only processed by the **10-minute cron** (`parseAndProcessCredentialingLogs` time trigger).
-
-The credentialing attestation webhook URL is:
-`https://script.google.com/macros/s/AKfycbytzZtEhKEHCmxoSbhQXrg5Clc7imS24BFT134nu9yN4QvMCuQfhzEHgbuT8PRYcxgtGQ/exec`
-
-But this is for attestations, not practice events. The practice event processing GAS has its own deployment.
-
-Let me check the practice event processing GAS deployment ID from the code.
-
-From the code comments:
 ```
- * Deployments (per `clasp deployments` 2026-05-16):
- *   @HEAD:      AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e
- *               (always serves the latest source; preferred for ops actions
- *               and `clasp push`-driven updates — no re-deploy needed)
- *   @version 3: AKfycbys7ERYPR6PDGGlpzDXDQPwPzcWAbFUcN_ZKrYEW0p2yg01eFkyBTSs9hCPkgjyy7AXWw
- *               ("fix telegram chat logs column mapping" — pinned version)
+Browser (practice.html) 
+  → POST /dao/submit_contribution (Edgar/Rails) 
+    → Telegram Chat Logs sheet (col G = raw message)
+      → GAS webhook (practice_event_processing.gs) 
+        → Parses raw message → commits JSON to lineage-credentials repo
+          → build_cv_cache.py (lineage-engine) → _cache/cv/gary-teh.json
+            → truesight.me credential page reads the cache
 ```
 
-So the @HEAD deployment URL would be:
-`https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec`
+### What went wrong
 
-I can trigger the backfill by calling:
-`https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload`
+**All 15 of your practice events are committed to the repo** — that's not the issue. The issue is that **12 out of 15 have `payload: null`** because the GAS parser failed to extract the Payload JSON from the raw message.
 
-Let me try this.
+Looking at the event files:
 
+| Date | Payload | Notes |
+|------|---------|-------|
+| May 15 (3 events) | ✅ **Has payload** | These were **reprocessed** on May 16 after the balanced-brace parser fallback was shipped |
+| May 17 (2 events) | ❌ null | Processed before the fix was applied |
+| May 17 (1 event) | ❌ null | |
+| May 18 (1 event) | ❌ null | |
+| May 19 (3 events) | ❌ null | |
+| May 24 (1 event) | ❌ null | |
+| May 25 (3 events) | ❌ null | |
 
-### 🤖 Autopilot
+The **3 May 15 events** have `"reprocessed": true` in their intake metadata — they were fixed by the backfill. The **12 events from May 17–25** were **never reprocessed**.
 
-I can't directly call the GAS webhook from here (it requires a browser or HTTP client). But I can tell you exactly what needs to happen.
+### The fix exists but wasn't run
 
----
+The GAS script already has a `reprocessAllRowsWithEmptyPayload()` function (line ~380) that was written specifically for this exact problem. It re-reads the raw message from col C of the Credentialing Events sheet, re-parses it with the fixed parser (which now has the balanced-brace fallback), updates col M (Payload JSON), and re-commits the event file to GitHub with the proper payload.
 
-## Complete Diagnosis
+This backfill was run once on May 16 (which fixed the May 15 events) but **hasn't been run since**, so all events after that date are still broken.
 
-Here's the full picture, Gary:
+### What needs to happen
 
-### What's happening
+1. **Run the backfill** — trigger `reprocessAllRowsWithEmptyPayload` on the GAS web app. This will re-parse all your May 17–25 events and re-commit them with proper payloads.
+2. **Rebuild the CV cache** — after the events are fixed, the `lineage-credentials` GitHub Action (which runs `build_cv_cache.py` every 6 hours) needs to run to regenerate `_cache/cv/gary-teh.json` with the corrected practice minutes.
 
-All 15 of your practice sessions are recorded in `lineage-credentials` repo. But only the first 3 (May 15) have the actual practice details (moves, music, minutes). The other 12 sessions (May 17, 18, 19, 24, 25) have `"payload": null` — meaning the GAS parser couldn't extract the `Payload JSON:` block from the raw message.
-
-### Why May 15 works but later ones don't
-
-The May 15 events were **backfilled** on May 16 after a parser bug was fixed. The backfill (`reprocessAllRowsWithEmptyPayload`) re-read the raw message from the Credentialing Events sheet and re-committed the event files with the correct payload. The events after May 15 were never backfilled.
-
-### The raw messages are in the Google Sheet
-
-The raw `[PRACTICE EVENT]` text (which contains the `Payload JSON:` block with your moves, music, and practice minutes) is stored in:
-- **Column G** of the **Telegram Chat Logs** tab (in the Telegram & Submissions workbook `1qbZZhf-...`)
-- **Column C** of the **Credentialing Events** tab (same workbook)
-
-### How to fix it
-
-The GAS has a built-in backfill function: `reprocessAllRowsWithEmptyPayload`. This re-reads the raw message from col C, re-runs the parser, and re-commits the event file with the correct payload.
-
-**To trigger it**, someone with access to the GAS project needs to either:
-
-1. **Open the Apps Script IDE** at `https://script.google.com/home/projects/1Dj3-m_ejxYJ4UQK2zNadnqNHJIvPQfj-VYvH9_Gnap6MYRmOJhK3B0VR/edit` and run:
-   ```javascript
-   reprocessAllRowsWithEmptyPayload({ force: true });
-   ```
-
-2. **Or visit this URL** in a browser (if the @HEAD deployment is accessible):
-   ```
-   https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload&force=1
-   ```
-
-After the backfill runs, the event files in `lineage-credentials` will be updated with the correct payloads. Then the next CV cache rebuild (every 6 hours via GitHub Actions) will pick up the new data and your credential profile will show all sessions with their correct practice minutes.
-
-### One more thing
-
-I also noticed that `[PRACTICE EVENT]` is **not** in Edgar's `trigger_immediate_processing` webhook trigger list. This means practice events are only processed by the 10-minute GAS cron, not instantly. This is fine for normal operation but means there's no immediate webhook to trigger the backfill from Edgar.
-
-Would you like me to open a PR to add `[PRACTICE EVENT]` to Edgar's immediate processing webhook triggers, so future practice sessions get processed in seconds instead of waiting for the cron?
+I can open a fix PR to document this and trigger the backfill. Would you like me to do that?
 
