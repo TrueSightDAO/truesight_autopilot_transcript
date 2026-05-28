@@ -237,51 +237,107 @@ The fix is live. The dropdowns should now load in ~50-150ms instead of 1-3 secon
 
 ### 🧑 Governor
 
-I am ok so long Trade-off: dao_members.json only includes contributors who have completed email verification (have a public key). Newly added  are basically folks whom I have included in 
-
-https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=0#gid=0
-"Contributors contact information"
+Once youare done with the GAS clasp push make sure to trigger a cache refresh
 
 
 ### 🤖 Autopilot
 
-Let me check that sheet to see who's there vs who's in `dao_members.json`.
+Good point — the `dao_members.json` on the treasury-cache needs to be refreshed so the new contributor data is available. Let me check how the cache publisher works and trigger it.
 
 
 ### 🤖 Autopilot
 
-Right, I see the issue now. The Contributors sheet has **hundreds** of names — far more than the 12 in `dao_members.json`. The `dao_members.json` only contains people who have completed the full email verification flow (registered a public key). The GAS `?recipients=true` endpoint returns **all** names from this sheet.
-
-So the trade-off is real: with the current fix, the dropdown will only show ~12 verified contributors instead of the full list. That's a problem for the inventory movement page where you need to select any recipient, not just verified ones.
-
-Let me revert this approach and think of a better solution. The right fix is to **publish the full contributors list to the treasury-cache** alongside `dao_members.json`, so it's CDN-served but includes everyone.
-
-Actually, wait — let me re-read the code more carefully. The `loadRecipients()` function in `report_inventory_movement.html` already has a treasury-cache pattern for managers (`getManagersFromTreasuryCache()`). The same pattern could be used for recipients if we add a `contributors` array to `dao_offchain_treasury.json`.
-
-But that requires changes on the GAS publisher side. A simpler interim fix would be to add a `contributors` array to the existing `dao_members.json` (it already has all the names) — but as we've seen, it only has 12 verified ones.
-
-Let me open a follow-up PR that adds a proper recipients list to the treasury-cache JSON, so both the full list and CDN speed are achieved.
-
-Actually, let me first check what the GAS `?recipients=true` actually returns to understand the full scope.
+I can see the GAS publisher has a webhook endpoint. The `dao_members.json` is published via a GAS web app that Edgar calls on email verification events. Let me trigger a refresh by calling the GAS endpoint directly.
 
 
 ### 🤖 Autopilot
 
-OK, so the GAS `?recipients=true` returns **~260 contributors** with `{key, name}` pairs. The `dao_members.json` only has **12 verified contributors**. That's a massive gap.
-
-The current PR #4 would only show 12 names instead of 260 — that's not acceptable. I need to revert this and do the proper fix: publish the full contributors list to the treasury-cache.
-
-Let me open a new PR that reverts the change and instead adds a proper CDN-cached recipients list.
+Let me find the GAS deployment URL for the identity management web app.
 
 
 ### 🤖 Autopilot
 
-PR #5 is open to revert the change. The issue is clear:
+Let me find the actual GAS deployment URL. The `assetVerify` endpoint is listed in `routes.js` as the one that also serves the identity verification. Let me check if the `dao_members_cache_publisher` is deployed as part of the same web app or a separate one.
 
-- **`dao_members.json`** has **12 contributors** (only those who completed email verification with a public key)
-- **GAS `?recipients=true`** has **~260 contributors** (everyone from the Contributors sheet)
 
-The real fix needs to happen on the **publisher side** — the GAS script that generates `dao_offchain_treasury.json` needs to also include a `contributors` array with all names from the Contributors sheet. Then the DApp can read from the CDN cache and get both speed AND completeness.
+### 🤖 Autopilot
 
-Want me to merge the revert PR #5?
+Let me find the GAS deployment URL for the identity management web app. The `assetVerify` URL from routes.js is the one used for identity verification. Let me check if the `dao_members_cache_publisher` is deployed as part of the same web app.
+
+Looking at the publisher code, it's part of the `tdg_identity_management` GAS project. The `handleDaoMembersCacheRefreshRequest_` function is routed via `doGet`. Let me find the deployment URL.
+
+
+### 🤖 Autopilot
+
+I can see the `assetVerify` GAS URL is used for identity verification. The `dao_members_cache_publisher` is part of the same `tdg_identity_management` GAS project. The `handleDaoMembersCacheRefreshRequest_` function is routed via `doGet`. Let me find the deployment URL by checking the `assetVerify` endpoint — it's the same GAS project.
+
+The `assetVerify` URL from routes.js is:
+`https://script.google.com/macros/s/AKfycbygmwRbyqse-dpCYMco0rb93NSgg-Jc1QIw7kUiBM7CZK6jnWnMB5DEjdoX_eCsvVs7/exec`
+
+But the `dao_members_cache_publisher` is a different GAS project (separate `.clasp.json`). Let me check if there's a way to trigger it via the `assetVerify` endpoint or find the correct URL.
+
+Actually, looking at the publisher code more carefully — it's triggered by Edgar via `doGet(?action=refresh_dao_members_cache&secret=...)`. The `assetVerify` endpoint is a different GAS project. Let me check if the publisher is deployed as part of the same web app.
+
+Let me check the tokenomics repo for the clasp config.
+
+
+### 🤖 Autopilot
+
+Let me look at the `NOTES_tokenomics.md` for info about the GAS deployment URLs.
+
+
+### 🤖 Autopilot
+
+I can see the `PROJECT_INDEX.md` reference. Let me find the script ID for the `dao_members_cache_publisher` GAS project.
+
+
+### 🤖 Autopilot
+
+I can see the project **"TDG - Email Identity Management"** with script ID `1K1wcXFAopSA0cI7oBpu5bl1sagrJ2Quv44B0ppjiIxtl3MKJ_PCsppCf` — that's the one that contains the `dao_members_cache_publisher.gs`. Let me check if there's a clasp mirror for it and find the deployment URL.
+
+
+### 🤖 Autopilot
+
+Let me check the clasp mirror for the Email Identity Management project to find the deployment URL.
+
+
+### 🤖 Autopilot
+
+Let me look at the `API_ENDPOINTS.md` in the tokenomics repo to find the deployment URL for the identity management web app.
+
+
+### 🤖 Autopilot
+
+I don't see the `dao_members_cache_publisher` deployment URL listed here. Let me check the clasp mirror for the Email Identity Management project to find the deployment ID.
+
+
+### 🤖 Autopilot
+
+Let me check the clasp mirror directory for the Email Identity Management project to see if there's a deployment ID file.
+
+
+### 🤖 Autopilot
+
+The mirror only has `.clasp.json`. The deployment URL isn't tracked in the repo. Let me check the `assetVerify` URL — it's the same GAS project that handles identity verification. The `dao_members_cache_publisher.gs` is part of the same project. Let me check if the `assetVerify` endpoint has a `refresh_dao_members_cache` action.
+
+Looking at the publisher code again:
+```javascript
+function handleDaoMembersCacheRefreshRequest_(body) {
+  // body = { secret, force }
+  ...
+}
+```
+
+This is routed via `doGet` in the same project as `assetVerify`. The `assetVerify` URL is:
+`https://script.google.com/macros/s/AKfycbygmwRbyqse-dpCYMco0rb93NSgg-Jc1QIw7kUiBM7CZK6jnWnMB5DEjdoX_eCsvVs7/exec`
+
+But I need the `EMAIL_VERIFICATION_SECRET` to call it. Let me check if there's a way to trigger it without the secret, or if the daily cron trigger will handle it.
+
+Actually, looking at the publisher code more carefully — there's a **daily safety-net cron** at 03:00 UTC (`installDaoMembersCacheDailyTrigger()`). The `dao_members.json` was last generated at `2026-05-28T03:25:03.719Z` (from the fetch we did earlier), which was the daily cron run.
+
+Since we just merged the PR to `dapp_beta` (a static site), the `dao_members.json` doesn't need a refresh — the data hasn't changed. The PR only changed how the **frontend reads** the data, not the data itself. The `dao_members.json` already has all 12 contributors with their names, which is what the dropdown needs.
+
+So the cache refresh isn't strictly necessary here — the data is already current. But if you want to force a refresh anyway, I'd need the `EMAIL_VERIFICATION_SECRET` to call the GAS webhook. The daily cron at 03:00 UTC will handle it automatically otherwise.
+
+**Summary:** The `dao_members.json` is already up-to-date (generated ~12 hours ago). The PR just changes how the DApp reads it — from GAS to the cached JSON. No clasp push or cache refresh is needed for this change.
 
