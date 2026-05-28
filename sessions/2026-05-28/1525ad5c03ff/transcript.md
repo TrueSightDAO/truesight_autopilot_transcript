@@ -10,45 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Here's what I found from the git history:
-
----
-
-## Analysis: Why the contributor/recipient lists are slow
-
-**These pages have never read the contributor/recipient lists from the GitHub JSON cache.** Here's the history:
-
-### report_contribution.html
-- **April 27, 2026** — Commit `5fb5422d` ("perf(dapp): cache-first signature verify") switched the **identity check** from GAS to `DaoMembersCache.findByPublicKey()` (the GitHub CDN JSON). This was a **huge speedup** for the "Verifying your digital signature..." step.
-- But the **contributor dropdown** (`loadContributors()`) has **always** called the GAS endpoint `?recipients=true`. It was never migrated to the JSON cache.
-
-### report_inventory_movement.html
-- Same story. The **identity check** uses `DaoMembersCache` (fast), but:
-  - **Managers** → tries treasury-cache first, falls back to GAS `?list=true`
-  - **Recipients** → **always** calls GAS `?recipients=true` (no cache at all)
-  - **All currencies** → tries treasury-cache, falls back to GAS
-
-### Why it feels slow now
-
-The **identity check** got fast (50-150ms via GitHub CDN), so the page renders quickly... but then you're staring at "Loading managers..." and "Loading recipients..." while the GAS endpoint cold-starts. The contrast makes it feel worse than before, even though the GAS call itself hasn't changed.
-
-The **real fix** would be to also publish the full recipient/contributor list to the treasury-cache JSON (like `dao_members.json` does for registered members), so the pages can pull it from GitHub's CDN instead of hitting GAS. But that requires changes on the GAS publisher side.
-
-A simpler frontend-only fix would be to **cache the GAS responses in localStorage** so subsequent page loads within the same session are instant. Want me to open a PR for that?
-
-
-### 🧑 Governor
-
-I think we should do have the real fix isnt it? But arent recipient/contributor list and dao_members.json the same set of people???
-
-
-### 🤖 Autopilot
-
-That's a great question. Let me check what data each source actually returns.
-
-
-### 🤖 Autopilot
-
 Now I can see the full picture clearly. Let me check what `dao_members.json` contains vs what the GAS `?recipients=true` returns.
 
 
@@ -340,4 +301,76 @@ Since we just merged the PR to `dapp_beta` (a static site), the `dao_members.jso
 So the cache refresh isn't strictly necessary here — the data is already current. But if you want to force a refresh anyway, I'd need the `EMAIL_VERIFICATION_SECRET` to call the GAS webhook. The daily cron at 03:00 UTC will handle it automatically otherwise.
 
 **Summary:** The `dao_members.json` is already up-to-date (generated ~12 hours ago). The PR just changes how the DApp reads it — from GAS to the cached JSON. No clasp push or cache refresh is needed for this change.
+
+
+### 🧑 Governor
+
+Seems to be fixed. Now https://beta.dapp.truesight.me/report_inventory_movement.html the notification number is being cut off by the outer borders of the notification icon
+
+
+### 🤖 Autopilot
+
+Let me check the notification badge styling on that page.
+
+
+### 🤖 Autopilot
+
+Now I see the issue. The notification badge is rendered by `tdg_balance.js` (which is included via `<script src="./tdg_balance.js"></script>`). Let me check that file for the badge styling.
+
+
+### 🤖 Autopilot
+
+I see — the `tdg_balance.js` renders a badge but it doesn't have a notification count. The notification badge must be coming from `menu.js`. Let me check that.
+
+
+### 🤖 Autopilot
+
+The notification badge comes from `js/notifications.js`. Let me check that.
+
+
+### 🤖 Autopilot
+
+Now I can see the issue clearly. The notification badge is styled in the injected CSS:
+
+```css
+#tsd-notif-badge { 
+  position: absolute; 
+  top: -4px; 
+  right: -4px; 
+  min-width: 18px; 
+  height: 18px; 
+  padding: 0 5px; 
+  border-radius: 9px; 
+  background: #d64545; 
+  color: #fff; 
+  font-size: 11px; 
+  font-weight: 700; 
+  line-height: 18px; 
+  text-align: center; 
+  box-sizing: border-box; 
+  display: none; 
+}
+```
+
+The badge has `height: 18px` and `line-height: 18px`, with `padding: 0 5px`. When the number is 2 digits (like "12"), the width is about 22px (5px left + ~12px text + 5px right) and the height is 18px. The `border-radius: 9px` makes it a pill shape. The `top: -4px; right: -4px` positions it outside the bell icon.
+
+The issue is likely that when the count is 3 digits (like "99+"), the badge gets wider but the `right: -4px` positioning combined with the parent button's `width: 40px` causes the badge to overflow the button's visible area and get clipped by the page border or the button's own border-radius.
+
+Let me open a fix PR.
+
+
+### 🤖 Autopilot
+
+PR #7 is open. Here's the summary:
+
+## PR #7 — Fix notification badge being cut off by page borders
+
+**Root cause:** The red notification badge is positioned at `top: -4px; right: -4px` relative to the bell button (`width: 40px; height: 40px; border-radius: 50%`). When the count is 2+ digits, the badge extends beyond the button's circular boundary and gets clipped by the page edge or the button's own `border-radius: 50%`.
+
+**Fix in `js/notifications.js`:**
+1. Moved badge inward: `right: -4px` → `right: -2px`, `top: -4px` → `top: -3px`
+2. Added `overflow: visible` to the parent button so the badge isn't clipped by the button's border-radius
+3. Added `z-index: 1` to the badge so it renders above any overlapping page content
+
+Want me to merge it?
 
