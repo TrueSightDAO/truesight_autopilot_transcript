@@ -10,36 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `lineage-credentials` repo might be private. Let me check the capoeira practice page to understand how practice events are submitted and stored.
-
-
-### 🤖 Autopilot
-
-Now let me look at the capoeira practice page to understand how practice events are submitted and where they go.
-
-
-### 🤖 Autopilot
-
-Let me look at the capoeira repo directly for the practice event submission code.
-
-
-### 🤖 Autopilot
-
-Let me check the capoeira repo for the practice event submission flow.
-
-
-### 🤖 Autopilot
-
-Now I understand the full architecture. Let me check the `lineage-credentials` repo to see if it exists and what data is cached.
-
-
-### 🤖 Autopilot
-
-I can see `lineage-credentials` is a public repo. Let me look at the cache data for your profile.
-
-
-### 🤖 Autopilot
-
 Now let me check the actual CV data for your profile (gary-teh) to see what practice events are recorded.
 
 
@@ -399,4 +369,50 @@ This backfill was run once on May 16 (which fixed the May 15 events) but **hasn'
 2. **Rebuild the CV cache** — after the events are fixed, the `lineage-credentials` GitHub Action (which runs `build_cv_cache.py` every 6 hours) needs to run to regenerate `_cache/cv/gary-teh.json` with the corrected practice minutes.
 
 I can open a fix PR to document this and trigger the backfill. Would you like me to do that?
+
+
+### 🧑 Governor
+
+Go for it
+
+
+### 🤖 Autopilot
+
+Let me try a different approach — I'll open the fix PR directly on the lineage-credentials repo since that's where the data needs to be fixed.
+
+
+### 🤖 Autopilot
+
+The `lineage-credentials` repo isn't in the allowed list for `open_fix_pr`. Let me open the fix PR on the `tokenomics` repo instead, since that's where the GAS code lives that needs to be triggered.
+
+
+### 🤖 Autopilot
+
+The PR is open at **https://github.com/TrueSightDAO/tokenomics/pull/315**.
+
+Here's a summary of what I found and the fix needed:
+
+---
+
+## What's happening
+
+The pipeline is: **Browser → Edgar → Google Sheet → GAS processor → GitHub (lineage-credentials) → CV cache → credential page**
+
+Your practice sessions from May 17–25 **are** in the raw data (15 event files exist in the repo), but **12 of them** have `payload: null` because the GAS parser failed to extract the Payload JSON when they were first processed.
+
+The **3 May 15 events** were fixed by a backfill on May 16 (they show `"reprocessed": true`), but the backfill was never run again for the later events.
+
+## The fix
+
+The GAS script already has a `reprocessAllRowsWithEmptyPayload()` function that re-reads the raw messages, re-parses them with the fixed parser, and re-commits the event files with proper payloads. It just needs to be triggered.
+
+**To trigger it**, someone with access to the GAS project needs to visit this URL in a browser:
+
+```
+https://script.google.com/macros/s/AKfycbzYmzg-mmKDPm6BXzvBZkXWgEy383Fe97TjnFTQHz_e/exec?action=reprocessAllRowsWithEmptyPayload
+```
+
+After that runs, the `lineage-credentials` GitHub Action (which rebuilds the CV cache every 6 hours) will pick up the corrected data, and your credential page will show all sessions with proper practice minutes.
+
+I've documented everything in **PR #315** on the `tokenomics` repo.
 
