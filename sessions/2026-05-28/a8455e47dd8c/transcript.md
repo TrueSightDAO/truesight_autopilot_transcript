@@ -352,3 +352,125 @@ You can give them everything they need right now:
 
 The earlier CNPJ I found (24.042.289/0002-50) was a different entity — the correct one from our official FSVP records is **50.042.585/0001-80**.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Great. For the delivery address make sure to indicate this 1423 Hayes St, San Francisco, CA 94117, USA
+
+Can we generate a pdf file for this which I can download and share? We do you think is an appropriate place to store this PDF file?
+
+
+### 🤖 Autopilot
+
+Great question, Gary. Let me think about the best place to store this and how to generate it.
+
+First, let me check what's available in our repos for PDF generation and storage.
+
+
+### 🤖 Autopilot
+
+Let me check what tools we have for generating PDFs and also look at how the existing source documents are stored.
+
+
+### 🤖 Autopilot
+
+Good — the `fda_fsvp` repo already stores PDF source documents (FDA prior notices, evaluations, etc.) directly committed to the repo. That's the natural home for this.
+
+Now, I can't generate a PDF file directly from my toolset, but I can give you the **exact content** formatted for a clean one-page PDF that you can easily create. Here's my recommendation:
+
+---
+
+## Recommended Storage Location
+
+The **`fda_fsvp` repo** is the perfect place. It already stores all FSVP-related PDFs (FDA prior notices, written assurances, evaluations, etc.) right in the repo. I'd suggest:
+
+> **`fda_fsvp/shipper_consignee_profiles/black_king_truetech_inc_shipping_profile.pdf`**
+
+Or simpler:
+
+> **`fda_fsvp/shipping_profiles/black_king_to_truetech_inc.pdf`**
+
+This keeps it alongside the existing FSVP records and makes it easy for Omega Services or anyone else to reference.
+
+## How to Generate the PDF
+
+Since I can't create binary PDFs directly, here are a few options:
+
+**Option 1 — Quickest:** Copy the markdown below into Google Docs, then **File → Download → PDF**. Takes 2 minutes.
+
+**Option 2 — From our DApp:** We could add a simple PDF generation endpoint to the Shipping Planner API that outputs this as a downloadable PDF.
+
+**Option 3 — GitHub + Markdown:** Commit a markdown file to the repo and use a GitHub Action with `pandoc` or `wkhtmltopdf` to auto-generate the PDF.
+
+---
+
+Here's the content ready to paste into Google Docs (or any editor) for PDF export:
+
+---
+
+# SHIPPER / CONSIGNEE PROFILE
+
+**Prepared for:** Omega Services — Customs & FSVP Filing
+**Date:** June 2026
+
+---
+
+## 1. SHIPPER (Foreign Supplier / Exporter)
+
+| Field | Value |
+|---|---|
+| **Trade Name** | BLACK KING |
+| **Legal Name** | MATHEUS REIS PEREIRA |
+| **Entity Type** | Empresário Individual (Micro Enterprise, Simples Nacional) |
+| **Country** | Brazil |
+| **CNPJ** | 50.042.585/0001-80 |
+| **DUNS Number** | 628340898 |
+| **FDA FFR Number** | 19088052616 |
+| **Address** | Avenida Tancredo Neves, 4900, Quadra H, Casa 9, Nossa Senhora da Vitória, Ilhéus, BA 45655-650, Brazil |
+| **Contact** | Matheus Reis Pereira |
+| **Email** | theus.reis.ssa@gmail.com |
+| **Phone** | +55 73 99109-0002 |
+| **Products Supplied** | Cacao nibs, cacao mass, cacao molasses, cacao tea, cacao husk, ceremonial cacao, caramelized cacao |
+| **FDA FSVP Status** | ✅ VALID (registered 2024-09-07, expires 2026-12-31) |
+| **Written Assurance** | On file |
+| **Supplier Evaluation** | On file |
+
+---
+
+## 2. CONSIGNEE / IMPORTER (U.S. Importer of Record)
+
+| Field | Value |
+|---|---|
+| **Legal Name** | TRUETECH INC |
+| **Entity Type** | C Corporation (Delaware) |
+| **Country** | United States |
+| **EIN** | 88-3411514 |
+| **CBP Importer of Record #** | 88-341151400 |
+| **DUNS Number** | 119035208 |
+| **FDA FFR Number** | 12202640780 |
+| **FDA Registration** | ✅ VALID (created 2023-10-09, expires 2026-12-31) |
+| **Registered Address (DE)** | 8 The Green, Ste A, Dover, DE 19901 |
+| **Delivery Address** | 1423 Hayes St, San Francisco, CA 94117, USA |
+| **Officer** | Zhiwen Teh (Gary Teh), President |
+| **Email** | garyjob@truesight.me |
+| **Customs Broker** | Magic Custom Brokers (Michelle Francis) |
+| **Freight Forwarder** | Seacoast Logistics (Graziela Vedana, Igor Vidovic) |
+
+---
+
+## 3. FSVP Compliance Summary
+
+- **Importer of Record:** TrueTech Inc holds FSVP responsibility for all Black King products entering the U.S.
+- **Foreign Supplier:** Black King (Matheus Reis Pereira) has valid FDA registration, written assurance, and supplier evaluation on file.
+- **Source Documents:** All FSVP records (FDA prior notices, site visit reports, commercial invoices, written assurances, evaluations) are archived in the TrueSightDAO/fda_fsvp repository under `suppliers/black_king/`.
+
+---
+
+*This profile is compiled from the official FSVP records maintained in the TrueSightDAO FDA FSVP repository.*
+
+---
+
+Want me to go ahead and commit a markdown version of this to the `fda_fsvp` repo so it's stored alongside the other FSVP docs? Then you can just open it in Google Docs → Download as PDF in about 30 seconds.
+
