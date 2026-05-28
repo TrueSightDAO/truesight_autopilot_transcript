@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I can see the full picture clearly. Let me check what `dao_members.json` contains vs what the GAS `?recipients=true` returns.
-
-
-### 🤖 Autopilot
-
-Now let me check what the GAS endpoint returns for `?recipients=true` vs what `dao_members.json` contains. Let me look at the treasury-cache repo to see the schema.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Here's the answer:
 
 ---
@@ -373,4 +363,14 @@ PR #7 is open. Here's the summary:
 3. Added `z-index: 1` to the badge so it renders above any overlapping page content
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+merge it
+
+
+### 🤖 Autopilot
+
+Merged! Commit `cf1957ef` on `dapp_beta`. The notification badge should now be fully visible without getting cut off by the page borders. GitHub Pages will auto-deploy the change.
 
