@@ -87,3 +87,25 @@ The unauthenticated fetch can read but not write. The `merge_pr` tool has the PA
 
 Gary, could you please **mark PR #33 as ready for review** on GitHub? You can do this on the PR page at https://github.com/TrueSightDAO/capoeira/pull/33 — there should be a "Ready for review" button. Once it's out of draft status, I'll merge it immediately.
 
+
+### 🧑 Governor
+
+I marked it as ready
+
+
+### 🤖 Autopilot
+
+Great, let me merge it now!
+
+
+### 🤖 Autopilot
+
+**PR #33 merged!** 🚀
+
+- **Repo:** `TrueSightDAO/capoeira`
+- **Title:** Swap order: move Generate Session above Practice History
+- **Merge SHA:** `62f7069da0e5fa9c0a898846af4ed37daaff635b`
+- **Method:** Squash
+
+The Generate Session section will now appear above Practice History on the practice page — returning users will see the call-to-action first without scrolling past past sessions.
+
