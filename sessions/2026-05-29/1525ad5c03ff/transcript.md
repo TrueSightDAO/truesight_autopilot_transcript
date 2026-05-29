@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Found it. The butterfly-effect-club admin panel (`index.html`) is the reference implementation for `[CREDENTIALING ATTESTATION EVENT]` — it generates attestee keypairs, builds the full attestation payload, and submits via Edgar. Let me open a PR to add this to the guide.
-
-
-### 🤖 Autopilot
-
 **PR #54** is open — it adds the butterfly-effect-club admin console as a reference implementation for `[CREDENTIALING ATTESTATION EVENT]`, alongside the capoeira platform's `[PRACTICE EVENT]`.
 
 Want me to merge it?
@@ -128,4 +123,16 @@ You're right — it's the same pattern repeated. Let me open a PR that adds the 
 **PR #10** is open on `dapp_beta` — it adds the printable receipt pattern to all 11 event-submitting pages that were missing it. Same proven pattern from `report_contribution.html` and `report_inventory_movement.html`: green-bordered summary, transaction hash display, `@media print` CSS, fade-in animation.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+merge it so I can experience it
+
+
+### 🤖 Autopilot
+
+Merged and deployed. All 11 event-submitting pages now have the printable receipt pattern. You can test any of them on https://beta.dapp.truesight.me/ — submit an event and you'll see the green summary box with all the details, ready to print (Ctrl+P).
 
