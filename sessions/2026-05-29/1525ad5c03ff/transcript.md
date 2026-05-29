@@ -334,61 +334,26 @@ Would you like me to mark it ready for review or merge it?
 
 ### 🧑 Governor
 
-I think we should probably use pre in the all various dapp modules isnt it
+Also make sure to do your code changes in dapp_beta instead
 
 
 ### 🤖 Autopilot
 
-You're right — this isn't just a `report_contribution.html` issue. Any DApp page that renders user-submitted descriptions or formatted text should preserve the original formatting. Let me check what other DApp pages have similar summary/display sections.
+You're right — the workflow is to land changes in `dapp_beta` first, then promote to `dapp_prod`. Let me close that PR and open one in `dapp_beta` instead.
 
 
 ### 🤖 Autopilot
 
-Good — I can see the pattern. Let me also check the other DApp pages that have summary sections.
+Good, `dapp_beta` has the same code. Let me close the `dapp_prod` PR and open one in `dapp_beta` instead.
 
 
 ### 🤖 Autopilot
 
-Now I have a clear picture of all the DApp pages. Let me update the PR to cover all the relevant pages. The key insight is:
+Done. The `dapp_prod` PR was the wrong target — I've now opened **PR #11** on `dapp_beta` instead.
 
-1. **`report_contribution.html`** — has a `#contributionSummary` with a `#summaryDescription` that uses `.textContent` — **needs `white-space: pre-wrap`**
-2. **`report_inventory_movement.html`** — has a `#movementSummary` but no free-text description field (uses structured fields like manager, recipient, item, QR code, quantity) — **no change needed**
-3. **`report_capital_injection.html`** — has a description field but **no summary section** displayed after submission (it just shows the output message) — **no change needed**
+**PR URL:** https://github.com/TrueSightDAO/dapp_beta/pull/11
 
-So the fix is really just for `report_contribution.html`. Let me update the PR to be more comprehensive — adding `white-space: pre-wrap` to all `.summary-value` elements across all DApp pages that have summary sections, so any future structured text renders correctly.
+The fix adds `white-space: pre-wrap;` to the `.summary-value` CSS in the contribution summary, so your structured descriptions with line breaks and bullet points will render exactly as you typed them. Once merged to `dapp_beta`, it can be promoted to `dapp_prod` via `gh repo sync`.
 
-Actually, looking more carefully, the existing PR #2 on `dapp_prod` already targets the right thing. Let me update it to be more comprehensive — applying `white-space: pre-wrap` to all `.summary-value` elements globally in the CSS, not just the description.
-
-Let me update the PR description to be more comprehensive.
-
-
-### 🤖 Autopilot
-
-I can see the PR already has `white-space: pre-wrap;` on `.summary-value` in the contribution summary section. That's the right fix for `report_contribution.html`.
-
-Now, you mentioned using `<pre>` across **all** DApp modules. Let me think about which pages actually render user-submitted descriptions that need formatting preserved:
-
-1. **`report_contribution.html`** — ✅ Already fixed with `white-space: pre-wrap` in PR #2
-2. **`report_inventory_movement.html`** — Has a `#movementSummary` but no free-text description field (structured fields only) — **no change needed**
-3. **`report_capital_injection.html`** — Has a description textarea but **no summary section** displayed after submission — **no change needed**
-4. **`verify_request.html`** — Let me check this one
-
-
-### 🤖 Autopilot
-
-Good — `verify_request.html` already uses `<pre>` blocks in its error messages and the `escapeHtml` function converts `\n` to `<br>`, so that's fine.
-
-So the only page that needs the fix is `report_contribution.html`, which already has `white-space: pre-wrap` in PR #2. 
-
-However, you mentioned using `<pre>` specifically. The difference is:
-- **`white-space: pre-wrap`** — preserves line breaks and whitespace, but text will still wrap at the container width (better UX for long descriptions)
-- **`<pre>`** — preserves everything including fixed-width font, but can overflow horizontally
-
-`white-space: pre-wrap` is generally the better choice for a summary section since it keeps the formatting without forcing a monospace font or horizontal scroll. But if you specifically want `<pre>`, I can update the PR.
-
-Would you like me to:
-1. **Keep `white-space: pre-wrap`** (already in PR #2) — preserves line breaks, wraps text, normal font
-2. **Switch to `<pre>`** — monospace font, preserves all whitespace exactly as typed
-
-Either way, the fix is already in place on `report_contribution.html`. Want me to merge PR #2?
+Would you like me to mark it ready for review or merge it?
 
