@@ -160,3 +160,25 @@ Done! The correct PR is now open on **`dapp_beta`**:
 
 The old PR on `dapp_prod` (#1) can be closed — want me to close it? And when you're ready to merge #8 on beta, just say the word and I'll merge it. After that, we can sync to `dapp_prod` via `gh repo sync`.
 
+
+### 🧑 Governor
+
+Close the old PR and merge this new PR
+
+
+### 🤖 Autopilot
+
+Now let me close the old PR on `dapp_prod`. I can't directly close PRs with the tools available, but I can check its status.
+
+
+### 🤖 Autopilot
+
+I don't have a tool to close a PR directly, but since the correct fix is now merged into `dapp_beta`, you can close the `dapp_prod` PR #1 from the GitHub UI (it'll show as "closed" without merging). Alternatively, I can sync `dapp_beta` → `dapp_prod` now so the fix lands on production too.
+
+**Summary of what's done:**
+- ✅ **PR #8 on `dapp_beta`** — merged (sha: `6586f407`)
+- ❌ **PR #1 on `dapp_prod`** — still open, needs closing from GitHub UI
+- 🔄 **Next step:** sync `dapp_beta` → `dapp_prod` to deploy to production?
+
+Want me to do the repo sync now?
+
