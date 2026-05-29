@@ -68,5 +68,12 @@
     "summary": "Improve report_contribution.html post-submission UX: show transaction hash and full contribution summary for printouts\n\nGary Teh (governor) requested two improvements:\n\n1. **Transaction hash displayed",
     "action": "merge_pr",
     "created_at": "2026-05-29T13:25:22Z"
+  },
+  {
+    "title": "Merge PR #9 on dapp_beta",
+    "qr_code": "",
+    "summary": "Improve report_inventory_movement.html post-submission UX: show transaction hash and full inventory movement summary for printouts\n\nSame feature as recently implemented on report_contribution.html (PR",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T13:28:12Z"
   }
 ]
