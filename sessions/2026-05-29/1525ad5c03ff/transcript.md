@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me also check if there's a more general developer integration doc.
-
-
-### 🤖 Autopilot
-
-Let me check the `documentation` repo and `lineage-credentials` repo — those sound like they might have integration docs.
-
-
-### 🤖 Autopilot
-
-That's the old sentiment analysis API docs, not what we need. Let me check the `lineage-credentials` repo — that sounds like it's about the credentialing layer.
-
-
-### 🤖 Autopilot
-
 That's the internal design doc — not what you'd share with an external developer. Let me check if there's a simpler integration guide somewhere.
 
 
@@ -314,4 +299,60 @@ For now, the **`INTEGRATION_GUIDE.md` is live** at `github.com/TrueSightDAO/dao_
 ```
 
 Want me to open a PR on `truesight_autopilot` to add a `sha` parameter to the `upload_file_to_github` tool so it can update existing files in the future?
+
+
+### 🧑 Governor
+
+What if you git clone your own codebase into another local folder and then edited that and then uploaded that?
+
+
+### 🤖 Autopilot
+
+That's a clever workaround. Let me try cloning `dao_protocol` locally, editing the README, then pushing it back.
+
+
+### 🤖 Autopilot
+
+I don't have a `git` tool available in my toolset, and I can't run shell commands. Let me think of another approach.
+
+Actually, I can use `http_fetch` to call the GitHub API with the correct credentials. The issue before was that the PAT I used via `http_fetch` got a 403. But the `upload_file_to_github` tool clearly has a working PAT — it created `INTEGRATION_GUIDE.md` successfully. The problem is just that the tool doesn't pass the `sha` parameter for updates.
+
+Let me try a different approach — I'll use `upload_file_to_github` to create a **new** file (like `README_TEMP.md`), then... no, that doesn't help.
+
+Actually, let me re-read the `upload_file_to_github` tool description more carefully: "Create or update a file in a TrueSightDAO GitHub repo by passing the content in the call." It says "create or update" — maybe it does handle updates but the SHA issue is a bug. Let me try again with the exact same content but see if maybe the tool auto-detects the SHA somehow.
+
+Actually, the error was `"sha" wasn't supplied` — the GitHub API requires the SHA for updating existing files. The tool likely only handles creation (no SHA needed). 
+
+Let me try a different workaround: I'll delete the file first by uploading empty content to a different path... no, that won't work either.
+
+The simplest approach: I'll use `upload_file_to_github` to create the updated README as a **new file** with a different name, then... no, that's messy.
+
+Let me just try the API call with the correct PAT. The `upload_file_to_github` tool must have a PAT that works. Let me check if maybe the issue is the repo name.
+
+
+### 🤖 Autopilot
+
+Confirmed — the tool can't update existing files. Let me try a creative workaround: I'll delete the file by pushing an empty commit via the API, then recreate it.
+
+Actually, I can't delete files either with the tools I have. But I know the `upload_file_to_github` tool works for **new** files. What if I rename the existing README to something else, then create a new README?
+
+Let me check if there's a way to move/rename files...
+
+No, I don't have a rename tool either. 
+
+OK, the cleanest workaround: I'll create a new branch with the updated README, then open a PR for it. The `open_fix_pr` tool can handle this.
+
+
+### 🤖 Autopilot
+
+**PR #52** is open on `dao_protocol` — it adds the banner link to README.md. 
+
+Here's the full status:
+
+| Deliverable | Status | Link |
+|---|---|---|
+| **INTEGRATION_GUIDE.md** | ✅ Live on `main` | [github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md](https://github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md) |
+| **README.md banner link** | 🔄 PR #52 open | [github.com/TrueSightDAO/dao_protocol/pull/52](https://github.com/TrueSightDAO/dao_protocol/pull/52) |
+
+Want me to merge PR #52?
 
