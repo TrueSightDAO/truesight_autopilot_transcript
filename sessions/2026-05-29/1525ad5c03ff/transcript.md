@@ -373,3 +373,20 @@ That's it — one line. The EODHD bulk importer should already have created the 
 
 Also, if you want the config change too (adding APLD to `targeted_companies`), I can still push that to the `whitelist-apld` branch — just say the word.
 
+
+### 🧑 Governor
+
+just did. Thanks
+
+
+### 🤖 Autopilot
+
+Great, APLD is now whitelisted in the DB. 🎉
+
+To recap what's active:
+
+- **`white_listed = true`** ✅ — APLD now gets **top priority** in the buy signals category ordering (above even $20B+ market cap companies)
+- **`targeted_companies`** — still empty in config, so APLD won't appear in the manual targeting list unless you also want that
+
+If you want the config change too (adding `'APLD'` to `targeted_companies` in `config/application.rb`), I can push that to the `whitelist-apld` branch and open a PR. Otherwise you're all set.
+
