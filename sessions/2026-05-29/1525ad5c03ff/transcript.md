@@ -356,3 +356,48 @@ Here's the full status:
 
 Want me to merge PR #52?
 
+
+### 🧑 Governor
+
+Feels like Credentialing & Identity section is missing an event that was submitted by the capoeira??
+
+
+### 🤖 Autopilot
+
+Good catch — the capoeira platform submits credentialing events too. Let me check what events the capoeira platform uses.
+
+
+### 🤖 Autopilot
+
+I see it references `practice-event-submit.js`. Let me check that file — it likely contains the event type used for capoeira practice submissions.
+
+
+### 🤖 Autopilot
+
+There it is — `[PRACTICE EVENT]`. That's the missing event. Let me update the INTEGRATION_GUIDE.md to include it.
+
+
+### 🤖 Autopilot
+
+Now I need to add `[PRACTICE EVENT]` to the Credentialing & Identity section. Let me update the guide.
+
+
+### 🤖 Autopilot
+
+Same issue — can't update existing files. Let me open a PR for this instead.
+
+
+### 🤖 Autopilot
+
+**PR #53** is open — it adds `[PRACTICE EVENT]` to the guide in all the right places.
+
+Here's the full status:
+
+| Deliverable | Status | Link |
+|---|---|---|
+| **INTEGRATION_GUIDE.md** (initial) | ✅ Live on `main` | [github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md](https://github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md) |
+| **README.md banner link** | 🔄 PR #52 open | [github.com/TrueSightDAO/dao_protocol/pull/52](https://github.com/TrueSightDAO/dao_protocol/pull/52) |
+| **[PRACTICE EVENT] addition** | 🔄 PR #53 open | [github.com/TrueSightDAO/dao_protocol/pull/53](https://github.com/TrueSightDAO/dao_protocol/pull/53) |
+
+Want me to merge either or both of these PRs?
+
