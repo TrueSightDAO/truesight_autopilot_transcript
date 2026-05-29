@@ -335,3 +335,27 @@ Both merged. Here's the final state:
 
 The guide now covers **26 event types** across 7 categories, with the capoeira `[PRACTICE EVENT]` properly documented in the Credentialing & Identity section alongside the anonymous keypair flow used by `capoeira.agroverse.shop`.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+I am thinking [CREDENTIALING ATTESTATION EVENT] should perhaps also include example to the butterfly-effect-club administration panel as the capoeira?
+
+
+### 🤖 Autopilot
+
+Good thinking. Let me check what the butterfly-effect-club admin panel looks like for credentialing attestation events.
+
+
+### 🤖 Autopilot
+
+Found it. The butterfly-effect-club admin panel (`index.html`) is the reference implementation for `[CREDENTIALING ATTESTATION EVENT]` — it generates attestee keypairs, builds the full attestation payload, and submits via Edgar. Let me open a PR to add this to the guide.
+
+
+### 🤖 Autopilot
+
+**PR #54** is open — it adds the butterfly-effect-club admin console as a reference implementation for `[CREDENTIALING ATTESTATION EVENT]`, alongside the capoeira platform's `[PRACTICE EVENT]`.
+
+Want me to merge it?
+
