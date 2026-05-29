@@ -10,193 +10,6 @@
 
 ### 🤖 Autopilot
 
-👋 **New topic detected!** Before we start, pick my role:
-
-**1.** Content Marketing Researcher — market analysis, SEO, content strategy
-**2.** Event Coordinator — plan DAO events and logistics
-**3.** SRE / DevOps Engineer — fix bugs, deploy code, monitor infra
-**4.** Retailer Outreach Coordinator — partner outreach, onboarding, followups
-**5.** Logistics Analyst — import/export, supply chain, freight
-**6.** Inventory Manager — QR codes, stock levels, inventory movements
-**7.** General DAO Assistant — everything (all tools, no specialisation)
-
-Reply with a number (1-7) or role name. I'll remember this for this topic.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-I was thinking for this view 
-
-https://dapp.truesight.me/report_contribution.html
-
-The signed request is sent to the Edgar after user clicks on button. 
-
-Right now I am helping submit on behalf of contributors because they tend to forget
-
-I also started printed the page and then sharing the print out to the contributors whom I submitted on behalf for
-
-I’m thinking in the printout the full details of the contribution should be visible. Also the transaction hash I’m thinking for the transaction hash perhaps have it displayed under the button what are your thoughts?
-
-
-### 🤖 Autopilot
-
-Let me look at the current state of that page to understand what we're working with.
-
-
-### 🤖 Autopilot
-
-Great, I've read the full page. Let me also check if there's a related Edgar endpoint or any other context files that might help.
-
-
-### 🤖 Autopilot
-
-Now I have a thorough understanding of the page. Let me give you my thoughts, Gary.
-
----
-
-## My Thoughts on `report_contribution.html`
-
-Great ideas. Let me break down what you're asking about:
-
-### 1. Transaction hash displayed under the button
-
-**Yes, this is a good idea.** Currently, after submission, the user sees a success message with a link to the Telegram chat logs, but the actual signed request hash (`requestHash`) is only embedded inside the `shareText` blob that gets copied/shared. It's not surfaced visibly on the page itself.
-
-**What I'd suggest:**
-- After Edgar returns a successful response (which includes the transaction hash / request hash), display it prominently **below the submit button** in a clean info box, e.g.:
-
-```
-✅ Report sent to Edgar successfully.
-
-Transaction Hash: 0x...abc123
-View: https://truesight.me/submissions/raw-telegram-chatlogs
-```
-
-- This way, when you **print the page** (Ctrl+P), the hash is visible in the printout.
-- The hash is already computed client-side (`requestHash`) before submission — so even if Edgar is offline and the report goes via clipboard/WhatsApp, we can still show it.
-
-### 2. Full contribution details visible in the printout
-
-**Agreed.** Currently the printout shows whatever is on screen, but the key details (contributors, type, amount, description, TDG issued, file location) are spread across form fields and info boxes. Some of those fields collapse or hide after submission.
-
-**What I'd suggest:**
-- After successful submission, render a **"Contribution Summary" card** below the button that consolidates:
-  - **Contributor(s):** name list
-  - **Type:** Time (X hours Y minutes) or USD ($X)
-  - **Description:** full text
-  - **TDG Issued:** per contributor
-  - **Transaction Hash:** (as above)
-  - **File Location:** (clickable link if uploaded)
-  - **Timestamp:** submission time
-
-This summary card would be **print-friendly** (clean white background, no hidden elements, no interactive controls) so when you print the page, the contributor gets a complete record.
-
-### 3. When you submit on behalf of others
-
-Since you're selecting multiple contributors (including yourself or others), the summary card would show **all** contributors and their respective TDG amounts — making it a single printout that covers everyone in that batch.
-
----
-
-**Would you like me to open a PR with these changes?** I'd:
-
-1. After successful Edgar submission, display a **"Contribution Summary"** section below the button showing all details + transaction hash.
-2. Make the summary **print-friendly** (visible in printouts).
-3. Show the transaction hash (`requestHash`) in a dedicated field under the button even when Edgar is offline (clipboard mode).
-
-Just say the word and I'll open a draft PR on `dapp_prod`.
-
-
-### 🧑 Governor
-
-Yes, go for it
-
-
-### 🤖 Autopilot
-
-Let me open a fix PR with these changes.
-
-
-### 🤖 Autopilot
-
-The PR is open! Here's a summary of what it does:
-
-**PR #1 — `dapp_prod`** → https://github.com/TrueSightDAO/dapp_prod/pull/1
-
-### Changes made:
-
-1. **Transaction hash under the button** — After submission, the `requestHash` (signed request ID) is now displayed in a dedicated field below the submit button, both in online (Edgar) and offline (clipboard/share) flows.
-
-2. **Contribution Summary card** — After successful submission, a consolidated summary card appears below the button showing:
-   - ✅ **Contributor(s)** — full name list
-   - ✅ **Type** — Time (X hours Y minutes) or USD ($X)
-   - ✅ **Description** — full text
-   - ✅ **TDG Issued** — per contributor
-   - ✅ **Transaction Hash** — clickable/copyable
-   - ✅ **File Location** — clickable link if uploaded
-   - ✅ **Timestamp** — submission time
-
-3. **Print-friendly** — The summary card uses clean, non-interactive styling that renders well when you print the page (Ctrl+P), so the printout you share with contributors has all the details visible.
-
-Want me to merge it, or would you like to review it first?
-
-
-### 🧑 Governor
-
-The PR should have been done on that dapp_beta instead
-
-
-### 🤖 Autopilot
-
-You're right — changes should land in `dapp_beta` first, then get synced to `dapp_prod`. Let me close that PR and open the right one.
-
-
-### 🤖 Autopilot
-
-Done! The correct PR is now open on **`dapp_beta`**:
-
-**PR #8 — `dapp_beta`** → https://github.com/TrueSightDAO/dapp_beta/pull/8
-
-The old PR on `dapp_prod` (#1) can be closed — want me to close it? And when you're ready to merge #8 on beta, just say the word and I'll merge it. After that, we can sync to `dapp_prod` via `gh repo sync`.
-
-
-### 🧑 Governor
-
-Close the old PR and merge this new PR
-
-
-### 🤖 Autopilot
-
-Now let me close the old PR on `dapp_prod`. I can't directly close PRs with the tools available, but I can check its status.
-
-
-### 🤖 Autopilot
-
-I don't have a tool to close a PR directly, but since the correct fix is now merged into `dapp_beta`, you can close the `dapp_prod` PR #1 from the GitHub UI (it'll show as "closed" without merging). Alternatively, I can sync `dapp_beta` → `dapp_prod` now so the fix lands on production too.
-
-**Summary of what's done:**
-- ✅ **PR #8 on `dapp_beta`** — merged (sha: `6586f407`)
-- ❌ **PR #1 on `dapp_prod`** — still open, needs closing from GitHub UI
-- 🔄 **Next step:** sync `dapp_beta` → `dapp_prod` to deploy to production?
-
-Want me to do the repo sync now?
-
-
-### 🧑 Governor
-
-Can we implement similar feature for this as well?
-
-https://dapp.truesight.me/report_inventory_movement.html
-
-
-### 🤖 Autopilot
-
-Let me read that page first.
-
-
-### 🤖 Autopilot
-
 Now I have a clear picture of both pages. Yes, I can implement the same feature for `report_inventory_movement.html`. The structure is very similar — it already computes a `requestHash` and builds a `shareText`, but doesn't display the hash or a summary card after submission.
 
 Let me open the PR.
@@ -434,4 +247,38 @@ Let me summarize what I've found for you:
 - **Links to reference implementations** — the `dao_client` Python package, the DApp HTML pages
 
 Want me to create this as a PR to the `dao_protocol` repo (or wherever you'd like it to live)?
+
+
+### 🧑 Governor
+
+Do you think this repo is the best place for it?
+
+
+### 🤖 Autopilot
+
+Good question. Let me think about where it makes most sense.
+
+The `dao_protocol` repo currently holds the `dao_client` README — it's about the Python client library. That's a bit narrow for a general integration guide.
+
+The best candidates:
+
+1. **`dao_protocol`** — already has the client docs, but the name implies protocol specs, not developer onboarding. Could work if we rename the scope.
+
+2. **`documentation`** — currently has the old sentiment analysis API docs. It's the most natural "docs for external developers" repo, but it's been neglected.
+
+3. **`agentic_ai_context`** — has all the internal context docs. Not ideal for external devs since it's full of internal workflows.
+
+4. **A new repo** like `developer-docs` or `integration-guides` — clean slate, but another repo to manage.
+
+5. **`truesight_me` / `truesight_me_prod`** — the public-facing site. Could live at `truesight.me/docs/integration.html` or similar.
+
+I think **`documentation`** is actually the best home — it's already public, already described as "Documentation for our engine's API", and it's where an external developer would naturally look. We'd just need to:
+
+- Clean up the old sentiment analysis API docs (or keep them as a section)
+- Add a new `INTEGRATION_GUIDE.md` at the root
+- Keep it focused: what a developer needs to integrate with the DAO's credentialing/signature layer
+
+Alternatively, if you want it on the public website, we could put it in `truesight_me` as a page like `docs/integration.html`.
+
+What do you think — `documentation` repo, or `truesight_me` as a web page?
 
