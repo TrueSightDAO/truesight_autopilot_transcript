@@ -282,3 +282,26 @@ Alternatively, if you want it on the public website, we could put it in `truesig
 
 What do you think — `documentation` repo, or `truesight_me` as a web page?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+what is the url for documentation repo?
+
+
+### 🤖 Autopilot
+
+It's **https://github.com/TrueSightDAO/documentation** — but it's currently the old sentiment analysis API docs. Let me check if it's public.
+
+
+### 🤖 Autopilot
+
+URL is **https://github.com/TrueSightDAO/documentation** — it's public, but it's currently the old sentiment analysis API docs (stock market data, brokerages, etc.). Not the right content for what you need.
+
+I'd suggest we put the integration guide in **`dao_protocol`** instead — it already has the `dao_client` README which is the closest thing we have to developer docs, and the name "protocol" fits an integration guide for external developers. We'd add a `INTEGRATION_GUIDE.md` alongside the existing content.
+
+Alternatively, if you want it on the public website so you can just share a link like `truesight.me/docs/integrate`, we could put it in **`truesight_me`**.
+
+Which would you prefer?
+
