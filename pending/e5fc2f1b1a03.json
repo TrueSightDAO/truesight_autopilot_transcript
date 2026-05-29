@@ -54,5 +54,12 @@
     "summary": "## Problem\n\nThe notification badge (red pill with count) on the bell icon in the top-right corner is being visually cut off by the outer page borders. The badge is positioned at `top: -4px; right: -4p",
     "action": "merge_pr",
     "created_at": "2026-05-28T21:15:11Z"
+  },
+  {
+    "title": "Merge PR #1 on dapp_prod",
+    "qr_code": "",
+    "summary": "Improve report_contribution.html post-submission UX: show transaction hash and full contribution summary for printouts\n\nGary Teh (governor) requested two improvements:\n\n1. **Transaction hash displayed",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T13:22:16Z"
   }
 ]
