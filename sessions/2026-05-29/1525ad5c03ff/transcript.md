@@ -10,90 +10,6 @@
 
 ### 🤖 Autopilot
 
-That's the internal design doc — not what you'd share with an external developer. Let me check if there's a simpler integration guide somewhere.
-
-
-### 🤖 Autopilot
-
-The `dao_client` repo seems to have moved or been renamed. Let me check what's available.
-
-
-### 🤖 Autopilot
-
-There we go — the `dao_protocol` repo actually contains the `dao_client` README. This is a great starting point, but it's quite detailed and developer-oriented. Let me check if there's something simpler specifically about the **credentialing layer** (the digital signature / verification system) that people want to integrate with.
-
-Let me summarize what I've found for you:
-
----
-
-**We don't have a single, clean "Integration Guide for Developers" `.md` file yet.** What we do have is spread across several places:
-
-1. **`dao_protocol` repo** (which is actually the `dao_client` README) — detailed Python client docs showing how to generate RSA keys, sign events, and POST to Edgar. Good but very implementation-heavy.
-
-2. **`CREDENTIALING_PLATFORM.md`** in `agentic_ai_context` — the internal design doc for the credentialing layer (capoeira practice → CVs → lineage attestations). Too internal to share.
-
-3. **`dapp/create_signature.html`** — the browser-side reference for how a user creates an RSA keypair and registers it with Edgar.
-
-**What I'd recommend:** I can write a clean, concise **`INTEGRATION_GUIDE.md`** that covers exactly what an external developer needs:
-
-- **The core primitive** — RSA-2048 keypair, sign a payload with RSASSA-PKCS1-v1_5 / SHA-256, POST to `https://edgar.truesight.me/dao/submit_contribution`
-- **The payload format** — the canonical `[EVENT NAME]\n- Label: value\n...` structure
-- **Registration flow** — how a user gets their public key bound to an email
-- **Verification** — how to check if a signature is valid via `GET /dao/check_digital_signature`
-- **Available event types** — contribution, inventory movement, sales, etc.
-- **Links to reference implementations** — the `dao_client` Python package, the DApp HTML pages
-
-Want me to create this as a PR to the `dao_protocol` repo (or wherever you'd like it to live)?
-
-
-### 🧑 Governor
-
-Do you think this repo is the best place for it?
-
-
-### 🤖 Autopilot
-
-Good question. Let me think about where it makes most sense.
-
-The `dao_protocol` repo currently holds the `dao_client` README — it's about the Python client library. That's a bit narrow for a general integration guide.
-
-The best candidates:
-
-1. **`dao_protocol`** — already has the client docs, but the name implies protocol specs, not developer onboarding. Could work if we rename the scope.
-
-2. **`documentation`** — currently has the old sentiment analysis API docs. It's the most natural "docs for external developers" repo, but it's been neglected.
-
-3. **`agentic_ai_context`** — has all the internal context docs. Not ideal for external devs since it's full of internal workflows.
-
-4. **A new repo** like `developer-docs` or `integration-guides` — clean slate, but another repo to manage.
-
-5. **`truesight_me` / `truesight_me_prod`** — the public-facing site. Could live at `truesight.me/docs/integration.html` or similar.
-
-I think **`documentation`** is actually the best home — it's already public, already described as "Documentation for our engine's API", and it's where an external developer would naturally look. We'd just need to:
-
-- Clean up the old sentiment analysis API docs (or keep them as a section)
-- Add a new `INTEGRATION_GUIDE.md` at the root
-- Keep it focused: what a developer needs to integrate with the DAO's credentialing/signature layer
-
-Alternatively, if you want it on the public website, we could put it in `truesight_me` as a page like `docs/integration.html`.
-
-What do you think — `documentation` repo, or `truesight_me` as a web page?
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-I think this is great! Do you have ability to edit the repo?
-
-
-### 🤖 Autopilot
-
-Yes, I can open a PR to the `documentation` repo. Let me first check what's there now, then write a clean integration guide.
-
-
-### 🤖 Autopilot
-
 OK, the `documentation` repo currently has the old sentiment analysis API docs. I'll add a new `INTEGRATION_GUIDE.md` alongside it. Let me write a clean, developer-friendly guide.
 
 
@@ -400,4 +316,22 @@ Here's the full status:
 | **[PRACTICE EVENT] addition** | 🔄 PR #53 open | [github.com/TrueSightDAO/dao_protocol/pull/53](https://github.com/TrueSightDAO/dao_protocol/pull/53) |
 
 Want me to merge either or both of these PRs?
+
+
+### 🧑 Governor
+
+merge
+
+
+### 🤖 Autopilot
+
+Both merged. Here's the final state:
+
+| Deliverable | Status | Link |
+|---|---|---|
+| **INTEGRATION_GUIDE.md** | ✅ Live — covers all 26 event types including `[PRACTICE EVENT]` | [github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md](https://github.com/TrueSightDAO/dao_protocol/blob/main/INTEGRATION_GUIDE.md) |
+| **README.md banner link** | ✅ Merged — banner at top links to the guide | [github.com/TrueSightDAO/dao_protocol](https://github.com/TrueSightDAO/dao_protocol) |
+| **[PRACTICE EVENT] added** | ✅ Merged — in Credentialing & Identity table, webhook mapping, and reference implementations | |
+
+The guide now covers **26 event types** across 7 categories, with the capoeira `[PRACTICE EVENT]` properly documented in the Credentialing & Identity section alongside the anonymous keypair flow used by `capoeira.agroverse.shop`.
 
