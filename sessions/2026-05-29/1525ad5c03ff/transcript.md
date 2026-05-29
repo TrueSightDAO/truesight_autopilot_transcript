@@ -346,3 +346,30 @@ Company.find_by(stock_symbol: "APLD")&.update(white_listed: true)
 
 Either way, the change is trivial — one line in config, one DB update.
 
+
+### 🧑 Governor
+
+Option B: Tell me to SSH into the production box and run the DB update directly.
+
+
+### 🤖 Autopilot
+
+I can't SSH from this autopilot box directly (no SSH key access configured here). But you can do it yourself easily.
+
+**Here's what to run on the production server:**
+
+```bash
+ssh seni_ror
+cd /home/ubuntu/sentiment_importer
+RAILS_ENV=production bundle exec rails c
+```
+
+Then in the Rails console:
+```ruby
+Company.find_by(stock_symbol: "APLD")&.update(white_listed: true)
+```
+
+That's it — one line. The EODHD bulk importer should already have created the APLD company record automatically when it fetched price data. If for some reason it doesn't exist yet, let me know and I can give you the create command instead.
+
+Also, if you want the config change too (adding APLD to `targeted_companies`), I can still push that to the `whitelist-apld` branch — just say the word.
+
