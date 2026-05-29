@@ -40,5 +40,12 @@
     "summary": "## Problem\n\nOn `report_contribution.html`, after a contribution is submitted, the **Contribution Summary** section displays the description using `.textContent`, which strips all formatting \u2014 line bre",
     "action": "merge_pr",
     "created_at": "2026-05-29T20:37:41Z"
+  },
+  {
+    "title": "Merge PR #11 on dapp_beta",
+    "qr_code": "",
+    "summary": "## Problem\n\nOn `report_contribution.html`, after a contribution is submitted, the **Contribution Summary** section displays the description using `.textContent`, which strips all formatting \u2014 line bre",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T20:38:41Z"
   }
 ]
