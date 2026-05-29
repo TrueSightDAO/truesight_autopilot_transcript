@@ -234,3 +234,111 @@ Both pages now have the same post-submission summary + transaction hash feature:
 
 Want me to sync `dapp_beta` → `dapp_prod` to deploy both to production?
 
+
+### 🧑 Governor
+
+Getting this error 
+
+Registration failed: [Errno 2] No such file or directory: '/home/ubuntu/sentiment_importer/config/edgar_dapp_listener_key.json'
+
+After I hit submit on 
+
+https://beta.dapp.truesight.me/create_signature.html
+
+I wonder if it’s something missing in the sentiment importer server
+
+
+### 🤖 Autopilot
+
+Let me check the Edgar server to see what's going on.
+
+
+### 🤖 Autopilot
+
+I see the Edgar server (`seni_ror_2026` / `i-0ac8462aa6bb54986`) is **stopped**! Let me check the sentiment_importer repo to understand what that key file is for.
+
+
+### 🤖 Autopilot
+
+The server is stopped. Let me look at the create_signature page to understand what it's calling.
+
+
+### 🤖 Autopilot
+
+Now I see the issue clearly. The `create_signature.html` page calls `EDGAR_SUBMIT_URL` (`/dao/submit_contribution`) to submit the email registration event. The error message says:
+
+```
+Registration failed: [Errno 2] No such file or directory: '/home/ubuntu/sentiment_importer/config/edgar_dapp_listener_key.json'
+```
+
+This is a server-side error on Edgar. The `sentiment_importer` Rails app is trying to read a JSON key file that doesn't exist. Let me check the sentiment_importer code to find where this is referenced.
+
+
+### 🤖 Autopilot
+
+`sentiment_importer` is private. Let me check the Edgar server's config by looking at the codebase on the server (which is stopped) or checking the repo for references to this key file.
+
+
+### 🤖 Autopilot
+
+The repo seems to have no `main` branch. Let me check what branches exist.
+
+
+### 🤖 Autopilot
+
+Now I see — the production servers are `seni_ror` (Rails) and `seni_sk` (Sidekiq). The old servers (`seni_ror_2026` / `seni_sk_2026`) are stopped. But the current Edgar is running on a different setup. Let me check what's actually running at `edgar.truesight.me`.
+
+
+### 🤖 Autopilot
+
+Edgar is responding. Let me check the actual server that's running it — the old `seni_ror_2026` is stopped, so Edgar must be on a different host. Let me look at the DNS.
+
+
+### 🤖 Autopilot
+
+Now I understand the issue. The `edgar_dapp_listener_key.json` is a Google service account key file that should exist at `/home/ubuntu/sentiment_importer/config/edgar_dapp_listener_key.json` on the Edgar server. It's missing.
+
+The error happens when `create_signature.html` submits the email registration event to Edgar (`/dao/submit_contribution`), and Edgar tries to use that key file (likely for writing to Google Sheets) but it's not there.
+
+Let me check if the server is actually running and look at what's happening.
+
+
+### 🤖 Autopilot
+
+OK, so Edgar is running and responding. The issue is specifically when the registration flow tries to submit the email registration event — that's when it tries to use the Google Sheets API via the `edgar_dapp_listener_key.json` service account key.
+
+Let me check if the autopilot server has the key or if we can find it.
+
+
+### 🤖 Autopilot
+
+This is the autopilot server, not the Edgar server. The Edgar server is the one that's missing the key file. Let me check the sentiment_importer code to find where this key is referenced and understand the fix.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. The `Gdrive::NewsletterEmails` model loads the key file at:
+
+```ruby
+Rails.root.join('config', 'edgar_dapp_listener_key.json')
+```
+
+This is the Google service account key for `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com`. The file is missing on the Edgar server.
+
+Let me check if the key exists somewhere in the workspace or if we need to generate it.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The `edgar_dapp_listener_key.json` is a Google service account key file for `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com`. It needs to exist at `/home/ubuntu/sentiment_importer/config/edgar_dapp_listener_key.json` on the Edgar server.
+
+The error happens because:
+1. You submit your email on `create_signature.html`
+2. The page calls `EDGAR_SUBMIT_URL` (`/dao/submit_contribution`) with the email registration event
+3. Edgar's Rails app tries to write to Google Sheets (via `Gdrive::NewsletterEmails` or similar) using the `edgar_dapp_listener_key.json` service account
+4. That file doesn't exist on the server → `Errno::ENOENT`
+
+**The fix:** The `edgar_dapp_listener_key.json` file needs to be placed on the Edgar server at the expected path. This is a credential file that shouldn't be committed to GitHub — it needs to be copied from wherever you have it locally (or generated from Google Cloud Console).
+
+Do you have a copy of the `edgar_dapp_listener_key.json` file somewhere? It would be the service account key for `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com`. If you can share it, I can get it onto the server.
+
