@@ -89,5 +89,12 @@
     "summary": "Add a banner link to INTEGRATION_GUIDE.md at the very top of README.md, before the existing content.\n\nThe first line of README.md should be:\n\n> \ud83d\udcd6 **New to the DAO? Start with the [Integration Guide \u2192]",
     "action": "merge_pr",
     "created_at": "2026-05-29T18:42:32Z"
+  },
+  {
+    "title": "Merge PR #53 on dao_protocol",
+    "qr_code": "",
+    "summary": "Add the missing [PRACTICE EVENT] to INTEGRATION_GUIDE.md in two places:\n\n1. In the **Credentialing & Identity** table (section 4), add a row:\n| `[PRACTICE EVENT]` | Log a capoeira training session (Tr",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T18:46:00Z"
   }
 ]
