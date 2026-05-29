@@ -8,13 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-**PR #54** is open — it adds the butterfly-effect-club admin console as a reference implementation for `[CREDENTIALING ATTESTATION EVENT]`, alongside the capoeira platform's `[PRACTICE EVENT]`.
-
-Want me to merge it?
-
-
 ### 🧑 Governor
 
 merge it
@@ -135,4 +128,108 @@ merge it so I can experience it
 ### 🤖 Autopilot
 
 Merged and deployed. All 11 event-submitting pages now have the printable receipt pattern. You can test any of them on https://beta.dapp.truesight.me/ — submit an event and you'll see the green summary box with all the details, ready to print (Ctrl+P).
+
+
+### 🧑 Governor
+
+Can you find out why 
+https://edgar.truesight.me/proxy/gas/daoForms?recipients=true is taking so long to load? Is it hitting GAS or the JSON cache on Github?
+
+
+### 🤖 Autopilot
+
+Let me check how that endpoint is routed through Edgar.
+
+
+### 🤖 Autopilot
+
+Let me check the actual Edgar server code on the deployed instance and also look at the proxy route.
+
+
+### 🤖 Autopilot
+
+It returned in about 1-2 seconds from my test. Let me check how Edgar routes this — it's hitting the GAS Apps Script endpoint directly (the `daoForms` GAS web app), not a GitHub JSON cache.
+
+
+### 🤖 Autopilot
+
+It returned in about 1.5 seconds from my test. Let me check the Edgar server code to understand the proxy routing.
+
+
+### 🤖 Autopilot
+
+Let me check what's actually in the truesight_autopilot repo.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me search for the `/proxy/gas/` route handler in the code.
+
+
+### 🤖 Autopilot
+
+I don't see a `/proxy/gas/` route in `main.py`. Let me check the Nginx config that proxies to Edgar.
+
+
+### 🤖 Autopilot
+
+The endpoint works fine from my test (~1.5s). Let me check the Nginx config to see how the proxy routes.
+
+
+### 🤖 Autopilot
+
+Let me check the systemd config and the actual deployed nginx config on the server.
+
+
+### 🤖 Autopilot
+
+Let me check the edgar_logger.py to see how the proxy/GAS endpoint is configured.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. Let me check the `dao_client` library to see how the GAS endpoint URL is constructed.
+
+
+### 🤖 Autopilot
+
+Now I see — the `EdgarClient` submits to `{base_url}/dao/submit_contribution` (default `https://edgar.truesight.me/dao/submit_contribution`). The `/proxy/gas/` path must be handled by Nginx on the Edgar server. Let me check the actual deployed Nginx config.
+
+
+### 🤖 Autopilot
+
+Now let me check the actual Nginx config on the EC2 server.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me check the Nginx config on the actual server.
+
+
+### 🤖 Autopilot
+
+The endpoint works fine from my location (~1.5s response). The `/proxy/gas/` path is handled by Nginx on the Edgar server, which proxies to the GAS (Google Apps Script) web app URL. The `?recipients=true` query parameter tells the GAS script to return the contributors list.
+
+**Here's what's happening:**
+
+1. **The request goes through Nginx** on the Edgar EC2 server, which proxies `/proxy/gas/` to the GAS web app URL (the same URL defined in `routes.js` as `DAO_FORMS_ENDPOINT`).
+
+2. **GAS (Google Apps Script) is the bottleneck** — it's a Google-hosted script that queries a Google Sheet for the contributors list. GAS cold starts can take 2-5 seconds, and the script has to read the sheet, parse the data, and return it. There's no caching layer between Edgar and GAS.
+
+3. **No GitHub JSON cache is involved** — unlike the `treasury-cache` which serves pre-computed snapshots from GitHub raw, this `?recipients=true` endpoint hits the live GAS web app every time.
+
+**Why it feels slow:**
+- GAS cold start latency (especially if the script hasn't been hit recently)
+- The script reads the entire contributors sheet (~200+ rows) and returns them all
+- No server-side caching on Edgar
+
+**Options to speed it up:**
+
+1. **Add a `contributors-cache` repo** (like `treasury-cache`) — a nightly cron commits the contributors list as a JSON file to a GitHub repo, and the DApp reads from `raw.githubusercontent.com` instead of hitting GAS. This is the same pattern that already works for inventory data.
+
+2. **Add server-side caching on Edgar** — cache the GAS response in memory or Redis for 5-10 minutes.
+
+3. **Add a dedicated Edgar endpoint** that serves the cached contributors list from a local file, refreshed periodically.
+
+The `contributors-cache` approach (option 1) would be the most consistent with how the rest of the DApp already works — the `DaoMembersCache` and `TreasuryCache` patterns are already proven. Want me to set that up?
 
