@@ -182,3 +182,36 @@ I don't have a tool to close a PR directly, but since the correct fix is now mer
 
 Want me to do the repo sync now?
 
+
+### 🧑 Governor
+
+Can we implement similar feature for this as well?
+
+https://dapp.truesight.me/report_inventory_movement.html
+
+
+### 🤖 Autopilot
+
+Let me read that page first.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture of both pages. Yes, I can implement the same feature for `report_inventory_movement.html`. The structure is very similar — it already computes a `requestHash` and builds a `shareText`, but doesn't display the hash or a summary card after submission.
+
+Let me open the PR.
+
+
+### 🤖 Autopilot
+
+Done! **PR #9 — `dapp_beta`** → https://github.com/TrueSightDAO/dapp_beta/pull/9
+
+This mirrors the same feature from `report_contribution.html`:
+
+1. **Transaction hash** displayed under the submit button after submission
+2. **Inventory Movement Summary card** showing all details (manager, recipient, item, QR code, quantity, location, hash, file location, timestamp)
+3. **Print-friendly** styling so your printouts have everything visible
+4. Works for both **single submission** and **batch submit** modes
+
+Want me to merge it?
+
