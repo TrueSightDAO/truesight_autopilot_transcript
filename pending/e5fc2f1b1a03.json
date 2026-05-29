@@ -96,5 +96,12 @@
     "summary": "Add the missing [PRACTICE EVENT] to INTEGRATION_GUIDE.md in two places:\n\n1. In the **Credentialing & Identity** table (section 4), add a row:\n| `[PRACTICE EVENT]` | Log a capoeira training session (Tr",
     "action": "merge_pr",
     "created_at": "2026-05-29T18:46:00Z"
+  },
+  {
+    "title": "Merge PR #54 on dao_protocol",
+    "qr_code": "",
+    "summary": "Update INTEGRATION_GUIDE.md to add the butterfly-effect-club admin panel as a reference implementation for [CREDENTIALING ATTESTATION EVENT], similar to how the capoeira platform is listed for [PRACTI",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T18:49:17Z"
   }
 ]
