@@ -1,59 +1,10 @@
 [
   {
-    "title": "Merge PR #315 on tokenomics",
-    "qr_code": "",
-    "summary": "## Backfill practice event payloads for pk-wR9zU8JMnEz1 (gary-teh)\n\n### Problem\n12 practice events from May 17\u201325, 2026 for practitioner pk-wR9zU8JMnEz1 (gary-teh) were committed to lineage-credential",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T02:48:47Z"
-  },
-  {
-    "title": "Merge PR #316 on tokenomics",
-    "qr_code": "",
-    "summary": "## Fix: doGet function conflict between practice_event_processing.gs and program_admin_endpoint.gs\n\n### Root cause of the null payload issue\nBoth `practice_event_processing.gs` and `program_admin_endp",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T03:05:05Z"
-  },
-  {
-    "title": "Merge PR #32 on capoeira",
-    "qr_code": "",
-    "summary": "## Progressive move cycling: remove difficulty bias, cycle through all moves\n\n### Problem\nThe current session generator has two issues:\n\n1. **Moves don't cycle through all available moves before repea",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T07:29:39Z"
-  },
-  {
-    "title": "Merge PR #33 on capoeira",
-    "qr_code": "",
-    "summary": "## Swap order: move Generate Session above Practice History\n\n### Problem\nThe Practice History section (past sessions dashboard) appears before the Generate Session section. For returning users with ma",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T19:47:00Z"
-  },
-  {
-    "title": "Merge PR #4 on dapp_beta",
-    "qr_code": "",
-    "summary": "## Problem\n\nThe contributor/recipient dropdowns on `report_contribution.html` and `report_inventory_movement.html` always call the GAS `daoForms` endpoint (`?recipients=true`), which has a 1-3 second ",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T20:52:53Z"
-  },
-  {
-    "title": "Merge PR #5 on dapp_beta",
-    "qr_code": "",
-    "summary": "## REVERT: Switch contributor/recipient dropdowns from GAS to DaoMembersCache\n\nThe previous PR #4 (commit 50479ef8) switched the contributor/recipient dropdowns to use `DaoMembersCache.fetchSnapshot()",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T20:59:52Z"
-  },
-  {
     "title": "Merge PR #6 on dapp_beta",
     "qr_code": "",
     "summary": "## Problem\n\nThe contributor/recipient dropdowns on `report_contribution.html` and `report_inventory_movement.html` call the GAS `?recipients=true` endpoint, which has a 1-3 second cold-start latency. ",
     "action": "merge_pr",
     "created_at": "2026-05-28T21:03:15Z"
-  },
-  {
-    "title": "Merge PR #7 on dapp_beta",
-    "qr_code": "",
-    "summary": "## Problem\n\nThe notification badge (red pill with count) on the bell icon in the top-right corner is being visually cut off by the outer page borders. The badge is positioned at `top: -4px; right: -4p",
-    "action": "merge_pr",
-    "created_at": "2026-05-28T21:15:11Z"
   },
   {
     "title": "Merge PR #1 on dapp_prod",
@@ -63,20 +14,6 @@
     "created_at": "2026-05-29T13:22:16Z"
   },
   {
-    "title": "Merge PR #8 on dapp_beta",
-    "qr_code": "",
-    "summary": "Improve report_contribution.html post-submission UX: show transaction hash and full contribution summary for printouts\n\nGary Teh (governor) requested two improvements:\n\n1. **Transaction hash displayed",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T13:25:22Z"
-  },
-  {
-    "title": "Merge PR #9 on dapp_beta",
-    "qr_code": "",
-    "summary": "Improve report_inventory_movement.html post-submission UX: show transaction hash and full inventory movement summary for printouts\n\nSame feature as recently implemented on report_contribution.html (PR",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T13:28:12Z"
-  },
-  {
     "title": "Merge PR #50 on dao_protocol",
     "qr_code": "",
     "summary": "Add INTEGRATION_GUIDE.md \u2014 a clean, developer-friendly guide for external developers who want to integrate with the TrueSight DAO credentialing layer.\n\nThe dao_protocol repo already holds the dao_clie",
@@ -84,24 +21,10 @@
     "created_at": "2026-05-29T18:12:22Z"
   },
   {
-    "title": "Merge PR #52 on dao_protocol",
+    "title": "Merge PR #10 on dapp_beta",
     "qr_code": "",
-    "summary": "Add a banner link to INTEGRATION_GUIDE.md at the very top of README.md, before the existing content.\n\nThe first line of README.md should be:\n\n> \ud83d\udcd6 **New to the DAO? Start with the [Integration Guide \u2192]",
+    "summary": "Add a printable submission receipt (summary section with @media print CSS) to all event-submitting DApp pages that are missing it, following the same pattern already used in report_contribution.html a",
     "action": "merge_pr",
-    "created_at": "2026-05-29T18:42:32Z"
-  },
-  {
-    "title": "Merge PR #53 on dao_protocol",
-    "qr_code": "",
-    "summary": "Add the missing [PRACTICE EVENT] to INTEGRATION_GUIDE.md in two places:\n\n1. In the **Credentialing & Identity** table (section 4), add a row:\n| `[PRACTICE EVENT]` | Log a capoeira training session (Tr",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T18:46:00Z"
-  },
-  {
-    "title": "Merge PR #54 on dao_protocol",
-    "qr_code": "",
-    "summary": "Update INTEGRATION_GUIDE.md to add the butterfly-effect-club admin panel as a reference implementation for [CREDENTIALING ATTESTATION EVENT], similar to how the capoeira platform is listed for [PRACTI",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T18:49:17Z"
+    "created_at": "2026-05-29T19:34:50Z"
   }
 ]
