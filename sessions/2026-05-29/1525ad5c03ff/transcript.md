@@ -367,3 +367,71 @@ The `edgar_dapp_listener_key.json` file is a Google service account private key 
 
 Which approach would you prefer?
 
+
+### 🧑 Governor
+
+I had a chat Just now seems people want to integrate to use the credentialing layer of our DAO, do we have a simple documentation somewhere which we can share to the developer who wants to integrate? Like an .md file?
+
+
+### 🤖 Autopilot
+
+Let me check what documentation exists for the credentialing/verification layer.
+
+
+### 🤖 Autopilot
+
+Let me check if there's an existing integration doc for developers.
+
+
+### 🤖 Autopilot
+
+Let me also check if there's a more general developer integration doc.
+
+
+### 🤖 Autopilot
+
+Let me check the `documentation` repo and `lineage-credentials` repo — those sound like they might have integration docs.
+
+
+### 🤖 Autopilot
+
+That's the old sentiment analysis API docs, not what we need. Let me check the `lineage-credentials` repo — that sounds like it's about the credentialing layer.
+
+
+### 🤖 Autopilot
+
+That's the internal design doc — not what you'd share with an external developer. Let me check if there's a simpler integration guide somewhere.
+
+
+### 🤖 Autopilot
+
+The `dao_client` repo seems to have moved or been renamed. Let me check what's available.
+
+
+### 🤖 Autopilot
+
+There we go — the `dao_protocol` repo actually contains the `dao_client` README. This is a great starting point, but it's quite detailed and developer-oriented. Let me check if there's something simpler specifically about the **credentialing layer** (the digital signature / verification system) that people want to integrate with.
+
+Let me summarize what I've found for you:
+
+---
+
+**We don't have a single, clean "Integration Guide for Developers" `.md` file yet.** What we do have is spread across several places:
+
+1. **`dao_protocol` repo** (which is actually the `dao_client` README) — detailed Python client docs showing how to generate RSA keys, sign events, and POST to Edgar. Good but very implementation-heavy.
+
+2. **`CREDENTIALING_PLATFORM.md`** in `agentic_ai_context` — the internal design doc for the credentialing layer (capoeira practice → CVs → lineage attestations). Too internal to share.
+
+3. **`dapp/create_signature.html`** — the browser-side reference for how a user creates an RSA keypair and registers it with Edgar.
+
+**What I'd recommend:** I can write a clean, concise **`INTEGRATION_GUIDE.md`** that covers exactly what an external developer needs:
+
+- **The core primitive** — RSA-2048 keypair, sign a payload with RSASSA-PKCS1-v1_5 / SHA-256, POST to `https://edgar.truesight.me/dao/submit_contribution`
+- **The payload format** — the canonical `[EVENT NAME]\n- Label: value\n...` structure
+- **Registration flow** — how a user gets their public key bound to an email
+- **Verification** — how to check if a signature is valid via `GET /dao/check_digital_signature`
+- **Available event types** — contribution, inventory movement, sales, etc.
+- **Links to reference implementations** — the `dao_client` Python package, the DApp HTML pages
+
+Want me to create this as a PR to the `dao_protocol` repo (or wherever you'd like it to live)?
+
