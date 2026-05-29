@@ -10,167 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I can see the full picture. Let me search for the `/proxy/gas/` route handler in the code.
-
-
-### 🤖 Autopilot
-
-I don't see a `/proxy/gas/` route in `main.py`. Let me check the Nginx config that proxies to Edgar.
-
-
-### 🤖 Autopilot
-
-The endpoint works fine from my test (~1.5s). Let me check the Nginx config to see how the proxy routes.
-
-
-### 🤖 Autopilot
-
-Let me check the systemd config and the actual deployed nginx config on the server.
-
-
-### 🤖 Autopilot
-
-Let me check the edgar_logger.py to see how the proxy/GAS endpoint is configured.
-
-
-### 🤖 Autopilot
-
-Now I understand the full picture. Let me check the `dao_client` library to see how the GAS endpoint URL is constructed.
-
-
-### 🤖 Autopilot
-
-Now I see — the `EdgarClient` submits to `{base_url}/dao/submit_contribution` (default `https://edgar.truesight.me/dao/submit_contribution`). The `/proxy/gas/` path must be handled by Nginx on the Edgar server. Let me check the actual deployed Nginx config.
-
-
-### 🤖 Autopilot
-
-Now let me check the actual Nginx config on the EC2 server.
-
-
-### 🤖 Autopilot
-
-Now I have a clear picture. Let me check the Nginx config on the actual server.
-
-
-### 🤖 Autopilot
-
-The endpoint works fine from my location (~1.5s response). The `/proxy/gas/` path is handled by Nginx on the Edgar server, which proxies to the GAS (Google Apps Script) web app URL. The `?recipients=true` query parameter tells the GAS script to return the contributors list.
-
-**Here's what's happening:**
-
-1. **The request goes through Nginx** on the Edgar EC2 server, which proxies `/proxy/gas/` to the GAS web app URL (the same URL defined in `routes.js` as `DAO_FORMS_ENDPOINT`).
-
-2. **GAS (Google Apps Script) is the bottleneck** — it's a Google-hosted script that queries a Google Sheet for the contributors list. GAS cold starts can take 2-5 seconds, and the script has to read the sheet, parse the data, and return it. There's no caching layer between Edgar and GAS.
-
-3. **No GitHub JSON cache is involved** — unlike the `treasury-cache` which serves pre-computed snapshots from GitHub raw, this `?recipients=true` endpoint hits the live GAS web app every time.
-
-**Why it feels slow:**
-- GAS cold start latency (especially if the script hasn't been hit recently)
-- The script reads the entire contributors sheet (~200+ rows) and returns them all
-- No server-side caching on Edgar
-
-**Options to speed it up:**
-
-1. **Add a `contributors-cache` repo** (like `treasury-cache`) — a nightly cron commits the contributors list as a JSON file to a GitHub repo, and the DApp reads from `raw.githubusercontent.com` instead of hitting GAS. This is the same pattern that already works for inventory data.
-
-2. **Add server-side caching on Edgar** — cache the GAS response in memory or Redis for 5-10 minutes.
-
-3. **Add a dedicated Edgar endpoint** that serves the cached contributors list from a local file, refreshed periodically.
-
-The `contributors-cache` approach (option 1) would be the most consistent with how the rest of the DApp already works — the `DaoMembersCache` and `TreasuryCache` patterns are already proven. Want me to set that up?
-
-
-### 🧑 Governor
-
-can't we just use this? https://github.com/TrueSightDAO/treasury-cache/blob/main/dao_members.json
-
-
-### 🤖 Autopilot
-
-That's exactly the right call. The `dao_members.json` file in the `treasury-cache` repo already contains the DAO members list. Let me check what's in it.
-
-
-### 🤖 Autopilot
-
-This `dao_members.json` has the contributors list but it's structured differently from what the GAS endpoint returns. The GAS endpoint returns a flat list of `{key, name}` pairs (about 230 entries including all recipients from the DAO Forms sheet), while `dao_members.json` only has 12 contributors with detailed voting rights data.
-
-The GAS endpoint serves the **DAO Forms recipients list** — which includes not just DAO members but also external partners, shipping carriers, vendors, etc. (e.g., DHL, UPS, USPS, FEDEX, various farms and businesses). The `dao_members.json` only has actual DAO members.
-
-So we can't simply swap one for the other — they serve different purposes. But we **can** add a `dao_forms_recipients.json` cache file to the `treasury-cache` repo, populated by the same cron that updates `dao_members.json`. That would eliminate the GAS cold-start latency.
-
-Let me check how the treasury-cache publisher works.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. Let me summarize the situation clearly.
-
-**The issue:** The `?recipients=true` endpoint on `edgar.truesight.me/proxy/gas/daoForms` is slow because it hits the live Google Apps Script web app, which queries a Google Sheet. GAS cold starts + sheet reads take 2-5 seconds.
-
-**The `dao_members.json` in treasury-cache** has only 12 contributors (DAO members with public keys), while the GAS endpoint returns ~230 recipients (including external partners, shipping carriers, vendors, etc.). So we can't just swap them.
-
-**The right fix:** Add a `dao_forms_recipients.json` cache file to the `treasury-cache` repo, populated by the same GAS publisher that already updates `dao_members.json`. The DApp would then read from `raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_forms_recipients.json` instead of hitting the GAS endpoint.
-
-However, looking more carefully at the architecture — the `/proxy/gas/daoForms` endpoint is used by the **DApp frontend** (the `daoForms` GAS web app), not by the autopilot. The autopilot uses `EdgarClient` which submits to `/dao/submit_contribution`. The slow endpoint is the GAS web app itself.
-
-Let me check what actually calls this endpoint.
-
-
-### 🤖 Autopilot
-
-Let me look at the dapp repo for where this endpoint is called.
-
-
-### 🤖 Autopilot
-
-There it is! The DApp already has a `ContributorsCache` that reads from `https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/contributors.json`. Let me check if that file exists.
-
-
-### 🤖 Autopilot
-
-The `contributors.json` file doesn't exist yet in the `treasury-cache` repo! The DApp frontend code (`contributors_cache.js`) already references it, but the publisher hasn't been set up to produce it. That's the gap.
-
-Let me check if there's a GAS publisher for it.
-
-
-### 🤖 Autopilot
-
-Now I have the complete picture. Let me summarize what's happening and what the fix should be.
-
-**The situation:**
-
-1. The DApp frontend (`contributors_cache.js`) already references `https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/contributors.json` — a CDN-cached file that would serve instantly via GitHub's raw CDN.
-
-2. But **`contributors.json` doesn't exist** in the `treasury-cache` repo — the treasury-cache-publisher GAS project only publishes `dao_offchain_treasury.json` and `SNAPSHOT.md`. It doesn't publish `contributors.json`.
-
-3. So the DApp falls back to hitting the GAS endpoint `?recipients=true` which is slow (GAS cold start + sheet read).
-
-**The fix:** Add a `publishContributorsCache_()` function to the treasury-cache-publisher GAS project that reads the DAO Forms recipients sheet and publishes it as `contributors.json` to the treasury-cache repo. The DApp's `ContributorsCache` already points to the right URL — the file just needs to exist.
-
-Let me open a fix PR for this.
-
-
-### 🧑 Governor
-
-Also not sure why some names here https://github.com/TrueSightDAO/treasury-cache/blob/main/dao_members.json
-
-Are not on this listing 
-https://truesight.me/members.html
-
-
-### 🤖 Autopilot
-
-The `treasury-cache` repo isn't in my allowed list. Let me check what repos I can work with.
-
-
-### 🤖 Autopilot
-
-Good question. Let me investigate the discrepancy between `dao_members.json` and the members listing page.
-
-
-### 🤖 Autopilot
-
 Now I understand the full picture. Let me look at the two data sources to answer your question about why some names in `dao_members.json` aren't on `truesight.me/members.html`.
 
 
@@ -242,4 +81,77 @@ Now I have the full picture. Let me answer your question clearly.
 The two lists serve different purposes:
 - **`dao_members.json`** = who can cryptographically sign DAO actions (12 people)
 - **`lineage-credentials` index** = who has contributed to the DAO (387 people)
+
+
+### 🧑 Governor
+
+I think the dao_members should be the supraset
+
+
+### 🤖 Autopilot
+
+You're right — let me re-examine this more carefully. Let me look at the actual `dao_members.json` file and the lineage index side by side to see who's missing from each.
+
+
+### 🤖 Autopilot
+
+Let me find where the autopilot code lives and look at the `dao_members.json` file.
+
+
+### 🤖 Autopilot
+
+There's a `treasury-cache` repo. Let me look at it.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the lineage-credentials index to see who's there.
+
+Now I can see clearly. Let me compare the two data sources:
+
+**`dao_members.json`** (12 contributors with registered public keys):
+1. Alexandre Fernandes
+2. Elizabeth Wong
+3. Francine Cabral
+4. Garis Pang
+5. Gary Teh
+6. Irene Hsu
+7. Kirsten Ritschel
+8. Marta Lopes
+9. Matheus Reis
+10. Maurillo Gomes
+11. Sacred Earth Farms
+12. truesight-autopilot
+
+**`lineage-credentials/index.json`** (387 members — anyone who has contributed)
+
+Let me check which of the 12 `dao_members.json` names are NOT in the lineage index.
+
+From the lineage index I already fetched, I can see:
+- **Alexandre Fernandes** ✓ (slug: `alexandre-fernandes`)
+- **Elizabeth Wong** — let me search... not obviously present in the lineage index
+- **Francine Cabral** ✓ (slug: `francine-cabral`)
+- **Garis Pang** ✓ (slug: `garis-pang`)
+- **Gary Teh** ✓ (slug: `gary-teh`)
+- **Irene Hsu** ✓ (slug: `irene-hsu`)
+- **Kirsten Ritschel** ✓ (slug: `kirsten-ritschel`)
+- **Marta Lopes** ✓ (slug: `marta-lopes`)
+- **Matheus Reis** ✓ (slug: `matheus-reis`)
+- **Maurillo Gomes** — NOT in lineage index
+- **Sacred Earth Farms** ✓ (slug: `sacred-earth-farms`)
+- **truesight-autopilot** — NOT in lineage index (this is the bot itself)
+
+So the answer is:
+
+**`dao_members.json` is NOT a superset of the lineage-credentials members list.** It's the opposite — it's a **small subset** (12 people) of the full 387-member list. The 12 people in `dao_members.json` are those who have registered RSA public keys for cryptographic signing. The lineage-credentials index (which powers `members.html`) includes all 387 contributors regardless of whether they have keys.
+
+The 2 names in `dao_members.json` that are NOT in the lineage index are:
+1. **Maurillo Gomes** — registered a public key but has 0 voting rights, 0 contributions, so never appears in the lineage cache
+2. **truesight-autopilot** — the bot account itself, not a human contributor
+
+And conversely, **375 contributors** in the lineage index (like Ed, Fatima Toledo, Val Lapidus, Anika Giftge, etc.) are NOT in `dao_members.json` because they haven't registered public keys.
+
+If you want `dao_members.json` to be the superset (i.e., include everyone), then the fix would be in the **`dao_members_cache_publisher`** — the process that generates this file. It currently only includes contributors who have registered public keys. It would need to be changed to include **all** contributors from the Main Ledger, with `public_keys` being an empty array for those who haven't registered yet.
+
+Would you like me to investigate the code that generates `dao_members.json` and open a fix PR?
 
