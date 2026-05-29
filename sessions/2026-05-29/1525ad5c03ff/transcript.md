@@ -141,3 +141,22 @@ The PR is open! Here's a summary of what it does:
 
 Want me to merge it, or would you like to review it first?
 
+
+### 🧑 Governor
+
+The PR should have been done on that dapp_beta instead
+
+
+### 🤖 Autopilot
+
+You're right — changes should land in `dapp_beta` first, then get synced to `dapp_prod`. Let me close that PR and open the right one.
+
+
+### 🤖 Autopilot
+
+Done! The correct PR is now open on **`dapp_beta`**:
+
+**PR #8 — `dapp_beta`** → https://github.com/TrueSightDAO/dapp_beta/pull/8
+
+The old PR on `dapp_prod` (#1) can be closed — want me to close it? And when you're ready to merge #8 on beta, just say the word and I'll merge it. After that, we can sync to `dapp_prod` via `gh repo sync`.
+
