@@ -10,64 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I understand the full picture. The issue is clear:
-
-**Root cause:** The `publishDaoMembersCacheToGithub_()` function in `dao_members_cache_publisher.gs` builds the contributor list **only** from the `Contributors Digital Signatures` sheet — it iterates `sigsRows` (rows from the signatures sheet) and only includes people who have at least one ACTIVE public key. The 375 contributors who appear on `members.html` (via the lineage-credentials index) but not in `dao_members.json` are people who have DAO contributions but have never registered a public key.
-
-**The fix:** The publisher needs to also read the `Contributors voting weight` sheet (which has ALL contributors, not just those with keys) and include every name from there, with an empty `public_keys` array for those who haven't registered keys yet.
-
-Let me open a fix PR.
-
-
-### 🤖 Autopilot
-
-I've opened **PR #325** on the `tokenomics` repo. Here's what it does:
-
-**Root cause:** The `dao_members_cache_publisher.gs` script builds the contributor list by iterating only the `Contributors Digital Signatures` sheet, filtering to rows with ACTIVE public keys. Anyone who hasn't registered a key is completely skipped.
-
-**Fix:** After building the `byName` map from the signatures sheet, the script now also iterates the `Contributors voting weight` sheet (which contains ALL contributors — all 387 of them) and adds any missing names with an empty `public_keys` array. This way:
-
-- Contributors **with** public keys → appear with their keys (as before)
-- Contributors **without** public keys → appear with `public_keys: []` and `email: null`
-- The `counts.contributors` will now reflect the full 387-member list
-
-The PR is a draft — would you like me to mark it ready for review, or do you want to review the changes first?
-
-
-### 🧑 Governor
-
-What is the URL?
-
-
-### 🤖 Autopilot
-
-The PR URL is:
-
-**https://github.com/TrueSightDAO/tokenomics/pull/325**
-
-
-### 🧑 Governor
-
-Looks good to me merge it
-
-
-### 🤖 Autopilot
-
-PR #325 has been merged. The next time the `dao_members_cache_publisher` runs (either via the daily cron at ~03:00 UTC, or the next Edgar webhook trigger), `dao_members.json` will be regenerated with all 387 contributors — those with public keys will have their keys listed, and those without will have an empty `public_keys` array.
-
-
-### 🧑 Governor
-
-are you able to clasp push and deploy?
-
-
-### 🤖 Autopilot
-
-Let me check if `clasp` is available on this server.
-
-
-### 🤖 Autopilot
-
 No `clasp` installed on this server. `clasp` is a Node.js tool for pushing to Google Apps Script projects — it's typically installed via `npm` and used from a developer's local machine or CI, not from this autopilot server.
 
 The `dao_members_cache_publisher.gs` file is deployed as a Google Apps Script project (attached to the Main Ledger spreadsheet). To push the merged code, you'd need to:
@@ -257,4 +199,18 @@ I've opened **PR #12** on `dapp_beta` which uses a `<pre>` element (with `white-
 I'll close PR #11 since #12 supersedes it with the `<pre>` approach you wanted.
 
 Would you like me to mark it ready for review or merge it?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+merge it
+
+
+### 🤖 Autopilot
+
+PR #12 is merged into `dapp_beta`. The `<pre>` element with `white-space: pre-wrap` and `font-family: inherit` will now preserve your formatted descriptions in the contribution summary.
+
+When you're ready to promote to production, you can sync `dapp_prod` from `dapp_beta` via `gh repo sync TrueSightDAO/dapp_prod`.
 
