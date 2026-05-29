@@ -26,5 +26,12 @@
     "summary": "Add a printable submission receipt (summary section with @media print CSS) to all event-submitting DApp pages that are missing it, following the same pattern already used in report_contribution.html a",
     "action": "merge_pr",
     "created_at": "2026-05-29T19:34:50Z"
+  },
+  {
+    "title": "Merge PR #325 on tokenomics",
+    "qr_code": "",
+    "summary": "## Problem\n\n`dao_members.json` (published to `treasury-cache`) currently only includes contributors who have registered at least one ACTIVE RSA public key in the `Contributors Digital Signatures` shee",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T20:15:04Z"
   }
 ]
