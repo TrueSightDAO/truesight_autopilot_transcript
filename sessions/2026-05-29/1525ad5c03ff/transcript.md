@@ -216,3 +216,30 @@ Actually, looking more carefully, most of the `dao_members.json` names DO appear
 
 So the answer to your question is: **`dao_members.json` is a subset of the full members list** — it only includes people who have completed the public key registration process. The `members.html` page shows the full 387-member list from the lineage-credentials cache, which includes everyone who has ever contributed to the DAO. The 12 people in `dao_members.json` are the ones who have registered RSA keys for signing.
 
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me answer your question clearly.
+
+**These are two completely different data sources serving different purposes:**
+
+### `dao_members.json` (treasury-cache)
+- **Source:** Main Ledger → `Contributors Digital Signatures` + `Contributors voting weight` + `Governors` tabs
+- **Contains:** Only **12 contributors** who have registered RSA public keys (digital signatures) with the DAO
+- **Purpose:** Cryptographic identity — used by the DApp for signature verification, permission gating, and Edgar submissions
+- **Schema:** Has `public_keys[]`, `voting_rights`, `email`, `roles`
+- **Missing people like "Ed", "Fatima Toledo", "Val Lapidus", "Anika Giftge"** etc. — these people have DAO contributions but haven't registered a public key yet
+
+### `members.html` (lineage-credentials)
+- **Source:** `https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json`
+- **Contains:** **387 members** — everyone who has ever made a DAO contribution, regardless of whether they have a public key
+- **Purpose:** Public directory / credential profiles — shows contribution history, TDG controlled, voting power
+- **Schema:** Has `display_name`, `total_tdg_controlled`, `total_contributions`, `voting_rights`, `is_governor`
+- **Includes** "Ed" (299 contributions, 82K TDG), "Fatima Toledo" (247 contributions, 65K TDG), "Val Lapidus" (258 contributions, 62K TDG), etc.
+
+**So the answer is:** The names in `dao_members.json` that aren't on `members.html` are the ones that **have registered public keys** but may not have DAO contributions yet (like `Maurillo Gomes` who has 0 voting rights and 0 contributions). And conversely, the names on `members.html` that aren't in `dao_members.json` (like Ed, Fatima, Val, Anika, etc.) are contributors who **have DAO contributions but haven't registered a public key** — they can submit contributions through the DApp but can't cryptographically sign them yet.
+
+The two lists serve different purposes:
+- **`dao_members.json`** = who can cryptographically sign DAO actions (12 people)
+- **`lineage-credentials` index** = who has contributed to the DAO (387 people)
+
