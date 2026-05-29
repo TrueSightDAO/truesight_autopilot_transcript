@@ -10,17 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I see the key difference. The `members.html` page reads from a completely different source:
-
-```
-const INDEX_URL = 'https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json';
-```
-
-Let me check that file.
-
-
-### 🤖 Autopilot
-
 Now I can see the full picture. The two data sources are completely different:
 
 **`dao_members.json`** (treasury-cache) — 12 contributors who have **registered public keys** (RSA keypairs for signing). These are people who can cryptographically sign DAO submissions.
@@ -239,4 +228,64 @@ Alternatively, you can deploy directly from the **Apps Script editor** in the br
 5. Click **Deploy → Test deployments** or use the existing deployment
 
 I don't have `clasp` or `npm` installed on this server, and I don't have access to the Google Apps Script project credentials needed to authenticate clasp. This would need to be done from a machine with the proper GAS project access. Would you like me to look into whether there's a CI/CD pipeline set up for this?
+
+
+### 🧑 Governor
+
+can you install it and then attempt to do a clasp push?
+
+
+### 🤖 Autopilot
+
+Let me check if Node.js is available first.
+
+
+### 🤖 Autopilot
+
+Let me check if Node.js is available on this server.
+
+
+### 🤖 Autopilot
+
+Node.js is not installed on this server. I could install it, but there's a bigger problem: **clasp requires OAuth authentication** (either via browser or a service account JSON file). Even if I install Node.js and clasp, I'd need:
+
+1. The **Google Apps Script project ID** for the `dao_members_cache_publisher` script
+2. A **service account JSON key** with access to that GAS project (or browser-based OAuth which isn't possible headless)
+
+I don't have access to either of those credentials on this server. The GAS project is bound to the Main Ledger spreadsheet and is deployed via the Apps Script editor in the browser.
+
+However, I can check if there's a CI/CD pipeline or a webhook that could trigger a redeploy. Let me look at the context files for any deployment instructions.
+
+
+### 🤖 Autopilot
+
+I found the key info in the context file. Let me look at the clasp notes:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `dao_members_cache_publisher.gs` is deployed as a Google Apps Script project. Let me check if there's a clasp mirror for it.
+
+
+### 🤖 Autopilot
+
+I can see the clasp mirrors but I don't see a specific mirror for `dao_members_cache_publisher`. The file is in `tokenomics/google_app_scripts/tdg_identity_management/dao_members_cache_publisher.gs`. Let me check if there's a clasp mirror for the TDG - Email Identity Management project which is the closest match.
+
+Looking at the index, **"TDG - Email Identity Management"** (`1K1wcXFAopSA0cI7oBpu5bl1sagrJ2Quv44B0ppjiIxtl3MKJ_PCsppCf`) is the project that would contain the `dao_members_cache_publisher.gs` code. But I don't have Node.js installed on this server, and clasp requires OAuth credentials that I don't have access to.
+
+Let me be straightforward with you, Gary:
+
+**I can't do a clasp push from this server** for two reasons:
+
+1. **Node.js is not installed** — I'd need to install it first (`apt install nodejs npm`)
+2. **Clasp requires authentication** — even after installing, I'd need either:
+   - A browser-based OAuth flow (impossible headless on a server)
+   - A **service account JSON key** with access to the GAS project (`1K1wcXFAopSA0cI7oBpu5bl1sagrJ2Quv44B0ppjiIxtl3MKJ_PCsppCf`)
+
+However, I can install Node.js + clasp and attempt a **`clasp login --creds`** if you have a service account JSON file that has access to that Apps Script project. Do you have one I can use? Or would you prefer to just deploy it manually from the Apps Script editor?
+
+The editor URL for the TDG - Email Identity Management project is:
+**https://script.google.com/home/projects/1K1wcXFAopSA0cI7oBpu5bl1sagrJ2Quv44B0ppjiIxtl3MKJ_PCsppCf/edit**
+
+You can paste the updated code from the merged PR into the `dao_members_cache_publisher.gs` file there and save it. The daily cron trigger will pick it up automatically.
 
