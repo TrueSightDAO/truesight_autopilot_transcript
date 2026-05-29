@@ -200,3 +200,13 @@ The PR URL is:
 
 **https://github.com/TrueSightDAO/tokenomics/pull/325**
 
+
+### 🧑 Governor
+
+Looks good to me merge it
+
+
+### 🤖 Autopilot
+
+PR #325 has been merged. The next time the `dao_members_cache_publisher` runs (either via the daily cron at ~03:00 UTC, or the next Edgar webhook trigger), `dao_members.json` will be regenerated with all 387 contributors — those with public keys will have their keys listed, and those without will have an empty `public_keys` array.
+
