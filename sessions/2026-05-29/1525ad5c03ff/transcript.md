@@ -129,3 +129,33 @@ To proceed, I need to know:
 
 If you want, I can also check whether APLD is already being tracked by the system right now.
 
+
+### 🧑 Governor
+
+do you think you will be able to white list stock ticker APLD in sentiment_importer ?
+
+
+### 🤖 Autopilot
+
+Yes, absolutely. Based on my analysis of the codebase:
+
+### What I'd do
+
+The `companies` table has a `white_listed` boolean column. APLD likely already exists as a company record (the EODHD bulk importer auto-creates companies when it fetches price data). I'd just need to flip the flag.
+
+### The plan
+
+1. **Check if APLD exists** in the production DB
+2. **Flip `white_listed = true`** on the record
+3. **Optionally add APLD to `targeted_companies`** in `config/application.rb` if you want it in the manual targeting list too
+
+### What I need from you
+
+**Can I go ahead?** I'll:
+
+1. SSH into `seni_ror` to check if APLD exists in the companies table
+2. Run the update to set `white_listed = true`
+3. Report back the result
+
+If you also want it added to the config file for the manual targeting list, I can open a PR for that too.
+
