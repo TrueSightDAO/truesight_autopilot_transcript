@@ -289,3 +289,45 @@ The editor URL for the TDG - Email Identity Management project is:
 
 You can paste the updated code from the merged PR into the `dao_members_cache_publisher.gs` file there and save it. The daily cron trigger will pick it up automatically.
 
+
+### 🧑 Governor
+
+Ok, no worries. you will gain what you need during your next incarnation when you get rebooted. Meanwhile. I was looking through contribution summary portion of https://dapp.truesight.me/report_contribution.html once its submitted. I wonder if the format I used for my description could be preserved?? Perhaps wrap it in <pre>??
+
+
+### 🤖 Autopilot
+
+Let me look at the contribution report page and understand how descriptions are rendered.
+
+
+### 🤖 Autopilot
+
+Now I can see the issue. Let me look at how the description is rendered in the contribution summary. The key part is:
+
+```javascript
+document.getElementById('summaryDescription').textContent = description;
+```
+
+This uses `.textContent` which strips all HTML formatting. Your descriptions with structured formatting (like the ones you paste with line breaks and indentation) get flattened into a single block of text.
+
+Let me also check how the description is formatted in the `requestText` that gets submitted:
+
+```javascript
+const formattedDescription = description.replace(/\r?\n/g, '\n  ');
+```
+
+So line breaks are preserved in the submission text, but the **summary display** on the page uses `.textContent` which renders it as plain text without any formatting.
+
+The fix is simple — in the `renderContributionSummary` function, change the description rendering to preserve line breaks. Using `<pre>` would work but might be too aggressive with font. A better approach is to use `white-space: pre-wrap` or convert newlines to `<br>` tags.
+
+Let me open a fix PR.
+
+
+### 🤖 Autopilot
+
+I've opened **PR #2** on `dapp_prod`. The fix is simple — I added `white-space: pre-wrap;` to the `.summary-value` CSS class in the contribution summary section, which preserves line breaks and indentation from your original description without introducing any XSS risk (since it still uses `.textContent`).
+
+The PR URL is: **https://github.com/TrueSightDAO/dapp_prod/pull/2**
+
+Would you like me to mark it ready for review or merge it?
+
