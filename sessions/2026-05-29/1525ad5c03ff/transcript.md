@@ -215,3 +215,22 @@ This mirrors the same feature from `report_contribution.html`:
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+Merge it
+
+
+### 🤖 Autopilot
+
+**PR #9 merged** ✅ (sha: `1dbff4e1`)
+
+Both pages now have the same post-submission summary + transaction hash feature:
+
+| Page | Status |
+|------|--------|
+| `report_contribution.html` | ✅ Merged (PR #8) |
+| `report_inventory_movement.html` | ✅ Merged (PR #9) |
+
+Want me to sync `dapp_beta` → `dapp_prod` to deploy both to production?
+
