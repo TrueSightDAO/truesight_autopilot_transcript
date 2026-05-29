@@ -10,54 +10,6 @@
 
 ### 🤖 Autopilot
 
-OK, the `documentation` repo currently has the old sentiment analysis API docs. I'll add a new `INTEGRATION_GUIDE.md` alongside it. Let me write a clean, developer-friendly guide.
-
-
-### 🤖 Autopilot
-
-The `documentation` repo isn't in my allowed list. Let me check what I can write to.
-
-
-### 🤖 Autopilot
-
-My allowed repos for `open_fix_pr` are: `dapp_beta, dapp_prod, tokenomics, truesight_me, truesight_me_prod, agroverse_shop, agroverse_shop_prod, dao_client, market_research, sentiment_importer, truesight_autopilot, .github, agentic_ai_context, agroverse-inventory, dao_protocol`.
-
-The `documentation` repo isn't in that list, but **`dao_protocol`** is — and it already has the `dao_client` README which is the closest thing to an integration guide. That's actually a good home since it's about the protocol/API surface.
-
-Let me add the integration guide there.
-
-
-### 🤖 Autopilot
-
-Done! **PR #50 — `dao_protocol`** → https://github.com/TrueSightDAO/dao_protocol/pull/50
-
-It adds `INTEGRATION_GUIDE.md` covering:
-
-1. **Overview** — what the DAO credentialing layer is
-2. **Core concepts** — RSA-2048 keypairs, canonical payload format, signing, Edgar endpoint
-3. **Registration flow** — how a user gets their public key bound to an email
-4. **Signature verification** — `GET /dao/check_digital_signature`
-5. **Event types table** — all available signed events
-6. **Reference implementations** — Python client, browser DApp, JS helper
-7. **Getting help**
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-I think the integration guide should be more extensive than just the credentialing if we are going down that route isnt it? It should provide an overview of protocols that is current supported by edgar and then for each with a detailed write up much like what you have done so far?
-
-
-### 🤖 Autopilot
-
-You're right. Let me think about what Edgar actually supports as protocols/endpoints that an external developer could integrate with.
-
-Let me check what Edgar's surface area looks like.
-
-
-### 🤖 Autopilot
-
 Now I can see the full Edgar surface. Let me also check the DAO controller to see what the main submission endpoint handles.
 
 
@@ -358,4 +310,19 @@ Found it. The butterfly-effect-club admin panel (`index.html`) is the reference 
 **PR #54** is open — it adds the butterfly-effect-club admin console as a reference implementation for `[CREDENTIALING ATTESTATION EVENT]`, alongside the capoeira platform's `[PRACTICE EVENT]`.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+merge it
+
+
+### 🤖 Autopilot
+
+Merged. The guide now has both reference implementations properly documented:
+
+- **`[PRACTICE EVENT]`** → `capoeira.agroverse.shop` (anonymous keypair, training sessions)
+- **`[CREDENTIALING ATTESTATION EVENT]`** → `butterfly-effect-club.truesight.me` (admin panel, cohort attestation)
+
+Both are in the **Credentialing & Identity** section and have their own reference implementation subsections.
 
