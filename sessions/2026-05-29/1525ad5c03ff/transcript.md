@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The members page reads from `https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json` — a completely different source than `dao_members.json`. Let me check that.
-
-
-### 🤖 Autopilot
-
 Now I see the key difference. The `members.html` page reads from a completely different source:
 
 ```
@@ -192,4 +187,16 @@ I've opened **PR #325** on the `tokenomics` repo. Here's what it does:
 - The `counts.contributors` will now reflect the full 387-member list
 
 The PR is a draft — would you like me to mark it ready for review, or do you want to review the changes first?
+
+
+### 🧑 Governor
+
+What is the URL?
+
+
+### 🤖 Autopilot
+
+The PR URL is:
+
+**https://github.com/TrueSightDAO/tokenomics/pull/325**
 
