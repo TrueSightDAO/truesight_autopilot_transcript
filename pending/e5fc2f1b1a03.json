@@ -61,5 +61,12 @@
     "summary": "Improve report_contribution.html post-submission UX: show transaction hash and full contribution summary for printouts\n\nGary Teh (governor) requested two improvements:\n\n1. **Transaction hash displayed",
     "action": "merge_pr",
     "created_at": "2026-05-29T13:22:16Z"
+  },
+  {
+    "title": "Merge PR #8 on dapp_beta",
+    "qr_code": "",
+    "summary": "Improve report_contribution.html post-submission UX: show transaction hash and full contribution summary for printouts\n\nGary Teh (governor) requested two improvements:\n\n1. **Transaction hash displayed",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T13:25:22Z"
   }
 ]
