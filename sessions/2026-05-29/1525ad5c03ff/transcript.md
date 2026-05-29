@@ -342,3 +342,28 @@ The error happens because:
 
 Do you have a copy of the `edgar_dapp_listener_key.json` file somewhere? It would be the service account key for `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com`. If you can share it, I can get it onto the server.
 
+
+### 🧑 Governor
+
+Do you have it on your server?
+
+
+### 🤖 Autopilot
+
+Let me check the autopilot server for any credential files.
+
+
+### 🤖 Autopilot
+
+No, I don't have it on this server. This is the autopilot server — it doesn't have the sentiment_importer codebase or its credentials.
+
+The `edgar_dapp_listener_key.json` file is a Google service account private key for `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com`. It's a credential file that was originally generated from Google Cloud Console and placed on the Edgar server. It seems to have been lost, possibly when the old `seni_ror_2026` server was stopped.
+
+**Options to fix this:**
+
+1. **If you have a backup** — check your local machine or Downloads folder for `edgar_dapp_listener_key.json`
+2. **Regenerate from Google Cloud Console** — go to https://console.cloud.google.com → IAM & Admin → Service Accounts → find `edgar-dapp-listener@get-data-io.iam.gserviceaccount.com` → Keys → Add Key → Create New Key (JSON). Then share the file with me and I'll place it on the Edgar server.
+3. **Check if it's on the stopped old server** — the old `seni_ror_2026` instance (i-0ac8462aa6bb54986) is stopped but its EBS volume still exists. We could start it temporarily to grab the file.
+
+Which approach would you prefer?
+
