@@ -82,5 +82,12 @@
     "summary": "Add INTEGRATION_GUIDE.md \u2014 a clean, developer-friendly guide for external developers who want to integrate with the TrueSight DAO credentialing layer.\n\nThe dao_protocol repo already holds the dao_clie",
     "action": "merge_pr",
     "created_at": "2026-05-29T18:12:22Z"
+  },
+  {
+    "title": "Merge PR #52 on dao_protocol",
+    "qr_code": "",
+    "summary": "Add a banner link to INTEGRATION_GUIDE.md at the very top of README.md, before the existing content.\n\nThe first line of README.md should be:\n\n> \ud83d\udcd6 **New to the DAO? Start with the [Integration Guide \u2192]",
+    "action": "merge_pr",
+    "created_at": "2026-05-29T18:42:32Z"
   }
 ]
