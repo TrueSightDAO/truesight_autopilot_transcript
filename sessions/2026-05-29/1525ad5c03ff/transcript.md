@@ -107,3 +107,37 @@ Since you're selecting multiple contributors (including yourself or others), the
 
 Just say the word and I'll open a draft PR on `dapp_prod`.
 
+
+### 🧑 Governor
+
+Yes, go for it
+
+
+### 🤖 Autopilot
+
+Let me open a fix PR with these changes.
+
+
+### 🤖 Autopilot
+
+The PR is open! Here's a summary of what it does:
+
+**PR #1 — `dapp_prod`** → https://github.com/TrueSightDAO/dapp_prod/pull/1
+
+### Changes made:
+
+1. **Transaction hash under the button** — After submission, the `requestHash` (signed request ID) is now displayed in a dedicated field below the submit button, both in online (Edgar) and offline (clipboard/share) flows.
+
+2. **Contribution Summary card** — After successful submission, a consolidated summary card appears below the button showing:
+   - ✅ **Contributor(s)** — full name list
+   - ✅ **Type** — Time (X hours Y minutes) or USD ($X)
+   - ✅ **Description** — full text
+   - ✅ **TDG Issued** — per contributor
+   - ✅ **Transaction Hash** — clickable/copyable
+   - ✅ **File Location** — clickable link if uploaded
+   - ✅ **Timestamp** — submission time
+
+3. **Print-friendly** — The summary card uses clean, non-interactive styling that renders well when you print the page (Ctrl+P), so the printout you share with contributors has all the details visible.
+
+Want me to merge it, or would you like to review it first?
+
