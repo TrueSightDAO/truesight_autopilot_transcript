@@ -210,3 +210,33 @@ Looks good to me merge it
 
 PR #325 has been merged. The next time the `dao_members_cache_publisher` runs (either via the daily cron at ~03:00 UTC, or the next Edgar webhook trigger), `dao_members.json` will be regenerated with all 387 contributors — those with public keys will have their keys listed, and those without will have an empty `public_keys` array.
 
+
+### 🧑 Governor
+
+are you able to clasp push and deploy?
+
+
+### 🤖 Autopilot
+
+Let me check if `clasp` is available on this server.
+
+
+### 🤖 Autopilot
+
+No `clasp` installed on this server. `clasp` is a Node.js tool for pushing to Google Apps Script projects — it's typically installed via `npm` and used from a developer's local machine or CI, not from this autopilot server.
+
+The `dao_members_cache_publisher.gs` file is deployed as a Google Apps Script project (attached to the Main Ledger spreadsheet). To push the merged code, you'd need to:
+
+1. **Install clasp locally** on a dev machine: `npm install -g @google/clasp`
+2. **Clone the project**: `clasp clone <script-id>` (the script ID is in the Apps Script project settings)
+3. **Push the updated code**: `clasp push`
+
+Alternatively, you can deploy directly from the **Apps Script editor** in the browser:
+1. Open the Main Ledger spreadsheet (`1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`)
+2. Go to **Extensions → Apps Script**
+3. Navigate to the `dao_members_cache_publisher.gs` file
+4. Paste the updated code (from the merged PR)
+5. Click **Deploy → Test deployments** or use the existing deployment
+
+I don't have `clasp` or `npm` installed on this server, and I don't have access to the Google Apps Script project credentials needed to authenticate clasp. This would need to be done from a machine with the proper GAS project access. Would you like me to look into whether there's a CI/CD pipeline set up for this?
+
