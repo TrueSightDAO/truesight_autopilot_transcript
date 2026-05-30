@@ -325,3 +325,27 @@ That's a bigger infrastructure change. For now, the simplest approach with **min
 
 Want me to open a PR that sets up this zero-downtime deploy pattern? Or for this first deploy, just do the simple restart (brief downtime) and we can add zero-downtime as a follow-up?
 
+
+### 🧑 Governor
+
+Skip the zero downtime for now 
+
+Just merge the PRs
+
+
+### 🤖 Autopilot
+
+Both merged:
+
+- **PR #64** — `/admin/deploy` self-deploy endpoint
+- **PR #65** — Local subprocess fallback in the deploy tool
+
+Now you just need to SSH in and run:
+
+```bash
+cd /opt/truesight_autopilot && sudo -u ubuntu git pull origin main
+sudo systemctl restart truesight-autopilot
+```
+
+After that, next time you can just say "redeploy" and I'll handle it myself.
+
