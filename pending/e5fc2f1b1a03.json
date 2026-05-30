@@ -54,5 +54,12 @@
     "summary": "## Problem\n\nOn `report_contribution.html`, after a contribution is submitted, the **Contribution Summary** section displays the description using `.textContent`, which strips all formatting \u2014 line bre",
     "action": "merge_pr",
     "created_at": "2026-05-29T20:40:09Z"
+  },
+  {
+    "title": "Merge PR #55 on dao_protocol",
+    "qr_code": "",
+    "summary": "Update INTEGRATION_GUIDE.md to clarify that [PRACTICE EVENT] is COPPA-compliant by design \u2014 no email or personal identification required, only the public key.\n\nTwo changes needed:\n\n1. In the Credentia",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T05:01:10Z"
   }
 ]
