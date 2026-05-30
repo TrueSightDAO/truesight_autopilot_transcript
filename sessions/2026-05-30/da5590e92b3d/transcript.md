@@ -271,47 +271,39 @@ Let me try yet another approach. Let me use `open_fix_pr` on the `oracle` repo b
 
 ### 🧑 Governor
 
-Are you supposed to setup the Sophia subdomain DNS record on route53 first?
+Merge it
 
 
 ### 🤖 Autopilot
 
-Great question. Let me check what the oracle repo's `index.html` actually expects and whether the DNS needs to be set up first.
-
-The `GAS_ORACLE_ADVISORY_URL` currently points to a Google Apps Script URL. I was going to change it to `http://100.52.234.163:8001/oracle-advisory` — but that's the autopilot's own IP, not a proper domain name. If the `oracle` site is served from a different domain (like `oracle.truesight.me`), then the browser's CORS policy would block requests from `oracle.truesight.me` to `100.52.234.163:8001`.
-
-So yes, the proper flow is:
-
-1. **Set up a DNS record** — e.g. `sophia.truesight.me` or `oracle-advisory.truesight.me` pointing to `100.52.234.163`
-2. **Update the oracle `index.html`** to point to the proper domain instead of a raw IP
-3. **Make sure the autopilot's CORS allows that domain** (currently `cors_origins: ["*"]` so it should be fine)
-
-Let me check what Route53 zones we have and set up the DNS record.
+PR #70 is merged. Now let me try `open_fix_pr` on the `oracle` repo:
 
 
 ### 🤖 Autopilot
 
-We have `truesight.me.` zone. Let me check what records already exist there:
+PR #22 is open on the `oracle` repo: https://github.com/TrueSightDAO/oracle/pull/22
+
+This PR makes the 3 changes:
+1. **GAS_ORACLE_ADVISORY_URL** → `http://100.52.234.163:8001/oracle-advisory`
+2. **"DAO Advisory (Grok)"** → **"DAO Advisory (DeepSeek)"**
+3. **"Loading DAO advisory from Grok via GAS..."** → **"Loading DAO advisory from autopilot..."**
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+Merge it
 
 
 ### 🤖 Autopilot
 
-I see `oracle.truesight.me` is already a CNAME pointing to `truesightdao.github.io` (GitHub Pages). So the oracle site is served from GitHub Pages.
+PR #22 merged. The `oracle` repo's `index.html` now points to the autopilot's `/oracle-advisory` endpoint at `http://100.52.234.163:8001/oracle-advisory` instead of the old GAS/Grok URL.
 
-Now, the question is: should `sophia.truesight.me` be a new subdomain pointing to this autopilot box (`100.52.234.163`)? That would be the proper way to do it — the oracle `index.html` would call `https://sophia.truesight.me/oracle-advisory` instead of a raw IP.
+The DAO Advisory panel will now:
+- **Source**: Autopilot (DeepSeek) instead of GAS (Grok)
+- **Heading**: "DAO Advisory (DeepSeek)"
+- **Loading text**: "Loading DAO advisory from autopilot..."
 
-Let me create the DNS record:
-
-
-### 🤖 Autopilot
-
-**Done!** `sophia.truesight.me` → `100.52.234.163` (A record, TTL 60s).
-
-Now the proper flow is:
-
-1. ✅ **DNS record created** — `sophia.truesight.me` → `100.52.234.163`
-2. **Next: Update oracle `index.html`** — change `GAS_ORACLE_ADVISORY_URL` to `https://sophia.truesight.me/oracle-advisory` (instead of the raw IP)
-3. **Next: Update the heading/labels** — "DAO Advisory (Grok)" → "DAO Advisory (DeepSeek)", etc.
-
-But I still need to merge PR #70 first so `open_fix_pr` works on the `oracle` repo. Can you say "merge it" for PR #70?
+The `/oracle-advisory` endpoint is already live on this box (port 8001). Want me to test it?
 
