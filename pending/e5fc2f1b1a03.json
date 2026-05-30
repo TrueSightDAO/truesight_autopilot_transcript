@@ -82,5 +82,12 @@
     "summary": "Add nginx setup to scripts/deploy.sh. After the '=== Checking health ===' section, add a new section '=== Setting up nginx + certbot ===' that:\n\n1. Symlinks config/nginx/sophia.conf to /etc/nginx/site",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:45:57Z"
+  },
+  {
+    "title": "Merge PR #73 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix the deploy tool (app/tools/deploy.py) local execution path. The local path uses `source .venv/bin/activate` which fails because subprocess.run with shell=True uses /bin/sh, not bash. Change the lo",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T22:49:35Z"
   }
 ]
