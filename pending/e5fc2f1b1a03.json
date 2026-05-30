@@ -40,5 +40,12 @@
     "summary": "Add a public /oracle-advisory endpoint to the FastAPI app that accepts the same GET params as the existing GAS oracle_advisory_bridge (mode, signature, primary_number, primary_name, primary_judgment, ",
     "action": "merge_pr",
     "created_at": "2026-05-30T14:26:59Z"
+  },
+  {
+    "title": "Merge PR #64 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add a self-deploy endpoint to app/main.py. Add this code near the other admin endpoints (around line 1000, before the Autopilot section):\n\n```python\n@app.post(\"/admin/deploy\")\nasync def admin_deploy(r",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T14:35:06Z"
   }
 ]
