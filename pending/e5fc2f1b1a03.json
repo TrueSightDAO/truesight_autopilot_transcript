@@ -75,5 +75,12 @@
     "summary": "Add SOPHIA.md \u2014 the new identity and nginx setup documentation for the TrueSight DAO autopilot, now named Sophia.\n\nCreate SOPHIA.md with:\n- Sophia's identity: the DAO's wisdom layer, named after the G",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:09:14Z"
+  },
+  {
+    "title": "Merge PR #68 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add \"Change\" to the AWS read-only allowlist in app/tools/aws_tools.py so the autopilot can create Route53 DNS records (ChangeResourceRecordSets).\n\nThe IAM user `truesight_autopilot` is in the Administ",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T22:15:52Z"
   }
 ]
