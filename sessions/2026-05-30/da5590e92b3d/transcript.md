@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me check the current Oracle deployment and how it's configured on AWS.
-
-
-### 🤖 Autopilot
-
 Now I have a clear picture. Let me check how the Oracle is currently deployed — it's a standalone static site at `oracle.truesight.me` served from the `oracle` repo via GitHub Pages.
 
 Let me check the current DNS/CNAME setup for the Oracle domain.
@@ -254,4 +249,51 @@ Great! Both PRs are open. Here's a summary of what's been done and what's pendin
 3. **Oracle frontend** — Update `oracle.truesight.me`'s `index.html` to call `https://sophia.truesight.me/oracle-advisory` instead of the GAS URL (or I can do that in a separate PR)
 
 Want me to go ahead and update the Oracle's `index.html` to point at Sophia?
+
+
+### 🧑 Governor
+
+Regarding DNS can’t you do that via route53 on explorya AWS?
+
+
+### 🤖 Autopilot
+
+Good call — let me check if Route53 is set up for `truesight.me` in the explorya account.
+
+
+### 🤖 Autopilot
+
+`truesight.me` is hosted in Route53 on explorya. Let me check what's already there and add the A record for Sophia.
+
+
+### 🤖 Autopilot
+
+Route53 is set up for `truesight.me` in explorya. Let me add the A record for `sophia.truesight.me` pointing to the autopilot EC2.
+
+
+### 🤖 Autopilot
+
+Right — I can only do read-only AWS calls. The Route53 change requires write access. Here's the exact command you need to run:
+
+**Add the DNS record for Sophia:**
+
+```bash
+aws route53 change-resource-record-sets \
+  --hosted-zone-id Z0032474227N6EQ3Z4QU \
+  --change-batch '{
+    "Changes": [{
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "sophia.truesight.me.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [{"Value": "100.52.234.163"}]
+      }
+    }]
+  }'
+```
+
+Run that with your explorya AWS credentials and it'll create `sophia.truesight.me` → `100.52.234.163`. Once DNS propagates (a few minutes with TTL 300), I can set up certbot for the SSL cert.
+
+Want me to also update the Oracle frontend (`oracle.truesight.me`'s `index.html`) to call `https://sophia.truesight.me/oracle-advisory` instead of the GAS URL?
 
