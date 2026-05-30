@@ -89,5 +89,12 @@
     "summary": "Fix the deploy tool (app/tools/deploy.py) local execution path. The local path uses `source .venv/bin/activate` which fails because subprocess.run with shell=True uses /bin/sh, not bash. Change the lo",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:49:35Z"
+  },
+  {
+    "title": "Merge PR #78 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add a root `/` landing page for sophia.truesight.me that displays a beautiful SVG avatar of Sophia (the DAO Oracle persona) instead of returning {\"detail\":\"Not Found\"}.\n\nThe page should:\n1. Be served ",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T23:32:34Z"
   }
 ]
