@@ -268,3 +268,25 @@ Wait — the GitHub Contents API requires the full file content for updates. The
 
 Let me try yet another approach. Let me use `open_fix_pr` on the `oracle` repo by first merging PR #70. Gary, can you say "merge it" so I can merge PR #70 and then use `open_fix_pr` on the oracle repo?
 
+
+### 🧑 Governor
+
+Merge it
+
+
+### 🤖 Autopilot
+
+PR #70 is merged. Now let me try `open_fix_pr` on the `oracle` repo:
+
+
+### 🤖 Autopilot
+
+PR #22 is open on the `oracle` repo: https://github.com/TrueSightDAO/oracle/pull/22
+
+This PR makes the 3 changes:
+1. **GAS_ORACLE_ADVISORY_URL** → `http://100.52.234.163:8001/oracle-advisory`
+2. **"DAO Advisory (Grok)"** → **"DAO Advisory (DeepSeek)"**
+3. **"Loading DAO advisory from Grok via GAS..."** → **"Loading DAO advisory from autopilot..."**
+
+Want me to merge it?
+
