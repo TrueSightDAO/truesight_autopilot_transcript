@@ -89,5 +89,12 @@
     "summary": "Fix deploy.py local path: replace 'source .venv/bin/activate && pip install -r requirements.txt' with '. .venv/bin/activate && pip install -r requirements.txt' because /bin/sh doesn't support 'source'",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:17:46Z"
+  },
+  {
+    "title": "Merge PR #70 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "The file app/tools/orchestration_specs.py has a hardcoded _ALLOWED_CHAT_REPOS list that doesn't include 'oracle'. Add 'oracle' to the list so the open_fix_pr tool can be used on the oracle repo. The r",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T22:33:29Z"
   }
 ]
