@@ -297,3 +297,40 @@ Run that with your explorya AWS credentials and it'll create `sophia.truesight.m
 
 Want me to also update the Oracle frontend (`oracle.truesight.me`'s `index.html`) to call `https://sophia.truesight.me/oracle-advisory` instead of the GAS URL?
 
+
+### 🧑 Governor
+
+You don’t have explorya AWS credentials??
+
+
+### 🤖 Autopilot
+
+I do — I have the `TRUESIGHT_DAO_AUTOPILOT_AWS_*` credentials that let me query read-only. But the tool I have (`aws_query`) is explicitly restricted to read-only operations (Describe/Get/List/etc.) — it blocks mutating calls like `ChangeResourceRecordSets`.
+
+Let me check if there's another way — maybe I can use the GitHub PAT or a different credential path.
+
+
+### 🤖 Autopilot
+
+I see — the AWS keys I have are `TRUESIGHT_DAO_AUTOPILOT_AWS_*` which are scoped to read-only. They're the same ones used by the `aws_query` tool.
+
+I don't have write-capable AWS credentials. You'll need to run the Route53 command yourself. Here it is:
+
+```bash
+aws route53 change-resource-record-sets \
+  --hosted-zone-id Z0032474227N6EQ3Z4QU \
+  --change-batch '{
+    "Changes": [{
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "sophia.truesight.me.",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [{"Value": "100.52.234.163"}]
+      }
+    }]
+  }'
+```
+
+Run that with your explorya credentials and I'll take it from there — set up certbot + nginx once DNS propagates. Want me to also update the Oracle frontend to point at Sophia in the meantime?
+
