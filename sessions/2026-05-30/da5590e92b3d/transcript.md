@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-I'm already on the EC2 box. Let me just git pull and restart the service directly.
-
-
-### 🤖 Autopilot
-
-I'm on the EC2 box. Let me pull the latest code and restart.
-
-
-### 🤖 Autopilot
-
-The merge commit `36b3150` isn't here yet. Let me pull.
-
-
-### 🤖 Autopilot
-
 I can't run git pull directly from here (no shell access). Let me use the GitHub API to check what the merged PR looks like, then I'll use the deploy script approach. Actually, I can use `open_fix_pr` to deploy — but that's circular. Let me just check if the endpoint code is already in the merged PR by reading the merged file.
 
 
@@ -253,4 +238,33 @@ sudo monit restart truesight-autopilot
 ```
 
 The code is merged at commit `36b3150` on `main` — just needs to be pulled and the service restarted.
+
+
+### 🧑 Governor
+
+Is there a way to modify the codebase so that the next time I ask you to redeploy yourself you could once I manually deployed you this time?
+
+
+### 🤖 Autopilot
+
+Great idea. I can add a self-deploy endpoint that does `git pull` + restart from within the process itself (no SSH needed). Let me open a PR for that.
+
+
+### 🤖 Autopilot
+
+The fix agent failed. Let me try a more targeted approach — I'll write the code directly.
+
+
+### 🤖 Autopilot
+
+PR #64 is open. It adds a `POST /admin/deploy` endpoint that:
+
+1. **Verifies JWT auth** — only authenticated governors can trigger it
+2. **Runs `git pull origin main`** — pulls the latest code
+3. **Forks a child process** that waits 1 second then runs `sudo systemctl restart truesight-autopilot`
+4. **Returns immediately** with the git output before the parent process gets killed by the restart
+
+So once this PR is merged and you manually restart this time, next time you can just say "redeploy" and I'll call my own `/admin/deploy` endpoint to pull + restart myself.
+
+Want me to merge PR #64 now so it's included in the deploy?
 
