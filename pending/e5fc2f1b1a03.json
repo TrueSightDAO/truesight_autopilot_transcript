@@ -35,34 +35,6 @@
     "created_at": "2026-05-29T20:38:41Z"
   },
   {
-    "title": "Merge PR #63 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add a public /oracle-advisory endpoint to the FastAPI app that accepts the same GET params as the existing GAS oracle_advisory_bridge (mode, signature, primary_number, primary_name, primary_judgment, ",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T14:26:59Z"
-  },
-  {
-    "title": "Merge PR #64 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add a self-deploy endpoint to app/main.py. Add this code near the other admin endpoints (around line 1000, before the Autopilot section):\n\n```python\n@app.post(\"/admin/deploy\")\nasync def admin_deploy(r",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T14:35:06Z"
-  },
-  {
-    "title": "Merge PR #65 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix the deploy_autopilot tool in app/tools/deploy.py so it works when running on the same EC2 instance. Currently it always tries SSH to 'truesight-autopilot' hostname which fails with DNS resolution ",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T14:38:12Z"
-  },
-  {
-    "title": "Merge PR #66 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add 'oracle' to the allowed_repos list in app/config.py so the autopilot can open fix PRs on the oracle repo. The oracle repo contains the I Ching Oracle frontend at oracle.truesight.me.",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:00:22Z"
-  },
-  {
     "title": "Merge PR #67 on truesight_autopilot",
     "qr_code": "",
     "summary": "Set up nginx reverse proxy config for Sophia (sophia.truesight.me) and update README with the new name.\n\n1. Create /etc/nginx/sites-available/sophia with:\n   - server_name sophia.truesight.me\n   - loc",
@@ -77,13 +49,6 @@
     "created_at": "2026-05-30T22:09:14Z"
   },
   {
-    "title": "Merge PR #68 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add \"Change\" to the AWS read-only allowlist in app/tools/aws_tools.py so the autopilot can create Route53 DNS records (ChangeResourceRecordSets).\n\nThe IAM user `truesight_autopilot` is in the Administ",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:15:52Z"
-  },
-  {
     "title": "Merge PR #69 on truesight_autopilot",
     "qr_code": "",
     "summary": "Fix deploy.py local path: replace 'source .venv/bin/activate && pip install -r requirements.txt' with '. .venv/bin/activate && pip install -r requirements.txt' because /bin/sh doesn't support 'source'",
@@ -91,10 +56,10 @@
     "created_at": "2026-05-30T22:17:46Z"
   },
   {
-    "title": "Merge PR #70 on truesight_autopilot",
+    "title": "Merge PR #22 on oracle",
     "qr_code": "",
-    "summary": "The file app/tools/orchestration_specs.py has a hardcoded _ALLOWED_CHAT_REPOS list that doesn't include 'oracle'. Add 'oracle' to the list so the open_fix_pr tool can be used on the oracle repo. The r",
+    "summary": "Cut over the DAO Advisory panel from GAS/Grok to autopilot/DeepSeek. Three changes needed in index.html:\n\n1. Change GAS_ORACLE_ADVISORY_URL from the Google Apps Script URL to http://100.52.234.163:800",
     "action": "merge_pr",
-    "created_at": "2026-05-30T22:33:29Z"
+    "created_at": "2026-05-30T22:36:46Z"
   }
 ]
