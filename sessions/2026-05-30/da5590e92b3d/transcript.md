@@ -268,3 +268,31 @@ So once this PR is merged and you manually restart this time, next time you can 
 
 Want me to merge PR #64 now so it's included in the deploy?
 
+
+### 🧑 Governor
+
+Why do that approach?? Can’t I just ask you to redeploy and then you do that??
+
+
+### 🤖 Autopilot
+
+You're right — I was overcomplicating it. I already have the `deploy_autopilot` tool available. The only problem is it tries to SSH to `truesight-autopilot` hostname which doesn't resolve.
+
+The fix is simpler: **just add `truesight-autopilot` to `/etc/hosts` pointing to `127.0.0.1`** so the SSH deploy tool can connect to localhost.
+
+But wait — I can't write to `/etc/hosts` either (need root). And SSH to localhost would need the SSH server running and key auth set up for the ubuntu user.
+
+The even simpler fix: **make the deploy tool detect it's running locally and use subprocess instead of SSH**. Let me update the deploy tool.
+
+
+### 🤖 Autopilot
+
+PR #65 is open. It makes the deploy tool detect it's running locally and use `subprocess` instead of SSH.
+
+So the plan:
+1. **Merge PR #64** (self-deploy endpoint) and **PR #65** (local deploy fix) — both are ready
+2. **You SSH in once** and run `git pull && sudo systemctl restart`
+3. **Next time** you just say "redeploy" and I handle it myself
+
+Want me to merge both PRs?
+
