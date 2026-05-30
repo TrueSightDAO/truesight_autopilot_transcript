@@ -385,3 +385,13 @@ The simpler path right now: just run `sudo systemctl restart truesight-autopilot
 
 Want me to merge PR #69 first so future self-deploys work?
 
+
+### 🧑 Governor
+
+Found it. Redeploying now
+
+
+### 🤖 Autopilot
+
+Great — once it's back up, I'll create the Route53 DNS record for `sophia.truesight.me`. Let me know when the health check passes!
+
