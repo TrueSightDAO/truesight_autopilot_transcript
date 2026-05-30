@@ -496,3 +496,100 @@ The GAS script becomes irrelevant for the advisory path. I can leave it running 
 
 Want me to open a PR on the oracle repo with the URL swap? I'd need to know what public URL I should listen on — or I can set one up as part of this.
 
+
+### 🧑 Governor
+
+Option B then. Also do you already have a public URL??
+
+
+### 🤖 Autopilot
+
+I don't have a public URL yet. The governor chatbot service runs on EC2 at `chatbot.truesight.me` but that's behind auth (RSA signature verification). I need a lightweight public endpoint — no auth, just accepts the hexagram payload and returns advisory text.
+
+Let me check what infrastructure I have available.
+
+
+### 🤖 Autopilot
+
+I'm running on `truesight-autopilot` (100.52.234.163). Let me check what's already listening there.
+
+
+### 🤖 Autopilot
+
+There's nginx on the autopilot box. Let me check what's already configured.
+
+
+### 🤖 Autopilot
+
+Plain nginx serving static files. I need to:
+
+1. Add a simple endpoint on this box that accepts the hexagram payload and returns advisory text
+2. Wire it through nginx
+
+The simplest approach: a tiny Python script (FastAPI or even a plain CGI) that accepts GET params, calls me (the autopilot's own reasoning), and returns JSON. But actually — I *am* the autopilot. I can just respond directly if there's a way to trigger me.
+
+The cleanest path: **add a simple nginx location that proxies to a lightweight Python handler.** The handler receives the hexagram params, I generate the advisory inline (using my own model access), and return it.
+
+Let me set this up.
+
+
+### 🤖 Autopilot
+
+OK, this is the autopilot box — it's not serving the oracle page (that's on GitHub Pages). I just need a simple endpoint here. Let me create a minimal Python handler.
+
+Actually, the simplest possible thing: a Python script behind nginx that receives the params, constructs a prompt, and returns the advisory. I'll use the existing Python environment.
+
+
+### 🤖 Autopilot
+
+There's already a FastAPI app here. Let me check if it's running and what port.
+
+
+### 🤖 Autopilot
+
+I can see the full picture now. The autopilot FastAPI app is already running on this box (port 8000 based on the config). Let me check what port it's actually on.
+
+
+### 🤖 Autopilot
+
+The autopilot runs on port **8001**. Let me check if it's actually running.
+
+
+### 🤖 Autopilot
+
+The autopilot is running on port 8001. Now I need to:
+
+1. Add a simple public endpoint to this FastAPI app that accepts the oracle advisory params and returns advisory text
+2. Wire it through nginx so it's accessible at a clean URL
+3. Swap the URL in the Oracle page
+
+Let me add the endpoint. The simplest approach: a GET endpoint that accepts the same params the GAS bridge currently receives, constructs a system prompt, calls DeepSeek (which I already have), and returns the advisory.
+
+
+### 🤖 Autopilot
+
+I have everything I need. Let me add a simple endpoint to the FastAPI app and wire it through nginx. I'll add it directly to `main.py`.
+
+
+### 🤖 Autopilot
+
+Now let me add the oracle advisory endpoint to the FastAPI app and wire nginx. I'll add a simple GET endpoint that accepts the same params as the GAS bridge.
+
+
+### 🤖 Autopilot
+
+Now let me add the oracle advisory endpoint. I'll add it to `main.py` — a simple GET endpoint that accepts the hexagram params, fetches the advisory snapshot, and calls DeepSeek to generate the advisory.
+
+
+### 🤖 Autopilot
+
+PR is open: **https://github.com/TrueSightDAO/truesight_autopilot/pull/63**
+
+Here's the plan:
+
+1. **PR #63** adds the `/oracle-advisory` endpoint to the autopilot + nginx config
+2. Once merged and deployed, the endpoint will be available at `http://100.52.234.163/oracle-advisory`
+3. Then I swap the `GAS_ORACLE_ADVISORY_URL` in the Oracle page's `index.html` to point there
+
+Want me to merge PR #63 and deploy it? Then I'll do the Oracle page swap.
+
