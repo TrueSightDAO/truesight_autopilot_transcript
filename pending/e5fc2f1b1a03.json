@@ -61,5 +61,12 @@
     "summary": "Add 'oracle' to the allowed_repos list in app/config.py so the autopilot can open fix PRs on the oracle repo. The oracle repo contains the I Ching Oracle frontend at oracle.truesight.me.",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:00:22Z"
+  },
+  {
+    "title": "Merge PR #67 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Set up nginx reverse proxy config for Sophia (sophia.truesight.me) and update README with the new name.\n\n1. Create /etc/nginx/sites-available/sophia with:\n   - server_name sophia.truesight.me\n   - loc",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T22:08:06Z"
   }
 ]
