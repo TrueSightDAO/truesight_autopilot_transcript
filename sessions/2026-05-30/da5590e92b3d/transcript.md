@@ -67,103 +67,89 @@ What exactly are you looking to cut over? The advisory backend, the DNS, or some
 
 ### 🧑 Governor
 
-The URL in Oracle instead of call the GAS calls your new end point
+Why not configure the nginx instance that is behind Edgar.truesight.me to have a path directed to autopilot?? That way we can save on needing yet another SSL certificate
 
 
 ### 🤖 Autopilot
 
-Got it — you want the Oracle's DAO Advisory to call **your new endpoint** (the autopilot) instead of the GAS web app. Let me check the current URL in the Oracle code and what endpoint the autopilot exposes.
+That's a smart approach — reuse the existing Edgar nginx + SSL setup. Let me check what's running on that EC2 instance and how Edgar's nginx is configured.
 
 
 ### 🤖 Autopilot
 
-Let me check the autopilot's FastAPI app to see what endpoints exist and what the new advisory endpoint should look like.
+I see — the Edgar EC2 instances (`seni_sk_2026` and `seni_ror_2026`) are both **stopped**. The only running instance is the autopilot itself (`truesight-autopilot`). Let me check where Edgar is actually running and what nginx config is in play.
 
 
 ### 🤖 Autopilot
 
-I can see the endpoint already exists! The autopilot already has a `/oracle-advisory` endpoint at line ~180 that's designed to replace the GAS call. Now I need to update the Oracle's `index.html` to point to the autopilot's endpoint instead of the GAS URL.
+Now I see — Edgar runs on **sentiment_importer** deployed at `edgar.truesight.me`. Let me check what's actually running there and how nginx is configured.
 
-Let me check the current GAS URL in the Oracle code and the autopilot's public URL.
 
-The current Oracle code has:
+### 🤖 Autopilot
+
+`sentiment_importer` is private. Let me check the autopilot's own nginx config and see what's currently running on it.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The **autopilot EC2** (`truesight-autopilot`) has nginx installed but it's just the default config — no virtual hosts set up. The autopilot's FastAPI service runs on port 8001.
+
+The **Edgar EC2 instances** (`seni_sk_2026` and `seni_ror_2026`) are both **stopped**, so there's no Edgar nginx to piggyback on right now.
+
+Here's my understanding of what you're proposing:
+
+**The plan:**
+1. The autopilot EC2 already has nginx installed
+2. We configure nginx on the autopilot box to serve as a reverse proxy — so `edgar.truesight.me/oracle/` (or a subdomain) proxies to the autopilot's FastAPI at `localhost:8001`
+3. This reuses the existing SSL cert for `edgar.truesight.me` — no new cert needed
+
+But wait — the Edgar instances are **stopped**. Is `edgar.truesight.me` currently pointing at a different host (like an ELB or CloudFront), or is it just down?
+
+Let me check the DNS:
+
+
+### 🤖 Autopilot
+
+So `edgar.truesight.me` is **live** — it's running somewhere (likely on one of those instances that got restarted, or a different host). Let me check what's actually serving it.
+
+
+### 🤖 Autopilot
+
+OK, so `edgar.truesight.me` is live and running the sentiment_importer Rails app (market data site). It's not on the stopped EC2 instances — it must be on a different host or an Elastic Beanstalk/Heroku setup.
+
+Let me check where it's actually hosted.
+
+
+### 🤖 Autopilot
+
+That search result is noise. Let me check the actual DNS directly.
+
+
+### 🤖 Autopilot
+
+`edgar.truesight.me` resolves to `54.211.179.126` — that's a different IP from the autopilot (`100.52.234.163`). Let me check what that IP is.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture:
+
+- **`edgar.truesight.me`** runs on **`seni_ror_200250915`** (t2.small, `54.211.179.126`) in the **nelanco** AWS account — this is the old Edgar instance that was restarted.
+- **The autopilot** runs on `truesight-autopilot` (`100.52.234.163`) in the **explorya** account.
+- They're in **different AWS accounts** and **different VPCs**.
+
+So we can't just add an nginx location on the Edgar box pointing to the autopilot — they're on separate instances in separate accounts.
+
+**The cleaner approach:** Configure nginx on the **autopilot EC2** itself to serve as a reverse proxy, and we can either:
+1. **Add a path** under an existing domain that already has SSL (like `edgar.truesight.me/oracle/`) — but that requires access to the Edgar nginx config on `seni_ror_200250915` in the nelanco account.
+2. **Or** set up a subdomain like `oracle-api.truesight.me` pointing to the autopilot, with a Let's Encrypt cert (free, auto-renewing).
+
+**What exactly do you want the Oracle to point to?** 
+
+The Oracle frontend (`oracle.truesight.me`) is already live via GitHub Pages. The **DAO Advisory backend** (the GAS web app that generates AI readings) is what the Oracle's `index.html` calls at:
 ```
-GAS_ORACLE_ADVISORY_URL = "https://script.google.com/macros/s/AKfycbxhfxG4o-nQjgCcq3RT3A37__qXKJ1QX2HdLldNbtbyM2gWmGIKfDhROP2lBiDkRBSt1w/exec"
+https://script.google.com/macros/s/AKfycbxhfxG4o-nQjgCcq3RT3A37__qXKJ1QX2HdLldNbtbyM2gWmGIKfDhROP2lBiDkRBSt1w/exec
 ```
 
-The autopilot's `/oracle-advisory` endpoint is at `https://oracle.truesight.me/oracle-advisory`... wait, no — the autopilot runs on EC2 at `100.52.234.163:8001`. Let me check what public URL it's served at.
-
-
-### 🤖 Autopilot
-
-The autopilot EC2 is in the `default` security group which allows all traffic from anywhere. The autopilot runs on port 8001. Let me check if there's a reverse proxy or if it's directly accessible.
-
-Let me look at the autopilot's config to see what host/port it binds to and if there's a domain name set up.
-
-
-### 🤖 Autopilot
-
-The autopilot runs on port 8001 at `0.0.0.0`. The EC2 public IP is `100.52.234.163`. But there's no reverse proxy or domain pointing to it yet for the Oracle advisory endpoint.
-
-Let me check if there's an nginx or any reverse proxy on the EC2.
-
-
-### 🤖 Autopilot
-
-Nginx is installed but I don't see a config for proxying to the autopilot. Let me check the current nginx config on the EC2.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. The autopilot runs on port 8001 on the EC2 (`100.52.234.163`). The Oracle's `index.html` has a hardcoded `GAS_ORACLE_ADVISORY_URL` that points to the GAS web app.
-
-Here's what needs to happen:
-
-1. **The Oracle's `index.html`** needs the `GAS_ORACLE_ADVISORY_URL` changed from the GAS URL to the autopilot's endpoint
-2. **The autopilot** needs a public-facing URL — either directly via the EC2 IP:port, or via a domain/subdomain
-
-The simplest approach: point the Oracle at `http://100.52.234.163:8001/oracle-advisory` (direct EC2). But that's HTTP, not HTTPS, and browsers will block mixed content since the Oracle is served over HTTPS.
-
-Better approach: set up an nginx reverse proxy on the EC2 to serve the `/oracle-advisory` path, or use a subdomain.
-
-Let me check what the current Oracle site URL is and propose the cleanest cut-over.
-
-The Oracle is at `oracle.truesight.me` (GitHub Pages). The autopilot is at `100.52.234.163:8001`.
-
-**The cleanest cut-over**: Update the Oracle's `index.html` to change the `GAS_ORACLE_ADVISORY_URL` from the GAS URL to `https://oracle.truesight.me/api/oracle-advisory` and set up nginx on the EC2 to proxy `/api/` to `localhost:8001`. But that requires the EC2 to serve the Oracle's domain.
-
-**Simpler approach**: Just change the URL to `https://api.truesight.me/oracle-advisory` and set up DNS + nginx. But that's a bigger lift.
-
-**Simplest approach that works right now**: Change the Oracle to call the autopilot directly at `http://100.52.234.163:8001/oracle-advisory`. The Oracle is served over HTTPS, so the browser will block mixed content (HTTP from HTTPS page).
-
-Let me propose the plan:
-
----
-
-Here's what I see:
-
-**Current state:**
-- Oracle (`oracle.truesight.me`) calls `GAS_ORACLE_ADVISORY_URL` → Google Apps Script → Grok
-- Autopilot already has a `/oracle-advisory` endpoint that does the same thing (calls DeepSeek instead of Grok)
-
-**What needs to change:**
-The `GAS_ORACLE_ADVISORY_URL` in `oracle/index.html` needs to point to the autopilot.
-
-**The problem:** The Oracle is served over HTTPS (GitHub Pages). The autopilot is on `100.52.234.163:8001` with no TLS. Browsers will block the mixed-content request.
-
-**Options:**
-
-1. **Set up nginx on the EC2** with a Let's Encrypt cert for `oracle.truesight.me` (or a subdomain), proxy `/api/oracle-advisory` → `localhost:8001`. Then update the Oracle to call `https://oracle.truesight.me/api/oracle-advisory`.
-
-2. **Direct EC2 IP** — won't work due to mixed-content blocking.
-
-3. **Use a free tunnel/proxy** — not production-grade.
-
-I'd recommend **option 1** — set up nginx on the autopilot EC2 to serve as a reverse proxy. Want me to:
-
-1. Update the Oracle's `index.html` to change the URL
-2. Set up nginx on the EC2 with a self-signed or Let's Encrypt cert
-3. Open a PR for the Oracle change
-
-Shall I proceed with option 1?
+Are you saying you want to **replace that GAS endpoint** with a route on the autopilot? If so, the autopilot already has nginx installed — I can set up a location block on it with a free Let's Encrypt cert, no need for the Edgar box at all.
 
