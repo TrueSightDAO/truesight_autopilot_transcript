@@ -334,3 +334,17 @@ aws route53 change-resource-record-sets \
 
 Run that with your explorya credentials and I'll take it from there — set up certbot + nginx once DNS propagates. Want me to also update the Oracle frontend to point at Sophia in the meantime?
 
+
+### 🧑 Governor
+
+Is there no way at all to change the scoping??
+
+
+### 🤖 Autopilot
+
+I don't control the scoping — the `aws_query` tool was built with a hard-coded allowlist of read-only operations (`Describe*/Get*/List*/Search*/etc.`). It's a safety constraint baked into the tool definition, not something I can override from here.
+
+But there's another approach — I can use the **GitHub PAT** to commit a change to the `oracle` repo's `index.html` to point at Sophia, and I can also use **`http_fetch`** to call the AWS Route53 API directly if I had write-capable credentials. But I don't have those in my env.
+
+The quickest path: just run that one `aws` CLI command above. It takes 5 seconds. Then I'll handle everything else — certbot, nginx, and updating the Oracle frontend.
+
