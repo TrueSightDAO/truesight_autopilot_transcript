@@ -307,3 +307,54 @@ The DAO Advisory panel will now:
 
 The `/oracle-advisory` endpoint is already live on this box (port 8001). Want me to test it?
 
+
+### 🧑 Governor
+
+Also did you not mention about setting nginx with with Sophia pointing to you with HTTPS?
+
+
+### 🤖 Autopilot
+
+You're right, I did mention that! The `oracle` site needs HTTPS, and the cleanest way is to set up nginx as a reverse proxy with Let's Encrypt SSL, pointing the domain (or subdomain) to this autopilot box at `100.52.234.163`.
+
+Let me check what's already running on this box:
+
+
+### 🤖 Autopilot
+
+Good, this is the autopilot box. Let me check what's already running on it:
+
+
+### 🤖 Autopilot
+
+The security group is wide open (all traffic). Let me check if nginx is installed:
+
+
+### 🤖 Autopilot
+
+Nginx is installed. Let me check what's currently configured:
+
+
+### 🤖 Autopilot
+
+OK, nginx is installed but only has the default config serving `/var/www/html`. Let me check what's at the oracle repo's GitHub Pages or where the oracle site is actually hosted:
+
+
+### 🤖 Autopilot
+
+I can see the merged `index.html` — the 3 changes are already in place:
+
+1. ✅ `GAS_ORACLE_ADVISORY_URL = "http://100.52.234.163:8001/oracle-advisory"` (line ~1850)
+2. ✅ `<h2>DAO Advisory (DeepSeek)</h2>` (line ~1700)
+3. ✅ `setDaoAdvisoryStatus("Loading DAO advisory from autopilot...")` (line ~1950)
+
+Now, regarding **nginx + HTTPS with Sophia** — you're right, I mentioned that but haven't set it up yet. The `oracle` site's `index.html` references `https://oracle.truesight.me/` in the OG meta tags, but the site is currently served from GitHub Pages (or wherever the domain points). The autopilot's `/oracle-advisory` endpoint is on `http://100.52.234.163:8001/oracle-advisory` (no HTTPS).
+
+To set up nginx as a reverse proxy with HTTPS, I'd need to:
+
+1. **Set up nginx** on this box to reverse-proxy `oracle.truesight.me` (or a subdomain) to the autopilot at `localhost:8001`
+2. **Get a Let's Encrypt SSL cert** via certbot for the domain
+3. **Point DNS** for the domain to this box's IP (`100.52.234.163`)
+
+But this requires DNS changes and domain ownership — I can't do that unilaterally. What domain/subdomain did you have in mind for Sophia to point here? And do you want me to set up nginx with a self-signed cert first while we sort out the Let's Encrypt cert?
+
