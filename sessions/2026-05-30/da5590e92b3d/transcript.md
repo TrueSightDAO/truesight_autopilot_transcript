@@ -341,3 +341,21 @@ sudo systemctl restart truesight-autopilot
 
 Then I'll create the Route53 DNS record for `sophia.truesight.me` and set up certbot + nginx.
 
+
+### 🧑 Governor
+
+Redeploy
+
+
+### 🤖 Autopilot
+
+Same issue — the deploy tool's local path uses `source` which fails with `/bin/sh`. The git pull succeeded (we're already on the latest code), but pip install fails before reaching the restart step.
+
+Can you SSH in and run:
+
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+That's all that's needed — the code is already on disk. Once restarted, I'll create the Route53 DNS record for `sophia.truesight.me`.
+
