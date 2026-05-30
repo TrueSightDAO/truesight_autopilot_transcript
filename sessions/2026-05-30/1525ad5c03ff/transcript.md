@@ -423,3 +423,13 @@ Here's what it clarifies:
 
 Want me to merge it or do you want to review first?
 
+
+### 🧑 Governor
+
+Yes merge it.
+
+
+### 🤖 Autopilot
+
+Merged. The INTEGRATION_GUIDE.md now clearly documents that `[PRACTICE EVENT]` is COPPA-compliant by design — no email or identification, just the public key.
+
