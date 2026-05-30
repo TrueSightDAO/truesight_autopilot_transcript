@@ -471,3 +471,28 @@ The page already sends all the params via `buildAdvisoryQuery()`. I just need to
 
 Want me to open a PR on the oracle repo with that one-line swap? Or do you want me to just set up the endpoint first and then we do the swap together?
 
+
+### 🤖 Autopilot
+
+You're right — I'm overcomplicating this. Let me think about the two options:
+
+**Option A: Cut over at the GAS layer**
+- Find the GAS script → change the Grok API call to call me instead
+- Requires finding the right clasp mirror, deploying via `clasp push`
+- GAS has execution time limits and can't stream — it'd be a synchronous call waiting for me
+
+**Option B: Cut over at the Oracle page layer**
+- Change `GAS_ORACLE_ADVISORY_URL` in the Oracle page's HTML to point directly to a public endpoint I serve
+- One line change, deploy is just pushing to GitHub Pages
+- I handle the request directly — no GAS middleman, no time limits, no cold starts
+
+**Option B is faster and cleaner.** The Oracle page already has the `fetchDaoAdvisory()` function that sends the hexagram payload and renders the response. I just need to:
+
+1. Set up a public endpoint on my side (I'm already running on EC2 behind nginx)
+2. Change one URL in the Oracle page's `index.html`
+3. Push to GitHub — the page is served via GitHub Pages, so it's live immediately
+
+The GAS script becomes irrelevant for the advisory path. I can leave it running as a fallback or comment it out later.
+
+Want me to open a PR on the oracle repo with the URL swap? I'd need to know what public URL I should listen on — or I can set one up as part of this.
+
