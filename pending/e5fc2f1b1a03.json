@@ -47,5 +47,12 @@
     "summary": "Add a self-deploy endpoint to app/main.py. Add this code near the other admin endpoints (around line 1000, before the Autopilot section):\n\n```python\n@app.post(\"/admin/deploy\")\nasync def admin_deploy(r",
     "action": "merge_pr",
     "created_at": "2026-05-30T14:35:06Z"
+  },
+  {
+    "title": "Merge PR #65 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix the deploy_autopilot tool in app/tools/deploy.py so it works when running on the same EC2 instance. Currently it always tries SSH to 'truesight-autopilot' hostname which fails with DNS resolution ",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T14:38:12Z"
   }
 ]
