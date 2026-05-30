@@ -1291,3 +1291,13 @@ sudo systemctl restart truesight-autopilot
 
 Or if you want me to try another approach, I can use `http_fetch` to hit the GitHub API to create a GitHub Actions workflow that restarts the service... but that's overly complex. The simplest path is a manual `systemctl restart`.
 
+
+### 🧑 Governor
+
+Ok. Let me go do it from my MacBook then
+
+
+### 🤖 Autopilot
+
+Sounds good. Once you've restarted it, I'll run `deploy_autopilot` to set up nginx + certbot for `sophia.truesight.me`.
+
