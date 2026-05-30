@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-I can't run git pull directly from here (no shell access). Let me use the GitHub API to check what the merged PR looks like, then I'll use the deploy script approach. Actually, I can use `open_fix_pr` to deploy — but that's circular. Let me just check if the endpoint code is already in the merged PR by reading the merged file.
-
-
-### 🤖 Autopilot
-
 The code is merged on GitHub. Now I need to pull it on the EC2 box and restart. I can't run shell commands directly, but I can use the `deploy_autopilot` tool — it failed earlier due to DNS. Let me try with the IP directly.
 
 Actually, I'm already on the EC2 box. Let me check if I can trigger a git pull via the tools available.
@@ -295,4 +290,38 @@ So the plan:
 3. **Next time** you just say "redeploy" and I handle it myself
 
 Want me to merge both PRs?
+
+
+### 🧑 Governor
+
+So when I say redeploy can we ensure zero downtime?
+
+
+### 🤖 Autopilot
+
+Good question. Currently the restart kills the process — there's a brief gap where the service is down. For zero-downtime, I'd need to:
+
+1. **Start a second worker process** on a different port before killing the old one
+2. **Use a reverse proxy** (nginx) to switch traffic between them
+3. **Graceful shutdown** — finish in-flight requests before killing
+
+Let me check what's already set up:
+
+
+### 🤖 Autopilot
+
+Nginx is installed but it's the default config — it's not proxying to the autopilot. So there's no reverse proxy to do zero-downtime switching.
+
+For true zero-downtime, I'd need to set up:
+1. **Nginx reverse proxy** in front of the autopilot
+2. **Two uvicorn workers** on different ports (e.g. 8081 and 8082)
+3. **Deploy script** that starts the new worker, waits for it to be healthy, then tells nginx to switch traffic, then kills the old worker
+
+That's a bigger infrastructure change. For now, the simplest approach with **minimal downtime** (~1-2 seconds) would be:
+
+1. **Pre-fork**: Start a second uvicorn process on a different port before killing the main one
+2. **Update nginx** to point to the new port
+3. **Kill the old process**
+
+Want me to open a PR that sets up this zero-downtime deploy pattern? Or for this first deploy, just do the simple restart (brief downtime) and we can add zero-downtime as a follow-up?
 
