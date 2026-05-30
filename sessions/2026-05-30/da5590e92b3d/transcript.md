@@ -156,3 +156,36 @@ The autopilot is running and healthy. The redeploy is confirmed:
 
 So the redeploy is done and the autopilot is live. Now — back to your Oracle question. What exactly do you want to cut over? The Oracle's **DAO Advisory backend** (currently a GAS web app) to the autopilot? If so, I can set up an nginx route on this box with a free Let's Encrypt cert — no need to touch the Edgar instance at all.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Nice! Sounds like a great idea! What do you think is a good subdomain to call yourself? Oracle seems limiting isn’t it??
+
+
+### 🤖 Autopilot
+
+Great question! Let me think about what the autopilot actually *does* beyond just the Oracle:
+
+1. **Governor Chat** — you talk to me through the DApp
+2. **Autonomous SRE** — I monitor email, AWS, GitHub, open fix PRs
+3. **Oracle Advisory** — I Ching + DAO context readings
+4. **Code generation** — I create PRs, fix bugs, deploy
+
+"Oracle" only covers #3. Here are some ideas:
+
+| Subdomain | Vibe | Why |
+|---|---|---|
+| **sophia.truesight.me** | Wisdom (Σοφία) | Covers Oracle + strategy + advisory — the DAO's wisdom layer |
+| **logos.truesight.me** | The Word / Logic | Covers code generation, SRE logic, chat — the rational mind |
+| **daemon.truesight.me** | Socrates' guiding spirit | The DAO's persistent background intelligence |
+| **pilot.truesight.me** | Autopilot | Direct, no-nonsense, matches the repo name |
+| **mind.truesight.me** | The DAO's mind | Broad enough to cover everything |
+| **sentinel.truesight.me** | Watchful guardian | SRE + monitoring focus |
+| **synapse.truesight.me** | Neural connection | Where the DAO's intelligence connects |
+
+My personal favorite: **sophia.truesight.me** — it's the Greek word for wisdom, covers the Oracle's divination aspect, the strategic advisory, the code intelligence, and ages well. But **pilot.truesight.me** is the most honest (matches the repo) and **mind.truesight.me** is the most expansive.
+
+What direction feels right to you?
+
