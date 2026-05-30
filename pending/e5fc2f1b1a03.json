@@ -75,5 +75,12 @@
     "summary": "Cut over the DAO Advisory panel from GAS/Grok to autopilot/DeepSeek. Three changes needed in index.html:\n\n1. Change GAS_ORACLE_ADVISORY_URL from the Google Apps Script URL to https://sophia.truesight.",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:45:30Z"
+  },
+  {
+    "title": "Merge PR #72 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add nginx setup to scripts/deploy.sh. After the '=== Checking health ===' section, add a new section '=== Setting up nginx + certbot ===' that:\n\n1. Symlinks config/nginx/sophia.conf to /etc/nginx/site",
+    "action": "merge_pr",
+    "created_at": "2026-05-30T22:45:57Z"
   }
 ]
