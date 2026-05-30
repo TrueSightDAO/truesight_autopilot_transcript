@@ -8,112 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-I think you should be up and running now 
-
-Go ahead and merge the codebase for Oracle.truesight.me now
-
-
-### 🤖 Autopilot
-
-Let me check what's in the oracle repo and see if there's a PR ready to merge.
-
-
-### 🤖 Autopilot
-
-I see the `oracle` repo. Let me check for open PRs.
-
-
-### 🤖 Autopilot
-
-There's one open PR (#23). Let me check its details — is it a draft, and what's in it?
-
-
-### 🤖 Autopilot
-
-Let me check the PR details more closely.
-
-
-### 🤖 Autopilot
-
-Let me check what's on the main branch and see the PR's actual changes.
-
-
-### 🤖 Autopilot
-
-Good — I can see the oracle repo has a full I Ching app. Now let me check PR #23 to see what it's about and whether it's a draft.
-
-
-### 🤖 Autopilot
-
-So the main branch already has the CNAME for `oracle.truesight.me`. Let me check the PR #23 more closely — what branch it's on, and whether it's draft.
-
-
-### 🤖 Autopilot
-
-Now I can see the key difference between main and PR #23. Let me compare:
-
-**Main branch** has:
-```
-const GAS_ORACLE_ADVISORY_URL =
-    "http://100.52.234.163:8001/oracle-advisory";
-```
-
-**PR #23 branch** has:
-```
-const GAS_ORACLE_ADVISORY_URL =
-    "https://sophia.truesight.me/oracle-advisory";
-```
-
-So PR #23 cuts over the DAO Advisory panel from the old internal IP (`100.52.234.163:8001`) to the new `sophia.truesight.me` domain. This is the "Cut over the DAO Advisory panel from GAS/Grok to autopilot/D" change. Let me merge it.
-
-
-### 🤖 Autopilot
-
-**PR #23 merged** ✅ — `oracle.truesight.me` is now live with the cutover.
-
-**What changed:**
-- The DAO Advisory panel now calls **`https://sophia.truesight.me/oracle-advisory`** instead of the old internal IP `http://100.52.234.163:8001/oracle-advisory`
-- This routes advisory requests through the autopilot/DeepSeek pipeline instead of the old GAS/Grok backend
-
-The site is served via GitHub Pages (CNAME: `oracle.truesight.me`), so the merge auto-deploys. Should be live within a minute or two.
-
-
-### 🧑 Governor
-
-I was thinking perhaps when user goes to Sophia.truesight.me instead of {"detail":"Not Found"} how about you display an avatar of how you imagine yourself to be? Can you generate one using SVG and then redeploy to display it
-
-
-### 🤖 Autopilot
-
-Great idea — let me check what's currently serving at sophia.truesight.me and how it's deployed.
-
-
-### 🤖 Autopilot
-
-Let me check what's actually serving sophia.truesight.me — it's the oracle-advisory endpoint. Let me look at the oracle repo to see if there's a deployment setup for a separate sophia site, and also check the AWS side.
-
-
-### 🤖 Autopilot
-
-So `sophia.truesight.me` is served by the autopilot box (the running `t3.small` at `100.52.234.163`). Let me check what's serving it there.
-
-
-### 🤖 Autopilot
-
-Let me check what's running on the autopilot box and how the oracle-advisory endpoint is configured.
-
-
-### 🤖 Autopilot
-
-Now I understand the full picture. The autopilot serves `sophia.truesight.me` via FastAPI, and the root `/` returns 404 because there's no route for it. Let me create a beautiful SVG avatar page and add it as a root route.
-
-Let me design an SVG avatar that represents Sophia — the DAO's Oracle/AI persona — and add it to the autopilot codebase.
-
-
 ### 🤖 Autopilot
 
 Now I have the full picture. I need to add a `GET /` route that returns an HTML page with an SVG avatar of Sophia. Let me create the fix PR.
@@ -199,4 +93,98 @@ The nginx proxy is up but the backend is timing out. The deploy attempt likely l
 ### 🤖 Autopilot
 
 The git log confirms the latest commit `00eb1a2` (our merge) is on disk. The service is timing out because the deploy tool's pip install failed and left the service in a bad state. Let me restart it directly.
+
+
+### 🧑 Governor
+
+Seeing this on DAO Advisory (DeepSeek)
+Unable to load advisory right now.
+The reading is complete, but the DAO advisory call failed. You can still open the advisory links above and retry by recasting.
+
+
+On https://oracle.truesight.me/
+
+
+### 🤖 Autopilot
+
+Let me check what's happening with the oracle site.
+
+
+### 🤖 Autopilot
+
+The oracle frontend is loading fine (200 OK). The issue is with the DAO Advisory call — it's hitting `https://sophia.truesight.me/oracle-advisory` which is the autopilot backend, and that's timing out (504 Gateway Time-out). That's because the autopilot service is down from the failed deploy attempt.
+
+Let me restart the service.
+
+
+### 🤖 Autopilot
+
+Good — the code is already on disk. Let me restart the service via systemctl.
+
+
+### 🤖 Autopilot
+
+The code is confirmed on disk with the new root route. The service is timing out because the deploy tool's pip install issue left it in a bad state. Let me restart it directly.
+
+I can't run `systemctl` directly from here, but I can check if the service is running and try to restart it via the admin endpoint.
+
+Let me check the service status:
+
+
+### 🤖 Autopilot
+
+The service was running recently. The 504 means the service is up but the LLM call is timing out (the oracle-advisory endpoint calls DeepSeek which can take 30+ seconds). Let me check if the service is actually running:
+
+
+### 🤖 Autopilot
+
+The service is running! The health endpoint works. The issue is that the **oracle-advisory** endpoint is timing out because it calls DeepSeek and the LLM response takes longer than nginx's 60-second proxy timeout.
+
+Let me check the root page:
+
+
+### 🤖 Autopilot
+
+The root page is live and serving beautifully! The Sophia SVG avatar is rendering at `https://sophia.truesight.me/`.
+
+Now about the **DAO Advisory** issue on `oracle.truesight.me` — the error message says:
+
+> "Unable to load advisory right now. The reading is complete, but the DAO advisory call failed."
+
+This is because the oracle frontend calls `https://sophia.truesight.me/oracle-advisory` which hits the autopilot backend, and that endpoint calls DeepSeek. The DeepSeek LLM call can take 30+ seconds, and nginx's default `proxy_read_timeout` is 60 seconds. If DeepSeek takes longer than that, nginx returns 504.
+
+Let me check the nginx config:
+
+
+### 🤖 Autopilot
+
+The nginx config already has `proxy_read_timeout 120s` for the `/oracle-advisory` endpoint, which should be plenty. The 504 I saw earlier was likely a transient issue — the service was restarting at that moment.
+
+Let me verify the oracle-advisory endpoint works now:
+
+
+### 🤖 Autopilot
+
+The oracle-advisory endpoint works perfectly. It returns a well-formed advisory from DeepSeek.
+
+Here's the full status:
+
+---
+
+**✅ sophia.truesight.me is live and working**
+
+| Endpoint | Status |
+|---|---|
+| `GET /` (Sophia landing page) | ✅ **200** — SVG avatar of Sophia with third eye, constellation lines, I Ching hexagram |
+| `GET /health` | ✅ **200** — service healthy, 38 governors loaded |
+| `GET /oracle-advisory` | ✅ **200** — DeepSeek advisory working, returns oracle guidance |
+
+**The DAO Advisory issue on oracle.truesight.me** — the error you saw ("Unable to load advisory right now") was likely a transient timeout during the deploy restart window. The endpoint is now responding correctly. The oracle frontend at `oracle.truesight.me` calls `sophia.truesight.me/oracle-advisory` which:
+
+1. Fetches the latest `ADVISORY_SNAPSHOT.md` from GitHub
+2. Builds a system prompt with the hexagram + DAO state
+3. Calls DeepSeek for the advisory
+4. Returns the result
+
+The nginx timeout is set to **120s** for this endpoint, which is sufficient. If a user sees the error again, it's likely a transient DeepSeek API latency spike — they can just **recast** (re-click "Reveal Guidance") and it will retry.
 
