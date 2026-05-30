@@ -355,3 +355,25 @@ To summarize what's happened and what's next:
 3. ❓ **Merge PR #70** on `truesight_autopilot` — adds `"oracle"` to the hardcoded allowed repos list so `open_fix_pr` can work on the oracle repo. Can you say "merge it"?
 4. Then I'll update the oracle `index.html` to point `GAS_ORACLE_ADVISORY_URL` to `https://sophia.truesight.me/oracle-advisory` and change the labels from Grok/GAS to DeepSeek/autopilot
 
+
+### 🧑 Governor
+
+Merge PR 70
+
+
+### 🤖 Autopilot
+
+Already merged! Now let me use `open_fix_pr` on the `oracle` repo to make the 3 changes:
+
+
+### 🤖 Autopilot
+
+**PR #23** is open on the `oracle` repo: https://github.com/TrueSightDAO/oracle/pull/23
+
+The fix agent should have made these 3 changes:
+1. `GAS_ORACLE_ADVISORY_URL` → `https://sophia.truesight.me/oracle-advisory`
+2. `"DAO Advisory (Grok)"` → `"DAO Advisory (DeepSeek)"`
+3. `"Loading DAO advisory from Grok via GAS..."` → `"Loading DAO advisory from autopilot..."`
+
+Want me to merge it?
+
