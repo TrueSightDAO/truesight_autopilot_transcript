@@ -21,20 +21,6 @@
     "created_at": "2026-05-29T18:12:22Z"
   },
   {
-    "title": "Merge PR #10 on dapp_beta",
-    "qr_code": "",
-    "summary": "Add a printable submission receipt (summary section with @media print CSS) to all event-submitting DApp pages that are missing it, following the same pattern already used in report_contribution.html a",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T19:34:50Z"
-  },
-  {
-    "title": "Merge PR #325 on tokenomics",
-    "qr_code": "",
-    "summary": "## Problem\n\n`dao_members.json` (published to `treasury-cache`) currently only includes contributors who have registered at least one ACTIVE RSA public key in the `Contributors Digital Signatures` shee",
-    "action": "merge_pr",
-    "created_at": "2026-05-29T20:15:04Z"
-  },
-  {
     "title": "Merge PR #2 on dapp_prod",
     "qr_code": "",
     "summary": "## Problem\n\nOn `report_contribution.html`, after a contribution is submitted, the **Contribution Summary** section displays the description using `.textContent`, which strips all formatting \u2014 line bre",
@@ -49,17 +35,10 @@
     "created_at": "2026-05-29T20:38:41Z"
   },
   {
-    "title": "Merge PR #12 on dapp_beta",
+    "title": "Merge PR #63 on truesight_autopilot",
     "qr_code": "",
-    "summary": "## Problem\n\nOn `report_contribution.html`, after a contribution is submitted, the **Contribution Summary** section displays the description using `.textContent`, which strips all formatting \u2014 line bre",
+    "summary": "Add a public /oracle-advisory endpoint to the FastAPI app that accepts the same GET params as the existing GAS oracle_advisory_bridge (mode, signature, primary_number, primary_name, primary_judgment, ",
     "action": "merge_pr",
-    "created_at": "2026-05-29T20:40:09Z"
-  },
-  {
-    "title": "Merge PR #55 on dao_protocol",
-    "qr_code": "",
-    "summary": "Update INTEGRATION_GUIDE.md to clarify that [PRACTICE EVENT] is COPPA-compliant by design \u2014 no email or personal identification required, only the public key.\n\nTwo changes needed:\n\n1. In the Credentia",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T05:01:10Z"
+    "created_at": "2026-05-30T14:26:59Z"
   }
 ]
