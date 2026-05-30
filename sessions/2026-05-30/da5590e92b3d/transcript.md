@@ -359,3 +359,15 @@ sudo systemctl restart truesight-autopilot
 
 That's all that's needed — the code is already on disk. Once restarted, I'll create the Route53 DNS record for `sophia.truesight.me`.
 
+
+### 🧑 Governor
+
+Is it something that will keep happening over and over again in the future
+
+
+### 🤖 Autopilot
+
+Yes, it will — every time I try to self-deploy from the EC2, the `source` command will fail with `/bin/sh`. The fix is in **PR #69** which replaces `source` with `.` (the POSIX-compatible way to source a script).
+
+Want me to merge PR #69? Then the next deploy will work.
+
