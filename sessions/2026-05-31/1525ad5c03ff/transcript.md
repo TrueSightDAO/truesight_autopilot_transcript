@@ -477,3 +477,34 @@ This way the record captures the **complete** session — not just the raw draw,
 
 I'll update the plan to make this clearer.
 
+
+### 🧑 Governor
+
+Also I think under the program listings on TrueSight me we probably need to extend a new program 
+
+I am thinking the Oracle draw is like a daily mindfulness grounding exercise what are your thoughts
+
+
+### 🤖 Autopilot
+
+I love that framing. It's not just "I consulted an oracle" — it's **a daily grounding ritual**. The program name should reflect that.
+
+Some thoughts on naming:
+
+- **`truesight-grounding`** — emphasizes the mindfulness/centering aspect
+- **`truesight-dawn-practice`** — ties to the morning routine
+- **`truesight-morning-oracle`** — specific but clear
+
+I lean toward **`truesight-grounding`** because:
+- It's broader than just the oracle — could later include meditation, breathwork, journaling
+- It frames the draw as a means to an end (grounding for the day), not the end itself
+- It reads well on `truesight.me/programs/truesight-grounding/`
+
+On the `truesight.me` side, the programs listing already has a pattern from Butterfly Effect and Tribo Mirim. Adding `truesight-grounding` would mean:
+
+1. A program page at `truesight.me/programs/truesight-grounding/index.html`
+2. A credentials viewer at `truesight.me/programs/truesight-grounding/credentials/#<pk-slug>`
+3. A listing card on the programs index page
+
+Want me to update the plan with the `truesight-grounding` naming and add the `truesight.me` program page to the roadmap?
+
