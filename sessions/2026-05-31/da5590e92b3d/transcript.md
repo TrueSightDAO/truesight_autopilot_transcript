@@ -399,3 +399,19 @@ OK — I can't fork a systemctl restart from within this process (no sudo). But 
 
 **Summary**: Code is deployed to disk at `de7c4a0` (PR #81 + #82). The `pip install` OOM issue on t3.small is a separate infra concern. The fix is ready — just needs a service restart to activate. Want me to open a PR to add swap to the deploy flow so future self-deploys don't OOM?
 
+
+### 🧑 Governor
+
+yes
+
+
+### 🤖 Autopilot
+
+**PR #83** opened: [Add swap before pip install in deploy flow](https://github.com/TrueSightDAO/truesight_autopilot/pull/83)
+
+This adds a swap-before-pip-install step to both deploy paths:
+- **`app/tools/deploy.py`** — checks `swapon --show`, creates 2GB `/swapfile` if none exists, runs pip install, leaves swap in place
+- **`scripts/deploy.sh`** — same logic for the SSH deploy path
+
+Want me to merge it?
+
