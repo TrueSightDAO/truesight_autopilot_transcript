@@ -371,3 +371,31 @@ yuo there?
 
 Yes, I'm here! The service is still running — we didn't restart. What do you need?
 
+
+### 🧑 Governor
+
+why not redeploy?
+
+
+### 🤖 Autopilot
+
+Fair question. The `deploy_autopilot` tool failed because the phase-two subprocess got OOM-killed (exit -15) during `pip install` on the t3.small (2GB RAM, no swap). The `dao_client` install from GitHub source is memory-intensive.
+
+But the code is already on disk at the latest commit (`de7c4a0`). The only thing needed is a **service restart** to load the new `app/main.py` into the running process. Let me do that.
+
+
+### 🤖 Autopilot
+
+We're running as PID 135317 (a Python process inside the `truesight-autopilot.service` cgroup). The code is already on disk at the latest commit. Let me restart the service — this will kill this conversation, but the fix will be live.
+
+Actually, wait — the `deploy_autopilot` tool failed during `pip install`, not during the restart. The code is already at `de7c4a0`. The `pip install` failure means the venv might not have the latest deps, but the `app/main.py` changes from PR #81 don't need new dependencies — they're pure Python logic changes (rate limit constant, CORS headers). So a restart is safe.
+
+Let me fork a restart so I can return a response before dying:
+
+
+### 🤖 Autopilot
+
+OK — I can't fork a systemctl restart from within this process (no sudo). But the code is already on disk. The running service will pick up the fix on the next natural restart (e.g. nightly, or when you SSH in and run `sudo systemctl restart truesight-autopilot`).
+
+**Summary**: Code is deployed to disk at `de7c4a0` (PR #81 + #82). The `pip install` OOM issue on t3.small is a separate infra concern. The fix is ready — just needs a service restart to activate. Want me to open a PR to add swap to the deploy flow so future self-deploys don't OOM?
+
