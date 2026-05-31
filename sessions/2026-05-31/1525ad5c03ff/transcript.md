@@ -10,145 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `index.html` is 188KB — too large to edit via the API. Let me take a different approach. I'll use `open_fix_pr` to add the Record Session button and script tag to `index.html`:
-
-
-### 🤖 Autopilot
-
-The PR is open at https://github.com/TrueSightDAO/oracle/pull/24. It adds the Record Session button and wires up `oracle-draw-submit.js` to the main `index.html` page.
-
-Here's a summary of everything implemented tonight:
-
-## Phase 1 Complete ✅
-
-| Item | Status | Link |
-|------|--------|------|
-| **1.1** `lineage-credentials/programs/truesight-grounding/manifest.json` | ✅ Created | [manifest.json](https://github.com/TrueSightDAO/lineage-credentials/blob/main/programs/truesight-grounding/manifest.json) |
-| **1.2** `lineage-credentials/programs/truesight-grounding/schemas/practice/oracle-consultation.json` | ✅ Created | [schema](https://github.com/TrueSightDAO/lineage-credentials/blob/main/programs/truesight-grounding/schemas/practice/oracle-consultation.json) |
-| **1.3** `oracle.truesight.me/index.html` — Record Session button | ✅ PR #24 open | [PR #24](https://github.com/TrueSightDAO/oracle/pull/24) |
-| **1.4** `oracle.truesight.me/assets/js/oracle-draw-submit.js` | ✅ Created | [oracle-draw-submit.js](https://github.com/TrueSightDAO/oracle/blob/main/assets/js/oracle-draw-submit.js) |
-| **1.5** Test end-to-end | ⏳ After PR merge | |
-
-**How it works now:**
-1. Visit `oracle.truesight.me` and cast your reading as usual
-2. Review the advisory
-3. Click **"Record Session"** — it generates/loads your RSA keypair, signs the `[PRACTICE EVENT]`, and POSTs to Edgar
-4. The event lands in `lineage-credentials/programs/truesight-grounding/<your-pk-slug>/practice/`
-
-Want me to merge the PR?
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-The RSA should just generate as soon as I am on the page of the page detects that I don’t have it yet 
-
-The recording of the session should just automatically happen in the background once the advisory returns from you
-
-There should be a button that user can click on which brings to them their past draw credentials on truesight.me
-
-
-### 🤖 Autopilot
-
-Got it — three changes to the flow:
-
-1. **Auto-generate RSA keypair** on page load if not present (no button needed)
-2. **Auto-submit** the `[PRACTICE EVENT]` to Edgar as soon as the advisory panel renders (no button needed)
-3. **"My Credentials" link** that takes them to `truesight.me` to view past draws
-
-Let me update both files.
-
-
-### 🤖 Autopilot
-
-Now let me rewrite `oracle-draw-submit.js` with the new auto-flow, and update `index.html` to remove the button and add a "My Credentials" link instead.
-
-
-### 🤖 Autopilot
-
-PR #25 is open at https://github.com/TrueSightDAO/oracle/pull/25.
-
-Here's what it changes:
-
-**Before (Phase 1):**
-- Page loads → nothing happens
-- User casts reading → advisory appears
-- User clicks "Record Session" → generates keypair → submits to Edgar
-
-**After (Phase 2):**
-- Page loads → auto-generates RSA keypair if absent (silent, no UI)
-- User casts reading → advisory appears → **auto-submits** `[PRACTICE EVENT]` to Edgar in background
-- A small "Practice Credentials" panel appears with status ("Recording session...", "✓ Recorded")
-- After submission, a **"My Credentials →"** link appears pointing to `truesight.me/programs/truesight-grounding/credentials/#{slug}` — one click to see all past draws
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-Yes. Go for it
-
-
-### 🤖 Autopilot
-
-Merged. Now let me deploy the updated site so the changes go live.
-
-
-### 🤖 Autopilot
-
-The deploy failed on the autopilot side (pip install issue, not related to the oracle site). The oracle site is a static GitHub Pages site — it's served directly from the `oracle` repo's `main` branch. Since PR #25 is merged to `main`, the changes are already live at **https://oracle.truesight.me**.
-
-Here's what's now live:
-
-| What | How |
-|------|-----|
-| **RSA keypair** | Auto-generated on page load if absent — silent, no UI |
-| **Auto-submit** | When the advisory panel appears, submits `[PRACTICE EVENT]` to Edgar automatically |
-| **Dedup** | Won't re-submit the same reading twice |
-| **"My Credentials →"** | Link appears after submission pointing to `truesight.me/programs/truesight-grounding/credentials/#{slug}` |
-
-Go ahead and cast a reading at **oracle.truesight.me** — it should auto-record your session and give you the link to your credentials.
-
-
-### 🧑 Governor
-
-Why am I not seeing the listings on 
-
-https://beta.truesight.me/programs.html
-
-
-### 🤖 Autopilot
-
-Let me check what's on that page and how the credentials listing works.
-
-
-### 🤖 Autopilot
-
-That's the issue — there's no `truesight-grounding` program page on `beta.truesight.me`. The `programs.html` page lists partner programs (Tribo Bahia Mirim, Butterfly Effect), but the `truesight-grounding` program (the one the Oracle submits to) doesn't have a landing page there yet.
-
-Let me check what repo serves `beta.truesight.me`:
-
-
-### 🤖 Autopilot
-
-I see the issue. The `programs.html` page only lists **partner programs** (Tribo Bahia Mirim, Butterfly Effect). The `truesight-grounding` program (Oracle practice) doesn't have a card here, and there's no `programs/truesight-grounding/` directory on `beta.truesight.me`.
-
-The "My Credentials →" link from the Oracle currently points to `truesight.me/programs/truesight-grounding/credentials/#{slug}`, but that page doesn't exist yet. Let me check what's on the production site:
-
-
-### 🤖 Autopilot
-
-Now I see the full picture. There are **two things missing**:
-
-1. **`programs/truesight-grounding/` directory** — no landing page exists on either `truesight_me_beta` or `truesight_me_prod`
-2. **`programs/truesight-grounding/credentials/` page** — the credentials listing page that the Oracle's "My Credentials →" link points to
-
-Let me check what the existing program pages look like for reference:
-
-
-### 🤖 Autopilot
-
 Now I see the pattern. Each program has:
 - `programs/<slug>/index.html` — landing page (driven by `program-shell.js` + `manifest.json`)
 - `programs/<slug>/manifest.json` — metadata
@@ -476,4 +337,57 @@ When you visit `truesight.me/programs/truesight-grounding/credentials/#pk-7UXQC-
 - **Mood** — A small tag
 
 The data comes from the `payload` block in the cached CV JSON, which is populated by `lineage-engine` from the `[PRACTICE EVENT]` submissions. The cache rebuilds every 6 hours, so your first submission will appear after the next build cycle.
+
+
+### 🧑 Governor
+
+Regarding La do sítio farm on Agroverse 
+
+Kirsten mentioned about perhaps using the wife’s name instead of just the label 
+
+This is her Instagram account
+
+https://www.instagram.com/jusara.nascimento.79?igsh=NTc4MTIwNjQ2YQ==
+
+What are your thoughts?
+
+
+### 🤖 Autopilot
+
+Let me look up the current farm listing and the Instagram profile to understand the context.
+
+
+### 🤖 Autopilot
+
+The Instagram profile shows Jusara Nascimento — she appears to be connected to the farm. Let me look up the current farm listing on Agroverse to understand the context:
+
+
+### 🤖 Autopilot
+
+Let me look up the current farm listing on Agroverse to see how "La do Sítio" is currently labeled:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The farm page says **"Paulo and his wife run La do Sitio"** — the farm is currently branded under Paulo's name. Kirsten's suggestion is to use the wife's name (Jusara Nascimento) instead of just "La do Sitio" as the label.
+
+My thoughts:
+
+**Yes, this is a great idea.** Here's why:
+
+1. **The farm page already says "Paulo and his wife"** — but only Paulo gets named. Jusara is invisible in the branding despite being a co-operator of the farm. Using her name (or both names) would be more accurate and respectful.
+
+2. **Her Instagram** (@jusara.nascimento.79) shows she's actively engaged in the farm and community life. She's not just a passive figure — she's a visible part of the operation.
+
+3. **Differentiation** — "La do Sitio" is a generic farm name. "Jusara's La do Sitio" or "Paulo & Jusara's La do Sitio" gives it a human face and story that customers connect with. This is exactly the kind of storytelling that Seth Godin's principles advocate — people buy from people, not from labels.
+
+4. **Women in cacao** — highlighting women farmers is a powerful narrative in the specialty cacao world, where women are often the backbone of farming communities but rarely get the credit.
+
+**Options for how to implement:**
+
+- **Product label:** "Ceremonial Cacao – Jusara & Paulo's La do Sitio Farm, Pará"
+- **Farm page:** Update the URL slug and page to reflect both names
+- **QR code / credential:** The farm's cacao bags could carry Jusara's name alongside Paulo's
+
+Want me to update the farm page on Agroverse to include Jusara's name?
 
