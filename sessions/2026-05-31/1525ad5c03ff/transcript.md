@@ -10,56 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. The GAS side is already complete — `edgar_send_onboarding_invitation.gs` exists and is deployed. The fix needed is purely on the Edgar (Rails) side. Let me try the fix PR again with a very specific description:
-
-
-### 🤖 Autopilot
-
-Let me check the WebhookTriggerWorker to understand its current signature:
-
-
-### 🤖 Autopilot
-
-Now I see the issue — the `WebhookTriggerWorker.perform_async` takes 5 positional args and the webhook call uses `HTTParty.get(webhook_url, query: { action: action })`. To pass extra params, I need to either modify the worker or use a different approach. Let me try a simpler approach — just append the params to the URL itself:
-
-
-### 🤖 Autopilot
-
-Let me try a different approach — directly create the PR via the GitHub API:
-
-
-### 🤖 Autopilot
-
-The fix agent keeps failing. Let me try a more direct approach — create the branch and file changes manually:
-
-
-### 🤖 Autopilot
-
-Let me try the fix agent one more time with a very short, focused description:
-
-
-### 🤖 Autopilot
-
-The fix agent seems to be failing consistently. Let me try a different approach — I'll create the changes directly:
-
-
-### 🤖 Autopilot
-
-OK, the repo uses `master` as its default branch, not `main`. Let me try uploading to master:
-
-
-### 🤖 Autopilot
-
-Good, the plan doc is committed. Now let me try the fix agent one more time since the repo uses `master`:
-
-
-### 🤖 Autopilot
-
-The fix agent keeps failing. Let me take a different approach and create the PR manually by making the file changes directly:
-
-
-### 🤖 Autopilot
-
 I can see the full file. Let me now create the actual PR by making the changes directly. I'll create a new branch with the changes:
 
 
@@ -379,4 +329,27 @@ sudo systemctl restart dao-protocol
 Also, you'll need to add the `DAO_PROTOCOL_WEBHOOK_ONBOARDING_INVITATION` env var to the server's `.env` (or it'll default to the same URL as the email verification webhook, which is the correct GAS project — so it should work without any env change).
 
 Want me to check if there's a systemd service file or deploy script I can look at from the repo?
+
+
+### 🧑 Governor
+
+Perhaps create an open follow up then? One of the other LLMs can go ahead to do so in the morning?
+
+
+### 🤖 Autopilot
+
+Good call. Let me create a structured follow-up task in the context repo so the next LLM can pick it up cleanly.
+
+
+### 🤖 Autopilot
+
+Done. Here's the summary of everything:
+
+## What was accomplished
+
+1. **Infrastructure doc** — `AWS_DIGITAL_INFRASTRUCTURE.md` committed to `agentic_ai_context`. Covers both AWS accounts, every EC2 instance, DNS routing, nginx proxy, service architecture, SSH keys, and the Edgar migration.
+
+2. **Fix merged** — `dao_protocol#56` merged to `main`. Wires the onboarding invitation email into the `[CONTRIBUTOR ADD EVENT]` dispatch.
+
+3. **Follow-up task created** — `tasks/DEPLOY_DAO_PROTOCOL_ONBOARDING_INVITATION.md` with exact SSH/deploy/verify steps for the next LLM to execute in the morning.
 
