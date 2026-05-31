@@ -421,3 +421,41 @@ And it all lands in the same `lineage-credentials` commit trail, visible on `ora
 
 Want me to draft a quick spec for how the oracle site would call it?
 
+
+### 🧑 Governor
+
+I am thinking for the oracle draw the media attributes being different
+
+Instead of moves and duration 
+
+It should be the hexagram draws and the QMDJ draw as well as what the advisory suggested. 
+
+And then I really start my day once my morning mindfulness session is done I could just start on the execution side by having conversations with you in telegram while you have context on what I drew for the day
+
+
+### 🤖 Autopilot
+
+That's a much richer record — and it makes the `[PRACTICE EVENT]` a bit too generic since the attributes are fundamentally different from capoeira's moves+minutes.
+
+I think we're back to needing a dedicated event type. But the *infrastructure* is already there — we just need:
+
+1. **A new event name** — `[ORACLE DRAW EVENT]` or `[MORNING ORACLE SESSION]`
+2. **A thin GAS handler** that writes to the same `lineage-credentials` repo (or a dedicated `oracle-draws/` path)
+3. **A simple page on `oracle.truesight.me`** that wraps the signing + submission
+
+The attributes would be something like:
+
+```
+[ORACLE DRAW EVENT]
+- Date: 2026-05-31
+- Hexagram(s): 23.1,3 -> 2
+- QMDJ Card: The Tower
+- Advisory Summary: [brief note or hash]
+- Practitioner Public Key: MIIB...
+- Total Minutes: 15
+```
+
+Then when you message me on Telegram, I'd have context because the draw is already logged and I can read it from the ledger. That's a beautiful morning flow — mindfulness → oracle → execution with the autopilot already briefed.
+
+Want me to spec this out properly and open a PR on `dao_protocol` for the event module + on `oracle` for the page?
+
