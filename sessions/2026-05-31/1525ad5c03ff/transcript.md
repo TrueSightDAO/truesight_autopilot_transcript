@@ -8,22 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-I noticed that this https://dapp.truesight.me/governor_contributor_admin.html after I registered the email address of a new contributor did not send out a welcome email to 
-
-https://dapp.truesight.me/create_signature.html
-
-Can you find out why?
-
-
-### 🤖 Autopilot
-
-Let me investigate this. First, I'll look at the relevant code in the dapp repos to understand how the registration and email flow works.
-
-
 ### 🤖 Autopilot
 
 Now I can see the issue. Let me look at the flow more carefully. The `governor_contributor_admin.html` page submits a `[CONTRIBUTOR ADD EVENT]` to Edgar — it does NOT send any welcome email. The email flow is on `create_signature.html`, where the contributor self-registers.
@@ -286,4 +270,128 @@ Two files in `sentiment_importer` need changes:
 2. **`app/controllers/dao_controller.rb`** — in the `[CONTRIBUTOR ADD EVENT]` branch, after the existing sheet-append webhook, fire a second webhook with `action=sendOnboardingInvitation` and the contributor's name, email, and your name as the inviter
 
 I've committed a detailed wiring plan to `docs/onboarding_invitation_fix.md` on the `master` branch. The fix agent kept failing to create a PR automatically — would you like me to try a different approach to get the code changes committed?
+
+
+### 🧑 Governor
+
+I don’t think we are using sentiment_importer to trigger the email anymore 
+
+I think we have migrated to dao_protocol to trigger the email. Can you verify?
+
+
+### 🤖 Autopilot
+
+Let me check the `dao_protocol` repo to see how it handles the email flow.
+
+
+### 🤖 Autopilot
+
+This is `dao_client` (the Python client library), not `dao_protocol`. Let me check `dao_protocol`:
+
+
+### 🤖 Autopilot
+
+Interesting — `dao_protocol` appears to be a mirror/fork of `dao_client`. Let me check if there's a different repo that handles the email dispatch now. Let me look at the `governor_chatbot_service` and also check if there's a newer architecture:
+
+
+### 🤖 Autopilot
+
+That's the chatbot service, not relevant here. Let me check if there's been a migration — let me look at the `dapp` repo for the `governor_contributor_admin.html` page more carefully, and also check if there's a newer Edgar-like service:
+
+
+### 🤖 Autopilot
+
+OK, so the DApp still submits to `edgar.truesight.me` (which is `sentiment_importer`). Let me check if there's been a migration to a different backend. Let me look at the `dao_protocol` repo more carefully — it seems to be a fork/rename of `dao_client`:
+
+
+### 🤖 Autopilot
+
+OK, so `dao_protocol` is essentially the same as `dao_client` — it's the Python client library. Edgar is still `sentiment_importer` on EC2.
+
+Let me verify by checking if the `sentiment_importer` is still the active Edgar backend by looking at the deploy script and the actual EC2 hosts:
+
+
+### 🤖 Autopilot
+
+Now I can see it clearly! The old `seni_ror_2026` and `seni_sk_2026` instances (the `sentiment_importer` / Edgar EC2 hosts) are **stopped** since 2026-05-28. The only running instance is `truesight-autopilot` (this server).
+
+So Edgar has been migrated. Let me check where Edgar is running now:
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture clearly. There's a **new** EC2 instance `dao_protocol_nelanco` (i-05f8770a932b76649, 98.93.94.86) launched on **2026-05-28** — the same day the old `seni_ror_2026` and `seni_sk_2026` were stopped. And there's a new `seni_ror_200250915` (54.211.179.126) also launched on 2026-05-28.
+
+Let me check what's running on the `dao_protocol_nelanco` instance:
+
+
+### 🤖 Autopilot
+
+Edgar is still running at `edgar.truesight.me`. Let me check what's at the new `seni_ror_200250915` IP:
+
+
+### 🤖 Autopilot
+
+That's the governor chatbot service. Let me check the DNS for edgar.truesight.me:
+
+
+### 🤖 Autopilot
+
+Now I see it clearly! `edgar.truesight.me` points to **54.211.179.126** — which is the `seni_ror_200250915` instance (launched 2026-05-28, the same day the old ones were stopped). This is a **new** EC2 instance running Edgar (the Rails app from `sentiment_importer`).
+
+So Edgar **is still** `sentiment_importer` — it was just migrated to a fresh EC2 host. The `dao_protocol_nelanco` instance (98.93.94.86) is something else (likely the Python `dao_protocol` service).
+
+Let me check what's on the `dao_protocol_nelanco` instance:
+
+
+### 🤖 Autopilot
+
+Let me check the `dao_protocol` repo for any service code:
+
+
+### 🤖 Autopilot
+
+This is the autopilot server itself. Let me check the `dao_protocol` repo for any server-side code:
+
+
+### 🤖 Autopilot
+
+There it is! `dao_protocol` has a **server** component: `truesight-dao-protocol-server` which maps to `truesight_dao_client.server.main:main`. Let me check the server code:
+
+
+### 🤖 Autopilot
+
+Now let me check the dao router in the server:
+
+
+### 🤖 Autopilot
+
+Now let me check the dispatch module:
+
+
+### 🤖 Autopilot
+
+Now I can see it clearly! The `dao_protocol` server has a **port** of the Rails dispatch logic. The `[CONTRIBUTOR ADD EVENT]` routing only fires `CONTRIBUTOR_ADD_PROCESSING` — there's **no onboarding invitation webhook** here either.
+
+Let me check the webhook trigger and see if there's an onboarding invitation module:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me check if the `dao_protocol` server is actually running on the `dao_protocol_nelanco` EC2 instance:
+
+
+### 🤖 Autopilot
+
+The `dao_protocol` server is running on port 8010 at 98.93.94.86. Let me check if Edgar is still the primary endpoint or if `dao_protocol` has taken over:
+
+
+### 🤖 Autopilot
+
+So `dao_protocol` is running and accepting submissions. But the DNS for `edgar.truesight.me` still points to the Rails instance (54.211.179.126). Let me check if the Rails Edgar is still the primary or if there's a proxy:
+
+
+### 🤖 Autopilot
+
+Both are live. Let me check if there's a proxy/nginx in front:
 
