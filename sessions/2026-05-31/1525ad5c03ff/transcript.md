@@ -376,3 +376,69 @@ So the fix needs to go into the **`dao_protocol`** repo, not `sentiment_importer
 
 Want me to open a fix PR on `dao_protocol` to wire it up?
 
+
+### 🧑 Governor
+
+Yes. I noticed quite a few LLMs missing this context regarding the nginx setup I wonder if it might be helpful to extend agentic_ai_context with information regarding our AWS digital infrastructure deployment setuo so that future LLMs don’t need to dig around for this context and can quickly get down to business
+
+
+### 🤖 Autopilot
+
+Great idea. Let me first check what infrastructure docs already exist in the context, then draft the right document.
+
+
+### 🤖 Autopilot
+
+Good — I can see the existing infra docs are minimal. Now let me look at what we know about the nginx/ALB setup and the full deployment architecture to write a comprehensive doc. Let me check the nginx configs:
+
+
+### 🤖 Autopilot
+
+Now let me check the nginx config on the Edgar host (54.211.179.126) and the krake_nginx host (54.226.114.186):
+
+
+### 🤖 Autopilot
+
+Interesting — the request to `http://54.226.114.186/` redirected to `https://edgar.truesight.me/`. That's the nginx proxy (krake_nginx) forwarding to Edgar. Let me check the nginx config on the krake_nginx host:
+
+
+### 🤖 Autopilot
+
+OK, I have enough context now. Let me write the infrastructure doc and commit it, then open the fix PR on `dao_protocol`. Let me first draft the infrastructure doc:
+
+
+### 🤖 Autopilot
+
+Good. Now I have a thorough understanding of the full infrastructure. Let me write the infrastructure doc and commit it, then open the fix PR on `dao_protocol`.
+
+
+### 🤖 Autopilot
+
+Now let me open the fix PR on `dao_protocol` to wire up the onboarding invitation email:
+
+
+### 🤖 Autopilot
+
+Here's a summary of everything I did:
+
+## What I Did
+
+### 1. Infrastructure Doc — `AWS_DIGITAL_INFRASTRUCTURE.md`
+Committed to `agentic_ai_context`. Covers:
+- Both AWS accounts (Explorya + Nelanco) and what runs where
+- Every EC2 instance with IPs, types, and purposes
+- DNS routing (Route53 → nginx → backend)
+- The Edgar migration (2026-05-28) — old instances stopped, new ones live
+- Service architecture diagrams for Edgar, dao_protocol, and autopilot
+- SSH keys, monitoring URLs, security groups
+- Common pitfalls (Edgar ≠ getdata.io, two Edgar backends exist, etc.)
+
+### 2. Fix PR — `dao_protocol#56`
+Opened a PR to wire the onboarding invitation email into the `[CONTRIBUTOR ADD EVENT]` dispatch. The GAS handler (`edgar_send_onboarding_invitation.gs`) is already deployed — the missing piece is that `dispatch.py` only fires the sheet-append webhook and never calls the `sendOnboardingInvitation` action.
+
+The PR adds:
+- A `trigger_with_params()` function to `webhook_trigger.py` for webhooks that need extra query params
+- Logic in `dispatch.py` to extract contributor name/email and the governor's identity from the event text, then fire the onboarding invitation webhook with all required params
+
+You can review it at: https://github.com/TrueSightDAO/dao_protocol/pull/56
+
