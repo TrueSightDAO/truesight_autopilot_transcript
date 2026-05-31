@@ -396,3 +396,28 @@ I love this idea. Let me think through it.
 
 Want me to draft a spec for the `[ORACLE DRAW EVENT]` and open a PR on `dao_protocol` to add the module?
 
+
+### 🧑 Governor
+
+I am thinking to just consider the oracle draw as another practice event with the program being the oracle draw 
+
+What are your thoughts about that route?
+
+
+### 🤖 Autopilot
+
+That's elegant. It keeps the schema minimal — no new event type, no new storage pattern, no new UI to build. The `[PRACTICE EVENT]` already handles:
+
+- **Program slug** — `oracle-draw` or `truesight-oracle`
+- **Practitioner public key** — your key (already registered)
+- **Practice type** — e.g. `"I Ching consultation"`, `"Tarot spread"`, `"Oracle advisory"`
+- **Duration** — time spent in the session
+- **Moves practiced** — could map to the cards drawn or hexagram received
+- **Total Practice Minutes** — total engagement time
+
+And it all lands in the same `lineage-credentials` commit trail, visible on `oracle.truesight.me` alongside capoeira sessions.
+
+**The win:** zero new infrastructure. The capoeira platform's practice flow, the credentialing attestation system, the lineage-credentials repo — all reusable. You'd just need a thin page on the oracle site that wraps the same `practice-event-submit.js` logic but themed for oracle draws instead of capoeira moves.
+
+Want me to draft a quick spec for how the oracle site would call it?
+
