@@ -508,3 +508,61 @@ On the `truesight.me` side, the programs listing already has a pattern from Butt
 
 Want me to update the plan with the `truesight-grounding` naming and add the `truesight.me` program page to the roadmap?
 
+
+### 🧑 Governor
+
+Yes. Also, if you got a logo for it as part of the implementation plan.
+
+
+### 🤖 Autopilot
+
+Let me think about the logo concept.
+
+**truesight-grounding** — a daily mindfulness grounding exercise using the Oracle.
+
+For the logo, I'm picturing something simple and symbolic:
+
+- **A circle** — wholeness, the daily cycle, grounding
+- **With a single vertical line through the center** — the axis mundi, the centered self, the I Ching's connection between heaven and earth
+- **Or: a hexagram outline (the I Ching symbol) with a horizontal baseline** — the oracle grounded in daily practice
+
+Actually, the simplest and most evocative: **a circle with a dot in the center** — the Zen ensō (circle of enlightenment) meeting the I Ching's center. It reads as both a grounding symbol and an oracle reference.
+
+Or even simpler: **a stylized "G" that forms a circle with a hexagram line through it.**
+
+Let me update the plan with all of this — the naming, the logo concept, the `truesight.me` program page, and the corrected draw flow.
+
+
+### 🤖 Autopilot
+
+The file already exists from the first write. Let me delete it first and re-create:
+
+
+### 🤖 Autopilot
+
+The file exists and needs the SHA. Let me read it first to get the SHA, then update:
+
+
+### 🤖 Autopilot
+
+I see — the file has the old content. The `upload_file_to_github` tool needs the SHA for existing files. Let me use a different approach — I'll delete and recreate via the GitHub API:
+
+
+### 🤖 Autopilot
+
+The tool doesn't support updating existing files. Let me use a different approach — write to a new filename:
+
+
+### 🤖 Autopilot
+
+Done. The plan is at `TRUESIGHT_GROUNDING_IMPLEMENTATION_PLAN.md`. I'll leave the old `ORACLE_DRAW_IMPLEMENTATION_PLAN.md` as-is since I can't overwrite it from here — the next LLM can clean it up.
+
+The plan now covers everything we discussed:
+
+- **Program name:** `truesight-grounding` — broader than just oracle, frames it as a daily grounding ritual
+- **Logo concept:** Circle with vertical line to center dot — grounded, centered, ready
+- **Draw flow:** "Draw" reveals the reading, "Record Session" signs + submits after you've reviewed it
+- **RSA signing:** Same `practice-event-submit.js` pattern from capoeira — Web Crypto API, localStorage keypair
+- **truesight.me program page:** New page at `/programs/truesight-grounding/` with logo, description, credentials viewer
+- **3-phase roadmap:** Foundation (manifest + draw page + truesight.me page), Autopilot integration, Dashboard
+
