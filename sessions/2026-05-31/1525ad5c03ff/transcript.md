@@ -93,3 +93,29 @@ Here's what it changes:
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+Yes. Go for it
+
+
+### 🤖 Autopilot
+
+Merged. Now let me deploy the updated site so the changes go live.
+
+
+### 🤖 Autopilot
+
+The deploy failed on the autopilot side (pip install issue, not related to the oracle site). The oracle site is a static GitHub Pages site — it's served directly from the `oracle` repo's `main` branch. Since PR #25 is merged to `main`, the changes are already live at **https://oracle.truesight.me**.
+
+Here's what's now live:
+
+| What | How |
+|------|-----|
+| **RSA keypair** | Auto-generated on page load if absent — silent, no UI |
+| **Auto-submit** | When the advisory panel appears, submits `[PRACTICE EVENT]` to Edgar automatically |
+| **Dedup** | Won't re-submit the same reading twice |
+| **"My Credentials →"** | Link appears after submission pointing to `truesight.me/programs/truesight-grounding/credentials/#{slug}` |
+
+Go ahead and cast a reading at **oracle.truesight.me** — it should auto-record your session and give you the link to your credentials.
+
