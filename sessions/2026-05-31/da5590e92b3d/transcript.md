@@ -214,3 +214,25 @@ All three run in <30s, no network calls, and they block the merge if they fail. 
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+merge
+
+
+### 🤖 Autopilot
+
+**PR #82 merged** — sha `de7c4a0`. The pre-merge CI is now live.
+
+To recap what's now in place:
+
+| Check | What it catches | Time |
+|-------|----------------|------|
+| `ast.parse()` on all `app/*.py` | Syntax errors | <1s |
+| `from app.main import app` | Missing imports, broken `app.route`, attribute errors | <5s |
+| `get_tool_schemas()` | Broken tool schema definitions | <5s |
+
+These run on every PR to `main` and **block the merge** if they fail. The existing `smoke.yml` (tool smoke tests with actual function calls) still runs alongside as a deeper check.
+
+The self-deploy loop is now gated: broken code can't merge → can't trigger a self-deploy → no need for SSH fallback.
+
