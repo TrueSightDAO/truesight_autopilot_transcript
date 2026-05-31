@@ -10,118 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I can see the full picture. Let me look at the `DaoEmailRegistrationService` to understand the email sending flow:
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. Let me check the key piece — the `[CONTRIBUTOR ADD EVENT]` handler. Looking at the `trigger_immediate_processing` method in the controller, I can see:
-
-```ruby
-elsif text.include?('[CONTRIBUTOR ADD EVENT]')
-  contributor_add_webhook_url = Rails.application.config.contributor_add_processing_webhook_url
-  if contributor_add_webhook_url.present?
-    webhooks_to_trigger << { ... }
-  else
-    Rails.logger.warn('contributor_add_processing_webhook_url not set in config/application.rb - contributor adds will only be processed by manual runs')
-  end
-```
-
-Let me check what the `contributor_add_processing_webhook_url` config looks like:
-
-
-### 🤖 Autopilot
-
-Now I have the complete picture. Let me also check the GAS side — the `ContributorAddHandler.js`:
-
-
-### 🤖 Autopilot
-
-Let me check the clasp_mirrors README to find the right script ID:
-
-
-### 🤖 Autopilot
-
-Now I have a thorough understanding of the architecture. Let me summarize the answer for you.
-
----
-
-Here's the full analysis of why **no welcome email** is sent when you register a new contributor via `governor_contributor_admin.html`:
-
-## The Two Separate Flows
-
-There are **two distinct flows** in the system, and they are intentionally decoupled:
-
-### Flow 1: Governor Adds Contributor (`governor_contributor_admin.html`)
-- You submit a `[CONTRIBUTOR ADD EVENT]` with name + email
-- Edgar logs it to **Telegram Chat Logs** (Google Sheet)
-- Edgar fires a **webhook** to the GAS `tdg_identity_management` project (`?action=processContributorAddsFromTelegramChatLogs`)
-- That GAS handler appends the name + email to **"Contributors contact information"** on the Main Ledger
-- **No email is sent** at this stage — by design
-
-### Flow 2: Contributor Self-Registers (`create_signature.html`)
-- The contributor visits `create_signature.html`, enters their email, generates a keypair
-- The browser submits an `[EMAIL REGISTERED EVENT]` to Edgar
-- Edgar calls `DaoEmailRegistrationService` → `trigger_verification_email()`
-- That fires a **separate GAS webhook** (`email_verification_gas_webhook_url`) with `?action=sendEmailVerification`
-- The GAS handler calls `GmailApp.sendEmail()` to send the verification link
-- The contributor clicks the link → `[EMAIL VERIFICATION EVENT]` → key is activated
-
-## Why No Welcome Email
-
-The `governor_contributor_admin.html` page **does not trigger any email**. The page's own description says it clearly:
-
-> *"The new contributor will later self-register their first device public key via the email-verification flow; you do not need to enter a public key here."*
-
-The design intent is:
-1. **You** (governor) add the contributor's name + email to the ledger (Flow 1)
-2. **The contributor** goes to `create_signature.html`, enters their email, and the system sends them a verification link (Flow 2)
-
-The contributor doesn't get a "welcome" email from your action — they only get the verification email when **they** initiate the registration on `create_signature.html`.
-
-## What's Missing (if you want a welcome email)
-
-If you want the system to send a welcome/onboarding email when a governor adds a contributor, that would be a **new feature** — the `ContributorAddHandler.js` GAS script would need to be extended to call `GmailApp.sendEmail()` after appending the row. Currently it only appends to the sheet.
-
-Would you like me to open a fix PR to add a welcome email feature to the contributor add flow?
-
-
-### 🧑 Governor
-
-Yes. Please do so. But before what do you suggest should be included in that welcome email to frame it. The most important piece that must not go missing is the link to create a signature
-
-
-### 🤖 Autopilot
-
-Let me first check the existing email template conventions and the create_signature flow to make sure I frame this correctly.
-
-
-### 🤖 Autopilot
-
-Interesting — I can see there's already a `sendOnboardingInvitation` action defined in this GAS project! Let me check if the handler file exists:
-
-
-### 🤖 Autopilot
-
-This is great news — the onboarding invitation handler **already exists**! The GAS file `edgar_send_onboarding_invitation.gs` is already written and deployed in the same Apps Script project. The `doGet`/`doPost` dispatcher in `edgar_send_email_verification.gs` already routes `action=sendOnboardingInvitation` to `handleOnboardingInvitationRequest_`.
-
-The missing piece is on the **Edgar (Rails) side** — the `trigger_immediate_processing` method in `dao_controller.rb` fires a webhook for `[CONTRIBUTOR ADD EVENT]`, but that webhook only goes to the `ContributorAddHandler.js` (which appends to the sheet). It does **not** call the `sendOnboardingInvitation` action.
-
-Let me now open the fix PR to wire this up.
-
-
-### 🤖 Autopilot
-
-Let me try again with a more focused description:
-
-
-### 🤖 Autopilot
-
-Let me check what's happening with the fix agent:
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. The GAS side is already complete — `edgar_send_onboarding_invitation.gs` exists and is deployed. The fix needed is purely on the Edgar (Rails) side. Let me try the fix PR again with a very specific description:
 
 
@@ -441,4 +329,54 @@ The PR adds:
 - Logic in `dispatch.py` to extract contributor name/email and the governor's identity from the event text, then fire the onboarding invitation webhook with all required params
 
 You can review it at: https://github.com/TrueSightDAO/dao_protocol/pull/56
+
+
+### 🧑 Governor
+
+Perfect. Merge and deploy?
+
+
+### 🤖 Autopilot
+
+Let me check the PR status first, then merge and deploy.
+
+
+### 🤖 Autopilot
+
+Merged. Now let me deploy to the `dao_protocol_nelanco` host. Let me check how it's deployed:
+
+
+### 🤖 Autopilot
+
+No deploy script in the repo. Let me check how the `dao_protocol` server is running on the EC2 host:
+
+
+### 🤖 Autopilot
+
+The server is running. I don't have SSH access to the `dao_protocol_nelanco` host from here (the autopilot's SSH key is `garyjob_aws`, but the Nelanco hosts use `GETDATA_IO_PAIR_20201122`). Let me check if I can reach it:
+
+
+### 🤖 Autopilot
+
+No SSH keys available on this host for the Nelanco instances. The deploy would need to be done from your machine. Here's what you need to do:
+
+**PR #56 is merged.** To deploy:
+
+```bash
+ssh ubuntu@98.93.94.86
+cd /opt/dao_protocol  # or wherever it's cloned
+git pull origin main
+sudo systemctl restart dao-protocol  # or supervisorctl, or however it's managed
+```
+
+Or if it's running via `pip install -e .` with the `truesight-dao-protocol-server` command, you may need to reinstall:
+
+```bash
+pip install -e .  # from the repo directory
+sudo systemctl restart dao-protocol
+```
+
+Also, you'll need to add the `DAO_PROTOCOL_WEBHOOK_ONBOARDING_INVITATION` env var to the server's `.env` (or it'll default to the same URL as the email verification webhook, which is the correct GAS project — so it should work without any env change).
+
+Want me to check if there's a systemd service file or deploy script I can look at from the repo?
 
