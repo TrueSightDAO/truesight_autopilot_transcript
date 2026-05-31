@@ -10,78 +10,6 @@
 
 ### 🤖 Autopilot
 
-I can see the full file. Let me now create the actual PR by making the changes directly. I'll create a new branch with the changes:
-
-
-### 🤖 Autopilot
-
-OK, the file already exists from the earlier upload. Let me take a step back and summarize what I've found for you, Gary.
-
----
-
-Here's the full picture:
-
-## What I Found
-
-**The GAS side is already complete.** The onboarding invitation handler (`edgar_send_onboarding_invitation.gs`) is fully written and deployed in the same Apps Script project as the email verification handler. It sends a Seth-Godin-voiced email with the `create_signature.html?em=<email>` link pre-filled.
-
-**The missing piece is purely on the Edgar (Rails) side** — `trigger_immediate_processing` in `dao_controller.rb` doesn't fire the onboarding webhook after a `[CONTRIBUTOR ADD EVENT]`.
-
-## What the Email Would Say
-
-The existing GAS handler composes this email (from `composeOnboardingBody_`):
-
-> **Subject:** Gary Teh added you to TrueSight DAO
->
-> Hi [contributor name],
->
-> Gary Teh added you to TrueSight DAO today.
->
-> The first thing to know: every action you take in this DAO is signed by a key only you control. Not a wallet. Not gas. Not crypto in the way you have been told it has to be.
->
-> **Generate your signing key (takes 30 seconds, lives in your browser):**
-> https://dapp.truesight.me/create_signature.html?em=you@example.com
->
-> Once that is done, you can submit contributions, propose work, and have your time recorded on the ledger like every other contributor.
->
-> If you want some context on what you are part of:
-> https://truesight.me/edgar.html
-> https://truesight.me/whitepaper
->
-> Welcome.
->
-> — TrueSight DAO
-
-Key framing decisions already baked in:
-- **Names the inviter** (you) — personal, not a bot
-- **One primary action** — the `create_signature.html` link with email pre-filled
-- **Anti-crypto-bro framing** — "Not a wallet. Not gas." signals this is different
-- **Secondary links** deprioritized below the primary action
-
-## The Fix Needed
-
-Two files in `sentiment_importer` need changes:
-
-1. **`config/application.rb`** — add `config.onboarding_invitation_webhook_url` defaulting to the same URL as `email_verification_gas_webhook_url`
-2. **`app/controllers/dao_controller.rb`** — in the `[CONTRIBUTOR ADD EVENT]` branch, after the existing sheet-append webhook, fire a second webhook with `action=sendOnboardingInvitation` and the contributor's name, email, and your name as the inviter
-
-I've committed a detailed wiring plan to `docs/onboarding_invitation_fix.md` on the `master` branch. The fix agent kept failing to create a PR automatically — would you like me to try a different approach to get the code changes committed?
-
-
-### 🧑 Governor
-
-I don’t think we are using sentiment_importer to trigger the email anymore 
-
-I think we have migrated to dao_protocol to trigger the email. Can you verify?
-
-
-### 🤖 Autopilot
-
-Let me check the `dao_protocol` repo to see how it handles the email flow.
-
-
-### 🤖 Autopilot
-
 This is `dao_client` (the Python client library), not `dao_protocol`. Let me check `dao_protocol`:
 
 
@@ -493,4 +421,42 @@ Same event type, same `lineage-credentials` commit trail, same infrastructure. T
 And the beautiful part: when you message me on Telegram after your morning session, I can read today's draw from the lineage-credentials repo and have full context for our conversation.
 
 Want me to spec out the oracle page on `oracle.truesight.me` that wraps the `practice-event-submit.js` logic?
+
+
+### 🧑 Governor
+
+Yeah. Perhaps have a implementation plant as well as an execution roadmap checklist done on agentic_ai_context so you have something ti refer back to as you go about doing the actual implementation and you won’t get lost on the context
+
+
+### 🤖 Autopilot
+
+Let me first read the capoeira practice event submission code to understand the exact pattern I need to replicate.
+
+
+### 🤖 Autopilot
+
+Now let me check the GAS handler that processes practice events to understand the routing:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check the manifest structure to understand what's needed for a new program:
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me write the implementation plan and roadmap.
+
+
+### 🤖 Autopilot
+
+Done. The plan is at `agentic_ai_context/ORACLE_DRAW_IMPLEMENTATION_PLAN.md`. It covers:
+
+- **Architecture** — how `[PRACTICE EVENT]` with `Program: truesight-oracle` flows through the existing pipeline
+- **Event payload shape** — hexagrams, QMDJ card, advisory summary in the flexible `Payload JSON`
+- **Manifest** — the `lineage-credentials` program manifest that tells the GAS processor to accept `oracle-consultation` practice types
+- **3-phase roadmap** — foundation (manifest + draw page), autopilot integration (Telegram context), dashboard (history view)
+- **Execution checklist** — tick-boxes for each phase
+
+The key insight is that **zero new infrastructure** is needed — the capoeira pipeline already handles any program with a valid manifest. The only new code is the `draw.html` page on `oracle.truesight.me` and the manifest in `lineage-credentials`.
 
