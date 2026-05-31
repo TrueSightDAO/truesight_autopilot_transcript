@@ -312,3 +312,32 @@ The credential page itself (the one that shows your practice log) loads from a *
 
 Want me to mirror the pages to prod first?
 
+
+### 🧑 Governor
+
+Mirror it
+
+
+### 🤖 Autopilot
+
+Now I'll mirror all 4 files to prod. Let me do them in parallel:
+
+
+### 🤖 Autopilot
+
+Now update `programs.html` on prod with the TrueSight Grounding card:
+
+
+### 🤖 Autopilot
+
+All mirrored to prod. Here's what's now live on **truesight.me**:
+
+| File | Status |
+|------|--------|
+| `truesight.me/programs.html` | ✅ Now shows **TrueSight Grounding** card |
+| `truesight.me/programs/truesight-grounding/index.html` | ✅ Landing page |
+| `truesight.me/programs/truesight-grounding/members.html` | ✅ Cohort listing |
+| `truesight.me/programs/truesight-grounding/credentials/#{slug}` | ✅ Credential CV page |
+
+The oracle's "My Credentials →" link now points to `truesight.me/programs/truesight-grounding/credentials/#{slug}` which actually exists. Go ahead and cast a reading at **oracle.truesight.me** — after the advisory appears, the link should take you to a working page (the session data will populate after the next lineage-engine cache build, ~6h).
+
