@@ -117,5 +117,12 @@
     "summary": "Create .github/workflows/pre-merge.yml with three fast CI checks that run on every PR to main:\n1. Syntax check all .py files under app/\n2. Import smoke: python -c \"from app.main import app\"\n3. Tool sc",
     "action": "merge_pr",
     "created_at": "2026-05-31T01:21:21Z"
+  },
+  {
+    "title": "Merge PR #83 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix deploy_autopilot OOM failure on t3.small (2GB RAM, no swap). The phase-two subprocess gets killed (exit -15, SIGTERM) during `pip install` of `dao_client` from GitHub source, which requires compil",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T01:26:45Z"
   }
 ]
