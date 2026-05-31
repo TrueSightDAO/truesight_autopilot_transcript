@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-This is `dao_client` (the Python client library), not `dao_protocol`. Let me check `dao_protocol`:
-
-
-### 🤖 Autopilot
-
 Interesting — `dao_protocol` appears to be a mirror/fork of `dao_client`. Let me check if there's a different repo that handles the email dispatch now. Let me look at the `governor_chatbot_service` and also check if there's a newer architecture:
 
 
@@ -459,4 +454,26 @@ Done. The plan is at `agentic_ai_context/ORACLE_DRAW_IMPLEMENTATION_PLAN.md`. It
 - **Execution checklist** — tick-boxes for each phase
 
 The key insight is that **zero new infrastructure** is needed — the capoeira pipeline already handles any program with a valid manifest. The only new code is the `draw.html` page on `oracle.truesight.me` and the manifest in `lineage-credentials`.
+
+
+### 🧑 Governor
+
+Yeah. I think we need RSA on that page isn’t it so that it can call Edgar after the draw is done? Also I think the submission to Edgar with the signed event should only happen after you returned the reading for the day isn’t it?
+
+
+### 🤖 Autopilot
+
+Exactly right on both points.
+
+**On RSA:** Yes — the `draw.html` page needs the same `practice-event-submit.js` pattern. The keypair is generated client-side via Web Crypto API (RSA-2048, same as capoeira and the DApp), stored in localStorage, and used to sign the `[PRACTICE EVENT]` payload before POSTing to Edgar. No key ever leaves the browser.
+
+**On timing:** The submission should happen **after** the reading is returned — not when the user clicks "draw cards." The flow is:
+
+1. User clicks "Draw" → hexagrams/cards are revealed on screen (the reading)
+2. User reviews the reading, optionally adds notes or an advisory summary
+3. User clicks "Record Session" → the `[PRACTICE EVENT]` is built with the full context (what was drawn + the advisory), signed, and submitted to Edgar
+
+This way the record captures the **complete** session — not just the raw draw, but what you took away from it. The advisory summary is the most valuable part for the autopilot to reference later.
+
+I'll update the plan to make this clearer.
 
