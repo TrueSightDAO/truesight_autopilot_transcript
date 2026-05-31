@@ -10,48 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I can see the issue. Let me look at the flow more carefully. The `governor_contributor_admin.html` page submits a `[CONTRIBUTOR ADD EVENT]` to Edgar — it does NOT send any welcome email. The email flow is on `create_signature.html`, where the contributor self-registers.
-
-Let me check what happens on the Edgar/backend side when a `[CONTRIBUTOR ADD EVENT]` is submitted — does it trigger any email?
-
-
-### 🤖 Autopilot
-
-Let me look at the Edgar backend to understand what happens when a `[CONTRIBUTOR ADD EVENT]` is submitted — specifically whether it triggers any email sending.
-
-
-### 🤖 Autopilot
-
-The `dao_client` repo seems to have moved. Let me check what repos exist and find the right one.
-
-
-### 🤖 Autopilot
-
-I see — `dao_client` is no longer listed. Let me check the `dapp_prod` repo (which is the production DApp) and look at the Edgar backend in the tokenomics repo.
-
-
-### 🤖 Autopilot
-
-Now let me look at the Edgar backend to understand the email flow. Let me check the tokenomics repo for the GAS scripts that handle email registration.
-
-
-### 🤖 Autopilot
-
-Let me look at the Edgar backend directly — the Rails app that processes these events.
-
-
-### 🤖 Autopilot
-
-Now I see the architecture clearly. Let me look at the actual GAS script that sends the verification email to understand the full flow.
-
-
-### 🤖 Autopilot
-
-Now I see — Edgar is the Rails app in `sentiment_importer`. Let me look at how it handles the `[CONTRIBUTOR ADD EVENT]` and whether it sends any email.
-
-
-### 🤖 Autopilot
-
 Now I can see the full picture. Let me look at the `DaoEmailRegistrationService` to understand the email sending flow:
 
 
@@ -394,4 +352,27 @@ So `dao_protocol` is running and accepting submissions. But the DNS for `edgar.t
 ### 🤖 Autopilot
 
 Both are live. Let me check if there's a proxy/nginx in front:
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+You there
+
+
+### 🤖 Autopilot
+
+Yes, I'm here. I was just verifying the architecture — you're right that the email dispatch has moved. Let me summarize what I found:
+
+**Edgar is now split across two services:**
+
+1. **`edgar.truesight.me`** (54.211.179.126) — still the Rails `sentiment_importer`, handles the old flow
+2. **`dao_protocol`** (98.93.94.86:8010) — the new FastAPI server that has a port of the dispatch logic in `truesight_dao_client/server/dispatch.py`
+
+The `dispatch_event()` function in `dao_protocol` has the `[CONTRIBUTOR ADD EVENT]` routing, but it only fires the `CONTRIBUTOR_ADD_PROCESSING` webhook — **no onboarding invitation** is wired up there either.
+
+So the fix needs to go into the **`dao_protocol`** repo, not `sentiment_importer`. The GAS handler (`edgar_send_onboarding_invitation.gs`) is already deployed and ready — we just need to add a second webhook trigger in `dispatch.py` for the `[CONTRIBUTOR ADD EVENT]` case.
+
+Want me to open a fix PR on `dao_protocol` to wire it up?
 
