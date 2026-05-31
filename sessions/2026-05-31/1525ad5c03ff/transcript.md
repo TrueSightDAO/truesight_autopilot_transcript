@@ -10,15 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `index.html` already has the `daoAdvisoryPanel` and all the casting logic. I just need to:
-1. Add the `oracle-draw-submit.js` script tag
-2. Add the "Record Session" button to the `daoAdvisoryPanel` section
-
-Let me make a focused edit to `index.html`:
-
-
-### 🤖 Autopilot
-
 The `index.html` is 188KB — too large to edit via the API. Let me take a different approach. I'll use `open_fix_pr` to add the Record Session button and script tag to `index.html`:
 
 
@@ -254,4 +245,70 @@ Three program cards now:
 4. That page shows your practice log — each session with hexagrams and advisory
 
 The credential cache (`lineage-engine`) rebuilds every 6 hours, so your first submission may take a bit to appear on the credentials page.
+
+
+### 🧑 Governor
+
+How come the credentials doesn’t generate in real time then?
+
+When I do capoeira my credentials happen as soon as I click on finish session
+
+
+### 🤖 Autopilot
+
+Good question. Let me check how the capoeira credential flow works to understand the difference.
+
+
+### 🤖 Autopilot
+
+Now I see the difference. The capoeira flow:
+
+1. **Submits to Edgar** (same as oracle) — `POST /dao/submit_contribution`
+2. **Derives the slug client-side** from the public key — `getCvUrl()` returns the URL immediately
+3. **Shows the CV link right away** — the credential page loads from `lineage-credentials/_cache/cv/<slug>.json`
+
+The key insight: the capoeira credential page loads from a **cached JSON file** (`_cache/cv/<slug>.json`) that's rebuilt every 6 hours by `lineage-engine`. So even capoeira doesn't show the new session in real-time on the credential page — it just shows the **link** immediately.
+
+But you said "my credentials happen as soon as I click on finish session" — let me check what actually happens on the capoeira finish screen:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me check what happens in `practice-flow.js` at "Finish Session":
+
+
+### 🤖 Autopilot
+
+Now I see the key difference. In capoeira's `finishSession()`:
+
+1. **`revealCvLinkOptimistically()`** — derives the slug **client-side** from the localStorage public key and shows the link immediately (no server round-trip needed)
+2. **`submitSession()`** — submits to Edgar in the background
+3. The link points to `truesight.me/programs/tribomirim/credentials/#{slug}` — the credential page itself loads from a **cached JSON file** that rebuilds every 6 hours
+
+So even capoeira doesn't show the new session data in real-time on the credential page — it just shows the **link** immediately because the slug is derived client-side. The actual session data appears on the credential page after the next cache build.
+
+The oracle already does the same thing — it derives the slug client-side and shows the link. The issue you're seeing is that the **credentials page itself** (`programs/truesight-grounding/credentials/#{slug}`) doesn't exist yet on `truesight.me` (prod). It exists on `beta.truesight.me` now, but the oracle's `getCvUrl()` points to `truesight.me` (prod).
+
+Let me check what the oracle's `getCvUrl()` currently points to:
+
+
+### 🤖 Autopilot
+
+The oracle's `getCvUrl()` points to `https://truesight.me/programs/truesight-grounding/credentials/#{slug}` — but that page doesn't exist on `truesight.me` (prod). It only exists on `beta.truesight.me` now.
+
+So the answer to your question "why doesn't it generate in real time?" is:
+
+**It does — the same way capoeira does.** Both derive the slug client-side and show the link immediately. The difference is:
+
+1. **Capoeira** → link points to `truesight.me/programs/tribomirim/credentials/#{slug}` — that page exists on prod
+2. **Oracle** → link points to `truesight.me/programs/truesight-grounding/credentials/#{slug}` — that page **doesn't exist on prod yet**, only on beta
+
+The credential page itself (the one that shows your practice log) loads from a **cached JSON file** (`lineage-credentials/_cache/cv/<slug>.json`) that's rebuilt every 6 hours by `lineage-engine`. So even capoeira doesn't show new sessions in real-time on the credential page — it just shows the link immediately.
+
+**Two things to fix:**
+
+1. **Mirror the `truesight-grounding` program pages to `truesight_me_prod`** so the link works on `truesight.me`
+2. **Optionally: make the credential page load from Edgar directly** instead of the 6-hour cache, for real-time display
+
+Want me to mirror the pages to prod first?
 
