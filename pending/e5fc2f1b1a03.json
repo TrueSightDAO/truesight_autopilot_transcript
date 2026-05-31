@@ -138,5 +138,12 @@
     "summary": "Add Record Session button and oracle-draw-submit.js to index.html\n\nTwo changes needed:\n\n1. Add `<script src=\"assets/js/oracle-draw-submit.js\" defer></script>` after the Qimen Dunjia script tag in the ",
     "action": "merge_pr",
     "created_at": "2026-05-31T05:08:12Z"
+  },
+  {
+    "title": "Merge PR #25 on oracle",
+    "qr_code": "",
+    "summary": "Rewrite oracle-draw-submit.js to auto-submit and replace Record Session button with My Credentials link\n\nThree changes to the flow:\n\n### 1. oracle-draw-submit.js \u2014 auto-generate + auto-submit\n\nRewrite",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T05:11:44Z"
   }
 ]
