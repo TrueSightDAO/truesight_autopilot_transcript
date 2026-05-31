@@ -96,5 +96,12 @@
     "summary": "Add a root `/` landing page for sophia.truesight.me that displays a beautiful SVG avatar of Sophia (the DAO Oracle persona) instead of returning {\"detail\":\"Not Found\"}.\n\nThe page should:\n1. Be served ",
     "action": "merge_pr",
     "created_at": "2026-05-30T23:32:34Z"
+  },
+  {
+    "title": "Merge PR #79 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "CORS headers missing on /oracle-advisory endpoint when called from oracle.truesight.me (GitHub Pages). The browser reports 'CORS header error' when the oracle frontend at oracle.truesight.me calls sop",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T01:05:29Z"
   }
 ]
