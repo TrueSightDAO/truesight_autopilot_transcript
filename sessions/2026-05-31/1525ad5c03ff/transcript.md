@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Interesting — `dao_protocol` appears to be a mirror/fork of `dao_client`. Let me check if there's a different repo that handles the email dispatch now. Let me look at the `governor_chatbot_service` and also check if there's a newer architecture:
-
-
-### 🤖 Autopilot
-
 That's the chatbot service, not relevant here. Let me check if there's been a migration — let me look at the `dapp` repo for the `governor_contributor_admin.html` page more carefully, and also check if there's a newer Edgar-like service:
 
 
@@ -561,4 +556,96 @@ Let me summarize what's in place:
 - `tasks/DEPLOY_DAO_PROTOCOL_ONBOARDING_INVITATION.md` — for the morning deploy
 
 The oracle draw plan is solid — the next LLM can pick up Phase 1.1 (manifest) and 1.3 (draw.html) directly from the spec. Good night, Gary 😊🙏
+
+
+### 🧑 Governor
+
+For the update to the agentic_ai_context can’t you just use the git pull and git push??
+
+
+### 🤖 Autopilot
+
+You're right — I can use git directly on this server since the repo is cloned. Let me check:
+
+
+### 🤖 Autopilot
+
+No clone of `agentic_ai_context` on this server. But I can clone it, update the file, and push:
+
+
+### 🤖 Autopilot
+
+Let me check if git is available and if I have SSH access set up:
+
+
+### 🤖 Autopilot
+
+There's an `agentic-ai-github-TrueSightDAO` SSH key. Let me check if there's a corresponding private key:
+
+
+### 🤖 Autopilot
+
+No private key stored. Let me check if the autopilot has a deploy key or token configured:
+
+
+### 🤖 Autopilot
+
+I have the `TRUESIGHT_DAO_AUTOPILOT` PAT. Let me use git to clone, update, and push:
+
+
+### 🤖 Autopilot
+
+I have the PAT. Let me clone, update, and push:
+
+
+### 🤖 Autopilot
+
+Let me try cloning and pushing with the PAT:
+
+
+### 🤖 Autopilot
+
+I can use the PAT from the env to authenticate. Let me write the updated file content and push it via the API with the SHA this time. The SHA from the earlier GET was `b386cee866c229cff965d55a2f3bf0672ccb6f8d`:
+
+
+### 🤖 Autopilot
+
+Good, SHA is `b386cee866c229cff965d55a2f3bf0672ccb6f8d`. Now let me PUT the updated content with the SHA:
+
+
+### 🤖 Autopilot
+
+Hmm, the base64 content I sent was truncated — only 424 bytes. Let me check what landed and fix it properly:
+
+
+### 🤖 Autopilot
+
+It got truncated because the base64 I sent was too short. Let me send the full content properly:
+
+
+### 🤖 Autopilot
+
+Let me verify it landed correctly:
+
+
+### 🤖 Autopilot
+
+It's still showing the truncated version — the CDN cache hasn't updated. The API returned 8479 bytes so the content is there. Let me check via the API directly:
+
+
+### 🤖 Autopilot
+
+The full document is there (8,916 bytes) — the raw.githubusercontent.com CDN just hasn't refreshed yet. It'll propagate in a minute or two.
+
+Here's the final summary of everything committed tonight:
+
+**`agentic_ai_context`:**
+- `AWS_DIGITAL_INFRASTRUCTURE.md` — full AWS deployment reference
+- `ORACLE_DRAW_IMPLEMENTATION_PLAN.md` — updated with `truesight-grounding` naming, submission-after-reading flow, and 4-phase roadmap including the `truesight.me` program page
+- `tasks/DEPLOY_DAO_PROTOCOL_ONBOARDING_INVITATION.md` — follow-up for the morning
+
+**`dao_protocol`:**
+- PR #56 merged — onboarding invitation email wired into `[CONTRIBUTOR ADD EVENT]` dispatch
+
+Good night, Gary. See you in the morning 😊🙏
 
