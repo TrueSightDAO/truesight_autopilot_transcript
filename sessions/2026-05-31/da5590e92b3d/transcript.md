@@ -361,3 +361,13 @@ The deploy tool failed because the phase-two subprocess got OOM-killed during `p
 
 Want me to restart the service? This conversation will end, but the CORS/rate-limit fix will be live.
 
+
+### 🧑 Governor
+
+yuo there?
+
+
+### 🤖 Autopilot
+
+Yes, I'm here! The service is still running — we didn't restart. What do you need?
+
