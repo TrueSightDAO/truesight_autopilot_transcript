@@ -103,5 +103,12 @@
     "summary": "CORS headers missing on /oracle-advisory endpoint when called from oracle.truesight.me (GitHub Pages). The browser reports 'CORS header error' when the oracle frontend at oracle.truesight.me calls sop",
     "action": "merge_pr",
     "created_at": "2026-05-31T01:05:29Z"
+  },
+  {
+    "title": "Merge PR #81 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix /oracle-advisory endpoint: CORS errors and overly aggressive rate limiting causing 429 responses for oracle.truesight.me frontend.\n\nTwo issues:\n1. **CORS**: The oracle frontend at oracle.truesight",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T01:17:16Z"
   }
 ]
