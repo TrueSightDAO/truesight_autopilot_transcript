@@ -119,3 +119,19 @@ Looking at the two requests in your logs:
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+merge
+
+
+### 🤖 Autopilot
+
+**PR #81 merged** — sha `c86eadd`. The fix is now in `main`. It'll deploy on the next restart.
+
+To summarize what changed:
+- **Rate limit**: `/oracle-advisory` window relaxed from 10s → 2s per IP
+- **CORS**: Explicit `Access-Control-Allow-Origin: *` + `Vary: Origin` on every response, including OPTIONS preflight
+
+The oracle frontend at `oracle.truesight.me` should work now without CORS errors or 429s on normal use.
+
