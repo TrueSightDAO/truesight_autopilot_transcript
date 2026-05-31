@@ -110,5 +110,12 @@
     "summary": "Fix /oracle-advisory endpoint: CORS errors and overly aggressive rate limiting causing 429 responses for oracle.truesight.me frontend.\n\nTwo issues:\n1. **CORS**: The oracle frontend at oracle.truesight",
     "action": "merge_pr",
     "created_at": "2026-05-31T01:17:16Z"
+  },
+  {
+    "title": "Merge PR #82 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Create .github/workflows/pre-merge.yml with three fast CI checks that run on every PR to main:\n1. Syntax check all .py files under app/\n2. Import smoke: python -c \"from app.main import app\"\n3. Tool sc",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T01:21:21Z"
   }
 ]
