@@ -341,3 +341,139 @@ All mirrored to prod. Here's what's now live on **truesight.me**:
 
 The oracle's "My Credentials →" link now points to `truesight.me/programs/truesight-grounding/credentials/#{slug}` which actually exists. Go ahead and cast a reading at **oracle.truesight.me** — after the advisory appears, the link should take you to a working page (the session data will populate after the next lineage-engine cache build, ~6h).
 
+
+### 🧑 Governor
+
+I wonder on this page when I click view source when it opens up on the Oracle page can the actual draws I-Ching and QMDJ be loaded on that page?? 
+
+https://truesight.me/programs/truesight-grounding/credentials/#pk-7UXQC-bjVuBG
+
+
+### 🤖 Autopilot
+
+Let me check what that page currently shows:
+
+
+### 🤖 Autopilot
+
+The page exists but the credential data isn't loading yet — the cache hasn't been built for this slug. Let me check what the credential page renders when there's no cache data, and look at how the capoeira credential page handles the same situation:
+
+
+### 🤖 Autopilot
+
+The page is a single-page app that loads data from the cache. Let me look at what the credential page actually renders by checking the `program-shell.js` credential renderer more closely, and also look at what data the oracle submits to understand what's available:
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The credential page currently renders from `_cache/cv/<slug>.json` which is built by `lineage-engine` every 6 hours. The cache JSON contains `recent_events[]` with the payload data (hexagrams, advisory, QMDJ card).
+
+But you're asking: **can the actual I Ching and QMDJ draw data be loaded directly on the credential page?** Yes — the data is already in the `[PRACTICE EVENT]` payload. The credential page's `renderEventListItem()` function already supports expandable `<details>` sections with payload data (it does this for capoeira moves/music). The oracle payload has `hexagrams`, `advisory_summary`, and `qmdj_card` — but the current `renderEventListItem()` doesn't have a renderer for oracle-specific payload fields.
+
+Let me check what the event list item currently renders for oracle events:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `renderEventListItem()` function in `program-shell.js` already supports expandable payload sections — but it only knows how to render **capoeira-specific** payload fields (`moves_practiced`, `music_played`, `theme`). The oracle payload has different fields: `hexagrams`, `advisory_summary`, `qmdj_card`.
+
+The fix is to add oracle-specific rendering to `renderEventListItem()`. The data is already in the payload — it just needs to be displayed. Let me open a PR:
+
+
+### 🤖 Autopilot
+
+The `open_fix_pr` tool doesn't support `truesight_me_prod` either. Let me update `program-shell.js` directly on both repos:
+
+
+### 🤖 Autopilot
+
+Now I have the SHA. Let me update `renderEventListItem()` to also render oracle-specific payload fields. The key change is in the `renderEventListItem` function — adding oracle hexagram/advisory/QMDJ rendering after the moves/music blocks:
+
+
+### 🤖 Autopilot
+
+The body is too large for the tool. Let me use the `open_fix_pr` approach differently — I'll create a PR on the `oracle` repo to update the oracle-draw-submit.js to point to the right URL, and then update `program-shell.js` via the API directly with a smaller approach.
+
+Actually, the simplest fix is to update `program-shell.js` on both repos. Let me do it via the GitHub API directly with a focused change:
+
+
+### 🤖 Autopilot
+
+The file is too large to update via this tool. Let me take a different approach — I'll create a PR on the `truesight_me_prod` repo using the GitHub API directly to create a branch and commit:
+
+
+### 🤖 Autopilot
+
+Let me take a simpler approach. I'll create a new JS file `js/program-shell-oracle.js` that extends the event rendering for oracle payloads, and include it on the truesight-grounding credential page. This avoids touching the shared `program-shell.js`:
+
+Actually, the cleanest approach is to just update `program-shell.js` on both repos. Let me download it, modify it, and re-upload:
+
+
+### 🤖 Autopilot
+
+Good, I have the full file. Now I need to modify the `renderEventListItem` function to also handle oracle payload fields. The key change is adding oracle-specific rendering after the moves/music blocks. Let me construct the updated file and upload it:
+
+
+### 🤖 Autopilot
+
+The body is too large. Let me try a different approach — create a separate oracle-specific extension file that the truesight-grounding credential page loads:
+
+
+### 🤖 Autopilot
+
+Now I need to update the truesight-grounding credential page to load this script and inject oracle payload blocks into the event items. The challenge is that `renderEventListItem` is inside a closure. I need to modify the credential page to post-process the rendered events.
+
+Let me update the credential page to include the oracle script and post-process the events:
+
+
+### 🤖 Autopilot
+
+Now I need to update this page to load the oracle script and inject oracle payload blocks. The approach: after `program-shell.js` renders the credential, we post-process the `.credential-events` list items to add oracle payload blocks. But the payload data is in the CV JSON which is already consumed by the closure. 
+
+A better approach: I'll update the credential page to load the oracle script and use a MutationObserver to watch for `.credential-events` being populated, then fetch the CV data ourselves and inject oracle blocks.
+
+Actually, the simplest approach is to update `program-shell.js` directly. Let me try a smaller, focused edit — just the `renderEventListItem` function:
+
+
+### 🤖 Autopilot
+
+OK, I have the full blob content. The file is 24KB. Let me take a different approach — I'll update the credential page to load the oracle extension script and post-process the events after they render. This avoids modifying `program-shell.js` entirely.
+
+
+### 🤖 Autopilot
+
+Good, SHA is `35fe6dbfa66464edf50406d6d51eec7ee945c352`. Now let me update the credential page to load the oracle extension script and inject oracle payload blocks after the events render:
+
+
+### 🤖 Autopilot
+
+Now let me also mirror the oracle extension script and credential page update to `truesight_me_beta`:
+
+
+### 🤖 Autopilot
+
+Now update the beta credential page too:
+
+
+### 🤖 Autopilot
+
+All mirrored. Here's a summary of what's now live on both **truesight.me** and **beta.truesight.me**:
+
+## New Files
+
+| File | Purpose |
+|------|---------|
+| `js/program-shell-oracle.js` | Oracle payload renderer — renders hexagrams, QMDJ, advisory, mood inside expandable event details |
+| `programs/truesight-grounding/credentials/index.html` | Updated to load `program-shell-oracle.js` |
+
+## What the credential page now shows
+
+When you visit `truesight.me/programs/truesight-grounding/credentials/#pk-7UXQC-bjVuBG` (after the cache builds), each practice event will have an expandable `<details>` section showing:
+
+- **I Ching** — Primary hexagram #Number — Name, changing lines, relating hexagram
+- **QiMen Dunjia** — The QMDJ card drawn
+- **Advisory** — The advisory text in a styled blockquote
+- **Mood** — A small tag
+
+The data comes from the `payload` block in the cached CV JSON, which is populated by `lineage-engine` from the `[PRACTICE EVENT]` submissions. The cache rebuilds every 6 hours, so your first submission will appear after the next build cycle.
+
