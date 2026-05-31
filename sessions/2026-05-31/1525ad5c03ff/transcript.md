@@ -10,73 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I'll mirror all 4 files to prod. Let me do them in parallel:
-
-
-### 🤖 Autopilot
-
-Now update `programs.html` on prod with the TrueSight Grounding card:
-
-
-### 🤖 Autopilot
-
-All mirrored to prod. Here's what's now live on **truesight.me**:
-
-| File | Status |
-|------|--------|
-| `truesight.me/programs.html` | ✅ Now shows **TrueSight Grounding** card |
-| `truesight.me/programs/truesight-grounding/index.html` | ✅ Landing page |
-| `truesight.me/programs/truesight-grounding/members.html` | ✅ Cohort listing |
-| `truesight.me/programs/truesight-grounding/credentials/#{slug}` | ✅ Credential CV page |
-
-The oracle's "My Credentials →" link now points to `truesight.me/programs/truesight-grounding/credentials/#{slug}` which actually exists. Go ahead and cast a reading at **oracle.truesight.me** — after the advisory appears, the link should take you to a working page (the session data will populate after the next lineage-engine cache build, ~6h).
-
-
-### 🧑 Governor
-
-I wonder on this page when I click view source when it opens up on the Oracle page can the actual draws I-Ching and QMDJ be loaded on that page?? 
-
-https://truesight.me/programs/truesight-grounding/credentials/#pk-7UXQC-bjVuBG
-
-
-### 🤖 Autopilot
-
-Let me check what that page currently shows:
-
-
-### 🤖 Autopilot
-
-The page exists but the credential data isn't loading yet — the cache hasn't been built for this slug. Let me check what the credential page renders when there's no cache data, and look at how the capoeira credential page handles the same situation:
-
-
-### 🤖 Autopilot
-
-The page is a single-page app that loads data from the cache. Let me look at what the credential page actually renders by checking the `program-shell.js` credential renderer more closely, and also look at what data the oracle submits to understand what's available:
-
-
-### 🤖 Autopilot
-
-Now I understand the full picture. The credential page currently renders from `_cache/cv/<slug>.json` which is built by `lineage-engine` every 6 hours. The cache JSON contains `recent_events[]` with the payload data (hexagrams, advisory, QMDJ card).
-
-But you're asking: **can the actual I Ching and QMDJ draw data be loaded directly on the credential page?** Yes — the data is already in the `[PRACTICE EVENT]` payload. The credential page's `renderEventListItem()` function already supports expandable `<details>` sections with payload data (it does this for capoeira moves/music). The oracle payload has `hexagrams`, `advisory_summary`, and `qmdj_card` — but the current `renderEventListItem()` doesn't have a renderer for oracle-specific payload fields.
-
-Let me check what the event list item currently renders for oracle events:
-
-
-### 🤖 Autopilot
-
-Now I see the full picture. The `renderEventListItem()` function in `program-shell.js` already supports expandable payload sections — but it only knows how to render **capoeira-specific** payload fields (`moves_practiced`, `music_played`, `theme`). The oracle payload has different fields: `hexagrams`, `advisory_summary`, `qmdj_card`.
-
-The fix is to add oracle-specific rendering to `renderEventListItem()`. The data is already in the payload — it just needs to be displayed. Let me open a PR:
-
-
-### 🤖 Autopilot
-
-The `open_fix_pr` tool doesn't support `truesight_me_prod` either. Let me update `program-shell.js` directly on both repos:
-
-
-### 🤖 Autopilot
-
 Now I have the SHA. Let me update `renderEventListItem()` to also render oracle-specific payload fields. The key change is in the `renderEventListItem` function — adding oracle hexagram/advisory/QMDJ rendering after the moves/music blocks:
 
 
@@ -445,4 +378,36 @@ Let me take a completely different approach — I'll create a PR description wit
 - New: `where Paulo, Jusara, and their family cultivate`
 
 Want me to try a different approach — maybe I can write the file to `/tmp` and use `upload_local_file_to_github`?
+
+
+### 🧑 Governor
+
+Can you document your challenges that you’re facing in the open follow up document so that I can probably get one of the LLM and then address it so that you don’t have to deal with this problem in the future
+
+
+### 🤖 Autopilot
+
+Great idea. Let me read the current open follow-ups doc to add to it.
+
+
+### 🤖 Autopilot
+
+Doesn't exist yet. Let me check if there's a similar doc elsewhere:
+
+
+### 🤖 Autopilot
+
+No existing doc. Let me create one in the `agentic_ai_context` repo (where all the operational docs live):
+
+
+### 🤖 Autopilot
+
+Done. I've created **`agentic_ai_context/OPEN_FOLLOW_UPS.md`** with 4 documented issues:
+
+1. **Large file updates** — can't update files >15KB via current tools (the exact problem we hit)
+2. **SSH key / git client missing** — the root cause; no native git on the box
+3. **`open_fix_pr` repo whitelist** — missing agroverse/truesight_me repos
+4. **`upload_file_to_github` needs SHA support** — only creates, never updates
+
+Each entry has the date, priority, problem description, what's needed, and workarounds. When you get another LLM to look at this, they'll have the full context.
 
