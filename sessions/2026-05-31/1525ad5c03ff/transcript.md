@@ -459,3 +459,38 @@ Then when you message me on Telegram, I'd have context because the draw is alrea
 
 Want me to spec this out properly and open a PR on `dao_protocol` for the event module + on `oracle` for the page?
 
+
+### 🧑 Governor
+
+I still prefer just keeping it under the Practice event since from my perspective it is another experiential learning session similar to capoeira but in a different domain 
+
+Triangulate with the butterfly effect to understand what I mean
+
+
+### 🤖 Autopilot
+
+Let me check the Butterfly Effect Club's credentialing design to understand the lineage/program model.
+
+
+### 🤖 Autopilot
+
+Now I see what you mean. The Butterfly Effect model treats every program as a **lineage** — a credentialing path where each `[PRACTICE EVENT]` is a session within that program. The `[PRACTICE EVENT]` is intentionally generic: it's a **practice session in any program**, with the `Program` field routing it.
+
+So the Oracle draw fits perfectly:
+
+```
+[PRACTICE EVENT]
+- Program: truesight-oracle
+- Practitioner Public Key: MIIB...
+- Practice Type: I Ching consultation
+- Moves Practiced: Hexagram 23.1,3 -> 2, QMDJ The Tower
+- Total Practice Minutes: 15
+- Advisory Summary: [brief note or hash]
+```
+
+Same event type, same `lineage-credentials` commit trail, same infrastructure. The `Program` field is what differentiates it — just like capoeira uses `capoeira-tribo-mirim` and Butterfly Effect uses `butterfly-effect`. The attributes (moves, duration) are generic enough to carry hexagrams and QMDJ cards as "moves practiced."
+
+And the beautiful part: when you message me on Telegram after your morning session, I can read today's draw from the lineage-credentials repo and have full context for our conversation.
+
+Want me to spec out the oracle page on `oracle.truesight.me` that wraps the `practice-event-submit.js` logic?
+
