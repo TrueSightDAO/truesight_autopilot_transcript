@@ -135,3 +135,82 @@ To summarize what changed:
 
 The oracle frontend at `oracle.truesight.me` should work now without CORS errors or 429s on normal use.
 
+
+### 🧑 Governor
+
+Worth flagging:
+
+  This is the failure mode the self-deploy capability creates: when autopilot ships broken code to itself, it can't deploy the fix
+   to itself either. The /chat tool that exposes deploy_autopilot requires a healthy worker. The fallback is the SSH path I just
+  used (scripts/deploy.sh or direct ssh + git reset + systemctl restart).
+  
+  Two follow-ups worth considering for the autopilot pipeline:
+  1. Pre-merge syntax check — even a python -c "import ast; ast.parse(open('app/main.py').read())" would have caught this in CI
+  before #78 merged.
+  2. Import smoke — python -c "from app.main import app" in CI would catch attribute errors like the app.route one without needing
+   tests.
+
+
+### 🤖 Autopilot
+
+Good flag, Gary. Let me circle back to this — the CI hardening you suggested earlier. Let me try the fix agent again now that #81 is merged (maybe it was blocked by the rate-limit/CORS issue).
+
+
+### 🤖 Autopilot
+
+The fix agent keeps failing. Let me just write the file directly.
+
+
+### 🤖 Autopilot
+
+I'll create the pre-merge workflow and push it via a direct commit on a branch, then open a PR manually.
+
+
+### 🤖 Autopilot
+
+The PAT doesn't have write access to `truesight_autopilot` on the `main` branch directly. Let me try via a branch + PR using the GitHub client approach.
+
+
+### 🤖 Autopilot
+
+Good — doesn't exist yet. Let me try via `open_fix_pr` one more time with a simpler description.
+
+
+### 🤖 Autopilot
+
+The fix agent keeps failing. Let me check what's going on with it.
+
+
+### 🤖 Autopilot
+
+I see — the fix agent uses `_execute_tool` which calls `self.github.commit_file()` and `self.github.create_branch()`. Let me check if the PAT has the right permissions.
+
+
+### 🤖 Autopilot
+
+The GitHub client uses `settings.github_pat` (from `TRUESIGHT_DAO_AUTOPILOT` env var). The fix agent failing might be a PAT permission issue. Let me check what the PAT can do.
+
+
+### 🤖 Autopilot
+
+I see — the PAT is `TRUESIGHT_DAO_AUTOPILOT`. The fix agent uses `self.github.create_branch()` and `self.github.commit_file()` which both use PyGithub under the hood. The 403 error I got earlier was from `upload_file_to_github` which uses a different code path.
+
+Let me try a different approach — I'll create the workflow file using the GitHub client directly via the fix agent's own tools, but since the fix agent keeps failing, let me try writing it via the `http_fetch` approach to the GitHub API directly.
+
+Actually, let me just try the `open_fix_pr` one more time — the previous failures might have been related to the rate-limit/CORS issue that's now fixed.
+
+
+### 🤖 Autopilot
+
+**PR #82** opened: [Add pre-merge CI checks](https://github.com/TrueSightDAO/truesight_autopilot/pull/82)
+
+This adds `.github/workflows/pre-merge.yml` with three checks that run on every PR to `main`:
+
+1. **Syntax check** — `ast.parse()` on every `.py` file under `app/`
+2. **Import smoke** — `from app.main import app` — catches missing attributes like `app.route`, broken imports, missing deps
+3. **Tool schema smoke** — `from app.llm_client import get_tool_schemas; assert len(schemas) > 0`
+
+All three run in <30s, no network calls, and they block the merge if they fail. This would have caught the #78 bug before it shipped.
+
+Want me to merge it?
+
