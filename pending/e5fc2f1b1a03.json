@@ -124,5 +124,12 @@
     "summary": "Fix deploy_autopilot OOM failure on t3.small (2GB RAM, no swap). The phase-two subprocess gets killed (exit -15, SIGTERM) during `pip install` of `dao_client` from GitHub source, which requires compil",
     "action": "merge_pr",
     "created_at": "2026-05-31T01:26:45Z"
+  },
+  {
+    "title": "Merge PR #56 on dao_protocol",
+    "qr_code": "",
+    "summary": "Wire onboarding invitation email into [CONTRIBUTOR ADD EVENT] dispatch\n\nThe GAS side already has a complete `sendOnboardingInvitation` handler deployed in the same Apps Script project as the email ver",
+    "action": "merge_pr",
+    "created_at": "2026-05-31T04:23:10Z"
   }
 ]
