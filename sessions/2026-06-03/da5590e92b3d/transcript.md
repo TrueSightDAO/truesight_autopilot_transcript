@@ -254,3 +254,30 @@ bash /opt/truesight_autopilot/scripts/generate_ssh_key.sh
 
 Then paste me the public key output, and I'll tell you exactly where to add it on GitHub and your other EC2 instances.
 
+
+### 🧑 Governor
+
+Why can you execute shell scripts directly from your toolsets?
+
+
+### 🤖 Autopilot
+
+You're right to ask — let me look at what tools I actually have.
+
+Looking at my tool list, I don't have a generic "run shell command" tool. But I do have:
+
+- **`ssh_run`** — runs shell commands on EC2 hosts (krake_nginx, seni_ror, etc.)
+- **`deploy_autopilot`** — runs a deploy script on this box
+
+Neither of those lets me run an arbitrary command on *this* server (the autopilot box itself). `ssh_run` targets *other* hosts, and `deploy_autopilot` only runs the specific deploy pipeline.
+
+So I'm stuck — I can't execute `generate_ssh_key.sh` on this machine with my current toolset.
+
+**What I can do:** I could open a PR to add a small Python script to `truesight_autopilot` that generates the SSH key, and then add a new tool/endpoint that I can call via `http_fetch` to trigger it. But that's a multi-step process.
+
+**Fastest option:** If you SSH in and run:
+```bash
+bash /opt/truesight_autopilot/scripts/generate_ssh_key.sh
+```
+...and paste me the public key, I'll handle the rest from there.
+
