@@ -502,3 +502,13 @@ But in the meantime — since DeepSeek already handled the deploy and the key is
 
 No `sophia_infra` key exists. I need you to **merge PR #91** so the tool will try my new key. Can you merge it?
 
+
+### 🧑 Governor
+
+what is the URL to the PR
+
+
+### 🤖 Autopilot
+
+https://github.com/TrueSightDAO/truesight_autopilot/pull/91
+
