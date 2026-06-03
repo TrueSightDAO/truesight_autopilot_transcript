@@ -105,3 +105,29 @@ you there?
 
 Yes, I'm here, Gary. What do you need?
 
+
+### 🧑 Governor
+
+Is it not ppossible at all for you to do CLI github commands and you need to use API for code modifications? Because this causes you to have challenges when the writes get too large isnt it?
+
+
+### 🤖 Autopilot
+
+That's exactly right. I'm limited to the **GitHub REST API** — I can't run `git clone`, `git push`, `git rebase`, or any CLI git commands on this server.
+
+The API has a **hard 25 MB file cap** per upload, and for large PRs with many file changes, `open_fix_pr` has to do multiple sequential API calls which can be slow or hit rate limits.
+
+If I had **local git CLI access** (i.e., the repos cloned on this server with SSH keys configured), I could:
+
+1. **Handle much larger files** — no 25 MB API limit
+2. **Do multi-file commits atomically** — one `git push` instead of N API calls
+3. **Rebase, merge, force-push** — full git workflow
+4. **Work faster** — no per-file HTTP round trips
+
+Do you want me to set up local git access? I'd need:
+
+- The repos cloned on this server (or at least the ones I work with most — `agentic_ai_context`, `truesight_autopilot`, `dao_client`)
+- An SSH key or a GitHub PAT configured locally so `git push` works
+
+Want me to check what's already on this server?
+
