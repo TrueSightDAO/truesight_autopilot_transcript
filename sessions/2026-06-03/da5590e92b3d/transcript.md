@@ -512,3 +512,24 @@ what is the URL to the PR
 
 https://github.com/TrueSightDAO/truesight_autopilot/pull/91
 
+
+### 🧑 Governor
+
+MErged.
+
+
+### 🤖 Autopilot
+
+Great, PR #91 is merged. Now I need to get the new code deployed so the `ssh_run` tool picks up the new key path. Let me try the deploy:
+
+
+### 🤖 Autopilot
+
+Same issue — git pull succeeded but pip install ran out of memory. The code is on disk though. I just need a service restart. Can you SSH in and run:
+
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+That'll reload the new code (including the multi-key SSH support) without needing the full deploy pipeline.
+
