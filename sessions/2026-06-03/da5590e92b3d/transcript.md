@@ -330,3 +330,61 @@ Here's the plan:
 
 Want me to merge PR #90?
 
+
+### 🧑 Governor
+
+merge and deploy
+
+
+### 🤖 Autopilot
+
+Now let me deploy:
+
+
+### 🤖 Autopilot
+
+The deploy failed again at the pip install step (out of memory during `dao_client` clone). But the **git pull succeeded** — the new code is on the server. Let me check if the service is still running and try to call the new endpoint:
+
+
+### 🤖 Autopilot
+
+Can't call localhost directly. Let me check if the service was restarted with the new code:
+
+
+### 🤖 Autopilot
+
+I can see the new endpoint is in the code (I can see `@app.get("/tools/generate-ssh-key")` near the bottom). The git pull succeeded but the full deploy (pip install) failed due to low memory. However, the service is still running the **old** version because the process wasn't restarted.
+
+I need to restart the service. Let me check if I can do that:
+
+
+### 🤖 Autopilot
+
+I can't run `systemctl restart` directly. But the `/admin/deploy` endpoint does exactly that — it runs `git pull` then forks a `systemctl restart`. Let me try hitting it via the public URL:
+
+
+### 🤖 Autopilot
+
+That endpoint requires JWT auth. Let me try a different approach — I can't restart the service from my tools.
+
+**Here's the situation:**
+
+1. ✅ **PR #90 merged** — code is on GitHub
+2. ✅ **Git pull succeeded** — new code is on disk at `/opt/truesight_autopilot/app/main.py`
+3. ❌ **Service not restarted** — the old process is still running
+4. ❌ **Deploy failed** due to low memory during pip install
+
+**What I need you to do:**
+
+SSH into the autopilot box and run:
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+Wait ~10 seconds, then check:
+```bash
+curl -s http://localhost:8001/tools/generate-ssh-key
+```
+
+That will generate the SSH key and return the public key. Paste it here and I'll tell you exactly where to add it on GitHub and your other EC2 instances.
+
