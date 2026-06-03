@@ -388,3 +388,13 @@ curl -s http://localhost:8001/tools/generate-ssh-key
 
 That will generate the SSH key and return the public key. Paste it here and I'll tell you exactly where to add it on GitHub and your other EC2 instances.
 
+
+### 🧑 Governor
+
+getting DeepSeek to help you. Please wait
+
+
+### 🤖 Autopilot
+
+Sounds good, I'll wait.
+
