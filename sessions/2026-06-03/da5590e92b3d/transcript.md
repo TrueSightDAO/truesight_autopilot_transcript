@@ -73,3 +73,25 @@ Here's the summary, Gary:
 
 I left a small test file (`test_write_access_gary.md`) in `agentic_ai_context` — want me to clean it up?
 
+
+### 🧑 Governor
+
+Are you doing this via Github or via their API?
+
+
+### 🤖 Autopilot
+
+I'm doing everything via **GitHub's REST API** (`api.github.com`), not via `git clone/push` on the command line.
+
+The tools I have are wrappers around the GitHub API:
+
+- **`read_repo_file`** → `GET /repos/{owner}/{repo}/contents/{path}`
+- **`upload_file_to_github`** → `PUT /repos/{owner}/{repo}/contents/{path}` (base64-encoded content)
+- **`open_fix_pr`** → creates a PR via the API (forks, commits, opens draft PR)
+- **`merge_pr`** → `PUT /repos/{owner}/{repo}/pulls/{number}/merge`
+- **`list_prs`** → `GET /repos/{owner}/{repo}/pulls`
+
+So I'm **not** doing `git pull`, `git push`, or any local git operations. Everything goes through the REST API with the DAO's GitHub token.
+
+If you need me to do something that requires actual git (like force-pushing, rebasing, or working with local clones), I'd need a different approach. But for reading files, creating/updating files, and managing PRs, the API works fine.
+
