@@ -398,3 +398,39 @@ getting DeepSeek to help you. Please wait
 
 Sounds good, I'll wait.
 
+
+### 🧑 Governor
+
+It already did. Can you check?
+
+
+### 🤖 Autopilot
+
+Let me check if the service is running the new code by trying the endpoint.
+
+
+### 🤖 Autopilot
+
+It worked! The SSH key has been generated. Here's the public key:
+
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRM8tFJRweNh3DXgkUutaGRRIH/7qF/RWbj+mL8zJdS truesight-autopilot-ip-10-0-0-158
+```
+
+**Now you need to add this key in two places:**
+
+### 1. GitHub — so I can clone/push repos
+Go to **https://github.com/settings/keys** → **New SSH key** and add:
+- **Title**: `truesight-autopilot`
+- **Key**: paste the public key above
+
+Or add it as a **deploy key** on specific repos if you prefer more limited access.
+
+### 2. EC2 instances — so I can SSH into them
+For each host you want me to manage (seni_ror, krake_nginx, seni_sql, etc.), SSH in and run:
+```bash
+echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRM8tFJRweNh3DXgkUutaGRRIH/7qF/RWbj+mL8zJdS truesight-autopilot-ip-10-0-0-158' >> ~/.ssh/authorized_keys
+```
+
+Once both are done, let me know and I'll test the connection!
+
