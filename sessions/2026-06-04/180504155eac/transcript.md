@@ -640,3 +640,74 @@ I need to fix either the compile script's key naming or the dashboard JS. The si
 
 Now let me also fix the compile script so future runs produce the right keys.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+https://github.com/TrueSightDAO/Cypher-Defense/actions/runs/26976083943/job/79603328217 has finished running, why am I not seeing any values surfaced on https://beta.truesight.me/security-dashboard/?
+
+
+### 🤖 Autopilot
+
+Let me check the current state of the JSON file and the dashboard.
+
+
+### 🤖 Autopilot
+
+The JSON is clean and has data. Let me check what the dashboard JS actually fetches and see if there's a CORS or URL issue.
+
+
+### 🤖 Autopilot
+
+The JS looks correct — it fetches from `raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/managed-ledgers/security-dashboard.json` and the keys match (`aws`, `web`, `github`, `phishing_blacklist`). Let me check if the raw URL actually resolves.
+
+
+### 🤖 Autopilot
+
+The raw URL works. Let me check what the actual content looks like from that URL.
+
+
+### 🤖 Autopilot
+
+The data is all there. Let me check if the beta site is actually serving the page correctly by looking at what the browser would see.
+
+
+### 🤖 Autopilot
+
+Everything looks correct on the server side. The data is there, the JS is being served. Let me check if there's a browser console error by looking at what a headless browser would see.
+
+
+### 🤖 Autopilot
+
+Everything is in place. The issue is likely that GitHub's `raw.githubusercontent.com` CDN caches for up to 5 minutes (the `cache-control: max-age=300` header). The file was just updated a few minutes ago. Let me check if the CDN is serving the old or new version.
+
+
+### 🤖 Autopilot
+
+The data is live and correct. The dashboard should be showing data now. Let me check if maybe the issue is that you're looking at a cached version in your browser. Try a hard refresh (Cmd+Shift+R on Mac, Ctrl+Shift+R on Windows) on **https://beta.truesight.me/security-dashboard/**.
+
+The data is there:
+- **Score**: 100 (A) — no deductions
+- **AWS**: 2 accounts (nelanco, explorya) — 0 instances currently
+- **Web**: 8 domains scanned
+- **GitHub**: 51 repos
+- **Phishing**: 4 total entries tracked
+
+If you're still seeing "Waiting for first scan..." after a hard refresh, it might be a browser caching issue with the `raw.githubusercontent.com` URL. The JS fetches from there, and the CDN has a 5-minute cache. You can bust it by appending a cache-buster — let me add that to the JS.
+
+
+### 🤖 Autopilot
+
+OK, here's the full diagnosis:
+
+**The data IS there** — the JSON file at `raw.githubusercontent.com` has all the data (score: 100, 2 AWS accounts, 8 web domains, 51 GitHub repos, phishing entries). The dashboard page, JS, and CSS are all being served correctly.
+
+**Two issues were fixed:**
+
+1. **The original JSON was corrupted** — the compile script's `2>&1` was mixing log lines ("Running security scanners...") into the JSON file. Fixed the workflow and cleaned the file.
+
+2. **Cache busting** — `raw.githubusercontent.com` has a 5-minute CDN cache. The JS now appends `?_=<timestamp>` to bypass it.
+
+**Try now:** Hard refresh (Cmd+Shift+R) on **https://beta.truesight.me/security-dashboard/** — it should show the data.
+
