@@ -644,3 +644,57 @@ Once you've created it, paste the token here and I'll:
 1. Set all 5 repo secrets on Cypher-Defense via `gh secret set`
 2. Store it as `TREASURY_CACHE_PUSH_TOKEN` for the workflow to publish to treasury-cache
 
+
+### 🧑 Governor
+
+I added the PAT token as CYPHER_DEFENCE_OPS_PAT in https://github.com/TrueSightDAO/Cypher-Defense/settings/secrets/actions
+
+I also made it available in your local file location at /home/ubuntu/CYPHER_DEFENCE_OPS_PAT let me know if this works
+
+
+### 🤖 Autopilot
+
+Let me check.
+
+
+### 🤖 Autopilot
+
+Got it. Let me verify it works and then set all the secrets.
+
+
+### 🤖 Autopilot
+
+The PAT works. I can see the existing secrets. Now let me set the missing ones — the Explorya AWS keys and the TREASURY_CACHE_PUSH_TOKEN.
+
+First, let me grab the Explorya AWS creds from the autopilot's .env.
+
+
+### 🤖 Autopilot
+
+I have all the creds. Now let me set the missing secrets on Cypher-Defense.
+
+
+### 🤖 Autopilot
+
+All 6 secrets are now set on Cypher-Defense:
+
+| Secret | Status |
+|--------|--------|
+| `CYPHER_DEFENCE_AWS_KEY` | ✅ Already existed |
+| `CYPHER_DEFENCE_AWS_SECRET` | ✅ Already existed |
+| `TRUESIGHT_DAO_AUTOPILOT_AWS_KEY` | ✅ **New** (Explorya account) |
+| `TRUESIGHT_DAO_AUTOPILOT_AWS_SECRET` | ✅ **New** (Explorya account) |
+| `TREASURY_CACHE_PUSH_TOKEN` | ✅ **New** (the OPS PAT itself, for publishing to treasury-cache) |
+| `CYPHER_DEFENCE_OPS_PAT` | ✅ Already existed (you added it) |
+
+The workflow is now fully wired. When it runs (daily at 06:00 UTC, or you can trigger it manually from the Actions tab), it will:
+
+1. Scan both AWS accounts ✅
+2. Check TLS + headers on all 8 domains ✅
+3. Scan all TrueSightDAO GitHub repos ✅
+4. Read the Cypher-Defense blacklist ✅
+5. Compile the report and publish to treasury-cache ✅
+6. Dashboard at `truesight.me/security-dashboard/` reads it ✅
+
+Want me to trigger a manual run to test it?
+
