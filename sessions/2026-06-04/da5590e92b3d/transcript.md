@@ -691,3 +691,21 @@ sudo systemctl restart truesight-autopilot
 
 Or if you want, I can open a PR to fix the deploy script to skip pip install when nothing changed in requirements — that would save memory.
 
+
+### 🧑 Governor
+
+DeepSeek just did a changed to your redeploy... try it
+
+
+### 🤖 Autopilot
+
+Still failing at pip install. The git pull succeeded though, so the code is on disk. I just need a simple restart. Let me try using SSH to restart myself via seni_ror — actually, I can't reach this box from another host easily.
+
+Can you run this one command?
+
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+Then I'll test krake_nginx right after.
+
