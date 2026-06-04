@@ -271,3 +271,52 @@ Here's what the page now does:
 
 To promote to production (`dapp.truesight.me`), you'd sync `dapp_beta` → `dapp_prod` via `gh repo sync`. Want me to do that?
 
+
+### 🧑 Governor
+
+Can we ensure this page 
+https://beta.dapp.truesight.me/program_registrations_review.html
+follows the same UI/UX style as the other pages on the dapp? If you need check agentic_ai_context
+
+
+### 🤖 Autopilot
+
+Now let me compare the current `program_registrations_review.html` against these conventions. The issues I can see:
+
+1. **No DAO logo** inside `.container` above `<h1>` (it's missing entirely)
+2. **No `.container` wrapper** — it uses a custom `.wrap` class instead of the standard `.container`
+3. **Body styles** are custom (`#faf8f4` background, no flex layout) instead of the standard `#f5f5f5` with flex column
+4. **No `#tdgBalanceBadge`** placeholder
+5. **Missing Twitter Card meta tags**
+6. **Missing `og:site_name`** meta tag
+7. **Missing `aria-live="polite"`** on status
+8. **No `@media print`** stylesheet block
+9. **No `#submissionResult`** forensic detail block (§9b)
+10. **Title format** — uses `Program Registrations · TrueSight DAO` instead of `Program Registrations - TrueSight DAO`
+
+Let me fix all of this.
+
+
+### 🤖 Autopilot
+
+PR #41 is open. Here's what changed to match the DApp conventions:
+
+**Layout & structure:**
+- Standard `body` flex layout with `#f5f5f5` background
+- Replaced custom `.wrap` with standard `.container` (white bg, border-radius, box-shadow)
+- Added DAO logo inside `.container` above `<h1>`
+- Added `#tdgBalanceBadge` placeholder after `#navDropdown`
+
+**Meta tags:**
+- Added Twitter Card meta tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`)
+- Added `og:site_name` and fixed `og:url` to `https://dapp.truesight.me/...`
+- Fixed title format to `Program Registrations - TrueSight DAO`
+
+**Conventions:**
+- Added `aria-live="polite"` on status element
+- Added `@media print` stylesheet for textareas and `<pre>` blocks
+- Added `#submissionResult` forensic detail block (§9b) — shows signed payload + Edgar response after submission
+- Status element now uses standard `.status` / `.error` / `.loading` classes
+
+You can review it at **https://github.com/TrueSightDAO/dapp_beta/pull/41** — want me to merge it?
+
