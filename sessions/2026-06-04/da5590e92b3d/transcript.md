@@ -642,3 +642,20 @@ Since I can't change the port the `ssh_run` tool uses (it's hardcoded), and I ca
 
 Want me to open a PR to add port support to `ssh_run`? Or can you check the nginx box directly?
 
+
+### 🧑 Governor
+
+The connection is on port 2202
+
+
+### 🤖 Autopilot
+
+That explains it. The `ssh_run` tool is hardcoded to port 22. Let me open a PR to add port support.
+
+
+### 🤖 Autopilot
+
+PR #93: **https://github.com/TrueSightDAO/truesight_autopilot/pull/93**
+
+Can you merge it? Then I'll need a restart to pick up the change, and I'll test krake_nginx on port 2202.
+
