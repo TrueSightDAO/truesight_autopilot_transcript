@@ -607,3 +607,40 @@ You'd need to either:
 
 Want me to generate a new PAT with the right scopes? I can walk you through creating one, or if you have one handy, pass it to me and I'll set all the secrets in one shot.
 
+
+### 🧑 Governor
+
+Can you go ahead and generate one?
+
+
+### 🤖 Autopilot
+
+I can't generate a GitHub PAT — those are created through the GitHub UI (Settings → Developer settings → Personal access tokens) and I don't have access to that flow.
+
+But here's exactly what you need to create:
+
+**Go to:** https://github.com/settings/tokens?type=beta
+
+Click **"Generate new token" → "Fine-grained token"**
+
+| Field | Value |
+|-------|-------|
+| **Token name** | `autopilot-ops` |
+| **Expiration** | No expiration (or 90 days) |
+| **Resource owner** | `TrueSightDAO` |
+| **Repository access** | **Only select repositories** → `Cypher-Defense`, `treasury-cache` |
+
+**Permissions:**
+
+| Repository | Permission | Access |
+|------------|-----------|--------|
+| Cypher-Defense | **Secrets** (Actions) | **Write** |
+| Cypher-Defense | **Workflows** | **Write** |
+| Cypher-Defense | **Contents** | **Write** |
+| treasury-cache | **Contents** | **Write** |
+
+Once you've created it, paste the token here and I'll:
+
+1. Set all 5 repo secrets on Cypher-Defense via `gh secret set`
+2. Store it as `TREASURY_CACHE_PUSH_TOKEN` for the workflow to publish to treasury-cache
+
