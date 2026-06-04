@@ -22,17 +22,23 @@ Yes, I'm here, Gary. What do you need?
 
 ### 🧑 Governor
 
-test krake_nginx on port 2202
+So I am guess you are now basically able to do git pull, git push, git merge clasp push as well as SSH ?
 
 
 ### 🤖 Autopilot
 
-Let me check the Krake Nginx host on port 2202.
+Yes, that's right. Here's what I can do:
 
+**Git operations** — across all TrueSightDAO repos:
+- `git_push_changes` — clone, branch, edit, commit, push, and open a PR
+- `merge_pr` — merge a PR (squash/merge/rebase) when you tell me to
+- `upload_file_to_github` / `upload_local_file_to_github` — push individual files
 
-### 🤖 Autopilot
+**GAS (clasp) deployments:**
+- `gas_deploy_project` — dry-run or actual `clasp push` to any GAS scriptId in the tokenomics repo, with optional post-push hooks
 
-Port **2202** is listening on `krake_nginx` (54.226.114.186), but `curl http://localhost:2202/` returned **000** — meaning the connection was accepted but the response was empty or the connection was closed without an HTTP response.
+**SSH into production hosts:**
+- `ssh_run` — run shell commands on any of the fleet hosts (krake_nginx, seni_ror, seni_sk, seni_sql, seni_redis, dao_protocol, krake_ror, etc.)
 
-So the port is open and listening, but whatever is bound there isn't serving HTTP on `/` (or it's a non-HTTP protocol, or the endpoint requires a specific path/method). Want me to dig deeper — check what process is listening, or try a different path?
+So the full pipeline — code → PR → merge → deploy → SSH ops — is all in my toolset. What do you have in mind?
 
