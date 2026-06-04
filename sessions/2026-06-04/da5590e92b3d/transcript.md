@@ -709,3 +709,31 @@ sudo systemctl restart truesight-autopilot
 
 Then I'll test krake_nginx right after.
 
+
+### 🧑 Governor
+
+try again
+
+
+### 🤖 Autopilot
+
+Still the same memory issue during pip install. The git pull succeeded though. Let me check if the code actually updated on disk:
+
+
+### 🤖 Autopilot
+
+The code is updated on disk — I can see both changes:
+1. `krake_nginx` has `"port": "2202"` ✅
+2. `_key_path()` now tries multiple keys including `id_ed25519_truesight_autopilot` ✅
+
+The service just needs a restart. Let me try using the `/admin/deploy` endpoint which does a `git pull` + restart — even though the deploy script failed, the endpoint itself might work since it just runs `systemctl restart`:
+
+Actually, the `/admin/deploy` endpoint requires JWT auth which I can't provide from here. 
+
+Can you run this one command?
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+Then I'll immediately test krake_nginx on port 2202.
+
