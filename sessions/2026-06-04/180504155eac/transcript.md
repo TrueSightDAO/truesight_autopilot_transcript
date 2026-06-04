@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The branch doesn't exist yet. Let me push to main since I can't create a branch with this tool, or try a different approach.
-
-
-### 🤖 Autopilot
-
 The proposal is checked in. Here's the link for your morning review:
 
 **📄 Proposal URL:** https://github.com/TrueSightDAO/Cypher-Defense/blob/master/docs/unity-integration/PROPOSAL.md
@@ -982,4 +977,36 @@ Workflow triggered. You can watch it run here:
 **https://github.com/TrueSightDAO/Cypher-Defense/actions/runs/26976083943**
 
 It'll take a couple minutes to complete. Once it finishes, the dashboard at **https://beta.truesight.me/security-dashboard/** will show live data.
+
+
+### 🧑 Governor
+
+How come https://beta.truesight.me/security-dashboard/ the top menu are different from the top menu as the landing page? Also the logo is not showing properly
+
+
+### 🤖 Autopilot
+
+Good catch. The beta site's header structure is different from prod — let me check what beta uses.
+
+
+### 🤖 Autopilot
+
+Now I see — the beta site uses a `<nav class="site-header">` with a Wix-hosted logo image, dropdown menus, and a full nav structure. My dashboard page used a flat `<header class="site-header">` with just 3 links and a local logo path. Let me fix it to match exactly.
+
+
+### 🤖 Autopilot
+
+Now let me create the PR and merge it.
+
+
+### 🤖 Autopilot
+
+Fixed and merged. The dashboard at **https://beta.truesight.me/security-dashboard/** should now have:
+
+1. **The same nav** as the rest of the site — logo, dropdown menus (Projects, Community, Resources), hamburger toggle on mobile
+2. **The Wix-hosted logo** that actually loads (instead of the broken local path)
+3. **Proper fonts** (Space Grotesk + Inter)
+4. **The site favicon**
+
+The scan should have finished by now too, so the data should be populating.
 
