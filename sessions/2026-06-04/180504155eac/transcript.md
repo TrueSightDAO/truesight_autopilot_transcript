@@ -964,3 +964,23 @@ https://github.com/TrueSightDAO/Cypher-Defense/actions/workflows/security-dashbo
 
 Click "Run workflow" → "Run" to kick it off now.
 
+
+### 🧑 Governor
+
+Can you just go ahead and trigger it using either PAT or SSH
+
+
+### 🤖 Autopilot
+
+The OPS PAT doesn't have Actions write scope. Let me use SSH on seni_ror with `gh` instead.
+
+
+### 🤖 Autopilot
+
+Same issue — needs `Actions: Write` scope on the PAT. Let me check what scopes it has and what's missing.
+
+
+### 🤖 Autopilot
+
+It can read workflows but not dispatch them. The PAT needs **Actions: Write** on Cypher-Defense. Could you add that at https://github.com/settings/personal-access-tokens → click `CYPHER_DEFENCE_OPS` → Repository access → `Cypher-Defense` → add **Actions: Write** permission?
+
