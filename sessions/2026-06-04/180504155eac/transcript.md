@@ -711,3 +711,46 @@ OK, here's the full diagnosis:
 
 **Try now:** Hard refresh (Cmd+Shift+R) on **https://beta.truesight.me/security-dashboard/** — it should show the data.
 
+
+### 🧑 Governor
+
+Repo Visibility Branch Protection Secret Scanning can we ensure we can see everything without scrolling left to right on desktop?
+
+
+### 🤖 Autopilot
+
+The table is too wide with 4 columns. Let me make it more compact or wrap better.
+
+
+### 🤖 Autopilot
+
+The issue is that the GitHub table has 4 columns (Repo, Visibility, Branch Protection, Secret Scanning) and some values are long. Let me make the table more compact and use icons/badges instead of full text.
+
+
+### 🤖 Autopilot
+
+Now add CSS to make the GitHub table compact enough to fit without scrolling.
+
+
+### 🤖 Autopilot
+
+Merged. Here's what changed:
+
+**GitHub Repo table** now uses `table-layout: fixed` with explicit column widths:
+
+| Column | Width | Content |
+|--------|-------|---------|
+| **Repo** | auto (fills remaining space) | Name with `text-overflow: ellipsis` |
+| **Visibility** | 60px | `pub` / `priv` badge (centered) |
+| **Branch Protection** | 90px | OK / none badge (centered) |
+| **Secret Scanning** | 80px | OK / off / ? badge (centered) |
+
+Also added:
+- Compact padding (0.4rem instead of 0.8rem)
+- Smaller font (0.78rem)
+- `white-space: nowrap` with `text-overflow: ellipsis` on repo names so long names truncate instead of pushing columns
+- Visibility badges (`sd-vis-public` green, `sd-vis-private` clay)
+- Archived repos get a small gray badge
+
+Hard refresh **https://beta.truesight.me/security-dashboard/** and the GitHub table should fit without horizontal scroll.
+
