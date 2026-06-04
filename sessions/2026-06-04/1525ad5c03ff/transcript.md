@@ -229,59 +229,45 @@ Want me to build that button into `program_registrations_review.html`? The flow 
 
 ### 🧑 Governor
 
-Great would you like to go ahead with the extension then?
+go ahead and merge it.
 
 
 ### 🤖 Autopilot
 
-Let me first read the existing page more carefully to understand the exact data structure, and also check the GAS endpoint to understand what fields come back.
+I need to clarify — there's nothing to merge yet. The `program_registrations_review.html` page exists but it's **read-only** — it doesn't have the "Submit as DAO Proposal" button we discussed.
+
+Do you want me to:
+
+1. **Build the feature** — add the "Submit as DAO Proposal" button + inline editor to `program_registrations_review.html` (on `dapp_beta`), then open a PR
+2. **Merge an existing PR** — if there's already a PR open for this, let me check
+
+Let me check if there's an existing PR:
 
 
 ### 🤖 Autopilot
 
-Now let me check the GAS endpoint to understand the exact data shape returned:
+There's already a PR open — **#40: "feat: add 'Submit as DAO Proposal' action to program registrations review"**. Let me check what it does:
 
 
 ### 🤖 Autopilot
 
-Empty right now (no pending registrations). Let me also check the `create_proposal.html` submit format more carefully to replicate it exactly for the governor's proposal submission. Let me also look at how the existing page handles the GAS response to understand the field names:
+PR #40 already has exactly what we discussed — the "Submit as DAO Proposal" button with inline editor on each card. Let me merge it.
 
 
 ### 🤖 Autopilot
 
-Now I have everything I need. Let me build the extension to `program_registrations_review.html`.
+Merged! PR #40 is now in `dapp_beta` (deployed to `beta.dapp.truesight.me`).
 
-The plan:
-1. Add a **"Submit as DAO Proposal"** button on each card
-2. Clicking it opens an **inline editor** where the governor can review and modify the fields
-3. On confirm, it signs a `[PROPOSAL CREATION]` event using the **governor's key** (same format as `create_proposal.html`) with `Type: program-registration` and the program data as the content
-4. The proposal then appears on `view_open_proposals.html` for DAO voting
+Here's what the page now does:
 
+**`program_registrations_review.html`** — governor-only page that:
 
-### 🤖 Autopilot
+1. **Lists pending** `[PROGRAM REGISTRATION REQUEST]` events from the Lineage form
+2. **Each card has a "Submit as DAO Proposal" button**
+3. **Clicking opens an inline editor** where you can modify all fields (program name, description, capabilities, website, logo, roster, price) based on your offline back-and-forth with the submitter
+4. **On submit**, it fires a `[PROPOSAL CREATION]` event signed with **your governor key** (not the submitter's), with `Type: program-registration`
+5. The proposal appears on **`view_open_proposals.html`** for DAO voting
+6. After voting passes, you trigger the provisioning
 
-PR is open: **https://github.com/TrueSightDAO/dapp_beta/pull/40**
-
-Here's what the extension does:
-
-**Each pending registration card** now has a **"Submit as DAO Proposal"** button. Clicking it opens an **inline editor overlay** where you (the governor) can:
-
-- Review and **edit** all fields: program name, organization, slug, description, capabilities, website, logo URL, roster sheet, proposed price
-- The editor is pre-populated from the original registration request
-- On confirm, it signs a `[PROPOSAL CREATION]` event using **your governor key** (not the submitter's) with:
-  - `Type: program-registration`
-  - `Title: "Lineage Program: <program name>"`
-  - `Content:` full program details as structured markdown
-- After successful submission, the card shows a **"✅ Proposal submitted"** badge
-- The proposal appears on `view_open_proposals.html` for DAO voting
-
-**The flow is now:**
-1. Visitor submits `[PROGRAM REGISTRATION REQUEST]` via `truesight.me/lineage-register.html`
-2. You review on `program_registrations_review.html` — back-and-forth offline as needed
-3. You click **"Submit as DAO Proposal"** → edit fields → confirm
-4. `[PROPOSAL CREATION]` is signed with your key → Edgar → becomes a GitHub PR
-5. DAO votes on `view_open_proposals.html`
-6. After voting passes → you provision the program
-
-Want me to merge it, or would you like to review first?
+To promote to production (`dapp.truesight.me`), you'd sync `dapp_beta` → `dapp_prod` via `gh repo sync`. Want me to do that?
 
