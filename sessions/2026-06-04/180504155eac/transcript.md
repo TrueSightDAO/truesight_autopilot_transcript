@@ -541,3 +541,43 @@ Done. The workflow file is pushed via SSH using your key. Here's the final statu
 
 3. After the first scan runs, the dashboard will be live at `truesight.me/security-dashboard/`
 
+
+### 🧑 Governor
+
+Can you make sure to update Agentic_ai_context so that future instances of you also know to just follow this route
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The agentic AI SSH key is on the **local Mac** (`/Users/garyjob/.ssh/agentic_ai_github/`), not on any EC2 host. The `seni_ror` host has your personal key which worked for the push.
+
+Let me append the context update.
+
+
+### 🤖 Autopilot
+
+Now let me append the context update about the SSH push route for workflow files.
+
+
+### 🤖 Autopilot
+
+Now let me append the context update.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I updated:
+
+**PR: https://github.com/TrueSightDAO/agentic_ai_context/pull/281**
+
+Two changes:
+
+1. **`CONTEXT_UPDATES.md`** — appended the security dashboard entry with the SSH workflow lesson baked in
+
+2. **`GITHUB_AGENTIC_AI_SSH.md`** — added a new section **"Workflow files (.github/workflows/) — SSH required"** that explains:
+   - PATs without `workflow` scope can't push to `.github/workflows/` paths
+   - Fix: use SSH (`git@github.com:...`) or `GIT_SSH_COMMAND` instead of the Contents API
+   - Fallback: use `seni_ror` as an SSH host when the agentic_ai_github key isn't available locally
+
+Future agents reading `GITHUB_AGENTIC_AI_SSH.md` will know to go straight to SSH for workflow files instead of hitting the PAT 403 wall.
+
