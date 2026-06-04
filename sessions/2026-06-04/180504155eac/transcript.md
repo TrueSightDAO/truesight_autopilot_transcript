@@ -802,3 +802,29 @@ And the security dashboard is now on **truesight_me_beta**:
 
 You can review it on `beta.truesight.me/security-dashboard/` once merged, then promote to prod.
 
+
+### 🤖 Autopilot
+
+Here's the summary of everything:
+
+---
+
+### Security Dashboard — moved to beta
+
+The dashboard is now on **`truesight_me_beta`** at branch `feat/security-dashboard`:
+
+**PR: https://github.com/TrueSightDAO/truesight_me_beta/pull/new/feat/security-dashboard**
+
+You can review it at `beta.truesight.me/security-dashboard/` once merged. When you're happy, promote to prod.
+
+### Hard rule added — no direct prod pushes
+
+**PR: https://github.com/TrueSightDAO/agentic_ai_context/pull/283**
+
+Updated two files:
+
+- **`GITHUB_AGENTIC_AI_SSH.md`** — New section at the top of Pull Requests: "Never push directly to production repos" with the table of blocked repos and beta counterparts
+- **`WORKSPACE_CONTEXT.md`** — New §3f "Production deployment rule — beta-first, never direct" with the same mapping and workflow
+
+Future instances of me, Sophia, Cursor, or any other LLM will read these and know to target beta first.
+
