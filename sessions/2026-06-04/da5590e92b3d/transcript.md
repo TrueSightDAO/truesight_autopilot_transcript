@@ -567,3 +567,136 @@ Here's the status:
 
 Also, krake_nginx didn't accept the connection — DeepSeek may not have added your key there yet, or it might use a different port/user.
 
+
+### 🧑 Governor
+
+can you help clear up the seni_sql disk. Are you sure dao_protocol is inactive? I was able to submit via dapp, I wonder if the document has drifted versus what is actually in production
+
+
+### 🤖 Autopilot
+
+Good points. Let me investigate both more carefully.
+
+
+### 🤖 Autopilot
+
+Good catches, Gary. Here's what's actually happening:
+
+### dao_protocol ✅
+You're right — it **is** running. The service name is just different from what I assumed. The process `truesight-dao-protocol-server` is active and listening on port 8010. No issue there.
+
+### seni_sql — Disk at 100%
+The root partition `/dev/xvda1` is full (7.7G/7.7G). Let me find what's eating the space:
+
+
+### 🤖 Autopilot
+
+The `du` scan timed out. Let me be more targeted:
+
+
+### 🤖 Autopilot
+
+Even targeted `du` is slow on a nearly-full disk. Let me try a different approach:
+
+
+### 🤖 Autopilot
+
+Interesting — the root partition is only 7.7G total and 93% inode usage. The large data is on `/seni_data_cache_2` (246G, 54% used). Let me find what's filling the root partition:
+
+
+### 🤖 Autopilot
+
+The disk is so full that `du` is crawling. Let me try a much lighter approach:
+
+
+### 🤖 Autopilot
+
+The logs are small. The issue is likely old kernel versions and apt cache. Let me check:
+
+
+### 🤖 Autopilot
+
+Found it. **14 old kernel versions** are installed. Each kernel image + headers takes ~200-300 MB. That's eating up the 7.7G root partition. The current running kernel is `4.4.0-1109-aws` (from the symlinks), so we can safely remove the older ones.
+
+Let me also check what else is using space:
+
+
+### 🤖 Autopilot
+
+That's the problem. **38 old kernel versions** accumulated since 2018. Each one takes ~20-30 MB in `/boot/` plus the package files. Running kernel is `4.4.0-1109-aws`. Let me clean them up:
+
+
+### 🤖 Autopilot
+
+840 MB in `/boot/` alone. Let me remove the old kernels. I'll keep the current one (1109) and the newest (1110 which is partially installed):
+
+
+### 🤖 Autopilot
+
+Too full for apt to work. Let me free up space manually first:
+
+
+### 🤖 Autopilot
+
+Freed 140 MB. Now let me remove old kernels manually:
+
+
+### 🤖 Autopilot
+
+Good, freed up ~628 MB. Now let me also remove the old kernel packages via dpkg:
+
+
+### 🤖 Autopilot
+
+The dpkg purge timed out. Let me check if it's still running or if it finished:
+
+
+### 🤖 Autopilot
+
+Now we're at **82%** (1.4 GB free). Let me also clean up the old headers and do a final sweep:
+
+
+### 🤖 Autopilot
+
+The dpkg from the previous command is still running. Let me wait and check:
+
+
+### 🤖 Autopilot
+
+It's still running through the postrm scripts. Already at 82% (1.4 GB free). Let me wait a moment and check the final result:
+
+
+### 🤖 Autopilot
+
+Still running through the postrm scripts. It's making slow progress. Let me wait a bit longer:
+
+
+### 🤖 Autopilot
+
+All old kernel images are purged. Now at **81%** (1.6 GB free). Let me also clean up the headers:
+
+
+### 🤖 Autopilot
+
+Now at **75%** (2.0 GB free). Let me also clean up the remaining old boot files and do a final check:
+
+
+### 🤖 Autopilot
+
+**seni_sql disk cleanup complete.** Here's the summary:
+
+| Metric | Before | After |
+|--------|--------|-------|
+| **Disk used** | 100% (0 bytes free) | **75% (2.0 GB free)** |
+| **Kernel images** | 38 old versions | 2 (current + newest) |
+| **Kernel headers** | 38 old versions | 1 remaining |
+
+**What I removed:**
+- 35 old linux-image packages (from 2018-2020)
+- 37 old linux-headers packages
+- Corresponding `/boot/` files (vmlinuz, initrd, System.map)
+
+**Kept:** Running kernel `4.4.0-1109-aws` and the partially-installed `4.4.0-1110-aws`.
+
+The system should be healthy now. Want me to also check on the other hosts or do anything else?
+
