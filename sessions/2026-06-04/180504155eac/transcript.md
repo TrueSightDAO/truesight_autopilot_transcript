@@ -948,3 +948,19 @@ Both PRs are merged:
 
 The security dashboard is now live at **`beta.truesight.me/security-dashboard/`**. When you're happy with how it looks, promote to prod via `gh repo sync` (without `--force`).
 
+
+### 🧑 Governor
+
+what is the URL on beta where I can see the dashboard?
+
+
+### 🤖 Autopilot
+
+**https://beta.truesight.me/security-dashboard/**
+
+Though it'll show "Waiting for first scan..." until the Cypher-Defense workflow runs. The first scheduled run is at 06:00 UTC tomorrow, or you can trigger it manually from the Actions tab:
+
+https://github.com/TrueSightDAO/Cypher-Defense/actions/workflows/security-dashboard-daily.yml
+
+Click "Run workflow" → "Run" to kick it off now.
+
