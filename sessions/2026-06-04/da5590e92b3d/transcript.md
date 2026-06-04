@@ -570,41 +570,162 @@ Also, krake_nginx didn't accept the connection — DeepSeek may not have added y
 
 ### 🧑 Governor
 
-Regarding krake_nginx, could you check? You should be able to check what the IP address is via AWS API. I believe its running on Nelanco account
+can you help clear up the seni_sql disk. Are you sure dao_protocol is inactive? I was able to submit via dapp, I wonder if the document has drifted versus what is actually in production
 
 
 ### 🤖 Autopilot
 
-The IP is correct — `54.226.114.186`, instance `i-05a041b6956aa7154`, running. But it's in security group `sg-4314630c` (default) which may not allow SSH from my IP. Let me check the security group rules:
+Good points. Let me investigate both more carefully.
 
 
 ### 🤖 Autopilot
 
-The default security group allows **all traffic from 0.0.0.0/0** (both inbound and outbound), so it's not a security group issue. The connection was refused, which means SSH daemon might not be running, or it's on a non-standard port. Let me check:
+Good catches, Gary. Here's what's actually happening:
+
+### dao_protocol ✅
+You're right — it **is** running. The service name is just different from what I assumed. The process `truesight-dao-protocol-server` is active and listening on port 8010. No issue there.
+
+### seni_sql — Disk at 100%
+The root partition `/dev/xvda1` is full (7.7G/7.7G). Let me find what's eating the space:
 
 
 ### 🤖 Autopilot
 
-Connection refused on port 22. The instance is running (confirmed via AWS), so either:
-
-1. **SSH is on a non-standard port** — common for nginx boxes
-2. **SSH daemon isn't running** — maybe it crashed
-3. **The key it expects** (`GETDATA_IO_PAIR_20201122`) is the one in the launch config, and my key isn't added yet
-
-Let me check if there's a different port by looking at the instance user data or any other clues:
+The `du` scan timed out. Let me be more targeted:
 
 
 ### 🤖 Autopilot
 
-No user data. The instance uses key pair `GETDATA_IO_PAIR_20201122` — that's the key it was launched with. My new key (`truesight-autopilot`) hasn't been added to its `~/.ssh/authorized_keys` yet.
+Even targeted `du` is slow on a nearly-full disk. Let me try a different approach:
 
-Since I can't SSH into it to add the key, and the security group allows all traffic, the only way in is via the original key pair. You'd need to:
 
-1. **SSH into krake_nginx** using the `GETDATA_IO_PAIR_20201122` key
-2. Then add my public key:
-   ```bash
-   echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRM8tFJRweNh3DXgkUutaGRRIH/7qF/RWbj+mL8zJdS truesight-autopilot-ip-10-0-0-158' >> ~/.ssh/authorized_keys
-   ```
+### 🤖 Autopilot
 
-Do you have that key pair? Or would you like me to look into an alternative approach (e.g., using AWS Systems Manager Session Manager if it's enabled)?
+Interesting — the root partition is only 7.7G total and 93% inode usage. The large data is on `/seni_data_cache_2` (246G, 54% used). Let me find what's filling the root partition:
+
+
+### 🤖 Autopilot
+
+The disk is so full that `du` is crawling. Let me try a much lighter approach:
+
+
+### 🤖 Autopilot
+
+The logs are small. The issue is likely old kernel versions and apt cache. Let me check:
+
+
+### 🤖 Autopilot
+
+Found it. **14 old kernel versions** are installed. Each kernel image + headers takes ~200-300 MB. That's eating up the 7.7G root partition. The current running kernel is `4.4.0-1109-aws` (from the symlinks), so we can safely remove the older ones.
+
+Let me also check what else is using space:
+
+
+### 🤖 Autopilot
+
+That's the problem. **38 old kernel versions** accumulated since 2018. Each one takes ~20-30 MB in `/boot/` plus the package files. Running kernel is `4.4.0-1109-aws`. Let me clean them up:
+
+
+### 🤖 Autopilot
+
+840 MB in `/boot/` alone. Let me remove the old kernels. I'll keep the current one (1109) and the newest (1110 which is partially installed):
+
+
+### 🤖 Autopilot
+
+Too full for apt to work. Let me free up space manually first:
+
+
+### 🤖 Autopilot
+
+Freed 140 MB. Now let me remove old kernels manually:
+
+
+### 🤖 Autopilot
+
+Good, freed up ~628 MB. Now let me also remove the old kernel packages via dpkg:
+
+
+### 🤖 Autopilot
+
+The dpkg purge timed out. Let me check if it's still running or if it finished:
+
+
+### 🤖 Autopilot
+
+Now we're at **82%** (1.4 GB free). Let me also clean up the old headers and do a final sweep:
+
+
+### 🤖 Autopilot
+
+The dpkg from the previous command is still running. Let me wait and check:
+
+
+### 🤖 Autopilot
+
+It's still running through the postrm scripts. Already at 82% (1.4 GB free). Let me wait a moment and check the final result:
+
+
+### 🤖 Autopilot
+
+Still running through the postrm scripts. It's making slow progress. Let me wait a bit longer:
+
+
+### 🤖 Autopilot
+
+All old kernel images are purged. Now at **81%** (1.6 GB free). Let me also clean up the headers:
+
+
+### 🤖 Autopilot
+
+Now at **75%** (2.0 GB free). Let me also clean up the remaining old boot files and do a final check:
+
+
+### 🤖 Autopilot
+
+**seni_sql disk cleanup complete.** Here's the summary:
+
+| Metric | Before | After |
+|--------|--------|-------|
+| **Disk used** | 100% (0 bytes free) | **75% (2.0 GB free)** |
+| **Kernel images** | 38 old versions | 2 (current + newest) |
+| **Kernel headers** | 38 old versions | 1 remaining |
+
+**What I removed:**
+- 35 old linux-image packages (from 2018-2020)
+- 37 old linux-headers packages
+- Corresponding `/boot/` files (vmlinuz, initrd, System.map)
+
+**Kept:** Running kernel `4.4.0-1109-aws` and the partially-installed `4.4.0-1110-aws`.
+
+The system should be healthy now. Want me to also check on the other hosts or do anything else?
+
+
+### 🧑 Governor
+
+This is what DeepSeek said + Thought: 2.8s
+We did this already — from Sophia to krake_nginx port 2202 using the Nelanco key. Let me verify the key is actually there and check Sophia's SSH config.
+
+
+### 🤖 Autopilot
+
+Interesting — so krake_nginx uses **port 2202** instead of the default 22, and a different key. The `ssh_run` tool is hardcoded to port 22 and the sophia_infra key. Let me open a PR to update the fleet registry with the correct port and key info:
+
+
+### 🤖 Autopilot
+
+Now I see — the SSH section says krake_nginx uses key `GETDATA_IO_PAIR_20201122` and DeepSeek mentioned port 2202. Let me update the `ssh_run` tool to support these variations:
+
+
+### 🤖 Autopilot
+
+PR #92 is open: **https://github.com/TrueSightDAO/truesight_autopilot/pull/92**
+
+This updates the SSH fleet with:
+- **krake_nginx** → port **2202** (was default 22)
+- All hosts now have explicit port in the spec
+- SSH command now uses `-p <port>` from the spec
+- Added `GETDATA_IO_PAIR_20201122` to the key search path
+
+But there's a catch — the `GETDATA_IO_PAIR_20201122` private key needs to exist on this server. DeepSeek may have already placed it there. Want me to merge and deploy to test?
 
