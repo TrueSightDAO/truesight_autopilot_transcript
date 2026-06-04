@@ -659,3 +659,19 @@ PR #93: **https://github.com/TrueSightDAO/truesight_autopilot/pull/93**
 
 Can you merge it? Then I'll need a restart to pick up the change, and I'll test krake_nginx on port 2202.
 
+
+### 🧑 Governor
+
+cant you merge it?
+
+
+### 🤖 Autopilot
+
+Merged. Now I need the service restarted to pick up the change. Can you SSH in and run:
+
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+Or if DeepSeek can handle it, that works too.
+
