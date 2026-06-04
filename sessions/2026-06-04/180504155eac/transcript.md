@@ -10,26 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me read the README, the PDF guide, and explore the backend/frontend structure.
-
-
-### 🤖 Autopilot
-
-Now let me read the core backend files to understand the Unity Risk Indicator framework.
-
-
-### 🤖 Autopilot
-
-Now let me read the backend routes, controllers, models, and services to understand the risk indicator logic.
-
-
-### 🤖 Autopilot
-
-Let me read a few key files to understand the core framework architecture.
-
-
-### 🤖 Autopilot
-
 Now let me also look at our current digital infrastructure to understand what we have.
 
 
@@ -580,4 +560,50 @@ Two changes:
    - Fallback: use `seni_ror` as an SSH host when the agentic_ai_github key isn't available locally
 
 Future agents reading `GITHUB_AGENTIC_AI_SSH.md` will know to go straight to SSH for workflow files instead of hitting the PAT 403 wall.
+
+
+### 🧑 Governor
+
+For setting the keys in the git repository I believe you can do so using the Gh client 
+
+I saw Claude do it before
+
+
+### 🤖 Autopilot
+
+You're right — `gh secret set` can set repo secrets directly. Let me check if `gh` is available on the autopilot host and try it.
+
+
+### 🤖 Autopilot
+
+`gh` is installed on `dao_protocol`. But it needs to be authenticated. Let me check if it already is, and if not, I'll use the PAT from the autopilot's `.env`.
+
+
+### 🤖 Autopilot
+
+Authenticated. Now let me check what secrets already exist on Cypher-Defense and set the ones that are missing.
+
+
+### 🤖 Autopilot
+
+The PAT doesn't have `secrets` scope either. Let me check what scopes it has.
+
+
+### 🤖 Autopilot
+
+This PAT is a fine-grained token that doesn't have the `secrets` scope either. Same problem as the workflow scope — it's a token scope limitation, not a tool issue.
+
+The `gh secret set` command needs a PAT with `secrets: write` permission on the repo. The current PAT (`TRUESIGHT_DAO_AUTOPILOT`) was created for Contents API access and doesn't cover secrets or workflows.
+
+You'd need to either:
+
+1. **Create a new fine-grained PAT** with `Administration: write` (for secrets) and `Workflows: write` scopes on Cypher-Defense, then I can use it to set everything
+2. **Or set them manually** — go to https://github.com/TrueSightDAO/Cypher-Defense/settings/secrets/actions and add:
+   - `CYPHER_DEFENCE_AWS_KEY`
+   - `CYPHER_DEFENCE_AWS_SECRET`
+   - `TRUESIGHT_DAO_AUTOPILOT_AWS_KEY`
+   - `TRUESIGHT_DAO_AUTOPILOT_AWS_SECRET`
+   - `TREASURY_CACHE_PUSH_TOKEN`
+
+Want me to generate a new PAT with the right scopes? I can walk you through creating one, or if you have one handy, pass it to me and I'll set all the secrets in one shot.
 
