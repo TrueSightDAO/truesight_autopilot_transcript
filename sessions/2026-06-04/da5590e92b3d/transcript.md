@@ -675,3 +675,19 @@ sudo systemctl restart truesight-autopilot
 
 Or if DeepSeek can handle it, that works too.
 
+
+### 🧑 Governor
+
+can you try to redeploy yourself?
+
+
+### 🤖 Autopilot
+
+Same issue — git pull works but pip install runs out of memory. The code is on disk though. I just need a restart. Can you run:
+
+```bash
+sudo systemctl restart truesight-autopilot
+```
+
+Or if you want, I can open a PR to fix the deploy script to skip pip install when nothing changed in requirements — that would save memory.
+
