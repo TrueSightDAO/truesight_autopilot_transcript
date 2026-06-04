@@ -10,13 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I understand the full picture. The agentic AI SSH key is on the **local Mac** (`/Users/garyjob/.ssh/agentic_ai_github/`), not on any EC2 host. The `seni_ror` host has your personal key which worked for the push.
-
-Let me append the context update.
-
-
-### 🤖 Autopilot
-
 Now let me append the context update about the SSH push route for workflow files.
 
 
@@ -912,4 +905,26 @@ Now shows the actual entries below the summary numbers:
 - Verified domains (if any)
 
 A fresh scan is running now at **https://github.com/TrueSightDAO/Cypher-Defense/actions/runs/26976755753**. Once it finishes (~2 min), hard refresh **https://beta.truesight.me/security-dashboard/** to see everything.
+
+
+### 🧑 Governor
+
+table for Repo Visibility Branch Protection Secret is still looking very squish on the desktop view can you ensure it spans the entire width similar to for example the table Domain TLS Days Left Security Headers
+
+
+### 🤖 Autopilot
+
+The issue is that the GitHub table has `table-layout: fixed` with narrow column widths. Let me remove those constraints and let it flow naturally like the web security table.
+
+
+### 🤖 Autopilot
+
+Merged. The GitHub table now:
+
+- **No fixed column widths** — repo name gets `width: 100%` and fills all remaining space
+- **Visibility, Branch Protection, Secret Scanning** columns auto-size to fit their content (centered)
+- **Same padding and font size** as the web security table (0.5rem 0.7rem, 0.85rem)
+- **`white-space: nowrap`** keeps badges from wrapping
+
+Hard refresh **https://beta.truesight.me/security-dashboard/** — the GitHub table should now span the full width like the web security table.
 
