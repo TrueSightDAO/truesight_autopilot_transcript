@@ -289,3 +289,55 @@ Want me to proceed with building this? I'd:
 3. **Build the static dashboard page** on truesight_me (or a new branch of it)
 4. **Open a PR** for each so you can review before anything merges
 
+
+### 🧑 Governor
+
+Update the proposal first in cypher defense 
+
+And then in create implementation plan 
+
+Execution roadmap checklist 
+
+I wonder which is a more appropriate repo to store these markdown files 
+
+Let’s discuss first
+
+
+### 🤖 Autopilot
+
+Good call — let's discuss the repo question before I write anything.
+
+### Where should these live?
+
+Here are the options I see:
+
+**Option A: Cypher-Defense** (current location)
+- Pros: It's the "defense" repo, already has docs/incidents/, AWS scripts, member briefings. The scanner scripts will live here too. Keeps everything security-related in one place.
+- Cons: The dashboard page itself will be on truesight_me (static site), so the output crosses repos anyway.
+
+**Option B: agentic_ai_context** (shared context)
+- Pros: All execution roadmaps and proposals live here per OPERATING_INSTRUCTIONS.md §5 ("Before implementing, commit a tracked execution roadmap checklist"). Other agents can find it.
+- Cons: It's context, not code — the actual scanner scripts won't live here.
+
+**Option C: treasury-cache** (where the JSON output goes)
+- Pros: Already holds managed-ledgers/ for structured data. The dashboard JSON will publish here.
+- Cons: It's a data cache, not a planning/design repo. Feels wrong for proposals and roadmaps.
+
+**Option D: A new `security` repo under TrueSightDAO**
+- Pros: Clean separation. Everything security — proposals, roadmaps, scanner scripts, dashboard code — in one place. Scales if we add more security tooling later.
+- Cons: Another repo to maintain. Overkill for what's currently a handful of scripts and a static page.
+
+**Option E: Keep it in Cypher-Defense** (proposal already there) + **roadmap in agentic_ai_context** (per convention)
+- Pros: Proposal lives with the code it describes (Cypher-Defense). Roadmap follows the established pattern in OPERATING_INSTRUCTIONS.md. Best of both.
+- Cons: Split across two repos — you'd need to look in two places.
+
+---
+
+My vote: **Option E** — update the proposal in Cypher-Defense (it's already there), then put the execution roadmap in agentic_ai_context per the existing convention (§5 of OPERATING_INSTRUCTIONS.md). That way:
+- The **what/why** (proposal) lives with the codebase it changes
+- The **how/when** (roadmap) lives in shared context where all agents can find and update it
+
+But if you'd rather keep it simpler and put everything in one place, I'd go **Option A** (all in Cypher-Defense under `docs/unity-integration/`).
+
+What's your preference?
+
