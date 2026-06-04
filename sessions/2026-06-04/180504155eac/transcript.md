@@ -901,3 +901,28 @@ Click that link, the form will be pre-filled with the branch. Hit "Create Pull R
 Alternatively, if you want to grant the OPS PAT pull requests write scope, I can do the whole thing in one shot. The setting is at:
 https://github.com/settings/tokens?type=beta → click `autopilot-ops` → Repository access → `truesight_me_beta` → add **Pull requests: Write** permission.
 
+
+### 🧑 Governor
+
+I think there was a miscommunication, I misread what you were writing.. 
+
+By the way the PAT key is called CYPHER_DEFENCE_OPS in my Github account on this page https://github.com/settings/personal-access-tokens
+
+I updated to with PUll REquest write permission
+
+
+### 🤖 Autopilot
+
+Let me try again with the updated PAT.
+
+
+### 🤖 Autopilot
+
+Still blocked. The PAT might need the scope added for the specific repo. Let me check — you said you updated it on the fine-grained tokens page. Did you add `truesight_me_beta` to the repository access list for this token? Currently it might only be scoped to `Cypher-Defense` and `treasury-cache`.
+
+The token needs **both**:
+1. **Repository access**: `truesight_me_beta` added to the list
+2. **Permissions**: `Pull requests: Write`
+
+Could you check at https://github.com/settings/personal-access-tokens — click on `CYPHER_DEFENCE_OPS` and verify `truesight_me_beta` is in the repository access list?
+
