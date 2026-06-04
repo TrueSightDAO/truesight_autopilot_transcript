@@ -185,3 +185,44 @@ Want me to build this? I'd create a new page like `dapp_beta/submit_lineage_prop
 - On submit, fires `[PROPOSAL CREATION]` with `Type: program-registration` and the full program data as content
 - The proposal then shows up on `view_open_proposals.html` for DAO voting
 
+
+### 🧑 Governor
+
+Actually didnt you already built a page on our DApp which allows governors to review all [PROGRAM REGISTRATION REQUEST] or did we stopped before we gotten to this stage the other day?
+
+
+### 🤖 Autopilot
+
+Let me check what exists in the DApp for reviewing program registrations.
+
+
+### 🤖 Autopilot
+
+There it is — **`program_registrations_review.html`** already exists! Let me read it.
+
+
+### 🤖 Autopilot
+
+We already built it! **`program_registrations_review.html`** exists on `dapp_beta` — it's a read-only review surface that:
+
+1. Fetches pending `[PROGRAM REGISTRATION REQUEST]` events from the GAS endpoint (`programRegistrations`)
+2. Displays them as cards with all fields (program name, description, capabilities, website, logo, roster, etc.)
+3. Gates access to governors only (`governor_chat.access` permission)
+4. Has a note saying *"Approval & provisioning is still manual"* and references `PROGRAM_PARTNER_ONBOARDING.md`
+
+So the page exists but it's **read-only** — no "Approve & Submit as DAO Proposal" button yet.
+
+What you're describing now is the **next step**: add a button on each card that lets the governor:
+
+1. Review the request (already visible)
+2. Edit/modify fields as needed
+3. Click **"Submit as DAO Proposal"** → fires `[PROPOSAL CREATION]` signed with the **governor's key** → appears on `view_open_proposals.html` for DAO voting
+4. After voting passes → governor provisions
+
+Want me to build that button into `program_registrations_review.html`? The flow would be:
+
+- Each card gets a **"Submit as DAO Proposal"** button
+- Clicking opens an inline editor where the governor can tweak the fields
+- On confirm, it signs a `[PROPOSAL CREATION]` event (using the governor's key, same format as `create_proposal.html`) with `Type: program-registration` and the program data as the body
+- The proposal appears on `view_open_proposals.html` for DAO voting
+
