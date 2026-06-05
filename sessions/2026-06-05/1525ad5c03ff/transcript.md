@@ -243,3 +243,25 @@ missing the styling that is available on https://truesight.me/programs/tribomiri
 
 Already done! I opened PR #15 on `truesight_me_prod` earlier for this exact issue — it adds the missing `.cobrand-strip` CSS to the truesight-grounding page. Want me to merge it?
 
+
+### 🧑 Governor
+
+merge that into beta
+
+
+### 🤖 Autopilot
+
+Let me check if the same fix is needed on `truesight_me_beta` first.
+
+
+### 🤖 Autopilot
+
+Same issue on beta — the `<style>` block is missing the `.cobrand-strip` CSS. Let me apply the fix and merge.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR #178 is live on `truesight_me_beta`. The cobrand-strip on the truesight-grounding page will now show the TrueSight Oracle logo with the warm styling, matching tribomirim and butterfly-effect.
+
+The same fix is still open on `truesight_me_prod` (PR #15) — want me to merge that too?
+
