@@ -229,3 +229,17 @@ Merged ✅ — PR #177 is now live on `truesight_me_beta`. The `.card .pill` now
 
 The same fix is also open on `truesight_me_prod` (PR #16) — want me to merge that one too?
 
+
+### 🧑 Governor
+
+Also https://truesight.me/programs/truesight-grounding/index.html
+
+.cobrand-strip  is
+
+missing the styling that is available on https://truesight.me/programs/tribomirim/index.html and https://truesight.me/programs/butterfly-effect/index.html
+
+
+### 🤖 Autopilot
+
+Already done! I opened PR #15 on `truesight_me_prod` earlier for this exact issue — it adds the missing `.cobrand-strip` CSS to the truesight-grounding page. Want me to merge it?
+
