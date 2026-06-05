@@ -265,3 +265,20 @@ Merged ✅ — PR #178 is live on `truesight_me_beta`. The cobrand-strip on the 
 
 The same fix is still open on `truesight_me_prod` (PR #15) — want me to merge that too?
 
+
+### 🧑 Governor
+
+Instead of merge, me just go sync into prod instead since that is the proper process to follow
+
+
+### 🤖 Autopilot
+
+Makes sense — the proper flow is beta → test → sync to prod. So we'll leave PR #15 open on `truesight_me_prod` and sync when ready.
+
+To recap what's now on beta:
+
+1. **PR #177** (merged) — `.card .pill` gets `display: block` so SunMint pill and "Reforesting the Amazon" are on separate lines
+2. **PR #178** (merged) — `.cobrand-strip` CSS added to truesight-grounding program page
+
+Both can be verified on `https://beta.truesight.me/` before syncing to prod.
+
