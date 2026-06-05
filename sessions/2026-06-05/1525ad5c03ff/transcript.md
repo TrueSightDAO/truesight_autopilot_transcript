@@ -282,3 +282,83 @@ To recap what's now on beta:
 
 Both can be verified on `https://beta.truesight.me/` before syncing to prod.
 
+
+### 🧑 Governor
+
+by the way, Each morning, practitioners cast the I Ching using the TrueSight Oracle. Every session is signed with the practitioner's RSA keypair and submitted as a [PRACTICE EVENT] to the TrueSight DAO lineage-credentials ledger. There is no attestation chain — this is a solo practice log. The credential is the cumulative record of your daily grounding sessions, verifiable from any QR code on a printed certificate. ### How it works 1. Visit oracle.truesight.me and cast your reading. 2. The session auto-records to your credential. 3. View your practice log here — each session shows the hexagrams drawn and the advisory received.
+
+on https://beta.truesight.me/programs/truesight-grounding/index.html
+Should probably be formatted for HTML, currently the Markdown format is showing up awkwardly
+
+
+### 🤖 Autopilot
+
+Let me check what's rendering — the manifest has `description_md` which gets processed by `renderInlineMarkdown()` in `program-shell.js`. Let me look at what's happening.
+
+
+### 🤖 Autopilot
+
+The issue is that `renderInlineMarkdown()` in `program-shell.js` only handles two constructs:
+- `[label](url)` → links
+- `` `code` `` → `<code>` tags
+
+But the description uses:
+- `### How it works` — heading (not handled)
+- `1. ...` / `2. ...` / `3. ...` — ordered list (not handled)
+- `\n\n` — paragraph breaks (not handled)
+
+So the raw markdown text shows up as-is. The `renderInlineMarkdown()` function escapes HTML first, then only processes links and code — headings and lists get escaped and displayed literally.
+
+The simplest fix: convert the `description_md` in the manifest to HTML directly, since the markdown renderer doesn't support headings or lists. Let me update the manifest.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR #179 is live on beta. The description now renders as proper HTML with paragraphs, an `<h3>` heading, and an ordered list instead of raw markdown syntax.
+
+Note: `renderInlineMarkdown()` escapes HTML first then processes links/code — so the `<p>`, `<h3>`, `<ol>` tags I put in the `description_md` field will actually get **escaped** and show as literal text. Let me check how `renderInlineMarkdown` works more carefully.
+
+Looking at the code again:
+
+```js
+function renderInlineMarkdown(md) {
+    var s = escapeHtml(md);  // <-- escapes ALL HTML first
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, ...);  // then processes links
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');  // then processes code
+    return s;
+}
+```
+
+So `escapeHtml()` will turn `<p>` into `&lt;p&gt;` — the HTML tags will show as literal text. That's not what we want.
+
+The right approach is to update `renderInlineMarkdown()` to support headings and lists, or to use a different rendering path. Let me fix this properly by updating `program-shell.js` to handle the additional markdown constructs.
+
+
+### 🤖 Autopilot
+
+Hmm, I reverted the manifest but I still need to update `program-shell.js` to handle headings and lists. Let me do that properly.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. The `renderInlineMarkdown` function needs to handle headings and lists. Let me update it properly:
+
+
+### 🤖 Autopilot
+
+The branch name was already used by the previous PR. Let me use a fresh branch name.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR #181 is live on beta. Here's what changed:
+
+**`js/program-shell.js`** — `renderInlineMarkdown()` now handles:
+- `### heading` → `<h3>heading</h3>`
+- `1. item` / `2. item` → `<ol><li>item</li></ol>`
+- `- item` / `* item` → `<ul><li>item</li></ul>`
+- `\n\n` → paragraph breaks (`<p>`)
+- Links `[label](url)` and `` `code` `` still work as before
+
+The truesight-grounding description should now render properly with a heading, ordered list, and paragraphs instead of raw markdown syntax. Check it at `https://beta.truesight.me/programs/truesight-grounding/index.html`.
+
