@@ -87,3 +87,19 @@ Bukan nanti, doa kawan-kawan kawan yang membunuhkan atau mengallihkan bahawa bet
 
 Maaf, saya kurang faham maksudnya. Boleh ulang semula dalam Bahasa Inggeris atau Bahasa Melayu yang lebih jelas? Saya nak pastikan saya faham apa yang awak nak saya buat dengan Alchemy Springs.
 
+
+### 🧑 Governor
+
+Boleh anda cuba lagi untuk memasakkan kesempatan kawasan jika anda memasakkan kesempatan kawasan kawasan kawasan kawasan kawasan kawasan kawasan kawasan [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Maaf, saya masih kurang jelas dengan mesej tu — bunyinya macam ada sedikit gangguan pada voice recognition. Boleh tak awak taip semula apa yang awak nak saya buat? Contohnya:
+
+- **Nak saya tambah Alchemy Springs ke dalam Hit List?**
+- **Nak saya buat PR untuk update something?**
+- **Atau nak saya tunggu sampai awak boleh login ke DApp?**
+
+Bagitahu saya ringkas je, saya sedia membantu.
+
