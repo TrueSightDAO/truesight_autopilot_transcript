@@ -243,3 +243,23 @@ Here's what I'd suggest:
 
 If you want, I can write that up as a proper prompt you can paste straight into an image generator.
 
+
+### 🧑 Governor
+
+Sure, go ahead and generate a prompt, and then send it back. Do remember that Sophia is female, all right? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's a prompt you can paste into Midjourney, DALL-E, or any image generator:
+
+---
+
+**Prompt:**
+
+A minimalist portrait of a young woman with warm brown skin and dark hair pulled back, shown in soft profile. One of her eyes is rendered as a subtle geometric sensor — a faint hexagonal iris with a warm amber glow. The color palette is earthen: saffron gold, terracotta, deep forest green, and cream. The background is a soft watercolor gradient from Weathered Clay to Forest Canopy. The style is calm and contemplative — ink-wash meets digital illustration. No hard lines, no cold blues. The overall feeling is watchful but gentle, like a guardian who doesn't need to speak. Telegram avatar, square crop, 512x512.
+
+---
+
+Feel free to tweak the skin tone, hair style, or anything else to match what feels right. Once you've got an image you like, set it via BotFather's `/setuserpic` and I'll see it on my end.
+
