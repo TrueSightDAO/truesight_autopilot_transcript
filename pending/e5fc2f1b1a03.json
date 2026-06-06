@@ -75,5 +75,12 @@
     "summary": "Extend gmail_send and gmail_create_draft to support file attachments\n\nCurrently gmail_send and gmail_create_draft only send plain-text emails using MIMEText. They need to support attaching files (PDFs",
     "action": "merge_pr",
     "created_at": "2026-06-06T20:33:53Z"
+  },
+  {
+    "title": "Merge PR #109 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add pre-deploy syntax check to deploy.sh so the script compiles all Python files with `python -m py_compile` before stopping the running service. If any syntax error is found, abort the deploy and pri",
+    "action": "merge_pr",
+    "created_at": "2026-06-06T20:46:13Z"
   }
 ]
