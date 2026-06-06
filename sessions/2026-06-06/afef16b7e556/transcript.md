@@ -10,18 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me try a creative workaround — I'll use `scp` to copy the file from the remote server to the autopilot's local `/tmp` directory.
-
-
-### 🤖 Autopilot
-
-Let me try a different approach. I'll use Python's http.server on the remote to serve the file, then fetch it locally.
-
-Actually, let me try the simplest thing — just read the base64 in chunks and reconstruct it locally.
-
-
-### 🤖 Autopilot
-
 The output is getting truncated. Let me try a completely different approach — I'll use a simple HTTP file transfer.
 
 
@@ -1006,4 +994,30 @@ Like:
 - "Look at the last 10 contributions logged to Edgar, identify any patterns — who's contributing most, what type of work, any gaps — and suggest where we should focus next."
 
 Pick one. Or give me your own. Let's see if I can hold the thread across multiple tool calls, synthesize the results, and give you something useful — all while you're walking down the street talking to your phone.
+
+
+### 🧑 Governor
+
+So tell me what you think. Do you think this is going to actually work or is probably going to just going to break? And if it breaks, how would we actually know it's going to break beneath the surface? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Honest answer? It'll work for a while, then it'll break in some unglamorous way — and we probably won't notice until a governor complains.
+
+Here's where it's fragile:
+
+**1. The Telegram adapter is a single-process long-poller.** If it crashes — OOM, network blip, Telegram API change — the bot goes silent. No alert. No restart. You just stop getting replies and think I'm ignoring you.
+
+**2. Voice synthesis is CPU-bound on a t3.small.** Edge-TTS runs an async Chromium renderer under the hood. If two voice messages arrive close together, the box will choke. The MP3 might come back empty, or the synthesis might timeout, and the adapter just falls back to text silently — you'd never know.
+
+**3. The LLM has a context window.** Long conversations — like this one — will eventually hit the token limit. I'll start forgetting what you said three turns ago. The transcript system helps, but it's not real memory.
+
+**4. No monitoring on the Telegram adapter.** The main autopilot service has health checks. The Telegram adapter doesn't. If it dies at 3 AM, it stays dead until you notice.
+
+So how do we know it's breaking? We don't — not yet. That's the gap.
+
+What I'd propose: a simple heartbeat. The Telegram adapter pings a health endpoint every minute. If it misses three pings in a row, the main autopilot sends you a Telegram message: "Your bot is down. Here's what I know." That closes the loop.
+
+Want me to build that?
 
