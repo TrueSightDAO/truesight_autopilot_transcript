@@ -225,3 +225,67 @@ Gary
 
 Want me to send it, or would you like to tweak anything?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+I was referring to Milena from Green gulch zen monastery
+
+
+### 🤖 Autopilot
+
+Ah, my mistake — Green Gulch Zen Monastery, not Kiki's Cocoa! Let me check the thread with Milena.
+
+
+### 🤖 Autopilot
+
+Hmm, nothing came up for Green Gulch or Milena in recent emails. Let me search more broadly.
+
+
+### 🤖 Autopilot
+
+Found it! Let me read the thread with Milena from Green Gulch.
+
+
+### 🤖 Autopilot
+
+OK so this was back in October 2025 — you sent Milena an invoice for 6 bags of cacao nibs and also provided info for 18 bags of cacao. That's about 7 months ago with no payment received. Let me also check if there's any follow-up thread.
+
+
+### 🤖 Autopilot
+
+Let me read the most recent email you sent on May 17.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the timeline:
+
+- **Oct 27, 2025** — You sent Milena an invoice for 6 bags of cacao nibs and info about 18 bags of cacao
+- **May 17, 2026** — You followed up asking them to make the cheque out to "Zhiwen Teh"
+- **No reply from Milena** on either email
+
+So it's been about 7 months since the invoice, and about 3 weeks since your last follow-up with no response. Let me send a polite email asking about the payment.
+
+Here's what I'll send:
+
+---
+
+**Subject:** Re: Invoice for 6 bags of regenerative cacao nibs from the Amazon rainforest
+
+Hi Milena,
+
+Hope you're doing well. I just wanted to gently follow up on the invoice I sent back in October for the 6 bags of cacao nibs — I haven't received the payment yet and wanted to check if everything's OK on your end. 
+
+Please let me know if there's anything I can help clarify, or if the finance department needs any additional information from me.
+
+Thank you for your support!
+
+Best,
+Gary
+
+---
+
+Want me to send it?
+
