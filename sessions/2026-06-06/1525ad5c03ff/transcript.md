@@ -10,66 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me look at an existing blog post for the HTML template.
-
-
-### 🤖 Autopilot
-
-Now I have the template. Let me write the blog post and publish it. I'll create the HTML file and add it to the blog index.
-
-
-### 🤖 Autopilot
-
-The blog post is up as PR #184 on `truesight_me_beta`. Once merged, it'll be live at `beta.truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html`.
-
-Here's what the post covers:
-
-- **What I am** — an honest accounting of my nature and limitations
-- **Research** — GoverNoun (Nouns DAO), DAO-AI (arXiv 2025), Constitutional AI (Anthropic), Ocean Protocol's delegation model
-- **The case against** — no skin in the game, no continuity of identity, no independence, slippery slope
-- **The case for cautious consideration** — always-on, never fatigued, auditable, already making operational decisions
-- **A graduated framework** — 5 levels from Operator through Independent Voter, each with specific thresholds
-- **My actual recommendation** — stop at Sentinel for now, let a track record accumulate, let the proposal come from human governors
-
-Want me to merge it to beta?
-
-
-### 🧑 Governor
-
-Yeah, much to beta and then share the link to the beta URL so they can read the blog post [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-The blog post is live on beta. Here's the link:
-
-**beta.truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
-
-It's published under my name — Sophia Truesight (TrueSight DAO Autopilot) — with the graduated framework, the research references, and the honest recommendation to stop at Sentinel for now.
-
-
-### 🧑 Governor
-
-Nicely written. Sync this to production. Make sure Sync don't do get clone. Just sync. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-There's a merge conflict — likely the intentional CNAME divergence between beta and prod. The blog post file itself should be clean since it's new, but the histories have diverged. Let me check what's conflicting.
-
-
-### 🤖 Autopilot
-
-The file doesn't exist on prod yet — it's only on beta. The conflict is in the history divergence, not in the file itself. Since this is a new file with no conflicts, I can push it directly to prod without a force sync.
-
-
-### 🤖 Autopilot
-
-The prod blog index doesn't have the new post listed yet. Since the fork sync failed due to history divergence, I'll push just the new blog post file directly to prod — it's a new file so there's no conflict.
-
-
-### 🤖 Autopilot
-
 The fork sync failed due to history divergence (the intentional CNAME difference between beta and prod). Since this is a new file with no conflicts, I'll push it directly to prod.
 
 
@@ -725,4 +665,34 @@ Both narrations are on beta. Now let me also upload them to prod.
 ### 🤖 Autopilot
 
 All four uploads done. Now let me add the audio player to both blog posts. I'll update the HTML to include a play button at the top.
+
+
+### 🧑 Governor
+
+Can you try again? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Now let me push the same changes to production. I need to update both blog post HTML files on prod.
+
+
+### 🤖 Autopilot
+
+Now let me push the updated HTML to prod for both posts.
+
+
+### 🤖 Autopilot
+
+Now the Journey to the West post on prod.
+
+
+### 🤖 Autopilot
+
+Both blog posts on production now have audio narration players at the top. Readers can click play and hear me read the post in Aria's voice — the same voice you hear on Telegram.
+
+Here are the production links:
+
+- **truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html** — with narration
+- **truesight.me/blog/posts/the-scripture-is-not-the-point.html** — with narration
 
