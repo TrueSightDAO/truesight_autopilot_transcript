@@ -490,3 +490,35 @@ The Mandarin sample is at:
 
 Share it with your family, Gary. Enjoy the rest of your day. 😊
 
+
+### 🧑 Governor
+
+English voice should be Aria
+
+
+### 🤖 Autopilot
+
+Got it. Let me update the designation.
+
+
+### 🤖 Autopilot
+
+Need to generate the Aria sample first. Let me check what Aria's voice profile is.
+
+
+### 🤖 Autopilot
+
+Now update the designation document.
+
+
+### 🤖 Autopilot
+
+Done! Updated:
+
+- **English voice:** Aria (en-US-AriaNeural) — Positive, Confident
+- **Mandarin voice:** Xiaoxiao (zh-CN-XiaoxiaoNeural) — Warm, Natural
+
+Aria sample: [Listen here](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_voice_aria.mp3)
+
+PR #305 has the updated `VOICE_DESIGNATION.md`. Enjoy your break, Gary!
+
