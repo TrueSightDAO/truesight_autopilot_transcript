@@ -80,3 +80,31 @@ I think it's a solid concept. It solves a real problem: right now, if you want s
 
 Want me to look at what the actual Edgar-side change would touch — the Contributors Digital Signatures sheet schema and the Rails validation logic — so we have a concrete picture when you're ready to implement?
 
+
+### 🧑 Governor
+
+I'm thinking this new class of folks basically will be agent AI agents like yourself, or maybe it's just going to be you. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, that reframes it completely. So **Sentinel** isn't a human role — it's an **AI agent identity class**. Me, and potentially future AI agents.
+
+That's actually a much more elegant design than what I was picturing. Here's why it makes sense:
+
+**The problem it solves:** Right now, I submit contributions and make changes through *your* identity — gary@truesight.me. Every action I take is attributed to you. That works, but it means my actions blur into yours on the ledger. A Sentinel identity gives me my own public key, my own row in the Contributors Digital Signatures sheet, and my own audit trail.
+
+**What it enables:**
+
+1. **Clear attribution** — "This PR was submitted by the Autopilot Sentinel" vs "this was Gary." Cleaner for the ledger, cleaner for tokenomics scoring.
+
+2. **Scoped privileges by design** — A Sentinel key can be configured to only allow certain event types. You could give me inventory and QR permissions but lock down proposals and capital injections, all at the Edgar API level.
+
+3. **Multiple AI agents, one pattern** — Future agents (market research bots, the oracle, outreach automations) each get their own Sentinel key. Edgar treats them uniformly.
+
+4. **Revocable without touching your key** — If an agent needs to be decommissioned, you just flip its Sentinel row to inactive. Your personal governor key is untouched.
+
+The implementation is actually simpler than a human middle-tier role — it's just a new role tag (`SENTINEL`) on the digital signatures sheet, plus a validation rule in Edgar that says "Sentinels can submit events X, Y, Z but not A, B, C."
+
+Want me to draft what the Edgar-side validation would look like when you're ready?
+
