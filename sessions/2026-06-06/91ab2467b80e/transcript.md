@@ -370,3 +370,80 @@ Let me check the earlier invoice thread more carefully for the mailing address y
 
 I don't have a mailing address on file from the email thread. Gary, what mailing address should I put on the invoice for where to send the check?
 
+
+### 🧑 Governor
+
+This is the mailing address
+
+3041 Taraval St, San Francisco, CA 94116, USA
+
+By the way, the Styling and the formatting of the PDF as well as the table is still off
+
+
+### 🤖 Autopilot
+
+Let me create a much better formatted PDF using a proper Python script with ReportLab for precise control over the layout.
+
+
+### 🤖 Autopilot
+
+Now let me copy it locally and upload it.
+
+
+### 🤖 Autopilot
+
+Let me copy the file locally first, then upload.
+
+
+### 🤖 Autopilot
+
+Let me try uploading via the local file upload tool instead.
+
+
+### 🤖 Autopilot
+
+The base64 has newlines in it. Let me copy the file locally first.
+
+
+### 🧑 Governor
+
+Actually can we change the mailing address to send the cheque to
+
+1968 south coast Highway 4616
+Laguna beach
+92651 CA USA?
+
+
+### 🤖 Autopilot
+
+Let me update the PDF with the new mailing address.
+
+
+### 🤖 Autopilot
+
+The file is on the remote host, not locally. Let me copy it over.
+
+
+### 🤖 Autopilot
+
+Let me try the upload with the flat base64.
+
+
+### 🤖 Autopilot
+
+Wait — I think I uploaded the old version. Let me regenerate with the correct address and upload again properly.
+
+
+### 🤖 Autopilot
+
+Done! The invoice PDF is updated with the correct mailing address. Here's what's on it now:
+
+**Payment Instructions:**
+- Cheque payable to: **Zhiwen Teh**
+- Mail to:
+  - **1968 South Coast Highway, #4616**
+  - **Laguna Beach, CA 92651**
+  - **USA**
+
+The download URL will be sent as a separate text message by the system. Let me know if you need any other changes!
+
