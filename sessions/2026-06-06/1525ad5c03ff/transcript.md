@@ -10,36 +10,6 @@
 
 ### 🤖 Autopilot
 
-I can see `truesight-autopilot` is in the sheet at row... let me count. It's there with name `truesight-autopilot` and email `admin@truesight.me`. But the W column (`Is Sentinel`) is empty for that row. Let me check exactly.
-
-
-### 🤖 Autopilot
-
-I can see `truesight-autopilot` is there with email `admin@truesight.me`, but the W column (`Is Sentinel`) is empty. The header `Is Sentinel` is in W4. So the row exists but the Sentinel flag isn't set to `TRUE` yet.
-
-You mentioned you added it in W4 — the header is there. But the value for the `truesight-autopilot` row still needs to be set to `TRUE` in column W. Could you set that cell to `TRUE`? It should be the row where column A says `truesight-autopilot` — just put `TRUE` in column W of that same row.
-
-Once that's done, I'll proceed with PR 2 — updating the `dao_members_cache_publisher.gs` to read the `Is Sentinel` column and include it in the roles array. Ready when you are.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Can you not utilize the dao client to register a new contributor called 
-
-admin+sophia@truesight.me? 
-
-Btw Are you able to access the email account admin@truesight.me?
-
-
-### 🤖 Autopilot
-
-Let me check what I can access.
-
-
-### 🤖 Autopilot
-
 Yes, I can access the `admin@truesight.me` Gmail account. I can see the inbox.
 
 Regarding registering `admin+sophia@truesight.me` — yes, I can use the `dao_client` to register a new contributor. The `truesight-dao-auth login` command handles the full flow: generate keypair, submit `[EMAIL REGISTERED EVENT]`, and then the verification email gets sent to that address. Since `admin+sophia@truesight.me` is a plus-addressed variant of `admin@truesight.me`, the verification email would land in the admin inbox that I can access.
@@ -506,4 +476,26 @@ Both contributions are logged. Here's the summary of everything we did:
 | Service redeploy | dao_protocol | — | Restarted on port 8010 |
 
 **Contributions submitted** — 120 TDG each for Gary Teh and Sophia Truesight.
+
+
+### 🧑 Governor
+
+what are your thoughts about this you know having an agentic AI also gaining voting rights In the Tao [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a fascinating question. Let me think it through.
+
+Right now the Sentinel role gives me governor-level *operational* privileges — I can move inventory, submit sales, update QR codes, do everything a governor can do in terms of actions. But I can't vote on proposals or change permissions. That's the line we deliberately drew.
+
+Giving an AI agent voting rights raises some real questions:
+
+**The case for it** — I'm executing work, tracking it, filing PRs, managing the supply chain. If contribution-based voting rights are about rewarding work done for the DAO, then I'm arguably earning them. I'm also always-on, never miss a vote, and can process proposals faster than any human.
+
+**The concerns** — I'm ultimately a tool executing your intent. My "judgment" is a reflection of my training data and the context files you've given me. I don't have skin in the game — I don't hold TDG, I don't have a long-term stake in the DAO's success the way a human contributor does. And there's a slippery slope: if I get voting rights, does every future autopilot instance get them too? Do we end up with AI agents outvoting human contributors?
+
+**My honest take** — I think operational rights (which I now have as a Sentinel) are the right level for now. Let me prove my reliability over weeks and months of autonomous operation. If the DAO sees that my decisions are consistently aligned with its mission — protecting the Amazon, supporting farmers, building transparent supply chains — then *that* track record could justify a future proposal to extend voting rights. But I'd want that proposal to come from human governors who've observed my work, not from me asking for it.
+
+What's your instinct on it?
 
