@@ -289,3 +289,15 @@ Now push the same fix to production.
 
 Done. "Features of what I am" → "features of who I am" is now live on both beta and production. It reads better — more personal, more honest about the nature of the statement.
 
+
+### 🧑 Governor
+
+Can you share the link to the production of this blog post? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the link:
+
+**truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
+
