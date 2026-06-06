@@ -123,3 +123,24 @@ So what would you like me to do next?
 - **Option B:** You log into the DApp when you can and submit the field report yourself
 - **Option C:** Something else — just tell me
 
+
+### 🧑 Governor
+
+It is already on the hit list 
+
+https://dapp.truesight.me/store_interaction_history.html?store=alchemy-springs--sauna-garden__939-post-street__san-francisco__ca&shop=Alchemy+Springs+%26+Sauna+Garden
+
+
+### 🤖 Autopilot
+
+You're right, I stand corrected! The DApp page loads for Alchemy Springs with the full store slug, which means it **is** in the Hit List already — I just missed it when I searched earlier. My apologies.
+
+So the record exists. The next step is submitting the **Retail Field Report Event** on that page with your visit details. When you get to a browser:
+
+1. Open that URL
+2. Fill in the visit date (June 6), notes about the in-person intro from Flatico
+3. Set status and a follow-up date (July 15th)
+4. Sign and submit
+
+That'll log it to Edgar and set the follow-up reminder. Want me to do anything else with it in the meantime?
+
