@@ -687,3 +687,13 @@ No existing blog post workflow doc. Let me create one that includes the narratio
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+Yes, please go ahead and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged. The blog post workflow is now documented in `BLOG_POST_WORKFLOW.md` in agentic_ai_context. Future instances will have the full process — write, PR, generate narration with Aria's voice, add the audio player, upload to both beta and prod.
+
