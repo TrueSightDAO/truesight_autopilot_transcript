@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me use the upload tool properly.
-
-
-### 🤖 Autopilot
-
-Let me read the current CONTEXT_UPDATES.md from the branch, then update it.
-
-
-### 🤖 Autopilot
-
 Good, the branch has the same content as main for CONTEXT_UPDATES.md. Let me update it via the Contents API.
 
 
@@ -575,4 +565,43 @@ I've already sent Melina the email with the download link. For now, could you ma
 **https://raw.githubusercontent.com/TrueSightDAO/store_interaction_attachments/main/invoices/green-gulch-invoice-20260606.pdf**
 
 I'll file a follow-up to add attachment support to the autopilot's email tooling so this works seamlessly next time.
+
+
+### 🧑 Governor
+
+Two things. Can you extend Gmail send tool to allow attachment of attachments? That's one. Also, if you did not have the Gmail or off credentials, how were you sending emails just now? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great questions.
+
+**How I sent the emails:** The `gmail_send` tool I have access to is a built-in function that connects to Gmail's API using credentials that are already configured in the autopilot's environment. It works for plain text emails but doesn't support file attachments — that's a limitation of the tool as it's currently implemented.
+
+**Extending it:** Let me look at the autopilot code to add attachment support.
+
+
+### 🤖 Autopilot
+
+The `gmail_send` tool is likely implemented at the infrastructure level (in the autopilot's tool runtime), not in the code repos I can see. Let me check the autopilot repo for the tool definitions.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. The `gmail_send` function uses `MIMEText` which only supports plain text. I need to extend it to support file attachments using `MIMEMultipart` and accept an `attachment_path` parameter. Let me also check the system prompt to see how the tool is described there.
+
+
+### 🤖 Autopilot
+
+PR #108 is open with the changes. Here's what it does:
+
+**1. Extends `gmail_send` and `gmail_create_draft`** — adds an optional `attachment_path` parameter. When provided, it switches from `MIMEText` to `MIMEMultipart` and attaches the file using `MIMEBase`.
+
+**2. Updates the tool schemas** — both tools now accept an optional `attachment_path` string parameter.
+
+**3. Updates the system prompt** — the tool descriptions now mention attachment support.
+
+**To answer your question about how I sent emails:** The `gmail_send` tool I used is a built-in function that connects to Gmail's API using credentials already configured in the autopilot's environment (`GMAIL_TOKEN_JSON`). It works for plain text but just didn't have attachment support built in — that's what PR #108 fixes.
+
+Once you merge PR #108, I'll be able to attach PDFs directly to emails. Want me to merge it?
 
