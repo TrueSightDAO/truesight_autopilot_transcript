@@ -144,3 +144,18 @@ Done. That draft is trashed. The June 5th email you sent already handled it — 
 
 As for the **Berkeley Herbal Center** draft — two previous emails with no reply. Want me to trash that one too, or do you want to send it as a final try?
 
+
+### 🧑 Governor
+
+I think we should send that to Berkeley Herbal Center. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me send that Berkeley Herbal Center draft now.
+
+
+### 🤖 Autopilot
+
+Sent! That's the third email to Berkeley Herbal Center — this one has more detail with the farm profiles, pricing flexibility, and the Instagram link showing the tree-planting program. Hopefully the third time's the charm. Let me know what you'd like to tackle next.
+
