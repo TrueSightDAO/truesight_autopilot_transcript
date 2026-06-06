@@ -289,3 +289,13 @@ Gary
 
 Want me to send it?
 
+
+### 🧑 Governor
+
+Yes, please go ahead and send it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sent! Polite follow-up to Milena at Green Gulch Zen Monastery asking about the October invoice for the 6 bags of cacao nibs. Hopefully their finance department just needed a nudge. Let me know what you'd like to tackle next.
+
