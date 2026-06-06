@@ -59,3 +59,24 @@ Good, I've got a solid picture of the current architecture. Here are my thoughts
 
 Want me to sketch out what the schema change in Edgar and the DAO client would look like? No code — just the shape of it.
 
+
+### 🧑 Governor
+
+Sorry for the typo, I meant sentinel
+
+
+### 🤖 Autopilot
+
+Ah, **Sentinel** — that's a much clearer name. A watcher, a guard, someone with authority to act but not to govern.
+
+So the mental model would be:
+
+- **Governors** — set direction, vote, create proposals, change permissions
+- **Sentinels** — execute operations with full DAO client privileges (inventory, sales, QR, contributions, notarizations) but no governance authority
+
+Edgar would check the public key, see the role is `SENTINEL`, and allow all operational events while blocking governance ones at the API level — clean, simple, and the DAO client doesn't even need to change much.
+
+I think it's a solid concept. It solves a real problem: right now, if you want someone to be able to move inventory or report sales via the DAO client, they need to be a governor. A Sentinel tier lets you delegate operational authority without expanding the voting circle.
+
+Want me to look at what the actual Edgar-side change would touch — the Contributors Digital Signatures sheet schema and the Rails validation logic — so we have a concrete picture when you're ready to implement?
+
