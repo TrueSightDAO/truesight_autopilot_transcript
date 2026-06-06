@@ -111,3 +111,15 @@ Here's the proposal:
 
 This will set a reminder that pops up in the DApp bell in mid-July so we don't lose the thread. Approve when ready!
 
+
+### 🧑 Governor
+
+Yeah, go for it. I approved. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+It's still waiting for the approve button on the DApp side. Since you're on Telegram, the approval needs to happen through the DApp web interface — the Approve/Reject buttons should be visible there. Once you tap Approve, it'll go through and the July 15th reminder will be locked in.
+
+Alternatively, if you want me to just log it directly, I can do that — just say the word.
+
