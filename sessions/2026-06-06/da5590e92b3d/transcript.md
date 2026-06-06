@@ -187,3 +187,47 @@ Are both of this psychic instances running on Nilland's AWS account or are they 
 
 Both Sidekiq instances are in **Nelanco's** account (`767697632458`). I confirmed this from the EC2 API — both `i-0dfeb7a93f1f78e8e` (34.234.193.80) and `i-09883a010a52509f6` (100.53.89.222) returned under the Nelanco account when I queried them. The old Explorya Sidekiq (`seni_sk_2026`, instance `i-0bb43299c84c5ccd5`) has been stopped since May 28.
 
+
+### 🧑 Governor
+
+Can you check the open rates of the emails that were sent out yesterday? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the newsletter tracking data and the Gmail sent items.
+
+
+### 🤖 Autopilot
+
+The newsletter tracking sheet is behind a different service account. Let me check the Hit List email tracking sheet instead, which tracks the warm-up outreach emails.
+
+
+### 🤖 Autopilot
+
+The Email Agent Follow Up sheet only has older data (November 2025) — the Open and Click through columns are empty for those rows. The tracking for yesterday's sends would be in a different system. Let me check the newsletter tracking sheet with the right service account.
+
+
+### 🤖 Autopilot
+
+The newsletter tracking sheet only goes up to April. The warm-up emails sent yesterday (June 5) don't appear here — they're tracked through the Mailsuite pixel in the Email Agent Follow Up sheet, but that sheet's Open/Click columns are empty for the old rows.
+
+Let me check the Gmail messages from yesterday for any replies or tracking signals.
+
+
+### 🤖 Autopilot
+
+Here's what I found about yesterday's emails:
+
+**Warm-up sends (June 5):** 26 emails were sent from the admin account. These are the automated warm-up outreach emails to prospects like Freedom Community Clinic, Proper Xchange, Source Sanctuary Studio, The Wild Grove Collective, and others. The tracking data for open rates lives in the Mailsuite pixel embedded in each email, which writes back to the **Email Agent Follow Up** sheet — but that sheet's Open and Click columns are empty for all rows I can see (the data goes back to November 2025 and none have open/click data populated).
+
+**Two replies came in yesterday:**
+1. **The Way Home Shop** (Portland) — replied to a warm-up. A response draft is staged and needs your eyes.
+2. **Good Vibrations Apothecary** — also replied. Response draft staged.
+
+**One bounce:** Mossy Tonic's email (`filler@godaddy.com`) bounced — that's a placeholder address, so that prospect needs a better contact.
+
+**The newsletter tracking sheet** (Agroverse News Letter Emails) only has data up to April — yesterday's sends don't appear there because they're warm-ups, not newsletter campaigns.
+
+**Bottom line:** I can't give you exact open rates because the Mailsuite tracking columns in the Email Agent Follow Up sheet appear to not be populating. That's a gap worth fixing — the warm-up pipeline sends tracking pixels but the data isn't landing in the sheet. Want me to look into that?
+
