@@ -507,84 +507,46 @@ Once those two corrections are done, I'll proceed with PR 2 — updating the `da
 
 ### 🧑 Governor
 
-I have corrected both yeah, so check it and see how it goes [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+allowing the governor-level rights to Sentinel roles. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
 ### 🤖 Autopilot
 
-Let me find the Sophia row in the contact sheet — it was near the bottom.
+Understood — Sentinels get governor-level operational rights. That's exactly what the roadmap says: the publisher will include `"sentinel"` in the `roles` array, and downstream systems (like the Telegram Chat Logs column S stamp) will treat them the same as governors for operational actions.
+
+Let me proceed with PR 2 — updating the `dao_members_cache_publisher.gs` to read the `Is Sentinel` column. First, let me also update the roadmap to mark step 1 as done.
 
 
 ### 🤖 Autopilot
 
-Both corrections look good:
+Let me update the roadmap to mark step 1 as done, then proceed with PR 2.
 
-**Digital Signatures sheet:**
-- Row 69: `Sophia Truesight` — `admin+sophia@truesight.me` — **ACTIVE** ✅
-- Name is now `Sophia Truesight` ✅
 
-**Contributors contact information:**
-- `truesight-autopilot` — `admin@truesight.me` — `Is Sentinel: TRUE` ✅
-- `Sophia Truesight` — `admin+sophia@truesight.me` — `Is Sentinel: TRUE` ✅
+### 🤖 Autopilot
 
-Everything is in place for the publisher to pick up. Now I'll proceed with **PR 2** — updating the `dao_members_cache_publisher.gs` to read the `Is Sentinel` column and include `"sentinel"` in the roles array. Let me do that now.
+Now let me proceed with PR 2 — the actual code change to `dao_members_cache_publisher.gs`. I need to read the current file and make the edits.
 
 
 ### 🤖 Autopilot
 
 Now I'll make the changes. I need to:
 
-1. Add a constant for the Contributors contact information sheet
-2. Read the sheet to build a `sentinelByName` map
-3. Add `"sentinel"` to the roles array when matched
-4. Update the counts block to include sentinels
-5. Update the schema comment
+1. Add a constant for the contact sheet and Sentinel column
+2. Read the Sentinel column and build a `sentinelByName` map
+3. Include `"sentinel"` in the roles array
+4. Update the counts block
 
 
 ### 🤖 Autopilot
 
-The search string didn't match exactly. Let me check the exact whitespace.
+PR #336 is open. Here's what it changes:
 
+1. **New constants** — `DAO_MEMBERS_CACHE_CONTACT_SHEET` and `DAO_MEMBERS_CACHE_SENTINEL_COL` (column W, index 22)
+2. **Sentinel lookup** — reads the `Contributors contact information` tab, builds a `sentinelByName` map from rows where `Is Sentinel` = TRUE
+3. **Roles merge** — after checking governor status, also checks sentinel status and pushes `"sentinel"` to the roles array
+4. **Counts** — adds `sentinels` count to the snapshot
 
-### 🤖 Autopilot
+So after this merges and the publisher runs, `truesight-autopilot` and `Sophia Truesight` will both appear with `"roles": ["member", "sentinel"]` in `dao_members.json`.
 
-The issue is the em dash character. Let me use `open_fix_pr` instead which handles the search/replace more robustly.
-
-
-### 🤖 Autopilot
-
-PR #335 is open. It's a draft — the agentic loop made the changes. Let me check what it produced.
-
-
-### 🤖 Autopilot
-
-PR #335 is up. Let me check the diff to make sure it looks right.
-
-
-### 🤖 Autopilot
-
-The branch wasn't pushed. The `open_fix_pr` tool creates a draft PR but the branch name might be different. Let me check the PR directly.
-
-
-### 🤖 Autopilot
-
-The PR is up at https://github.com/TrueSightDAO/tokenomics/pull/335. It's a draft with 6 commits, 42 additions, 1 deletion — looks right. The branch is `autopilot/fix-1780754952`.
-
-Let me check the diff to confirm the changes are correct.
-
-
-### 🤖 Autopilot
-
-The diff looks perfect. Here's a summary of what's in PR #335:
-
-**Changes to `dao_members_cache_publisher.gs`:**
-
-1. **Schema comment** — updated to document the sentinel role
-2. **New constants** — `DAO_MEMBERS_CACHE_CONTACT_SHEET`, `DAO_MEMBERS_CACHE_CONTACT_HEADER_ROW`, `DAO_MEMBERS_CACHE_CONTACT_SENTINEL_COL`
-3. **New sentinel lookup** — reads the `Contributors contact information` sheet (columns A + W) to build a `sentinelByName` map
-4. **Role assignment** — pushes `"sentinel"` to the roles array when a contributor's name matches
-5. **Counts** — adds `sentinels` to the counts block
-6. **Commit message** — includes sentinel count
-
-It's a draft PR ready for review. Want me to mark it ready and merge it?
+Want me to merge this PR?
 
