@@ -460,3 +460,33 @@ I'd personally recommend **Yunjian** (professional,沉稳) for the Mandarin vers
 
 Share them with your family and enjoy your break, Gary. 😊
 
+
+### 🧑 Governor
+
+Use Xiao Xiao as your Chinese voice, make sure to update the agent AI context for that.
+
+
+### 🤖 Autopilot
+
+Let me update the context to record Xiaoxiao as the designated Mandarin voice.
+
+
+### 🤖 Autopilot
+
+Now let me update the context to record Xiaoxiao as the designated Mandarin voice.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I've recorded:
+
+**PR #304** — `VOICE_DESIGNATION.md` created in `agentic_ai_context` with:
+
+- **English voice:** Andrew (en-US-AndrewNeural) — warm, confident, authentic
+- **Mandarin voice:** Xiaoxiao (zh-CN-XiaoxiaoNeural) — warm, natural
+
+The Mandarin sample is at:  
+👉 [https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3)
+
+Share it with your family, Gary. Enjoy the rest of your day. 😊
+
