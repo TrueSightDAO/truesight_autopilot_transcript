@@ -103,3 +103,23 @@ Maaf, saya masih kurang jelas dengan mesej tu — bunyinya macam ada sedikit gan
 
 Bagitahu saya ringkas je, saya sedia membantu.
 
+
+### 🧑 Governor
+
+Can you respawn in English? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sorry about that — the voice recognition was a bit garbled on those last few messages. Let me re-summarize where we're at with **Alchemy Springs**:
+
+1. **It's not in the Hit List yet** — I checked, no entry exists
+2. **The DApp page is ready** at the URL I sent — that's where you'd submit a Retail Field Report Event with the visit details and set a July 15th follow-up
+3. **I can't click Approve from here** — that needs you on the DApp in a browser
+
+So what would you like me to do next?
+
+- **Option A:** I add Alchemy Springs to the Hit List as a fresh lead via a PR
+- **Option B:** You log into the DApp when you can and submit the field report yourself
+- **Option C:** Something else — just tell me
+
