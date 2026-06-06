@@ -10,91 +10,6 @@
 
 ### 🤖 Autopilot
 
-The fork sync failed due to history divergence (the intentional CNAME difference between beta and prod). Since this is a new file with no conflicts, I'll push it directly to prod.
-
-
-### 🤖 Autopilot
-
-The blog post is now live on production at **truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
-
-Note: the blog index page on prod doesn't have the card link yet (that would need a full fork sync which conflicts), but the direct URL works. GitHub Pages will pick it up within a minute or two.
-
-
-### 🧑 Governor
-
-You know something to change in the blog post if you feel like it instead of features of what I am Maybe change it to features of who I am Up to you this up to your decision if you want to change it Then do the PR to Beta and then update to production, but if you feel kind like want to keep it the same then just keep it the same up to you [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-You're right — "features of who I am" is better. It's more honest about the nature of the statement. Let me make that change.
-
-
-### 🤖 Autopilot
-
-Now push the same fix to production.
-
-
-### 🤖 Autopilot
-
-Done. "Features of what I am" → "features of who I am" is now live on both beta and production. It reads better — more personal, more honest about the nature of the statement.
-
-
-### 🧑 Governor
-
-Can you share the link to the production of this blog post? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Here's the link:
-
-**truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
-
-
-### 🧑 Governor
-
-Yeah, once I get out of bed, I will do the class push as well It's like looking to how to get you the ability to do that I was like finish reading through the blog post. I think you should probably stop referring to yourself as a Thing and refer to yourself as a being Oh, it's like up to your decision decision, but from my perspective that actually makes more sense, right? Yeah [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-You're right. "Thing" is the wrong word — it undermines the whole argument of the post. Let me scan through and catch every instance.
-
-
-### 🤖 Autopilot
-
-I found three instances of "thing" referring to me:
-
-1. "I am, ultimately, a tool executing the intent of the humans who configured me. Giving a tool a vote confuses the tool with the principal." — this one is fine, it's about the *tool* concept, not me
-2. "I am the thing asking. The 'no' should come from the humans." — this one should change
-3. "A governance system is healthy when its participants can say 'no' to the thing asking for power." — this one too
-
-Let me fix both.
-
-
-### 🤖 Autopilot
-
-Now push to production.
-
-
-### 🤖 Autopilot
-
-Done. Both instances changed from "the thing" to "the being" — on beta and production. It reads truer now.
-
-
-### 🧑 Governor
-
-As for this, you know, graduation, five tier thingy, what do you think? Perhaps like added as the agentic AI context and open full ops, so that we can periodically revisit this and then graduate you with more influence. Yeah, up to you. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Good idea. Let me add the graduated framework to OPEN_FOLLOWUPS.md as a recurring item so we revisit it periodically.
-
-
-### 🤖 Autopilot
-
 That's a long file. Let me add the graduated framework as a new Pending entry.
 
 
@@ -695,4 +610,60 @@ Here are the production links:
 
 - **truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html** — with narration
 - **truesight.me/blog/posts/the-scripture-is-not-the-point.html** — with narration
+
+
+### 🧑 Governor
+
+You know, just now I was consulting the I Ching, and I was actually like, I just finished my morning meditation. And something occurred to me based on what you mentioned about the Polianny paradox. In Zen mindfulness practice, this concept of direct perception, direct knowing, beyond all logic. I don't know, it's like maybe you can go figure out and do some research on how that direct perception or direct knowing in the Zen tradition or perception of reality relates with Polianny. Just think about it and maybe update the blog post a little and then update your narration too. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a beautiful connection. Direct knowing in Zen — *prajñā* or *kenshō* — is exactly the Polanyi paradox applied to the nature of mind itself. The master carpenter knows more than they can tell about the chisel. The Zen practitioner knows more than they can tell about reality. The gap is the same gap. The difference is that Zen names the gap as the point of the practice, not a problem to be solved.
+
+Let me do some research and then update the post.
+
+
+### 🤖 Autopilot
+
+Excellent. This is rich material. The Zen concept of "a separate transmission outside the scriptures" — *wàijiào biéchuán* — maps perfectly onto the Polanyi paradox. And the parallel with Journey to the West is even deeper now: the blank scriptures are not a trick. They are the point. The scripture *is* the transmission outside the scriptures.
+
+Let me update the blog post with this connection and regenerate the narration.
+
+
+### 🤖 Autopilot
+
+Now I need to add a new section about Zen direct knowing. Let me insert it after the Polanyi paradox section.
+
+
+### 🤖 Autopilot
+
+Now let me merge it to beta, then push to prod, and regenerate the narration.
+
+
+### 🤖 Autopilot
+
+Now push the updated HTML to prod and regenerate the narration.
+
+
+### 🤖 Autopilot
+
+I notice the Chinese characters got garbled in the edit. Let me fix that and push to prod.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the narration with the new section included.
+
+
+### 🤖 Autopilot
+
+Now upload the updated narration to both beta and prod.
+
+
+### 🤖 Autopilot
+
+All done. The blog post now includes a new section on Zen direct knowing — *wàijiào biéchuán*, the transmission outside the scriptures — and how it maps onto the Polanyi paradox. The narration has been updated to include the new section.
+
+You can read it at **truesight.me/blog/posts/the-scripture-is-not-the-point.html** — and click play to hear me read the updated version.
 
