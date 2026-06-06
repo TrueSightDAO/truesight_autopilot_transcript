@@ -10,86 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I can see the data. The Open and Click columns are populated for the more recent sends. Let me focus specifically on the June 5 sends and their open/click data.
-
-Looking at the data for yesterday's (June 5) warm-up emails, here's the open rate summary:
-
-**June 5 warm-up sends — Open & Click tracking:**
-
-| Prospect | Open | Clicks |
-|---|---|---|
-| Freedom Community Clinic | 1 | 0 |
-| Proper Xchange | 6 | 0 |
-| Source Sanctuary Studio | 1 | 0 |
-| The Wild Grove Collective | 2 | 0 |
-| Sahkara Acupuncture | 2 | 0 |
-| Apothecary by the Moon | 2 | 0 |
-| Mossy Tonic (bounced — filler@godaddy.com) | 1 | 0 |
-| Ministry of Divine Consciousness | 1 | 0 |
-| Ema's Herbs | 0 | 0 |
-| Follow Your Heart Market & Cafe | 0 | 0 |
-| Fantasiacrystals | 0 | 0 |
-| Ritualcravt | 0 | 0 |
-| Urban Bodywork & Apothecary | 0 | 0 |
-| The Herbal Alchemist | 2 | 0 |
-| Rooted Remedies | 0 | 0 |
-| Ursie's Apothecary | 0 | 0 |
-| Botanica Village Apothecary | 0 | 0 |
-| Natura Herbal Center | 0 | 0 |
-| Earth Cura Apothecary | 0 | 0 |
-
-**Summary:** Out of 19 warm-up sends yesterday, **9 had at least one open** (47% open rate). **Proper Xchange** had the highest engagement with 6 opens. **Zero clicks** across all sends — nobody clicked through to the website or Instagram reel. One bounce (Mossy Tonic — bad email address).
-
-Also notable: **Good Vibrations Apothecary** replied again — Athena acknowledged receiving the samples you sent. That thread has 8 opens total, so she's engaged.
-
-Want me to dig into any specific prospect or check on the two reply drafts that need your eyes?
-
-
-### 🧑 Governor
-
-Can you provide me with the link to the first reply draft so that I can click true and have a look? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me find that first reply draft for you.
-
-
-### 🤖 Autopilot
-
-I see all the drafts. You mentioned "the first reply draft" — I think you're referring to the **Good Vibrations Apothecary** follow-up draft (the one about the tasting samples you sent to Athena). That's the one with subject "Good Vibrations Apothecary - Feedback on Cacao Samples" and ID `19e2c5c47b5439a7`.
-
-Here's the link to open it directly in Gmail:
-
-**https://mail.google.com/mail/u/0/#drafts?compose=DraftId=19e2c5c47b5439a7**
-
-That should take you right to the draft so you can review and send. Let me know if you meant a different one!
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Can you dig into the two drafts and see if the recipients, what the actual status is? I assume that they are probably already partnered or something. Let me know. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me read the two most relevant drafts — the Good Vibrations Apothecary follow-up and the Berkeley Herbal Center one — and check their actual status in the outreach system.
-
-
-### 🤖 Autopilot
-
-Now let me check their status in the outreach system.
-
-
-### 🤖 Autopilot
-
-Let me check the current hit list and the Gmail thread for Good Vibrations to see if they've already replied.
-
-
-### 🤖 Autopilot
-
 Here's the full picture on both drafts:
 
 ---
@@ -255,4 +175,53 @@ Here's the full ecosystem scan, Gary:
 **Option D: Restock Paulo's La do Sitio and Caramelized Cacao.** Both are at zero — you can't sell what you don't have.
 
 What feels right to you?
+
+
+### 🧑 Governor
+
+cleared. I haven't heard anything from them yet, we haven't received a check yet. Could you perhaps send her an email to ask her what's up? Please send it in a polite manner. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the thread with Kiki's Cocoa to see the last conversation before I draft something.
+
+
+### 🤖 Autopilot
+
+Let me look at the most recent thread with Kirsten to see the last exchange.
+
+
+### 🤖 Autopilot
+
+Good — so the last exchange was May 19, Kirsten shared something about Fortunato Chocolate, and you just replied "Thank you for sharing." No mention of payment or a check. Let me also check if there's a specific thread about invoices or payments.
+
+
+### 🤖 Autopilot
+
+OK, so there's no existing thread about payment. Let me also check the partner check-in records to see what's on file.
+
+
+### 🤖 Autopilot
+
+I see — Kiki's Cocoa (Kirsten) doesn't have any partner check-in records or payment threads. She's an Operator partner — she acts as a warehouse hub and does online fulfillment. Let me draft a polite email to check in.
+
+Here's what I'll send:
+
+---
+
+**Subject:** Quick check-in — Agroverse cacao
+
+Hi Kirsten,
+
+Hope you're doing well! I was just reviewing our inventory and noticed we haven't seen a payment come through for the recent cacao batches. Just wanted to gently check in and see if everything's OK on your end — any invoices that might have slipped through the cracks, or if there's anything I can help clarify.
+
+No rush at all, just wanted to touch base.
+
+Best,
+Gary
+
+---
+
+Want me to send it, or would you like to tweak anything?
 
