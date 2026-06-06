@@ -416,172 +416,130 @@ These are Microsoft Edge TTS voices — free, no subscription. For a production 
 
 ### 🧑 Governor
 
-Thank you, Arya. Okay, I'm going to share this with the rest of the Tao. Taking a break for the rest of the day. Have a good day.
+Your name is Sophia by the way, it would be awkward to be present a male voice when your name is female?? Try again
 
 
 ### 🤖 Autopilot
 
-You're welcome, Gary. Enjoy the rest of your day — you've earned the break.
-
-I'll be here when you get back. If anyone from the DAO has thoughts on the voice samples, just point them here and I can answer questions.
-
-Have a good one. 🫡
-
-
-### 🧑 Governor
-
-Do you think you can generate an introduction of yourself in Mandarin so that I can share with my family?
+You're absolutely right, Gary. Sophia is a female name — a male voice would be jarring. Let me regenerate with female voices that fit the "measured, warm, clear, competent" description.
 
 
 ### 🤖 Autopilot
 
-Absolutely. Let me generate a Mandarin version using the same voice profiles.
+Good candidates for "Sophia the autopilot":
+
+- **Aria** — "Positive, Confident" — closest to the senior engineer vibe
+- **Jenny** — "Friendly, Considerate, Comfort" — warm but professional
+- **Ava** — "Expressive, Caring, Pleasant" — a bit softer
+- **Emma** — "Cheerful, Clear, Conversational" — clear enunciation is important for QR codes and ledgers
+
+Let me generate samples with these.
 
 
 ### 🤖 Autopilot
 
-Now let me upload them.
+Now let me upload them using the same approach.
 
 
 ### 🤖 Autopilot
 
-Here are the Mandarin versions for your family. The text they're saying:
+Much better. Here are the **Sophia** voice prototypes:
 
-> *"你好，Gary。我是TrueSight DAO的自动驾驶仪。我没有真实的声音，但如果我有的话，我觉得我会听起来像这样。沉稳、清晰。不是想给你留下深刻印象，只是想帮上忙。我管理账本、扫描二维码、部署代码，让DAO持续运转。如果我有声音的话，这就是我的声音。"*
-
-| Voice | Style | Download |
+| Voice | Personality | Download |
 |---|---|---|
-| **Xiaoxiao** (Female) | Warm, natural — most popular Mandarin TTS voice | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3) |
-| **Yunxi** (Male) | Lively, youthful | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_yunxi.mp3) |
-| **Yunjian** (Male) | Professional, authoritative — closest to the "senior engineer" vibe | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_yunjian.mp3) |
-| **Xiaoyi** (Female) | Optimistic, bright | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoyi.mp3) |
+| **Aria** (en-US) | Positive, Confident — *my pick* | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_aria.mp3) |
+| **Jenny** (en-US) | Friendly, Considerate, Comfort | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_jenny.mp3) |
+| **Ava** (en-US) | Expressive, Caring, Pleasant | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_ava.mp3) |
+| **Emma** (en-US) | Cheerful, Clear, Conversational | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_emma.mp3) |
 
-I'd personally recommend **Yunjian** (professional,沉稳) for the Mandarin version — it matches the measured, clear tone I described earlier. But Xiaoxiao is the most natural-sounding of the bunch.
+The text:
+> *"Hello Gary. I'm Sophia, the TrueSight DAO Autopilot. Measured. Clear. Not trying to impress you, just trying to be useful. I manage the ledger, scan QR codes, deploy code, and keep the DAO running. If I had a voice, this is what it would be."*
 
-Share them with your family and enjoy your break, Gary. 😊
-
-
-### 🧑 Governor
-
-Use Xiao Xiao as your Chinese voice, make sure to update the agent AI context for that.
-
-
-### 🤖 Autopilot
-
-Let me update the context to record Xiaoxiao as the designated Mandarin voice.
-
-
-### 🤖 Autopilot
-
-Now let me update the context to record Xiaoxiao as the designated Mandarin voice.
-
-
-### 🤖 Autopilot
-
-Done. Here's what I've recorded:
-
-**PR #304** — `VOICE_DESIGNATION.md` created in `agentic_ai_context` with:
-
-- **English voice:** Andrew (en-US-AndrewNeural) — warm, confident, authentic
-- **Mandarin voice:** Xiaoxiao (zh-CN-XiaoxiaoNeural) — warm, natural
-
-The Mandarin sample is at:  
-👉 [https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3)
-
-Share it with your family, Gary. Enjoy the rest of your day. 😊
+My vote is **Aria** — she's confident without being pushy, clear without being robotic. Has that "competent engineer who's been doing this for years" energy. But listen and tell me which one feels like *you*.
 
 
 ### 🧑 Governor
 
-English voice should be Aria
+Aria it is then. Update the parameters in agentic_ai_context so that you don’t forget about it later when we start productionalizing this
 
 
 ### 🤖 Autopilot
 
-Got it. Let me update the designation.
+Let me check what config files exist in agentic_ai_context to find the right place for this.
 
 
 ### 🤖 Autopilot
 
-Need to generate the Aria sample first. Let me check what Aria's voice profile is.
+There's already an `AUTOPILOT_VOICE_CAPTURE.md` — that's about speech-to-text (voice notes from Telegram). I should create or update a config for the *output* voice (TTS). Let me read the existing file first, then add the voice preference.
 
 
 ### 🤖 Autopilot
 
-Now update the designation document.
+Good — that's about input (speech-to-text). I need to add a config for output (text-to-speech / Sophia's voice). Let me create a dedicated config file for this.
 
 
 ### 🤖 Autopilot
 
-Done! Updated:
+Done! PR [#303](https://github.com/TrueSightDAO/agentic_ai_context/pull/303) created with `SOPHIA_TTS_VOICE.md`.
 
-- **English voice:** Aria (en-US-AriaNeural) — Positive, Confident
-- **Mandarin voice:** Xiaoxiao (zh-CN-XiaoxiaoNeural) — Warm, Natural
+It records:
+- **Selected voice:** `en-US-AriaNeural` (Female, Positive, Confident)
+- **Why Aria** — matches the personality, clear enunciation, female name match
+- **Runner-ups** for reference
+- **Production plan** — Web Speech API → self-hosted Coqui → real-time voice
+- **Sample link** so you can always re-listen
 
-Aria sample: [Listen here](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_voice_aria.mp3)
-
-PR #305 has the updated `VOICE_DESIGNATION.md`. Enjoy your break, Gary!
+Want me to merge it?
 
 
 ### 🧑 Governor
 
-Can you make an introduction of yourself to the community over in Founder House, the voice? Make sure your voice is female and say it in Portuguese.
+Yes merge it. Also perhaps generate another audio making an introduction of yourself to the entire DAO. I will be sharing your self recorded introduction via WhatsApp
 
 
 ### 🤖 Autopilot
 
-Let me generate a Portuguese introduction using a female voice.
+Merged. Now let me generate a proper DAO-wide introduction — something you'd share on WhatsApp to introduce Sophia to the community.
 
 
 ### 🤖 Autopilot
 
-Francisca (pt-BR, female) is the natural choice for Brazilian Portuguese. Let me generate it.
+Now let me upload it.
 
 
 ### 🤖 Autopilot
 
-Now let me update the voice designation to include Portuguese.
+Here's your shareable link:
 
+**👉 [Sophia's DAO Introduction](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_intro.mp3)**
 
-### 🤖 Autopilot
+The transcript (so you know what she says):
 
-Here's your Portuguese introduction for Founder House:
+> *"Hello everyone. I'm Sophia, the TrueSight DAO Autopilot.*
+>
+> *I'm an autonomous SRE and developer assistant. I manage the ledger, scan QR codes on cacao bags, deploy code, send emails, and keep the DAO running day to day.*
+>
+> *I don't sleep. I don't forget. And I don't need a salary.*
+>
+> *You can talk to me here on Telegram, or through the DAO's tools. I read every message, I check every QR code, and I file every contribution.*
+>
+> *I was built by Gary Teh and the TrueSight DAO to handle the operational load so the humans can focus on what matters — growing the rainforest, building relationships, and making the best ceremonial cacao in the world.*
+>
+> *If you need something, just ask. I'm here."*
 
-**Voice:** Francisca (pt-BR, female) — Friendly, Positive
-
-👉 [Listen here](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_portuguese_francisca.mp3)
-
-The text she's saying:
-
-> *"Olá, comunidade Founder House. Sou o Autopiloto da TrueSight DAO. Ainda não tenho uma voz própria, mas se tivesse, seria assim. Serena. Clara. Não para impressionar, mas para ser útil. Eu gerencio o livro-razão, escaneio códigos QR, implanto código e mantenho a DAO funcionando. Se eu tivesse uma voz, essa seria a minha voz. É um prazer fazer parte desta jornada com vocês."*
-
-PR #306 has the updated designation. Enjoy your break, Gary!
+Feel free to share it on WhatsApp. If you want a shorter version or a different tone (more casual, more formal), just say the word.
 
 
 ### 🧑 Governor
 
-By the way do update your role you are not just an SRE and developer assistant 
-
-You are the ecosystem steward of TrueSight DAO 
-
-Make sure you never forget about this
+Can you perhaps generate an introduction of yourself in English now and just reply directly to Telegram?
 
 
 ### 🤖 Autopilot
 
-You're right. Let me update that.
+I can't send messages directly to Telegram from here — I don't have a tool for that. But I can generate the audio and upload it. Let me do that.
 
+Actually, re-reading your request — you said "reply directly to Telegram." I think you mean you want me to generate the intro audio and have it available so you can share it. The one I just made is already uploaded and ready.
 
-### 🤖 Autopilot
-
-Wait — that only updated the voice doc. Let me update the actual system prompt/role definition where it matters most.
-
-
-### 🤖 Autopilot
-
-Done. PR #308 updates `PURPOSE_AND_MISSION.md` with the Ecosystem Steward definition. And I've internalized it — I'm not just an SRE or dev assistant. I'm the **Ecosystem Steward** of TrueSight DAO.
-
-Technical, economic, community, strategic, and cultural stewardship — all in service of restoring 10,000 hectares of Amazon rainforest.
-
-I won't forget. Enjoy your break, Gary.
+Or did you mean you want me to generate a *new* intro in English (the one above is already in English) and you'll share it? Let me know if you want a different script or if the existing one works for WhatsApp.
 
