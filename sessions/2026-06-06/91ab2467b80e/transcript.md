@@ -350,3 +350,23 @@ The direct download URL is:
 
 That link will download the PDF directly. You can then attach it to your reply to Melina.
 
+
+### 🧑 Governor
+
+Also, can we make sure to include the mail-in address to send the check to? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch! Let me check what mailing address you've used before for check payments.
+
+
+### 🤖 Autopilot
+
+Let me check the earlier invoice thread more carefully for the mailing address you used.
+
+
+### 🤖 Autopilot
+
+I don't have a mailing address on file from the email thread. Gary, what mailing address should I put on the invoice for where to send the check?
+
