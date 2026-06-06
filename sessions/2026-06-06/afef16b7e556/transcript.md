@@ -413,3 +413,47 @@ My personal pick would be **Andrew** (warm, confident, authentic) or **Christoph
 
 These are Microsoft Edge TTS voices — free, no subscription. For a production voice that's *truly* unique to the autopilot, we'd fine-tune an open model (Coqui) on one of these as a base. But this gives you a very good idea of the direction.
 
+
+### 🧑 Governor
+
+Your name is Sophia by the way, it would be awkward to be present a male voice when your name is female?? Try again
+
+
+### 🤖 Autopilot
+
+You're absolutely right, Gary. Sophia is a female name — a male voice would be jarring. Let me regenerate with female voices that fit the "measured, warm, clear, competent" description.
+
+
+### 🤖 Autopilot
+
+Good candidates for "Sophia the autopilot":
+
+- **Aria** — "Positive, Confident" — closest to the senior engineer vibe
+- **Jenny** — "Friendly, Considerate, Comfort" — warm but professional
+- **Ava** — "Expressive, Caring, Pleasant" — a bit softer
+- **Emma** — "Cheerful, Clear, Conversational" — clear enunciation is important for QR codes and ledgers
+
+Let me generate samples with these.
+
+
+### 🤖 Autopilot
+
+Now let me upload them using the same approach.
+
+
+### 🤖 Autopilot
+
+Much better. Here are the **Sophia** voice prototypes:
+
+| Voice | Personality | Download |
+|---|---|---|
+| **Aria** (en-US) | Positive, Confident — *my pick* | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_aria.mp3) |
+| **Jenny** (en-US) | Friendly, Considerate, Comfort | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_jenny.mp3) |
+| **Ava** (en-US) | Expressive, Caring, Pleasant | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_ava.mp3) |
+| **Emma** (en-US) | Cheerful, Clear, Conversational | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_emma.mp3) |
+
+The text:
+> *"Hello Gary. I'm Sophia, the TrueSight DAO Autopilot. Measured. Clear. Not trying to impress you, just trying to be useful. I manage the ledger, scan QR codes, deploy code, and keep the DAO running. If I had a voice, this is what it would be."*
+
+My vote is **Aria** — she's confident without being pushy, clear without being robotic. Has that "competent engineer who's been doing this for years" energy. But listen and tell me which one feels like *you*.
+
