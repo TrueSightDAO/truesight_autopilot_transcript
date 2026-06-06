@@ -310,3 +310,15 @@ Good. Per the operating instructions, I need to create a tracked execution roadm
 
 The roadmap is up as a PR. You said to merge it before we continue — shall I go ahead and merge PR #314?
 
+
+### 🧑 Governor
+
+Yes, please merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PR #314 is merged. The roadmap is now tracked in `agentic_ai_context/SENTINEL_ROLE_IMPLEMENTATION_PLAN.md`.
+
+**RESUME HERE** — Step 1 is to add the `Is Sentinel` column to the `Contributors contact information` sheet. That's a manual sheet edit. Do you want me to walk through what needs to go where, or would you like to handle the sheet edit yourself and then I'll pick up with PR 2 (the publisher script)?
+
