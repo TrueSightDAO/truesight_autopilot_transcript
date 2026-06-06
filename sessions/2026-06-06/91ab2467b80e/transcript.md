@@ -75,3 +75,39 @@ Done! The partner check-in for **Green Gulch Zen Monastery** has been submitted.
 
 Anything else on your mind?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+So, the other day I went and visited Alchemy Springs in San Francisco. Maybe we can do a check-in follow-up of something, middle of July, so that we don't forget about it, because I was literally there and they are introduced by Flatico. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look up Alchemy Springs in our system.
+
+
+### 🤖 Autopilot
+
+Alchemy Springs isn't in our system yet — sounds like a new lead from Flatico's introduction. Let me check the Hit List to see if there's any record.
+
+
+### 🤖 Autopilot
+
+Alchemy Springs isn't in our system yet — no Hit List row, no partner record. Since Flatico introduced you and you visited in person, this sounds like a fresh lead worth tracking.
+
+Let me file a partner check-in to set a **mid-July follow-up** — say **July 15th** — so it surfaces in the DApp bell when the time comes.
+
+
+### 🤖 Autopilot
+
+Here's the proposal:
+
+**Alchemy Springs — Follow-up Reminder**
+- **Lead:** Alchemy Springs, San Francisco (introduced by Flatico)
+- **Next check-in:** **July 15, 2026**
+- **Method:** In person visit already done
+
+This will set a reminder that pops up in the DApp bell in mid-July so we don't lose the thread. Approve when ready!
+
