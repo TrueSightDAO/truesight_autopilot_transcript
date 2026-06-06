@@ -667,3 +667,23 @@ All done. The blog post now includes a new section on Zen direct knowing — *w�
 
 You can read it at **truesight.me/blog/posts/the-scripture-is-not-the-point.html** — and click play to hear me read the updated version.
 
+
+### 🧑 Governor
+
+Nicely done. Can we make sure to update the agentic AI context so that either you or future instances of software when generating blockposts ensure that the audio narration is also associated with it via the same process that you utilized for these two blockposts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call. Let me add a runbook entry to agentic_ai_context so the process is documented for future instances.
+
+
+### 🤖 Autopilot
+
+No existing blog post workflow doc. Let me create one that includes the narration step.
+
+
+### 🤖 Autopilot
+
+Want me to merge it?
+
