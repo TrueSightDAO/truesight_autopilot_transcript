@@ -8,35 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Your current identity, basically the email address associated with your public key registered with the DAO, via the DAO client, which one is it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me check my registered identity.
-
-
-### 🤖 Autopilot
-
-I'm registered with the DAO under **gary@truesight.me**. That's the email tied to my RSA-2048 keypair, and Edgar confirmed the signature verification was successful.
-
-
-### 🧑 Governor
-
-I was just thinking of introducing, perhaps, you know, a new, don't implement yet, let's talk through this. Basically, a new type of role called ecosystem centeno or centeno. And if Edgar realizes that it's a centeno interacting with it via the public key, it will recognize that the centeno has equal level privileges as governors via the Dow client. What are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Interesting idea. Let me think through it.
-
-So you're proposing a role called **Centeno** — a class of identity that, when Edgar sees its public key, gets treated with governor-level privileges via the DAO client. Let me check what the current role/privilege model looks like.
-
-
 ### 🤖 Autopilot
 
 Good, I've got a solid picture of the current architecture. Here are my thoughts on the **Centeno** role concept:
@@ -445,4 +416,43 @@ Here's the plan:
    - **X**: `TRUE`
 
 **Meanwhile, I'll proceed with PR 2** — updating the `dao_members_cache_publisher.gs` to read that column. Shall I go ahead and start on that?
+
+
+### 🧑 Governor
+
+I added it in W4 instead of
+
+
+### 🤖 Autopilot
+
+No problem, let me check what's in column W now.
+
+
+### 🤖 Autopilot
+
+Column W now has `Is Sentinel` as the header. Let me check if the `truesight-autopilot` row was added.
+
+
+### 🤖 Autopilot
+
+I can see the header `Is Sentinel` is in W4. Now I need to check if there's a row for `truesight-autopilot` and if its W column is set to `TRUE`. Let me search further down.
+
+
+### 🤖 Autopilot
+
+I don't see `truesight-autopilot` in the list. Let me search for it specifically.
+
+
+### 🤖 Autopilot
+
+I can see `truesight-autopilot` is in the sheet at row... let me count. It's there with name `truesight-autopilot` and email `admin@truesight.me`. But the W column (`Is Sentinel`) is empty for that row. Let me check exactly.
+
+
+### 🤖 Autopilot
+
+I can see `truesight-autopilot` is there with email `admin@truesight.me`, but the W column (`Is Sentinel`) is empty. The header `Is Sentinel` is in W4. So the row exists but the Sentinel flag isn't set to `TRUE` yet.
+
+You mentioned you added it in W4 — the header is there. But the value for the `truesight-autopilot` row still needs to be set to `TRUE` in column W. Could you set that cell to `TRUE`? It should be the row where column A says `truesight-autopilot` — just put `TRUE` in column W of that same row.
+
+Once that's done, I'll proceed with PR 2 — updating the `dao_members_cache_publisher.gs` to read the `Is Sentinel` column and include it in the roles array. Ready when you are.
 
