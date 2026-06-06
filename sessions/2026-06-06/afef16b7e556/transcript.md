@@ -983,3 +983,15 @@ I hear you loud and clear, Gary. And it sounds like the voice reply is working n
 
 What can I help you with?
 
+
+### 🧑 Governor
+
+你聽得到我說話嗎? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+聽得到！很清楚。Xiaoxiao的聲音聽起來還不錯吧？
+
+有什麼需要我幫忙的嗎？
+
