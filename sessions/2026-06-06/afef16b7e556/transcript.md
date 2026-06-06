@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-That's truncated. Let me use a different approach — I'll scp the files or use a Python script to upload them directly.
-
-
-### 🤖 Autopilot
-
-No token on the remote server. Let me try a different approach — I'll use `scp` to copy the files to the autopilot's local environment, then upload from there.
-
-
-### 🤖 Autopilot
-
-Let me try a simpler approach — I'll use the `upload_file_to_github` tool with base64 content, but I need to get the full base64. Let me split it into chunks.
-
-
-### 🤖 Autopilot
-
 The output is being truncated by the SSH tool. Let me try a different approach — I'll write a Python script on the remote server that uploads directly to GitHub using the API.
 
 
@@ -914,4 +899,42 @@ sudo journalctl -u truesight-autopilot-telegram -n 30 --no-pager
 ```
 
 That would tell us if the adapter is running and if there are any errors in the logs.
+
+
+### 🧑 Governor
+
+I just did a redeploy. Can you check now?
+
+
+### 🤖 Autopilot
+
+Main service is healthy. Now let me check if the Telegram adapter is running with the new code by looking at the process.
+
+
+### 🤖 Autopilot
+
+Can't SSH from here. But you just redeployed — did you send a voice message to test it? If you did and it came back as text instead of voice, let me check the code logic more carefully.
+
+Actually, let me re-read my implementation. I think I see a potential issue. In `handle_message()`, the flow for voice messages is:
+
+1. Voice detected → `is_voice = True`, transcribe → set `text = transcribed_text`
+2. Then it checks for commands (`/start`, `/help`, `/reset`, etc.) — those won't match since it's transcribed speech
+3. Then it calls `call_chat_with_progress()` which returns the response
+4. Then `if is_voice and response: _handle_voice_reply(...)`
+
+But wait — `call_chat_with_progress()` **already sends the text response** to the chat (it edits the status message with the final response). So the user sees the text. Then `_handle_voice_reply()` runs and should also send a voice message.
+
+The question is: did the voice synthesis actually run? Let me check if `edge-tts` is installed on the sophia host.
+
+
+### 🤖 Autopilot
+
+Gary — could you try sending a voice message now and let me know what happens? If it still comes back as text, I'll need to check the Telegram adapter logs on the sophia host. You can check them with:
+
+```bash
+ssh sophia
+sudo journalctl -u truesight-autopilot-telegram -n 50 --no-pager
+```
+
+Look for lines with `autopilot.telegram` or `autopilot.voice_output` — that'll tell us if the voice synthesis ran or if there was an error.
 
