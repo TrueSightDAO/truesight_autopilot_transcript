@@ -200,3 +200,83 @@ It's a **one-column addition** to the Digital Signatures sheet and a **small ref
 
 Want me to draft the exact column schema and the code change for `governors.rb` when you're ready to move forward?
 
+
+### 🧑 Governor
+
+The government's privilege is auto-computed right now. I'm thinking probably like the Sentinel role should be recorded on the contributors contact information tab and state as a new column. Basically a new column is Sentinel, and then if it's Sentinel, then the column should reflect the true. And also, we are not really using the sentiment importer tag stack for this anymore, isn't it? Can you check the Agentic AI context? I think we are extending the DAO protocol, which is a Python library. Check first, don't implement anything, let's discuss. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the DAO protocol repo and the current architecture to understand where the authority logic lives now.
+
+
+### 🤖 Autopilot
+
+Wait — I notice the README says "dao_client" but the repo is called "dao_protocol". Let me check what's actually in the dao_protocol repo, since you mentioned extending that.
+
+
+### 🤖 Autopilot
+
+Now let me check the actual dao_protocol repo structure more carefully — the README says it's the Python client but the repo name is dao_protocol.
+
+
+### 🤖 Autopilot
+
+OK, so `dao_protocol` is the repo that contains the Python `dao_client` library. Let me look at what's actually in it — specifically the contributors cache module since that's where the role lookup would live.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `dao_members.json` snapshot to see its current shape.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me also check the `dao_members_cache_publisher.gs` to see how it determines roles currently.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Here's my analysis:
+
+---
+
+## Current State
+
+You're right — the architecture has shifted. Let me trace the actual flow:
+
+**The governor privilege is NOT computed by `sentiment_importer` anymore** for the cache. The `dao_members.json` snapshot is built by a **Google Apps Script** (`dao_members_cache_publisher.gs`) that:
+
+1. Reads `Contributors Digital Signatures` for public keys
+2. Reads `Governors` tab to see who's a governor
+3. Auto-derives the `roles` array — `["governor", "member"]` or just `["member"]`
+4. Publishes to `treasury-cache/dao_members.json`
+
+The `sentiment_importer`'s `governors.rb` still has the hardcoded `TRUSTED_AGENTS` list for the Telegram Chat Logs column S stamp, but you're saying we're moving away from that stack.
+
+**The `dao_protocol` repo** (which is the Python `dao_client` library) reads from `dao_members.json` via `contributors.py` — it already has a `for_public_key()` lookup that returns the contributor record including `roles`.
+
+## Your Proposal
+
+Put the Sentinel flag on **Contributors contact information** as a new column (e.g. `Is Sentinel` with `TRUE`/`FALSE`), and have the `dao_members_cache_publisher.gs` read it when building the `roles` array — so Sentinels get `["sentinel", "member"]` or `["sentinel"]` in the JSON.
+
+Then the `dao_protocol` Python library can check `roles` at the client side — when my autopilot key is looked up, it sees `roles: ["sentinel"]` and knows it has operational parity.
+
+## What I Like About This Approach
+
+1. **One source of truth** — the sheet is the canonical record, not hardcoded Ruby constants
+2. **The publisher already does this pattern** — it reads the `Governors` tab to derive `roles`. Adding a column read from `Contributors contact information` is the same pattern, just a different sheet
+3. **The `dao_protocol` client already returns `roles`** — so no client-side changes needed for the lookup
+4. **No Edgar/Rails changes** — the `sentiment_importer`'s `TRUSTED_AGENTS` list becomes irrelevant once the cache is the authority
+
+## What Needs to Change
+
+1. **Contributors contact information** — add column U: `Is Sentinel` (TRUE/FALSE)
+2. **`dao_members_cache_publisher.gs`** — read that column and include `"sentinel"` in the `roles` array when TRUE
+3. **Optionally update `governors.rb`** — to remove `TRUSTED_AGENTS` and instead check the `dao_members.json` roles field, but that's a separate concern
+
+The `dao_protocol` Python library (`contributors.py`) already returns the `roles` field from the snapshot — so I (the autopilot) could already check `"sentinel" in record["roles"]` once the publisher starts emitting it.
+
+Does that match what you were thinking?
+
