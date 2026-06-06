@@ -790,3 +790,128 @@ So if you voice message me on **Telegram**, I'll reply with a voice message usin
 
 Would you like me to add voice reply support to the DApp chat as well? That would be the next step in the implementation plan — adding a `/chat/voice` endpoint and a record button in `chat.html`.
 
+
+### 🧑 Governor
+
+You know, we are right now having a conversation via the telegram and not that, right? So maybe you can check your implementation.
+
+
+### 🤖 Autopilot
+
+You're right, I apologize! Let me check what happened.
+
+
+### 🤖 Autopilot
+
+The sophia host is reachable and the main autopilot service is healthy. Let me check the Telegram adapter logs.
+
+
+### 🤖 Autopilot
+
+The SSH key isn't on this server (dao_protocol). The deploy was run from Gary's Mac, not from here. But the health endpoint confirms the main service is running. Let me check if the Telegram adapter is running by looking at the process list.
+
+
+### 🤖 Autopilot
+
+The main service is healthy. The deploy script reported success and restarted the Telegram adapter. But since I can't SSH to the sophia host from here (no key), I can't check the Telegram adapter logs directly.
+
+Let me look at this from a different angle — the deploy tool's output said the Telegram adapter was restarted. But maybe the issue is that the voice reply code I wrote has a bug. Let me review the flow more carefully.
+
+Looking at my code in `telegram_adapter.py`, the voice reply flow is:
+
+1. Voice note comes in → `is_voice = True`, `transcribed_text` is set
+2. Text goes to `call_chat_with_progress()` which returns the response
+3. If `is_voice and response`, call `_handle_voice_reply()`
+
+The issue is: `call_chat_with_progress()` **already sends the text response** to Telegram (it edits the status message or sends a new message). So by the time `_handle_voice_reply()` runs, the text has already been sent. Then `_handle_voice_reply()` tries to synthesize and send a voice message on top of that.
+
+But wait — you said you sent a voice message and got a text response back, not a voice response. That means either:
+1. The Telegram adapter wasn't restarted with the new code, OR
+2. The voice synthesis failed silently
+
+Let me check if the deploy actually pushed the new code. The deploy ran from the autopilot's `deploy_autopilot` tool which runs `deploy.sh`. It reported success. But the deploy script does `git fetch origin main && git reset --hard origin/main` — and I merged the PRs before deploying. So the code should be there.
+
+Actually, I think I know the issue. Looking at my code more carefully:
+
+In `handle_message()`, the voice message flow is:
+```python
+response = call_chat_with_progress(chat_id, thread_id, text, session_id, public_key)
+if is_voice and response:
+    _handle_voice_reply(chat_id, thread_id, transcribed_text, response)
+```
+
+But `call_chat_with_progress()` **already sends the text response** to the chat (it edits the status message). So the user sees the text response. Then `_handle_voice_reply()` runs and tries to send a voice message too. But the issue might be that `call_chat_with_progress()` returns the response text, and then `_handle_voice_reply()` tries to synthesize it.
+
+Wait — actually, looking at the flow again: when you sent a voice message, you got the "🎤 Heard: ..." text back (that's from the existing code that transcribes and shows what was heard). Then the text went to the LLM, and the response came back as text. The voice synthesis should have happened after that.
+
+The problem might be that the Telegram adapter process wasn't actually restarted with the new code. Let me check if I can trigger a restart.
+
+
+### 🤖 Autopilot
+
+Can't admin deploy without auth. Let me check if the Telegram adapter is actually running by looking at the process from the health check.
+
+Actually, I realize the issue might be simpler. Let me re-read my code more carefully...
+
+Looking at `handle_message()` in the new code:
+
+```python
+# Voice note → transcribe locally (faster-whisper)
+is_voice = bool(voice_file_id and not text)
+transcribed_text = ""
+if is_voice:
+    local_audio = download_telegram_file(voice_file_id)
+    transcribed_text = transcribe_voice(local_audio) if local_audio else ""
+    if not transcribed_text:
+        send_message(chat_id, "🎤 I could not make out any speech in that voice note.", thread_id)
+        return
+    text = transcribed_text
+```
+
+Then later:
+```python
+try:
+    response = call_chat_with_progress(chat_id, thread_id, text, session_id, public_key)
+    # If original message was a voice note, send voice reply + URL follow-up
+    if is_voice and response:
+        _handle_voice_reply(chat_id, thread_id, transcribed_text, response)
+```
+
+This looks correct. But wait — the old code had `send_message(chat_id, f"🎤 Heard: {text}", thread_id)` right after transcription. Let me check if I removed that... 
+
+Looking at my code again — yes, I removed the "🎤 Heard:" message! The old code sent that as a confirmation. In my new code, I removed it because I thought the voice reply would be sufficient. But that means the user doesn't see any confirmation that their voice was heard before the response comes back.
+
+But more importantly — the voice reply should still work. Unless the Telegram adapter wasn't actually restarted with the new code.
+
+Let me check the deploy output more carefully. The deploy tool said:
+```
+"steps": [{"step": "git_pull", "status": "ok"}, {"step": "pip_install", "status": "ok"}, {"step": "restart_service", "status": "ok"}, ...]
+```
+
+It restarted the main service. But the Telegram adapter is a **separate systemd unit** (`truesight-autopilot-telegram`). Looking at the deploy script, it does restart the Telegram adapter too:
+
+```bash
+sudo systemctl restart truesight-autopilot-telegram
+```
+
+So it should have been restarted. But maybe the restart failed silently? Or maybe the new code has a bug that crashes the Telegram adapter on startup?
+
+Let me check if the Telegram adapter is actually running by looking at the sophia host's processes.
+
+
+### 🤖 Autopilot
+
+The main service is running fine. The Telegram adapter is a separate process. Since I can't SSH to the sophia host from here (no key on dao_protocol), I can't check its logs directly.
+
+But here's what I think happened: the deploy script ran from Gary's Mac (where the deploy_autopilot tool executes deploy.sh). It reported success. The code is on the server. But the Telegram adapter might need a manual restart if it crashed on startup with the new code.
+
+Gary — since you're on Telegram right now and I can't SSH to the sophia host from this server, could you try sending another voice message? If it still doesn't work, I may need you to restart the Telegram adapter on the sophia host:
+
+```bash
+ssh sophia
+sudo systemctl restart truesight-autopilot-telegram
+sudo journalctl -u truesight-autopilot-telegram -n 30 --no-pager
+```
+
+That would tell us if the adapter is running and if there are any errors in the logs.
+
