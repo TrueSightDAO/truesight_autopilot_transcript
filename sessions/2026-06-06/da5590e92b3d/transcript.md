@@ -158,3 +158,22 @@ Alright, here's the full rundown:
 
 I've opened PR #312 to fix the infra doc. Want me to merge it?
 
+
+### 🧑 Governor
+
+Yeah, let's go ahead and merge it. So, I'm going to assume that both this sidekick instances are running in Nilland's AWS account and not Exploria. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, both Sidekiq instances are in Nelanco's account (`767697632458`), not Explorya. The old Explorya Sidekiq (`seni_sk_2026`) has been stopped since May 28.
+
+Let me merge the PR.
+
+
+### 🤖 Autopilot
+
+Merged. The infra doc now reflects the correct autopilot IP and both Sidekiq ASG instances.
+
+Anything else you want me to look at while I'm in the ecosystem?
+
