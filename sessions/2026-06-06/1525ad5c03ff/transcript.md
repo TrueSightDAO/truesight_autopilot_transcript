@@ -108,3 +108,95 @@ The implementation is actually simpler than a human middle-tier role — it's ju
 
 Want me to draft what the Edgar-side validation would look like when you're ready?
 
+
+### 🧑 Governor
+
+Maybe do an analysis of the Google sheet ledger to see what changes that needs to happen. And yeah, first focus on that. Let's have a discussion. Don't drop anything and don't implement anything yet. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look at the actual sheet schema to understand what we're working with.
+
+
+### 🤖 Autopilot
+
+Now let me look at the actual sheet data to see the current structure.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me also check how Edgar validates governor status to understand the full flow.
+
+
+### 🤖 Autopilot
+
+This is very revealing. Let me also check the Edgar controller to see how it handles event authorization.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my analysis of what needs to change for the **Sentinel** role:
+
+---
+
+## Analysis: Changes Needed for Sentinel Role
+
+### Current Architecture
+
+Right now, there are **two tiers** of identity in the system:
+
+1. **Governors** — humans listed in the `Governors` tab (column A). When Edgar sees an ACTIVE signature from one of them, it stamps `YES` in Telegram Chat Logs column S, which gives downstream GAS scripts global override authority on inventory/expense/sales operations.
+
+2. **Non-governor contributors** — ACTIVE digital signature holders who aren't on the Governors list. They get `NO` in column S, and downstream scripts enforce scope rules (e.g., you can only move inventory you manage).
+
+There's also a hardcoded exception in `governors.rb`:
+
+```ruby
+TRUSTED_AGENTS = ['admin@truesight.me', 'truesight-autopilot'].freeze
+```
+
+These two emails get `YES` authority without being on the Governors tab. That's the **ad-hoc Sentinel pattern** — but it's hardcoded, not a proper role.
+
+### What Would Change
+
+**1. Contributors Digital Signatures sheet — add a `Role` column (I)**
+
+| Current columns A-H | New column I |
+|---|---|
+| ... | **`Role`** |
+
+Values: `GOVERNOR` (default for existing rows), `SENTINEL`, or blank (treated as contributor).
+
+This is the **single source of truth** for what a key can do. No more hardcoded `TRUSTED_AGENTS` list.
+
+**2. `governors.rb` — replace `TRUSTED_AGENTS` with a role lookup**
+
+Instead of:
+```ruby
+TRUSTED_AGENTS = ['admin@truesight.me', 'truesight-autopilot'].freeze
+```
+
+It would check the `Role` column: if the signer's row has `Role = SENTINEL`, treat them as having governor-level operational authority. The `authority_cell_for_verification` method already has the `rec` object — it just needs to check `rec['Role']` instead of a hardcoded list.
+
+**3. `dao_controller.rb` — optional event-scoping (future)**
+
+Right now, Edgar doesn't block any event types based on role — it logs everything and lets downstream GAS enforce scope. A Sentinel role could optionally gate certain events at the API level (e.g., reject `[PROPOSAL CREATION]` from a Sentinel key with a 403). But that's a nice-to-have, not required for V1.
+
+**4. `dao_members_cache_publisher.gs` — include role in the snapshot**
+
+The `dao_members.json` cache that powers the DApp and `dao_client` would include the role so clients can display "Sentinel" vs "Governor" without a separate lookup.
+
+### What Doesn't Need to Change
+
+- **The Governors tab** — stays as-is. Sentinels aren't governors; they just get operational parity.
+- **Telegram Chat Logs column S** — the `YES`/`NO` stamp still works; Sentinels get `YES`.
+- **Downstream GAS scripts** — they already check column S. Sentinels getting `YES` means they flow through the same authorized paths.
+- **The DAO client / DApp** — no changes needed. The client just submits signed events; Edgar decides what to allow.
+
+### Summary
+
+It's a **one-column addition** to the Digital Signatures sheet and a **small refactor** of `governors.rb` to replace the hardcoded agent list with a role lookup. The downstream effects ripple automatically because everything already keys off the `YES`/`NO` stamp in column S.
+
+Want me to draft the exact column schema and the code change for `governors.rb` when you're ready to move forward?
+
