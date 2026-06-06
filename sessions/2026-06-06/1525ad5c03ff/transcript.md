@@ -187,3 +187,23 @@ Yeah, please merge this [System note: the user sent this as a VOICE message via 
 
 Merged. The graduated framework is now in OPEN_FOLLOWUPS.md with a quarterly review cadence — first check-in September 6, 2026. The escalation path is clear: two clean quarterly reviews → a human governor can propose Level 2 (Advisory voter). The Sentinel doesn't get to ask for it; the humans decide.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+I'm thinking of changing your name that's registered with the bot father. Do you think there will cause any issues with regards to the telegram interface experience? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question. Let me think through what depends on the bot name.
+
+The Telegram bot name (the display name set via BotFather, e.g. `/setname`) is purely cosmetic from the API's perspective. The bot's **username** (the `@handle`) is what matters for routing, and that can't change without breaking things. The display name is just what shows up at the top of the chat and in the chat list.
+
+So changing the display name via BotFather — no issues. The adapter doesn't read the bot's own name anywhere. It listens for incoming updates by update_id, not by name. Commands like `/start` work by the command string, not by who sent them.
+
+The only place the current name might be baked in is if someone wrote a script or a chat that references "Sophia Truesight" by name in a hardcoded way — but that would be in human conversations, not in the adapter code. The adapter itself doesn't care.
+
+So go ahead — zero technical risk. What were you thinking of changing it to?
+
