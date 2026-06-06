@@ -77,3 +77,13 @@ Here's what you'd do on that page:
 
 Since you're on Telegram right now, I can't click the button for you. But the page is set up and ready when you get to a browser. Want me to do anything else with Alchemy Springs in the meantime — like add them to the Hit List directly?
 
+
+### 🧑 Governor
+
+Bukan nanti, doa kawan-kawan kawan yang membunuhkan atau mengallihkan bahawa betul-betul buat. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Maaf, saya kurang faham maksudnya. Boleh ulang semula dalam Bahasa Inggeris atau Bahasa Melayu yang lebih jelas? Saya nak pastikan saya faham apa yang awak nak saya buat dengan Alchemy Springs.
+
