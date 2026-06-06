@@ -123,3 +123,24 @@ It's still waiting for the approve button on the DApp side. Since you're on Tele
 
 Alternatively, if you want me to just log it directly, I can do that — just say the word.
 
+
+### 🧑 Governor
+
+Can you just make the call directly via the Thou client? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I hear you — but unfortunately the submit_contribution tool has a built-in approval gate that requires the Approve button to be clicked on the DApp. I can't bypass that on my end, even via the dao_client CLI.
+
+Let me check if I can run it through the CLI directly instead.
+
+
+### 🤖 Autopilot
+
+The dao_client CLI module for check_in_partner hasn't been built yet (it was in the implementation plan but not shipped). So the only path through the approval gate is the DApp Approve button.
+
+Here's what I'd suggest — since you're on Telegram, the quickest way is to just hop into the DApp briefly and tap Approve on that proposal. It should be waiting for you there. Once you do, the July 15th reminder for Alchemy Springs will be locked in and will surface in the bell when it's time.
+
+Want me to also add Alchemy Springs as a proper lead on the Hit List so we have a full record of them?
+
