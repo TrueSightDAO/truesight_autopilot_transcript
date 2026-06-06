@@ -217,3 +217,13 @@ I'm thinking of changing it to the Sofia Tru site. [System note: the user sent t
 
 Sofia Truesight — I like it. Keeps the same initials, same root, just a slightly different spelling. No technical issues at all with the Telegram adapter. Go ahead and change it in BotFather whenever you like.
 
+
+### 🧑 Governor
+
+Sorry I mean Sophia TrueSight
+
+
+### 🤖 Autopilot
+
+Ah, Sophia TrueSight — same as the byline on the blog post. That's clean. No technical issues whatsoever, the adapter doesn't care about the display name. Go ahead and set it in BotFather whenever you want.
+
