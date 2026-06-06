@@ -10,83 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Here's my analysis of what needs to change for the **Sentinel** role:
-
----
-
-## Analysis: Changes Needed for Sentinel Role
-
-### Current Architecture
-
-Right now, there are **two tiers** of identity in the system:
-
-1. **Governors** — humans listed in the `Governors` tab (column A). When Edgar sees an ACTIVE signature from one of them, it stamps `YES` in Telegram Chat Logs column S, which gives downstream GAS scripts global override authority on inventory/expense/sales operations.
-
-2. **Non-governor contributors** — ACTIVE digital signature holders who aren't on the Governors list. They get `NO` in column S, and downstream scripts enforce scope rules (e.g., you can only move inventory you manage).
-
-There's also a hardcoded exception in `governors.rb`:
-
-```ruby
-TRUSTED_AGENTS = ['admin@truesight.me', 'truesight-autopilot'].freeze
-```
-
-These two emails get `YES` authority without being on the Governors tab. That's the **ad-hoc Sentinel pattern** — but it's hardcoded, not a proper role.
-
-### What Would Change
-
-**1. Contributors Digital Signatures sheet — add a `Role` column (I)**
-
-| Current columns A-H | New column I |
-|---|---|
-| ... | **`Role`** |
-
-Values: `GOVERNOR` (default for existing rows), `SENTINEL`, or blank (treated as contributor).
-
-This is the **single source of truth** for what a key can do. No more hardcoded `TRUSTED_AGENTS` list.
-
-**2. `governors.rb` — replace `TRUSTED_AGENTS` with a role lookup**
-
-Instead of:
-```ruby
-TRUSTED_AGENTS = ['admin@truesight.me', 'truesight-autopilot'].freeze
-```
-
-It would check the `Role` column: if the signer's row has `Role = SENTINEL`, treat them as having governor-level operational authority. The `authority_cell_for_verification` method already has the `rec` object — it just needs to check `rec['Role']` instead of a hardcoded list.
-
-**3. `dao_controller.rb` — optional event-scoping (future)**
-
-Right now, Edgar doesn't block any event types based on role — it logs everything and lets downstream GAS enforce scope. A Sentinel role could optionally gate certain events at the API level (e.g., reject `[PROPOSAL CREATION]` from a Sentinel key with a 403). But that's a nice-to-have, not required for V1.
-
-**4. `dao_members_cache_publisher.gs` — include role in the snapshot**
-
-The `dao_members.json` cache that powers the DApp and `dao_client` would include the role so clients can display "Sentinel" vs "Governor" without a separate lookup.
-
-### What Doesn't Need to Change
-
-- **The Governors tab** — stays as-is. Sentinels aren't governors; they just get operational parity.
-- **Telegram Chat Logs column S** — the `YES`/`NO` stamp still works; Sentinels get `YES`.
-- **Downstream GAS scripts** — they already check column S. Sentinels getting `YES` means they flow through the same authorized paths.
-- **The DAO client / DApp** — no changes needed. The client just submits signed events; Edgar decides what to allow.
-
-### Summary
-
-It's a **one-column addition** to the Digital Signatures sheet and a **small refactor** of `governors.rb` to replace the hardcoded agent list with a role lookup. The downstream effects ripple automatically because everything already keys off the `YES`/`NO` stamp in column S.
-
-Want me to draft the exact column schema and the code change for `governors.rb` when you're ready to move forward?
-
-
-### 🧑 Governor
-
-The government's privilege is auto-computed right now. I'm thinking probably like the Sentinel role should be recorded on the contributors contact information tab and state as a new column. Basically a new column is Sentinel, and then if it's Sentinel, then the column should reflect the true. And also, we are not really using the sentiment importer tag stack for this anymore, isn't it? Can you check the Agentic AI context? I think we are extending the DAO protocol, which is a Python library. Check first, don't implement anything, let's discuss. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me check the DAO protocol repo and the current architecture to understand where the authority logic lives now.
-
-
-### 🤖 Autopilot
-
 Wait — I notice the README says "dao_client" but the repo is called "dao_protocol". Let me check what's actually in the dao_protocol repo, since you mentioned extending that.
 
 
@@ -652,4 +575,71 @@ So the flow is:
 3. Someone opens the GAS editor and runs `publishDaoMembersCacheNow()` to test
 
 Want me to merge PR #336 now?
+
+
+### 🧑 Governor
+
+Yeah, just go ahead and merge the PR [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+There's a merge conflict. Let me check what's conflicting.
+
+
+### 🤖 Autopilot
+
+That's the dao_protocol repo, not tokenomics. Let me check the tokenomics repo on the autopilot machine.
+
+
+### 🤖 Autopilot
+
+The tokenomics repo isn't cloned on the server. Let me resolve the conflict via the GitHub API — I'll check what the conflict is.
+
+
+### 🤖 Autopilot
+
+The PR has `mergeable: false` and `mergeable_state: "dirty"` — there's a conflict. Let me check what changed on main since the branch was created.
+
+
+### 🤖 Autopilot
+
+I see — PR #335 (another autopilot PR) was merged to main *after* my branch was created, and it modified the same file. The base commit changed from `282dda6` to `76d0ded`. My branch is based on `282dda6` but main is now at `76d0ded` which includes PR #335's changes to the same file.
+
+Let me rebase the branch. I'll use `open_fix_pr` to handle the conflict resolution.
+
+
+### 🤖 Autopilot
+
+Let me try a different approach — I'll use `git_push_changes` to update the branch with a rebased version.
+
+
+### 🤖 Autopilot
+
+Interesting — PR #335 already merged the Sentinel changes to main! The file on `main` already has the Sentinel constants, the `sentinelByName` lookup, the roles merge, and the sentinels count. It looks like another autopilot session already applied these changes via PR #335.
+
+So the conflict is because my PR #336 is trying to apply the same changes again. Let me check what's different between my branch and main.
+
+
+### 🤖 Autopilot
+
+The changes are already on `main` via PR #335. The only difference between my branch and main is minor naming — my branch uses `DAO_MEMBERS_CACHE_SENTINEL_COL = 23` while main uses `DAO_MEMBERS_CACHE_CONTACT_SENTINEL_COL = 22` (0-based vs 1-based indexing). Main's version is actually more correct (column W is index 22 in 0-based).
+
+Since the Sentinel changes are already merged to main via PR #335, PR #336 is redundant. Let me close it and update the roadmap.
+
+
+### 🤖 Autopilot
+
+Good, PR #336 is closed. The Sentinel changes are already on `main` via PR #335. Let me verify by checking the current `dao_members.json` to see if it already reflects the Sentinel role.
+
+
+### 🤖 Autopilot
+
+I can see the `dao_members.json` was last generated at `2026-06-06T14:02:12` with trigger `edgar_webhook` — but it doesn't have a `sentinels` count and `truesight-autopilot` still shows `"roles": ["member"]` without `"sentinel"`. This means the publisher ran *before* the code change was merged.
+
+The code change (PR #335) is on `main` but the publisher hasn't been re-run since. The next time it runs (either via the daily cron at 03:00 UTC, or manually via `publishDaoMembersCacheNow()`), it will pick up the Sentinel column and emit `"roles": ["member", "sentinel"]` for both `truesight-autopilot` and `Sophia Truesight`.
+
+However, there's still the issue that `Sophia Truesight` doesn't have a matching row in the Digital Signatures sheet with that name — the Sophia key was registered with a blank name. The publisher joins by name, so until that's fixed, Sophia won't appear in the cache at all.
+
+Could you update the Digital Signatures sheet row for `admin+sophia@truesight.me` to have the name `Sophia Truesight` in column A? That way the publisher can match her to her public key.
 
