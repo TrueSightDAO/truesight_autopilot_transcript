@@ -10,36 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me file the follow-up in the OPEN_FOLLOWUPS.md under ## Pending.
-
-
-### 🤖 Autopilot
-
-Let me check the exact formatting of the Pending section.
-
-
-### 🤖 Autopilot
-
-I see — the file has a slightly different structure. Let me find the exact text to match.
-
-
-### 🤖 Autopilot
-
-Let me check the exact characters around that heading.
-
-
-### 🤖 Autopilot
-
-The em dash is the issue — it's `\u2014` not `---`. Let me use the exact bytes.
-
-
-### 🤖 Autopilot
-
-Hmm, that wrote an empty file. Let me fix that — I need to read the file and add my entry properly.
-
-
-### 🤖 Autopilot
-
 OK, the file is intact. The earlier empty write was a mistake. Let me now properly add the entry by reading the file and using a precise edit.
 
 
@@ -109,4 +79,14 @@ Good — the Graziela entry is on main now with the name "Seacos Logistic" from 
 ### 🤖 Autopilot
 
 Want me to merge this one too?
+
+
+### 🧑 Governor
+
+Yeah, much this [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Done, PR #319 is merged. The follow-up entry now says "Seacoast Logistic" — I'll bring it up on Monday to check if Graziela's replied yet.
 
