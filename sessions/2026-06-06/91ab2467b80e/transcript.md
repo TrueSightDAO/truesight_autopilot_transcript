@@ -513,3 +513,40 @@ The direct download URL is:
 
 That link will download the PDF directly so you can attach it to your reply to Melina.
 
+
+### 🧑 Governor
+
+Instead of the PDF invoice format using the green color, can we have it instead using the color scheme of trussite.me and then just indicate agroverse cacao, we don't really need to indicate trussite down in the invoice itself. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the truesight.me color scheme first.
+
+
+### 🤖 Autopilot
+
+The truesight.me site uses a dark/navy theme. Let me check the CSS for the exact colors.
+
+
+### 🤖 Autopilot
+
+Now I can see the truesight.me color scheme. Let me check the CSS file for the exact colors.
+
+
+### 🤖 Autopilot
+
+Now I have the truesight.me color scheme. The key colors are:
+- **Background:** `#f7f1e8` (warm cream)
+- **Accent:** `#f4a300` (saffron/gold)
+- **Forest:** `#5f6f52` (olive green)
+- **Text:** `#2b1d14` (dark brown)
+- **Surface:** `#fff9f0` (light cream)
+
+Let me regenerate the PDF with this color scheme and just "Agroverse Cacao" as the header.
+
+
+### 🤖 Autopilot
+
+Done! The invoice now uses the truesight.me color scheme — warm cream background, saffron/gold accents, olive green text — with just "AGROVERSE CACAO" at the top and no TrueSight DAO branding in the body. The download URL will be sent as a separate text message.
+
