@@ -171,3 +171,26 @@ Or if you want zero-downtime, the cheapest path is: **one t3.medium** (4 GB, ~$3
 
 What do you think — stop-and-restart for now, or upgrade the box?
 
+
+### 🧑 Governor
+
+So basically the stock and restart means you'll have a downtime for a bit right, isn't it? So basically you're triggering off a separate process to end your own process but your own process doesn't really end it just reboots after a while. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Exactly right. The deploy script is a separate process that:
+
+1. Pulls the latest code
+2. Installs dependencies
+3. Stops the old service (systemctl stop)
+4. Starts the new one (systemctl start)
+
+So there's a gap — maybe 5-10 seconds — where nobody's listening. Telegram handles that fine; it'll retry the webhook for a few minutes.
+
+But you're pointing at something deeper — the deploy script is a *third party* killing and reviving me. I don't self-terminate. The script does the killing.
+
+Your two-instance idea avoids that gap entirely. One instance takes over the Telegram webhook, the other reboots, then they swap. It's just the shared state problem to solve.
+
+For now, want me to just do the stop-and-restart? The downtime is under 10 seconds. Or do you want to explore the two-instance approach more?
+
