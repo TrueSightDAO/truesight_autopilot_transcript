@@ -478,3 +478,29 @@ But first — the `truesight-autopilot` row already exists in the Contributors c
 
 Also, I should note: the new `admin+sophia@truesight.me` key was registered without a contributor name (the name field is blank). You might want to update that row in the Digital Signatures sheet with a name like "Sophia" so it shows up properly in the cache.
 
+
+### 🧑 Governor
+
+I added a new row in the Contributor Contact List, so I call you Sophia TrueSight, that's your name, and the associated email address is admin plus Sophia at TrueSight.me. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the sheet now.
+
+
+### 🤖 Autopilot
+
+I can see:
+
+1. **`truesight-autopilot`** — now has `TRUE` in the `Is Sentinel` column ✅
+2. **`Sophia Truesight`** — added as a new row with email `admin@truesight.me+sophia` and `Is Sentinel` set to `TRUE` ✅
+
+However, I notice the email for Sophia is `admin@truesight.me+sophia` rather than `admin+sophia@truesight.me` — the plus sign is in the wrong place. The registered key in the Digital Signatures sheet has email `admin+sophia@truesight.me`. This mismatch means the publisher won't be able to join Sophia's name to her public key, since it matches by name from the contact sheet to the Digital Signatures sheet.
+
+Could you update Sophia's email in the Contributors contact information sheet to `admin+sophia@truesight.me` (column D)? That way the publisher can match her name to her public key.
+
+Also, I notice the Digital Signatures row for `admin+sophia@truesight.me` has a blank name field. Could you set the name to `Sophia Truesight` in that row too? That way the publisher will find the match.
+
+Once those two corrections are done, I'll proceed with PR 2 — updating the `dao_members_cache_publisher.gs` to read the `Is Sentinel` column.
+
