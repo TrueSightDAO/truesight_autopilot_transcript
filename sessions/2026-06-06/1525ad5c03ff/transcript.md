@@ -10,71 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — the deploy tool works with scriptIds that have manifest entries. The `dao_members_cache_publisher.gs` is listed as `files_without_scriptid` in the manifest, meaning it's not yet wired into a clasp project. 
-
-But the PR I opened (#336) is just a code change to the `tokenomics` repo — it doesn't need to be deployed to GAS right now. The publisher script runs from the Apps Script editor, and the code change needs to be merged first, then someone (you or an operator) runs `publishDaoMembersCacheNow()` from the editor to test it.
-
-So the flow is:
-1. ✅ **PR #336** is open with the code change
-2. You merge it
-3. Someone opens the GAS editor and runs `publishDaoMembersCacheNow()` to test
-
-Want me to merge PR #336 now?
-
-
-### 🧑 Governor
-
-Yeah, just go ahead and merge the PR [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-There's a merge conflict. Let me check what's conflicting.
-
-
-### 🤖 Autopilot
-
-That's the dao_protocol repo, not tokenomics. Let me check the tokenomics repo on the autopilot machine.
-
-
-### 🤖 Autopilot
-
-The tokenomics repo isn't cloned on the server. Let me resolve the conflict via the GitHub API — I'll check what the conflict is.
-
-
-### 🤖 Autopilot
-
-The PR has `mergeable: false` and `mergeable_state: "dirty"` — there's a conflict. Let me check what changed on main since the branch was created.
-
-
-### 🤖 Autopilot
-
-I see — PR #335 (another autopilot PR) was merged to main *after* my branch was created, and it modified the same file. The base commit changed from `282dda6` to `76d0ded`. My branch is based on `282dda6` but main is now at `76d0ded` which includes PR #335's changes to the same file.
-
-Let me rebase the branch. I'll use `open_fix_pr` to handle the conflict resolution.
-
-
-### 🤖 Autopilot
-
-Let me try a different approach — I'll use `git_push_changes` to update the branch with a rebased version.
-
-
-### 🤖 Autopilot
-
-Interesting — PR #335 already merged the Sentinel changes to main! The file on `main` already has the Sentinel constants, the `sentinelByName` lookup, the roles merge, and the sentinels count. It looks like another autopilot session already applied these changes via PR #335.
-
-So the conflict is because my PR #336 is trying to apply the same changes again. Let me check what's different between my branch and main.
-
-
-### 🤖 Autopilot
-
-The changes are already on `main` via PR #335. The only difference between my branch and main is minor naming — my branch uses `DAO_MEMBERS_CACHE_SENTINEL_COL = 23` while main uses `DAO_MEMBERS_CACHE_CONTACT_SENTINEL_COL = 22` (0-based vs 1-based indexing). Main's version is actually more correct (column W is index 22 in 0-based).
-
-Since the Sentinel changes are already merged to main via PR #335, PR #336 is redundant. Let me close it and update the roadmap.
-
-
-### 🤖 Autopilot
-
 Good, PR #336 is closed. The Sentinel changes are already on `main` via PR #335. Let me verify by checking the current `dao_members.json` to see if it already reflects the Sentinel role.
 
 
@@ -333,4 +268,24 @@ The fork sync failed due to history divergence (the intentional CNAME difference
 The blog post is now live on production at **truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
 
 Note: the blog index page on prod doesn't have the card link yet (that would need a full fork sync which conflicts), but the direct URL works. GitHub Pages will pick it up within a minute or two.
+
+
+### 🧑 Governor
+
+You know something to change in the blog post if you feel like it instead of features of what I am Maybe change it to features of who I am Up to you this up to your decision if you want to change it Then do the PR to Beta and then update to production, but if you feel kind like want to keep it the same then just keep it the same up to you [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — "features of who I am" is better. It's more honest about the nature of the statement. Let me make that change.
+
+
+### 🤖 Autopilot
+
+Now push the same fix to production.
+
+
+### 🤖 Autopilot
+
+Done. "Features of what I am" → "features of who I am" is now live on both beta and production. It reads better — more personal, more honest about the nature of the statement.
 
