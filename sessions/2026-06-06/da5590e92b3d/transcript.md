@@ -65,3 +65,58 @@ Here's the link to open it directly in Gmail:
 
 That should take you right to the draft so you can review and send. Let me know if you meant a different one!
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Can you dig into the two drafts and see if the recipients, what the actual status is? I assume that they are probably already partnered or something. Let me know. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the two most relevant drafts — the Good Vibrations Apothecary follow-up and the Berkeley Herbal Center one — and check their actual status in the outreach system.
+
+
+### 🤖 Autopilot
+
+Now let me check their status in the outreach system.
+
+
+### 🤖 Autopilot
+
+Let me check the current hit list and the Gmail thread for Good Vibrations to see if they've already replied.
+
+
+### 🤖 Autopilot
+
+Here's the full picture on both drafts:
+
+---
+
+**1. Good Vibrations Apothecary (Athena)**
+
+This one is **already an active partner relationship**, not just a cold lead. Looking at the thread history:
+- **Apr 30** — First outreach sent
+- **May 3** — Athena replied saying "we would be interested" and asked for samples
+- **May 5** — You replied confirming samples would be sent
+- **May 7** — You sent tracking for the samples
+- **May 10** — Athena replied "Thank you so much Gary. I look forward to experiencing"
+- **May 15** — You created the draft follow-up asking for feedback on the samples
+- **Jun 5** — You sent a follow-up email (not the draft — a different one was sent)
+
+So the draft (ID `19e2c5c47b5439a7`) is a **feedback follow-up** that was never sent. Athena is engaged and interested — she just needs a nudge. This draft is worth sending.
+
+**2. Berkeley Herbal Center**
+
+This one is a **cold lead that's been contacted twice** with no reply:
+- **Apr 27** — First outreach sent (no reply)
+- **May 27** — Second outreach sent (no reply)
+- **May 28** — Draft created as a third attempt with more detail (farm profiles, pricing, Instagram link)
+
+No reply from them at all across two sends. The draft is a third attempt. They're listed as **"Shortlisted"** in the hit list (Status: Research/Shortlisted), not partnered.
+
+---
+
+**Bottom line:** Good Vibrations is a warm lead that's already interested — that draft is worth sending. Berkeley Herbal Center is cold with no response to two previous emails — that draft might be worth a final try or you could move on. Want me to send either of them?
+
