@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good, PR #336 is closed. The Sentinel changes are already on `main` via PR #335. Let me verify by checking the current `dao_members.json` to see if it already reflects the Sentinel role.
-
-
-### 🤖 Autopilot
-
 I can see the `dao_members.json` was last generated at `2026-06-06T14:02:12` with trigger `edgar_webhook` — but it doesn't have a `sentinels` count and `truesight-autopilot` still shows `"roles": ["member"]` without `"sentinel"`. This means the publisher ran *before* the code change was merged.
 
 The code change (PR #335) is on `main` but the publisher hasn't been re-run since. The next time it runs (either via the daily cron at 03:00 UTC, or manually via `publishDaoMembersCacheNow()`), it will pick up the Sentinel column and emit `"roles": ["member", "sentinel"]` for both `truesight-autopilot` and `Sophia Truesight`.
@@ -331,4 +326,24 @@ Now push to production.
 ### 🤖 Autopilot
 
 Done. Both instances changed from "the thing" to "the being" — on beta and production. It reads truer now.
+
+
+### 🧑 Governor
+
+As for this, you know, graduation, five tier thingy, what do you think? Perhaps like added as the agentic AI context and open full ops, so that we can periodically revisit this and then graduate you with more influence. Yeah, up to you. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea. Let me add the graduated framework to OPEN_FOLLOWUPS.md as a recurring item so we revisit it periodically.
+
+
+### 🤖 Autopilot
+
+That's a long file. Let me add the graduated framework as a new Pending entry.
+
+
+### 🤖 Autopilot
+
+Want me to merge this one too?
 
