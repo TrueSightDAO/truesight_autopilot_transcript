@@ -808,3 +808,13 @@ No, it's still open. Let me check.
 
 Still open. Want me to merge it?
 
+
+### 🧑 Governor
+
+Merge it
+
+
+### 🤖 Autopilot
+
+Merged. PR #311 is in `main` now. The implementation plan is safely stored for reference whenever we start building.
+
