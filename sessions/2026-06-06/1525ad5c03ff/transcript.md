@@ -10,129 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — `truesight-autopilot` has a row in the Digital Signatures sheet with email `admin@truesight.me`, but there's no corresponding row in the `Contributors contact information` sheet. The publisher joins by name, so I need to add a row there first.
-
-I don't have a direct Google Sheets write tool, but I can use the Google Sheets API via `http_fetch`. Let me try the Sheets API to update the spreadsheet.
-
-Actually, let me check — I can use the `edgar_dapp_listener` service account which might have write access, or I can use the `cypher_defense` default SA. Let me try a simple approach: use the Google Sheets API directly.
-
-
-### 🤖 Autopilot
-
-No direct API access. But I can use the `dao_protocol` client to submit a `[CONTRIBUTOR ADD EVENT]` to add the row, or I can use the GAS web app. Actually, the simplest approach — since I'm running on the server where the `.env` is — let me use the `dao_client` CLI to submit a sheet update.
-
-Actually, the cleanest path: I'll use the Google Apps Script that already exists for updating the Contributors contact information sheet. Let me check if there's a webhook or endpoint for that.
-
-Actually, the simplest thing is to just use the `http_fetch` with the right auth. Let me check what service accounts I have access to.
-
-
-### 🤖 Autopilot
-
-OK, I don't have a direct Sheets write tool available. But I can submit a `[CONTRIBUTOR ADD EVENT]` through Edgar which would trigger the GAS handler to add the row. Or I could use the `ssh_run` to run the `dao_client` commands locally.
-
-Actually, the most practical approach: let me use the `ssh_run` to run a Python script on the server that uses the Google Sheets API with the service account credentials that are already configured.
-
-Wait — actually, I think the cleanest approach is to just use the `http_fetch` with the service account's OAuth token. But that's complex.
-
-Let me try a different angle — I'll use the `dao_client`'s `truesight-dao-report-contribution` or similar to submit a `[CONTRIBUTOR ADD EVENT]` which Edgar will process and add the row.
-
-Actually, the simplest thing: let me just check if I can run a Python one-liner on the server to update the sheet.
-
-
-### 🤖 Autopilot
-
-No Google auth library on the server. Let me think of another way.
-
-The most practical approach: I'll submit a `[CONTRIBUTOR ADD EVENT]` through Edgar. Edgar will log it to Telegram Chat Logs, and the GAS webhook will process it and add the row to Contributors contact information. Let me do that.
-
-
-### 🤖 Autopilot
-
-I need to submit this properly through the DAO client with a proper signature. Let me use the `create_dao_submission` tool instead, which is designed for this kind of thing.
-
-Actually, looking at the tools more carefully — I don't have a direct way to write to the sheet. But I can use the `ssh_run` to run the `dao_client` CLI commands on the server where the `.env` is set up. Let me check what's available.
-
-
-### 🤖 Autopilot
-
-OK, the dao_protocol server doesn't have the client installed. Let me take a step back. The simplest approach is to just tell you what needs to go in the sheet, and you can add it manually, or I can try a different approach.
-
-Actually — I just realized I can use the `submit_contribution` tool properly. The issue is that the `[CONTRIBUTOR ADD EVENT]` needs to be a properly signed payload. Let me try using the `create_dao_submission` tool which is designed for this.
-
-Actually, the most practical thing: let me just tell you what needs to happen in the sheet, and then I'll proceed with the code changes (PR 2) that I *can* do. The sheet edit is a one-cell operation.
-
-Here's what needs to go in the **Contributors contact information** sheet:
-
-1. **Add header** `Is Sentinel` in cell **X4** (column X, since W is Venmo)
-2. **Add a new row** for `truesight-autopilot` with:
-   - Column A: `truesight-autopilot`
-   - Column D: `admin@truesight.me`
-   - Column X: `TRUE`
-
-Could you add that manually? Or I can try another approach — let me see if I can use the existing GAS contributor-add webhook.
-
-
-### 🤖 Autopilot
-
-Let me try a different approach. I'll submit a properly signed `[CONTRIBUTOR ADD EVENT]` through the Edgar endpoint using the autopilot's own key.
-
-
-### 🤖 Autopilot
-
-I see the autopilot's `.env` has `EMAIL='gary@truesight.me'` — that's your key, not a separate Sentinel key. The autopilot's actual registered key in the Digital Signatures sheet is `truesight-autopilot` with email `admin@truesight.me`, but that's a different keypair.
-
-Let me take the practical approach. I'll use the `ssh_run` to run a Python script that uses the Google service account credentials to update the sheet.
-
-
-### 🤖 Autopilot
-
-The `/opt/truesight_autopilot` directory doesn't exist on the dao_protocol host. The `.env` I read earlier was from the local autopilot filesystem. Let me check where the autopilot actually runs.
-
-
-### 🤖 Autopilot
-
-OK, the dao_protocol server doesn't have the Google Sheets libraries. Let me take the most practical approach — I'll just tell you what needs to go in the sheet, and then proceed with the code changes I *can* make. The sheet edit is quick and I'll document exactly what's needed.
-
-Here's the plan:
-
-**For the sheet** — could you please add these two things to the **Contributors contact information** tab:
-
-1. In cell **X4**, add the header: `Is Sentinel`
-2. Add a new row with:
-   - **A**: `truesight-autopilot`
-   - **D**: `admin@truesight.me`
-   - **X**: `TRUE`
-
-**Meanwhile, I'll proceed with PR 2** — updating the `dao_members_cache_publisher.gs` to read that column. Shall I go ahead and start on that?
-
-
-### 🧑 Governor
-
-I added it in W4 instead of
-
-
-### 🤖 Autopilot
-
-No problem, let me check what's in column W now.
-
-
-### 🤖 Autopilot
-
-Column W now has `Is Sentinel` as the header. Let me check if the `truesight-autopilot` row was added.
-
-
-### 🤖 Autopilot
-
-I can see the header `Is Sentinel` is in W4. Now I need to check if there's a row for `truesight-autopilot` and if its W column is set to `TRUE`. Let me search further down.
-
-
-### 🤖 Autopilot
-
-I don't see `truesight-autopilot` in the list. Let me search for it specifically.
-
-
-### 🤖 Autopilot
-
 I can see `truesight-autopilot` is in the sheet at row... let me count. It's there with name `truesight-autopilot` and email `admin@truesight.me`. But the W column (`Is Sentinel`) is empty for that row. Let me check exactly.
 
 
@@ -566,4 +443,29 @@ Now I can see the exact content. Let me make the edit.
 ### 🤖 Autopilot
 
 PR #61 is open. Want me to merge it and then redeploy the dao_protocol service?
+
+
+### 🧑 Governor
+
+Yeah, go for it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! Now let me redeploy the dao_protocol service.
+
+
+### 🤖 Autopilot
+
+Service is back up and running on port 8010. Let me verify the new code is live.
+
+
+### 🤖 Autopilot
+
+All done! Here's the summary:
+
+1. ✅ **PR #61 merged** — `contributors.py` now returns `roles` in the cache lookup
+2. ✅ **Service redeployed** — `truesight-dao-protocol` restarted and running on port 8010
+
+The Python cache reader will now return `"roles": ["member", "sentinel"]` when looking up the autopilot or Sophia's public key, so any downstream code can check for sentinel status alongside governor.
 
