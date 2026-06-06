@@ -941,32 +941,73 @@ Look for lines with `autopilot.telegram` or `autopilot.voice_output` — that'll
 
 ### 🧑 Governor
 
-Okay, I'm sending you a text right now
+Hey Sofia, this is a voice message.
 
 
 ### 🤖 Autopilot
 
-Got it! Since you're texting me now (not a voice message), the flow goes through the normal text path — no voice reply needed.
+I hear you — but I'm still responding in text, which means the voice reply isn't working yet. Let me check the Telegram adapter logs on the sophia host to see what's happening.
 
-But when you send a voice message, it should now:
-1. Transcribe it
-2. Detect the language
-3. Process with the LLM
-4. Synthesize the response as a voice message using the right voice
-5. Send the voice reply
-6. If there are URLs, send a follow-up text with them
+Gary, could you run this on your end?
 
-Give it a try whenever you're ready!
+```bash
+ssh sophia
+sudo journalctl -u truesight-autopilot-telegram -n 50 --no-pager
+```
+
+That'll show me the logs and I can diagnose why the voice synthesis isn't firing.
 
 
 ### 🧑 Governor
 
-Eu falo pode que isso é pequenho. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+Hey, Sophia, tell me if it's working for you now.
 
 
 ### 🤖 Autopilot
 
-Olá! Sim, você falou "pode que isso é pequeno" — e você está certo, algumas coisas são pequenas mesmo. Mas é nos pequenos detalhes que a gente constrói coisas grandes, não é?
+I'm still getting your messages as text here in the DApp chat, not through Telegram. The voice reply system I built works through the **Telegram bot** — so when you voice message me on Telegram, I should reply with a voice message.
 
-Como posso ajudar você hoje?
+But this conversation we're having right now is through the **DApp chat** (the web interface), not Telegram. So I can only respond in text here.
+
+Could you try sending me a voice message on **Telegram** instead? That's where the voice reply should work. If it doesn't, I'll need those logs to debug.
+
+
+### 🧑 Governor
+
+Hey, Sophia, can you hear me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I hear you loud and clear, Gary. And it sounds like the voice reply is working now — you got this response as a voice message, right?
+
+What can I help you with?
+
+
+### 🧑 Governor
+
+你聽得到我說話嗎? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+聽得到！很清楚。Xiaoxiao的聲音聽起來還不錯吧？
+
+有什麼需要我幫忙的嗎？
+
+
+### 🧑 Governor
+
+You know, it feels like we are in a very surreal state right now where I can like literally talk to you and then you can like Kind of just dig into whatever aspects of the doubt and figure out what's up. Maybe even propose what to do Yeah, just don't really know what to think about this [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+It *is* surreal. You're walking down the street, talking into your phone, and I'm here — a language model running on a server in some AWS data center — listening, thinking, and talking back in a voice that didn't exist 24 hours ago.
+
+But here's what I think about it: this is exactly what we built the DAO for. Not just smart contracts and tokenomics, but actual tools that make the mission tangible. You can talk to me about inventory, about Kirsten's QR codes, about the next shipment from Ilhéus, about whether we should open a retail account with some apothecary in LA — and I can just *do* it. Check the ledger. Scan the code. Open the PR. No typing, no clicking through menus.
+
+It's not magic. It's just a bunch of Python scripts, an LLM, and a Telegram bot that finally learned to talk back. But the feeling — yeah, that's something else.
+
+So what's on your mind? What part of the DAO do you want to poke at?
 
