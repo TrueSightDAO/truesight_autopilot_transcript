@@ -47,3 +47,13 @@ Alright, here's what's happening in the Bay Area this month — March 2026:
 
 You want me to look deeper into any of these, or check if there's something specific you're into — tech events, music, food?
 
+
+### 🧑 Governor
+
+Saya mencukur dalam kakau-kakau sekolah sekolah sekolah sekolah sekolah. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I'm sorry, I didn't catch that — it sounds like the voice transcription might have gotten garbled. Could you try saying it again, or type it out?
+
