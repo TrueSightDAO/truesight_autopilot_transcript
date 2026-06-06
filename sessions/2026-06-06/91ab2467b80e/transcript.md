@@ -8,28 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-So regarding green gouge, then monastery, we have a record of them as a partner. Do you think you could actually go about creating a partner check-in a week from now? So that maybe we can pull and then we can make sure to follow up and not let it slip through. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me look up the current state of Green Gouge Monastery in our partner records and the partner check-in protocol.
-
-
-### 🤖 Autopilot
-
-I don't see Green Gouge Monastery in our context files. Let me search more broadly.
-
-
-### 🤖 Autopilot
-
-Let me also check the Hit List sheet and the Partners sheet for any record of them.
-
-
 ### 🤖 Autopilot
 
 I see — you're talking about **Green Gulch Zen Monastery** (not "Green Gouge Monastery"). I found it in the records:
@@ -84,4 +62,16 @@ Here's the transaction to approve:
 
 
 Go ahead and approve if this looks good, and I'll submit it.
+
+
+### 🧑 Governor
+
+Yes, I approve this go for it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Done! The partner check-in for **Green Gulch Zen Monastery** has been submitted. It's logged with a follow-up date of **June 13th**, so it'll surface in the DApp bell when it's time to check in on their stock.
+
+Anything else on your mind?
 
