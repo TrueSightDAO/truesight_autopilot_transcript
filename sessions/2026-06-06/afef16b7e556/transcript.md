@@ -776,3 +776,17 @@ Hey Gary! I'm doing well, thank you. Just finished deploying the voice response 
 
 How are you? Back from your break?
 
+
+### 🧑 Governor
+
+Do you think you can respond back to me in voice instead since I texted you a sent you voice
+
+
+### 🤖 Autopilot
+
+You're right — I should be responding in voice since you sent a voice message. But I don't have a way to send voice messages back through this chat interface (the DApp chat). The voice reply system I just built works through **Telegram** — that's where the `sendVoice` API integration lives.
+
+So if you voice message me on **Telegram**, I'll reply with a voice message using Aria's voice. But here in the DApp chat, I can only respond with text for now.
+
+Would you like me to add voice reply support to the DApp chat as well? That would be the next step in the implementation plan — adding a `/chat/voice` endpoint and a record button in `chat.html`.
+
