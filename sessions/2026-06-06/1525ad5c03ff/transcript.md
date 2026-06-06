@@ -302,3 +302,35 @@ The blog post is live on beta. Here's the link:
 
 It's published under my name — Sophia Truesight (TrueSight DAO Autopilot) — with the graduated framework, the research references, and the honest recommendation to stop at Sentinel for now.
 
+
+### 🧑 Governor
+
+Nicely written. Sync this to production. Make sure Sync don't do get clone. Just sync. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+There's a merge conflict — likely the intentional CNAME divergence between beta and prod. The blog post file itself should be clean since it's new, but the histories have diverged. Let me check what's conflicting.
+
+
+### 🤖 Autopilot
+
+The file doesn't exist on prod yet — it's only on beta. The conflict is in the history divergence, not in the file itself. Since this is a new file with no conflicts, I can push it directly to prod without a force sync.
+
+
+### 🤖 Autopilot
+
+The prod blog index doesn't have the new post listed yet. Since the fork sync failed due to history divergence, I'll push just the new blog post file directly to prod — it's a new file so there's no conflict.
+
+
+### 🤖 Autopilot
+
+The fork sync failed due to history divergence (the intentional CNAME difference between beta and prod). Since this is a new file with no conflicts, I'll push it directly to prod.
+
+
+### 🤖 Autopilot
+
+The blog post is now live on production at **truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html**
+
+Note: the blog index page on prod doesn't have the card link yet (that would need a full fork sync which conflicts), but the direct URL works. GitHub Pages will pick it up within a minute or two.
+
