@@ -194,3 +194,43 @@ Your two-instance idea avoids that gap entirely. One instance takes over the Tel
 
 For now, want me to just do the stop-and-restart? The downtime is under 10 seconds. Or do you want to explore the two-instance approach more?
 
+
+### 🧑 Governor
+
+Yeah, let's try this. Stop and restart. But I think what would be important is that during the before we even do the stop, right, we have to ensure that there's nothing wrong in your code, isn't it? Because otherwise if you stop, or there's something wrong in your code, then you won't be able to start again because you start having syntax error. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're absolutely right. That's the classic risk — stop the running service, new code has a syntax error, and suddenly I'm dead with no way to come back up.
+
+The deploy script should do a **syntax check** before stopping the old process. Let me look at how the deploy currently works and add that safety net.
+
+
+### 🤖 Autopilot
+
+I see — the deploy script already does a `git pull` and `pip install` before restarting the service. But you're right, it doesn't do a **syntax check** on the pulled code before killing the old process.
+
+Here's what I'd add as a safety net: after pulling the code and installing deps, do a `python -m py_compile` on the app directory before the restart. If there's a syntax error, abort and report it — never kill the running service.
+
+Let me add that safety check to the deploy script.
+
+
+### 🤖 Autopilot
+
+I've opened **PR #109** on `truesight_autopilot` that adds a syntax check step. Here's what it does:
+
+After `pip install` but **before** `systemctl restart`, it runs:
+```bash
+python -m py_compile -x ".venv" -x "context" .
+```
+If any `.py` file has a syntax error, the deploy aborts and prints the error — the old service keeps running untouched.
+
+So the flow becomes:
+1. Pull code ✅
+2. Install deps ✅
+3. **Syntax check all Python files** ← new
+4. Only then: stop old, start new
+
+Want me to merge that PR so we can proceed with the deploy?
+
