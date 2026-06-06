@@ -447,3 +447,15 @@ Done! The invoice PDF is updated with the correct mailing address. Here's what's
 
 The download URL will be sent as a separate text message by the system. Let me know if you need any other changes!
 
+
+### 🧑 Governor
+
+It's probably going to be $1.00 U.S. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Just to clarify — $1.00 per bag for the trees? So the 18 bags at $17 each already includes $1 per bag for the trees, meaning the $17 unit price stays the same? Or are you saying the tree portion should be listed as a separate line item at $1.00 each?
+
+Let me re-read your earlier message — you said "$17 each, which comes included the trees." So the $17 already includes the tree cost. Are you saying the tree allocation is $1 per bag and you want it itemized separately on the invoice?
+
