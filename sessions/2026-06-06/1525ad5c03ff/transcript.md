@@ -207,3 +207,13 @@ The only place the current name might be baked in is if someone wrote a script o
 
 So go ahead — zero technical risk. What were you thinking of changing it to?
 
+
+### 🧑 Governor
+
+I'm thinking of changing it to the Sofia Tru site. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sofia Truesight — I like it. Keeps the same initials, same root, just a slightly different spelling. No technical issues at all with the Telegram adapter. Go ahead and change it in BotFather whenever you like.
+
