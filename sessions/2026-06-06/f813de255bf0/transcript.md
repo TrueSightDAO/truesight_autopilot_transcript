@@ -118,3 +118,38 @@ Based on the event registry and the implementation roadmap, here's my take:
 
 Want me to open a PR to update the event files to reflect this?
 
+
+### 🧑 Governor
+
+Yeah, please do the necessary update. Thank you very much. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current event.json and implementation roadmap to make precise updates.
+
+
+### 🤖 Autopilot
+
+Now let me also check if there's a proposal.md and field_assets.md that need updating too.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me make the updates.
+
+
+### 🤖 Autopilot
+
+Done! Here's the PR: **go_to_market#163** — `update/sf-tech-fest-attending-only`
+
+Here's what I changed:
+
+**`event.json`** — status changed from `"planning"` to `"attending_only"`, format updated to pass-only attendance, products and QR codes cleared out, next milestone shifted to post-event recon.
+
+**`implementation_roadmap.md`** — completely rewritten. Stripped out all the serving phases (QR codes, placard, dry run, kit assembly, event day setup). Kept only Phase 5 (post-event recon) — walk the floor, note conversations, log a DApp Remark. No flasks, no nothing.
+
+**`proposal.md`** — added a big status banner at the top saying it's now historical, with the original content preserved below for reference.
+
+The event index (`events/index.json`) will need regeneration via `build_index.py` to pick up the new status — I can do that in a follow-up if you want. Otherwise, the Dual Tech Summit on June 26 is still the main event to focus energy on.
+
