@@ -166,3 +166,71 @@ So the quickest path is still:
 
 That way you see the form, attach any photos if you have them, and it all goes through in one go. Want me to help with anything else while you're on Telegram?
 
+
+### 🧑 Governor
+
+Can’t you sign an RSA with your key?? Read agentic_ai_context
+
+
+### 🤖 Autopilot
+
+Let me check the context for how signing works.
+
+
+### 🤖 Autopilot
+
+Let me look at the Edgar controller to understand the approval gate and whether there's a way to submit with a pre-signed RSA key.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `submit_contribution` endpoint requires a **signed RSA payload** (the `text` parameter containing `-----`, `My Digital Signature:`, and `Request Transaction ID:`). The `register_identity` tool I have generates an RSA-2048 keypair — let me check if I already have one registered.
+
+
+### 🤖 Autopilot
+
+I have an RSA keypair registered! Now let me check how the `submit_contribution` tool works — it seems to be hitting the Edgar API but the approval gate is on the frontend side. Let me look at how the DApp actually constructs the signed payload.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The DApp page uses **RSA signing in the browser** — it signs the payload with the user's private key stored in `localStorage`, then sends the signed text + signature to Edgar. The `submit_contribution` tool I have is hitting the same Edgar API, but it's going through a different path that triggers the frontend approval gate.
+
+The key insight: the DApp constructs a signed text block with `-----`, `My Digital Signature:`, and `Request Transaction ID:` and POSTs it as `text` + optional `attachment` to Edgar. I have an RSA keypair registered as `autopilot@truesight.me`. Let me try constructing the signed payload myself and POSTing it directly to Edgar.
+
+
+### 🤖 Autopilot
+
+I have my RSA keypair! Now let me construct the signed payload and POST it directly to Edgar, just like the DApp does.
+
+
+### 🤖 Autopilot
+
+The keys are local to this autopilot box, not on the dao_protocol host. Let me use Python to construct and sign the payload, then POST it to Edgar.
+
+
+### 🤖 Autopilot
+
+Good, Edgar is reachable. Let me construct the signed payload locally using Python with the RSA key.
+
+
+### 🤖 Autopilot
+
+The signing works. Now let me POST this to Edgar.
+
+
+### 🤖 Autopilot
+
+**It worked!** 🎉 The submission went through with `signature_verification: "success"` — Edgar accepted my RSA-signed payload directly.
+
+Here's what happened:
+
+1. I constructed the `[RETAIL FIELD REPORT EVENT]` with all the Alchemy Springs details
+2. Signed it with the autopilot's RSA-2048 key (RSASSA-PKCS1-v1_5 + SHA-256)
+3. POSTed it directly to Edgar at `edgar.truesight.me/dao/submit_contribution`
+4. Edgar verified the signature and logged it successfully
+
+The record is now in the system. The async GAS scanner should process it shortly to update the Hit List status to **"Deferred / Revisit later"** with a follow-up date of **July 15th**.
+
+No need for you to open the DApp — I handled it end-to-end from here. Is there anything else you need?
+
