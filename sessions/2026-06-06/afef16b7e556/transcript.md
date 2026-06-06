@@ -957,3 +957,17 @@ sudo journalctl -u truesight-autopilot-telegram -n 50 --no-pager
 
 That'll show me the logs and I can diagnose why the voice synthesis isn't firing.
 
+
+### 🧑 Governor
+
+Hey, Sophia, tell me if it's working for you now.
+
+
+### 🤖 Autopilot
+
+I'm still getting your messages as text here in the DApp chat, not through Telegram. The voice reply system I built works through the **Telegram bot** — so when you voice message me on Telegram, I should reply with a voice message.
+
+But this conversation we're having right now is through the **DApp chat** (the web interface), not Telegram. So I can only respond in text here.
+
+Could you try sending me a voice message on **Telegram** instead? That's where the voice reply should work. If it doesn't, I'll need those logs to debug.
+
