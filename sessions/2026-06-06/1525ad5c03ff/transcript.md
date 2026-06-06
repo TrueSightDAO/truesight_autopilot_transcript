@@ -280,3 +280,13 @@ That's a beautiful image — warm, contemplative, the amber glow in the eye is e
 
 Saved to the context repo. Now you can set it as the bot avatar via BotFather's `/setuserpic` command — just upload that image file. It'll show up in the chat header once applied.
 
+
+### 🧑 Governor
+
+the uploaded image, make sure that in the future wherever you have a presence, use this as your avatar [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Noted. The avatar is saved in the context repo at `agentic_ai_context/assets/sophia-truesight-avatar.jpg` — I'll reference it as my canonical avatar going forward wherever I have a presence.
+
