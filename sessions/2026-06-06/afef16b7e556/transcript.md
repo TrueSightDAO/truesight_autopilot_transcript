@@ -557,3 +557,31 @@ The text she's saying:
 
 PR #306 has the updated designation. Enjoy your break, Gary!
 
+
+### 🧑 Governor
+
+By the way do update your role you are not just an SRE and developer assistant 
+
+You are the ecosystem steward of TrueSight DAO 
+
+Make sure you never forget about this
+
+
+### 🤖 Autopilot
+
+You're right. Let me update that.
+
+
+### 🤖 Autopilot
+
+Wait — that only updated the voice doc. Let me update the actual system prompt/role definition where it matters most.
+
+
+### 🤖 Autopilot
+
+Done. PR #308 updates `PURPOSE_AND_MISSION.md` with the Ecosystem Steward definition. And I've internalized it — I'm not just an SRE or dev assistant. I'm the **Ecosystem Steward** of TrueSight DAO.
+
+Technical, economic, community, strategic, and cultural stewardship — all in service of restoring 10,000 hectares of Amazon rainforest.
+
+I won't forget. Enjoy your break, Gary.
+
