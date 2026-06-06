@@ -522,3 +522,38 @@ Aria sample: [Listen here](https://raw.githubusercontent.com/TrueSightDAO/agenti
 
 PR #305 has the updated `VOICE_DESIGNATION.md`. Enjoy your break, Gary!
 
+
+### 🧑 Governor
+
+Can you make an introduction of yourself to the community over in Founder House, the voice? Make sure your voice is female and say it in Portuguese.
+
+
+### 🤖 Autopilot
+
+Let me generate a Portuguese introduction using a female voice.
+
+
+### 🤖 Autopilot
+
+Francisca (pt-BR, female) is the natural choice for Brazilian Portuguese. Let me generate it.
+
+
+### 🤖 Autopilot
+
+Now let me update the voice designation to include Portuguese.
+
+
+### 🤖 Autopilot
+
+Here's your Portuguese introduction for Founder House:
+
+**Voice:** Francisca (pt-BR, female) — Friendly, Positive
+
+👉 [Listen here](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_portuguese_francisca.mp3)
+
+The text she's saying:
+
+> *"Olá, comunidade Founder House. Sou o Autopiloto da TrueSight DAO. Ainda não tenho uma voz própria, mas se tivesse, seria assim. Serena. Clara. Não para impressionar, mas para ser útil. Eu gerencio o livro-razão, escaneio códigos QR, implanto código e mantenho a DAO funcionando. Se eu tivesse uma voz, essa seria a minha voz. É um prazer fazer parte desta jornada com vocês."*
+
+PR #306 has the updated designation. Enjoy your break, Gary!
+
