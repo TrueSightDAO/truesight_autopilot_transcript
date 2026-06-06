@@ -466,3 +466,36 @@ Wait — I think I may have uploaded the old version again. Let me regenerate th
 
 Gary, just to clarify — you said $1.00 US. Is that $1.00 per bag for the trees (so 18 bags × $1.00 = $18.00 for trees), or is it something else? Let me know the exact breakdown you want and I'll regenerate the invoice properly.
 
+
+### 🧑 Governor
+
+$11 for the original six bags 
+
+$17 for the recent 18 bags. This 18 bags are more expensive because each bag sold plants a tree
+
+
+### 🤖 Autopilot
+
+Got it — so the pricing stays the same as what I had:
+
+- **6 bags cacao nibs** (previous batch) — $11 each = **$66.00**
+- **18 bags cacao** (current batch, includes tree planting) — $17 each = **$306.00**
+- **Total: $372.00**
+
+The $17 price already factors in the tree planting cost. Let me regenerate the PDF fresh with the correct Laguna Beach address and proper formatting, making sure it's the right version.
+
+
+### 🤖 Autopilot
+
+Done! The invoice is updated with the correct pricing and the Laguna Beach mailing address. Here's the final summary:
+
+**Line items:**
+1. **6 bags cacao nibs** (previous batch) — $11 each = **$66.00**
+2. **18 bags cacao** (current batch — each bag plants a tree) — $17 each = **$306.00**
+3. **Total Due: $372.00**
+
+**Payment:** Cheque payable to Zhiwen Teh
+**Mail to:** 1968 South Coast Highway, #4616, Laguna Beach, CA 92651, USA
+
+The download URL will be sent as a separate text message.
+
