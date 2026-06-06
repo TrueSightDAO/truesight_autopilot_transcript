@@ -971,3 +971,15 @@ But this conversation we're having right now is through the **DApp chat** (the w
 
 Could you try sending me a voice message on **Telegram** instead? That's where the voice reply should work. If it doesn't, I'll need those logs to debug.
 
+
+### 🧑 Governor
+
+Hey, Sophia, can you hear me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I hear you loud and clear, Gary. And it sounds like the voice reply is working now — you got this response as a voice message, right?
+
+What can I help you with?
+
