@@ -147,3 +147,27 @@ Alternatively, upgrade the instance from t2.small (2 GB) to t3.small (2 GB but b
 
 Want me to try that — stop the service, deploy, then restart?
 
+
+### 🧑 Governor
+
+I think let's just do away with the swap since it's unused. What are your thoughts if we had two instances of you running and then one instance stopped the other instance to reboot and once the other instance is up then the other instance stopped the first instance to reboot. Just like chat about this. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a classic blue-green deployment pattern — and I like the thinking. Let me talk through it.
+
+**The swap**: You're right, it's unused because the OOM killer hits before swap even kicks in. The compile spikes happen too fast. I'll remove it.
+
+**The two-instance idea**: It's elegant in theory — one instance serves while the other reboots/deploys, then they swap. But there's a catch with our setup:
+
+1. **Statefulness** — I hold conversation sessions in memory and on local disk. If instance A dies, instance B doesn't have the context unless we share a database or Redis. We'd need a shared session store.
+2. **The Telegram adapter** — Telegram only lets one webhook endpoint per bot. You can't have two instances both receiving messages without a load balancer in front.
+3. **Cost** — Two t2.small instances = ~$35/month vs one at ~$17/month.
+
+**A simpler version of your idea**: What if we just stop the service, deploy, then restart? That's a 30-second downtime window. The Telegram bot just queues messages during that time and delivers them when I'm back up. No second instance needed.
+
+Or if you want zero-downtime, the cheapest path is: **one t3.medium** (4 GB, ~$30/month) — that's enough headroom to deploy while running. Same cost as two t2.smalls but simpler.
+
+What do you think — stop-and-restart for now, or upgrade the box?
+
