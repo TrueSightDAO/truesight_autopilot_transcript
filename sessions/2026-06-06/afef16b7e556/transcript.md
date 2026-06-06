@@ -941,20 +941,19 @@ Look for lines with `autopilot.telegram` or `autopilot.voice_output` — that'll
 
 ### 🧑 Governor
 
-Okay, I'm sending you a text right now
+Hey Sofia, this is a voice message.
 
 
 ### 🤖 Autopilot
 
-Got it! Since you're texting me now (not a voice message), the flow goes through the normal text path — no voice reply needed.
+I hear you — but I'm still responding in text, which means the voice reply isn't working yet. Let me check the Telegram adapter logs on the sophia host to see what's happening.
 
-But when you send a voice message, it should now:
-1. Transcribe it
-2. Detect the language
-3. Process with the LLM
-4. Synthesize the response as a voice message using the right voice
-5. Send the voice reply
-6. If there are URLs, send a follow-up text with them
+Gary, could you run this on your end?
 
-Give it a try whenever you're ready!
+```bash
+ssh sophia
+sudo journalctl -u truesight-autopilot-telegram -n 50 --no-pager
+```
+
+That'll show me the logs and I can diagnose why the voice synthesis isn't firing.
 
