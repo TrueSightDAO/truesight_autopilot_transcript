@@ -35,13 +35,6 @@
     "created_at": "2026-05-29T20:38:41Z"
   },
   {
-    "title": "Merge PR #67 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Set up nginx reverse proxy config for Sophia (sophia.truesight.me) and update README with the new name.\n\n1. Create /etc/nginx/sites-available/sophia with:\n   - server_name sophia.truesight.me\n   - loc",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:08:06Z"
-  },
-  {
     "title": "Merge PR #254 on agentic_ai_context",
     "qr_code": "",
     "summary": "Add SOPHIA.md \u2014 the new identity and nginx setup documentation for the TrueSight DAO autopilot, now named Sophia.\n\nCreate SOPHIA.md with:\n- Sophia's identity: the DAO's wisdom layer, named after the G",
@@ -56,81 +49,11 @@
     "created_at": "2026-05-30T22:17:46Z"
   },
   {
-    "title": "Merge PR #22 on oracle",
-    "qr_code": "",
-    "summary": "Cut over the DAO Advisory panel from GAS/Grok to autopilot/DeepSeek. Three changes needed in index.html:\n\n1. Change GAS_ORACLE_ADVISORY_URL from the Google Apps Script URL to http://100.52.234.163:800",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:36:46Z"
-  },
-  {
     "title": "Merge PR #71 on truesight_autopilot",
     "qr_code": "",
     "summary": "Create a reference nginx config file at deploy/nginx-sophia.conf for the sophia.truesight.me reverse proxy. This config should:\n1. Listen on port 80 for sophia.truesight.me\n2. Proxy all requests to ht",
     "action": "merge_pr",
     "created_at": "2026-05-30T22:42:04Z"
-  },
-  {
-    "title": "Merge PR #23 on oracle",
-    "qr_code": "",
-    "summary": "Cut over the DAO Advisory panel from GAS/Grok to autopilot/DeepSeek. Three changes needed in index.html:\n\n1. Change GAS_ORACLE_ADVISORY_URL from the Google Apps Script URL to https://sophia.truesight.",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:45:30Z"
-  },
-  {
-    "title": "Merge PR #72 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add nginx setup to scripts/deploy.sh. After the '=== Checking health ===' section, add a new section '=== Setting up nginx + certbot ===' that:\n\n1. Symlinks config/nginx/sophia.conf to /etc/nginx/site",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:45:57Z"
-  },
-  {
-    "title": "Merge PR #73 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix the deploy tool (app/tools/deploy.py) local execution path. The local path uses `source .venv/bin/activate` which fails because subprocess.run with shell=True uses /bin/sh, not bash. Change the lo",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T22:49:35Z"
-  },
-  {
-    "title": "Merge PR #78 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add a root `/` landing page for sophia.truesight.me that displays a beautiful SVG avatar of Sophia (the DAO Oracle persona) instead of returning {\"detail\":\"Not Found\"}.\n\nThe page should:\n1. Be served ",
-    "action": "merge_pr",
-    "created_at": "2026-05-30T23:32:34Z"
-  },
-  {
-    "title": "Merge PR #79 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "CORS headers missing on /oracle-advisory endpoint when called from oracle.truesight.me (GitHub Pages). The browser reports 'CORS header error' when the oracle frontend at oracle.truesight.me calls sop",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T01:05:29Z"
-  },
-  {
-    "title": "Merge PR #81 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix /oracle-advisory endpoint: CORS errors and overly aggressive rate limiting causing 429 responses for oracle.truesight.me frontend.\n\nTwo issues:\n1. **CORS**: The oracle frontend at oracle.truesight",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T01:17:16Z"
-  },
-  {
-    "title": "Merge PR #82 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Create .github/workflows/pre-merge.yml with three fast CI checks that run on every PR to main:\n1. Syntax check all .py files under app/\n2. Import smoke: python -c \"from app.main import app\"\n3. Tool sc",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T01:21:21Z"
-  },
-  {
-    "title": "Merge PR #83 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix deploy_autopilot OOM failure on t3.small (2GB RAM, no swap). The phase-two subprocess gets killed (exit -15, SIGTERM) during `pip install` of `dao_client` from GitHub source, which requires compil",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T01:26:45Z"
-  },
-  {
-    "title": "Merge PR #56 on dao_protocol",
-    "qr_code": "",
-    "summary": "Wire onboarding invitation email into [CONTRIBUTOR ADD EVENT] dispatch\n\nThe GAS side already has a complete `sendOnboardingInvitation` handler deployed in the same Apps Script project as the email ver",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T04:23:10Z"
   },
   {
     "title": "Merge PR #24 on oracle",
@@ -140,13 +63,6 @@
     "created_at": "2026-05-31T05:08:12Z"
   },
   {
-    "title": "Merge PR #25 on oracle",
-    "qr_code": "",
-    "summary": "Rewrite oracle-draw-submit.js to auto-submit and replace Record Session button with My Credentials link\n\nThree changes to the flow:\n\n### 1. oracle-draw-submit.js \u2014 auto-generate + auto-submit\n\nRewrite",
-    "action": "merge_pr",
-    "created_at": "2026-05-31T05:11:44Z"
-  },
-  {
     "title": "Merge PR #94 on truesight_autopilot",
     "qr_code": "",
     "summary": "The deploy.sh script always runs pip install, which clones dao_client into a temp dir and runs out of memory on the t2.micro (1.9GB RAM). Fix: check if requirements.txt hash has changed before running",
@@ -154,10 +70,10 @@
     "created_at": "2026-06-04T00:37:50Z"
   },
   {
-    "title": "Merge PR #335 on tokenomics",
+    "title": "Merge PR #108 on truesight_autopilot",
     "qr_code": "",
-    "summary": "Add Sentinel role support to dao_members_cache_publisher.gs\n\nThe `Contributors contact information` sheet now has an `Is Sentinel` column (column W, header row 4). The publisher needs to read this col",
+    "summary": "Extend gmail_send and gmail_create_draft to support file attachments\n\nCurrently gmail_send and gmail_create_draft only send plain-text emails using MIMEText. They need to support attaching files (PDFs",
     "action": "merge_pr",
-    "created_at": "2026-06-06T14:10:15Z"
+    "created_at": "2026-06-06T20:33:53Z"
   }
 ]
