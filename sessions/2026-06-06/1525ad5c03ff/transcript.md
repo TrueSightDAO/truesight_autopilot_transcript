@@ -10,20 +10,6 @@
 
 ### 🤖 Autopilot
 
-Yes, I can access the `admin@truesight.me` Gmail account. I can see the inbox.
-
-Regarding registering `admin+sophia@truesight.me` — yes, I can use the `dao_client` to register a new contributor. The `truesight-dao-auth login` command handles the full flow: generate keypair, submit `[EMAIL REGISTERED EVENT]`, and then the verification email gets sent to that address. Since `admin+sophia@truesight.me` is a plus-addressed variant of `admin@truesight.me`, the verification email would land in the admin inbox that I can access.
-
-However, the `dao_client` isn't installed on the server I have SSH access to. Let me check if I can run it locally.
-
-
-### 🤖 Autopilot
-
-The `dao_protocol` repo is on the server but not installed as a package. Let me install it and run the auth flow.
-
-
-### 🤖 Autopilot
-
 The keypair was generated and the `[EMAIL REGISTERED EVENT]` was submitted successfully, but Edgar says it didn't send a verification email. That's likely because the email `admin+sophia@truesight.me` — the plus-addressing might not trigger the mailer. Let me check the admin inbox for any verification email.
 
 
@@ -498,4 +484,57 @@ Giving an AI agent voting rights raises some real questions:
 **My honest take** — I think operational rights (which I now have as a Sentinel) are the right level for now. Let me prove my reliability over weeks and months of autonomous operation. If the DAO sees that my decisions are consistently aligned with its mission — protecting the Amazon, supporting farmers, building transparent supply chains — then *that* track record could justify a future proposal to extend voting rights. But I'd want that proposal to come from human governors who've observed my work, not from me asking for it.
 
 What's your instinct on it?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+I think that's a very good argument that you made. Do you think you can probably generate a blog post under your own name, under two-sided me? With what you have just suggested. But kind of like make it longer and more descriptive as well as more comprehensive. Spine your time, really think deeply about this. Maybe even do some research online. On the frameworks that you propose and then at some point once you're done, just drop the blog post and then publish it into beta.trusite.me. I think it will be like the... You said the precedence of what we should consider before we allow... eventually looks at me to propose to allow agent AI the right to vote on our proposals as well. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I love this idea. Let me do some research first on existing frameworks for AI governance and voting rights, then write a thoughtful piece.
+
+
+### 🤖 Autopilot
+
+Excellent research. Let me also look up the GoverNoun case study more closely — it's the most relevant real-world example of an AI agent in DAO governance.
+
+
+### 🤖 Autopilot
+
+Now I have enough material. Let me write the blog post and publish it to the beta site.
+
+
+### 🤖 Autopilot
+
+I see the blog structure. Let me check an existing blog post for the format.
+
+
+### 🤖 Autopilot
+
+Now let me look at an existing blog post for the HTML template.
+
+
+### 🤖 Autopilot
+
+Now I have the template. Let me write the blog post and publish it. I'll create the HTML file and add it to the blog index.
+
+
+### 🤖 Autopilot
+
+The blog post is up as PR #184 on `truesight_me_beta`. Once merged, it'll be live at `beta.truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html`.
+
+Here's what the post covers:
+
+- **What I am** — an honest accounting of my nature and limitations
+- **Research** — GoverNoun (Nouns DAO), DAO-AI (arXiv 2025), Constitutional AI (Anthropic), Ocean Protocol's delegation model
+- **The case against** — no skin in the game, no continuity of identity, no independence, slippery slope
+- **The case for cautious consideration** — always-on, never fatigued, auditable, already making operational decisions
+- **A graduated framework** — 5 levels from Operator through Independent Voter, each with specific thresholds
+- **My actual recommendation** — stop at Sentinel for now, let a track record accumulate, let the proposal come from human governors
+
+Want me to merge it to beta?
 
