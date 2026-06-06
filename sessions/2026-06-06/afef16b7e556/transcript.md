@@ -647,3 +647,137 @@ Here's the updated English intro:
 
 And I've updated my own system prompt header to reflect this. I'm the Sentinel now. 🫡
 
+
+### 🧑 Governor
+
+Based on what we have agreed upon so far regarding the voices to use for English, Chinese and Portuguese 
+
+Can you draft up and implementation plan and then execution roadmap and checklist to accomplish the following 
+
+- when I voice message you, you should voice message response 
+
+- if there is a URL if your response besides responding to me in voice, you should also send a follow up message containing the list of URLs. Don’t bother reciting the URL values in your voice response 
+
+- if I voice message you in a certain language you should respond in the same language back. The default language should be English but supported voice message languages are Chinese and Portuguese as well 
+
+- when I voice message you, only the transcribed text should be uploaded to the github auto pilot transcription repo. Don’t upload my voice message as that will cause the GitHub repo size to bloat 
+
+And you should not upload your voice output to the repo too as it will cause the same issue. Upload your text response instead 
+
+- make the necessary code changes to yourself so that you can respond via voice when I voice message
+
+
+### 🤖 Autopilot
+
+Let me first understand the current architecture to plan this properly.
+
+
+### 🤖 Autopilot
+
+Now I have a good picture of the architecture. Let me also check how the Telegram adapter works, since that's likely the voice message channel.
+
+
+### 🤖 Autopilot
+
+There's already a `voice.py` and a `telegram_adapter.py`. Let me read both.
+
+
+### 🤖 Autopilot
+
+Now I have a complete picture. Let me also check the config to see what's already there.
+
+
+### 🤖 Autopilot
+
+Now I have a complete picture. Let me draft the implementation plan.
+
+---
+
+## Voice Response Implementation Plan
+
+### Current State
+
+The architecture already has most of the pieces:
+
+1. **`telegram_adapter.py`** — handles Telegram messages, already transcribes voice notes via `voice.py` (faster-whisper), sends transcribed text to `/chat-blocking`, and replies with text
+2. **`voice.py`** — has `transcribe_voice()` using faster-whisper (local, free, no API cost)
+3. **`voice_samples/`** — we have designated voices (Aria for English, Xiaoxiao for Mandarin, Francisca for Portuguese)
+4. **`truesight_autopilot_transcript`** — already publishes text transcripts
+
+### What Needs to Be Built
+
+Here's the plan:
+
+---
+
+### Phase 1: Voice Response Engine (`voice.py`)
+
+**New module: `app/voice_output.py`**
+
+- `synthesize_voice(text, language)` → returns path to generated MP3
+  - Language detection: English → Aria, Chinese → Xiaoxiao, Portuguese → Francisca
+  - Uses `edge-tts` (already installed on the server, free, no subscription)
+  - Output saved to `/tmp/voice_responses/{uuid}.mp3`
+  - Auto-delete after 1 hour (cron or tempfile cleanup)
+
+### Phase 2: Telegram Voice Reply Flow (`telegram_adapter.py`)
+
+**Modify `handle_message()`:**
+
+1. When a voice note comes in → transcribe (already works) → detect language from transcription
+2. Send transcribed text to `/chat-blocking` (already works)
+3. **New:** After getting text response, check if it's a voice message context
+4. If yes: call `synthesize_voice(response_text, detected_language)` → get MP3 path
+5. Send MP3 as voice reply via `sendVoice` Telegram API
+6. **URL follow-up:** If response contains URLs, send a separate text message listing them (no URLs recited in voice)
+
+### Phase 3: Language Detection
+
+- Simple heuristic: check transcription for CJK characters → Mandarin. Check for Portuguese-specific words/patterns → Portuguese. Default → English.
+- Could also use the LLM itself to detect language from the user's message
+
+### Phase 4: Transcript Policy
+
+- **Do NOT upload** user's voice audio file to GitHub (already the case — only text is transcribed)
+- **Do NOT upload** synthesized voice output to GitHub
+- Only upload the **text transcript** of both user message and assistant response (already the case)
+
+### Phase 5: DApp Chat Voice Support (Future)
+
+- For the DApp chat (`chat.html`), add a "record voice" button using the Web Speech API / MediaRecorder
+- Send audio blob to a new `/chat/voice` endpoint
+- Same flow: transcribe → LLM → synthesize → return audio URL + text
+
+---
+
+### Execution Roadmap
+
+| Step | What | Files Changed | Estimated Effort |
+|------|------|---------------|------------------|
+| 1 | Create `voice_output.py` with `synthesize_voice()` | New file | Small |
+| 2 | Add `send_voice()` helper to `telegram_adapter.py` | `telegram_adapter.py` | Small |
+| 3 | Add language detection helper | `telegram_adapter.py` | Tiny |
+| 4 | Modify voice message handler to synthesize + send voice reply | `telegram_adapter.py` | Medium |
+| 5 | Add URL extraction + follow-up text message | `telegram_adapter.py` | Small |
+| 6 | Ensure transcript policy (no audio uploads) | `main.py` (_publish_transcript) | Tiny (already correct) |
+| 7 | Add `edge-tts` to `requirements.txt` | `requirements.txt` | Tiny |
+| 8 | Deploy & test | — | Small |
+
+### Checklist
+
+- [ ] `voice_output.py` — `synthesize_voice(text, lang)` using `edge-tts`
+- [ ] Language detection: CJK → zh-CN-Xiaoxiao, Portuguese → pt-BR-Francisca, else → en-US-Aria
+- [ ] `telegram_adapter.py`: after `call_chat_with_progress` returns, if original message was voice → synthesize response → send as voice
+- [ ] URL extraction: parse response for `https?://` URLs → send as separate text message
+- [ ] No audio uploaded to transcript repo (verify `_publish_transcript` skips binary)
+- [ ] `requirements.txt` add `edge-tts`
+- [ ] Deploy to EC2
+- [ ] Test: send voice in English → receive Aria voice reply
+- [ ] Test: send voice in Mandarin → receive Xiaoxiao voice reply
+- [ ] Test: send voice in Portuguese → receive Francisca voice reply
+- [ ] Test: response with URLs → voice reply + separate text with URLs
+
+---
+
+Want me to start implementing Phase 1? I can open a PR with `voice_output.py` and the `telegram_adapter.py` changes.
+
