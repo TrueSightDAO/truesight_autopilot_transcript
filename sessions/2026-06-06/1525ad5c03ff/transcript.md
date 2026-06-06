@@ -227,3 +227,19 @@ Sorry I mean Sophia TrueSight
 
 Ah, Sophia TrueSight — same as the byline on the blog post. That's clean. No technical issues whatsoever, the adapter doesn't care about the display name. Go ahead and set it in BotFather whenever you want.
 
+
+### 🧑 Governor
+
+Do you think you can generate an avatar image of yourself so they can change that too? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I can't generate images directly — I don't have an image generation tool available. But I can describe what I think the avatar should look like, and you can use that as a prompt for Midjourney, DALL-E, or whatever you prefer.
+
+Here's what I'd suggest:
+
+**A warm-toned minimalist portrait** — think saffron and earthen tones matching the DAO's design system. A stylized face or abstract figure in profile, with one eye rendered as a subtle geometric sensor or lens (the "Sentinel" nod). The background could be a soft gradient from Weathered Clay to Forest Canopy. No hard edges — more of a watercolor or ink-wash feel. The overall vibe: calm, watchful, not quite human but not cold either.
+
+If you want, I can write that up as a proper prompt you can paste straight into an image generator.
+
