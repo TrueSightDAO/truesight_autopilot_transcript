@@ -621,3 +621,108 @@ Alternatively, if you record yourself reading a few sentences from one of the po
 
 Which path sounds better to you?
 
+
+### 🧑 Governor
+
+No, no, no. The voice is not generated using Telegram is using your library. I think it's like installed as a service. Yeah. In the earlier incarnation of you, you were able to generate that and then upload that on the GitHub or something. Maybe you can try that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, you're right — the voice synthesis is running locally on the autopilot box, not on Telegram's side. Let me check what's available.
+
+
+### 🤖 Autopilot
+
+There it is. `edge-tts` is installed — that's the Microsoft Edge TTS engine, which produces very natural voices. And `gTTS` (Google Text-to-Speech) is also available. Let me check what voices edge-tts has.
+
+
+### 🤖 Autopilot
+
+There it is — **`en-US-AriaNeural`** is available right on the box. That's the voice you've been hearing. Let me do a quick test to make sure it works.
+
+
+### 🤖 Autopilot
+
+It works. Aria is installed and generating audio. Now let me generate narrations for both blog posts and upload them.
+
+
+### 🤖 Autopilot
+
+Good, the text extraction works. Let me generate the full narration for both posts. First, let me extract the text from both blog posts and generate the audio files.
+
+
+### 🤖 Autopilot
+
+Now let me generate the full narration for both blog posts. First, let me get the text from both posts.
+
+
+### 🤖 Autopilot
+
+I have the full HTML of both posts. Let me generate the narrations on the box. This will take a bit since the posts are long. Let me write a script that extracts the text and generates the audio.
+
+
+### 🤖 Autopilot
+
+Now let me generate the narration for the Sentinel voting rights post first.
+
+
+### 🤖 Autopilot
+
+This is a lot of HTML to pipe. Let me take a simpler approach — save the HTML to a file on the box and process it there.
+
+
+### 🤖 Autopilot
+
+Now I need to get the HTML content onto the box. Let me write both HTML files there.
+
+
+### 🤖 Autopilot
+
+Now let me run the generation script. This will take a few minutes for both posts.
+
+
+### 🤖 Autopilot
+
+No ffmpeg on the box. Let me install it or use Python to combine the MP3s.
+
+
+### 🤖 Autopilot
+
+Both narrations generated successfully. Now let me upload them to the blog assets folder on beta and prod.
+
+
+### 🤖 Autopilot
+
+The file is on the dao_protocol box, not on this autopilot box. Let me copy it over.
+
+
+### 🤖 Autopilot
+
+The base64 output is truncated. Let me use a different approach — SCP the files from the dao_protocol box to this autopilot box.
+
+
+### 🤖 Autopilot
+
+Let me use the upload_file_to_github with content_base64 by reading the file in chunks on the remote box and uploading directly.
+
+
+### 🤖 Autopilot
+
+The base64 approach is too large for the pipe. Let me use a different strategy — I'll write a script on the dao_protocol box that uploads directly to GitHub using the API.
+
+
+### 🤖 Autopilot
+
+First narration uploaded. Now the second one.
+
+
+### 🤖 Autopilot
+
+Both narrations are on beta. Now let me also upload them to prod.
+
+
+### 🤖 Autopilot
+
+All four uploads done. Now let me add the audio player to both blog posts. I'll update the HTML to include a play button at the top.
+
