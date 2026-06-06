@@ -459,3 +459,10 @@ Just to clarify — $1.00 per bag for the trees? So the 18 bags at $17 each alre
 
 Let me re-read your earlier message — you said "$17 each, which comes included the trees." So the $17 already includes the tree cost. Are you saying the tree allocation is $1 per bag and you want it itemized separately on the invoice?
 
+
+### 🤖 Autopilot
+
+Wait — I think I may have uploaded the old version again. Let me regenerate the PDF with the $1.00 tree amount and the correct address, then upload fresh.
+
+Gary, just to clarify — you said $1.00 US. Is that $1.00 per bag for the trees (so 18 bags × $1.00 = $18.00 for trees), or is it something else? Let me know the exact breakdown you want and I'll regenerate the invoice properly.
+
