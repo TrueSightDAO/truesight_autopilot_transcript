@@ -50,3 +50,30 @@ Here's the quickest path:
 
 If you can't get to it right now, no worries — I'll note it and we can circle back. Alternatively, I can just add Alchemy Springs directly to the Hit List as a fresh lead via a PR, which doesn't need DApp approval. Want me to do that instead?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+https://dapp.truesight.me/store_interaction_history.html?store=alchemy-springs--sauna-garden__939-post-street__san-francisco__ca&shop=Alchemy+Springs+%26+Sauna+Garden
+
+This is the specific record
+
+
+### 🤖 Autopilot
+
+Let me take a look at that page to see what's already recorded.
+
+
+### 🤖 Autopilot
+
+Got it — so the DApp page for Alchemy Springs exists and is ready to accept a **Retail Field Report Event**. That's the right place to log the visit.
+
+Here's what you'd do on that page:
+
+1. **Fill in the visit details** — date (June 6), notes about the in-person visit, status (probably "Deferred / Revisit later" since they're not yet carrying cacao)
+2. **Set a follow-up date** — July 15th sounds right
+3. **Sign and submit** — that sends the `[RETAIL FIELD REPORT EVENT]` to Edgar and logs it
+
+Since you're on Telegram right now, I can't click the button for you. But the page is set up and ready when you get to a browser. Want me to do anything else with Alchemy Springs in the meantime — like add them to the Hit List directly?
+
