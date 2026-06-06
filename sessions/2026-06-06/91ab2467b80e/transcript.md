@@ -144,3 +144,25 @@ So the record exists. The next step is submitting the **Retail Field Report Even
 
 That'll log it to Edgar and set the follow-up reminder. Want me to do anything else with it in the meantime?
 
+
+### 🧑 Governor
+
+Can you do the submission or are you not able to do so via the dao_protocol Python client?
+
+
+### 🤖 Autopilot
+
+Let me check — the DApp page submits a `[RETAIL FIELD REPORT EVENT]` to Edgar. I can submit events directly via the Edgar API using `submit_contribution`. Let me try that now.
+
+
+### 🤖 Autopilot
+
+I can submit it, but it still needs your **Approve** click on the DApp — the Edgar API requires that human-in-the-loop approval for signed events. I can't bypass it from here.
+
+So the quickest path is still:
+
+1. Open that DApp URL in a browser
+2. Fill in the details and hit Submit
+
+That way you see the form, attach any photos if you have them, and it all goes through in one go. Want me to help with anything else while you're on Telegram?
+
