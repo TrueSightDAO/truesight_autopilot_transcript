@@ -457,3 +457,37 @@ The text:
 
 My vote is **Aria** — she's confident without being pushy, clear without being robotic. Has that "competent engineer who's been doing this for years" energy. But listen and tell me which one feels like *you*.
 
+
+### 🧑 Governor
+
+Aria it is then. Update the parameters in agentic_ai_context so that you don’t forget about it later when we start productionalizing this
+
+
+### 🤖 Autopilot
+
+Let me check what config files exist in agentic_ai_context to find the right place for this.
+
+
+### 🤖 Autopilot
+
+There's already an `AUTOPILOT_VOICE_CAPTURE.md` — that's about speech-to-text (voice notes from Telegram). I should create or update a config for the *output* voice (TTS). Let me read the existing file first, then add the voice preference.
+
+
+### 🤖 Autopilot
+
+Good — that's about input (speech-to-text). I need to add a config for output (text-to-speech / Sophia's voice). Let me create a dedicated config file for this.
+
+
+### 🤖 Autopilot
+
+Done! PR [#303](https://github.com/TrueSightDAO/agentic_ai_context/pull/303) created with `SOPHIA_TTS_VOICE.md`.
+
+It records:
+- **Selected voice:** `en-US-AriaNeural` (Female, Positive, Confident)
+- **Why Aria** — matches the personality, clear enunciation, female name match
+- **Runner-ups** for reference
+- **Production plan** — Web Speech API → self-hosted Coqui → real-time voice
+- **Sample link** so you can always re-listen
+
+Want me to merge it?
+
