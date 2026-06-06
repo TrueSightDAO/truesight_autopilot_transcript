@@ -231,3 +231,50 @@ Here's what I found about yesterday's emails:
 
 **Bottom line:** I can't give you exact open rates because the Mailsuite tracking columns in the Email Agent Follow Up sheet appear to not be populating. That's a gap worth fixing — the warm-up pipeline sends tracking pixels but the data isn't landing in the sheet. Want me to look into that?
 
+
+### 🧑 Governor
+
+I meant the emails that were sent out yesterday to the prospective retailers. I think the information should probably be tracked in the Google sheet with which contains the hit list tab. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — the Hit List sheet tracks the warm-up outreach. Let me check the Hit List spreadsheet for the Email Agent Follow Up tab more thoroughly, looking for the June 5 sends.
+
+
+### 🤖 Autopilot
+
+Now I can see the data. The Open and Click columns are populated for the more recent sends. Let me focus specifically on the June 5 sends and their open/click data.
+
+Looking at the data for yesterday's (June 5) warm-up emails, here's the open rate summary:
+
+**June 5 warm-up sends — Open & Click tracking:**
+
+| Prospect | Open | Clicks |
+|---|---|---|
+| Freedom Community Clinic | 1 | 0 |
+| Proper Xchange | 6 | 0 |
+| Source Sanctuary Studio | 1 | 0 |
+| The Wild Grove Collective | 2 | 0 |
+| Sahkara Acupuncture | 2 | 0 |
+| Apothecary by the Moon | 2 | 0 |
+| Mossy Tonic (bounced — filler@godaddy.com) | 1 | 0 |
+| Ministry of Divine Consciousness | 1 | 0 |
+| Ema's Herbs | 0 | 0 |
+| Follow Your Heart Market & Cafe | 0 | 0 |
+| Fantasiacrystals | 0 | 0 |
+| Ritualcravt | 0 | 0 |
+| Urban Bodywork & Apothecary | 0 | 0 |
+| The Herbal Alchemist | 2 | 0 |
+| Rooted Remedies | 0 | 0 |
+| Ursie's Apothecary | 0 | 0 |
+| Botanica Village Apothecary | 0 | 0 |
+| Natura Herbal Center | 0 | 0 |
+| Earth Cura Apothecary | 0 | 0 |
+
+**Summary:** Out of 19 warm-up sends yesterday, **9 had at least one open** (47% open rate). **Proper Xchange** had the highest engagement with 6 opens. **Zero clicks** across all sends — nobody clicked through to the website or Instagram reel. One bounce (Mossy Tonic — bad email address).
+
+Also notable: **Good Vibrations Apothecary** replied again — Athena acknowledged receiving the samples you sent. That thread has 8 opens total, so she's engaged.
+
+Want me to dig into any specific prospect or check on the two reply drafts that need your eyes?
+
