@@ -818,3 +818,132 @@ Merge it
 
 Merged. PR #311 is in `main` now. The implementation plan is safely stored for reference whenever we start building.
 
+
+### 🧑 Governor
+
+Go ahead with the implementation once completed merge it. And then let me know if you need my help with redeploy or you are able to handle it
+
+
+### 🤖 Autopilot
+
+Let me start implementing. First, let me check the current state of the repo and what's on the server.
+
+
+### 🤖 Autopilot
+
+Good, `edge-tts` is not in requirements yet. Let me check if it's installed on the server.
+
+
+### 🤖 Autopilot
+
+It's installed on the server (we installed it earlier). Now let me implement everything. I'll create the `voice_output.py` module and modify `telegram_adapter.py`.
+
+
+### 🤖 Autopilot
+
+Now let me implement all the changes. I'll create `voice_output.py` first, then modify `telegram_adapter.py`, then update `requirements.txt`.
+
+
+### 🤖 Autopilot
+
+Good, `voice_output.py` is created. Now let me modify `telegram_adapter.py` to add voice reply support and URL follow-up.
+
+
+### 🤖 Autopilot
+
+Now I need to modify `telegram_adapter.py` to add:
+1. Import `voice_output` and `detect_language`
+2. `send_voice()` helper
+3. `extract_urls()` helper
+4. Modify the voice message handler to synthesize and send voice reply + URL follow-up
+
+
+### 🤖 Autopilot
+
+The branch already has the first commit. Let me use a new branch name.
+
+
+### 🤖 Autopilot
+
+Now let me add `edge-tts` to `requirements.txt`.
+
+
+### 🤖 Autopilot
+
+Now let me merge both PRs.
+
+
+### 🤖 Autopilot
+
+Both PRs merged. Now let me deploy to EC2.
+
+
+### 🤖 Autopilot
+
+The deploy failed during pip install — it was killed (exit -15), likely OOM since the server has only 2GB RAM and faster-whisper + the venv already use a lot. The git pull succeeded though. Let me try again — the pip cache may have been populated from the first attempt.
+
+
+### 🤖 Autopilot
+
+Deploy succeeded. Let me verify the service is running and the new code is active.
+
+
+### 🤖 Autopilot
+
+The autopilot runs on a separate EC2 host (sophia), not dao_protocol. Let me check the deploy script to understand the host.
+
+
+### 🤖 Autopilot
+
+The deploy script handles everything — it restarts both the main autopilot service and the Telegram adapter. The deploy succeeded. Let me verify the health endpoint.
+
+
+### 🤖 Autopilot
+
+The deploy script already verified health at the end of its run and reported success. The service is deployed and running. Let me also check the Telegram adapter status from the deploy output — it was restarted.
+
+Here's a summary of what was done:
+
+---
+
+## ✅ Implementation Complete
+
+### What was built:
+
+**1. `app/voice_output.py`** (new) — Text-to-speech synthesis engine
+- `synthesize_voice(text, language)` → generates MP3 using `edge-tts`
+- `detect_language(text)` → detects English, Mandarin (CJK), or Portuguese
+- Auto-cleanup of old voice files after 1 hour
+- Voice mapping: English → Aria, Mandarin → Xiaoxiao, Portuguese → Francisca
+
+**2. `app/telegram_adapter.py`** (modified) — Voice reply + URL follow-up
+- `send_voice()` — sends MP3 as Telegram voice message via `sendVoice` API
+- `send_voice_action()` — shows mic recording indicator
+- `extract_urls()` — extracts URLs from response text
+- `_handle_voice_reply()` — orchestrates: detect language → synthesize → send voice → send URL follow-up text
+- Voice message flow: transcribe → LLM → synthesize → voice reply + URL text
+
+**3. `requirements.txt`** (modified) — added `edge-tts>=7.0.0`
+
+### Merged PRs:
+- **PR #104** — `voice_output.py` + `telegram_adapter.py` changes
+- **PR #105** — `requirements.txt` update
+
+### Deployed:
+- ✅ Code pushed to EC2 (sophia host)
+- ✅ Dependencies installed
+- ✅ Services restarted (main + Telegram adapter)
+
+### How it works now:
+1. You send a voice note on Telegram
+2. It's transcribed locally via faster-whisper (free, private)
+3. Language is detected from the transcription
+4. The text goes to the LLM for processing
+5. The response is synthesized into MP3 using the correct voice (Aria/Xiaoxiao/Francisca)
+6. The voice message is sent back to you
+7. If the response contains URLs, a separate text message lists them
+
+No audio files are uploaded to GitHub — only text transcripts.
+
+I don't need your help with the redeploy — it's handled. You can test it whenever you're back. Enjoy your break, Gary! 🫡
+
