@@ -159,3 +159,26 @@ Let me send that Berkeley Herbal Center draft now.
 
 Sent! That's the third email to Berkeley Herbal Center — this one has more detail with the farm profiles, pricing flexibility, and the Instagram link showing the tree-planting program. Hopefully the third time's the charm. Let me know what you'd like to tackle next.
 
+
+### 🧑 Governor
+
+Saya tak tahu, saya perlu buat perasaan ekosystem dan kemudian saya tahu apa yang awak fikir mengambil tangan saya sekarang. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Saya faham — awak nak rasa ekosistem dulu sebelum decide apa yang nak buat. Biar saya bagi gambaran ringkas apa yang sedang aktif sekarang:
+
+**Yang sedang berjalan:**
+- **Warm-up emails** — 19 prospecting emails dihantar semalam, 47% open rate tapi zero clicks. Ramai yang buka tapi tak click through.
+- **Berkeley Herbal Center** — baru saya hantar email ketiga untuk awak
+- **Good Vibrations** — Athena dah interested, samples dah sampai, awak dah follow-up Jun 5. Sekarang tunggu dia reply.
+- **Drafts** — ada 18 lagi draft warm-up emails untuk apothecaries lain yang sedia nak dihantar
+
+**Yang mungkin perlukan perhatian awak:**
+1. **Hantar warm-up drafts yang lain** — ada 18 lagi sedia nak pergi
+2. **Follow-up dengan yang dah buka email tapi tak click** — Proper Xchange buka 6 kali, tu tanda minat
+3. **Check balas-balas yang masuk** — mana tahu ada yang dah reply
+
+Apa yang awak rasa? Nak saya hantarkan warm-up drafts yang lain, atau nak tumpu pada follow-up yang spesifik?
+
