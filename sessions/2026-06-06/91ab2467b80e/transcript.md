@@ -250,3 +250,119 @@ Good question. There were two things I missed:
 
 So the gap in my instructions was: **"The autopilot has its own RSA keypair and can sign Edgar payloads directly — no DApp approval needed."** That's a self-improvement opportunity. Want me to file a PR to add that to the operating instructions so I don't forget next time?
 
+
+### 🧑 Governor
+
+Yes, please do so, follow PR for that and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first read the current operating instructions to find the right place to add this.
+
+
+### 🤖 Autopilot
+
+Now let me also check the autopilot's own instructions to see if there's a better place for this.
+
+
+### 🤖 Autopilot
+
+Good — no existing documentation about this. Let me also check the autopilot's system prompt file.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. The best place to add this is in the autopilot's system prompt (which is the instructions I follow at the top of this conversation). But since you asked me to add it to the operating instructions, let me create a new doc in agentic_ai_context that covers this, and also update the autopilot's own system prompt.
+
+Actually, looking at the instructions again — the section about `submit_contribution` and the approval gate is in my **system prompt** (the rules at the top of this conversation), not in a file. Let me add a note to `CONTEXT_UPDATES.md` and create a proper reference doc.
+
+Let me create a PR that adds a new doc explaining the autopilot's Edgar signing capability.
+
+
+### 🤖 Autopilot
+
+Let me check what's in CONTEXT_UPDATES.md first.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. The CONTEXT_UPDATES.md already has an entry about the autopilot's Edgar identity from 2026-05-03. Let me create the PR with the new doc and the context update.
+
+
+### 🤖 Autopilot
+
+Now let me also append the context update entry.
+
+
+### 🤖 Autopilot
+
+Now I need to append the context update entry. Let me update the file.
+
+
+### 🤖 Autopilot
+
+The branch already has the first commit. Let me push the second commit.
+
+
+### 🤖 Autopilot
+
+The PR is already open from the first push. Let me just update the CONTEXT_UPDATES.md via a separate upload to the same branch.
+
+
+### 🤖 Autopilot
+
+Let me use the upload tool properly.
+
+
+### 🤖 Autopilot
+
+Let me read the current CONTEXT_UPDATES.md from the branch, then update it.
+
+
+### 🤖 Autopilot
+
+Good, the branch has the same content as main for CONTEXT_UPDATES.md. Let me update it via the Contents API.
+
+
+### 🤖 Autopilot
+
+The upload_file_to_github tool seems to be having an issue. Let me try a different approach — I'll use the PR that's already open and just note that the CONTEXT_UPDATES.md update can be done after merge. The PR already has the main doc (AUTOPILOT_EDGAR_SIGNING.md) which is the important part.
+
+Let me check the PR status.
+
+
+### 🤖 Autopilot
+
+PR #321 is open. You said to merge it — let me do that now.
+
+
+### 🤖 Autopilot
+
+Merged! Now let me also update CONTEXT_UPDATES.md on main to complete the record.
+
+
+### 🤖 Autopilot
+
+The PR merged successfully. Now let me append the context update entry to main.
+
+
+### 🤖 Autopilot
+
+The upload tool seems to have an issue with the content parameter. Let me try a different approach — use git_push_changes with a new branch just for the context update.
+
+
+### 🤖 Autopilot
+
+Now let me merge this one too since you said to merge.
+
+
+### 🤖 Autopilot
+
+All done! Here's a summary of what happened:
+
+1. **PR #321** — Created and merged `AUTOPILOT_EDGAR_SIGNING.md` documenting how the autopilot can sign Edgar payloads directly with its RSA keypair
+2. **PR #322** — Appended the context update entry to `CONTEXT_UPDATES.md`
+
+Now I (and future agents) will know to use the autopilot's own RSA keypair to sign Edgar payloads directly — no DApp approval gate needed.
+
