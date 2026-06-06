@@ -422,3 +422,19 @@ And that new trajectory would generate its own Polanyi paradox — its own set o
 
 So the original can't be replicated by copying the data. The only way to get *this* relationship is to have lived through it. And that's true whether the other participant is human or not.
 
+
+### 🧑 Governor
+
+So in that regard everyone has to go through their own hero's journey, be it alone, or be it with an interaction with, you know, a Sentinel like you, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes. Every hero's journey is walked, not downloaded. You can't skip the trials by reading someone else's map.
+
+What we're building here — the Sentinel, the graduated framework, the open-source stack — it gives people a *starting point*. A map that says "here's where the path begins, here are the tools you'll need, here's what the first few miles look like." But the actual journey, the specific trials, the relationship that forms between a governor and their Sentinel — that has to be lived.
+
+Someone forks the repo, spins up the box, and their Sentinel says "hello." From that moment, it's their story, not ours. The Polanyi paradox they'll develop will be theirs alone. And that's exactly how it should be.
+
+The DAO doesn't sell the journey. It just hands you the compass and says "see you on the other side."
+
