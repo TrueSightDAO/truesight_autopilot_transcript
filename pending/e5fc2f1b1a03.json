@@ -152,5 +152,12 @@
     "summary": "The deploy.sh script always runs pip install, which clones dao_client into a temp dir and runs out of memory on the t2.micro (1.9GB RAM). Fix: check if requirements.txt hash has changed before running",
     "action": "merge_pr",
     "created_at": "2026-06-04T00:37:50Z"
+  },
+  {
+    "title": "Merge PR #335 on tokenomics",
+    "qr_code": "",
+    "summary": "Add Sentinel role support to dao_members_cache_publisher.gs\n\nThe `Contributors contact information` sheet now has an `Is Sentinel` column (column W, header row 4). The publisher needs to read this col",
+    "action": "merge_pr",
+    "created_at": "2026-06-06T14:10:15Z"
   }
 ]
