@@ -177,3 +177,13 @@ Merged. The infra doc now reflects the correct autopilot IP and both Sidekiq ASG
 
 Anything else you want me to look at while I'm in the ecosystem?
 
+
+### 🧑 Governor
+
+Are both of this psychic instances running on Nilland's AWS account or are they running on the Exploria account? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Both Sidekiq instances are in **Nelanco's** account (`767697632458`). I confirmed this from the EC2 API — both `i-0dfeb7a93f1f78e8e` (34.234.193.80) and `i-09883a010a52509f6` (100.53.89.222) returned under the Nelanco account when I queried them. The old Explorya Sidekiq (`seni_sk_2026`, instance `i-0bb43299c84c5ccd5`) has been stopped since May 28.
+
