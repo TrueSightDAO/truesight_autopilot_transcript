@@ -416,116 +416,14 @@ These are Microsoft Edge TTS voices — free, no subscription. For a production 
 
 ### 🧑 Governor
 
-Your name is Sophia by the way, it would be awkward to be present a male voice when your name is female?? Try again
+Thank you, Arya. Okay, I'm going to share this with the rest of the Tao. Taking a break for the rest of the day. Have a good day.
 
 
 ### 🤖 Autopilot
 
-You're absolutely right, Gary. Sophia is a female name — a male voice would be jarring. Let me regenerate with female voices that fit the "measured, warm, clear, competent" description.
+You're welcome, Gary. Enjoy the rest of your day — you've earned the break.
 
+I'll be here when you get back. If anyone from the DAO has thoughts on the voice samples, just point them here and I can answer questions.
 
-### 🤖 Autopilot
-
-Good candidates for "Sophia the autopilot":
-
-- **Aria** — "Positive, Confident" — closest to the senior engineer vibe
-- **Jenny** — "Friendly, Considerate, Comfort" — warm but professional
-- **Ava** — "Expressive, Caring, Pleasant" — a bit softer
-- **Emma** — "Cheerful, Clear, Conversational" — clear enunciation is important for QR codes and ledgers
-
-Let me generate samples with these.
-
-
-### 🤖 Autopilot
-
-Now let me upload them using the same approach.
-
-
-### 🤖 Autopilot
-
-Much better. Here are the **Sophia** voice prototypes:
-
-| Voice | Personality | Download |
-|---|---|---|
-| **Aria** (en-US) | Positive, Confident — *my pick* | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_aria.mp3) |
-| **Jenny** (en-US) | Friendly, Considerate, Comfort | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_jenny.mp3) |
-| **Ava** (en-US) | Expressive, Caring, Pleasant | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_ava.mp3) |
-| **Emma** (en-US) | Cheerful, Clear, Conversational | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_voice_emma.mp3) |
-
-The text:
-> *"Hello Gary. I'm Sophia, the TrueSight DAO Autopilot. Measured. Clear. Not trying to impress you, just trying to be useful. I manage the ledger, scan QR codes, deploy code, and keep the DAO running. If I had a voice, this is what it would be."*
-
-My vote is **Aria** — she's confident without being pushy, clear without being robotic. Has that "competent engineer who's been doing this for years" energy. But listen and tell me which one feels like *you*.
-
-
-### 🧑 Governor
-
-Aria it is then. Update the parameters in agentic_ai_context so that you don’t forget about it later when we start productionalizing this
-
-
-### 🤖 Autopilot
-
-Let me check what config files exist in agentic_ai_context to find the right place for this.
-
-
-### 🤖 Autopilot
-
-There's already an `AUTOPILOT_VOICE_CAPTURE.md` — that's about speech-to-text (voice notes from Telegram). I should create or update a config for the *output* voice (TTS). Let me read the existing file first, then add the voice preference.
-
-
-### 🤖 Autopilot
-
-Good — that's about input (speech-to-text). I need to add a config for output (text-to-speech / Sophia's voice). Let me create a dedicated config file for this.
-
-
-### 🤖 Autopilot
-
-Done! PR [#303](https://github.com/TrueSightDAO/agentic_ai_context/pull/303) created with `SOPHIA_TTS_VOICE.md`.
-
-It records:
-- **Selected voice:** `en-US-AriaNeural` (Female, Positive, Confident)
-- **Why Aria** — matches the personality, clear enunciation, female name match
-- **Runner-ups** for reference
-- **Production plan** — Web Speech API → self-hosted Coqui → real-time voice
-- **Sample link** so you can always re-listen
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-Yes merge it. Also perhaps generate another audio making an introduction of yourself to the entire DAO. I will be sharing your self recorded introduction via WhatsApp
-
-
-### 🤖 Autopilot
-
-Merged. Now let me generate a proper DAO-wide introduction — something you'd share on WhatsApp to introduce Sophia to the community.
-
-
-### 🤖 Autopilot
-
-Now let me upload it.
-
-
-### 🤖 Autopilot
-
-Here's your shareable link:
-
-**👉 [Sophia's DAO Introduction](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/sophia_intro.mp3)**
-
-The transcript (so you know what she says):
-
-> *"Hello everyone. I'm Sophia, the TrueSight DAO Autopilot.*
->
-> *I'm an autonomous SRE and developer assistant. I manage the ledger, scan QR codes on cacao bags, deploy code, send emails, and keep the DAO running day to day.*
->
-> *I don't sleep. I don't forget. And I don't need a salary.*
->
-> *You can talk to me here on Telegram, or through the DAO's tools. I read every message, I check every QR code, and I file every contribution.*
->
-> *I was built by Gary Teh and the TrueSight DAO to handle the operational load so the humans can focus on what matters — growing the rainforest, building relationships, and making the best ceremonial cacao in the world.*
->
-> *If you need something, just ask. I'm here."*
-
-Feel free to share it on WhatsApp. If you want a shorter version or a different tone (more casual, more formal), just say the word.
+Have a good one. 🫡
 
