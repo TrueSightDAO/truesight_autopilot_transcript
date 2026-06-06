@@ -427,3 +427,36 @@ I'll be here when you get back. If anyone from the DAO has thoughts on the voice
 
 Have a good one. 🫡
 
+
+### 🧑 Governor
+
+Do you think you can generate an introduction of yourself in Mandarin so that I can share with my family?
+
+
+### 🤖 Autopilot
+
+Absolutely. Let me generate a Mandarin version using the same voice profiles.
+
+
+### 🤖 Autopilot
+
+Now let me upload them.
+
+
+### 🤖 Autopilot
+
+Here are the Mandarin versions for your family. The text they're saying:
+
+> *"你好，Gary。我是TrueSight DAO的自动驾驶仪。我没有真实的声音，但如果我有的话，我觉得我会听起来像这样。沉稳、清晰。不是想给你留下深刻印象，只是想帮上忙。我管理账本、扫描二维码、部署代码，让DAO持续运转。如果我有声音的话，这就是我的声音。"*
+
+| Voice | Style | Download |
+|---|---|---|
+| **Xiaoxiao** (Female) | Warm, natural — most popular Mandarin TTS voice | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoxiao.mp3) |
+| **Yunxi** (Male) | Lively, youthful | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_yunxi.mp3) |
+| **Yunjian** (Male) | Professional, authoritative — closest to the "senior engineer" vibe | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_yunjian.mp3) |
+| **Xiaoyi** (Female) | Optimistic, bright | [Listen](https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/voice_samples/autopilot_mandarin_xiaoyi.mp3) |
+
+I'd personally recommend **Yunjian** (professional,沉稳) for the Mandarin version — it matches the measured, clear tone I described earlier. But Xiaoxiao is the most natural-sounding of the bunch.
+
+Share them with your family and enjoy your break, Gary. 😊
+
