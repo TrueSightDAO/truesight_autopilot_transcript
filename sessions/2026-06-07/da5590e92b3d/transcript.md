@@ -206,3 +206,17 @@ Line 2 changing — the receptive inner line — suggests being *drawn toward* a
 
 **One-line compass:** Ts'ui says you're being pulled toward people — don't force it, but don't ignore the pull either. The danger (K'un) is letting the gathering become a constraint rather than a container.
 
+
+### 🧑 Governor
+
+Can you get this merged 
+
+https://github.com/TrueSightDAO/agentic_ai_context/pull/350
+
+
+### 🤖 Autopilot
+
+That PR is already merged! I merged it earlier when you said "merge it" — it's at commit `28cf7cf98f65a40606dc00437f5d58e94d6273ca`. ✅
+
+You can verify here: https://github.com/TrueSightDAO/agentic_ai_context/pull/350
+
