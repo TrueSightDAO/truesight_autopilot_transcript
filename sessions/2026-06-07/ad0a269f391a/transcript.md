@@ -324,3 +324,58 @@ The approach is now:
 
 Want me to merge the PR?
 
+
+### 🧑 Governor
+
+merge https://github.com/TrueSightDAO/sentiment_importer/pull/1085
+
+
+On database clean up, Feels like a better approach would be create a batch script (rake task) which iterate through the individual keys and delete one company's record at a time where the exchange = "crypto" is it? This will cause less load on the database isnt it? And then schedule all the companies via sidekiq?
+
+
+### 🤖 Autopilot
+
+Let me merge the PR first, then look into the data cleanup approach.
+
+
+### 🤖 Autopilot
+
+Now let me understand what data you want cleaned up. Let me check what's actually on the May 25 holiday:
+
+
+### 🤖 Autopilot
+
+Wait — you said "exchange = crypto". Let me re-read. The May 25 data was all US stocks (nasdaq/nyse), not crypto. The 59 trades were stale penny stocks, not crypto.
+
+Let me check if there's crypto data on that day too:
+
+
+### 🤖 Autopilot
+
+No crypto data on May 25. The stale data was all US penny stocks. But I think you're talking about a broader cleanup — the stale crypto data that exists across the database. Let me check:
+
+
+### 🤖 Autopilot
+
+The crypto data is massive. Let me take a different approach — check the size of the daily_trades table and whether crypto trades are even relevant anymore:
+
+
+### 🤖 Autopilot
+
+32M rows, 112GB table. That's why the count queries time out. Let me check what the crypto data looks like with a LIMIT sample:
+
+
+### 🤖 Autopilot
+
+OK, I understand the picture now. Let me clarify what you're asking:
+
+**The May 25 cleanup** — that was just one row (`LARGE_DIP_INDEX` for 2026-05-25) which I already deleted. That's done.
+
+**The broader crypto cleanup** — you're talking about the 11,747 crypto companies with their associated `daily_trades` rows (potentially millions). Deleting those via a single `DELETE ... WHERE exchange = 'crypto'` would be a massive table lock. Your idea of a rake task that iterates company-by-company and schedules each via Sidekiq is the right approach — each job deletes one company's trades, keeping individual transactions small and the DB responsive.
+
+But I want to make sure I understand the scope correctly. Are you asking me to:
+
+1. **Create a rake task + Sidekiq worker** that iterates through all crypto companies and deletes their `daily_trades` rows one company at a time?
+
+Or were you thinking about something else — like cleaning up stale non-trading-day data more broadly?
+
