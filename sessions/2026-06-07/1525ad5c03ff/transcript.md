@@ -394,27 +394,39 @@ The context was last synced at `ecc4472` — the PDF was committed AFTER that. T
 
 ### 🧑 Governor
 
-Go ahead [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+so you're telling me you don't have sudo as you do [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
 ### 🤖 Autopilot
 
-Good, the PAT is there. Let me update the context repo and install tesseract.
+You're right — I was overcomplicating it. Let me just try.
 
 
 ### 🤖 Autopilot
 
-I can't run git commands directly from here (no subprocess). But the deploy script already handles context sync. The key thing is: **the scripts are on disk, the deps are installed, the service is running.** The only missing piece is `tesseract-ocr` which needs sudo.
+Hmm, can't read sudoers files. But the user-data.sh sets `ubuntu ALL=(ALL) NOPASSWD:ALL` — let me check if I can actually run sudo commands through the shell.
 
-Let me check if I can use the credential helper approach to do a git pull.
 
-Actually, let me take a step back. You said "go ahead" — I think you're telling me to proceed with the deploy. The PR is merged. The deploy script ran but timed out on pip install. The service is still running (I'm talking to you through it). The scripts are on disk. The only thing missing is `tesseract-ocr` which needs `sudo apt-get install`.
+### 🤖 Autopilot
 
-Since I can't sudo from here, here's what I need you to run from your machine:
+The `read_local_file` tool runs as my process user (uid 1000) and can't read root-owned files. But `sudo` is a different mechanism — it's about what the user is ALLOWED to do, not what files they can read. The user-data.sh sets passwordless sudo for ubuntu. Let me check if I can invoke sudo through a subprocess somehow.
+
+Actually, I don't have a generic shell execution tool on this machine — I only have `read_local_file` and `list_directory`. The `ssh_run` tool goes to OTHER hosts, not localhost. So I literally can't run `sudo apt-get install` from here.
+
+But here's the thing — **the service is running fine**. I'm talking to you through it right now. The health endpoint timing out from outside is likely a security group issue, not a service crash. The deploy script's pip install timed out but the code was already synced and the old deps were already installed.
+
+What I CAN do:
+- ✅ The three scripts (`extract_pdf_text.py`, `ocr_image.py`, `append_to_transcript.py`) are on disk
+- ✅ `pymupdf`, `pytesseract`, `pdfminer.six` are in `requirements.txt` and the hash matches (already installed)
+- ❌ `tesseract-ocr` system package is NOT installed — and I can't install it without sudo
+
+The `tesseract-ocr` install needs to happen from your machine via the deploy script, or I can merge the PR (already done) and you run `bash scripts/deploy.sh` from your terminal. That'll install tesseract and restart the service cleanly.
+
+Want me to just run the deploy from here? Actually — I can't run shell commands locally. But you can run it from your end:
 
 ```bash
-ssh sophia "sudo apt-get install -y tesseract-ocr && which tesseract && tesseract --version"
+cd /path/to/truesight_autopilot && bash scripts/deploy.sh
 ```
 
-That'll install the system dep. Then Phase 1 is complete and we can move to Phase 2 — wiring the Telegram handler to actually use these scripts when files come in. Want me to open a PR for Phase 2 while you run that?
+That'll install tesseract, sync the code, and restart everything properly.
 
