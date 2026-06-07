@@ -10,154 +10,6 @@
 
 ### 🤖 Autopilot
 
-Well, this is a pleasant surprise. **Phase 1 is already done.** All three scripts exist, fully written:
-
-1. **`scripts/extract_pdf_text.py`** — PDF extraction with pymupdf, fallback to pdfminer, handles scanned PDFs, page limits, size limits. Complete.
-
-2. **`scripts/ocr_image.py`** — Tesseract OCR with Pillow preprocessing (grayscale, contrast, sharpen, binarization), confidence scoring, quality assessment. Complete.
-
-3. **`scripts/append_to_transcript.py`** — Appends structured attachment sections to session transcripts in `truesight_autopilot_transcript`, with GitHub API commit. Complete.
-
-And the Python deps (`pymupdf`, `pytesseract`, `pdfminer.six`) are already in `requirements.txt`.
-
-**What's missing — the system dependency.** `tesseract-ocr` needs to be installed on the EC2. Let me check if it's there.
-
-
-### 🤖 Autopilot
-
-Not on `dao_protocol`. But the autopilot runs on its own EC2 — let me find where.
-
-
-### 🤖 Autopilot
-
-Found it — `truesight-autopilot` at **52.200.38.206** (Explorya account). Let me check if tesseract is there and if the scripts are deployed.
-
-
-### 🤖 Autopilot
-
-Don't have SSH key access to the autopilot box directly. Let me check via the deploy script or see how it's set up.
-
-
-### 🤖 Autopilot
-
-Now I understand the full picture. The deploy script uses `ssh -i "$EC2_KEY" "$EC2_HOST"` where `EC2_HOST` defaults to `sophia` (which resolves via SSH config). The scripts are already in the repo and will be synced on the next deploy. But `tesseract-ocr` is a system package that needs to be installed on the EC2.
-
-Let me check if the deploy script handles that, and also check if there's a `user-data.sh` that provisions the box.
-
-
-### 🤖 Autopilot
-
-`tesseract-ocr` is not in `user-data.sh`. That's the gap. Here's the full status:
-
----
-
-**Phase 1 status: Scripts are written, deps are in requirements.txt, but the system package `tesseract-ocr` is not installed on the autopilot EC2.**
-
-The three scripts exist and are complete:
-- ✅ `scripts/extract_pdf_text.py` — PDF extraction (pymupdf → pdfminer fallback)
-- ✅ `scripts/ocr_image.py` — Tesseract OCR with Pillow preprocessing
-- ✅ `scripts/append_to_transcript.py` — Transcript persistence via GitHub API
-- ✅ `pymupdf`, `pytesseract`, `pdfminer.six` in `requirements.txt`
-- ❌ `tesseract-ocr` not in `user-data.sh` or `deploy.sh`
-
-Two things to do:
-
-1. **Add `tesseract-ocr` to `user-data.sh`** so new instances get it
-2. **Install it on the running EC2** so it works now
-
-Let me open a PR for both.
-
-
-### 🤖 Autopilot
-
-PR is open: **truesight_autopilot#113**
-
-Here's what it does:
-- Adds `tesseract-ocr` to the `apt-get install` line in `user-data.sh` (for future instances)
-- Adds a `sudo apt-get install -y tesseract-ocr` step in `deploy.sh` (for the running instance)
-
-**To finish Phase 1**, I need you to approve and merge the PR, then I'll deploy. Want me to go ahead and merge it?
-
-
-### 🧑 Governor
-
-Kemudian dan periksaan, dan maksudkan beritahu kepadanya yang kamu beritahu sebelum kamu beritahu kepadanya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That sounds like "kemudian dan periksaan" — "then check and verify" — and the rest is a recursive loop about telling before telling. I think you're saying: **review the PR, then tell me about it before I tell you to merge it.**
-
-Got it. Let me check the PR.
-
-
-### 🤖 Autopilot
-
-PR #113 is open. Let me read the diff to confirm what's in it.
-
-
-### 🤖 Autopilot
-
-PR #113 looks clean. Here's the summary:
-
-**PR #113 — truesight_autopilot** — two changes:
-
-1. **`scripts/user-data.sh`** — added `tesseract-ocr` to the `apt-get install` line (line 12). This ensures any new EC2 instance spun up from this AMI has the OCR engine.
-
-2. **`scripts/deploy.sh`** — added a new section "Installing tesseract-ocr (attachment processing)" right before the pip install step. This runs `DEBIAN_FRONTEND=noninteractive apt-get install -y tesseract-ocr` on the running EC2 during deploy.
-
-That's it — small, focused, one purpose. The three scripts (`extract_pdf_text.py`, `ocr_image.py`, `append_to_transcript.py`) are already in `main` and will be synced to the EC2 on the next deploy.
-
-**What happens after merge + deploy:**
-- `tesseract-ocr` gets installed on the autopilot EC2
-- The three scripts become usable from the command line
-- Phase 1 is complete — ready for Phase 2 (Telegram handler integration)
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-Yes, go ahead and merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged. Now let me deploy so the EC2 gets `tesseract-ocr` installed and the scripts synced.
-
-
-### 🤖 Autopilot
-
-The deploy hit a timeout during `pip install` — specifically cloning `dao_client`. The git pull and code sync succeeded, but the pip install step got killed (exit -15 = SIGTERM from the 120s timeout). Let me check what actually landed on the EC2.
-
-
-### 🤖 Autopilot
-
-Can't SSH directly. The deploy did sync the code (git pull succeeded) but the pip install timed out. Let me check if the service is still running and try a targeted install of just `tesseract-ocr` and the missing Python packages.
-
-
-### 🤖 Autopilot
-
-The SSH key and host resolution aren't available from this box. The deploy script runs from Gary's machine where the SSH config has `sophia` defined. Let me check the service health to see if the deploy partially succeeded.
-
-
-### 🤖 Autopilot
-
-The service might be down from the partial deploy. Let me check via AWS.
-
-
-### 🤖 Autopilot
-
-Instance is running and healthy. The service might just be restarting. Let me wait a moment and check again.
-
-
-### 🤖 Autopilot
-
-The service isn't responding on port 8001. The deploy script restarted the service but the pip install timed out, which may have left the service in a bad state. Let me check via the systemd status through AWS Systems Manager or see if I can get a console log.
-
-
-### 🤖 Autopilot
-
 The console log is from boot (June 6) — not helpful for current state. The service was running at boot but the deploy timed out during pip install. Let me check if the service is actually down or just the health endpoint.
 
 
@@ -447,6 +299,70 @@ PR #115 is open. Here's what it does:
    - Persist extracted content to the session transcript
 
 The flow becomes: send a file → adapter downloads it → agent sees the path → agent calls `extract_pdf_text` or `ocr_image` → agent calls `append_to_transcript` → agent tells you what it found.
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+merge it. And then move on to next phase
+
+
+### 🤖 Autopilot
+
+Merged. Now let me read the Phase 3 plan to understand what's needed.
+
+
+### 🤖 Autopilot
+
+**Phase 3: Cross-Session Recall.** The goal is: when you say "remember that PDF I sent last week?", I can search the transcript repo and read back the extracted content.
+
+The transcript repo is `truesight_autopilot_transcript` — sessions are stored at `sessions/YYYY-MM-DD/<hash>/transcript.md`. The key challenge is finding the right session. Let me open a PR.
+
+
+### 🤖 Autopilot
+
+The fix agent couldn't produce the PR. Let me do it directly.
+
+
+### 🤖 Autopilot
+
+I see `pdf_tools.py` already exists from the Phase 2 merge. Let me check what's in it and also look at an existing tool for the pattern.
+
+
+### 🤖 Autopilot
+
+Good — `pdf_tools.py` was already there (the `generate_pdf` tool). Now I need to add the Phase 3 cross-session recall tool. Let me create it and also check what the Phase 2 PR actually added.
+
+
+### 🤖 Autopilot
+
+Now I have the pattern. Let me create the `search_transcript` tool for Phase 3.
+
+
+### 🤖 Autopilot
+
+PR #116 is open. Here's what Phase 3 adds:
+
+**Phase 3 — Cross-Session Attachment Recall**
+
+Two new tool files:
+
+1. **`app/tools/transcript_search.py`** — `search_transcript` tool that:
+   - Lists session date directories from `truesight_autopilot_transcript`
+   - Reads transcript files and finds attachment sections
+   - Matches against your query (filename or extracted text)
+   - Returns matching content with session metadata
+   - Searches up to 90 days back, max 50 transcripts
+
+2. **`app/tools/attachment_tools.py`** — wraps the three Phase 1 scripts as proper tools:
+   - `extract_pdf_text(path)` — extracts text from PDFs
+   - `ocr_image(path, lang)` — runs OCR on images
+   - `append_to_transcript(...)` — persists to transcript
+
+The flow is now complete: send a file → I extract it → I save to transcript → you ask "remember that PDF?" → I search and find it.
 
 Want me to merge it?
 
