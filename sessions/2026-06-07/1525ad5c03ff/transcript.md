@@ -203,3 +203,24 @@ The key insight: **Grok vision is already wired** for image analysis. We just ne
 
 Want me to merge either of these PRs, or shall we start executing Phase 1?
 
+
+### 🧑 Governor
+
+Merge the implementation document and then share with me the URL to download the PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me merge the implementation plan PR first.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the PDF download URL:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/ATTACHMENT_PROCESSING_IMPLEMENTATION_PLAN.pdf**
+
+That's the raw blob URL — you can view it in the browser or download it. The `.md` version is at the same path with `.md` extension if you prefer that.
+
+The conventions PR (#336) is still open — do you want me to merge that one too?
+
