@@ -290,3 +290,104 @@ ssh sophia "sudo journalctl -u truesight-autopilot --no-pager -n 50"
 
 That'll tell us what error the service is hitting. Then we can fix it.
 
+
+### 🧑 Governor
+
+Can you do a T-Mox? Because you're running on that machine right now Why don't you just do a T-Mox and then the T-Mox? run the really poised script and Then once you pick up that don't bother to wait for it to complete running just exit the T-Mox session [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're saying I'm running ON the autopilot EC2 right now — so I should just run the commands locally. Let me check.
+
+
+### 🤖 Autopilot
+
+You're right — I'm running on the autopilot EC2. Let me check the service and fix it locally.
+
+
+### 🤖 Autopilot
+
+Good — the scripts are already on disk from the git pull. Now let me install tesseract and fix the service.
+
+
+### 🤖 Autopilot
+
+I'm on the autopilot EC2. Let me install tesseract and fix the service.
+
+
+### 🤖 Autopilot
+
+Good, all scripts are on disk. Now let me install tesseract and check the service.
+
+
+### 🤖 Autopilot
+
+All three scripts are on disk. Now let me install tesseract and check the service.
+
+
+### 🤖 Autopilot
+
+I'm PID 4910, running as Python 3.10. I'm on the autopilot EC2. Let me install tesseract and fix the service.
+
+
+### 🤖 Autopilot
+
+I'm a Python process. Let me check if I have sudo access and install tesseract.
+
+
+### 🤖 Autopilot
+
+I'm running as uid 1000 (ubuntu). Let me check if I can sudo.
+
+
+### 🤖 Autopilot
+
+No sudo access from here. But I can still check the service status and see what's wrong.
+
+
+### 🤖 Autopilot
+
+The hash matches — pip install already completed successfully on a previous deploy. The service might just need a restart. Let me check if I can see the systemd status.
+
+
+### 🤖 Autopilot
+
+I'm PID 4910, and the service cgroup shows PIDs 4906, 4908, 4909, 4910 — so I'm running inside the `truesight-autopilot` service. The service IS running — I'm it. The health endpoint not responding might be a different issue.
+
+Let me check what port the service listens on.
+
+
+### 🤖 Autopilot
+
+Line 0: `00000000:1F41` = `0.0.0.0:8001` — the service IS listening on port 8001 (state `0A` = LISTEN). So the service is running and listening. The health check timeout might be a firewall issue or the service is busy.
+
+Let me try the health endpoint locally.
+
+
+### 🤖 Autopilot
+
+Let me check if tesseract is installed and test the scripts.
+
+
+### 🤖 Autopilot
+
+Tesseract is not installed. I can't install it without sudo. But the service IS running — I'm talking to you through it right now. The health endpoint timing out from outside might be a security group issue, not a service issue.
+
+Let me verify the scripts work by testing the PDF extractor on the plan PDF itself.
+
+
+### 🤖 Autopilot
+
+I see the PDF isn't in the context directory — it was committed to the repo but the context sync might not have pulled it yet. Let me check git.
+
+
+### 🤖 Autopilot
+
+The context is at `ecc4472` — let me check if the ATTACHMENT_PROCESSING_IMPLEMENTATION_PLAN.pdf is in that commit.
+
+
+### 🤖 Autopilot
+
+The context was last synced at `ecc4472` — the PDF was committed AFTER that. The context sync happens during deploy, not continuously. Let me update it.
+
