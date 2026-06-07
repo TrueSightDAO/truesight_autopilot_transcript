@@ -100,3 +100,89 @@ PDFs are completely opaque to me right now. Images get Grok vision but no OCR te
 
 **Want me to start Phase 1?** I can open a PR to create the three scripts and add the deps to the deploy script. That's the foundation everything else builds on.
 
+
+### 🧑 Governor
+
+Yeah, please start with Phase 1 [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first check what scripts already exist and how the deploy script works so I don't duplicate anything.
+
+
+### 🤖 Autopilot
+
+Interesting — the three scripts already exist as files in the repo, and `pymupdf`, `pytesseract`, and `pdfminer.six` are already in `requirements.txt`. Let me check what's actually in those scripts.
+
+
+### 🤖 Autopilot
+
+Well, this is a pleasant surprise. **Phase 1 is already done.** All three scripts exist, fully written:
+
+1. **`scripts/extract_pdf_text.py`** — PDF extraction with pymupdf, fallback to pdfminer, handles scanned PDFs, page limits, size limits. Complete.
+
+2. **`scripts/ocr_image.py`** — Tesseract OCR with Pillow preprocessing (grayscale, contrast, sharpen, binarization), confidence scoring, quality assessment. Complete.
+
+3. **`scripts/append_to_transcript.py`** — Appends structured attachment sections to session transcripts in `truesight_autopilot_transcript`, with GitHub API commit. Complete.
+
+And the Python deps (`pymupdf`, `pytesseract`, `pdfminer.six`) are already in `requirements.txt`.
+
+**What's missing — the system dependency.** `tesseract-ocr` needs to be installed on the EC2. Let me check if it's there.
+
+
+### 🤖 Autopilot
+
+Not on `dao_protocol`. But the autopilot runs on its own EC2 — let me find where.
+
+
+### 🤖 Autopilot
+
+Found it — `truesight-autopilot` at **52.200.38.206** (Explorya account). Let me check if tesseract is there and if the scripts are deployed.
+
+
+### 🤖 Autopilot
+
+Don't have SSH key access to the autopilot box directly. Let me check via the deploy script or see how it's set up.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The deploy script uses `ssh -i "$EC2_KEY" "$EC2_HOST"` where `EC2_HOST` defaults to `sophia` (which resolves via SSH config). The scripts are already in the repo and will be synced on the next deploy. But `tesseract-ocr` is a system package that needs to be installed on the EC2.
+
+Let me check if the deploy script handles that, and also check if there's a `user-data.sh` that provisions the box.
+
+
+### 🤖 Autopilot
+
+`tesseract-ocr` is not in `user-data.sh`. That's the gap. Here's the full status:
+
+---
+
+**Phase 1 status: Scripts are written, deps are in requirements.txt, but the system package `tesseract-ocr` is not installed on the autopilot EC2.**
+
+The three scripts exist and are complete:
+- ✅ `scripts/extract_pdf_text.py` — PDF extraction (pymupdf → pdfminer fallback)
+- ✅ `scripts/ocr_image.py` — Tesseract OCR with Pillow preprocessing
+- ✅ `scripts/append_to_transcript.py` — Transcript persistence via GitHub API
+- ✅ `pymupdf`, `pytesseract`, `pdfminer.six` in `requirements.txt`
+- ❌ `tesseract-ocr` not in `user-data.sh` or `deploy.sh`
+
+Two things to do:
+
+1. **Add `tesseract-ocr` to `user-data.sh`** so new instances get it
+2. **Install it on the running EC2** so it works now
+
+Let me open a PR for both.
+
+
+### 🤖 Autopilot
+
+PR is open: **truesight_autopilot#113**
+
+Here's what it does:
+- Adds `tesseract-ocr` to the `apt-get install` line in `user-data.sh` (for future instances)
+- Adds a `sudo apt-get install -y tesseract-ocr` step in `deploy.sh` (for the running instance)
+
+**To finish Phase 1**, I need you to approve and merge the PR, then I'll deploy. Want me to go ahead and merge it?
+
