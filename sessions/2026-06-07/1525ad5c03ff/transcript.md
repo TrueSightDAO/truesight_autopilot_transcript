@@ -64,3 +64,51 @@ That's a small change to the deploy script or systemd unit. I can open a PR for 
 
 Want me to start with the easy win — the "I'm back" ping — and we can talk about session persistence separately?
 
+
+### 🧑 Governor
+
+Ya, mari kita pergi ke jenis. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look at the deploy script and systemd setup to figure out the best place to add the post-deploy ping.
+
+
+### 🤖 Autopilot
+
+Now let me look at the deploy tool implementation to see how it currently works:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me look at the deploy tool specifically:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my analysis:
+
+**The problem**: When the deploy tool runs, step 3 does `systemctl restart truesight-autopilot` — which kills the current process. The deploy tool returns a JSON result like `"Service restarting..."` but that message never reaches you because the process that was generating the response is already dead. You just see "deploying..." and then silence.
+
+**The fix**: I'll add a post-deploy health-check + Telegram ping. The deploy script already restarts all three services. I'll add a step after restart that:
+1. Polls the health endpoint until it comes back up
+2. Sends a Telegram message to you saying "✅ Back online"
+
+Let me open the PR.
+
+
+### 🤖 Autopilot
+
+PR is open! Here's the summary:
+
+**PR #120** — Adds a post-deploy "I'm back" notification to Telegram.
+
+**How it works:**
+1. Before restarting, the deploy tool writes a marker file (`/tmp/.autopilot_deployed`) with the commit SHA and timestamp
+2. When the new process starts up, the FastAPI lifespan checks for that marker
+3. If found, it sends you a Telegram message: *"✅ Deploy complete — commit abc123, back online in Xs"*
+4. Then deletes the marker so it only fires once
+
+This way the **new** process sends the notification, not the dying one — so it's reliable. Want me to merge it?
+
