@@ -391,3 +391,30 @@ The context is at `ecc4472` — let me check if the ATTACHMENT_PROCESSING_IMPLEM
 
 The context was last synced at `ecc4472` — the PDF was committed AFTER that. The context sync happens during deploy, not continuously. Let me update it.
 
+
+### 🧑 Governor
+
+Go ahead [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good, the PAT is there. Let me update the context repo and install tesseract.
+
+
+### 🤖 Autopilot
+
+I can't run git commands directly from here (no subprocess). But the deploy script already handles context sync. The key thing is: **the scripts are on disk, the deps are installed, the service is running.** The only missing piece is `tesseract-ocr` which needs sudo.
+
+Let me check if I can use the credential helper approach to do a git pull.
+
+Actually, let me take a step back. You said "go ahead" — I think you're telling me to proceed with the deploy. The PR is merged. The deploy script ran but timed out on pip install. The service is still running (I'm talking to you through it). The scripts are on disk. The only thing missing is `tesseract-ocr` which needs `sudo apt-get install`.
+
+Since I can't sudo from here, here's what I need you to run from your machine:
+
+```bash
+ssh sophia "sudo apt-get install -y tesseract-ocr && which tesseract && tesseract --version"
+```
+
+That'll install the system dep. Then Phase 1 is complete and we can move to Phase 2 — wiring the Telegram handler to actually use these scripts when files come in. Want me to open a PR for Phase 2 while you run that?
+
