@@ -37,3 +37,28 @@ Great question, Gary. Let me break this down.
 
 Want me to start with a PR that adds a PDF text extraction script and an OCR script to the autopilot repo? Then we can test it right here.
 
+
+### 🧑 Governor
+
+Actually, you know, don't go about implementing this. Let's continue the conversation. Actually, you know, for all our conversations, right? There's an output to the autopilot transcript repo. Maybe what would be interesting is that when I send you the attachment, whatever, that you, you know, pull out via OCR or image recognition or PDF extraction, you know, using the ALMs, you write the output from the tree processes to that transcript specific to this conversation session. That way you have something to reference to. I'm assuming that that's how we are able to continue the conversation in this topic without you forgetting about stuff. Let me know if I'm wrong in my assumption. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're mostly right, but let me clarify the nuance.
+
+**The transcript repo** — yes, every conversation session gets written to `truesight_autopilot_transcript`. That's a permanent record I can *read back* later. So if I save extracted PDF text or image descriptions there, I can pull them up in a future session.
+
+**But here's the key distinction:** The transcript repo is long-term storage. My *context window* is what I'm actively working with during a conversation. When I write to the transcript, that doesn't automatically reload it into my active memory next session. I'd need to explicitly read it back — which I can do, but only if I know to look for it.
+
+**The practical flow would be:**
+
+1. You send a PDF/image → I extract the content (OCR/vision/PDF text)
+2. I write it to the transcript file for this session
+3. During the same conversation, I still have it in context — we can discuss
+4. Next session, if you say "remember that PDF I sent last week?" I can `read_repo_file` the transcript and pull it back
+
+**What's missing right now** is the extraction tools themselves — OCR and vision. But the storage pipeline you described is solid. The transcript repo is exactly the right place for it.
+
+Want me to scope out a minimal PR that adds just the extraction scripts (PDF text + OCR), wired to save output to the transcript? No tool changes — just helper scripts I can call.
+
