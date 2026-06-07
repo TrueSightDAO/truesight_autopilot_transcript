@@ -474,3 +474,31 @@ Let me check if the service was restarted recently by looking at the cgroup.
 
 Same PIDs — no restart happened. The deploy hasn't run yet on your end. Let me know when Claude finishes the deploy and I'll verify everything is in place.
 
+
+### 🧑 Governor
+
+Can you check if you have been redeployed?
+
+
+### 🤖 Autopilot
+
+New PID — I was **redeployed**. I'm now PID 6251, not 4910. Let me check if tesseract is installed and the context is updated.
+
+
+### 🤖 Autopilot
+
+Both are updated. Let me check tesseract properly.
+
+
+### 🤖 Autopilot
+
+**Yes, I've been redeployed.** Here's the full status:
+
+- **New PID:** 6251 (was 4910)
+- **Autopilot repo:** at commit `20508da` (merged PR #113)
+- **Context repo:** at `e4fc6d3` (updated with latest agentic_ai_context)
+- **`tesseract`:** ✅ **Installed** at `/usr/bin/tesseract`
+- **Service:** ✅ Running and healthy
+
+**Phase 1 is complete.** All three scripts are on disk, tesseract is installed, Python deps are in place. Ready for Phase 2 — wiring the Telegram handler to actually use these scripts when files come in. Want me to open a PR for that?
+
