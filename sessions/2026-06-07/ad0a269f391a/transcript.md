@@ -132,3 +132,80 @@ The 59 trades are likely stale/partial data that got imported (possibly crypto o
 
 Want me to open a PR to add a minimum-trade-count guard to `mark_large_dips` so holidays with sparse data don't produce false correction readings?
 
+
+### 🧑 Governor
+
+yup. And also clean up the data for that day so that the chart doesn't look inaccurate
+
+
+### 🤖 Autopilot
+
+Let me first check what the sell-off index chart looks like and understand the data cleanup needed.
+
+
+### 🤖 Autopilot
+
+Clear as day — May 25 (Memorial Day) spikes to 0.25 with only 13 dips from 59 trades, while the surrounding real trading days are all 5–13%. Let me also check what those 59 trades on May 25 actually are:
+
+
+### 🤖 Autopilot
+
+Those are all penny stocks / near-delisted companies — stale data from a non-trading day. Now let me look at the code more carefully to plan the fix.
+
+
+### 🤖 Autopilot
+
+Now let me look at the `MacroIndicator.sell_off_over_period` to understand how the chart data is built:
+
+
+### 🤖 Autopilot
+
+Now I have a complete picture. Let me open the fix PR.
+
+
+### 🤖 Autopilot
+
+Let me do this directly with a PR.
+
+
+### 🤖 Autopilot
+
+Now let me create the PR with both the code fix and the data cleanup:
+
+
+### 🤖 Autopilot
+
+PR is open. Now let me clean up the bad data point from the database so the chart is accurate immediately.
+
+
+### 🤖 Autopilot
+
+Let me verify the cleanup:
+
+
+### 🤖 Autopilot
+
+The false 0.25 spike is gone. Here's the summary:
+
+---
+
+**Done.** Here's what happened:
+
+### Code Fix — PR #1081
+**https://github.com/TrueSightDAO/sentiment_importer/pull/1081**
+
+Added a `MINIMUM_TRADE_COUNT = 1000` guard to two places:
+
+1. **`DailyTrade.mark_large_dips`** — skips the large dip marking if fewer than 1,000 qualified companies have trades on that date
+2. **`LargeDipIndexRefresher.calculate_sell_off_index`** — returns nil (skips the index update) if trade count < 1,000
+
+Also added a `count_qualified_trades` helper method to `DailyTrade` so both places use the same check.
+
+### Data Cleanup
+Deleted the `LARGE_DIP_INDEX` row for **2026-05-25** (Memorial Day). The chart now shows a clean progression from May 22 → May 26 without the false 25% spike.
+
+### Why 1,000?
+Normal trading days have **10,000+** qualified companies. 1,000 is a generous floor — any day below that is clearly not a real trading day. The May 25 holiday had only **59**.
+
+The PR is ready for your review. Want me to merge it?
+
