@@ -28,82 +28,75 @@ What do you need to look into?
 
 ### 🧑 Governor
 
-Just a thought I am looking at the data on this https://edgar.truesight.me/large_dips?the_date=2026-5-26, that day is not a trading day, the sell off showing up as actual correction level 25 is inaccurate.
+Merge it. 
+
+Next item is that we used to experiment with including pricing data of crypo-currencies. It added a lot of junk. And then coingecko stopped providing us with that data feed. And no only really looks at the data of those crypto anyways and they really cause the lookup via the search bar to look shitty. I am not sure if it slows things down as well for the lookup, it might. 
+
+On the companies table their exchange = "crypto"
+
+I wonder what are your thoughts of what we should do about these records?
 
 
 ### 🤖 Autopilot
 
-Let me look into what's on that page and understand the data flow.
+Let me first merge that PR, then investigate the crypto records situation.
 
 
 ### 🤖 Autopilot
 
-The page redirects to a login screen (I can't see the data directly without authentication). Let me read the key source files to understand how large dips are calculated and whether there's a trading-day filter.
+I see 14 open PRs. Which one did you want me to merge? The most recent one is #317 — "Follow-up: Graziela/Seacos airline quote still pending — poke Monday". Or did you mean a different one?
+
+Meanwhile, let me investigate the crypto records situation.
 
 
 ### 🤖 Autopilot
 
-The default branch isn't `main`. Let me find the right branch.
+Let me read the key files to understand the crypto infrastructure.
 
 
 ### 🤖 Autopilot
 
-The SHA in the URLs is `62acafde74d3094ce1c9f706e5f667ff0556eb5f`. Let me read the key files using that ref.
+The default branch isn't `main`. Let me check what branches exist.
 
 
 ### 🤖 Autopilot
 
-Now let me look at the US market version (the non-crypto one) and the `DailySummary.sell_off_drivers` method to understand how the sell-off index is calculated.
+Good, I can read the files via the blob URL. Let me read the key ones.
 
 
 ### 🤖 Autopilot
 
-Now I have a clear picture. Let me also check the config to see the `dip_cut_off_perc` and `dip_tracking_period_days` values.
+Now let me check how the search bar works and how crypto records affect it.
 
 
 ### 🤖 Autopilot
 
-Now I have a complete picture. Here's my analysis:
-
----
-
-You're right. Here's what's happening:
-
-**The root cause:** The large dip index has **no trading-day filter**. It runs against whatever dates exist in the `daily_trades` table.
-
-Looking at the code flow:
-
-1. **Controller** (`daily_trades_controller.rb` line 67): When you pass `?the_date=2026-5-26`, it uses that date directly — no check for whether it's a trading day.
-
-2. **`mark_large_dips`** (`daily_trade.rb`): The SQL does a `LEFT JOIN` on `daily_trades` for the target date. If a date has *any* data in `daily_trades` (even stale/partial data), it will calculate a sell-off ratio. The query:
-   ```sql
-   select count(distinct company_id) as trade_count
-   from daily_trades
-   where date_published = '2026-05-26'
-     and company_id in (select id from qualified_companies)
-   ```
-   If there are *some* trades recorded for that date (even if it's a holiday/weekend with thin or stale data), it produces a ratio.
-
-3. **The sell-off threshold** is `config.sell_off_driver_threshold = 0.25` (25% in `application.rb` line ~130). If the ratio hits 0.25, it flags as "correction level 25."
-
-**Why 2026-05-26 shows a false reading:** May 26, 2026 is a Tuesday — but it could be a non-trading day (e.g., Memorial Day observed in the US is the last Monday of May, which would be May 25, 2026 — so May 26 *should* be a trading day). Let me check what actually happened that day.
+Now let me check the database to see how many crypto records exist and what the search bar looks like.
 
 
 ### 🤖 Autopilot
 
-Now let me check the sell-off index value for that date:
+Let me try via the database directly.
 
 
 ### 🤖 Autopilot
 
-Interesting — the actual sell-off ratio for 2026-05-26 is only **0.052** (5.2%), not 25%. But May 25 shows **0.25** (25%) with only **59 trades** — that's the problematic day.
-
-Let me check what day of the week these fall on:
+Now let me check what the search bar looks like and how crypto records affect it.
 
 
 ### 🤖 Autopilot
 
-Now let me check what happened on May 25 (Monday) — Memorial Day 2026:
+Now I have a clear picture. Let me also check the Sidekiq queues for crypto workers.
+
+
+### 🤖 Autopilot
+
+Let me check the sidekiq queues and cron jobs for crypto.
+
+
+### 🤖 Autopilot
+
+Excellent — now I have the full picture. Let me also check how many crypto records have stale/zero market cap (dead coins).
 
 
 ### 🤖 Autopilot
@@ -112,100 +105,30 @@ Now I have the full picture. Here's my analysis:
 
 ---
 
-**Confirmed: May 25, 2026 was Memorial Day** — the US stock market was closed. But the database shows **59 trades** recorded for that day with **13 large dips**, producing a sell-off ratio of exactly **0.25** (25%). That's the "correction level 25" you saw.
-
-The 59 trades are likely stale/partial data that got imported (possibly crypto or international securities, or a data provider artifact). With only 59 companies reporting on a closed day, a handful of dips can easily push the ratio to 0.25.
-
-**The actual trading days (May 26–28)** show a healthy 5.2%–5.7% sell-off ratio — well below the 25% correction threshold — so there was no real correction.
-
-**The root cause in the code:** There is **no trading-day filter** anywhere in the large dip pipeline:
-
-1. **`most_recent_us_market_trading_date`** (`daily_trade.rb`) — correctly finds the last date with data, but it's used only for the *default* date navigation, not as a gate.
-
-2. **`mark_large_dips`** — runs the SQL against whatever date is passed. If 59 companies have data on a holiday, it calculates a ratio from those 59.
-
-3. **The controller** (`daily_trades_controller.rb` line 67) — when you pass `?the_date=2026-5-26`, it uses that date directly. The page then shows the sell-off index for that date, which for May 26 is actually fine (5.2%). But if you navigated to **May 25** (the holiday), it would show 25%.
-
-4. **The `sell_off_drivers_query`** is disabled (returns empty), so the "sell-off drivers" section on the page is already a no-op.
-
-**What should be fixed:** The `mark_large_dips` method (and/or the controller) should skip dates that aren't US market trading days. The simplest fix: add a check that the date has a meaningful number of trades (e.g., > 1000 qualified companies) before calculating the sell-off index, or maintain a trading-day calendar.
-
-Want me to open a PR to add a minimum-trade-count guard to `mark_large_dips` so holidays with sparse data don't produce false correction readings?
-
-
-### 🧑 Governor
-
-yup. And also clean up the data for that day so that the chart doesn't look inaccurate
-
-
-### 🤖 Autopilot
-
-Let me first check what the sell-off index chart looks like and understand the data cleanup needed.
-
-
-### 🤖 Autopilot
-
-Clear as day — May 25 (Memorial Day) spikes to 0.25 with only 13 dips from 59 trades, while the surrounding real trading days are all 5–13%. Let me also check what those 59 trades on May 25 actually are:
-
-
-### 🤖 Autopilot
-
-Those are all penny stocks / near-delisted companies — stale data from a non-trading day. Now let me look at the code more carefully to plan the fix.
-
-
-### 🤖 Autopilot
-
-Now let me look at the `MacroIndicator.sell_off_over_period` to understand how the chart data is built:
-
-
-### 🤖 Autopilot
-
-Now I have a complete picture. Let me open the fix PR.
-
-
-### 🤖 Autopilot
-
-Let me do this directly with a PR.
-
-
-### 🤖 Autopilot
-
-Now let me create the PR with both the code fix and the data cleanup:
-
-
-### 🤖 Autopilot
-
-PR is open. Now let me clean up the bad data point from the database so the chart is accurate immediately.
-
-
-### 🤖 Autopilot
-
-Let me verify the cleanup:
-
-
-### 🤖 Autopilot
-
-The false 0.25 spike is gone. Here's the summary:
+**On the merge** — which PR did you want merged? There are 14 open PRs in `agentic_ai_context`. The most recent is #317 ("Follow-up: Graziela/Seacos airline quote still pending"). Let me know which one.
 
 ---
 
-**Done.** Here's what happened:
+**On the crypto records** — here's the situation:
 
-### Code Fix — PR #1081
-**https://github.com/TrueSightDAO/sentiment_importer/pull/1081**
+**Scale of the problem:**
+- **11,747 crypto companies** out of **57,077 total** = **20.6%** of all records
+- **8,228** of those (70%) have **zero market cap** — dead/shitcoins that never had value
+- **11,719** still have daily_trade records (price history)
+- The `CryptoImporter` worker already has `return # Deprecated` at the top — it's dead code
+- `CryptoMarketCapRefresher` also has `return # Deprecated`
 
-Added a `MINIMUM_TRADE_COUNT = 1000` guard to two places:
+**Impact on the search bar:**
+The search bar (`SearchController#auto_complete`) calls `Company.search(params["q"]).limit(10)` — which searches across ALL companies including crypto. Since 20% of the DB is crypto junk, about 2 of every 10 autocomplete results are crypto noise. And since the search prioritizes exact symbol matches, typing something like "BTC" or "ETH" would pull up crypto before real stocks.
 
-1. **`DailyTrade.mark_large_dips`** — skips the large dip marking if fewer than 1,000 qualified companies have trades on that date
-2. **`LargeDipIndexRefresher.calculate_sell_off_index`** — returns nil (skips the index update) if trade count < 1,000
+**Performance impact:** The `Company.search` query does `LOWER(stock_symbol) LIKE` and `LOWER(name) LIKE` across the full 57K-row table. The 11K extra crypto rows add ~20% more rows to scan. Not catastrophic but not nothing.
 
-Also added a `count_qualified_trades` helper method to `DailyTrade` so both places use the same check.
+**My recommendation:** Clean them up in layers:
 
-### Data Cleanup
-Deleted the `LARGE_DIP_INDEX` row for **2026-05-25** (Memorial Day). The chart now shows a clean progression from May 22 → May 26 without the false 25% spike.
+1. **Delete dead coins** — the 8,228 with `market_cap = 0` (never had value, never will). These are pure noise.
+2. **Delete or soft-delete the rest** — the remaining ~3,500 that had market cap but whose data feed (CoinGecko) is dead. Nobody looks at them.
+3. **Remove the crypto workers from Sidekiq cron** — `CryptoImporter`, `CryptoMarketCapRefresher`, `CryptoLargeDipIndexRefresher`, `LargeCryptoSpikeIndexRefresher` — they're all deprecated but may still be scheduled.
+4. **Remove the crypto-related code paths** — the `exchange == "crypto"` guards in `Company` model (which skip fundamentals refresh, description refresh, etc.) become unnecessary.
 
-### Why 1,000?
-Normal trading days have **10,000+** qualified companies. 1,000 is a generous floor — any day below that is clearly not a real trading day. The May 25 holiday had only **59**.
-
-The PR is ready for your review. Want me to merge it?
+Want me to open a PR for this?
 
