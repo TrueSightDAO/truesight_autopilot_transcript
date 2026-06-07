@@ -89,5 +89,12 @@
     "summary": "Phase 1 of attachment processing: install tesseract-ocr system dependency. Add `tesseract-ocr` to `scripts/user-data.sh` apt-get install line so new EC2 instances get it at boot. Also add a `sudo apt-",
     "action": "merge_pr",
     "created_at": "2026-06-07T18:48:41Z"
+  },
+  {
+    "title": "Merge PR #115 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Phase 2: Integrate attachment processing into the autopilot's tool system.\n\nThe Telegram adapter already downloads attachments to /tmp/tg_attachments/ and tells the agent to use tools like scan_qr_fro",
+    "action": "merge_pr",
+    "created_at": "2026-06-07T21:30:35Z"
   }
 ]
