@@ -96,5 +96,12 @@
     "summary": "Phase 2: Integrate attachment processing into the autopilot's tool system.\n\nThe Telegram adapter already downloads attachments to /tmp/tg_attachments/ and tells the agent to use tools like scan_qr_fro",
     "action": "merge_pr",
     "created_at": "2026-06-07T21:30:35Z"
+  },
+  {
+    "title": "Merge PR #120 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "## Problem\n\nWhen the autopilot deploys itself (via the `deploy_autopilot` tool), step 3 does `systemctl restart truesight-autopilot` which kills the current process. The deploy tool returns a JSON res",
+    "action": "merge_pr",
+    "created_at": "2026-06-07T23:26:40Z"
   }
 ]
