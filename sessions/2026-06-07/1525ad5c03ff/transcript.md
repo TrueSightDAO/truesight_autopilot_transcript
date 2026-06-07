@@ -224,3 +224,57 @@ That's the raw blob URL — you can view it in the browser or download it. The `
 
 The conventions PR (#336) is still open — do you want me to merge that one too?
 
+
+### 🧑 Governor
+
+Go ahead with the implementation. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me start executing Phase 1. First, I need to install dependencies on the autopilot EC2. Let me check what host it's on.
+
+
+### 🤖 Autopilot
+
+The autopilot isn't on `seni_ror`. Let me check the autopilot's actual EC2 instance. From the README I saw it's on a dedicated EC2 at IP `100.52.234.163`. Let me check if I can reach it via the fleet or need to find it differently.
+
+
+### 🤖 Autopilot
+
+I can see the autopilot isn't in the fleet registry for SSH. Let me check if I can reach it via the `deploy_autopilot` tool or find its IP from the README. The README said IP `100.52.234.163` but that's not in the AWS listing. Let me check the sophia.truesight.me DNS:
+
+
+### 🤖 Autopilot
+
+The autopilot is at **52.200.38.206**. Let me check if I can SSH there via the fleet or need another approach. Let me try via the deploy tool or check if there's an SSH key available.
+
+
+### 🤖 Autopilot
+
+I can't SSH into the autopilot box directly. But I can still create the scripts and open a PR — the deploy step can be handled later. Let me create the three scripts and open a PR on the autopilot repo.
+
+
+### 🤖 Autopilot
+
+Phase 1 is done. Here's the summary:
+
+**PR #112** on `truesight_autopilot` — **Phase 1: Foundation scripts**
+
+Three new scripts created:
+
+1. **`scripts/extract_pdf_text.py`** — PDF text extraction using pymupdf, with pdfminer.six fallback. Handles scanned PDF detection, page limits, size limits.
+
+2. **`scripts/ocr_image.py`** — Tesseract-based OCR with Pillow preprocessing (grayscale, contrast, sharpen, binarize). Returns extracted text with confidence scores and quality flags.
+
+3. **`scripts/append_to_transcript.py`** — Appends structured attachment content to the session transcript in `truesight_autopilot_transcript`. Creates formatted sections with file type, timestamp, extracted text, OCR results, and Grok descriptions.
+
+4. **`requirements.txt`** — Added `pymupdf`, `pytesseract`, `pdfminer.six` dependencies.
+
+**What's needed to complete Phase 1:**
+- Install system deps on the autopilot EC2: `apt-get install -y tesseract-ocr`
+- Install Python deps: `pip install pymupdf pytesseract pdfminer.six`
+- The EC2 is at IP `52.200.38.206` but I don't have SSH access to it from here
+
+Would you like me to deploy this to the autopilot EC2? You'd need to either give me SSH access or run the install commands yourself.
+
