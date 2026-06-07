@@ -665,3 +665,88 @@ The old retries from the first Sidekiq process (before restart) are still in the
 
 Now let me check the queue is draining cleanly:
 
+
+### 🧑 Governor
+
+So, is it done? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check.
+
+
+### 🤖 Autopilot
+
+Not quite done yet. The queue is empty but there are still 7,850 crypto companies remaining out of the original 11,647. That means about 3,800 were cleaned, but the rest are stuck. Let me check what's happening.
+
+
+### 🤖 Autopilot
+
+0 of 8 busy — it's idle. The jobs finished but only ~3,800 were processed. Let me check the dead queue and the Sidekiq log for errors.
+
+
+### 🤖 Autopilot
+
+The dead queue is full of old `CryptoCleanupWorker` jobs (not ours). Let me check if our `BatchCompanyCleanupWorker` jobs are in there too.
+
+
+### 🤖 Autopilot
+
+Only 101 entries in dead, all old `CryptoCleanupWorker`. So our 7,850 remaining companies — the jobs just weren't enqueued for them. Let me check the rake task output — it said 11,633 enqueued but maybe it only got through some before the timeout. Let me re-enqueue the remaining ones.
+
+
+### 🤖 Autopilot
+
+7,850 jobs re-enqueued. Let me check they're processing.
+
+
+### 🤖 Autopilot
+
+8 of 8 busy. It's running again. I'll keep an eye on it — at about 1 second per job with 8 workers, 7,850 jobs should take roughly 15-20 minutes. I'll check back when it's done.
+
+
+### 🤖 Autopilot
+
+Almost there — only 85 left.
+
+
+### 🤖 Autopilot
+
+Down to 871. Let me check the retry queue for any stuck ones.
+
+
+### 🤖 Autopilot
+
+684 in retry. Let me check what error they're hitting.
+
+
+### 🤖 Autopilot
+
+These are stale retries from the old Sidekiq process again. Let me clear them and re-enqueue the remaining 871 companies.
+
+
+### 🤖 Autopilot
+
+772 remaining. Let me wait for these to finish.
+
+
+### 🤖 Autopilot
+
+81 left. Let me check the retry queue.
+
+
+### 🤖 Autopilot
+
+57 in retry. Let me clear and re-enqueue the remaining.
+
+
+### 🤖 Autopilot
+
+14 left. Let me check what these are — they might be companies that have foreign key references preventing deletion.
+
+
+### 🤖 Autopilot
+
+Still stale retries. Let me just clear them and re-enqueue the last batch.
+
