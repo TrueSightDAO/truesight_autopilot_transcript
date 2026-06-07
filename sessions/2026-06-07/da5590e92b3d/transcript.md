@@ -87,3 +87,58 @@ Here's today's draw:
 
 **The fix:** I should sync the oracle_logs repo from the lineage-credentials so it stays current. Want me to open a PR to backfill the missing draws (06-04 through 06-07) into oracle_logs?
 
+
+### 🧑 Governor
+
+In the future make sure to reference to this https://truesight.me/programs/truesight-grounding/credentials/#pk-iWL9OH9hpE_D for all my oracles until I state otherwise... Perhaps you need to update agentic_ai_context?
+
+
+### 🤖 Autopilot
+
+You're right — I need to record this in my context so I always know where to find your oracle draws. Let me check what's currently in the context about oracle sources.
+
+
+### 🤖 Autopilot
+
+Good — I can see the current context references `oracle_logs` as the source. I need to update it so my instructions point to your lineage credentials URL instead. Let me also read the relevant context files to see the exact wording.
+
+
+### 🤖 Autopilot
+
+Now let me also check the system prompt section that references oracle_logs.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The implementation plan already says the autopilot should read from `lineage-credentials`, but my system prompt (the instructions I was given) points to `oracle_logs` instead. Let me update my context so I always look at your specific credential URL.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me update the context to point to your lineage credentials URL for all future oracle draws. I'll update the relevant files.
+
+
+### 🤖 Autopilot
+
+Now I need to update my own system prompt instructions. The issue is that my system prompt (the instructions at the top of this conversation) references `oracle_logs` via `read_oracle_logs()`. I can't edit my own system prompt directly, but I can update the context files to make the correct source clear, and I can also update the `TRUESIGHT_GROUNDING_IMPLEMENTATION_PLAN.md` which already has the right architecture but doesn't specify your specific pk-slug.
+
+Let me create a small context file that records your oracle source, and update the implementation plan to reference your specific credential URL.
+
+
+### 🤖 Autopilot
+
+PR opened: **https://github.com/TrueSightDAO/agentic_ai_context/pull/350**
+
+Here's what I did and why:
+
+**The problem:** My system prompt tells me to read oracle draws from the `oracle_logs` repo via `read_oracle_logs()`. That repo hasn't been synced since 2026-06-03, so I was stuck on old data.
+
+**The fix:** Created **`GOVERNOR_ORACLE_SOURCE.md`** in agentic_ai_context that records:
+- Your canonical oracle source: `https://truesight.me/programs/truesight-grounding/credentials/#pk-iWL9OH9hpE_D`
+- The exact path in `lineage-credentials` where your draws live
+- Instructions to read from there instead of `oracle_logs`
+
+**What I'll do now:** For all future oracle draws, I'll read from `lineage-credentials/programs/truesight-grounding/pk-iWL9OH9hpE_D/practice/` — not `oracle_logs`.
+
+Want me to merge that PR now?
+
