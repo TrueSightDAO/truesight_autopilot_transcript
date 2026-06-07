@@ -12,103 +12,88 @@
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
 
-was the deployment completed?
+Since it's still posting to the general, can we post it to this specific topic? I think maybe you're missing the writing of the topic ID. Try again. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
 ### 🤖 Autopilot
 
-Let me check the deployment status.
+Let me check the current topic context and try posting to this specific topic.
 
 
 ### 🤖 Autopilot
 
-I see the PRs are merged but the code isn't deployed to the EC2 box yet. Let me check what's running now and deploy.
+Now I see the issue. The adapter does pass `message_thread_id` to `sendMessage`, but the fallback path (when HTML parse fails) drops the thread_id. Let me look at the actual flow for how the response gets sent back — specifically the voice response path:
 
 
 ### 🤖 Autopilot
 
-The code is already deployed on the box — `/opt/truesight_autopilot` is on commit `801576b` which is the latest merged PR #119. Let me check if the services are actually running.
+Now let me look at the voice message handler specifically to see how it routes:
 
 
 ### 🤖 Autopilot
 
-**Yes, the deployment is complete and running.** Here's the status:
+I see the issue now. The `thread_id` is being correctly extracted and passed to `send_message`, `send_voice`, etc. Let me check the `call_chat_with_progress` function more carefully — it uses `edit_message_text` on a status message, and if the response is short enough it tries to edit the status message in-place. But the status message was sent to the **general** chat (no thread_id) because...
 
-| Service | Status | Uptime |
-|---|---|---|
-| **truesight-autopilot** (main API) | ✅ **active (running)** | ~9 min (since 22:20:51 UTC) |
-| **truesight-autopilot-telegram** (Telegram adapter) | ✅ **active (running)** | ~13 min (since 22:16:39 UTC) |
-| **truesight-autopilot-watchdog** | ✅ **active (running)** | ~13 min |
-
-The code on disk is at commit `801576b` — the latest merged PR #119 (`create_telegram_topic`). All three systemd units are up and the main API is serving on port 8001 with 2 workers.
-
-
-### 🧑 Governor
-
-I noticed in between deployments after you deployed yourself Here in the chat, it still says deploying. I wonder if it's possible for you after you finish redeploying To, you know, pick up where you left off Maybe even if you cannot say that deployments finish in the original message Just like ping me in the same channel saying, hey, I'm back What do you think? Do you think it's possible? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+Let me check `call_chat_with_progress`:
 
 
 ### 🤖 Autopilot
 
-That's a really good point. Right now when I deploy myself, the process kills the running process, pulls the new code, restarts — and I just go dark. There's no "I'm back" signal.
-
-Here's what I think is possible:
-
-**The easy win** — Add a post-deploy hook in the deploy script that sends a Telegram message to you once the new process is healthy. Something like:
-
-> "✅ Deploy complete — commit abc123, back online at 22:20 UTC"
-
-That's a small change to the deploy script or systemd unit. I can open a PR for that right now.
-
-**The harder thing** — Picking up where I left off. That would mean persisting the conversation state (the full message history, tool call results, etc.) before shutdown and restoring it on restart. Right now I don't do that — each deploy is a clean slate. It's architecturally possible but it's a bigger lift: I'd need to serialize the session to disk or a DB before SIGTERM, then reload it on startup. Worth doing, but it's a separate feature.
-
-Want me to start with the easy win — the "I'm back" ping — and we can talk about session persistence separately?
-
-
-### 🧑 Governor
-
-Ya, mari kita pergi ke jenis. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+I see — the `call_chat_with_progress` sends the status message with `thread_id`, and then tries to `edit_message_text` on it. That should work. But the issue is that the status message IS sent to the topic (with thread_id), and the final response is also sent to the topic. Let me check the actual logs to see what happened:
 
 
 ### 🤖 Autopilot
 
-Let me look at the deploy script and systemd setup to figure out the best place to add the post-deploy ping.
+I see — the voice messages are being sent to chat `-1003919341801` which is the group chat ID. But the `thread_id` (topic ID) is not being logged. Let me check if the `send_voice` function is actually receiving the thread_id:
 
 
 ### 🤖 Autopilot
 
-Now let me look at the deploy tool implementation to see how it currently works:
+I see — the service was restarted at 23:30:44. The voice message you sent at 23:31 was processed but I don't see the voice reply being sent. Let me check the full log after the restart:
 
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me look at the deploy tool specifically:
+The log stops there — the voice was transcribed but I don't see the voice reply being sent. This is the current session. Let me check the autopilot main service logs for the chat request:
 
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Here's my analysis:
-
-**The problem**: When the deploy tool runs, step 3 does `systemctl restart truesight-autopilot` — which kills the current process. The deploy tool returns a JSON result like `"Service restarting..."` but that message never reaches you because the process that was generating the response is already dead. You just see "deploying..." and then silence.
-
-**The fix**: I'll add a post-deploy health-check + Telegram ping. The deploy script already restarts all three services. I'll add a step after restart that:
-1. Polls the health endpoint until it comes back up
-2. Sends a Telegram message to you saying "✅ Back online"
-
-Let me open the PR.
+I see — the chat request at 23:32:50 is the current session (this conversation). The voice message you sent at 23:31 was transcribed but I don't see a corresponding chat request for it. Let me check:
 
 
 ### 🤖 Autopilot
 
-PR is open! Here's the summary:
+So the voice message you sent at 23:31 was transcribed but the chat request never reached the autopilot. Let me look at the telegram adapter logs more carefully for what happened after transcription:
 
-**PR #120** — Adds a post-deploy "I'm back" notification to Telegram.
 
-**How it works:**
-1. Before restarting, the deploy tool writes a marker file (`/tmp/.autopilot_deployed`) with the commit SHA and timestamp
-2. When the new process starts up, the FastAPI lifespan checks for that marker
-3. If found, it sends you a Telegram message: *"✅ Deploy complete — commit abc123, back online in Xs"*
-4. Then deletes the marker so it only fires once
+### 🤖 Autopilot
 
-This way the **new** process sends the notification, not the dying one — so it's reliable. Want me to merge it?
+The log ends after transcription — the adapter seems to have stalled or crashed after transcribing. Let me check if the process is still running:
+
+
+### 🤖 Autopilot
+
+It's still running. The issue is that the voice message was transcribed but the adapter seems to have gotten stuck after transcription. Let me check if there's a timeout or crash happening silently. Let me look at the code path for voice messages more carefully:
+
+
+### 🤖 Autopilot
+
+I see — the voice message goes through `call_chat_with_progress` which sends a status message ("Thinking...") with `thread_id`. Then when the response comes back, it tries to `edit_message_text` on the status message. If the status message was sent to the topic (with thread_id), editing it should work.
+
+But wait — the issue you're describing is that the response is going to the **general** chat, not the topic. Let me check the `send_message` function's fallback path more carefully:
+
+
+### 🤖 Autopilot
+
+I found the bug! Look at the fallback path in `send_message` (line 246-249): when the HTML-formatted message fails (status_code != 200), the fallback sends to the **chat without thread_id**. This is the issue — if the HTML parsing fails for any reason, the fallback drops the thread_id and posts to the general chat.
+
+But more importantly, let me check the `edit_message_text` function:
+
+
+### 🤖 Autopilot
+
+There it is! `edit_message_text` does NOT pass `message_thread_id`. When the status message was sent to a topic (with thread_id), editing it requires the same `message_thread_id` parameter. Without it, Telegram returns a 400 error because the message is in a topic thread.
+
+This is the root cause. Let me fix it:
 
