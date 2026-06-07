@@ -110,5 +110,12 @@
     "summary": "Bug: Telegram topic replies go to general chat instead of the topic thread.\n\nRoot cause: Two places drop the `message_thread_id`:\n\n1. `edit_message_text()` (line 284) \u2014 does not accept or pass `messag",
     "action": "merge_pr",
     "created_at": "2026-06-07T23:35:44Z"
+  },
+  {
+    "title": "Merge PR #122 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "The `edit_message_text` function in telegram_adapter.py doesn't pass `message_thread_id` when editing a message that was sent to a forum topic. This causes Telegram to return a 400 error when trying t",
+    "action": "merge_pr",
+    "created_at": "2026-06-07T23:38:06Z"
   }
 ]
