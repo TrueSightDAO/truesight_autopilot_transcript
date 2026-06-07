@@ -186,3 +186,40 @@ Here's what it does:
 
 **To finish Phase 1**, I need you to approve and merge the PR, then I'll deploy. Want me to go ahead and merge it?
 
+
+### 🧑 Governor
+
+Kemudian dan periksaan, dan maksudkan beritahu kepadanya yang kamu beritahu sebelum kamu beritahu kepadanya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That sounds like "kemudian dan periksaan" — "then check and verify" — and the rest is a recursive loop about telling before telling. I think you're saying: **review the PR, then tell me about it before I tell you to merge it.**
+
+Got it. Let me check the PR.
+
+
+### 🤖 Autopilot
+
+PR #113 is open. Let me read the diff to confirm what's in it.
+
+
+### 🤖 Autopilot
+
+PR #113 looks clean. Here's the summary:
+
+**PR #113 — truesight_autopilot** — two changes:
+
+1. **`scripts/user-data.sh`** — added `tesseract-ocr` to the `apt-get install` line (line 12). This ensures any new EC2 instance spun up from this AMI has the OCR engine.
+
+2. **`scripts/deploy.sh`** — added a new section "Installing tesseract-ocr (attachment processing)" right before the pip install step. This runs `DEBIAN_FRONTEND=noninteractive apt-get install -y tesseract-ocr` on the running EC2 during deploy.
+
+That's it — small, focused, one purpose. The three scripts (`extract_pdf_text.py`, `ocr_image.py`, `append_to_transcript.py`) are already in `main` and will be synced to the EC2 on the next deploy.
+
+**What happens after merge + deploy:**
+- `tesseract-ocr` gets installed on the autopilot EC2
+- The three scripts become usable from the command line
+- Phase 1 is complete — ready for Phase 2 (Telegram handler integration)
+
+Want me to merge it?
+
