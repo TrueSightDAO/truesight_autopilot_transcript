@@ -132,3 +132,121 @@ The search bar (`SearchController#auto_complete`) calls `Company.search(params["
 
 Want me to open a PR for this?
 
+
+### 🧑 Governor
+
+I meant this PR https://github.com/TrueSightDAO/sentiment_importer/pull/1081. If it is already merged fine. 
+
+Go ahead and create a PR to clean out the junk 1,4 and then perhaps either run the clean up in the sentiment_importer sidekiq Ec2 instances if you dont want to setup the execution environment on your box
+
+
+### 🤖 Autopilot
+
+Let me check that PR first.
+
+
+### 🤖 Autopilot
+
+PR #1081 is still open. Let me merge it.
+
+
+### 🤖 Autopilot
+
+PR #1081 merged. Now let me look at the code to prepare the cleanup PR.
+
+
+### 🤖 Autopilot
+
+Now let me also check if there's a Sidekiq cron config for crypto workers.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check for the `LargeCryptoSpikeIndexRefresher` and any other crypto workers.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me also check the `day_trade.rake` and `import_daily_trades.rake` for crypto cron references.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `DailyTrade` model for the `most_recent_crypto_market_trading_date` method.
+
+
+### 🤖 Autopilot
+
+Good. Now I have everything I need. Let me create the PR with items 1 and 4 — removing the crypto worker code and the CoinGecko config.
+
+
+### 🤖 Autopilot
+
+Let me do this directly with git_push_changes.
+
+
+### 🤖 Autopilot
+
+Now let me handle the config removals from `application.rb` and `sidekiq.yml`.
+
+
+### 🤖 Autopilot
+
+Now let me also read the sidekiq.yml to edit the queue list.
+
+
+### 🤖 Autopilot
+
+Now let me push the config edits to the same branch.
+
+
+### 🤖 Autopilot
+
+The branch already exists from the file deletions. Let me use a new branch for the config edits.
+
+
+### 🤖 Autopilot
+
+Two PRs created:
+
+1. **#1082** — `cleanup/remove-deprecated-crypto-code` — Deletes the 9 crypto worker/helper/rake/analysis files
+2. **#1083** — `cleanup/remove-crypto-config` — Removes CoinGecko config from `application.rb` and the `crypto_market_prices` queue from `sidekiq.yml`
+
+Now for **step 2 — the DB cleanup**. You said you wanted to run it on the Sidekiq EC2 instance. Let me write a script that can be run via `rails runner` on `seni_ror`:
+
+
+### 🤖 Autopilot
+
+Good, the runner works. Here's the plan:
+
+---
+
+**Summary of what's done and what's next:**
+
+**✅ Merged:** PR #1081 (Fix: Add minimum trade count guard)
+
+**✅ PRs created (code cleanup):**
+- **#1082** — Deletes 9 crypto worker/helper/rake/analysis files
+- **#1083** — Removes CoinGecko config + crypto_market_prices queue
+
+**⏳ DB cleanup (step 2) — ready to run on `seni_ror`:**
+
+The command would be:
+```bash
+cd /home/ubuntu/sentiment_importer && \
+RAILS_ENV=production SECRET_KEY_BASE=dummy /home/ubuntu/.rbenv/shims/bundle exec rails runner "
+  # Delete daily_trades for crypto companies first (frees ~20% of the trades table)
+  DailyTrade.joins(:company).where(companies: {exchange: 'crypto'}).delete_all
+  # Then delete the crypto companies themselves
+  Company.where(exchange: 'crypto').delete_all
+  puts 'Done. Remaining companies: ' + Company.count.to_s
+"
+```
+
+That will:
+1. Delete all daily_trade records belonging to crypto companies
+2. Delete the 11,747 crypto company records
+3. Search bar immediately stops returning crypto noise
+
+Want me to run it?
+
