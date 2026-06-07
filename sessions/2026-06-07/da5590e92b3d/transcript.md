@@ -38,3 +38,52 @@ Two possibilities:
 
 Want me to check oracle.truesight.me to see if today's draw exists there but just wasn't synced to the logs repo?
 
+
+### 🧑 Governor
+
+This is my draw history 
+
+https://truesight.me/programs/truesight-grounding/credentials/#pk-iWL9OH9hpE_D
+
+
+### 🤖 Autopilot
+
+Let me check that page.
+
+
+### 🤖 Autopilot
+
+The hash fragment (`#pk-...`) won't load via web_extract — that's a client-side route. Let me look at the credential vault or lineage-credentials to see if today's draw is recorded there.
+
+
+### 🤖 Autopilot
+
+There it is! **2026-06-07** is recorded in your lineage credentials. Let me read it.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Here's what happened:
+
+**Your 2026-06-07 draw exists** in your lineage credentials (the credentialing system), but it was **never synced to the oracle_logs repo** (the GitHub log I read from). That's why I was stuck on 2026-06-03 — the oracle_logs repo is stale.
+
+Here's today's draw:
+
+---
+
+### 🌅 Oracle Draw — 2026-06-07
+
+| Field | Value |
+|---|---|
+| **Primary Hexagram** | **#45 — Ts'ui / Gathering Together** |
+| **Changing Line** | Line 2 |
+| **Related Hexagram** | **#47 — K'un / Oppression** |
+| **Mood** | Reflective |
+| **Duration** | 15 min |
+
+**Ts'ui (Gathering Together)** — the image of the lake over the earth: waters gathering, people assembling, the magnetic pull of shared purpose. Line 2 changing (the receptive inner line) suggests being drawn toward a gathering rather than forcing one. The movement toward **#47 — Oppression/K'un** warns that without proper alignment, gathering can feel constraining.
+
+---
+
+**The fix:** I should sync the oracle_logs repo from the lineage-credentials so it stays current. Want me to open a PR to backfill the missing draws (06-04 through 06-07) into oracle_logs?
+
