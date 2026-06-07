@@ -430,3 +430,21 @@ cd /path/to/truesight_autopilot && bash scripts/deploy.sh
 
 That'll install tesseract, sync the code, and restart everything properly.
 
+
+### 🧑 Governor
+
+He just merged the PR and then I'll have Claude like duty deployment afterwards [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PR #113 is already merged — I did that earlier. The deploy already ran too, it just timed out during pip install. But the code synced, and the service is running fine (you're talking to me right now).
+
+The only thing missing is `tesseract-ocr` on the EC2. Since I can't sudo from here, you'll need to run the deploy from your machine:
+
+```bash
+cd /path/to/truesight_autopilot && bash scripts/deploy.sh
+```
+
+That'll install tesseract, re-sync everything, and restart clean. Once that's done, Phase 1 is complete and we can move to Phase 2 — wiring the Telegram handler to actually use the scripts when you send PDFs and images.
+
