@@ -82,5 +82,12 @@
     "summary": "Add pre-deploy syntax check to deploy.sh so the script compiles all Python files with `python -m py_compile` before stopping the running service. If any syntax error is found, abort the deploy and pri",
     "action": "merge_pr",
     "created_at": "2026-06-06T20:46:13Z"
+  },
+  {
+    "title": "Merge PR #113 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Phase 1 of attachment processing: install tesseract-ocr system dependency. Add `tesseract-ocr` to `scripts/user-data.sh` apt-get install line so new EC2 instances get it at boot. Also add a `sudo apt-",
+    "action": "merge_pr",
+    "created_at": "2026-06-07T18:48:41Z"
   }
 ]
