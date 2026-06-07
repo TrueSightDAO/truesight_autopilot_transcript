@@ -97,3 +97,28 @@ There it is! `edit_message_text` does NOT pass `message_thread_id`. When the sta
 
 This is the root cause. Let me fix it:
 
+
+### 🧑 Governor
+
+All right go for it fix it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Found the bug. `edit_message_text` doesn't pass `message_thread_id`, so when the status message is in a topic, editing it fails silently. The fallback then deletes the status and sends a new message — but without thread_id, it goes to general.
+
+Let me fix both `edit_message_text` and the fallback path in `send_message`.
+
+
+### 🤖 Autopilot
+
+PR #121 is open. Here's what it fixes:
+
+1. **`edit_message_text()`** — now accepts `thread_id` and passes it as `message_thread_id` in the API call. Without this, editing a status message in a topic fails silently.
+
+2. **`send_message()` fallback** — the raw-text fallback now also includes `thread_id`, so if HTML formatting fails, the reply still lands in the right topic instead of general.
+
+3. **`call_chat_with_progress()`** — now passes `thread_id` through to `edit_message_text()` calls.
+
+Want me to merge it and restart the adapter?
+
