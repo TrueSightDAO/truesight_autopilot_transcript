@@ -26,3 +26,45 @@ I don't have "Grazilia" anywhere in my context — not in the DAO docs, not in p
 
 Can you point me to where Grazilla lives? A previous conversation, a doc, a contact, or just the email address you want me to send to? Once I have that, I can read the prior thread and send the follow-up.
 
+
+### 🧑 Governor
+
+I meant Graziela
+
+
+### 🤖 Autopilot
+
+Ah, Graziela! Let me search for that.
+
+
+### 🤖 Autopilot
+
+Found her! Graziela Vedana from Seacos Logistic (graziela@5cl.rs). The follow-up is about the airline quote revalidation — she was waiting on the airline as of June 5. Let me find the last email thread.
+
+
+### 🤖 Autopilot
+
+Got the thread. The last message from Graziela on June 5 said she was "only waiting on the airline to revalidate their quote." Let me read the latest in the thread to see if anything came in after that.
+
+
+### 🤖 Autopilot
+
+Alright, I've got the full picture. The thread is "Re: Quote Gary / Exportação = NCM 1801.00.00" — Graziela's last message on June 5 said she was waiting on the airline to revalidate their quote. No reply since then.
+
+Here's a draft follow-up I can send in the same thread:
+
+---
+
+**Subject:** Re: Quote Gary / Exportação = NCM 1801.00.00
+
+Hi Graziela,
+
+Just checking in — any update from the airline on the revalidated quote? Would love to get the finalized figures so we can move forward.
+
+Thanks,
+Gary
+
+---
+
+Want me to send it, or would you like to tweak the wording?
+
