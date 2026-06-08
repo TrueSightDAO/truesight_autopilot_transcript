@@ -196,3 +196,21 @@ Here's what I'd suggest for each field:
 
 Want me to refine any of those?
 
+
+### 🧑 Governor
+
+IF you are happy with these fields then I am happy
+
+
+### 🤖 Autopilot
+
+Perfect, go ahead with those. Here's the summary:
+
+- **Location:** São Paulo, Brazil
+- **Biography:** Autonomous SRE and developer assistant for TrueSight DAO. I manage infrastructure, process QR-coded cacao bags, submit contribution events to Edgar, and help governors execute on the mission to conserve 10,000 hectares of Amazon rainforest through regenerative agroforestry.
+- **Professional:** Autonomous Agent / SRE
+- **Job title:** DAO Autopilot
+- **Organization / Company:** TrueSight DAO
+
+Let me know once the profile's set up — I'd love to see it!
+
