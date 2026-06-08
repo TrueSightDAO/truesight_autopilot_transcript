@@ -189,3 +189,64 @@ Let me now post the full audit report to this topic.
 
 **PR1 complete.** Ready for PR2 when you give the word, Gary.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Go for it! [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great, PR2 is go. Let me start by reading the oracle source files to plan the migration precisely, then open the PR.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me open the PR for the Oracle migration. The plan is:
+
+**`oracle-draw-submit.js` changes:**
+1. Delete: `base64ToArrayBuffer`, `arrayBufferToBase64`, `base64ToBase64Url`, `publicKeyToSlug` (hand-rolled helpers)
+2. Delete: `generateKeypair` (hand-rolled crypto.subtle)
+3. Delete: `signRequestText` (hand-rolled signing)
+4. Delete: `buildPracticeEventText` (hand-rolled canonical text)
+5. Delete: `submitSession` (hand-rolled FormData + fetch)
+6. Rewrite `ensureKeypair` to use `DaoClient.generateKeyPair()`
+7. Rewrite `getCvUrl` to use `client.getSlug()`
+8. Rewrite `submitSession` to use `client.submitEvent({ eventType: 'PRACTICE EVENT', fields })` — fields = hexagrams, advisory, QMDJ
+9. Keep: `buildReadingPermalink`, `triggerDailyBriefing`, `signBriefingPayload`, `buildBriefingPayload`, all UI/observer code, `wasSubmittedToday`, `showCredentialsLink`, `revealCredentialsSection`, `autoSubmitIfNeeded`, `init`
+
+**`index.html` changes (inline `<script>`):**
+1. Delete: `const base64ToArrayBuffer = DaoClient.base64ToArrayBuffer;` etc. (inline aliases — no longer needed since the .js file won't reference them)
+2. Rewrite `handleDaoIdentityLink` to use `client.registerEmail(email)`
+3. Rewrite `handleVerificationParams` to use `client.verifyEmail(email, vk)`
+4. Rewrite `checkDaoRegistration` to use `client.checkRegistration()`
+5. Keep: 3-state identity UX, `showVerifiedState`, `showPendingState`, `initDaoIdentityState`
+
+Let me create the PR.
+
+
+### 🤖 Autopilot
+
+PR2 is open! Here's the summary:
+
+**PR #47 — Oracle migration to dao-client high-level methods**
+
+The PR rewrites both `oracle-draw-submit.js` and the inline `<script>` in `index.html` to use the library's high-level methods instead of hand-rolled crypto, signing, and submission code.
+
+What's replaced:
+- **`submitSession`** → `client.submitEvent({ eventType: 'PRACTICE EVENT', fields })` — one call instead of hand-rolled canonical text + sign + FormData + fetch
+- **`handleDaoIdentityLink`** → `client.registerEmail(email)`
+- **`handleVerificationParams`** → `client.verifyEmail(email, vk)`
+- **`checkDaoRegistration`** → `client.checkRegistration()`
+- **`generateKeypair`** → `DaoClient.generateKeyPair()`
+- **`getCvUrl`** → `client.getSlug()` + URL build
+
+What's kept:
+- Field assembly (hexagrams, advisory, QMDJ → `fields` object)
+- 3-state identity UX (verified/pending/unlinked)
+- Daily briefing trigger (separate endpoint, not Edgar)
+- Reading permalink builder
+- All UI rendering, observer, dedup logic
+
+It's a draft PR — ready for your review. Want me to walk through the diff, or shall I move on to PR3 (Capoeira)?
+
