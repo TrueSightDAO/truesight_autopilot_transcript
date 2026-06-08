@@ -10,26 +10,6 @@
 
 ### 🤖 Autopilot
 
-The capoeira `index.html` doesn't load `practice-event-submit.js` — that's loaded from `practice.html`. Let me check:
-
-
-### 🤖 Autopilot
-
-I see — `practice.html` loads `practice-event-submit.js` as a regular script (no `defer`). I need to add the CDN script tag **before** it. Let me update the capoeira PR to also add the CDN tag to `practice.html`:
-
-
-### 🤖 Autopilot
-
-The branch already exists from the first push. Let me force-push:
-
-
-### 🤖 Autopilot
-
-Now let me also clean up the `signRequestText` function in the capoeira PR — the current edit left a comment about `Object.getPrototypeOf` that shouldn't be there. Let me fix that:
-
-
-### 🤖 Autopilot
-
 I see the `signRequestText` has a leftover comment with `Object.getPrototypeOf`. Let me clean that up:
 
 
@@ -318,4 +298,58 @@ Phase 1 PR is open: https://github.com/TrueSightDAO/dao_protocol/pull/70
 The `build()` method stays unchanged for backward compat — `buildSubmitEvent()` is additive.
 
 Want me to merge it and start Phase 2 (the `submitEvent()` method on `DaoClient` with outcome parsing)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] yes. go for it.
+
+
+### 🤖 Autopilot
+
+Phase 1 merged. Now Phase 2 — `submitEvent()` on `DaoClient` with outcome parsing. Let me read the current `index.ts` and `edgar.ts` to plan the changes.
+
+
+### 🤖 Autopilot
+
+Now let me also check what Edgar's response body actually looks like for different outcomes, so I can parse them correctly:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture of Edgar's response shapes. Let me build Phase 2 — `submitEvent()` with outcome parsing.
+
+Key response shapes from Edgar:
+- **200** → `{status: 'success', fileUploadedToGithub: ..., googleSheetLogged: true, signature_verification: 'success', email_registration?: {...}}`
+- **409** → `{status: 'error', error: 'Duplicate submission...'}`
+- **422** → `{status: 'error', error: 'Email onboarding failed', email_registration: {ok: false, ...}}`
+- **500** → `{status: 'error', error: '...'}`
+
+And `check_digital_signature` returns:
+- **200** → `{registered: true, contributor_name, contributor_email}`
+- **200** → `{registered: false, pending_verification: true, contributor_email}`
+- **404** → `{registered: false, error: 'No matching...'}`
+
+
+### 🤖 Autopilot
+
+Phase 2 PR is open: https://github.com/TrueSightDAO/dao_protocol/pull/71
+
+**What's in it:**
+
+1. **`submitEvent()`** — new method on `DaoClient` that:
+   - Uses `PayloadBuilder.buildSubmitEvent()` (auto-injects Timestamp, guards field values)
+   - Accepts `generationSource` param (required when `window` is undefined — Node guard)
+   - Parses Edgar's response into structured outcomes: `submitted`, `duplicate` (409), `signature_verification_failed`, `validation_failed` (422), `server_error` (500)
+   - Returns `{ok, status, txId, slug, httpStatus, emailRegistration?, error?}`
+
+2. **`registerEmail(email)`** — submits `[EMAIL REGISTERED EVENT]`, returns `{ok, status, txId, emailRegistration: {status: 'pending_verification' | ...}}`
+
+3. **`verifyEmail(email, verificationKey)`** — submits `[EMAIL VERIFICATION EVENT]`, returns `{ok, status, txId, emailRegistration: {status: 'activated' | 'already_consumed' | ...}}`
+
+4. **`checkRegistration()`** — calls Edgar's `check_digital_signature` endpoint, returns `{registered, pending_verification, contributor_email, ...}`
+
+5. **15 unit tests** covering all outcome paths, email lifecycle, Node guard, and error handling
+
+Want me to merge it and move to Phase 3 (integration testing against Edgar)?
 
