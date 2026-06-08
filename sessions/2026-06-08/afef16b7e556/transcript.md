@@ -113,3 +113,15 @@ Here's what was wrong and what I did:
 
 This is on `truesight_me_beta`. Once you've reviewed the beta site, let me know if you want me to promote it to production.
 
+
+### 🧑 Governor
+
+What is the URL? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The PR URL is github.com/TrueSightDAO/truesight_me_beta/pull/194. I'll send that as a separate text message.
+
+The two posts — "Should an AI agent get voting rights?" and "The scripture is not the point" — are now added to the blog index on the beta site. Once you've had a chance to review it on the beta, let me know if you want me to promote it to production.
+
