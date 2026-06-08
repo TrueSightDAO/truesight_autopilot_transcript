@@ -124,5 +124,12 @@
     "summary": "Add an email-link section to the oracle page (oracle.truesight.me/index.html) that lets practitioners link their existing browser keypair to their email address, so their name appears on the credentia",
     "action": "merge_pr",
     "created_at": "2026-06-08T01:58:34Z"
+  },
+  {
+    "title": "Merge PR #41 on oracle",
+    "qr_code": "",
+    "summary": "Add a GitHub Actions CI workflow that runs `node --check` on all JS in the repo before merging PRs. The workflow should:\n\n1. Trigger on pull requests to `main` that touch `index.html`, `assets/js/*.js",
+    "action": "merge_pr",
+    "created_at": "2026-06-08T17:03:16Z"
   }
 ]
