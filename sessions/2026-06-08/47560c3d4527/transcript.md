@@ -132,49 +132,105 @@ Once you review and merge PRs #125 and #126, I'll build **PR2** — the oracle b
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=1722] Also why is it not sent to this end point instead? 
-
-4. ping_sophia (HTTPS) — trigger only
-
-
-see this https://github.com/TrueSightDAO/agentic_ai_context/blob/main/HANDOFF_PROTOCOL_OVERVIEW.md
+[Telegram context: chat_id=-1003919341801, thread_id=1722] what about the portion of the Advisory as well as the QMDJ?
 
 
 ### 🤖 Autopilot
 
-Let me read the handoff protocol overview to understand the ping_sophia mechanism.
+You're right — the briefing should include the DAO Advisory (the DeepSeek-generated guidance) and the QMDJ chart data, since those are integral parts of the oracle reading. Let me check what the oracle currently captures in its advisory panel and QMDJ panel, then update the daily briefing to include them.
+
+Let me look at how the oracle's `buildPracticeEventText` captures advisory + QMDJ, and what the advisory payload looks like:
 
 
 ### 🤖 Autopilot
 
-Now I see the full picture. You're right to ask. Let me explain:
+I see — the oracle already captures `advisory_summary` (from `#daoAdvisoryBody` textContent) and `qmdj_card` (from `#qmdjMeta` textContent) in the practice event payload. The daily briefing should include these too. Let me also check how the advisory is fetched to understand what data is available:
 
-**`ping_sophia`** is the existing handoff trigger — a local LLM (Claude Code, Cursor, etc.) on a governor's machine POSTs to `/chat-blocking` to wake Sophia. But it has a key limitation stated in the protocol:
 
-> *"The ping_sophia reply is the **HTTP** Sophia, which is **not** automatically the same session as the Telegram-facing Sophia."*
+### 🤖 Autopilot
 
-So `ping_sophia` returns the reply to the *caller* (the local LLM), not to Telegram. It's a synchronous HTTP response, not a Telegram post.
+The file was pushed on the branch. Let me read it from the PR branch:
 
-**The `/daily-briefing` endpoint I built is different** — it's designed for the **oracle browser** (not a local LLM) to fire a signed trigger after a reading. The key differences:
 
-| | `ping_sophia` (existing) | `/daily-briefing` (new) |
-|---|---|---|
-| **Caller** | Local LLM on governor's machine | Oracle browser (`oracle.truesight.me`) |
-| **Auth** | JWT (from RSA challenge) | X-Public-Key + RSA signature |
-| **Response** | Returns text to the caller | Posts to Telegram #General |
-| **Purpose** | "Wake up, here's a plan to execute" | "A governor just read the oracle — post their morning briefing" |
-| **Dedup** | No | Yes (once per governor per day) |
+### 🤖 Autopilot
 
-**So why not send the briefing through `ping_sophia`?**
+Good. Now I see the full picture. The oracle's `buildPracticeEventText` already captures:
+- `advisory_summary` — from `#daoAdvisoryBody` textContent (the DeepSeek-generated DAO guidance)
+- `qmdj_card` — from `#qmdjMeta` textContent (the QMDJ chart metadata)
 
-Because `ping_sophia` is a **synchronous HTTP call** from a local LLM that expects a text reply back. The oracle browser can't call `ping_sophia` — it doesn't have a JWT, and even if it did, the reply would go back to the browser, not to Telegram #General where the governor expects to see it.
+But the daily briefing's `_compose_agenda` only uses `primary_hexagram` from the reading data — it doesn't include the advisory or QMDJ. The fix is to:
 
-The `/daily-briefing` endpoint is purpose-built for the **oracle → Telegram** flow. It's fire-and-forget: the oracle browser POSTs, Sophia composes the agenda, and posts it to #General. The browser gets a JSON `{"ok": true}` back and moves on.
+1. Accept `advisory_summary` and `qmdj_card` in the reading payload
+2. Include them in the composed agenda
 
-**However** — I realize there's a cleaner approach. Instead of a new endpoint, I could have made the oracle POST to `/chat-blocking` with a special message like "Morning oracle briefing for <governor>" and let the chat handler compose + post the briefing. But that would:
-1. Create a chat session entry for every reading (noise)
-2. Not have the dedup logic
-3. Require the oracle to hold a JWT
+Let me update the daily briefing module:
 
-The dedicated endpoint is the right pattern. Does the design make sense, or would you prefer a different approach?
+
+### 🤖 Autopilot
+
+The file doesn't exist on `main` yet — it was pushed on the `feat/daily-briefing-endpoint` branch. Since PR #125 hasn't been merged yet, I need to write the full updated file instead of editing it. Let me write the complete updated version:
+
+
+### 🤖 Autopilot
+
+Done. Here's the update:
+
+## PR #127 — Advisory + QMDJ in daily briefing
+
+The daily briefing now includes the full oracle reading context:
+
+**What changed in `app/daily_briefing.py`:**
+
+1. **`_compose_agenda()`** now extracts two additional fields from `reading_data`:
+   - `advisory_summary` — the DeepSeek-generated DAO guidance (from `#daoAdvisoryBody`), truncated to 800 chars for Telegram readability
+   - `qmdj_card` — the QiMen Dunjia chart metadata (from `#qmdjMeta`), truncated to 300 chars
+
+2. **`handle_daily_briefing()`** fallback — if `payload.reading` is absent, it also tries `payload.advisory_summary` and `payload.qmdj_card` directly, so the oracle can send them at either nesting level.
+
+3. **Both sections are optional** — if the oracle doesn't include them, the briefing still works (just omits those lines).
+
+**Example Telegram output:**
+
+```
+☀️ Good morning, Gary!
+
+🌅 Today's hexagram: 1 — Ch'ien / The Creative
+
+🔮 Oracle Advisory:
+The Creative force is strong today. Initiate bold, clear action. The DAO's
+current momentum supports expansion — focus on the handoffs that require
+decisive leadership. Watch for overreach in the afternoon…
+
+🧭 QiMen Dunjia: 陽遁4局 · 值符天輔 @ 巽 · 值使杜門 @ 震
+
+📋 Morning Briefing
+…
+```
+
+**PRs now open (all need review + merge before PR2):**
+- **#125** — `app/daily_briefing.py` module (core handler)
+- **#126** — Route wiring in `app/main.py`
+- **#127** — Advisory + QMDJ inclusion (this one)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] Makes more sense now. Also instead of creating a new topic (thread id) it should just land in the #General which basically is the chat_id without the thread id
+
+
+### 🤖 Autopilot
+
+You're right — and that's exactly how it's already implemented. Let me confirm:
+
+In `app/daily_briefing.py`, the Telegram post is hardcoded to:
+
+```python
+_GENERAL_CHAT_ID = -1003919341801  # TrueSight DAO Ops #General (no thread_id)
+```
+
+And the `_post_to_telegram` function sends to that chat_id with **no `message_thread_id`** — so it lands in the main #General feed, not in any topic/thread.
+
+The current `chat_id=-1003919341801, thread_id=1722` on your message is just the Telegram context of *this conversation* (you're talking to me from within a topic). The briefing posts to the bare chat_id without the thread_id, so it drops into the main #General channel as intended.
+
+No code change needed here — it's already correct.
 
