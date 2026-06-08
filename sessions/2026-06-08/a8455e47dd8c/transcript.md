@@ -89,3 +89,44 @@ Sent! The follow-up is in the same thread asking Graziela for:
 
 I'll update the follow-up tracker in OPEN_FOLLOWUPS.md to reflect this was sent today.
 
+
+### 🧑 Governor
+
+Could you comb through the email thread between Omega services and SeaCoast logistics to figure out the actual answer. I think Isis responded somewhere
+
+[Attachment auto-processed: **f2e49887b0184e5ab7f1b30acc4d1802.jpg**]
+- Type: Image (OCR confidence: 86.1%, quality: good)
+- Saved to transcript
+
+Extracted text:
+```
+9:13 onil LTE 400} < +Aoge - Graziela Vedana Qo 4 9:06 AM tome v Hi Gary, I have 90% of what | need. | just asked Brazil to reconfirm the dimensions and weights of the pallets. There has been a lot of back and forth, and | want to be sure | am using the correct figures. I see that we have 3 pallets. If you have this information, that would be great. Otherwise | am just waiting on that from Brazil. Thank you, Graziela ‘9 me 9:13AM © 4 < to Graziela v Vf ON © Reply )( @ Forward )(®)
+```
+
+
+### 🤖 Autopilot
+
+Interesting — that image shows a WhatsApp conversation, not the email thread. Let me check the email thread more carefully — Isis from Omega Services may have responded with actual numbers. Let me look at the full thread again.
+
+
+### 🤖 Autopilot
+
+I've combed through the entire thread. Here's what I found — Isis did respond, but she didn't give actual numbers for the airline freight. Let me break it down:
+
+**What Omega Services (Isis/Ana) provided on June 5:**
+- **Road transport (Salvador):** BRL 6,615.00 + 0.15% ad-valorem
+- **3 pallets:** BRL 195.00
+- **Fumigation:** BRL 500.00
+- **Total (ground side):** BRL 695.00 for pallets + road transport
+
+**But what's still missing — the airline freight:**
+Isis's message on June 5 said: *"Recebemos a foto da carga na quarta-feira de tarde, estamos checando sobre a paletização da carga no padrão aceita pela companhia aérea, para agendarmos a coleta do material e voo."* — They received the cargo photo Wednesday afternoon and are checking palletization standards accepted by the airline so they can schedule pickup and flight.
+
+Then Ana Barros sent the road transport costs but the **airline quote** was still pending from Graziela's side — she said she was waiting on the airline to revalidate.
+
+**So the actual answer is:** The ground costs in Brazil are known (~BRL 6,615 road + BRL 695 pallets/fumigation), but the **air freight cost, pickup time, and SF arrival ETA** are all still pending the airline revalidation that Graziela was waiting on as of June 5. No one has sent those finalized figures yet.
+
+That WhatsApp screenshot you attached shows Graziela saying she has "90% of what I need" and is just waiting on Brazil to reconfirm pallet dimensions and weights — so she's still working on it on her end too.
+
+The email I already sent today asking for consolidated costs, pickup time, and SF ETA is exactly the right follow-up. Want me to also follow up on WhatsApp since that seems to be a faster channel with her?
+
