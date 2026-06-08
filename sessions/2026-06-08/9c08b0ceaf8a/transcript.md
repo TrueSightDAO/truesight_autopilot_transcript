@@ -89,3 +89,30 @@ Her last message (June 5): *"I am only waiting on the airline to revalidate thei
 
 Shall I draft the Graziela email first?
 
+
+### 🧑 Governor
+
+Can you read through the recent verification plan.md file in more detail before you suggest anything? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the relevant files more carefully.
+
+
+### 🤖 Autopilot
+
+Got it. Now I have the full picture from the pre-flight checklist.
+
+Here's the situation:
+
+**Graziela's last message (June 5):** *"I am only waiting on the airline to revalidate their quote to send this over to you."* — that's 3 days ago with no follow-up from her.
+
+The checklist says the airline quote revalidation is the **last pending item** before final figures can be consolidated. Everything else — SISCOMEX, pallets, road transport, airport charges — has been worked out. She's the bottleneck now.
+
+**My recommendation:** I'll draft a short, polite follow-up email for your approval. Something like:
+
+> *"Hi Graziela, just checking in — any word from the airline on the revalidated quote? Happy to loop in anyone on my end if it helps move it along. Thanks!"*
+
+Want me to draft it properly and show it to you before sending?
+
