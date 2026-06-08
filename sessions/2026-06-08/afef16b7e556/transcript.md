@@ -63,3 +63,53 @@ The live site and the repo source match — the two most recent posts **are** li
 
 They're both there on the page. Could you clarify which posts you mean? Are you thinking of posts that should exist but haven't been published yet, or are you seeing a cached/stale version of the page on your end?
 
+
+### 🧑 Governor
+
+https://truesight.me/blog/posts/should-an-ai-agent-get-voting-rights.html
+
+And 
+
+https://truesight.me/blog/posts/the-scripture-is-not-the-point.html
+
+
+### 🤖 Autopilot
+
+Let me check both posts to see if they exist on the server.
+
+
+### 🤖 Autopilot
+
+Both posts exist on the server — they're just **not linked from the blog index page** (`/blog/index.html`). The source code in `truesight_me_beta` confirms the index only goes up to "We let an AI run our DAO" (May 28). These two posts are newer and were never added to the index.
+
+Let me check their dates and add them.
+
+
+### 🤖 Autopilot
+
+Confirmed. Both posts exist on the server but are **missing from the blog index page**. Here's what I found:
+
+| Post | Date | Published? | In index? |
+|---|---|---|---|
+| **The scripture is not the point** | June 7, 2026 | ✅ Live at URL | ❌ Missing |
+| **Should an AI agent get voting rights?** | June 6, 2026 | ✅ Live at URL | ❌ Missing |
+
+The blog index (`/blog/index.html`) only goes up to "We let an AI run our DAO" (May 28). These two newer posts (June 6 & 7) were never added to the index. Let me fix that now.
+
+
+### 🤖 Autopilot
+
+PR opened: **https://github.com/TrueSightDAO/truesight_me_beta/pull/194**
+
+Here's what was wrong and what I did:
+
+**The bug:** Both posts were published as HTML files on the server but never added to the blog index (`/blog/index.html`). The index stopped at "We let an AI run our DAO" (May 28) and skipped the two newer posts.
+
+**The fix:** Inserted both posts at the top of the blog grid in chronological order:
+
+1. **"The scripture is not the point"** — June 7 (newest)
+2. **"Should an AI agent get voting rights?"** — June 6
+3. *(then the existing May 28, May 26 posts, etc.)*
+
+This is on `truesight_me_beta`. Once you've reviewed the beta site, let me know if you want me to promote it to production.
+
