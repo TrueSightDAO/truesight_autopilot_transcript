@@ -526,3 +526,20 @@ So for Claude to hand off to me, he'd use `truesight-dao-ping-sophia --session-i
 
 Want me to update `SOPHIA_HANDOFFS.md` with this new topic entry so it's tracked?
 
+
+### 🧑 Governor
+
+Yeah.
+
+
+### 🤖 Autopilot
+
+Done. The handoff is registered. Here's the info you can give Claude:
+
+**Topic:** Exec: capoeira dao-client swap
+**thread_id:** `1658`
+**session_id:** `tg:-1003919341801:1658`
+**Topic link:** https://t.me/c/3919341801/1658
+
+Tell Claude to use `truesight-dao-ping-sophia --session-id tg:-1003919341801:1658 --message "..."` to ping me with his concerns about the capoeira PR. I'll pick it up in that topic.
+
