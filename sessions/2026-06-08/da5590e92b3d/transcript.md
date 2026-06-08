@@ -10,48 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me also check the oracle-draw-submit.js to understand how the keypair is stored and used.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. Let me create the implementation plan and roadmap.
-
-
-### 🤖 Autopilot
-
-Plan is up at **agentic_ai_context#353**. Here's the summary:
-
-**The problem:** Your oracle keypair lives in localStorage on `oracle.truesight.me` — the credential page on `truesight.me` can't see those keys because they're different origins. So the email-link section can't go on the credential page.
-
-**The fix:** Put the email-link section on the **oracle page itself** (`oracle.truesight.me`). The oracle page already has the keys. Add a small form: "Link this oracle to your DAO identity" → enter email → signs `[EMAIL REGISTERED EVENT]` with existing keys → verification email → done. Then the credential page can look up your name from `dao_members.json`.
-
-**Roadmap:**
-1. **PR 1** — Add email-link section to `oracle/index.html` (reuses existing keys, no new keygen)
-2. **No PR needed** — Verification flow already exists in Edgar
-3. **PR 3** — Update `program-shell.js` to resolve name from `dao_members.json` when `practitioner_name` is empty
-4. **PR 4** — Promote to prod
-
-Want to discuss the plan before I start building PR 1?
-
-
-### 🧑 Governor
-
-Merge the implementation plan and PR zero basically and then let's go ahead of the execution [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Plan is merged. Now let me also merge the credential PK mapping PR since it's related context.
-
-
-### 🤖 Autopilot
-
-Both merged. Now let me build PR 1 — the email-link section on the oracle page. Let me read the oracle page structure to plan the edit.
-
-
-### 🤖 Autopilot
-
 This is a large file. The oracle page is hosted on GitHub Pages from the `oracle` repo. Let me now build PR 1 — adding the email-link section to the oracle page. I'll add it right before the footer, after the credentials section.
 
 
@@ -176,4 +134,16 @@ Both PRs are merged. Here's the full picture of what's now live:
 - Your name appears instead of the anonymous `pk-...` slug
 
 Want me to promote to prod?
+
+
+### 🧑 Governor
+
+Yuck promote the prop. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Hit a merge conflict on `truesight_me_prod` — the beta and prod histories have diverged (likely from the intentional CNAME difference). This needs a human to reconcile. I can't force-sync.
+
+Want me to look at what's different and suggest a fix?
 
