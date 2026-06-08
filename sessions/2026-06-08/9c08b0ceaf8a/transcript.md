@@ -8,18 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Can you go ahead read through what needs to be done and then go ahead with the implementation?
-
-
-### 🤖 Autopilot
-
-Let me start by reading the context files to understand what's needed.
-
-
 ### 🤖 Autopilot
 
 That's a comprehensive backlog. Let me understand what you're asking — you want me to read through the OPEN_FOLLOWUPS.md and start implementing what's actionable. Let me check what's currently actionable vs blocked.
@@ -249,4 +237,59 @@ Got it now. I was looking at the wrong file. The **RESEND_VERIFICATION_PLAN.md**
 3. Then mirror the same change in the Rails code for parity
 
 Want me to start implementing PR1?
+
+
+### 🧑 Governor
+
+Yeah, go ahead with the implementation. I think we already killed off all the code on the rails side So that one is outdated [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Right — the extraction plan confirms PR8d hasn't been done yet (the Rails delete is still pending soak), but the live traffic goes through dao_protocol. So I'll implement in the Python code only and skip the Rails parity.
+
+Let me start by checking the sheet to see what column I currently holds, so I know where to add the "last sent at" timestamp.
+
+
+### 🤖 Autopilot
+
+Columns A–H are used, I is empty. I'll add column I as "Verification Email Last Sent". Now let me implement the changes.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my implementation plan:
+
+1. **Add `COL_EMAIL_LAST_SENT = 9`** (column I) to the sheet adapter
+2. **Add `update_email_last_sent(row)`** to stamp column I
+3. **Add `_cooldown_seconds()`** config (60s default)
+4. **Modify `_process_registration`** in `email_registration.py`: when VERIFYING, look up existing `vk`, check cooldown, re-send email, stamp last-sent
+5. **Update `find_by_public_key`** to also return `vk` and `row` for VERIFYING rows (needed for resend)
+6. **Update `_fetch_row_a_h`** to read through column I
+
+Let me also check the email_registration.py to see the exact `_process_registration` flow again.
+
+I already have it. Let me now implement all the changes.
+
+
+### 🤖 Autopilot
+
+PR is open: **dao_protocol#64** — [feat: resend verification email for pending registrations](https://github.com/TrueSightDAO/dao_protocol/pull/64)
+
+Here's what it does:
+
+**When a re-submitted `[EMAIL REGISTERED EVENT]` comes in for a VERIFYING key:**
+1. Looks up the existing `vk` (verification key) from the sheet
+2. Checks column I for a cooldown timestamp — if under 60s, returns `{cooldown: true, retry_after_s: N}` with no email sent
+3. If cooldown passed, re-triggers `sendEmailVerification` with the same `vk` (existing link stays valid)
+4. Stamps column I with the current UTC time
+
+**New column I** on the Contributors Digital Signatures sheet — "Verification Email Last Sent" — stores the timestamp for rate-limiting.
+
+**Response shapes:**
+- Resend success → `{resent: true, verification_email_sent: true}`
+- Cooldown active → `{cooldown: true, retry_after_s: 45}`
+- Already ACTIVE → still `skipped` (no email)
+
+Want me to merge it, or do you want to review first?
 
