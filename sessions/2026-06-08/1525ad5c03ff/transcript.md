@@ -10,49 +10,6 @@
 
 ### 🤖 Autopilot
 
-This is a large file. The key DAO-client inline code is in the `<script>` block at the bottom. Let me identify the inline helpers that need to be swapped:
-
-1. `base64ToArrayBuffer` — inline
-2. `arrayBufferToBase64` — inline
-3. `base64ToBase64Url` — inline
-4. `publicKeyToSlug` — uses the above helpers
-5. Key generation + signing — uses `window.crypto.subtle` directly
-
-The oracle plan says to swap these to `DaoClient.*`. Let me also check the capoeira file:
-
-
-### 🤖 Autopilot
-
-Now I have the full picture for both repos. Let me proceed with both PRs in parallel.
-
-**Issue 2 — Oracle CDN re-integration:**
-
-The oracle's inline helpers are in `index.html`:
-- `base64ToArrayBuffer`, `arrayBufferToBase64`, `base64ToBase64Url` — swap to `DaoClient.*`
-- `publicKeyToSlug` — uses the above, swap to `DaoClient.*`
-- Key generation + signing — uses `window.crypto.subtle` directly via `DaoClient` methods
-
-The CDN script tag needs to be added with correct load order (before the inline script, no `defer`).
-
-**Issue 3 — Capoeira swap:**
-
-Same pattern — swap the 6 generic helpers to `DaoClient.*`, keep capoeira-specific logic.
-
-Let me start with both PRs:
-
-
-### 🤖 Autopilot
-
-Oracle PR #44 open. Now the capoeira swap:
-
-
-### 🤖 Autopilot
-
-Wait — I need to also add the CDN script tag to capoeira's `index.html`. Let me check what the capoeira HTML looks like:
-
-
-### 🤖 Autopilot
-
 The capoeira `index.html` doesn't load `practice-event-submit.js` — that's loaded from `practice.html`. Let me check:
 
 
@@ -293,4 +250,72 @@ Merged. The plan is now in the context at `DAO_CLIENT_V1_1_0_PLAN.md` for any fu
 - **Node guard** — `generationSource` param required when `window` is undefined
 
 Ready to pick up whenever you want to start Phase 1.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] go for it.
+
+
+### 🤖 Autopilot
+
+Starting Phase 1 — test vectors + canonical-bytes alignment. Let me read the current source files to understand exactly what I'm working with.
+
+
+### 🤖 Autopilot
+
+Now let me check the existing test setup and the Ruby verifier's exact canonical-bytes contract:
+
+
+### 🤖 Autopilot
+
+Now let me check the existing test directory structure:
+
+
+### 🤖 Autopilot
+
+No existing tests. Let me also check the Ruby verifier's exact canonical-bytes contract one more time — specifically what `.strip()` does to the message:
+
+The Ruby verifier does:
+```ruby
+message = lines[0..separator_index].join("\n")
+# ...
+message_to_sign = message.strip
+```
+
+So the signed payload = everything from line 0 up to and including `--------`, joined with `\n`, then `.strip()` (removes leading/trailing whitespace). The JS `PayloadBuilder.build()` currently returns:
+
+```
+[EVENT NAME]\n- Field: value\n--------
+```
+
+No trailing newline — so `.strip()` is a no-op. That's correct. But I need to verify the exact byte sequence. Let me also check the Ruby spec's fixture to see what a real payload looks like:
+
+
+### 🤖 Autopilot
+
+I notice the old format uses `- Field:` prefix for some fields but not all (the example has `amount to withdraw: 70` without a `-` prefix). That's a legacy format. The current `PayloadBuilder.build()` uses `- Key: value` consistently. Let me check the Ruby verifier to confirm it handles both:
+
+The Ruby verifier just splits on `--------`, takes everything before it as the message. It doesn't care about the `- ` prefix — that's a convention, not a parsing requirement. The canonical bytes are literally everything from the start to `--------`, joined with `\n`, then `.strip()`.
+
+Now I have everything I need. Let me create the test vectors and the Phase 1 implementation. I'll work on the `dao_protocol` repo directly.
+
+
+### 🤖 Autopilot
+
+Phase 1 PR is open: https://github.com/TrueSightDAO/dao_protocol/pull/70
+
+**What's in it:**
+
+1. **Test-vector suite** — 12 cases in `test/vectors/submit-event-vectors.json` covering basic events, multi-line values, special chars, `[... EVENT]` guard, empty fields, numeric/boolean/null/object values
+2. **`PayloadBuilder.buildSubmitEvent()`** — new method that:
+   - Auto-injects `Timestamp` as the first field (ISO 8601 UTC)
+   - Rejects field values containing `[... EVENT]` substrings (prevents Edgar misdispatch)
+   - Accepts optional fixed timestamp for testability
+3. **Unit tests** — 12 tests in `test/payload.test.ts` covering all vector cases, the `build()` backward compat, and the field guard
+4. **Canonical-bytes alignment** — output has no trailing newline, so Ruby's `.strip()` is a no-op. Byte-for-byte match confirmed.
+
+The `build()` method stays unchanged for backward compat — `buildSubmitEvent()` is additive.
+
+Want me to merge it and start Phase 2 (the `submitEvent()` method on `DaoClient` with outcome parsing)?
 
