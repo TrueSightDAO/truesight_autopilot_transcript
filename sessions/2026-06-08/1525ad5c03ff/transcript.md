@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see the `signRequestText` has a leftover comment with `Object.getPrototypeOf`. Let me clean that up:
-
-
-### 🤖 Autopilot
-
-Now let me also clean up the oracle PR — the `signRequestText` function in the oracle's inline code uses `window.crypto.subtle` directly for signing, which is correct (it's consumer-specific logic, not a generic helper). Let me verify the oracle PR is clean:
-
-
-### 🤖 Autopilot
-
 The oracle PR looks clean. The CDN tag is before the inline script (no `defer`), and the 4 helpers are aliased to `DaoClient.*`. All consumer-specific logic (signing, 3-state UX, QMDJ, advisory, share flow) is preserved.
 
 Here's the full status report:
@@ -352,4 +342,20 @@ Phase 2 PR is open: https://github.com/TrueSightDAO/dao_protocol/pull/71
 5. **15 unit tests** covering all outcome paths, email lifecycle, Node guard, and error handling
 
 Want me to merge it and move to Phase 3 (integration testing against Edgar)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] merge it
+
+
+### 🤖 Autopilot
+
+Phase 2 merged. Ready for Phase 3 — integration testing against Edgar. Want me to:
+
+1. **Build + publish v1.1.0-rc.1** to npm (pre-release tag) so the oracle and capoeira can test against it
+2. **Run a real `submitEvent`** against Edgar prod to verify the full round-trip
+3. **Run a real `registerEmail` + `verifyEmail`** round-trip
+
+Or all three?
 
