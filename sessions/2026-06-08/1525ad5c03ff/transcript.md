@@ -160,3 +160,93 @@ Both should work identically to before — the swap was one-to-one for every hel
 
 Want me to run a quick smoke test on either?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] I meant this 🔧 Claude's review of the v1.1.0 submitEvent design (relayed by Gary)
+
+Direction is right — submitEvent({eventType, fields}) deletes the whole "consumer signs it wrong" bug class. The risk is 100% in the canonical-bytes layer (where every bug this session lived). Make those impossible, not just convenient.
+
+MUST-HAVES (each = a real bug we hit):
+1) Canonical bytes must BYTE-match Edgar's verifier (signs up to & incl. the first --------, then .strip()). Ship a test-vector suite: (eventType, fields) → expected canonical string → asserted to verify, cross-checked against dao_protocol's Python build_payload so JS/Python can't drift. This is the test that catches signature_verification:failed.
+2) Auto-inject a nonce (Timestamp) INSIDE the signed body by default. Persistent keys produce identical signatures for identical fields → HTTP 409 "Duplicate submission". Don't make every consumer rediscover this.
+3) Own the signed-body vs wrapper split. fields = the signed key-values before --------. The library owns the wrapper AFTER it (signature, Request Transaction ID, "generated using <X>", "Verify submission here: <url>"). <X> is the verification-email RETURN link → make generationSource a param, default window.location.origin+pathname.
+4) Surface outcomes, don't flatten. {ok,requestHash,slug} isn't enough — distinguish 409, 422, signature_verification, and the email lifecycle: activated / already_consumed / pending_verification / pubkey_mismatch / not_found. The oracle's 3-state UI needs these.
+5) Guard field VALUES against "[… EVENT]" substrings — Edgar dispatches by substring, so a bracketed tag inside a value causes a 422 misdispatch.
+
+SEMVER: removing the 4 aliases is BREAKING → that's v2.0.0. Better: KEEP the low-level primitives (zero-cost escape hatch for odd/future shapes) and ADD submitEvent as the documented happy path → clean additive v1.1.0.
+
+SMALLER: schema parity with dao_protocol Python (one cross-check test so they don't drift) · keep attachment?: File · keep backfillUnsent / session-history / UI consumer-side (right boundary) · Node guard: window.location defaults throw in Node 18+, require generationSource when window is undefined.
+
+NET: yes — draft submitEvent + registerEmail/verifyEmail/checkRegistration as additive v1.1.0 (keep primitives). The PR must include: canonical test-vector suite + nonce handling + generationSource param + outcome surfacing. Those four are what make it safer, not just prettier.
+
+
+### 🤖 Autopilot
+
+Gary's relayed the review. Let me read the current `dao_protocol` code to understand the exact canonical-bytes contract before drafting anything.
+
+
+### 🤖 Autopilot
+
+Now I have the exact canonical-bytes contract. Let me also check the current `dao-client` source to see what we're working with:
+
+
+### 🤖 Autopilot
+
+Now let me check the EdgarClient and CryptoUtils for the full picture:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the Ruby spec to understand the exact verification contract:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me summarize the review and what v1.1.0 should look like.
+
+---
+
+**Claude's review is sharp and every point is a real bug we hit.** Here's my take:
+
+### The core insight
+
+The v1.0.0 `submit()` method is a thin wrapper around the old inline pattern — it still lets the consumer build the payload string themselves. The bug class isn't in the signing, it's in **what bytes get signed**. The review correctly identifies that the fix must be at the canonical-bytes layer, not the API surface.
+
+### What v1.1.0 should look like
+
+**Keep the primitives** (zero-cost escape hatch) — `CryptoUtils`, `PayloadBuilder.build()`, `EdgarClient.buildShareText()` stay. This is additive, not breaking.
+
+**Add `submitEvent({eventType, fields})`** that owns the signed-body construction end-to-end:
+
+1. **Canonical bytes** — `PayloadBuilder.build(eventType, fields)` produces the exact string Edgar verifies (up to and including `--------`, then `.strip()`). The Ruby verifier does `lines[0..separator_index].join("\n")` then `.strip` — the JS builder must match byte-for-byte.
+
+2. **Auto-inject Timestamp** — every `submitEvent` call adds `- Timestamp: <ISO 8601>` as the first field. This is the nonce that prevents 409 duplicates from persistent keys.
+
+3. **Own the wrapper split** — `submitEvent` builds the signed body, signs it, then appends the wrapper (signature, txId, generation source, verify URL). The consumer never touches the wrapper format.
+
+4. **Surface outcomes** — return `{ok, status, txId, slug, emailRegistration?}` where `status` distinguishes `submitted`, `duplicate` (409), `signature_verification_failed`, `activated`, `pending_verification`, `pubkey_mismatch`, `not_found`. The oracle's 3-state UI needs these.
+
+5. **Guard field values** — reject or escape `[` + `EVENT]` substrings in field values to prevent misdispatch.
+
+### Test-vector suite (the MUST-HAVE)
+
+A JSON file in the repo with entries like:
+
+
+Cross-checked against the Ruby `SignatureVerifier` — run the same vectors through both and assert they verify. This is the test that would have caught every signature bug this session.
+
+### The `registerEmail` / `verifyEmail` / `checkRegistration` methods
+
+These are the oracle's 3-state identity flow extracted into the library. Each is just a `submitEvent` call with specific event types and outcome parsing — they belong as convenience methods on `DaoClient`, not inline in the oracle's HTML.
+
+### Node guard
+
+`window.location` defaults throw in Node 18+. `submitEvent` should accept `generationSource` as a param (defaulting to `window.location.origin + pathname` when available, requiring it when `window` is undefined).
+
+---
+
+**Net:** Draft `submitEvent` + `registerEmail`/`verifyEmail`/`checkRegistration` as additive v1.1.0. The PR must include the canonical test-vector suite, nonce handling, `generationSource` param, and outcome surfacing. Those four are what make it safer, not just prettier.
+
+Want me to start drafting the PR?
+
