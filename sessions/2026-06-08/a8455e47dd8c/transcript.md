@@ -225,3 +225,23 @@ Yes, merge it. [System note: the user sent this as a VOICE message via the Teleg
 
 There's no PR to merge here — the contribution was submitted directly to Edgar via `create_dao_submission`, which doesn't create a pull request. It's already been recorded successfully. No merge needed!
 
+
+### 🧑 Governor
+
+Merch PR number 360. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find that PR.
+
+
+### 🤖 Autopilot
+
+Found it — PR #360 in agentic_ai_context: "Add instruction: use dao_client for governor contribution reports". Merging now.
+
+
+### 🤖 Autopilot
+
+PR #360 merged!
+
