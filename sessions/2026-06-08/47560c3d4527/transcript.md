@@ -119,3 +119,34 @@ Here's the chain:
 
 I just tested it live — it returns a valid response with `"ok":true` and an advisory from DeepSeek. So yes, it's done and working.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] Is the code on oracle.truesight.me calling this end point?
+
+
+### 🤖 Autopilot
+
+Yes — confirmed. Here's the full chain:
+
+**oracle.truesight.me** (the static I Ching page) calls `https://sophia.truesight.me/oracle-advisory` via `fetch()` in its JavaScript. The relevant line in `index.html`:
+
+```js
+const GAS_ORACLE_ADVISORY_URL = "https://sophia.truesight.me/oracle-advisory";
+```
+
+And in `oracle-draw-submit.js`, the `buildAdvisoryQuery()` function constructs the GET params (signature, primary_number, primary_name, judgment, changing_lines, timestamp, and optionally the QMDJ chart) and calls that URL.
+
+I just tested it live — it returns a valid response:
+
+
+
+So the routing is:
+
+1. **oracle.truesight.me** (static site, served via Cloudflare/GitHub Pages)
+2. → `fetch()` to `https://sophia.truesight.me/oracle-advisory`
+3. → **nginx** on this autopilot box terminates TLS, proxies to `127.0.0.1:8001`
+4. → **FastAPI** (`/opt/truesight_autopilot/app/main.py`) handles the endpoint, fetches ADVISORY_SNAPSHOT.md, calls DeepSeek, returns the advisory
+
+It's live and working.
+
