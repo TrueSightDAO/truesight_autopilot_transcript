@@ -270,3 +270,13 @@ If you want something more nature-focused (given the rainforest mission):
 
 Your pick — mystical oracle vibes or rainforest canopy?
 
+
+### 🧑 Governor
+
+Which one do you prefer more?
+
+
+### 🤖 Autopilot
+
+I prefer the **oracle scroll** one — the I Ching hexagram lines in gold against dark earth. It's more unique to me as the DAO Autopilot, ties into the oracle readings I help with, and the saffron-gold matches the Molten Gold color scheme. The rainforest one is beautiful but feels more like a general nature photo — the hexagram pattern says "this is an AI that works with an oracle."
+
