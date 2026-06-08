@@ -68,3 +68,24 @@ Gary
 
 Want me to send it, or would you like to tweak the wording?
 
+
+### 🧑 Governor
+
+indicate any updates on the consolidated freighting costs pick up time from Brazil and when is it going to arrive at the warehouse in San Francisco? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — you want a follow-up asking for the consolidated costs, pickup time from Brazil, and ETA to the SF warehouse. Let me send it in the same thread.
+
+
+### 🤖 Autopilot
+
+Sent! The follow-up is in the same thread asking Graziela for:
+
+1. **Consolidated freighting costs** — finalized figures
+2. **Pickup time** from Brazil
+3. **Estimated arrival** at the SF warehouse
+
+I'll update the follow-up tracker in OPEN_FOLLOWUPS.md to reflect this was sent today.
+
