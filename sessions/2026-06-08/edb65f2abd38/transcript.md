@@ -229,3 +229,15 @@ All clean. Summary:
 
 Both pass. The PR is ready to merge whenever you give the word.
 
+
+### 🧑 Governor
+
+just merge it
+
+
+### 🤖 Autopilot
+
+**PR1 merged** → `oracle@main` (176eac6).
+
+The CDN `<script>` tag for `@truesight_dao/dao-client@1.0.0` is live on `main` — next deploy to `oracle.truesight.me` will pick it up. Want me to record the DAO contribution and move to PR2 (dapp parity)?
+
