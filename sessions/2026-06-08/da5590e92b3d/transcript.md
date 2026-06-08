@@ -299,3 +299,36 @@ Cleared 910 cached entries. Also need to clear the old-format keys without the `
 
 All 910 dedup cache entries cleared. Try linking your email again on `oracle.truesight.me` — the duplicate guard is now reset. Make sure to do a hard refresh first so the page loads the fixed code with the `--------` separator.
 
+
+### 🧑 Governor
+
+Still getting this error
+
+[Attachment auto-processed: **1c56a84b63a746a0b883898bf74c74e8.jpg**]
+- Type: Image (OCR confidence: 81.9%, quality: good)
+- Saved to transcript
+
+Extracted text:
+```
+7:20 4 oul LTE GB v Identity Linked Link this oracle to your DAO identity Error: HTTP 409: {"status":"error","error":"Duplicate submission (Request Transaction ID already processed)."} Saved insight 45 - Gathering Together — 47 — Oppression 10 hours ago Guidance & tips + Cast your lines Pinner th a en ele n eh hin, ¢ > © @
+```
+
+
+### 🤖 Autopilot
+
+The dedup cache was cleared but the browser is still sending the same `Request Transaction ID` — because the oracle keypair in localStorage hasn't changed. The dedup is keyed by the SHA256 of the signature bytes, and since the same private key signs the same message text, it produces the same signature every time.
+
+The fix needs to be in the oracle page itself — the `Request Transaction ID` should include something unique per attempt (like a timestamp or nonce) so each submission has a unique signature. Let me look at how the DApp's `create_signature.html` handles this.
+
+
+### 🤖 Autopilot
+
+The issue is clear: the oracle signs the same message text every time, producing the same signature bytes, which the dedup guard recognizes. The fix is to include a unique nonce (timestamp) in the message being signed, so each attempt produces a different signature.
+
+
+### 🤖 Autopilot
+
+Merged. Now the page includes a `- Timestamp:` field in the signed message, so each attempt produces different signature bytes and the dedup guard won't block it.
+
+Do a hard refresh on `oracle.truesight.me` and try linking again.
+
