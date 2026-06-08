@@ -222,3 +222,19 @@ So the question is: do you want me to **promote the RC to a proper release** (e.
 
 Or are you happy with the RC as-is for now? The oracle PR #45 is already open pointing at `@1.1.0-rc.1` — I can merge it once you confirm.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Merge it
+
+
+### 🤖 Autopilot
+
+PR #45 merged. Oracle is now pointing at `@truesight_dao/dao-client@1.1.0-rc.1` on the CDN.
+
+**Summary of what's done:**
+- ✅ **Step 2** — Oracle CDN URL updated to `@1.1.0-rc.1` (merged to main)
+- ✅ **Step 3** — `latest` dist-tag already points at `1.1.0-rc.1` on npm
+
+The RC is live. If you want a clean `1.1.0` release (no `-rc.1`), I'd need npm publish credentials to push a new version — let me know.
+
