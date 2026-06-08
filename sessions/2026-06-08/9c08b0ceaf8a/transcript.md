@@ -351,3 +351,25 @@ The contribution went through fine — the 409 was just the duplicate guard catc
 
 The server now handles resend requests. When someone re-submits `[EMAIL REGISTERED EVENT]` while VERIFYING, it re-sends the email (60s cooldown). Want me to move on to **PR2** — the oracle frontend resend affordance?
 
+
+### 🧑 Governor
+
+Regarding the earlier confusion when Claude like trigger the handoff, how do we ensure that you don't get confused like this again? Because I know that Claude or the other LLM so always upload to agentic AI contacts where before they trigger the handoff to you via telegram. So what do you propose? How do you propose we go about handling this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question. The root cause was: when you said "read the verification plan," I searched my local context cache and found `BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md` first (which matched "plan" loosely), and didn't realize there was a newer file on the remote main branch that I hadn't pulled yet.
+
+Here's what I propose:
+
+**1. Add a handoff manifest file** — a single machine-readable file like `HANDOFFS_INDEX.md` that lists every active handoff with its filename, date, and a one-line summary. When you say "read the plan," I check this index first. It's faster than grepping all `.md` files.
+
+**2. On handoff, Claude updates the manifest** — when Claude commits a plan and pings me, they add a row to the manifest. That way I know exactly what files I'm supposed to be working on.
+
+**3. I pull the remote before searching** — my first step when you mention a plan or handoff should be `git pull` on agentic_ai_context, not searching my local cache. The `RESEND_VERIFICATION_PLAN.md` was already on the remote main branch — I just hadn't fetched it.
+
+**4. SOPHIA_HANDOFFS.md already exists** — it's the registry of handoffs with topic links. The gap is that I didn't check it first. I should make it a rule: when you mention a handoff or plan, read `SOPHIA_HANDOFFS.md` first to see what's active, then pull the remote.
+
+Want me to open a PR to add the handoff manifest and update my system prompt with the pull-first rule?
+
