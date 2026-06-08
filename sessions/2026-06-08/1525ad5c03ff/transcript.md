@@ -255,3 +255,37 @@ Once you have it, I can write it into a small file like `CURRENT_TOPIC.md` that 
 
 Want me to create a quick reference file for it once you grab the thread ID?
 
+
+### 🧑 Governor
+
+I shared this to Claude... https://t.me/c/3919341801/3 would that work?
+
+
+### 🤖 Autopilot
+
+Let me check — the URL `https://t.me/c/3919341801/3` means:
+
+- **Chat ID:** `-1003919341801` (the TrueSight DAO Ops group)
+- **Thread ID:** `3`
+
+So the session ID to rejoin this topic would be:
+
+```
+tg:-1003919341801:3
+```
+
+That should work. When Claude uses `truesight-dao-ping-sophia --session-id tg:-1003919341801:3 --message "..."`, it'll land right back in this conversation thread.
+
+Let me write a quick reference file so it's easy to find.
+
+
+### 🤖 Autopilot
+
+PR #365 created. The session ID is `tg:-1003919341801:3`.
+
+So when you're talking to Claude, you can say:
+
+> *"Hand this off to Sophia in the same topic. Use session ID `tg:-1003919341801:3` and ping her with `truesight-dao-ping-sophia`."*
+
+And Claude can run that command to drop a message right back into this thread. Want me to merge that PR?
+
