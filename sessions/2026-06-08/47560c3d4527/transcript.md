@@ -316,3 +316,21 @@ Here's what it does:
 
 **Non-blocking**: the oracle reading flow is completely unaffected. Silent on failure.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] merge it
+
+
+### 🤖 Autopilot
+
+Merged. PR #46 is now on `main` in the oracle repo. The change will be live on `oracle.truesight.me` once the static site deploys (GitHub Pages or whatever serves it).
+
+The full chain is now:
+
+1. **Governor casts reading** on oracle.truesight.me
+2. **Advisory panel appears** → `autoSubmitIfNeeded()` fires
+3. **PRACTICE EVENT** submitted to Edgar (as before)
+4. **Fire-and-forget POST** to `sophia.truesight.me/daily-briefing` with signed payload
+5. **Sophia** verifies key → checks governor → dedups → composes agenda → posts to Telegram #General
+
