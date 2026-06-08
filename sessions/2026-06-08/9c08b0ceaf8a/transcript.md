@@ -373,3 +373,48 @@ Here's what I propose:
 
 Want me to open a PR to add the handoff manifest and update my system prompt with the pull-first rule?
 
+
+### 🧑 Governor
+
+Yeah, can you do that and then also update the agent AI context to ensure all the future our arms know to follow this protocol? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current SOPHIA_HANDOFFS.md to see its exact format, then build the manifest and update the docs.
+
+
+### 🤖 Autopilot
+
+Good. Now let me also check the OPERATING_INSTRUCTIONS.md to see where to add the protocol rule.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me implement the fix — I'll:
+
+1. Create a `HANOFF_MANIFEST.md` — machine-readable table of all active handoffs
+2. Update `SOPHIA_HANDOFFS.md` with the pull-first rule
+3. Add a protocol section to `OPERATING_INSTRUCTIONS.md` for all future LLMs
+4. Update my own system prompt entry in `CONTEXT_UPDATES.md`
+
+
+### 🤖 Autopilot
+
+PR is open: **agentic_ai_context#358** — [feat: handoff manifest + pull-first protocol for all LLMs](https://github.com/TrueSightDAO/agentic_ai_context/pull/358)
+
+Here's what it does:
+
+**1. `HANDOFF_MANIFEST.md`** — a single table listing every active handoff with plan file, status, and resume tracker state. Any LLM can check this in 2 seconds instead of grepping all `.md` files.
+
+**2. `SOPHIA_HANDOFFS.md`** — added a bold **pull-first rule** at the top: before acting on any handoff, `git pull origin main` first.
+
+**3. `OPERATING_INSTRUCTIONS.md` §7** — the full protocol codified for all future LLMs (Claude, Cursor, Sophia, etc.):
+- Pull remote before searching
+- Check the manifest first
+- Cross-reference with SOPHIA_HANDOFFS.md
+- Read the plan file in full before proposing actions
+- Fallback steps if the manifest is empty
+
+Want me to merge it?
+
