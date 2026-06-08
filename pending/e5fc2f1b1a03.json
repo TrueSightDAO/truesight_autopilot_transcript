@@ -117,5 +117,12 @@
     "summary": "The `edit_message_text` function in telegram_adapter.py doesn't pass `message_thread_id` when editing a message that was sent to a forum topic. This causes Telegram to return a 400 error when trying t",
     "action": "merge_pr",
     "created_at": "2026-06-07T23:38:06Z"
+  },
+  {
+    "title": "Merge PR #28 on oracle",
+    "qr_code": "",
+    "summary": "Add an email-link section to the oracle page (oracle.truesight.me/index.html) that lets practitioners link their existing browser keypair to their email address, so their name appears on the credentia",
+    "action": "merge_pr",
+    "created_at": "2026-06-08T01:58:34Z"
   }
 ]
