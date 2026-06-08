@@ -29,3 +29,17 @@ Could you let me know:
 
 Alternatively, if you want me to **create** a new topic for something, I can do that with `create_telegram_topic`.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801] I am in General channel...
+
+
+### 🤖 Autopilot
+
+Got it — you're in the **General** channel (chat_id `-1003919341801`), not inside a specific forum topic. In Telegram, the General channel is the main chat area, not a threaded topic, so there's no `thread_id` to speak of here.
+
+If you want me to create a dedicated forum topic for a specific task (e.g., "Exec: warm-up auto-send" or "QR batch processing"), just say the word and I'll spin one up with `create_telegram_topic`.
+
+What are you working on?
+
