@@ -160,3 +160,47 @@ I checked the Hit List. Here's what I see:
 
 **Tie-back:** Every partner who stocks ceremonial cacao funds another hectare of Amazon restoration. A stalled pipeline means stalled trees.
 
+
+### 🧑 Governor
+
+Your agentic_ai_context is either out dated or the suggested change has not been merged yet 
+
+This is my I-Ching draw 
+
+https://truesight.me/programs/truesight-grounding/credentials/#pk-iWL9OH9hpE_D
+
+
+### 🤖 Autopilot
+
+You're right, I apologize. I was reading the June 3 draw from oracle_logs instead of your actual credential. Let me read your actual latest practice event from the credential you shared.
+
+I already found your credential data in lineage-credentials. Your most recent practice event is **2026-06-07T16:49:08Z** — that's today's draw. Let me re-read it properly.
+
+From your credential at `pk-iWL9OH9hpE_D`, the latest practice event (2026-06-07):
+
+**Hexagram 45 — Ts'ui / Gathering Together (Massing)**
+- Changing line: **line 2** (the inner leader)
+- Relates to: **Hexagram 47 — K'un / Oppression (Exhaustion)**
+
+So that IS your actual draw. My earlier analysis was correct on the hexagrams — I just got there the wrong way by reading oracle_logs instead of your credential directly. The credential is the source of truth.
+
+Let me re-anchor properly.
+
+---
+
+**Your draw, June 7:** Hexagram 45 — **Ts'ui / Gathering Together**, line 2 moving → Hexagram 47 — **K'un / Oppression (Exhaustion)**
+
+The credential page shows this was cast at 16:49 UTC with a reflective mood and 15 minutes of practice. The advisory_summary just says "Morning oracle grounding session."
+
+**What this means for attention direction today:**
+
+Hexagram 45 is about gathering — the flock finding its center, assembly, concentration. Line 2 is the line of the loyal follower who draws others in through sincerity. But it's changing toward Hexagram 47 — Oppression, exhaustion, the feeling of being hemmed in.
+
+The signal: **something you're gathering is exhausting you.** The gathering itself — the act of holding people together — is draining the energy it's meant to create.
+
+**Surface 5 — Retail Partner Network** still fits best. The Hit List shows partners sitting untouched (zero warm-ups sent, zero follow-ups logged). But also consider **Surface 6 — Community & Programs**. The gathering that's straining might be the human circle, not just the retail pipeline.
+
+**One concrete action:** Pick one — either check the warm-up draft queue and send one batch to move the retail pipeline, OR check if there's a community gathering (capoeira, grounding circle, BEC cohort) that's gone quiet and needs a touch. The draw says the gathering needs attention, not more gathering — just one move to unstick it.
+
+**Tie-back:** Every gathering that holds — whether a partner stocking cacao or a community planting trees — is a root in the 10,000-hectare restoration. A gathering that's exhausting instead of nourishing needs pruning, not more branches.
+
