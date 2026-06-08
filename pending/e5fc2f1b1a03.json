@@ -131,5 +131,12 @@
     "summary": "Add a GitHub Actions CI workflow that runs `node --check` on all JS in the repo before merging PRs. The workflow should:\n\n1. Trigger on pull requests to `main` that touch `index.html`, `assets/js/*.js",
     "action": "merge_pr",
     "created_at": "2026-06-08T17:03:16Z"
+  },
+  {
+    "title": "Merge PR #123 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Two changes needed in telegram_adapter.py:\n\n1. **Forward thread_id to LLM context**: In `handle_message`, the thread_id is used for routing replies but never passed to the LLM as part of the message c",
+    "action": "merge_pr",
+    "created_at": "2026-06-08T21:08:49Z"
   }
 ]
