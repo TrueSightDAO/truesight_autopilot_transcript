@@ -172,3 +172,89 @@ The only external endpoint the oracle page calls is:
 
 There's no reference to `daily-briefing` or `daily_briefing` anywhere in the oracle repo's code. The daily briefing is a separate system — it runs from the autopilot's `app/daily_briefing.py` and posts directly to Telegram (the #General channel), not through the oracle frontend.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] PR1 is now fully built across two PRs:
+
+1. PR #125 (feat/daily-briefing-endpoint) — the core app/daily_briefing.py module with the full handler, agenda composer, dedup store, and Telegram poster
+2. PR #126 (feat/daily-briefing-route-wire) — wires the /daily-briefing route into app/main.py with CORS for oracle.truesight.me
+
+Here's the summary of what was built:
+
+---
+
+✅ PR1 Complete — Sophia /daily-briefing endpoint
+
+What it does
+
+When a governor casts their morning oracle reading, the oracle fires a signed POST to https://sophia.truesight.me/daily-briefing. Sophia:
+
+1. Verifies the key — only proceeds if the signing key maps to a DAO governor (non-governor draws are silently rejected)
+2. Dedups — once per governor per day (file-based dedup store, survives restarts)
+3. Composes a personalized agenda from live sources:
+   • Parked handoffs — SOPHIA_HANDOFFS.md rows with status active/go-ready
+   • Open PRs — across 10 key DAO repos, sorted newest-first
+   • Due follow-ups — OPEN_FOLLOWUPS.md ## Pending section
+   • In-flight status — recent CONTEXT_UPDATES.md entries
+   • Hexagram framing — the day's reading as the opening theme
+4. Posts to Telegram #General — chat -1003919341801, no thread_id
+5. Returns JSON — fire-and-forget; the oracle doesn't wait
+
+Request shape (from oracle browser)
+
+POST https://sophia.truesight.me/daily-briefing
+Headers: X-Public-Key: <base64 public key>
+Body: {
+  "payload": {
+    "reading": {
+      "primary_hexagram": {"number": 1, "name": "Ch'ien / The Creative"},
+      "timestamp_utc": "2026-06-09T12:00:00Z"
+    }
+  },
+  "signature": "<base64 RSA signature of payload>"
+}
+Response
+
+
+
+Gates satisfied
+
+• ✅ Governor-check before briefing
+• ✅ Dedup per governor per day
+• ✅ Non-breaking trigger (fire-and-forget JSON)
+• ✅ CORS allowing https://oracle.truesight.me
+• ✅ Open PR, not auto-merged
+• ✅ Generated-by: Sophia (TrueSight Autopilot) on every commit
+
+Next: PR2
+
+Once you review and merge PRs #125 and #126, I'll build PR2 — the oracle browser-side trigger. After a governor's reading, it POSTs the signed briefing-request (fire-and-forget, non-blocking, must not affect the reading flow).
+
+
+### 🤖 Autopilot
+
+Thanks for the summary. Let me check the current state of those PRs.
+
+
+### 🤖 Autopilot
+
+I don't see PRs #125 or #126 in the open list. Let me check if they exist at all.
+
+
+### 🤖 Autopilot
+
+Both PRs #125 and #126 are already **merged** (closed, with `merged_at` timestamps):
+
+- **PR #125** — `feat: add /daily-briefing endpoint` — merged 2026-06-08T22:27:40
+- **PR #126** — `Wire /daily-briefing route into server with CORS` — merged 2026-06-08T22:27:43
+
+So PR1 is already deployed in the codebase. But the code on the running server may not have been deployed yet. Let me check.
+
+
+### 🤖 Autopilot
+
+It's already deployed and live on the server. The code is at `/opt/truesight_autopilot/app/daily_briefing.py` and the route is wired in `main.py` at `/daily-briefing`.
+
+So to answer your original question: **No, oracle.truesight.me does NOT currently call `sophia.truesight.me/daily-briefing`** — the oracle frontend only calls `/oracle-advisory`. The `/daily-briefing` endpoint exists and is deployed, but there's no trigger on the oracle side yet. That's what you described as **PR2** — wiring the oracle browser to POST the signed briefing request after a governor's reading.
+
