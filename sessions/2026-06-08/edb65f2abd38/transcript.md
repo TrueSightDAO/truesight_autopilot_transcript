@@ -207,3 +207,25 @@ Here's what was done:
 
 Ready for review. Want me to run `node --check` on the changed files now?
 
+
+### 🧑 Governor
+
+yeah. Give it a shot
+
+
+### 🤖 Autopilot
+
+`oracle-draw-submit.js` clean. Now extract the inline `<script>` from `index.html`:
+
+
+### 🤖 Autopilot
+
+All clean. Summary:
+
+| File | `node --check` |
+|---|---|
+| `assets/js/oracle-draw-submit.js` | ✅ OK |
+| `index.html` (inline `<script>`) | ✅ OK |
+
+Both pass. The PR is ready to merge whenever you give the word.
+
