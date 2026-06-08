@@ -150,3 +150,25 @@ So the routing is:
 
 It's live and working.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] I meant does oracle call sophia.truesight.me/daily-briefing?
+
+
+### 🤖 Autopilot
+
+Ah, I misunderstood. Let me check.
+
+
+### 🤖 Autopilot
+
+No — **oracle.truesight.me does NOT call `sophia.truesight.me/daily-briefing`**.
+
+The only external endpoint the oracle page calls is:
+
+- **`https://sophia.truesight.me/oracle-advisory`** — for the DAO advisory (DeepSeek-generated interpretation of the hexagram + DAO state)
+- **`https://edgar.truesight.me/dao/submit_contribution`** — for auto-submitting [PRACTICE EVENT]s to the ledger
+
+There's no reference to `daily-briefing` or `daily_briefing` anywhere in the oracle repo's code. The daily briefing is a separate system — it runs from the autopilot's `app/daily_briefing.py` and posts directly to Telegram (the #General channel), not through the oracle frontend.
+
