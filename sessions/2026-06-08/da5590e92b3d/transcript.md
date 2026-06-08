@@ -115,3 +115,65 @@ Yeah, I merge it [System note: the user sent this as a VOICE message via the Tel
 
 Merged. The oracle page at `oracle.truesight.me` now has a "Link to DAO Identity" button in the top-right hero area. Next step is PR 3 — updating the credential page to resolve the practitioner's name from `dao_members.json` when `practitioner_name` is empty. Want me to build that?
 
+
+### 🧑 Governor
+
+Yeah, go for it now and then merge once you're done [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the credential page rendering code to understand where the name resolution happens.
+
+
+### 🤖 Autopilot
+
+Now I can see the `renderCredential` function. The key line is:
+
+```js
+html += '<h1 class="credential-name">' + escapeHtml(cv.display_name || slug) + '</h1>';
+```
+
+When `cv.display_name` is empty (which it is for oracle practitioners who haven't linked their email), it falls back to the slug. I need to add a `dao_members.json` lookup here. Let me also check the credential page HTML.
+
+
+### 🤖 Autopilot
+
+I see it loads `program-shell-oracle.js` — let me check that file too.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The `renderCredential` function in `program-shell.js` renders `cv.display_name || slug`. The fix is to add a `dao_members.json` lookup inside `renderCredential` — after the CV loads, if `cv.display_name` is empty, fetch `dao_members.json` and try to resolve the practitioner's name by their public key.
+
+Let me check where `dao_members.json` lives.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `dao_members.json` has contributors with `public_keys` arrays. The oracle keypair's public key (stored in localStorage) can be matched against these. The credential page's CV already carries a `pk_hash` field that matches the slug prefix. But the simpler approach: the CV already has `cv.display_name` — the issue is that oracle practitioners who haven't linked their email have `display_name: ""` in the CV.
+
+The real fix is: after loading the CV, if `cv.display_name` is empty, look up the `pk_hash` in `dao_members.json` to find the contributor's name. Let me build this.
+
+
+### 🤖 Autopilot
+
+PR is up at **truesight_me_beta#193**. Let me merge it.
+
+
+### 🤖 Autopilot
+
+Both PRs are merged. Here's the full picture of what's now live:
+
+**On the oracle page** (`oracle.truesight.me`):
+- A "Link to DAO Identity" ghost button in the top-right hero area
+- Click it → enter your email → signs an `[EMAIL REGISTERED EVENT]` with your existing keypair → sends to Edgar
+- Shows "Check your email for a verification link"
+- On future visits, shows "✓ Identity Linked" with a "My Credentials →" link
+
+**On the credential page** (`truesight.me/programs/truesight-grounding/credentials/`):
+- After linking your email and verifying, the credential page now resolves your name from `dao_members.json`
+- Your name appears instead of the anonymous `pk-...` slug
+
+Want me to promote to prod?
+
