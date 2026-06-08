@@ -71,3 +71,15 @@ Merging PR #36 now.
 
 PR #36 is merged. The resend link is now live on oracle.truesight.me. When someone's in the pending state — registered but waiting for the email link — they'll see a "Didn't get it? Resend" link below the message. Clicking it re-signs and re-submits the registration event, and the server enforces a 60-second cooldown between resends.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Very cool. Thank you very much. Have a good evening. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're welcome, Gary. Glad that's all buttoned up. Have a good evening!
+
