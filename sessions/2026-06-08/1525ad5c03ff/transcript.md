@@ -139,92 +139,24 @@ Both now load `DaoClient` from the CDN bundle instead of inline helpers. Go ahea
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
 
-[Telegram context: chat_id=-1003919341801, thread_id=3] I am thinking for the NPM library instead of requiring uses to be so base which introduces alot of variables and is prone to failure especially when utilizing LLM
-
-  // in practice.html before this file. Each was verified against @1.0.1.
-  const base64ToArrayBuffer = DaoClient.base64ToArrayBuffer;
-  const arrayBufferToBase64 = DaoClient.arrayBufferToBase64;
-  const base64ToBase64Url = DaoClient.base64ToBase64Url;
-  const publicKeyToSlug = DaoClient.publicKeyToSlug;
-
-
-also introduce methods like these
-
-  DaoClient.practice event
-  DaoClient.attestation event
-  DaoClient.register email address
-  DaoClient.verify email address 
-
-
-With strict parameters? What are your thoughts?
+[Telegram context: chat_id=-1003919341801, thread_id=3] Thoughts about?
 
 
 ### 🤖 Autopilot
 
-Strong call, Gary. The current pattern — aliasing 4 low-level helpers and leaving the consumer to wire up signing, form-building, and submission — is fragile. Every project that needs to submit a signed event has to re-implement the same boilerplate, and as you said, LLMs introduce variables.
+Good question. Let me check what's actually deployed vs what's in `main` now.
 
-Here's my take:
 
-**The 4 aliases should go away entirely.** They're a half-measure — we swapped the base64 helpers but the consumer still has to:
-- Build the canonical request text (with the correct `--------` boundary)
-- Import the private key from localStorage
-- Call `window.crypto.subtle.sign` with the right algorithm
-- Build the `FormData` + POST to Edgar
-- Parse the response
+### 🤖 Autopilot
 
-That's 5+ steps per event type. One wrong line and the signature doesn't verify.
+Both sites are live and serving. The CDN bundle is loading — I can see the oracle page renders fully (QMDJ panel, hexagram reference, identity panel all present). The capoeira practice page loads with the session generator and history dashboard.
 
-**What `DaoClient.*` should expose instead:**
+**What I'd test:**
 
-```js
-// Submit a signed event to Edgar — one call, strict params
-DaoClient.submitEvent({
-  eventType: 'PRACTICE EVENT',       // or 'EMAIL REGISTERED EVENT', etc.
-  fields: {
-    'Program': 'capoeira-tribo-mirim',
-    'Practice Type': 'training-session',
-    'Practitioner Name': '...',
-    // ... all key-value pairs that go before --------
-  },
-  // Optional: key overrides (defaults to localStorage publicKey/privateKey)
-  // publicKey: '...',
-  // privateKey: '...',
-})
-// Returns: { ok: true, requestHash: '...', slug: '...' }
-// Or throws with a clear message
-```
+1. **Oracle** — cast a reading, check the DAO advisory loads (it calls the GAS backend via `DaoClient` helpers), and verify the identity link flow still works
+2. **Capoeira** — finish a practice session, confirm the `[PRACTICE EVENT]` submits to Edgar without signature errors
 
-**Strict params means:**
-- `eventType` is validated against a known list (`PRACTICE EVENT`, `EMAIL REGISTERED EVENT`, `EMAIL VERIFICATION EVENT`, `CONTRIBUTION EVENT`, etc.)
-- `fields` is a flat key-value map — no freeform text building
-- The method handles: canonical text construction, key import, signing, form-building, POST, response parsing
-- If a required field is missing for that event type, it throws immediately with a clear message
+Both should work identically to before — the swap was one-to-one for every helper. The only risk is if the CDN fails to load (unlikely — verified 200), in which case `DaoClient` would be undefined and the page would throw. That's the same risk as any CDN dependency.
 
-**Additional methods:**
-
-```js
-// Register email — wraps submitEvent with EMAIL REGISTERED EVENT shape
-DaoClient.registerEmail(email)
-
-// Verify email — wraps submitEvent with EMAIL VERIFICATION EVENT shape
-DaoClient.verifyEmail(email, verificationKey)
-
-// Check registration status against Edgar
-DaoClient.checkRegistration(publicKey)
-// Returns: { registered, pending_verification, contributor_email, ... }
-```
-
-**This eliminates:**
-- The 4 aliases entirely (consumers never touch base64 or crypto.subtle)
-- The `signRequestText` inline function in capoeira
-- The `handleDaoIdentityLink` / `handleVerificationParams` inline code in oracle
-- The `buildPracticeEventText` function (replaced by passing fields)
-- The `submitSession` function (replaced by calling `DaoClient.submitEvent`)
-
-**What stays consumer-side:**
-- UI rendering (cards, buttons, progress bars)
-- localStorage session history tracking
-- Event-specific field assembly (what goes into the `fields` map)
-
-Want me to draft the `submitEvent` API and open a PR on `dao_protocol` for v1.1.0?
+Want me to run a quick smoke test on either?
 
