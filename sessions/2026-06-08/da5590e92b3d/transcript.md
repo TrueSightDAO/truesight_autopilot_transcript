@@ -8,13 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Tidak mimpi, makanan itu saya di sini Saya perlu terlalu maniskan, dan daripada saya Bagaimana saya beritahu makan tengok di acá, mereka Ketakutan saya buat itu, saya Tiada apa-apa, dan ia akan tinggalkan sebelum Dan kemudian saya menampilkan ke sini Jadi saya ia fikir menjadi semuna yang pentingak Saya pun berkata daripada h Like, saya akan berada di sini Jika saya pergi ke jalan di jalan terbuka banyak perkara. Saya ingatkan, as soon as I finish my draw, dan you realise that their new draw has been pulled, you again, you know, just do what you do with your analysis, but like push something out to the general topic so that when I come in, I really know what needs my attention for the day. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
 ### 🤖 Autopilot
 
 I hear you, Gary. Let me pull today's oracle draw and check the attention surfaces so I can give you a clear direction for the day.
@@ -357,4 +350,46 @@ Want me to build this? I'd add a small section to the credential page that:
 - Shows an email input + "Link to my DAO identity" button
 - Submits `[EMAIL REGISTERED EVENT]` via Edgar (same as create_signature.html does)
 - Then the standard verification email flow takes over
+
+
+### 🧑 Governor
+
+Generate an implementation plan, as well as the execution roadmap and the execution roadmap checklist. Merge that first and then let's have a conversation. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first check what already exists for the credential page and the oracle app to understand the full picture.
+
+
+### 🤖 Autopilot
+
+Now let me also check the oracle app to understand how keys are stored.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the oracle-draw-submit.js to understand how the keypair is stored and used.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me create the implementation plan and roadmap.
+
+
+### 🤖 Autopilot
+
+Plan is up at **agentic_ai_context#353**. Here's the summary:
+
+**The problem:** Your oracle keypair lives in localStorage on `oracle.truesight.me` — the credential page on `truesight.me` can't see those keys because they're different origins. So the email-link section can't go on the credential page.
+
+**The fix:** Put the email-link section on the **oracle page itself** (`oracle.truesight.me`). The oracle page already has the keys. Add a small form: "Link this oracle to your DAO identity" → enter email → signs `[EMAIL REGISTERED EVENT]` with existing keys → verification email → done. Then the credential page can look up your name from `dao_members.json`.
+
+**Roadmap:**
+1. **PR 1** — Add email-link section to `oracle/index.html` (reuses existing keys, no new keygen)
+2. **No PR needed** — Verification flow already exists in Edgar
+3. **PR 3** — Update `program-shell.js` to resolve name from `dao_members.json` when `practitioner_name` is empty
+4. **PR 4** — Promote to prod
+
+Want to discuss the plan before I start building PR 1?
 
