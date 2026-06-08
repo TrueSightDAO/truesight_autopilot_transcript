@@ -135,3 +135,15 @@ Merge to main so that I can review. [System note: the user sent this as a VOICE 
 
 Merged to main on the beta repo. You can review it now at truesight.me/blog/index.html — the two posts should appear at the top. Let me know if everything looks right, and if you'd like me to promote to production.
 
+
+### 🧑 Governor
+
+You are promoted to production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+There's a merge conflict when syncing beta to production. This is the intentional CNAME divergence — the prod and beta repos have different domain configurations that can cause conflicts. A human needs to reconcile this manually.
+
+Could you take a look at the conflict on the production repo? The beta changes are ready — it's just the sync that hit a snag.
+
