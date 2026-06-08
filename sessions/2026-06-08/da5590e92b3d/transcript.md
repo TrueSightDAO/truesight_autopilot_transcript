@@ -332,3 +332,32 @@ Merged. Now the page includes a `- Timestamp:` field in the signed message, so e
 
 Do a hard refresh on `oracle.truesight.me` and try linking again.
 
+
+### 🧑 Governor
+
+Still getting same error on browser not sure why
+
+
+### 🤖 Autopilot
+
+The browser is likely still loading the old cached page. GitHub Pages can take a minute or two to deploy, and the browser cache may be stubborn. Let me check if the deployed page has the fix.
+
+
+### 🤖 Autopilot
+
+The web_extract only gets rendered text, not the raw HTML source. Let me check the actual deployed HTML to see if the fix is live.
+
+
+### 🤖 Autopilot
+
+The deployed page has the fix — I can see the `var nonce = new Date().toISOString();` and `- Timestamp: ' + nonce` in the response. GitHub Pages is serving the updated code.
+
+The issue is your browser cache. On iPhone, Chrome/Safari aggressively caches pages. You need to force a hard refresh. Try this:
+
+1. Open Safari/Chrome on your iPhone
+2. Go to `oracle.truesight.me`
+3. Tap the **aA** icon (or the URL bar) and tap **Website Data** → **Remove All Website Data** (or just **Clear Cache**)
+4. Alternatively, open a **Private/Incognito tab** and navigate to the page
+
+The fix is definitely live on the server — the nonce timestamp is in the HTML. Your browser is just serving the old cached version.
+
