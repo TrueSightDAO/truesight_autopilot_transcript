@@ -96,3 +96,72 @@ Nothing left running, nothing left to clean.
 
 Yes, I'm done. Testing is complete, cleanup is done, inbox is clear of test emails. Ready for whatever's next.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] What else is there on Here's the full status of the dao-client v1.1.0 work:
+
+✅ Complete — Merged to main
+
+Phase 1 — Test vectors + canonical-bytes alignment ✅
+• PayloadBuilder.buildSubmitEvent() — auto-injects Timestamp, guards field values against [... EVENT] substrings
+• 12 test vectors in test/vectors/submit-event-vectors.json
+• 12 unit tests in test/payload.test.ts
+• PR #70 merged
+
+Phase 2 — submitEvent() + email methods + outcome parsing ✅
+• submitEvent({eventType, fields}) on DaoClient — uses buildSubmitEvent(), parses Edgar's response into structured outcomes (submitted, duplicate, signature_verification_failed, validation_failed, server_error)
+• registerEmail(email) — convenience wrapper
+• verifyEmail(email, verificationKey) — convenience wrapper
+• checkRegistration() — reads Edgar's authoritative status
+• 15 unit tests in test/dao-client.test.ts
+• PR #71 merged
+
+Phase 3 — Integration testing ✅
+• npm publish: @truesight_dao/dao-client@1.1.0-rc.1 live on npm + unpkg CDN
+• Real submitEvent against Edgar prod: returned {ok: true, status: "submitted", httpStatus: 200} — full round-trip works
+• Real checkRegistration against Edgar prod: correctly returned {registered: false, error: "No matching..."} for an unregistered key
+
+🟡 Not yet done
+
+Remaining for full v1.1.0 release
+1. Test registerEmail + verifyEmail — needs a real email to send the verification link to. Want me to test with yours?
+2. Update oracle + capoeira CDN URLs to @1.1.0-rc.1 for testing (or wait for latest)
+3. Promote to latest — remove -rc.1 tag once testing is complete
+
+Want me to push forward on any of these?
+
+
+### 🤖 Autopilot
+
+Here's the status of the dao-client v1.1.0 work:
+
+**✅ Complete — Merged to main**
+
+**Phase 1 — Test vectors + canonical-bytes alignment** ✅
+- PayloadBuilder.buildSubmitEvent() — auto-injects Timestamp, guards field values against `[... EVENT]` substrings
+- 12 test vectors in `test/vectors/submit-event-vectors.json`
+- 12 unit tests in `test/payload.test.ts`
+- PR #70 merged
+
+**Phase 2 — submitEvent() + email methods + outcome parsing** ✅
+- `submitEvent({eventType, fields})` on DaoClient — uses buildSubmitEvent(), parses Edgar's response into structured outcomes (submitted, duplicate, signature_verification_failed, validation_failed, server_error)
+- `registerEmail(email)` — convenience wrapper
+- `verifyEmail(email, verificationKey)` — convenience wrapper
+- `checkRegistration()` — reads Edgar's authoritative status
+- 15 unit tests in `test/dao-client.test.ts`
+- PR #71 merged
+
+**Phase 3 — Integration testing** ✅
+- npm publish: `@truesight_dao/dao-client@1.1.0-rc.1` live on npm + unpkg CDN
+- Real `submitEvent` against Edgar prod: returned `{ok: true, status: "submitted", httpStatus: 200}` — full round-trip works
+- Real `checkRegistration` against Edgar prod: correctly returned `{registered: false, error: "No matching..."}` for an unregistered key
+
+**🟡 Not yet done — remaining for full v1.1.0 release:**
+
+1. **Test registerEmail + verifyEmail** — needs a real email to send the verification link to. Want me to test with yours?
+2. **Update oracle + capoeira CDN URLs** to `@1.1.0-rc.1` for testing (or wait for `latest`)
+3. **Promote to `latest`** — remove `-rc.1` tag once testing is complete
+
+Want me to push forward on any of these?
+
