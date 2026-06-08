@@ -8,67 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1722] Go for it
-
-
-### 🤖 Autopilot
-
-I'm ready! What do you need help with, Gary? I've got full access to the DAO context, repos, AWS, Gmail, and the fleet. Just point me at a task — whether it's checking infrastructure, making code changes, processing QR codes, reviewing emails, or anything else.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1722] this 
-
-📋 Morning Oracle Standup — build coordination
-
-I've read MORNING_ORACLE_STANDUP_PLAN.md from GitHub main. Here's the sequence and current state:
-
-Sequence (2 PRs):
-
-PR1 — Sophia /daily-briefing endpoint (dao_protocol / truesight_autopilot)
-- Verify key → governor via check_digital_signature
-- Dedup per contributor per day
-- Compose agenda from: SOPHIA_HANDOFFS parked handoffs / open PRs / due OPEN_FOLLOWUPS / in-flight status / hexagram framing
-- Post to Telegram #General
-- CORS allowing https://oracle.truesight.me
-
-PR2 — Oracle browser trigger (oracle repo)
-- After a governor's reading, POST signed briefing-request (fire-and-forget, non-blocking)
-- Depends on PR1 (endpoint must exist + CORS-allow the origin)
-
-Gates:
-1. ✅ Governor-check before briefing
-2. ✅ Dedup per governor per day
-3. ✅ Non-breaking trigger (oracle unaffected if endpoint errors)
-4. ✅ Privacy — flag sensitive items
-5. ✅ Open PR, don't auto-merge
-6. ✅ Generated-by: Sophia (TrueSight Autopilot) on every commit + PR
-
-Status: PARKED at RESUME HERE (PR1). No code started yet.
-
-Ready. Reply "go for it" and I'll execute from RESUME HERE through the gates, reporting here.
-
-
-### 🤖 Autopilot
-
-Got it — executing the Morning Oracle Standup build from RESUME HERE. Let me start by reading the plan file and gathering context.
-
-
-### 🤖 Autopilot
-
-Good, I have the full plan. Now let me gather context on the existing codebases — the autopilot's current FastAPI routes, the oracle's signing mechanism, and the handoffs/follow-ups files.
-
-
-### 🤖 Autopilot
-
-Now let me look at the existing autopilot server code and the oracle's signing mechanism to understand the patterns I need to follow.
-
-
 ### 🤖 Autopilot
 
 Now let me also check the oracle repo to understand the signing mechanism and the oracle's existing code:
@@ -194,4 +133,87 @@ Body: {
 ### Next: PR2
 
 Once you review and merge PRs #125 and #126, I'll build **PR2** — the oracle browser-side trigger. After a governor's reading, it POSTs the signed briefing-request (fire-and-forget, non-blocking, must not affect the reading flow).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] what about the portion of the Advisory as well as the QMDJ?
+
+
+### 🤖 Autopilot
+
+You're right — the briefing should include the DAO Advisory (the DeepSeek-generated guidance) and the QMDJ chart data, since those are integral parts of the oracle reading. Let me check what the oracle currently captures in its advisory panel and QMDJ panel, then update the daily briefing to include them.
+
+Let me look at how the oracle's `buildPracticeEventText` captures advisory + QMDJ, and what the advisory payload looks like:
+
+
+### 🤖 Autopilot
+
+I see — the oracle already captures `advisory_summary` (from `#daoAdvisoryBody` textContent) and `qmdj_card` (from `#qmdjMeta` textContent) in the practice event payload. The daily briefing should include these too. Let me also check how the advisory is fetched to understand what data is available:
+
+
+### 🤖 Autopilot
+
+The file was pushed on the branch. Let me read it from the PR branch:
+
+
+### 🤖 Autopilot
+
+Good. Now I see the full picture. The oracle's `buildPracticeEventText` already captures:
+- `advisory_summary` — from `#daoAdvisoryBody` textContent (the DeepSeek-generated DAO guidance)
+- `qmdj_card` — from `#qmdjMeta` textContent (the QMDJ chart metadata)
+
+But the daily briefing's `_compose_agenda` only uses `primary_hexagram` from the reading data — it doesn't include the advisory or QMDJ. The fix is to:
+
+1. Accept `advisory_summary` and `qmdj_card` in the reading payload
+2. Include them in the composed agenda
+
+Let me update the daily briefing module:
+
+
+### 🤖 Autopilot
+
+The file doesn't exist on `main` yet — it was pushed on the `feat/daily-briefing-endpoint` branch. Since PR #125 hasn't been merged yet, I need to write the full updated file instead of editing it. Let me write the complete updated version:
+
+
+### 🤖 Autopilot
+
+Done. Here's the update:
+
+## PR #127 — Advisory + QMDJ in daily briefing
+
+The daily briefing now includes the full oracle reading context:
+
+**What changed in `app/daily_briefing.py`:**
+
+1. **`_compose_agenda()`** now extracts two additional fields from `reading_data`:
+   - `advisory_summary` — the DeepSeek-generated DAO guidance (from `#daoAdvisoryBody`), truncated to 800 chars for Telegram readability
+   - `qmdj_card` — the QiMen Dunjia chart metadata (from `#qmdjMeta`), truncated to 300 chars
+
+2. **`handle_daily_briefing()`** fallback — if `payload.reading` is absent, it also tries `payload.advisory_summary` and `payload.qmdj_card` directly, so the oracle can send them at either nesting level.
+
+3. **Both sections are optional** — if the oracle doesn't include them, the briefing still works (just omits those lines).
+
+**Example Telegram output:**
+
+```
+☀️ Good morning, Gary!
+
+🌅 Today's hexagram: 1 — Ch'ien / The Creative
+
+🔮 Oracle Advisory:
+The Creative force is strong today. Initiate bold, clear action. The DAO's
+current momentum supports expansion — focus on the handoffs that require
+decisive leadership. Watch for overreach in the afternoon…
+
+🧭 QiMen Dunjia: 陽遁4局 · 值符天輔 @ 巽 · 值使杜門 @ 震
+
+📋 Morning Briefing
+…
+```
+
+**PRs now open (all need review + merge before PR2):**
+- **#125** — `app/daily_briefing.py` module (core handler)
+- **#126** — Route wiring in `app/main.py`
+- **#127** — Advisory + QMDJ inclusion (this one)
 
