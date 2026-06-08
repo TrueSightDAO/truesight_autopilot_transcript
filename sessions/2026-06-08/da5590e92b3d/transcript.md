@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me also check the oracle app to understand how keys are stored.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Let me also check the oracle-draw-submit.js to understand how the keypair is stored and used.
 
 
@@ -109,4 +104,14 @@ The old PR 28 is superseded. New PR is **oracle#29**. Here's what it does:
 On future page loads, it checks localStorage and shows the linked state immediately with a "My Credentials →" link.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+Yeah, I merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged. The oracle page at `oracle.truesight.me` now has a "Link to DAO Identity" button in the top-right hero area. Next step is PR 3 — updating the credential page to resolve the practitioner's name from `dao_members.json` when `practitioner_name` is empty. Want me to build that?
 
