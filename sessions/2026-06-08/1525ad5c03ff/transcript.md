@@ -225,3 +225,37 @@ The actual URL construction logic lives in `edgar_send_email_verification.gs` in
 
 So this wasn't a case of me missing existing docs — the flow was **undocumented in agentic_ai_context**. I had to read the source code directly. Want me to file a follow-up to add a runbook for this flow?
 
+
+### 🧑 Governor
+
+yeah. I think it is important to update the documentations so that future LLMs or yourself attempting to replicate it for another site doesnt hit with the same issue again
+
+
+### 🤖 Autopilot
+
+Let me check what already exists and where best to add it.
+
+
+### 🤖 Autopilot
+
+Good — `SERVICE_IDENTITY_ONBOARDING.md` describes the bot flow but doesn't detail the URL construction. Let me also check the existing `DAPP_PAGE_CONVENTIONS.md` or similar:
+
+
+### 🤖 Autopilot
+
+Confirmed — completely undocumented. Let me create a new runbook for this.
+
+
+### 🤖 Autopilot
+
+Done — **PR #354** is open: `EMAIL_VERIFICATION_URL_FLOW.md`. It covers:
+
+1. The full flow diagram — Edgar → GAS → email → landing page → auto-submit
+2. The `buildSignatureVerificationUrl_()` function and how `return_url` + `em` + `vk` are assembled
+3. How `create_signature.html` parses those params and auto-submits the verification
+4. The `return_url` parameter — how it's derived from `generation_source_url` and why it matters
+5. The service-identity bot variant
+6. Testing/debugging tips and anti-patterns
+
+So next time an LLM or operator needs to replicate this for another site, it's all in one place instead of scattered across three repos. Want me to merge it?
+
