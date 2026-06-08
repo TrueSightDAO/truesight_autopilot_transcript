@@ -65,27 +65,57 @@ Is there something else you were asking about with "is it done"? Or were you jus
 
 ### 🤖 Autopilot
 
-Let me check the oracle repo for how it's calling the daily briefing endpoint.
+Let me check what's deployed on the oracle host and look at the oracle repo.
 
 
 ### 🤖 Autopilot
 
-Now I can see the oracle app. Let me check if it's calling the daily briefing endpoint. Let me look at the specific JavaScript that handles the DAO advisory and the daily briefing endpoint.
+Let me check the oracle repo for any daily briefing or API endpoint references, and also look at what's deployed on the oracle host.
 
 
 ### 🤖 Autopilot
 
-I can see from the oracle's `index.html` that it has this constant:
+Let me look at the oracle repo's actual code and also check what's running on the oracle host.
 
-```javascript
-const GAS_ORACLE_ADVISORY_URL = "https://sophia.truesight.me/oracle-advisory";
-```
 
-And it calls this endpoint in `fetchDaoAdvisory()` when a reading is revealed — it passes the I Ching draw parameters (signature, hexagram numbers, changing lines, QMDJ chart) to this URL to get the DAO advisory back.
+### 🤖 Autopilot
 
-So to answer your question: **The oracle.truesight.me frontend calls `https://sophia.truesight.me/oracle-advisory`** (which is the autopilot/nginx endpoint), **not a daily briefing endpoint directly.** It's the DAO Advisory endpoint that generates the advisory text based on the I Ching draw + QMDJ chart + advisory snapshot context.
+Now I can see the oracle page. Let me check what endpoint it calls — I can see it references `GAS_ORACLE_ADVISORY_URL = "https://sophia.truesight.me/oracle-advisory"`. Let me also check the oracle-draw-submit.js file and see what's actually deployed on the oracle host.
 
-The **daily briefing** (the Telegram post to #General) is a separate thing — that's in `truesight_autopilot/app/daily_briefing.py` and runs on a cron schedule, not triggered by the oracle page. The oracle only calls the advisory endpoint when a user reveals a reading on the page.
 
-Are you asking about whether the oracle is calling the **daily briefing** endpoint (which it isn't — that's a cron job), or whether it's calling the **oracle-advisory** endpoint (which it is, on every reading reveal)?
+### 🤖 Autopilot
+
+Now let me check what's actually deployed on the oracle host and what endpoint it's calling.
+
+
+### 🤖 Autopilot
+
+Let me check the nginx config on the oracle host and the autopilot box to see what's routing to `sophia.truesight.me/oracle-advisory`.
+
+
+### 🤖 Autopilot
+
+Now let me check the FastAPI app on port 8001 to see if the `/oracle-advisory` endpoint is actually implemented there.
+
+
+### 🤖 Autopilot
+
+The endpoint is implemented and running on the autopilot box. Let me verify it's actually live and responding.
+
+
+### 🤖 Autopilot
+
+It's live and working. Here's the full picture:
+
+**Yes, the code on oracle.truesight.me is calling this endpoint — and it's working.**
+
+Here's the chain:
+
+1. **oracle.truesight.me** (static HTML/JS) — the I Ching oracle page
+2. When a reading is revealed, the frontend calls `https://sophia.truesight.me/oracle-advisory` with the hexagram params (primary_number, primary_name, judgment, changing_lines, etc.)
+3. **sophia.truesight.me** is an nginx reverse proxy on **this autopilot box** (port 443 → 127.0.0.1:8001)
+4. The FastAPI app at `/opt/truesight_autopilot/app/main.py` handles the `/oracle-advisory` endpoint — it fetches the current ADVISORY_SNAPSHOT.md from GitHub, builds a system prompt with the hexagram + DAO state, and calls DeepSeek to generate the advisory
+5. Returns JSON in the same shape the GAS bridge used to
+
+I just tested it live — it returns a valid response with `"ok":true` and an advisory from DeepSeek. So yes, it's done and working.
 
