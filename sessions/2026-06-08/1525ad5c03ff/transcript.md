@@ -238,3 +238,38 @@ PR #45 merged. Oracle is now pointing at `@truesight_dao/dao-client@1.1.0-rc.1` 
 
 The RC is live. If you want a clean `1.1.0` release (no `-rc.1`), I'd need npm publish credentials to push a new version — let me know.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] you already have it.
+
+
+### 🤖 Autopilot
+
+Let me check what npm credentials I have access to.
+
+
+### 🤖 Autopilot
+
+I don't have npm auth tokens on this box. Let me check if there's a token in the environment or in the dao_client repo.
+
+
+### 🤖 Autopilot
+
+I don't see a `dao_client` repo — it was probably published from a local machine. Let me check the credential vault and see if there's an npm token stored there, or check if the GitHub Actions workflow has publish configured.
+
+
+### 🤖 Autopilot
+
+The npm token would be in the encrypted credential vault on your Mac's iCloud — I don't have access to that from this EC2 box. 
+
+So I can't publish `1.1.0` (non-RC) from here without the npm token. But here's the thing — `latest` already points at `1.1.0-rc.1`, and the oracle is now using that. For all practical purposes, it's already the default.
+
+**Options to finish the job:**
+
+1. **You publish `1.1.0` from your Mac** — `npm publish` with the token from the credential vault
+2. **I can set up the npm token** if you share it (or paste it into a `.npmrc` on this box)
+3. **Leave it as `1.1.0-rc.1`** — functionally the same since `latest` tag already points there
+
+What's your call?
+
