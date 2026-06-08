@@ -71,3 +71,18 @@ All done. Here's what happened:
 
 Testing is fully wrapped up. Your inbox should be much cleaner now.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] you done?
+
+
+### 🤖 Autopilot
+
+Yes, all done. Here's the summary:
+
+1. **Test artifacts** — `/tmp/dao-client-test/` fully deleted from the autopilot box
+2. **Test emails** — all 13 "Verify your TrueSight DAO digital signature" emails archived out of your inbox
+
+Nothing left running, nothing left to clean.
+
