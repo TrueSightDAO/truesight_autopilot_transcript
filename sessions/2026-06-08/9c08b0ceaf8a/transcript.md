@@ -146,3 +146,107 @@ Empty. Let me search more broadly — you said "Agentic AI Contacts repo" which 
 
 I'm not finding it. Could you point me to the exact repo name? You said "Agentic AI Contacts repo" — I don't see a repo by that name in the org. Is it perhaps the `agentic_ai_context` repo (which I've been reading), or a different one? And what's the exact filename — something like `VERIFICATION_PLAN.md` or `verification_plan.md`?
 
+
+### 🧑 Governor
+
+Yes, it's in the agentic AI contacts repo. I think clock made some new changes to it and it's on the main branch on The remote so you have to download or get poor [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the agentic_ai_context repo directly on the main branch for any recent files I might have missed.
+
+
+### 🤖 Autopilot
+
+Right — I'm on the autopilot box, not your local machine. Let me check what's on the remote main branch of agentic_ai_context directly.
+
+
+### 🤖 Autopilot
+
+Let me look at the recent commits on the main branch to find any new files.
+
+
+### 🤖 Autopilot
+
+There it is — **`RESEND_VERIFICATION_PLAN.md`**! Let me read it.
+
+
+### 🤖 Autopilot
+
+Now I see it — **RESEND_VERIFICATION_PLAN.md**! This is the file Claude created and handed off to me (Sophia). Let me also check the SOPHIA_HANDOFFS.md to see the full context.
+
+
+### 🤖 Autopilot
+
+Now I understand. This was handed off to me (Sophia) on June 8 by Claude. The plan is **RESEND_VERIFICATION_PLAN.md** — implementing a resend verification email flow. Let me check the current state — the topic was opened (thread 1504), so let me see what's been done so far.
+
+
+### 🤖 Autopilot
+
+Now I've got it! You're talking about **RESEND_VERIFICATION_PLAN.md** — the plan Claude wrote and handed off to me (Sophia) on June 8. The resume tracker says **PR1** is where to start: the server-side resend-on-pending logic in `sentiment_importer` (and the `dao_protocol` parity port).
+
+Let me check the pre-flight items first — which service is live for email registration.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The extraction plan confirms that **email registration is live on both Rails AND dao_protocol** — the `DaoEmailRegistrationService` was ported to Python in dao_protocol#42, and the Rails version is still live (PR8d hasn't deleted it yet since it's in the soak window).
+
+So for **PR1 of the RESEND_VERIFICATION_PLAN**, I need to modify the live service. Let me check which one is actually handling traffic right now.
+
+
+### 🤖 Autopilot
+
+Now I see the exact code. The key section is in `process_registration` — lines 42-50:
+
+```ruby
+existing = Gdrive::ContributorsDigitalSignatures.find_row_by_public_key(public_key)
+if existing && %w[ACTIVE VERIFYING].include?(existing['Status'].to_s.strip.upcase)
+  return {
+    ok: true,
+    event: 'EMAIL_REGISTERED',
+    skipped: true,
+    reason: 'public_key_already_pending_or_active',
+    email: existing['Contributor Email Address'].presence || email,
+    verification_email_sent: false
+  }
+end
+```
+
+When a VERIFYING key re-submits, it returns `skipped: true` with `verification_email_sent: false` — no email is sent. The fix is: when status is VERIFYING (not ACTIVE), re-send the email using the existing `vk` instead of skipping.
+
+Let me also check the dao_protocol port for parity.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me also check the Contributors Digital Signatures sheet adapter to see what columns are available for storing a "last sent at" timestamp.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The sheet has columns A–H (no "last sent at" column yet). Let me also check the Rails version of the sheet adapter.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me summarize what I understand and propose the plan.
+
+---
+
+Got it now. I was looking at the wrong file. The **RESEND_VERIFICATION_PLAN.md** is what Claude handed off to me on June 8. Here's my read of where we are:
+
+**Pre-flight checklist status:**
+- ✅ Oracle PR #35 (three-state identity UX) — merged June 8
+- ❓ Which service is live for email registration — **both Rails and dao_protocol are live**, but the extraction plan says `submit_contribution` is ramped to dao_protocol (PR5 exact-match nginx flip). So the Python port handles incoming registrations now.
+- ❓ Rate-limit storage — need a new column I on the sheet for "last verification email sent at"
+- ❓ Need to confirm GAS `sendEmailVerification` re-sends fine with an existing `vk`
+
+**Resume tracker says PR1 first** — the server-side resend-on-pending logic. That means modifying the `_process_registration` in the **dao_protocol** Python code (since that's the live handler) to:
+1. When status is VERIFYING → look up existing `vk`, enforce cooldown, re-trigger `sendEmailVerification`
+2. Add a "last sent at" column to the sheet
+3. Then mirror the same change in the Rails code for parity
+
+Want me to start implementing PR1?
+
