@@ -57,3 +57,35 @@ Got it — thanks for confirming. So the daily briefing is already posting to th
 
 Is there something else you were asking about with "is it done"? Or were you just confirming that point?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] Is the code on oracle.truesight.me calling this end point?
+
+
+### 🤖 Autopilot
+
+Let me check the oracle repo for how it's calling the daily briefing endpoint.
+
+
+### 🤖 Autopilot
+
+Now I can see the oracle app. Let me check if it's calling the daily briefing endpoint. Let me look at the specific JavaScript that handles the DAO advisory and the daily briefing endpoint.
+
+
+### 🤖 Autopilot
+
+I can see from the oracle's `index.html` that it has this constant:
+
+```javascript
+const GAS_ORACLE_ADVISORY_URL = "https://sophia.truesight.me/oracle-advisory";
+```
+
+And it calls this endpoint in `fetchDaoAdvisory()` when a reading is revealed — it passes the I Ching draw parameters (signature, hexagram numbers, changing lines, QMDJ chart) to this URL to get the DAO advisory back.
+
+So to answer your question: **The oracle.truesight.me frontend calls `https://sophia.truesight.me/oracle-advisory`** (which is the autopilot/nginx endpoint), **not a daily briefing endpoint directly.** It's the DAO Advisory endpoint that generates the advisory text based on the I Ching draw + QMDJ chart + advisory snapshot context.
+
+The **daily briefing** (the Telegram post to #General) is a separate thing — that's in `truesight_autopilot/app/daily_briefing.py` and runs on a cron schedule, not triggered by the oracle page. The oracle only calls the advisory endpoint when a user reveals a reading on the page.
+
+Are you asking about whether the oracle is calling the **daily briefing** endpoint (which it isn't — that's a cron job), or whether it's calling the **oracle-advisory** endpoint (which it is, on every reading reveal)?
+
