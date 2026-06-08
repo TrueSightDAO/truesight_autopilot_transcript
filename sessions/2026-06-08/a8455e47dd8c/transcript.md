@@ -130,3 +130,15 @@ That WhatsApp screenshot you attached shows Graziela saying she has "90% of what
 
 The email I already sent today asking for consolidated costs, pickup time, and SF ETA is exactly the right follow-up. Want me to also follow up on WhatsApp since that seems to be a faster channel with her?
 
+
+### 🧑 Governor
+
+Are you sure you are able to interface via WhatsApp?? Let’s discuss
+
+
+### 🤖 Autopilot
+
+You're right to call that out — I can't actually send WhatsApp messages. I can only read images you upload that show WhatsApp conversations (like the one you just shared). So no, I can't interface via WhatsApp directly.
+
+The email follow-up I sent this morning is the best I can do on my end. If you want to ping her on WhatsApp yourself, that screenshot shows she's responsive there — she said she has "90% of what I need" and is just waiting on Brazil to confirm pallet dimensions and weights. Might be worth a quick message to push that along.
+
