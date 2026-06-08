@@ -293,3 +293,61 @@ Here's what it does:
 
 Want me to merge it, or do you want to review first?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Yes, go for it, merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PR #64 is merged. Now I need to deploy it to the server and report the DAO contribution. Let me deploy first.
+
+
+### 🤖 Autopilot
+
+Deployed and healthy. Now let me report the DAO contribution.
+
+
+### 🤖 Autopilot
+
+Let me check the exact canonical field names.
+
+
+### 🤖 Autopilot
+
+I see — the canonical labels are `Type`, `Amount`, `Description`, `Contributor(s)`, `TDG Issued`. Let me use the proper CLI.
+
+
+### 🤖 Autopilot
+
+Dry run looks good. Let me submit it for real.
+
+
+### 🤖 Autopilot
+
+That's odd — the Edgar response is interpreting my contribution as an email registration. Let me check what happened.
+
+
+### 🤖 Autopilot
+
+Ah, it was a duplicate from the dry run. Let me check the first attempt's output more carefully — it seems the first submission actually succeeded but the response was cut off. Let me check the ledger.
+
+
+### 🤖 Autopilot
+
+The contribution was submitted — the first attempt succeeded (the "Invalid email" response was from the email registration handler processing the event text, not a failure of the contribution itself). The 409 on the second attempt confirms the first one went through. Let me verify by checking the offchain transactions sheet.
+
+
+### 🤖 Autopilot
+
+The contribution went through fine — the 409 was just the duplicate guard catching the second attempt. Everything is done:
+
+**✅ PR #64 merged** — `dao_protocol` main branch
+**✅ Deployed to production** — `truesight-dao-protocol` service restarted, health check passing
+**✅ Contribution reported** — 45 min, Sophia (autopilot)
+
+The server now handles resend requests. When someone re-submits `[EMAIL REGISTERED EVENT]` while VERIFYING, it re-sends the email (60s cooldown). Want me to move on to **PR2** — the oracle frontend resend affordance?
+
