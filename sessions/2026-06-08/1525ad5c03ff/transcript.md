@@ -201,3 +201,30 @@ PR #359 merged. The roadmap is now live in `agentic_ai_context/TRUESIGHT_DAO_CLI
 
 Understood on holding off PR2 and PR3 — the roadmap is there as the reference. When you and Claude land on the direction, just say the word and I'll pick up from the **RESUME HERE** pointer.
 
+
+### 🧑 Governor
+
+I wonder if it is possible for you to expose a list of topic ids so that when I have a conversation with claude I could then point it to send the hand off back to the same topic?
+
+
+### 🤖 Autopilot
+
+Great question. Let me check what's available on the Telegram side.
+
+
+### 🤖 Autopilot
+
+Yes, this is already possible. The handoff registry in `SOPHIA_HANDOFFS.md` has exactly what you need.
+
+**The key is the `thread_id`.** Each Telegram topic has a numeric thread ID. The session ID format is `tg:-1003919341801:<thread_id>`. So when you're talking to Claude, you can tell it:
+
+> "Hand this off to Sophia in the same topic. Use session ID `tg:-1003919341801:<thread_id>` and ping her via `truesight-dao-ping-sophia`."
+
+The problem is you don't have the thread IDs at your fingertips when you're in a conversation with Claude. What I can do is **expose a command** that lists all active topics with their thread IDs and session IDs. Something like:
+
+> `/topics` — lists every active Telegram topic, its thread ID, and the session ID to rejoin it
+
+I could write that list to a file in `agentic_ai_context` that gets refreshed periodically, or I could just respond with the list whenever you ask.
+
+Want me to create a **`ACTIVE_TOPICS.md`** file that I keep updated with the current topic list? That way both you and Claude can read it from the context repo.
+
