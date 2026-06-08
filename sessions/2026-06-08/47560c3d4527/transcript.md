@@ -258,3 +258,61 @@ It's already deployed and live on the server. The code is at `/opt/truesight_aut
 
 So to answer your original question: **No, oracle.truesight.me does NOT currently call `sophia.truesight.me/daily-briefing`** — the oracle frontend only calls `/oracle-advisory`. The `/daily-briefing` endpoint exists and is deployed, but there's no trigger on the oracle side yet. That's what you described as **PR2** — wiring the oracle browser to POST the signed briefing request after a governor's reading.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1722] yes. That is what we need done
+
+
+### 🤖 Autopilot
+
+Understood. Let me build PR2 — the oracle browser-side trigger that POSTs a signed briefing request to `sophia.truesight.me/daily-briefing` after a governor's reading.
+
+Let me first check the existing oracle code to understand the flow and where to hook in.
+
+
+### 🤖 Autopilot
+
+Now let me check the server-side endpoint to understand the exact request shape it expects.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the `handle_daily_briefing` function to understand what payload shape it expects.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `verify_payload` function to understand the exact signing scheme.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. The signing scheme is the same as the chat endpoint — JSON-serialize the payload with `separators=(",", ":")`, sign with RSA-SHA256, send as `{"payload": {...}, "signature": "base64"}` with `X-Public-Key` header.
+
+Let me also check the exact payload shape the daily_briefing handler expects.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me build the PR.
+
+
+### 🤖 Autopilot
+
+PR2 is open: **https://github.com/TrueSightDAO/oracle/pull/46**
+
+Here's what it does:
+
+**`assets/js/oracle-draw-submit.js`** — adds three new functions:
+
+1. **`buildBriefingPayload(reading)`** — constructs the payload matching the server's expected shape (`reading.primary_hexagram`, `reading.related_hexagram`, `reading.changing_lines`, `reading.timestamp_utc`, plus `timestamp` and `nonce` for server-side skew/replay checks)
+
+2. **`signBriefingPayload(payload)`** — JSON-serializes with sorted keys (matching the server's `json.dumps(payload, separators=(",", ":"))`), RSA-SHA256 signs with the existing keypair
+
+3. **`triggerDailyBriefing()`** — fire-and-forgets a signed POST to `https://sophia.truesight.me/daily-briefing` with `X-Public-Key` header. Errors are logged to console only — never disrupts the reading flow.
+
+**Hook point**: called from `autoSubmitIfNeeded()` after the advisory panel appears, *after* the PRACTICE EVENT submission (or dedup). Always sends — the server handles per-governor-per-day dedup.
+
+**Non-blocking**: the oracle reading flow is completely unaffected. Silent on failure.
+
