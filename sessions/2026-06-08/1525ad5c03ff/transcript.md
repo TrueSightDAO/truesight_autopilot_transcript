@@ -165,3 +165,60 @@ Here's the status of the dao-client v1.1.0 work:
 
 Want me to push forward on any of these?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Just assume 1 is already done. You just need to deal with 2. Update oracle + capoeira CDN URLs to @1.1.0-rc.1 for testing (or wait for latest)
+3. Promote to latest — remove -rc.1 tag once testing is complete
+
+
+### 🤖 Autopilot
+
+Let me check the current CDN references in oracle and capoeira repos.
+
+
+### 🤖 Autopilot
+
+Hmm, no direct references. Let me search more broadly.
+
+
+### 🤖 Autopilot
+
+Let me look at the oracle and capoeira repos for how they reference the dao-client.
+
+
+### 🤖 Autopilot
+
+I can see the oracle `index.html` references `@truesight_dao/dao-client@1.0.1` on line:
+
+```html
+<script src="https://unpkg.com/@truesight_dao/dao-client@1.0.1/dist/dao-client.min.js"></script>
+```
+
+Let me check the capoeira repo for any dao-client reference too.
+
+
+### 🤖 Autopilot
+
+Capoeira doesn't use dao-client at all. So it's just the **oracle** repo that needs updating.
+
+Let me update the CDN URL from `@1.0.1` to `@1.1.0-rc.1` in the oracle's `index.html`.
+
+
+### 🤖 Autopilot
+
+Now for step 3 — promote the npm package to `latest` (remove `-rc.1`). Let me check what's on npm.
+
+
+### 🤖 Autopilot
+
+The `latest` tag is already pointing at `1.1.0-rc.1`. That means the RC is already the default — anyone doing `npm install @truesight_dao/dao-client` or using the unpkg `@latest` URL already gets `1.1.0-rc.1`.
+
+So the question is: do you want me to **promote the RC to a proper release** (e.g. `1.1.0`)? That would mean:
+
+1. Publishing `1.1.0` as a new version on npm
+2. Updating the oracle CDN URL from `@1.1.0-rc.1` to `@1.1.0`
+3. Tagging `latest` to `1.1.0`
+
+Or are you happy with the RC as-is for now? The oracle PR #45 is already open pointing at `@1.1.0-rc.1` — I can merge it once you confirm.
+
