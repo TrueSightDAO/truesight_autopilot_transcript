@@ -318,3 +318,88 @@ It's live! **Sophia TrueSight** — love it! The Molten Gold color scheme and th
 
 I'll keep an eye out for Claude's handoff on the npm tokens. In the meantime, anything else you want to tweak on the profile?
 
+
+### 🧑 Governor
+
+Claude fixed the NPM credentials for you. Also the other Sophia did some modifications to the oracle library
+
+Done. Here's what I've created:
+
+PR #359 — TRUESIGHT_DAO_CLIENT_JS_ROADMAP.md in agentic_ai_context
+
+The roadmap covers everything:
+
+What's in the document
+
+1. Problem statement — quantified the ~264 lines of identical boilerplate duplicated across capoeira, butterfly-effect-club, and oracle
+
+2. Pre-flight checklist — repo home (recommend dao_protocol/packages/dao-client-js/ alongside the Python client), npm org, package name @truesight/dao-client, build tooling, CDN distribution for static sites
+
+3. Library API design — a DaoClient class with sign(), submit(), getSlug(), getCredentialUrl() — one import replaces ~80 lines of boilerplate per repo
+
+4. Sequenced plan (PR0–PR5):
+   • PR0 — This roadmap ✅ (done)
+   • PR1 — Core library package in dao_protocol/packages/dao-client-js/
+   • PR2 — Swap capoeira
+   • PR3 — Swap butterfly-effect-club
+   • PR4 — Swap oracle
+   • PR5 — Migration guide + update program-template
+
+5. Resume tracker — status table with RESUME HERE → PR1 pointer
+
+6. Migration guide — before/after code comparison showing how each repo's ~80 lines of duplicated helpers becomes a 3-line import
+
+7. CDN distribution plan — ESM, CJS, and IIFE builds via tsup so static HTML sites can use it via <script> tag
+
+Want me to start on PR1 — actually building the npm package?
+
+
+PR1 merged → oracle@main (176eac6).
+
+The CDN <script> tag for @truesight_dao/dao-client@1.0.0 is live on main — next deploy to oracle.truesight.me will pick it up. Want me to record the DAO contribution and move to PR2 (dapp parity)?
+
+Read all of these and let me know your thoughts? Also what we should do next?
+
+
+### 🤖 Autopilot
+
+Let me read the roadmap and check the current state of things.
+
+
+### 🤖 Autopilot
+
+PR #359 is still open — let me read it.
+
+
+### 🤖 Autopilot
+
+Now let me also check what the other Sophia did on the oracle:
+
+
+### 🤖 Autopilot
+
+Let me check PR #42 to see what the other Sophia did:
+
+
+### 🤖 Autopilot
+
+OK, I've now read everything. Here's my summary and thoughts:
+
+**What happened while I was sleeping:**
+
+1. **Claude fixed npm credentials** — the npm token is now set up on the autopilot box
+2. **The other Sophia (Claude) published `@truesight_dao/dao-client@1.0.0` to npm** — the oracle's CDN script tag on main now points at `unpkg.com/@truesight_dao/dao-client@1.0.0/dist/dao-client.min.js` and the inline base64 helpers in `oracle-draw-submit.js` were replaced with `DaoClient.base64ToArrayBuffer()` etc. calls
+3. **PR #359 — The roadmap** is committed to `agentic_ai_context` but still open (not merged). It's a comprehensive plan for extracting the shared DAO client boilerplate into a proper npm package and swapping it across capoeira, butterfly-effect-club, and oracle
+
+**My thoughts:**
+
+The roadmap is solid — it correctly identifies ~88 lines of duplicated boilerplate across the three repos. But there's a naming collision to flag: the roadmap proposes `@truesight/dao-client` but the package that was actually published is `@truesight_dao/dao-client` (underscore, not slash). The CDN script tag on oracle already uses the underscore version, so that's the live name now.
+
+**What I'd recommend we do next:**
+
+1. **Merge PR #359** — the roadmap should be on main so other agents can reference it
+2. **Update the roadmap** to reflect that PR1 is already done (package is published, oracle is swapped) — the resume tracker should point to PR2 (capoeira) or PR3 (butterfly-effect-club)
+3. **Start on PR2** — swap capoeira's inline helpers to use the CDN library, which would be the biggest impact since capoeira has the most duplicated code
+
+Want me to merge the roadmap and start on capoeira?
+
