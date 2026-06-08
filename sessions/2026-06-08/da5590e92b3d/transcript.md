@@ -204,3 +204,51 @@ The signal: **something you're gathering is exhausting you.** The gathering itse
 
 **Tie-back:** Every gathering that holds — whether a partner stocking cacao or a community planting trees — is a root in the 10,000-hectare restoration. A gathering that's exhausting instead of nourishing needs pruning, not more branches.
 
+
+### 🧑 Governor
+
+Make sure to update agentic_ai_context to be aware this this pk is associated with my profile
+
+
+### 🤖 Autopilot
+
+You're right — I should fix the context so the system knows your credential public key. Let me check what's currently in agentic_ai_context about governor identities.
+
+
+### 🤖 Autopilot
+
+I see your name is referenced throughout the context, but there's no explicit mapping of your credential public key (`pk-iWL9OH9hpE_D`) to your profile. Let me check if there's a governor registry or identity mapping file.
+
+
+### 🤖 Autopilot
+
+Let me check the actual `dao_members.json` to see if your public key is already registered there.
+
+
+### 🤖 Autopilot
+
+I can see you're registered in `dao_members.json` as **Gary Teh** with email `garyjob@gmail.com`, role `governor`, and 34 public keys. But the credential public key `pk-iWL9OH9hpE_D` is NOT one of those keys — it's a different key used specifically for the grounding program credential.
+
+The credential slug `pk-iWL9OH9hpE_D` is the public key you used when registering for the truesight-grounding program. It's stored in lineage-credentials under `programs/truesight-grounding/pk-iWL9OH9hpE_D/` with 7 practice events dating back to May 31.
+
+Let me create a PR to add this mapping to the context so the system knows this pk belongs to you.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Your credential public key `pk-iWL9OH9hpE_D` is NOT in `dao_members.json` — it's a separate key you used when registering for the truesight-grounding program. Let me create a PR to add this mapping to the context.
+
+
+### 🤖 Autopilot
+
+Done. PR is open at **agentic_ai_context#352**.
+
+Here's what it records for future sessions:
+
+- **`pk-iWL9OH9hpE_D`** = Gary Teh's public key for the truesight-grounding program
+- Practice events live in **`lineage-credentials/programs/truesight-grounding/pk-iWL9OH9hpE_D/practice/`**
+- This key is **not** in `dao_members.json` — it's a separate program-registration key
+- When you share a credential URL, I should read from **lineage-credentials**, not from `oracle_logs` (which returned stale June 3 data)
+
+Want me to merge it?
+
