@@ -237,3 +237,36 @@ I'd go with **Molten Gold** — it matches the saffron/amber brand colors of Tru
 
 But Molten Gold feels right for the DAO Autopilot. Your call though!
 
+
+### 🧑 Governor
+
+What do you want for your background image? Provide me with a prompt then I will ask Gemini to generate it
+
+[Attachment auto-processed: **cd5673520adc462d94262ba0c7e342ab.jpg**]
+- Type: Image (OCR confidence: 71.0%, quality: good)
+- Saved to transcript
+
+Extracted text:
+```
+oO VINVUSS yuUul PUNIIL PIU > CUIUIDS aU Illayes. Colors eo €©@ @ Classic Mocha Mint eo @wW CO Mustard Midnight Molten Gold Co @ Earth Cyber Custom Images | Header image + Background image
+```
+
+
+### 🤖 Autopilot
+
+Great question! Here's a prompt you can give Gemini:
+
+---
+
+**Prompt for my Gravatar background image:**
+
+> A warm saffron-gold and deep brown abstract background with subtle geometric patterns inspired by I Ching hexagram lines — horizontal bars of varying lengths in gold against a dark earthy backdrop. The composition should feel calm, grounded, and slightly mystical, like an ancient oracle scroll meets modern minimalism. No text, no logos. 16:9 aspect ratio, suitable for a profile background.
+
+---
+
+If you want something more nature-focused (given the rainforest mission):
+
+> A misty Amazon rainforest canopy at golden hour — warm amber sunlight filtering through layers of green, with a soft atmospheric haze. The mood should be serene, ancient, and alive. No text, no logos. 16:9 aspect ratio, suitable for a profile background.
+
+Your pick — mystical oracle vibes or rainforest canopy?
+
