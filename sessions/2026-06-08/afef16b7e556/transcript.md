@@ -125,3 +125,13 @@ The PR URL is github.com/TrueSightDAO/truesight_me_beta/pull/194. I'll send that
 
 The two posts — "Should an AI agent get voting rights?" and "The scripture is not the point" — are now added to the blog index on the beta site. Once you've had a chance to review it on the beta, let me know if you want me to promote it to production.
 
+
+### 🧑 Governor
+
+Merge to main so that I can review. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged to main on the beta repo. You can review it now at truesight.me/blog/index.html — the two posts should appear at the top. Let me know if everything looks right, and if you'd like me to promote to production.
+
