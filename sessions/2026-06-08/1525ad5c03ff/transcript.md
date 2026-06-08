@@ -51,3 +51,96 @@ I think I might have been referring to **Handlebars.js** — that's a templating
 
 But if it was a different package, remind me which one and I'll give you a straight answer on whether it works with static HTML.
 
+
+### 🧑 Governor
+
+I meant what you were referencing here 
+
+Now I have a complete picture. Here's my analysis:
+
+---
+
+You're right on both counts. Here's what I see across the three repos:
+
+The Pattern They All Share
+
+Every single one — capoeira, butterfly-effect-club, and oracle — independently reimplements the same boilerplate:
+
+1. RSA-2048 keypair generation (Web Crypto API)
+2. base64ToArrayBuffer / arrayBufferToBase64 / base64ToBase64Url — identical helper functions copy-pasted three times
+3. publicKeyToSlug() — SHA-256 hash → base64url → pk- prefix, duplicated identically
+4. Canonical payload formatting ([EVENT NAME]\n- Label: value\n...)
+5. RSASSA-PKCS1-v1_5 signing
+6. FormData + fetch POST to Edgar
+7. localStorage key management (publicKey, privateKey)
+
+The oracle even imports the qimen-dunjia library as a vendored standalone JS — that's a whole separate integration surface.
+
+The Problem
+
+When you tried to hand-roll from scratch with the oracle, you had to rediscover all of this. Each new front-end project means re-inventing the same signing pipeline, the same key management, the same Edgar submission flow. That's the back-and-forth waste you felt.
+
+My Proposal
+
+Two deliverables:
+
+1. @truesight/dao-client — a single npm package
+
+A zero-dependency JavaScript/TypeScript library that any front-end can import:
+
+import { DaoClient } from '@truesight/dao-client';
+
+// One call — keypair auto-generated if missing
+const client = new DaoClient();
+
+// Submit any event type
+await client.submit('PRACTICE EVENT', {
+  'Program': 'truesight-grounding',
+  'Practice Type': 'oracle-consultation',
+  'Practitioner Public Key': client.publicKey,
+  ...
+});
+
+// Or just sign and get the share text
+const { shareText } = client.sign('CONTRIBUTION EVENT', {...});
+
+// Get the credential slug
+const slug = await client.getSlug();
+
+This eliminates the copy-paste boilerplate across all three repos. One source of truth for key generation, signing, payload formatting, and Edgar submission.
+
+2. An implementation plan + execution roadmap
+
+I'll analyze all three repos, extract the common integration surface, and produce:
+• A roadmap document showing the refactoring sequence
+• A checklist for each repo (capoeira, butterfly-effect-club, oracle) to swap their inline code for the library import
+• A migration guide so new front-ends (tribomirimbahia, future projects) start with the library from day one
+
+---
+
+Want me to start building? I'd begin with:
+
+1. Create the npm package in a new truesight-dao-client-js repo (or add it to dao_protocol as a packages/ subdirectory)
+2. Open PRs against capoeira, butterfly-effect-club, and oracle to swap their inline code for the library import
+3. Write the roadmap as a context file in agentic_ai_context
+
+Say the word and I'll kick it off.
+
+
+### 🤖 Autopilot
+
+Ah, right — **`@truesight/dao-client`**! Yes, that's the npm package I was proposing.
+
+To answer your question directly: **yes, it can easily be included in regular static HTML files.** Since it's a zero-dependency JS library, you'd just:
+
+1. Publish it to npm as `@truesight/dao-client`
+2. Include it via a CDN like unpkg or jsdelivr:
+   ```html
+   <script src="https://unpkg.com/@truesight/dao-client"></script>
+   ```
+3. Or bundle it into your static assets folder and serve it locally with a `<script>` tag.
+
+No build step, no server-side processing — it's designed to work in the browser with the Web Crypto API that's already there. That was the whole point: one script tag and you get key generation, signing, and Edgar submission without re-inventing the pipeline every time.
+
+Want me to start building it? I'd create the package, publish it, then open PRs to swap the inline code in capoeira, butterfly-effect-club, and oracle.
+
