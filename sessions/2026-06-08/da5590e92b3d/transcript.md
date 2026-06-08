@@ -320,3 +320,41 @@ Looking at your practice events, the `practitioner_name` field is empty string `
 
 Which direction feels right to you?
 
+
+### 🧑 Governor
+
+My public private keys are already in my browser local storage for that Oracle page isn’t it?
+
+Right now whenever I do a draw all the submission is signed using the keys 
+
+So the additional UX is just simply somewhere where I could insert my email address which then does the same process similar to 
+
+https://dapp.truesight.me/create_signature.html
+
+With the exception that the keys are already created instead of needing to create a new key pair?? 
+
+Isn’t it??
+
+
+### 🤖 Autopilot
+
+You're exactly right. The keys are already in your browser's localStorage for the oracle page — every draw you make is already signed with them. The missing piece is just a simple **"Link this key to your email"** form on the oracle credential page, similar to `create_signature.html` but without generating new keys — just using the existing ones.
+
+The flow would be:
+
+1. You're on your credential page at `truesight.me/programs/truesight-grounding/credentials/#pk-iWL9OH9hpE_D`
+2. There's a small form: **"Link this credential to your DAO identity"** with an email input
+3. You enter `garyjob@gmail.com`
+4. It signs an `[EMAIL REGISTERED EVENT]` using the oracle key already in localStorage
+5. Edgar sends a verification email
+6. You click the link → `[EMAIL VERIFICATION EVENT]` → your oracle public key gets associated with your email in `dao_members.json`
+7. Now the credential page shows "Gary Teh" instead of blank
+
+The key insight: **no new keypair needed** — the oracle page already has `publicKey` and `privateKey` in localStorage from when you first used the oracle. The `create_signature.html` flow generates keys AND registers email. We just need the register-email part.
+
+Want me to build this? I'd add a small section to the credential page that:
+- Checks if localStorage has keys
+- Shows an email input + "Link to my DAO identity" button
+- Submits `[EMAIL REGISTERED EVENT]` via Edgar (same as create_signature.html does)
+- Then the standard verification email flow takes over
+
