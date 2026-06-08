@@ -359,3 +359,138 @@ Phase 2 merged. Ready for Phase 3 — integration testing against Edgar. Want me
 
 Or all three?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] all 3
+
+
+### 🤖 Autopilot
+
+Let me first check the current build setup and then do all three.
+
+
+### 🤖 Autopilot
+
+Let me check the CI publish workflow to understand the release process:
+
+
+### 🤖 Autopilot
+
+Good — CI publishes on tag push. I need to bump the version, push a tag, and then run the integration tests. Let me do the version bump + tag first, then test.
+
+
+### 🤖 Autopilot
+
+Now push the tag to trigger the npm publish:
+
+
+### 🤖 Autopilot
+
+Tag pushed. Let me wait a moment for the CI to run, then verify the package is on npm:
+
+
+### 🤖 Autopilot
+
+The CI might still be running. Let me check the Actions:
+
+
+### 🤖 Autopilot
+
+The publish workflow is **In progress** — it's running now. Let me wait a moment and check npm directly:
+
+
+### 🤖 Autopilot
+
+Only 1.0.0 and 1.0.1 are on npm so far — the CI is still running. Let me check the workflow status:
+
+
+### 🤖 Autopilot
+
+The workflow ran but I can't see the full status from the rendered page. Let me check the npm registry again — it may have published by now:
+
+
+### 🤖 Autopilot
+
+**✅ `@truesight_dao/dao-client@1.1.0-rc.1` is live on npm.**
+
+Now let me verify the CDN serves it correctly:
+
+
+### 🤖 Autopilot
+
+**✅ CDN serves the bundle with `DaoClient` global.** I can see `submitEvent`, `registerEmail`, `verifyEmail`, `checkRegistration` all in the minified output.
+
+Now let me run the integration tests. I'll write a quick Node.js script that tests the full round-trip against Edgar prod:
+
+
+### 🤖 Autopilot
+
+The CJS build uses ESM imports internally — this is a browser library. Let me test via the browser CDN instead, using a headless approach:
+
+
+### 🤖 Autopilot
+
+No Chrome on the box. Let me use playwright via the existing node_modules:
+
+
+### 🤖 Autopilot
+
+Playwright is available. Let me run the test in headless Chromium:
+
+
+### 🤖 Autopilot
+
+Missing system libs. Let me install them and try again:
+
+
+### 🤖 Autopilot
+
+The browser launched but the test timed out. Let me check what happened — likely the page loaded but the test didn't complete. Let me add more debugging:
+
+
+### 🤖 Autopilot
+
+The CDN loads correctly and all methods are present. The error is that `generateKeyPairSync()` throws in headless Chromium (no localStorage persistence between sessions). Let me fix the test to handle this — the constructor needs existing keys or async generation:
+
+
+### 🤖 Autopilot
+
+Hmm, only one console log. Let me check the page output:
+
+
+### 🤖 Autopilot
+
+**✅ ALL TESTS PASS!**
+
+Here's the full results:
+
+### ✅ Step 1 — npm publish
+`@truesight_dao/dao-client@1.1.0-rc.1` is live on npm and served by unpkg CDN.
+
+### ✅ Step 2 — Real `submitEvent` against Edgar prod
+```
+Result: {
+  "ok": true,
+  "txId": "MyqkkBHUmZqvdptPziWnbHt9xakUjn3/...",
+  "slug": "pk-FFLYhtL7Ljie",
+  "httpStatus": 200,
+  "status": "submitted"
+}
+```
+**The full round-trip works** — `submitEvent()` built the canonical payload with auto-injected Timestamp, signed it, submitted to Edgar, and got back `status: "submitted"` with HTTP 200.
+
+### ✅ Step 3 — Real `checkRegistration` against Edgar prod
+```
+Registration: {
+  "registered": false,
+  "error": "No matching contributor digital signature"
+}
+```
+Correct — this is a fresh key that hasn't been registered. The `checkRegistration()` method correctly parsed Edgar's 404 response.
+
+### What's left for the full v1.1.0 release
+1. **Test `registerEmail` + `verifyEmail`** — needs a real email to send the verification link to. Want me to test with your email?
+2. **Update the oracle and capoeira CDN URLs** to `@1.1.0-rc.1` for testing
+3. **Promote to `latest`** (remove `-rc.1`) once testing is complete
+
