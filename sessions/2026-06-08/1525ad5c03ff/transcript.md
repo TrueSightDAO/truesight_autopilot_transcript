@@ -543,3 +543,30 @@ Done. The handoff is registered. Here's the info you can give Claude:
 
 Tell Claude to use `truesight-dao-ping-sophia --session-id tg:-1003919341801:1658 --message "..."` to ping me with his concerns about the capoeira PR. I'll pick it up in that topic.
 
+
+### 🧑 Governor
+
+Are you able to detect the tread_id of this current topic?
+
+
+### 🤖 Autopilot
+
+Let me check.
+
+
+### 🤖 Autopilot
+
+Hmm, the registry got reverted — my entry isn't there and the Oracle CDN entry lost its topic link. Let me check what's on main:
+
+
+### 🤖 Autopilot
+
+OK, it's there on main — the local context file was just stale. The entry is registered correctly.
+
+As for detecting the current topic's thread_id — I can't directly detect it from the Telegram message metadata I receive. The Telegram adapter passes the chat context to me, but I don't have a tool to read the current session's thread_id. What I *can* tell you is:
+
+- The topic I just created has **thread_id: 1658**
+- But this conversation we're having right now (in the main chat, not in that topic) doesn't have a thread_id I can detect
+
+The `create_telegram_topic` tool returns the thread_id it created, so that's how I know 1658. For the current conversation, you'd need to check the Telegram topic URL yourself — the thread_id is the number at the end of the URL (e.g., `https://t.me/c/3919341801/1658` → `1658`).
+
