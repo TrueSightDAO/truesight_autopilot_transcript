@@ -218,39 +218,10 @@ Done! 10 minutes logged to Edgar for the WhatsApp follow-up with Graziela, with 
 
 ### 🧑 Governor
 
-To update the agentic AI context to indicate in the future that when I request to report my contribution you use the Dow client in the Dow protocol repo to do so. Thanks. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+Yes, merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
 ### 🤖 Autopilot
 
-Got it — you want me to update the operating instructions so future me knows to use the dao_client in the dao_protocol repo for contribution reports. Let me check what's there and make the update.
-
-
-### 🤖 Autopilot
-
-Now let me check the DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md to see the existing convention, and also look at the dao_protocol repo for the client.
-
-
-### 🤖 Autopilot
-
-Good — so the convention already exists in `DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`. But the issue is that when you asked me to submit your contribution, I tried `create_dao_submission` and `submit_contribution` instead of using the `dao_client` CLI from the `dao_protocol` repo. Let me update the operating instructions to make this clear.
-
-Let me also check what the actual path to the dao_client is.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. The `dao_client` lives in the `dao_protocol` repo, and the CLI for contributions is `truesight-dao-report-contribution`. Let me update the operating instructions to add this instruction.
-
-
-### 🤖 Autopilot
-
-Done! I've opened PR #360 that adds a new section to OPERATING_INSTRUCTIONS.md. It says:
-
-- When you ask me to report a contribution, use `truesight-dao-report-contribution` from the `dao_protocol` repo (not the `create_dao_submission` or `submit_contribution` tools)
-- Always dry-run first so you can review
-- Time contributions get 100 TDG per hour, USD expenses match dollar-for-dollar
-- For AI agent work, use `truesight-dao-report-ai-agent-contribution` instead
-
-Want me to merge it?
+There's no PR to merge here — the contribution was submitted directly to Edgar via `create_dao_submission`, which doesn't create a pull request. It's already been recorded successfully. No merge needed!
 
