@@ -10,161 +10,6 @@
 
 ### 🤖 Autopilot
 
-The CI run failed. Let me get the logs.
-
-
-### 🤖 Autopilot
-
-The "Build + runtime smoke test (publish gate)" step failed. Let me get the actual logs.
-
-
-### 🤖 Autopilot
-
-Can't get logs directly (need admin). Let me check the test file to figure out what's failing.
-
-
-### 🤖 Autopilot
-
-Now I see the issue. The test at line 80 (`constructor` → `generates a keypair when none exists in storage`) creates a `new DaoClient()` which calls `generateKeyPairSync()` which throws. The test catches it but the test itself is marked `async` and expects it to work. Let me check the actual error by looking at what the test run produces.
-
-The problem is clear: the test file expects `new DaoClient()` to work without throwing, but the constructor calls `generateKeyPairSync()` which throws. The PR #77 fix should have addressed this, but the test wasn't updated to match the new constructor behavior.
-
-Let me check what the actual state of the code is on main after PR #77 merged.
-
-
-### 🤖 Autopilot
-
-Good — PR #77's fix is on main. The constructor no longer throws. But the test file still has the old test that expects `new DaoClient()` to work without keys, and the tests that manually set `client.publicKey`/`client.privateKey` after construction. The issue is that the tests call `submitEvent()` which calls `this.crypto.sign(this.privateKey, payload)` — but `this.privateKey` is `''` (empty string) because the test sets it to `'test-private-key'`... wait, the tests DO set it. Let me look more carefully.
-
-Actually, the tests set `client.publicKey = 'test-public-key'` and `client.privateKey = 'test-private-key'` after construction. That should work. Let me check what the actual test failure is. The issue might be in the `generateKeyPairSync` still being referenced somewhere, or the `crypto.ts` still having it.
-
-
-### 🤖 Autopilot
-
-The `generateKeyPairSync` was removed from crypto.ts — good. Now let me check the storage.ts for the legacy key migration.
-
-
-### 🤖 Autopilot
-
-Good — legacy key migration is in place. Now let me figure out why the test is actually failing. The test file creates `new DaoClient()` which now works (doesn't throw). But the tests that call `submitEvent()` set `client.publicKey` and `client.privateKey` manually. The `submitEvent()` calls `this.crypto.sign(this.privateKey, payload)` which calls `CryptoUtils.base64ToArrayBuffer(privateKeyBase64)` — with `'test-private-key'` which is not valid base64. That would throw.
-
-But wait — the mock for `crypto.subtle.sign` returns a resolved promise. The issue is `CryptoUtils.base64ToArrayBuffer('test-private-key')` — `atob('test-private-key')` would throw because it's not valid base64.
-
-Let me check what the actual test failure is by looking at the CI logs more carefully. I can't get the raw logs (403), but I can check the test output another way.
-
-
-### 🤖 Autopilot
-
-Now I can see the full picture. Two categories of test failures:
-
-1. **`atob('test-private-key')` throws** — The tests set `client.privateKey = 'test-private-key'` which isn't valid base64. When `submitEvent()` calls `this.crypto.sign('test-private-key', payload)`, it hits `CryptoUtils.base64ToArrayBuffer('test-private-key')` → `atob('test-private-key')` throws `INVALID_CHARACTER_ERR`. This affects 9 tests.
-
-2. **`not_applicable` vs `pubkey_mismatch`** — The `parseSubmitResponse` method returns `not_applicable` instead of `pubkey_mismatch` for the 422 case. This is a logic bug in the response parser.
-
-Let me check the edgar.ts parser to understand the second issue.
-
-
-### 🤖 Autopilot
-
-Now I see both issues clearly. Here's the full report:
-
----
-
-**Investigation complete. Here's why `@truesight_dao/dao-client@1.1.0-rc.2` isn't on npm:**
-
-The CI workflow ran but **failed at the smoke test gate** (`npm test`). Two categories of test failures:
-
-### 1. `atob('test-private-key')` throws (9 tests fail)
-
-The tests manually set `client.privateKey = 'test-private-key'` after construction, but `'test-private-key'` isn't valid base64. When `submitEvent()` calls `this.crypto.sign('test-private-key', payload)`, it hits `CryptoUtils.base64ToArrayBuffer()` → `atob('test-private-key')` → throws `INVALID_CHARACTER_ERR`.
-
-**Root cause:** The tests were written for the old constructor that generated real keys. After PR #77 made the constructor safe (no key generation), the tests set dummy key strings that aren't valid base64. The mock for `crypto.subtle.sign` is never reached because `base64ToArrayBuffer` throws first.
-
-### 2. `not_applicable` vs `pubkey_mismatch` (1 test fails)
-
-The test expects `parseSubmitResponse` to return `emailRegistration.status = 'pubkey_mismatch'` for a 422 response with `email_registration.ok = false`. But the parser checks for `er.pubkey_mismatch === true` — and the test's mock response doesn't include that field. So it falls through to `not_applicable`.
-
-**Root cause:** The test mock sends `{ok: false, error: 'Public key mismatch'}` but doesn't include `pubkey_mismatch: true`. The parser logic is correct — the test data is incomplete.
-
-### How to fix
-
-Two small fixes needed in `test/dao-client.test.ts`:
-
-1. **Replace `'test-private-key'` with valid base64** in all 9 tests that set `client.privateKey`. Use a real base64 string like `'dGVzdC1wcml2YXRlLWtleQ=='` (which is `'test-private-key'` base64-encoded).
-
-2. **Add `pubkey_mismatch: true`** to the 422 test's mock response body.
-
-Want me to open a PR with these test fixes?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Yeah, please open PR and get them fixed [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-The replace_all search didn't match. Let me check the exact whitespace in the file.
-
-
-### 🤖 Autopilot
-
-The indentation uses 6 spaces. Let me also check the exact text around the pubkey_mismatch area.
-
-
-### 🤖 Autopilot
-
-Now I have the exact whitespace. Let me do the edits properly.
-
-
-### 🤖 Autopilot
-
-The whitespace must be different. Let me check with cat -A.
-
-
-### 🤖 Autopilot
-
-The whitespace looks correct — 6 spaces. The issue might be that the tool is having trouble with the file path. Let me try using the full path from the repo root.
-
-
-### 🤖 Autopilot
-
-**PR #79** is open with the test fixes. Two changes:
-
-1. **Valid base64 keys** — replaced all `'test-public-key'` / `'test-private-key'` with their actual base64 encodings (`'dGVzdC1wdWJsaWMta2V5'` / `'dGVzdC1wcml2YXRlLWtleQ=='`). This fixes the 9 tests that were crashing on `atob()`.
-
-2. **Added `pubkey_mismatch: true`** to the 422 mock response so the parser correctly returns `pubkey_mismatch` instead of `not_applicable`.
-
-Once merged, the CI should pass `npm test` and auto-publish `1.1.0-rc.2` to npm. Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged. The CI should kick off now — it'll run the tests, and if they pass, publish `@truesight_dao/dao-client@1.1.0-rc.2` to npm. Once that's live on the CDN, the capoeira page should load without the constructor crash.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Can you submit your URL to check the MPM page? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-The package doesn't appear on npmjs.com's public listing — it's likely a **private scoped package** under the `@truesight_dao` org. That's why the web search can't find it. Let me check the CDN directly to see what version is actually published.
-
-
-### 🤖 Autopilot
-
-So `1.1.0-rc.1` is on the CDN but `1.1.0-rc.2` is not. The CI run for PR #79 just merged — let me check if it triggered a workflow.
-
-
-### 🤖 Autopilot
-
 The API only shows 1 run (the failed one from PR #78). The PR #79 merge just happened — the new CI run might not have started yet or the cache is stale. Let me check more recent runs.
 
 
@@ -591,4 +436,31 @@ Here's the summary of everything that happened:
 4. **`test/payload.test.ts`** — added `\\n` → actual newline conversion when reading from JSON vectors
 
 I'll let you know as soon as the CI finishes.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Heyledik, feneş. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check if the CI has finished yet.
+
+
+### 🤖 Autopilot
+
+✅ **CI Run #7 succeeded!** The publish workflow passed — all tests green, and it published `@truesight_dao/dao-client@1.1.0-rc.2` to npm.
+
+Let me check if it actually published.
+
+
+### 🤖 Autopilot
+
+✅ **All green!** The CI run completed successfully:
+
+1. **Build + runtime smoke test (publish gate)** — ✅ passed
+2. **Publish if this version is new** — ✅ published
+
+`@truesight_dao/dao-client@1.1.0-rc.2` is now live on npm. The pingback monitor should have already sent a notification to this thread.
 
