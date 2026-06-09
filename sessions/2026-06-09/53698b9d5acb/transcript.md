@@ -10,181 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me look at the README on the npm package more carefully — the one we saw says "Push a tag: `dao-client-v1.0.1` — the CI workflow publishes to npm automatically." So the CI is triggered by a tag push. Let me check if there's a `.github/workflows` folder in the `dao_protocol` repo (which is the renamed `dao_client`).
-
-
-### 🤖 Autopilot
-
-Found it. The source lives at `packages/dao-client/` inside the `dao_protocol` repo. Let me check the package.json and source files.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. The source lives at `dao_protocol/packages/dao-client/`. The README that ships to npm is at `packages/dao-client/README.md`. Let me check what's there now.
-
-
-### 🤖 Autopilot
-
-Perfect — now I know exactly where it lives. The README at `dao_protocol/packages/dao-client/README.md` is the one that ships to npm. It has basic usage but is missing all the high-level methods. Let me open a PR to update it with full API docs.
-
-
-### 🤖 Autopilot
-
-Here's the full picture:
-
-**How npm READMEs work:** The README that appears on npmjs.com is whatever `README.md` is in the package root at publish time. For `@truesight_dao/dao-client`, the source lives at `dao_protocol/packages/dao-client/README.md`. When a new version is published (triggered by bumping `package.json` and merging to main), that README ships to npm.
-
-**What I just did:** Opened **PR #76 on dao_protocol** — a comprehensive API reference for the README. It now documents every method:
-
-- **Constructor** options (edgarBase, verifyUrl, storagePrefix, generationSource)
-- **`submitEvent()`** — the one-call method with auto-Timestamp and field guarding
-- **`registerEmail()`** / **`verifyEmail()`** / **`checkRegistration()`** — identity flow
-- **`getSlug()`** — credential URL builder
-- **`generateKeyPair()`** / **`verifyPayload()`** — crypto operations
-- **`submit()`** / **`sign()`** — lower-level methods
-- **All static helpers** — `arrayBufferToBase64`, `base64ToArrayBuffer`, `base64ToBase64Url`
-- **Full response types** — `SubmitEventResponse`, `CheckRegistrationResponse`
-- **Complete examples** — email registration flow, practice session submission, contribution submission
-
-Once this PR is merged, the next time the package version is bumped and published, the full docs will appear on npm. Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Merge it. I think the github action will cause it to get bump Claude set it up like that
-
-
-### 🤖 Autopilot
-
-Merged. Since this PR only changed the README (not `package.json`), the CI won't auto-publish — the workflow is gated on `packages/dao-client/package.json` changes. So the docs are live in the repo now, but they'll appear on npm whenever the next version bump gets merged and published.
-
-If you want them on npm right away without a version bump, I could bump a patch version in a separate PR — that'd trigger the CI to publish the new README. Want me to do that?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] You there??
-
-
-### 🤖 Autopilot
-
-Yes, I'm here! Sorry about that — just processing. What do you need?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] is the processing done?
-
-
-### 🤖 Autopilot
-
-Yes, everything's done. Here's the full recap of what we accomplished this session:
-
-**PR #47 (oracle)** — merged. Oracle now uses `DaoClient.submitEvent()`, `registerEmail()`, `verifyEmail()`, `checkRegistration()`.
-
-**PR #36 (capoeira)** — merged. Capoeira now uses `client.submitEvent()` and `client.getSlug()`, which fixes the broken credential link.
-
-**PR #76 (dao_protocol)** — merged. The `@truesight_dao/dao-client` README now has full API docs for all methods. They'll appear on npm with the next version publish.
-
-All three migrations are complete. Want me to deploy the autopilot with the latest changes, or is there anything else?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] why would you need to deploy autopilot? No code changes happened isnt it?
-
-
-### 🤖 Autopilot
-
-You're right, no code changes to the autopilot itself happened — all the PRs were on oracle, capoeira, and dao_protocol. Nothing to deploy. My mistake.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] https://capoeira.agroverse.shop/practice.html#s=eyJ0aCI6IkF0dGFja3MiLCJtdiI6WyJnaW5nYSIsIm1hcnRlbG8iLCJtZWlhX2x1YV9kZV9mcmVudGUiLCJwb250ZWlyYSIsInF1ZWl4YWRhX2RlX2ZyZW50ZSJdLCJtdSI6WyIwMDciLCIwMDQiLCIwMDUiLCIwMDEiLCIwMTAiXX0
-
-dao-client.min.js:1 Uncaught Error: Use generateKeyPair() (async) or load from storage
-generateKeyPairSync @ dao-client.min.js:1
-f @ dao-client.min.js:7
-(anonymous) @ practice-event-submit.js:36
-(anonymous) @ practice-event-submit.js:162
-
-Why?
-
-
-### 🤖 Autopilot
-
-Let me look at the error. The stack trace points to `generateKeyPairSync` being called from the `DaoClient` constructor. Let me check what's happening.
-
-
-### 🤖 Autopilot
-
-Found it. The constructor calls `this.crypto.generateKeyPairSync()` — which throws `Use generateKeyPair() (async) or load from storage`. Let me check the crypto source.
-
-
-### 🤖 Autopilot
-
-There's the bug. The `DaoClient` constructor calls `this.crypto.generateKeyPairSync()` when no existing keypair is found in storage. But `generateKeyPairSync()` just throws `'Use generateKeyPair() (async) or load from storage'` — it's a placeholder that was never implemented.
-
-The constructor should call `this.crypto.generateKeyPair()` (async) instead. Let me also check the storage prefix — the old capoeira code uses `LS_PUBLIC_KEY = 'publicKey'` but the new `DaoClient` constructor looks for `truesight_dao_public_key`. So even if a keypair exists in localStorage under the old keys, the new client won't find it, hits the sync fallback, and throws.
-
-Two bugs:
-1. **Constructor calls sync method that throws** — needs to call `await this.crypto.generateKeyPair()` instead
-2. **Storage prefix mismatch** — old keys are `publicKey`/`privateKey`, new client looks for `truesight_dao_public_key`/`truesight_dao_private_key`
-
-Let me fix both.
-
-
-### 🤖 Autopilot
-
-**PR #77** is open with the fix. Two bugs:
-
-1. **The constructor calls `generateKeyPairSync()` which just throws** — it's a placeholder that was never implemented. The fix makes the constructor safe (no key generation in constructor), adds a static `DaoClient.create()` factory that does async key generation, and adds `ensureKeys()` for deferred key setup.
-
-2. **Storage prefix mismatch** — old capoeira/oracle keys live under `publicKey`/`privateKey` (no prefix), but the new client looks for `truesight_dao_public_key`. The fix adds a legacy fallback in `StorageManager.loadKeyPair()` so existing users' keys are found and migrated.
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Yep, just go ahead and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged. Now we need to publish a new version so the CDN picks it up. Since the CI auto-publishes when `package.json` changes, let me bump the patch version.
-
-
-### 🤖 Autopilot
-
-PR #78 is open — just a version bump to `1.1.0-rc.2`. Once merged, the CI will build, test, and publish to npm. Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Birch step one two [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged. The CI should now kick off — it'll build, run the smoke test, and publish `@truesight_dao/dao-client@1.1.0-rc.2` to npm. Once that's done, the CDN will serve the fixed version and the capoeira page should load without the crash.
-
-You might need to do a hard refresh (or wait a few minutes for the CDN cache to clear) when you test it again.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Can you spend some time to investigate why the dial client at 1.1.0-rc.2 is not on mpm yet? Yeah, just go investigate this. Don't need to do anything just report back so that when I wake up in the morning I know why we are having this issue. And I know so in your report such as how we can fix it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me investigate the CI pipeline to see why the publish didn't trigger.
-
-
-### 🤖 Autopilot
-
 The CI run failed. Let me get the logs.
 
 
@@ -630,4 +455,140 @@ Let me just do a full write of the package.json.
 ### 🤖 Autopilot
 
 The build step works now (`npm run build && vitest run`), but the vectors JSON is still failing. The `v4` branch only has the `package.json` write — it doesn't have the vectors fix or the payload test fix. I need to combine all changes into one branch. Let me do a single comprehensive PR with all 4 files changed.
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yes, keep iterating on the fix until everything passes and then only then do a PR and then merge [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me do this properly — one branch with all fixes, test locally until green, then PR and merge.
+
+
+### 🤖 Autopilot
+
+Good. Now let me apply all fixes and test iteratively.
+
+
+### 🤖 Autopilot
+
+The sed for payload.ts didn't work — the regex escaping is tricky. Let me do it properly.
+
+
+### 🤖 Autopilot
+
+Now let me test.
+
+
+### 🤖 Autopilot
+
+**All 46 tests pass across all 3 test files.** Now let me push this as a single PR.
+
+
+### 🤖 Autopilot
+
+Wait — I wrote the vectors JSON with the wrong escaping. The `\\\\` in the JSON content I sent will produce double-escaped patterns. Let me verify the PR branch actually passes tests.
+
+
+### 🤖 Autopilot
+
+The JSON escaping got mangled by the tool. The `\\\\` in my content was interpreted as `\\` in the file, which is wrong. Let me just use the locally-tested files from the working copy.
+
+
+### 🤖 Autopilot
+
+The locally-tested copy has `'Line one\\nLine two\\nLine three'` which is the string `Line one\nLine two\nLine three` (with literal backslash-n). The test converts `\\n` → actual newlines. Let me push the exact files from the working copy.
+
+
+### 🤖 Autopilot
+
+**All 46 tests pass.** Now let me push the exact files from the working copy.
+
+
+### 🤖 Autopilot
+
+Good — the JSON is valid and the escaping is correct. Now let me push the exact files from the working directory.
+
+
+### 🤖 Autopilot
+
+The escaping in the JSON content I sent through the tool is wrong — `\\\\` in my content becomes `\\` in the file, which is double-escaped. The tool's JSON parser is eating one level of escaping. Let me use a different approach — upload the actual files from the working copy.
+
+
+### 🤖 Autopilot
+
+Now let me verify the PR branch passes.
+
+
+### 🤖 Autopilot
+
+Still the multi-line issue. The `\\n` conversion in the test isn't working. The received output shows `Line one\\nLine two\\nLine three` (literal backslash-n), meaning the conversion isn't happening. Let me check what's in the test file on the branch.
+
+
+### 🤖 Autopilot
+
+The regex is `/\\\\\\\\n/g` which in the actual JS is `/\\\\n/g` — that's looking for two backslashes followed by n, but the JSON has `\\n` (one backslash + n). The escaping is off by one level. In the locally-tested working copy, the regex was `/\\\\n/g` which in JS is `/\n/g` (looking for literal backslash-n). But the tool's JSON parser is eating one level.
+
+Let me just fix this by using a simpler approach — read the file from the working copy and upload it directly.
+
+
+### 🤖 Autopilot
+
+In the working copy, the comment says `\\n` (one backslash) and the regex is `/\\\\n/g` which in JS is `/\n/g` — matching literal `\n` (backslash + n). That's correct. Let me upload the exact file.
+
+
+### 🤖 Autopilot
+
+The base64 is truncated. Let me get the full file.
+
+
+### 🤖 Autopilot
+
+Now let me also upload the vectors JSON and payload.ts from the working copy.
+
+
+### 🤖 Autopilot
+
+Now let me verify the branch passes.
+
+
+### 🤖 Autopilot
+
+**All 46 tests pass across all 3 test files.** Now let me merge.
+
+
+### 🤖 Autopilot
+
+Now let me run the CI pingback monitor to watch the new workflow run.
+
+
+### 🤖 Autopilot
+
+The cache is stale — still showing the old run. The new merge hasn't triggered a workflow yet. Let me wait a moment and check again.
+
+
+### 🤖 Autopilot
+
+Run #7 is **queued** — the CI is starting. Let me run the pingback monitor to watch it.
+
+
+### 🤖 Autopilot
+
+The CI pingback monitor is running in the background (PID 41239). It'll poll every 15 seconds and send a message to this Telegram thread when the CI run completes.
+
+Here's the summary of everything that happened:
+
+**PR #88 merged** — all 46 tests pass locally. The CI run #7 is now queued. The pingback monitor will notify this thread when it completes.
+
+**What was fixed (4 files):**
+1. **`package.json`** — test script now runs `npm run build && vitest run` so the smoke test can find `dist/dao-client.min.js`
+2. **`src/payload.ts`** — validation regex widened to catch multi-word event names like `[EMAIL REGISTERED EVENT]`
+3. **`test/vectors/submit-event-vectors.json`** — fixed invalid JSON (`undefined` → `null`, proper escaping)
+4. **`test/payload.test.ts`** — added `\\n` → actual newline conversion when reading from JSON vectors
+
+I'll let you know as soon as the CI finishes.
 
