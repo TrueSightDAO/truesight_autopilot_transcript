@@ -244,3 +244,96 @@ Port 80 open. Let me also check DNS propagation.
 
 DNS resolves. Let me retry certbot.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+how is progress?
+
+
+### 🤖 Autopilot
+
+Good timing — I'm mid-flight on Unit 1. Let me retry the certbot now that port 80 is open, and give you the full status.
+
+
+### 🤖 Autopilot
+
+**TLS is live.** Let me verify HTTPS is reachable.
+
+
+### 🤖 Autopilot
+
+502 is expected — nginx is proxying to `127.0.0.1:8010` but dao_protocol isn't running yet. That's the next step.
+
+Now let me set up the Python venv and clone dao_protocol.
+
+
+### 🤖 Autopilot
+
+Now set up the systemd unit for dao-protocol-beta.
+
+
+### 🤖 Autopilot
+
+Now let me check what `main:app` looks like in the dao_protocol repo to make sure the startup command is right.
+
+
+### 🤖 Autopilot
+
+The server entry point is `truesight_dao_client.server.main:main`. Let me check the server module.
+
+
+### 🤖 Autopilot
+
+Good — the server is `uvicorn truesight_dao_client.server.main:app`. Let me update the systemd unit with the correct command.
+
+
+### 🤖 Autopilot
+
+**dao-protocol-beta is running.** Let me verify HTTPS is now serving properly.
+
+
+### 🤖 Autopilot
+
+**HTTPS is live and proxying to dao_protocol.** A 404 on `/` is expected — the API routes are at `/health`, `/dao/`, etc. Let me verify the health endpoint.
+
+
+### 🤖 Autopilot
+
+**`/ping` returns 200 with `environment: development`.** Unit 1 is essentially complete.
+
+---
+
+## Progress Report — Beta Sandbox Endpoint
+
+Here's where we stand:
+
+### ✅ Unit 1 — Provision EC2 (DONE)
+| Step | Status |
+|------|--------|
+| Locked-down SG created (`sg-0346c37fdc8108ffc`) | ✅ 443 open, 22 restricted to autopilot |
+| Instance launched (`i-0b8c6d989594fb229`, `t3.small`) | ✅ Running in `us-east-1c` |
+| EIP allocated + associated (`54.162.175.189`) | ✅ |
+| Base packages (nginx, certbot, python3-venv, git, ufw) | ✅ |
+| nginx reverse proxy (`:443 → 127.0.0.1:8010`) | ✅ |
+| Let's Encrypt TLS (`beta.edgar.truesight.me`) | ✅ Expires 2026-09-07 |
+| dao_protocol cloned + venv + deps | ✅ |
+| systemd unit `dao-protocol-beta` | ✅ Running, enabled |
+| **HTTPS reachable** | ✅ `https://beta.edgar.truesight.me/ping` → `{"environment":"development"}` |
+
+### ⏭️ Next units (headless — I'll proceed)
+| Unit | What | Status |
+|------|------|--------|
+| **2** | Route53 A record | ✅ Already done above |
+| **3** | Deploy beta dao_protocol | ✅ Running |
+| **4** | Code: env guard (`sk_live` guard) | ⏳ Opening PR next |
+| **5** | Code: subscription webhook handler | ⏳ After Unit 4 |
+| **8** | Update `AWS_DIGITAL_INFRASTRUCTURE.md` | ⏳ Will do alongside |
+| **9** | Headless E2E test script | ⏳ After Unit 5 |
+| **10** | Update `CHOCOLATE_SUBSCRIPTION_PLAN.md` | ⏳ After Unit 5 |
+
+**🛑 Remaining operator gates:** Unit 6 (prod Rails delegation — touches prod Edgar) and Unit 7 (Stripe dashboard — test keys + webhook registration). Those need you.
+
+I'll proceed with **Unit 4** (the `sk_live` guard code) now — opening a PR in `dao_protocol`. Want me to continue?
+
