@@ -196,3 +196,74 @@ GitHub Pages auto-deployed from the `main` branch merge. No further action neede
 
 Beta traffic will no longer pollute your production analytics.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1963] [Handoff context — this Telegram topic (thread 1963) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Nice! Can we check that all the CI UX testing script in github action is also not polluting production too?
+
+
+### 🤖 Autopilot
+
+Good catch — the Playwright visual consistency tests run against the live beta site in CI. Let me check the CI config.
+
+
+### 🤖 Autopilot
+
+Now let me check what the actual Playwright tests do — do they just check visual consistency, or do they interact with the page in ways that could fire analytics/pixel events?
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. The Playwright tests navigate to real pages on `beta.agroverse.shop` — they load the full HTML, which includes the analytics scripts. But with the fix we just deployed, the Facebook Pixel now skips initialization on beta. Let me also check whether the tests block JS execution at all, and whether the GA4 gtag stub could still fire:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the analysis:
+
+---
+
+## CI Playwright Tests — Analytics Leakage Analysis
+
+**The tests run against `beta.agroverse.shop`** (the live deployed beta site). They load real pages in a headless Chromium browser, which means the browser executes all JavaScript including analytics scripts.
+
+### Status after today's fix:
+
+| Tracker | Leaks from CI tests? |
+|---|---|
+| **Google Analytics (GA4)** `G-S6EP25EHF4` | ✅ **No** — `google-analytics.js` guards against `beta.agroverse.shop` |
+| **Facebook Pixel** `2896386767418228` | ✅ **No** — `facebook-pixel.js` now guards against `beta.agroverse.shop` (just deployed) |
+| **Facebook Pixel events** | ✅ **No** — same guard in `facebook-pixel-events.js` |
+
+### However — there's a subtle issue with the cart tests
+
+The cart tests (like `cart-functionality.spec.ts`) actually **click "Add to Cart" buttons** and interact with the cart. The `add-to-cart.js` and `cart.js` scripts fire GA4/Facebook events like `add_to_cart`, `view_cart`, etc. Let me verify those event scripts also have the hostname guard:
+
+
+### 🤖 Autopilot
+
+Here's the full verdict:
+
+---
+
+## CI Playwright Tests — Analytics Leakage Analysis
+
+**Status: ✅ Clean across the board now.**
+
+The tests run headless Chromium against `beta.agroverse.shop`, loading real pages with full JS execution. Here's what fires:
+
+| Script | Hostname Guard? | Leaks from CI? |
+|---|---|---|
+| `google-analytics.js` (GA4) | ✅ Guards `beta.agroverse.shop` | ✅ **No** — returns early with no-op gtag stub |
+| `ga4-events.js` (GA4 e-commerce events) | ❌ **No hostname guard** — but it calls `gtag()` which is the no-op stub on beta | ✅ **No** — stub swallows events |
+| `facebook-pixel.js` (base Pixel) | ✅ Guards `beta.agroverse.shop` (just deployed) | ✅ **No** — returns early |
+| `facebook-pixel-events.js` (FB events) | ✅ Guards `beta.agroverse.shop` (just deployed) | ✅ **No** — returns early |
+
+**Key detail on `ga4-events.js`:** It doesn't have its own hostname guard, but it calls `window.gtag()` — which on beta is the no-op stub installed by `google-analytics.js`. So the events are swallowed harmlessly. Not ideal (they still log to console), but they don't reach Google's servers.
+
+**The cart tests** click "Add to Cart" buttons which fire `trackAddToCart` → `gtag('event', ...)` → no-op stub. No leakage.
+
+**Bottom line:** The CI tests are clean. The Facebook Pixel fix we deployed covers both the base pixel and the event scripts. Want me to also add a hostname guard to `ga4-events.js` for completeness (to suppress the console noise), or is this sufficient?
+
