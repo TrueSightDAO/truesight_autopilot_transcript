@@ -154,3 +154,45 @@ This thread (1963) isn't in the handoff manifest — it's a direct request. You 
 
 **Next step:** The fix is on `agroverse_shop_beta`'s `main`. To get it live on the beta site, the beta needs to be deployed. Want me to check how the beta site is deployed (GitHub Pages, Netlify, etc.) and push it live?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1963] [Handoff context — this Telegram topic (thread 1963) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+yes.
+
+
+### 🤖 Autopilot
+
+Let me check how the beta site is deployed.
+
+
+### 🤖 Autopilot
+
+It's GitHub Pages — push to `main` on `agroverse_shop_beta` and it auto-deploys to `beta.agroverse.shop`. The PR is already merged to `main`, so the deploy should be automatic. Let me verify:
+
+
+### 🤖 Autopilot
+
+**Already live.** The fix is deployed on `beta.agroverse.shop` — the hostname guard is now in place:
+
+```js
+// Skip initialization on beta or localhost
+if (hostname === 'beta.agroverse.shop' || hostname === 'www.beta.agroverse.shop' || ...) {
+    console.log('Facebook Pixel disabled: running on ' + hostname);
+    return;
+}
+```
+
+GitHub Pages auto-deployed from the `main` branch merge. No further action needed.
+
+**Summary of what's now blocked on beta:**
+
+| Tracker | Before | After |
+|---|---|---|
+| Google Analytics (GA4) `G-S6EP25EHF4` | ✅ Already guarded | ✅ Still guarded |
+| Facebook Pixel `2896386767418228` | ❌ **Leaking** | ✅ **Blocked** |
+| Facebook Pixel events | ❌ **Leaking** | ✅ **Blocked** (same guard in `facebook-pixel-events.js`) |
+
+Beta traffic will no longer pollute your production analytics.
+
