@@ -130,3 +130,27 @@ Here's the summary:
 
 Want me to also check if there's a Google Customer Reviews / Merchant Center survey opt-in that might fire on beta? The `config.js` sets `GOOGLE_CUSTOMER_REVIEWS_MERCHANT_ID` to `null` for non-production hosts, so that one looks clean.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1963] [Handoff context — this Telegram topic (thread 1963) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+fix it
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then merge the PR.
+
+
+### 🤖 Autopilot
+
+This thread (1963) isn't in the handoff manifest — it's a direct request. You said "fix it" — I'll merge the PR.
+
+
+### 🤖 Autopilot
+
+**PR #127 merged.** The fix adds a hostname guard to `facebook-pixel.js` (and `facebook-pixel-events.js`) so they skip initialization on `beta.agroverse.shop` — same pattern as `google-analytics.js` already uses.
+
+**Next step:** The fix is on `agroverse_shop_beta`'s `main`. To get it live on the beta site, the beta needs to be deployed. Want me to check how the beta site is deployed (GitHub Pages, Netlify, etc.) and push it live?
+
