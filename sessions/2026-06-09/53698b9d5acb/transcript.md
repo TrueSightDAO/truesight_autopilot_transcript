@@ -579,3 +579,44 @@ Two small fixes needed in `test/dao-client.test.ts`:
 
 Want me to open a PR with these test fixes?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yeah, please open PR and get them fixed [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The replace_all search didn't match. Let me check the exact whitespace in the file.
+
+
+### 🤖 Autopilot
+
+The indentation uses 6 spaces. Let me also check the exact text around the pubkey_mismatch area.
+
+
+### 🤖 Autopilot
+
+Now I have the exact whitespace. Let me do the edits properly.
+
+
+### 🤖 Autopilot
+
+The whitespace must be different. Let me check with cat -A.
+
+
+### 🤖 Autopilot
+
+The whitespace looks correct — 6 spaces. The issue might be that the tool is having trouble with the file path. Let me try using the full path from the repo root.
+
+
+### 🤖 Autopilot
+
+**PR #79** is open with the test fixes. Two changes:
+
+1. **Valid base64 keys** — replaced all `'test-public-key'` / `'test-private-key'` with their actual base64 encodings (`'dGVzdC1wdWJsaWMta2V5'` / `'dGVzdC1wcml2YXRlLWtleQ=='`). This fixes the 9 tests that were crashing on `atob()`.
+
+2. **Added `pubkey_mismatch: true`** to the 422 mock response so the parser correctly returns `pubkey_mismatch` instead of `not_applicable`.
+
+Once merged, the CI should pass `npm test` and auto-publish `1.1.0-rc.2` to npm. Want me to merge it?
+
