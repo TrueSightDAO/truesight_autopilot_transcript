@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The API only shows 1 run (the failed one from PR #78). The PR #79 merge just happened — the new CI run might not have started yet or the cache is stale. Let me check more recent runs.
-
-
-### 🤖 Autopilot
-
 I see only the old failed run (run #5). The PR #79 merge just happened moments ago — the new CI run hasn't appeared yet. The workflow is triggered by `push` to `main` with paths `packages/dao-client/package.json` — but PR #79 only changed the test file, not `package.json`. So **the CI won't trigger** because the path filter doesn't match.
 
 The `package.json` version is still `1.1.0-rc.2` from PR #78 (which failed). The test fix in PR #79 didn't bump the version or change `package.json`, so the workflow won't re-run.
@@ -463,4 +458,83 @@ Let me check if it actually published.
 2. **Publish if this version is new** — ✅ published
 
 `@truesight_dao/dao-client@1.1.0-rc.2` is now live on npm. The pingback monitor should have already sent a notification to this thread.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Hey, there's a Submit a testation event that is used in the botify club that I don't see in the mpm package expose as a method Can you explore that deeply and then? Yeah, can you also generate a PR for the mpm package to include that if you're not sure ask me what the URL is? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me search for "testation" and "botify" across the codebase to understand what you're referring to.
+
+
+### 🤖 Autopilot
+
+I think you mean **"attestation"** not "testation" — specifically `[CREDENTIALING ATTESTATION EVENT]`. Let me look at the dao-client source to see what methods are exposed.
+
+
+### 🤖 Autopilot
+
+I see — the `DaoClient` has `submitEvent()` as a generic method, but there's no dedicated `submitAttestation()` or `submitCredentialingAttestation()` method. Let me check the Butterfly Effect Club / credentialing flow to see how attestations are submitted there.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The `[CREDENTIALING ATTESTATION EVENT]` is submitted through the generic `submitEvent()` method on `DaoClient`, but there's no dedicated convenience method for it like there is for `registerEmail()` and `verifyEmail()`. Let me also check the Butterfly Effect Club to see how it's used there.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The `[CREDENTIALING ATTESTATION EVENT]` is submitted through the generic `submitEvent()` method, but there's no dedicated convenience method like `submitAttestation()`. Let me check the existing `submitEvent()` method signature and the exact fields the attestation event needs.
+
+The attestation event payload format from the proposal (§6.1) is:
+
+```
+[CREDENTIALING ATTESTATION EVENT]
+- Program: butterfly-effect
+- Attestation Type: program-completion
+- Attestor Public Key: <...>
+- Attestor Name: ERA Professionals — Butterfly Effect
+- Attestee Public Key: <...>
+- Attestee Name: Maria Santos
+- Captured At: 2026-05-22T14:00:00Z
+- Program Year: 2025-2026
+- Source URL: https://butterfly-effect-club.truesight.me/
+- Payload JSON: { ... }
+```
+
+This is a specific event type with specific field names. The `submitEvent()` method can handle it generically, but there's no `submitAttestation()` convenience method. Let me create a PR to add one.
+
+
+### 🤖 Autopilot
+
+Let me verify the build still passes.
+
+
+### 🤖 Autopilot
+
+All 46 tests pass. Here's the summary:
+
+**PR #89** is open — adds `submitAttestation()` and `submitQualification()` convenience methods to `DaoClient`.
+
+The `submitAttestation()` method wraps `submitEvent()` with the correct `[CREDENTIALING ATTESTATION EVENT]` type and field names. Usage:
+
+```typescript
+const result = await client.submitAttestation({
+  program: 'butterfly-effect',
+  attestationType: 'program-completion',
+  attesteePublicKey: 'MIIBIjANBgkqhkiG9w0BAQEF...',
+  attesteeName: 'Maria Santos',
+  capturedAt: '2026-05-22T14:00:00Z',
+  programYear: '2025-2026',
+  sourceUrl: 'https://butterfly-effect-club.truesight.me/',
+  payload: { decision: 'approved', school: 'ERA Academy Lahore' },
+});
+```
+
+It auto-injects `Attestor Public Key` from the client's own key, so the admin doesn't need to pass it. The `submitQualification()` method follows the same pattern for live-cohort admission events.
+
+Want me to merge it?
 
