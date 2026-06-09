@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me check the existing PDP structure and the checkout form storage:
-
-
-### 🤖 Autopilot
-
-Now let me check the existing PDP page structure to understand the template pattern:
-
-
-### 🤖 Autopilot
-
 Now I have a thorough understanding of the codebase. Let me also check the existing checkout page and the subscribe directory:
 
 
@@ -471,4 +461,78 @@ Let me build this:
 **PR2.3 is open:** https://github.com/TrueSightDAO/dapp_beta/pull/44
 
 Now I need to add the `dao_protocol` endpoints that the fulfillment page calls — `/subscription/obligations` (list PENDING) and `/subscription/fulfill` (mark FULFILLED). Let me add these to the existing `subscription_obligation` router:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go for it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Proceeding. I need to add the two `dao_protocol` endpoints that the fulfillment page calls — `/subscription/obligations` (list PENDING) and `/subscription/fulfill` (mark FULFILLED).
+
+
+### 🤖 Autopilot
+
+Now I'll add the two new endpoints to this router — `GET /subscription/obligations` (list PENDING) and `POST /subscription/fulfill` (mark FULFILLED):
+
+
+### 🤖 Autopilot
+
+The file was written on a different branch. Let me read it from main:
+
+
+### 🤖 Autopilot
+
+The file doesn't exist on main yet — it was only on the PR branch. I need to write it fresh on a new branch that includes the full file with all three endpoints:
+
+
+### 🤖 Autopilot
+
+Now let me merge all the Phase 2 PRs and report contributions. Let me merge them in order:
+
+
+### 🤖 Autopilot
+
+Merge conflict on PR #103 because the file was written fresh but the other PRs already merged the same file. Let me resolve by reading the current state and updating:
+
+
+### 🤖 Autopilot
+
+Good — the file exists on main now (from the merged PRs). I just need to add the two new endpoints to it:
+
+
+### 🤖 Autopilot
+
+All Phase 2 PRs merged. Now let me report the DAO contributions and update the plan tracker.
+
+
+### 🤖 Autopilot
+
+Here's the full status update:
+
+## Phase 2 complete — all PRs merged
+
+| PR | Scope | Status |
+|----|-------|--------|
+| **2.1** | Subscription Fulfillment Queue sheet module | ✅ Merged |
+| **2.2** | Rails webhook invoice.paid handler + dao_protocol obligation endpoint | ✅ Merged |
+| **2.3** | Fulfill Subscriptions page + list/fulfill endpoints | ✅ Merged |
+
+## 🛑 STOP — operator test gate (end of Phase 2)
+
+Per the plan, I stop here and hand back to you for the full loop test. Here's what needs operator verification:
+
+1. **Deploy dao_protocol** with the new modules (sheet tab auto-creates on first access)
+2. **Deploy sentiment_importer** with the new webhook handler
+3. **Deploy dapp_beta** with fulfill_subscriptions.html
+4. **Run the full loop:**
+   - `stripe trigger invoice.payment_succeeded` → should create a PENDING row in the Subscription Fulfillment Queue tab
+   - Visit `beta.dapp.truesight.me/fulfill_subscriptions.html` → should show the PENDING obligation
+   - Enter QR codes + tracking → submit → should create [SALES EVENT]s and mark FULFILLED
+
+On your sign-off, we can **activate Linda** — the Activation gate is now satisfied. Phase 3 (RSA accounts) is independent and can follow later.
 
