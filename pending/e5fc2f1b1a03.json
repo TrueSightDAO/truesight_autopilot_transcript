@@ -152,5 +152,12 @@
     "summary": "Add comprehensive API documentation to the @truesight_dao/dao-client README.md\n\nThe current README is minimal \u2014 just a CDN snippet and build instructions. It doesn't document any of the library's meth",
     "action": "merge_pr",
     "created_at": "2026-06-09T01:02:56Z"
+  },
+  {
+    "title": "Merge PR #77 on dao_protocol",
+    "qr_code": "",
+    "summary": "Fix DaoClient constructor crash on fresh install \u2014 two bugs:\n\n1. **Constructor calls sync method that throws.** The DaoClient constructor calls `this.crypto.generateKeyPairSync()` when no existing key",
+    "action": "merge_pr",
+    "created_at": "2026-06-09T01:28:19Z"
   }
 ]
