@@ -10,49 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see only the old failed run (run #5). The PR #79 merge just happened moments ago — the new CI run hasn't appeared yet. The workflow is triggered by `push` to `main` with paths `packages/dao-client/package.json` — but PR #79 only changed the test file, not `package.json`. So **the CI won't trigger** because the path filter doesn't match.
-
-The `package.json` version is still `1.1.0-rc.2` from PR #78 (which failed). The test fix in PR #79 didn't bump the version or change `package.json`, so the workflow won't re-run.
-
-I need to re-trigger the publish. I can either:
-1. Re-run the failed workflow from run #5 (but I don't have admin rights)
-2. Push a dummy change to `package.json` to trigger the workflow
-
-Let me check if I can re-run the failed workflow.
-
-
-### 🤖 Autopilot
-
-Can't re-run without auth. Let me trigger it by pushing a trivial change to `package.json` — I'll bump the build metadata.
-
-
-### 🤖 Autopilot
-
-Here's the situation, Gary:
-
-**Why 1.1.0-rc.2 isn't on npm yet:**
-
-The CI workflow only triggers on pushes to `main` that change `packages/dao-client/package.json`. PR #79 (the test fix) only changed the test file — not `package.json` — so the workflow never re-ran after the fix. The version `1.1.0-rc.2` is still sitting in `package.json` from PR #78, but the CI run for that version failed (tests crashed), and nobody re-triggered it.
-
-**What I just did:**
-
-Opened **PR #80** — a trivial edit to `package.json` (added a `_ci_trigger` field) so the workflow fires. Once merged, the CI will build, run the now-fixed tests, and publish `1.1.0-rc.2` to npm.
-
-Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Yes, merge it. And then can you is it possible for you to monitor it with a Ping-back feature or something? I know you don't really have that feature yet. Do you think you can build it, which triggers you to look at it? And then once done, you ping back to this channel. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Good, merged. Now let me build the ping-back feature. I'll add a simple CI status checker to the autopilot that polls the workflow run and sends a Telegram message when it completes.
-
-
-### 🤖 Autopilot
-
 Good, I have the context. Now let me build a simple CI monitor that polls the workflow and pings back to this Telegram thread. I'll add it as a script in the autopilot.
 
 
@@ -537,4 +494,38 @@ const result = await client.submitAttestation({
 It auto-injects `Attestor Public Key` from the client's own key, so the admin doesn't need to pass it. The `submitQualification()` method follows the same pattern for live-cohort admission events.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Perfect, can you submit this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! PR #89 is in. The CI will pick it up and publish `@truesight_dao/dao-client` with the new `submitAttestation()` and `submitQualification()` methods.
+
+Let me check if the CI triggered.
+
+
+### 🤖 Autopilot
+
+The cache is still showing the old run. Let me check for the new one.
+
+
+### 🤖 Autopilot
+
+The merge hasn't triggered a new CI run yet — the workflow only runs on pushes to `main` that change the `packages/dao-client/` path. The merge was a squash merge from a PR, so the push event should trigger it. Let me wait a moment and check.
+
+
+### 🤖 Autopilot
+
+The cache is still showing the old run. The workflow might have a path filter that only triggers on changes to `packages/dao-client/`. Let me check the workflow file.
+
+
+### 🤖 Autopilot
+
+The workflow only triggers on changes to `packages/dao-client/package.json`. Since the merge was a squash merge that included changes to `src/index.ts` (not `package.json`), the version didn't change, so the workflow won't trigger. That's fine — the version is already `1.1.0-rc.2` on npm, and the new methods are part of the same package. The Butterfly Effect Club can start using `submitAttestation()` right away by importing the latest from the `main` branch or the already-published npm package.
+
+Actually, the npm package was already published with the previous CI run (#7). The new `submitAttestation()` method is on `main` but not yet published to npm since the version didn't bump. If you want it published, we'd need to bump the version in `package.json` to trigger the CI. Want me to do that?
 
