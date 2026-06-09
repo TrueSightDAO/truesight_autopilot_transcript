@@ -255,3 +255,60 @@ No `gh` CLI available. The PR is open as a regular PR (not draft). That's fine �
 
 It's open as a regular PR (couldn't convert to draft without `gh` CLI auth), but it's ready for review whenever you want to take a look.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] By the way, I'm noticing right now in the Kapoeira experience that there is no link from the practice page to my credentialing on the true-side me web page. I think it's probably removed. Can you check the mixture that your new PR? PR 36 actually fixes that bug. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the current state of the capoeira practice page to see if the credential link is actually broken right now, and whether PR #36 fixes it.
+
+
+### 🤖 Autopilot
+
+Interesting — the live page *does* have the credential link elements. Let me look more carefully at the actual HTML to see if the `getCvUrl` function is working correctly in the current `@1.0.1` version.
+
+
+### 🤖 Autopilot
+
+I see the issue now. Looking at the live `@1.0.1` version of `DaoClient` — let me check what `publicKeyToSlug` actually is on that version.
+
+
+### 🤖 Autopilot
+
+Now I see the bug clearly. In `@1.0.1`, the static method is called `publicKeyToSlug` (lowercase 'k'), but the capoeira code aliases it as:
+
+```js
+const publicKeyToSlug = DaoClient.publicKeyToSlug;
+```
+
+Let me check the exact method name in the minified code... Looking at the `@1.0.1` bundle, the static method is `publicKeyToSlug` (lowercase 'k'). And the alias in capoeira is `DaoClient.publicKeyToSlug` — that should match.
+
+Wait, let me look more carefully. The `@1.0.1` bundle has `async publicKeyToSlug(e){...}` as an *instance* method on the `Crypto` class (the inner `o` class). But `DaoClient.publicKeyToSlug` — is it exposed as a static?
+
+Looking at the `@1.0.1` bundle exports: `static arrayBufferToBase64`, `static base64ToArrayBuffer`, `static base64ToBase64Url`, `static async generateKeyPair`. There's **no** `static publicKeyToSlug` in `@1.0.1`.
+
+But in `@1.1.0-rc.1`, same thing — no static `publicKeyToSlug`. It's an instance method on the `Crypto` class, not a static on `DaoClient`.
+
+So the current code on the live site has:
+
+```js
+const publicKeyToSlug = DaoClient.publicKeyToSlug;
+```
+
+But `DaoClient.publicKeyToSlug` is `undefined` because it's not a static method — it's an instance method on the internal `Crypto` class. That means `getCvUrl()` calls `undefined(pub)` which throws, and the credential link never resolves.
+
+**PR #36 fixes this** because it replaces the broken alias with `client.getSlug()` — which is the proper instance method on the `DaoClient` instance. So yes, Gary, you're right — the credential link is broken on the live site right now because `DaoClient.publicKeyToSlug` doesn't exist as a static, and PR #36 fixes it by using `client.getSlug()` instead.
+
+You're spot on, Gary. The credential link on the live capoeira practice page is indeed broken right now, and PR #36 fixes it.
+
+**The bug:** The current `@1.0.1` code aliases `const publicKeyToSlug = DaoClient.publicKeyToSlug` — but `publicKeyToSlug` is an *instance* method on the internal `Crypto` class, not a static on `DaoClient`. So the alias resolves to `undefined`, `getCvUrl()` silently fails, and the credential link never appears.
+
+**The fix in PR #36:** It replaces the broken alias with `client.getSlug()` — the proper instance method on the `DaoClient` instance. That's the same pattern the Oracle migration (PR #47, just merged) uses.
+
+So when you review and merge PR #36, the credential link will start working again. Want me to walk through the diff with you, or shall we get it reviewed and merged?
+
