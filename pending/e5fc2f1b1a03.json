@@ -145,5 +145,12 @@
     "summary": "PR2 \u2014 Oracle migration to @truesight_dao/dao-client high-level methods\n\nMigrate oracle-draw-submit.js and index.html from hand-rolled signing/identity/submission to the pinned @truesight_dao/dao-clien",
     "action": "merge_pr",
     "created_at": "2026-06-08T23:13:09Z"
+  },
+  {
+    "title": "Merge PR #75 on dao_client",
+    "qr_code": "",
+    "summary": "Add comprehensive API documentation to the @truesight_dao/dao-client README.md\n\nThe current README is minimal \u2014 just a CDN snippet and build instructions. It doesn't document any of the library's meth",
+    "action": "merge_pr",
+    "created_at": "2026-06-09T01:02:56Z"
   }
 ]
