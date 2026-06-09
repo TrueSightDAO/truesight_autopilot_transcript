@@ -500,3 +500,50 @@ All three migrations are complete. Want me to deploy the autopilot with the late
 
 You're right, no code changes to the autopilot itself happened — all the PRs were on oracle, capoeira, and dao_protocol. Nothing to deploy. My mistake.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] https://capoeira.agroverse.shop/practice.html#s=eyJ0aCI6IkF0dGFja3MiLCJtdiI6WyJnaW5nYSIsIm1hcnRlbG8iLCJtZWlhX2x1YV9kZV9mcmVudGUiLCJwb250ZWlyYSIsInF1ZWl4YWRhX2RlX2ZyZW50ZSJdLCJtdSI6WyIwMDciLCIwMDQiLCIwMDUiLCIwMDEiLCIwMTAiXX0
+
+dao-client.min.js:1 Uncaught Error: Use generateKeyPair() (async) or load from storage
+generateKeyPairSync @ dao-client.min.js:1
+f @ dao-client.min.js:7
+(anonymous) @ practice-event-submit.js:36
+(anonymous) @ practice-event-submit.js:162
+
+Why?
+
+
+### 🤖 Autopilot
+
+Let me look at the error. The stack trace points to `generateKeyPairSync` being called from the `DaoClient` constructor. Let me check what's happening.
+
+
+### 🤖 Autopilot
+
+Found it. The constructor calls `this.crypto.generateKeyPairSync()` — which throws `Use generateKeyPair() (async) or load from storage`. Let me check the crypto source.
+
+
+### 🤖 Autopilot
+
+There's the bug. The `DaoClient` constructor calls `this.crypto.generateKeyPairSync()` when no existing keypair is found in storage. But `generateKeyPairSync()` just throws `'Use generateKeyPair() (async) or load from storage'` — it's a placeholder that was never implemented.
+
+The constructor should call `this.crypto.generateKeyPair()` (async) instead. Let me also check the storage prefix — the old capoeira code uses `LS_PUBLIC_KEY = 'publicKey'` but the new `DaoClient` constructor looks for `truesight_dao_public_key`. So even if a keypair exists in localStorage under the old keys, the new client won't find it, hits the sync fallback, and throws.
+
+Two bugs:
+1. **Constructor calls sync method that throws** — needs to call `await this.crypto.generateKeyPair()` instead
+2. **Storage prefix mismatch** — old keys are `publicKey`/`privateKey`, new client looks for `truesight_dao_public_key`/`truesight_dao_private_key`
+
+Let me fix both.
+
+
+### 🤖 Autopilot
+
+**PR #77** is open with the fix. Two bugs:
+
+1. **The constructor calls `generateKeyPairSync()` which just throws** — it's a placeholder that was never implemented. The fix makes the constructor safe (no key generation in constructor), adds a static `DaoClient.create()` factory that does async key generation, and adds `ensureKeys()` for deferred key setup.
+
+2. **Storage prefix mismatch** — old capoeira/oracle keys live under `publicKey`/`privateKey` (no prefix), but the new client looks for `truesight_dao_public_key`. The fix adds a legacy fallback in `StorageManager.loadKeyPair()` so existing users' keys are found and migrated.
+
+Want me to merge it?
+
