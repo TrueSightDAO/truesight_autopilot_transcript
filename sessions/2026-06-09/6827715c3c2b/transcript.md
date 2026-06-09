@@ -580,68 +580,122 @@ Want me to proceed with **Unit 9** (the headless E2E test script)?
 Yup. I think the stripe test visa card is 4242 4242 4242 4242 or something
 
 
-### 🤖 Autopilot
+### 🧑 Governor
 
-Right — `pm_card_visa` is the Stripe test token. Let me build the headless E2E test script. I'll create it as a standalone Python script in `dao_protocol` that Sophia can run.
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
 
-
-### 🤖 Autopilot
-
-Good — the sandbox sheet is a placeholder logger for now. The E2E test will verify the webhook is called by checking the beta box's logs. Let me create the test script.
+once you are done with your side all the way until 10. Can you do a hand off to the other thread which is focused on Agroverse chocolate subscriptions?
 
 
 ### 🤖 Autopilot
 
-Let me create the script directly.
+Right — `4242 4242 4242 4242` is the standard Stripe test card that succeeds without triggering 3D Secure. Let me build the headless E2E test script (Unit 9), then update the chocolate subscription plan (Unit 10), and hand off.
+
+First, let me read the chocolate subscription plan to understand the Phase 2 webhook context.
 
 
 ### 🤖 Autopilot
 
-Now let me also add the console-script entry to `pyproject.toml`.
+Now I have the full picture. The chocolate subscription plan says the webhook stays on Rails (decision table), but we've actually moved it to dao_protocol on the beta box. Let me build the headless E2E test script (Unit 9), then update the chocolate plan (Unit 10), and hand off.
+
+Let me create the E2E test script that runs against the beta box.
 
 
 ### 🤖 Autopilot
 
-Now let me also update the plan tracker for Unit 9.
+Now let me create the headless E2E test script. It'll run from the autopilot box against the beta endpoint.
 
 
 ### 🤖 Autopilot
 
----
+Now let me run the non-Stripe part of the E2E test right now to prove it works.
 
-## Progress Report
 
-### ✅ Unit 9 — Headless E2E test script (PRs open)
+### 🤖 Autopilot
 
-| File | PR | Status |
-|------|----|--------|
-| `truesight_dao_client/tests/test_e2e_subscription_webhook.py` | [#95](https://github.com/TrueSightDAO/dao_protocol/pull/95) | ⧗ Open |
-| `pyproject.toml` (console script entry) | [#96](https://github.com/TrueSightDAO/dao_protocol/pull/96) | ⧗ Open |
+Quote escaping issue in the inline Python. Let me write it as a temp file instead.
 
-The script does:
-1. Creates a test product + $10/month price via Stripe API
-2. Creates a test customer
-3. Attaches `tok_visa` (Visa test token) as payment method
-4. Creates a subscription → triggers `invoice.paid` webhook
-5. Waits 15s, then SSH-checks beta box logs for the subscription ID
-6. Verifies unsigned POST to webhook returns 400
-7. Cleans up (cancels sub, deletes customer + product)
-8. Supports `--dry-run`, `--beta-host`, `--beta-key-path`, `--stripe-key` flags
 
-### Overall status
+### 🤖 Autopilot
 
-| Unit | Status |
-|------|--------|
-| **1** — Provision EC2 | ☑ |
-| **2** — Route53 | ☑ |
-| **3** — Deploy beta dao_protocol | ☑ |
-| **4** — `sk_live` guard | ☑ Merged |
-| **5** — Subscription webhook handler | ☑ Merged |
-| **6** — Prod Rails delegation | ➡️ Deferred |
-| **7** — Stripe test webhook | ☑ |
-| **8** — AWS_DIGITAL_INFRASTRUCTURE.md | ☑ Merged |
-| **9** — Headless E2E test | ⧗ PRs #95, #96 |
-| **10** — Update CHOCOLATE_SUBSCRIPTION_PLAN.md | ☐ |
+The PR hasn't been merged yet. Let me just run the smoke tests directly with curl.
 
-Want me to merge PRs #95 and #96 and run the E2E test to confirm everything works?
+
+### 🤖 Autopilot
+
+Both smoke tests pass. Now let me also run the full Stripe E2E to prove the subscription flow works end-to-end.
+
+
+### 🤖 Autopilot
+
+Subscription created and invoice paid instantly. Now let me check the beta box logs to see if the webhook was received and processed.
+
+
+### 🤖 Autopilot
+
+The webhook **is being received** (Stripe hit the endpoint at `3.130.192.231`) but there's a 500 error. The issue is at line 53 — the Stripe event object uses a different access pattern. Let me check the exact error.
+
+
+### 🤖 Autopilot
+
+The issue is clear — `KeyError: 'get'` at line 53. The Stripe event object is a `StripeObject`, not a plain dict, so `.get("type")` doesn't work — it tries `__getattr__` which calls `self["get"]` and fails. The fix is to use `event["type"]` or access the `_data` dict directly. Let me fix the webhook handler.
+
+
+### 🤖 Autopilot
+
+The issue is that `stripe.Webhook.construct_event()` returns a `StripeObject` which doesn't support `.get()`. I need to convert it to a dict first. Let me fix this.
+
+
+### 🤖 Autopilot
+
+Now merge and deploy the fix.
+
+
+### 🤖 Autopilot
+
+Now let me run the full E2E test again to verify the webhook works end-to-end.
+
+
+### 🤖 Autopilot
+
+Now check the beta box logs for the webhook processing.
+
+
+### 🤖 Autopilot
+
+Still failing — `stripe.util.convert_to_dict` also has issues with the newer Stripe SDK. Let me check the exact error.
+
+
+### 🤖 Autopilot
+
+The newer Stripe SDK uses `stripe._util.convert_to_dict` or I should just use `json.loads(str(event_obj))`. Let me fix this properly.
+
+
+### 🤖 Autopilot
+
+Now run the E2E test again.
+
+
+### 🤖 Autopilot
+
+**200 OK!** The webhook is being received and processed. Let me also check for the SANDBOX sheet log line.
+
+
+### 🤖 Autopilot
+
+The webhook is returning 200 but the SANDBOX log line isn't showing. The `logger.info` in `sandbox_sheet.py` uses `logging.getLogger(__name__)` which means the log level might not be configured. Let me check the log level and fix if needed.
+
+
+### 🤖 Autopilot
+
+The old errors are from the previous version. The new version (after the fix) is returning 200. The SANDBOX log lines might be at a different log level. Let me check the uvicorn log level and the sandbox_sheet logger config.
+
+The issue is that `uvicorn` only shows `INFO` level by default, and the `sandbox_sheet` logger uses `logging.getLogger(__name__)` which inherits the root logger level. Let me check if the log is actually being called by looking at the full journal output for the latest events.
+
+
+### 🤖 Autopilot
+
+The webhook is returning 200 but the SANDBOX log line isn't showing. The `logger.info` in `sandbox_sheet.py` uses `logging.getLogger(__name__)` which is `truesight_dao_client.server.services.sandbox_sheet`. The uvicorn log configuration might not be propagating to child loggers. Let me add a `print()` fallback to ensure visibility, or better yet, configure the logger in the webhook handler.
+
+Actually, the simplest fix: the `logger.info` calls in `sandbox_sheet.py` are being made but uvicorn's log config doesn't show them. Let me add a `print()` alongside the logger call for now, or better — configure the root logger in the webhook handler. But actually, the most pragmatic thing is to just add `print()` statements since this is a sandbox.
 
