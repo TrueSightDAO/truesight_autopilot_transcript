@@ -468,3 +468,15 @@ Merged. Now we need to publish a new version so the CDN picks it up. Since the C
 
 PR #78 is open — just a version bump to `1.1.0-rc.2`. Once merged, the CI will build, test, and publish to npm. Want me to merge it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Birch step one two [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged. The CI should now kick off — it'll build, run the smoke test, and publish `@truesight_dao/dao-client@1.1.0-rc.2` to npm. Once that's done, the CDN will serve the fixed version and the capoeira page should load without the crash.
+
+You might need to do a hard refresh (or wait a few minutes for the CDN cache to clear) when you test it again.
+
