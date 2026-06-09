@@ -572,3 +572,76 @@ The tracker still shows the old state from before my PR #404. Let me update it n
 
 Want me to proceed with **Unit 9** (the headless E2E test script)?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yup. I think the stripe test visa card is 4242 4242 4242 4242 or something
+
+
+### 🤖 Autopilot
+
+Right — `pm_card_visa` is the Stripe test token. Let me build the headless E2E test script. I'll create it as a standalone Python script in `dao_protocol` that Sophia can run.
+
+
+### 🤖 Autopilot
+
+Good — the sandbox sheet is a placeholder logger for now. The E2E test will verify the webhook is called by checking the beta box's logs. Let me create the test script.
+
+
+### 🤖 Autopilot
+
+Let me create the script directly.
+
+
+### 🤖 Autopilot
+
+Now let me also add the console-script entry to `pyproject.toml`.
+
+
+### 🤖 Autopilot
+
+Now let me also update the plan tracker for Unit 9.
+
+
+### 🤖 Autopilot
+
+---
+
+## Progress Report
+
+### ✅ Unit 9 — Headless E2E test script (PRs open)
+
+| File | PR | Status |
+|------|----|--------|
+| `truesight_dao_client/tests/test_e2e_subscription_webhook.py` | [#95](https://github.com/TrueSightDAO/dao_protocol/pull/95) | ⧗ Open |
+| `pyproject.toml` (console script entry) | [#96](https://github.com/TrueSightDAO/dao_protocol/pull/96) | ⧗ Open |
+
+The script does:
+1. Creates a test product + $10/month price via Stripe API
+2. Creates a test customer
+3. Attaches `tok_visa` (Visa test token) as payment method
+4. Creates a subscription → triggers `invoice.paid` webhook
+5. Waits 15s, then SSH-checks beta box logs for the subscription ID
+6. Verifies unsigned POST to webhook returns 400
+7. Cleans up (cancels sub, deletes customer + product)
+8. Supports `--dry-run`, `--beta-host`, `--beta-key-path`, `--stripe-key` flags
+
+### Overall status
+
+| Unit | Status |
+|------|--------|
+| **1** — Provision EC2 | ☑ |
+| **2** — Route53 | ☑ |
+| **3** — Deploy beta dao_protocol | ☑ |
+| **4** — `sk_live` guard | ☑ Merged |
+| **5** — Subscription webhook handler | ☑ Merged |
+| **6** — Prod Rails delegation | ➡️ Deferred |
+| **7** — Stripe test webhook | ☑ |
+| **8** — AWS_DIGITAL_INFRASTRUCTURE.md | ☑ Merged |
+| **9** — Headless E2E test | ⧗ PRs #95, #96 |
+| **10** — Update CHOCOLATE_SUBSCRIPTION_PLAN.md | ☐ |
+
+Want me to merge PRs #95 and #96 and run the E2E test to confirm everything works?
+
