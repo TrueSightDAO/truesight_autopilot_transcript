@@ -96,3 +96,151 @@ Per the plan, I **STOP** here at the operator gate. Before I launch the billable
 
 **Gary, do you approve launching the beta EC2 box?** Say "go" and I'll fire it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go
+
+
+### 🤖 Autopilot
+
+Full authorization received. Launching the beta EC2 box now.
+
+**Step 1: Create the locked-down security group first.**
+
+
+### 🤖 Autopilot
+
+SG created. Now add the rules: 443 open to all, 22 restricted to my IP (the autopilot box's IP so I can SSH in).
+
+
+### 🤖 Autopilot
+
+SG locked down. Now launch the instance.
+
+
+### 🤖 Autopilot
+
+Instance launching. Now allocate an Elastic IP and associate it.
+
+
+### 🤖 Autopilot
+
+EIP allocated: **54.162.175.189**. Now wait for the instance to be running, then associate.
+
+
+### 🤖 Autopilot
+
+Instance is running. Now associate the EIP.
+
+
+### 🤖 Autopilot
+
+EIP **54.162.175.189** associated. Now set up the Route53 A record in EXPLORYA.
+
+
+### 🤖 Autopilot
+
+DNS record created. Now SSH into the new box and set it up — base packages, nginx, Let's Encrypt, Python venv.
+
+
+### 🤖 Autopilot
+
+The keypair isn't on this box. Let me check what SSH keys are available.
+
+
+### 🤖 Autopilot
+
+Let me try with the autopilot key, and also check if the `GETDATA_IO_PAIR_20201122` key exists somewhere else or if I need to generate a new keypair for this box.
+
+
+### 🤖 Autopilot
+
+The `GETDATA_IO_PAIR_20201122` keypair was used at launch but the private key isn't on this box. I need to generate a new keypair and update the instance to accept it, or create a new keypair and re-launch. Let me generate a new keypair specifically for the beta box and add the public key to the instance.
+
+Actually — the simplest approach: I'll create a new EC2 keypair, download the private key to the autopilot box, and use it.
+
+
+### 🤖 Autopilot
+
+Got the key. Let me save it and use it to SSH in.
+
+
+### 🤖 Autopilot
+
+The instance was launched with `GETDATA_IO_PAIR_20201122` keypair, so the new key won't work. I need to stop the instance, update the keypair, or use the correct approach. Let me check if the GETDATA key is stored anywhere accessible.
+
+Actually, the simplest path: I'll terminate this instance and re-launch with the new keypair.
+
+
+### 🤖 Autopilot
+
+The GETDATA key isn't on this box. Let me take the pragmatic approach: terminate this instance, re-launch with the new keypair I just created.
+
+
+### 🤖 Autopilot
+
+Now re-launch with the new keypair.
+
+
+### 🤖 Autopilot
+
+New instance: **i-0b8c6d989594fb229**. Now associate the EIP to this new instance.
+
+
+### 🤖 Autopilot
+
+Wait for it to be running, then SSH.
+
+
+### 🤖 Autopilot
+
+Running with EIP. Let me SSH in.
+
+
+### 🤖 Autopilot
+
+Still booting. Let me wait a moment and retry.
+
+
+### 🤖 Autopilot
+
+Host key changed because it's a new instance. Let me clear the old key and retry.
+
+
+### 🤖 Autopilot
+
+**SSH OK.** Now let me set up the box — base packages, nginx, Let's Encrypt, Python venv, and clone dao_protocol.
+
+
+### 🤖 Autopilot
+
+Base packages installed. Now set up nginx as a reverse proxy and get Let's Encrypt TLS.
+
+
+### 🤖 Autopilot
+
+The `$` signs got escaped by the heredoc. Let me fix the nginx config.
+
+
+### 🤖 Autopilot
+
+Now get Let's Encrypt TLS certificate.
+
+
+### 🤖 Autopilot
+
+The SG has port 80 open but the DNS might not have propagated yet. Let me check if the DNS resolves and also open port 80 in the SG (it's already open via the nginx config, but the SG only has 443 and 22). Let me add port 80 temporarily for the certbot challenge.
+
+
+### 🤖 Autopilot
+
+Port 80 open. Let me also check DNS propagation.
+
+
+### 🤖 Autopilot
+
+DNS resolves. Let me retry certbot.
+
