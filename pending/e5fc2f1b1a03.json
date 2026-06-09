@@ -166,5 +166,12 @@
     "summary": "The oracle's index.html is missing the `arrayBufferToBase64` function at the top level of the script block. It's called in the email verification handler (`handleVerificationParams` IIFE) on the line ",
     "action": "merge_pr",
     "created_at": "2026-06-09T14:19:52Z"
+  },
+  {
+    "title": "Merge PR #127 on agroverse_shop_beta",
+    "qr_code": "",
+    "summary": "Facebook Pixel leaks from beta.agroverse.shop into production analytics. The file js/facebook-pixel.js does NOT check hostname before firing fbq('init') and fbq('track', 'PageView'). The google-analyt",
+    "action": "merge_pr",
+    "created_at": "2026-06-09T21:59:38Z"
   }
 ]
