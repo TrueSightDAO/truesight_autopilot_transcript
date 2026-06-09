@@ -472,3 +472,21 @@ If you want them on npm right away without a version bump, I could bump a patch 
 
 Yes, I'm here! Sorry about that — just processing. What do you need?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] is the processing done?
+
+
+### 🤖 Autopilot
+
+Yes, everything's done. Here's the full recap of what we accomplished this session:
+
+**PR #47 (oracle)** — merged. Oracle now uses `DaoClient.submitEvent()`, `registerEmail()`, `verifyEmail()`, `checkRegistration()`.
+
+**PR #36 (capoeira)** — merged. Capoeira now uses `client.submitEvent()` and `client.getSlug()`, which fixes the broken credential link.
+
+**PR #76 (dao_protocol)** — merged. The `@truesight_dao/dao-client` README now has full API docs for all methods. They'll appear on npm with the next version publish.
+
+All three migrations are complete. Want me to deploy the autopilot with the latest changes, or is there anything else?
+
