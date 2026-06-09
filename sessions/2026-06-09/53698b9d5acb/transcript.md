@@ -312,3 +312,20 @@ You're spot on, Gary. The credential link on the live capoeira practice page is 
 
 So when you review and merge PR #36, the credential link will start working again. Want me to walk through the diff with you, or shall we get it reviewed and merged?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Just go ahead and merge it then [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PR #36 merged. The credential link on the capoeira practice page should start working once the CDN cache refreshes — the fix replaces the broken `DaoClient.publicKeyToSlug` alias with `client.getSlug()`.
+
+That wraps up the full migration:
+
+- ✅ **PR #47 (oracle)** — merged, using `submitEvent`, `registerEmail`, `verifyEmail`, `checkRegistration`
+- ✅ **PR #36 (capoeira)** — merged, using `submitEvent`, `client.getSlug()`
+
+Both consumers are now on `@1.1.0-rc.1` with the high-level library methods. Want me to deploy the autopilot with the latest changes?
+
