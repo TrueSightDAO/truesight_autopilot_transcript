@@ -462,3 +462,13 @@ Merged. Since this PR only changed the README (not `package.json`), the CI won't
 
 If you want them on npm right away without a version bump, I could bump a patch version in a separate PR — that'd trigger the CI to publish the new README. Want me to do that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] You there??
+
+
+### 🤖 Autopilot
+
+Yes, I'm here! Sorry about that — just processing. What do you need?
+
