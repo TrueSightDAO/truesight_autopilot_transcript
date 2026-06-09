@@ -529,3 +529,49 @@ The workflow only triggers on changes to `packages/dao-client/package.json`. Sin
 
 Actually, the npm package was already published with the previous CI run (#7). The new `submitAttestation()` method is on `main` but not yet published to npm since the version didn't bump. If you want it published, we'd need to bump the version in `package.json` to trigger the CI. Want me to do that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yes. Can you update a agent AI context for a self that in the future when you make any changes to this library you need to bump the package.json along when you do the code commit before you merge. Make sure to update this so that all other LLMs know to follow the same procedure and so I don't need to repeat myself again. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first bump the version to trigger the publish, then update the context file.
+
+
+### 🤖 Autopilot
+
+Now let me update the agentic AI context so all LLMs know the rule.
+
+
+### 🤖 Autopilot
+
+Now let me add the rule about bumping package.json.
+
+
+### 🤖 Autopilot
+
+Now let me merge the version bump PR so the CI publishes.
+
+
+### 🤖 Autopilot
+
+Now let me merge the context docs PR too.
+
+
+### 🤖 Autopilot
+
+Let me check if the CI triggered for the publish.
+
+
+### 🤖 Autopilot
+
+CI run #8 is **queued** — it'll build, test, and publish `@truesight_dao/dao-client@1.1.0-rc.3` to npm with the new `submitAttestation()` and `submitQualification()` methods.
+
+Here's what was done:
+
+1. **Version bump PR #90** — `1.1.0-rc.2` → `1.1.0-rc.3`, merged
+2. **CI run #8** — queued, will publish automatically
+3. **Context docs PR #380** — added §8 to `OPERATING_INSTRUCTIONS.md` with the version bump rule, so every LLM that reads this context will know: any code change to `dao_protocol/packages/dao-client/` must bump `package.json` in the same PR before merge. The rule is also referenced in the summary bullet list so it's hard to miss.
+
