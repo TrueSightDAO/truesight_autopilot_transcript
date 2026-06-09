@@ -10,35 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me check the published library version more carefully — what methods does `1.1.0-rc.1` actually expose?
-
-
-### 🤖 Autopilot
-
-Now let me verify the exact methods available in the minified bundle by checking the class structure. I can see from the minified code that `DaoClient` has:
-
-**Instance methods:**
-- `submitEvent({ eventType, fields, ... })` ✓
-- `registerEmail(email)` ✓
-- `verifyEmail(email, vk)` ✓
-- `checkRegistration()` ✓
-- `getSlug()` ✓
-- `verifyPayload(text, signature)` ✓
-- `generateKeyPair()` ✓ (instance method)
-- `submit(eventType, fields)` (lower-level)
-- `sign(eventType, fields)` (lower-level)
-
-**Static methods:**
-- `DaoClient.generateKeyPair()` ✓
-- `DaoClient.arrayBufferToBase64()` ✓
-- `DaoClient.base64ToArrayBuffer()` ✓
-- `DaoClient.base64ToBase64Url()` ✓
-
-Now let me also check the capoeira repo's `practice.html` to see how it loads the library.
-
-
-### 🤖 Autopilot
-
 Excellent! Now I have a complete picture. Let me compile the audit report.
 
 Key findings:
@@ -478,4 +449,16 @@ Here's the full picture:
 - **Complete examples** — email registration flow, practice session submission, contribution submission
 
 Once this PR is merged, the next time the package version is bumped and published, the full docs will appear on npm. Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Merge it. I think the github action will cause it to get bump Claude set it up like that
+
+
+### 🤖 Autopilot
+
+Merged. Since this PR only changed the README (not `package.json`), the CI won't auto-publish — the workflow is gated on `packages/dao-client/package.json` changes. So the docs are live in the repo now, but they'll appear on npm whenever the next version bump gets merged and published.
+
+If you want them on npm right away without a version bump, I could bump a patch version in a separate PR — that'd trigger the CI to publish the new README. Want me to do that?
 
