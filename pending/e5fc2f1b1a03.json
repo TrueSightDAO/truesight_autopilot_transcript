@@ -159,5 +159,12 @@
     "summary": "Fix DaoClient constructor crash on fresh install \u2014 two bugs:\n\n1. **Constructor calls sync method that throws.** The DaoClient constructor calls `this.crypto.generateKeyPairSync()` when no existing key",
     "action": "merge_pr",
     "created_at": "2026-06-09T01:28:19Z"
+  },
+  {
+    "title": "Merge PR #56 on oracle",
+    "qr_code": "",
+    "summary": "The oracle's index.html is missing the `arrayBufferToBase64` function at the top level of the script block. It's called in the email verification handler (`handleVerificationParams` IIFE) on the line ",
+    "action": "merge_pr",
+    "created_at": "2026-06-09T14:19:52Z"
   }
 ]
