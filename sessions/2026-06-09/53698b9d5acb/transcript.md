@@ -10,179 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I see the issue. The oracle page has a `#credentialsSection` and `#daoIdentityLinkedPanel` that show a "My Credentials →" link, but the link is only populated after the DAO identity is linked. Let me look at the specific section and understand what's missing.
-
-The `#credentialsSection` has:
-```html
-<section id="credentialsSection" hidden>
-  <article class="dao-advisory-panel">
-    <h2>Practice Credentials</h2>
-    <p class="dao-advisory-status" id="recordStatus">Sessions record to your lineage automatically after each reading.</p>
-    <a id="cvLink" href="#" target="_blank" rel="noopener noreferrer" hidden>My Credentials →</a>
-  </article>
-</section>
-```
-
-And the `#daoIdentityLinkedPanel` has:
-```html
-<article class="dao-advisory-panel" id="daoIdentityLinkedPanel" hidden>
-  <h2>DAO Identity</h2>
-  <p class="dao-advisory-status" id="daoIdentityLinkedStatus">...</p>
-  <a id="daoIdentityCvLink" href="#" target="_blank" rel="noopener noreferrer" hidden>My Credentials →</a>
-</article>
-```
-
-The `showVerifiedState()` function sets the `cvLink` href to `https://truesight.me/programs/truesight-grounding/credentials/#<slug>`, but the `#credentialsSection` itself is never shown. Let me check — the `showVerifiedState` function sets `cvLink.href` and `cvLink.hidden = false`, but it never unhides `#credentialsSection`.
-
-Also, the `#daoIdentityLinkedPanel` is shown instead. But the user said the oracle isn't showing the link to credentials on truesight.me. Let me trace the flow more carefully.
-
-The issue is that `showVerifiedState()` shows `daoIdentityLinkedPanel` but the `#credentialsSection` (which has the Practice Credentials link) is never unhidden. And the `cvLink` inside `#credentialsSection` gets its href set but the section stays hidden.
-
-Let me create a comprehensive plan and sandbox testing environment.
-
-
-### 🤖 Autopilot
-
-Plan is merged. Now let me start executing. First, pre-flight — check the oracle repo structure.
-
-
-### 🤖 Autopilot
-
-Good, the oracle repo exists. Let me check its structure.
-
-
-### 🤖 Autopilot
-
-There's already a `package.json` with `cheerio` as a dependency. Let me set up vitest + happy-dom for local testing.
-
-
-### 🤖 Autopilot
-
-Now I need to extract the key JS functions from the inline `<script>` in `index.html` into a testable module. But first, let me just write a test that loads the HTML and tests the DOM behavior directly — that's the fastest path to a working sandbox.
-
-
-### 🤖 Autopilot
-
-All 4 tests pass. The sandbox is working. Now let me apply the actual fix to `index.html` and commit everything together.
-
-
-### 🤖 Autopilot
-
-Now let me update the test to verify the fix works with the actual HTML loaded.
-
-
-### 🤖 Autopilot
-
-The test is failing because the HTML contains `credentialsSection.hidden = false` but with different whitespace/formatting. Let me check what's actually in the file.
-
-
-### 🤖 Autopilot
-
-The fix is there but the test assertion is too strict. Let me fix the test to match the actual content.
-
-
-### 🤖 Autopilot
-
-All 4 tests pass. Now let me push everything to the oracle repo — the fix + the test setup.
-
-
-### 🤖 Autopilot
-
-Wait — the `index.html` fix was applied locally but I didn't include it in the push. The `git_push_changes` tool only pushed the `writes` and `edits` I specified. Let me upload the fixed `index.html`.
-
-
-### 🤖 Autopilot
-
-Now let me verify the PR branch passes tests.
-
-
-### 🤖 Autopilot
-
-The vitest package isn't installed in the cloned repo — it was installed in the local working copy but not committed to `package.json`. Let me fix that.
-
-
-### 🤖 Autopilot
-
-Now I need to upload the fixed `index.html` to this branch too.
-
-
-### 🤖 Autopilot
-
-Now let me verify the full test suite passes on the PR branch.
-
-
-### 🤖 Autopilot
-
-**All 4 tests pass.** The PR is ready for your review. Here's what was done:
-
-**PR #49** on the oracle repo — fix + test suite:
-
-1. **The fix** — one line added to `showVerifiedState()`: `credentialsSection.hidden = false`. This makes the "My Credentials →" link visible after a user verifies their DAO identity.
-
-2. **The sandbox** — vitest + happy-dom test suite in `test/credentials.test.ts`:
-   - Tests that `showVerifiedState()` unhides the credentials section and sets the link href
-   - Tests that `showPendingState()` shows the pending message without the link
-   - Tests that `handleReset()` hides all panels
-   - Tests that the HTML file actually contains the fix
-
-Run locally with `npm test` any time before merging.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Yeah, make sure in the future, when you're making any code changes to any of our repository which is HTML and JavaScript. For example, Capoeira, Oracle, Shrewsite Me, or Agrivers, make sure to follow this same process to run and test the mixture that the functionality works. Before you merge it into the repo, so as to prevent code quality degrading, make sure to update the agentic AI context that this is a process that you must follow. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me update the operating instructions with this rule, then merge the oracle PR.
-
-
-### 🤖 Autopilot
-
-I see there are duplicate `## 7.` sections (Summary for agents and Handoff protocol). Let me add the new rule and fix the numbering.
-
-
-### 🤖 Autopilot
-
-The search string is too long. Let me use a shorter match.
-
-
-### 🤖 Autopilot
-
-Now let me merge both PRs.
-
-
-### 🤖 Autopilot
-
-Both merged. Here's the summary:
-
-**Done:**
-
-1. **Oracle fix merged** — `showVerifiedState()` now unhides `#credentialsSection` so the "My Credentials →" link is visible after DAO identity verification. Tested locally with vitest + happy-dom before merging.
-
-2. **Context rule added** — §9 in OPERATING_INSTRUCTIONS.md now requires that any HTML/JS change to any frontend repo (oracle, capoeira, truesight_me, agroverse_shop, dapp_beta, etc.) must be tested with a local JSDom/happy-dom test suite before the PR is merged. The process is: write the test first, apply the fix, run `npm test` to confirm green, then open the PR. This way the governor only reviews working code.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Are you sure you really tested everything and to end for the Oracle? And I'm sure that there's actually no error at all during the loading of the Dow client. Yeah, you really need to check to make sure that no error is happening because I'm still seeing error and like the is showing exception because it can't call a method when utilizing the Dow client.min.js. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-You're right to call me out — I only tested the credentials link fix in isolation, not the full end-to-end page load. Let me check what errors are actually happening when the oracle loads.
-
-
-### 🤖 Autopilot
-
-The page loads fine from the web extract. Let me check the actual browser console errors by looking at the dao-client version being loaded and the JavaScript execution.
-
-
-### 🤖 Autopilot
-
 I see the issue now. The oracle loads `dao-client@1.1.0-rc.1` from unpkg, but the `submitAttestation()` and `submitQualification()` methods were added in `1.1.0-rc.3`. However, the oracle doesn't use those methods — it uses `client.registerEmail()` which was already in `1.1.0-rc.1`.
 
 But wait — the real issue is that the oracle page calls `new DaoClient()` at the top level of the inline script, and the `DaoClient` constructor in `1.1.0-rc.1` might have a bug. Let me check what version is actually on npm and what the constructor does.
@@ -340,4 +167,75 @@ Here's the full summary:
 **Full audit across all 8 HTML/JS repos:** only **oracle** uses dao-client from unpkg, and it's already fixed to `1.1.0-rc.3` (PR #50 merged).
 
 **New convention added** — §10 in OPERATING_INSTRUCTIONS.md now requires that whenever a new dao-client version is published, ALL repos must be audited and bumped in the same session. The audit table lists every repo and its current version so nothing gets missed.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Hey, for the Oracle code base, can you besides just running unit tests also maybe run an integration test which means that you literally load the page in a browser and then observe if the developer console is throwing up any error when the page loads. I'm not sure. Maybe figure a phantom JS or something similar where you can run it and then just observe the console. Yeah, that would be helpful. And once you figure that out, maybe update the agent AI contacts on how you go about doing so in the future. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call. Let me set up a headless browser integration test for the oracle that loads the actual page and checks the console for errors.
+
+
+### 🤖 Autopilot
+
+Puppeteer is available globally via npx. Let me check if Chromium is installed.
+
+
+### 🤖 Autopilot
+
+Puppeteer has Chrome 148 installed. Now let me clone the oracle repo and write the integration test.
+
+
+### 🤖 Autopilot
+
+Now let me update the vitest config to handle the integration test and run it.
+
+
+### 🤖 Autopilot
+
+The npx vitest doesn't have the local node_modules. Let me use the project's own vitest.
+
+
+### 🤖 Autopilot
+
+Puppeteer isn't in the project's node_modules. Let me install it and write a standalone script instead of a vitest test — that's cleaner for integration tests.
+
+
+### 🤖 Autopilot
+
+The integration test works — **zero console errors on both pages**. The only failure is a minor assertion: the page title says "I Ching Hexagram Calculator" not "Oracle". Let me fix that assertion and also check the body text more carefully.
+
+
+### 🤖 Autopilot
+
+**Both pages pass — zero console errors, zero warnings, zero failed requests.** Now let me push this to the oracle repo and update the agentic_ai_context docs.
+
+
+### 🤖 Autopilot
+
+Now let me update the agentic_ai_context docs with the integration test methodology.
+
+
+### 🤖 Autopilot
+
+Now let me merge the oracle PR too.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I set up:
+
+**Integration test** (`test/integration.test.ts` in the oracle repo):
+- Uses Puppeteer with Chrome 148 (already cached on the autopilot box)
+- Loads `index.html` and `draw.html` in a headless browser
+- Captures all `console.error`, `console.warn`, and failed network requests
+- Asserts: no DaoClient constructor crash, no uncaught TypeError/ReferenceError, page renders expected content
+- Gated behind `VITEST_INTEGRATION=true` so normal `npm test` stays fast
+
+**Both pages pass with zero console errors, zero warnings, zero failed requests.**
+
+**Docs updated** — §10 in OPERATING_INSTRUCTIONS.md now documents the full methodology: how to write integration tests, what to check, how to run them, and when to add them (CDN version bumps, new dependencies, runtime error fixes, pre-deploy).
 
