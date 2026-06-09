@@ -630,3 +630,56 @@ Once merged, the CI should pass `npm test` and auto-publish `1.1.0-rc.2` to npm.
 
 Merged. The CI should kick off now — it'll run the tests, and if they pass, publish `@truesight_dao/dao-client@1.1.0-rc.2` to npm. Once that's live on the CDN, the capoeira page should load without the constructor crash.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Can you submit your URL to check the MPM page? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The package doesn't appear on npmjs.com's public listing — it's likely a **private scoped package** under the `@truesight_dao` org. That's why the web search can't find it. Let me check the CDN directly to see what version is actually published.
+
+
+### 🤖 Autopilot
+
+So `1.1.0-rc.1` is on the CDN but `1.1.0-rc.2` is not. The CI run for PR #79 just merged — let me check if it triggered a workflow.
+
+
+### 🤖 Autopilot
+
+The API only shows 1 run (the failed one from PR #78). The PR #79 merge just happened — the new CI run might not have started yet or the cache is stale. Let me check more recent runs.
+
+
+### 🤖 Autopilot
+
+I see only the old failed run (run #5). The PR #79 merge just happened moments ago — the new CI run hasn't appeared yet. The workflow is triggered by `push` to `main` with paths `packages/dao-client/package.json` — but PR #79 only changed the test file, not `package.json`. So **the CI won't trigger** because the path filter doesn't match.
+
+The `package.json` version is still `1.1.0-rc.2` from PR #78 (which failed). The test fix in PR #79 didn't bump the version or change `package.json`, so the workflow won't re-run.
+
+I need to re-trigger the publish. I can either:
+1. Re-run the failed workflow from run #5 (but I don't have admin rights)
+2. Push a dummy change to `package.json` to trigger the workflow
+
+Let me check if I can re-run the failed workflow.
+
+
+### 🤖 Autopilot
+
+Can't re-run without auth. Let me trigger it by pushing a trivial change to `package.json` — I'll bump the build metadata.
+
+
+### 🤖 Autopilot
+
+Here's the situation, Gary:
+
+**Why 1.1.0-rc.2 isn't on npm yet:**
+
+The CI workflow only triggers on pushes to `main` that change `packages/dao-client/package.json`. PR #79 (the test fix) only changed the test file — not `package.json` — so the workflow never re-ran after the fix. The version `1.1.0-rc.2` is still sitting in `package.json` from PR #78, but the CI run for that version failed (tests crashed), and nobody re-triggered it.
+
+**What I just did:**
+
+Opened **PR #80** — a trivial edit to `package.json` (added a `_ci_trigger` field) so the workflow fires. Once merged, the CI will build, run the now-fixed tests, and publish `1.1.0-rc.2` to npm.
+
+Want me to merge it?
+
