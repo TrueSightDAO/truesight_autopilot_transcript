@@ -270,3 +270,37 @@ That's actually doable with Puppeteer + Gmail search. The tricky part is step 3 
 
 But if you want the full end-to-end including real email, I can make it work — just need to add Gmail polling to the integration test and accept that it'll take 10-30 seconds for the email to arrive. What do you think?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Let's go with your approach then and then let's see how it goes and Can you Yeah, let's just do that go with your approach [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Alright, let me build the lighter integration test — it'll simulate the registration flow by checking the UI renders correctly and the Edgar request is well-formed, without the email round-trip.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The oracle page has a DAO Identity section that uses `DaoClient` directly. Let me build the integration test that simulates the registration flow.
+
+
+### 🤖 Autopilot
+
+**All 4 tests pass.** Let me push this to the oracle repo.
+
+
+### 🤖 Autopilot
+
+Done. Here's what the integration test now covers:
+
+**4 tests, all passing:**
+
+1. **`index.html` loads** — zero console errors, no DaoClient crash, page renders I Ching content
+2. **`draw.html` loads** — same checks for the draw page
+3. **DAO Identity UI** — clicks "Link to DAO Identity", verifies the email form appears, fills in a test email, clicks submit, confirms the error is handled gracefully (no uncaught exceptions, status message shown)
+4. **Full casting flow** — clicks "Begin your cast", "Toss All Lines", "Reveal Guidance", verifies hexagram cards render, share button enables, no console errors
+
+The DAO Identity test validates the UI renders correctly and Edgar submission attempts are handled gracefully even without a keypair. The full end-to-end with real email verification (Sophia registering admin@truesight.me, waiting for the email, clicking the link) would add email polling and browser session persistence — that's doable but adds ~30s of email-wait time and some brittleness. Want me to add that as a separate test gated behind a `VITEST_E2E=true` flag?
+
