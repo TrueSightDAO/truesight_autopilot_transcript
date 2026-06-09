@@ -299,3 +299,51 @@ The e2e test that actually hits the live oracle and checks Gmail is gated behind
 
 Both PRs are ready to merge whenever you give the word.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yeah, just merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Both merged. Now let me deploy the latest to production.
+
+
+### 🤖 Autopilot
+
+Good — both commits are on main. Now let me deploy to the S3 bucket that serves oracle.truesight.me.
+
+
+### 🤖 Autopilot
+
+Let me check where oracle.truesight.me is hosted — it's likely behind the krake nginx.
+
+
+### 🤖 Autopilot
+
+It's hosted on GitHub Pages — `truesightdao.github.io`. That means it auto-deploys from the `oracle` repo's main branch via GitHub Actions. Let me check if there's a deploy workflow.
+
+
+### 🤖 Autopilot
+
+Since `oracle.truesight.me` points to `truesightdao.github.io`, it's served via GitHub Pages. The repo doesn't have a `.github/workflows` directory, so it's likely using the default GitHub Pages build from the `main` branch. Let me check if there's a `gh-pages` branch or a Pages config.
+
+
+### 🤖 Autopilot
+
+No `gh-pages` branch. The site is likely served directly from the `main` branch via GitHub Pages (which serves the root of the repo). The merge to main should trigger the deploy automatically within a minute or two. Let me verify the site is live.
+
+
+### 🤖 Autopilot
+
+The site is live and serving. The GitHub Pages deploy happened automatically after the merge to main.
+
+Both PRs are merged and deployed. Here's the summary:
+
+**PR #59** — Added missing `arrayBufferToBase64`, `base64ToArrayBuffer`, and `publicKeyToSlug` functions. Fixes the `ReferenceError` crash when clicking the verification link.
+
+**PR #61** — Changed `ensureKeypair()` and `submitSession()` to use `client.ensureKeys()` instead of `client.generateKeyPair()`. This is the root cause fix — the oracle was generating a **new keypair on every page load**, overwriting the one that was registered. When the verification link opened the page, it signed with a different key than the one Edgar had on record, triggering the `:pubkey_mismatch` error.
+
+Both are live on oracle.truesight.me now. You should be able to re-register and the verification flow should work end-to-end.
+
