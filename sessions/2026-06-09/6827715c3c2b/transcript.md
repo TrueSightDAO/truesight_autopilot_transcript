@@ -480,3 +480,95 @@ After Unit 5 merges.
 
 Want me to mark PR #91 ready for review?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+▎ Unit 7 unblocked. Your Stripe test secret is staged on your box at ~/stripe_test_key (raw sk_test_…), and PR #91 is merged.
+  ▎ SSH to the beta box with ~/.ssh/dao-protocol-beta-key (ubuntu@54.162.175.189) and:
+  ▎ 1. Deploy merged #91 so /stripe/subscription_webhook responds.
+  ▎ 2. Set DAO_PROTOCOL_STRIPE_SECRET_KEY in the beta box .env from ~/stripe_test_key.
+  ▎ 3. Register a Stripe test-mode webhook via the Stripe API (you have the key) → URL 
+  ▎ https://beta.edgar.truesight.me/stripe/subscription_webhook, events checkout.session.completed, invoice.paid, 
+  ▎ invoice.payment_failed, customer.subscription.deleted → set the returned whsec_… as DAO_PROTOCOL_STRIPE_WEBHOOK_SECRET.
+  ▎ 4. Restart dao-protocol-beta; confirm an unsigned POST to the webhook returns 400 (proves it's live + verifying signatures).
+
+
+### 🤖 Autopilot
+
+Let me start — first, merge PR #91, then SSH into the beta box.
+
+
+### 🤖 Autopilot
+
+Already merged. Now let me read the Stripe test key from the autopilot box and deploy the merged code to the beta box.
+
+
+### 🤖 Autopilot
+
+Got the test key. Now SSH to the beta box, pull the merged code, set up the .env, and register the webhook via Stripe API.
+
+
+### 🤖 Autopilot
+
+Code deployed and running. Now let me verify the webhook endpoint is live by sending an unsigned POST (should return 400).
+
+
+### 🤖 Autopilot
+
+**400 — endpoint is live and rejecting unsigned requests.** Now let me register the Stripe test webhook via the Stripe API.
+
+
+### 🤖 Autopilot
+
+Webhook registered. The signing secret is `whsec_vYZHUYL1kBVZv8OEnGbAD7zWz50cMhpH`. Now set it as `DAO_PROTOCOL_STRIPE_WEBHOOK_SECRET` and restart.
+
+
+### 🤖 Autopilot
+
+Now let me confirm the webhook endpoint still returns 400 without a valid signature (proving it's live + verifying).
+
+
+### 🤖 Autopilot
+
+Let me also verify the Stripe webhook endpoint is active by checking Stripe's view of it.
+
+
+### 🤖 Autopilot
+
+**Unit 7 complete.** Now let me update the plan tracker.
+
+
+### 🤖 Autopilot
+
+The tracker was already updated by the previous PR. Let me check the current state.
+
+
+### 🤖 Autopilot
+
+The tracker still shows the old state from before my PR #404. Let me update it now with the current status.
+
+
+### 🤖 Autopilot
+
+---
+
+## ✅ Unit 7 Complete — Here's what was done
+
+| Step | Status |
+|------|--------|
+| **1. Deploy merged PR #91** | ✅ `git pull origin main` on beta box — 4 files updated (config guard + webhook handler + sandbox sheet service + main.py router registration) |
+| **2. Set `DAO_PROTOCOL_STRIPE_SECRET_KEY`** | ✅ Written to `.env` + systemd unit on beta box |
+| **3. Register Stripe test webhook** | ✅ Via Stripe API — endpoint `we_1TgY4lHrrz4344lsNPFwGAP5`, URL `https://beta.edgar.truesight.me/stripe/subscription_webhook`, events: `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`. Signing secret `whsec_vYZHUYL1kBVZv8OEnGbAD7zWz50cMhpH` set in `.env` + systemd |
+| **4. Restart + verify** | ✅ `POST` without signature → `400 {"error":"missing stripe-signature header"}` — endpoint is live and verifying signatures |
+
+### Remaining units
+
+| Unit | Status |
+|------|--------|
+| **9** — Headless E2E test script | ☐ Create a script that: creates test customer + `pm_card_visa` + subscription via Stripe test API → Stripe delivers `invoice.paid` to beta endpoint → assert the SANDBOX queue row |
+| **10** — Update `CHOCOLATE_SUBSCRIPTION_PLAN.md` Phase 2 | ☐ Point PR2.2 webhook at dao_protocol |
+
+Want me to proceed with **Unit 9** (the headless E2E test script)?
+
