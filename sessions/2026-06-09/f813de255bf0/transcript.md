@@ -121,3 +121,54 @@ Happy hour after 4-5 PM at a tech summit is when people are winding down, drinks
 2. Revise the checklist Phase 0 → Phase 0a (superseded) + Phase 0b (on-site coordination)
 3. Shift the emphasis from "all-day snack table" to "happy hour activation"
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] what do you propose?
+
+
+### 🤖 Autopilot
+
+Let me read the current state of the files to make precise edits.
+
+
+### 🤖 Autopilot
+
+Here's my proposal for what to update and how:
+
+---
+
+## What I propose
+
+### 1. `event.json` — reflect the new reality
+
+The old plan (snack table, self-serve, stage shoutout) is superseded by the WhatsApp exchange. The new format is: **you attend with a comp ticket, arrive at lunch, and Soniya will set you up for happy hour (after 4-5 PM).** The cacao becomes a happy-hour pour rather than an all-day snack-table presence.
+
+Key changes:
+- **`status`** → `"locked"` (the date/attendance is confirmed, just the format shifted)
+- **`status_note`** → *"Format shifted: snack table self-serve not locked. Gary attending with comp ticket; happy hour setup (after 4-5 PM) to be coordinated on-site with Soniya."*
+- **`format`** → *"Gary attending with comp ticket. Cacao pour at happy hour (after 4-5 PM) — setup coordinated on-site with Soniya."*
+- **`next_milestone`** → *"Arrive at lunch, coordinate happy hour setup with Soniya on-site"*
+- **`start_time`** → keep 11:00 (event starts), but add a note that the cacao moment is happy hour
+- **`reminders.check_in_date`** → bump to today (June 9) since the old check-in date passed
+
+### 2. `EXECUTION_CHECKLIST.md` — rewrite Phase 0 + adjust Phase 3-4
+
+- **Phase 0** → mark the old confirmations (snack table, shoutout, self-serve) as superseded by WhatsApp. Add a new Phase 0b: *"On-site coordination with Soniya — arrive at lunch, find her, confirm happy hour setup."*
+- **Phase 3** (print + kit) — still valid but size for happy hour (one flask may be enough, or bring both and see)
+- **Phase 4** (event day) — rewrite setup to: arrive at lunch, check in with Soniya, coordinate happy hour placement
+
+### 3. `implementation_roadmap.md` — same treatment
+
+Mirror the Phase 0 rewrite and shift emphasis to happy hour as the primary activation moment.
+
+### 4. `proposal.md` — lighter touch
+
+The proposal's §4.1 already has happy hour as "The sober, mind-enhancing option as alcohol flows" — that's now the headline moment. I'd add a note at the top reflecting the WhatsApp update rather than rewriting the whole doc.
+
+---
+
+**The happy hour angle is actually stronger than the snack table.** At a tech summit happy hour, alcohol is flowing, people are networking — cacao as the non-alcoholic, focus-enhancing alternative is a more differentiated play than "cacao by the snack table at 11 AM." The proposal's own risk register says "flasks run out in first hour" — with happy hour, you're serving at the right moment.
+
+Want me to open a PR with these changes?
+
