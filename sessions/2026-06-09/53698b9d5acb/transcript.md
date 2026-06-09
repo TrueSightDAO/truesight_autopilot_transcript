@@ -683,3 +683,87 @@ Opened **PR #80** — a trivial edit to `package.json` (added a `_ci_trigger` fi
 
 Want me to merge it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yes, merge it. And then can you is it possible for you to monitor it with a Ping-back feature or something? I know you don't really have that feature yet. Do you think you can build it, which triggers you to look at it? And then once done, you ping back to this channel. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good, merged. Now let me build the ping-back feature. I'll add a simple CI status checker to the autopilot that polls the workflow run and sends a Telegram message when it completes.
+
+
+### 🤖 Autopilot
+
+Good, I have the context. Now let me build a simple CI monitor that polls the workflow and pings back to this Telegram thread. I'll add it as a script in the autopilot.
+
+
+### 🤖 Autopilot
+
+Now let me merge it and run it against the current CI run.
+
+
+### 🤖 Autopilot
+
+Now let me deploy the autopilot so the script is available, then run the monitor against the latest CI run.
+
+
+### 🤖 Autopilot
+
+Deploy failed on the native extension compile (the known `dao_client` pip install issue). The script is already on disk from the git pull though. Let me just run the monitor directly.
+
+
+### 🤖 Autopilot
+
+Good, the code is on disk. Now let me find the latest CI run ID for the publish workflow and run the monitor.
+
+
+### 🤖 Autopilot
+
+Run #6 already completed and **failed again**. Let me check what happened — it's the same test failure. The test fix from PR #79 was on `main` when PR #80 merged, so the CI should have picked it up. Let me check the run details.
+
+
+### 🤖 Autopilot
+
+Still failing on the smoke test. The head SHA is `f89c8bf` which is the PR #80 merge commit. PR #79 (test fix) was `4969e90` — let me check if it's actually an ancestor.
+
+
+### 🤖 Autopilot
+
+PR #79 is an ancestor of the head — the test fix IS on main. But the CI still failed. The test file change from PR #79 was a full-file write. Let me check what's actually on main for the test file.
+
+
+### 🤖 Autopilot
+
+The test file looks correct — valid base64 keys and `pubkey_mismatch: true` are in place. But the CI still failed. The issue must be something else. Let me check if there's a separate smoke test that's failing.
+
+
+### 🤖 Autopilot
+
+The smoke test seeds localStorage with `truesight_dao_public_key` and `truesight_dao_private_key` — that's the new prefixed keys. But the test file also creates `new DaoClient()` which now works (constructor doesn't throw). The smoke test should pass.
+
+Wait — the CI failure is on the "Build + runtime smoke test" step. Let me check if the build step itself is failing, not the tests. The `npm test` runs `vitest run` which includes BOTH test files. Let me check if the build step succeeds.
+
+Actually, looking at the CI output more carefully — the step name is "Build + runtime smoke test (publish gate)" and it runs `npm test`. The `npm test` script is `vitest run`. The build happens in `prepublishOnly` which is NOT called by `npm test`. So the bundle might not exist when the smoke test runs.
+
+Let me check the `package.json` scripts again:
+
+```json
+"test": "vitest run",
+"prepublishOnly": "npm run build && npm run build:esm"
+```
+
+The smoke test (`dao-client.smoke.test.ts`) does `readFileSync('dist/dao-client.min.js')` — but `npm test` doesn't build first! The `dist/` directory would only exist if a previous build left it there. On a fresh CI checkout, `dist/` doesn't exist, so the smoke test fails with a file-not-found error.
+
+That's the bug. The `npm test` script needs to build first, or the smoke test needs to be separated from the unit tests. Let me fix this.
+
+
+### 🤖 Autopilot
+
+**PR #81** is open. The root cause was simple: `npm test` runs `vitest run`, but the smoke test reads `dist/dao-client.min.js` which doesn't exist on a fresh CI checkout because `npm run build` never ran. The fix changes the test script to `npm run build && vitest run`.
+
+I also removed the stale `_ci_trigger` field from `package.json`.
+
+Want me to merge it?
+
