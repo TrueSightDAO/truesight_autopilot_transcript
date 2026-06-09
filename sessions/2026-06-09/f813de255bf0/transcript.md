@@ -172,3 +172,40 @@ The proposal's §4.1 already has happy hour as "The sober, mind-enhancing option
 
 Want me to open a PR with these changes?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] Yes!
+
+
+### 🤖 Autopilot
+
+PR is open: **go_to_market#166** — [SF Tech Fest: update format to happy-hour activation per Soniya WhatsApp](https://github.com/TrueSightDAO/go_to_market/pull/166)
+
+Here's what changed across the 4 files:
+
+### `event.json`
+- **status** → `"locked"` (no longer "planning" — attendance is confirmed)
+- **status_note** → reflects the WhatsApp shift: snack table not locked, comp ticket confirmed, happy hour setup on-site
+- **format** → "Gary attending with comp student ticket. Cacao pour at happy hour (after 4-5 PM)"
+- **next_milestone** → "Arrive at lunch, coordinate happy hour setup with Soniya on-site"
+- **check_in_date** → bumped to today (Jun 9)
+
+### `EXECUTION_CHECKLIST.md`
+- Original **Phase 0** (snack table / shoutout / self-serve confirmations) → marked as **superseded**
+- New **Phase 0b** → on-site coordination: arrive lunch, find Soniya, lock happy hour setup
+- **Phase 4** → rewritten: arrive at lunch → network as attendee → happy hour pour (after 4-5 PM) is the primary activation moment
+
+### `implementation_roadmap.md`
+- Same Phase 0a/0b split
+- Happy hour promoted to the headline activation moment
+- Critical path updated to reflect the new flow
+
+### `proposal.md`
+- Top note explaining the WhatsApp update
+- §4.1 table rewritten: happy hour is now the **primary** moment, not a secondary slot
+- §0 trigger & confirmation updated with the actual WhatsApp exchange
+- §6 stage shoutout → marked as no longer expected
+
+**Key strategic note baked into all files:** the happy hour slot is actually *stronger* positioning than the snack table. At a tech summit happy hour, alcohol is flowing, people are networking — cacao as the non-alcoholic, focus-enhancing counterpoint is a more differentiated and memorable play than "cacao by the snack table at 11 AM."
+
