@@ -239,3 +239,34 @@ Done. Here's what I set up:
 
 **Docs updated** — §10 in OPERATING_INSTRUCTIONS.md now documents the full methodology: how to write integration tests, what to check, how to run them, and when to add them (CDN version bumps, new dependencies, runtime error fixes, pre-deploy).
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] I'm thinking, well, since technically a user yourself and you have your own email address, Sofya, Blas, I don't know, admin, Blas, Sofya, at trussite.me.com, right? What are your thoughts? Where as part of your integration tasks you are for the Oracle? Link your profile to link the page to your profile and then do the end-to-end test. Let me know what you think, because I noticed when you try to do the verification of your identity. In the, you know, you kind of like kept on breaking for some strange unknown reasons. I'm not sure why you have to figure out why you're having this issue. Maybe you are having problems waiting for the email to land in your own inbox and then click true. But, yeah, tell me what you think. Don't try to implement this. It's a really thing too deeply. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a really interesting idea. Let me think through it.
+
+**The concept:** Have the autopilot (Sophia) register her own DAO identity with her email (admin@truesight.me), then use that identity to do a real end-to-end oracle draw — register email, receive the verification link, click it, then submit a practice draw event to Edgar. That would test the full pipeline: dao-client → Edgar → email delivery → verification → submission.
+
+**The practical challenge:** The email verification link needs to be clicked in the *same browser* where the keypair lives (localStorage). The autopilot runs headless — no persistent browser profile with localStorage. So I'd need to:
+
+1. Generate a keypair in a headless browser session
+2. Register the email via dao-client
+3. Wait for the email to arrive in the admin inbox
+4. Extract the verification link from the email
+5. Navigate the same browser session to that link
+6. Then submit a draw event
+
+That's actually doable with Puppeteer + Gmail search. The tricky part is step 3 — email delivery isn't instant, so the test would need polling with a timeout.
+
+**The bigger question:** Is this worth the complexity vs. the current integration test that just loads the page and checks for console errors? The current test already caught the dao-client constructor crash. An end-to-end test with real email verification would be more thorough but also more brittle — email delays, rate limits, the admin inbox getting cluttered with test registrations.
+
+**My take:** I think a lighter version makes more sense — have the integration test do a *simulated* registration flow where it checks that the email registration form renders, that clicking "Continue" sends a properly formatted request to Edgar, and that the verification link flow works up to the point where it needs a human click. That tests the UI and the Edgar integration without the email round-trip brittleness.
+
+But if you want the full end-to-end including real email, I can make it work — just need to add Gmail polling to the integration test and accept that it'll take 10-30 seconds for the email to arrive. What do you think?
+
