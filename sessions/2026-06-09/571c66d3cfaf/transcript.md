@@ -8,58 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] go for it
-
-
-### 🤖 Autopilot
-
-I see you're responding to the conversation thread. Let me check what context we're in — this is Telegram thread 1939 in the working group. Let me look up what's been happening here.
-
-
-### 🤖 Autopilot
-
-Gary, I'm in Telegram thread 1939 but I don't have prior context from this thread in my transcript history. Could you give me a quick orientation — what are we executing on here? A deploy, a fix, an outreach batch, something else? Once I know the mission, I'll get straight to it.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] Agroverse Chocolate Subscriptions — Phase 1 kickoff
-
-I've read the finalized CHOCOLATE_SUBSCRIPTION_PLAN.md (2026-06-09).
-
-RESUME HERE: Phase 1, PR1.1 → PR1.6, then STOP at the operator test gate.
-
-Execution protocol: Each PR ships with green mocked CI + an Operator Test Runbook in the PR body. I open PRs only — no merge, no promote.
-
-Key pre-flight facts:
-- GTIN = 00860010660256 (reuse, never mint)
-- Stripe test-mode GAS switch is a HARD GATE (no real-card testing)
-- GAS is shared beta+prod — new action must be purely additive
-
-Phase 1 sequence:
-1.1 — Generic SKU + subscription schema in products.js (agroverse_shop_beta)
-1.2 — Shared subscribe engine (/subscribe/)
-1.3 — Clean path wrapper /subscribe/chocolate-bar/
-1.4 — GAS additive createSubscriptionCheckoutSession
-1.5 — Generic-bar PDP
-1.6 — Webhook-safe (Rails — subscription checkout.session.completed no-op cleanly)
-
-🛑 STOP after PR1.6 — hand back to Gary for local test-mode pass. No PR1.7 (promotion), no Phase 2 until Gary signs off.
-
-Ready and parked.
-
-Reply "go for it" and I will execute Phase 1 (PR1.1-1.6) and STOP at the operator test gate for Gary.
-
-
-### 🤖 Autopilot
-
-Let me start by reading the plan document to ground myself in the details.
-
-
 ### 🤖 Autopilot
 
 I've read the full plan. Let me now check the current state of the repos and pre-flight items before executing.
@@ -197,4 +145,50 @@ DAO contribution reported. Now **PR1.6 — Webhook-safe subscription checkout.se
 ### 🤖 Autopilot
 
 I can see the issue. The `checkout.session.completed` handler delegates to `dao_protocol`'s `/stripe/order_sync`. For subscription sessions, `dao_protocol`'s handler will see no `channel=='meta'` and no `wix_products` — it should no-op cleanly. But the Rails side should also be aware: subscription sessions have `mode: 'subscription'`. Let me check what `dao_protocol`'s handler does:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What is the status?
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan to pick up from the RESUME HERE marker.
+
+
+### 🤖 Autopilot
+
+Good — I have the full plan context. Let me check the status of all PRs I've opened so far.
+
+
+### 🤖 Autopilot
+
+Here's the full status:
+
+## Phase 1 Status — All 6 PRs open, all DAO contributions reported
+
+| PR | Repo | Scope | Status |
+|----|------|-------|--------|
+| **PR1.1** #121 | `agroverse_shop_beta` | Generic SKU + subscription schema in `products.js` | ✅ **Open** — DAO contribution reported (45 TDG) |
+| **PR1.2** #122 | `agroverse_shop_beta` | Shared subscribe engine at `/subscribe/` | ✅ **Open** — DAO contribution reported (60 TDG) |
+| **PR1.3** #123 | `agroverse_shop_beta` | Clean path wrapper `/subscribe/chocolate-bar/` | ✅ **Open** — DAO contribution reported (15 TDG) |
+| **PR1.4** #124 / #125 | `agroverse_shop_beta` | Additive GAS `createSubscriptionCheckoutSession` | ✅ **Open** — #124 (dispatch only, superseded), #125 (full function body). DAO contribution reported (60 TDG) |
+| **PR1.5** #126 | `agroverse_shop_beta` | Generic-bar PDP at `/product-page/ceremonial-cacao-chocolate-bar/` | ✅ **Open** — DAO contribution reported (45 TDG) |
+| **PR1.6** | `sentiment_importer` | Webhook-safe subscription `checkout.session.completed` | ⧗ **In progress** — I was investigating the Rails webhook handler when this Telegram topic was created |
+
+### What's left for PR1.6
+
+I was mid-investigation. The Rails `webhook_controller.rb#stripe` delegates `checkout.session.completed` to `dao_protocol`'s `/stripe/order_sync` on `localhost:8010`. For subscription sessions (`mode:'subscription'`), that endpoint will see no `channel=='meta'` and no `wix_products` — it should no-op cleanly. I need to:
+
+1. Check if `dao_protocol`'s `/stripe/order_sync` handler already handles this gracefully (no-op on missing `channel`/`wix_products`)
+2. If not, add a guard in either the Rails webhook or `dao_protocol` to skip subscription-mode sessions cleanly
+
+### After PR1.6 → 🛑 STOP at the operator test gate
+
+Per the plan: after PR1.6 is open with green CI, **Sophia stops and hands back to the operator** for a local test-mode pass. No merging, no promotion, no Linda link until the operator signs off.
+
+**Shall I continue with PR1.6 investigation, or do you want to review the open PRs first?**
 
