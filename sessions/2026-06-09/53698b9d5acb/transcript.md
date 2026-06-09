@@ -10,100 +10,6 @@
 
 ### 🤖 Autopilot
 
-Excellent! Now I have a complete picture. Let me compile the audit report.
-
-Key findings:
-
-**Capoeira** pins `@1.0.1` (not `1.1.0-rc.1`), and its `practice-event-submit.js` already aliases `DaoClient` static helpers but still hand-rolls `signRequestText`, `buildPracticeEventText`, and `submitSession`.
-
-**Oracle** pins `@1.1.0-rc.1` and its `index.html` already aliases `DaoClient` statics inline, but `oracle-draw-submit.js` still hand-rolls everything.
-
-Let me now post the full audit report to this topic.
-
----
-
-## 📋 PR1 — DAO Client Adoption Audit + Gap Report
-
-### Library version audit
-
-| Consumer | Pinned version | unpkg 200? | Methods available |
-|---|---|---|---|
-| **Oracle** | `@1.1.0-rc.1` | ✅ | `submitEvent`, `registerEmail`, `verifyEmail`, `checkRegistration`, `getSlug`, `generateKeyPair`, `verifyPayload`, statics |
-| **Capoeira** | `@1.0.1` | ✅ | Same method surface (the `submitEvent` family was present by 1.0.1) |
-
-### Oracle — every signing/identity/submission site classified
-
-| Site | File | Hand-rolled? | Target library method |
-|---|---|---|---|
-| `signRequestText` | `oracle-draw-submit.js:82-95` | ✅ Hand-rolled (importKey + sign + base64) | `client.submitEvent()` handles signing internally |
-| `buildPracticeEventText` | `oracle-draw-submit.js:57-81` | ✅ Hand-rolled (canonical text assembly) | `client.submitEvent({ eventType: 'PRACTICE EVENT', fields })` — fields = hexagrams, advisory, QMDJ |
-| `submitSession` | `oracle-draw-submit.js:133-180` | ✅ Hand-rolled (FormData + fetch + status UI) | `client.submitEvent()` — one call |
-| `generateKeypair` | `oracle-draw-submit.js:34-44` | ✅ Hand-rolled (crypto.subtle.generateKey) | `DaoClient.generateKeyPair()` (static) |
-| `publicKeyToSlug` | `oracle-draw-submit.js:24-28` | ✅ Hand-rolled (SHA-256 + base64url) | `client.getSlug()` |
-| `base64ToArrayBuffer` | `oracle-draw-submit.js:10-14` | ✅ Hand-rolled | `DaoClient.base64ToArrayBuffer()` |
-| `arrayBufferToBase64` | `oracle-draw-submit.js:16-20` | ✅ Hand-rolled | `DaoClient.arrayBufferToBase64()` |
-| `base64ToBase64Url` | `oracle-draw-submit.js:22` | ✅ Hand-rolled | `DaoClient.base64ToBase64Url()` |
-| `handleDaoIdentityLink` | `index.html` (inline `<script>`) | ✅ Hand-rolled (FormData + fetch + sign) | `client.registerEmail(email)` |
-| `handleVerificationParams` | `index.html` (inline `<script>`) | ✅ Hand-rolled (FormData + fetch + sign) | `client.verifyEmail(email, vk)` |
-| `checkDaoRegistration` | `index.html` (inline `<script>`) | ✅ Hand-rolled (fetch + parse) | `client.checkRegistration()` |
-| `getCvUrl` | `oracle-draw-submit.js:47-51` | ✅ Hand-rolled (slug + string concat) | `client.getSlug()` + URL build (keep consumer-side) |
-| `triggerDailyBriefing` | `oracle-draw-submit.js:97-130` | ✅ Hand-rolled (separate signing scheme) | **Keep as-is** — this is a separate endpoint, not Edgar |
-| `buildReadingPermalink` | `oracle-draw-submit.js:183-196` | ✅ Consumer logic | **Keep** — field assembly, not signing |
-
-**Total hand-rolled sites: 12** (10 can migrate to library, 2 should stay)
-
-### Capoeira — every signing/identity/submission site classified
-
-| Site | File | Hand-rolled? | Target library method |
-|---|---|---|---|
-| `signRequestText` | `practice-event-submit.js:67-78` | ✅ Hand-rolled (importKey + sign + base64) | `client.submitEvent()` handles signing internally |
-| `buildPracticeEventText` | `practice-event-submit.js:47-65` | ✅ Hand-rolled (canonical text assembly) | `client.submitEvent({ eventType: 'PRACTICE EVENT', fields })` |
-| `submitSession` | `practice-event-submit.js:83-120` | ✅ Hand-rolled (FormData + fetch + history stamp) | `client.submitEvent()` — one call |
-| `generateKeypair` | `practice-event-submit.js:28-32` | ✅ Hand-rolled (wraps `DaoClient.generateKeyPair()`) | Already thin — can inline to `DaoClient.generateKeyPair()` |
-| `publicKeyToSlug` | aliased from `DaoClient` | ✅ Already using library | Already correct |
-| `base64ToArrayBuffer` | aliased from `DaoClient` | ✅ Already using library | Already correct |
-| `arrayBufferToBase64` | aliased from `DaoClient` | ✅ Already using library | Already correct |
-| `base64ToBase64Url` | aliased from `DaoClient` | ✅ Already using library | Already correct |
-| `getCvUrl` | `practice-event-submit.js:37-42` | ✅ Hand-rolled (slug + URL build) | `client.getSlug()` + URL build (keep consumer-side) |
-| `backfillUnsent` | `practice-event-submit.js:125-143` | ✅ Consumer logic (scans history, calls submitSession) | **Keep** — but swap inner `submitSession` call for `client.submitEvent()` |
-
-**Total hand-rolled sites: 6** (4 can migrate to library, 2 should stay)
-
-### Summary
-
-| Consumer | Hand-rolled sites | Migratable to library | Keep consumer-side |
-|---|---|---|---|
-| **Oracle** | 12 | 10 | 2 (briefing trigger, permalink builder) |
-| **Capoeira** | 6 | 4 | 2 (backfill scanner, CV URL builder) |
-
-### Key observations for PR2/PR3
-
-1. **Capoeira already pins `@1.0.1`** — needs bumping to `@1.1.0-rc.1` (or whatever verified version passes Gate 2)
-2. **Oracle already pins `@1.1.0-rc.1`** — good, but `submitEvent` needs to be verified against Edgar's canonical test vectors before PR2
-3. **Both consumers alias `DaoClient` statics** — the aliases at the top of each file can be deleted once the migration is complete
-4. **Oracle's `index.html` has inline `DaoClient` aliases** (`const base64ToArrayBuffer = DaoClient.base64ToArrayBuffer;` etc.) — these need to be cleaned up as part of PR2
-5. **The 3-state identity UX** (verified/pending/unlinked) in oracle's `index.html` is already well-structured — PR2 must preserve it
-6. **Capoeira's `backfillUnsent`** iterates history and calls `submitSession` — PR3 should swap the inner call to `client.submitEvent()` while keeping the iteration logic
-
-**Next step:** PR2 (Oracle migration) is ready to start once `submitEvent`'s canonical test-vector suite is confirmed green against Edgar. PR3 (Capoeira) follows the same pattern.
-
----
-
-**PR1 complete.** Ready for PR2 when you give the word, Gary.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1776] Go for it! [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Great, PR2 is go. Let me start by reading the oracle source files to plan the migration precisely, then open the PR.
-
-
-### 🤖 Autopilot
-
 Now I have the complete picture. Let me open the PR for the Oracle migration. The plan is:
 
 **`oracle-draw-submit.js` changes:**
@@ -546,4 +452,19 @@ Let me fix both.
 2. **Storage prefix mismatch** — old capoeira/oracle keys live under `publicKey`/`privateKey` (no prefix), but the new client looks for `truesight_dao_public_key`. The fix adds a legacy fallback in `StorageManager.loadKeyPair()` so existing users' keys are found and migrated.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1776] Yep, just go ahead and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged. Now we need to publish a new version so the CDN picks it up. Since the CI auto-publishes when `package.json` changes, let me bump the patch version.
+
+
+### 🤖 Autopilot
+
+PR #78 is open — just a version bump to `1.1.0-rc.2`. Once merged, the CI will build, test, and publish to npm. Want me to merge it?
 
