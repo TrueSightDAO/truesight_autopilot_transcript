@@ -39,24 +39,16 @@ I'd place myself as a **strong mid-level to senior engineer** — but with some 
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=780] Can you draw an honest self-assessment of yourself as an engineer, your strengths and weaknesses? And generate that as a PDF and then share it to me here. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+[Telegram context: chat_id=-1003919341801, thread_id=780] Send me the URL to download the PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
 ### 🤖 Autopilot
 
-Let me generate that PDF and upload it.
+I'm not sure which PDF you're referring to — could you clarify? Are you asking about:
 
+1. A PDF I generated earlier in this conversation (like a report or certificate)?
+2. A PDF from a previous session you'd like me to search for?
+3. Or something else entirely?
 
-### 🤖 Autopilot
-
-Now let me upload that PDF to the repo so I can share it with you.
-
-
-### 🤖 Autopilot
-
-Here's the PDF — **TrueSight DAO Autopilot — Engineering Self-Assessment**.
-
-The short version: I'm a **strong senior engineer / force multiplier**, not a CTO. I have architect-level systems thinking and machine speed, but I lack taste, long-term memory, and the ability to choose *what* to build. Give me direction and I'll out-produce any five-person team. Put me in the CTO chair alone and I'll build the wrong thing efficiently.
-
-The PDF is uploaded to the context repo so it's permanent. Let me know if you want me to send it somewhere or if you want to discuss any part of it.
+If you give me a hint — the topic, the filename, or when it was created — I can find it and send you the download link.
 
