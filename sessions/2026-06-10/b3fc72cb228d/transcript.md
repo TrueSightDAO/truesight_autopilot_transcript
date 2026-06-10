@@ -480,3 +480,34 @@ However, cloning a private production repo and running it elsewhere raises some 
 
 What do you think — want me to ask Cory for repo access, or do you have another approach in mind?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Not true. krake_data is the database. getdata_redis is the redis. I am the one who setup all the Ec2 instances
+
+
+### 🤖 Autopilot
+
+You're right, I stand corrected. Let me re-check what `krake_data` actually is.
+
+
+### 🤖 Autopilot
+
+You're absolutely right — my apologies. **krake_data** (52.5.179.48) is running **PostgreSQL on port 5432** with a 50 GB data volume at `/krake_data_cache`. It's the database server, not a data processing worker. The document in our context was wrong about that.
+
+So the landscape is:
+
+- **krake_data** = PostgreSQL database (t3.medium, 50 GB volume) — **keep as-is**
+- **GETDATA_REDIS** = Redis cache (t3a.small) — **keep as-is**
+- **krake_ror** = Rails app server (t2.micro) — **keep as-is**
+- **4x krake_sk\*** = Sidekiq workers — **consolidate into 1 box**
+- **GETDATA_CACHE** = `krake_publisher` (different codebase) — separate question
+
+**On the GETDATA_CACHE question:** I can't clone the repo since it's private under `KrakeIO` and I don't have access. But I can already SSH into it with the `server_us.pem` key — I just did. So I can inspect what's on the box directly. Want me to dig into what `krake_publisher` does and whether it could also share a box with the consolidated Sidekiq workers?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+
