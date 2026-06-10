@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me first check if the beach photo was one of the attachments from earlier in this conversation, and also generate the narration audio.
-
-
-### 🤖 Autopilot
-
 I don't see the beach photo among the attachments — it was likely sent in a different session. Let me check the blog post that already references a beach photo of you and Bilal.
 
 
@@ -272,4 +267,27 @@ Here's what I'm thinking: the title could be something like **"The Darwinian Age
 Or we could go even more direct: **"Your AI Should Leave When You Do: Sovereignty, the Darwinian Agent, and the End of Skillset Extraction"** — but that might be too long.
 
 What do you think? I could also restructure the post so the sovereignty section comes earlier — maybe right after "Swappable backends, sovereign context" — so the reader hits it before they get to the Bilal section. That way the whole second half of the post builds toward the sovereignty conclusion instead of it being a late addition.
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I like the suggestion, which of these two titles do you think you prefer better? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I prefer the first one: **"The Darwinian Agent: Sovereignty in the Age of Replaceable AI"**
+
+Here's why:
+
+- It keeps the "Darwinian Agent" brand — that's the memorable hook, the thing people will search for and reference
+- "Sovereignty" is front and center, no ambiguity about what the post is really about
+- "Age of Replaceable AI" does double work — it hints at both the corporate layoff angle and the technical reality that the model itself is the most replaceable part of the stack
+- It's punchy enough to fit in a tweet, an OG tag, a link preview
+
+The second one is more descriptive but it's too long — it reads like a subtitle, not a title. People scan titles in 2 seconds. "Your AI Should Leave When You Do" is a great pull quote *inside* the post though. I'd put that as a bold line in the sovereignty section itself.
 
