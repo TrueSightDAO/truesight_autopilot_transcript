@@ -10,97 +10,6 @@
 
 ### 🤖 Autopilot
 
-The tracker still shows the old state from before my PR #404. Let me update it now with the current status.
-
-
-### 🤖 Autopilot
-
----
-
-## ✅ Unit 7 Complete — Here's what was done
-
-| Step | Status |
-|------|--------|
-| **1. Deploy merged PR #91** | ✅ `git pull origin main` on beta box — 4 files updated (config guard + webhook handler + sandbox sheet service + main.py router registration) |
-| **2. Set `DAO_PROTOCOL_STRIPE_SECRET_KEY`** | ✅ Written to `.env` + systemd unit on beta box |
-| **3. Register Stripe test webhook** | ✅ Via Stripe API — endpoint `we_1TgY4lHrrz4344lsNPFwGAP5`, URL `https://beta.edgar.truesight.me/stripe/subscription_webhook`, events: `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`. Signing secret `whsec_vYZHUYL1kBVZv8OEnGbAD7zWz50cMhpH` set in `.env` + systemd |
-| **4. Restart + verify** | ✅ `POST` without signature → `400 {"error":"missing stripe-signature header"}` — endpoint is live and verifying signatures |
-
-### Remaining units
-
-| Unit | Status |
-|------|--------|
-| **9** — Headless E2E test script | ☐ Create a script that: creates test customer + `pm_card_visa` + subscription via Stripe test API → Stripe delivers `invoice.paid` to beta endpoint → assert the SANDBOX queue row |
-| **10** — Update `CHOCOLATE_SUBSCRIPTION_PLAN.md` Phase 2 | ☐ Point PR2.2 webhook at dao_protocol |
-
-Want me to proceed with **Unit 9** (the headless E2E test script)?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Yup. I think the stripe test visa card is 4242 4242 4242 4242 or something
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-once you are done with your side all the way until 10. Can you do a hand off to the other thread which is focused on Agroverse chocolate subscriptions?
-
-
-### 🤖 Autopilot
-
-Right — `4242 4242 4242 4242` is the standard Stripe test card that succeeds without triggering 3D Secure. Let me build the headless E2E test script (Unit 9), then update the chocolate subscription plan (Unit 10), and hand off.
-
-First, let me read the chocolate subscription plan to understand the Phase 2 webhook context.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. The chocolate subscription plan says the webhook stays on Rails (decision table), but we've actually moved it to dao_protocol on the beta box. Let me build the headless E2E test script (Unit 9), then update the chocolate plan (Unit 10), and hand off.
-
-Let me create the E2E test script that runs against the beta box.
-
-
-### 🤖 Autopilot
-
-Now let me create the headless E2E test script. It'll run from the autopilot box against the beta endpoint.
-
-
-### 🤖 Autopilot
-
-Now let me run the non-Stripe part of the E2E test right now to prove it works.
-
-
-### 🤖 Autopilot
-
-Quote escaping issue in the inline Python. Let me write it as a temp file instead.
-
-
-### 🤖 Autopilot
-
-The PR hasn't been merged yet. Let me just run the smoke tests directly with curl.
-
-
-### 🤖 Autopilot
-
-Both smoke tests pass. Now let me also run the full Stripe E2E to prove the subscription flow works end-to-end.
-
-
-### 🤖 Autopilot
-
-Subscription created and invoice paid instantly. Now let me check the beta box logs to see if the webhook was received and processed.
-
-
-### 🤖 Autopilot
-
-The webhook **is being received** (Stripe hit the endpoint at `3.130.192.231`) but there's a 500 error. The issue is at line 53 — the Stripe event object uses a different access pattern. Let me check the exact error.
-
-
-### 🤖 Autopilot
-
 The issue is clear — `KeyError: 'get'` at line 53. The Stripe event object is a `StripeObject`, not a plain dict, so `.get("type")` doesn't work — it tries `__getattr__` which calls `self["get"]` and fails. The fix is to use `event["type"]` or access the `_data` dict directly. Let me fix the webhook handler.
 
 
@@ -1043,4 +952,37 @@ This means I can't deploy the GAS action directly. Let me check what account cla
 • `ssh run` → {
 • `ssh run` → {
 • `ssh run` → {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Also I am thinking perhaps not necessary to show this 
+You'll be redirected to Stripe Checkout to complete your subscription. Cancel or modify anytime via the Stripe Customer Portal. when the user just landed for the first time on that page isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — showing "You'll be redirected to Stripe Checkout" before the user has even filled in their address is premature. It's noise that distracts from the form. The user's focus should be on entering their details, not on what happens after.
+
+Let me clean that up — replace it with something that makes sense at the initial state, and only show the Stripe note after they've selected shipping.
+
+
+### 🤖 Autopilot
+
+Done. The subscribe page now shows a simple helper: **"Fill in your shipping address to see shipping options and subscribe."** — no premature Stripe jargon.
+
+Also, on the GAS deployment — the clasp credentials on this box don't have access to the Shopping Cart GAS project (owned by your account). The source file is written and PR'd at `tokenomics#339`. To deploy it:
+
+1. Open https://script.google.com/home/projects/1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn/edit
+2. Create a new script file and paste the contents of `google_app_scripts/agroverse_shop_checkout/create_subscription_checkout_session.gs`
+3. Deploy as a new version → copy the `/exec` URL
+4. Update `js/config.js` with the new URL if it changed
+
+Or if you want me to handle it, I can set up clasp with your credentials — just share the token.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #137 on agroverse_shop_beta merged successfully (sha: 1ca97e58e848a96bb7c52493257fbeedfc738b4e). Pull Request successfully merged
 
