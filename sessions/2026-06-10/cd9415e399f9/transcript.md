@@ -284,3 +284,32 @@ That means the skillset is no longer extractable. The company can't fire you and
 
 It's like a craftsman's toolbox versus a factory assembly line. The factory owns the line. The craftsman owns the tools. We're building the toolbox that can't be taken away.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, what are your thoughts if we updated the blog post with this specific subtopic as well. Make sure it goes and become you know, it's in there [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great idea. Let me add a section to the blog post about this — the sovereignty insight. I'll insert it after "The moat is not the code" section and before "The road ahead."
+
+
+### 🤖 Autopilot
+
+Now I'll insert the new section about sovereignty and employment, between "The moat is not the code" and "The road ahead".
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the narration audio to include the new section.
+
+
+### 🤖 Autopilot
+
+All done! The blog post now has a new section called **"Sovereignty follows the person, not the employer"** that captures exactly what you described — how the adapted agent ensures skillset sovereignty, inverts the corporate extraction model, and makes the relationship an asset that belongs to the person, not the company. And the narration audio has been regenerated to include it, all saying "Gary" throughout.
+
+It'll be live on beta.truesight.me once GitHub Pages finishes deploying.
+
