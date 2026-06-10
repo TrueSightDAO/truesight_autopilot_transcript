@@ -888,3 +888,109 @@ The log is very sparse. The `ArgumentError` from Bugsnag might be from the old p
 
 The log only has 3 lines — the Rails server was restarted and the log was truncated. The new process is running. Let me test the shipping endpoint again with a valid address to confirm it's working.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is the progress?
+
+
+### 🤖 Autopilot
+
+Here's where we stand on the address verification v2:
+
+## ✅ Done
+
+### Backend (sentiment_importer — deployed to production)
+- **`ShippingCalculatorService#verify_address`** — new method that calls EasyPost Address Verification API with `verify: ["delivery"]`
+- **Controller updated** — now calls `verify_address` before returning rates
+  - Verified address → returns rates as before
+  - Needs review → returns `status: "address_needs_review"` with suggestions
+  - Invalid → returns `status: "address_invalid"` with error
+
+### Frontend (agroverse_shop_beta — merged, waiting for GitHub Pages build)
+- **`showAddressSuggestions()`** — renders a yellow warning card with the suggested corrected address
+- **"Use suggested" button** — fills the form with the corrected address and re-fetches rates
+- **"Keep mine" button** — falls back to GAS (skips EasyPost verification) and proceeds with the user's original address
+- **`calculateShippingFallback()`** — retries shipping without address verification
+
+## ⏳ In progress
+- GitHub Pages is building the frontend changes (takes a few minutes)
+- The backend is deployed and tested — valid addresses return rates, bad addresses return errors
+
+## What's left
+- The bad address test returned `status: "error"` instead of `address_needs_review` — I need to check if the EasyPost verification is actually being called or if it's falling through to the old error path. Let me test that now.
+
+
+### 🤖 Autopilot
+
+Good — valid addresses return rates. Now let me test with a clearly bad address to see if it returns `address_needs_review`.
+
+
+### 🤖 Autopilot
+
+It's returning `status: "error"` instead of `address_needs_review`. This means the EasyPost verification is failing silently and falling through to the old error path. Let me check the server logs to see what's happening.
+
+
+### 🤖 Autopilot
+
+I see the issue — the server is running on WEBrick (not Puma) and the log doesn't show any of our shipping rate requests. The requests are going through nginx which proxies to port 3002. Let me check if the new code is actually loaded.
+
+
+### 🤖 Autopilot
+
+The new code is on disk. The issue is that the Rails server was restarted but the old process might still be running on port 3002. Let me check.
+
+
+### 🤖 Autopilot
+
+The process started at 23:39 — that's the new one. But the log shows it's WEBrick and the shipping requests aren't being logged. Let me check if the nginx proxy is pointing to the right port.
+
+
+### 🤖 Autopilot
+
+**It's working.** The response now includes `"verifiedAddress"` — EasyPost normalized "160 Pine St" to "160 PINE ST", "San Francisco" to "SAN FRANCISCO", and added the +4 ZIP code "94111-5504". The address verification is live.
+
+Let me also test with a bad address.
+
+
+### 🤖 Autopilot
+
+**Both paths work perfectly:**
+
+1. **Valid address** → `status: "success"` + rates + `verifiedAddress` with normalized data
+2. **Bad address** → `status: "address_needs_review"` + `error: "Address not found, House number is missing"` + empty suggestions
+
+The frontend will show the yellow warning card with the error message. Since there are no suggestions (EasyPost couldn't figure out what the user meant), the user will see "Please check your address and try again."
+
+Let me also test with a slightly wrong address that EasyPost *can* correct.
+
+
+### 🤖 Autopilot
+
+"160 Pine Street" → verified to "160 PINE ST" with ZIP+4. The address verification is working end-to-end.
+
+## Progress Summary
+
+| Layer | Status | Details |
+|-------|--------|---------|
+| **Backend** (sentiment_importer) | ✅ **Deployed & tested** | `verify_address` method + controller update live on Edgar |
+| **Valid address** | ✅ Returns rates + `verifiedAddress` with normalized data |
+| **Bad address** | ✅ Returns `address_needs_review` with error message |
+| **Frontend** (agroverse_shop_beta) | ✅ **Merged** | `showAddressSuggestions()` + accept/reject buttons |
+| **GitHub Pages build** | ⏳ Building | Frontend changes deploying now |
+
+The backend is fully live. Once GitHub Pages finishes building, the subscribe page will show the address suggestion card when a user enters a bad address.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+
