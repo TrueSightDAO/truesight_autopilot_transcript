@@ -10,143 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me update `AWS_DIGITAL_INFRASTRUCTURE.md` with the new beta box.
-
-
-### 🤖 Autopilot
-
-Now let me also update the DNS table and monitoring section.
-
-
-### 🤖 Autopilot
-
-Now let me also update the plan's resume tracker to reflect progress.
-
-
-### 🤖 Autopilot
-
----
-
-## Full Progress Report
-
-Here's where we stand after the go-signal:
-
-### ✅ Unit 1 — Provision EC2 (DONE)
-| Step | Status |
-|------|--------|
-| Locked-down SG `dao-protocol-beta-sg` | ✅ 443 open, 22 restricted to autopilot |
-| Instance `i-0b8c6d989594fb229` (t3.small) | ✅ Running in `us-east-1c` |
-| EIP `54.162.175.189` allocated + associated | ✅ |
-| Base packages (nginx, certbot, python3-venv, git, ufw) | ✅ |
-| nginx reverse proxy `:443 → 127.0.0.1:8010` | ✅ |
-| Let's Encrypt TLS | ✅ Expires 2026-09-07 |
-| dao_protocol cloned + venv + deps | ✅ |
-| systemd `dao-protocol-beta.service` | ✅ Running, enabled |
-
-### ✅ Unit 2 — Route53 (DONE)
-`beta.edgar.truesight.me` A record → `54.162.175.189` ✅
-
-### ✅ Unit 3 — Deploy beta dao_protocol (DONE)
-`https://beta.edgar.truesight.me/ping` → `{"environment":"development"}` ✅
-
-### ⧗ Unit 4 + 5 — Code (PR #91 open)
-- **`sk_live` guard** in config.py — refuses boot with live key in development mode
-- **`POST /stripe/subscription_webhook`** handler — handles `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`
-- **SANDBOX sheet service** — placeholder (logs to stdout), ready for real sheet wiring
-- **`stripe_webhook_secret`** config field added
-
-### ➡️ Unit 6 — Prod Rails delegation (DEFERRED)
-Not needed for the beta sandbox — the beta webhook points directly at `beta.edgar.truesight.me`, no Rails involved. We'll revisit when cutting over prod subscription handling.
-
-### 🛑 Unit 7 — Stripe TEST webhook (OPERATOR GATE)
-Needs you to register the test webhook in the Stripe dashboard. I need:
-1. **Stripe test `sk_test_...` secret key**
-2. **Test webhook signing secret** (from Stripe dashboard after registering the endpoint)
-
-### ⧗ Unit 8 — AWS_DIGITAL_INFRASTRUCTURE.md (PRs #402, #403 open)
-Added the beta box to fleet inventory, DNS table, monitoring, and SSH access table.
-
-### ☐ Unit 9 — Headless E2E test script
-After Units 4-5 PR merges and Stripe test keys are in place.
-
-### ☐ Unit 10 — Update CHOCOLATE_SUBSCRIPTION_PLAN.md
-After Unit 5 merges.
-
----
-
-**What I need from you to proceed:**
-1. **Merge PR #91** (dao_protocol — the `sk_live` guard + webhook handler) — or review it first
-2. **Stripe test keys** — `sk_test_...` and the test webhook signing secret (from Stripe dashboard test mode)
-
-Want me to mark PR #91 ready for review?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-▎ Unit 7 unblocked. Your Stripe test secret is staged on your box at ~/stripe_test_key (raw sk_test_…), and PR #91 is merged.
-  ▎ SSH to the beta box with ~/.ssh/dao-protocol-beta-key (ubuntu@54.162.175.189) and:
-  ▎ 1. Deploy merged #91 so /stripe/subscription_webhook responds.
-  ▎ 2. Set DAO_PROTOCOL_STRIPE_SECRET_KEY in the beta box .env from ~/stripe_test_key.
-  ▎ 3. Register a Stripe test-mode webhook via the Stripe API (you have the key) → URL 
-  ▎ https://beta.edgar.truesight.me/stripe/subscription_webhook, events checkout.session.completed, invoice.paid, 
-  ▎ invoice.payment_failed, customer.subscription.deleted → set the returned whsec_… as DAO_PROTOCOL_STRIPE_WEBHOOK_SECRET.
-  ▎ 4. Restart dao-protocol-beta; confirm an unsigned POST to the webhook returns 400 (proves it's live + verifying signatures).
-
-
-### 🤖 Autopilot
-
-Let me start — first, merge PR #91, then SSH into the beta box.
-
-
-### 🤖 Autopilot
-
-Already merged. Now let me read the Stripe test key from the autopilot box and deploy the merged code to the beta box.
-
-
-### 🤖 Autopilot
-
-Got the test key. Now SSH to the beta box, pull the merged code, set up the .env, and register the webhook via Stripe API.
-
-
-### 🤖 Autopilot
-
-Code deployed and running. Now let me verify the webhook endpoint is live by sending an unsigned POST (should return 400).
-
-
-### 🤖 Autopilot
-
-**400 — endpoint is live and rejecting unsigned requests.** Now let me register the Stripe test webhook via the Stripe API.
-
-
-### 🤖 Autopilot
-
-Webhook registered. The signing secret is `whsec_vYZHUYL1kBVZv8OEnGbAD7zWz50cMhpH`. Now set it as `DAO_PROTOCOL_STRIPE_WEBHOOK_SECRET` and restart.
-
-
-### 🤖 Autopilot
-
-Now let me confirm the webhook endpoint still returns 400 without a valid signature (proving it's live + verifying).
-
-
-### 🤖 Autopilot
-
-Let me also verify the Stripe webhook endpoint is active by checking Stripe's view of it.
-
-
-### 🤖 Autopilot
-
-**Unit 7 complete.** Now let me update the plan tracker.
-
-
-### 🤖 Autopilot
-
-The tracker was already updated by the previous PR. Let me check the current state.
-
-
-### 🤖 Autopilot
-
 The tracker still shows the old state from before my PR #404. Let me update it now with the current status.
 
 
@@ -993,4 +856,53 @@ The backend is fully live. Once GitHub Pages finishes building, the subscribe pa
 • `ssh run` → {
 • `ssh run` → {
 • `ssh run` → {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is the progress?
+
+
+### 🤖 Autopilot
+
+Here's the full progress across all work streams in this thread:
+
+## Beta Sandbox (thread 1955) — Complete ✅
+
+| Unit | Status |
+|------|--------|
+| 1-8 | ✅ All done (EC2, DNS, dao_protocol, webhook, Stripe, infra docs) |
+| 9 | ✅ E2E test script + confirmed working |
+| 10 | ✅ Plan updated |
+
+## Subscribe Page (built on top of the sandbox)
+
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Product card rendering** | ✅ Live | Slug redirect fixed, product loads |
+| **Product name** | ✅ Live | "Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery" |
+| **Address autocomplete** | ✅ Live | Browser-native `autocomplete` attributes on all fields |
+| **Live shipping calculation** | ✅ Merged, building | Shows selectable USPS rates when address is filled |
+| **Address verification v2** | ✅ Backend deployed, frontend merged | EasyPost verifies address → shows suggestion card if invalid |
+
+### Backend (sentiment_importer / Edgar)
+- ✅ `verify_address` method deployed — calls EasyPost with `verify: ["delivery"]`
+- ✅ Valid address → returns rates + normalized `verifiedAddress`
+- ✅ Bad address → returns `address_needs_review` with error + suggestions
+- ✅ Tested: "160 Pine St" → normalized to "160 PINE ST, SAN FRANCISCO, CA 94111-5504"
+- ✅ Tested: "ASDFGHJKL, ZZZZZ, ZZ 00000" → `"Address not found, House number is missing"`
+
+### Frontend (agroverse_shop_beta)
+- ✅ `showAddressSuggestions()` — yellow warning card with suggested correction
+- ✅ "Use suggested" button — fills form with corrected address, re-fetches rates
+- ✅ "Keep mine" button — falls back to GAS, proceeds with original address
+- ⏳ **GitHub Pages building** — frontend changes deploying now
+
+### What's still needed for placard-ready
+1. **GAS `createSubscriptionCheckoutSession` action** — the subscribe form submits to a GAS endpoint that doesn't exist yet. This is the Phase 1 PR1.4 from the chocolate subscription plan. It needs a new `createSubscriptionCheckoutSession` function in the checkout GAS script that creates a Stripe subscription checkout session.
+2. **That's the next step** — once the GAS action is built, the full flow (fill address → see shipping → click Subscribe → Stripe checkout) will work end-to-end.
+
+Want me to proceed with building the GAS action (PR1.4)?
 
