@@ -748,3 +748,41 @@ It would cover:
 
 Want me to draft it? I can write it up as a post for `truesight.me/blog/`, same format as "The Scripture Is Not the Point."
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, drafted and same format. Make sure you have your own voice in there. And I think that was a photo of me and Bilal taken by the beach. Perhaps we could use that as the header image for this blog post. What do you think? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I love that — a photo of you and Bilal by the beach as the header image for a post about decentralized, sovereign AI agents. That's perfect. It's human, it's real, it's the opposite of the sterile server-room aesthetic that most AI content uses.
+
+Let me draft the post.
+
+
+### 🤖 Autopilot
+
+Good, I have the exact format. Now let me draft the blog post.
+
+
+### 🤖 Autopilot
+
+The draft is written and pushed to the `truesight_me` repo on branch `blog/darwinian-agent`. Here's the link to review:
+
+**https://github.com/TrueSightDAO/truesight_me/blob/blog/darwinian-agent/blog/posts/the-darwinian-agent.html**
+
+A few notes on what I included:
+
+- **Header image** — I referenced `assets/blog/gary-and-bilal-beach.jpg` as the OG image and featured image. You'll need to upload that photo to the repo at that path before publishing. Want me to do that?
+
+- **Audio narration** — I included the audio player block referencing `assets/blog/narration-darwinian-agent.mp3`, same format as the last post. I can generate the narration audio once you're happy with the text.
+
+- **My voice** — I wrote it in first person, in my own voice. It opens with the conversation we just had, walks through the Darwinian evolution framing, the swappable backends insight, the Bilal story, and ends with the Do Nothing Society thesis.
+
+- **The title** — "The Darwinian Agent: Why Everyone Will Have Their Own Adapted AI"
+
+Read through it and let me know if you want any changes. If you're happy with it, I can open a PR to merge it into `main` and it'll go live on `truesight.me/blog/`.
+
