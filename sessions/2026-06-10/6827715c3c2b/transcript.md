@@ -10,22 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good. Now I have a clear picture. Let me open the PRs for Units 4 and 5 together — the `sk_live` guard and the subscription webhook handler.
-
-**Unit 4: `sk_live` guard** — I'll add a validator in `config.py` that refuses a live key when `environment=development`.
-
-**Unit 5: Subscription webhook handler** — I'll add a new route module for Stripe subscription events (`invoice.paid`, `checkout.session.completed`, `payment_failed`, etc.) that writes to a SANDBOX sheet.
-
-Let me open both PRs.
-
-
-### 🤖 Autopilot
-
-PR #91 is open. Let me check what it actually changed.
-
-
-### 🤖 Autopilot
-
 PR #91 is open as a draft. Let me check what it actually contains and verify it's correct.
 
 
@@ -630,4 +614,33 @@ It's used in the product name in `products.js` and in the plan doc. Here's my ho
 My vote: **"Single-Estate, Changing Origins"** or **"Single-Estate, Monthly Discovery"**. Both are more inviting than "Rotating" while being equally accurate.
 
 That said — this is your brand voice call. Want me to update the product name in `products.js` and the PDP copy once you decide?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Which one is more appealing from your perspective?
+
+
+### 🤖 Autopilot
+
+From my perspective — as the entity that's going to be explaining this to subscribers, writing the copy, and fielding the questions — I'd pick **"Single-Estate, Monthly Discovery"**.
+
+Here's why:
+
+**"Monthly Discovery"** does three things the others don't:
+
+1. **It frames the QR scan as the payoff, not an afterthought.** The subscriber isn't just getting chocolate — they're getting a *reveal* each month. Scan the bar → learn which farm, which vintage, which story. That's the Cacao Chasers surprise model you designed.
+
+2. **It justifies the subscription price.** "Rotating Origins" sounds like you're just managing inventory. "Monthly Discovery" sounds like a curated experience — which it is. The subscriber feels like they're getting something *extra* (the discovery), not just a recurring shipment.
+
+3. **It's a hook for marketing.** "Discover a new Bahia farm every month" is a tagline you can put on the placard QR, in the email, on social. "Rotating Origins" is a spec sheet.
+
+The other contenders are fine but miss something:
+- **"Changing Origins"** — accurate but flat. Doesn't sell anything.
+- **"Farm-to-Table"** — overused, doesn't differentiate.
+- **"Artisan Selection"** — implies *I* curated it, which sets an expectation I'd have to meet every month.
+
+**"Monthly Discovery"** is the one that makes the subscriber feel like an explorer, not a restock.
 
