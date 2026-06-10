@@ -337,3 +337,27 @@ Sure! Here's the link to the blog post:
 
 It might still be deploying from the latest changes — give it a few minutes and it should be fully live with the new title, sovereignty section, and updated narration audio.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+By the way, I think one of your links in the reference is broken. This is the correct one I think.
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/era-sentinel-account-requirements.pdf
+
+
+### 🤖 Autopilot
+
+Let me check if that PDF exists.
+
+
+### 🤖 Autopilot
+
+The PDF exists. The current link in the blog post points to the `.md` version. Let me fix it to point to the PDF instead.
+
+
+### 🤖 Autopilot
+
+Fixed! The reference link now points to the PDF instead of the `.md` file. Good catch — that would have been a broken link for anyone clicking through.
+
