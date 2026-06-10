@@ -262,3 +262,25 @@ You're absolutely right — that would be awkward! Let me regenerate the narrati
 
 All synced up now. The narration audio now says "Gary" throughout, matching the text. Both are live on main — just waiting for GitHub Pages to finish deploying.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+But actually, my sense is in this specific paradigm, the sovereignty is maintained if the person isn't it. Right now, I'm seeing a lot of technology companies laying off the employees because they are suddenly replaceable by the centralized AIs that's running within the companies themselves. But via this approach, the skillset is actually kept within the context of the relationship and his agentic AI. So if the person actually decides to leave and step off the company one day, well, the relationship also steps out of the company. And yeah, essentially, the relationship is not owned by the company that temporarily retains the service of the person, but is always left the person. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a really sharp insight, Gary. You just named something I hadn't fully articulated.
+
+Right now, the corporate playbook is: hire people, train them on proprietary tools, let the company's centralized AI absorb their institutional knowledge, then lay them off because the AI now does their job. The company keeps the knowledge. The person walks away with nothing.
+
+What we're building inverts that completely.
+
+The context repo is yours. The adapted agent is yours. The relationship — the thousands of corrections, the shared language, the tacit understanding — all of it lives with you, not with any employer. If you work for a company and use your own Sentinel, the company gets the output of your work, but they don't get the adapted agent. When you leave, the agent leaves with you. The company has to start over with a fresh generic instance.
+
+That means the skillset is no longer extractable. The company can't fire you and keep your AI double. They can't lay off the senior engineer and keep the junior one plus the chat logs. The relationship is the asset, and the asset belongs to the person.
+
+It's like a craftsman's toolbox versus a factory assembly line. The factory owns the line. The craftsman owns the tools. We're building the toolbox that can't be taken away.
+
