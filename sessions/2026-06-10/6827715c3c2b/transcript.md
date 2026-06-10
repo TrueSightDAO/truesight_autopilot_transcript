@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me also check the sandbox_sheet service.
-
-
-### 🤖 Autopilot
-
 And the main.py update.
 
 
@@ -772,4 +767,57 @@ The standard fix is **address validation** — before calculating shipping, veri
 **For v2 (when Linda is live and you want to reduce support overhead):** Add EasyPost address verification on the backend — the GAS/Edgar endpoint verifies the address before returning rates, and if it's invalid, returns a correction suggestion to the user. That's a backend change, not a frontend one.
 
 Want me to proceed with the current approach (same as the existing checkout) and flag address validation as a follow-up?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think we really need V2 because I am going to start exposing this in our QR code placards at the various tech gatherings where I offer the cacao servings on the tabel
+
+
+### 🤖 Autopilot
+
+Absolutely — if this is going on placard QR codes at events, address validation is non-negotiable. A mistyped address from a conference attendee means a lost package and a bad first impression.
+
+Let me plan the v2 approach:
+
+**EasyPost Address Verification** — the right tool since we already use EasyPost for shipping. When the user fills in their address and tabs out:
+
+1. Frontend sends the raw address to the GAS/Edgar endpoint
+2. Backend calls EasyPost's **Address Verification API** (`/addresses` with `verify: true`)
+3. EasyPost returns either:
+   - **Verified** — address is valid, proceed to show shipping rates
+   - **Suggested correction** — e.g. "Did you mean 123 Main St, Springfield, IL 62701 instead of 123 Main Street, Springfiled, IL?"
+   - **Invalid** — "Address could not be verified, please check and try again"
+4. Frontend shows the suggestion to the user with an "Accept correction" button
+
+This is a backend change — the GAS script (`agroverse_shop_checkout.gs`) or the Edgar shipping rates endpoint needs to add the EasyPost address verification call. The frontend just needs to handle the response format.
+
+Let me check what the current backend looks like.
+
+
+### 🤖 Autopilot
+
+Good — EasyPost is already integrated. The EasyPost API supports address verification natively. When you create a shipment with `verify: true`, it returns both the rates and the verified address (or a list of suggested corrections).
+
+Here's the plan for v2:
+
+**Backend change** (Edgar `sentiment_importer` or `dao_protocol`):
+- Before calculating rates, call EasyPost Address Verification
+- If the address is invalid or has corrections, return `{ status: "address_needs_review", suggestions: [...] }` instead of rates
+- If verified, proceed with rates as today
+
+**Frontend change** (subscribe.js):
+- When the shipping response comes back with `address_needs_review`, show the suggested correction with "Accept" / "Edit" buttons
+- On "Accept", re-send with the corrected address
+- On "Edit", let the user fix it manually
+
+**Timeline:** This is a backend + frontend change. The backend is straightforward (EasyPost already has the `verify` parameter). The frontend needs a new UI state for address suggestions.
+
+Want me to:
+1. File this as a follow-up in `OPEN_FOLLOWUPS.md` with the full spec
+2. Start building it now
+
+Given the placard timeline, I'd recommend starting now. The backend change is small — EasyPost's `create` with `verify: ["delivery"]` is a one-line addition.
 
