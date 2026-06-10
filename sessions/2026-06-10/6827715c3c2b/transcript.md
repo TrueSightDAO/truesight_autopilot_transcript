@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-And the main.py update.
-
-
-### 🤖 Autopilot
-
-PR #91 looks solid. Now let me also do **Unit 8** (update `AWS_DIGITAL_INFRASTRUCTURE.md`) since that's mandatory and I have all the info.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Let me update `AWS_DIGITAL_INFRASTRUCTURE.md` with the new beta box.
 
 
@@ -820,4 +810,81 @@ Want me to:
 2. Start building it now
 
 Given the placard timeline, I'd recommend starting now. The backend change is small — EasyPost's `create` with `verify: ["delivery"]` is a one-line addition.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+2.
+
+
+### 🤖 Autopilot
+
+Let me start building the address verification v2. First, let me understand the current shipping rates controller to know exactly where to add the verification.
+
+
+### 🤖 Autopilot
+
+Now let me also check the GAS checkout script for the shipping rates function.
+
+
+### 🤖 Autopilot
+
+Good — the shipping rates go through Edgar's `sentiment_importer`. Now let me build this. The plan:
+
+1. **Backend** (`sentiment_importer`): Add EasyPost address verification to the shipping rates controller. Before returning rates, verify the address. If invalid, return suggestions.
+2. **Frontend** (`agroverse_shop_beta`): Update `subscribe.js` to handle the address verification response — show suggestions, let user accept/correct.
+
+Let me start with the backend.
+
+
+### 🤖 Autopilot
+
+Now update the controller to use address verification.
+
+
+### 🤖 Autopilot
+
+Now update the frontend — `subscribe.js` needs to handle the new response format with address suggestions.
+
+
+### 🤖 Autopilot
+
+Now I need to add the `showAddressSuggestions` function to `subscribe.js`. Let me add it.
+
+
+### 🤖 Autopilot
+
+Now let me merge all the PRs.
+
+
+### 🤖 Autopilot
+
+Now I need to deploy the `sentiment_importer` changes to the Rails server.
+
+
+### 🤖 Autopilot
+
+Rails is restarting. Let me verify the shipping endpoint is working with the new address verification.
+
+
+### 🤖 Autopilot
+
+The endpoint is live and returning rates. Now let me test with a bad address to see the verification response.
+
+
+### 🤖 Autopilot
+
+Hmm — the bad address returns `status: "error"` rather than `address_needs_review`. This means the EasyPost address verification is either failing or the `verify_address` method isn't being called properly. Let me check the server logs.
+
+
+### 🤖 Autopilot
+
+The log is very sparse. The `ArgumentError` from Bugsnag might be from the old process shutting down. Let me check if the new process is actually serving requests by looking at the full log.
+
+
+### 🤖 Autopilot
+
+The log only has 3 lines — the Rails server was restarted and the log was truncated. The new process is running. Let me test the shipping endpoint again with a valid address to confirm it's working.
 
