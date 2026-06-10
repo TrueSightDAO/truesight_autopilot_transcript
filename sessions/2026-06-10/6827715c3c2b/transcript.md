@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `sk_live` guard is in place. Let me check the subscription webhook module.
-
-
-### 🤖 Autopilot
-
 Let me also check the sandbox_sheet service.
 
 
@@ -753,4 +748,28 @@ Done. All address fields now have proper `autocomplete` attributes:
 - **City / State / ZIP / Country** → fills in from the saved address
 
 This is the browser-native autocomplete — works in Chrome, Safari, Firefox, Edge with zero setup. If you want Google Places-style dropdown suggestions later (where it shows real addresses as you type), that would need a Google API key and a Places script — happy to add that when you're ready.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+How would the API to easy post fetch and return the shipping cost then if the user is allowed to enter inaccurate address
+
+
+### 🤖 Autopilot
+
+That's the right concern. The current checkout page handles this the same way — it takes whatever the user typed and sends it to the EasyPost API (via Edgar/GAS). EasyPost then returns USPS rates based on that address. If the address is inaccurate, USPS will still return a rate — it just might not be the *right* rate (delivery could fail or get delayed).
+
+The standard fix is **address validation** — before calculating shipping, verify the address against a USPS address database. EasyPost actually offers this built-in:
+
+1. **EasyPost Address Verification** — when you send an address to EasyPost for rates, it can auto-verify and suggest corrections. The API returns both the original and the verified address.
+
+2. **Google Places Autocomplete** — prevents bad addresses at the input stage by only letting users select real addresses from the dropdown.
+
+**My recommendation for v1:** Keep it simple. The current checkout page doesn't validate addresses either — it sends whatever the user types to EasyPost, gets rates back, and the package ships to whatever address was entered. If it bounces, that's a support issue. This is the same risk the existing one-off checkout already accepts.
+
+**For v2 (when Linda is live and you want to reduce support overhead):** Add EasyPost address verification on the backend — the GAS/Edgar endpoint verifies the address before returning rates, and if it's invalid, returns a correction suggestion to the user. That's a backend change, not a frontend one.
+
+Want me to proceed with the current approach (same as the existing checkout) and flag address validation as a follow-up?
 
