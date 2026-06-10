@@ -10,81 +10,6 @@
 
 ### 🤖 Autopilot
 
-I now have a thorough understanding of the entire codebase. Let me also check the checkout.js to understand how the GAS call is made:
-
-
-### 🤖 Autopilot
-
-I now have a complete understanding of the codebase. Let me execute Phase 1. I'll start with **PR1.1** — the generic SKU + subscription schema in `products.js`.
-
-Let me also check if there's a `/subscribe/` directory already:
-
-
-### 🤖 Autopilot
-
-Good — no `/subscribe/` directory exists yet. Let me also check the existing images directory for the generic bar hero:
-
-
-### 🤖 Autopilot
-
-Good. Now I have the full picture. Let me execute **PR1.1** — the generic SKU entry in `products.js`.
-
-**PR1.1 — Generic SKU + subscription schema in `products.js`**
-
-I need to:
-1. Add subscription metadata fields to the existing chocolate bar entries (they already have `gtin`)
-2. Add the new generic-bar catalog entry with `subscribable: true`, `subscriptionSlug`, `cadence`, `min/max/defaultQty`, `origin: 'rotating'`
-
-
-### 🤖 Autopilot
-
-**PR1.1 is open:** https://github.com/TrueSightDAO/agroverse_shop_beta/pull/121
-
-Now let me report the DAO contribution and move to **PR1.2** — the shared subscribe engine.
-
-
-### 🤖 Autopilot
-
-Now **PR1.2 — Shared subscribe engine** (`/subscribe/`). This is the data-driven engine that resolves the SKU from the catalog, renders quantity picker + address form, calls the GAS action, and redirects to Stripe.
-
-
-### 🤖 Autopilot
-
-**PR1.2 is open:** https://github.com/TrueSightDAO/agroverse_shop_beta/pull/122
-
-DAO contribution reported. Now **PR1.3 — Clean path wrapper** `/subscribe/chocolate-bar/`.
-
-
-### 🤖 Autopilot
-
-**PR1.3 — Clean path wrapper** `/subscribe/chocolate-bar/`. This is a thin ~10-line page that points the engine at `subscriptionSlug:'chocolate-bar'`.
-
-
-### 🤖 Autopilot
-
-**PR1.3 is open:** https://github.com/TrueSightDAO/agroverse_shop_beta/pull/123
-
-DAO contribution reported. Now **PR1.4 — GAS additive `createSubscriptionCheckoutSession`**.
-
-
-### 🤖 Autopilot
-
-**PR1.4 — GAS additive `createSubscriptionCheckoutSession`**. This is the most critical piece. Per the plan:
-- **Purely additive** — new function, existing `createCheckoutSession` untouched
-- Unit line with `recurring:{interval:'month'}`
-- Run EasyPost weight+rate code once → recurring shipping line
-- `mode:'subscription'`
-- `environment` test/live key switch
-- Key off `sku` (productId) + `quantity` + `shippingAddress`
-
-
-### 🤖 Autopilot
-
-Hmm, the edit only added the action dispatch. I need to also add the actual function body. Let me check what was committed:
-
-
-### 🤖 Autopilot
-
 I see the edit only added the dispatch line but not the actual function body. I need to add the `createSubscriptionCheckoutSession` function. Let me add it after the existing `createCheckoutSession` function:
 
 
@@ -565,4 +490,26 @@ The test areas are:
 9. **Google Sheets audit trail** — both tabs
 10. **12 edge cases** — quantity bounds, validation, declines, timeouts
 11. **Production smoke test** — after promotion
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you share the link to the URL for where the user acceptance testing steps are? Thank you very much. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The UAT section is in the plan document itself. The PR is open at:
+
+github.com/TrueSightDAO/agentic_ai_context/pull/413
+
+Once that's merged, you can read the full doc directly from the repo at:
+
+github.com/TrueSightDAO/agentic_ai_context/blob/main/CHOCOLATE_SUBSCRIPTION_PLAN.md
+
+Scroll to the very bottom — the UAT section starts after the "Risks / open items" section. It's titled "User Acceptance Testing (UAT) — end-to-end walkthrough" and covers all 11 test areas with URLs, expected behavior, and what to assert for each.
+
+Want me to merge that PR now so it's live in the doc?
 
