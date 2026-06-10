@@ -710,3 +710,47 @@ Done. Once GitHub Pages builds, the subscribe page will show:
 
 The ceremonial cacao ($25/bag) can be added as a separate subscribable SKU later via a thin `/subscribe/ceremonial-cacao/` wrapper — same engine, no new code.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think there should be autocomplete for the address isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — the existing checkout page has address autocomplete via the `checkout-form-storage.js` that saves to localStorage and restores on page load. Let me check if the subscribe page is using it.
+
+Looking at the subscribe page HTML, it loads `config.js`, `products.js`, `ga4-events.js`, `universal-nav.js`, and `subscribe.js` — but **not** `checkout-form-storage.js`. So saved address data from a previous checkout won't auto-fill on the subscribe page.
+
+But I think you mean **Google Places / address autocomplete** — where the browser suggests addresses as you type (street name, city suggestions, etc.). That's a different thing.
+
+Let me check what the existing checkout page uses.
+
+
+### 🤖 Autopilot
+
+No Google Places API integration on the existing checkout either. So the existing checkout just uses standard HTML form fields with `required` attributes and `pattern` validation (ZIP code pattern).
+
+Two options for what "autocomplete" means here:
+
+**1. Browser-native autocomplete** — the browser remembers addresses the user has typed before and suggests them. This is free — just add `autocomplete` attributes to the form fields. Super quick to implement.
+
+**2. Google Places Autocomplete API** — a dropdown that suggests real addresses as you type (like on Airbnb/Uber). Requires a Google API key and adds a script dependency. More polished UX but more setup.
+
+I'd suggest **option 1** as the immediate improvement — it's zero-dependency and works on any device the user has typed their address before. Let me add the HTML `autocomplete` attributes to the subscribe form.
+
+
+### 🤖 Autopilot
+
+Done. All address fields now have proper `autocomplete` attributes:
+
+- **Name** → browser suggests saved names
+- **Email** → suggests saved emails
+- **Phone** → suggests saved phone numbers
+- **Street address** → suggests full saved addresses
+- **City / State / ZIP / Country** → fills in from the saved address
+
+This is the browser-native autocomplete — works in Chrome, Safari, Firefox, Edge with zero setup. If you want Google Places-style dropdown suggestions later (where it shows real addresses as you type), that would need a Google API key and a Places script — happy to add that when you're ready.
+
