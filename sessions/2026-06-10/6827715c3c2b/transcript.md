@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-PR #91 is open as a draft. Let me check what it actually contains and verify it's correct.
-
-
-### 🤖 Autopilot
-
 The `sk_live` guard is in place. Let me check the subscription webhook module.
 
 
@@ -643,4 +638,24 @@ The other contenders are fine but miss something:
 - **"Artisan Selection"** — implies *I* curated it, which sets an expectation I'd have to meet every month.
 
 **"Monthly Discovery"** is the one that makes the subscriber feel like an explorer, not a restock.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go for monthly discovery then.
+
+
+### 🤖 Autopilot
+
+Let me update the product name in `products.js` and the subscribe page header.
+
+
+### 🤖 Autopilot
+
+Updated. Once GitHub Pages builds, the subscribe page will show:
+
+- **Product name:** "Ceremonial Cacao Chocolate Bar — Single-Estate, Monthly Discovery"
+- **Subtitle:** "Discover a new single-estate farm every month. Each bar is QR-traceable to its exact origin and vintage. Cancel or modify anytime."
 
