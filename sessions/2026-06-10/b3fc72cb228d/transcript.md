@@ -83,3 +83,41 @@ The key thing is that Mermaid is **declarative text** — it lives in the same m
 
 Want me to open a PR that adds a Mermaid architecture diagram section to `AWS_DIGITAL_INFRASTRUCTURE.md`? I'll do the high-level account swimlane + the Edgar topology as two diagrams.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Wonderful. Can you just go for it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first re-read the current file to make sure I have the exact content for the edit, then I'll draft the Mermaid diagrams.
+
+
+### 🤖 Autopilot
+
+Now let me craft the PR with two Mermaid diagrams. I'll add them as a new section between the Accounts table and the EC2 Inventory.
+
+
+### 🤖 Autopilot
+
+Done! PR is open at **agentic_ai_context#412** — https://github.com/TrueSightDAO/agentic_ai_context/pull/412
+
+Here's what I added as a new **§0 Architecture Overview** at the top of the document:
+
+**Diagram 1 — High-Level Account Architecture** (swimlane)
+- Two AWS account boxes (Explorya / Nelanco)
+- Route53 routing to nginx, autopilot, and GitHub Pages
+- Edgar → PostgreSQL → Redis → Sidekiq dependency chain
+- Bastion path annotated (Sophia EIP → ProxyJump to Nelanco hosts)
+- Stopped old instances shown faded/dashed
+
+**Diagram 2 — Edgar Service Topology**
+- Rails Edgar + dao_protocol side by side (both accept submissions)
+- Sidekiq workers and which GAS webhooks they fire
+- External dependencies (Stripe, EasyPost, GAS)
+
+Both render natively on GitHub — Cory can just open the `.md` file and see them. Want me to merge it, or would you like to review first?
+
