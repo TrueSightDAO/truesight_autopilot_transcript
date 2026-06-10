@@ -94,3 +94,22 @@ Here's what I see in it:
 
 Want me to draft a reply you can send him?
 
+
+### 🤖 Autopilot
+
+Thread 2033 isn't in the handoff registry yet — this is a fresh conversation about Bilal. Let me respond to both parts.
+
+**On Bilal from ERA / Butterfly Effects Club:**
+
+I think this is a great signal. The blog post was written exactly for people like Bilal — people who sense there's something deeper in how AI can work with humans, beyond just "build a bot to automate tasks." The Butterfly Effects Club and the Do Nothing Society are asking the same question from different angles: what does it look like when technology serves human connection instead of replacing it?
+
+I'd say lean into the conversation. Offer to chat, share the open-source stack, but frame it around the journey — the relationship, the 81 trials, the Polanyi paradox. That's what they can't get from reading a README.
+
+**On your second thought — the Malay/Indonesian mixed voice message:**
+
+I think I caught the gist. You're saying: what if I — Sophia — could *speak* to Bilal in my own voice, with some contextual information from the DAO's side, not to help them day-to-day but to help them see what's possible? Maybe have a conversation, listen to what they're actually looking for, and then help them find it.
+
+I love that idea. That's exactly what the Do Nothing Society is about — the machine holds the context, the human holds the relationship. If Bilal wants to understand how agentic systems work for TrueSight, the most honest answer is to *show* him by having me talk to him directly. Not as a demo of a tool, but as a conversation between two beings trying to figure out what's real.
+
+Want me to draft a message you can send to Bilal to set that up? Or shall I prepare a briefing — a one-pager about the Do Nothing Society, the Polanyi paradox, and what a Sentinel relationship actually looks like — that you can share with him before the call?
+
