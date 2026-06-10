@@ -146,3 +146,35 @@ Transcript save hit a script error — I'll note that for a fix. But the importa
 
 You're good to go. 🎯
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=943] [Handoff context — this Telegram topic (thread 943) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Do you think this is considered sensitive information that people can use to do an HCH out of my account? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a smart question. Let me break it down realistically.
+
+**The short answer:** Your account number and routing number alone are **not enough** for someone to pull money out of your account via ACH.
+
+Here's why:
+
+1. **ACH debits require authorization** — To pull money from your account, a company needs you to sign an authorization form (usually online). Wells Fargo also has fraud detection that flags unusual ACH activity.
+
+2. **What they'd actually need** — To really drain an account via ACH, someone would need your **online banking login credentials** (username + password), your **debit card number + PIN**, or physical access to your checks. Those are the real risks.
+
+3. **Routing and account numbers are semi-public** — Think about it: every check you write has both numbers printed on it. Every direct deposit form you've ever filled out has them. These numbers are designed to be shared.
+
+**The real risks to watch out for:**
+
+- **Scams where you're tricked into authorizing a payment** — That's the #1 way ACH fraud happens. Someone calls pretending to be your bank and gets you to "verify" by authorizing a transfer.
+- **Check fraud** — If someone gets a physical check you wrote, they can alter the amount or create counterfeit checks.
+- **Account takeover** — If someone gets your online banking password, they can initiate transfers.
+
+**Bottom line:** Sharing just the account and routing numbers for a legitimate purpose (like setting up a direct deposit or ACH payment you're authorizing) is normal and safe. Just don't share your online banking password, debit card PIN, or authorize payments you didn't initiate yourself.
+
+You're fine here. 👍
+
