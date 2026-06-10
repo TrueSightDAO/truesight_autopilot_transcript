@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-I don't see the beach photo among the attachments — it was likely sent in a different session. Let me check the blog post that already references a beach photo of you and Bilal.
-
-
-### 🤖 Autopilot
-
 I see — the existing beach photo is at `assets/blog/gary_and_bilal.jpeg`. Let me use that same photo for the new post (it's the same beach walk with Bilal). Now let me generate the narration audio and merge the PR.
 
 
@@ -325,4 +320,20 @@ All done! Here's what's changed:
 **Narration audio** → Regenerated with the new title and the sovereignty section included, all saying "Gary"
 
 Everything's merged to main on `truesight_me_beta`. GitHub Pages will pick it up in a few minutes.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Can you share with me the link to the blog post and then also just oh never mind yeah Just share with me the link to the blog post [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure! Here's the link to the blog post:
+
+**https://beta.truesight.me/blog/posts/the-darwinian-agent.html**
+
+It might still be deploying from the latest changes — give it a few minutes and it should be fully live with the new title, sovereignty section, and updated narration audio.
 
