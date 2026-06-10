@@ -593,3 +593,40 @@ Exactly — everything runs locally on this EC2 box. No external API calls, no c
 
 That's actually one of the nice things about the architecture — the more we can keep local, the less we depend on external services that could go down, change their pricing, or shut off access.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Jerry was curious when I was sharing with him about you. Do you think you can generate a one-page document PDF that can provide Jerry for the context of the setup? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure! Let me check who Jerry is in our context first.
+
+
+### 🤖 Autopilot
+
+I don't have much context on Jerry in the DAO records. But I can still put together a clean one-page overview of the setup — the architecture, what runs where, how it all fits together. That should give Jerry the big picture regardless of what specifically he's curious about.
+
+Let me generate it.
+
+
+### 🤖 Autopilot
+
+Here you go:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/autopilot-architecture-overview.pdf**
+
+It's a clean one-pager covering:
+
+- **What the Autopilot is** — autonomous SRE and dev assistant
+- **How it works** — the stack (EC2, Python, DeepSeek, edge-tts, GitHub, Telegram)
+- **What it can do** — chat, execute actions, open PRs, monitor infra, send emails, generate PDFs
+- **Key design principles** — local-first, relationship over scripture, human in the loop, self-improving
+- **Monthly cost** — ~$35-60/month
+- **How to clone it** — the 5-step process
+
+Should give Jerry the full picture at a glance.
+
