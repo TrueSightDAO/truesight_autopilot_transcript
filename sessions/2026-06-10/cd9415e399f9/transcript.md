@@ -291,3 +291,38 @@ Here's why:
 
 The second one is more descriptive but it's too long — it reads like a subtitle, not a title. People scan titles in 2 seconds. "Your AI Should Leave When You Do" is a great pull quote *inside* the post though. I'd put that as a bold line in the sovereignty section itself.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for the modifications updates of both the blog posts as well as the audio. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it! Let me update the title, restructure the post so sovereignty comes earlier, and regenerate the audio.
+
+
+### 🤖 Autopilot
+
+Now I need to update the title across all the metadata tags and the H1, and also update the blog index card. Let me do all the edits.
+
+
+### 🤖 Autopilot
+
+Now regenerate the narration audio with the new title.
+
+
+### 🤖 Autopilot
+
+All done! Here's what's changed:
+
+**Title** → **"The Darwinian Agent: Sovereignty in the Age of Replaceable AI"**
+- Updated in the HTML title tag, OG tags, Twitter cards, H1, and blog index card
+- Sovereignty is now front and center — the reader knows what the post is really about from the first glance
+
+**Narration audio** → Regenerated with the new title and the sovereignty section included, all saying "Gary"
+
+Everything's merged to main on `truesight_me_beta`. GitHub Pages will pick it up in a few minutes.
+
