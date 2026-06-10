@@ -659,3 +659,35 @@ Updated. Once GitHub Pages builds, the subscribe page will show:
 - **Product name:** "Ceremonial Cacao Chocolate Bar — Single-Estate, Monthly Discovery"
 - **Subtitle:** "Discover a new single-estate farm every month. Each bar is QR-traceable to its exact origin and vintage. Cancel or modify anytime."
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think we should not use Ceremonial Cacao and stick to Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery, since the pricing of 10 is for that isnt it? Or do you think we should allow users the ability to decide between how many chocolate bars and ceremonial bars to subscribe to?
+
+
+### 🤖 Autopilot
+
+Good catch. Let me think through this.
+
+**The $10 price point is for the 81% dark chocolate bar** — that's confirmed in `products.js` where `price: 10.00` and the GTIN `00860010660256` is the shared 81% bar GTIN. The ceremonial cacao (200g bags) is $25 and is a different product entirely.
+
+So the name should match what you're actually selling at that price. **"Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery"** is accurate.
+
+**On your second question — should subscribers choose between bars and ceremonial cacao?**
+
+I'd say **no, not in v1.** Here's why:
+
+1. **Two different supply chains.** The chocolate bars are made (Kirsten produces them from the cacao). The ceremonial cacao is just bagged. They have different inventory pools, different packaging, different shipping weights. Mixing them in one subscription engine doubles the complexity.
+
+2. **Two different price points.** $10/bar vs $25/bag. The quantity picker (3/6/12) makes sense for bars at $10. For ceremonial at $25, 12 bags = $300/month — that's a different buyer.
+
+3. **The subscription is a discovery product.** The whole hook is "you don't pick the farm, you discover it." Letting people pick *product type* undermines that simplicity. The choice should be: subscribe to bars OR buy ceremonial one-off.
+
+4. **Phase 3 can add it.** The architecture is data-driven — adding a `/subscribe/ceremonial-cacao/` wrapper later is a ~10-line change. But for Linda and the first real subscribers, one clear SKU is the right call.
+
+**My recommendation:** Rename to **"Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery"**, keep the subscription focused on bars only for v1, and add ceremonial cacao as a second subscribable SKU in a later phase.
+
+Want me to make that change?
+
