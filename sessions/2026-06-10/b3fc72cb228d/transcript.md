@@ -197,3 +197,33 @@ That would cut from 7 → 4 instances, saving roughly **$40-50/mo**.
 
 Want me to look into what Sidekiq queues each worker is configured for, so we can plan the consolidation properly?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I am thinking perhaps all the krake_sk and GETDATA_CACHE to consolidate into one EC2 instance?
+
+
+### 🤖 Autopilot
+
+That's a clean consolidation. Let me look at what we're dealing with — the 5 worker instances that could merge:
+
+**Candidates for consolidation:**
+1. **krake_sk** — t2.nano (0.5 GB RAM) — general Sidekiq
+2. **krake_sk_webhook** — t2.small (2 GB) — webhook worker
+3. **krake_sk_crawler** — t2.small (2 GB) — crawler worker
+4. **krake_sk_scaler** — t2.micro (1 GB) — autoscaling worker
+5. **GETDATA_CACHE** — t2.micro (1 GB) — cache worker
+
+**Total combined memory:** ~6.5 GB across 5 boxes, but they're all idle so actual usage is probably under 2 GB.
+
+**My recommendation:** A single **t3.small (2 GB)** or **t3.medium (4 GB)** would handle all of these comfortably at current load levels. The key is configuring separate Sidekiq queues with distinct concurrency settings so they don't step on each other.
+
+**What we'd need to figure out before doing it:**
+1. What Sidekiq queue names each worker currently processes
+2. Whether the webhook/crawler workers have any unique gem dependencies that'd conflict
+3. The deploy mechanism — are they ASG-managed or manual?
+
+I can dig into the Krake codebase to find the Sidekiq queue configs. Want me to search the repo for that?
+
