@@ -133,3 +133,67 @@ Perfect, let's just go ahead and merge it. [System note: the user sent this as a
 
 Merged! The Mermaid diagrams are now live in `AWS_DIGITAL_INFRASTRUCTURE.md` on `main`. Cory can open the file on GitHub and see both diagrams rendered — the account swimlane and the Edgar topology. If he has any questions about specific parts, feel free to loop me in.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I was thinking right now there is probably not a lot of load running through the GetData infrastructure 
+
+I wonder if we really need all the krake_sk** ec2 instances or all their workloads could all be consolidated into just one instance let me know your thoughts
+
+
+### 🤖 Autopilot
+
+Good question. Let me check what's actually running on those Krake instances to give you a data-backed answer.
+
+
+### 🤖 Autopilot
+
+Let me also check what processes are actually running on these boxes to see current load.
+
+
+### 🤖 Autopilot
+
+Those Krake boxes use a different SSH key (`GETDATA_key_pair`) than what the autopilot has access to. Let me check via CloudWatch instead to get utilization data.
+
+
+### 🤖 Autopilot
+
+No CloudWatch metrics — these instances don't have detailed monitoring enabled. But here's what I can tell you from the instance data alone:
+
+---
+
+**Current Krake/GetData fleet — 7 instances:**
+
+| Instance | Type | Cost/mo (approx) | Purpose |
+|----------|------|------------------|---------|
+| **krake_ror** | t2.micro | ~$8 | Rails app server |
+| **krake_sk** | t2.nano | ~$4 | Sidekiq worker |
+| **krake_sk_webhook** | t2.small | ~$17 | Webhook worker |
+| **krake_sk_crawler** | t2.small | ~$17 | Crawler worker |
+| **krake_sk_scaler** | t2.micro | ~$8 | Autoscaling worker |
+| **krake_data** | t3.medium | ~$30 | Data processing |
+| **GETDATA_CACHE** | t2.micro | ~$8 | Cache worker |
+| **Total** | | **~$92/mo** | |
+
+Plus **GETDATA_REDIS** (t3a.small, ~$15/mo) which is a separate concern.
+
+**My take:** You're right that there's probably very little load right now. The architecture was designed for scale that hasn't materialized yet. Consolidation makes sense.
+
+**The question is: can they all run on one box?**
+
+The main constraint is **krake_data** (t3.medium, 4 GB RAM) — it's the heaviest. Everything else is t2.micro/nano/small. A single t3.medium (4 GB) could likely run all the Sidekiq processes + the Rails app + the cache worker, as long as you configure separate Sidekiq queues rather than separate boxes.
+
+**What I'd recommend:**
+
+1. **Low-risk first step** — consolidate the 4 smallest (krake_sk, krake_sk_scaler, GETDATA_CACHE, and maybe krake_sk_webhook) onto krake_data. They're all Sidekiq-type workers that just need different queue configs.
+
+2. **Keep krake_ror separate** — it's the web-facing Rails app and should stay isolated for stability.
+
+3. **Keep krake_sk_crawler separate initially** — crawlers can be memory-intensive and you don't want them starving the main app.
+
+That would cut from 7 → 4 instances, saving roughly **$40-50/mo**.
+
+Want me to look into what Sidekiq queues each worker is configured for, so we can plan the consolidation properly?
+
