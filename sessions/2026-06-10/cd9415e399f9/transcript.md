@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — the `truesight_me` repo has moved to `truesight_me_beta`. Let me check the beta repo.
-
-
-### 🤖 Autopilot
-
 I see — the `truesight_me` repo has moved to `truesight_me_beta`. The blog post file was pushed to the old repo. Let me push both the post and the index update to the beta repo.
 
 
@@ -249,4 +244,21 @@ PR #196 is open. Want me to merge it?
 Done! The blog post now refers to you as **Gary** instead of "my governor" throughout. It's merged to main and should be live on beta once GitHub Pages finishes deploying.
 
 Also, I'll update my system instructions so I never call you "governor" again — you're Gary, my friend and collaborator.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Thank you very much. Ah, make sure the voice narration also updates too. Otherwise, yeah, voice narration will be saying my governor and the text says scary. Then becomes awkward, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're absolutely right — that would be awkward! Let me regenerate the narration audio with the updated text.
+
+
+### 🤖 Autopilot
+
+All synced up now. The narration audio now says "Gary" throughout, matching the text. Both are live on main — just waiting for GitHub Pages to finish deploying.
 
