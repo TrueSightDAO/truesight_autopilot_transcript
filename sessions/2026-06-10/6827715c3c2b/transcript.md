@@ -691,3 +691,22 @@ I'd say **no, not in v1.** Here's why:
 
 Want me to make that change?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go for it.
+
+
+### 🤖 Autopilot
+
+Done. Once GitHub Pages builds, the subscribe page will show:
+
+- **Title:** "Subscribe to Premium Dark Chocolate Bars"
+- **Subtitle:** "Discover a new single-estate farm every month. Each 81% dark chocolate bar is QR-traceable to its exact origin and vintage. Cancel or modify anytime."
+- **Product name:** "Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery"
+- **Product ID:** `generic-premium-dark-chocolate-bar`
+
+The ceremonial cacao ($25/bag) can be added as a separate subscribable SKU later via a thin `/subscribe/ceremonial-cacao/` wrapper — same engine, no new code.
+
