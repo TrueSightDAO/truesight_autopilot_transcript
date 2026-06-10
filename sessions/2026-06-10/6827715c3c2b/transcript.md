@@ -906,3 +906,141 @@ Here's the full progress across all work streams in this thread:
 
 Want me to proceed with building the GAS action (PR1.4)?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+yes please.
+
+
+### 🤖 Autopilot
+
+Let me first understand the existing GAS checkout script to know exactly how to add the subscription action.
+
+
+### 🤖 Autopilot
+
+The GAS script is in the `tokenomics` repo. Let me find it.
+
+
+### 🤖 Autopilot
+
+No `agroverse_shop_checkout` in the tokenomics repo. Let me search more broadly.
+
+
+### 🤖 Autopilot
+
+The GAS script isn't in any repo. Let me check the clasp mirrors in the tokenomics repo.
+
+
+### 🤖 Autopilot
+
+Found it — **"Agroverse - Shopping Cart"** with scriptId `1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn`. Let me read the source.
+
+
+### 🤖 Autopilot
+
+The clasp mirror only has `.clasp.json` — the actual source files are elsewhere. Let me check the `google_app_scripts` directory for the shopping cart.
+
+
+### 🤖 Autopilot
+
+The checkout script isn't in the tokenomics repo as a source file. Let me check if it's deployed on the server.
+
+
+### 🤖 Autopilot
+
+That script ID doesn't have a deployed web app. Let me check the config to find the actual GAS URL being used.
+
+
+### 🤖 Autopilot
+
+Found it. The GAS URL is:
+`https://script.google.com/macros/s/AKfycbyefqjQnWegrXR9y18HyJMxSM2wWCyucsK5qdh5isJICVhonssajEpT4Dt3hq3A7PTA/exec`
+
+This is the deployed Shopping Cart GAS. I can't read the source from GitHub since it's only deployed as a clasp mirror. Let me check if there's a source file in the repo.
+
+
+### 🤖 Autopilot
+
+The Shopping Cart GAS (`1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn`) doesn't have source files in the repo — it's only deployed via clasp. Let me try to read the source from the deployed GAS by calling it with a debug action.
+
+
+### 🤖 Autopilot
+
+Now I can see the existing actions. The GAS supports:
+- `getOrderStatus`
+- `getGcrContextByQr`
+- `calculateShippingRates`
+- `createLedgerCheckoutSession`
+
+I need to add `createSubscriptionCheckoutSession`. Let me check if I can read the source via the clasp mirror or if I need to work with what I know.
+
+The GAS source isn't in the repo — it's only deployed. I need to write the new function and deploy it. Let me create the source file in the repo and deploy via clasp.
+
+
+### 🤖 Autopilot
+
+I understand the architecture now. The Shopping Cart GAS source isn't in the repo — it's only in the clasp mirror. Since I can't `clasp pull` the source (no clasp setup on this box), I need to write the new `createSubscriptionCheckoutSession` function as a new source file and deploy it.
+
+Let me create the source file in the `google_app_scripts` reference folder and also set up the clasp mirror for deployment.
+
+First, let me check if clasp is available on the autopilot box.
+
+
+### 🤖 Autopilot
+
+Clasp is available. Let me check if it's logged in.
+
+
+### 🤖 Autopilot
+
+Clasp is logged in. Now let me check the tokenomics repo checkout on the autopilot box.
+
+
+### 🤖 Autopilot
+
+No tokenomics checkout on the autopilot box. I need to clone it and set up the clasp mirror. But first, let me write the GAS function as a source file in the repo, then deploy via clasp.
+
+Let me create the subscription checkout function. Based on the existing `createLedgerCheckoutSession` pattern (which I can see from the debug response), I need to write a new action that:
+
+1. Takes `sku`, `quantity`, `shippingAddress`
+2. Looks up the product from the catalog
+3. Creates a Stripe subscription checkout session with recurring `price_data`
+4. Returns the checkout URL
+
+
+### 🤖 Autopilot
+
+Now I need to deploy this to the Shopping Cart GAS. Let me clone the tokenomics repo on the autopilot box and use clasp to push.
+
+
+### 🤖 Autopilot
+
+The clasp mirror only has `.clasp.json`. I need to `clasp pull` first to get the existing source, then add my new function, then push.
+
+
+### 🤖 Autopilot
+
+The clasp credentials don't have access to this GAS project. This is expected — the Shopping Cart GAS is owned by `garyjob@agroverse.shop` and the clasp credentials on this box are likely for a different account.
+
+This means I can't deploy the GAS action directly. Let me check what account clasp is logged in as.
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → https://drive.google.com/start/apps\
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+
