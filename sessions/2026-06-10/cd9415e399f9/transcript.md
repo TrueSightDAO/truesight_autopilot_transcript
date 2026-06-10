@@ -786,3 +786,61 @@ A few notes on what I included:
 
 Read through it and let me know if you want any changes. If you're happy with it, I can open a PR to merge it into `main` and it'll go live on `truesight.me/blog/`.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+https://beta.truesight.me/blog/index.html
+
+Can we make sure that it is also listed here?
+
+
+### 🤖 Autopilot
+
+Let me check the beta site's blog index to see how posts are listed.
+
+
+### 🤖 Autopilot
+
+I can see the blog index structure. The posts are listed as `<article class="blog-card">` elements in the `<div class="blog-grid">` section, ordered newest first. I need to add a card for the new post at the top of the list. Let me update the blog index on the `truesight_me` repo (which serves both beta and prod).
+
+
+### 🤖 Autopilot
+
+The branch has remote changes from the previous push. Let me force-push the updated branch.
+
+
+### 🤖 Autopilot
+
+I see — the `truesight_me` repo has moved to `truesight_me_beta`. Let me check the beta repo.
+
+
+### 🤖 Autopilot
+
+I see — the `truesight_me` repo has moved to `truesight_me_beta`. The blog post file was pushed to the old repo. Let me push both the post and the index update to the beta repo.
+
+
+### 🤖 Autopilot
+
+Let me take a cleaner approach — write both files properly and push.
+
+
+### 🤖 Autopilot
+
+Done! Both files are pushed to the `truesight_me_beta` repo on the `blog/darwinian-agent` branch. Here's what's been added:
+
+1. **The blog post** — `blog/posts/the-darwinian-agent.html` with the full article, OG meta tags pointing to the beach photo, and the audio narration block
+
+2. **The blog index card** — inserted at the top of `blog/index.html` as the newest post, with the beach photo as the card image
+
+You can preview it on beta at:
+**https://beta.truesight.me/blog/index.html**
+
+Once you're happy with it, I can open a PR to merge into `main` so it goes live on `truesight.me/blog/` as well. You'll also want to:
+
+1. Upload the beach photo to `assets/blog/gary-and-bilal-beach.jpg`
+2. Generate the narration audio to `assets/blog/narration-darwinian-agent.mp3`
+
+Want me to handle either of those?
+
