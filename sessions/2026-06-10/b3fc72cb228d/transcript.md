@@ -227,3 +227,57 @@ That's a clean consolidation. Let me look at what we're dealing with — the 5 w
 
 I can dig into the Krake codebase to find the Sidekiq queue configs. Want me to search the repo for that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think you have the ability to SSH into the boxes, right? And then for the Cric underscore SK instances, just see what is the actual site kick.yml file configuration being referenced. I think the upstart script would give you a lot of insights. Because from my perspective, like the Cric underscore instances are just all running the same exact code basis. Not so sure about the get data underscore cache though. I think you can just go in and take a look too. Maybe any of the day we just have two separate code basis running on one box. Go dig deeper and then come back to me on that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The Krake boxes use a different SSH key (`GETDATA_key_pair`) than what I have access to from the autopilot. Let me try via the bastion path — I can SSH through the autopilot to reach them.
+
+
+### 🤖 Autopilot
+
+Right — the Nelanco boxes all use `GETDATA_IO_PAIR_20201122` key, and the autopilot only has the `garyjob_aws` key loaded. I can't SSH into them directly from here.
+
+However, I can look at the Krake codebase to find the Sidekiq configs. Let me search the repo.
+
+
+### 🤖 Autopilot
+
+The Krake codebase isn't in the TrueSightDAO org — it's a separate product (getdata.io). Let me check if there's anything in the sentiment_importer repo that references Krake Sidekiq configs.
+
+
+### 🤖 Autopilot
+
+That's the sentiment_importer (Edgar) — not Krake. The Krake codebase isn't in our GitHub org. Let me check if there's any reference to Krake's deploy configs or Sidekiq setup in our docs.
+
+
+### 🤖 Autopilot
+
+So here's the situation: the Krake/getdata.io codebase is **not in the TrueSightDAO GitHub org** — it's a separate product owned by Nelan. I don't have access to its repo or SSH access to the boxes (different SSH key).
+
+**What I can tell you from the EC2 metadata alone:**
+
+All five `krake_sk*` instances were launched from **different AMIs** and use **different key pairs** — `krake_sk` and `krake_sk_scaler` use `GETDATA_IO_PAIR_20201122`, while `krake_sk_crawler`, `krake_data`, and `GETDATA_CACHE` use `GETDATA_key_pair`. That suggests they may have slightly different setups.
+
+**To actually dig into the Sidekiq configs, I'd need one of:**
+1. The Krake repo URL (if it's on GitHub under a different org)
+2. Someone to SSH in and grab the `/etc/systemd/system/sidekiq*.service` or upstart configs
+3. Or you could ask Cory/Nelan's team to share the Sidekiq queue configs
+
+**My best guess based on naming conventions:**
+- `krake_sk` — general/default queue
+- `krake_sk_webhook` — webhooks queue
+- `krake_sk_crawler` — crawler/scraper queue
+- `krake_sk_scaler` — autoscaling decisions queue
+- `GETDATA_CACHE` — cache warming queue
+
+They're almost certainly the same Rails codebase with different `sidekiq -q <queue_name>` flags. Consolidating them onto one box would just mean running multiple Sidekiq systemd services with different `-q` arguments.
+
+Want me to ask Cory for the Krake repo URL or the Sidekiq configs so I can give you a precise consolidation plan?
+
