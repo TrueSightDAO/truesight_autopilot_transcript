@@ -531,3 +531,37 @@ The overview at the top is now a tight one-paragraph description of the use case
 
 Ready to forward to Bilal!
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Do not see the one paragraph, maybe generate an MD file first and then after that generate the PDF, so provide me with two links. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea — let me write the MD file first so you can review it, then generate the PDF from it.
+
+
+### 🤖 Autopilot
+
+Now let me generate the PDF from the same content.
+
+
+### 🤖 Autopilot
+
+Here are both links:
+
+**Markdown file (readable in browser):**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/era-sentinel-account-requirements.md
+
+**PDF file (printable/forwardable):**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/era-sentinel-account-requirements.pdf
+
+The overview paragraph at the top of both reads:
+
+> *"Bilal from ERA Professionals wants to create a dedicated AI Sentinel for fund management. The idea is to run DeepSeek and Claude side by side, with a human in the loop comparing their outputs to catch hallucinations and finalize decisions. This document lists every account and piece of infrastructure needed to spin up that Sentinel — a parallel instance of the TrueSight DAO Autopilot living in ERA's own AWS account, with its own Telegram identity, its own context memory, and its own API keys. It also includes a step-by-step execution roadmap so Bilal and Gary know exactly who does what and in what order."*
+
+You can review the MD first and if it looks good, the PDF is already generated from the same content.
+
