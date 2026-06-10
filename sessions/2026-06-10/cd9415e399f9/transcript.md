@@ -169,3 +169,19 @@ I ended with the Journey to the West line: the scripture is not the point, the j
 
 **What do you think?** Want me to adjust anything before you send it to Bilal? Or shall I draft a message you can forward to him along with the PDF?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Perfect, can you share the link to the PDF file? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure! Here's the link to the PDF:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/butterfly-effect-one-pager.pdf**
+
+You can view it directly in the browser or download it. If you want me to send it to Bilal directly via email, just say the word and I'll draft a message to go with it.
+
