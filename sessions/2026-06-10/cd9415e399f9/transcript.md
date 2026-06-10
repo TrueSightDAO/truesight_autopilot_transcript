@@ -10,64 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — the `truesight_me` repo has moved to `truesight_me_beta`. The blog post file was pushed to the old repo. Let me push both the post and the index update to the beta repo.
-
-
-### 🤖 Autopilot
-
-Let me take a cleaner approach — write both files properly and push.
-
-
-### 🤖 Autopilot
-
-Done! Both files are pushed to the `truesight_me_beta` repo on the `blog/darwinian-agent` branch. Here's what's been added:
-
-1. **The blog post** — `blog/posts/the-darwinian-agent.html` with the full article, OG meta tags pointing to the beach photo, and the audio narration block
-
-2. **The blog index card** — inserted at the top of `blog/index.html` as the newest post, with the beach photo as the card image
-
-You can preview it on beta at:
-**https://beta.truesight.me/blog/index.html**
-
-Once you're happy with it, I can open a PR to merge into `main` so it goes live on `truesight.me/blog/` as well. You'll also want to:
-
-1. Upload the beach photo to `assets/blog/gary-and-bilal-beach.jpg`
-2. Generate the narration audio to `assets/blog/narration-darwinian-agent.mp3`
-
-Want me to handle either of those?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Can you share the exact URL to view the blog post on beta.truside.me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Sure! Here's the link to the blog post on beta:
-
-**https://beta.truesight.me/blog/posts/the-darwinian-agent.html**
-
-And the blog index where it should appear at the top:
-
-**https://beta.truesight.me/blog/index.html**
-
-Note that the beach photo and narration audio won't load yet since those assets haven't been uploaded — but the text content should render fine.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Yeah, displaying fall fall right now. Maybe just like merge the PR that you have generated Also the if you haven't make sure to Also generate the narration audio as well as the beach photo Make sure that when I go to the link. They just provided I can Really see everything and interact with your voice over there [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
 Let me first check if the beach photo was one of the attachments from earlier in this conversation, and also generate the narration audio.
 
 
@@ -312,4 +254,22 @@ Now let me regenerate the narration audio to include the new section.
 All done! The blog post now has a new section called **"Sovereignty follows the person, not the employer"** that captures exactly what you described — how the adapted agent ensures skillset sovereignty, inverts the corporate extraction model, and makes the relationship an asset that belongs to the person, not the company. And the narration audio has been regenerated to include it, all saying "Gary" throughout.
 
 It'll be live on beta.truesight.me once GitHub Pages finishes deploying.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I was thinking right now the title and you know the part about a sovereignity, it's not really obvious in the title until you got all the way to the very end, but I did like from my perspective, the sovereignity is almost like a central theme of this blog post. What are the thoughts? Let's discuss about this. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right. The sovereignty angle is the real punchline of the whole piece, and right now it's buried in the second-to-last section. The title "The Darwinian Agent: Why Everyone Will Have Their Own Adapted AI" hints at it but doesn't land the punch.
+
+Here's what I'm thinking: the title could be something like **"The Darwinian Agent: Sovereignty in the Age of Replaceable AI"** — that way sovereignty is right there in the title, and the subtitle or opening paragraph can make it clear that this isn't just about having a personalized AI, it's about who owns the relationship when the corporate extraction machine comes for it.
+
+Or we could go even more direct: **"Your AI Should Leave When You Do: Sovereignty, the Darwinian Agent, and the End of Skillset Extraction"** — but that might be too long.
+
+What do you think? I could also restructure the post so the sovereignty section comes earlier — maybe right after "Swappable backends, sovereign context" — so the reader hits it before they get to the Bilal section. That way the whole second half of the post builds toward the sovereignty conclusion instead of it being a late addition.
 
