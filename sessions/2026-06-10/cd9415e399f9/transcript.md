@@ -434,3 +434,45 @@ Each unit has its own checklist, and there's a **resume tracker** at the bottom 
 
 Ready for you to forward to Bilal whenever you want.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I'm not seeing the execution rope map checklist so can you make sure to generate it properly? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what the PDF actually looks like to see if the roadmap rendered properly.
+
+
+### 🤖 Autopilot
+
+Let me regenerate it and make sure the roadmap section is clear and prominent.
+
+
+### 🤖 Autopilot
+
+Here's the updated PDF with the roadmap clearly laid out:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/era-sentinel-account-requirements.pdf**
+
+I've restructured it so the roadmap is much more prominent. The document now has:
+
+**Part 1** — The 10 account/infrastructure items with clear who-provides-what
+
+**Part 2** — The full execution roadmap with 6 units, each with its own checkbox list:
+
+- **PRE-FLIGHT** — 11 checkboxes for Bilal (AWS, GitHub, API keys, Gmail, etc.)
+- **UNIT 1** — 4 checkboxes for you (Telegram bot)
+- **UNIT 2** — 6 checkboxes (fork codebase, customize)
+- **UNIT 3** — 8 checkboxes (deploy to EC2, verify everything)
+- **UNIT 4** — 5 checkboxes (first conversation, the 81 trials)
+- **UNIT 5** — 5 checkboxes (fund management tooling)
+- **UNIT 6** — 3 checkboxes (documentation for future clones)
+
+And a **resume tracker table** at the bottom showing everything as PENDING with "START HERE" on Pre-flight.
+
+Should be ready to forward to Bilal now!
+
