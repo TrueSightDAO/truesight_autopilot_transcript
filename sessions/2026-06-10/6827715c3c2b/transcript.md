@@ -8,29 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-go for it
-
-
-### 🤖 Autopilot
-
-Let me read the handoff plan first.
-
-
-### 🤖 Autopilot
-
-Got it. Full authorization received. Let me start executing.
-
-**Starting at Unit 1 — Pre-flight checklist first.**
-
-Let me verify the NELANCO RunInstances permission (dry-run) and check the existing infrastructure.
-
-
 ### 🤖 Autopilot
 
 Excellent. Pre-flight data gathered. Let me also check Route53 for the truesight.me hosted zone and find the latest Ubuntu AMI.
@@ -852,4 +829,103 @@ The redirect script is now live (2 occurrences of `slug=chocolate-bar` — one i
 The redirect script is now in the page. The page loads at `/subscribe/chocolate-bar/`, the inline script detects no `?slug=` param, and redirects to `/subscribe/chocolate-bar/?slug=chocolate-bar`. Then `subscribe.js` reads `slug=chocolate-bar`, calls `getProductBySubscriptionSlug('chocolate-bar')`, and finds the product.
 
 **Fix is deployed and live.** The page should now show the product card instead of "Product not found." Try refreshing `https://beta.agroverse.shop/subscribe/chocolate-bar/` — it should work now.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1955] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1955) is the active handoff for `BETA_SANDBOX_ENDPOINT_PLAN.md`. Before responding, read it with read_context_file("BETA_SANDBOX_ENDPOINT_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think the shipping cost should be visible as soon as I filled in the address.. Reference the UX in the current existing checkout page
+
+
+### 🤖 Autopilot
+
+Good point. Let me look at how the existing checkout page handles shipping calculation to replicate that UX pattern.
+
+
+### 🤖 Autopilot
+
+Now let me check how the existing checkout page calculates shipping — it likely calls the EasyPost endpoint.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual checkout page on the live site to understand the shipping UX pattern.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual product page checkout flow to understand how shipping is handled there.
+
+
+### 🤖 Autopilot
+
+Let me look at how the existing product page checkout works — specifically how shipping is calculated.
+
+
+### 🤖 Autopilot
+
+Now let me find the shipping calculator that handles live rate calculation.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The existing checkout page uses `checkout-shipping-calculator.js` which:
+1. Listens for address field blur events
+2. Calls the GAS or Edgar API to get live USPS rates via EasyPost
+3. Displays selectable shipping options with radio buttons
+4. Updates the total with the selected rate
+
+The subscribe page needs the same pattern. Let me update `subscribe.js` to integrate the shipping calculator — it should auto-calculate shipping when the address fields are filled, and show the total including shipping in the summary.
+
+
+### 🤖 Autopilot
+
+Now I also need to add the shipping rates container to the HTML and wire up the address blur listeners. Let me also update the HTML to add the container and the submit button to be disabled by default.
+
+
+### 🤖 Autopilot
+
+Now I also need to add the address blur listeners in `subscribe.js` that trigger shipping calculation. Let me check the current init function and add the listeners.
+
+
+### 🤖 Autopilot
+
+I need to add the address blur listeners to the `init()` function. Let me update it.
+
+
+### 🤖 Autopilot
+
+Now let me merge all three PRs and deploy.
+
+
+### 🤖 Autopilot
+
+All merged. GitHub Pages will take a minute to build. Let me verify once it's live.
+
+
+### 🤖 Autopilot
+
+Still cached. Let me wait a bit more.
+
+
+### 🤖 Autopilot
+
+Live. Let me verify the full page loads correctly.
+
+
+### 🤖 Autopilot
+
+The page is live with all the changes:
+
+1. ✅ **Product card** now renders (slug redirect works)
+2. ✅ **`#subscribe-shipping-rates`** container is in the summary
+3. ✅ **Shipping** shows "Enter address below" initially
+4. ✅ **Total** shows "Enter address" initially
+5. ✅ **Subscribe Now button** is `disabled` by default
+6. ✅ **Address blur listeners** will trigger live shipping calculation
+
+The shipping calculation will call the same EasyPost/USPS endpoint as the checkout page when the user fills in their address and tabs out. The shipping options will appear as selectable radio buttons in the summary, and the total will update with the selected shipping cost — matching the existing checkout UX.
+
+Try it out at `https://beta.agroverse.shop/subscribe/chocolate-bar/` — fill in an address and tab to the next field, and shipping options should appear.
 
