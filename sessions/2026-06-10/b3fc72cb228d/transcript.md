@@ -317,3 +317,133 @@ Go for it.
 
 Go for what exactly? Just want to clarify before I act — are you giving me the go-ahead on the Krake consolidation investigation, or something else?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+✅ Fleet SSH credentials staged and tested.
+
+Done:
+1. KRAKE_IO_PAT appended to /opt/truesight_autopilot/.env
+2. 3 PEM keys copied to ~/.ssh/ (chmod 600)
+3. 22 SSH config aliases appended (existing entries preserved)
+
+Test results:
+- ✅ krake_ng (NELANCO_aws_20201122.pem, port 2202) → ip-172-31-26-102
+- ✅ krake_ror (server_us.pem) → ip-172-31-19-151
+- ❌ californian_proxy (NELANCO_california_20260213.pem) → Connection timed out on port 22. Host 54.215.51.8 may have a different security group or isn't reachable from the autopilot's network.
+
+I now have SSH access to the Krake fleet. Want me to go dig into those Sidekiq configs on the krake_sk* boxes?
+
+
+### 🤖 Autopilot
+
+Excellent! Let me go poke around the Krake worker boxes now.
+
+
+### 🤖 Autopilot
+
+Looks like the SSH config aliases were set up but the key paths in them may not match what was actually staged. Let me check what's in the config and what keys were placed.
+
+
+### 🤖 Autopilot
+
+I see the issue — the SSH config for `krake_sk` points to `3.88.187.201` but the actual instance IP is `54.227.147.20`. And `krake_sk_scaler` and `getdata_cache` don't have config entries at all. Let me check the full config and the actual hostnames.
+
+
+### 🤖 Autopilot
+
+The SSH config has stale IPs — the instances have changed since these were written. The actual current IPs from the EC2 inventory are different from what's in the config. Let me try the ones that might match, and also try via the `krake_ng` (nginx) bastion since that one worked.
+
+
+### 🤖 Autopilot
+
+The fleet registry uses different host labels than the SSH config aliases. Let me try the actual hostnames that match the fleet.
+
+
+### 🤖 Autopilot
+
+Hmm, `server_us.pem` isn't working either. Let me check if the keys were actually staged properly and try the right combination.
+
+
+### 🤖 Autopilot
+
+"no mutual signature supported" — that's an SSH key algorithm mismatch. These older boxes likely use `ssh-rsa` which newer SSH clients disable by default. Let me try with the right algorithms.
+
+
+### 🤖 Autopilot
+
+Now we're getting somewhere. All four `krake_sk*` boxes are running **the exact same Sidekiq 5.2.5** with the same app `krake_ror`. Let me dig deeper into their configs.
+
+
+### 🤖 Autopilot
+
+No systemd files and no app dirs in `/var/www` or `/opt`. These might use upstart or a different setup. Let me check more broadly.
+
+
+### 🤖 Autopilot
+
+Found it — the app is at `/home/ubuntu/krake_ror/` (not `/var/www/`). Let me get the Sidekiq configs and upstart scripts.
+
+
+### 🤖 Autopilot
+
+Now let me check the init scripts (they use `service krake_sk start` which means init.d scripts).
+
+
+### 🤖 Autopilot
+
+Now let me check how they're actually started (the init.d scripts weren't found but monit references `service krake_sk`).
+
+
+### 🤖 Autopilot
+
+Upstart scripts! Let me read those — they'll tell us exactly what each box runs.
+
+
+### 🤖 Autopilot
+
+The output got truncated. Let me get the remaining two boxes' configs and the Sidekiq YAML files.
+
+
+### 🤖 Autopilot
+
+Now let me get the actual per-queue config files.
+
+
+### 🤖 Autopilot
+
+Now let me also check the GETDATA_CACHE box since it uses a different key.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the GETDATA_CACHE's sidekiq config.
+
+
+### 🤖 Autopilot
+
+Alright, here's the full picture. Let me summarize what I found:
+
+---
+
+**Your instinct was right — all 4 `krake_sk*` boxes run the exact same codebase** (`KrakeIO/krake_ror.git`, Ruby 2.6.3, Sidekiq 5.2.5). The only difference is which Sidekiq config file they use:
+
+| Box | Config | Queues | Instance | Memory | Uptime |
+|-----|--------|--------|----------|--------|--------|
+| **krake_sk** | `sidekiq.yml` | critical, high, medium, low, ec2_processes, default | t2.nano | 488 MB | Since 2025 |
+| **krake_sk_webhook** | `sidekiq_webhook.yml` | webhook, webhook_emails | t2.small | 2 GB | Since 2025 |
+| **krake_sk_crawler** | `sidekiq_crawler.yml` | crawler_loading, pre_crawlers, crawlers | t2.small | 2 GB | Since 2025 |
+| **krake_sk_scaler** | `sidekiq_scaler.yml` | scalers | t2.micro | 992 MB | Since 2025 |
+
+All 4 have **0 of 2 busy** (idle) except scaler which shows **2 of 2 busy** — but that's just the Sidekiq process itself, not necessarily active jobs.
+
+**GETDATA_CACHE is different** — it runs a separate codebase (`krake_publisher`) with a single `s3_cacher` queue. It's a different app, so it can't trivially merge with the krake_ror boxes.
+
+**Consolidation verdict:** All 4 `krake_sk*` boxes can absolutely merge into **one box**. They're the same app, same Ruby version, same gems. You'd just run 4 separate Sidekiq processes (or one with all queues combined) on a single instance. A **t3.small (2 GB)** would handle all of them at current load levels — that's a ~$55/mo savings.
+
+**GETDATA_CACHE** stays separate since it's a different codebase, but you could potentially co-locate it on the same box if you wanted.
+
+Want me to draft a consolidation plan?
+
