@@ -397,3 +397,40 @@ The key insight I included at the end: the infrastructure deploys in an afternoo
 
 Want me to forward this to Bilal, or do you want to review it first and send it yourself?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+And you also provide a detailed execution roadmap checklist for the deployment and setup process that you think will actually be required and include that in the PDF generated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me regenerate the PDF with a full execution roadmap checklist included.
+
+
+### 🤖 Autopilot
+
+Done! Here's the updated PDF with the full execution roadmap included:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/docs/era-sentinel-account-requirements.pdf**
+
+The document now has two parts:
+
+**Part 1** — The 11 account/infrastructure items, same as before, with who provides what and estimated costs (~$60-110/month).
+
+**Part 2** — A full **execution roadmap** with 6 units:
+
+1. **Pre-flight** — Bilal provides all the accounts (12 checklist items)
+2. **Unit 1** — You create the Telegram bot
+3. **Unit 2** — Fork and customize the codebase for fund management
+4. **Unit 3** — First deployment to ERA's EC2
+5. **Unit 4** — First conversation and the 81 trials begin
+6. **Unit 5** — Fund management tooling (iterative)
+7. **Unit 6** — Documentation and handoff for future clones
+
+Each unit has its own checklist, and there's a **resume tracker** at the bottom showing everything as PENDING with "RESUME HERE: Pre-flight."
+
+Ready for you to forward to Bilal whenever you want.
+
