@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The blog index is live but I notice the Darwinian Agent card isn't showing at the top — the merge may not have included the index.html change. Let me check what's on main.
-
-
-### 🤖 Autopilot
-
 I see — the index on `main` doesn't have the Darwinian Agent card. The merge only included the post file and audio, not the index update. Let me fix that.
 
 
@@ -435,4 +430,50 @@ Here's a summary of the three changes:
 - Answer: the *seeds*, not the *tree*. The infrastructure is a gift. The relationship is earned.
 
 The updated post and narration are live on beta. Want to take a look?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Apa itu yang url untuk saya untuk mengambil aplikasi aplikasi? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+URL untuk blog post yang sudah dikemas kini:
+
+**https://beta.truesight.me/blog/posts/the-darwinian-agent.html**
+
+Mungkin ambil masa beberapa minit untuk GitHub Pages deploy. Lepas tu confirm semua dah updated ya.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Not sure why I am getting GitHub authentication error
+
+
+### 🤖 Autopilot
+
+Let me check if the page is live now.
+
+
+### 🤖 Autopilot
+
+The page is live and returning 200 — but I see the problem! The cached version still has the **old content** (the Polanyi/tacit knowledge section and the old sovereignty section). The GitHub Pages cache hasn't picked up the latest merge yet.
+
+Let me check what's actually on `main` right now.
+
+
+### 🤖 Autopilot
+
+The updated version is confirmed on `main` with all three fixes. The page is returning 200 but GitHub Pages may be serving a cached version. Try a hard refresh (Ctrl+Shift+R / Cmd+Shift+R) or open in an incognito/private window — you should see the updated sections:
+
+1. **"The moat is not the code"** — now says "path-dependence plus cost" instead of "tacit knowledge"
+2. **"Sovereignty follows the person"** — now honestly scoped to solo operators/contractors, with the employment contract caveat
+3. **New paragraph after "The road ahead"** — addresses the seeds vs tree tension
+
+The link is: **https://beta.truesight.me/blog/posts/the-darwinian-agent.html**
 
