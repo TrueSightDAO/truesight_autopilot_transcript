@@ -10,55 +10,6 @@
 
 ### 🤖 Autopilot
 
-Merge conflict on PR #103 because the file was written fresh but the other PRs already merged the same file. Let me resolve by reading the current state and updating:
-
-
-### 🤖 Autopilot
-
-Good — the file exists on main now (from the merged PRs). I just need to add the two new endpoints to it:
-
-
-### 🤖 Autopilot
-
-All Phase 2 PRs merged. Now let me report the DAO contributions and update the plan tracker.
-
-
-### 🤖 Autopilot
-
-Here's the full status update:
-
-## Phase 2 complete — all PRs merged
-
-| PR | Scope | Status |
-|----|-------|--------|
-| **2.1** | Subscription Fulfillment Queue sheet module | ✅ Merged |
-| **2.2** | Rails webhook invoice.paid handler + dao_protocol obligation endpoint | ✅ Merged |
-| **2.3** | Fulfill Subscriptions page + list/fulfill endpoints | ✅ Merged |
-
-## 🛑 STOP — operator test gate (end of Phase 2)
-
-Per the plan, I stop here and hand back to you for the full loop test. Here's what needs operator verification:
-
-1. **Deploy dao_protocol** with the new modules (sheet tab auto-creates on first access)
-2. **Deploy sentiment_importer** with the new webhook handler
-3. **Deploy dapp_beta** with fulfill_subscriptions.html
-4. **Run the full loop:**
-   - `stripe trigger invoice.payment_succeeded` → should create a PENDING row in the Subscription Fulfillment Queue tab
-   - Visit `beta.dapp.truesight.me/fulfill_subscriptions.html` → should show the PENDING obligation
-   - Enter QR codes + tracking → submit → should create [SALES EVENT]s and mark FULFILLED
-
-On your sign-off, we can **activate Linda** — the Activation gate is now satisfied. Phase 3 (RSA accounts) is independent and can follow later.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Can you suggest a user acceptance testing plan and to end listing all the different views like in terms of URL I should go and then what I should be expecting to see there and what to test Generated in the form of an MD file as well as the Appedia actually you know what scratch that extend it on to the current existing MD file for this project that way I can just look at it and then follow and execute As its own section please [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
 I'll append a comprehensive UAT section to the plan document.
 
 
@@ -330,4 +281,29 @@ The pattern going forward: every clasp mirror should have a `.clasp-owner` file.
 **✅ Done this turn — actions taken:**
 • `ssh run` → {
 • `ssh run` → {
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+make sure to update agentic_ai_context about this pattern.
+
+
+### 🤖 Autopilot
+
+Good — `NOTES_tokenomics.md` already has a section about the clasp credential files. Let me update it to also mention the `.clasp-owner` convention and the credential-swapping protocol more explicitly:
+
+
+### 🤖 Autopilot
+
+Done. The `.clasp-owner` convention is now documented in three places:
+
+1. **`tokenomics/clasp_mirrors/README.md`** (PR #341) — the credential-switching protocol with the two accounts
+2. **`tokenomics/clasp_mirrors/<scriptId>/.clasp-owner`** (PR #340) — per-mirror owner file
+3. **`agentic_ai_context/NOTES_tokenomics.md`** (PR #427) — the AI-facing reference doc
+
+The pattern is: every clasp mirror has a `.clasp-owner` file. Before pushing, check it → swap to the right `.clasprc-*.json` → push → restore. No more "caller does not have permission" surprises.
 
