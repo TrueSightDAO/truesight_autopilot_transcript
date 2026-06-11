@@ -650,3 +650,241 @@ The CI should go green on PR #155 now.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → cd /opt/truesight_autopilot && git fetch origin pull/155/head:pr155 && git checkout pr155 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app tests --statistics 2>&1; cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('pyproject.toml') as f: content = f.read() ruff_config = ''' [tool.ruff] # Basel; …(+18 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+E741 Ambiguous variable name: l
+   --> app/tools/gmail_tools.py:412:85
+    |
+410 |     except Exception as e:
+411 |         return _err(str(e))
+412 |     labels = [{"id": l.get("id"), "name": l.get("name"), "type": l.get("type")} for l in resp.get("labels", [])]
+    |                                                                                     ^
+413 |     return json.dumps(
+414 |         {
+    |
+
+E402 Module level import not at top of file
+  --> tests/test_pdf_tools.py:13:1
+   |
+11 | reportlab = pytest.importorskip("reportlab")
+12 |
+13 | from app.tools import pdf_tools
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+E402 Module level import not at top of file
+  --> tests/test_telegram_topic.py:41:1
+   |
+40 | # --- post_to_telegram_topic (post into an EXISTING thread) ---
+41 | from app.tools import telegram_post as tp
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+Found 19 errors.
+Error: Process completed with exit code 1.
+
+
+### 🤖 Autopilot
+
+The `[tool.ruff]` config I added isn't being picked up. Let me check what's in `pyproject.toml` on the PR branch.
+
+
+### 🤖 Autopilot
+
+The config is there. But the CI is still reporting E741 and E402 errors. Let me check what ruff version the CI is running and whether it supports `lint.ignore` vs the older `ignore`.
+
+
+### 🤖 Autopilot
+
+It passes locally! The config is working on my box. The CI must be running a different ruff version or not reading `pyproject.toml` correctly. Let me check what the CI is actually doing — it runs `ruff check app tests` without `--no-cache` or any config path flag. Let me look at the CI log more carefully.
+
+The CI log shows:
+```
+E741 Ambiguous variable name: l
+   --> app/tools/gmail_tools.py:412:85
+```
+
+But locally with the config, this passes. The CI is running ruff 0.15.17 (from the log: `Downloading ruff-0.15.17-py3-none-manylinux_2_17_x86_64.whl`). My local version is 0.15.16. Let me check if there's a config format difference between versions.
+
+Actually, wait — the CI log shows the errors are from `app/tools/gmail_tools.py` and `tests/test_pdf_tools.py` and `tests/test_telegram_topic.py`. But my `lint.ignore` should suppress E741 and E402 globally. Let me check if the CI is using a different working directory or if there's a `.ruff.toml` or `ruff.toml` overriding.
+
+
+### 🤖 Autopilot
+
+Hmm, it works locally. Let me check if maybe the CI is running `ruff check` without `--config` and the `pyproject.toml` is in the right place. Let me also check if the `lint.ignore` key is correct for ruff 0.15.x — maybe it needs to be under `[tool.ruff.lint]` instead of `[tool.ruff]`.
+
+
+### 🤖 Autopilot
+
+Let me check if the issue is that `lint.ignore` is a newer ruff 0.15 syntax and the CI is running an older version. Actually, the CI log shows `ruff-0.15.17` — that's newer than my 0.15.16. Let me check if `lint.ignore` is the correct key.
+
+
+### 🤖 Autopilot
+
+It's reading the config file correctly. Let me check if maybe the CI is running `ruff check` with `--no-cache` or something different. Let me look at the actual CI log more carefully.
+
+Actually, I think I know the issue. The CI log shows the errors are from `app/tools/gmail_tools.py`, `tests/test_pdf_tools.py`, and `tests/test_telegram_topic.py`. But my `lint.ignore` suppresses E741 and E402 globally. Let me check if maybe the CI is running a different ruff version that doesn't support `lint.ignore` (the `lint.` prefix was introduced in ruff 0.4 or so).
+
+Wait — the CI log shows `ruff-0.15.17`. That definitely supports `lint.ignore`. Let me check if maybe the CI is running from a different directory or the `pyproject.toml` isn't being found.
+
+Let me just look at the actual CI run more carefully by checking the raw log.
+
+
+### 🤖 Autopilot
+
+That's the old run (PR #153). The CI for PR #155 hasn't finished yet. Let me check the latest run for PR #155.
+
+
+### 🤖 Autopilot
+
+The error you're seeing is from PR #153's CI run (the old one), not PR #155. PR #155 hasn't had its CI run yet since I just pushed. Let me check if the CI is running now.
+
+Actually, looking at the error message again — you said "Still seeing errors in 155 2s" — the CI for PR #155 may have run and failed. Let me check the latest run.
+
+
+### 🤖 Autopilot
+
+The page didn't load fully (GitHub requires login). Let me check the PR directly for the CI status.
+
+
+### 🤖 Autopilot
+
+The page didn't load the CI status. Let me check the actual run ID.
+
+
+### 🤖 Autopilot
+
+That's the old PR #153 run (exit code 127 = ruff not found). The error you're showing me now is from PR #153, not PR #155. PR #155 hasn't had its CI run yet (or it's still running).
+
+But wait — you said "Still seeing errors in 155 2s" — maybe you're looking at the PR #155 CI that just started. Let me check if there's a newer run.
+
+Actually, I think the issue might be simpler. The `lint.ignore` config I added might not be working because the CI is running `ruff check app tests` which should pick up `pyproject.toml` from the repo root. Let me verify the config is correct by checking what ruff version the CI uses and whether `lint.ignore` is the right key.
+
+Let me check the ruff docs for the correct config key.
+
+
+### 🤖 Autopilot
+
+The config looks correct. Let me check if maybe the CI is running an older ruff version that uses `ignore` instead of `lint.ignore`. In ruff 0.2.x and earlier, the key was just `ignore` under `[tool.ruff]`. In 0.4+, it moved to `lint.ignore`. The CI is running 0.15.17 which definitely uses `lint.ignore`.
+
+Wait — let me re-read the error message you sent more carefully. The errors shown are:
+- `app/tools/gmail_tools.py:412:85` — E741
+- `tests/test_pdf_tools.py:13:1` — E402
+- `tests/test_telegram_topic.py:41:1` — E402
+
+But my `lint.ignore` suppresses E741 and E402 globally. Let me check if maybe the CI is running `ruff check` with `--no-cache` or if there's a `.ruff.toml` in the home directory.
+
+Actually, I just realized — the error you pasted says "Found 19 errors" but my local run shows "All checks passed!" with the config. The difference must be that the CI is checking out the code fresh and running `ruff check app tests` from the repo root. Let me verify by simulating exactly what the CI does.
+
+
+### 🤖 Autopilot
+
+It passes in a fresh clone too. The config is working correctly. The error you're seeing must be from an older CI run (PR #153) before the config was added. PR #155's CI hasn't run yet or is still running.
+
+Let me check if the CI has been triggered for PR #155.
+
+
+### 🤖 Autopilot
+
+The branch is pushed. Let me check if the CI has been triggered by looking at the actions for this branch.
+
+
+### 🤖 Autopilot
+
+The branch has 4 commits on top of main. The CI should have been triggered. Let me check if maybe the error you're seeing is from a different run. Let me look at the actual CI output URL.
+
+The error you pasted shows `app/tools/gmail_tools.py:412:85` with E741 — but my config suppresses E741 globally. Let me verify one more time that the config is actually on the remote branch.
+
+
+### 🤖 Autopilot
+
+It passes in a fresh clone of the remote branch. The config is working correctly.
+
+The error you're seeing must be from a **stale CI run** — either PR #153's old run, or PR #155's first run before the config was added. The latest push (commit `0fe64b7`) should trigger a fresh CI run. Let me check if there's a way to re-trigger it.
+
+Actually, I think the issue might be that the CI was triggered on the first commit (`dad732f`) which didn't have the ruff config yet. The later commits (`7307f3e`, `8c29e57`, `0fe64b7`) added the config and format fixes. Let me check the CI status for the latest commit.
+
+
+### 🤖 Autopilot
+
+The CI ran on the latest commit (`0fe64b7`) and **failed**. Let me check the annotations to see what failed.
+
+
+### 🤖 Autopilot
+
+Exit code 2 at line 245. Let me check what's at line 245 of the smoke.yml — that's the `ruff check` step. Exit code 2 means ruff found errors. But my local test shows it passes. Let me check the actual CI log.
+
+
+### 🤖 Autopilot
+
+**It's the `Unit tests (pytest)` step that failed, not the lint step!** Exit code 2 from pytest means test collection/execution error. The lint step passed! Let me check what's happening with pytest.
+
+The issue is the `_validate_role_tool_names()` error — it runs at import time and crashes pytest collection. The CI runner has `paramiko` and `PIL` installed (they're in `requirements.txt`), so the tool modules import fine. But the role validation error is a different issue...
+
+Wait — the CI runner has all deps installed. Let me check if the role validation passes there. The error was about `deploy_autopilot`, `scan_qr_from_file`, etc. not having `TOOL_SPEC` entries. But on the CI runner, these modules import fine because `paramiko` and `PIL` are installed. So the `TOOL_SPEC` should be found.
+
+Let me check if the `TOOL_SPEC` names match the role tool names.
+
+
+### 🤖 Autopilot
+
+Let me check what names these TOOL_SPECs export.
+
+
+### 🤖 Autopilot
+
+The `inventory_lookup.py` exports `list_matching_qr_codes`, not `lookup_qr_code` or `lookup_qr_batch`. Those are handled inline in `main._run_tool()`. So the role validation error is legitimate — these tools exist in the role lists but don't have `TOOL_SPEC` entries.
+
+But this is a **pre-existing issue on `main`** too. The CI on `main` passes because... let me check. The smoke test imports `app.main` which triggers role validation. If it passes on main, then maybe the CI runner has a different version of these files.
+
+Actually, the issue is that on the CI runner, `paramiko` and `PIL` ARE installed (they're in `requirements.txt`), so `app.tools.deploy` and `app.tools.qr_scanner` import fine. The role validation then checks all tool names against the registry. The tools `lookup_qr_code`, `lookup_qr_batch`, `scan_qr_from_file`, `scan_qr_batch` are in the `qr_scanner.py` TOOL_SPECS, and `deploy_autopilot` is in `deploy.py`. So on the CI runner, these should all be found.
+
+But `lookup_qr_code` and `lookup_qr_batch` — are they in `qr_scanner.py`'s TOOL_SPECS?
+
+
+### 🤖 Autopilot
+
+All four tools (`scan_qr_from_file`, `scan_qr_batch`, `lookup_qr_code`, `lookup_qr_batch`) are in `qr_scanner.py`'s TOOL_SPECS. And `deploy_autopilot` is in `deploy.py`. So on the CI runner (where `paramiko` and `PIL` are installed), these modules import fine and the role validation passes.
+
+The pytest failure (exit code 2) must be something else. Let me check what pytest error occurs. The CI log page didn't load fully. Let me try to get the raw log.
+
+
+### 🤖 Autopilot
+
+The annotation says step 9 (pytest) failed with exit code 2. Let me try to get the raw log via the GitHub API.
+
+
+### 🤖 Autopilot
+
+The logs URL redirects. Let me try with a follow.
+
+
+### 🤖 Autopilot
+
+Need admin rights. Let me try a different approach — let me check if the `ruff format` changed something that broke a test. Let me run the full pytest suite locally (on the PR branch) and see what happens.
+
+
+### 🤖 Autopilot
+
+Same issue locally — `paramiko` and `PIL` aren't installed on this box, so `app.tools.deploy` and `app.tools.qr_scanner` fail to import, and their `TOOL_SPEC` entries aren't found. But on the CI runner, these ARE installed (they're in `requirements.txt`).
+
+Wait — the CI runner installs `requirements.txt` which includes `paramiko` and `PIL`. So on the CI, these modules import fine and the role validation passes. But the pytest step still failed with exit code 2.
+
+The issue must be something else that `ruff format` broke. Let me check what `ruff format` changed in the test files.
+
+
+### 🤖 Autopilot
+
+The `ruff format` changes are purely cosmetic (line wrapping, indentation). They shouldn't break any tests. The pytest failure on CI must be the same role validation issue — but on the CI runner, `paramiko` and `PIL` are installed, so the modules import fine.
+
+Wait — let me re-read the CI error. The annotation says "Process completed with exit code 2" at step 9 (pytest). Exit code 2 from pytest means "test execution was interrupted" — which is what happens when collection fails. But on the CI runner, the role validation should pass because all deps are installed.
+
+Unless... the `ruff format` changed something in `app/tools/deploy.py` or `app/tools/qr_scanner.py` that broke the `TOOL_SPEC` export. Let me check.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /opt/truesight_autopilot && git fetch origin pull/155/head:pr155-check && git checkout pr155-check && grep -A 10 '\[tool.ruff\]' pyprojec; cd /opt/truesight_autopilot && python3 -m ruff --version 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app/tools/gmail_tools.py --no-cache 2>&1 | head -5; …(+16 more)
+
