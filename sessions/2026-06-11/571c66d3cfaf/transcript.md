@@ -698,3 +698,30 @@ So the plan already has this as the next step. But there are also simpler, faste
 
 The nav link is the fastest win. Want me to add a "Subscribe" link to the navigation so it appears on every page? Then we can follow up with the PDP and homepage CTA.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Does it make sense just placing the Subscribe link without any context to explain to the visitor what the subscription button is for??
+
+
+### 🤖 Autopilot
+
+You're right — a bare "Subscribe" link in the nav with no context would be confusing. Better to build the **generic-bar PDP** (PR1.5 from the plan) which is the proper marketing surface that explains the rotating-origins model, the surprise discovery, QR traceability, and has the Subscribe CTA in context.
+
+That page would live at `/product-page/ceremonial-cacao-chocolate-bar/` and would be discoverable from:
+- The **homepage** products section (linked like other PDPs)
+- The **nav** (as "Chocolate Bars" or similar)
+- **Search / social / ads**
+
+Want me to build the generic-bar PDP now? It would include:
+- Hero image of the bar + packaging
+- "Rotating origins" concept copy — every month a different single-estate farm
+- QR traceability hook — scan the back to discover the exact farm + vintage
+- **Primary CTA: "Subscribe — starting at $60/month"** → `/subscribe/chocolate-bar/`
+- Secondary: one-off Add-to-Cart
+- Tasting notes, ingredients, shipping terms
+- Wholesale banner
+- Impact section (regenerative, DAO, farmers)
+
