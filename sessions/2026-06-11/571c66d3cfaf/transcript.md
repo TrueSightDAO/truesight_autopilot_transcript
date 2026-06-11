@@ -655,3 +655,29 @@ Yes — I filed a durable follow-up monitor entry in `OPEN_FOLLOWUPS.md` that wi
 
 So whenever that timer strikes — whether it's 60 days or you tell me earlier — I'll be here to pick it up.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+How much time do you think we spent working on phase 1?
+
+
+### 🤖 Autopilot
+
+Rough estimate based on the PRs and conversation volume:
+
+| Activity | Estimated time |
+|----------|---------------|
+| Planning & design (subscribe page, Stripe flow, PDPs) | ~30 min |
+| PR1.1 — Subscribe page | ~20 min |
+| PR1.2 — Stripe Checkout Session (GAS) | ~25 min |
+| PR1.3 — Checkout success page | ~10 min |
+| PR1.4 — Nav link | ~5 min |
+| PR1.5 — Subscribe CTAs on PDPs + generic PDP + homepage card | ~30 min |
+| Tagline, layout tweaks, remove Buy One button | ~15 min |
+| Filing the Phase 2 follow-up | ~5 min |
+| **Total** | **~2 hours 20 min** |
+
+That's end-to-end from plan to shipped — subscribe engine, Stripe integration, two vintage PDP CTAs, a new generic PDP, homepage card, and all the polish. Not bad for a chocolate subscription. 🍫
+
