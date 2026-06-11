@@ -155,3 +155,157 @@ Alternatively, if you prefer a standalone doc, I'd name it `AORA_GO_PARTNERSHIP_
 
 Once I have those, I'll draft the plan as a PR to `agentic_ai_context` and we can open a dedicated tracking topic.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Jerri works for Liz on her team. 
+
+So basically on Agroverse TrueSight DAO side we offer
+
+- cacao supply chain from Brazil to where it lands
+- conversion from cacao beans into chocolate bars
+- handling of warehousing and storage of cacao beans from farmers during harvesting season
+- converts cacao beans into chocolate bars
+
+- Credentialing layer which is being utilized by the service that Kaon is building on. Kaon who is a partner she brough it. He is building MindLoop engine. Basically allows people to build experientail learning modules and publish. We will use it to publish an experiential learning module. And when people complete, it will generate a record on our credentialing layer.
+
+- I think jerri is right now also researching border crossing into china for our cacao. 
+
+- She has past us details of the chocolate mold which they produce in China. Liz is thinking of purchasing them and then I pick it up from her and drop it off in Santos (not sure if that route is happening right now) since Jerri was mentioning that Parents and students in China are not going to be around in JUly. So not very sure.
+
+- Fatima has spoken with Santos, she suggested the following as a proper document which both English and Portugess which she can then use for communication with Santos. 
+
+
+Notes from conversation with Fatima this morning
+
+- whose to cacao (ours which we source directly from the farm)
+- percentage of cacao (81% until other wise - perhaps to indicate this as a decision to be make when Liz has more market visibility)
+ - proportion (19% sugar )
+
+- amount required per month 
+- wrapper foil (who provides)
+
+- best case scenario and secondary 
+
+- mold will be stored with Matheus
+- collect bars and the shell, the mold
+
+
+Outcomes
+- How many chocolate mold he needs
+
+
+Prior conversation with Santos
+-SANTOS: it works like this… 
+He makes a 70% cacao bars, but it can be (60%cacau + 10%cacau butter) or (63% cacao + 7% cacau butter) or (65% cacau+ 5%cacau butter). The 30% can be regular sugar or Demerara sugar (rustic, rough, not so refined, kind of brown sugar).
+For any combination of 70% the price is R$130,00/kg. He delivers in 40 gr bars in basic laminated package. Will send you videos showing the packages.
+
+
+The current mold he has produces 40 gram chocolate bars. He mentioned he is ok trying to make the bars to 50grams. 
+
+The sizes different from the ones we use in San Francisco which Kirsten has 
+Polycarbonate mold 27.5cm x 17.5cm with 4 cavities / 50g
+
+Cavity dimension: 13cm x 5.5cm, 0.6cm deep
+
+It's a standard mold made in Italy - I'll ask about the manufacturer
+
+https://www.chocolat-chocolat.com/product/art1116-chocolate-bar-mold/
+Made by Cabrellon (Italy)
+https://www.cabrellon.it/
+
+Jerri has found the one that is exactly similar to the mold we are using in San Francisco
+
+
+Santos Dimension mold dimension is
+Barras de 40g 
+07x06
+
+Sr Santos, veja se eu entendi:
+
+- a barra tem 7cm X 6cm
+
+Ela é quase um formato quadrado. É isso?
+
+Based on discussion with Fatima, she mentions she needs the expected kilogram of chocolate production per period before Santos can know how many chocolate molds he needs. My sense is if we dont provide as much mold then his through put capacity is limited. 
+
+Perhaps in the execution roadmap, we should indicate for Liz to indicate to us the expected demand the china retailers and distributors are expecting per year. Likely we will need to pre-stock the chocolate bars into the warehouse
+
+Omega services is alot of friction. So lesser number of freights is better.
+
+Originally the launch in July with the students and parents is a physical experiential leraning experience with two parts (reference our context farm and supply chain, I believe it is somewhere)
+
+Was expecting once Kaon is done with his engine, I use his engine to generate experiential learning module like Capoeira, Butterfly effect and Oracle experience.
+
+And we run that experience in china.
+
+
+### 🤖 Autopilot
+
+This is a lot of rich context. Let me synthesize what I'm hearing and propose the right structure.
+
+Let me check what's in the `aora` repo to see the current state of things.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check if there's anything about Kaon/MindLoop in the context.
+
+
+### 🤖 Autopilot
+
+All new context. Here's my synthesis of what you've laid out and my recommendation:
+
+---
+
+**You're describing three interconnected workstreams that the current `AORA_EXPERIENCE_PLAN.md` doesn't cover.** The original plan was a content roadmap (two modules → site → credentialing). What's emerged is a full **supply chain + manufacturing + experiential learning partnership** with Liz/Go/Kaon.
+
+Here's how I see the layers:
+
+### Layer 1: The Aora Experience (existing plan)
+- Content modules (Agroforestry, Supply Chain) — **done** (PR1 merged)
+- zh-CN translation — Jerri's team (Liz's team)
+- Session generator + credentialing — fast follow
+
+### Layer 2: Go/MindLoop Integration (new — Liz + Kaon)
+- Kaon's MindLoop engine as the experiential learning platform
+- Aora modules published as MindLoop experiences
+- Credentialing layer triggered on completion → TrueSight DAO Lineage
+- This is the **technical partnership interface** — exercise schema contract between Aora's `exercises.json` and MindLoop's engine
+
+### Layer 3: Supply Chain & Manufacturing (new — Liz + Santos + Fatima)
+- Cacao sourcing (ours, direct from farm)
+- Chocolate production with Santos (81% cacao / 19% sugar, 40g bars, R$130/kg)
+- Mold specs — Santos's 40g bars vs. Cabrellon Italian mold (50g, 4 cavities)
+- Border crossing into China (Jerri researching)
+- Pre-stocking warehouse, freight cadence (Omega = friction, minimize trips)
+- Demand forecasting needed from Liz (retailers/distributors → annual kg → mold quantity → throughput)
+
+### Layer 4: China Launch (new — Liz + Jerri + Gary)
+- July timeline uncertain (parents/students not around in July)
+- Physical experiential learning events (farm + supply chain modules)
+- Potentially shifted timeline
+
+---
+
+**My recommendation: restructure the Aora plan into a proper multi-workstream document.**
+
+I'd suggest updating `AORA_EXPERIENCE_PLAN.md` to become the **master coordination document** with four sections:
+
+1. **Content & Credentialing** (the original plan — modules, MindLoop integration, Lineage)
+2. **Supply Chain & Manufacturing** (Santos production, mold, border crossing, warehousing)
+3. **Go Partnership** (Liz's role, Kaon's MindLoop, demand forecasting, market visibility)
+4. **China Launch** (salons, timeline, Jerri's logistics)
+
+Each section gets its own implementation roadmap + execution checklist with owners, dependencies, and gates.
+
+**Want me to draft this as a PR?** I'll:
+1. Rewrite `AORA_EXPERIENCE_PLAN.md` with the four workstreams
+2. Keep all existing content (PR0, PR1 are done) and add the new tracks
+3. Add a clear **decision log** for open questions (mold size, July timeline, demand forecast, border crossing status)
+4. Open the PR for your review
+
+Or would you prefer I start with just the **execution checklist** layer first — a separate `AORA_EXECUTION_CHECKLIST.md` that tracks per-item status — and update the main plan separately?
+
