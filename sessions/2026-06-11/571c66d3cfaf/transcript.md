@@ -750,3 +750,148 @@ Try refreshing the subscribe page — your address should already be filled in f
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #146 on agroverse_shop_beta merged successfully (sha: ada1e3ef966554e9c0f8d641dbeee75904875951). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Shipping cost is still missing. Can you do testing yourself?
+
+
+### 🤖 Autopilot
+
+Let me test the GAS directly and see what shipping amount it's calculating:
+
+
+### 🤖 Autopilot
+
+It returns a Stripe URL. Let me check what the Stripe session actually contains by looking at it via the Stripe API:
+
+
+### 🤖 Autopilot
+
+Let me look at the actual Stripe payload the GAS builds. The issue is likely in how the shipping line item is constructed. Let me check the `createStripeSubscriptionSession_` function more carefully.
+
+Looking at the code, the shipping is added as `line_items[1]` with `recurring[interval]=month`. But in Stripe's subscription mode, you can't have `shipping_address_collection` with a subscription — Stripe doesn't support that. The shipping address is collected via the customer portal, not during checkout.
+
+But more importantly — the shipping is added as a **recurring line item**, not as a **shipping option**. In Stripe Checkout, shipping options are shown in a separate section with a selector. Line items just show as products. So the shipping cost appears as a second product line, not as a shipping cost.
+
+Let me check what the `Code.js` version does differently — it uses `shipping_options` array:
+
+Looking at the `Code.js` `createSubscriptionCheckoutSession` (the one in the main file), it:
+1. Calculates shipping via EasyPost
+2. Adds it as `line_items[1]` with `price_data` and `recurring`
+
+But the `create_subscription_checkout_session.js` version does the same thing. The issue is that in **subscription mode**, Stripe doesn't support `shipping_options` — you can only add shipping as a recurring line item.
+
+So the shipping cost IS being sent to Stripe, but it shows as a second line item (labeled "Shipping") rather than in the shipping section. Let me verify by checking the Stripe session directly:
+
+
+### 🤖 Autopilot
+
+OK so the payload has `line_items[0]` (product) and `line_items[1]` (shipping). But wait — `shipping_address_collection` is NOT supported in subscription mode by Stripe. Let me check if that's causing the shipping line item to be rejected.
+
+Actually, let me just look at the actual Stripe session to see what was created:
+
+
+### 🤖 Autopilot
+
+Let me look at the actual Stripe session to see what line items were created. I need to use the Stripe API directly. Let me check if there's a Stripe key accessible:
+
+
+### 🤖 Autopilot
+
+**Found it!** The `line_items[1]` (shipping line) is **not in the payload**! The payload only has `line_items[0]`. The shipping line item code is there in the function but it's not being included because the condition `if (shippingAmountCents > 0)` is probably evaluating to `false` — meaning `shippingAmountCents` is 0.
+
+This means the shipping calculation is returning $0. Let me check why. The `calculateSubscriptionShipping_` function calls `calculateShippingRatesViaEasyPost` which returns Stripe-format rates. But then it tries to find `cheapest.amount` — but the EasyPost rates are in Stripe format with `shipping_rate_data.fixed_amount.amount`, not a flat `.amount` property.
+
+Let me look at the EasyPost return format vs what the code expects:
+
+From `Code.js`, `calculateShippingRatesViaEasyPost` returns:
+```javascript
+shippingOptions.push({
+  shipping_rate_data: {
+    type: 'fixed_amount',
+    fixed_amount: {
+      amount: Math.round(rateValue * 100), // in cents
+      currency: 'usd'
+    },
+    display_name: serviceName + ' - USPS',
+    delivery_estimate: estimateFromService(serviceName)
+  }
+});
+```
+
+But `calculateSubscriptionShipping_` does:
+```javascript
+var cheapest = rates[0];
+for (var i = 1; i < rates.length; i++) {
+  if (rates[i].amount < cheapest.amount) {
+    cheapest = rates[i];
+  }
+}
+return cheapest.amount;
+```
+
+It's looking for `rates[i].amount` but the EasyPost rates have `rates[i].shipping_rate_data.fixed_amount.amount` (in cents). So `cheapest.amount` is `undefined`, and the function returns `undefined`, which makes `shippingAmountCents = Math.round(undefined * 100) = NaN`, and `NaN > 0` is `false`, so the shipping line item is skipped!
+
+The fix: the `calculateSubscriptionShipping_` function needs to read the correct property from the EasyPost rates.
+
+
+### 🤖 Autopilot
+
+Now let me push to GAS and deploy:
+
+
+### 🤖 Autopilot
+
+Now let me test it:
+
+
+### 🤖 Autopilot
+
+Let me verify this session has the shipping line item by checking the Stripe API:
+
+
+### 🤖 Autopilot
+
+**Both are working now!** The Stripe session has:
+
+- **Line item 0**: 6 bars × $10.00 = **$60.00/month** ✅ with product image ✅
+- **Line item 1**: **Shipping = $7.38/month** ✅ (recurring, locked at signup)
+- **Total**: **$67.38/month**
+
+The shipping cost is $7.38 (Ground Advantage via EasyPost for 6 bars to Laguna Beach, CA). It shows as a separate recurring line item labeled "Shipping" in Stripe Checkout.
+
+Let me merge the PR:
+
+
+### 🤖 Autopilot
+
+**Fixed and verified.** Here's what was wrong:
+
+**Root cause:** `calculateSubscriptionShipping_` was reading `rates[i].amount` but `calculateShippingRatesViaEasyPost` returns rates in Stripe format:
+```javascript
+{ shipping_rate_data: { fixed_amount: { amount: 738 } } }  // 738 cents
+```
+
+So `cheapest.amount` was `undefined` → `shippingAmountCents = NaN` → the `if (shippingAmountCents > 0)` check was `false` → the shipping line item was **never added** to the Stripe payload.
+
+**Verified via Stripe API — the latest session shows:**
+- 6 bars × $10.00 = **$60.00/month** ✅ (with product image)
+- Shipping (Ground Advantage) = **$7.38/month** ✅
+- **Total: $67.38/month**
+
+Try the subscribe flow again — both the product image and shipping cost should now appear in Stripe Checkout.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg
+• `ssh run` → https://dashboard.stripe.com/test/payments/cs_test_a1KsvjDJPEWUVaFD5T5zx0lJSvgYyEXYYs6CvNmnme8DkNdFrHu8o1nEMl\n\nGrep
+• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg\n
+• `merge pr` → ✅ PR #147 on agroverse_shop_beta merged successfully (sha: e724b3836f5e861f17d61b1207e84c3b494fb7e3). Pull Request successfully merged
+
