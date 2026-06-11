@@ -423,3 +423,71 @@ gantt
 
 Shall I go ahead?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Mold decision (Santos vs Cabrellon) has already been decided we will be using Cabrellon dimensions... Let's indicate clearly the assumption is that Liz side will provide the final packing and we deliver the bars in generic foil.. 
+
+Jerri and her team mate are right now repackaging the cacao for the chinese market. 
+
+Also not sure how much cacao to stock because zero visibility on China market Aora GO requirements. DAO capital has already been deployed and will be deplyoed to the freight already bound for USA. Amount in AGl15 as well as our main ledger.
+
+
+### 🤖 Autopilot
+
+Excellent — that clarifies several key decisions. Let me capture all of this precisely before drafting.
+
+Let me also check the AGL15 and Main Ledger amounts to reference accurately.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me draft the updated plan as a PR.
+
+
+### 🤖 Autopilot
+
+Right — I need to provide the actual file content. Let me read the current file and prepare the rewrite.
+
+
+### 🤖 Autopilot
+
+Now I'll write the full replacement.
+
+
+### 🤖 Autopilot
+
+PR is open: **https://github.com/TrueSightDAO/agentic_ai_context/pull/423**
+
+Here's a summary of what the restructured plan contains:
+
+---
+
+### What changed
+
+The old plan was a single-track product roadmap (modules → site → credentialing). The new plan has **four workstreams** with a PERT chart showing dependencies:
+
+| Workstream | Key items |
+|---|---|
+| **1. Content & Credentialing** | PR0–PR4 (existing), plus Kaon's MindLoop integration |
+| **2. Supply Chain & Manufacturing** | 63 bars for Liz, Santos production, border crossing, capital deployed (AGL15: $5,279.73 + Main Ledger) |
+| **3. Go Partnership (Liz)** | Demand forecast (critical blocker), packaging boundary, wrapper foil, pre-stock |
+| **4. China Launch** | July decision, Gary carries bars, salon events |
+
+### Decisions locked this session
+
+- **Mold:** Cabrellon Italian (same as SF) — ✅
+- **Packaging:** Liz provides final packaging; DAO delivers in generic foil — ✅
+- **Jerri's team:** Repackaging cacao for China — ✅
+- **Capital:** Deployed to USA freight; zero China visibility until Liz's forecast — ✅
+
+### Critical blocker
+
+**Liz's demand forecast** is the gate for everything downstream: Santos mold quantity, pre-stock warehouse, freight cadence. Without it, we can't size the China operation.
+
+---
+
+Want me to merge the PR, or would you like to review first?
+
