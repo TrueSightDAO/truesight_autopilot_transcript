@@ -396,3 +396,57 @@ Now, let me build the plan for this. Here's what I've extracted from the PDF:
 
 Want me to go ahead and set up the events file and monitoring framework?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Perhaps set up an implementation plan, execution roadmap, and check list first, and file it in the agentic AI context, share a PDF in detail of what you're going to do when you go ahead. And then other partners, if they have their own individual newsletter, then it makes sense for you to just link monitor for specific email address, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — let me build a proper plan first before executing. Let me set up the implementation plan and roadmap.
+
+
+### 🤖 Autopilot
+
+Good — I have the full picture of the DAO's growth model and workspace. Now let me build the implementation plan and file it.
+
+
+### 🤖 Autopilot
+
+Good — I have the full picture. Now let me build the implementation plan and file it.
+
+
+### 🤖 Autopilot
+
+Now let me generate the PDF for you to review.
+
+
+### 🤖 Autopilot
+
+Now let me upload the PDF to GitHub so you can access it.
+
+
+### 🤖 Autopilot
+
+Here's a summary of what I've done:
+
+---
+
+**Filed the implementation plan.** Two things landed:
+
+1. **PR #446** — `PARTNER_EVENTS_MONITORING_PLAN.md` in `agentic_ai_context` — the full markdown plan with phased roadmap, schema, checklist, and seed events from the SFZC newsletter
+2. **PDF uploaded** — `plans/partner-events-monitoring-plan.pdf` on the same repo for easy reading
+
+**The plan covers 3 phases:**
+
+- **Phase 1 (Foundation):** Create the events file, seed with SFZC events, set up inbox monitoring for `admin+sophia@truesight.me`, build extraction prompt, add events section to the landing page
+- **Phase 2 (Multi-Partner):** Subscribe 3–5 partner newsletters, build structured JSON feed, add filter/sort UI
+- **Phase 3 (Automation):** Auto-detect new senders, auto-archive past events, iCal export, partner dashboard
+
+**And you're right about the partner model** — each partner has their own newsletter sender email. The registry maps partner → sender domain, so when a new newsletter arrives from a known sender, Sophia knows which partner it belongs to. For new partners, you just subscribe `admin+sophia@truesight.me` and add them to the registry.
+
+When you're ready to go, just say the word and I'll start Phase 1.
+
