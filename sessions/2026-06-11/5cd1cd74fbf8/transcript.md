@@ -8,37 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — this Telegram topic (thread 2622) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-go for it.
-
-
-### 🤖 Autopilot
-
-Let me check the handoff registry to find the plan for this thread.
-
-
-### 🤖 Autopilot
-
-This is thread **2622**. Let me check if there's a specific plan for this thread. It's not listed in the manifest or registry by thread_id. Let me search for what might be associated with this thread.
-
-
-### 🤖 Autopilot
-
-Thread 2622 isn't registered in the handoff manifest or SOPHIA_HANDOFFS.md. Let me check what plans exist in the context that might be relevant to this thread — the handoff context says "this Telegram topic may be an execution handoff."
-
-Let me look at what plans are available and see if any are relevant to the conversation so far.
-
-
-### 🤖 Autopilot
-
-Let me check the conversation history to understand what was discussed before my session started.
-
-
 ### 🤖 Autopilot
 
 Gary — thread 2622 isn't registered in the handoff manifest or SOPHIA_HANDOFFS.md, so I don't have a plan file to execute from. I don't have the conversation history that led to this thread being opened.
@@ -442,4 +411,47 @@ PR #153 should go green on the next CI run.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×25 → cd /opt/truesight_autopilot && git checkout autopilot/fix-followup-store-pr1 && python3 -m compileall -q app tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app/followups.py tests/test_followups.py 2>&1; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Make sure in the future before you or future instances of Sophia push, make sure all the test passes locally before pushing to Github...
+
+
+### 🤖 Autopilot
+
+Understood. That's a clear process rule. Let me add it to the system prompt so future Sophia instances don't repeat this.
+
+
+### 🤖 Autopilot
+
+The system prompt is generated dynamically in code. Let me find where it's built and add the local-test rule there.
+
+
+### 🤖 Autopilot
+
+The default system prompt is generated in `app/context.py`. Let me check it.
+
+
+### 🤖 Autopilot
+
+Found it. The system prompt header is `_SYSTEM_PROMPT_HEADER` in `app/context.py`. I need to add a rule about running tests locally before pushing. Let me add it to the `## AUTOPILOT MODE` section.
+
+
+### 🤖 Autopilot
+
+Done. PR #155 adds a **hard rule** to the system prompt — every future Sophia instance must run the full local test suite before pushing:
+
+1. `compileall` — syntax check
+2. `ruff check` — lint (new files must be clean; pre-existing errors in untouched files are acceptable)
+3. `ruff format --check` — formatting
+4. `pytest` — all unit tests pass
+
+Only push after all four pass.
+
+https://github.com/TrueSightDAO/truesight_autopilot/pull/155
+
+**Gate:** own-repo — needs a human to review and merge.
 
