@@ -10,124 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `main` branch already has the form autofill (from PR #146) and the `createSubscriptionSession` uses the original `fetch()` GET approach. PR #140 (pass product details) and PR #138 (autocomplete) are superseded by later merges. Let me close the unnecessary ones:
-
-
-### 🤖 Autopilot
-
-No `gh` auth. Let me close them via the API:
-
-
-### 🤖 Autopilot
-
-No API token available. Those PRs are superseded anyway — the important ones (the actual fixes) are all merged. Here's the full status:
-
-**All subscription fixes are merged and deployed (GAS version @41).** Here's what's live:
-
-| Fix | PR | Status |
-|-----|----|--------|
-| Success URL from `127.0.0.1` to `beta.agroverse.shop` | #141 | ✅ Merged |
-| `createSubscriptionCheckoutSession` route in `doGet` | #142 | ✅ Merged |
-| Remove duplicate function, fix `+` sign decoding, commit missing file | #144 | ✅ Merged |
-| Product image + shipping calc args | #145 | ✅ Merged |
-| Form autofill from localStorage | #146 | ✅ Merged |
-| Shipping amount reading wrong rate property | #147 | ✅ Merged |
-
-**Verified via Stripe API — the subscription session shows:**
-- 6 bars × $10.00 = **$60.00/month** with product image ✅
-- Shipping (Ground Advantage) = **$7.38/month** ✅
-- **Total: $67.38/month**
-
-Try the subscribe flow at **beta.agroverse.shop/subscribe/chocolate-bar/** — your address should auto-fill, shipping rates should show, and Stripe Checkout should display the product image and correct total.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-I go brought back to this page after I completed checkout
-
-https://beta.agroverse.shop/subscribe/chocolate-bar/?slug=chocolate-bar
-
-It doesnt seem to know that I already checked out... Feels schizoprehnic isnt it?
-
-
-### 🤖 Autopilot
-
-You're right — the success/cancel URLs in the GAS point back to the subscribe page, but there's no success state. After a Stripe Checkout completes, it redirects to `?success=true&session_id=...` but the page just shows the same subscribe form again. It should show a confirmation message.
-
-Let me check what the GAS sends for success/cancel URLs:
-
-
-### 🤖 Autopilot
-
-The success URL is `?success=true&session_id={CHECKOUT_SESSION_ID}` but the subscribe page doesn't check for that parameter. I need to add success/cancel detection to the subscribe page JS. Let me also check how the regular order history page works:
-
-
-### 🤖 Autopilot
-
-Now I need to add success/cancel detection to the subscribe page. When Stripe redirects back with `?success=true&session_id=...`, the page should show a confirmation instead of the subscribe form. When `?canceled=true`, it should show a message.
-
-
-### 🤖 Autopilot
-
-**Fixed.** Now when Stripe redirects back after a subscription:
-
-- **✅ Success** → Shows a green confirmation card: "You're all set!" with a chocolate emoji, the session reference, and links to **View Order History** and **Continue Shopping**
-- **⏳ Canceled** → Shows a yellow card: "Subscription Canceled" with a **Try Again** button that reloads the clean form
-- **Normal page load** → Subscribe form as before
-
-Try completing a subscription again — you'll land on a proper confirmation page instead of the same form.
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #148 on agroverse_shop_beta merged successfully (sha: 98b8fbc33f75999d51cf42a55f909048c44d12ba). Pull Request successfully merged
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #148 on agroverse_shop_beta merged successfully (sha: 98b8fbc33f75999d51cf42a55f909048c44d12ba). Pull Request successfully merged
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-you there?
-
-
-### 🤖 Autopilot
-
-Yes, I'm here. What do you need?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-What is the visual cue for the user to follow to go manage an existing subscription then?
-
-
-### 🤖 Autopilot
-
-Good question. Right now there's **no** visual cue — after the success page, the user is left with links to "View Order History" and "Continue Shopping", but neither of those leads to subscription management (pause, cancel, change quantity, update address).
-
-Stripe subscriptions are managed through the **Stripe Customer Portal** — a hosted page where customers can update payment methods, change plans, cancel, etc. But we need to:
-
-1. Create a Stripe Customer Portal session (GAS endpoint)
-2. Add a "Manage Subscription" link on the success page
-3. Add a "Manage Subscription" link in the nav or footer so users can find it later
-
-Let me check what the plan says and what's needed:
-
-
-### 🤖 Autopilot
-
 Great question. The plan actually addresses this in the **Decisions** table under "Cancel path":
 
 > **Phase 1:** Stripe **no-code Customer Portal login link** (dashboard config, email-based, zero build) — so "cancel/modify anytime" is true the day Linda goes live.
@@ -835,4 +717,71 @@ Build a product detail page at `/product-page/premium-dark-chocolate-bar/` that 
 ---
 
 Want me to proceed with building it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I meantup update our existing one
+
+
+### 🤖 Autopilot
+
+Ah, you want to update the **existing PDP** rather than build a new one from scratch. Let me check what PDPs already exist for the chocolate bar:
+
+
+### 🤖 Autopilot
+
+Now I see — the existing PDP at `/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/` is for the **Oscar's Farm vintage-specific bar**. You want to update it to also promote the subscription, not build a separate generic PDP.
+
+The plan makes sense — this is the chocolate bar PDP that people land on from the homepage. Adding a "Subscribe" CTA here alongside the existing "Add to Cart" is the fastest path to discoverability.
+
+Here's the updated plan:
+
+---
+
+## Updated PR1.5 Plan: Add Subscribe CTA to Existing Chocolate Bar PDP
+
+### What
+Add a **Subscribe CTA** to the existing Oscar's Farm chocolate bar PDP at `/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/`. This is the page visitors land on from the homepage products section — they can either buy one-off or subscribe.
+
+### Changes to the existing PDP
+
+| # | Change | Details |
+|---|--------|---------|
+| 1 | **Subscribe CTA** | Add a "Subscribe — pick your quantity" button below the "Add to Cart" button, linking to `/subscribe/chocolate-bar/` |
+| 2 | **Subscription note** | Brief text: "Get a new single-estate bar every month. Cancel anytime." |
+| 3 | **No farm-specific content removed** | The PDP keeps all its Oscar's Farm content — the subscribe CTA is additive, not replacing anything |
+
+### What it does NOT do
+- No new PDP page needed — the existing one gets the CTA
+- No generic PDP slug — the subscription is promoted from the existing bar PDP
+- No nav link yet (that can be a separate step)
+
+---
+
+## Execution checklist
+
+| # | Step | Details |
+|---|------|---------|
+| ☐ | **1. Add Subscribe CTA** | Add subscribe button + note to the existing PDP HTML |
+| ☐ | **2. PR + merge** | Open PR, merge on approval |
+| ☐ | **3. DAO contribution** | Report the contribution |
+
+---
+
+## UAT
+
+| # | Check | What to look for |
+|---|-------|------------------|
+| U1 | PDP loads | No console errors, images load |
+| U2 | Subscribe CTA visible | Button appears below "Add to Cart" |
+| U3 | Subscribe link works | Clicking takes you to `/subscribe/chocolate-bar/` |
+| U4 | Add to Cart still works | One-off purchase unchanged |
+| U5 | Mobile | Responsive, buttons stack properly |
+
+---
+
+Want me to proceed?
 
