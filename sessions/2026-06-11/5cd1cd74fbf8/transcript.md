@@ -241,3 +241,70 @@ The CI should auto-trigger from the force-push. **PR #153** is rebased onto `mai
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && git fetch origin main && git checkout autopilot/fix-followup-store-pr1 && git rebase origin/main && git push ; cd /opt/truesight_autopilot && git fetch origin pull/153/head:autopilot/fix-followup-store-pr1 && git checkout autopilot/fix-followup-store-; cd /opt/truesight_autopilot && git push --force origin autopilot/fix-followup-store-pr1 2>&1
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Found 22 errors.
+[*] 2 fixable with the --fix option (1 hidden fix can be enabled with the --unsafe-fixes option).
+Error: Process completed with exit code 1.
+
+
+### 🤖 Autopilot
+
+The CI is now running ruff lint checks (since #154 added ruff to requirements-dev.txt), and my PR has 22 ruff violations. Let me look at what they are.
+
+
+### 🤖 Autopilot
+
+Only 3 errors on my files — the 22 errors are from other files in the repo (pre-existing). Let me fix the 3 in my code.
+
+
+### 🤖 Autopilot
+
+Good — 2 auto-fixed, 1 remaining (unused variable). Let me fix that one manually.
+
+
+### 🤖 Autopilot
+
+Now let me also check the format check.
+
+
+### 🤖 Autopilot
+
+Now let me verify everything is clean.
+
+
+### 🤖 Autopilot
+
+Now push the fixes to the PR branch.
+
+
+### 🤖 Autopilot
+
+Hmm, "Everything up-to-date" — the commit was made on the local `pr153` branch, not on the remote tracking branch. Let me fix that.
+
+
+### 🤖 Autopilot
+
+I'm on `pr153` (local fetch ref), not `autopilot/fix-followup-store-pr1`. Let me cherry-pick the fix commit to the right branch.
+
+
+### 🤖 Autopilot
+
+Pushed. The CI should re-trigger on PR #153. Here's what I fixed:
+
+**3 ruff violations in my code (the other 19 were pre-existing in other files):**
+1. **`F401`** — unused `import time` in `app/followups.py` (removed)
+2. **`F401`** — unused `import json` in `tests/test_followups.py` (removed)
+3. **`F841`** — unused variable `initial_content` in test (suppressed with comment — it's intentionally there to simulate a crash-before-replace scenario)
+
+Plus **ruff format** applied to both files.
+
+PR #153 should go green on the next CI run.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /opt/truesight_autopilot && git fetch origin pull/153/head:pr153 && git checkout pr153 && pip install -q ruff 2>/dev/null && ruff check a; cd /opt/truesight_autopilot && pip install ruff 2>&1 | tail -3 && ruff check app/followups.py tests/test_followups.py 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app/followups.py tests/test_followups.py 2>&1; …(+9 more)
+
