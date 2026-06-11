@@ -773,3 +773,54 @@ The note reads:
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #433 on agentic_ai_context merged successfully (sha: b97b905ead3e9e1ecc98e1636883588100afc009). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think all the links need to be clickable. Also I think Kaon's engine is also a blocker for the roll out of the experiential learning track isnt it?
+
+I think at the top of the document all the critical blockers need to be surfaced isnt it? Since everybody will be referencing this
+
+Also right now it is not clear what the china side of the final assembled package looks like
+
+
+### 🤖 Autopilot
+
+Good points. Let me address all three:
+
+1. **Make links clickable** — the GitHub URLs in the Related section need markdown link syntax
+2. **Surface critical blockers at the top** — Kaon's MindLoop engine is indeed a blocker for the experiential learning track
+3. **China side final package** — needs a clear description of what the assembled product looks like when it reaches the consumer
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me make all three improvements at once.
+
+
+### 🤖 Autopilot
+
+PR #436 is open. Here's what changed:
+
+**1. 🚨 Critical blockers banner** — right after the PERT chart, a table everyone sees immediately:
+
+| Blocker | Owner | Status |
+|---------|-------|--------|
+| 🔴 Liz's demand forecast | Liz | no visibility |
+| 🔴 Kaon's MindLoop engine | Kaon | not started |
+| 🔴 Capital source for China | Liz/Gary | no investor visibility |
+| 🟡 Border crossing | Jerri | in progress |
+| 🟡 Launch date decision | Liz/Jerri | ~Jul 1 |
+| 🟢 Freight quote | Graziela | blocked (airline) |
+
+**2. China final package section** — what the consumer actually receives:
+- **Physical:** 50g bar in generic foil → Liz's packaging → $10 retail
+- **Digital:** QR code → MindLoop module → Lineage credential
+- **Experience:** Two-part workshop at Tanxiang Island
+- **Revenue:** $6/bar flows back to DAO
+
+**3. All links now clickable** — every reference in the Related section is a proper markdown link.
+
+Want me to merge it?
+
