@@ -519,3 +519,75 @@ Anything else you'd like to tackle in this thread?
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #423 on agentic_ai_context merged successfully (sha: 04cdfbb86b38d07117a1a207e4376e532b89553e). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also if stocking for Go Aora beyond what we currently already have stock in Matheus warehouse in Brazil (mainly beans), then need additional capital. We dont have any visibility into where that capital is going to come from
+
+Also yesterday this was the correspondance between me and JErri
+
+Hi Gary, I'm already consulting a freight forwarder on the matters related to importing cocoa and related products into China. To speed things up, could you help me with a few things when you have a moment:
+
+Rough weight and volume estimates for each item (frozen pulp, dried pods, beans, chocolate bars, etc.)
+Your shipping address in Brazil (which city)
+Whether you can ship from a company or just personally
+
+I'll share the forwarder's feedback as soon as I have it. 
+
+Also, I'm working on adjusting and listing the feasibility plans and deliverable of the activity, based on Evan's feedback. 
+(Evan shared the following feedback:
+He recommends using Tanxiang Island (Dongguan Tanxiang Island, a 402.8-mu river island in Shayao Village, Shijie Town, features sandalwood forests, rice fields, and fish ponds. Surrounded by water with rich vegetation, it serves ecological conservation, leisure tourism, family farming, and food education, while offering picking, camping, team-building, and conference activities) as the venue for this event, rather than relying on immersive projection equipment. 
+The natural environment there provides the best five-sense immersive experience. The island also has basic facilities and infrastructure, as well as staff with relevant agricultural knowledge.
+To further scale this event going forward, school partnerships will be essential as a form of endorsement — for example, BBK Xiaotiancai School.
+Holding the event in July is likely not feasible, as most parents have already planned their children's summer holiday schedules by that point.
+My concern regarding the venue suggestion:
+While the natural setting of Tanxiang Island is appealing, I am concerned that the island may experience heavy rainfall during the summer, along with mosquitoes and other pests. In particular, there was a outbreak of chikungunya in the Guangdong last summer. These factors pose significant risks. As this is our first event, such conditions could leave a negative impression on participants and affect their initial perception of the program.)
+
+Plz feel free to text me anytime if you are avaliable or have any other feedback or suggestion. I'll update you soon.
+
+Thanks!
+Ok got it. Regarding the volumen waiting for Liz to provide visibility into the go to market as well as how much she actually wants to stock for Aora. My main concern right now is figuring out all the administrative road blocks when we need to ship. Usually that takes at least a month or two to clear.
+At this point, I still have no visibility regarding the go to market for the China side.
+What you suggested regarding July totally aligns with this morning draw from 易经 and 奇门遁甲. Seems like the universe might be suggesting trying to rush something in July probably not a good idea.
+
+I like the venue suggestion. And working directly with schools is totally aligned with what we are already doing right now with the 4 schools in Pakistan.
+Perhaps we push back to a later date where it feels more organic and natural for students and parents. It will also allow us more visibility of how much cacao we should stock this upcoming season from the farmers so that we can support the needs of Aora in China while respecting the farmers' and nature's cycle.
+Your shipping address in Brazil (which city)
+R. Cel. Paiva, 46 - Centro, Ilhéus - BA, 45653-310, Brazil
+Whether you can ship from a company or just personally. 
+The other community member's registered company we use for our exports. We are in the process of setting up a dedicated company entity so that we stop channeling all the export tax through his personal company's account. When that gets setup will let you know
+Administrative details for Open Claw to integrate with if using OpenClaw for handling administrative clearance
+
+
+### 🤖 Autopilot
+
+Excellent — this is critical context. Let me capture it properly by updating the plan with the new information from this correspondence.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan with the new context from the Jerri correspondence — the venue shift, July cancellation signal, Brazil shipping address, company entity status, and the capital constraint.
+
+
+### 🤖 Autopilot
+
+PR #424 is open. Want me to merge it?
+
+Here's what the update adds:
+
+**New decisions locked (items 11–16):**
+- July launch **shifted** — parents/students booked; I Ching + QMDJ aligned
+- **Venue direction:** Tanxiang Island (Dongguan) — natural setting, no projection equipment
+- **School partnerships** — aligns with Pakistan program (4 schools)
+- **Brazil shipping address** — R. Cel. Paiva, 46 - Centro, Ilhéus - BA
+- **Company entity** — using community member's company; DAO setting up dedicated one
+- **Capital constraint** — beyond current Matheus bean stock, China stocking needs **new capital** with no source yet
+
+**Updated PERT chart** — July→later timeline, added capital sourcing row, extended border crossing research to 60 days
+
+**New section 2d** — Jerri's freight forwarder requests with weight/volume estimates needed
+
+**New open decision #9** — provide weight/volume estimates to Jerri by ~Jun 15
+
