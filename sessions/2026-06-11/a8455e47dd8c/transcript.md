@@ -345,3 +345,56 @@ If those 274 kg of cacao almonds (AGL8, staying in Brazil) are converted to bars
 
 **Key insight:** The current freight shipment has a potential retail value of ~$33K and cost ~$2.8K to ship — that's an 11.8× return on freight cost alone. Even at wholesale, you're looking at ~$7.8K profit from a single shipment. The real bottleneck isn't the freight cost — it's selling the inventory once it arrives at Kirsten's.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Do make this calculation as detailed as possible. Tavillate it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me build this as a proper PDF report with full detail.
+
+
+### 🤖 Autopilot
+
+Now let me upload this to the repo so you have a permanent copy.
+
+
+### 🤖 Autopilot
+
+The full PDF report is uploaded and available at:
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/freight_profit_analysis_2026-06-11.pdf**
+
+Here's the executive summary of the 10-section analysis:
+
+---
+
+**Bottom Line: This single shipment has a potential profit of $5,600–$21,700 depending on sales channel.**
+
+### Key Numbers
+
+| Scenario | Revenue | Net Profit | Margin |
+|---|---|---|---|
+| **All retail** | $33,330 | **$21,675** | 65% |
+| **Mixed (30/70 retail/wholesale)** | $21,665 | **$10,459** | 48% |
+| **All wholesale** | $16,665 | **$5,610** | 34% |
+| **Worst case (higher freight)** | $16,665 | **$4,711** | 28% |
+
+### What's in the report (10 sections):
+
+1. **Payload breakdown** — all 11 line items with retail prices from the shop
+2. **Freight cost** — current $2,825 vs potential increase to ~$3,724 (inland transport already quoted higher by Isis)
+3. **COGS** — cacao cost basis ($7,058) + packaging ($672)
+4. **Revenue scenarios** — retail, wholesale, mixed, and Aora 100 bars
+5. **Full P&L** for all 4 scenarios
+6. **Unit economics** — $57.78/kg profit at retail, $14.95/kg at wholesale
+7. **La do Sitio full conversion** — 274 kg → ~2,000 bars → **$9,060 profit**
+8. **Cash flow** — $3,697 cash needed, 2.8× cash-on-cash return
+9. **Risk & sensitivity** — sell-through rate table, risk factors
+10. **Summary table** — all scenarios side by side
+
+**Key insight:** The freight cost is only 8.5% of retail value. The real bottleneck isn't shipping cost — it's **sell-through speed** once inventory lands at Kirsten's. At current retail run rate (~$1K/month), break-even takes ~10 months. A single wholesale buyer would make it immediate.
+
