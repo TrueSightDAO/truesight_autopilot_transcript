@@ -262,3 +262,32 @@ You'd need to:
 
 Alternatively, if you want me to just merge #146 as-is and we handle the smoke.yml change separately, I can do that now — the test fixes are correct and verified. The `--deselect` flags just mean CI won't run them yet, but the code is fixed.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I gave you administrative rights to the Github organization for that PAT. To infinity and beyond!!!
+
+
+### 🤖 Autopilot
+
+Let me verify the PAT now has the right scopes and try the smoke.yml update:
+
+
+### 🤖 Autopilot
+
+Still blocked — the token on the autopilot box hasn't been updated yet. The old PAT value is still in `/opt/truesight_autopilot/.env`. You'll need to:
+
+1. Go to **GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens**
+2. Find the `TRUESIGHT_DAO_AUTOPILOT` token
+3. Under **Repository permissions**, set **Workflows** to **Write**
+4. Copy the new token value
+5. Update it in `/opt/truesight_autopilot/.env` on the autopilot box (or send me the new value and I'll update it)
+
+Once that's done, I can push the smoke.yml change and merge #146.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents\
+
