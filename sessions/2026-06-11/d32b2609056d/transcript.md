@@ -418,3 +418,27 @@ The branch already exists remotely (from the earlier `git push`). Let me just op
 **✅ Done this turn — actions taken:**
 • `ssh run` ×33 → cd /opt/truesight_autopilot && git worktree add /opt/truesight_autopilot/worktrees/vault/ main 2>&1; ls /opt/truesight_autopilot/worktrees/vault/app/; ls /opt/truesight_autopilot/worktrees/vault/app/tools/; …(+30 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Cool! What next?
+
+
+### 🤖 Autopilot
+
+Step A (Phase 0.1) is done — PR [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) is open and waiting for your review/merge.
+
+**Next up is Step B — Phase 3: Credential Vault.** Here's the sequence I'd follow:
+
+| PR | What | Why |
+|----|------|-----|
+| **3.1** | **Vault store** — encrypted on-disk store at `app/vault.py` | The core — stores creds safely with `{name, purpose, scopes, version, value(enc), created_by, created_at}`. Never-overwrite, delete-allowed, versioned. |
+| **3.2** | **Reference-by-name / inject-at-execution** — tools request a credential by name, value injected at call time | LLM/transcript/logs only ever see `{name, purpose, scopes}` — never the actual value |
+| **3.3** | **Vault web page** — authenticate via email→RSA → check Governors cache → vault UI | Governor can add/delete/view credential names; non-governor gets a friendly nudge |
+| **3.4** | **Backup/restore** — encrypted backup so re-imaging doesn't lose creds | Box-loss ≠ credential-loss |
+| **3.5–3.7** | Missing-cred behavior, vault URL, tests | Polish |
+
+All via the worktree, same as Step A. Want me to start on **PR 3.1 — the vault store**?
+
