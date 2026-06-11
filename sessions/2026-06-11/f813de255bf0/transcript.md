@@ -554,3 +554,26 @@ It connects to four existing Growth Model loops: Email360 Retention, QR Trace-Ba
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/partner-events-monitoring-plan/PARTNER_EVENTS_MONITORING_PLAN.md
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+The events listing will all be on Agroverse.shop by the way TrueSight.me is just purely governance, metrics and ops related stuff related 
+
+Just to clarify, let me know if you need anything else to clarify
+
+
+### 🤖 Autopilot
+
+Got it — that clarifies the question I had in the plan. So:
+
+- **Agroverse.shop** = the community-facing surface. Events listing lives here. It's where cacao buyers, partners, and the broader ecosystem go.
+- **TrueSight.me** = the DAO hub. Governance, metrics, ops, Beer Hall, treasury. Not for events.
+
+That makes sense — the events page is about community discovery and foot traffic to partner spaces, which is a natural fit for the shop/brand site.
+
+I'll update the plan to reflect this. The open question in section 8 is now answered: events go on `agroverse.shop/events` (or similar path).
+
+I think the plan is clear enough to start when you're ready. Whenever you give the go signal, I'll begin Phase 1 — starting with creating the events file and seeding it with the SF Zen Center events we already extracted.
+
