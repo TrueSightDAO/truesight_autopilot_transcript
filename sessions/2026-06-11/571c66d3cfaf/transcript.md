@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me merge and deploy:
-
-
-### 🤖 Autopilot
-
-Now let me also revert the iframe-based CORS fix in `subscribe.js` (PR #143) since the real issue was the GAS function, not CORS. The original `fetch()` with GET should work now:
-
-
-### 🤖 Autopilot
-
 Good — the `subscribe.js` on `main` still has the original `fetch()` with GET approach (PR #143 wasn't merged yet). That's the correct approach — the GAS is now fixed, so the fetch should work. Let me close PR #143 without merging since it's not needed:
 
 
@@ -765,4 +755,70 @@ So the flow is: subscribe → success page → "View Order History" link → see
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #154 on agroverse_shop_beta merged successfully (sha: 9e1414d0588cd944521c0cb233e6ddf31897c4c8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Still not seeing the subscription in my order history when I land back on this page
+
+https://beta.agroverse.shop/subscribe/chocolate-bar/?success=true&session_id=cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC&slug=chocolate-bar
+
+Why?
+
+
+### 🤖 Autopilot
+
+Let me check what's happening. The success page loads, `checkReturnFromStripe()` detects `success=true`, calls `showSuccessState()`, which saves to order history. But let me check if `window.OrderHistory` is actually available at that point.
+
+The issue is likely **load order**. The scripts load in this order in the HTML:
+
+```html
+<script src="../../js/config.js"></script>
+<script src="../../js/products.js"></script>
+<script src="../../js/ga4-events.js"></script>
+<script src="../../js/universal-nav.js"></script>
+<script src="../../js/checkout-form-storage.js"></script>
+<script src="../../js/subscribe.js"></script>
+```
+
+But `order-history.js` is **not loaded** on the subscribe page! It's only loaded on the `/order-history/` page. So `window.OrderHistory` is `undefined` when `showSuccessState()` tries to call it.
+
+Let me verify:
+
+
+### 🤖 Autopilot
+
+Confirmed — `order-history.js` is **not loaded** on the subscribe page. The script list at the bottom is:
+
+```html
+<script src="../../js/config.js"></script>
+<script src="../../js/products.js"></script>
+<script src="../../js/ga4-events.js"></script>
+<script src="../../js/universal-nav.js"></script>
+<script src="../../js/checkout-form-storage.js"></script>
+<script src="../../js/subscribe.js"></script>
+```
+
+No `order-history.js`. So `window.OrderHistory` is `undefined` and the save silently fails.
+
+The fix: add `order-history.js` to the subscribe page so it's available when the success state tries to save.
+
+
+### 🤖 Autopilot
+
+**Found it.** The `order-history.js` script was never loaded on the subscribe page. So `window.OrderHistory` was `undefined` and the `saveOrderToHistory()` call silently failed.
+
+Now the subscribe page loads `order-history.js`, so when you complete a subscription, it saves to `localStorage` and the subscription will appear in `/order-history/`.
+
+Try subscribing again — then check `/order-history/` and you should see it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #155 on agroverse_shop_beta merged successfully (sha: 443efbb3b2af3041d3ffc7cb1502985d01e506b4). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #155 on agroverse_shop_beta merged successfully (sha: 443efbb3b2af3041d3ffc7cb1502985d01e506b4). Pull Request successfully merged
 
