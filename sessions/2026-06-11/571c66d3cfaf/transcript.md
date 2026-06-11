@@ -10,117 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I'll append the UAT section to the plan document.
-
-
-### 🤖 Autopilot
-
-Done. The UAT section is now appended to the plan document at the end, right before the footer. It covers 11 test areas with specific URLs, what to expect visually, and what to assert for each. The PR is open at the link — you can review it there or just pull the updated doc.
-
-The test areas are:
-1. **Generic-bar PDP** — the product page with Subscribe + one-off CTAs
-2. **Subscribe engine** — the clean `/subscribe/chocolate-bar/` URL
-3. **Direct slug param** — the `?slug=` interface
-4. **First charge webhook** — verifying the PENDING row appears
-5. **Renewal webhook** — `stripe trigger invoice.payment_succeeded`
-6. **Fulfillment page** — the DApp page for Kirsten
-7. **Sales Reporter regression** — making sure one-off sales still work
-8. **Stripe Dashboard** — subscription management
-9. **Google Sheets audit trail** — both tabs
-10. **12 edge cases** — quantity bounds, validation, declines, timeouts
-11. **Production smoke test** — after promotion
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Can you share the link to the URL for where the user acceptance testing steps are? Thank you very much. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-The UAT section is in the plan document itself. The PR is open at:
-
-github.com/TrueSightDAO/agentic_ai_context/pull/413
-
-Once that's merged, you can read the full doc directly from the repo at:
-
-github.com/TrueSightDAO/agentic_ai_context/blob/main/CHOCOLATE_SUBSCRIPTION_PLAN.md
-
-Scroll to the very bottom — the UAT section starts after the "Risks / open items" section. It's titled "User Acceptance Testing (UAT) — end-to-end walkthrough" and covers all 11 test areas with URLs, expected behavior, and what to assert for each.
-
-Want me to merge that PR now so it's live in the doc?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-where are we with the subscriptions?
-
-
-### 🤖 Autopilot
-
-Let me check the current state of all the PRs and the plan tracker.
-
-
-### 🤖 Autopilot
-
-Here's where we stand:
-
-## Phase 1 — All code merged ✅
-
-| PR | Scope | Status |
-|----|-------|--------|
-| 1.1 | Generic SKU in `products.js` | ✅ Merged |
-| 1.2 | Subscribe engine at `/subscribe/` | ✅ Merged |
-| 1.3 | Clean URL `/subscribe/chocolate-bar/` | ✅ Merged |
-| 1.4 | GAS `createSubscriptionCheckoutSession` | ✅ Merged |
-| 1.5 | Generic-bar PDP | ✅ Merged |
-| 1.6 | Webhook no-op doc | ✅ Merged |
-
-## Phase 2 — All code merged ✅
-
-| PR | Scope | Status |
-|----|-------|--------|
-| 2.1 | Fulfillment Queue sheet module | ✅ Merged |
-| 2.2 | Rails `invoice.paid` handler + obligation endpoint | ✅ Merged |
-| 2.3 | `fulfill_subscriptions.html` page + list/fulfill endpoints | ✅ Merged |
-
-## What's still needed — operator action
-
-**1. Prod promotion** — the `sync_beta_to_prod` failed due to a GitHub token scope issue. You need to manually sync `agroverse_shop_prod` from `agroverse_shop_beta`'s main branch on GitHub.
-
-**2. GAS deploy** — the new `createSubscriptionCheckoutSession` function is in the repo but needs to be deployed to the Apps Script. This is operator-gated (Sophia's `gas_deploy_project` tool targets the `tokenomics` clasp mirrors, not the shop checkout script).
-
-**3. UAT testing** — run through the test cases in the UAT section (sections 1–10 in the doc) on the beta site with Stripe test mode.
-
-**4. Activate Linda** — once UAT passes, the Activation gate is satisfied. You can send Linda the link to `www.agroverse.shop/subscribe/chocolate-bar/`.
-
-## Phase 3 (RSA accounts) — not started
-
-This is independent and can wait. It covers sign-in, order history, and the Stripe Customer Portal integration.
-
-Want me to tackle anything specific next?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Check this 2. GAS deploy — the new createSubscriptionCheckoutSession function is in the repo but needs to be deployed to the Apps Script. This is operator-gated (Sophia's gas_deploy_project tool targets the tokenomics clasp mirrors, not the shop checkout script).
-
-I believe it is already deplyoed and if not since you have clasp credential keys you should be able to handle it. DeepSeek made the keys available to you
-
-
-### 🤖 Autopilot
-
-Let me check what clasp mirrors and GAS deployments exist.
-
-
-### 🤖 Autopilot
-
 Let me check the clasp mirrors for the shop checkout script:
 
 
@@ -393,4 +282,50 @@ However, the most likely reason you're not seeing autofill is:
 3. **HTTPS vs HTTP** — most browsers only offer autofill on HTTPS pages. Beta is HTTPS, so that's fine.
 
 Could you try clicking into the **Full Name** field first? Browsers typically wait for focus on the first field before showing the autofill dropdown. If it still doesn't appear, it's likely a browser settings thing rather than a code issue.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I see the UX problem. The rates appear above the address fields instead of below it. That is why I had no idea that the shipping cost is. 
+
+What are your thoughts perhaps having the address field above the #subscribe-summary?
+
+
+### 🤖 Autopilot
+
+You're right — that's the UX issue. The shipping rates section is rendered inside the summary box (above the address fields), but the user hasn't filled in their address yet. So it shows "Enter address below" in the summary, but the address fields are **below** the summary. The user fills in their address, then has to scroll back up to see the rates appear.
+
+The fix: move the address fields **above** the summary box, so the flow is:
+
+1. Choose quantity
+2. Fill in shipping address
+3. See shipping rates + total in the summary
+4. Subscribe
+
+Let me restructure the HTML:
+
+
+### 🤖 Autopilot
+
+Now I need to move the address fields **above** the summary. The new flow should be:
+
+1. Quantity picker
+2. Shipping address fields
+3. Summary (with shipping rates + total)
+4. Subscribe button
+
+
+### 🤖 Autopilot
+
+PR #139 is up. The new page flow will be:
+
+1. **Product card** — what you're subscribing to
+2. **Quantity picker** — 3/6/12 bars or manual
+3. **Shipping address** — Full Name, Email, Phone, Street, City, State, ZIP
+4. **Summary** — bars, unit price, subtotal, **shipping rates** (auto-calculates as you fill address), **monthly total**
+5. **Subscribe Now** button
+
+This way you fill in your address first, then immediately see the shipping rates and total right below it — no scrolling back up.
 
