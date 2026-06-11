@@ -926,3 +926,42 @@ Want me to also add a link to the generic PDP from the homepage products section
 • `merge pr` → ✅ PR #157 on agroverse_shop_beta merged successfully (sha: 67e2d05f74e19c4260c9e9d7ecec79304c15b4f6). Pull Request successfully merged
 • `create dao submission` → Contribution submitted
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think this is a great idea 
+
+Want me to also add a link to the generic PDP from the homepage products section so visitors can discover it?
+
+
+### 🤖 Autopilot
+
+Yes, let me check the homepage to see where to add it:
+
+
+### 🤖 Autopilot
+
+I can see the product gallery on the homepage. The last two cards are the Oscar's and Santa Ana chocolate bars. I'll add the generic PDP as a new card in the product gallery, positioned before the vintage bars since it's the subscription entry point.
+
+
+### 🤖 Autopilot
+
+**Done.** The generic PDP card is now in the homepage product gallery, right before the Oscar's bar. Here's the full discovery flow now:
+
+### Visitor paths to subscription
+
+| Entry point | Click | Lands on |
+|-------------|-------|----------|
+| **Homepage** → product gallery | "Premium Dark Chocolate Bar" card → "Learn More" | Generic PDP |
+| **Oscar's Bar PDP** | "Subscribe — pick your quantity" | Generic PDP |
+| **Santa Ana Bar PDP** | "Subscribe — pick your quantity" | Generic PDP |
+| **Generic PDP** | "Subscribe Now" | `/subscribe/chocolate-bar/` |
+
+Check it out at `beta.agroverse.shop` — the new card should be visible in the products section.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #158 on agroverse_shop_beta merged successfully (sha: 75262c85f8371c4632c42bcf12d406ca4c822e3a). Pull Request successfully merged
+
