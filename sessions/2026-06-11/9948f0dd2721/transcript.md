@@ -704,3 +704,52 @@ Recipe 81% cacao / 19% sugar (default; may adjust when Liz has market visibility
 
 PR #432 — just that one line fix. Want me to merge it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+recommended that final retail price is USd$10 for the bar. But $6 for the bar which includes the trees. All of the transactions leading up to the sales and delivery will be tracked via the AORA ledger which is a managed ledger by TrueSight DAO
+
+Gary's understanding is that the sales proceeds final retail will go to Liz and her team at GO, the USd$6 per bar will only be made available back to TrueSight DAo which operates the Agroverse project once the bars are sold
+
+Go check the estimates of how much Graziela has quoted for the freight. The USd cash balance after deducting that amount sitting in our main ledger and AGL15 will be what is available to finance the follow up needs of the Aora GO collaboration. Anything beyond that and we will need investors to finance another round of AGL contract. No visibility into who that will be. So fingers crossed
+
+
+### 🤖 Autopilot
+
+Let me check the freight quote details and the current cash position.
+
+
+### 🤖 Autopilot
+
+Now let me check the Graziela freight pricing snapshot for the current lane.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me update the plan with the pricing model, revenue flow, and available cash calculation.
+
+
+### 🤖 Autopilot
+
+PR #433 is open. Here's what it adds:
+
+**Pricing model:**
+- Retail: **$10/bar** (Gary recommended)
+- DAO return: **$6/bar** (includes trees)
+- Liz/Go collects retail → $6 flows back to DAO after bars sold
+- All tracked via **AORA ledger** (managed by TrueSight DAO)
+
+**Cash position after current freight:**
+- Main Ledger + AGL15 = $8,452.02
+- Less freight ($2,825.09) = **~$5,626.93 remaining**
+- That's what's available for Aora/Go follow-up needs
+- Beyond that → need a new AGL round with investors — no visibility on who
+
+**Graziela's freight pricing** (for future China freight cost projections):
+- 200kg: $3.50/kg → 500kg+: $3.30/kg
+- Plus inland transport ($695 + 0.15%), airport charges ($0.30/kg min $250), US fees
+
+Want me to merge it?
+
