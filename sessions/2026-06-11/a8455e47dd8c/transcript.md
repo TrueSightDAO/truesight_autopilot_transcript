@@ -95,3 +95,35 @@ Right now there's a complicating factor: the escalating Iran/USA conflict is dri
 
 That's why the freight cost in the plan is marked as **tentative** — the original $2,825.09 estimate could go up depending on what the airline says when they finally revalidate.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Question, what was the original inland Brazil price quoted by Omega Services and what is the most current price quoted? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the freight audit repo for the detailed pricing breakdown.
+
+
+### 🤖 Autopilot
+
+Here's the breakdown from the Omega Services quotation (dated April 15, 2026):
+
+**Inland Transport (Brazil) — Omega's formula:**
+- **Base:** $695.00
+- **Plus:** 0.15% of cargo value (ad valorem)
+- So for this shipment (~375 kg, estimated cargo value ~$1,875 at $5/kg), that's $695 + ~$2.81 = **~$697.81**
+
+That matches the $697.81 line item in the freight cost breakdown from the AORA plan.
+
+**Other Brazil-side costs from the same Omega quote:**
+- **Airline charges in Brazil:** $95.00 per shipment
+- **Airport charges:** $0.30/kg, minimum $250 — for 375 kg that's $112.50, so the $250 minimum applies
+
+**Most current pricing?** The snapshot I have is from **April 15, 2026** — that's the latest archived quote from Omega. There hasn't been a newer snapshot filed since then. The airline revalidation that Graziela is waiting on would update the **air freight rate** (the per-kg airline cost), not the inland Brazil portion — that's Omega's domain and should remain stable.
+
+So the inland Brazil cost is still the original **~$697.81** figure. No updated quote has come in yet.
+
