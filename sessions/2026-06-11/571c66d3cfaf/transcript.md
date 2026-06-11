@@ -830,3 +830,37 @@ Good — both vintage PDPs are nearly identical in structure. Here's the updated
 
 Want me to proceed with building all three?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+which means that the subscribe buttons on both Oscar and Santa Ana bars should bring the visitor to the generic subscription page isnt it?
+
+
+### 🤖 Autopilot
+
+Exactly right. The Subscribe CTA on both vintage PDPs should link to the **generic PDP** (`/product-page/premium-dark-chocolate-bar/`), not directly to the subscribe engine. That way:
+
+1. **Oscar's Bar PDP** → "Subscribe" → **Generic PDP** (explains the rotating-origins model) → "Subscribe Now" → `/subscribe/chocolate-bar/`
+2. **Santa Ana Bar PDP** → "Subscribe" → **Generic PDP** → "Subscribe Now" → `/subscribe/chocolate-bar/`
+3. **Generic PDP** (also linked from nav/homepage) → "Subscribe Now" → `/subscribe/chocolate-bar/`
+
+The generic PDP becomes the **marketing landing page** that explains what the subscription is before sending them to the form. The vintage PDPs are the discovery entry points.
+
+Updated plan:
+
+---
+
+## PR1.5 Plan: Subscribe CTA on All Bar PDPs + Generic Landing Page
+
+| # | Change | Details |
+|---|--------|---------|
+| **1** | **Oscar's Bar PDP** | Add "Subscribe — pick your quantity" button → `/product-page/premium-dark-chocolate-bar/` |
+| **2** | **Santa Ana Bar PDP** | Same Subscribe CTA → `/product-page/premium-dark-chocolate-bar/` |
+| **3** | **Generic PDP** (new) | `/product-page/premium-dark-chocolate-bar/` — rotating-origins concept page with "Subscribe Now" → `/subscribe/chocolate-bar/` and secondary one-off Add-to-Cart |
+
+**Flow:** Vintage PDP → Subscribe → Generic PDP (learn about subscription) → Subscribe Now → subscribe form
+
+Want me to proceed?
+
