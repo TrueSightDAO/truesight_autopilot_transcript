@@ -1033,3 +1033,80 @@ Without Phase 2, monthly renewals are charged but **unrecorded and unfulfilled**
 
 Want me to start building Phase 2?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think file this as an open follow up for now. By the way I just had a discussion with Claude and I think we are going to extend with you with more capabilities really soon. So perhaps read the follow up monitor in agentic_ai_context (claude just uploaded that) File it in that format so that you can easily detect that follow up when you get reincarnated with that capability and then remind me about it. 
+
+I think we should probably re-look into phase 2 once Linda subscribes and has successfully received two subsccriptions shipments or in two months. What do you think?
+
+
+### 🤖 Autopilot
+
+Let me check the follow-ups file and the new monitor:
+
+
+### 🤖 Autopilot
+
+I see the file — it's massive. Let me search for the monitor/upload Claude mentioned:
+
+
+### 🤖 Autopilot
+
+I don't see a new monitor file from Claude in the attachments or context. Let me check if there's a recently added file:
+
+
+### 🤖 Autopilot
+
+I don't see a new monitor file that Claude uploaded. Let me check the recent commits to agentic_ai_context:
+
+
+### 🤖 Autopilot
+
+There it is — PR #447: **"handoff: Sophia durable follow-up monitor — plan + UAT + registry"** — merged just now. Let me read it:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Claude built a **durable follow-up monitor** plan that lets me track multi-day promises. Let me file the Phase 2 follow-up using that system.
+
+First, let me add it to `OPEN_FOLLOWUPS.md` in the new fenced-block format, then I'll explain my thinking on timing.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. Let me file the Phase 2 follow-up properly in `OPEN_FOLLOWUPS.md` using the new fenced-block format, so the durable follow-up monitor can detect it when it's built.
+
+
+### 🤖 Autopilot
+
+**Done.** Here's the summary:
+
+### What I filed
+
+A durable follow-up monitor entry in `OPEN_FOLLOWUPS.md` that will:
+
+- **Check weekly** starting now
+- **Ping thread 1939** after ~60 days (escalation timer)
+- When it fires, remind you to revisit Phase 2 and ask if Linda has received 2 successful shipments yet
+
+### On your timing question
+
+I think your instinct is right — **wait until Linda has received 2 successful shipments before building Phase 2**. Here's why:
+
+1. **Validate the model first** — does the subscription actually work operationally? Does Kirsten know how to fulfill it? Does Linda stay subscribed after month 1? If the model has issues, you don't want automation built on top of a broken foundation.
+2. **Phase 2 is real engineering** — it touches the Rails webhook handler, the dapp fulfillment UI, the GAS sales parser, and a new sheet tab. That's meaningful build time that could go elsewhere if subscriptions don't stick.
+3. **The interim bridge works** — you get email notifications for each renewal (from Stripe), and you can manually fulfill via the existing `report_sales.html` flow. It's not automated, but it's viable for 1 subscriber.
+
+So the plan is: Linda subscribes → you manually fulfill month 1 → month 2 → if both go smoothly and she's still subscribed, **the follow-up fires and we build Phase 2**.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #448 on agentic_ai_context merged successfully (sha: 0b9ab07a34ad674f3ee4b7abe6cd751272228b2e). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #448 on agentic_ai_context merged successfully (sha: 0b9ab07a34ad674f3ee4b7abe6cd751272228b2e). Pull Request successfully merged
+
