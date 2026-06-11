@@ -10,83 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see the problem clearly now. The `doGet` function handles `createCheckoutSession` but **not** `createSubscriptionCheckoutSession`. The frontend calls it via GET (`fetch(scriptUrl + '?' + params.toString(), { method: 'GET' })`), but `doGet` falls through to the error message.
-
-The `createSubscriptionCheckoutSession` function exists in the code, but `doGet` doesn't route to it. Let me fix that:
-
-
-### 🤖 Autopilot
-
-Now let me push this to the GAS and deploy:
-
-
-### 🤖 Autopilot
-
-Deployed as version @35. Now let me merge the PR:
-
-
-### 🤖 Autopilot
-
-**Fixed.** The `createSubscriptionCheckoutSession` function existed in the GAS code but `doGet()` didn't have a route for it — so when the frontend called `?action=createSubscriptionCheckoutSession&sku=...`, the GAS fell through to the "Invalid action" error.
-
-**Deployed as version @35** on the same public URL. Try the subscription flow again now — it should work.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-• `ssh run` → {
-• `merge pr` → ✅ PR #142 on agroverse_shop_beta merged successfully (sha: 7cba8918f1c50f5bb47950ae2c5ac5615b794c18). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-chocolate-bar/?slug=chocolate-bar:1 Access to fetch at 'https://script.google.com/macros/s/AKfycbyefqjQnWegrXR9y18HyJMxSM2wWCyucsK5qdh5isJICVhonssajEpT4Dt3hq3A7PTA/exec?action=createSubscriptionCheckoutSession&environment=development&sku=generic-premium-dark-chocolate-bar&quantity=6&shippingAddress=%7B%22fullName%22%3A%22Gary+Teh%22%2C%22email%22%3A%22garyjob%40gmail.com%22%2C%22phone%22%3A%22415+3000019%22%2C%22address%22%3A%221968+South+Coast+Highway+4616%22%2C%22city%22%3A%22Laguna+Beach%22%2C%22state%22%3A%22CA%22%2C%22zip%22%3A%2292651%22%2C%22country%22%3A%22US%22%7D' from origin 'https://beta.agroverse.shop' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
-script.google.com/macros/s/AKfycbyefqjQnWegrXR9y18HyJMxSM2wWCyucsK5qdh5isJICVhonssajEpT4Dt3hq3A7PTA/exec?action=createSubscriptionCheckoutSession&environment=development&sku=generic-premium-dark-chocolate-bar&quantity=6&shippingAddress=%7B%22fullName%22%3A%22Gary+Teh%22%2C%22email%22%3A%22garyjob%40gmail.com%22%2C%22phone%22%3A%22415+3000019%22%2C%22address%22%3A%221968+South+Coast+Highway+4616%22%2C%22city%22%3A%22Laguna+Beach%22%2C%22state%22%3A%22CA%22%2C%22zip%22%3A%2292651%22%2C%22country%22%3A%22US%22%7D:1  Failed to load resource: net::ERR_FAILEDUnderstand this error
-subscribe.js:676 Subscription error: TypeError: Failed to fetch
-    at createSubscriptionSession (subscribe.js:627:26)
-
-
-I think you probably just made some code changes to GAS that is triggering CORS. Go figure what you did different
-
-
-### 🤖 Autopilot
-
-You're right — the previous version of the GAS (before my changes) was working for `createCheckoutSession` via GET, so CORS wasn't an issue before. Let me check what changed.
-
-The key insight: Google Apps Script web apps **do not support CORS headers** for `doGet()` — they only return `Access-Control-Allow-Origin` for `doPost()` when the `Content-Type` is not `text/html`. But the existing `createCheckoutSession` route in `doGet` was already working, so something about my new route is different.
-
-Let me look at the actual request the frontend makes:
-
-
-### 🤖 Autopilot
-
-The frontend code isn't in the GitHub repos indexed by search. Let me check the beta site directly:
-
-
-### 🤖 Autopilot
-
-Let me look at the actual JS bundle on the beta site to find the fetch call:
-
-
-### 🤖 Autopilot
-
-Let me look at the actual JS bundle to find the fetch call. The error says `subscribe.js:676` — let me check the built assets:
-
-
-### 🤖 Autopilot
-
-Let me look at the HTML source for the script tags:
-
-
-### 🤖 Autopilot
-
-The subscribe page loads `../../js/subscribe.js`. Let me read that:
-
-
-### 🤖 Autopilot
-
 Now I see the issue clearly. The frontend calls:
 
 ```javascript
@@ -1000,4 +923,62 @@ So the flow is: subscribe → success page → "Manage Subscription" button → 
 **✅ Done this turn — actions taken:**
 • `ssh run` → cp /home/ubuntu/.clasprc-gary.json /home/ubuntu/.clasprc.json && python3 -c " import urllib.request url = 'https://raw.githubusercontent.com
 • `merge pr` ×2 → ✅ PR #149 on agroverse_shop_beta merged successfully (sha: 33f319ecf8646902d6d01114dfba655df01cccb8). Pull Request successfully merged; ✅ PR #151 on agroverse_shop_beta merged successfully (sha: 6c8c67b5ebe0b9556ce2a696f162f0f7ef00a95d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Not seeing • ⏳ Canceled → Shows a yellow card: "Subscription Canceled" with a Try Again button that reloads the clean form
+
+
+### 🤖 Autopilot
+
+Let me check what's actually deployed on the beta site:
+
+
+### 🤖 Autopilot
+
+The code is there — `checkReturnFromStripe()`, `showSuccessState()`, and `showCanceledState()` are all in the deployed `subscribe.js`. The issue is that the **success URL** in the GAS points to `/order-status?session_id=...` instead of `/subscribe/chocolate-bar/?success=true&session_id=...`.
+
+Let me check the GAS success URL:
+
+Looking at the `Code.js` `createSubscriptionCheckoutSession` function (the canonical one in the main file), the success URL is:
+```javascript
+var successUrl = baseUrl + '/order-status?session_id={CHECKOUT_SESSION_ID}';
+```
+
+And the cancel URL is:
+```javascript
+var cancelUrl = baseUrl + '/subscribe/chocolate-bar/?slug=chocolate-bar';
+```
+
+So:
+- **Success** redirects to `/order-status?session_id=...` — which shows the order status page, NOT the subscribe success page
+- **Cancel** redirects to `/subscribe/chocolate-bar/?slug=chocolate-bar` — which just shows the form again, no `?canceled=true`
+
+The success/cancel URLs need to match what `subscribe.js` expects:
+- Success: `?success=true&session_id=...`
+- Cancel: `?canceled=true`
+
+
+### 🤖 Autopilot
+
+**Found it.** The success/cancel URLs in the GAS were wrong:
+
+- **Success** was redirecting to `/order-status?session_id=...` — the order status page, not the subscribe page with `?success=true`
+- **Cancel** was redirecting to `/subscribe/chocolate-bar/?slug=chocolate-bar` — just the form, no `?canceled=true`
+
+The `subscribe.js` code checks for `?success=true` and `?canceled=true` URL params, but the GAS was sending users to different URLs entirely. Fixed both to match what the frontend expects.
+
+Now when you complete a subscription:
+- ✅ **Success** → `/subscribe/chocolate-bar/?success=true&session_id=...` → green confirmation card with "Manage Subscription" button
+- ⏳ **Cancel** → `/subscribe/chocolate-bar/?canceled=true` → yellow card with "Try Again" button
+
+Try it again — the success/cancel states should work now.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cp /home/ubuntu/.clasprc-gary.json /home/ubuntu/.clasprc.json && python3 -c " import urllib.request url = 'https://raw.githubusercontent.com
+• `merge pr` → ✅ PR #152 on agroverse_shop_beta merged successfully (sha: 792cf7169ddf86d7746465e11cf586ef4b52c9f6). Pull Request successfully merged
 
