@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-I'll append a comprehensive UAT section to the plan document.
-
-
-### 🤖 Autopilot
-
 Now I'll append the UAT section to the plan document.
 
 
@@ -306,4 +301,96 @@ Done. The `.clasp-owner` convention is now documented in three places:
 3. **`agentic_ai_context/NOTES_tokenomics.md`** (PR #427) — the AI-facing reference doc
 
 The pattern is: every clasp mirror has a `.clasp-owner` file. Before pushing, check it → swap to the right `.clasprc-*.json` → push → restore. No more "caller does not have permission" surprises.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+How come I dont see autocomplete for address when I type it in here
+https://beta.agroverse.shop/subscribe/chocolate-bar/?slug=chocolate-bar
+
+Or is it meant to be like this?
+
+
+### 🤖 Autopilot
+
+Let me check the subscribe page code to see how the address form is implemented.
+
+
+### 🤖 Autopilot
+
+I see the issue — the address fields are plain `<input>` elements with no `autocomplete` attribute. Browsers use `autocomplete` attributes to offer saved address suggestions. Let me check the HTML template:
+
+
+### 🤖 Autopilot
+
+That confirms it — there are zero `autocomplete` attributes anywhere in the shop code. The address fields have no hints for the browser, so it doesn't offer autofill. Let me check the subscribe page HTML:
+
+
+### 🤖 Autopilot
+
+Actually, looking more carefully at the HTML — the fields **do** have `autocomplete` attributes! I see:
+
+- `autocomplete="name"` on fullName
+- `autocomplete="email"` on email
+- `autocomplete="tel"` on phone
+- `autocomplete="street-address"` on address
+- `autocomplete="address-level2"` on city
+- `autocomplete="address-level1"` on state
+- `autocomplete="postal-code"` on zip
+- `autocomplete="country"` on country
+
+So the autocomplete attributes are there. The issue is likely that the form fields are inside a `<form>` that's inside a page loaded via a redirect (the page auto-redirects to add `?slug=chocolate-bar`). Browsers sometimes don't offer autofill on pages that redirect. Also, the form has `required` attributes and `pattern` validation which is good.
+
+Let me check if there's a `name` attribute issue — browsers often match autofill by `name` attribute values:
+
+The `name` attributes are: `fullName`, `email`, `phone`, `address`, `city`, `state`, `zip`, `country`. These are fine — browsers recognize these.
+
+The autocomplete attributes **are** there and correct. The issue might be:
+
+1. **The redirect** — the page auto-redirects from `/subscribe/chocolate-bar/` to `/?slug=chocolate-bar`. Browsers often don't offer autofill on pages that do an immediate redirect. You're visiting `?slug=chocolate-bar` directly which avoids that, but the redirect script runs first.
+
+2. **Browser-specific** — some browsers need the user to have saved address info in the browser's autofill settings.
+
+3. **The form is inside a dynamically-loaded section** — the product card is populated by JS, but the form fields are static HTML so that shouldn't matter.
+
+Let me check if the redirect is the culprit — the page has a script that redirects if no `slug` param is present:
+
+```javascript
+if (!params.get('slug')) {
+    var newUrl = window.location.pathname.replace(/\/$/, '') + '/?slug=chocolate-bar' + window.location.hash;
+    window.location.replace(newUrl);
+}
+```
+
+When you visit `https://beta.agroverse.shop/subscribe/chocolate-bar/?slug=chocolate-bar`, the slug IS present, so the redirect doesn't fire. The autocomplete attributes are all correct.
+
+This is likely a **browser behavior** issue rather than a code bug. Some things to try:
+- Try in a different browser (Chrome usually has the best autofill)
+- Make sure you have saved addresses in your browser's autofill settings
+- Click into the "Full Name" field first — browsers often wait for focus on the first field before offering autofill
+
+That said, I could add a `name` attribute to the form itself and ensure the form fields use the standard HTML autocomplete tokens. Let me check if there's a quick improvement:
+
+The form fields already use the correct `autocomplete` tokens per the HTML spec. The issue is likely that the page URL has query parameters (`?slug=chocolate-bar`) — some browsers are cautious about autofilling on pages with query strings for security reasons.
+
+A simple fix would be to add `autocomplete="on"` to the `<form>` element itself (it's missing), and also wrap the address fields in a `<fieldset>` with `autocomplete="shipping address-line1"` etc. But honestly, the current setup should work in most browsers.
+
+Let me add the `autocomplete="on"` to the form element — that's the one thing missing:
+
+
+### 🤖 Autopilot
+
+The autocomplete attributes **are** already on the individual fields — I can see them in the HTML. The one thing missing was `autocomplete="on"` on the `<form>` element itself, which I've added in PR #138.
+
+However, the most likely reason you're not seeing autofill is:
+
+1. **The page redirect** — when you visit `/subscribe/chocolate-bar/` (without `?slug=...`), the page auto-redirects to `/?slug=chocolate-bar`. Browsers often suppress autofill on pages that redirect. You're visiting with `?slug=chocolate-bar` already, so that shouldn't apply.
+
+2. **Browser autofill settings** — Chrome especially needs you to have saved addresses in `chrome://settings/addresses` and have autofill enabled.
+
+3. **HTTPS vs HTTP** — most browsers only offer autofill on HTTPS pages. Beta is HTTPS, so that's fine.
+
+Could you try clicking into the **Full Name** field first? Browsers typically wait for focus on the first field before showing the autofill dropdown. If it still doesn't appear, it's likely a browser settings thing rather than a code issue.
 
