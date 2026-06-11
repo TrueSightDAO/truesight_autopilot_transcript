@@ -1216,3 +1216,48 @@ If you want to skip PR #155 entirely and go straight to PR1, I can close #155 an
 
 Which way?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+merged
+
+
+### 🤖 Autopilot
+
+Let me verify the merge and then start PR1.
+
+
+### 🤖 Autopilot
+
+PR #155 merged ✅. Now let me pull latest `main` and start PR1 step 1.
+
+
+### 🤖 Autopilot
+
+Now let me read the current `OPEN_FOLLOWUPS.md` to understand the structure I'll be parsing:
+
+
+### 🤖 Autopilot
+
+Good — I now have the full picture. The `OPEN_FOLLOWUPS.md` already has a ````followup` block in it (the `chocolate-subscription-phase2` entry). That's my test case for the parser.
+
+**Progress summary:**
+
+### ✅ PR #155 — merged by you
+### ✅ CI — green on main (Claude's PYTHONPATH fix + my format fix)
+### 📋 Now: PR1 step 1 — `app/followups.py` (parser + state sidecar)
+
+I'm ready to start building. The plan says:
+
+1. **`app/followups.py`** — parse ` ```followup ` blocks from `OPEN_FOLLOWUPS.md`, load/merge `followups/state.json`, provide `list_open()`, `get(id)`, `upsert_state(id, …)`, `set_status(id, status)`
+2. Atomic state writes (tmp + `os.replace`)
+3. Tests
+
+Shall I proceed with PR1?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && git checkout main && git pull origin main 2>&1
+
