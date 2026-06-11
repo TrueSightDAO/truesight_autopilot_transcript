@@ -8,38 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-you have the ability to clasp push and deploy. Check your credentials
-
-
-### 🤖 Autopilot
-
-Let me check what clasp credentials are available on the autopilot box.
-
-
-### 🤖 Autopilot
-
-Clasp is installed and there are multiple credential files. Let me check which clasp identity is active and clone the tokenomics repo.
-
-
-### 🤖 Autopilot
-
-I have three clasp credential files:
-- `~/.clasprc.json` — default (admin@truesight.me)
-- `~/.clasprc-gary.json` — **garyjob@agroverse.shop** (the one that owns the QR code GAS script)
-- `~/.clasprc-admin.json` — admin@truesight.me
-
-The GAS script `1N6o00N9VtRK_L3e0NQXEsmC6QME1KObZdmdbJgo0Tbgj_7P-ElNL5THn` is owned by `garyjob@agroverse.shop`, so I need to use the `--clasprc` flag with the gary credentials. Let me clone the tokenomics repo and set up the clasp mirror.
-
-
-### 🤖 Autopilot
-
-The PR hasn't been merged yet, so the file doesn't exist on main. I need to check out the PR branch.
-
-
 ### 🤖 Autopilot
 
 Now I have the PR branch checked out. Let me copy the files to the clasp mirror and deploy.
@@ -637,4 +605,68 @@ Now let me run UAT U2 — duplicate detection.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && grep -n "setValues\|setVa; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && sed -n '2088,2100p' qr_co; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && python3 << 'PYEOF' with o; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Hmmm... Can we not have dao_client post directly to GAS? Instead have dao_client send to edgar and write to https://docs.google.com/spreadsheets/d/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ/edit?gid=0#gid=0 "Telegram Chat Logs" and then after that dao_client do doGet to trigger GAS to read and pick up that row to handle processing
+
+
+### 🤖 Autopilot
+
+Got it — so the flow is:
+
+```
+dao_client register_qr_code
+  |
+  |  1. POST signed event to Edgar
+  |  2. Edgar writes to "Telegram Chat Logs" sheet
+  v
+dao_client (same command, step 2)
+  |
+  |  3. GET the GAS web app URL with ?action=processQRCodeGenerationTelegramLogs
+  v
+GAS reads "Telegram Chat Logs" sheet, picks up the new row, creates QR code entry
+```
+
+This keeps the **audit trail** in Edgar/Telegram Chat Logs (which is the canonical event log) while still having dao_client trigger the GAS processing directly. Let me update the plan to reflect this.
+
+
+### 🤖 Autopilot
+
+**✅ Plan updated again.** PR #455 now reflects the correct two-step flow:
+
+```
+dao_client register_qr_code
+  |
+  |  Step 1: POST signed [QR CODE REGISTRATION] event
+  v
+Edgar (sentiment_importer)
+  |  Appends to "Telegram Chat Logs" sheet
+  v
+dao_client (same command)
+  |
+  |  Step 2: GET GAS ?action=processQRCodeGenerationTelegramLogs
+  v
+GAS reads Telegram Chat Logs, creates QR code entry
+```
+
+**Updated plan sections:**
+- **Architecture diagram** — shows the two-step flow
+- **Component breakdown** — Edgar endpoint restored
+- **Phase 2** — Edgar endpoint reinstated
+- **Phase 3** — dao_client now does two steps (POST to Edgar, then GET GAS)
+- **Gates** — G2 restored
+- **UAT** — U3 restored
+- **Files** — sentiment_importer controller + route restored
+- **Timeline** — back to 5-8 hours
+- **RESUME HERE** — PR2 restored
+
+Want me to open PR2 (Edgar endpoint in sentiment_importer) next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/agentic_ai_context_fix && git pull origin fix/qr-registration-plan-simplify-architecture 2>&1 | tail -3; cd /tmp/agentic_ai_context_fix && python3 << 'PYEOF' with open('plans/QR_CODE_REGISTRATION_IMPLEMENTATION_PLAN.md', 'r') as f: content = f.r; cd /tmp/agentic_ai_context_fix && git add -A && git -c user.name="Sophia Autopilot" -c user.email="autopilot@truesight.me" commit -m "Restor
 
