@@ -938,3 +938,26 @@ Done! Revised invoice sent to Graziela with:
 
 Betul kan?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Maksud saya, saya akan datangkan kesempatan untuk mencari kesempatan ini. Terima kasih kerana Ili Al's Brazil dari Matos Fasilati di Kerstens, Fasilati di San Francisco. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sama-sama, Gary! Saya faham — awak nak pastikan shipment dari Brazil sampai ke Kirsten di San Francisco dengan lancar.
+
+**Ringkasan status sekarang:**
+
+✅ **Airline** — rates and space confirmed
+✅ **Commercial Invoice (Rev 2, FOB)** — dah hantar ke Graziela
+✅ **Packing List (Rev 1)** — dah hantar
+❌ **Nota Fiscal (NF-e)** — masih tunggu Matheus guna SEFAZ portal Brazil
+
+Selepas Matheus settlekan Nota Fiscal tu, shipment boleh gerak. Saya akan follow up dengan Graziela dalam beberapa hari kalau tak ada update.
+
+Ada apa-apa lagi yang nak saya tolong?
+
