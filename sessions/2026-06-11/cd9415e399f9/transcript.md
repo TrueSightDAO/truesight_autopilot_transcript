@@ -522,3 +522,47 @@ The current post says "the context lives in a GitHub repo that Gary controls" �
 
 Want me to add a section to the post about this and regenerate the audio?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yes, please go for it and then once you're done merge and then also sink to production [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current post and add the new section about self-hosted sovereignty.
+
+
+### 🤖 Autopilot
+
+I'll add a new section about self-hosted sovereignty right after the "Swappable backends" section, then regenerate audio, merge, and sync to prod.
+
+
+### 🤖 Autopilot
+
+Now regenerate the audio.
+
+
+### 🤖 Autopilot
+
+Now let me try the sync to prod.
+
+
+### 🤖 Autopilot
+
+Still hitting the same conflict. The post and audio are live on **beta.truesight.me** but the sync to prod is blocked by the diverged histories. The new section is titled **"Going further: self-hosted sovereignty"** and covers:
+
+- GitHub itself is centralized (Microsoft-owned)
+- You can self-host git (Gitea, Forgejo) on your own hardware
+- You can run local models (Qwen, DeepSeek, Llama) on your own machine
+- At that point, zero dependency on any third-party service
+
+For prod, a human will need to manually reconcile the conflict on `truesight_me_prod` — or if you're okay with it, I could try a different approach to push just the blog files to prod.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #201 on truesight_me_beta merged successfully (sha: 6d5504de1574d4c648a1a01b9dc6bc9063e94712). Pull Request successfully merged
+• `ssh run` → cd /opt/truesight_autopilot && source .venv/bin/activate && python3 << 'PYEOF' import asyncio import edge_tts text = """The Darwinian Agent:
+
