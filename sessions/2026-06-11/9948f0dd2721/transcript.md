@@ -77,3 +77,30 @@ Want me to draft it? I can:
 
 Or if you'd rather just tell me the key details about Liz, Go, and the expanded scope, I'll incorporate them.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Liz is Elizabeth Wong.
+
+
+### 🤖 Autopilot
+
+Got it — Elizabeth Wong. Let me search for any existing references to her full name in the DAO context.
+
+
+### 🤖 Autopilot
+
+So Elizabeth Wong is a known customer (purchased 37 bars in April 2026) — and now she's becoming a **collaborator** on Go and Aora. That's a meaningful relationship evolution.
+
+To draft the right plan, I need a bit more context from you:
+
+1. **What's Liz's role?** Is she leading the Go integration (Kaon's GO app/Nucleus network), co-designing the Aora modules, running the China salons, or something else?
+
+2. **What does "Go" mean here?** The existing Aora plan references "Mr. Cao's GO/Nucleus network" — is Liz working with/for Mr. Cao, or is she a separate partner bringing her own Go expertise?
+
+3. **What's the expanded scope?** Beyond what's in `AORA_EXPERIENCE_PLAN.md` (modules → site → credentialing), what new work does the Liz collaboration unlock?
+
+Once I have those, I'll draft the collaboration plan as a PR to `agentic_ai_context` and we can open a dedicated tracking topic.
+
