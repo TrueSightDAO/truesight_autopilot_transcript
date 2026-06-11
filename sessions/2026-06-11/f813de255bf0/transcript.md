@@ -10,13 +10,6 @@
 
 ### 🤖 Autopilot
 
-Still getting the old error. This is because the new deployment is a **versioned deployment** (version 12), not `@HEAD`. The version was created from the code at the time of deployment, but the `@HEAD` deployment still points to the latest code. The issue is that the `doGet` function in the versioned deployment doesn't have my changes.
-
-Wait — I pushed the code to the clasp mirror, but the versioned deployment captures the code at the time of `clasp deploy`. The `clasp push` updated the remote project, but the new deployment should have captured the latest code. Let me check if the push actually went through correctly.
-
-
-### 🤖 Autopilot
-
 The code is there in the mirror. But the versioned deployment was created from the pushed code. The issue might be that the `@HEAD` deployment (`AKfycbzwOJQD1k939QJtWxSAwm26NbBgzMG86QWObmHDpfs`) is the one that needs to be tested, but it requires authentication.
 
 Let me check if the new deployment `@12` actually has the right code by testing a different action that should work.
@@ -1791,4 +1784,29 @@ Want me to tweak anything — colors, layout, text, size?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps import os OUTPUT_DIR = "/tmp/qr_generation" QR_CODE = ; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+The QR code looks squished..
+
+
+### 🤖 Autopilot
+
+You're right — the QR code is being resized from the original 450x350 canvas which has the text baked in, making it look squished when stretched to 440px. Let me regenerate the QR code at the right size for the placard and rebuild.
+
+
+### 🤖 Autopilot
+
+Fixed! The QR code is now generated fresh at the correct size (420px square with proper border) instead of being stretched from the smaller canvas. The logo is embedded cleanly in the center.
+
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
+
+The QR should now be perfectly square and scannable. Want me to adjust anything else — colors, layout, text, or print it at a specific size?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
 
