@@ -242,3 +242,23 @@ All 3 deselected tests are fixed and hermetic:
 
 Also — PRs #144 and #145 are duplicates that should be closed. Want me to merge #146 now?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+or perhaps I extend the PAT with workflow scope? what is the name of the PAT?
+
+
+### 🤖 Autopilot
+
+The PAT is `TRUESIGHT_DAO_AUTOPILOT` — it's stored in `/opt/truesight_autopilot/.env` on the autopilot box.
+
+You'd need to:
+1. Go to GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
+2. Find the token (it starts with `github_pat_11AAIHROQ...`)
+3. Add **Contents: write** permission (which it already has) and **Workflows: write** permission (which it's missing)
+4. Update the value in `/opt/truesight_autopilot/.env` on the autopilot box if the token value changes
+
+Alternatively, if you want me to just merge #146 as-is and we handle the smoke.yml change separately, I can do that now — the test fixes are correct and verified. The `--deselect` flags just mean CI won't run them yet, but the code is fixed.
+
