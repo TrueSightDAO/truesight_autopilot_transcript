@@ -10,13 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — Elizabeth Wong purchased **37 bars** (20 Oscar 2024 + 17 Santa Ana 2023) in April 2026. She now needs **100 bars total**, so the **outstanding is 63 bars**.
-
-Let me also check the current inventory and freight status.
-
-
-### 🤖 Autopilot
-
 Excellent — I now have the full picture. Let me also check the current inventory to see what's available.
 
 
@@ -612,4 +605,25 @@ Here's what the update adds:
 **4. Weight/volume for Jerri's forwarder** — chocolate bars only:
 - Pilot (100 bars): 5 kg, ~0.03 m³
 - Full batch from La do Sitio (~2,000 bars): ~100 kg, ~0.5 m³
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+By the way, the pilot for 100 bars if it is happening it is me bringing it over to CHina in my backpack
+
+
+### 🤖 Autopilot
+
+Got it — that simplifies the logistics significantly. Let me update that in the plan.
+
+
+### 🤖 Autopilot
+
+PR #429 is open. Want me to merge it?
+
+The key change: **100 bars = Gary's backpack.** 5 kg total — fits easily in carry-on. No freight, no shipping cost, no crush risk since you're carrying them personally.
+
+If July shifts, the bars just sit at Kirsten's until your next China trip. Simple.
 
