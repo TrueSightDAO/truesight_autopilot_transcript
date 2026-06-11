@@ -10,110 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — both vintage PDPs are nearly identical in structure. Here's the updated plan:
-
----
-
-## Updated PR1.5 Plan: Subscribe CTA on All Bar PDPs + Generic Landing Page
-
-### Three changes in one PR:
-
-| # | Change | Details |
-|---|--------|---------|
-| **1** | **Oscar's Bar PDP** | Add Subscribe CTA below "Add to Cart" → `/subscribe/chocolate-bar/` |
-| **2** | **Santa Ana Bar PDP** | Same Subscribe CTA, same link |
-| **3** | **Generic Landing Page** | New page at `/product-page/premium-dark-chocolate-bar/` — explains the rotating-origins subscription model, no farm-specific content, primary CTA to subscribe, secondary one-off Add-to-Cart |
-
-### Why three
-- **Vintage PDPs** → visitors who land on a specific bar page can subscribe instead of buying one-off
-- **Generic PDP** → a dedicated page for the subscription concept itself, linkable from nav, homepage, social, placard QRs. No farm-specific content — just the subscription pitch.
-
-### What the generic PDP includes
-- Hero image of the bar + packaging
-- "Single-Estate, Monthly Discovery" concept copy — rotating origins, QR traceability
-- **Primary CTA:** "Subscribe — pick your quantity" → `/subscribe/chocolate-bar/`
-- **Secondary:** "Add to Cart" for a one-off (sells from same pool)
-- Tasting notes, specs, shipping terms, wholesale banner, impact section
-- No farm videos, no shipment docs, no taste profile chart (those are vintage-specific)
-
----
-
-## Execution checklist
-
-| # | Step | Details |
-|---|------|---------|
-| ☐ | **1. Oscar's PDP** | Add Subscribe CTA below Add to Cart |
-| ☐ | **2. Santa Ana PDP** | Same Subscribe CTA |
-| ☐ | **3. Generic PDP** | New page at `/product-page/premium-dark-chocolate-bar/` |
-| ☐ | **4. PR + merge** | Open PR, merge on approval |
-| ☐ | **5. DAO contribution** | Report the contribution |
-
----
-
-## UAT
-
-| # | Check | What to look for |
-|---|-------|------------------|
-| U1 | Oscar's PDP | Subscribe button visible, links to `/subscribe/chocolate-bar/` |
-| U2 | Santa Ana PDP | Same Subscribe button |
-| U3 | Generic PDP | Page renders at `/product-page/premium-dark-chocolate-bar/`, no console errors |
-| U4 | Generic PDP Subscribe CTA | Links to `/subscribe/chocolate-bar/` |
-| U5 | Generic PDP Add to Cart | One-off purchase works |
-| U6 | Mobile | All three pages responsive |
-
----
-
-Want me to proceed with building all three?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-which means that the subscribe buttons on both Oscar and Santa Ana bars should bring the visitor to the generic subscription page isnt it?
-
-
-### 🤖 Autopilot
-
-Exactly right. The Subscribe CTA on both vintage PDPs should link to the **generic PDP** (`/product-page/premium-dark-chocolate-bar/`), not directly to the subscribe engine. That way:
-
-1. **Oscar's Bar PDP** → "Subscribe" → **Generic PDP** (explains the rotating-origins model) → "Subscribe Now" → `/subscribe/chocolate-bar/`
-2. **Santa Ana Bar PDP** → "Subscribe" → **Generic PDP** → "Subscribe Now" → `/subscribe/chocolate-bar/`
-3. **Generic PDP** (also linked from nav/homepage) → "Subscribe Now" → `/subscribe/chocolate-bar/`
-
-The generic PDP becomes the **marketing landing page** that explains what the subscription is before sending them to the form. The vintage PDPs are the discovery entry points.
-
-Updated plan:
-
----
-
-## PR1.5 Plan: Subscribe CTA on All Bar PDPs + Generic Landing Page
-
-| # | Change | Details |
-|---|--------|---------|
-| **1** | **Oscar's Bar PDP** | Add "Subscribe — pick your quantity" button → `/product-page/premium-dark-chocolate-bar/` |
-| **2** | **Santa Ana Bar PDP** | Same Subscribe CTA → `/product-page/premium-dark-chocolate-bar/` |
-| **3** | **Generic PDP** (new) | `/product-page/premium-dark-chocolate-bar/` — rotating-origins concept page with "Subscribe Now" → `/subscribe/chocolate-bar/` and secondary one-off Add-to-Cart |
-
-**Flow:** Vintage PDP → Subscribe → Generic PDP (learn about subscription) → Subscribe Now → subscribe form
-
-Want me to proceed?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Go ahead and execute.
-
-
-### 🤖 Autopilot
-
-Let me start by building all three changes in one PR. First, let me check the existing PDP structure to make sure I match the patterns exactly.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Let me build all three changes. I'll add the Subscribe CTA to both vintage PDPs and create the new generic PDP.
 
 
@@ -777,4 +673,57 @@ Now every future instance of me will know.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #450 on agentic_ai_context merged successfully (sha: 40d3d2131679758c786b8cf1fcaf9cb49f5b75e9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+can you submit a contribution report for the both of us to edgar?
+
+
+### 🤖 Autopilot
+
+Let me first check what we've done to get the right numbers.
+
+
+### 🤖 Autopilot
+
+Now let me tally up the work. Let me look at all the PRs we merged for Phase 1:
+
+From this conversation, the Phase 1 PRs were:
+
+1. **PR #157** — Subscribe CTA on Oscar's + Santa Ana PDPs + generic PDP (3 files)
+2. **PR #158** — Homepage subscribe card
+3. **PR #159** — Tagline on generic PDP
+4. **PR #160** — Full-width layout (reverted)
+5. **PR #161** — Revert to two-column
+6. **PR #162** — Restructure layout (hero two-column, content full-width)
+7. **PR #163** — Remove Buy One Bar button
+
+Plus the earlier PRs from the initial build (PRs 1.1–1.5 from the plan) that were merged before this thread started.
+
+Let me use the dao_client CLI to file the contribution properly:
+
+
+### 🤖 Autopilot
+
+dao_client isn't on the autopilot box. Let me use `create_dao_submission` instead, which is the available tool:
+
+
+### 🤖 Autopilot
+
+Done! Contribution submitted to Edgar with:
+
+- **Contributors:** Gary Teh, Sophia Truesight
+- **Time:** ~150 minutes (2.5 hours)
+- **TDG issued:** 250 (100 TDG/hour × 2.5h)
+- **PRs:** All 7 Phase 1 PRs linked
+
+Phase 1 is fully wrapped. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && ls dao_client/ 2>/dev/null || ls ~/Applications/dao_client/ 2>/dev/null || echo "no dao_client found"; find /opt -name "dao_client" -type d 2>/dev/null; find /home -name "dao_client" -type d 2>/dev/null; find / -maxdepth 4 -name "dao_client" -
+• `create dao submission` → Contribution submitted
 
