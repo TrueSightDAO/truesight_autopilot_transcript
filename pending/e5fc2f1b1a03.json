@@ -70,55 +70,6 @@
     "created_at": "2026-06-04T00:37:50Z"
   },
   {
-    "title": "Merge PR #108 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Extend gmail_send and gmail_create_draft to support file attachments\n\nCurrently gmail_send and gmail_create_draft only send plain-text emails using MIMEText. They need to support attaching files (PDFs",
-    "action": "merge_pr",
-    "created_at": "2026-06-06T20:33:53Z"
-  },
-  {
-    "title": "Merge PR #109 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add pre-deploy syntax check to deploy.sh so the script compiles all Python files with `python -m py_compile` before stopping the running service. If any syntax error is found, abort the deploy and pri",
-    "action": "merge_pr",
-    "created_at": "2026-06-06T20:46:13Z"
-  },
-  {
-    "title": "Merge PR #113 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Phase 1 of attachment processing: install tesseract-ocr system dependency. Add `tesseract-ocr` to `scripts/user-data.sh` apt-get install line so new EC2 instances get it at boot. Also add a `sudo apt-",
-    "action": "merge_pr",
-    "created_at": "2026-06-07T18:48:41Z"
-  },
-  {
-    "title": "Merge PR #115 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Phase 2: Integrate attachment processing into the autopilot's tool system.\n\nThe Telegram adapter already downloads attachments to /tmp/tg_attachments/ and tells the agent to use tools like scan_qr_fro",
-    "action": "merge_pr",
-    "created_at": "2026-06-07T21:30:35Z"
-  },
-  {
-    "title": "Merge PR #120 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "## Problem\n\nWhen the autopilot deploys itself (via the `deploy_autopilot` tool), step 3 does `systemctl restart truesight-autopilot` which kills the current process. The deploy tool returns a JSON res",
-    "action": "merge_pr",
-    "created_at": "2026-06-07T23:26:40Z"
-  },
-  {
-    "title": "Merge PR #121 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Bug: Telegram topic replies go to general chat instead of the topic thread.\n\nRoot cause: Two places drop the `message_thread_id`:\n\n1. `edit_message_text()` (line 284) \u2014 does not accept or pass `messag",
-    "action": "merge_pr",
-    "created_at": "2026-06-07T23:35:44Z"
-  },
-  {
-    "title": "Merge PR #122 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "The `edit_message_text` function in telegram_adapter.py doesn't pass `message_thread_id` when editing a message that was sent to a forum topic. This causes Telegram to return a 400 error when trying t",
-    "action": "merge_pr",
-    "created_at": "2026-06-07T23:38:06Z"
-  },
-  {
     "title": "Merge PR #28 on oracle",
     "qr_code": "",
     "summary": "Add an email-link section to the oracle page (oracle.truesight.me/index.html) that lets practitioners link their existing browser keypair to their email address, so their name appears on the credentia",
@@ -133,32 +84,11 @@
     "created_at": "2026-06-08T17:03:16Z"
   },
   {
-    "title": "Merge PR #123 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Two changes needed in telegram_adapter.py:\n\n1. **Forward thread_id to LLM context**: In `handle_message`, the thread_id is used for routing replies but never passed to the LLM as part of the message c",
-    "action": "merge_pr",
-    "created_at": "2026-06-08T21:08:49Z"
-  },
-  {
-    "title": "Merge PR #47 on oracle",
-    "qr_code": "",
-    "summary": "PR2 \u2014 Oracle migration to @truesight_dao/dao-client high-level methods\n\nMigrate oracle-draw-submit.js and index.html from hand-rolled signing/identity/submission to the pinned @truesight_dao/dao-clien",
-    "action": "merge_pr",
-    "created_at": "2026-06-08T23:13:09Z"
-  },
-  {
     "title": "Merge PR #75 on dao_client",
     "qr_code": "",
     "summary": "Add comprehensive API documentation to the @truesight_dao/dao-client README.md\n\nThe current README is minimal \u2014 just a CDN snippet and build instructions. It doesn't document any of the library's meth",
     "action": "merge_pr",
     "created_at": "2026-06-09T01:02:56Z"
-  },
-  {
-    "title": "Merge PR #77 on dao_protocol",
-    "qr_code": "",
-    "summary": "Fix DaoClient constructor crash on fresh install \u2014 two bugs:\n\n1. **Constructor calls sync method that throws.** The DaoClient constructor calls `this.crypto.generateKeyPairSync()` when no existing key",
-    "action": "merge_pr",
-    "created_at": "2026-06-09T01:28:19Z"
   },
   {
     "title": "Merge PR #56 on oracle",
@@ -168,17 +98,10 @@
     "created_at": "2026-06-09T14:19:52Z"
   },
   {
-    "title": "Merge PR #127 on agroverse_shop_beta",
+    "title": "Merge PR #145 on truesight_autopilot",
     "qr_code": "",
-    "summary": "Facebook Pixel leaks from beta.agroverse.shop into production analytics. The file js/facebook-pixel.js does NOT check hostname before firing fbq('init') and fbq('track', 'PageView'). The google-analyt",
+    "summary": "Fix the 3 deselected unit tests so they're hermetic and pass on CI.\n\nThe 3 tests currently excluded via --deselect in .github/workflows/smoke.yml:\n\n1. tests/test_ssh_tools.py::test_missing_key_is_a_cl",
     "action": "merge_pr",
-    "created_at": "2026-06-09T21:59:38Z"
-  },
-  {
-    "title": "Merge PR #91 on dao_protocol",
-    "qr_code": "",
-    "summary": "## Unit 4: Add sk_live guard to config\n\nAdd a Pydantic model_validator to `truesight_dao_client/server/config.py` that checks: if `environment == \"development\"` and `stripe_secret_key` starts with `sk",
-    "action": "merge_pr",
-    "created_at": "2026-06-09T22:02:32Z"
+    "created_at": "2026-06-11T00:45:42Z"
   }
 ]
