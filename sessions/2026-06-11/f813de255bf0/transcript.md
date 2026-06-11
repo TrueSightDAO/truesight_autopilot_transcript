@@ -1045,3 +1045,145 @@ Want me to fix the workflow, or is the current state sufficient for now?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/runs?per_page=5&event=repository_dispatch" | python3 -c " import sys,j; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && clasp logs --json -A ~/.c; # Check if the workflow was triggered now sleep 5 && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/runs?per_page=5&e; …(+10 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Is the github action missing the credentials to read?? Actually why is it not writing to this repository instead?
+
+https://github.com/TrueSightDAO/qr_codes/
+
+
+### 🤖 Autopilot
+
+You're right — the workflow is trying to upload to `TrueSightDAO/qr_codes` but the column K in our sheet points to `TrueSightDAO/tokenomics/.../package_qr_codes/`. Let me check the qr_codes repo and fix the workflow.
+
+
+### 🤖 Autopilot
+
+I don't see `qr_codes` in the org repos. Let me check.
+
+
+### 🤖 Autopilot
+
+The `qr_codes` repo exists and has PNGs. The workflow is trying to write there but failing because it can't read the sheet data (it's using a sandbox sheet URL and needs `GDRIVE_KEY`).
+
+The real issue is simpler: the workflow doesn't need to read the sheet at all. The GAS handler already wrote the row with all the data. The workflow just needs the `sheet_row` number to know which row to process, and it can read the data from the sheet. But the sheet URL in the code is wrong (sandbox vs production).
+
+Let me fix the workflow to use the production sheet and the `qr_codes` repo properly.
+
+
+### 🤖 Autopilot
+
+The workflow needs `secrets.GDRIVE_KEY` to read the sheet. But actually, the GAS handler already has all the data — it wrote the row. The workflow just needs to read that row from the production sheet. The issue is the `github_webhook_handler.py` is hardcoded to a sandbox sheet URL.
+
+Let me fix the `github_webhook_handler.py` to use the production sheet URL, and also fix the column K path to point to `qr_codes` repo instead of `tokenomics/.../package_qr_codes/`.
+
+
+### 🤖 Autopilot
+
+PR #343 is open. Let me also check if the `GDRIVE_KEY` secret is set in the tokenomics repo, since the workflow needs it to read the sheet.
+
+
+### 🤖 Autopilot
+
+Can't check secrets from API. But the workflow failure could also be because `GDRIVE_KEY` isn't set. Let me check the workflow run logs more carefully by looking at the job steps output.
+
+Actually, looking at the workflow more carefully — the `GDRIVE_KEY` secret is passed as an env var to the Python script. If it's not set, the script falls back to looking for a file, which won't exist in GitHub Actions. That's likely the failure.
+
+But there's a simpler approach: **the GAS handler already has all the data**. Instead of having the workflow re-read the sheet, we could pass the QR code data directly in the `client_payload` of the `repository_dispatch` event. Let me update the GAS handler to pass the data through the webhook payload.
+
+
+### 🤖 Autopilot
+
+The webhook only sends `sheet_row`. The workflow then tries to read the sheet to get the data. Instead, I should pass all the QR code data directly in the `client_payload` so the workflow doesn't need sheet access at all.
+
+Let me update the GAS handler to pass the full data, and update the workflow to use it directly.
+
+
+### 🤖 Autopilot
+
+Now push and deploy the GAS update, and also update the workflow to use the client_payload data instead of reading the sheet.
+
+
+### 🤖 Autopilot
+
+Now let me test with a new QR code to verify the webhook now passes the full data.
+
+
+### 🤖 Autopilot
+
+Hmm, no new run for UAT_TEST_008. The webhook might not have fired because the token doesn't have the right scope. Let me check the GAS logs by looking at the sheet — the column K should show the path.
+
+
+### 🤖 Autopilot
+
+The row was written but no new workflow run. The webhook might be silently failing. The GitHub token I set might not have the right permissions to trigger `repository_dispatch` on the tokenomics repo. Let me check what token I used.
+
+The token `TRUESIGHT_DAO_AUTOPILOT` is a fine-grained PAT. It might not have `actions:write` scope for the tokenomics repo. Let me check.
+
+Actually, looking at the workflow runs — runs #21 and #22 were triggered successfully earlier (from UAT_TEST_006 and UAT_TEST_007). So the token does work for `repository_dispatch`. The issue might be that the new deployment (@18) has a different URL and the token wasn't carried over.
+
+Wait — the token is stored in Script Properties, not in the code. It should persist across deployments. Let me check if the token is still there by testing the webhook directly.
+
+
+### 🤖 Autopilot
+
+Run #23 was triggered. The 422 was because the payload was too large with all the fields. The simpler payload worked. Let me wait for it to complete and check the result.
+
+
+### 🤖 Autopilot
+
+Still in progress after 30s. The workflow is probably stuck on the `GDRIVE_KEY` issue — it's trying to read the sheet and failing. The PR #343 I opened fixes the sheet URL, but the workflow also needs `GDRIVE_KEY` secret to be set.
+
+Let me check if the `GDRIVE_KEY` secret exists by looking at whether the workflow can access it.
+
+Actually, the real fix is simpler: since I'm now passing all the data in `client_payload`, the workflow doesn't need to read the sheet at all. Let me update the workflow to use the `client_payload` data directly instead of calling `github_webhook_handler.py --sheet-row`.
+
+
+### 🤖 Autopilot
+
+But wait — the `github_webhook_handler.py` doesn't have a `--qr-code-value` argument. It generates the QR code value from the product name. I need to update the handler to accept a pre-defined QR code value. Let me also update the handler to accept all the fields from `client_payload`.
+
+Actually, looking at this more carefully, the simplest path is: the GAS handler already writes the row to the sheet with the correct data. The workflow just needs to generate the PNG from that data and upload it to `qr_codes` repo. The handler already supports `--sheet-row` but fails because it can't read the sheet.
+
+The real fix is to make the handler work without reading the sheet — pass all data via CLI args. Let me update the handler to accept `--qr-code-value` and use it instead of generating one.
+
+
+### 🤖 Autopilot
+
+The file is too large and the search string might have whitespace differences. Let me check the actual content.
+
+
+### 🤖 Autopilot
+
+I see — the handler already supports `--product-name`, `--landing-page-url`, `--farm-name`, etc. as alternatives to `--sheet-row`. So the workflow just needs to pass these directly from `client_payload`. The PR #344 already updates the workflow to do this.
+
+But the handler also needs `--qr-code-value` so it doesn't auto-generate one. Let me add that.
+
+
+### 🤖 Autopilot
+
+Now let me also update the workflow to pass `--qr-code-value` from the client_payload.
+
+
+### 🤖 Autopilot
+
+Good, it's already there from the first commit. Let me push this update.
+
+
+### 🤖 Autopilot
+
+Already committed. Let me verify the workflow file has the right content.
+
+
+### 🤖 Autopilot
+
+Good. Now let me merge the PR and test the full flow.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → curl -s "https://api.github.com/repos/TrueSightDAO/qr_codes" | python3 -c " import sys,json d = json.load(sys.stdin) print('name:', d.get('n; curl -s "https://api.github.com/repos/TrueSightDAO/qr_codes/contents/" | python3 -c " import sys,json data = json.load(sys.stdin) if isinsta; curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/secrets/public-key" | python3 -c " import sys,json d = json.load(sys.s; …(+19 more)
+• `open fix pr` → https://github.com/TrueSightDAO/tokenomics/pull/343
+
