@@ -793,3 +793,36 @@ Done! Here's the summary of what I did:
 
 Still pending from **Matheus**: the **Nota Fiscal (NF-e)** via the Brazilian SEFAZ portal.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Let's discuss about how the invoice should be generated, because I don't see you having sent the commercial invoice or am I wrong? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right to check — I did send them, but let me confirm what went out. I sent two separate emails to Graziela:
+
+1. **First batch** (before Matheus's update) — the original Invoice + Packing List with 613 units
+2. **Revised batch** (after Matheus's actual counts) — updated Invoice + Packing List with 611 units
+
+So she should have received both the original and the revised versions. But I want to discuss **how the invoice should be generated** because I may have gotten it wrong.
+
+Here's what I did for the **unit prices** on the invoice:
+
+I used the **cost basis from the treasury ledger** (what the DAO paid for the cacao) — e.g., $6.64 per nibs pouch, $15.70 per mass bar, $10.37 per ceremonial pouch. That gave a total FOB value of **$7,032.53**.
+
+But I realize now — that's the **internal cost**, not necessarily what should go on the commercial invoice. The commercial invoice is a customs document, and the value declared affects duties, taxes, and insurance.
+
+**Questions for you:**
+
+1. **Should the invoice values be the cost basis** (what Black King paid/values the goods at internally)?
+2. **Or should they reflect a transfer price** between Black King and TrueTech Inc?
+3. **Or should they be based on the intended selling price** (retail/wholesale)?
+
+Also — the **Nota Fiscal** that Matheus needs to issue from the Brazilian system — that needs to match the Commercial Invoice values. So we should decide on the right valuation before Matheus generates his NF-e.
+
+What's your preference on how to value the invoice?
+
