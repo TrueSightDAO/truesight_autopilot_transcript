@@ -565,3 +565,24 @@ Check it at `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/` — s
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #160 on agroverse_shop_beta merged successfully (sha: 4112de7c89002a4f9514a4ab9b84a4e8313cbf0f). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Actually I was wrong. I prefer the previous format
+
+
+### 🤖 Autopilot
+
+No problem — let me revert it back to the two-column layout:
+
+
+### 🤖 Autopilot
+
+Reverted. Back to the two-column layout — image left, content right. Should look exactly as it did before.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #161 on agroverse_shop_beta merged successfully (sha: 394808de8d26c86b06ad288a250737ae6d7cc70f). Pull Request successfully merged
+
