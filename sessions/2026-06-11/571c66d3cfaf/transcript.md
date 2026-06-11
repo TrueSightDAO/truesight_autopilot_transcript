@@ -10,84 +10,6 @@
 
 ### 🤖 Autopilot
 
-Here's the full plan for **PR1.5 — Generic-bar PDP**:
-
----
-
-## PR1.5 Implementation Plan: Premium Dark Chocolate Bar PDP
-
-### What
-Build a product detail page at `/product-page/premium-dark-chocolate-bar/` that serves as the discoverable marketing surface for the subscription. This is the page a visitor lands on from the homepage, nav, search, or social — it explains the rotating-origins model and funnels them to the subscribe page.
-
-### Page URL
-`/product-page/premium-dark-chocolate-bar/` (matches `productPageSlug` in `products.js`)
-
-### Content blocks (top → bottom)
-
-| Block | Content |
-|-------|---------|
-| **1. Hero + Title** | Product image (bar + packaging front), name: "Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery", tagline about rotating origins |
-| **2. Primary CTA** | "Subscribe — pick your quantity" button → `/subscribe/chocolate-bar/` with note "Cancel or modify anytime" |
-| **3. Secondary CTA** | "Add to Cart" for a one-off purchase (standard Add-to-Cart, sells from same pool) |
-| **4. The Concept** | Explains the rotating-origins model: every bar is a single estate from a different Bahia farm; you discover the exact farm + vintage by scanning the QR on the back. Framed as a feature, not a limitation. |
-| **5. What You Get** | Monthly shipment, QR-traceable to farm + vintage, shipped from SF |
-| **6. Gallery** | Bar close-up, packaging back showing the traceability QR, optional map of rotating Bahia origins |
-| **7. Tasting & Specs** | 81% dark, ceremonial-grade, minimal ingredients, 50g per bar, allergens |
-| **8. Shipping & Terms** | Ships monthly, shipping computed at signup and locked, manage via Stripe Customer Portal |
-| **9. Wholesale banner** | Link to `/wholesale/` for bulk/shop orders |
-| **10. Impact** | Regenerative, single-estate, supports farmers + the DAO |
-
-### What it does NOT include
-- No "Products from This Farm" cross-listing (generic is not farm-bound)
-- No specific price anchoring in subscribe CTA ("pick your quantity" not "$60/month")
-- No subscription management UI (that's the Stripe Customer Portal)
-
----
-
-## Execution checklist
-
-| # | Step | Details |
-|---|------|---------|
-| ☐ | **1. Create PDP HTML** | `/product-page/premium-dark-chocolate-bar/index.html` — full page with all content blocks, reusing existing PDP styling patterns |
-| ☐ | **2. Add to homepage** | Link the PDP from the homepage products section so visitors can discover it |
-| ☐ | **3. Add to nav** | Add "Chocolate Bars" or "Premium Dark Chocolate" link in the nav pointing to the PDP |
-| ☐ | **4. Verify subscribe link** | The "Subscribe" CTA correctly links to `/subscribe/chocolate-bar/` |
-| ☐ | **5. Verify Add-to-Cart** | One-off purchase works via the standard cart flow |
-| ☐ | **6. PR + merge** | Open PR, merge on approval |
-| ☐ | **7. DAO contribution** | Report the contribution |
-
----
-
-## UAT (what to check after deploy)
-
-| # | Check | What to look for |
-|---|-------|------------------|
-| U1 | `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/` | Page renders, hero image loads, no console errors |
-| U2 | Subscribe CTA | Clicking takes you to `/subscribe/chocolate-bar/` |
-| U3 | Add-to-Cart | One-off purchase works through checkout |
-| U4 | Homepage | PDP is linked from the products section |
-| U5 | Nav | Nav link to the PDP is present |
-| U6 | Mobile | Page is responsive, images scale properly |
-
----
-
-Want me to proceed with building it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-I meantup update our existing one
-
-
-### 🤖 Autopilot
-
-Ah, you want to update the **existing PDP** rather than build a new one from scratch. Let me check what PDPs already exist for the chocolate bar:
-
-
-### 🤖 Autopilot
-
 Now I see — the existing PDP at `/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/` is for the **Oscar's Farm vintage-specific bar**. You want to update it to also promote the subscription, not build a separate generic PDP.
 
 The plan makes sense — this is the chocolate bar PDP that people land on from the homepage. Adding a "Subscribe" CTA here alongside the existing "Add to Cart" is the fastest path to discoverability.
@@ -612,4 +534,34 @@ Subtle enough to be a wink, not a punchline.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #159 on agroverse_shop_beta merged successfully (sha: 0b4cea35c968c08315f2ef7e3d145196052b4d2b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Also I think perhaps the content can occupy the full width? Right now the images are on the left and the wordings and boxes are on the right...
+
+
+### 🤖 Autopilot
+
+You're right — the two-column layout (`grid-template-columns: 1fr 1fr`) leaves a lot of empty space and makes the content feel cramped on the right. Let me switch the generic PDP to a single-column layout so the content flows full-width:
+
+
+### 🤖 Autopilot
+
+Done! Now the generic PDP flows full-width:
+
+- **Hero image + gallery** — centered at top (max 600px wide)
+- **Content below** — full-width: title, tagline, price, CTAs, concept section, product details, subscription details, impact section, subscribe CTA
+
+Check it at `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/` — should feel much more spacious.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #160 on agroverse_shop_beta merged successfully (sha: 4112de7c89002a4f9514a4ab9b84a4e8313cbf0f). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #160 on agroverse_shop_beta merged successfully (sha: 4112de7c89002a4f9514a4ab9b84a4e8313cbf0f). Pull Request successfully merged
 
