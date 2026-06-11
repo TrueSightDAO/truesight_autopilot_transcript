@@ -103,5 +103,12 @@
     "summary": "Fix the 3 deselected unit tests so they're hermetic and pass on CI.\n\nThe 3 tests currently excluded via --deselect in .github/workflows/smoke.yml:\n\n1. tests/test_ssh_tools.py::test_missing_key_is_a_cl",
     "action": "merge_pr",
     "created_at": "2026-06-11T00:45:42Z"
+  },
+  {
+    "title": "Merge PR #146 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Fix the 3 deselected unit tests and drop the --deselect flags from .github/workflows/smoke.yml.\n\nThe 3 tests currently excluded via --deselect in smoke.yml:\n\n1. tests/test_ssh_tools.py::test_missing_k",
+    "action": "merge_pr",
+    "created_at": "2026-06-11T00:46:58Z"
   }
 ]
