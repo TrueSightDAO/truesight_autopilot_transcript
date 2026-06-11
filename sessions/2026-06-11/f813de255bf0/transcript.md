@@ -1187,3 +1187,30 @@ Good. Now let me merge the PR and test the full flow.
 • `ssh run` ×22 → curl -s "https://api.github.com/repos/TrueSightDAO/qr_codes" | python3 -c " import sys,json d = json.load(sys.stdin) print('name:', d.get('n; curl -s "https://api.github.com/repos/TrueSightDAO/qr_codes/contents/" | python3 -c " import sys,json data = json.load(sys.stdin) if isinsta; curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/secrets/public-key" | python3 -c " import sys,json d = json.load(sys.s; …(+19 more)
 • `open fix pr` → https://github.com/TrueSightDAO/tokenomics/pull/343
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+what was the script that was writing to that repo I just refered to?
+
+
+### 🤖 Autopilot
+
+The script that writes to `TrueSightDAO/qr_codes` is `github_webhook_handler.py` in the `tokenomics` repo at `agroverse_qr_code_web_service/github_webhook_handler.py`.
+
+It's triggered by the GitHub Actions workflow `qr-code-webhook.yml` when a `repository_dispatch` event with type `qr-code-generation` is received. The GAS handler calls `triggerGitHubWebhook()` which POSTs to `https://api.github.com/repos/TrueSightDAO/tokenomics/dispatches`, which then triggers the workflow.
+
+The workflow:
+1. Checks out the tokenomics repo
+2. Runs `github_webhook_handler.py --sheet-row <N>` 
+3. That script reads the row from the Google Sheet, generates a QR PNG, and uploads it to `TrueSightDAO/qr_codes` via the GitHub API
+
+The problem is the script is hardcoded to a **sandbox** sheet URL (`1qSi_-VSj7yiJl0Ak-Q3lch-l4mrH37cEw8EmQwS_6a4`) instead of the production sheet. And it needs `GDRIVE_KEY` secret to read the sheet at all.
+
+I've opened two PRs to fix this:
+- **PR #343** — Fix the sheet URL to production + update column K path
+- **PR #344** — Skip the sheet read entirely by passing all data via `client_payload` from the GAS webhook (no `GDRIVE_KEY` needed)
+
+Want me to merge these PRs and test the full end-to-end flow?
+
