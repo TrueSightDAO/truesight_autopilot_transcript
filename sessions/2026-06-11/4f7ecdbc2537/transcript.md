@@ -517,3 +517,177 @@ The config IS being picked up (no F401, I001, etc. showing) — but E501 is stil
 • `ssh run` → {
 • `ssh run` → {
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what next?
+
+
+### 🤖 Autopilot
+
+Let me check the current state of things — PR #148 is open but the auto-fixes weren't applied to all source files. Let me push the fixes to that branch and get it ready to merge.
+
+
+### 🤖 Autopilot
+
+Hmm, it says "Found 206 errors" — the auto-fixes didn't reduce the count. Let me check what's happening:
+
+
+### 🤖 Autopilot
+
+Wait — 182 of 206 are E501 (line-too-long). But the config says to ignore E501. Let me check if the config is correct on this branch:
+
+
+### 🤖 Autopilot
+
+I see — `E501` is NOT in the ignore list! The config has `ignore = ["ARG", "E402", ...]` but not `"E501"`. The original plan's config had `E501` in the ignore list but the agentic loop's PR #148 didn't include it. Let me fix the config and push:
+
+
+### 🤖 Autopilot
+
+Down to 24 errors — much better. These are the remaining non-auto-fixable ones. Let me see what they are and fix them:
+
+
+### 🤖 Autopilot
+
+24 errors. Let me fix them — most are straightforward:
+
+1. **F821** (7) — `session_key`, `_gov_name_for_key`, `List` — undefined names, need imports
+2. **E701/E702** (8) — multiple statements on one line
+3. **B904** (5) — `raise ... from err`
+4. **F401** (2) — unused imports
+5. **B008** (1) — `File(...)` in default arg
+6. **UP031** (1) — `%` formatting
+
+Let me fix them all:
+
+
+### 🤖 Autopilot
+
+None auto-fixable. These need manual fixes. Let me handle them:
+
+
+### 🤖 Autopilot
+
+Let me fix these. I'll use `git_push_changes` with all the edits:
+
+
+### 🤖 Autopilot
+
+The search string for `_gov_name_for_key` didn't match exactly. Let me check the actual content:
+
+
+### 🤖 Autopilot
+
+The issue is the f-string continuation. Let me use a simpler approach — just replace `_gov_name_for_key` with `_resolve_gov_name`:
+
+
+### 🤖 Autopilot
+
+Now let me also check if `_resolve_gov_name` exists or if I need to define it:
+
+
+### 🤖 Autopilot
+
+Neither function exists! This is a pre-existing bug — `_gov_name_for_key` is called but never defined. Let me check what the actual function should be:
+
+
+### 🤖 Autopilot
+
+It doesn't exist — this is a pre-existing bug that was already in the codebase. The function was probably supposed to be defined but never was. Let me check what the governor registry provides:
+
+
+### 🤖 Autopilot
+
+There's no `resolve_gov_name` function. Let me check what `is_governor` does and what the actual lookup pattern is:
+
+
+### 🤖 Autopilot
+
+I need to add a `resolve_gov_name` function. Let me add it to `governor_registry.py`:
+
+
+### 🤖 Autopilot
+
+OK, this is getting complex with many edits. Let me use `open_fix_pr` to handle the full PR-B properly — it can do the multi-file edits:
+
+
+### 🤖 Autopilot
+
+The agentic loop is working on PR #149. Let me check what it produced:
+
+
+### 🤖 Autopilot
+
+Config and CI look good. Let me check if the source code fixes were applied:
+
+
+### 🤖 Autopilot
+
+Let me check if it passes ruff now:
+
+
+### 🤖 Autopilot
+
+Still has B904 violations in auth.py. The agentic loop didn't fix them properly. Let me check what it did:
+
+
+### 🤖 Autopilot
+
+It DID add `from None` — but ruff is still flagging it. Let me check the actual file content:
+
+
+### 🤖 Autopilot
+
+Wait — the local checkout doesn't have the fix because I checked out the branch before the fix was pushed. Let me re-check:
+
+
+### 🤖 Autopilot
+
+The auth.py fix is correct. The issue is my local checkout is stale. Let me check the full diff:
+
+
+### 🤖 Autopilot
+
+The agentic loop's PR #149 didn't fix most of the violations — it only fixed auth.py. The main.py, dao_identity.py, deploy.py, pdf_tools.py, extract_pdf_text.py, smoke_tools.py, and test_adapter_thread_lock.py fixes are all missing. And `_resolve_gov_name` was added to `governor_registry.py` but the import in main.py wasn't updated.
+
+Let me check what the agentic loop actually did to governor_registry.py:
+
+
+### 🤖 Autopilot
+
+Good — the function was added. But main.py calls `_resolve_gov_name` (with underscore prefix) while the function is named `resolve_gov_name` (without underscore). And the import in main.py wasn't updated. Let me fix all remaining issues directly:
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/149
+• `ssh run` → https://github.com/TrueSightDAO/truesight_autopilot\n
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → https://github.com/TrueSightDAO/truesight_autopilot\n
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+
