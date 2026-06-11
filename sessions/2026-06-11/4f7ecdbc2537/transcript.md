@@ -691,3 +691,133 @@ Good — the function was added. But main.py calls `_resolve_gov_name` (with und
 • `ssh run` → {
 • `ssh run` → {
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+Let me fix all remaining ruff violations directly and push to PR #149's branch.
+
+
+### 🤖 Autopilot
+
+Let me fix all 24 remaining violations at once:
+
+
+### 🤖 Autopilot
+
+Down to 18. Let me see what's left:
+
+
+### 🤖 Autopilot
+
+Some fixes didn't take. Let me check what's happening:
+
+
+### 🤖 Autopilot
+
+The E701 and E702 fixes didn't work because the regex replacement didn't match. Let me check the actual file content:
+
+
+### 🤖 Autopilot
+
+There are 6 lines (manager, recipient, item, qr, qty, ledger) — my regex only matched qr, qty, ledger. Let me fix all 6:
+
+
+### 🤖 Autopilot
+
+I broke the syntax in main.py with my E701 fix. Let me check:
+
+
+### 🤖 Autopilot
+
+The regex created `if if manager:` — doubled `if`. Let me fix this properly:
+
+
+### 🤖 Autopilot
+
+Let me use a more careful approach — use `open_fix_pr` which handles multi-file edits properly:
+
+
+### 🤖 Autopilot
+
+Let me wait for the agentic loop to finish and check the result:
+
+
+### 🤖 Autopilot
+
+It only fixed auth.py and main.py — missed all the other files. Let me check what it did to main.py:
+
+
+### 🤖 Autopilot
+
+Good — E701 fixed. But it didn't fix the other files. Let me check if ruff passes now:
+
+
+### 🤖 Autopilot
+
+The agentic loop's PR #150 is based on an older commit (before my sed changes to main.py). It re-introduced the `_gov_name_for_key` calls. This is getting messy with multiple overlapping PRs.
+
+Let me take a completely different approach — I'll close the stale PRs and make a clean single PR with all fixes:
+
+
+### 🤖 Autopilot
+
+It's on line 33 with `refresh_cache` too. Let me fix the search:
+
+
+### 🤖 Autopilot
+
+The file on the remote main branch might have a slightly different format. Let me check:
+
+
+### 🤖 Autopilot
+
+The main branch has a different import structure now. Let me check the full import section:
+
+
+### 🤖 Autopilot
+
+The function `_gov_name_for_key` IS defined on line 39! It's a private function in main.py, not in governor_registry.py. So the F821 errors were false positives from my earlier sed changes. Let me check the current state:
+
+
+### 🤖 Autopilot
+
+The function IS defined — it was never missing. My earlier sed `s/_gov_name_for_key/_resolve_gov_name/g` broke it. The main branch is clean. Let me start fresh from main:
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/150
+• `ssh run` → https://github.com/TrueSightDAO/truesight_autopilot\n
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+
