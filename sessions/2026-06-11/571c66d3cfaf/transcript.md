@@ -779,3 +779,29 @@ That will trigger `checkReturnFromStripe()` → `showSuccessState()` → `window
 
 Then check `/order-history/` and you should see it listed.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Is. there anywhere I can check in localStorage to ensure that this data is in fact catpured?
+
+
+### 🤖 Autopilot
+
+Yes. Open your browser's DevTools (F12 or right-click → Inspect) and go to the **Application** tab (Chrome) or **Storage** tab (Firefox). Under **Local Storage**, look for the key:
+
+```
+agroverse_order_history
+```
+
+Click on it and you'll see the JSON array of saved orders. If the subscription was saved, you'll see an entry with `sessionId: "cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC"`.
+
+Alternatively, you can paste this into the console on the subscribe page:
+
+```javascript
+JSON.parse(localStorage.getItem('agroverse_order_history'))
+```
+
+That will print the array. If it's empty (`[]`), the save didn't fire yet — refresh the success URL first.
+
