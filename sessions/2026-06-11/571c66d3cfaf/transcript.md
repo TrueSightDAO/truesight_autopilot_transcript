@@ -586,3 +586,76 @@ Reverted. Back to the two-column layout — image left, content right. Should lo
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #161 on agroverse_shop_beta merged successfully (sha: 394808de8d26c86b06ad288a250737ae6d7cc70f). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+The layout looks awkward
+
+https://beta.agroverse.shop/product-page/premium-dark-chocolate-bar/
+
+Premium Dark Chocolate Bar
+Single-Estate, Monthly Discovery 
+
+And 
+
+
+$10.00 per bar
+
+huge gap
+
+All on the right
+
+Then the rest of the boxes just left and right left and right...
+
+
+### 🤖 Autopilot
+
+I see it now — the two-column layout makes the right column feel like a narrow strip with huge gaps, and the content boxes below also alternate left/right awkwardly. Let me look at the full page structure to fix this properly.
+
+The issue is that the `.product-header` grid forces everything into two columns, and the concept/product-details/impact sections (which are full-width blocks) sit inside the right column. Let me restructure so the hero section stays two-column (image left, title/price/CTAs right) but the content sections below break out to full width:
+
+
+### 🤖 Autopilot
+
+I see the problem now. The revert left the `<h1>` and content boxes **inside** the right column of the grid, but the `<h1>` is outside the `.product-info` div. The structure is broken — the right column has the h1, price, CTAs, then all the content boxes (concept, description, details, impact) are also crammed into that same right column. That's why it looks awkward.
+
+The fix: keep the two-column grid for the hero (image left, title/price/CTAs right), but move all the content sections **outside** the `.product-header` grid so they flow full-width below.
+
+
+### 🤖 Autopilot
+
+Should look much better now. The layout is:
+
+```
+┌──────────────┬──────────────────────────────┐
+│              │  Premium Dark Chocolate Bar   │
+│   Image +    │  Single-Estate...             │
+│   Gallery    │  "Life is like..."            │
+│              │  $10.00 per bar               │
+│              │  [Subscribe] [Buy One]        │
+│              │  [Wholesale banner]           │
+└──────────────┴──────────────────────────────┘
+
+┌──────────────────────────────────────────────┐
+│  A monthly journey through our farms         │  ← full width
+├──────────────────────────────────────────────┤
+│  Product description + traceability          │  ← full width
+├──────────────────────────────────────────────┤
+│  Product Details                             │  ← full width
+├──────────────────────────────────────────────┤
+│  Subscription Details                        │  ← full width
+├──────────────────────────────────────────────┤
+│  Your subscription regenerates the Amazon    │  ← full width
+├──────────────────────────────────────────────┤
+│         [Subscribe Now]                      │  ← full width
+└──────────────────────────────────────────────┘
+```
+
+Check it at `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/`
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #162 on agroverse_shop_beta merged successfully (sha: 51949fb4ee5e3fa8c30f9c8aa9f2e3e6c09417b8). Pull Request successfully merged
+
