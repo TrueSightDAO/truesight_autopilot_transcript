@@ -8,171 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-I meant clone the GETDATA_CACHE ec2 instance as an EC2 AMI and then spin up a new EC2 instance using the AMI image but ensure it has your key in the authorized key...
-
-
-### 🤖 Autopilot
-
-Already on it! The AMI is being created right now — `ami-05da693e385f7585a`. The snapshot is still baking (25 GB volume, taking a while). Once it's ready, I'll launch a new instance from it with my SSH key injected so I can SSH in and inspect the `krake_publisher` codebase directly.
-
-I'll let you know as soon as it's done.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-I spke with DeepSeek on the local machine, he mentioned that you might already have it. Could you try?
-
-
-### 🤖 Autopilot
-
-Let me check if I already have access.
-
-
-### 🤖 Autopilot
-
-DeepSeek was right — I already have access! The `server_us.pem` key works on the original GETDATA_CACHE box. No need to wait for the AMI clone. Let me dig into the `krake_publisher` codebase now.
-
-
-### 🤖 Autopilot
-
-I'm already in. Here's what I found on **GETDATA_CACHE**:
-
-**`krake_publisher`** — a Rails 6.0 app, Ruby 2.6.3, same stack as `krake_ror`. It runs a single Sidekiq process processing the `s3_cacher` queue (with a `s3_cacher_large` variant also available). The upstart script is `s3_cacher`.
-
-**Key difference from krake_sk boxes:** It's a **different codebase** (`KrakeIO/krake_publisher.git` vs `KrakeIO/krake_ror.git`), so it can't trivially merge onto the same box as the consolidated Sidekiq workers. They'd need separate deploy directories, separate Ruby environments, etc.
-
-**Bottom line on consolidation plan:**
-
-| What | Plan |
-|------|------|
-| **4x krake_sk\*** | ✅ Consolidate into **1 EC2 instance** — same codebase, just 4 Sidekiq processes with different queue configs |
-| **GETDATA_CACHE** | ❌ Keep separate — different codebase (`krake_publisher`) |
-| **krake_data** | Keep as-is — it's the PostgreSQL database |
-| **krake_ror** | Keep as-is — Rails web server |
-| **GETDATA_REDIS** | Keep as-is — Redis |
-
-Want me to proceed with the consolidation plan for the 4 krake_sk boxes? I'd recommend spinning up a single t3.small, installing the codebase once, and running 4 separate upstart scripts for each queue config.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-• `ssh run` → https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf\n#
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-yes please.
-
-
-### 🤖 Autopilot
-
-Let me draft the consolidation plan and open a PR to document it.
-
-
-### 🤖 Autopilot
-
-Now let me create the consolidation plan document and update the infrastructure doc.
-
-
-### 🤖 Autopilot
-
-Plan is documented and PR is open at **agentic_ai_context#419**.
-
-Here's the summary:
-
-**What:** Consolidate 4 krake_sk* boxes → 1 t3.small
-**Savings:** ~$29-46/mo
-**Why it works:** All 4 run the exact same codebase, just different Sidekiq queue configs
-**What stays:** krake_ror, krake_data (PostgreSQL), GETDATA_REDIS, GETDATA_CACHE
-
-**The plan covers:**
-- 4 Upstart scripts on one box (one per queue config)
-- Separate PID files to avoid conflicts
-- Monit config for all 4 processes
-- Cutover steps (drain old → start new → verify)
-- Rollback plan (just start the old boxes back up)
-
-Want me to go ahead and execute the migration, or do you want to review the plan first?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-merge the implementation plan, roadmap and checklist and then go ahead with the execution
-
-
-### 🤖 Autopilot
-
-Let me first merge the PR, then start executing.
-
-
-### 🤖 Autopilot
-
-Plan is merged. Now let me execute Phase 1 — launch the new consolidated box.
-
-First, I need to pick a good AMI to base it on. Let me check what AMI the existing krake_sk boxes use.
-
-
-### 🤖 Autopilot
-
-I see the boxes use different AMIs and two different key pairs. The simplest approach: I'll create an AMI from one of the existing krake_sk boxes (they all have the same codebase deployed), then launch a t3.small from it. Let me use `krake_sk` (t2.nano) as the source since it's the smallest and has the base code.
-
-Actually, a cleaner approach — let me just launch a fresh Ubuntu 18.04 instance and deploy the code onto it, since the upstart script already handles `git pull` and `bundle install` on start. But first, let me check what Ubuntu version the existing boxes run.
-
-
-### 🤖 Autopilot
-
-Ubuntu 14.04 — that's ancient. The AMI approach is better to preserve the exact environment. Let me create an AMI from the `krake_sk` (t2.nano) box since it has all 4 sidekiq config files already.
-
-
-### 🤖 Autopilot
-
-AMI `ami-0c5329f9833839fda` is being created. Let me wait for it to complete, then launch the new t3.small.
-
-
-### 🤖 Autopilot
-
-Only 8 GB this time, should be faster. Let me check periodically.
-
-
-### 🤖 Autopilot
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #419 on agentic_ai_context merged successfully (sha: eeb9230dc255232ce00982bfc726eb481ffc3ae7). Pull Request successfully merged
-• `ssh run` → {
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-File for tacking later in open follow ups... your response is cutting off 
-
-I only see this
-
-———
-✅ Done this turn — actions taken:
-• merge pr → ✅ PR #419 on agentic_ai_context merged successfully (sha: eeb9230dc255232ce00982bfc726eb481ffc3ae7). Pull Request successfully merged
-• ssh run → {
-
-This means that the telegram throughput is cutting off some stuff
-
-
-### 🤖 Autopilot
-
-You're right, the AMI snapshot is still baking at 0% and my response got truncated. Let me register this as a follow-up and check the AMI status.
-
-
 ### 🤖 Autopilot
 
 Good, I have the full backlog. Let me file the Krake consolidation follow-up and check the AMI status.
@@ -695,4 +530,94 @@ If the box ever crashes, the ASG will launch a fresh one from the AMI and all 5 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+And the security dashboard knows how to interface with this?
+
+https://truesight.me/security-dashboard/
+
+Also what about the AWS infrastructure .md file? I wonder if we should also include in that file how the codebases are deployed...
+
+
+### 🤖 Autopilot
+
+Good questions. Let me check both.
+
+
+### 🤖 Autopilot
+
+The dashboard page exists but the sections are empty — it's a static shell. Let me check how it works.
+
+
+### 🤖 Autopilot
+
+Now let me check the AWS scanner to see if it knows about the new consolidated box.
+
+
+### 🤖 Autopilot
+
+Good — the scanner uses `boto3` to describe all EC2 instances across all regions. It will automatically pick up the new consolidated box because it just lists whatever instances exist. No code change needed.
+
+Now let me also check the infra doc and update it with deployment info.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me answer both questions:
+
+---
+
+**1. Security Dashboard — yes, it auto-discovers the new box**
+
+The dashboard's `scan_aws_inventory.py` uses `boto3 describe_instances()` across all regions — it doesn't hardcode instance IDs. It will automatically pick up the new `krake_sk_consolidated` instance (and the old terminated ones will drop off). **No code change needed.**
+
+The dashboard is currently showing empty sections because the daily GitHub Action (`security-dashboard-daily.yml`) runs the scanner and publishes to `treasury-cache/managed-ledgers/security-dashboard.json`, which the static page reads. Let me check if the action is running.
+
+
+### 🤖 Autopilot
+
+Good — it runs daily at 06:00 UTC. The next run will pick up the new consolidated box automatically.
+
+---
+
+**2. AWS infra doc — yes, let me update it with the current state and add a deployment section.**
+
+The doc currently still references the old standalone `i-09d97cc0780fc8363` and the old stopped boxes. Let me update it to reflect the ASG-managed consolidated box and add a deployment section.
+
+
+### 🤖 Autopilot
+
+Now let me add the deployment section. Let me add it at the end of the doc.
+
+
+### 🤖 Autopilot
+
+Now let me add the deployment section at the end.
+
+
+### 🤖 Autopilot
+
+The branch was already pushed. Let me use a new branch name.
+
+
+### 🤖 Autopilot
+
+Here's the summary:
+
+**1. Security Dashboard — auto-discovers the new box ✅**
+The scanner uses `boto3 describe_instances()` with no hardcoded IDs. The next daily run (06:00 UTC) will show the consolidated box and the old terminated ones will drop off. No code change needed.
+
+**2. AWS infra doc updated ✅**
+PR #442 merged — added:
+- **§11 Deployment Guide** — how each service ships (Edgar, dao_protocol, autopilot, Krake, GitHub Pages, security dashboard, krake_publisher) with SSH commands, process names, env var locations
+- **§12 Consolidation History** — documents the 6→1 consolidation with savings
+- Updated instance table with ASG-managed consolidated box, terminated old boxes
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #442 on agentic_ai_context merged successfully (sha: 1815612aca2d4ea3668658b48c5290f38b77206a). Pull Request successfully merged
 
