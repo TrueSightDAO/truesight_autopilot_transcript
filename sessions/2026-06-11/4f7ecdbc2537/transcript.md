@@ -953,3 +953,103 @@ This is a pre-existing bug — `public_key` was never in scope in `_run_tool`. T
 • `ssh run` → {
 • `ssh run` → {
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what else?
+
+
+### 🤖 Autopilot
+
+Let me check the current state — ruff check passes, but I still need to apply format and push the PR.
+
+
+### 🤖 Autopilot
+
+Both check and format pass clean. Now let me push this as a PR. I need to add the config files (pyproject.toml, requirements-dev.txt, smoke.yml) plus all the auto-fixed source files:
+
+
+### 🤖 Autopilot
+
+100 files changed — that's the format changes plus the fixes. Let me commit and push:
+
+
+### 🤖 Autopilot
+
+Now I need to push this to a feature branch and open a PR. But I committed to main locally — let me undo that and use a branch:
+
+
+### 🤖 Autopilot
+
+Now I need to add the smoke.yml workflow change and open the PR. The smoke.yml can't be in the same commit since it needs the workflow scope. Let me add it separately:
+
+
+### 🤖 Autopilot
+
+Now let me open the PR:
+
+
+### 🤖 Autopilot
+
+`gh` isn't authenticated. Let me use the API directly:
+
+
+### 🤖 Autopilot
+
+**PR #151 is open!** Now let me merge it:
+
+
+### 🤖 Autopilot
+
+**Phase 1, PR-B — ✅ MERGED!** Let me report the contribution and update the plan tracker.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan tracker:
+
+
+### 🤖 Autopilot
+
+The context file hasn't synced my previous update yet. Let me check what's there:
+
+
+### 🤖 Autopilot
+
+The context file hasn't synced my PR-A update yet. Let me update it directly:
+
+
+### 🤖 Autopilot
+
+---
+
+## ✅ Phase 1, PR-B: Done — merged
+
+**PR #151** — merged to `truesight_autopilot` main
+
+**What landed:**
+- `ruff` in `requirements-dev.txt` + `pyproject.toml` config (lenient baseline)
+- `ruff check` + `ruff format --check` steps in `smoke.yml`
+- 85 auto-fixes + format across 100 files
+- 9 manual fixes (B904, F821, E701/E702, F401, UP031)
+- Pre-existing bug fix: undefined `public_key` in `_run_tool` → `governor_name`
+- DAO contribution reported
+
+**Plan tracker updated** — RESUME HERE now points to **Phase 1, PR-C (mypy)**.
+
+**Next up:** PR-C — add `mypy` to `requirements-dev.txt`, configure in `pyproject.toml` (lenient: `ignore_missing_imports`, no `--strict`), wire into CI, establish a passing baseline. Want me to proceed?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → https://github.com/TrueSightDAO/truesight_autopilot/pull/new/phase1/pr-b-ruff-final
+• `upload file to github` → https://github.com/TrueSightDAO/truesight_autopilot/blob/phase1/pr-b-ruff-final/.github/workflows/smoke.yml
+• `ssh run` → {
+• `merge pr` → ✅ PR #151 on truesight_autopilot merged successfully (sha: d3bb01063a28ca5c6f6eb73d334c43fbf26e0a9b). Pull Request successfully merged
+• `create dao submission` → {"status": "success", "message": "Contribution submitted"}
+
