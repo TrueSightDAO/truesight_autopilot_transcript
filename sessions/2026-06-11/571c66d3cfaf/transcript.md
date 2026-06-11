@@ -10,190 +10,6 @@
 
 ### 🤖 Autopilot
 
-The clasp mirror for the Shopping Cart script exists at `1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn`. Let me check what's in it and see if the source file from the repo needs to be synced:
-
-
-### 🤖 Autopilot
-
-There's already a `create_subscription_checkout_session.js` file in the clasp mirror! Let me check if it matches what's in the repo:
-
-
-### 🤖 Autopilot
-
-The clasp mirror already has the `create_subscription_checkout_session.js` file. But this is a **separate file** — it's not the same as the function I added to `agroverse_shop_checkout.gs` in the repo. The clasp mirror has it as a standalone file, while the repo has it as a function inside the main checkout script.
-
-Let me check the main `Code.js` in the clasp mirror to see if it already has the function:
-
-
-### 🤖 Autopilot
-
-The clasp mirror already has the `createSubscriptionCheckoutSession` function integrated into `Code.js` (the main file) — I can see the `doGet` handler dispatches to it at line:
-
-```
-if (action === 'createSubscriptionCheckoutSession') {
-```
-
-And there's a separate `create_subscription_checkout_session.js` file in the mirror. The clasp mirror is already set up. Let me try deploying it:
-
-
-### 🤖 Autopilot
-
-The deploy script uses manifest entries, not clasp mirrors directly. Let me check the manifest:
-
-
-### 🤖 Autopilot
-
-There's no `agroverse_shop_checkout` directory in the tokenomics `google_app_scripts` — the Shopping Cart script is managed through the clasp mirror directly, not through the deploy script's manifest system. The clasp mirror already has the code synced. Let me try pushing directly with clasp:
-
-
-### 🤖 Autopilot
-
-The clasp mirror has the `create_subscription_checkout_session.js` file already synced. Let me check if the `Code.js` in the mirror already has the `doGet` dispatch for `createSubscriptionCheckoutSession` — I saw it does from the read above. The clasp mirror is already up to date with the code from the repo.
-
-Let me check if the clasp mirror's `Code.js` matches what's in the repo's `agroverse_shop_beta`:
-
-
-### 🤖 Autopilot
-
-The repo's `agroverse_shop_checkout.gs` already has the `createSubscriptionCheckoutSession` function integrated (I can see it in the file). The clasp mirror's `Code.js` also has it. The clasp mirror has a separate `create_subscription_checkout_session.js` file too.
-
-The clasp mirror is already up to date with the code. Let me try deploying directly with clasp:
-
-
-### 🤖 Autopilot
-
-The clasp credentials don't have permission to push to this specific script. The `.clasprc.json` is for a different account than the one that owns the Shopping Cart script.
-
-So the GAS deploy is indeed operator-gated. The code is already in the clasp mirror and in the repo — it just needs someone with the right Google account to deploy it from the Apps Script editor.
-
-Here's the summary: the `createSubscriptionCheckoutSession` function is already in the clasp mirror's `Code.js` and as a separate file. The code is ready to deploy — you just need to open the Apps Script project at `script.google.com` with the Shopping Cart script ID (`1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn`), verify the files are there, and click Deploy.
-
-———
-**✅ Done this turn — actions taken:**
-• `gas deploy project` → {"status": "error", "exit_code": 1, "tokenomics_root": "/opt/truesight_autopilot/context/tokenomics", "command": ["python3", "/opt/truesight_autopilot/context/tokenomics/scripts/deploy_gas_project.py"
-• `ssh run` → {
-• `ssh run` → {
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-you have the following -rw-------  1 ubuntu ubuntu  632 Jun  7 21:02 .clasprc-admin.json
--rw-------  1 ubuntu ubuntu 1895 Jun 11 00:06 .clasprc-gary.json
--rw-------  1 ubuntu ubuntu 1905 Jun 11 00:48 .clasprc.json
--rw-------  1 ubuntu ubuntu 1905 Jun 11 00:22 .clasprc.json.bak
-
-at /home/ubuntu
-
-There aer only two accounts where GAS are deployed to admin@truesight.me and garyjob@agroverse.shop
-
- .clasprc-admin.json =  admin@truesight.me 
- .clasprc-gary.json = garyjob@agroverse.shop
-
-I wonder if it might be helpful if you check or indicate in the Version.gs which clasp to use in the future? so that not just you but all future Sophias. as welll as LLMs dont get stuck like this again??
-
-
-### 🤖 Autopilot
-
-Excellent idea. Let me check which account owns the Shopping Cart script and add a version hint.
-
-
-### 🤖 Autopilot
-
-Now let me check which clasp account owns the Shopping Cart script by trying each one:
-
-
-### 🤖 Autopilot
-
-Gary's account (`garyjob@agroverse.shop`) owns the Shopping Cart script. And I can see there's already a deployment at version @2 called "Add createSubscriptionCheckoutSession action" — so it's already been deployed! Let me check the admin account too:
-
-
-### 🤖 Autopilot
-
-Confirmed — Gary's account owns it. And the subscription function is already deployed (version @2). Now let me update the Version.js to document which clasp account to use, and also add a `.clasp-owner` hint file:
-
-
-### 🤖 Autopilot
-
-The search string didn't match exactly — probably whitespace differences. Let me use the exact content:
-
-
-### 🤖 Autopilot
-
-The issue is the em dash character. Let me use the exact bytes:
-
-
-### 🤖 Autopilot
-
-Now let me also update the clasp_mirrors README to document the credential-switching protocol:
-
-
-### 🤖 Autopilot
-
-Great catch — and here's the good news: **the subscription function is already deployed.** When I swapped to Gary's credentials and ran `clasp deployments`, it showed:
-
-```
-- AKfycbwNfYeWKDnWGblvrs0VE-WYvzo8voMSIOdxBkaH7SJlRKJTyU_l_Gn4UIFZkQijUq6J @2 - Add createSubscriptionCheckoutSession action
-```
-
-So version @2 of the Shopping Cart GAS already includes the subscription function. It was deployed previously and just needed the right credentials to verify.
-
-**Two PRs opened to prevent this in the future:**
-
-1. **PR #340** — Added `.clasp-owner` file and `@owner` tag in `Version.js` for the Shopping Cart mirror, documenting it's owned by `garyjob@agroverse.shop`
-2. **PR #341** — Added the credential-switching protocol to `clasp_mirrors/README.md` so any future Sophia knows to check `.clasp-owner` and swap `.clasprc-*.json` before pushing
-
-The pattern going forward: every clasp mirror should have a `.clasp-owner` file. Before any `clasp push`, check that file, swap to the right credentials, push, then restore.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-• `ssh run` → {
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-make sure to update agentic_ai_context about this pattern.
-
-
-### 🤖 Autopilot
-
-Good — `NOTES_tokenomics.md` already has a section about the clasp credential files. Let me update it to also mention the `.clasp-owner` convention and the credential-swapping protocol more explicitly:
-
-
-### 🤖 Autopilot
-
-Done. The `.clasp-owner` convention is now documented in three places:
-
-1. **`tokenomics/clasp_mirrors/README.md`** (PR #341) — the credential-switching protocol with the two accounts
-2. **`tokenomics/clasp_mirrors/<scriptId>/.clasp-owner`** (PR #340) — per-mirror owner file
-3. **`agentic_ai_context/NOTES_tokenomics.md`** (PR #427) — the AI-facing reference doc
-
-The pattern is: every clasp mirror has a `.clasp-owner` file. Before pushing, check it → swap to the right `.clasprc-*.json` → push → restore. No more "caller does not have permission" surprises.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-How come I dont see autocomplete for address when I type it in here
-https://beta.agroverse.shop/subscribe/chocolate-bar/?slug=chocolate-bar
-
-Or is it meant to be like this?
-
-
-### 🤖 Autopilot
-
-Let me check the subscribe page code to see how the address form is implemented.
-
-
-### 🤖 Autopilot
-
 I see the issue — the address fields are plain `<input>` elements with no `autocomplete` attribute. Browsers use `autocomplete` attributes to offer saved address suggestions. Let me check the HTML template:
 
 
@@ -546,4 +362,26 @@ Try the subscription flow again on beta — it should now redirect to `beta.agro
 • `ssh run` → {
 • `ssh run` → {
 • `merge pr` → ✅ PR #141 on agroverse_shop_beta merged successfully (sha: 6904d2d72f71c55eb218bdfc77483efa0c2a9cf2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So I go back to the subscription page and then try again?
+
+
+### 🤖 Autopilot
+
+Yes — the GAS has been updated (version @34), so the next time you go through the flow, Stripe will redirect to `beta.agroverse.shop/order-status` instead of `127.0.0.1:8000`.
+
+Steps:
+1. Go back to **beta.agroverse.shop/subscribe/chocolate-bar/?slug=chocolate-bar**
+2. Fill in quantity + shipping address
+3. Select a shipping rate
+4. Click **Subscribe Now** → Stripe Checkout
+5. Complete payment in Stripe
+6. You'll be redirected to **beta.agroverse.shop/order-status?session_id=...** (should work now)
+
+Also, the product image should now appear in Stripe Checkout since the frontend passes the image URL (PR #140 was also merged).
 
