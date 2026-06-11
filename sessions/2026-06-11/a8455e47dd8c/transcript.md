@@ -532,3 +532,23 @@ Here's the summary with the $50/bar pricing baked in:
 - Mixed scenario profit now **$15,897** — up from $15,844
 - **Freight cost is only 7.8% of retail value** — even better than before
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also I meant apothecaries and not upper taekri
+
+
+### 🤖 Autopilot
+
+Ah, got it — the cacao husk and tea are going to **apothecaries** at $20/lb, not Upper Taekri. Let me update the PDF with the correct customer name.
+
+
+### 🤖 Autopilot
+
+Done! The corrected PDF v4 is at:
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/freight_profit_analysis_2026-06-11_v4.pdf**
+
+All references updated from "Upper Taekri" to **"apothecaries"** throughout. The numbers are the same — $20/lb for husk and tea to apothecaries, adding **$2,337** in revenue.
+
