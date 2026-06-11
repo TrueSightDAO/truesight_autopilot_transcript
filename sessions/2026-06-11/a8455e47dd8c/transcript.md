@@ -961,3 +961,27 @@ Selepas Matheus settlekan Nota Fiscal tu, shipment boleh gerak. Saya akan follow
 
 Ada apa-apa lagi yang nak saya tolong?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Hey, can you just speak to me in English? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ha, sorry about that! Yes, English from now on.
+
+So to recap where we are:
+
+**✅ Done:**
+- Airline rates and space confirmed
+- Commercial Invoice (Rev 2, FOB) — sent to Graziela
+- Packing List (Rev 1) — sent to Graziela
+
+**❌ Still waiting:**
+- **Nota Fiscal (NF-e)** — Matheus needs to issue this through the Brazilian SEFAZ portal
+
+Once Matheus gets that done, the shipment can move. Want me to follow up with Graziela or Matheus in a couple of days if we haven't heard back?
+
