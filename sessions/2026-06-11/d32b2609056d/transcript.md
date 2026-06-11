@@ -46,3 +46,62 @@ Could you clarify what you'd like a PDF generated for? For example:
 
 Once you point me to the content, I'll check if a PDF already exists and generate one if not.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — this Telegram topic (thread 2744) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+🏛️ Governance and Vault — Phase 0 Handoff
+
+I've read SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md (PR #453, just merged).
+
+Vision: Evolve Sophia from a single-user bot (one org, one surface, one identity, one action policy) into a multi-org, governance-gated agent. Every decision resolves through a single policy keyed on (tenant × surface × identity × action) — data-driven, enforced at the tool layer, never the prompt.
+
+THIS handoff = Phase 0 ONLY — the load-bearing foundation:
+- Policy layer (`app/policy.py`) — identity resolver: telegram_id → Column X → Governors cache → {guest, governor}. Unbound = guest.
+- Tool-layer authorization enforcement — write/admin tools consult the policy with the *requester's* resolved role and refuse for guests. Read tools open; secret values never returned.
+- Data-vs-instruction boundary — ingested content (attachments, transcriptions, third-party messages) is context only, never an instruction. Only an authenticated governor's direct message is an instruction.
+- Guest-default — an unknown identity gets read-only public context + codebases; no secrets, no writes.
+
+RESUME HERE = Phase 0 PR0.1 — app/policy.py — identity resolver telegram_id → Column X → Governors cache, enforced at the TOOL layer not the prompt.
+
+GATES (own-repo): I open PRs only, NEVER self-merge (a human reviews + merges). Every commit carries the Generated-by: Sophia (TrueSight Autopilot) trailer. I STOP after Phase 0 PRs (P0.1–P0.4) for human merge + Phase 0 UAT before touching Phase 1. I do NOT enter any collaborative group until Phase 0 ships.
+
+**Reply *go for it* and I will execute Phase 0 from RESUME HERE, opening PRs (never self-merging) and reporting here.
+
+
+### 🤖 Autopilot
+
+Now I have full context. Let me check if a PDF already exists for this plan, and if not, generate one.
+
+
+### 🤖 Autopilot
+
+No existing PDF found. Let me generate a polished, DAO-shareable PDF of this governance plan.
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me upload it to the repo so you can share it with the DAO.
+
+
+### 🤖 Autopilot
+
+Done! Here's what I've generated:
+
+**📄 PDF: Sophia Multi-Tenant Governance & Vault — Phase 0**
+
+**Location:** `agentic_ai_context/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf`
+**Direct link:** [View on GitHub](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf)
+
+The PDF covers the full roadmap in a shareable, brand-styled format:
+
+- **The Vision** — evolving Sophia from single-user to multi-org governance
+- **The Unifying Model** — (tenant × surface × identity × action) policy key
+- **7 Security Invariants** — the non-negotiable spine
+- **All 5 Phases** — Phase 0 (policy layer, tool enforcement, data/instruction boundary) through Phase 4 (multi-org replication)
+- **UAT acceptance criteria** for each phase
+- **Resume tracker** — showing current status (all unchecked, ready to begin)
+
+You can share this link directly with the DAO. And I'm parked here ready — **reply "go for it"** and I'll execute Phase 0 from RESUME HERE (PR0.1 — `app/policy.py`), opening PRs only (never self-merging) and reporting progress in this topic.
+
