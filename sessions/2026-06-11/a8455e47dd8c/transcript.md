@@ -908,3 +908,33 @@ Bagus! Jadi semuanya sudah betul. Invoice yang saya hantar ke Graziela dah accur
 
 Sekali Matheus settlekan Nota Fiscal tu, shipment boleh gerak. Ada apa-apa lagi yang nak saya tolong?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think we shouldn't indicate the freight cost in the invoice since that is like directly paid by true tag ink instead of paid fire black ink. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Betul tu — since TrueTech Inc is paying the freight directly (not Black King), the freight cost shouldn't be on the invoice. The invoice should just show **FOB value** (goods only), not CIF.
+
+Let me regenerate the invoice without the freight line.
+
+
+### 🤖 Autopilot
+
+Now let me send this corrected version to Graziela.
+
+
+### 🤖 Autopilot
+
+Done! Revised invoice sent to Graziela with:
+
+- **Incoterms:** FOB Salvador (not DAP)
+- **Total value:** $7,032.53 (goods only)
+- **Freight:** noted as paid directly by buyer — not on the invoice
+
+Betul kan?
+
