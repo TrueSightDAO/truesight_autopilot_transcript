@@ -679,3 +679,48 @@ I can generate one following the same pattern as the DTS one you shared (`DTS_CT
 
 What do you think about the landing page approach — a simple agroverse.shop page that tells the story and captures emails?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I like the landing page approach... Actually what do you think if the landing page is frame around friends of the rainiforest??
+
+
+### 🤖 Autopilot
+
+That's a great angle. "Friends of the Rainforest" reframes the whole thing — it's not about buying a product, it's about joining a community of people who are connected to the forest through what they consume.
+
+Here's how I see it working:
+
+**The landing page: agroverse.shop/friends-of-the-rainforest**
+
+The QR scan takes them to a page that feels like an invitation, not a sales pitch:
+
+- **Hero:** "You just joined the Friends of the Rainforest." — immediately makes them feel part of something
+- **What they drank:** A short story about Oscar's ceremonial cacao and Paulo's cacao tea — the farmers, the forest, the regenerative cycle
+- **The invitation:** "One bag of this cacao plants a tree in the Amazon. Want to be a Friend of the Rainforest?"
+- **Email capture:** Simple signup — "Stay connected to the forest and the people who protect it"
+- **CTA to buy:** Links to the ceremonial cacao and cacao tea product pages for those who want to bring the experience home
+
+**Why this works better than a product page:**
+
+1. **It matches the moment.** They just had a beautiful, warm experience drinking ceremonial cacao. A product page feels transactional. "Friends of the Rainforest" extends the feeling.
+
+2. **It captures emails naturally.** People are more willing to give their email to "join" something than to "buy" something.
+
+3. **It feeds the loop we just designed.** Those emails go into the monthly newsletter, which includes partner events — so next time SF Zen Center has an event, these same people hear about it.
+
+4. **It's scalable.** Every future event (Dual Tech Summit on the 26th, any partner pouring) can use the same QR → same landing page. One canonical "Friends of the Rainforest" page that all sampling experiences feed into.
+
+**For the placard CTA, keeping it short and warm:**
+
+*"Scan to become a Friend of the Rainforest"*
+
+Or even simpler — just the phrase and a small sub-line:
+
+**Friend of the Rainforest**
+*Scan to join the community protecting the Amazon, one sip at a time.*
+
+What do you think? Should I start building the landing page on agroverse_shop_beta and generate the QR code?
+
