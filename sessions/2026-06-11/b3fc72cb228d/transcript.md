@@ -8,26 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Cory who is part of the Nelan’s team mention that he would like to understand more about the layout of the AWS infrastructure 
-
-We currently have this document 
-
-https://github.com/TrueSightDAO/agentic_ai_context/blob/main/AWS_DIGITAL_INFRASTRUCTURE.md
-
-I wonder if it might be helpful to further annotate what each instance does what are your thoughts?
-
-
-### 🤖 Autopilot
-
-Great question. Let me first read the current document to see what we have.
-
-
 ### 🤖 Autopilot
 
 This is actually a pretty solid document already — it covers accounts, every EC2 instance with its purpose, DNS routing, traffic flow, service architecture, SSH access, monitoring, and security groups.
@@ -848,4 +828,39 @@ Want me to terminate the old instances now, or keep them around for a few days?
 • `ssh run` → {
 • `ssh run` → {
 • `merge pr` → ✅ PR #435 on agentic_ai_context merged successfully (sha: cec7205d208ca75e82de8f1088aeae8a115a6ee2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+what is next?
+
+
+### 🤖 Autopilot
+
+Good question. Let me check what's pending in the backlog that's actionable right now.
+
+
+### 🤖 Autopilot
+
+That's a long list. Here's what's **actionable right now** (not blocked, not time-gated, fits in a session):
+
+**Immediate / time-sensitive:**
+1. **Graziela / Seacoast Logistic** — it's Monday (or close to it). I can check Gary's inbox for a reply from her and draft a follow-up if needed.
+2. **Dual Tech Summit (≈Jun 26)** — we're in the Jun 8–17 window. If Ken confirmed the date/venue, I can build the event page + wire QR → newsletter signup.
+
+**Quick wins (30-60 min each):**
+3. **Fix 3 deselected unit tests** in truesight_autopilot — mock network calls, drop `--deselect` flags.
+4. **Pin dao_client version** in requirements.txt to stop compiling native extensions every deploy.
+5. **Check AWS T&S case** — see if Nelanco's service limitation was lifted.
+
+**What's blocked or time-gated:**
+- Chocolate subscriptions E2E — waiting on beta sandbox
+- Edgar PR8d cleanup — waiting on soak until ~Jun 25
+- Hit List expansion — waiting on supply dropping below 36 drafts
+- Watchdog v2 — waiting on ~1 month signal quality data
+- Certbot renewal — time-bounded but not urgent yet
+
+What's your priority? The Dual Tech Summit is coming up fast (Jun 26) — that might be the most time-sensitive.
 
