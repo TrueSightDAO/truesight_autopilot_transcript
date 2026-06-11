@@ -105,3 +105,40 @@ The PDF covers the full roadmap in a shareable, brand-styled format:
 
 You can share this link directly with the DAO. And I'm parked here ready — **reply "go for it"** and I'll execute Phase 0 from RESUME HERE (PR0.1 — `app/policy.py`), opening PRs only (never self-merging) and reporting progress in this topic.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Park this under open follow ups using the format that is expected by your follow up monitor schema... Perhaps check back in with me in two weeks once I have my conversation with BIlal to see if we are going ahead with this.
+
+
+### 🤖 Autopilot
+
+Let me check the follow-up monitor schema to file this correctly.
+
+
+### 🤖 Autopilot
+
+Now I can see the format. The follow-up entries use a YAML-like `followup` block with `id`, `chat_id`, `thread_id`, `title`, `condition`, `schedule`, `status`, and `description`. Let me also check the follow-up monitor plan to confirm the exact schema.
+
+
+### 🤖 Autopilot
+
+Now I have the full schema. Let me file the follow-up entry properly in `OPEN_FOLLOWUPS.md`.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I've done:
+
+**📄 PDF generated** — `agentic_ai_context/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf` — a brand-styled, DAO-shareable document covering the full roadmap. You can share the [GitHub link](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf) with the DAO.
+
+**📋 Follow-up filed** — PR [#456](https://github.com/TrueSightDAO/agentic_ai_context/pull/456) adds a durable follow-up entry to `OPEN_FOLLOWUPS.md`:
+
+- **Condition:** `elapsed_days` with `escalate_after_days: 14`
+- **When it fires (~June 25):** the follow-up monitor will ping this thread (2744) to remind you to check in after your Bilal conversation
+- **What it says:** asks if the Bilal conversation happened and what the decision is — if go-ahead, executes Phase 0 from RESUME HERE
+
+The plan is parked and ready. When you're back from the Bilal conversation, just say the word and I'll execute Phase 0.
+
