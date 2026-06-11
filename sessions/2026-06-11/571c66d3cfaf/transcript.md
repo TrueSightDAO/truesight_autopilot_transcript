@@ -385,3 +385,55 @@ Steps:
 
 Also, the product image should now appear in Stripe Checkout since the frontend passes the image URL (PR #140 was also merged).
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Getting this error
+
+Invalid action. Use: action=getOrderStatus&sessionId=cs_xxx | action=getGcrContextByQr&qr=... | action=calculateShippingRates&...
+
+subscribe.js:676 Subscription error: Error: Invalid action. Use: action=getOrderStatus&sessionId=cs_xxx | action=getGcrContextByQr&qr=... | action=calculateShippingRates&...
+    at createSubscriptionSession (subscribe.js:638:13)
+    at async HTMLFormElement.handleSubmit (subscribe.js:673:25)
+
+
+### 🤖 Autopilot
+
+The GAS is not recognizing the `createSubscriptionCheckoutSession` action. Let me check — the `doGet` function in the GAS only handles `getOrderStatus`, `getGcrContextByQr`, `calculateShippingRates`, and `createCheckoutSession`. The `createSubscriptionCheckoutSession` action is **not listed** in `doGet`!
+
+The frontend calls it via GET (`fetch(scriptUrl + '?' + params.toString(), { method: 'GET' })`), but `doGet` doesn't have a handler for it. Let me check:
+
+
+### 🤖 Autopilot
+
+I see the problem clearly now. The `doGet` function handles `createCheckoutSession` but **not** `createSubscriptionCheckoutSession`. The frontend calls it via GET (`fetch(scriptUrl + '?' + params.toString(), { method: 'GET' })`), but `doGet` falls through to the error message.
+
+The `createSubscriptionCheckoutSession` function exists in the code, but `doGet` doesn't route to it. Let me fix that:
+
+
+### 🤖 Autopilot
+
+Now let me push this to the GAS and deploy:
+
+
+### 🤖 Autopilot
+
+Deployed as version @35. Now let me merge the PR:
+
+
+### 🤖 Autopilot
+
+**Fixed.** The `createSubscriptionCheckoutSession` function existed in the GAS code but `doGet()` didn't have a route for it — so when the frontend called `?action=createSubscriptionCheckoutSession&sku=...`, the GAS fell through to the "Invalid action" error.
+
+**Deployed as version @35** on the same public URL. Try the subscription flow again now — it should work.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `merge pr` → ✅ PR #142 on agroverse_shop_beta merged successfully (sha: 7cba8918f1c50f5bb47950ae2c5ac5615b794c18). Pull Request successfully merged
+
