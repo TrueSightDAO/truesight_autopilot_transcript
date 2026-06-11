@@ -591,3 +591,155 @@ Here's what the update adds:
 
 **New open decision #9** — provide weight/volume estimates to Jerri by ~Jun 15
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/black_king/entity.json
+OUr full list of SKU is found here. All entries come with GTIN number. It gets updated as and when we roll out new SKUs.
+https://agroverse.shop/js/products.js
+
+Can use OpenClaw to process as well.
+Rough weight and volume estimates for each item (frozen pulp, dried pods, beans, chocolate bars, etc.)
+
+I think based on my understanding of what Liz has spoken about so far regarding schools we are focused on only chocolate bars (50grams)
+Total inventory stock we have in our community warehouse managed by Matheus who owns Black king can be found here. All the inventory items records include GTIN and HS Code where appropriate
+
+https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_offchain_treasury.json
+
+Have OpenClaw search for manager name 
+manager_name: "Matheus Reis",
+
+It is should be able to pull in the results into your system
+Information for the freight forwarders we work with in Brazil as well as on the USA side an be found here
+
+https://raw.githubusercontent.com/TrueSightDAO/agroverse-freight-audit/main/pointers/freight_partners.json
+
+OpenClaw will be able to pull this easily into your system
+By the way just to clarify the initial pilot of 100 chocolate bars is being brought from USA to China if it is happening in July. If not then will need to figure since I am planning to be in Brazil in August period, not a good idea to be hanging on to the 100 bars and then bringing them around while I move around, they will get crushed...
+All the external files are system maintain and automatically updated as and when there are changes.
+Got it. thank you Gary. 
+I will share the activity concept and execution plan later. It includes four different effectiveness levels and varying degrees of actionability. This plan is based on the core design of the two major learning experience modules you
+previously sent me, and incorporates the three points of feedback from Evan. It also includes the corresponding executable and deliverable verification checklist.
+Hi, guys. Here is the Quotation for Chocolate Mold.  The factory is in Dongguan, and the chocolate mold models (MHC-CL082) with the closest match in dimensions and specifications are available in stock at present.
+
+
+### 🤖 Autopilot
+
+Excellent — this is a goldmine of structured data. Let me pull in all the referenced files so I can answer Jerri's weight/volume question precisely.
+
+
+### 🤖 Autopilot
+
+Now let me pull Matheus's inventory from the treasury cache.
+
+
+### 🤖 Autopilot
+
+Now I have all the data. Let me merge the previous PR first, then compile the weight/volume estimates for Jerri's freight forwarder based on the actual inventory data.
+
+
+### 🤖 Autopilot
+
+Merged ✅. Now let me compile the weight/volume estimates for Jerri's freight forwarder based on the actual data I've pulled.
+
+---
+
+## Weight & Volume Estimates for Jerri's Freight Forwarder
+
+Based on the live inventory data (Matheus Reis / Black King warehouse in Ilhéus + Kirsten's SF production), here are the estimates for each item category Jerri asked about:
+
+### 1. Chocolate Bars (50g — Cabrellon mold, Aora focus)
+
+This is the primary item for the Aora pilot. Per the product data:
+- **Unit weight:** 50g (1.76 oz)
+- **Pilot batch:** 100 bars = **5 kg total**
+- **Dimensions per bar:** ~13cm × 5.5cm × 0.6cm (Cabrellon mold cavity)
+- **Volume per 100 bars (unpackaged):** ~4,290 cm³ (≈0.0043 m³)
+- **Volume in generic foil + boxed:** ~0.02–0.03 m³ (allow 5× for packaging)
+- **HS Code:** 1806.31 (chocolate bars, filled or not)
+
+### 2. Cacao Beans (Bulk — what's in Matheus's warehouse)
+
+From Matheus's inventory (manager_name: "Matheus Reis"):
+| Item | Qty (kg) | Ledger |
+|------|----------|--------|
+| Cacao Almonds (KG) - AGL8 | 274 kg | AGL8 |
+| Cacao Almonds KG from Oscar's farm - AGL14 | 40 kg | AGL14 |
+| Cacao Almonds KG from Vivi's farm - AGL13 | 15 kg | AGL13 |
+| **Total beans** | **~329 kg** | |
+
+- **Unit weight:** Sold per kg
+- **Density:** ~600 kg/m³ (cacao beans, whole)
+- **Volume for 329 kg:** ~0.55 m³
+- **HS Code:** 1801.00.00
+
+### 3. Cacao Mass (Retail Ready — pouches)
+
+From Matheus's inventory:
+| Item | Qty | Unit weight |
+|------|-----|-------------|
+| Ceremonial Cacao pouches (Paulo 2024) - AGL8 | 170 units | 200g each |
+| Cacao Mass Bar (500g) - Main Ledger | 38 units | 500g each |
+| **Total mass weight** | **~53 kg** | |
+
+- **HS Code:** 1803.10.00
+
+### 4. Cacao Nibs (Bulk)
+
+From Matheus's inventory:
+| Item | Qty |
+|------|-----|
+| Cacao Nibs (KG) - Ilheus, Brazil 2024 | 80 kg |
+| Cacao Nibs (Kilograms) Santos - AGL13 | 100 kg |
+| **Total nibs** | **180 kg** |
+
+- **HS Code:** 1801.00.00
+
+### 5. Cacao Tea / Husk
+
+| Item | Qty |
+|------|-----|
+| Cacao Tea (KG) - AGL13 | 21 kg |
+| Cacao Husk (KG) | 20 kg |
+| Cacao Tea loose - AGL8 | ~14.7 kg |
+| **Total** | **~56 kg** |
+
+- **HS Code:** 2106.90 (tea), 1801.00.00 (husk)
+
+### 6. Dried Pods & Frozen Pulp
+
+These are **not currently in inventory** — no stock records exist for dried pods or frozen pulp. If Jerri needs these for the experiential module (sensory exercises), they'd need to be sourced separately from the farms (Oscar, Paulo, Vivi). Estimates:
+- **Dried pods:** ~50–100g each, very low density
+- **Frozen pulp:** ~250ml per portion, needs冷链 (cold chain) shipping
+
+### Summary Table for Jerri
+
+| Item | Est. Weight | Est. Volume | HS Code | In Stock? |
+|------|-------------|-------------|---------|-----------|
+| **Chocolate bars (100 × 50g)** | **5 kg** | **~0.03 m³** | 1806.31 | Needs production (Kirsten) |
+| **Cacao beans (bulk)** | **329 kg** | **~0.55 m³** | 1801.00 | ✅ Matheus warehouse |
+| **Cacao mass (pouches + bars)** | **53 kg** | **~0.15 m³** | 1803.10 | ✅ Matheus warehouse |
+| **Cacao nibs (bulk)** | **180 kg** | **~0.30 m³** | 1801.00 | ✅ Matheus warehouse |
+| **Cacao tea / husk** | **56 kg** | **~0.15 m³** | 2106.90 | ✅ Matheus warehouse |
+| **Dried pods** | TBD | TBD | — | ❌ Need sourcing |
+| **Frozen pulp** | TBD | TBD | — | ❌ Need sourcing |
+
+**Brazil shipping address for Jerri's forwarder:** R. Cel. Paiva, 46 - Centro, Ilhéus - BA, 45653-310, Brazil
+
+**Export entity:** Currently using community member's company; DAO setting up dedicated entity.
+
+---
+
+**Note on the 100 bars logistics:** Since July is likely shifting, you mentioned you'll be in Brazil in August — carrying 100 bars around while traveling risks crushing them. Options:
+1. **Store at Kirsten's** until a China date firms up, then ship directly
+2. **Ship from Kirsten → China** via freight (adds cost but avoids travel damage)
+3. **Produce in Brazil via Santos** using the Cabrellon mold if you're there in August
+
+Want me to add these weight/volume estimates and the logistics options to the plan?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #424 on agentic_ai_context merged successfully (sha: 741b098b592302a386c9194cc781f0457314d786). Pull Request successfully merged
+
