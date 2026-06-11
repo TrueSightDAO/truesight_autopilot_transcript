@@ -117,5 +117,12 @@
     "summary": "Add ruff (lint + format check) to the CI pipeline for truesight_autopilot.\n\nSteps:\n1. Add `ruff>=0.15,<1` to requirements-dev.txt\n2. Add a [tool.ruff] section to pyproject.toml with a lenient baseline",
     "action": "merge_pr",
     "created_at": "2026-06-11T00:59:45Z"
+  },
+  {
+    "title": "Merge PR #149 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Add ruff (lint + format check) to the CI pipeline for truesight_autopilot. This is Phase 1 PR-B of the hardening plan.\n\nSteps:\n1. Add `ruff>=0.15,<1` to requirements-dev.txt\n2. Add [tool.ruff] config ",
+    "action": "merge_pr",
+    "created_at": "2026-06-11T01:08:28Z"
   }
 ]
