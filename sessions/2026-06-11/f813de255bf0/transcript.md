@@ -10,32 +10,6 @@
 
 ### 🤖 Autopilot
 
-The `@HEAD` deployment requires authentication (it redirected to Google sign-in). The existing public deployment `AKfycbySJ86...` is the one that's configured as a web app with "Anyone" access. But that deployment is on the `1MnAsIQAxcSf...` project, not `1N6o00N9VtRK...`.
-
-The issue is that the `@HEAD` deployment on `1N6o00N9VtRK...` hasn't been configured as a web app. This requires the GAS UI. However, I can use the existing `AKfycbySJ86...` URL which is on the `1MnAsIQAxcSf...` project — but I need to push the `registerSingleQRCode` handler to that project too.
-
-Wait — I already pushed to `1MnAsIQAxcSf...` earlier! The `AKfycbySJ86...` URL returned "Invalid action" because it's a **versioned deployment** (not `@HEAD`). Let me check which deployment that is.
-
-
-### 🤖 Autopilot
-
-The `AKfycbySJ86...` URL is not listed here — it must be on a different project. Let me check the manifest again.
-
-Looking at the manifest, `AKfycbySJ86...` is listed under the `1MnAsIQAxcSf...` project's deployments as `probe_ICHoJo1z`. But it's not a `clasp deployment` — it's a separate deployment URL that was created manually in the GAS UI. The `@HEAD` deployment `AKfycbzwOJQD1k939QJtWxSAwm26NbBgzMG86QWObmHDpfs` requires authentication because it's not configured as a public web app.
-
-I need to create a new versioned deployment that's configured as a public web app. But this requires the GAS UI. Let me check if the `@HEAD` deployment can be tested with the `processQRCodeGenerationTelegramLogs` action (which is the existing batch QR action).
-
-Actually, let me re-read the situation. The `AKfycbySJ86...` URL works and returns JSON — it's the batch QR web service. My push to `1MnAsIQAxcSf...` updated the code, but the `AKfycbySJ86...` deployment is a **versioned deployment** (not `@HEAD`), so it won't see my changes until I redeploy it.
-
-Let me create a new deployment from `@HEAD` that's configured as a web app. But clasp can't configure the "Execute as" and "Access" settings — that's a GAS UI operation.
-
-The simplest path forward: **update the existing `AKfycbySJ86...` deployment to point at `@HEAD`**. But clasp doesn't support updating an existing deployment's version — you can only create new deployments.
-
-Let me try a different approach — deploy a new version and test the `@HEAD` URL with authentication bypass.
-
-
-### 🤖 Autopilot
-
 Still getting the old error. This is because the new deployment is a **versioned deployment** (version 12), not `@HEAD`. The version was created from the code at the time of deployment, but the `@HEAD` deployment still points to the latest code. The issue is that the `doGet` function in the versioned deployment doesn't have my changes.
 
 Wait — I pushed the code to the clasp mirror, but the versioned deployment captures the code at the time of `clasp deploy`. The `clasp push` updated the remote project, but the new deployment should have captured the latest code. Let me check if the push actually went through correctly.
@@ -1782,4 +1756,39 @@ You can download and print the placard from the URL above for tomorrow's table d
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/runs?per_page=5&event=repository_dispatch" | python3 -c " import sys,j; curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/generated_qr_codes" 2>/dev/null | python3 -c " import sys,json data =; pip3 install qrcode[pil] pillow requests 2>&1 | tail -3; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Looks nice https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png BUt can it be even nicer?? Lol
+
+
+### 🤖 Autopilot
+
+Let me make it look more professional and polished.
+
+
+### 🤖 Autopilot
+
+Here's the updated placard — much nicer now:
+
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
+
+What's improved:
+- **Warm cream background** instead of plain white
+- **Saffron gradient top band** with the event title
+- **Decorative line** under the subtitle
+- **Drop shadow** behind the QR code for depth
+- **Rounded info box** with icon-labeled rows (Origin, Product, Harvest, Batch, Link)
+- **Green bottom band** with the DAO mission tagline
+- **Rounded outer border** with saffron corner accents
+- Better typography with bold/regular font weights
+
+Want me to tweak anything — colors, layout, text, size?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps import os OUTPUT_DIR = "/tmp/qr_generation" QR_CODE = ; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
 
