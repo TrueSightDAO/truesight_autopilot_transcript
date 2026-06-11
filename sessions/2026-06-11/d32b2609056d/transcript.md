@@ -249,3 +249,172 @@ Already done! The plan update PR [#459](https://github.com/TrueSightDAO/agentic_
 
 Once you merge that PR, the plan is durable and any future incarnation of me will pick up the right order. Want me to go ahead and start executing?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Merged. Go for it
+
+
+### 🤖 Autopilot
+
+Let me first refresh my view of the plan to get the latest merged version, then set up the worktree and start executing.
+
+
+### 🤖 Autopilot
+
+Plan is merged and current. Now let me set up the worktree and start Step A — Phase 0.1: `app/policy.py`.
+
+
+### 🤖 Autopilot
+
+Worktree is set up. Now let me look at the existing codebase to understand the project structure before writing `app/policy.py`.
+
+
+### 🤖 Autopilot
+
+Now let me look at the existing auth module and the telegram adapter to understand how identity flows work today.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me also check the existing test structure and the `__init__.py` for the app module.
+
+
+### 🤖 Autopilot
+
+Now I have enough context. Let me write `app/policy.py` — the identity resolver. The key design:
+
+1. **Identity resolver**: `telegram_id → Column X (Contributors contact) → Governors cache → {guest, governor}`
+2. For now, since we don't have the Column X lookup built yet (that's Phase 1), the v0 resolver will use a simpler approach: the existing `GOVERNOR_NAMES` env var + the Telegram user allowlist to resolve identity. This gives us a working policy layer immediately that the vault can use.
+3. The policy returns `{role: "governor" | "guest", name: str | None}`.
+
+
+### 🤖 Autopilot
+
+Now let me write the tests for it.
+
+
+### 🤖 Autopilot
+
+Let me run the tests to make sure they pass.
+
+
+### 🤖 Autopilot
+
+The issue is that `patch.dict(os.environ, ...)` doesn't affect the module-level caches because they were already loaded by the `autouse` fixture. The `_load_governor_names()` and `_load_governor_telegram_ids()` functions cache to module globals, but `patch.dict` patches `os.environ` *before* the function runs — the issue is the `autouse` fixture calls `refresh_governor_cache()` which sets `_GOVERNOR_NAMES = None` and `_GOVERNOR_TELEGRAM_IDS = None`, but then the `patch.dict` context manager hasn't been entered yet at fixture time. Let me fix the test — the issue is that `patch.dict` patches happen inside the test function, but the `autouse` fixture runs before the test function body. The `_reset_governor_cache` fixture sets the caches to `None`, then the test function's `patch.dict` patches `os.environ`, then `resolve_identity` calls `_load_governor_*` which re-reads from `os.environ` — that should work. Let me check more carefully.
+
+Actually, the issue is that `patch.dict` patches `os.environ` but the `_load_governor_*` functions read from `os.getenv` which reads from the *real* `os.environ`. `patch.dict(os.environ, ...)` should work because `os.getenv` reads from `os.environ`. Let me check if the issue is that the `autouse` fixture runs *before* the `patch.dict` context manager, so the caches are `None` but then `patch.dict` enters and the functions re-read... that should work.
+
+Wait — the issue might be that `_reset_governor_cache` sets `_GOVERNOR_NAMES = None` and `_GOVERNOR_TELEGRAM_IDS = None`, but then `patch.dict` patches `os.environ` inside the test, and `resolve_identity` calls `_load_governor_*` which sees `None` caches and re-reads from the patched `os.environ`. That should work. Let me debug.
+
+
+### 🤖 Autopilot
+
+The env var is set but the function still returns GUEST. The issue is that `_load_governor_telegram_ids` reads from `os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")` — but `os.getenv` reads from the real `os.environ` which IS patched. Let me check more carefully.
+
+
+### 🤖 Autopilot
+
+`os.getenv` returns the patched value but the loaded IDs are empty. The issue must be in the parsing logic. Let me check:
+
+
+### 🤖 Autopilot
+
+That works fine standalone. The issue must be that the module-level `_GOVERNOR_TELEGRAM_IDS` cache is being set to the empty set from the `autouse` fixture's `refresh_governor_cache()` call, and then the `_load_governor_telegram_ids` function checks `if _GOVERNOR_TELEGRAM_IDS is None` — but `refresh_governor_cache` sets it to `None`, then `_load_governor_*` re-reads... Let me look more carefully at the code.
+
+Wait — I see the issue. In `_load_governor_telegram_ids`:
+```python
+if _GOVERNOR_TELEGRAM_IDS is None:
+    raw = os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")
+```
+
+But `refresh_governor_cache` sets `_GOVERNOR_TELEGRAM_IDS = None`. Then when `_load_governor_telegram_ids` is called, it sees `None`, reads from env, and sets the cache. But the `autouse` fixture calls `refresh_governor_cache()` which sets the caches to `None` — but this happens *before* the `patch.dict` context manager enters. So when the test function runs, `patch.dict` patches `os.environ`, then `resolve_identity` calls `_load_governor_telegram_ids` which sees `_GOVERNOR_TELEGRAM_IDS is None` (set by the fixture), reads from the patched `os.environ`, and should get the patched value...
+
+Let me add some debug prints to the actual function:
+
+
+### 🤖 Autopilot
+
+There it is! `refresh_governor_cache` sets `_GOVERNOR_TELEGRAM_IDS = None`, but then `_load_governor_names()` is called (inside `refresh_governor_cache`), which reads from the *real* env (not patched yet) and sets `_GOVERNOR_NAMES` to `{'Gary Teh'}`. But `_load_governor_telegram_ids()` is also called inside `refresh_governor_cache` — wait, no, `refresh_governor_cache` only sets to `None` and calls `_load_governor_names()` and `_load_governor_telegram_ids()`.
+
+Actually looking at the code again:
+
+```python
+def refresh_governor_cache() -> None:
+    global _GOVERNOR_NAMES, _GOVERNOR_TELEGRAM_IDS
+    _GOVERNOR_NAMES = None
+    _GOVERNOR_TELEGRAM_IDS = None
+    _load_governor_names()
+    _load_governor_telegram_ids()
+```
+
+So `refresh_governor_cache` sets both to `None`, then calls `_load_governor_names()` which reads from the current (unpatched) env and sets `_GOVERNOR_NAMES` to `{'Gary Teh'}` (the default). Then `_load_governor_telegram_ids()` reads from the current (unpatched) env where `TELEGRAM_ALLOWED_USER_IDS` is not set, so it gets `""` and sets `_GOVERNOR_TELEGRAM_IDS = set()`.
+
+Then when the test function runs with `patch.dict`, `resolve_identity` calls `_load_governor_telegram_ids()` which sees `_GOVERNOR_TELEGRAM_IDS = set()` (not `None`!), so it returns the cached empty set without re-reading from the patched env.
+
+The fix: `refresh_governor_cache` should set the caches to `None` but NOT pre-load them. Or the `_load_*` functions should not cache empty results. Let me fix the code:
+
+
+### 🤖 Autopilot
+
+Confirmed — the bug is that `refresh_governor_cache` pre-loads the caches with the current (unpatched) env values. The fix is to make `refresh_governor_cache` only null the caches without pre-loading, so the next call to `_load_*` picks up whatever env is current at that point.
+
+
+### 🤖 Autopilot
+
+Still failing. The issue is deeper — the `autouse` fixture runs `refresh_governor_cache()` which sets caches to `None`. Then `patch.dict` patches `os.environ`. Then `resolve_identity` calls `_load_governor_telegram_ids()` which sees `None` and reads from `os.getenv`. But `os.getenv` reads from the patched `os.environ`... Let me check if the issue is that the `autouse` fixture runs *after* the `patch.dict` context manager is set up, or if there's an import-time caching issue.
+
+
+### 🤖 Autopilot
+
+Still GUEST even though `os.getenv` returns the patched value! Let me add debug directly to the function:
+
+
+### 🤖 Autopilot
+
+That works! So the issue is specifically with the `autouse` fixture. Let me check what `refresh_governor_cache` does now after my edit:
+
+
+### 🤖 Autopilot
+
+The sed didn't work because the multiline pattern didn't match. Let me fix it properly:
+
+
+### 🤖 Autopilot
+
+All 24 tests pass. Now let me also make sure the existing test suite still passes (no regressions):
+
+
+### 🤖 Autopilot
+
+**198 passed, 4 skipped** — no regressions. Now let me commit and open the PR.
+
+
+### 🤖 Autopilot
+
+Now let me open the PR via the tool:
+
+
+### 🤖 Autopilot
+
+No `gh` auth on the box. Let me use the GitHub API via the existing tool:
+
+
+### 🤖 Autopilot
+
+Let me use the git_push_changes tool which has the right auth:
+
+
+### 🤖 Autopilot
+
+The branch already exists remotely (from the earlier `git push`). Let me just open the PR via the GitHub API with the right token:
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×33 → cd /opt/truesight_autopilot && git worktree add /opt/truesight_autopilot/worktrees/vault/ main 2>&1; ls /opt/truesight_autopilot/worktrees/vault/app/; ls /opt/truesight_autopilot/worktrees/vault/app/tools/; …(+30 more)
+
