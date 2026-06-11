@@ -10,119 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me push with the gary credentials.
-
-
-### 🤖 Autopilot
-
-There's a syntax error in `qr_code_web_service.gs`. This is a pre-existing issue, not caused by my changes. Let me check what's on line 9.
-
-
-### 🤖 Autopilot
-
-The file looks fine — it's just comments. The issue might be that clasp is trying to push this file to the wrong project. The `qr_code_web_service.gs` belongs to script `1MnAsIQAxcSf...`, not `1N6o00N9VtRK...`. I'm pushing all `.gs` files to the `1N6o00` mirror, but some of them belong to other projects.
-
-Let me only push the files that belong to this script.
-
-
-### 🤖 Autopilot
-
-**✅ Phase 1 GAS deployed!** The `register_single_qr_code.gs` is now live on the GAS project.
-
-Now let me deploy a new version so the web app URL points to the updated code.
-
-
-### 🤖 Autopilot
-
-New deployment created. Now let me run **UAT U1** — test the GAS endpoint directly.
-
-
-### 🤖 Autopilot
-
-The new deployment URL returns a 404 — this is normal for a fresh GAS deployment. The existing deployment `AKfycbxtOS1OE3zd01IxfQ0Oo-Qurq0KSz15V9VFgVaZAWA` is at `@HEAD` which means it already points to the latest code. Let me test with that URL.
-
-
-### 🤖 Autopilot
-
-The deployment needs to be configured as a web app (execute as me, access anyone). Let me check the existing deployment from the manifest — the batch QR URL `AKfycbySJ86OcVsk5gETTiJ-CY-zBZGHAQoZ8yVW-buxXMjOI9eEc3HP7AicHhtNICHoJo1z` is the one that works. Let me check if that's the same project.
-
-
-### 🤖 Autopilot
-
-That URL works but it's a different project (the batch QR project `1MnAsIQAxcSf...`). The `1N6o00N9VtRK...` project needs to be deployed as a web app. Let me check the GAS editor to see if it's set up as a web app.
-
-The `1N6o00N9VtRK` project is the QR code generation processor — it's triggered by Telegram logs, not a public web app. The `register_single_qr_code.gs` I wrote uses `doGet(e)` which means it needs to be deployed as a web app.
-
-Let me check the existing deployment URL from the manifest for this project — the manifest says "head: TBC" for this project. Let me check if there's an existing web app URL.
-
-
-### 🤖 Autopilot
-
-The `@HEAD` deployment should point to the latest code. But it returns 404 because the GAS web app needs to be configured with "Execute as me" and "Anyone" access. This is a one-time setup in the GAS editor UI that can't be done via clasp CLI.
-
-Let me check if the `@HEAD` deployment URL works with the existing `processQRCodeGenerationTelegramLogs` action.
-
-
-### 🤖 Autopilot
-
-This project (`1N6o00N9VtRK...`) has never been deployed as a web app — it's a time-triggered script, not a web-accessible one. The `doGet(e)` handler I wrote won't work without a web app deployment.
-
-I have two options:
-1. **Deploy this project as a web app** — requires GAS UI (can't do from CLI alone)
-2. **Move the `register_single_qr_code.gs` to the batch QR project** (`1MnAsIQAxcSf...`) which already has a working web app deployment at `AKfycbySJ86.../exec`
-
-Option 2 is better — the batch QR project already has a web app deployment that works. Let me update the plan to use that project instead.
-
-
-### 🤖 Autopilot
-
-This project uses `.js` extensions. Let me check the existing `qr_code_web_service.js` to see how it handles actions.
-
-
-### 🤖 Autopilot
-
-This is the right project. The `doGet` function already routes actions. I need to add a `registerSingleQRCode` action handler here. Let me add it to the existing `qr_code_web_service.js` and push.
-
-
-### 🤖 Autopilot
-
-I need to add the `registerSingleQRCode` action to the `doGet` function. Let me insert it right after the `processProgramRegistrationsFromTelegramChatLogs` block.
-
-
-### 🤖 Autopilot
-
-Now I need to add the `handleRegisterSingleQRCode` function. Let me append it at the end of the file.
-
-
-### 🤖 Autopilot
-
-Now push to the batch QR project.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×24 → cd /opt/truesight_autopilot/tokenomics && cp ~/.clasprc-gary.json ~/.clasprc.json && clasp login --creds 2>&1 | head -5; echo "---"; clasp w; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1N6o00N9VtRK_L3e0NQXEsmC6QME1KObZdmdbJgo0Tbgj_7P-ElNL5THn/ && ls -la *.gs *.js appsscri; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1N6o00N9VtRK_L3e0NQXEsmC6QME1KObZdmdbJgo0Tbgj_7P-ElNL5THn/ && rm -f *.js appsscript.jso; …(+17 more)
-• `gas deploy project` → error
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-what next?
-
-
-### 🤖 Autopilot
-
-I was in the middle of pushing the `registerSingleQRCode` handler to the batch QR project (`1MnAsIQAxcSf...`) which already has a working web app deployment. Let me push and test.
-
-
-### 🤖 Autopilot
-
-Now let me test the existing deployment URL with the new action.
-
-
-### 🤖 Autopilot
-
 The deployment is still serving the old code — it's not pointing at `@HEAD`. Let me check the deployments.
 
 
@@ -662,4 +549,115 @@ Now let me proceed to PR4 — wire the autopilot to use the new command.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → cd /tmp && GIT_TERMINAL_PROMPT=0 git clone https://github.com/TrueSightDAO/dao_client.git dao_client_tmp 2>&1 | tail -3; ls /tmp/dao_client_tmp/; cat /tmp/dao_client_tmp/pyproject.toml; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+what next?
+
+
+### 🤖 Autopilot
+
+I was in the middle of PR4 — wiring the autopilot to use the new `register_qr_code` command. Let me check where I left off.
+
+I had cloned the autopilot repo and was examining the canonical labels in `main.py` to understand how to add the QR code registration event. Let me continue.
+
+
+### 🤖 Autopilot
+
+The autopilot doesn't have any QR code registration logic yet. I need to add:
+1. The `QR CODE REGISTRATION` event to `_CANONICAL_LABELS`
+2. Field aliases for the QR registration fields
+3. A handler that calls the dao_client command
+
+Let me look at how the existing `submit_dao_event` function works.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. I need to:
+
+1. Add `QR CODE REGISTRATION` to `_CANONICAL_LABELS`
+2. Add field aliases for QR registration fields
+3. Add required fields validation
+4. Add the command construction in the approval flow
+
+Let me do all of this.
+
+
+### 🤖 Autopilot
+
+Now I need to add the command construction for QR code registration in the approval flow. Let me find the right spot.
+
+
+### 🤖 Autopilot
+
+I need to add a branch for `QR CODE REGISTRATION` in the command construction. Let me add it after the inventory movement block.
+
+
+### 🤖 Autopilot
+
+Now I also need to add the `_run_tool` handler for QR CODE REGISTRATION. Let me find where the actual submission happens.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` handler uses `EdgarDirectClient.submit_contribution()`. For QR code registration, I need a different flow since it's a two-step process (POST to Edgar, then GET GAS). Let me add a handler for it.
+
+
+### 🤖 Autopilot
+
+The `EdgarDirectClient.submit_contribution` calls `self._client.submit(event_name, attributes)` which POSTs to `/dao/submit_contribution`. For QR code registration, I need to POST to `/dao/qr_code_register` instead. Let me add a method to `EdgarDirectClient`.
+
+
+### 🤖 Autopilot
+
+Now I need to wire the `_run_tool` handler for QR CODE REGISTRATION in `main.py`. Let me find where the `submit_contribution` handler is and add a branch for QR registration.
+
+
+### 🤖 Autopilot
+
+I need to add a branch for QR CODE REGISTRATION before the `submit_contribution` call.
+
+
+### 🤖 Autopilot
+
+Now let me commit and push.
+
+
+### 🤖 Autopilot
+
+All PRs are pushed. Now let me run UAT. Let me start with U1 (GAS single QR registration) which I already verified, then U2 (duplicate detection), then test the full flow.
+
+**U1 ✅** and **U2 ✅** already passed earlier.
+
+Let me now test U4 — the dao_client command with `--dry-run`.
+
+
+### 🤖 Autopilot
+
+The attribute exists but is a module-level constant, not on the class. Let me fix the module.
+
+
+### 🤖 Autopilot
+
+The import is failing because the file wasn't saved properly. Let me check.
+
+
+### 🤖 Autopilot
+
+The Python edit didn't apply because the `build_event_cli` string wasn't in the file. Let me fix it directly.
+
+
+### 🤖 Autopilot
+
+**✅ UAT U4 (dry-run) passed!** The command correctly shows the two-step flow.
+
+Now let me commit the fix to the dao_client branch and push.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×30 → sed -n '1080,1120p' /tmp/autopilot_tmp/app/main.py; grep -n "def submit_dao_event\|def _run_dao_client\|truesight-dao-report" /tmp/autopilot_tmp/app/main.py | head -20; sed -n '1340,1400p' /tmp/autopilot_tmp/app/main.py; …(+25 more)
 
