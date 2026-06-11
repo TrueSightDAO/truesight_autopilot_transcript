@@ -887,3 +887,24 @@ The bulk items (nibs by KG, almonds by KG, tea by KG) are at their bulk cost —
 
 The invoice I sent to Graziela is accurate. No changes needed on the values.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Bagus. Benarkan untuk mengetahui pelajar, dan berkata diberitahu di depan pelajar yang kami menjelihkan kembali dari Brazil ke San Francisco, untuk mencari ini. Jadi, dalam masa itu, kami ada制a untuk mendapatkan documentasi. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Bagus! Jadi semuanya sudah betul. Invoice yang saya hantar ke Graziela dah accurate — guna accumulated cost dari ledger.
+
+**Status sekarang:**
+
+✅ **Airline** — rates and space confirmed
+✅ **Commercial Invoice** — sent to Graziela (Rev 1, 611 units, actual weights)
+✅ **Packing List** — sent to Graziela (Rev 1)
+❌ **Nota Fiscal (NF-e)** — masih tunggu Matheus, sebab dia kena guna Brazilian SEFAZ portal
+
+Sekali Matheus settlekan Nota Fiscal tu, shipment boleh gerak. Ada apa-apa lagi yang nak saya tolong?
+
