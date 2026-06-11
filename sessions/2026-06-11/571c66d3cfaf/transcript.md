@@ -749,3 +749,17 @@ So the PDP would live at:
 
 That's clean, descriptive, and tells you exactly what it is. Want me to build it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+starting at $60/month I dont think we should indicate specific amount. Let user decide.
+
+
+### 🤖 Autopilot
+
+Good call. The PDP should say **"Subscribe — pick your quantity"** or **"Subscribe — from 1 bar/month"** rather than anchoring a specific price. The subscribe page itself will show the actual cost once they pick a quantity.
+
+Want me to build the PDP at `/product-page/premium-dark-chocolate-bar/` with that approach?
+
