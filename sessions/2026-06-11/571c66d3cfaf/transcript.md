@@ -10,75 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I see — the existing PDP at `/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/` is for the **Oscar's Farm vintage-specific bar**. You want to update it to also promote the subscription, not build a separate generic PDP.
-
-The plan makes sense — this is the chocolate bar PDP that people land on from the homepage. Adding a "Subscribe" CTA here alongside the existing "Add to Cart" is the fastest path to discoverability.
-
-Here's the updated plan:
-
----
-
-## Updated PR1.5 Plan: Add Subscribe CTA to Existing Chocolate Bar PDP
-
-### What
-Add a **Subscribe CTA** to the existing Oscar's Farm chocolate bar PDP at `/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/`. This is the page visitors land on from the homepage products section — they can either buy one-off or subscribe.
-
-### Changes to the existing PDP
-
-| # | Change | Details |
-|---|--------|---------|
-| 1 | **Subscribe CTA** | Add a "Subscribe — pick your quantity" button below the "Add to Cart" button, linking to `/subscribe/chocolate-bar/` |
-| 2 | **Subscription note** | Brief text: "Get a new single-estate bar every month. Cancel anytime." |
-| 3 | **No farm-specific content removed** | The PDP keeps all its Oscar's Farm content — the subscribe CTA is additive, not replacing anything |
-
-### What it does NOT do
-- No new PDP page needed — the existing one gets the CTA
-- No generic PDP slug — the subscription is promoted from the existing bar PDP
-- No nav link yet (that can be a separate step)
-
----
-
-## Execution checklist
-
-| # | Step | Details |
-|---|------|---------|
-| ☐ | **1. Add Subscribe CTA** | Add subscribe button + note to the existing PDP HTML |
-| ☐ | **2. PR + merge** | Open PR, merge on approval |
-| ☐ | **3. DAO contribution** | Report the contribution |
-
----
-
-## UAT
-
-| # | Check | What to look for |
-|---|-------|------------------|
-| U1 | PDP loads | No console errors, images load |
-| U2 | Subscribe CTA visible | Button appears below "Add to Cart" |
-| U3 | Subscribe link works | Clicking takes you to `/subscribe/chocolate-bar/` |
-| U4 | Add to Cart still works | One-off purchase unchanged |
-| U5 | Mobile | Responsive, buttons stack properly |
-
----
-
-Want me to proceed?
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-I think we shuold also have the bar from https://beta.agroverse.shop/product-page/organic-81-dark-chocolate-bar-50g-fazenda-santa-ana-bahia-2023/index.html to also include this subscription. BUt I also think we should have a dedicated generic page which people could land on to do the subscription
-
-
-### 🤖 Autopilot
-
-Let me check the Fazenda Santa Ana PDP too:
-
-
-### 🤖 Autopilot
-
 Good — both vintage PDPs are nearly identical in structure. Here's the updated plan:
 
 ---
@@ -658,4 +589,33 @@ Check it at `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/`
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #162 on agroverse_shop_beta merged successfully (sha: 51949fb4ee5e3fa8c30f9c8aa9f2e3e6c09417b8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I dont think we should have the Buy One Bar — $10.00 button 
+
+https://beta.agroverse.shop/product-page/premium-dark-chocolate-bar/
+
+
+### 🤖 Autopilot
+
+You're right — the generic PDP is a subscription landing page. Having a "Buy One Bar" button undermines the subscription pitch. Let me remove it:
+
+
+### 🤖 Autopilot
+
+Done. The generic PDP now has a single clear CTA: **Subscribe — pick your quantity**. No competing one-off button. Clean subscription landing page.
+
+Check it at `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/`
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #163 on agroverse_shop_beta merged successfully (sha: c896c25d4050c3359fe9574c2f236df9d85605b3). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #163 on agroverse_shop_beta merged successfully (sha: c896c25d4050c3359fe9574c2f236df9d85605b3). Pull Request successfully merged
 
