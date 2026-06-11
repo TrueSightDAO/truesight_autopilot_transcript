@@ -481,3 +481,24 @@ At that point, there is *nothing* in the stack that depends on a third-party ser
 
 The post talks about swapping frontier models. The real endgame is not needing them at all.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Jadi maksudnya, kita potensi-potensi periksaan as well as the audio [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Betul! Maksud awak, kita patut update blog post dan audio untuk cover point ni — bahawa sovereignty sebenar bukan setakat GitHub dan frontier models, tapi sampai ke peringkat self-hosted git dan local models.
+
+Jadi kita tambah satu section baru atau update section yang sedia ada untuk sebut:
+
+- GitHub tu sendiri masih centralized (Microsoft)
+- Sovereignty sebenar adalah bila kau host git kau sendiri (Gitea, Forgejo)
+- Dan model pun boleh jalan local (Qwen, DeepSeek, Llama)
+- Barulah stack totally decoupled dari mana-mana third party
+
+Nak saya buat update untuk post dan audio sekali?
+
