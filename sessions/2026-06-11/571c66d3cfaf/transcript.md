@@ -805,3 +805,66 @@ JSON.parse(localStorage.getItem('agroverse_order_history'))
 
 That will print the array. If it's empty (`[]`), the save didn't fire yet — refresh the success URL first.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Very cool. It is showing now. 
+https://beta.agroverse.shop/order-status/?session_id=cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC
+
+I think the problem is that there is no way for me the customer to click through to manage this subscription isnt it?
+
+
+### 🤖 Autopilot
+
+You're right. The order status page shows the subscription details but has no "Manage Subscription" button. Let me check what it renders:
+
+
+### 🤖 Autopilot
+
+Let me check the order-status.js to see what it renders:
+
+
+### 🤖 Autopilot
+
+I see — the order status page shows "Continue Shopping" and "View Order History" buttons, but no "Manage Subscription" button. For subscription orders, we need to detect that it's a subscription and show a "Manage Subscription" button.
+
+The GAS `getOrderStatus` returns the order data. For subscription sessions, the Stripe session has `mode: 'subscription'`. Let me check if the GAS returns that info:
+
+
+### 🤖 Autopilot
+
+The GAS returns the order but doesn't include a `mode` field to indicate it's a subscription. I need to:
+
+1. Add `mode` to the GAS response for subscription sessions
+2. Add a "Manage Subscription" button to the order status page when the order is a subscription
+
+
+### 🤖 Autopilot
+
+**Now there's a full path to manage the subscription.** Here's the complete flow:
+
+1. **Subscribe** → success page with "Manage Subscription" button
+2. **Order history** (`/order-history/`) → subscription appears in the list
+3. **Click the subscription** → goes to `/order-status/?session_id=...`
+4. **Order status page** → now shows a **"Manage Subscription" button** (only for subscription orders)
+5. **Click it** → opens Stripe Customer Portal → pause, cancel, change quantity, update address, etc.
+
+Refresh your order status page at:
+```
+https://beta.agroverse.shop/order-status/?session_id=cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC
+```
+
+You should see the "Manage Subscription" button now.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cp /home/ubuntu/.clasprc-gary.json /home/ubuntu/.clasprc.json && python3 -c " import urllib.request url = 'https://raw.githubusercontent.com
+• `merge pr` → ✅ PR #156 on agroverse_shop_beta merged successfully (sha: e718c15bec6fa0f26e71177239897c2cb9594794). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cp /home/ubuntu/.clasprc-gary.json /home/ubuntu/.clasprc.json && python3 -c " import urllib.request url = 'https://raw.githubusercontent.com
+• `merge pr` → ✅ PR #156 on agroverse_shop_beta merged successfully (sha: e718c15bec6fa0f26e71177239897c2cb9594794). Pull Request successfully merged
+
