@@ -10,58 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see — the `Code.js` already has a `createSubscriptionCheckoutSession` function (the one in the main file) that uses `buildFormData` and the proper Stripe API format. But the `create_subscription_checkout_session.js` file overrides it with a version that builds the payload manually as flat key-value pairs.
-
-The key issue for the Customer Portal: I need to add the `createSubscriptionPortalSession` function and its `doGet` route. Let me add it to the `Code.js` file (the main one) since that's the canonical version:
-
-
-### 🤖 Autopilot
-
-Now let me push to GAS and deploy:
-
-
-### 🤖 Autopilot
-
-Now let me merge both PRs:
-
-
-### 🤖 Autopilot
-
-**Done.** Here's the visual cue for subscription management:
-
-**On the success page** (after completing checkout), users now see:
-1. ✅ **"Manage Subscription" button** — clicks it → calls the new GAS endpoint → opens Stripe Customer Portal where they can pause, cancel, change quantity, update address, etc.
-2. 📧 **"You can also manage your subscription from the email Stripe sent you."** — Stripe automatically sends a Customer Portal email when a subscription is created (no-code, configured in Stripe dashboard)
-
-**The Stripe Customer Portal** (configured in Stripe dashboard, no code needed) lets subscribers:
-- Cancel subscription
-- Update payment method
-- Change shipping address
-- View upcoming invoices
-- Pause/resume
-
-So the flow is: subscribe → success page → "Manage Subscription" button → Stripe Portal → manage everything there. And Stripe also emails them a portal link automatically.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cp /home/ubuntu/.clasprc-gary.json /home/ubuntu/.clasprc.json && python3 -c " import urllib.request url = 'https://raw.githubusercontent.com
-• `merge pr` ×2 → ✅ PR #149 on agroverse_shop_beta merged successfully (sha: 33f319ecf8646902d6d01114dfba655df01cccb8). Pull Request successfully merged; ✅ PR #151 on agroverse_shop_beta merged successfully (sha: 6c8c67b5ebe0b9556ce2a696f162f0f7ef00a95d). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Not seeing • ⏳ Canceled → Shows a yellow card: "Subscription Canceled" with a Try Again button that reloads the clean form
-
-
-### 🤖 Autopilot
-
-Let me check what's actually deployed on the beta site:
-
-
-### 🤖 Autopilot
-
 The code is there — `checkReturnFromStripe()`, `showSuccessState()`, and `showCanceledState()` are all in the deployed `subscribe.js`. The issue is that the **success URL** in the GAS points to `/order-status?session_id=...` instead of `/subscribe/chocolate-bar/?success=true&session_id=...`.
 
 Let me check the GAS success URL:
@@ -964,4 +912,26 @@ Check it out at `beta.agroverse.shop` — the new card should be visible in the 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #158 on agroverse_shop_beta merged successfully (sha: 75262c85f8371c4632c42bcf12d406ca4c822e3a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+just to clarify, I notice email notifications in my inbox when someone subscribes. does stripe send me an email notification every month when a subscription clears or does it not?
+
+
+### 🤖 Autopilot
+
+Stripe sends email notifications for:
+
+1. **First charge** (`checkout.session.completed` with `mode=subscription`) — yes, you get a Stripe receipt email
+2. **Renewal charges** (`invoice.paid`) — yes, Stripe sends a receipt email each month when the recurring charge succeeds
+3. **Failed payments** (`invoice.payment_failed`) — yes, Stripe sends a dunning email to the customer and a notification to you
+
+So you **will** get an email every month when a subscription renews. But there's a catch — those are just **payment receipts**. They don't create a fulfillment obligation in the system yet because the `invoice.paid` webhook handler (PR2.2) hasn't been built.
+
+Right now, the first charge is recorded in the Stripe Social Media Checkout ID sheet (via the existing `checkout.session.completed` handler), but monthly renewals will just be Stripe receipts with no corresponding fulfillment queue entry until Phase 2 is done.
+
+Want me to update the plan's status and move on to the next item?
 
