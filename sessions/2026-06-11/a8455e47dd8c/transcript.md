@@ -985,3 +985,27 @@ So to recap where we are:
 
 Once Matheus gets that done, the shipment can move. Want me to follow up with Graziela or Matheus in a couple of days if we haven't heard back?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, full up with Matthieu's tomorrow. Send him an email. And if he doesn't respond, then maybe send me a telegram notification in this thread a day after that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it. Let me send Matheus an email now asking for the Nota Fiscal.
+
+
+### 🤖 Autopilot
+
+Done! Email sent to Matheus with Graziela CC'd.
+
+Here's the plan:
+- **Today** — email sent to Matheus asking for the Nota Fiscal
+- **Tomorrow** — if no response, I'll check
+- **Day after** — if still no response, I'll ping you in this Telegram thread
+
+I'll keep an eye on it.
+
