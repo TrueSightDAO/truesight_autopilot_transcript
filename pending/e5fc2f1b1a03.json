@@ -105,13 +105,6 @@
     "created_at": "2026-06-11T00:45:42Z"
   },
   {
-    "title": "Merge PR #146 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Fix the 3 deselected unit tests and drop the --deselect flags from .github/workflows/smoke.yml.\n\nThe 3 tests currently excluded via --deselect in smoke.yml:\n\n1. tests/test_ssh_tools.py::test_missing_k",
-    "action": "merge_pr",
-    "created_at": "2026-06-11T00:46:58Z"
-  },
-  {
     "title": "Merge PR #148 on truesight_autopilot",
     "qr_code": "",
     "summary": "Add ruff (lint + format check) to the CI pipeline for truesight_autopilot.\n\nSteps:\n1. Add `ruff>=0.15,<1` to requirements-dev.txt\n2. Add a [tool.ruff] section to pyproject.toml with a lenient baseline",
@@ -131,5 +124,12 @@
     "summary": "Fix all remaining ruff violations in truesight_autopilot so `ruff check` passes cleanly. This is needed to complete Phase 1 PR-B of the hardening plan (adding ruff to CI).\n\nThe violations are:\n\n1. app",
     "action": "merge_pr",
     "created_at": "2026-06-11T01:38:40Z"
+  },
+  {
+    "title": "Merge PR #343 on tokenomics",
+    "qr_code": "",
+    "summary": "Fix github_webhook_handler.py to use production sheet and qr_codes repo\n\nTwo issues:\n1. The SHEET_URL is hardcoded to a sandbox sheet (1qSi_-VSj7yiJl0Ak-Q3lch-l4mrH37cEw8EmQwS_6a4). Change it to the p",
+    "action": "merge_pr",
+    "created_at": "2026-06-11T23:01:21Z"
   }
 ]
