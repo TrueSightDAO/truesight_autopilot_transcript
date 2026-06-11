@@ -1288,3 +1288,129 @@ Now let me also run ruff format to make sure everything is clean:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /opt/truesight_autopilot && git fetch origin autopilot/followup-store 2>&1 && git checkout autopilot/followup-store && git merge origin/a; cd /opt/truesight_autopilot && git add tests/test_followups.py && git commit -m "PR1: add unit tests for follow-up parser + state sidecar Ge; cd /opt/truesight_autopilot && cat > tests/test_followups.py << 'TESTEOF' """ Tests for app/followups.py — follow-up parser + state sidecar.; …(+17 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what next?
+
+
+### 🤖 Autopilot
+
+Let me check the CI status on the latest push:
+
+
+### 🤖 Autopilot
+
+The indentation fix I made locally hasn't been pushed yet. Let me push it and wait for CI:
+
+
+### 🤖 Autopilot
+
+Still failing. Let me check the annotations:
+
+
+### 🤖 Autopilot
+
+Line 92 — that's a different failure now! The git checkout warning is still there (Post-Run cleanup), but the actual failure is on line 92. Let me check what's on line 92 of the smoke.yml:
+
+
+### 🤖 Autopilot
+
+Line 92 is the `pytest -xvs` step. The pytest is failing! Let me check what's happening. Let me look at the CI log:
+
+
+### 🤖 Autopilot
+
+It's **Lint (ruff)** failing — not pytest! Ruff is finding issues. Let me check locally:
+
+
+### 🤖 Autopilot
+
+There are duplicate dict keys in `app/main.py` — `qr_code` and `manager` are repeated. This is a pre-existing issue in main that was introduced by the merge. Let me fix it:
+
+
+### 🤖 Autopilot
+
+I see — there's a `"qr_code"` key and a `"manager"` key that appear earlier in the dict too. Let me check:
+
+
+### 🤖 Autopilot
+
+Line 1115 has `"qr_code"` and line 1131 also has `"qr_code"` — duplicate. Same for `"manager"` at lines 1118 and 1137. These are in a field-mapping dict. Let me see the full context:
+
+
+### 🤖 Autopilot
+
+I see — the `# QR Code Registration` section has its own `"qr_code"` and `"manager"` keys that duplicate the ones in the `# Inventory Movement` section above. This is a field-mapping dict where different event types have different aliases for the same field names. The `"qr_code"` in the Inventory Movement section maps to `"QR Code"` and the one in QR Code Registration also maps to `"QR Code"` — they're the same mapping. Same for `"manager"`.
+
+The fix is to remove the duplicate entries from the QR Code Registration section since they're already defined above:
+
+
+### 🤖 Autopilot
+
+Lint passes but format check fails. Let me run ruff format:
+
+
+### 🤖 Autopilot
+
+Now let me also check the full CI suite locally:
+
+
+### 🤖 Autopilot
+
+My test file has unused imports. Let me fix:
+
+
+### 🤖 Autopilot
+
+Now let me run pytest to make sure the tests pass:
+
+
+### 🤖 Autopilot
+
+The `chat_id` is parsed as an integer by YAML (`-1003919341801` → int), but the test expects a string. Let me fix the test:
+
+
+### 🤖 Autopilot
+
+The corruption test needs to handle the JSONDecodeError. Let me fix `_load_state` to catch it:
+
+
+### 🤖 Autopilot
+
+The `_read_md()` function is resolving to the real path because the `_FOLLOWUPS_MD` path is resolved at module import time. The patch on `resolve` doesn't work because the path is already resolved. Let me fix the tests to patch `_read_md` and `_write_md` directly instead:
+
+
+### 🤖 Autopilot
+
+Also need to fix the `TestNextDue` tests which have the same issue:
+
+
+### 🤖 Autopilot
+
+**All 22 tests pass!** Now let me run the full CI suite locally to make sure everything is clean:
+
+
+### 🤖 Autopilot
+
+All clean. Now let me push everything:
+
+
+### 🤖 Autopilot
+
+I need to exclude the `worktrees/vault` directory and the `followups/state.json` (it's a local artifact). Let me clean up:
+
+
+### 🤖 Autopilot
+
+The `followups/state.json` is still showing. Let me just add a `.gitignore` for it or exclude it from the commit:
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×26 → cd /opt/truesight_autopilot && git log --oneline -3 && echo "---" && git rev-parse HEAD; cd /opt/truesight_autopilot && git add app/main.py && git commit -m "Fix indentation error in main.py (12→8 spaces on closing brace) The pro; sleep 90 && echo "waited"; …(+20 more)
+
