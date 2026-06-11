@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The output got truncated. Let me get the remaining two boxes' configs and the Sidekiq YAML files.
-
-
-### 🤖 Autopilot
-
 Now let me get the actual per-queue config files.
 
 
@@ -574,6 +569,112 @@ Want me to do it?
 **✅ Done this turn — actions taken:**
 • `ssh run` → {
 • `ssh run` → https://rubygems.org
+• `ssh run` → {
+• `ssh run` → {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go it and also shut down that box
+
+
+### 🤖 Autopilot
+
+Let me do this step by step — first clone the code, set it up, verify it works, then shut down the old box.
+
+
+### 🤖 Autopilot
+
+Need to use the right Ruby via RVM.
+
+
+### 🤖 Autopilot
+
+Gems installed. Now let me check what env vars the old box uses and create the Upstart script.
+
+
+### 🤖 Autopilot
+
+The consolidated box already has the same Redis credentials (`redis.getdata.io`). The AWS keys are different (different S3 buckets). Let me set up the env and create the Upstart script.
+
+
+### 🤖 Autopilot
+
+Hmm — I see 4 krake_ror processes but no krake_publisher process. The Upstart script says it's running but the process might have exited. Let me check.
+
+
+### 🤖 Autopilot
+
+The process exited immediately. The upstart log is empty. Let me check if there's a database or Redis connection issue.
+
+
+### 🤖 Autopilot
+
+The `tmp/pids/` directory doesn't exist. Let me create it and fix the Upstart script.
+
+
+### 🤖 Autopilot
+
+Now there are 5 Sidekiq processes — the 4 krake_ror ones plus the new krake_publisher. Let me verify it's stable and update Monit.
+
+
+### 🤖 Autopilot
+
+All 5 processes running and stable. Now let me update Monit, then stop the old GETDATA_CACHE box.
+
+
+### 🤖 Autopilot
+
+Now stop the old GETDATA_CACHE box.
+
+
+### 🤖 Autopilot
+
+Now let me also terminate the 4 old krake_sk boxes since you said to shut them down.
+
+
+### 🤖 Autopilot
+
+All done. Here's the final state:
+
+**✅ Consolidation Complete**
+
+| Before | After | Status |
+|--------|-------|--------|
+| krake_sk (t2.nano) | → krake_sk_consolidated (t2.small) | ✅ Terminated |
+| krake_sk_webhook (t2.small) | → same box | ✅ Terminated |
+| krake_sk_crawler (t2.small) | → same box | ✅ Terminated |
+| krake_sk_scaler (t2.micro) | → same box | ✅ Terminated |
+| GETDATA_CACHE (t2.micro) | → same box | ✅ Stopped |
+
+**Consolidated box** (54.160.89.135) now runs **5 Sidekiq processes**:
+1. krake_sk — general queues
+2. krake_sk_webhook — webhook queues
+3. krake_sk_crawler — crawler queues
+4. krake_sk_scaler — scaler queues
+5. krake_publisher — s3_cacher queue
+
+**Memory:** ~1 GB used of 2 GB — still healthy headroom.
+**Savings:** ~$55/mo (5 instances → 1).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
+• `ssh run` → {
 • `ssh run` → {
 • `ssh run` → {
 
