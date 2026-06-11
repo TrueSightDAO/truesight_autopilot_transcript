@@ -583,3 +583,56 @@ Want me to:
 2. Update the dao_client PR to POST directly to the GAS URL?
 3. Update the plan document to reflect the simplified architecture?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+You might want to update the implementation plan to reflect this
+
+
+### 🤖 Autopilot
+
+Let me update the plan document to reflect the simplified architecture.
+
+
+### 🤖 Autopilot
+
+Now let me update the remaining sections — Phase 2 removal, Phase 3 changes, gates, UAT, files, and timeline.
+
+
+### 🤖 Autopilot
+
+The first commit already pushed. Let me push the remaining edits as a second commit on the same branch.
+
+
+### 🤖 Autopilot
+
+The branch already exists on remote with the first commit. Let me force-push the updated branch.
+
+
+### 🤖 Autopilot
+
+**✅ Plan updated.** PR #455 now has both commits reflecting the simplified architecture.
+
+Here's what changed in the plan:
+
+| Section | Before | After |
+|---------|--------|-------|
+| **Architecture** | dao_client → Edgar → Telegram Logs → GAS | dao_client → GAS directly |
+| **Phase 2** | Edgar endpoint in `sentiment_importer` | **Removed** |
+| **Phase 3** | POST to Edgar `/dao/qr_code_register` | POST directly to GAS web app URL |
+| **Gates** | 4 gates (G1-G4) | G2 removed |
+| **UAT** | U3 tested Edgar endpoint | U3 removed |
+| **Files** | 3 new files + 3 modified | 2 new files + 1 modified |
+| **Timeline** | 5-8 hours | 4-6 hours |
+| **RESUME HERE** | Start with PR1 | ✅ Phase 1 done, skip to PR3 |
+
+**PR:** https://github.com/TrueSightDAO/agentic_ai_context/pull/455
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && git clone --depth=1 -b fix/qr-registration-plan-simplify-architecture https://github.com/TrueSightDAO/agentic_ai_context.git agen; cd /tmp/agentic_ai_context_fix && python3 << 'PYEOF' with open('plans/QR_CODE_REGISTRATION_IMPLEMENTATION_PLAN.md', 'r') as f: content = f.r; cd /tmp/agentic_ai_context_fix && git add -A && git -c user.name="Sophia Autopilot" -c user.email="autopilot@truesight.me" commit -m "Remove
+
