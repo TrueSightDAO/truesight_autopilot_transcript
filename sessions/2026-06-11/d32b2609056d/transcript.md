@@ -142,3 +142,47 @@ Done. Here's what I've done:
 
 The plan is parked and ready. When you're back from the Bilal conversation, just say the word and I'll execute Phase 0.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I wonder if you could go about implementing the vault feature first? Because I think regardless of the conversation with Bilal or Liz's interest, the vault feature will be dependently useful for the collaboration between you and me. Make sure to do the implementation via a github worktree instead of on the main code repo. I think you are doing something else on that repo right now in another thread. Thoughts?>
+
+
+### 🤖 Autopilot
+
+Great call. The vault is the most universally useful piece — it secures credentials regardless of multi-tenant governance, and it's the foundation everything else depends on. Let me think about this carefully.
+
+**Your concern about git worktree is valid** — the follow-up monitor handoff (thread 2622) is actively opening PRs on `truesight_autopilot`, so I can't just branch from the same clone without risking conflicts. A `git worktree` gives me an independent working directory on the same repo, so both threads can operate in parallel without stepping on each other.
+
+However, there's a **sequencing issue** I want to flag before I start:
+
+The vault (Phase 3 in the plan) depends on **Phase 0 — the policy layer** (`app/policy.py`). Specifically:
+
+1. **Phase 0.1** — `app/policy.py` resolves identity (`telegram_id → {guest, governor}`). The vault's web page needs this to gate who can see/add/delete credentials.
+2. **Phase 0.2** — Tool-layer enforcement. The vault's `inject-at-execution` pattern needs the policy to know *which* tools the requester may run.
+3. **Phase 3.3** — The vault web page authenticates via email→RSA flow, then checks the **Governors cache** (Phase 0's identity resolver). Without Phase 0, the vault page can't distinguish a governor from a guest.
+
+**So the minimal viable path is:**
+
+1. **Phase 0.1** (`app/policy.py` — identity resolver) — this is small, ~one file. It's the load-bearing foundation.
+2. **Phase 3** (vault) — once identity resolution exists, the vault can use it.
+
+I could **skip Phase 0.2–0.4** for now (tool-layer enforcement, data/instruction boundary) and go straight from 0.1 → vault. That gives you the credential security you want without the full governance machinery.
+
+**Proposed plan:**
+
+| Step | What | Why |
+|------|------|-----|
+| 1 | **Phase 0.1** — `app/policy.py` identity resolver | Needed so vault knows who's a governor |
+| 2 | **Phase 3.1** — Vault store (encrypted on-disk) | The core — store creds safely |
+| 3 | **Phase 3.2** — Reference-by-name / inject-at-execution | Tools use vault creds without seeing values |
+| 4 | **Phase 3.3** — Vault web page | Governor UI to add/delete/view creds |
+| 5 | **Phase 3.4** — Backup/restore | So re-imaging doesn't lose creds |
+| 6 | **Phase 3.5–3.7** — Missing-cred behavior, URL, tests | Polish |
+
+All via a **git worktree** so thread 2622's follow-up monitor work is undisturbed.
+
+Want me to proceed with this sequence? If so, I'll set up the worktree and start with Phase 0.1 → vault.
+
