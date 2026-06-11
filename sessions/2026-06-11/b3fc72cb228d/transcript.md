@@ -648,3 +648,52 @@ Here's the summary:
 
 Want me to go ahead and execute the migration, or do you want to review the plan first?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+merge the implementation plan, roadmap and checklist and then go ahead with the execution
+
+
+### 🤖 Autopilot
+
+Let me first merge the PR, then start executing.
+
+
+### 🤖 Autopilot
+
+Plan is merged. Now let me execute Phase 1 — launch the new consolidated box.
+
+First, I need to pick a good AMI to base it on. Let me check what AMI the existing krake_sk boxes use.
+
+
+### 🤖 Autopilot
+
+I see the boxes use different AMIs and two different key pairs. The simplest approach: I'll create an AMI from one of the existing krake_sk boxes (they all have the same codebase deployed), then launch a t3.small from it. Let me use `krake_sk` (t2.nano) as the source since it's the smallest and has the base code.
+
+Actually, a cleaner approach — let me just launch a fresh Ubuntu 18.04 instance and deploy the code onto it, since the upstart script already handles `git pull` and `bundle install` on start. But first, let me check what Ubuntu version the existing boxes run.
+
+
+### 🤖 Autopilot
+
+Ubuntu 14.04 — that's ancient. The AMI approach is better to preserve the exact environment. Let me create an AMI from the `krake_sk` (t2.nano) box since it has all 4 sidekiq config files already.
+
+
+### 🤖 Autopilot
+
+AMI `ami-0c5329f9833839fda` is being created. Let me wait for it to complete, then launch the new t3.small.
+
+
+### 🤖 Autopilot
+
+Only 8 GB this time, should be faster. Let me check periodically.
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #419 on agentic_ai_context merged successfully (sha: eeb9230dc255232ce00982bfc726eb481ffc3ae7). Pull Request successfully merged
+• `ssh run` → {
+
