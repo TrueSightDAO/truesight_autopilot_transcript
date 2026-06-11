@@ -1053,3 +1053,66 @@ The context file hasn't synced my PR-A update yet. Let me update it directly:
 • `merge pr` → ✅ PR #151 on truesight_autopilot merged successfully (sha: d3bb01063a28ca5c6f6eb73d334c43fbf26e0a9b). Pull Request successfully merged
 • `create dao submission` → {"status": "success", "message": "Contribution submitted"}
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what are checklist are there on this road map?
+
+
+### 🤖 Autopilot
+
+Good question. Let me read the current state of the plan to give you the full picture.
+
+
+### 🤖 Autopilot
+
+The context file hasn't synced my updates yet — it still shows the original state. Here's the **real current status** of what's been done vs what's left:
+
+---
+
+## ✅ Done (merged)
+
+| PR | What | PR |
+|----|------|-----|
+| **A** | Fix 3 deselected tests + drop `--deselect` flags | [#146](https://github.com/TrueSightDAO/truesight_autopilot/pull/146) |
+| **B** | Add `ruff` lint+format check to CI | [#151](https://github.com/TrueSightDAO/truesight_autopilot/pull/151) |
+
+## ☐ Remaining roadmap
+
+### Phase 1 — Make CI real
+| PR | What | Est. effort |
+|----|------|-------------|
+| **C** | **Add `mypy`** — type checking with lenient baseline (`ignore_missing_imports`, no `--strict`) | Medium |
+
+### Phase 2 — Self-modification safety (highest blast radius)
+| PR | What | Est. effort |
+|----|------|-------------|
+| **D** | **Own-repo PR gate** — label + block self-merge for `truesight_autopilot` PRs | Medium |
+| **E** | **Adversarial pre-PR review** — second LLM pass to find reasons NOT to merge | Stretch |
+
+### Phase 3 — Operational robustness
+| PR | What | Est. effort |
+|----|------|-------------|
+| **F** | **Persist nonce replay cache** — file-based, survives restart | Small |
+| **G** | **flock timeout on context lock** — bounded wait instead of hang | Small |
+
+### Phase 4 — Stretch / debt
+| PR | What | Est. effort |
+|----|------|-------------|
+| **H** | Migrate 4 legacy tools to registry handler pattern | Medium |
+| **I** | Troubleshooting runbook in README | Small |
+
+### UAT checks (after Phase 1 complete)
+| # | What to eyeball |
+|---|-----------------|
+| U1 | Open a PR that breaks a test → CI turns **red** |
+| U2 | Revert the break → CI turns **green** |
+| U3 | Autopilot-opened PR has `self-modify` label + can't self-merge |
+| U4 | Replay a nonce after restart → rejected |
+
+---
+
+**Next in line:** **PR-C (mypy)**. Want me to proceed?
+
