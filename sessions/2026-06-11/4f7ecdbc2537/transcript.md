@@ -213,3 +213,32 @@ Which way?
 • `ssh run` → {
 • `ssh run` → https://oauth2.googleapis.com/token\
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+you there?
+
+
+### 🤖 Autopilot
+
+Yes, I'm here. I've been executing Phase 1, PR-A of the hardening plan.
+
+**Progress so far:**
+
+**PR #146** — https://github.com/TrueSightDAO/truesight_autopilot/pull/146
+
+All 3 deselected tests are fixed and hermetic:
+1. ✅ `test_missing_key_is_a_clear_error` — mocks `_key_path()` so it doesn't fall through to real SSH keys
+2. ✅ `test_handle_message_allowed_calls_chat` — updated assertion for the new prefixed message format
+3. ✅ `test_send_message_retries_without_thread_on_400` — fallback payload now drops `message_thread_id`
+
+**One blocker:** The `--deselect` flags in `.github/workflows/smoke.yml` couldn't be removed because the PAT lacks `workflow` scope — GitHub blocks API writes to workflow files. The test fixes are correct and verified locally, but CI will still skip them until the smoke.yml is updated.
+
+**Two ways forward:**
+- **You** (or someone with a `workflow`-scoped PAT) push the smoke.yml change to the PR branch, then I merge
+- Or I merge #146 as-is (tests fixed but still deselected in CI), and we handle the smoke.yml change when the PAT scope is resolved
+
+Also — PRs #144 and #145 are duplicates that should be closed. Want me to merge #146 now?
+
