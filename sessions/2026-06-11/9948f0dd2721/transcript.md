@@ -309,3 +309,117 @@ Each section gets its own implementation roadmap + execution checklist with owne
 
 Or would you prefer I start with just the **execution checklist** layer first — a separate `AORA_EXECUTION_CHECKLIST.md` that tracks per-item status — and update the main plan separately?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Kirsten has already produced a bunch of chocolate bars, Liz needs a total of 100 bars. Check the records to see how many bars she bought. That way we know the outstanding
+
+Also right now Omega services and working with Graziela from SeaCoast Logistics to get a new freight of cacao shipped from matheus warehouse to Kirsten warehouse. Once the freight arrives, Kirsten will produce the outstanding. If the July launch happens, then I will bring the 100 bars with me physically to go to china. 
+
+Can you help organize the details and let's discuss and then compile as  PERT chart (using mermaid diagram) perhaps on the AORA experience.
+
+thoughts?
+
+
+### 🤖 Autopilot
+
+Let me check the records on Elizabeth Wong's purchase and the current inventory situation.
+
+
+### 🤖 Autopilot
+
+Good — Elizabeth Wong purchased **37 bars** (20 Oscar 2024 + 17 Santa Ana 2023) in April 2026. She now needs **100 bars total**, so the **outstanding is 63 bars**.
+
+Let me also check the current inventory and freight status.
+
+
+### 🤖 Autopilot
+
+Excellent — I now have the full picture. Let me also check the current inventory to see what's available.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my organized summary and proposal:
+
+---
+
+## Current State Summary
+
+**Elizabeth Wong's purchase history:**
+- **Already bought:** 37 bars (20 Oscar 2024 + 17 Santa Ana 2023) — April 2026
+- **Needed total:** 100 bars
+- **Outstanding:** **63 bars** to be produced by Kirsten
+
+**Supply chain status:**
+- New cacao freight from Matheus's warehouse (Ilhéus) → Kirsten's warehouse (SF) — in progress via Omega/SeaCoast (Graziela)
+- Airline quote still pending per OPEN_FOLLOWUPS.md (Graziela waiting on airline revalidation since June 5)
+- Once freight arrives, Kirsten produces the outstanding 63 bars
+
+**July launch uncertainty:**
+- Parents/students may not be around in July
+- If launch happens, you physically carry the 100 bars to China
+- If not, timeline shifts — but the bars still need to be produced
+
+---
+
+## Proposed: AORA_EXPERIENCE_PLAN.md restructure with PERT chart
+
+I propose we update `AORA_EXPERIENCE_PLAN.md` to become a **master coordination document** with four workstreams, each with its own execution checklist, and a **PERT chart** (Mermaid) showing dependencies.
+
+Here's the PERT chart I'd draft:
+
+```mermaid
+gantt
+    title Aora — Master Execution Timeline
+    dateFormat  YYYY-MM-DD
+    
+    section 1. Content & Credentialing
+    PR1 Module content (done)           :done, 2026-06-04, 1d
+    PR2 zh-CN translation (Jerri)       :active, 2026-06-10, 14d
+    PR3 exercises.json + session gen    :2026-06-20, 10d
+    PR4 Credentialing tie-in            :2026-07-01, 7d
+    Kaon MindLoop integration           :2026-06-25, 14d
+    
+    section 2. Supply Chain & Manufacturing
+    Freight quote (Graziela/SeaCoast)   :active, 2026-06-05, 14d
+    Cacao freight Matheus→Kirsten       :2026-06-19, 10d
+    Kirsten produces 63 bars            :2026-06-29, 7d
+    Santos chocolate production setup   :2026-06-15, 21d
+    Border crossing research (Jerri)    :active, 2026-06-10, 30d
+    
+    section 3. Go Partnership (Liz)
+    Demand forecast (Liz)               :2026-06-15, 14d
+    Mold decision (Santos vs Cabrellon) :2026-06-15, 7d
+    Wrapper foil decision               :2026-06-20, 5d
+    Pre-stock warehouse planning        :2026-07-01, 14d
+    
+    section 4. China Launch
+    Launch date decision                :2026-06-20, 5d
+    Gary carries 100 bars to China      :2026-07-07, 1d
+    Physical experiential events        :2026-07-07, 21d
+```
+
+**Key dependencies (critical path):**
+1. Freight quote → cacao arrives → Kirsten produces 63 bars → Gary carries to China
+2. Liz's demand forecast → Santos mold quantity → production throughput
+3. Kaon's MindLoop ready → publish Aora modules → credentialing live
+
+**Open decisions to flag in the plan:**
+- July launch: happening or shifted? (affects everything)
+- Santos mold vs Cabrellon mold (affects bar size: 40g vs 50g)
+- Wrapper foil: who provides?
+- Demand forecast from Liz: annual kg needed → mold count → freight cadence
+
+---
+
+**Want me to draft this as a PR?** I'll:
+1. Rewrite `AORA_EXPERIENCE_PLAN.md` with the four workstreams, PERT chart, and execution checklists
+2. Add a decision log for all open items
+3. Keep all existing completed work (PR0, PR1) intact
+4. Open the PR for your review
+
+Shall I go ahead?
+
