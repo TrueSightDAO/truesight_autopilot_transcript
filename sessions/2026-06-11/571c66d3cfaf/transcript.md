@@ -10,33 +10,6 @@
 
 ### 🤖 Autopilot
 
-I found the root cause. In the `createSubscriptionCheckoutSession` function, the success URL for development mode is:
-
-```javascript
-var baseUrl = environment === 'development'
-  ? 'http://127.0.0.1:8000'
-  : 'https://www.agroverse.shop';
-```
-
-When you're on `beta.agroverse.shop`, the frontend sends `environment=development`, so the GAS creates a Stripe session with `success_url = http://127.0.0.1:8000/order-status?session_id=...`. That's why the page you landed on was broken — it tried to load from `127.0.0.1:8000` which doesn't exist from your browser.
-
-Also, the `createCheckoutSession` function (for one-time purchases) has the same issue — it uses `http://127.0.0.1:8000` for development. But the `sendTrackingEmails` function correctly uses `https://beta.agroverse.shop` for development. So there's an inconsistency.
-
-Let me fix the success/cancel URLs in both `createSubscriptionCheckoutSession` and `createCheckoutSession` to use `https://beta.agroverse.shop` for development mode:
-
-
-### 🤖 Autopilot
-
-Now I need to sync this to the clasp mirror and push it to the GAS so the fix goes live. Let me do that:
-
-
-### 🤖 Autopilot
-
-The tokenomics repo doesn't have the latest from agroverse_shop_beta. Let me pull the file from the beta repo directly:
-
-
-### 🤖 Autopilot
-
 Good, the file from the PR branch has the fix. Now let me write it to the clasp mirror and push:
 
 
@@ -672,4 +645,71 @@ Try the subscription flow again on beta — it should work now.
 • `ssh run` → {
 • `merge pr` → ✅ PR #144 on agroverse_shop_beta merged successfully (sha: 240710e4d33d1cef208fae429f5a7201e05c3556). Pull Request successfully merged
 • `ssh run` → {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+The shipping cost as well as the image is still now showing on the Stripe checkout page after I click on subscribe.
+
+I think for the shipping cost it is because I didnot manually click on any options since the first is selected by default. Can you check?
+
+
+### 🤖 Autopilot
+
+Let me check what the GAS is actually sending to Stripe for the subscription session. The issue is likely in the `create_subscription_checkout_session.js` file — it builds the Stripe payload differently than the `Code.js` version.
+
+Let me look at what the `create_subscription_checkout_session.js` sends:
+
+
+### 🤖 Autopilot
+
+I see two issues:
+
+**1. Product image missing** — The `createStripeSubscriptionSession_` function doesn't include `product_data[images]` at all. The `Code.js` version of `createSubscriptionCheckoutSession` (the one in the main file) does include it, but the `create_subscription_checkout_session.js` version overrides it and doesn't pass images.
+
+**2. Shipping cost** — The shipping is added as a **recurring line item** (`line_items[1]` with `recurring[interval]=month`). This means it shows as a separate line in Stripe Checkout, not as a shipping option. The user won't see a shipping selector. But the amount should still show. The issue might be that `calculateShippingRatesViaEasyPost` is being called with the wrong arguments — let me check its signature:
+
+
+### 🤖 Autopilot
+
+It's in the GAS code. Let me check the signature from the `Code.js` I read earlier:
+
+From the `Code.js` file, `calculateShippingRatesViaEasyPost(weightOz, shippingAddress)` takes **two** arguments: weight and a shipping address object. But the `create_subscription_checkout_session.js` calls it with **three** arguments: `calculateShippingRatesViaEasyPost(totalWeightOz, ORIGIN_ADDRESS, toAddress)` — passing the origin as the second arg and destination as the third.
+
+That's wrong — the function signature is `(weightOz, shippingAddress)` where the second arg is the destination. So it's treating `ORIGIN_ADDRESS` (the origin) as the destination, and ignoring the actual destination.
+
+Let me fix both issues — add the product image and fix the shipping calculation:
+
+
+### 🤖 Autopilot
+
+Now let me push this to the GAS and deploy:
+
+
+### 🤖 Autopilot
+
+Let me verify it works:
+
+
+### 🤖 Autopilot
+
+Works. Now let me merge the PR:
+
+
+### 🤖 Autopilot
+
+**Deployed as GAS version @40.** Here's what was wrong:
+
+**1. Product image** — The Stripe payload didn't include `product_data[images]` at all. Stripe Checkout shows a placeholder when no image is provided. Now it sends the chocolate bar product image URL.
+
+**2. Shipping cost** — `calculateShippingRatesViaEasyPost(weightOz, shippingAddress)` takes **two** args: weight + **destination** address. But the code was calling it with **three** args: `(weight, ORIGIN_ADDRESS, toAddress)` — passing the **origin** address as the destination. EasyPost then tried to ship from the customer's address to the origin (or couldn't find valid rates), fell back to flat rates, and the shipping amount was wrong.
+
+Try the subscription flow again — the image and correct shipping cost should now show in Stripe Checkout.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `merge pr` → ✅ PR #145 on agroverse_shop_beta merged successfully (sha: fde24517aeeb1ce51b57ba855cecc9f9b9e0a5c4). Pull Request successfully merged
 
