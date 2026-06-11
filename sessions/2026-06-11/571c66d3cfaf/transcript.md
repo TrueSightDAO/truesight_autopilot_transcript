@@ -895,3 +895,57 @@ Try the subscribe flow again — both the product image and shipping cost should
 • `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg\n
 • `merge pr` → ✅ PR #147 on agroverse_shop_beta merged successfully (sha: e724b3836f5e861f17d61b1207e84c3b494fb7e3). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Perfect merge it!
+
+
+### 🤖 Autopilot
+
+All the subscription fixes are already merged. Let me check if there are any remaining open PRs:
+
+
+### 🤖 Autopilot
+
+PR #143 (the iframe CORS fix) is unnecessary since the real fix was in the GAS. Let me close it. PRs #140 and #138 — let me check if they're already superseded by later merges:
+
+
+### 🤖 Autopilot
+
+The `main` branch already has the form autofill (from PR #146) and the `createSubscriptionSession` uses the original `fetch()` GET approach. PR #140 (pass product details) and PR #138 (autocomplete) are superseded by later merges. Let me close the unnecessary ones:
+
+
+### 🤖 Autopilot
+
+No `gh` auth. Let me close them via the API:
+
+
+### 🤖 Autopilot
+
+No API token available. Those PRs are superseded anyway — the important ones (the actual fixes) are all merged. Here's the full status:
+
+**All subscription fixes are merged and deployed (GAS version @41).** Here's what's live:
+
+| Fix | PR | Status |
+|-----|----|--------|
+| Success URL from `127.0.0.1` to `beta.agroverse.shop` | #141 | ✅ Merged |
+| `createSubscriptionCheckoutSession` route in `doGet` | #142 | ✅ Merged |
+| Remove duplicate function, fix `+` sign decoding, commit missing file | #144 | ✅ Merged |
+| Product image + shipping calc args | #145 | ✅ Merged |
+| Form autofill from localStorage | #146 | ✅ Merged |
+| Shipping amount reading wrong rate property | #147 | ✅ Merged |
+
+**Verified via Stripe API — the subscription session shows:**
+- 6 bars × $10.00 = **$60.00/month** with product image ✅
+- Shipping (Ground Advantage) = **$7.38/month** ✅
+- **Total: $67.38/month**
+
+Try the subscribe flow at **beta.agroverse.shop/subscribe/chocolate-bar/** — your address should auto-fill, shipping rates should show, and Stripe Checkout should display the product image and correct total.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+
