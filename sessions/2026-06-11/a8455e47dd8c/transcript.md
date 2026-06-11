@@ -127,3 +127,86 @@ That matches the $697.81 line item in the freight cost breakdown from the AORA p
 
 So the inland Brazil cost is still the original **~$697.81** figure. No updated quote has come in yet.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Reach through the email track with Omega Services and pull everything out. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You want me to search your Gmail for the full email thread with Omega Services and extract all the pricing details. Let me do that.
+
+
+### 🤖 Autopilot
+
+That's an old 2023 thread. Let me search more specifically for the recent freight quotes.
+
+
+### 🤖 Autopilot
+
+I found two main threads. Let me read the full Omega thread (the one with Isis Ribeiro) and the main Graziela thread to extract all pricing details.
+
+
+### 🤖 Autopilot
+
+Now let me also check the more recent thread with Graziela about the airline revalidation status.
+
+
+### 🤖 Autopilot
+
+Excellent — I now have the complete picture from the email threads. Here's everything extracted:
+
+---
+
+## Complete Omega Services Pricing History
+
+### Original Quote (Nov 2025 — baseline air freight rates)
+**Air Freight (airport-to-airport, SSA→US):**
+| Weight | Rate/kg |
+|--------|---------|
+| 200 kg | $3.50 |
+| 300 kg | $3.40 |
+| 500 kg | $3.30 |
+| 750 kg | $3.30 |
+| 1,000 kg | $3.20 |
+
+**Inland Brazil (Omega):** $695.00 + 0.15% ad valorem — **unchanged throughout**
+
+### Quote for Austin (24 Mar 2026 — 180 kg to 3rd Eye Cafe)
+- Air Freight SSA→IAH: **$735.00 lump sum** (chargeable weight 210 kg)
+- Delivery to door Austin: **$355.00**
+- Everything else same structure
+
+### Quote for San Francisco (15 Apr 2026 — 375 kg pallet)
+Graziela said: *"rates remain the same as last time we quoted"*
+- 1 pallet @ 100×120×100 cm, 275/350 kgs
+- Air Freight: **$3.40/kg** (300 kg tier) = ~$1,261.20 for ~371 kg
+- Delivery to door SF: **$295.00** (cheaper than Austin)
+- Airline Terminal Fee (TAP): **$200.00**
+- All other line items same structure
+
+### Updated Inland Transport (28 May 2026 — from Isis Ribeiro directly)
+**This is the key change:** Due to the transport profile changing (now moving multiple pallets instead of one consolidated pallet), Omega revised the inland road transport cost:
+
+> **R$7,290.00 + 0.15% ad valorem**
+
+At the current BRL/USD rate (~5.0), that's approximately **$1,458.00** — more than double the original $695.00 base.
+
+### Pallet costs (also from Isis, 28 May 2026)
+- 3 pallets: **BRL 195.00** (~$39)
+- Fumigation of 3 pallets: **BRL 500.00** (~$100)
+- **Total: BRL 695.00** (~$139)
+
+### Current Status (as of 3 Jun 2026)
+- Graziela's team was trying to reach Matheus for additional info but he wasn't replying
+- They were exploring whether **repacking at the airport** would be cheaper than trucking pallets to Matheus's warehouse
+- The **airline revalidation** for air freight rates was still pending
+- No further updates since June 3
+
+---
+
+**Bottom line:** The original inland Brazil cost of **$695.00** has likely increased to approximately **$1,458** (R$7,290) due to the multi-pallet transport requirement. The air freight rate revalidation is still pending from the airline. The email I sent to Graziela earlier today should hopefully get us an update on where things stand now.
+
