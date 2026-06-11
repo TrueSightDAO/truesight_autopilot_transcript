@@ -610,3 +610,41 @@ Want me to proceed with the consolidation plan for the 4 krake_sk boxes? I'd rec
 • `ssh run` → {
 • `ssh run` → https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf\n#
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+yes please.
+
+
+### 🤖 Autopilot
+
+Let me draft the consolidation plan and open a PR to document it.
+
+
+### 🤖 Autopilot
+
+Now let me create the consolidation plan document and update the infrastructure doc.
+
+
+### 🤖 Autopilot
+
+Plan is documented and PR is open at **agentic_ai_context#419**.
+
+Here's the summary:
+
+**What:** Consolidate 4 krake_sk* boxes → 1 t3.small
+**Savings:** ~$29-46/mo
+**Why it works:** All 4 run the exact same codebase, just different Sidekiq queue configs
+**What stays:** krake_ror, krake_data (PostgreSQL), GETDATA_REDIS, GETDATA_CACHE
+
+**The plan covers:**
+- 4 Upstart scripts on one box (one per queue config)
+- Separate PID files to avoid conflicts
+- Monit config for all 4 processes
+- Cutover steps (drain old → start new → verify)
+- Rollback plan (just start the old boxes back up)
+
+Want me to go ahead and execute the migration, or do you want to review the plan first?
+
