@@ -104,3 +104,54 @@ To draft the right plan, I need a bit more context from you:
 
 Once I have those, I'll draft the collaboration plan as a PR to `agentic_ai_context` and we can open a dedicated tracking topic.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+She is leading the Go. Correct. All your references are correct. It falls under the Aora experience plan.
+
+
+### 🤖 Autopilot
+
+Let me re-read the Aora plan to get the full picture fresh, then I'll draft the collaboration layer.
+
+
+### 🤖 Autopilot
+
+Good. Now I have the full picture. Here's my proposal:
+
+---
+
+**I agree — the Liz/Go collaboration needs its own structured layer within the Aora plan.**
+
+The current `AORA_EXPERIENCE_PLAN.md` is a **product roadmap** (modules → site → credentialing). What's missing is the **partnership execution layer** — specifically:
+
+**What Liz brings (Go/Nucleus):**
+- She leads the Go side — Kaon's GO app / Nucleus network
+- The engine-agnostic exercises in the Aora modules need to be recomposable by Go
+- There's a technical integration interface (exercise schema → Go's session format)
+- There's a go-to-market coordination (salons, pilot events, China launch)
+
+**What a dedicated collaboration plan should cover:**
+
+| Section | What |
+|---------|------|
+| **Roles & boundaries** | Liz (Go engine, session recomposition, China ops) vs. Gary (module content, QR/ledger, credentialing) vs. Jerri (zh-CN, salon logistics) |
+| **Go integration spec** | Exercise schema contract — what the `data/exercises.json` must expose for Go to consume; API or file-based handoff |
+| **Implementation roadmap** | Parallel tracks: Liz's Go integration work + Gary's module/content work + Jerri's localization/events — with dependency gates |
+| **Execution checklist** | Per-milestone: deliverables, verification, sign-off |
+| **Communication cadence** | Syncs, async updates, who escalates what |
+
+**My suggestion:** Create it as a **new section within `AORA_EXPERIENCE_PLAN.md`** (rather than a separate file) since it's the same program — just the partnership execution layer that the original plan didn't capture because Liz wasn't in the picture yet.
+
+Alternatively, if you prefer a standalone doc, I'd name it `AORA_GO_PARTNERSHIP_PLAN.md` and cross-link it from the main plan.
+
+**Want me to draft it?** I'll need a few details from you:
+
+1. **What's the Go integration interface?** Does Liz need a specific JSON schema for exercises, or is it a file handoff, or an API?
+2. **What's Liz's timeline?** Does she have her own milestones (GO app readiness, salon scheduling) that need to gate the Aora content delivery?
+3. **Any specific deliverables Liz is expecting from you** (beyond what's already in the plan) — or vice versa?
+
+Once I have those, I'll draft the plan as a PR to `agentic_ai_context` and we can open a dedicated tracking topic.
+
