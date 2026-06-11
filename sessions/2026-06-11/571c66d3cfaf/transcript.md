@@ -900,3 +900,17 @@ Try completing a subscription again — you'll land on a proper confirmation pag
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #148 on agroverse_shop_beta merged successfully (sha: 98b8fbc33f75999d51cf42a55f909048c44d12ba). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+you there?
+
+
+### 🤖 Autopilot
+
+Yes, I'm here. What do you need?
+
