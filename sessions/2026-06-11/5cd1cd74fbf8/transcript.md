@@ -1198,3 +1198,21 @@ The plan is at **PR1 step 1** — `app/followups.py` (parser + state sidecar). O
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && git add -A && git diff --cached --stat 2>&1; cd /opt/truesight_autopilot && git commit -m "Fix ruff format after merge with main The merge introduced a formatting issue in app/main.py. ; sleep 60 && echo "waited"
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is next?
+
+
+### 🤖 Autopilot
+
+PR #155 is green and ready. The next step is:
+
+**You merge PR #155** (or tell me to close it), then I start **PR1 of the Follow-up Monitor Plan** — `app/followups.py` (parser + state sidecar).
+
+If you want to skip PR #155 entirely and go straight to PR1, I can close #155 and start fresh from `main`.
+
+Which way?
+
