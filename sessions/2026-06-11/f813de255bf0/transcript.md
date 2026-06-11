@@ -560,3 +560,47 @@ And to test the QR code detection, you can try:
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #166 on agroverse_shop_beta merged successfully (sha: fc17fad6275ba54f9d48eeb94cdd48997f7e99a5). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think we should also surface the monthly subscription option on the page isnt it? Because that will directly help reduce the CAC incurred from serving cacao at the tech events
+
+
+### 🤖 Autopilot
+
+You're right — the monthly subscription is the perfect upsell here. Someone just had a beautiful cacao experience at the event, they're already on the page feeling connected to the farmers and the forest. The subscription locks in recurring revenue and directly offsets the CAC of serving at events.
+
+Let me check what subscription page exists.
+
+
+### 🤖 Autopilot
+
+Now I see the subscription page — it's for the chocolate bar subscription. But at the event you're pouring ceremonial cacao and cacao tea, not chocolate bars. Let me think about what subscription makes sense here.
+
+Actually, the subscription is for the **Premium Dark Chocolate Bar** — a different product. But the principle is the same: recurring revenue offsets CAC. Let me add a subscription section that links to the chocolate bar subscription, since that's the existing recurring product. I'll also add a note about how subscribing directly supports the events.
+
+
+### 🤖 Autopilot
+
+Done. The subscription section is now on the page, positioned between the one-time product cards and the email signup form. Here's what it looks like:
+
+**New "Make it monthly" section** — gold-themed to stand out from the green email form:
+
+- **Headline:** "🌙 Make it monthly"
+- **Copy:** "Subscribe to a monthly discovery of single-estate dark chocolate bars. Each month a different Bahia farm, each bar QR-traceable to its origin. Your subscription directly supports bringing these tasting experiences to more events."
+- **Three perks:** Monthly discovery (different farm every month), Fully traceable (QR-linked), Plants trees
+- **CTA button:** "Start a Monthly Subscription →" linking to the subscription page
+- **Pricing note:** "From $10/bar. Cancel or modify anytime."
+
+**How this offsets CAC:** Every person who scans the QR at the event, lands on this page, and subscribes becomes recurring revenue. One subscriber at $10-60/month covers the cost of serving cacao at multiple events. The page explicitly connects the dots — "your subscription directly supports bringing these tasting experiences to more events."
+
+Give it a minute for GitHub Pages to build, then check it at:
+
+**https://beta.agroverse.shop/friends-of-the-rainforest/**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #167 on agroverse_shop_beta merged successfully (sha: 30e9f9e07f5a7718a34d6abf9f6edc73b987f314). Pull Request successfully merged
+
