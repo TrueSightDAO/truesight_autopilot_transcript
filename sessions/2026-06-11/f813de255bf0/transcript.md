@@ -466,3 +466,66 @@ You can download the QR PNG from that last URL to print on the placard. Want me 
 • `upload file to github` → https://github.com/TrueSightDAO/lineage-assets/blob/main/qrs/SFTF_FR_20260612_1.json
 • `ssh run` → python3 -c " import qrcode from io import BytesIO img = qrcode.make('https://truesight.me/qr/?id=SFTF_FR_20260612_1') img.save('/tmp/SFTF_FR
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+The formatting of this https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_1.png is not similar to the formatting of 
+
+https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/DTS_CT_20260626_1.png
+
+I think we have a dedicated python script in tokenomics repo to generate the Qr code. 
+
+Also an entry needs to be created here
+
+https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=472328231#gid=472328231 "Agroverse QR codes" I wonder what went wrong where...
+
+
+### 🤖 Autopilot
+
+You're right — let me check the DTS QR code format and find the proper script.
+
+
+### 🤖 Autopilot
+
+I see — the DTS QR code has a proper branded design with the TrueSight DAO logo and styling, not just a plain QR code. Let me find the script that generates these.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The QR code generator uses a **template image** and embeds the QR code into it with farm name, harvest year, and a logo. The DTS QR code was generated using this batch compiler with a proper template.
+
+Let me check what template and logos exist.
+
+
+### 🤖 Autopilot
+
+Now I understand. The proper way to generate QR codes is to:
+1. Add a row to the **"Agroverse QR codes"** Google Sheet
+2. Run `generate_qr_batch.sh` which reads from the sheet and generates the branded QR
+
+Let me check the sheet to see what columns are needed.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The QR code needs to be added as a row in the **"Agroverse QR codes"** Google Sheet, then the batch compiler generates the branded PNG. Let me also check if there's a row for the DTS QR code to see how it was entered.
+
+
+### 🤖 Autopilot
+
+I see — the proper workflow is to add a row to the **"Agroverse QR codes"** Google Sheet, then run the batch compiler. I can't write to the sheet directly from here, but I can tell you what needs to be added.
+
+You're right on both counts:
+1. The QR code PNG I generated is plain — it doesn't have the branded template with the logo, farm name, harvest year, and serial number like the DTS one
+2. The QR code needs a row in the **"Agroverse QR codes"** Google Sheet
+
+Here's what the row should look like for the sheet (columns A through V):
+
+| A (qr_code) | B (landing_page) | C (ledger) | D (status) | E (farm name) | F (state) | G (country) | H (Year) | I (Currency) | J (creation date) | K (location) | L-V (empty) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `SFTF_FR_20260612_1` | `https://www.agroverse.shop/friends-of-the-rainforest` | | `SAMPLE` | `SF Tech Fest` | `CA` | `USA` | `2026` | `Friends of the Rainforest` | `20260612` | `ICC Milpitas` | |
+
+Could you add that row to the **Agroverse QR codes** tab? Once it's in the sheet, I can run the batch compiler from the autopilot box to generate the properly branded QR code PNG with the logo, farm info, and serial number — matching the DTS format exactly.
+
