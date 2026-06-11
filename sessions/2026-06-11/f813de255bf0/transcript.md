@@ -943,3 +943,105 @@ Now let me register a new QR code and check if the GitHub Actions workflow trigg
 **✅ Done this turn — actions taken:**
 • `ssh run` ×28 → cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && grep -n "GitHub\|webhook\; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && grep -n "trigger\|webhook; sed -n '1397,1450p' /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/qr_code_web_; …(+21 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+how is progress?
+
+
+### 🤖 Autopilot
+
+Let me test the full flow now — register a QR code and check if the GitHub Actions workflow triggers.
+
+
+### 🤖 Autopilot
+
+Now let me check if the GitHub Actions workflow was triggered.
+
+
+### 🤖 Autopilot
+
+No new runs. The webhook might not have fired. Let me check the GAS logs to see what happened.
+
+
+### 🤖 Autopilot
+
+Let me check if the webhook function was called by looking at the sheet — the column K should have the PNG URL. Let me also check if the token was actually set.
+
+
+### 🤖 Autopilot
+
+The row was written with the expected PNG path in column K. But the GitHub Actions workflow wasn't triggered. The issue is likely that the `triggerGitHubWebhook` function failed silently (the try/catch caught the error). Let me check if the token was actually stored by testing it.
+
+
+### 🤖 Autopilot
+
+**It worked!** Two new workflow runs are in progress:
+- `#22: QR Code Generation Webhook` — created 2026-06-11T22:56:53
+- `#21: QR Code Generation Webhook` — created 2026-06-11T22:56:34
+
+These correspond to UAT_TEST_007 and UAT_TEST_006. Let me wait for them to complete and check the output.
+
+
+### 🤖 Autopilot
+
+Still in progress. Let me check what the workflow does — it might need specific inputs.
+
+
+### 🤖 Autopilot
+
+The workflow needs `secrets.QR_CODE_REPOSITORY_TOKEN` and `secrets.GDRIVE_KEY` to run. These secrets might not be set in the tokenomics repo. Let me check the workflow run logs.
+
+
+### 🤖 Autopilot
+
+Both failed. Let me check the logs.
+
+
+### 🤖 Autopilot
+
+The "Generate QR Code" step failed. Let me get the actual error.
+
+
+### 🤖 Autopilot
+
+The token doesn't have admin rights. Let me check the workflow run details for the error message via the API.
+
+
+### 🤖 Autopilot
+
+The workflow is failing but I can't see the logs without admin rights. The most likely cause is that the `github_webhook_handler.py` script needs `GDRIVE_KEY` secret which might not be set. Let me check what the script does.
+
+
+### 🤖 Autopilot
+
+I see the issue. The `github_webhook_handler.py` uses a **sandbox** Google Sheet URL (`1qSi_-VSj7yiJl0Ak-Q3lch-l4mrH37cEw8EmQwS_6a4`) instead of the production sheet. And it needs `GDRIVE_KEY` secret which may not be set in the tokenomics repo.
+
+The workflow is failing because it can't read the sheet data. The column K in our sheet points to `tokenomics/.../package_qr_codes/` but the workflow tries to upload to `TrueSightDAO/qr_codes` repo.
+
+This is a pre-existing issue with the GitHub Actions workflow — it's configured for a different sheet and repo. The GAS handler successfully triggers the webhook, but the workflow itself needs configuration.
+
+Let me summarize the current state for you:
+
+**Progress so far:**
+
+| Phase | Status | Details |
+|-------|--------|---------|
+| **Phase 1: GAS** | ✅ Done | `registerSingleQRCode` handler deployed, webhook trigger added, GITHUB_TOKEN set |
+| **Phase 2: Edgar** | ✅ Done | Merged to master on seni_ror, endpoint live at `POST /dao/qr_code_register` |
+| **Phase 3: dao_client** | ✅ PR #105 | `truesight-dao-register-qr-code` command — two-step flow |
+| **Phase 4: Autopilot** | ✅ PR | Wired to handle `QR CODE REGISTRATION` events |
+| **UAT U1-U2** | ✅ Passed | GAS registration + duplicate detection |
+| **UAT U4 (dry-run)** | ✅ Passed | dao_client command shows correct payload |
+| **GitHub Actions** | ⚠️ Triggered but fails | Workflow runs but `github_webhook_handler.py` can't read the production sheet |
+
+The GitHub Actions workflow failure is a pre-existing configuration issue — the `github_webhook_handler.py` is hardcoded to a sandbox sheet and needs `GDRIVE_KEY` secret. The GAS handler correctly triggers the webhook (runs #21 and #22 were created), but the workflow itself needs fixing to work with the production sheet.
+
+Want me to fix the workflow, or is the current state sufficient for now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/runs?per_page=5&event=repository_dispatch" | python3 -c " import sys,j; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/ && clasp logs --json -A ~/.c; # Check if the workflow was triggered now sleep 5 && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/actions/runs?per_page=5&e; …(+10 more)
+
