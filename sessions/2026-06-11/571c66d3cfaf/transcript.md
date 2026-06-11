@@ -10,71 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — the `subscribe.js` on `main` still has the original `fetch()` with GET approach (PR #143 wasn't merged yet). That's the correct approach — the GAS is now fixed, so the fetch should work. Let me close PR #143 without merging since it's not needed:
-
-
-### 🤖 Autopilot
-
-Let me close PR #143 (the iframe CORS fix) since it's not needed — the real fix was in the GAS:
-
-
-### 🤖 Autopilot
-
-Alright — here's the full summary of what was wrong and what's fixed:
-
----
-
-**Root cause:** There were **two** `createSubscriptionCheckoutSession` functions in the GAS project:
-
-1. **`Code.js`** — My version (from PR #141/#142) that returns `createCORSResponse(...)` (a `ContentService.TextOutput`)
-2. **`create_subscription_checkout_session.js`** — An older version that was in the clasp mirror but **never committed to the repo**. This version returned a **plain JS object** like `{ status: 'error', error: '...' }`
-
-Since GAS loads files alphabetically, `create_subscription_checkout_session.js` (c) loaded **after** `Code.js` (C), so its version **overrode** the correct one. When `doGet` called `createSubscriptionCheckoutSession`, it ran the wrong version which returned a plain object — and GAS rejected it with "not a supported return type."
-
-**Three bugs fixed (all deployed as GAS version @39):**
-
-1. **Duplicate function** — Updated `create_subscription_checkout_session.js` to return `createCORSResponse(...)` like the `Code.js` version
-2. **`+` sign decoding** — `URLSearchParams` encodes spaces as `+`, but GAS doesn't decode them. `JSON.parse` failed on `"1968+South+Coast..."`. Fixed by replacing `+` with space before parsing
-3. **Shipping address type** — `doGet` parses the JSON first and passes an object, but the separate file expected a string. Added a type check to handle both
-
-**Also committed the missing file** — `create_subscription_checkout_session.js` is now in the repo at `google-app-script/agroverse_shop_checkout/`.
-
-Try the subscription flow again on beta — it should work now.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → {
-• `merge pr` → ✅ PR #144 on agroverse_shop_beta merged successfully (sha: 240710e4d33d1cef208fae429f5a7201e05c3556). Pull Request successfully merged
-• `ssh run` → {
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-The shipping cost as well as the image is still now showing on the Stripe checkout page after I click on subscribe.
-
-I think for the shipping cost it is because I didnot manually click on any options since the first is selected by default. Can you check?
-
-
-### 🤖 Autopilot
-
-Let me check what the GAS is actually sending to Stripe for the subscription session. The issue is likely in the `create_subscription_checkout_session.js` file — it builds the Stripe payload differently than the `Code.js` version.
-
-Let me look at what the `create_subscription_checkout_session.js` sends:
-
-
-### 🤖 Autopilot
-
 I see two issues:
 
 **1. Product image missing** — The `createStripeSubscriptionSession_` function doesn't include `product_data[images]` at all. The `Code.js` version of `createSubscriptionCheckoutSession` (the one in the main file) does include it, but the `create_subscription_checkout_session.js` version overrides it and doesn't pass images.
@@ -821,4 +756,26 @@ Try subscribing again — then check `/order-history/` and you should see it.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #155 on agroverse_shop_beta merged successfully (sha: 443efbb3b2af3041d3ffc7cb1502985d01e506b4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So All that I have to do is just go back to that browser and the refresh on that URL isnt it?
+
+
+### 🤖 Autopilot
+
+Exactly. Since the subscription was already completed and the success page rendered, the `localStorage` save only happens when `showSuccessState()` runs — which requires the `?success=true` URL params.
+
+So just go back to that browser tab with the success URL and refresh:
+
+```
+https://beta.agroverse.shop/subscribe/chocolate-bar/?success=true&session_id=cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC&slug=chocolate-bar
+```
+
+That will trigger `checkReturnFromStripe()` → `showSuccessState()` → `window.OrderHistory.saveOrderToHistory()` → subscription appears in `/order-history/`.
+
+Then check `/order-history/` and you should see it listed.
 
