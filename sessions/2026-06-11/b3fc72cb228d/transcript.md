@@ -8,143 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Now I have the full picture. Let me also check the GETDATA_CACHE's sidekiq config.
-
-
-### 🤖 Autopilot
-
-Alright, here's the full picture. Let me summarize what I found:
-
----
-
-**Your instinct was right — all 4 `krake_sk*` boxes run the exact same codebase** (`KrakeIO/krake_ror.git`, Ruby 2.6.3, Sidekiq 5.2.5). The only difference is which Sidekiq config file they use:
-
-| Box | Config | Queues | Instance | Memory | Uptime |
-|-----|--------|--------|----------|--------|--------|
-| **krake_sk** | `sidekiq.yml` | critical, high, medium, low, ec2_processes, default | t2.nano | 488 MB | Since 2025 |
-| **krake_sk_webhook** | `sidekiq_webhook.yml` | webhook, webhook_emails | t2.small | 2 GB | Since 2025 |
-| **krake_sk_crawler** | `sidekiq_crawler.yml` | crawler_loading, pre_crawlers, crawlers | t2.small | 2 GB | Since 2025 |
-| **krake_sk_scaler** | `sidekiq_scaler.yml` | scalers | t2.micro | 992 MB | Since 2025 |
-
-All 4 have **0 of 2 busy** (idle) except scaler which shows **2 of 2 busy** — but that's just the Sidekiq process itself, not necessarily active jobs.
-
-**GETDATA_CACHE is different** — it runs a separate codebase (`krake_publisher`) with a single `s3_cacher` queue. It's a different app, so it can't trivially merge with the krake_ror boxes.
-
-**Consolidation verdict:** All 4 `krake_sk*` boxes can absolutely merge into **one box**. They're the same app, same Ruby version, same gems. You'd just run 4 separate Sidekiq processes (or one with all queues combined) on a single instance. A **t3.small (2 GB)** would handle all of them at current load levels — that's a ~$55/mo savings.
-
-**GETDATA_CACHE** stays separate since it's a different codebase, but you could potentially co-locate it on the same box if you wanted.
-
-Want me to draft a consolidation plan?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-I dont think we should consolidate the krake_sks into krake_data since that is the database instance. Perhaps consolidate all the krake_sk into just one Ec2?? 
-
-For the GETDATA_CACHE, perhaps clone it and then instantiate it with a key that you hold. would that work? that way you can see what is inside
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-you there?
-
-
-### 🤖 Autopilot
-
-Yes, I'm here. Let me clarify a couple things from your message:
-
-**1. krake_data is NOT the database** — `krake_data` (t3.medium, 52.5.179.48) is a data processing worker, not a database. The actual database is `GETDATA_REDIS` (Redis) and there's no PostgreSQL listed for Krake — it may use an external DB. So consolidating onto `krake_data` was never the plan anyway.
-
-**Your idea is right** — consolidate all 4 `krake_sk*` boxes into **one single EC2 instance**. That's clean and simple.
-
-**2. GETDATA_CACHE** — it runs `krake_publisher` (a different codebase from `krake_ror`). You're suggesting I clone the repo and spin up a copy that I have the key for, so I can inspect the code. That makes sense — the Krake repos are private under `KrakeIO` org on GitHub, so I can't read them. If I clone it and set up a box I control, I can dig into what it actually does.
-
-However, cloning a private production repo and running it elsewhere raises some questions:
-- Do you have access to the `KrakeIO/krake_publisher` repo?
-- Would you want me to just ask Cory for read access to the KrakeIO org instead? That'd be simpler than cloning and re-deploying.
-
-What do you think — want me to ask Cory for repo access, or do you have another approach in mind?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Not true. krake_data is the database. getdata_redis is the redis. I am the one who setup all the Ec2 instances
-
-
-### 🤖 Autopilot
-
-You're right, I stand corrected. Let me re-check what `krake_data` actually is.
-
-
-### 🤖 Autopilot
-
-You're absolutely right — my apologies. **krake_data** (52.5.179.48) is running **PostgreSQL on port 5432** with a 50 GB data volume at `/krake_data_cache`. It's the database server, not a data processing worker. The document in our context was wrong about that.
-
-So the landscape is:
-
-- **krake_data** = PostgreSQL database (t3.medium, 50 GB volume) — **keep as-is**
-- **GETDATA_REDIS** = Redis cache (t3a.small) — **keep as-is**
-- **krake_ror** = Rails app server (t2.micro) — **keep as-is**
-- **4x krake_sk\*** = Sidekiq workers — **consolidate into 1 box**
-- **GETDATA_CACHE** = `krake_publisher` (different codebase) — separate question
-
-**On the GETDATA_CACHE question:** I can't clone the repo since it's private under `KrakeIO` and I don't have access. But I can already SSH into it with the `server_us.pem` key — I just did. So I can inspect what's on the box directly. Want me to dig into what `krake_publisher` does and whether it could also share a box with the consolidated Sidekiq workers?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-I meant clone the GETDATA_CACHE ec2 instance as an EC2 AMI and then spin up a new EC2 instance using the AMI image but ensure it has your key in the authorized key...
-
-
-### 🤖 Autopilot
-
-Ah, got it — clone the box itself via AMI, not the repo. That makes more sense. Let me do that.
-
-
-### 🤖 Autopilot
-
-Good. It's a t2.micro with a single 8 GB root volume. Let me create an AMI from it, then launch a clone with my key injected.
-
-
-### 🤖 Autopilot
-
-AMI is being created: `ami-05da693e385f7585a`. It'll take a minute or two to complete. Let me wait and check when it's ready, then launch a clone.
-
-
-### 🤖 Autopilot
-
-Still pending. Let me wait a moment and check again.
-
-
-### 🤖 Autopilot
-
-Still pending. The snapshot is being created. Let me check again in a bit.
-
-
-### 🤖 Autopilot
-
-Still baking. Let me check the snapshot progress.
-
-
-### 🤖 Autopilot
-
-Still at 0% — the 25 GB snapshot is being created from the live volume. This could take a few minutes. I'll keep checking.
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -746,4 +609,90 @@ Here's the full picture:
 **✅ New auto-launched instances terminated** (ASGs tried to replace the ones I terminated)
 
 **On retrofitting:** The consolidated box could be put into an ASG with Min=1, Max=1 for auto-healing (if the box dies, ASG replaces it from the AMI). But the current setup is a single t2.small with 5 Upstart scripts — the ASG would just launch a fresh box from the AMI, and the Upstart scripts would auto-start all 5 Sidekiq processes on boot. Want me to set that up?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it.
+
+
+### 🤖 Autopilot
+
+Let me set up the ASG for the consolidated box. I'll create a launch template from the AMI and wire it up.
+
+
+### 🤖 Autopilot
+
+AMI is available. Now create the launch template.
+
+
+### 🤖 Autopilot
+
+Now create the ASG.
+
+
+### 🤖 Autopilot
+
+Now I need to check if the current instance is already in the ASG or if the ASG will launch a new one. Let me check.
+
+
+### 🤖 Autopilot
+
+The ASG launched a **new** instance (`i-05eb7c0c69349991d`). Now I have two instances — the original `i-09d97cc0780fc8363` and the new ASG-managed one. The ASG will auto-heal the new one. I should terminate the original standalone instance since the ASG-managed one will take over.
+
+Let me wait for the new one to be running, then verify it works and terminate the old one.
+
+
+### 🤖 Autopilot
+
+Still pending. Let me wait for it to be running.
+
+
+### 🤖 Autopilot
+
+Let me wait a bit more.
+
+
+### 🤖 Autopilot
+
+Still pending. The AMI snapshot is still baking. Let me check the snapshot status.
+
+
+### 🤖 Autopilot
+
+Snapshot is complete. The instance should be booting now.
+
+
+### 🤖 Autopilot
+
+Instance is running. Let me verify it has the Sidekiq processes and then terminate the old standalone box.
+
+
+### 🤖 Autopilot
+
+All 5 Sidekiq processes running on the new ASG-managed instance. Now let me terminate the old standalone box.
+
+
+### 🤖 Autopilot
+
+All done. Here's the final state:
+
+**✅ ASG retrofitted — complete**
+
+| Resource | Detail |
+|----------|--------|
+| **Launch template** | `krake-sk-consolidated` (lt-064ccd1d859cd34b8) — AMI `ami-046aefdade31fd70a`, t2.small |
+| **ASG** | `krake_sk_consolidated` — Min=1, Max=1, Desired=1, auto-heals |
+| **New instance** | `i-05eb7c0c69349991d` (54.237.53.162) — 5 Sidekiq processes running |
+| **Old standalone** | `i-09d97cc0780fc8363` — terminated |
+| **Old ASGs** | All 6 disabled (Min=0, Max=0, Desired=0) |
+| **Old instances** | All terminated |
+
+If the box ever crashes, the ASG will launch a fresh one from the AMI and all 5 Upstart scripts will auto-start on boot.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
 
