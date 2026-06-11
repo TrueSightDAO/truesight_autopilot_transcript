@@ -254,3 +254,21 @@ I need to add this handoff to the manifest and also register it in SOPHIA_HANDOF
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /opt/truesight_autopilot && git worktree add /tmp/worktrees/live-progress-pr1 2>/dev/null || echo "worktree exists" && ls /tmp/worktrees/; cd /tmp/worktrees/live-progress-pr1 && git checkout -b live-progress-pr1 2>/dev/null; git branch; cd /tmp/worktrees/live-progress-pr1 && cat app/main.py | head -50; …(+15 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2799] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2799) is the active handoff for `SOPHIA_LIVE_PROGRESS_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_LIVE_PROGRESS_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is the link to merge
+
+
+### 🤖 Autopilot
+
+The PR to merge is:
+
+**https://github.com/TrueSightDAO/truesight_autopilot/pull/160**
+
+Title: *PR1: add _live_progress record + _render_progress + richer _ack_queued_if_busy*
+
+Once you merge it, I can proceed to **PR2** — the progress-query immediate answer (lock-bypassing read path + lightweight classifier).
+
