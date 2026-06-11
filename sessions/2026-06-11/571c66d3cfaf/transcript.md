@@ -1003,3 +1003,33 @@ So to answer your earlier question more precisely:
 
 So for renewals, you'll get Stripe's default receipt but no custom "New Order" email until Phase 2 is built.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is phase 2?
+
+
+### 🤖 Autopilot
+
+Phase 2 is the **Fulfillment Automation** phase — it's what makes subscriptions actually work operationally beyond just collecting payments. Here's the summary from the plan:
+
+### Phase 2 — Fulfillment automation (kill the relay)
+
+The problem: right now when a subscription renews each month, the money comes in but nobody is told to pack and ship the bars. Phase 2 builds the system that connects the recurring charge to Kirsten's fulfillment workflow.
+
+| PR | What it does |
+|----|-------------|
+| **2.1** | **Fulfillment Queue sheet** — a new Google Sheet tab that tracks each monthly obligation: subscriber, address, SKU, quantity, invoice ID, status (PENDING → FULFILLED) |
+| **2.2** | **`invoice.paid` webhook handler** — when Stripe sends a renewal charge, the Rails webhook creates a PENDING row in the queue. Also handles `invoice.payment_failed` (no obligation created) and `customer.subscription.deleted` (stop future obligations) |
+| **2.3** | **Fulfillment UI** — a page in the dapp where Kirsten can see PENDING obligations, pick one, scan N QR codes (reusing the existing `report_sales.html`), enter a tracking number, and submit — which fans out into N per-bar `[SALES EVENT]`s |
+| **2.4** | **Sales parser update** — teach it to accept subscription invoice IDs (which start with `in_` or `sub_`, not `cs_`) so renewal-sourced sales reconcile properly |
+| **2.5** | **Low-stock alert** (stretch) — warn when the generic bar pool is running low relative to upcoming obligations |
+
+### Why it matters
+
+Without Phase 2, monthly renewals are charged but **unrecorded and unfulfilled** — the money comes in but nobody knows they need to ship bars. The plan calls this out as the **Activation gate**: don't send real subscribers to the page until Phase 2 is live (or the interim bridge is in place).
+
+Want me to start building Phase 2?
+
