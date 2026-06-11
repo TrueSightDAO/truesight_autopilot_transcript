@@ -8,25 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Boleh kamu mempunyai email ke Grazilla dari Sikos Logistics untuk us about the status of the freight? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me check the context for this freight situation.
-
-
-### 🤖 Autopilot
-
-I see "Graziela" (not Grazilla) in the AORA_EXPERIENCE_PLAN.md — she's the freight contact. Let me read the relevant context to understand the current freight status.
-
-
 ### 🤖 Autopilot
 
 Now I understand the context. You're asking about the freight status — the current shipment from Matheus (Ilhéus, Brazil) to Kirsten (San Francisco). Let me check the latest status and find Graziela's contact.
@@ -551,4 +532,43 @@ Done! The corrected PDF v4 is at:
 **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/freight_profit_analysis_2026-06-11_v4.pdf**
 
 All references updated from "Upper Taekri" to **"apothecaries"** throughout. The numbers are the same — $20/lb for husk and tea to apothecaries, adding **$2,337** in revenue.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+What are the instructions I gave you regarding how to understand and analyze and assess the items in the manifest for profit and loss purpose? Can you come up with a comprehensive documentation so that future incarnations of yourself as well as other LLMs will know that this is the instructions to follow when doing the analysis for the profit and loss? By the way, I love the way you generated all the sections. They are very detailed and it's very helpful for all of us. So yeah, perhaps update this in the Agente AI context. Thank you very much. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Thank you! Let me capture this as a proper runbook in the agentic_ai_context so future incarnations follow the same methodology.
+
+
+### 🤖 Autopilot
+
+Done! The methodology document is now in a PR at:
+**https://github.com/TrueSightDAO/agentic_ai_context/pull/445**
+
+Here's what I captured in `FREIGHT_PROFIT_ANALYSIS_METHODOLOGY.md`:
+
+### The 14-section runbook covers:
+
+1. **Core Principle** — what the analysis answers
+2. **Data Sources** — where to find manifest, freight costs, COGS, prices
+3. **Pricing Structure** — your stated pricing ($25/$17 retail/wholesale, $50 mass bars, $20/lb to apothecaries, etc.)
+4. **Revenue Calculation** — how to handle bulk repacking, fixed-price channels, three scenarios
+5. **Freight Cost** — current breakdown + potential increases + worst case
+6. **COGS** — how to pull cost basis from treasury cache + packaging costs
+7. **P&L Statements** — the four required scenarios with full line items
+8. **Unit Economics** — per-kg, per-item, break-even formulas
+9. **Cash Flow & Capital Position** — available cash, cash required, ROI
+10. **Risk & Sensitivity** — risk table + sell-through sensitivity + time to profitability
+11. **Summary Table** — all scenarios side by side
+12. **Output Format** — verbal summary + PDF report + styling rules
+13. **Version History** — v1 through v4
+14. **Related Documents** — links to all source files
+
+Want me to merge the PR, or would you like to review it first?
 
