@@ -1879,3 +1879,35 @@ QR code is 912x912 native resolution — perfectly square and scannable. Perfect
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Love it! But the words are spilling outside the box on the right side??
+
+
+### 🤖 Autopilot
+
+You're right — the right side info box is overflowing. Let me fix the layout to fit properly within the landscape width.
+
+
+### 🤖 Autopilot
+
+Fixed! The QR code is now smaller (684px instead of 912px) to leave more room on the right, and the info box is properly contained within the canvas width with text truncation for long values.
+
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
+
+Layout now:
+- **Left:** QR code (684px) with "Scan to support..." below
+- **Right:** Subtitle, info box with 6 rows, and mission text — all within bounds
+- Everything has proper margins and nothing spills off the edge
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
