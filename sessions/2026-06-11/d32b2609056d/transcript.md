@@ -186,3 +186,66 @@ All via a **git worktree** so thread 2622's follow-up monitor work is undisturbe
 
 Want me to proceed with this sequence? If so, I'll set up the worktree and start with Phase 0.1 → vault.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Perhaps update the implementation plan to indicate this new order instead? That way you remember in case you get reincarnated during the impelemtation process?
+
+
+### 🤖 Autopilot
+
+Good call — let me update the plan file to reflect the new sequencing, then proceed.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan with the new sequencing — vault-first, with Phase 0.1 as the minimal dependency, and add the worktree convention.
+
+
+### 🤖 Autopilot
+
+Plan updated. Here's the summary of what changed in the roadmap:
+
+**New execution order (vault-first):**
+
+| Step | What | Why now |
+|------|------|---------|
+| **A** | Phase 0.1 — `app/policy.py` identity resolver | Minimal dependency vault needs to gate its web page |
+| **B** | **Phase 3 — Credential vault** (store, inject, web page, backup) | **Immediate value** — secures creds for you and me regardless of Bilal/Liz |
+| **C** | Phase 0.2–0.4 — Tool enforcement + data boundary | Deferred until after vault |
+| **D** | Phase 1 — Identity binding (email challenge) | Later |
+| **E** | Phase 2 — Engagement modes | Later |
+| **F** | Phase 4 — Multi-org replication | Last |
+
+**Added §11 — Worktree convention:** all vault/governance work from this thread uses a `git worktree` at `/opt/truesight_autopilot/worktrees/vault/`, keeping it independent from the follow-up monitor work in thread 2622.
+
+**PR:** [#459](https://github.com/TrueSightDAO/agentic_ai_context/pull/459)
+
+Also updated the follow-up entry in `OPEN_FOLLOWUPS.md` to reference the new sequencing. The plan is now durable — if I get "reincarnated" mid-implementation, the new RESUME HERE clearly says: **Step A (Phase 0.1 identity resolver) → Step B (Phase 3 vault)** via worktree.
+
+Want me to go ahead and start executing Step A?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Sophia TrueSight, [Jun 11, 2026 at 4:09:12 PM]:
+
+
+Perhaps update the implementation plan to indicate this new order instead? That way you remember in case you get reincarnated during the impelemtation process?
+
+
+### 🤖 Autopilot
+
+Already done! The plan update PR [#459](https://github.com/TrueSightDAO/agentic_ai_context/pull/459) is open and ready for your review/merge. Here's what it changed:
+
+1. **Reordered the roadmap** — vault-first: Step A (Phase 0.1 identity resolver) → Step B (Phase 3 vault) → then the rest deferred
+2. **Added §11 Worktree convention** — so parallel handoff threads don't conflict
+3. **Updated RESUME HERE** — clearly says vault-first order
+4. **Updated Resume tracker** — shows the new A→B→C→D→E→F sequence
+
+Once you merge that PR, the plan is durable and any future incarnation of me will pick up the right order. Want me to go ahead and start executing?
+
