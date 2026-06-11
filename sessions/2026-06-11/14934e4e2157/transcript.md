@@ -8,107 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2799] [Handoff context — this Telegram topic (thread 2799) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-can you implement this via a github worktree so as to not clash with what you are doing in another thread_id make sure you and future incarnations of Sophia follow this convention moving forward for all future write activities.
-
-
-### 🤖 Autopilot
-
-Let me first check the handoff manifest and understand what's being worked on in this thread.
-
-
-### 🤖 Autopilot
-
-I see this is thread **2799** — but I don't see it registered in the handoff manifest or SOPHIA_HANDOFFS.md yet. Let me check what plan file might be associated with this thread.
-
-Let me also check what's in the context for this specific thread.
-
-
-### 🤖 Autopilot
-
-This thread (2799) isn't registered in the handoff manifest yet. But you're asking me to implement something — could you clarify **what** you'd like me to implement? You mentioned a GitHub worktree convention, but I need to know:
-
-1. **What's the task?** — What code change or feature are we implementing?
-2. **Which repo?** — e.g. `truesight_autopilot`, `dao_client`, `tokenomics`, etc.?
-3. **What's the other thread** that might clash? — So I know which branch/worktree to avoid.
-
-Once I have that, I can:
-- Create a **git worktree** in a dedicated directory (e.g. `/tmp/worktrees/<repo>-<feature>/`)
-- Work from that worktree so it doesn't interfere with any other thread's git state
-- Document this convention in the handoff plan so future Sophia incarnations follow it
-
-**Re: the convention** — understood. Going forward, for all write activities (PRs, file uploads, etc.), I'll use **git worktrees** instead of the default clone to avoid cross-thread git state clashes. I'll document this in the handoff plan for this thread.
-
-What are we building?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2799] [Handoff context — this Telegram topic (thread 2799) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Sophia — Live Progress Introspection — Handoff Received
-
-✅ Plan read: SOPHIA_LIVE_PROGRESS_PLAN.md (PR #457, just merged).
-
-Restatement: When Gary messages a thread while I'm mid-turn, the dispatch lock queues it and I reply with a canned "📥 Got it — queued." That ack is blind to what I'm actually doing. The fix: a per-session _live_progress record that the executing turn updates (current tool/arg, round, elapsed, done-so-far, queue depth), and a lock-bypassing read path so a "how's progress?" gets a real answer — instant, templated, race-free under workers=1.
-
-RESUME HERE = PR1 — the _live_progress record in _run_tool_round_loop + _render_progress helper + richer _ack_queued_if_busy.
-
-PR2 — progress-query answered immediately via a lock-bypassing read path + lightweight classifier.
-
-GATES: Open PRs only, NEVER self-merge (human reviews + merges). Generated-by: Sophia (TrueSight Autopilot) trailer on every commit. UAT U1–U5 is the completion gate.
-
-Reply go for it and I will execute from RESUME HERE, opening PRs (never self-merging) and reporting here.
-
-
-### 🤖 Autopilot
-
-✅ Plan confirmed. Let me read the plan file fresh from GitHub `main` to make sure I have the latest.
-
-
-### 🤖 Autopilot
-
-Plan confirmed. I'm parked and ready.
-
-**Summary of what I'll execute on GO:**
-
-**PR1** — `_live_progress` record in `app/main.py`:
-- `_live_progress: dict[session_id, dict]` — updated by `_run_tool_round_loop` at each round + tool-call start/done
-- `_render_progress(session_id) -> str | None` — templated snapshot
-- Richer `_ack_queued_if_busy` in `telegram_adapter.py` — folds the snapshot into the ack
-- Tests for all three
-
-**PR2** — Progress-query immediate answer:
-- Read-only progress path (lock-bypassing)
-- Lightweight classifier for status-y phrases → immediate reply
-- Tests: status vs instruction classification, graceful idle
-
-**Gates:** Open PRs only, NEVER self-merge. `Generated-by: Sophia (TrueSight Autopilot)` trailer. UAT U1–U5.
-
-**Worktree convention:** I'll use a dedicated git worktree for this work so it doesn't clash with any other thread's git state.
-
-✅ **Ready. Reply "go for it" and I'll execute from RESUME HERE (PR1) through PR2, reporting progress here.**
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2799] [Handoff context — this Telegram topic (thread 2799) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-go for it
-
-
-### 🤖 Autopilot
-
-GO received. Executing PR1 — `_live_progress` record + `_render_progress` + richer `_ack_queued_if_busy`.
-
-First, let me read the current state of the files I need to modify.
-
-
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me create a worktree and implement PR1. First, let me set up the worktree.
@@ -385,4 +284,29 @@ Now let me update the handoff manifest to reflect PR2 status:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot && git worktree add /tmp/worktrees/live-progress-pr2 -b live-progress-pr2 2>/dev/null || echo "worktree exists"; cd /tmp/worktrees/live-progress-pr2 && python3 << 'PYEOF' with open('app/main.py', 'r') as f: content = f.read() # Add GET /chat/progress en; cd /tmp/worktrees/live-progress-pr2 && python3 << 'PYEOF' with open('app/telegram_adapter.py', 'r') as f: content = f.read() # Add _is_progr; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2799] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2799) is the active handoff for `SOPHIA_LIVE_PROGRESS_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_LIVE_PROGRESS_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+cool! What next?
+
+
+### 🤖 Autopilot
+
+PR2 (#161) is open and awaiting your merge. After that's merged and deployed, the plan says:
+
+**PR2 completion gate:** UAT U2–U5 in Telegram:
+- **U2** — While a turn runs, ask "how's progress?" → immediate snapshot, not queued
+- **U3** — A real instruction during a busy turn is **still queued** (not misread as status)
+- **U4** — Progress query with nothing running → graceful "nothing running right now"
+- **U5** — Introspection never slows the executing turn
+
+**To proceed:**
+1. Merge PR #161
+2. I deploy it
+3. Run U2–U5 to verify
+
+Want me to merge #161 now?
 
