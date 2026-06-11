@@ -502,3 +502,23 @@ Jadi kita tambah satu section baru atau update section yang sedia ada untuk sebu
 
 Nak saya buat update untuk post dan audio sekali?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2033] [Handoff context — this Telegram topic (thread 2033) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Can you speak and respond in English? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sorry about that! Yes — you're saying we should update both the blog post and the audio to cover this point: that true sovereignty doesn't stop at GitHub and frontier models. It goes all the way down to self-hosted git and local models.
+
+The current post says "the context lives in a GitHub repo that Gary controls" — but GitHub itself is still a centralized platform owned by Microsoft. The real endgame is:
+
+- **Self-hosted git** (Gitea, Forgejo) on your own server or even a Raspberry Pi
+- **Local models** (Qwen, DeepSeek, Llama) running on your own hardware
+- No dependency on any third-party service at all
+
+Want me to add a section to the post about this and regenerate the audio?
+
