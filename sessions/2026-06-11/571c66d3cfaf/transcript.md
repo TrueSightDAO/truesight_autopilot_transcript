@@ -935,3 +935,71 @@ Right now, the first charge is recorded in the Stripe Social Media Checkout ID s
 
 Want me to update the plan's status and move on to the next item?
 
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+This is the email notification I got. Is this from Stripe or is this from one of our own scripts??
+
+[Attachment auto-processed: **a1f3e97fc799419ca000676af60bf8ec.pdf**]
+- Type: PDF (1 page, 1207 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Gary Teh <garyjob@agroverse.shop>
+New Order: Zhiwen Teh - $67.38
+1 message
+garyjob@agroverse.shop <garyjob@agroverse.shop>
+Wed, Jun 10, 2026 at 7:06 PM
+To: garyjob@agroverse.shop
+New order received!
+=== ORDER DETAILS ===
+Order Date: 6/10/2026, 7:01:20 PM
+Stripe Session ID: cs_test_b1PDUX7u0oiBgfojR8mpG9TuYwBxQnjS6H2V3wKNXFHoTlUOMWOOWa0Kg8
+Payment Status: paid
+=== CUSTOMER INFORMATION ===
+Name: Zhiwen Teh
+Email: garyjob@gmail.com
+=== SHIPPING ADDRESS ===
+1968 South Coast Highway, 4616, Laguna Beach, CA, 92651, US
+=== ORDER ITEMS ===
+Premium Dark Chocolate Bar — Single-Estate, Monthly Discovery (x6), Shipping (x1)
+Total Quantity: 7
+=== PRICING BREAKDOWN ===
+Subtotal: $67.38
+Shipping: $0.00
+Total: $67.38
+Stripe Fee: $0.00
+Net Amount: $67.38
+=== LINKS ===
+View in Stripe Dashboard: https://dashboard.stripe.com/payments?status%5B%5D=successful
+Search for Session ID: cs_test_b1PDUX7u0oiBgfojR8mpG9TuYwBxQnjS6H2V3wKNXFHoTlUOMWOOWa0Kg8
+---
+This is an automated notification from Agroverse Shop.
+6/11/26, 1:15 PM
+GetData Inc Mail - New Order: Zhiwen Teh - $67.38
+https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thread-f:1867664436078706846&simpl=msg-f:1867664436078706846
+1/1
+```
+
+
+### 🤖 Autopilot
+
+That's from **our own GAS script**, not Stripe. The email format gives it away:
+
+- **From:** `garyjob@agroverse.shop` (your own domain)
+- **Format:** Plain text with "=== ORDER DETAILS ===" sections
+- **Footer:** "This is an automated notification from Agroverse Shop."
+- **Content:** Includes Stripe Session ID, shipping address, item breakdown
+
+This is sent by the existing `sendOrderConfirmationEmail` function in the GAS (`agroverse_shop_checkout.gs`) which fires on `checkout.session.completed` — it works for subscriptions too since the first charge triggers that webhook.
+
+So to answer your earlier question more precisely:
+
+- **First charge** → our GAS script sends you this email ✅ (you're seeing it)
+- **Monthly renewals** (`invoice.paid`) → Stripe sends its own receipt email, but our GAS script does **not** send a notification because there's no `invoice.paid` handler yet (that's PR2.2)
+
+So for renewals, you'll get Stripe's default receipt but no custom "New Order" email until Phase 2 is built.
+
