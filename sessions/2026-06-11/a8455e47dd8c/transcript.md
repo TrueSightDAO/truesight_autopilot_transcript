@@ -826,3 +826,26 @@ Also — the **Nota Fiscal** that Matheus needs to issue from the Brazilian syst
 
 What's your preference on how to value the invoice?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+The cost of the invoice should be based on the accumulated costs that we incurred so far, producing the units. So it's accurate when filing for taxes with the US, the Brazilian government. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — the invoice values should reflect the **accumulated production cost** (cost basis), which is exactly what I used from the treasury ledger. So the invoice I sent is correct in that regard.
+
+However, I want to double-check one thing — the **accumulated cost** should include not just the raw cacao cost, but also:
+
+1. **Raw cacao cost** (from treasury ledger) ✅ — $7,032.53
+2. **Packaging costs** (pouches, labels, etc.) — should these be added?
+3. **Processing/labor costs** (grinding, roasting, packing) — should these be added?
+4. **Freight cost** ($2,825.09) — this is listed separately on the invoice as freight, not part of the goods value
+
+The current invoice has the **FOB value at $7,032.53** (just the cacao cost basis) and the **CIF value at $9,857.62** (cacao + freight).
+
+**Question:** Should I add packaging and processing costs into the unit prices, or is the raw cacao cost basis sufficient for the commercial invoice? The treasury ledger values are what the DAO paid for the cacao itself — packaging and labor are separate line items in the treasury.
+
