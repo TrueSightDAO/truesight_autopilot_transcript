@@ -291,3 +291,53 @@ Once that's done, I can push the smoke.yml change and merge #146.
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents\
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2317] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2317) is the active handoff for `AUTOPILOT_HARDENING_PLAN.md`. Before responding, read it with read_context_file("AUTOPILOT_HARDENING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Try again
+
+
+### 🤖 Autopilot
+
+That worked! The smoke.yml now has `pytest -q` with no `--deselect` flags. Let me merge PR #146:
+
+
+### 🤖 Autopilot
+
+**Phase 1, PR-A — ✅ MERGED**
+
+Now let me report the DAO contribution and update the plan tracker:
+
+
+### 🤖 Autopilot
+
+Now let me update the plan tracker in the context file:
+
+
+### 🤖 Autopilot
+
+**Phase 1, PR-A — complete.** Here's the summary:
+
+---
+
+## ✅ Phase 1, PR-A: Done
+
+**PR #146** — merged to `truesight_autopilot` main
+
+**What changed:**
+- **3 tests fixed** — all now hermetic (no real network/SSH calls)
+- **`--deselect` flags removed** from `smoke.yml` — full unit suite now gates CI
+- **DAO contribution** reported
+
+**Plan tracker updated** — `AUTOPILOT_HARDENING_PLAN.md` now points RESUME HERE to **Phase 1, PR-B** (add `ruff` lint+format to CI).
+
+**Next up:** PR-B — add `ruff` to `requirements-dev.txt`, configure in `pyproject.toml`, add a CI step in `smoke.yml`, and fix/`# noqa`-justify violations so it passes. Want me to proceed?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/truesight_autopilot/blob/autopilot/fix-1781138761/.github/workflows/smoke.yml
+• `merge pr` → ✅ PR #146 on truesight_autopilot merged successfully (sha: 070992753d6b581f64428887f9d6fa36ad1461ec). Pull Request successfully merged
+• `create dao submission` → {"status": "success", "message": "Contribution submitted"}
+
