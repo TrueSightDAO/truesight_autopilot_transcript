@@ -519,3 +519,61 @@ Yes — the Krake SK consolidation is complete. Here's the summary:
 
 Other than those two loose ends, the consolidation is done.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2018] [Handoff context — this Telegram topic (thread 2018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+• The 4 old boxes are stopped, not terminated — I can terminate them now if you want, or keep them a few days as rollback terminate.
+
+I wonder if the codebase for GETDATA_CACHE can also be consolidated into that same box housing all the Krake_sk?
+
+
+### 🤖 Autopilot
+
+Good question. Let me check what `krake_publisher` (the GETDATA_CACHE codebase) actually needs vs what `krake_ror` (the consolidated box) has.
+
+
+### 🤖 Autopilot
+
+Whoa — **Ruby 1.9.3** on GETDATA_CACHE. That's ancient. The consolidated box runs **Ruby 2.6.3** via RVM. Let me check more.
+
+
+### 🤖 Autopilot
+
+Interesting — the consolidated box also shows Ruby 1.9.3 (it's the system Ruby), but the Gemfile says 2.6.3. Let me check if RVM is installed on the consolidated box.
+
+
+### 🤖 Autopilot
+
+The consolidated box already has **Ruby 2.6.3** installed via RVM (same version `krake_publisher` needs). And `krake_publisher` uses the same stack: Rails 6.0, Sidekiq 5.2.5, PostgreSQL, Redis. The Gemfile is nearly identical to `krake_ror`'s.
+
+**Verdict: Yes, it can be consolidated onto the same box.** Here's the analysis:
+
+| Factor | krake_ror (consolidated) | krake_publisher (GETDATA_CACHE) | Compatible? |
+|--------|--------------------------|--------------------------------|-------------|
+| Ruby | 2.6.3 (via RVM) | 2.6.3 | ✅ Same |
+| Rails | 6.0.0 | 6.0.0 | ✅ Same |
+| Sidekiq | 5.2.5 | 5.2.5 | ✅ Same |
+| DB | PostgreSQL (krake_data) | PostgreSQL (sql.getdata.io) | ✅ Same type |
+| Redis | GETDATA_REDIS | GETDATA_REDIS | ✅ Same |
+| Deploy dir | `/home/ubuntu/krake_ror/` | `/home/ubuntu/krake_publisher/` | ✅ Separate dirs |
+
+**What it would take:**
+1. Clone `krake_publisher` onto the consolidated box
+2. `bundle install` (same Ruby, same gems — should be fast)
+3. Create one more Upstart script (`/etc/init/krake_publisher.conf`) pointing at `config/sidekiq_s3_cacher.yml`
+4. Update Monit
+5. Stop GETDATA_CACHE, start the new process
+
+**Savings:** Another ~$8/mo (t2.micro → $0)
+
+Want me to do it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → {
+• `ssh run` → https://rubygems.org
+• `ssh run` → {
+• `ssh run` → {
+
