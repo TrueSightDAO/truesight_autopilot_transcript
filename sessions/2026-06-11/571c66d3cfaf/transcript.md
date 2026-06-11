@@ -10,33 +10,6 @@
 
 ### 🤖 Autopilot
 
-Great question. The plan actually addresses this in the **Decisions** table under "Cancel path":
-
-> **Phase 1:** Stripe **no-code Customer Portal login link** (dashboard config, email-based, zero build) — so "cancel/modify anytime" is true the day Linda goes live.
-
-So the intended flow is: after subscribing, the user gets a **Stripe Customer Portal link** (sent via email by Stripe automatically) where they can pause, cancel, change quantity, update address, etc.
-
-But right now on the success page there's no visual cue pointing them to that. The success page I just built has "View Order History" and "Continue Shopping" — neither mentions subscription management.
-
-**What I should add to the success page:**
-- A note: **"You'll receive an email from Stripe to manage your subscription"** — Stripe sends this automatically when a subscription is created (the Customer Portal is configured in the Stripe dashboard, no code needed)
-- A **"Manage Subscription"** button that creates a Stripe Customer Portal session (needs a new GAS endpoint)
-
-Let me add the email cue now (zero-build) and create the portal session endpoint for the button:
-
-
-### 🤖 Autopilot
-
-Now I need to add the GAS endpoint for the Customer Portal. Let me add it to the `create_subscription_checkout_session.js` file:
-
-
-### 🤖 Autopilot
-
-Now I need to add the `doGet` route for this new action. Let me check the current `doGet`:
-
-
-### 🤖 Autopilot
-
 I see — the `Code.js` already has a `createSubscriptionCheckoutSession` function (the one in the main file) that uses `buildFormData` and the proper Stripe API format. But the `create_subscription_checkout_session.js` file overrides it with a version that builds the payload manually as flat key-value pairs.
 
 The key issue for the Customer Portal: I need to add the `createSubscriptionPortalSession` function and its `doGet` route. Let me add it to the `Code.js` file (the main one) since that's the canonical version:
@@ -784,4 +757,76 @@ Add a **Subscribe CTA** to the existing Oscar's Farm chocolate bar PDP at `/prod
 ---
 
 Want me to proceed?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think we shuold also have the bar from https://beta.agroverse.shop/product-page/organic-81-dark-chocolate-bar-50g-fazenda-santa-ana-bahia-2023/index.html to also include this subscription. BUt I also think we should have a dedicated generic page which people could land on to do the subscription
+
+
+### 🤖 Autopilot
+
+Let me check the Fazenda Santa Ana PDP too:
+
+
+### 🤖 Autopilot
+
+Good — both vintage PDPs are nearly identical in structure. Here's the updated plan:
+
+---
+
+## Updated PR1.5 Plan: Subscribe CTA on All Bar PDPs + Generic Landing Page
+
+### Three changes in one PR:
+
+| # | Change | Details |
+|---|--------|---------|
+| **1** | **Oscar's Bar PDP** | Add Subscribe CTA below "Add to Cart" → `/subscribe/chocolate-bar/` |
+| **2** | **Santa Ana Bar PDP** | Same Subscribe CTA, same link |
+| **3** | **Generic Landing Page** | New page at `/product-page/premium-dark-chocolate-bar/` — explains the rotating-origins subscription model, no farm-specific content, primary CTA to subscribe, secondary one-off Add-to-Cart |
+
+### Why three
+- **Vintage PDPs** → visitors who land on a specific bar page can subscribe instead of buying one-off
+- **Generic PDP** → a dedicated page for the subscription concept itself, linkable from nav, homepage, social, placard QRs. No farm-specific content — just the subscription pitch.
+
+### What the generic PDP includes
+- Hero image of the bar + packaging
+- "Single-Estate, Monthly Discovery" concept copy — rotating origins, QR traceability
+- **Primary CTA:** "Subscribe — pick your quantity" → `/subscribe/chocolate-bar/`
+- **Secondary:** "Add to Cart" for a one-off (sells from same pool)
+- Tasting notes, specs, shipping terms, wholesale banner, impact section
+- No farm videos, no shipment docs, no taste profile chart (those are vintage-specific)
+
+---
+
+## Execution checklist
+
+| # | Step | Details |
+|---|------|---------|
+| ☐ | **1. Oscar's PDP** | Add Subscribe CTA below Add to Cart |
+| ☐ | **2. Santa Ana PDP** | Same Subscribe CTA |
+| ☐ | **3. Generic PDP** | New page at `/product-page/premium-dark-chocolate-bar/` |
+| ☐ | **4. PR + merge** | Open PR, merge on approval |
+| ☐ | **5. DAO contribution** | Report the contribution |
+
+---
+
+## UAT
+
+| # | Check | What to look for |
+|---|-------|------------------|
+| U1 | Oscar's PDP | Subscribe button visible, links to `/subscribe/chocolate-bar/` |
+| U2 | Santa Ana PDP | Same Subscribe button |
+| U3 | Generic PDP | Page renders at `/product-page/premium-dark-chocolate-bar/`, no console errors |
+| U4 | Generic PDP Subscribe CTA | Links to `/subscribe/chocolate-bar/` |
+| U5 | Generic PDP Add to Cart | One-off purchase works |
+| U6 | Mobile | All three pages responsive |
+
+---
+
+Want me to proceed with building all three?
 
