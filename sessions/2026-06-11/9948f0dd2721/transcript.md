@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Excellent — I now have the full picture. Let me also check the current inventory to see what's available.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Here's my organized summary and proposal:
 
 ---
@@ -752,4 +747,29 @@ PR #433 is open. Here's what it adds:
 - Plus inland transport ($695 + 0.15%), airport charges ($0.30/kg min $250), US fees
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+merge it. Indicate that the freighting cost is tentative might shift given that war between Iran and USA is heating up again.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — commit `b97b905`. Now let me add the Iran/USA war note.
+
+
+### 🤖 Autopilot
+
+PR #434 — just the war risk note. Want me to merge it?
+
+The note reads:
+
+> ⚠️ **War risk note:** This freight cost is tentative. The escalating Iran/USA conflict is driving up global air freight rates. Actual cost may shift upward.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #433 on agentic_ai_context merged successfully (sha: b97b905ead3e9e1ecc98e1636883588100afc009). Pull Request successfully merged
 
