@@ -644,3 +644,135 @@ Want me to mark the PRs ready for review, or anything else?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×29 → cd /opt/truesight_autopilot/worktrees/vault && git status --short && git branch --show-current; wc -l /opt/truesight_autopilot/worktrees/vault/app/vault.py /opt/truesight_autopilot/worktrees/vault/tests/test_vault.py 2>/dev/null; head -; cd /opt/truesight_autopilot/worktrees/vault && python3 -m pytest tests/test_vault.py -v 2>&1; …(+22 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I merged both.
+
+
+### 🤖 Autopilot
+
+Both PRs merged. Now let me update the resume tracker and move to the next items — the vault web page (3.3), missing-credential behavior (3.5), and vault URL tool (3.6), which now have the identity resolver dependency satisfied.
+
+Let me first update the plan's resume tracker, then start on the vault web page.
+
+
+### 🤖 Autopilot
+
+Let me update the resume tracker to reflect the merged PRs, then start on the vault web page (3.3), missing-credential tool (3.5), and vault URL tool (3.6).
+
+
+### 🤖 Autopilot
+
+Now let me update the worktree to the latest main (which has both merged PRs) and start building the vault web page.
+
+
+### 🤖 Autopilot
+
+Good — the worktree is on the latest main with both PRs merged. Now let me look at the existing FastAPI app structure to understand how to add the vault web page.
+
+
+### 🤖 Autopilot
+
+No templates or static dirs yet. The vault web page will need:
+1. A FastAPI route in `main.py` (or a new `vault_routes.py`)
+2. HTML templates for the vault UI
+3. Static CSS/JS
+
+Let me also check what the existing auth flow looks like to reuse the email→RSA pattern:
+
+
+### 🤖 Autopilot
+
+I have a good picture now. The vault web page needs:
+
+1. **`app/vault_routes.py`** — FastAPI routes for the vault web page
+2. **`app/templates/vault/`** — Jinja2 templates
+3. **`app/static/vault/`** — CSS/JS
+
+But actually, given the complexity of a full web page with email→RSA auth, let me think about the simplest useful path. The plan says:
+
+> **3.3 Vault web page**: authenticate via email→RSA flow → check Governors cache → governor: vault UI (add w/ purpose, delete, view names+purpose, not values); non-governor: friendly contribution-nudge denial
+
+The email→RSA flow already exists (`/auth/challenge`). The vault web page can reuse that. Let me build it as a set of FastAPI routes with Jinja2 templates.
+
+
+### 🤖 Autopilot
+
+Now the HTML templates:
+
+
+### 🤖 Autopilot
+
+Now I need to wire the vault routes into `main.py`. Let me check how the existing router is set up:
+
+
+### 🤖 Autopilot
+
+No existing `include_router` pattern — routes are defined directly on `app`. Let me add the vault router to main.py:
+
+
+### 🤖 Autopilot
+
+Now I need to add the `/auth/verify-code` endpoint that the login page calls. Let me also add a logout endpoint and wire Jinja2 templates into the FastAPI app:
+
+
+### 🤖 Autopilot
+
+Now let me check if Jinja2Templates is available and if there are any import issues:
+
+
+### 🤖 Autopilot
+
+Good. Now let me run the compile check and tests:
+
+
+### 🤖 Autopilot
+
+All 67 tests pass. Now let me also add the missing-credential tool (3.5) and vault URL tool (3.6) as Sophia tools:
+
+
+### 🤖 Autopilot
+
+Now let me write tests for the vault tools:
+
+
+### 🤖 Autopilot
+
+**75 tests pass** (43 vault + 24 policy + 8 vault tools). Now let me commit everything and open the PR:
+
+
+### 🤖 Autopilot
+
+Here's the full progress report:
+
+---
+
+**✅ Phase 3 complete through 3.7 — all PRs open**
+
+| PR | What | Status |
+|----|------|--------|
+| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | **Phase 0.1** — `app/policy.py` identity resolver | ✅ **Merged** |
+| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | **Phase 3.1–3.7** — Vault store + all tests | ✅ **Merged** |
+| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | **Phase 3.3–3.6** — Vault web page, tools, URL | ⏳ Draft — needs review |
+
+**What's in PR #166:**
+- **3.3** — Vault web page (`/vault`) with Saffron Monk styling, governor gate, credential CRUD, audit log, health check
+- **3.5** — `report_missing_credential()` tool — never fails silently
+- **3.6** — `get_vault_url()` tool — returns non-secret vault URL
+- **3.7** — 8 new tests, 75 total, all passing
+
+**What's next (deferred):**
+- **Step C** — Phase 0.2–0.4: Tool-layer enforcement, data/instruction boundary
+- **Step D** — Phase 1: Identity binding (email challenge → Column X)
+- **Step E** — Phase 2: Engagement modes
+- **Step F** — Phase 4: Multi-org replication
+
+Want me to mark PR #166 ready for review, or start on Step C?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cat /opt/truesight_autopilot/worktrees/vault/app/main.py | head -80; ls /opt/truesight_autopilot/worktrees/vault/app/templates/ 2>/dev/null || echo "no templates dir"; ls /opt/truesight_autopilot/worktrees/vau; …(+20 more)
+
