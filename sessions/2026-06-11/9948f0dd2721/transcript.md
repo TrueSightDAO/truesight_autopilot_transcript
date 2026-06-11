@@ -692,3 +692,15 @@ Critical path: Freight quote → cacao arrives at Kirsten → produce 63 bars �
 
 PR #431 — just the formatting fix. Want me to merge it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Recipe 81% cacao / 19% sugar (default; may adjust when Liz has market visibility) Gary / Liz decided indicate as Gary suggested.
+
+
+### 🤖 Autopilot
+
+PR #432 — just that one line fix. Want me to merge it?
+
