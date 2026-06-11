@@ -864,3 +864,65 @@ Updated plan:
 
 Want me to proceed?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go ahead and execute.
+
+
+### 🤖 Autopilot
+
+Let me start by building all three changes in one PR. First, let me check the existing PDP structure to make sure I match the patterns exactly.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me build all three changes. I'll add the Subscribe CTA to both vintage PDPs and create the new generic PDP.
+
+
+### 🤖 Autopilot
+
+Now let me report the DAO contribution:
+
+
+### 🤖 Autopilot
+
+**Done.** Here's what was built:
+
+### Three changes merged
+
+| Page | Change |
+|------|--------|
+| **Oscar's Bar PDP** | Added "Subscribe — pick your quantity" → generic PDP |
+| **Santa Ana Bar PDP** | Same Subscribe CTA → generic PDP |
+| **Generic PDP** (new) | `/product-page/premium-dark-chocolate-bar/` — rotating-origins concept page with Subscribe Now → `/subscribe/chocolate-bar/` |
+
+### The flow
+```
+Vintage PDP (Oscar/Santa Ana)
+  → "Subscribe — pick your quantity"
+  → Generic PDP (learn about rotating origins, traceability, impact)
+  → "Subscribe Now"
+  → /subscribe/chocolate-bar/ (pick quantity, enter address, pay)
+```
+
+### UAT checklist
+
+| # | Check | URL |
+|---|-------|-----|
+| U1 | Oscar's PDP Subscribe button | `beta.agroverse.shop/product-page/organic-81-dark-chocolate-bar-50g-oscar-bahia-2024/` |
+| U2 | Santa Ana PDP Subscribe button | `beta.agroverse.shop/product-page/organic-81-dark-chocolate-bar-50g-fazenda-santa-ana-bahia-2023/` |
+| U3 | Generic PDP renders | `beta.agroverse.shop/product-page/premium-dark-chocolate-bar/` |
+| U4 | Generic PDP Subscribe CTA | Links to `/subscribe/chocolate-bar/` |
+| U5 | Generic PDP Add to Cart | One-off purchase works |
+| U6 | Mobile | All three pages responsive |
+
+Want me to also add a link to the generic PDP from the homepage products section so visitors can discover it?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #157 on agroverse_shop_beta merged successfully (sha: 67e2d05f74e19c4260c9e9d7ecec79304c15b4f6). Pull Request successfully merged
+• `create dao submission` → Contribution submitted
+
