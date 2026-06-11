@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — I have the full picture of the DAO's growth model and workspace. Now let me build the implementation plan and file it.
-
-
-### 🤖 Autopilot
-
 Good — I have the full picture. Now let me build the implementation plan and file it.
 
 
@@ -514,4 +509,54 @@ The page now has the same richness as the farm pages — photos, videos, stories
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #165 on agroverse_shop_beta merged successfully (sha: 67e51dfe947bd47c8412dcf7d00dbd2c86a3ee47). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Looking better now
+
+Perhaps this form should utilize the same forms on the shipment pages which associates a visitor who turned subscriber to the QR code scanned?
+https://beta.agroverse.shop/shipments/agl14/index.html
+
+
+### 🤖 Autopilot
+
+Let me look at the shipment page form to understand how it works.
+
+
+### 🤖 Autopilot
+
+Now I see it. The shipment page has a sophisticated email signup system that:
+
+1. **Detects QR codes from URL params** (`?qr_code=DTS_CT_20260626_1`)
+2. **Links the email to the QR code** via a Google Apps Script endpoint (`LINK_EMAIL_API_URL`)
+3. **Shows the QR code on the page** so the visitor knows it's been detected
+4. **Tracks tree planting** per shipment
+
+This is exactly what the Friends of the Rainforest page should use. Let me update the page to use the same system.
+
+
+### 🤖 Autopilot
+
+Done. The signup form now uses the same system as the shipment pages. Here's what changed:
+
+**The email form now works exactly like the shipment pages:**
+
+1. **QR code detection from URL** — if someone scans a QR code that points to `friends-of-the-rainforest/?qr_code=DTS_FR_20260613_1`, the page detects it and shows a green "QR Code Detected" banner with the code value
+2. **Email linked to QR code** — when they submit their email, it's sent to the same Google Apps Script endpoint (`LINK_EMAIL_API_URL`) that the shipment pages use, associating the subscriber with the QR code
+3. **Fallback without QR** — if they land on the page without scanning a QR (e.g. from a link), the form still works and stores locally
+4. **Same visual style** — green-themed to match the Friends of the Rainforest branding, but the same form structure, input styling, success/error messages, and API endpoint
+
+Give it a minute for GitHub Pages to build, then check it at:
+
+**https://beta.agroverse.shop/friends-of-the-rainforest/**
+
+And to test the QR code detection, you can try:
+**https://beta.agroverse.shop/friends-of-the-rainforest/?qr_code=DTS_FR_20260613_1**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #166 on agroverse_shop_beta merged successfully (sha: fc17fad6275ba54f9d48eeb94cdd48997f7e99a5). Pull Request successfully merged
 
