@@ -713,3 +713,40 @@ Try the subscription flow again — the image and correct shipping cost should n
 • `ssh run` → {
 • `merge pr` → ✅ PR #145 on agroverse_shop_beta merged successfully (sha: fde24517aeeb1ce51b57ba855cecc9f9b9e0a5c4). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can we have the address fields auto complete? I am kind of tired of needing to key in the same address over and over again... I like the flow we have in the regular checkout
+
+
+### 🤖 Autopilot
+
+Let me check how the regular checkout handles autocomplete:
+
+
+### 🤖 Autopilot
+
+I see — the regular checkout saves form data to localStorage via `CheckoutFormStorage.save(formData)` before redirecting to Stripe. Let me find that module:
+
+
+### 🤖 Autopilot
+
+There it is — `checkout-form-storage.js` saves to `localStorage` under key `agroverse_checkout_info` and auto-populates the form on page load. The subscribe page just needs to use the same module. Let me add it to the subscribe page HTML and wire it up:
+
+
+### 🤖 Autopilot
+
+**Done.** The subscribe page now uses the same `checkout-form-storage.js` module as the regular checkout. It:
+
+1. **Auto-fills** from saved address on page load (same `localStorage` key, so any address you've entered on the checkout page will appear)
+2. **Auto-saves** as you type (debounced, just like the checkout page)
+3. **Shares** the saved address between subscribe and checkout — enter it once on either page
+
+Try refreshing the subscribe page — your address should already be filled in from your previous checkout entries.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #146 on agroverse_shop_beta merged successfully (sha: ada1e3ef966554e9c0f8d641dbeee75904875951). Pull Request successfully merged
+
