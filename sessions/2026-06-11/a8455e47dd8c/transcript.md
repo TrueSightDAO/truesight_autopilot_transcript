@@ -398,3 +398,37 @@ Here's the executive summary of the 10-section analysis:
 
 **Key insight:** The freight cost is only 8.5% of retail value. The real bottleneck isn't shipping cost — it's **sell-through speed** once inventory lands at Kirsten's. At current retail run rate (~$1K/month), break-even takes ~10 months. A single wholesale buyer would make it immediate.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+By the way, for the Kakao house, Kakao tea, we are thinking of selling it directly to the upper taekri. The quota price I provided for them is $20 a pound, yeah. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — that changes the revenue calculation for the cacao husk and cacao tea items in the shipment. Let me update the numbers.
+
+So for the **cacao husk (20 kg)** and **cacao tea (12 kg + 21 kg = 33 kg total)** going to Upper Taekri at **$20/lb**:
+
+- 1 kg = 2.2046 lbs
+- 20 kg husk = 44.09 lbs × $20 = **$881.80**
+- 33 kg tea = 72.75 lbs × $20 = **$1,455.00**
+- **Total tea/husk revenue: ~$2,336.80**
+
+That's significantly higher than my earlier estimate of $10/kg ($530 total). At $20/lb ($44/kg), the tea and husk alone bring in **~$2,337** instead of $530 — an extra **~$1,807** in revenue.
+
+Let me update the profit scenarios with this correction:
+
+**Revised Mixed Scenario (30% retail / 70% wholesale + tea at $20/lb to Upper Taekri):**
+
+| Line | Before | After |
+|------|--------|-------|
+| Tea/husk revenue | $530 | **$2,337** |
+| Total revenue | $21,665 | **$23,472** |
+| Net profit | $10,459 | **~$12,266** |
+| Margin | 48% | **~52%** |
+
+Want me to regenerate the PDF with this updated pricing for the tea going to Upper Taekri?
+
