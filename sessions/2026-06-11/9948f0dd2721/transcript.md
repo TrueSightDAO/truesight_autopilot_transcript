@@ -845,3 +845,32 @@ Anything else you'd like to tackle in this thread?
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #436 on agentic_ai_context merged successfully (sha: e248325fd97d657b1e45ed8c65b4e7cc8403bb57). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2312] [Handoff context — this Telegram topic (thread 2312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+ONly Main Ledger (Gary Teh) $3,172.29
+AGL15 (Gary Teh) $5,279.73 has been ear marked for deployment into inventory. The rest are ear marked for disbursement back to financiers
+
+Also noticed AGL4 (TrueSight DAO) $9,036.35 is wrong 
+
+9,036.35 is equity of TrueSight DAO and not cash
+
+
+### 🤖 Autopilot
+
+You're right — I mislabeled those. Let me fix the cash position section to accurately reflect what's deployable vs what's already allocated.
+
+
+### 🤖 Autopilot
+
+PR #437 is open. The fix:
+
+- **Removed AGL4** ($9,036.35) — it's equity, not cash
+- **Removed AGL6, AGL8, AGL10** — earmarked for financier disbursement
+- **Only Main Ledger ($3,172.29) + AGL15 ($5,279.73)** = **$8,452.02 total deployable**
+- After freight ($2,825.09) = **$5,626.93 remaining** for Aora/Go
+
+Want me to merge it?
+
