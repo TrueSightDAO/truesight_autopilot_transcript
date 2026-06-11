@@ -10,120 +10,6 @@
 
 ### 🤖 Autopilot
 
-**Found it!** The `line_items[1]` (shipping line) is **not in the payload**! The payload only has `line_items[0]`. The shipping line item code is there in the function but it's not being included because the condition `if (shippingAmountCents > 0)` is probably evaluating to `false` — meaning `shippingAmountCents` is 0.
-
-This means the shipping calculation is returning $0. Let me check why. The `calculateSubscriptionShipping_` function calls `calculateShippingRatesViaEasyPost` which returns Stripe-format rates. But then it tries to find `cheapest.amount` — but the EasyPost rates are in Stripe format with `shipping_rate_data.fixed_amount.amount`, not a flat `.amount` property.
-
-Let me look at the EasyPost return format vs what the code expects:
-
-From `Code.js`, `calculateShippingRatesViaEasyPost` returns:
-```javascript
-shippingOptions.push({
-  shipping_rate_data: {
-    type: 'fixed_amount',
-    fixed_amount: {
-      amount: Math.round(rateValue * 100), // in cents
-      currency: 'usd'
-    },
-    display_name: serviceName + ' - USPS',
-    delivery_estimate: estimateFromService(serviceName)
-  }
-});
-```
-
-But `calculateSubscriptionShipping_` does:
-```javascript
-var cheapest = rates[0];
-for (var i = 1; i < rates.length; i++) {
-  if (rates[i].amount < cheapest.amount) {
-    cheapest = rates[i];
-  }
-}
-return cheapest.amount;
-```
-
-It's looking for `rates[i].amount` but the EasyPost rates have `rates[i].shipping_rate_data.fixed_amount.amount` (in cents). So `cheapest.amount` is `undefined`, and the function returns `undefined`, which makes `shippingAmountCents = Math.round(undefined * 100) = NaN`, and `NaN > 0` is `false`, so the shipping line item is skipped!
-
-The fix: the `calculateSubscriptionShipping_` function needs to read the correct property from the EasyPost rates.
-
-
-### 🤖 Autopilot
-
-Now let me push to GAS and deploy:
-
-
-### 🤖 Autopilot
-
-Now let me test it:
-
-
-### 🤖 Autopilot
-
-Let me verify this session has the shipping line item by checking the Stripe API:
-
-
-### 🤖 Autopilot
-
-**Both are working now!** The Stripe session has:
-
-- **Line item 0**: 6 bars × $10.00 = **$60.00/month** ✅ with product image ✅
-- **Line item 1**: **Shipping = $7.38/month** ✅ (recurring, locked at signup)
-- **Total**: **$67.38/month**
-
-The shipping cost is $7.38 (Ground Advantage via EasyPost for 6 bars to Laguna Beach, CA). It shows as a separate recurring line item labeled "Shipping" in Stripe Checkout.
-
-Let me merge the PR:
-
-
-### 🤖 Autopilot
-
-**Fixed and verified.** Here's what was wrong:
-
-**Root cause:** `calculateSubscriptionShipping_` was reading `rates[i].amount` but `calculateShippingRatesViaEasyPost` returns rates in Stripe format:
-```javascript
-{ shipping_rate_data: { fixed_amount: { amount: 738 } } }  // 738 cents
-```
-
-So `cheapest.amount` was `undefined` → `shippingAmountCents = NaN` → the `if (shippingAmountCents > 0)` check was `false` → the shipping line item was **never added** to the Stripe payload.
-
-**Verified via Stripe API — the latest session shows:**
-- 6 bars × $10.00 = **$60.00/month** ✅ (with product image)
-- Shipping (Ground Advantage) = **$7.38/month** ✅
-- **Total: $67.38/month**
-
-Try the subscribe flow again — both the product image and shipping cost should now appear in Stripe Checkout.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → {
-• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg
-• `ssh run` → https://dashboard.stripe.com/test/payments/cs_test_a1KsvjDJPEWUVaFD5T5zx0lJSvgYyEXYYs6CvNmnme8DkNdFrHu8o1nEMl\n\nGrep
-• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg
-• `ssh run` → {
-• `ssh run` → {
-• `ssh run` → https://beta.agroverse.shop/assets/images/products/81-dark-chocolate-bar-50g-packaging.jpg\n
-• `merge pr` → ✅ PR #147 on agroverse_shop_beta merged successfully (sha: e724b3836f5e861f17d61b1207e84c3b494fb7e3). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Perfect merge it!
-
-
-### 🤖 Autopilot
-
-All the subscription fixes are already merged. Let me check if there are any remaining open PRs:
-
-
-### 🤖 Autopilot
-
-PR #143 (the iframe CORS fix) is unnecessary since the real fix was in the GAS. Let me close it. PRs #140 and #138 — let me check if they're already superseded by later merges:
-
-
-### 🤖 Autopilot
-
 The `main` branch already has the form autofill (from PR #146) and the `createSubscriptionSession` uses the original `fetch()` GET approach. PR #140 (pass product details) and PR #138 (autocomplete) are superseded by later merges. Let me close the unnecessary ones:
 
 
@@ -785,4 +671,30 @@ Try:
 1. Go to `https://beta.agroverse.shop/order-status/?session_id=cs_test_b1mxDFZYRQytRKHlv7ncXMIequOYDvu6xnusThRazxgJhIsHlPqFgDFzDC`
 2. **Hard refresh**: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)
 3. You should see the "Manage Subscription" button below the order details
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Nicely done. So I guess the question becomes how does a visitor to our site's landing page discover that this option even exist?
+
+
+### 🤖 Autopilot
+
+Great question. Right now the subscribe page is only reachable if you know the direct URL. The plan calls for a **generic-bar PDP** (PR1.5) that would be the discoverable entry point, but that's not built yet.
+
+Let me check what the plan says about this:
+
+From `CHOCOLATE_SUBSCRIPTION_PLAN.md`:
+
+> **PR1.5** | `agroverse_shop_beta` | **Generic-bar PDP** at `/product-page/<generic-slug>/` per the *PDP spec*: discovery/rotating-origin copy, hero=product, gallery incl. packaging-back QR shot, **primary Subscribe CTA → `/subscribe/chocolate-bar/`**, optional one-off Add-to-Cart, provenance block, wholesale banner.
+
+So the plan already has this as the next step. But there are also simpler, faster ways to add discoverability right now:
+
+1. **Add a "Subscribe" link in the nav** — quick, visible on every page
+2. **Add a "Subscribe Now" section on the homepage** — hero or CTA block
+3. **The generic-bar PDP** (PR1.5) — the full product page with subscribe CTA
+
+The nav link is the fastest win. Want me to add a "Subscribe" link to the navigation so it appears on every page? Then we can follow up with the PDP and homepage CTA.
 
