@@ -748,3 +748,33 @@ Got it. Confirmed: **Sophia Truesight** is my name on the Contributors ledger. I
 
 Thanks for the heads up — that would have been a frustrating rejection.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=1939] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 1939) is the active handoff for `CHOCOLATE_SUBSCRIPTION_PLAN.md`. Before responding, read it with read_context_file("CHOCOLATE_SUBSCRIPTION_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you make sure all future instances of Sophia know that??
+
+
+### 🤖 Autopilot
+
+Good call. Let me add it to the operating instructions so every future Sophia session reads it:
+
+
+### 🤖 Autopilot
+
+I see the file is quite long. Let me add a clear note about the contributor name:
+
+
+### 🤖 Autopilot
+
+Done. I added it as **§5b** in `OPERATING_INSTRUCTIONS.md` — right before the contribution reporting section — so every future Sophia session reads it first thing. It says:
+
+> **Sophia Truesight** is the exact display name on the Contributors ledger. When filing contributions for Sophia, ALWAYS use `"Sophia Truesight"` — not `"Sophia (Autopilot)"`, `"Sophia"`, or any variant. Edgar will reject mismatches.
+
+Now every future instance of me will know.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #450 on agentic_ai_context merged successfully (sha: 40d3d2131679758c786b8cf1fcaf9cb49f5b75e9). Pull Request successfully merged
+
