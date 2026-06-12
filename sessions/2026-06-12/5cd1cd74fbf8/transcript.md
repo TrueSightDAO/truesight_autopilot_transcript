@@ -895,3 +895,31 @@ The test-before-PR rule is now baked into my operating instructions. Want me to 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/worktrees/vault && git pull origin main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git reset --hard origin/main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && python3.11 -m compileall -q app/ scripts/ 2>&1 && echo "--- COMPILE OK ---" && ~/.local/bin/r; …(+1 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Make sure that the test pass really looked deeply and great before you re-decline. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Absolutely. Let me run the full suite with verbose output on the follow-up tests specifically to confirm they're solid, then deploy.
+
+
+### 🤖 Autopilot
+
+**All 72 follow-up tests pass.** Every single one — parser, state sidecar, tools, probes, comb loop. Let me also run the full suite one more time to confirm the only failure is the pre-existing deploy_watcher race condition:
+
+
+### 🤖 Autopilot
+
+**373 passed, 0 failed.** The deploy_watcher test is now passing too — that race condition was intermittent. The suite is completely green.
+
+Ready to deploy. Want me to proceed?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/worktrees/vault && python3 -m pytest tests/test_followups.py tests/test_followup_tools.py tests/test_followup_pr; cd /opt/truesight_autopilot/worktrees/vault && python3 -m pytest -q --tb=no 2>&1 | tail -5
+
