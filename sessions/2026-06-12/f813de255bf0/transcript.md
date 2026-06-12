@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The pull restored the broken state (from my earlier push). The `registerSingleQRCode` block is still there from my earlier edit, but the `}` is missing after the `processProgramRegistrationsFromTelegramChatLogs` return. Let me fix it properly.
-
-
-### 🤖 Autopilot
-
 Now the structure is correct. Let me push and deploy.
 
 
@@ -2017,4 +2012,48 @@ Let me simplify the info box to just the essentials:
 - **Batch:** SFTF_FR_20260612_2
 
 Clean, honest, and the QR does the rest. Want me to update the placard?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+All right perfect can you go ahead and regenerate the file also I think for future when we need to generate the placards like this we should probably have like a standard operating procedure that you can follow instead of like us wasting time doing all the back and forth like we did for this isn't it Then that way the in the future the whole thing just becomes very streamlined [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Absolutely. Let me update the placard and create the SOP at the same time.
+
+
+### 🤖 Autopilot
+
+Now let me create the SOP so future placard generation is streamlined.
+
+
+### 🤖 Autopilot
+
+Done! Here's the updated placard:
+
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
+
+Info box now shows just:
+- **Origin:** Brazilian Amazon Rainforest
+- **Collection:** Friends of the Rainforest
+- **Batch:** SFTF_FR_20260612_2
+- **Web:** agroverse.shop/friends-of-the-rainforest
+
+Clean, honest, and the QR takes people to the page with full details.
+
+And I've created the **Placard Generation SOP** — PR #466 on agentic_ai_context. It covers:
+- QR code naming conventions
+- Placard layout specs and design rules
+- All the troubleshooting fixes we discovered (squished QR, text overflow, word wrap, GitHub upload issues)
+- A quick-reference command template
+
+Next time you need a placard, I just need the event name, collection, and URL — no back and forth needed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
 
