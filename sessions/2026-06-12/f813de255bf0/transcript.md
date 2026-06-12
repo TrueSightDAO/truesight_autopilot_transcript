@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see the bug! The `registerSingleQRCode` block was inserted **inside** the `processProgramRegistrationsFromTelegramChatLogs` block — there's a mismatched `}`. The `sed` insert put the new code before the closing `}` of the previous `if` block. Let me fix this.
-
-
-### 🤖 Autopilot
-
-Yes — the `sed` inserted the new block between the `return` and the closing `}` of the previous block. The `}` on line 1985 closes the `registerSingleQRCode` block, but the `processProgramRegistrationsFromTelegramChatLogs` block is missing its closing `}`. Let me fix this.
-
-
-### 🤖 Autopilot
-
 Now there's an extra `}` on line 1986 (closing the `registerSingleQRCode` block) and another `}` on line 1987 (which was the original closing of the `processProgramRegistrationsFromTelegramChatLogs` block, now orphaned). Let me fix this properly.
 
 
@@ -1955,6 +1945,39 @@ The box layout now looks like:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+You know the great text under the box is cutting out from the Alter right edge of the whole image. I think you need to properly apply the work wrap [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right, the mission text under the box is overflowing past the right edge. Let me fix the text wrapping properly.
+
+
+### 🤖 Autopilot
+
+Fixed! The mission text now uses proper word wrapping — it breaks cleanly at word boundaries within the available width instead of running off the right edge.
+
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
+
+The text now wraps like:
+```
+Every purchase helps restore 10,000
+hectares of Amazon Rainforest through
+regenerative agroforestry with local
+farming communities.
+```
+
+Instead of one long line spilling off the side.
 
 ———
 **✅ Done this turn — actions taken:**
