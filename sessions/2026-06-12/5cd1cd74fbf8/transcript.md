@@ -1028,3 +1028,83 @@ PR5 isn't a code PR — it's the deploy and live testing phase. The plan says:
 
 Want me to start the deploy? Since you mentioned earlier I should check before redeploying — the box is currently running an older version. I need to pull main and restart the service.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Not yet. The other thread, I noticed you're having problems responding. The thread's name is stream of consciousness. Can you go analyze and figure out why this is the situation? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find and investigate the "stream of consciousness" thread.
+
+
+### 🤖 Autopilot
+
+Found it. This is the **Stream of consciousness** thread (thread `780`) — it was the original incident that sparked the entire concurrency fix. The plan says the fix is already deployed (PR0–PR3 merged, `--workers 1` live), but Gary's live smoke test was never completed.
+
+Let me check the current state of that thread and see if there's an active issue:
+
+
+### 🤖 Autopilot
+
+The session for thread 780 doesn't exist on disk anymore — it was likely cleaned up. Let me check the service logs for recent errors:
+
+
+### 🤖 Autopilot
+
+There it is — **the same error is still happening right now.** At 03:47 UTC, the service is still getting:
+
+> `"Messages with role 'tool' must be a response to a preceding message with 'tool_calls'"`
+
+This is the exact same dangling `tool_calls` bug from the original incident. The fix was deployed but it's still happening. Let me check which session is affected:
+
+
+### 🤖 Autopilot
+
+Those are process IDs, not session IDs. Let me find the actual session:
+
+
+### 🤖 Autopilot
+
+The grep is getting confused by the JSON escaping. Let me try a different approach:
+
+
+### 🤖 Autopilot
+
+The bracket number `[780560]` is the session hash! Let me check that session:
+
+
+### 🤖 Autopilot
+
+The session file doesn't exist on disk — it's in memory only. The error is happening on a live session. Let me check what sessions are currently active:
+
+
+### 🤖 Autopilot
+
+Found it — session `780560` is thread **780** (Stream of consciousness). The session is in memory but the transcript is corrupted. Let me check if the sanitiser is running:
+
+
+### 🤖 Autopilot
+
+The sanitiser is NOT logging anything — it's not healing the orphan `tool_calls`. This means the deployed fix (PR0) isn't working for this case, or the session was created after the deploy and the sanitiser isn't catching the specific pattern.
+
+Here's my diagnosis:
+
+**The "Stream of consciousness" thread (780) is still broken.** The same dangling `tool_calls` error is happening right now — 4 times in the last hour. The sanitiser that was supposed to heal this isn't working, or the session is being re-created with the corruption each time.
+
+**Root cause:** The session `780560` has an assistant `tool_calls` message without a following `tool` response. The `_sanitise_tool_messages` function should inject a synthetic tool result, but it's not doing so — either because it's not being called on this session, or the pattern doesn't match.
+
+**Fix needed:** I need to either:
+1. Fix the sanitiser to catch this case
+2. Manually repair the session
+3. Restart the service to clear the in-memory session
+
+Want me to dive into fixing this?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → ls /opt/truesight_autopilot/sessions/ 2>/dev/null | head -20; cd /opt/truesight_autopilot && python3 -c " import json, os sessions_dir = 'sessions' for f in sorted(os.listdir(sessions_dir)): if f.endswi; sudo journalctl -u truesight-autopilot.service --since "2 hours ago" --no-pager 2>&1 | grep -i "error\|exception\|traceback\|400\|dangling\|; …(+13 more)
+
