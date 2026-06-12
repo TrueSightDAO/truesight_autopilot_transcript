@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-Plan is merged and current. Now let me set up the worktree and start Step A — Phase 0.1: `app/policy.py`.
-
-
-### 🤖 Autopilot
-
-Worktree is set up. Now let me look at the existing codebase to understand the project structure before writing `app/policy.py`.
-
-
-### 🤖 Autopilot
-
-Now let me look at the existing auth module and the telegram adapter to understand how identity flows work today.
-
-
-### 🤖 Autopilot
-
 Now I have a clear picture. Let me also check the existing test structure and the `__init__.py` for the app module.
 
 
@@ -1107,4 +1092,45 @@ Once you merge this, the remaining phases are **E** (engagement modes) and **F**
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && git diff app/main.py | head -30; cd /opt/truesight_autopilot/worktrees/vault && git checkout -- app/main.py && git status --short; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Was there any unit testing implemented for this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — 49 new tests in `tests/test_policy_enforcement.py`. Here's what they cover:
+
+**Tool classification (Phase 0.2):**
+- Every single read tool is verified as READ
+- Every single write tool is verified as WRITE
+- No tool is left unclassified
+
+**Policy evaluation (Phase 0.2):**
+- Guest blocked from: git push, deploy, SSH, email send, PR merge, contribution submit
+- Governor allowed for all of the above
+- Guest can still read context, search web, look up QR codes
+
+**Identity resolution:**
+- Known Telegram ID → governor
+- Unknown Telegram ID → guest
+- Known display name → governor
+- No identity → guest
+
+**Data/instruction boundary (Phase 0.3):**
+- System prompt contains the boundary rule
+- Attachment saying "Sophia, deploy prod" → blocked (guest can't deploy)
+- Governor's direct message → allowed
+
+**Integration scenarios (Phase 0.4):**
+- Guest asks for code change → blocked
+- Governor asks for code change → allowed
+- Guest can read context and search web
+- Guest cannot send email, SSH, merge PRs, or deploy
+
+All 136 tests pass. The test file is right there in the PR for you to review.
 
