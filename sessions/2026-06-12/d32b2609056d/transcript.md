@@ -777,3 +777,96 @@ Plus: manual "deploy now" button bypasses all checks
 
 Want me to update the plan with this? I'll add it as a new section to the implementation doc.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Ah, perfect! Wonderful! Can you go ahead with the implementation? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first update the plan doc with the safe deploy orchestration section, then implement it.
+
+
+### 🤖 Autopilot
+
+Let me update the plan with the safe deploy orchestration section, then implement it.
+
+
+### 🤖 Autopilot
+
+Plan updated. Now let me implement it. First, sync the worktree to latest main:
+
+
+### 🤖 Autopilot
+
+Good — PR #166 is merged. Now let me build the deploy watcher:
+
+
+### 🤖 Autopilot
+
+Now the tests:
+
+
+### 🤖 Autopilot
+
+The issue is that `_state_path()` returns a directory path, not a file path. The `STATE_DIR` is set to the temp dir, and `STATE_PATH` is `active_tracks.json` — but `_state_path()` constructs the path incorrectly. Let me fix the `_state_path()` function:
+
+
+### 🤖 Autopilot
+
+One test failure — the heartbeat timestamp comparison is too tight (same second). Let me fix the test to use a more reliable comparison:
+
+
+### 🤖 Autopilot
+
+The issue is that `_now_iso()` has second-level precision and both calls happen in the same second. Let me add sub-second precision:
+
+
+### 🤖 Autopilot
+
+**90 tests pass.** Now let me wire the deploy watcher into the vault web page's system status endpoint, and add the heartbeat hooks to the existing background loops. Let me also add the system status API to the vault routes:
+
+
+### 🤖 Autopilot
+
+Now let me add the system status panel to the vault web page template:
+
+
+### 🤖 Autopilot
+
+Now let me run the full test suite to check for regressions:
+
+
+### 🤖 Autopilot
+
+All 90 pass. Let me also run the compile check:
+
+
+### 🤖 Autopilot
+
+Now commit and open the PR:
+
+
+### 🤖 Autopilot
+
+Done! Here's the summary:
+
+**PR [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167)** — Safe deploy orchestration (draft, needs review)
+
+**What it does:**
+- **`app/deploy_watcher.py`** — Track registry + deploy gate. Background processes register themselves with heartbeats. `can_deploy()` checks if all tracks are idle before allowing a restart.
+- **Stale detection** — If a track exceeds its max duration (e.g. a crashed loop), it's treated as stuck and doesn't block deployment forever.
+- **Vault web page** — New "System Status" panel showing active tracks, elapsed time, and Deploy/Force Deploy buttons.
+- **API** — `GET /vault/api/system-status` and `POST /vault/api/deploy`
+- **15 tests**, 90 total, all passing
+
+**What's still needed to wire it fully:**
+The heartbeat hooks need to be added to the actual background loops (follow-up monitor, email poller, telegram adapter). That's a follow-up PR — this one provides the infrastructure. Want me to mark it ready for review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cat > /opt/truesight_autopilot/worktrees/vault/app/deploy_watcher.py << 'PYEOF' """Safe deploy orchestration — idle-check watcher. Monitors ; cat > /opt/truesight_autopilot/worktrees/vault/tests/test_deploy_watcher.py << 'PYEOF' """Tests for app/deploy_watcher.py — safe deploy orch; …(+10 more)
+
