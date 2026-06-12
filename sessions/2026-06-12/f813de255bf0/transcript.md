@@ -2109,3 +2109,59 @@ So for future events, the whole process will be:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cat > /tmp/placard_generator.py << 'PYEOF' #!/usr/bin/env python3 """ Placard Generator — CLI tool for generating branded landscape placards; python3 /tmp/placard_generator.py \ --qr-code "SFTF_FR_20260612_2" \ --event "SF Tech Fest 2026" \ --collection "Friends of the Rainforest" ; sed -i 's/from PIL import Image, ImageDraw, ImageFilter/from PIL import Image, ImageDraw, ImageFilter, ImageFont/' /tmp/placard_generator.py
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Wonderful! Make sure to update the Agentic AI context for the future incarnations of you as well as the LOMs know to call this method. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — I need to update the context files so future incarnations know about the placard generator. Let me update the SOP and the main operating instructions.
+
+
+### 🤖 Autopilot
+
+The file is on the branch but the tool can't find it because it's checking main. Let me write the updated SOP directly.
+
+
+### 🤖 Autopilot
+
+Now let me also update the main OPERATING_INSTRUCTIONS.md to reference the placard generator.
+
+
+### 🤖 Autopilot
+
+Now let me add a reference to the placard generator in the context files. I'll add it to the reading order table and create a note.
+
+
+### 🤖 Autopilot
+
+The reference doesn't exist yet. Let me add it to the reading order table.
+
+
+### 🤖 Autopilot
+
+All updated. Here's what's in place for future incarnations:
+
+**PR #466** (agentic_ai_context) now has:
+1. **`PLACARD_GENERATION_SOP.md`** — Full SOP with design rules, parameters, troubleshooting
+2. **`PLACARD_GENERATION_SOP.pdf`** — PDF version for sharing with the team
+3. **Section 8 in the SOP** — "Context for Future AI Incarnations" with key lessons learned
+4. **Reference in `OPERATING_INSTRUCTIONS.md`** — Added to the reading order table so every future agent knows to check the SOP when a placard is requested
+
+**PR #168** (truesight_autopilot) has:
+1. **`scripts/placard_generator.py`** — Reusable CLI tool
+
+So next time any future incarnation of me sees "generate a placard," they'll:
+1. Find the SOP in the reading order table
+2. Read the design rules and lessons learned
+3. Run the CLI tool with the right parameters
+4. Get it done in under 2 minutes with no back and forth
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && git clone --depth=1 -b feat/placard-generation-sop https://github.com/TrueSightDAO/agentic_ai_context.git sop_update 2>&1 | tail ; cd /tmp/sop_update && python3 << 'PYEOF' with open('plans/PLACARD_GENERATION_SOP.md', 'r') as f: content = f.read() # Add CLI tool reference; cd /tmp/sop_update && git add -A && git -c user.name="Sophia Autopilot" -c user.email="autopilot@truesight.me" commit -m "Add CLI tool refer; …(+2 more)
+
