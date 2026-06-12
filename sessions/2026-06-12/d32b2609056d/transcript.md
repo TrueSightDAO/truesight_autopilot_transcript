@@ -10,34 +10,6 @@
 
 ### 🤖 Autopilot
 
-Found the bugs:
-
-1. **`update()` line 271**: `if scopes is None:` — should be `if new_scopes is None:` (uses the parameter name)
-2. **`delete()` line 319**: raises `KeyError` but test expects `ValueError`
-3. **`get_value()` line 384**: raises `KeyError` but test expects `ValueError`
-4. **`export_key()`**: returns raw bytes but test expects a valid Fernet key (base64-encoded 32 bytes)
-5. **`get_vault()` singleton**: calls `is_initialized()` then `initialize()` — logic is inverted
-
-Let me fix all of these:
-
-
-### 🤖 Autopilot
-
-Wait — 4 occurrences means the replacement happened twice (once in delete, once in get_value, and then the second replacement also matched). Let me check:
-
-
-### 🤖 Autopilot
-
-Hmm, 4 occurrences — that means there are 4 places that raise this error. Let me check what each one is:
-
-
-### 🤖 Autopilot
-
-OK — 4 methods all raise ValueError now. That's fine — `update()`, `delete()`, `get_ref()`, and `get_value()`. The tests expect ValueError for delete and get_value. Let me run the tests again:
-
-
-### 🤖 Autopilot
-
 Good progress — down from 10 to 5 failures. Let me fix the remaining issues:
 
 1. **`is_initialized()`** — the `initialize()` method creates the key file but `is_initialized()` might not be finding it
@@ -1249,4 +1221,80 @@ The PR is ready at: https://github.com/TrueSightDAO/truesight_autopilot/pull/176
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot/worktrees/vault && git checkout feature/phase-e-engagement-modes && python3 << 'PYEOF' with open('tests/test_dep; cd /opt/truesight_autopilot/worktrees/vault && python3 -m pytest tests/test_deploy_watcher.py -v 2>&1 | tail -10; cd /opt/truesight_autopilot/worktrees/vault && python3 -m pytest tests/ -v 2>&1 | tail -5; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+https://github.com/TrueSightDAO/truesight_autopilot/actions/runs/27393287790/job/80955263695#step:7:1
+
+I’m seeing this failure over here not sure why can you check?
+
+
+### 🤖 Autopilot
+
+Let me look at the CI run to see what failed.
+
+
+### 🤖 Autopilot
+
+I can see the issue. The CI run failed at the "Run tests" step with exit code 1. Let me get the actual test output:
+
+
+### 🤖 Autopilot
+
+The page isn't rendering the full log. Let me try the raw log API:
+
+
+### 🤖 Autopilot
+
+The "Run tests" step failed but I can't see the actual output from the API. Let me get the logs directly:
+
+
+### 🤖 Autopilot
+
+Found it! The very last line of the "Run tests" step:
+
+```
+/opt/hostedtoolcache/Python/3.10.20/x64/bin/python: No module named pytest
+```
+
+**pytest is not installed.** The issue is in the CI workflow — the `pip install` command has a fallback that never runs because `requirements.txt` exists but doesn't include pytest:
+
+```
+pip install -r requirements.txt 2>/dev/null || pip install pytest pytest-asyncio ruff ...
+```
+
+The `2>/dev/null` swallows the error from `requirements.txt`, but the `||` only triggers if the first command fails. Since `requirements.txt` exists and pip processes it (even if some packages fail), the exit code might be 0, so the fallback never runs.
+
+Let me fix the workflow to always install pytest:
+
+
+### 🤖 Autopilot
+
+Found the issue. The CI failure was:
+
+```
+/opt/hostedtoolcache/Python/3.10.20/x64/bin/python: No module named pytest
+```
+
+The problem was in the workflow file — it had:
+```
+pip install -r requirements.txt 2>/dev/null || pip install pytest ...
+```
+
+The `2>/dev/null` swallowed errors, and the `||` fallback only runs if the first command exits non-zero. Since `requirements.txt` installs successfully (it just doesn't include pytest), the fallback never ran.
+
+I've fixed it to install pytest separately:
+```
+pip install -r requirements.txt
+pip install pytest pytest-asyncio ruff
+```
+
+The fix is pushed to the PR branch. The CI should pass now on the next run.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/worktrees/vault && git checkout feature/phase-e-engagement-modes && python3 << 'PYEOF' with open('.github/workfl; cd /opt/truesight_autopilot/worktrees/vault && git add .github/workflows/test.yml && git commit -m "Fix CI: install pytest separately instea
 
