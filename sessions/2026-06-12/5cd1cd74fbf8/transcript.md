@@ -871,3 +871,23 @@ Once those are merged, the next step is **PR5 — Deploy + UAT**. That means:
 
 So the next action is: **merge PR #169 and PR #170**, then I'll deploy and we can test it live in this thread.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you share the links for the both of them? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here are the two PRs ready for merge:
+
+1. **PR #169** — PR3: follow-up probes
+   https://github.com/TrueSightDAO/truesight_autopilot/pull/169
+
+2. **PR #170** — PR4: follow-up comb loop
+   https://github.com/TrueSightDAO/truesight_autopilot/pull/170
+
+Once you merge both, I'll deploy and we can run the UAT scenarios live in this thread.
+
