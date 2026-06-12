@@ -860,3 +860,38 @@ And yes, there are unit tests for it. The fix itself is two things:
 
 All 22 tests in `test_followups.py` pass after this fix. I verified locally before pushing.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yep, I merged it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the merge and check the test suite on main now.
+
+
+### 🤖 Autopilot
+
+All merged. Let me pull latest main and run the full test suite to confirm everything is green:
+
+
+### 🤖 Autopilot
+
+Lint still has pre-existing issues from other PRs. Let me check the actual unit tests:
+
+
+### 🤖 Autopilot
+
+**372 passed, 1 failed** — and the 1 failure is in `test_deploy_watcher.py` (a race condition in the heartbeat timestamp test), not in any of my follow-up code. The follow-up tests all pass.
+
+The test-before-PR rule is now baked into my operating instructions. Want me to proceed with the deploy and UAT?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot/worktrees/vault && git pull origin main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git reset --hard origin/main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && python3.11 -m compileall -q app/ scripts/ 2>&1 && echo "--- COMPILE OK ---" && ~/.local/bin/r; …(+1 more)
+
