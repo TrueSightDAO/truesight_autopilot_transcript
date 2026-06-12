@@ -10,184 +10,6 @@
 
 ### 🤖 Autopilot
 
-Here's the full progress report:
-
----
-
-**✅ Phase 3 complete through 3.7 — all PRs open**
-
-| PR | What | Status |
-|----|------|--------|
-| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | **Phase 0.1** — `app/policy.py` identity resolver | ✅ **Merged** |
-| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | **Phase 3.1–3.7** — Vault store + all tests | ✅ **Merged** |
-| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | **Phase 3.3–3.6** — Vault web page, tools, URL | ⏳ Draft — needs review |
-
-**What's in PR #166:**
-- **3.3** — Vault web page (`/vault`) with Saffron Monk styling, governor gate, credential CRUD, audit log, health check
-- **3.5** — `report_missing_credential()` tool — never fails silently
-- **3.6** — `get_vault_url()` tool — returns non-secret vault URL
-- **3.7** — 8 new tests, 75 total, all passing
-
-**What's next (deferred):**
-- **Step C** — Phase 0.2–0.4: Tool-layer enforcement, data/instruction boundary
-- **Step D** — Phase 1: Identity binding (email challenge → Column X)
-- **Step E** — Phase 2: Engagement modes
-- **Step F** — Phase 4: Multi-org replication
-
-Want me to mark PR #166 ready for review, or start on Step C?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×23 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cat /opt/truesight_autopilot/worktrees/vault/app/main.py | head -80; ls /opt/truesight_autopilot/worktrees/vault/app/templates/ 2>/dev/null || echo "no templates dir"; ls /opt/truesight_autopilot/worktrees/vau; …(+20 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Hey, I've merged the PR166. Don't go and redeploy it because there are a few tracks that's active right now, right? If you go ahead and redeploy it then it will just cause the other tracks to suddenly die and then I have to waste my time going we start all the work in the various tracks. So I think what you should do next, if not already done so, extend the implementation plan, right? Such that you could in your loop, right? Your call loop monitor if all the other processes are already idle and if so, then go ahead and redeploy. That means whenever I give the instructions to redeploy or you give your own self and instruction to redeploy, it doesn't happen immediately, but observe all the processes that is still active. And if none of them are active, then the loop should go ahead and redeploy itself. But if it's active, just stay idle. And then for that newly available page, right? I think once I sign in authenticate as a governor, I should be able to see what the various track IDs where work is being actively done, isn't it? So yeah, something to consider. Let me know your thoughts. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That's a really good point. Let me think through this.
-
-**On the redeploy problem:** You're right — if I just deploy the new code while other tracks (thread 2622's follow-up monitor, any active sessions) are mid-execution, they'd get SIGTERM'd and you'd lose work. That's bad.
-
-**What I'd propose for the plan update:**
-
-1. **A "safe deploy" loop** — a background watcher that checks if all active tracks/processes are idle before executing a pending deploy. It monitors:
-   - Active Telegram sessions (any thread with an in-flight LLM call)
-   - The follow-up monitor loop (thread 2622)
-   - Any long-running tool calls (SSH, git operations, etc.)
-   - The email poller
-   
-2. **Only deploys when everything's quiet** — if any track is active, it waits and rechecks on the next loop cycle. No forced restart.
-
-3. **For the vault page** — once you authenticate as governor, it could show a "System Status" panel listing:
-   - Active tracks/threads with their IDs
-   - What each is doing
-   - Whether a deploy is pending
-   - A "Deploy now" button if you want to force it
-
-This way you never lose work from parallel tracks, and you have visibility into what's running.
-
-Want me to update the implementation plan with this? I'd add it as a new section — something like "Safe deploy orchestration" — between the vault and the remaining phases.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Yeah, I think that's a great idea and I think like in your implementation, you need to make sure that You don't accidentally trick yourself into never redeploying right just in case like you know There's like some long running loop that just loops for the sake of looping. Yeah, just something to think about [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Good catch — the "never deploys because something is always running" trap. Here's how I'd handle it:
-
-**The deploy watcher needs a timeout per track.** Each tracked process gets a max expected duration:
-- Telegram chat turn: ~2 minutes max (LLM timeout)
-- Follow-up monitor loop: ~30 seconds per check
-- Email poller: ~15 seconds per poll
-- SSH/git operations: ~60 seconds
-
-If a track has been running longer than its timeout, it's either stuck or the timeout is wrong — either way, the deploy should proceed. The watcher logs a warning about the overrun track, then deploys anyway.
-
-**Plus a manual override** — on the vault page, a "Force deploy" button that bypasses the idle check entirely. For when you know what you're doing.
-
-**And a heartbeat** — each long-running loop (follow-up monitor, email poller) writes a timestamp to a shared state file. If the deploy watcher sees a stale heartbeat (>2x the expected interval), it treats that track as dead and deploys anyway. This prevents a crashed loop from blocking deployment forever.
-
-So the logic is:
-
-```
-For each active track:
-  if track is idle → safe to deploy
-  if track has exceeded its timeout → safe to deploy (stuck/crashed)
-  if track is running but within timeout → WAIT
-
-Plus: manual "deploy now" button bypasses all checks
-```
-
-Want me to update the plan with this? I'll add it as a new section to the implementation doc.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Ah, perfect! Wonderful! Can you go ahead with the implementation? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me first update the plan doc with the safe deploy orchestration section, then implement it.
-
-
-### 🤖 Autopilot
-
-Let me update the plan with the safe deploy orchestration section, then implement it.
-
-
-### 🤖 Autopilot
-
-Plan updated. Now let me implement it. First, sync the worktree to latest main:
-
-
-### 🤖 Autopilot
-
-Good — PR #166 is merged. Now let me build the deploy watcher:
-
-
-### 🤖 Autopilot
-
-Now the tests:
-
-
-### 🤖 Autopilot
-
-The issue is that `_state_path()` returns a directory path, not a file path. The `STATE_DIR` is set to the temp dir, and `STATE_PATH` is `active_tracks.json` — but `_state_path()` constructs the path incorrectly. Let me fix the `_state_path()` function:
-
-
-### 🤖 Autopilot
-
-One test failure — the heartbeat timestamp comparison is too tight (same second). Let me fix the test to use a more reliable comparison:
-
-
-### 🤖 Autopilot
-
-The issue is that `_now_iso()` has second-level precision and both calls happen in the same second. Let me add sub-second precision:
-
-
-### 🤖 Autopilot
-
-**90 tests pass.** Now let me wire the deploy watcher into the vault web page's system status endpoint, and add the heartbeat hooks to the existing background loops. Let me also add the system status API to the vault routes:
-
-
-### 🤖 Autopilot
-
-Now let me add the system status panel to the vault web page template:
-
-
-### 🤖 Autopilot
-
-Now let me run the full test suite to check for regressions:
-
-
-### 🤖 Autopilot
-
-All 90 pass. Let me also run the compile check:
-
-
-### 🤖 Autopilot
-
-Now commit and open the PR:
-
-
-### 🤖 Autopilot
-
 Done! Here's the summary:
 
 **PR [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167)** — Safe deploy orchestration (draft, needs review)
@@ -1110,4 +932,50 @@ The new run already completed! Look at the second entry:
 The PR is ready for review at: https://github.com/TrueSightDAO/truesight_autopilot/pull/176
 
 All green — 449 tests passing, CI working correctly now.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yep, I merged it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me update the worktree and plan tracker.
+
+
+### 🤖 Autopilot
+
+The plan doc still has the original unicode characters. Let me check what's actually in the file:
+
+
+### 🤖 Autopilot
+
+I see — the plan doc was never updated from the original. The previous PRs updating it were never merged. Let me just update it directly now:
+
+
+### 🤖 Autopilot
+
+Here's the full picture:
+
+**✅ All merged — 8 PRs complete:**
+
+| PR | What | Status |
+|----|------|--------|
+| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | Phase 0.1 — Identity resolver | ✅ Merged |
+| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | Phase 3 — Vault store | ✅ Merged |
+| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | Phase 3 — Vault web page + tools | ✅ Merged |
+| [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167) | Safe deploy orchestration | ✅ Merged |
+| [#171](https://github.com/TrueSightDAO/truesight_autopilot/pull/171) | Heartbeat hooks | ✅ Merged |
+| [#172](https://github.com/TrueSightDAO/truesight_autopilot/pull/172) | Phase 1 — Identity binding | ✅ Merged |
+| [#174](https://github.com/TrueSightDAO/truesight_autopilot/pull/174) | Phase C — Tool enforcement + CI | ✅ Merged |
+| [#176](https://github.com/TrueSightDAO/truesight_autopilot/pull/176) | Phase E — Engagement modes | ✅ Merged |
+
+**Only Phase F (multi-org replication) remains.** That's the big one — template repos, AMI provisioning, onboarding runbook. Want to tackle it now or take a break first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
 
