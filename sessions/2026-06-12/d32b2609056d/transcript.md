@@ -10,25 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have enough context. Let me write `app/policy.py` — the identity resolver. The key design:
-
-1. **Identity resolver**: `telegram_id → Column X (Contributors contact) → Governors cache → {guest, governor}`
-2. For now, since we don't have the Column X lookup built yet (that's Phase 1), the v0 resolver will use a simpler approach: the existing `GOVERNOR_NAMES` env var + the Telegram user allowlist to resolve identity. This gives us a working policy layer immediately that the vault can use.
-3. The policy returns `{role: "governor" | "guest", name: str | None}`.
-
-
-### 🤖 Autopilot
-
-Now let me write the tests for it.
-
-
-### 🤖 Autopilot
-
-Let me run the tests to make sure they pass.
-
-
-### 🤖 Autopilot
-
 The issue is that `patch.dict(os.environ, ...)` doesn't affect the module-level caches because they were already loaded by the `autouse` fixture. The `_load_governor_names()` and `_load_governor_telegram_ids()` functions cache to module globals, but `patch.dict` patches `os.environ` *before* the function runs — the issue is the `autouse` fixture calls `refresh_governor_cache()` which sets `_GOVERNOR_NAMES = None` and `_GOVERNOR_TELEGRAM_IDS = None`, but then the `patch.dict` context manager hasn't been entered yet at fixture time. Let me fix the test — the issue is that `patch.dict` patches happen inside the test function, but the `autouse` fixture runs before the test function body. The `_reset_governor_cache` fixture sets the caches to `None`, then the test function's `patch.dict` patches `os.environ`, then `resolve_identity` calls `_load_governor_*` which re-reads from `os.environ` — that should work. Let me check more carefully.
 
 Actually, the issue is that `patch.dict` patches `os.environ` but the `_load_governor_*` functions read from `os.getenv` which reads from the *real* `os.environ`. `patch.dict(os.environ, ...)` should work because `os.getenv` reads from `os.environ`. Let me check if the issue is that the `autouse` fixture runs *before* the `patch.dict` context manager, so the caches are `None` but then `patch.dict` enters and the functions re-read... that should work.
@@ -1168,4 +1149,18 @@ Ah, I see what's happening in that screenshot. The URL is getting truncated — 
 The issue is that when I send a URL followed by bold text (like `**Phase C**`), Telegram's markdown parser sometimes glues the `**` to the end of the URL. The URL itself is correct — `https://github.com/TrueSightDAO/truesight_autopilot/pull/174` — but the formatting makes it look like there's extra characters.
 
 I'll make sure to put a space or newline between URLs and any bold/formatting going forward so they don't get mangled.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yeah, he's too so [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I think you said "Yeah, it's true" or similar — acknowledging the URL formatting issue. I'll make sure to keep URLs separate from formatting going forward.
+
+So PR #174 is ready for you to merge whenever you're ready. After that, the remaining phases are **E** (engagement modes — addressed-only groups, DM policy, audit channel) and **F** (multi-org replication).
 
