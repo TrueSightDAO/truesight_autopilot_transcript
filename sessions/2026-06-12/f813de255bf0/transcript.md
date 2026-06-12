@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Hmm, now the `getPendingProgramRegistrations` block lost its `if` statement. The extra `}` I removed was actually the closing of the `registerSingleQRCode` block, and the `}` on line 1986 was the closing of the `processProgramRegistrationsFromTelegramChatLogs` block. Let me look at the full context more carefully.
-
-
-### 🤖 Autopilot
-
 I see the problem now. The original code had:
 ```
     }
@@ -2002,4 +1997,30 @@ All within bounds. Check it at:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Nicely done. Okay, so the product, I would just, instead of like stating, is from Oskar. We should just indicate Kakao from the Brazilian Amazon rainforest. And then it's not just ceremonial Kakao, we're offering, isn't it? Because like, Kristen is also making Kakao tea. So yeah, ceremonial Kakao's, no, not sure like what to think about it, but yeah, what do you think? Let's discuss this. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great points! Let me think about this:
+
+**Origin:** You're right — "Oscar Farm, Bahia, Brazil" is too specific for a table placard. "Brazilian Amazon Rainforest" is much more evocative and tells the story better.
+
+**Product:** You're right that it's not just ceremonial cacao. Kirsten is making cacao tea, there are cacao nibs, ceremonial-grade cacao, and the Friends of the Rainforest collection could include multiple products. 
+
+I'd suggest we keep the product line broad on the placard — something like **"Brazilian Amazon Cacao"** or **"Amazon Rainforest Cacao Collection"** — since the placard is a table tent for the SF Tech Fest booth, not a product label. People can scan the QR to see the full product range on the website.
+
+So the info box would read:
+- **Origin:** Brazilian Amazon Rainforest
+- **Product:** Amazon Rainforest Cacao Collection
+- **Collection:** Friends of the Rainforest
+- **Harvest Year:** 2026
+
+That keeps it accurate, broad enough to cover everything Kirsten's making, and tells the rainforest story upfront. Want me to update the placard with those changes?
 
