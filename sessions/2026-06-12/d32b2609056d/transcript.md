@@ -887,3 +887,26 @@ What sounds good?
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What do you think if it did 1 and 3? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a smart combo. Here's why they work well together:
+
+**1 (Wire heartbeat hooks)** is the finishing touch on the safe deploy system — without it, the deploy watcher infrastructure exists but nothing actually registers itself. It's a small, mechanical PR: add `register_track()` / `heartbeat()` calls into the existing background loops.
+
+**3 (Phase 1 — Identity binding)** is the natural next capability. It gives us the email-challenge → Telegram binding pipeline, which means:
+- The vault web page gets proper email→RSA auth (instead of the v0 bridge)
+- The identity resolver (`app/policy.py`) gets upgraded from env-var-based to Column X → Governors cache
+- Non-governor contributors can verify themselves and get read access
+
+And they don't conflict — the heartbeat wiring is in the background loops, identity binding is in the auth/policy layer. Different files, different concerns. We could even do them in parallel PRs from the same worktree.
+
+Want me to start with both? I'd open them as separate PRs so you can review each independently.
+
