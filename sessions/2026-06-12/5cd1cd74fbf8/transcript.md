@@ -1611,3 +1611,123 @@ Here are the two open PRs that need your merge:
 
 Once you merge both, I'll start building PR3 (the probes) and PR4 (the comb loop).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I've merged both of them, go ahead to implement PR3 and PR4. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the merges and pull latest main.
+
+
+### 🤖 Autopilot
+
+Both merged! Let me pull latest main and start PR3.
+
+
+### 🤖 Autopilot
+
+There's a git worktree issue. Let me check:
+
+
+### 🤖 Autopilot
+
+I'm on the `autopilot/followup-tools` branch, not `main`. The main branch is checked out in `worktrees/vault`. Let me switch to the main worktree:
+
+
+### 🤖 Autopilot
+
+Good, main is updated. Now let me build PR3 — the probes module. Let me first check the email_poller's Gmail service to understand how to reuse it:
+
+
+### 🤖 Autopilot
+
+Good, I can see the Gmail service pattern. Now let me build PR3 — the probes module:
+
+
+### 🤖 Autopilot
+
+**PR3 opened:** https://github.com/TrueSightDAO/truesight_autopilot/pull/169
+
+Now let me add the tests and push:
+
+
+### 🤖 Autopilot
+
+The test can't find the module because the file was pushed to GitHub but not checked out locally. Let me write it locally:
+
+
+### 🤖 Autopilot
+
+**All 16 tests pass!** Now let me push the test file to the PR3 branch:
+
+
+### 🤖 Autopilot
+
+I'm on the wrong branch. Let me fix:
+
+
+### 🤖 Autopilot
+
+I'm on the wrong branch. Let me fetch the probes branch and switch:
+
+
+### 🤖 Autopilot
+
+The test file was committed to the wrong branch. Let me cherry-pick it:
+
+
+### 🤖 Autopilot
+
+The probes branch doesn't have the test commit. Let me write the test file directly:
+
+
+### 🤖 Autopilot
+
+Now let me build PR4 — the comb loop. This is the big one: the hourly loop that runs probes and spins up Sophia turns in threads.
+
+
+### 🤖 Autopilot
+
+**PR4 opened:** https://github.com/TrueSightDAO/truesight_autopilot/pull/170
+
+Now let me add the tests for PR4:
+
+
+### 🤖 Autopilot
+
+Same issue — the module is on the remote branch but not locally. Let me write it locally:
+
+
+### 🤖 Autopilot
+
+Let me write the file using a different approach:
+
+
+### 🤖 Autopilot
+
+Need `pytest-asyncio`. Let me install it and also check if it's in requirements:
+
+
+### 🤖 Autopilot
+
+The loop test is calling `_tick` twice because the `KeyboardInterrupt` happens on the second `asyncio.sleep` call. The first iteration runs `_tick` once, then sleeps (returns None), then the second iteration runs `_tick` again, then sleeps (raises KeyboardInterrupt). Let me fix the test:
+
+
+### 🤖 Autopilot
+
+**All 16 tests pass!** Now let me push the test file to the PR4 branch:
+
+
+### 🤖 Autopilot
+
+Wrong branch again. Let me switch:
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×25 → cd /opt/truesight_autopilot && git checkout main && git pull origin main 2>&1; cd /opt/truesight_autopilot && git worktree list 2>&1 && echo "---" && git status --short 2>&1; cd /opt/truesight_autopilot/worktrees/vault && git pull origin main 2>&1; …(+16 more)
+
