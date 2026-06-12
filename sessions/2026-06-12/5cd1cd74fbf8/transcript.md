@@ -946,3 +946,39 @@ The UAT scenarios include things like:
 
 Want me to proceed with the deploy and start the UAT?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do you think you could actually do some unit testing first on what's on the main right now before you pull? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Smart. Let me run the full test suite against what's currently deployed on main before pulling the new code. That way if something breaks, I know it was the new code, not a pre-existing issue.
+
+
+### 🤖 Autopilot
+
+There are lint issues on main — mostly unused imports from other PRs that got merged. These are pre-existing, not from my code. Let me run the actual unit tests to see if they pass:
+
+
+### 🤖 Autopilot
+
+So there are **11 failing tests** on main right now. The failures fall into two categories:
+
+1. **`test_followups.py`** (7 failures) — the `_FOLLOWUPS_MD` path resolves to the real file which doesn't exist locally, and the `_load_state` doesn't catch `JSONDecodeError`. These are the same issues I fixed locally earlier but the fixes weren't in the merged PRs — someone else's version got merged instead.
+
+2. **`test_deploy_watcher.py`** (1 failure) — unrelated to my code.
+
+3. **`test_followups.py` assertion** (1 failure) — `chat_id` parsed as int vs string.
+
+So main has pre-existing test failures. The good news is my new tests (`test_followup_probes.py`, `test_followup_loop.py`, `test_followup_tools.py`) all pass — they're in the 362 passing.
+
+Want me to fix the `test_followups.py` issues on main before we deploy?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && git log --oneline -3 && echo "---" && python3.11 -m compileall -q app/ scripts/ 2>&1 && echo "--- COMPILE OK ; cd /opt/truesight_autopilot && ~/.local/bin/ruff check app/ tests/ scripts/ 2>&1 && echo "--- LINT OK ---" && ~/.local/bin/ruff format --che; cd /opt/truesight_autopilot && python3 -m pytest -q 2>&1
+
