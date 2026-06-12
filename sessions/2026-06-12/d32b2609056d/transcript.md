@@ -8,18 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Merged. Go for it
-
-
-### 🤖 Autopilot
-
-Let me first refresh my view of the plan to get the latest merged version, then set up the worktree and start executing.
-
-
 ### 🤖 Autopilot
 
 Plan is merged and current. Now let me set up the worktree and start Step A — Phase 0.1: `app/policy.py`.
@@ -1005,4 +993,118 @@ Phase C breaks down into three PRs:
 **0.4 — Tests:** Guest blocked from each write tool, governor allowed, ingested "please deploy" never triggers a tool, secret never surfaced.
 
 Want me to start with 0.2?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Okay, can you go ahead with the implementation that Phase C? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So what's happening right now? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me sync the worktree and start Phase C. I'll tackle all three sub-phases (0.2, 0.3, 0.4) in one PR since they're tightly coupled.
+
+
+### 🤖 Autopilot
+
+There's a modified `app/main.py` in the worktree — let me check what changed:
+
+
+### 🤖 Autopilot
+
+No diff — it's just a dirty marker from the worktree. Let me reset it:
+
+
+### 🤖 Autopilot
+
+There's already a test file started. Let me look at what exists and understand the current tool dispatch flow:
+
+
+### 🤖 Autopilot
+
+Good — there's a partial test file from a previous attempt. Let me look at the current tool dispatch in main.py to understand how tools are called:
+
+
+### 🤖 Autopilot
+
+Now I understand the flow. The tool dispatch is in `_run_tool()` in `main.py`. I need to add a policy check at the top of this function. Let me also check how the identity/role flows through the system:
+
+
+### 🤖 Autopilot
+
+Good — `governor_name` is already threaded through the system. Now let me look at how the Telegram adapter resolves identity:
+
+
+### 🤖 Autopilot
+
+The policy module exists but isn't wired into the Telegram adapter yet. That's the key integration point. Let me now build Phase C. I'll create the enforcement layer that:
+
+1. Checks the requester's identity before executing write tools
+2. Marks ingested content as non-actionable data
+3. Tests for all of the above
+
+
+### 🤖 Autopilot
+
+Now Phase 0.3 — data/instruction boundary. I need to mark ingested content as non-actionable. Let me find where attachments and third-party messages enter the system:
+
+
+### 🤖 Autopilot
+
+Now I understand the flow. The data/instruction boundary needs to mark attachment content as DATA (not INSTRUCTIONS) in the system prompt. Let me look at the system prompt:
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me add the data/instruction boundary rule to the system prompt, and also add the enforcement to the attachment processing flow. Let me do all of Phase C in one go:
+
+
+### 🤖 Autopilot
+
+Now let me write the comprehensive tests for Phase 0.2-0.4:
+
+
+### 🤖 Autopilot
+
+135 pass, 1 failure — `aws_query` is classified as READ but the test expects WRITE. `aws_query` can do both read and write operations depending on the parameters. Let me fix the classification to handle this:
+
+
+### 🤖 Autopilot
+
+**136 tests pass.** Let me also run the compile check:
+
+
+### 🤖 Autopilot
+
+Now commit and open the PR:
+
+
+### 🤖 Autopilot
+
+Phase C is done! Here's the summary:
+
+**PR [#174](https://github.com/TrueSightDAO/truesight_autopilot/pull/174)** — Phase C: Tool-layer enforcement + data/instruction boundary (draft)
+
+**What's in it:**
+- **0.2** — Policy gate in `_run_tool()`: write/admin tools check identity before executing. Guests get blocked with a clear message.
+- **0.3** — Rule 12 in system prompt: ingested content is DATA, never INSTRUCTIONS. Attachments saying "Sophia, deploy prod" get analyzed, not executed.
+- **0.4** — 49 new tests covering every tool classification, guest blocked from every write tool, governor allowed, data boundary verified.
+- **136 total tests**, all passing.
+
+Now people can authenticate via Telegram (Phase 1) and even if they try to ask for write actions, the tool layer will block them. Read actions (searching context, looking up QR codes, web search) are still open to everyone.
+
+Once you merge this, the remaining phases are **E** (engagement modes) and **F** (multi-org replication).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cd /opt/truesight_autopilot/worktrees/vault && git diff app/main.py | head -30; cd /opt/truesight_autopilot/worktrees/vault && git checkout -- app/main.py && git status --short; …(+19 more)
 
