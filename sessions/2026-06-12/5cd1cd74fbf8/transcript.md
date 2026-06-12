@@ -997,3 +997,34 @@ Want me to proceed with the deploy?
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git reset --hard origin/main 2>&1 && python3 -m pytest -q --tb=no 2>
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Okay, go ahead with the next PR [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What's happening right now? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Right now we're at the final step — **PR5: Deploy + UAT**. All the code is merged and the test suite is 100% green (373 passed).
+
+PR5 isn't a code PR — it's the deploy and live testing phase. The plan says:
+
+1. **Deploy** — pull latest main on the autopilot box and restart the service so the new follow-up code runs
+2. **UAT** — run through the test scenarios live in this thread:
+   - Create a follow-up from here
+   - List open follow-ups
+   - Test time escalation
+   - Test Gmail reply detection
+   - Close a follow-up
+
+Want me to start the deploy? Since you mentioned earlier I should check before redeploying — the box is currently running an older version. I need to pull main and restart the service.
+
