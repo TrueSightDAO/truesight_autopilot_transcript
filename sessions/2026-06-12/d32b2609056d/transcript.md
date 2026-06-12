@@ -1164,3 +1164,17 @@ I think you said "Yeah, it's true" or similar — acknowledging the URL formatti
 
 So PR #174 is ready for you to merge whenever you're ready. After that, the remaining phases are **E** (engagement modes — addressed-only groups, DM policy, audit channel) and **F** (multi-org replication).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What is the URL to review the PR? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the URL:
+
+https://github.com/TrueSightDAO/truesight_autopilot/pull/174
+
