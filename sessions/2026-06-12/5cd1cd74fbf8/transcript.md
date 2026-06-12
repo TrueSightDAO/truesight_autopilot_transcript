@@ -1108,3 +1108,26 @@ Want me to dive into fixing this?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → ls /opt/truesight_autopilot/sessions/ 2>/dev/null | head -20; cd /opt/truesight_autopilot && python3 -c " import json, os sessions_dir = 'sessions' for f in sorted(os.listdir(sessions_dir)): if f.endswi; sudo journalctl -u truesight-autopilot.service --since "2 hours ago" --no-pager 2>&1 | grep -i "error\|exception\|traceback\|400\|dangling\|; …(+13 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So what's happening? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the situation with the **Stream of consciousness** thread (780):
+
+**The same bug is still happening right now.** The service logged 4 `"Messages with role 'tool' must be a response to a preceding message with 'tool_calls'"` errors in the last hour. That's the exact same dangling `tool_calls` bug from the original incident.
+
+**Why the fix didn't work:** The concurrency fix (PR0–PR3, `--workers 1`, per-thread locks) was deployed, but the **self-healing sanitiser** that was supposed to automatically repair corrupted transcripts isn't working. It's not logging anything, which means it's either:
+- Not being called on this session
+- Not matching the specific pattern of the corruption
+- The session is in-memory only and gets re-corrupted each time
+
+**What needs to happen:** I need to look at the `_sanitise_tool_messages` code to understand why it's not healing the orphan `tool_calls`, fix it, and then repair the session so thread 780 can respond again.
+
+Want me to investigate the sanitiser code and fix it?
+
