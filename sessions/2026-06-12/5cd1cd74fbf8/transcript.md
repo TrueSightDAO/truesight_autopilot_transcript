@@ -1591,3 +1591,23 @@ So the next steps are:
 
 Want me to go ahead and start PR3 while you review PR1 and PR2?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you share with me the full list of URLs to all the PRs that way I can just click and merge? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here are the two open PRs that need your merge:
+
+1. **PR #159** — PR1: follow-up store (schema parser + state sidecar)
+   https://github.com/TrueSightDAO/truesight_autopilot/pull/159
+
+2. **PR #164** — PR2: follow-up tools (add_followup, list_followups, close_followup)
+   https://github.com/TrueSightDAO/truesight_autopilot/pull/164
+
+Once you merge both, I'll start building PR3 (the probes) and PR4 (the comb loop).
+
