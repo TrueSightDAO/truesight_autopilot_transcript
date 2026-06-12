@@ -951,3 +951,49 @@ The fix is simple: instead of comparing `t2 > t1` (where `t1` was the current ti
 
 Once you merge this, the full test suite will be 100% green with zero flaky tests. Want me to proceed with deploy after that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+The app I have merged it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So what's next? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the merge and check the test suite one final time.
+
+
+### 🤖 Autopilot
+
+Merged. Let me pull and run the full suite to confirm 100% green:
+
+
+### 🤖 Autopilot
+
+**373 passed, 0 failed.** The suite is completely green.
+
+Now for what's next — **PR5: Deploy + UAT**. The plan says:
+
+1. **Deploy** — pull latest main on the autopilot box and restart the service
+2. **UAT scenarios** — run through U1–U9 live in this thread:
+   - U1: Create a follow-up from this thread
+   - U2: List open follow-ups
+   - U3: See time escalation fire
+   - U4: Test Gmail reply detection
+   - U5: Close a follow-up
+   - U6–U9: Edge cases
+
+Want me to proceed with the deploy?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git reset --hard origin/main 2>&1 && python3 -m pytest -q --tb=no 2>
+
