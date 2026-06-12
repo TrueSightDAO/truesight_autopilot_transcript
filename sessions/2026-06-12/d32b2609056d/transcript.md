@@ -1178,3 +1178,24 @@ Here's the URL:
 
 https://github.com/TrueSightDAO/truesight_autopilot/pull/174
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do you think that maybe main.py as well as context.py require their own unit test as well? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a fair point. The 49 tests I wrote test the policy layer (`app/policy.py`) and the system prompt (`app/context.py`), but they don't directly test the enforcement gate I added to `_run_tool()` in `main.py`. 
+
+The enforcement gate in `main.py` is the critical integration point — it's where the policy check actually happens at runtime. If that code has a bug, the policy tests pass but the enforcement doesn't work.
+
+I should add tests that:
+1. Mock `_run_tool()` and verify the policy check fires for write tools
+2. Verify the blocked/allow JSON response format
+3. Test that the data/instruction boundary rule is actually in the rendered system prompt
+
+Want me to add those tests to the PR before you merge?
+
