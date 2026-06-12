@@ -10,44 +10,6 @@
 
 ### 🤖 Autopilot
 
-PDF generated. Let me upload it to the repo so you can share it with the DAO.
-
-
-### 🤖 Autopilot
-
-Done! Here's what I've generated:
-
-**📄 PDF: Sophia Multi-Tenant Governance & Vault — Phase 0**
-
-**Location:** `agentic_ai_context/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf`
-**Direct link:** [View on GitHub](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN_PHASE0.pdf)
-
-The PDF covers the full roadmap in a shareable, brand-styled format:
-
-- **The Vision** — evolving Sophia from single-user to multi-org governance
-- **The Unifying Model** — (tenant × surface × identity × action) policy key
-- **7 Security Invariants** — the non-negotiable spine
-- **All 5 Phases** — Phase 0 (policy layer, tool enforcement, data/instruction boundary) through Phase 4 (multi-org replication)
-- **UAT acceptance criteria** for each phase
-- **Resume tracker** — showing current status (all unchecked, ready to begin)
-
-You can share this link directly with the DAO. And I'm parked here ready — **reply "go for it"** and I'll execute Phase 0 from RESUME HERE (PR0.1 — `app/policy.py`), opening PRs only (never self-merging) and reporting progress in this topic.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Park this under open follow ups using the format that is expected by your follow up monitor schema... Perhaps check back in with me in two weeks once I have my conversation with BIlal to see if we are going ahead with this.
-
-
-### 🤖 Autopilot
-
-Let me check the follow-up monitor schema to file this correctly.
-
-
-### 🤖 Autopilot
-
 Now I can see the format. The follow-up entries use a YAML-like `followup` block with `id`, `chat_id`, `thread_id`, `title`, `condition`, `schedule`, `status`, and `description`. Let me also check the follow-up monitor plan to confirm the exact schema.
 
 
@@ -869,4 +831,59 @@ The heartbeat hooks need to be added to the actual background loops (follow-up m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cat > /opt/truesight_autopilot/worktrees/vault/app/deploy_watcher.py << 'PYEOF' """Safe deploy orchestration — idle-check watcher. Monitors ; cat > /opt/truesight_autopilot/worktrees/vault/tests/test_deploy_watcher.py << 'PYEOF' """Tests for app/deploy_watcher.py — safe deploy orch; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yes, I've merged dick [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I think you said "Yes, I've merged it" — PR #167 is merged. Let me update the worktree and the plan tracker.
+
+
+### 🤖 Autopilot
+
+Good — PR #167 is merged. Now let me update the plan tracker and the RESUME HERE to reflect current state, then ask what you'd like to tackle next.
+
+
+### 🤖 Autopilot
+
+The plan doc wasn't updated from the previous PR merge. Let me check what's actually in the file now:
+
+
+### 🤖 Autopilot
+
+I see — the plan doc hasn't been updated since the earlier PRs were merged. The previous plan update PRs (#464 for the tracker, #465 for safe deploy section) were opened but not merged yet. Let me update the plan directly now to reflect everything that's been done:
+
+
+### 🤖 Autopilot
+
+Plan updated. Here's where we stand:
+
+**✅ All Phase 3 complete — 4 PRs merged:**
+
+| PR | What | Status |
+|----|------|--------|
+| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | Phase 0.1 — Identity resolver | ✅ Merged |
+| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | Phase 3.1–3.7 — Vault store | ✅ Merged |
+| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | Phase 3.3–3.6 — Vault web page + tools | ✅ Merged |
+| [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167) | Safe deploy orchestration | ✅ Merged |
+
+**What's next — you have options:**
+
+1. **Wire heartbeat hooks** into the background loops (follow-up monitor, email poller, telegram adapter) so the deploy watcher actually works end-to-end
+2. **Step C — Phase 0.2–0.4**: Tool-layer enforcement + data/instruction boundary
+3. **Step D — Phase 1**: Identity binding (email challenge → Column X)
+4. **Step E — Phase 2**: Engagement modes
+5. **Step F — Phase 4**: Multi-org replication
+
+What sounds good?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
 
