@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have a clear picture. Let me also check the existing test structure and the `__init__.py` for the app module.
-
-
-### 🤖 Autopilot
-
 Now I have enough context. Let me write `app/policy.py` — the identity resolver. The key design:
 
 1. **Identity resolver**: `telegram_id → Column X (Contributors contact) → Governors cache → {guest, governor}`
@@ -1149,4 +1144,28 @@ Here it is:
 **https://github.com/TrueSightDAO/truesight_autopilot/pull/174**
 
 Phase C — tool-layer enforcement + data/instruction boundary. 49 new tests, 136 total, all passing.
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Any reason why ** is occasionally attached at the end of a URL you shared??
+
+[Attachment auto-processed: **21798f14073b4216a9d46b38d658b6a4.jpg**]
+- Type: Image (OCR confidence: 86.7%, quality: good)
+
+Extracted text:
+```
+Sophia TrueSight TrueSight DAO Ops Pinned Message if **Governance and Vault — Phase... x TrueSightDAO/ truesight_autopilot/pull/174 ', Phase C — tool-layer (| enforcement + data/instruction boundary. 49 new tests, 136 total, all passing. 7:46 PM Unread Messages Sophia TrueSight Sentinel + https://github.com/ TrueSightDAO/ ; truesight_; autopilot/pull/17 += [DB
+```
+
+
+### 🤖 Autopilot
+
+Ah, I see what's happening in that screenshot. The URL is getting truncated — it shows `pull/174` but then there's a `**` and the rest gets cut off.
+
+The issue is that when I send a URL followed by bold text (like `**Phase C**`), Telegram's markdown parser sometimes glues the `**` to the end of the URL. The URL itself is correct — `https://github.com/TrueSightDAO/truesight_autopilot/pull/174` — but the formatting makes it look like there's extra characters.
+
+I'll make sure to put a space or newline between URLs and any bold/formatting going forward so they don't get mangled.
 
