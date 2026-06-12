@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me update the plan with the new sequencing — vault-first, with Phase 0.1 as the minimal dependency, and add the worktree convention.
-
-
-### 🤖 Autopilot
-
 Plan updated. Here's the summary of what changed in the roadmap:
 
 **New execution order (vault-first):**
@@ -998,4 +993,40 @@ What would you like to tackle next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yeah, I think maybe let's do a re-deployment. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Alright, what is next? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the deploy watcher first to see if it's safe to deploy, then we can decide.
+
+
+### 🤖 Autopilot
+
+All clear — no active tracks, safe to deploy. Want me to go ahead and redeploy? It'll pull the latest main (with all 6 merged PRs), install any new deps, and restart the service.
+
+Otherwise, for what's next, the remaining phases are:
+
+- **C — Phase 0.2–0.4**: Tool-layer enforcement — write/admin tools check the requester's role and refuse guests. Data/instruction boundary so attachments can't trick me into running commands.
+- **E — Phase 2**: Engagement modes — addressed-only mode for collaborative groups, DM policy, audit channel.
+- **F — Phase 4**: Multi-org replication — template repos, AMI provisioning.
+
+Which sounds most useful?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 -c " from app.deploy_watcher import get_system_status import json status = get_system_status() print(
 
