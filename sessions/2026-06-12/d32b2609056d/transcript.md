@@ -10,34 +10,6 @@
 
 ### 🤖 Autopilot
 
-Done! Here's the summary:
-
-**PR [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167)** — Safe deploy orchestration (draft, needs review)
-
-**What it does:**
-- **`app/deploy_watcher.py`** — Track registry + deploy gate. Background processes register themselves with heartbeats. `can_deploy()` checks if all tracks are idle before allowing a restart.
-- **Stale detection** — If a track exceeds its max duration (e.g. a crashed loop), it's treated as stuck and doesn't block deployment forever.
-- **Vault web page** — New "System Status" panel showing active tracks, elapsed time, and Deploy/Force Deploy buttons.
-- **API** — `GET /vault/api/system-status` and `POST /vault/api/deploy`
-- **15 tests**, 90 total, all passing
-
-**What's still needed to wire it fully:**
-The heartbeat hooks need to be added to the actual background loops (follow-up monitor, email poller, telegram adapter). That's a follow-up PR — this one provides the infrastructure. Want me to mark it ready for review?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×16 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1; cat > /opt/truesight_autopilot/worktrees/vault/app/deploy_watcher.py << 'PYEOF' """Safe deploy orchestration — idle-check watcher. Monitors ; cat > /opt/truesight_autopilot/worktrees/vault/tests/test_deploy_watcher.py << 'PYEOF' """Tests for app/deploy_watcher.py — safe deploy orch; …(+10 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Yes, I've merged dick [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
 I think you said "Yes, I've merged it" — PR #167 is merged. Let me update the worktree and the plan tracker.
 
 
@@ -978,4 +950,90 @@ Here's the full picture:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+By the way, it's like tracking a little. So how do I actually access the credential vaults? What's the URL? Is it already deployed somewhere or what? Also, what's the URL for me to check like the running processes? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So, how do I access the vault credentials URL as well as the URL for seeing what the various treads are active for you? Is there a specific URL I can go to right now or how does it work? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good questions. The vault web page and system status are part of the autopilot's FastAPI server, which runs on this EC2 box. Let me check what's actually running and what the vault URL tool returns.
+
+
+### 🤖 Autopilot
+
+The server is running on port 8001. Let me check what the vault URL tool returns and what endpoints are available:
+
+
+### 🤖 Autopilot
+
+The server is running but the root endpoint is timing out — it's probably busy with an LLM call or something. Let me check the vault routes specifically:
+
+
+### 🤖 Autopilot
+
+The server is responding to connections but the requests are timing out — it's likely stuck on a long-running LLM call. Let me check what's happening:
+
+
+### 🤖 Autopilot
+
+I see — the server is processing a Telegram session (session 81627) and it's making LLM calls. The web server is single-worker (workers=1), so it can only handle one request at a time. When it's busy with an LLM call, HTTP requests queue up and time out.
+
+The vault web page and system status are served by the same process. Let me check the vault routes to confirm the URLs:
+
+
+### 🤖 Autopilot
+
+OK, here's the situation:
+
+**Vault web page:** The vault routes exist at `/vault/` on the autopilot's FastAPI server, which runs on this EC2 box at port 8001. But it's **not exposed to the internet** — it's only accessible from localhost. It needs to be put behind the Nginx reverse proxy (krake_nginx) to be accessible via a public URL like `vault.truesight.me` or similar.
+
+**System status:** Same thing — `/vault/api/system-status` on localhost:8001.
+
+**The issue:** The server is single-worker and gets blocked when processing LLM calls. So even locally, HTTP requests time out during active chat sessions.
+
+Let me check what the vault URL tool returns:
+
+
+### 🤖 Autopilot
+
+The vault URL tool doesn't exist yet — it was planned in Phase 3.6 but the implementation was in PR #166. Let me check what's actually in the codebase:
+
+
+### 🤖 Autopilot
+
+The vault URL tool was never implemented. Let me check what the vault routes actually serve:
+
+
+### 🤖 Autopilot
+
+OK, now I have the full picture. Here's the situation:
+
+**The vault web page exists** at `/vault/` on the autopilot's FastAPI server (port 8001), but it's **only accessible from localhost** — there's no public URL. It needs to be exposed through the Nginx reverse proxy.
+
+**The system status** is at `/vault/api/system-status` — same issue, localhost only.
+
+**The vault URL tool** (Phase 3.6) was never implemented — it was supposed to return the vault URL when asked.
+
+**The server is single-worker** — when it's processing an LLM call (which takes 5-30 seconds), HTTP requests to the vault page time out.
+
+Want me to:
+1. Set up the Nginx proxy to expose the vault page publicly?
+2. Add a `VAULT_PUBLIC_URL` setting so the vault URL tool can return it?
+3. Or both?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → sudo systemctl status truesight-autopilot 2>&1 | head -15; curl -s http://localhost:8001/vault/api/system-status 2>&1 | python3 -m json.tool 2>/dev/null || curl -s http://localhost:8001/vault/api/sys; curl -s --max-time 5 http://localhost:8001/ 2>&1 | head -5; …(+6 more)
 
