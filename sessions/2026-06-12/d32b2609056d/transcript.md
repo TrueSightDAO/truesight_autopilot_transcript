@@ -10,67 +10,6 @@
 
 ### 🤖 Autopilot
 
-The issue is that `patch.dict(os.environ, ...)` doesn't affect the module-level caches because they were already loaded by the `autouse` fixture. The `_load_governor_names()` and `_load_governor_telegram_ids()` functions cache to module globals, but `patch.dict` patches `os.environ` *before* the function runs — the issue is the `autouse` fixture calls `refresh_governor_cache()` which sets `_GOVERNOR_NAMES = None` and `_GOVERNOR_TELEGRAM_IDS = None`, but then the `patch.dict` context manager hasn't been entered yet at fixture time. Let me fix the test — the issue is that `patch.dict` patches happen inside the test function, but the `autouse` fixture runs before the test function body. The `_reset_governor_cache` fixture sets the caches to `None`, then the test function's `patch.dict` patches `os.environ`, then `resolve_identity` calls `_load_governor_*` which re-reads from `os.environ` — that should work. Let me check more carefully.
-
-Actually, the issue is that `patch.dict` patches `os.environ` but the `_load_governor_*` functions read from `os.getenv` which reads from the *real* `os.environ`. `patch.dict(os.environ, ...)` should work because `os.getenv` reads from `os.environ`. Let me check if the issue is that the `autouse` fixture runs *before* the `patch.dict` context manager, so the caches are `None` but then `patch.dict` enters and the functions re-read... that should work.
-
-Wait — the issue might be that `_reset_governor_cache` sets `_GOVERNOR_NAMES = None` and `_GOVERNOR_TELEGRAM_IDS = None`, but then `patch.dict` patches `os.environ` inside the test, and `resolve_identity` calls `_load_governor_*` which sees `None` caches and re-reads from the patched `os.environ`. That should work. Let me debug.
-
-
-### 🤖 Autopilot
-
-The env var is set but the function still returns GUEST. The issue is that `_load_governor_telegram_ids` reads from `os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")` — but `os.getenv` reads from the real `os.environ` which IS patched. Let me check more carefully.
-
-
-### 🤖 Autopilot
-
-`os.getenv` returns the patched value but the loaded IDs are empty. The issue must be in the parsing logic. Let me check:
-
-
-### 🤖 Autopilot
-
-That works fine standalone. The issue must be that the module-level `_GOVERNOR_TELEGRAM_IDS` cache is being set to the empty set from the `autouse` fixture's `refresh_governor_cache()` call, and then the `_load_governor_telegram_ids` function checks `if _GOVERNOR_TELEGRAM_IDS is None` — but `refresh_governor_cache` sets it to `None`, then `_load_governor_*` re-reads... Let me look more carefully at the code.
-
-Wait — I see the issue. In `_load_governor_telegram_ids`:
-```python
-if _GOVERNOR_TELEGRAM_IDS is None:
-    raw = os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")
-```
-
-But `refresh_governor_cache` sets `_GOVERNOR_TELEGRAM_IDS = None`. Then when `_load_governor_telegram_ids` is called, it sees `None`, reads from env, and sets the cache. But the `autouse` fixture calls `refresh_governor_cache()` which sets the caches to `None` — but this happens *before* the `patch.dict` context manager enters. So when the test function runs, `patch.dict` patches `os.environ`, then `resolve_identity` calls `_load_governor_telegram_ids` which sees `_GOVERNOR_TELEGRAM_IDS is None` (set by the fixture), reads from the patched `os.environ`, and should get the patched value...
-
-Let me add some debug prints to the actual function:
-
-
-### 🤖 Autopilot
-
-There it is! `refresh_governor_cache` sets `_GOVERNOR_TELEGRAM_IDS = None`, but then `_load_governor_names()` is called (inside `refresh_governor_cache`), which reads from the *real* env (not patched yet) and sets `_GOVERNOR_NAMES` to `{'Gary Teh'}`. But `_load_governor_telegram_ids()` is also called inside `refresh_governor_cache` — wait, no, `refresh_governor_cache` only sets to `None` and calls `_load_governor_names()` and `_load_governor_telegram_ids()`.
-
-Actually looking at the code again:
-
-```python
-def refresh_governor_cache() -> None:
-    global _GOVERNOR_NAMES, _GOVERNOR_TELEGRAM_IDS
-    _GOVERNOR_NAMES = None
-    _GOVERNOR_TELEGRAM_IDS = None
-    _load_governor_names()
-    _load_governor_telegram_ids()
-```
-
-So `refresh_governor_cache` sets both to `None`, then calls `_load_governor_names()` which reads from the current (unpatched) env and sets `_GOVERNOR_NAMES` to `{'Gary Teh'}` (the default). Then `_load_governor_telegram_ids()` reads from the current (unpatched) env where `TELEGRAM_ALLOWED_USER_IDS` is not set, so it gets `""` and sets `_GOVERNOR_TELEGRAM_IDS = set()`.
-
-Then when the test function runs with `patch.dict`, `resolve_identity` calls `_load_governor_telegram_ids()` which sees `_GOVERNOR_TELEGRAM_IDS = set()` (not `None`!), so it returns the cached empty set without re-reading from the patched env.
-
-The fix: `refresh_governor_cache` should set the caches to `None` but NOT pre-load them. Or the `_load_*` functions should not cache empty results. Let me fix the code:
-
-
-### 🤖 Autopilot
-
-Confirmed — the bug is that `refresh_governor_cache` pre-loads the caches with the current (unpatched) env values. The fix is to make `refresh_governor_cache` only null the caches without pre-loading, so the next call to `_load_*` picks up whatever env is current at that point.
-
-
-### 🤖 Autopilot
-
 Still failing. The issue is deeper — the `autouse` fixture runs `refresh_governor_cache()` which sets caches to `None`. Then `patch.dict` patches `os.environ`. Then `resolve_identity` calls `_load_governor_telegram_ids()` which sees `None` and reads from `os.getenv`. But `os.getenv` reads from the patched `os.environ`... Let me check if the issue is that the `autouse` fixture runs *after* the `patch.dict` context manager is set up, or if there's an import-time caching issue.
 
 
@@ -1276,4 +1215,48 @@ The PR is updated at the same URL: https://github.com/TrueSightDAO/truesight_aut
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout feature/phase-c-tool-enforcement 2>&1; cd /opt/truesight_autopilot/worktrees/vault && python3 << 'PYEOF' # Add integration tests for _run_tool() enforcement and context.py system ; mkdir -p /opt/truesight_autopilot/worktrees/vault/.github/workflows; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I merged it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me update the worktree and the plan tracker.
+
+
+### 🤖 Autopilot
+
+The plan doc still has the original tracker. Let me just update it directly:
+
+
+### 🤖 Autopilot
+
+Here's the full picture:
+
+**✅ All merged — 7 PRs complete:**
+
+| PR | What | Status |
+|----|------|--------|
+| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | Phase 0.1 — Identity resolver | ✅ Merged |
+| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | Phase 3 — Vault store | ✅ Merged |
+| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | Phase 3 — Vault web page + tools | ✅ Merged |
+| [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167) | Safe deploy orchestration | ✅ Merged |
+| [#171](https://github.com/TrueSightDAO/truesight_autopilot/pull/171) | Heartbeat hooks | ✅ Merged |
+| [#172](https://github.com/TrueSightDAO/truesight_autopilot/pull/172) | Phase 1 — Identity binding | ✅ Merged |
+| [#174](https://github.com/TrueSightDAO/truesight_autopilot/pull/174) | Phase C — Tool enforcement + CI | ✅ Merged |
+
+**Remaining:**
+- **E** — Phase 2: Engagement modes (addressed-only groups, DM policy, audit channel)
+- **F** — Phase 4: Multi-org replication (template repos, AMI provisioning)
+
+What would you like to tackle next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
 
