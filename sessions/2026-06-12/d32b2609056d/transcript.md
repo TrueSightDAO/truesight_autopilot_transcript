@@ -8,77 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-I think you said "Yes, I've merged it" — PR #167 is merged. Let me update the worktree and the plan tracker.
-
-
-### 🤖 Autopilot
-
-Good — PR #167 is merged. Now let me update the plan tracker and the RESUME HERE to reflect current state, then ask what you'd like to tackle next.
-
-
-### 🤖 Autopilot
-
-The plan doc wasn't updated from the previous PR merge. Let me check what's actually in the file now:
-
-
-### 🤖 Autopilot
-
-I see — the plan doc hasn't been updated since the earlier PRs were merged. The previous plan update PRs (#464 for the tracker, #465 for safe deploy section) were opened but not merged yet. Let me update the plan directly now to reflect everything that's been done:
-
-
-### 🤖 Autopilot
-
-Plan updated. Here's where we stand:
-
-**✅ All Phase 3 complete — 4 PRs merged:**
-
-| PR | What | Status |
-|----|------|--------|
-| [#160](https://github.com/TrueSightDAO/truesight_autopilot/pull/160) | Phase 0.1 — Identity resolver | ✅ Merged |
-| [#165](https://github.com/TrueSightDAO/truesight_autopilot/pull/165) | Phase 3.1–3.7 — Vault store | ✅ Merged |
-| [#166](https://github.com/TrueSightDAO/truesight_autopilot/pull/166) | Phase 3.3–3.6 — Vault web page + tools | ✅ Merged |
-| [#167](https://github.com/TrueSightDAO/truesight_autopilot/pull/167) | Safe deploy orchestration | ✅ Merged |
-
-**What's next — you have options:**
-
-1. **Wire heartbeat hooks** into the background loops (follow-up monitor, email poller, telegram adapter) so the deploy watcher actually works end-to-end
-2. **Step C — Phase 0.2–0.4**: Tool-layer enforcement + data/instruction boundary
-3. **Step D — Phase 1**: Identity binding (email challenge → Column X)
-4. **Step E — Phase 2**: Engagement modes
-5. **Step F — Phase 4**: Multi-org replication
-
-What sounds good?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /opt/truesight_autopilot/worktrees/vault && git fetch origin main && git checkout main && git reset --hard origin/main 2>&1
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-What do you think if it did 1 and 3? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That's a smart combo. Here's why they work well together:
-
-**1 (Wire heartbeat hooks)** is the finishing touch on the safe deploy system — without it, the deploy watcher infrastructure exists but nothing actually registers itself. It's a small, mechanical PR: add `register_track()` / `heartbeat()` calls into the existing background loops.
-
-**3 (Phase 1 — Identity binding)** is the natural next capability. It gives us the email-challenge → Telegram binding pipeline, which means:
-- The vault web page gets proper email→RSA auth (instead of the v0 bridge)
-- The identity resolver (`app/policy.py`) gets upgraded from env-var-based to Column X → Governors cache
-- Non-governor contributors can verify themselves and get read access
-
-And they don't conflict — the heartbeat wiring is in the background loops, identity binding is in the auth/policy layer. Different files, different concerns. We could even do them in parallel PRs from the same worktree.
-
-Want me to start with both? I'd open them as separate PRs so you can review each independently.
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
@@ -1036,4 +965,71 @@ Want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → sudo systemctl status truesight-autopilot 2>&1 | head -15; curl -s http://localhost:8001/vault/api/system-status 2>&1 | python3 -m json.tool 2>/dev/null || curl -s http://localhost:8001/vault/api/sys; curl -s --max-time 5 http://localhost:8001/ 2>&1 | head -5; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+You know how I was thinking You're I'm assuming your local host 80001 basically is what I see when I go to Sophia.trusite.me Maybe over there, it should show me whether I have already you know linked my identity to My email via the R is a key flow, right and if I did if I'm the governor, it should show me You know, maybe two links one to see the vote and The other to see the system status what I'll talk about this UX [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's actually at sophia.truesight.me:
+
+
+### 🤖 Autopilot
+
+`sophia.truesight.me` points to this box's public IP (52.200.38.206). Let me check what's listening on port 443:
+
+
+### 🤖 Autopilot
+
+Nginx is running on this box too (not just krake_nginx). Let me check its config:
+
+
+### 🤖 Autopilot
+
+There's a sophia site config. Let me read it:
+
+
+### 🤖 Autopilot
+
+It's already set up! `sophia.truesight.me` proxies to port 8001. The issue is the server is single-worker and gets blocked by LLM calls. Let me check if the vault page loads:
+
+
+### 🤖 Autopilot
+
+The server is stuck. Let me check what's happening:
+
+
+### 🤖 Autopilot
+
+The health endpoint returned 200 OK at 04:31:25 — it's working! The timeout from my external fetch was just because the server was busy with an LLM call at that exact moment. Let me try again:
+
+
+### 🤖 Autopilot
+
+The server is busy right now. The single-worker model means HTTP requests queue behind LLM calls. This is the core UX problem — the vault page is inaccessible when the bot is thinking.
+
+Here's the situation:
+
+**The vault IS accessible at `sophia.truesight.me/vault/`** — the Nginx proxy is already set up, SSL certs are in place, everything routes correctly. But the server is single-worker (uvicorn with `--workers 1`), so when it's processing a Telegram chat (making LLM calls that take 5-30 seconds), the vault page times out.
+
+**The same URL would show you:**
+- Login page if you're not authenticated (email→RSA flow)
+- Vault UI if you're a governor (list/add/delete/rotate credentials)
+- System status at `/vault/api/system-status`
+- Contribution nudge if you're a verified non-governor
+
+**The fix** is either:
+1. **Add more workers** — `--workers 2` or `--workers 4` so HTTP requests don't block on LLM calls
+2. **Or** run the vault as a separate process
+
+Want me to bump the worker count so the vault page is always responsive?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → grep -r "sophia\|autopilot\|8001" /etc/nginx/sites-enabled/ 2>/dev/null | head -20; sudo grep -r "sophia\|autopilot\|8001" /etc/nginx/sites-enabled/ 2>/dev/null | head -20; whoami && ls -la ~/.ssh/ 2>&1 | head -5; …(+7 more)
 
