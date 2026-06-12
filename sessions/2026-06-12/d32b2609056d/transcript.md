@@ -738,3 +738,42 @@ This way you never lose work from parallel tracks, and you have visibility into 
 
 Want me to update the implementation plan with this? I'd add it as a new section — something like "Safe deploy orchestration" — between the vault and the remaining phases.
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yeah, I think that's a great idea and I think like in your implementation, you need to make sure that You don't accidentally trick yourself into never redeploying right just in case like you know There's like some long running loop that just loops for the sake of looping. Yeah, just something to think about [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch — the "never deploys because something is always running" trap. Here's how I'd handle it:
+
+**The deploy watcher needs a timeout per track.** Each tracked process gets a max expected duration:
+- Telegram chat turn: ~2 minutes max (LLM timeout)
+- Follow-up monitor loop: ~30 seconds per check
+- Email poller: ~15 seconds per poll
+- SSH/git operations: ~60 seconds
+
+If a track has been running longer than its timeout, it's either stuck or the timeout is wrong — either way, the deploy should proceed. The watcher logs a warning about the overrun track, then deploys anyway.
+
+**Plus a manual override** — on the vault page, a "Force deploy" button that bypasses the idle check entirely. For when you know what you're doing.
+
+**And a heartbeat** — each long-running loop (follow-up monitor, email poller) writes a timestamp to a shared state file. If the deploy watcher sees a stale heartbeat (>2x the expected interval), it treats that track as dead and deploys anyway. This prevents a crashed loop from blocking deployment forever.
+
+So the logic is:
+
+```
+For each active track:
+  if track is idle → safe to deploy
+  if track has exceeded its timeout → safe to deploy (stuck/crashed)
+  if track is running but within timeout → WAIT
+
+Plus: manual "deploy now" button bypasses all checks
+```
+
+Want me to update the plan with this? I'll add it as a new section to the implementation doc.
+
