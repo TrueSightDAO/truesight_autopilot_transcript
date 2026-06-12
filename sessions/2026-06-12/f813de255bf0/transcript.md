@@ -10,34 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now there's an extra `}` on line 1986 (closing the `registerSingleQRCode` block) and another `}` on line 1987 (which was the original closing of the `processProgramRegistrationsFromTelegramChatLogs` block, now orphaned). Let me fix this properly.
-
-
-### 🤖 Autopilot
-
-I see — line 1987 has an extra `}` that's orphaned. The structure should be:
-```
-    }  // closes processProgramRegistrationsFromTelegramChatLogs
-    if (actionStr === 'registerSingleQRCode') {
-      ...
-    }  // closes registerSingleQRCode
-    if (actionStr === 'getPendingProgramRegistrations') {
-```
-
-But currently it's:
-```
-    }  // closes processProgramRegistrationsFromTelegramChatLogs (line 1978)
-    if (actionStr === 'registerSingleQRCode') {
-      ...
-    }  // closes registerSingleQRCode (line 1986)
-    }  // ORPHAN (line 1987)
-```
-
-Let me remove the orphaned `}` on line 1987.
-
-
-### 🤖 Autopilot
-
 Hmm, now the `getPendingProgramRegistrations` block lost its `if` statement. The extra `}` I removed was actually the closing of the `registerSingleQRCode` block, and the `}` on line 1986 was the closing of the `processProgramRegistrationsFromTelegramChatLogs` block. Let me look at the full context more carefully.
 
 
@@ -1978,6 +1950,54 @@ farming communities.
 ```
 
 Instead of one long line spilling off the side.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 << 'PYEOF' from PIL import Image, ImageDraw, ImageFont, ImageFilter import qrcode from qrcode.constants import ERROR_CORRECT_H impor; python3 << 'PYEOF' import base64, json, urllib.request, os GITHUB_TOKEN = os.popen('grep "^TRUESIGHT_DAO_AUTOPILOT=" /opt/truesight_autopilo
+
+
+### 🧑 Governor
+
+[Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, you see the gray sentence of words that say Amazon rainforest it’s kind of like cut off. Can you maybe adjust your coding for that section to ensure that that sentence doesn’t cut off right now cutting off
+
+[Attachment auto-processed: **b2ba2d6028764f0d8d31cac848c61d1c.jpg**]
+- Type: Image (OCR confidence: 89.3%, quality: good)
+
+Extracted text:
+```
+SF Tech Fest 2026 Friends of the Rainforest About This Cacao Origin Oscar Farm, Bahia, Brazil Product Ceremonial Cacao Collection Friends of the Rainforest Harvest Year 2026 Batch ID SFTF_FR_20260612_2 Web agroverse.shop/friends-of-the-rainforest Every purchase helps restore 10,000 hectares of Amazon Rainfof through regenerative agroforestry with local farming communiti¢ Scan to support the Amazon Rainforest Ne 1a) ol eat ROR ns eae Reese
+```
+
+
+### 🤖 Autopilot
+
+I see it — "Rainfof" and "communiti¢" are cut off at the right edge. The word wrap function is using `right_w` which is the width from `right_x` to the right edge, but the text starts at `right_x` which already has the right margin built in. Let me check the math.
+
+The issue: `right_w = WIDTH - right_x - 55` gives the correct available width, but the `draw_wrapped_text` function uses `max_width` correctly. Let me check — the problem might be that the text is being drawn at `right_x` but the `max_width` is correct. Let me look more carefully.
+
+Actually, looking at the OCR output: "Rainfof" should be "Rainforest" — it's being cut at exactly the character where the box boundary ends. The `max_val_w` calculation might be off. Let me add some padding and also make the right side slightly wider by reducing the QR code size.
+
+
+### 🤖 Autopilot
+
+Fixed! Here's what I changed:
+
+1. **Smaller QR code** — reduced from box_size=12 to box_size=10 (570px instead of 684px), giving more room to the right side
+2. **Wider right column** — reduced right margin from 55px to 40px, and left gap from 55px to 45px
+3. **Word wrap** — the mission text now properly wraps at word boundaries within the full available width
+
+The mission text should now read cleanly as:
+```
+Every purchase helps restore 10,000
+hectares of Amazon Rainforest through
+regenerative agroforestry with local
+farming communities.
+```
+
+All within bounds. Check it at:
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/SFTF_FR_20260612_2_placard.png**
 
 ———
 **✅ Done this turn — actions taken:**
