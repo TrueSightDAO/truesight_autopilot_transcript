@@ -10,32 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see the problem now. The original code had:
-```
-    }
-    if (actionStr === 'getPendingProgramRegistrations') {
-```
-
-After my `sed` insert, it became:
-```
-    }
-    if (actionStr === 'registerSingleQRCode') {
-      ...
-    }
-    }  // this was the original closing } of processProgramRegistrationsFromTelegramChatLogs
-    if (actionStr === 'getPendingProgramRegistrations') {
-```
-
-But I removed the wrong `}`. Let me restore the file from the pulled version and redo the edit properly.
-
-
-### 🤖 Autopilot
-
-Good, fresh pull. Now let me do the edit properly using Python for precision.
-
-
-### 🤖 Autopilot
-
 The pull restored the broken state (from my earlier push). The `registerSingleQRCode` block is still there from my earlier edit, but the `}` is missing after the `processProgramRegistrationsFromTelegramChatLogs` return. Let me fix it properly.
 
 
@@ -2023,4 +1997,24 @@ So the info box would read:
 - **Harvest Year:** 2026
 
 That keeps it accurate, broad enough to cover everything Kirsten's making, and tells the rainforest story upfront. Want me to update the placard with those changes?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think we don't really need to say harvest year, right? Because the year is actually inaccurate. It's that year basically reflects when we generated this QR code. It's not really the actual QR code of the Kakao. So if the people actually scan, they will actually like land up on that page. What do you think? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're absolutely right. The "2026" is just when we minted the QR code, not the harvest year of the cacao. That's misleading. And since people scan the QR and land on the Friends of the Rainforest page anyway, the page itself will have the accurate product info.
+
+Let me simplify the info box to just the essentials:
+
+- **Origin:** Brazilian Amazon Rainforest
+- **Collection:** Friends of the Rainforest
+- **Batch:** SFTF_FR_20260612_2
+
+Clean, honest, and the QR does the rest. Want me to update the placard?
 
