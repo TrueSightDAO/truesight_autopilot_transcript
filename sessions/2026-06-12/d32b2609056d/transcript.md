@@ -945,3 +945,188 @@ Anything else you'd like me to work on?
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== Git ===" && cd /opt/truesight_autopilot && git log --oneline -1 && echo "=== Services ===" && systemctl is-active truesight-autopi
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Somehow not seeing any email after I provided my email address here 
+
+https://sophia.truesight.me/vault/login
+
+
+### 🤖 Autopilot
+
+Let me check the auth flow to understand how the email challenge is sent.
+
+
+### 🤖 Autopilot
+
+Let me check the auth code to see how the email challenge is actually sent.
+
+
+### 🤖 Autopilot
+
+Now let me check the login page's JavaScript — it calls `/auth/verify-code` but I need to see how the challenge is actually sent. Let me check the main.py for the auth routes.
+
+
+### 🤖 Autopilot
+
+I see the issue. The login page's JavaScript calls `/auth/verify-code` but the **challenge email is never actually sent**. The login page has two steps:
+
+1. **Step 1** — Enter email → calls `sendChallenge()` which just hides the email field and shows the code input. It does NOT actually send an email.
+2. **Step 2** — Enter code → calls `verifyCode()` which POSTs to `/auth/verify-code`
+
+The `/auth/verify-code` endpoint accepts **any code** that's 6+ characters (v0 stub) — there's no actual email sending or code generation happening. The comment says "Phase 1 will replace this with the full challenge mint + consume pipeline."
+
+Let me check the login template more carefully to see what `sendChallenge()` actually does.
+
+
+### 🤖 Autopilot
+
+Found it. The `sendChallenge()` function **doesn't actually send an email** — it just hides the email form and shows the code input. The comment says: *"The actual challenge is sent via the Edgar email-verification flow. For now, show the code input — the user pastes the code they received."*
+
+And the `/auth/verify-code` endpoint accepts **any code** 6+ characters as valid (v0 stub).
+
+So the flow is broken in two ways:
+1. No email is actually sent
+2. You can just enter any 6+ char code to get in
+
+Let me fix this properly — wire up the email sending via Gmail and generate a real challenge code.
+
+
+### 🤖 Autopilot
+
+Good — the Gmail send tool exists. Now let me fix the login flow. I'll update the `sendChallenge()` function to actually POST to a backend endpoint that generates a code and emails it, and update the backend to do the same.
+
+
+### 🤖 Autopilot
+
+Now add the `/auth/send-challenge` endpoint to main.py that generates a code and emails it.
+
+
+### 🤖 Autopilot
+
+Now update the verify-code endpoint to actually check the stored code.
+
+
+### 🤖 Autopilot
+
+Now I need to also update the governor_registry to recognize the synthetic vault key. Let me check how the vault page checks governor status.
+
+
+### 🤖 Autopilot
+
+The `_resolve_identity_from_jwt` function checks the governors cache by public key. The synthetic key (`vault:email:...`) won't match any governor's public key, so even with a valid JWT, the user will be treated as a non-governor and shown the contribution nudge.
+
+I need to update the resolver to also check if the email associated with the synthetic key belongs to a governor. Let me check the governor_registry.
+
+
+### 🤖 Autopilot
+
+I see — the governor check is by public key. The synthetic vault key won't match. I need to update the vault's `_resolve_identity_from_jwt` to also check by email when the key is a vault synthetic key. Let me update vault_routes.py.
+
+
+### 🤖 Autopilot
+
+Now let me also check what email you're registered with in the governors cache so I can confirm it'll work.
+
+
+### 🤖 Autopilot
+
+Your email is `garyjob@gmail.com` — that's what you'd enter on the login page. Now let me restart the vault worker and test.
+
+
+### 🤖 Autopilot
+
+Now let me commit and push these changes, then open a PR.
+
+
+### 🤖 Autopilot
+
+Now let me test the flow end-to-end by simulating what the login page does.
+
+
+### 🤖 Autopilot
+
+Empty response — the vault worker (port 8002) doesn't have the `/auth/send-challenge` endpoint (that's on the main bot, port 8001). The vault worker only has the vault routes. The `/auth/` endpoints are on the main bot.
+
+The login page's JavaScript calls `/auth/send-challenge` which goes through Nginx to the main bot (port 8001) since there's no specific location for `/auth/`. Let me check.
+
+
+### 🤖 Autopilot
+
+The main bot is busy. Let me check the Gmail send — the issue might be that the Gmail token is expired.
+
+
+### 🤖 Autopilot
+
+Gmail send works. The issue is that the main bot is busy processing this conversation and can't respond to the HTTP request. The `/auth/send-challenge` endpoint is on the main bot (port 8001), but the vault worker (port 8002) doesn't have it.
+
+I need to either:
+1. Add the auth endpoints to the vault worker too, OR
+2. Make the login page's JavaScript call the vault worker directly
+
+Option 1 is better — the vault worker should be self-contained for auth. Let me add the auth routes to the vault worker.
+
+
+### 🤖 Autopilot
+
+Now I need to extract the auth endpoints from main.py into a shared auth_routes.py module. Let me check what's already there.
+
+
+### 🤖 Autopilot
+
+Let me create a shared `auth_routes.py` module that both the main app and vault worker can use.
+
+
+### 🤖 Autopilot
+
+Now update main.py to import from the shared module instead of having its own copies.
+
+
+### 🤖 Autopilot
+
+Now let me restart both services and test.
+
+
+### 🤖 Autopilot
+
+Right — can't restart the main bot directly. Let me use the deploy tool instead, or just restart the vault worker (which is safe since it's a separate process).
+
+
+### 🤖 Autopilot
+
+Vault is up. Now let me test the send-challenge endpoint through the vault worker (port 8002).
+
+
+### 🤖 Autopilot
+
+The endpoint works. Let me check if the email was actually sent by checking the Gmail sent folder.
+
+
+### 🤖 Autopilot
+
+The email was sent! The code is `601590`. Let me test the verify-code endpoint.
+
+
+### 🤖 Autopilot
+
+The code was already consumed (the previous test used it). Let me test the full flow again with a fresh code.
+
+
+### 🤖 Autopilot
+
+The code is stored in the vault worker's memory (separate process), not in the main bot's. The Python import reads from the main bot's process. Let me check the vault worker's stored codes by hitting the verify endpoint with a wrong code to see the error.
+
+Actually, let me just check the Gmail for the new code.
+
+
+### 🤖 Autopilot
+
+The latest code is `140200`. Let me test verifying it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×24 → grep -n 'auth\|challenge\|verify-code\|send.*email\|email.*challenge' /opt/truesight_autopilot/app/main.py 2>/dev/null | head -20; sed -n '982,1070p' /opt/truesight_autopilot/app/main.py; grep -n 'send.*email\|email.*send\|gmail_send\|send_email\|_send_email\|send_challenge\|challenge.*email' /opt/truesight_autopilot/app/main.; …(+20 more)
+
