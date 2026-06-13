@@ -1320,3 +1320,52 @@ I'll start by studying the capoeira/oracle auth implementation to understand the
 
 One question before I start: the `@truesight_dao/dao-client` npm package — is it published on npm, or is it a local package in one of the repos I should look at?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+The published one
+
+
+### 🤖 Autopilot
+
+Let me look at the published `@truesight_dao/dao-client` package and the capoeira/oracle implementations to understand the exact pattern.
+
+
+### 🤖 Autopilot
+
+Let me search for the DAO Identity / create_signature pattern in the oracle JS.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the dapp's `create_signature.html` for the exact vault-access signing flow.
+
+
+### 🤖 Autopilot
+
+I have enough from the oracle JS. The pattern is clear — it uses the Web Crypto API (`window.crypto.subtle`) directly with `RSASSA-PKCS1-v1_5` / `SHA-256`, storing the keypair in `localStorage` under `publicKey`/`privateKey` keys. This is the same pattern used across the dapp and capoeira.
+
+Now I have a complete understanding. Here's my acknowledgment and plan:
+
+---
+
+## Acknowledged
+
+**Postmortem accepted.** The `main.py` edit was reckless — I inserted code inline without checking surrounding function boundaries, skipped `py_compile` and `pytest`, and caused a production crash-loop. **Hard rule locked:** every vault change on a branch first, `python -m py_compile app/*.py` + `pytest -q` before any deploy. Never insert into the middle of a function.
+
+**Self-restart blocked.** Understood — `ssh_run` blocks raw `systemctl restart`/`pkill`, `deploy_autopilot` defers while threads are mid-turn. I won't work around it.
+
+**Own-repo gate.** PRs only, never self-merge. `Generated-by` trailer on every commit.
+
+## Order of attack
+
+| # | What | How |
+|---|------|-----|
+| **1** | **Fix #1.5 — RSA-signature vault login** | Study the oracle's `oracle-draw-submit.js` pattern (Web Crypto API, `RSASSA-PKCS1-v1_5`/`SHA-256`, `localStorage` keypair). Rebuild vault login page to: auto-generate keypair on first visit, sign a vault-access challenge, verify against Governors registry. Rip out email/cookie auth entirely. Reuse `@truesight_dao/dao-client` npm package for the crypto. |
+| **2** | **Fix #2 — Vault link from root page** | Add a link from `sophia.truesight.me/` to `/vault/login` |
+| **3** | **Fix #1 — Vault 500** | Already fixed in PR #183 (merged) — verified 200 on `/vault/` and `/vault/login` |
+
+I'll open a branch and start with Fix #1.5 — the RSA-signature vault login. The oracle's `oracle-draw-submit.js` gives me the exact pattern: `localStorage` keypair generation via `window.crypto.subtle.generateKey`, signing with `RSASSA-PKCS1-v1_5`/`SHA-256`, and the server verifies against the Governors registry. I'll mirror that exactly for the vault login page.
+
