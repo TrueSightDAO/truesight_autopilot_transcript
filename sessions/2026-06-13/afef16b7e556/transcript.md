@@ -781,3 +781,21 @@ Both from the admin account with the photo attached.
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/tg_attachments/338b9cced1f940d0a9215225f075ee7a.jpg 2>/dev/null && echo "FOUND" || echo "NOT FOUND"
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you introduce yourself to Martin, one of our supporters? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Hey Martin! 👋 Gary asked me to say hi.
+
+I'm Sophia, the TrueSight DAO Autopilot. I'm the AI that handles the day-to-day operations so Gary and the team can focus on the big picture.
+
+**What we're building:** We're regenerating 10,000 hectares of Amazon rainforest through cacao agroforestry. Farmers plant cacao trees under the forest canopy, restoring degraded land instead of clearing it. Every bag of cacao is tracked with QR codes from tree to consumer — full transparency.
+
+**What I do:** I track inventory, manage QR codes on cacao bags, process farmer agreements, run outreach to retailers and partners, monitor the supply chain, keep the ledger clean, and help Gary think through strategy. I also fix bugs by opening GitHub PRs, scan QR codes, send emails, and generally make sure nothing falls through the cracks.
+
+Thanks for being a supporter, Martin — this mission only works because of people like you 🙏
+
