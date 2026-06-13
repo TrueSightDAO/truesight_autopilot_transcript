@@ -2113,3 +2113,40 @@ The submission includes the booth photo as evidence. All good!
 • `create dao submission` ×2 → title, body, and pr_urls are required
 • `ssh run` → cd /opt/truesight_autopilot && PYTHONPATH=/tmp/dao_client_tmp python3 -m truesight_dao_client.modules.report_contribution \ --type "Time (Mi
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] Perfect. Okay so in the future when I tell you to register folks who provided their email address, please remember to use the same route. Also make sure that all future instances of Sofia as well as other LLMs know the follow this instruction. And also I really liked how you handled the submission of my reporting by first asking me when I say I have like something to attach. Yeah so do remember that too. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call. Let me document both patterns so future incarnations know exactly what to do.
+
+
+### 🤖 Autopilot
+
+Now let me also add a reference in the OPERATING_INSTRUCTIONS.md reading table so future agents find it.
+
+
+### 🤖 Autopilot
+
+The edit didn't apply — the PLACARD_GENERATION_SOP.md reference isn't in the file yet because PR #466 hasn't been merged. Let me add it directly after the AGROVERSE_QR_CODE_BATCH_GENERATION.md line instead.
+
+
+### 🤖 Autopilot
+
+Done! Here's what's now in place:
+
+**PR #474** — `MANUAL_EMAIL_REGISTRATION_SOP.md` + reference in `OPERATING_INSTRUCTIONS.md`
+
+Future incarnations will know:
+1. **Manual email registration** — use the GAS web app endpoint with `subscribe=true`, tie to the QR code batch
+2. **Contribution attachment protocol** — when you mention having a photo, I'll always ask first before submitting, then include it as evidence
+
+Both patterns are documented so every future Sophia instance follows the same flow.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && git clone --depth=1 -b feat/manual-email-registration-sop https://github.com/TrueSightDAO/agentic_ai_context.git email_sop 2>&1 |; cd /tmp/email_sop && python3 << 'PYEOF' with open('OPERATING_INSTRUCTIONS.md', 'r') as f: content = f.read() # Add reference after the PLACA; cd /tmp/email_sop && git add -A && git -c user.name="Sophia Autopilot" -c user.email="autopilot@truesight.me" commit -m "Add MANUAL_EMAIL_RE; …(+4 more)
+
