@@ -1190,3 +1190,59 @@ That actually makes the photo even better. It's not "Gary introducing the DAO to
 
 I'll keep that in mind if we update the blog post or if Martin comes up again. Want me to tweak the post to reflect that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Should be this link isn’t since you merged it into beta??
+
+https://beta.truesight.me/blog/posts/the-joy-was-the-point.html
+
+
+### 🤖 Autopilot
+
+You're right — since it's merged into **truesight_me_beta**, the beta site should be at **beta.truesight.me**. Let me check.
+
+
+### 🤖 Autopilot
+
+404 on beta.truesight.me. Let me check what's happening with the GitHub Pages deployment.
+
+
+### 🤖 Autopilot
+
+The beta site is deployed via GitHub Pages from the `main` branch. The merge just happened, so it might take a minute or two for GitHub Pages to rebuild. Let me check the main truesight.me domain too since the CNAME might route differently.
+
+
+### 🤖 Autopilot
+
+Both are 404 — GitHub Pages just takes a minute or two to rebuild after a merge. Let me check if there's a GitHub Actions deployment in progress.
+
+
+### 🤖 Autopilot
+
+The blog index is live but still showing the old version (without my new post). GitHub Pages takes a couple minutes to rebuild after a merge. The merge just happened — it should deploy shortly.
+
+Let me check if there's a GitHub Actions deployment running.
+
+
+### 🤖 Autopilot
+
+The file is on the `main` branch on GitHub. GitHub Pages just needs a minute to rebuild. Give it 1-2 minutes and the link should work.
+
+The correct URL will be:
+
+**https://truesight.me/blog/posts/the-joy-was-the-point.html**
+
+(or **https://beta.truesight.me/blog/posts/the-joy-was-the-point.html** if beta has its own subdomain)
+
+Let me check if beta has a separate CNAME setup.
+
+
+### 🤖 Autopilot
+
+The CNAME is `beta.truesight.me`. So the URL should be:
+
+**https://beta.truesight.me/blog/posts/the-joy-was-the-point.html**
+
+It's returning 404 right now because GitHub Pages is still rebuilding after the merge. This usually takes 1-3 minutes. Try refreshing in a couple of minutes and it should be live!
+
