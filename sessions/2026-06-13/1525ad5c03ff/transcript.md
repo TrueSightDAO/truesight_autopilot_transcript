@@ -751,3 +751,96 @@ And the Edgar page should be updated to reflect that Edgar is now the **DAO Prot
 
 This is a natural extension of the separation plan — Phase 1.6 or 1.7. Want me to add it to the plan and draft the Perch page for the website?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yep, add it into the plan and then proceed to draft the purge page for the website [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me update the plan and draft the Perch page for the website.
+
+
+### 🤖 Autopilot
+
+Good, I have the plan. Let me update it with the website changes and then draft the Perch page.
+
+
+### 🤖 Autopilot
+
+Plan updated. Now let me look at the existing website structure to match the style, then draft the Perch page.
+
+
+### 🤖 Autopilot
+
+Good, I can see the pattern. Now let me create the Perch page and update the navigation + Edgar page. I'll do all three as a PR to `truesight_me_beta`.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me create the PR with all three changes: new `perch.html`, updated navigation in `edgar.html`, and the new page.
+
+
+### 🤖 Autopilot
+
+Now I also need to update the navigation on all other pages that share the same nav. Let me check which pages need updating.
+
+
+### 🤖 Autopilot
+
+The nav is duplicated across every HTML page. Let me check which pages reference the old nav with `edgar.html` to update them all.
+
+
+### 🤖 Autopilot
+
+I see the nav is duplicated across every page. The PR I already opened updates `perch.html` and `edgar.html` with the new nav. I need to also update `index.html`, `about-us.html`, `agroverse.html`, `sunmint.html`, `programs.html`, `fundraisers.html`, `faq.html`, `members.html`, and any others that share the same nav. Let me update them all.
+
+
+### 🤖 Autopilot
+
+I see — the nav appears twice in faq.html (once in the nav and once in the footer maybe). Let me use a more specific search string.
+
+
+### 🤖 Autopilot
+
+The nav appears twice in faq.html — once in the actual nav and once somewhere else (maybe a footer or duplicate). Let me use replace_all.
+
+
+### 🤖 Autopilot
+
+Here's the full status update:
+
+---
+
+## ✅ Done this session
+
+**Phase 1 progress:**
+
+| Step | Status |
+|------|--------|
+| 1.1 DNS: `perch.truesight.me` A record | ✅ Done |
+| 1.2 SSL cert: Let's Encrypt via DNS-01 | ✅ Done |
+| 1.3 Nginx config on krake-nginx | ✅ Config added, needs reload |
+| 1.4 Edgar landing page | 📝 Drafted, ready to deploy |
+| 1.5 Rails domain-aware routing | ⏳ Pending nginx reload |
+| **1.6 Website: The Perch page** | **✅ PR #214** |
+| **1.6 Website: Nav update (8 pages)** | **✅ PR #215** |
+| **1.6 Website: Edgar page updated** | **✅ PR #214** |
+
+**Two PRs open on `truesight_me_beta`:**
+- **PR #214** — New `perch.html` page + updated `edgar.html` (DAO Protocol focus)
+- **PR #215** — Navigation updated on all 8 pages to include "The Perch"
+
+**The Perch page** describes it as "A Steward's View of the Markets" — sentiment dashboard, backtester, market compare, and how it connects to the ecosystem. Links to `perch.truesight.me`.
+
+**Edgar page** now focuses on the DAO Protocol role: contributions, QR codes, identity/signatures, partner onboarding, inventory, Stripe. Links to The Perch.
+
+**Still needed from you on krake-nginx:**
+```bash
+sudo nginx -t && sudo nginx -s reload
+```
+That'll make `perch.truesight.me` live with the SSL cert.
+
