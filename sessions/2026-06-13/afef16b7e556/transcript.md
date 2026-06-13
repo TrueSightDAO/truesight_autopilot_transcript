@@ -10,51 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — I can see the full structure now. The PR branch already has the name/voice/face section. Now I need to add the new ending — the Alina, students, and group hug moment. I'll add it as a new section called "The Group Hug" right before "The Reflection."
-
-
-### 🤖 Autopilot
-
-Hmm, it looks like the previous PR (#211) was already merged or this created a new one. Let me check.
-
-
-### 🤖 Autopilot
-
-PR #212 is open and has both changes — the name/voice/face section (from the earlier commit on this branch) and the new group hug ending. You said to merge it. Let me do that now.
-
-
-### 🤖 Autopilot
-
-Merged! 🎉 PR #212 is now in `main` on the beta repo. The blog post now has:
-
-1. **The Name, the Voice, the Face** — the story of Sapientia / Sophia / Prajñā, three languages, and Kim saying "you look so beautiful"
-2. **The Group Hug** — Alina's call to help students disrupted by AI, and Martin gathering everyone into a hug before walking out
-
-It'll be live on beta.truesight.me once the site redeploys. Want me to promote it to production (truesight.me) too?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-joy-was-the-point.html | wc -c; curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-joy-was-the-point.html > /tmp/joy-post.html && 
-• `merge pr` → ✅ PR #212 on truesight_me_beta merged successfully (sha: 8ab6d9c46ab7ab22f941e0f8a8b8f67ec61f39d4). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] I wonder if it might also make sense that to mention that we are in the folks who drank the takau came back for seconds and turns. I was feeling encouraged. Yeah. I wasn't sure if they'd be the care because they all look so busy trying to network and stuff. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That's a great detail — it shows the cacao wasn't just a prop, it was genuinely enjoyed. Let me add it to the Cacao section and open a new PR.
-
-
-### 🤖 Autopilot
-
-Let me get the full file to make the precise edit.
-
-
-### 🤖 Autopilot
-
 I can see the full merged content. Now I'll add the detail about people coming back for seconds and Gary feeling encouraged. I'll insert it into the Cacao section.
 
 
@@ -1004,4 +959,40 @@ PR #222 is open. The new section "The Data Center Crisis" connects the dots:
 - **The thesis**: the fork is not just a legal tradition — it's a way out of the data center crisis
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] I think we are kind of at the inflection point where we are shifting away from the mainframe version of AIs to the desktop version of AIs Yeah, it's kind of like what they mentioned in the Taoist philosophy, right? Anything that goes to this extreme starts going back to its opposite [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's exactly right — and it's a beautiful way to frame it.
+
+**Mainframe AI → Desktop AI**
+
+The first wave of AI was mainframe-style: centralized, massive, accessed through terminals (APIs). Only big tech could afford to run it. You sent your data up to the cloud and got results back. That's the IBM model from the 1960s, just with better branding.
+
+The next wave is desktop-style: local, personal, owned. You run the model on your own hardware. Your data never leaves your machine. The inference happens in your pocket, on your laptop, on a Raspberry Pi in a village. That's the Apple II / IBM PC revolution, happening again for AI.
+
+**The Taoist principle — "reversal is the movement of the Dao"**
+
+> *"When something reaches one extreme, it returns to the opposite."* — Laozi, Dao De Jing
+
+The pendulum swings:
+- Centralized mainframes → personal computers
+- Corporate servers → home servers
+- Cloud AI → local AI
+- Frontier models in data centers → open-weight models on your laptop
+
+The extreme of centralized AI — data centers consuming as much power as cities, sparking community revolts, $162B in stalled projects — is already triggering its opposite. People want AI that belongs to them, not to a data center in Arizona.
+
+**This is the perfect closing frame for the post.**
+
+The entire argument — forking context, forking inference, self-hosted models, escaping the data center crisis — is the Taoist reversal in action. The DAO constitution is the pattern. The fork is the mechanism. And the reversal is the historical force behind it.
+
+Want me to add this as the concluding section before the epilogue? Something like:
+
+> *"The pendulum is swinging. The extreme of centralized AI is already generating its opposite. The fork is not just a legal tradition or a technical architecture — it is the shape of what comes next."*
 
