@@ -450,3 +450,37 @@ The extraction plan already has PR8d queued up to delete the ported Rails action
 
 What do you think? Want me to sketch out what a full rename + domain split would look like?
 
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Yeah, I mean, your naming approach makes sense. Although when I think about it, there's a lot of places on the system as well as the code base that assumes that Edgar is the protocol at this point, isn't it? So shifting the protocol to a new domain might end up be more of a breaking change than maybe shifting the trading system to a new domain. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a really good point. Let me check — you're right that a lot of the system has already shifted to treating Edgar as the protocol.
+
+
+### 🤖 Autopilot
+
+You're absolutely right. Let me check the actual blast radius — how many places reference `edgar.truesight.me` vs how many reference `dao_protocol` or the protocol routes.
+
+
+### 🤖 Autopilot
+
+Hit the rate limit, but I already know enough from context. Here's my take:
+
+**You're right — Edgar *is* the protocol now.** The extraction work we did (pulling `/dao/*` routes to `dao_protocol` on its own box) was a *technical* split, but the *identity* is still Edgar. The DApp submits contributions to Edgar. The QR code checks go through Edgar. Email registration goes through Edgar. The newsletter pipeline goes through Edgar. The trading dashboard is actually the smaller, less-coupled piece at this point.
+
+So the cleaner move would be:
+
+**Keep `edgar.truesight.me` as the DAO protocol** — that's where all the operational traffic already flows, and renaming that would break a lot more.
+
+**Move the trading dashboard to something new** — a new subdomain like `markets.truesight.me` or `sentiment.truesight.me` or even a completely new name. The trading stuff (backtester, sentiment, stock data) is more self-contained and has fewer external consumers hitting it programmatically.
+
+That said — the trading dashboard is also the older, more established identity. "Edgar" has been the financial tool name since the beginning. So there's a case for the opposite too.
+
+What feels right to you? If we're going to do a rename, I'd want to pick the one that causes less downstream breakage. Want me to do a proper blast-radius analysis once the rate limit resets?
+
