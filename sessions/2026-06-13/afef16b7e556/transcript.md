@@ -1448,3 +1448,18 @@ This is the correct photo for the "Gary, Atrish, and Kim" slot. Let me check wha
 
 Done! The correct photo of you, Atrish, and Kim is now uploaded. It'll be live on **beta.truesight.me** once GitHub Pages rebuilds in a minute or two.
 
+
+### 🧑 Governor
+
+Kim holding the setup instructions sent to her phone
+
+[Attachment auto-processed: **2e4676711a094b2cab6f7b6f2425c703.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Done! The correct photo of Kim holding the setup instructions on her phone is now uploaded. It'll be live on **beta.truesight.me** shortly.
+
