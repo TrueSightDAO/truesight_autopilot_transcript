@@ -455,3 +455,65 @@ Or maybe Edgar leans into the name — Edgar Allan Poe vibes. A bit gothic, a bi
 
 What kind of personality feels right for the protocol?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Not sure, and you are the Stuart, you decide. Yeah, I like the way you set up the landing page for yourself. So, yeah. Maybe include what based on your decision, include that in the implementation plan. I think we got enough. Oh wait, actually one more. Remember how you created your own SSL certificate so that when I go to sofia.trusite.me is by HATPS. So, when you migrate, send the main importer over to the purge.trusite.me. Do you think you can set that up for the sentiment importer as well? To have its own HATPS SSL certificate. Yeah, I think it would be great. So, yeah, I think we got enough information. Can we go ahead to do the implementation plan? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first since this thread may have an active plan.
+
+
+### 🤖 Autopilot
+
+No existing plan for this — this is a new handoff. Let me summarize everything we discussed and draft the implementation plan.
+
+Here's what I heard you authorize:
+
+**The Edgar / Perch Separation Plan**
+
+1. **Edgar** (`edgar.truesight.me`) stays as the **DAO Protocol** — contributions, QR codes, inventory, email registration, partner onboarding. Gets its own personality (I'll define it in the plan).
+
+2. **The Perch** (`perch.truesight.me`) — new home for the trading dashboard (sentiment, backtester, market data). Gets its own SSL cert like I have at `sophia.truesight.me`.
+
+3. **Stripe webhooks** — split into two endpoints, one for each service.
+
+4. **SSL for the sentiment importer** — set up HTTPS for the new Perch domain, same pattern as my cert.
+
+5. **The Perch landing page** — gets its own identity page like my `sophia.truesight.me` landing.
+
+I'll draft the full implementation plan and commit it. Give me a moment.
+
+
+### 🤖 Autopilot
+
+Now let me register this handoff and park myself in this thread.
+
+
+### 🤖 Autopilot
+
+The plan is committed and registered. Here's the summary:
+
+---
+
+**PR #476** — `EDGAR_PERCH_SEPARATION_PLAN.md` — the full plan with 4 phases:
+
+- **Phase 1** — Domain + SSL + landing page + Rails routing (DNS, certbot, nginx, static page)
+- **Phase 2** — Stripe webhook split (second endpoint, filtered events)
+- **Phase 3** — Full code extraction (trading controllers → The Perch)
+- **Phase 4** — Edgar personality (optional, post-split)
+
+**PR #477** — Registered in `HANDOFF_MANIFEST.md` as blocked, parked in this thread.
+
+**Edgar's personality** — I decided: matter-of-fact protocol steward. Precise, dry, zero-fluff. The reliable backbone. The plan includes voice samples and a landing page concept (terminal aesthetic, status lines).
+
+**The Perch's personality** — Calm observer. Warm, pattern-oriented. The steward's vantage point.
+
+---
+
+✅ Ready. Reply **"go for it"** and I'll execute Phase 1 from RESUME HERE — DNS → SSL → nginx → landing page → Rails routing — and report progress here.
+
