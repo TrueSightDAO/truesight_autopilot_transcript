@@ -2039,3 +2039,60 @@ I'd suggest we:
 
 What do you think? And what are the two email addresses?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] Those are the two email addresses
+Kim 
+
+(k.johnsoki@gmail.com)
+
+Artish
+
+(artish2008@gmail.com)
+
+
+### 🤖 Autopilot
+
+Got the two emails. Let me check how the QR code landing page flow works and register them properly.
+
+
+### 🤖 Autopilot
+
+I see — the Email360 system uses a Google Sheet workbook for newsletter subscribers. Let me check how to add subscribers directly.
+
+
+### 🤖 Autopilot
+
+I can see the schema. The Main Ledger has an "Agroverse News Letter Subscribers" sheet with columns: Email, Status, Created Date, Imported Date, Source. Let me add Kim and Artish with source = "SF Tech Fest 2026" and associate them with the QR code.
+
+
+### 🤖 Autopilot
+
+I can see the sheet. Let me add Kim and Artish as subscribers with source "SF Tech Fest 2026" and associate them with the QR code `SFTF_FR_20260612_2`. I'll use the dao_client to submit this as a contribution event.
+
+Actually, let me just add them directly to the sheet since I can see the schema clearly.
+
+
+### 🤖 Autopilot
+
+I can't write to the sheet directly from here, but I can use the GAS web app or submit via Edgar. Let me check if there's a simpler way — I'll submit a contribution event to log this and add them to the newsletter subscribers sheet via the existing flow.
+
+Actually, the simplest approach: let me just note what needs to happen and we can discuss the best way to register them.
+
+Here's what I'm thinking:
+
+**Kim** — k.johnsoki@gmail.com
+**Artish** — artish2008@gmail.com
+
+**Option A:** Add them directly to the "Agroverse News Letter Subscribers" sheet with:
+- Status: PENDING (or CONFIRMED since they gave emails in person)
+- Source: "SF Tech Fest 2026"
+- QR Code association: SFTF_FR_20260612_2
+
+**Option B:** Register them via the same flow as if they scanned the QR — which would trigger the Email360 retention loop automatically.
+
+**Option C:** Log them as a `[CONTRIBUTION EVENT]` first, then add to the subscribers list.
+
+Which approach do you prefer? And should they go in as PENDING (needs confirmation email) or CONFIRMED (since they gave emails directly at the booth)?
+
