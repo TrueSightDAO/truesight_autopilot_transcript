@@ -501,3 +501,73 @@ But if you'd prefer **everything** to go through dao_protocol and have it handle
 **✅ Done this turn — actions taken:**
 • `ssh run` → grep -n "location\|proxy_pass\|root\|try_files" /etc/nginx/sites-available/edgar.conf
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] yes everything moved to dao_protocol to ensure total clean separation
+
+
+### 🤖 Autopilot
+
+Agreed. Let me move the Rails routes to dao_protocol so nginx only talks to one backend.
+
+First, let me check what dao_protocol's FastAPI server looks like to understand how to add the proxy and ping endpoints.
+
+
+### 🤖 Autopilot
+
+There's already a `proxy` router! Let me check it.
+
+
+### 🤖 Autopilot
+
+There's already a proxy router in dao_protocol! Let me check the GAS upstreams config.
+
+
+### 🤖 Autopilot
+
+The dao_protocol already has the proxy router and GAS upstreams — it's just missing `programRegistrations` too. And the health router is already there. Let me check the health route.
+
+
+### 🤖 Autopilot
+
+The health router already has `/ping` but only handles GET, not HEAD. Let me now:
+
+1. Add `programRegistrations` to dao_protocol's GAS upstreams
+2. Add HEAD support to `/ping`
+3. Update nginx to route everything to dao_protocol
+
+
+### 🤖 Autopilot
+
+Now add HEAD support to `/ping`:
+
+
+### 🤖 Autopilot
+
+Now restart dao_protocol:
+
+
+### 🤖 Autopilot
+
+FastAPI doesn't like the union return type. Let me fix it properly.
+
+
+### 🤖 Autopilot
+
+Both GET and HEAD work on dao_protocol. Now let me also verify the proxy works:
+
+
+### 🤖 Autopilot
+
+The old process is still running. Let me kill it and restart.
+
+
+### 🤖 Autopilot
+
+The environment is set to `development` but the Stripe key is a live key. Let me check the config.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×28 → find /home/ubuntu/dao_protocol/.venv -path "*/truesight_dao_client/server/*" -name "*.py" 2>/dev/null | head -10; find /home/ubuntu/dao_prot; find /home/ubuntu/dao_protocol/.venv -name "*.py" -path "*/site-packages/*" 2>/dev/null | grep -i "dao\|server\|main\|fastapi\|uvicorn" | he; pip3 show truesight-dao-client 2>/dev/null || /home/ubuntu/dao_protocol/.venv/bin/pip show truesight-dao-client 2>/dev/null; …(+24 more)
+
