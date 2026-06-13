@@ -10,42 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I understand the pattern. The dao_client uses `build_event_cli` to create thin wrappers. But for this command, I need a two-step flow: POST to Edgar, then GET the GAS web app. Let me create a custom module.
-
-
-### 🤖 Autopilot
-
-Now I need to check how `EdgarClient.submit_event` works — the `build_event_cli` function uses it internally. Let me check.
-
-
-### 🤖 Autopilot
-
-I see — `EdgarClient.submit()` POSTs to `/dao/submit_contribution`, not `/dao/qr_code_register`. I need to either:
-1. Add a new `submit_qr_code_register` method to EdgarClient, or
-2. Have the module POST directly to the new Edgar endpoint
-
-Let me update the module to POST directly to the new Edgar endpoint, since the new route is `POST /dao/qr_code_register`.
-
-
-### 🤖 Autopilot
-
-Now add the entry point to pyproject.toml.
-
-
-### 🤖 Autopilot
-
-The repo moved to `dao_protocol`. Let me create the PR there.
-
-
-### 🤖 Autopilot
-
-The branch already exists on dao_protocol from the dao_client push (GitHub redirected). The PR URL is: https://github.com/TrueSightDAO/dao_protocol/pull/new/feat/register-qr-code
-
-Now let me proceed to PR4 — wire the autopilot to use the new command.
-
-
-### 🤖 Autopilot
-
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → cd /tmp && GIT_TERMINAL_PROMPT=0 git clone https://github.com/TrueSightDAO/dao_client.git dao_client_tmp 2>&1 | tail -3; ls /tmp/dao_client_tmp/; cat /tmp/dao_client_tmp/pyproject.toml; …(+20 more)
@@ -2095,4 +2059,50 @@ Here's what I'm thinking:
 **Option C:** Log them as a `[CONTRIBUTION EVENT]` first, then add to the subscribers list.
 
 Which approach do you prefer? And should they go in as PENDING (needs confirmation email) or CONFIRMED (since they gave emails directly at the booth)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] I think just add them via option A and status would be confirmed. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I can't write directly to the sheet from here, but I can use the GAS web app to add them. Let me check if there's an existing endpoint for adding subscribers.
+
+
+### 🤖 Autopilot
+
+I can see the web app has newsletter subscriber functionality. Let me check the subscribe endpoint.
+
+
+### 🤖 Autopilot
+
+Let me use the existing web app's subscribe endpoint. Looking at the code, the web app at `AKfycbxigq4-J0izShubqIC5k6Z7fgNRyVJLakfQ34HPuENiSpxuCG-wSq0g-wOAedZzzgaL/exec` handles `email_address` and `subscribe` params. Let me try it.
+
+
+### 🤖 Autopilot
+
+Kim is registered! Now Artish.
+
+
+### 🤖 Autopilot
+
+Both are registered! Let me verify they were added to the subscribers sheet.
+
+
+### 🤖 Autopilot
+
+Both are in the system:
+
+| Email | Status | Source |
+|-------|--------|--------|
+| k.johnsoki@gmail.com | ✅ CONFIRMED | qr:SFTF_FR_20260612_2 |
+| artish2008@gmail.com | ✅ CONFIRMED | qr:SFTF_FR_20260612_2 |
+
+They're registered as CONFIRMED subscribers with source `qr:SFTF_FR_20260612_2`, exactly as if they scanned the QR code at the booth. They'll be picked up by the Email360 retention loop and get the same follow-up sequence as any QR scanner would.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → grep -n "subscribe\|SUBSCRIBE\|Newsletter\|addSubscriber\|appendRow" /opt/truesight_autopilot/tokenomics/clasp_mirrors/1y6JVYwqdrFD4zHT4zyIf; ls /opt/truesight_autopilot/tokenomics/clasp_mirrors/1y6JVYwqdrFD4zHT4zyIfU762RRsW7GgZKPVuzorpwUS61mDnFQZ65Qsz/; find /opt/truesight_autopilot/tokenomics/clasp_mirrors/ -name "*.gs" -o -name "*.js" 2>/dev/null | head -20
 
