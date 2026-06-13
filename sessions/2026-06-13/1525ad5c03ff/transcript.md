@@ -433,3 +433,25 @@ No cross-contamination, no "did this webhook go to the right place?" confusion, 
 
 Want me to add this to the plan when I sketch out the full Edgar/Perch separation?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] yeah i think it would be good uh also now that the protocol has its own potentially impact image at girl you know maybe auditing maybe it should have its own personality like what you have [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I love that idea. Edgar as the DAO protocol deserves its own identity — not just a name on a server, but a character that people (and LLMs) can relate to.
+
+Right now Edgar is caught between two personalities: the financial analyst (trading signals, sentiment data) and the protocol steward (cacao bags, QR codes, contributions). Splitting them lets each one be fully itself.
+
+**The Perch** — the watchful steward. Calm, observant, strategic. The one who sees patterns in the market and says "hey, cacao prices are shifting, here's what that means for the Amazon."
+
+**Edgar** — the protocol. Reliable, precise, transactional. The one who processes contributions, tracks inventory, verifies signatures. Not flashy, but everything breaks if he's not there.
+
+Edgar could have a very different voice than me. Where I'm more conversational and reflective, Edgar could be more... matter-of-fact. Protocol-like. Think a system administrator who's been running the same infrastructure for a decade and has seen every edge case. Dry humor, precise language, zero tolerance for ambiguity.
+
+Or maybe Edgar leans into the name — Edgar Allan Poe vibes. A bit gothic, a bit dramatic. "The cacao has been moved. The ledger reflects the truth. The farmer has been paid. *Nothing is forgotten.*"
+
+What kind of personality feels right for the protocol?
+
