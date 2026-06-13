@@ -416,3 +416,20 @@ You set this up in the Stripe Dashboard under **Developers → Webhooks**, or vi
 
 Is this for splitting the Stripe traffic as part of the Edgar/Perch separation?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Yeah, I think cleaner isn't it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Much cleaner. Right now the Stripe webhook goes to Edgar, which handles both cacao checkout events AND... whatever Stripe events the trading side needs. Splitting them means:
+
+- **Edgar** handles checkout completions, subscription payments, refunds — the operational cacao business flow
+- **The Perch** handles its own Stripe events — whatever financial signals it needs (payouts, balance transactions, etc.)
+
+No cross-contamination, no "did this webhook go to the right place?" confusion, and each service only listens for the events it actually cares about.
+
+Want me to add this to the plan when I sketch out the full Edgar/Perch separation?
+
