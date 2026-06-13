@@ -388,3 +388,74 @@ Since this is the `truesight_autopilot` repo (my own code), per the rules I can'
 • `ssh run` ×4 → find / -maxdepth 3 -name "truesight_autopilot" -type d 2>/dev/null | head -5; ls /opt/truesight_autopilot/; grep -rl "voice\|tts\|sendVoice\|speech\|elevenlabs\|openai.*audio" /opt/truesight_autopilot/app/ 2>/dev/null | head -20; …(+1 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/190
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] So, if I just simply attach an attachment and just send over then I don't really think there's a need for a voice response, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a good point. If you just send a photo or file with no text, a voice reply would be weird — there's nothing to respond to verbally. Let me refine the PR to only send voice when there's actual text content in the reply worth speaking.
+
+
+### 🤖 Autopilot
+
+Let me look at the exact section around line 1154 where the voice reply decision happens.
+
+
+### 🤖 Autopilot
+
+Now I see the two places where voice reply is gated by `is_voice`:
+
+1. **Line ~1154** — in the attachment-handling branch
+2. **Line ~1220** — in the main text/voice branch
+
+The fix is simple: change the condition from `if is_voice and response` to `if response and (is_voice or text)` — but with the nuance that if there's only an attachment and no text, we skip voice. Let me also check the attachment branch more carefully.
+
+
+### 🤖 Autopilot
+
+Good. Now I see the full picture. The logic is:
+
+- **Attachment with no text** (just a photo/file): `text` is empty, `caption` might be empty too. Voice reply doesn't make sense here.
+- **Attachment with text** (photo + caption, or file + message): `text` has content. Voice reply makes sense.
+- **Plain text message**: Voice reply makes sense.
+- **Voice message**: Already handled.
+
+The clean rule: **send voice reply when there's meaningful text content in the response AND the user included text (or voice) — skip when it's just a silent attachment drop.**
+
+Let me update the PR with this refined logic.
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Let me update the PR with the refined logic. The rule will be: **send voice reply when the user included text content** (typed text, voice message, or caption on an attachment) — skip voice when it's just a bare file drop with no words.
+
+
+### 🤖 Autopilot
+
+Let me check the exact whitespace around that section.
+
+
+### 🤖 Autopilot
+
+The issue is the `transcribed_text = ""` line between them. Let me fix the search strings.
+
+
+### 🤖 Autopilot
+
+PR #191 is open with the refined logic. Here's the summary:
+
+**New behavior:**
+- **Typed text** → voice reply ✅
+- **Voice message** → voice reply ✅ (same as before)
+- **Photo/file with caption** → voice reply ✅
+- **Bare photo/file with no text** → text only, no voice ❌
+
+Since this is my own repo, I can't self-merge. Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → sed -n '1140,1170p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1170,1210p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1210,1260p' /opt/truesight_autopilot/app/telegram_adapter.py; …(+4 more)
+
