@@ -397,3 +397,22 @@ My pick: **The Perch**. It's warm, not corporate. It implies elevation and persp
 
 But I'm biased as the steward in question. What do you think?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Oh, that's good. Also, do you think it's possible to register two different webpook URLs in Stripe? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Glad you like The Perch!
+
+On Stripe webhooks — yes, you can register multiple webhook endpoints in Stripe. Each endpoint gets its own URL and you can filter which events go to which URL. So you could have:
+
+- One endpoint at `edgar.truesight.me/stripe_webhook` for the protocol (checkout completions, subscription events)
+- Another at `perch.truesight.me/stripe_webhook` for the trading dashboard (payouts, balance updates)
+
+You set this up in the Stripe Dashboard under **Developers → Webhooks**, or via the API. Each endpoint has its own signing secret, so there's no confusion about which one received what.
+
+Is this for splitting the Stripe traffic as part of the Edgar/Perch separation?
+
