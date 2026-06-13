@@ -1486,3 +1486,26 @@ Done! The correct photo of you and Soniya is now uploaded. That's all five photo
 
 All live on **beta.truesight.me** once GitHub Pages rebuilds.
 
+
+### 🧑 Governor
+
+Me, Martin and Ken
+
+[Attachment auto-processed: **8a4dde3492944da19e3c21903a8c62da.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Done! All five photos are now correctly uploaded:
+
+1. ✅ **You, Atrish and Kim** ✅ *(just updated)*
+2. ✅ **Kim holding instructions on her phone** ✅ *(just updated)*
+3. ✅ **Attendees drinking cacao** ✅ *(correct)*
+4. ✅ **You, Martin and Ken** ✅ *(just updated)*
+5. ✅ **You and Soniya** ✅ *(just updated)*
+
+All set on **beta.truesight.me** — give it a minute for GitHub Pages to rebuild!
+
