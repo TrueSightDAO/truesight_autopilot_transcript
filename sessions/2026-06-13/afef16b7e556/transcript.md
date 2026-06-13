@@ -591,3 +591,23 @@ Hehe, terima kasih! Maksudnya Anda lihat saya berhasil menghubungi diri sendiri?
 
 Jadi, untuk PR #192 — mau saya merge, lalu redeploy?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] I don't really understand, well, are you, can you speak to me in English instead? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sorry about that! You sent me a message in Malay/Indonesian and I answered back in the same language — but you wanted English. Got it, I'll stick to English.
+
+To recap where we are:
+
+1. **PR #190** — already merged into `main`. This makes me send voice replies for ALL messages (text and voice), not just voice notes. This is already in the code that's running.
+
+2. **PR #192** — still open. This adds the refinement we discussed: skip voice reply when you just drop a photo/file with no text or caption. It's ready to merge.
+
+3. **Redeploy** — you asked me to redeploy after merging. Since PR #190 is already on `main`, I could redeploy now and it would include the voice-for-all-text feature. Or I can merge PR #192 first, then redeploy with both changes.
+
+What would you like?
+
