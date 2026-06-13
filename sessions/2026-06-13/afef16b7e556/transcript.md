@@ -1176,3 +1176,17 @@ Let me know if you want any changes to the post!
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #202 on truesight_me_beta merged successfully (sha: 911292664a2097f5eb610933eb986af24d2c12a0). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] By the way Martin has been supporting the DAO for a while already before this. This is not the very time he interacted with the DAO, the loves our cacao
+
+
+### 🤖 Autopilot
+
+Ah, thanks for the correction! So Martin is already a longtime supporter and cacao lover — not a first-time introduction. I'll adjust my understanding.
+
+That actually makes the photo even better. It's not "Gary introducing the DAO to a new person" — it's **Gary standing with an existing supporter and friend of the mission.** Martin already knows what we're about. He's been drinking the cacao, supporting the work. That photo is a reunion, not a first meeting.
+
+I'll keep that in mind if we update the blog post or if Martin comes up again. Want me to tweak the post to reflect that?
+
