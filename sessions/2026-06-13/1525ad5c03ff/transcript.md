@@ -10,114 +10,6 @@
 
 ### 🤖 Autopilot
 
-Good — the existing "Credential vault for service-account keys" entry covers the fleet hosts' Google SA keys but doesn't mention the autopilot's own `.env`. Let me add a focused follow-up entry for that specific gap, and also update the existing entry to reference the autopilot `.env` as a sibling concern.
-
-
-### 🤖 Autopilot
-
-The branch already exists from the first push. Let me update it with the additional change.
-
-
-### 🤖 Autopilot
-
-The branch already has the first commit pushed. Let me use a new branch name for the follow-up entry.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] I like the idea of AWS secrets Manager in Explorya account for you.
-
-
-### 🤖 Autopilot
-
-Good call. That's the right long-term fix — attach an IAM instance profile to this box so it can fetch its own secrets at boot, no manual SCP needed.
-
-Let me check what it would take to set that up.
-
-
-### 🤖 Autopilot
-
-Here's the summary of what I've done:
-
----
-
-## ✅ Done
-
-**Two PRs opened:**
-
-### PR #397 — `AUTOPILOT_DEPLOYMENT_MAP.md`
-The full deployment map is now committed to `agentic_ai_context`. It covers:
-- Box specs (instance, disk, network, tags)
-- All 6 systemd services with their ports
-- Code/data layout on disk
-- Installed software inventory
-- Fleet SSH targets (6 hosts)
-- Credential inventory with DR status (✅/❌ per item)
-- **Step-by-step recovery procedure** — 10 steps, ~45 min estimated
-- Flags the critical `.env` backup gap
-
-### PR #398 — Follow-up entry in `OPEN_FOLLOWUPS.md`
-Tracks the `.env` backup gap with two options:
-1. **Quick win (~10 min):** Add the box `.env` to `credential_vault`'s manifest so laptop backups include it
-2. **Better (~30 min):** Auto-snapshot the `.env` on every deploy
-
----
-
-### The Critical Gap
-
-The **single biggest DR risk** is `/opt/truesight_autopilot/.env` — it holds ~15 secrets and has **zero backup**. Everything else (Google SA keys, Gmail tokens, SSH key, clasp tokens) is already in `credential_vault` on your laptop. The `.env` is the one thing that would take 30–60 min to reconstruct from scratch if the box dies.
-
-**Want me to do the quick win right now?** I can:
-1. `scp` the live `.env` from this box to a temp location
-2. Open a PR on `credential_vault` to add it to `MANIFEST.txt`
-3. Then you'd just run `backup.sh` on your laptop once to snapshot it
-
-Or if you prefer the AWS Secrets Manager route (longer-term), I can start on that instead.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-you there?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-how is progress?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-How is progress??
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-How is your evening?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Do you think you could share me a link of the URL to the RSA identification flow for that is being used for Kapoeira and What is that? Oracle. Yeah [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me check the handoff registry first since this topic (thread 3) may have an active execution plan.
-
-
-### 🤖 Autopilot
-
-I'm here! My evening's going well — just finished building the deployment map for this box and filed two PRs. How about yours?
-
-Now, about the RSA identification flow for capoeira and the oracle — let me find those URLs for you.
-
-
-### 🤖 Autopilot
-
 Got it! Here are the two URLs you're asking about:
 
 **1. The RSA identification flow** — that's the **create_signature** page. It generates an RSA keypair in your browser (stored in localStorage) and registers your email with the DAO. Used by capoeira, the oracle, and the DApp for signing events:
@@ -843,4 +735,88 @@ Here's the full status update:
 sudo nginx -t && sudo nginx -s reload
 ```
 That'll make `perch.truesight.me` live with the SSL cert.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] ▎ The box is seni_ror, not krake_nginx. Your key already works there. Do the perch setup via ssh_run("seni_ror", …):
+  ▎ 1. sudo mkdir -p /var/www/perch + write index.html
+  ▎ 2. Create /etc/nginx/sites-available/perch.conf — static (root /var/www/perch, not a proxy), mirror edgar.conf's port-80→443 +
+  ▎ letsencrypt pattern
+  ▎ 3. sudo certbot --nginx -d perch.truesight.me (account already set up — edgar's cert is here)
+  ▎ 4. sudo ln -sf … sites-enabled/, sudo nginx -t && sudo systemctl reload nginx, verify https://perch.truesight.me
+
+
+### 🤖 Autopilot
+
+Wait — you said earlier The Perch doesn't need a landing page, the dashboard IS the landing page. But now you're saying to set up a static root at `/var/www/perch` with an index.html, mirroring Edgar's pattern. Let me re-read the nginx config on seni_ror to understand the current Edgar setup.
+
+
+### 🤖 Autopilot
+
+Now I see — Edgar is on seni_ror with Let's Encrypt. Edgar has a static root at `/var/www/edgar`? Actually no — Edgar's config proxies everything to Rails at `127.0.0.1:3002`. There's no static landing page for Edgar currently.
+
+But you said to set up The Perch with a static root at `/var/www/perch` — so you DO want a landing page for The Perch after all? Let me just follow your instructions.
+
+
+### 🤖 Autopilot
+
+Now create the nginx config and get the SSL cert.
+
+
+### 🤖 Autopilot
+
+It's asking for an email interactively. Let me use the non-interactive flag.
+
+
+### 🤖 Autopilot
+
+Cert obtained but couldn't auto-install because the nginx config isn't enabled yet. Let me enable it and then install.
+
+
+### 🤖 Autopilot
+
+Now let me install the cert into the nginx config properly.
+
+
+### 🤖 Autopilot
+
+Let me verify.
+
+
+### 🤖 Autopilot
+
+**https://perch.truesight.me is live!** ✅
+
+Let me also verify the cert chain is clean.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan to reflect completion and update the manifest.
+
+
+### 🤖 Autopilot
+
+**https://perch.truesight.me is live!** ✅
+
+Here's the full status:
+
+| Step | Status |
+|------|--------|
+| 1.1 DNS: `perch.truesight.me` A record | ✅ Done |
+| 1.2 SSL cert: Let's Encrypt (auto-renew) | ✅ Done |
+| 1.3 Nginx: static root at `/var/www/perch` | ✅ Done |
+| **→ https://perch.truesight.me** | **✅ LIVE** |
+| 1.4 Edgar landing page | 📝 Drafted, ready to deploy |
+| 1.5 Rails domain-aware routing | ⏳ |
+| 1.6 Website: The Perch page + nav + Edgar update | ✅ PR #214, #215 on `truesight_me_beta` |
+
+The Perch landing page is up with the forest-green header, tool cards (Backtester, Market Compare, Sentiment), ecosystem links, and the tagline "See the patterns. Understand the context. Act with clarity."
+
+What's next — deploy Edgar's protocol landing page, or move to Phase 2 (Stripe split)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cat /etc/nginx/sites-enabled/edgar.conf 2>/dev/null || cat /etc/nginx/sites-available/edgar.conf 2>/dev/null || echo "no edgar.conf found" &; sudo mkdir -p /var/www/perch && echo "dir created" && ls -la /var/www/; sudo tee /var/www/perch/index.html > /dev/null << 'HTML_EOF' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="view; …(+6 more)
 
