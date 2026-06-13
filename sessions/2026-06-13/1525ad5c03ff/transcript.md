@@ -10,75 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now update Edgar's nginx config — flip the catch-all `/` to serve the static landing page, and keep all the specific path proxies to dao_protocol.
-
-
-### 🤖 Autopilot
-
-Let me also verify the specific endpoints still work through Edgar.
-
-
-### 🤖 Autopilot
-
-Both domains are working correctly now:
-
-- **https://edgar.truesight.me** → terminal-aesthetic protocol landing page (static) + dao_protocol Python server for all API endpoints ✅
-- **https://perch.truesight.me** → Rails sentiment_importer trading dashboard ✅
-
-The split is clean. Want me to move to Phase 2 (Stripe webhook split) next?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cat /etc/nginx/sites-enabled/edgar.conf; curl -s -o /dev/null -w "%{http_code}" http://172.31.23.207:8010/ 2>/dev/null; echo ""; curl -s http://172.31.23.207:8010/ 2>/dev/null | hea; sudo mkdir -p /var/www/edgar && echo "dir created"; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] I think color theme of https://edgar.truesight.me/ should be similar to truesight.me and sophia.truesight.me isnt it?
-
-
-### 🤖 Autopilot
-
-You're right — the terminal aesthetic is cool but it doesn't match the brand. Let me check sophia's theme for reference.
-
-
-### 🤖 Autopilot
-
-Got it — the brand theme is warm: cream background (`#f7f1e8`), saffron accent (`#f4a300`), forest green (`#5f6f52`), clay (`#c08457`), dark text (`#2b1d14`). Let me update Edgar's landing page to match.
-
-
-### 🤖 Autopilot
-
-Much better. Now it matches the brand — cream background, forest green header, saffron accents on hover, Space Grotesk font. Same family as truesight.me and sophia.truesight.me.
-
-Here's the current state:
-
-| Domain | Serves | Looks like |
-|--------|--------|------------|
-| **edgar.truesight.me** | Protocol landing page + dao_protocol API | ✅ Brand theme (cream/forest/saffron) |
-| **perch.truesight.me** | Rails sentiment_importer dashboard | ✅ Full trading UI |
-
-What's next? Phase 2 — Stripe webhook split?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] I think for each call listed on https://edgar.truesight.me/
-
-It should list the different types of signature accepted isnt it?
-
-
-### 🤖 Autopilot
-
-Good idea — each endpoint should show what signature/auth it accepts. Let me check what the actual endpoints expect.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. All endpoints use **RSA-2048 with SHA-256** (RSASSA-PKCS1-v1_5) — the digital signature IS the authentication. Let me update the landing page to show this.
 
 
@@ -518,4 +449,55 @@ Also — anyone who has `localStorage.routesMode = 'proxy'` set in their browser
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → grep -n "GAS_UPSTREAMS" /var/www/sentiment_importer/releases/*/app/controllers/proxy_controller.rb 2>/dev/null | head -3 || find /var/www/se; find / -name "proxy_controller.rb" 2>/dev/null | head -5; grep -n "programRegistrations\|GAS_UPSTREAMS\|shipping" /home/ubuntu/sentiment_importer/app/controllers/proxy_controller.rb; …(+16 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] but doesnt anything hitting edgar hit dao_protocol python server box at this point or is my understanding wrong?
+
+
+### 🤖 Autopilot
+
+Your understanding is correct for the **catch-all** — anything that doesn't match a specific `location` block in nginx goes to dao_protocol. But I added explicit `location` blocks for the Rails routes (`/ping`, `/proxy/gas/`, `/webhook`) that route to Rails on `:3002` instead.
+
+Let me show you the current nginx config so you can see exactly what routes where:
+
+
+### 🤖 Autopilot
+
+So the routing is:
+
+**→ Rails (`127.0.0.1:3002` — same box):**
+- `GET /ping` (and HEAD)
+- `/proxy/gas/*` (all GAS proxy calls)
+- `/webhook`, `/webhook_cities`
+
+**→ dao_protocol (`172.31.23.207:8010` — separate box):**
+- `/dao/*` (submit_contribution, verify-signature, check_digital_signature)
+- `/qr-code-check`
+- `/link-email`
+- `/stripe_webhook`
+- `/newsletter/*`
+- `/email_agent/*`
+- `/agroverse_shop/shipping_rates`
+- `/dao-protocol/*`
+- **Catch-all** (everything else)
+
+So the DApp's Edgar calls route like this:
+
+| DApp call | Goes to |
+|-----------|---------|
+| `edgar.truesight.me/ping` (HEAD) | **Rails** (:3002) ✅ |
+| `edgar.truesight.me/dao/submit_contribution` | **dao_protocol** (:8010) ✅ |
+| `edgar.truesight.me/proxy/gas/programRegistrations` | **Rails** (:3002) → GAS ✅ |
+
+The reason I kept `/proxy/gas/` on Rails is because the proxy controller has the GAS allowlist logic, URL rewriting, and error handling already built. Moving it to dao_protocol would mean duplicating all that. Same for `/ping` — Rails handles HEAD properly on GET routes.
+
+But if you'd prefer **everything** to go through dao_protocol and have it handle the GAS proxying too, we can do that — it just means adding the proxy logic to the Python server. Your call.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep -n "location\|proxy_pass\|root\|try_files" /etc/nginx/sites-available/edgar.conf
 
