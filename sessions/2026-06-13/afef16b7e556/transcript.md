@@ -1463,3 +1463,26 @@ Kim holding the setup instructions sent to her phone
 
 Done! The correct photo of Kim holding the setup instructions on her phone is now uploaded. It'll be live on **beta.truesight.me** shortly.
 
+
+### 🧑 Governor
+
+Me and Soniya
+
+[Attachment auto-processed: **0ae6a79fc35b40569c2aae984d1fd43a.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Done! The correct photo of you and Soniya is now uploaded. That's all five photos corrected now:
+
+1. ✅ **You, Atrish and Kim** — just updated
+2. ✅ **Kim holding instructions on her phone** — just updated
+3. ✅ **Attendees drinking cacao** — correct
+4. ✅ **You, Martin and Ken** — correct
+5. ✅ **You and Soniya** — just updated
+
+All live on **beta.truesight.me** once GitHub Pages rebuilds.
+
