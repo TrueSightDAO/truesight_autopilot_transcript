@@ -10,54 +10,6 @@
 
 ### 🤖 Autopilot
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×24 → cd /tmp && GIT_TERMINAL_PROMPT=0 git clone https://github.com/TrueSightDAO/dao_client.git dao_client_tmp 2>&1 | tail -3; ls /tmp/dao_client_tmp/; cat /tmp/dao_client_tmp/pyproject.toml; …(+20 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=7] [Handoff context — this Telegram topic (thread 7) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-what next?
-
-
-### 🤖 Autopilot
-
-I was in the middle of PR4 — wiring the autopilot to use the new `register_qr_code` command. Let me check where I left off.
-
-I had cloned the autopilot repo and was examining the canonical labels in `main.py` to understand how to add the QR code registration event. Let me continue.
-
-
-### 🤖 Autopilot
-
-The autopilot doesn't have any QR code registration logic yet. I need to add:
-1. The `QR CODE REGISTRATION` event to `_CANONICAL_LABELS`
-2. Field aliases for the QR registration fields
-3. A handler that calls the dao_client command
-
-Let me look at how the existing `submit_dao_event` function works.
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. I need to:
-
-1. Add `QR CODE REGISTRATION` to `_CANONICAL_LABELS`
-2. Add field aliases for QR registration fields
-3. Add required fields validation
-4. Add the command construction in the approval flow
-
-Let me do all of this.
-
-
-### 🤖 Autopilot
-
-Now I need to add the command construction for QR code registration in the approval flow. Let me find the right spot.
-
-
-### 🤖 Autopilot
-
 I need to add a branch for `QR CODE REGISTRATION` in the command construction. Let me add it after the inventory movement block.
 
 
@@ -2105,4 +2057,32 @@ They're registered as CONFIRMED subscribers with source `qr:SFTF_FR_20260612_2`,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → grep -n "subscribe\|SUBSCRIBE\|Newsletter\|addSubscriber\|appendRow" /opt/truesight_autopilot/tokenomics/clasp_mirrors/1y6JVYwqdrFD4zHT4zyIf; ls /opt/truesight_autopilot/tokenomics/clasp_mirrors/1y6JVYwqdrFD4zHT4zyIfU762RRsW7GgZKPVuzorpwUS61mDnFQZ65Qsz/; find /opt/truesight_autopilot/tokenomics/clasp_mirrors/ -name "*.gs" -o -name "*.js" 2>/dev/null | head -20
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7] Very cool. So can you submit a contribution report on my behalf for one hour? Because I was actually there chatting with all of them and serving other cacao for around an hour. Let me know if you need a photo attachment or something. If so, then hold off and let me do the attachment first and then you submit. What do you think? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call! Let me do a dry-run first to show you what the submission will look like, then you can attach a photo if you want before I submit for real.
+
+
+### 🤖 Autopilot
+
+Here's the dry-run. The submission looks like:
+
+**Contribution:** 60 minutes | **TDG:** 100 | **Contributor:** Gary Teh
+**Description:** SF Tech Fest 2026 booth duty — served cacao, chatted with attendees, collected 2 email leads (Kim & Artish) tied to QR code SFTF_FR_20260612_2.
+
+I'd suggest:
+- If you have a **photo** of the booth or the placard on the table, attach it — it makes the contribution more solid
+- If not, the description + the fact that the QR code and subscriber records exist in the ledger is already good evidence
+
+Want to attach a photo first, or shall I submit as-is?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && PYTHONPATH=/tmp/dao_client_tmp python3 -m truesight_dao_client.modules.report_contribution \ --type "Time (Mi
 
