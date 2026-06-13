@@ -459,3 +459,107 @@ Since this is my own repo, I can't self-merge. Want me to merge it?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → sed -n '1140,1170p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1170,1210p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1210,1260p' /opt/truesight_autopilot/app/telegram_adapter.py; …(+4 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] [Handoff context — this Telegram topic (thread 780) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Perfect. Can you go ahead and redeploy now? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+First, let me merge the PR, then redeploy.
+
+
+### 🤖 Autopilot
+
+Merge conflict — PR #190 probably already changed the same lines. Let me check.
+
+
+### 🤖 Autopilot
+
+PR #190 from earlier (the first attempt at this) must have conflicted with #191. Let me resolve this by updating the branch with the latest main.
+
+
+### 🤖 Autopilot
+
+PR #190 already merged! It was the first attempt at this feature. Let me check what's on main now.
+
+
+### 🤖 Autopilot
+
+So PR #190 merged but it still has the old `is_voice` condition — it was the first attempt that didn't have the refined logic. Let me check what #190 actually changed.
+
+
+### 🤖 Autopilot
+
+PR #190 already merged and it sends voice for ALL messages (including text). But it doesn't have the refinement we discussed — skipping voice for bare attachment drops. Let me check the current state of main to see what's actually deployed.
+
+
+### 🤖 Autopilot
+
+PR #190 already merged into main and it sends voice for ALL messages. The only thing missing is the refinement we discussed — skipping voice for bare attachment drops. But since PR #190 is already on main, the current code will try to speak even for silent file drops.
+
+Let me check the attachment branch too.
+
+
+### 🤖 Autopilot
+
+So the attachment branch still has `if is_voice and response` — PR #190 only changed the main branch. Let me fix the attachment branch too to match the same logic, then redeploy.
+
+
+### 🤖 Autopilot
+
+But wait — `has_user_text` doesn't exist yet in the attachment branch's scope. Let me check.
+
+
+### 🤖 Autopilot
+
+Right — `has_user_text` was in PR #191 which never merged. The variable doesn't exist on main. Let me fix this properly — I need to add the variable AND use it.
+
+
+### 🤖 Autopilot
+
+I see the issue — the PR branch doesn't have `has_user_text` defined. Let me fix this properly by adding the variable definition in the right scope.
+
+
+### 🤖 Autopilot
+
+I need to add `has_user_text` right after `is_voice`. Let me update the PR branch.
+
+
+### 🤖 Autopilot
+
+OK, the branch doesn't have `has_user_text` yet. Let me add it now.
+
+
+### 🤖 Autopilot
+
+The sed didn't work because of the newline. Let me do it properly.
+
+
+### 🤖 Autopilot
+
+Now let me also check the attachment branch voice reply line.
+
+
+### 🤖 Autopilot
+
+Now let me run the local tests to make sure everything passes before pushing.
+
+
+### 🤖 Autopilot
+
+All 466 tests pass. Now push.
+
+
+### 🤖 Autopilot
+
+Now let me merge it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+• `ssh run` ×25 → cd /opt/truesight_autopilot && git fetch origin && git checkout main && git pull origin main; cd /opt/truesight_autopilot && git log --oneline -5; grep -n "has_user_text\|is_voice and response" /opt/truesight_autopilot/app/telegram_adapter.py; …(+22 more)
+
