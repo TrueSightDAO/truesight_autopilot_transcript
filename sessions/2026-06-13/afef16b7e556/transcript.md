@@ -1246,3 +1246,31 @@ The CNAME is `beta.truesight.me`. So the URL should be:
 
 It's returning 404 right now because GitHub Pages is still rebuilding after the merge. This usually takes 1-3 minutes. Try refreshing in a couple of minutes and it should be live!
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Yes please tweak the part about Martin
+
+
+### 🤖 Autopilot
+
+Let me update the Martin section to reflect that he's a longtime supporter, not a new introduction.
+
+
+### 🤖 Autopilot
+
+PR is open. You said to merge it, so:
+
+
+### 🤖 Autopilot
+
+Done! The Martin section now reads:
+
+> *"Martin has been supporting the DAO for a while now. He loves our cacao — he knows what we are building because he has been part of the journey. Seeing him at TECH FEST was a reunion, not a first meeting. That is what makes this community special: the people who stay."*
+
+It'll be live on **https://beta.truesight.me/blog/posts/the-joy-was-the-point.html** once GitHub Pages finishes rebuilding (1-2 min).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #203 on truesight_me_beta merged successfully (sha: 9691aaca475a43db59a0004ae40a80e62a0c70e4). Pull Request successfully merged
+
