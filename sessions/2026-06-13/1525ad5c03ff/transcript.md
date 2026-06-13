@@ -10,27 +10,6 @@
 
 ### 🤖 Autopilot
 
-No existing plan for this — this is a new handoff. Let me summarize everything we discussed and draft the implementation plan.
-
-Here's what I heard you authorize:
-
-**The Edgar / Perch Separation Plan**
-
-1. **Edgar** (`edgar.truesight.me`) stays as the **DAO Protocol** — contributions, QR codes, inventory, email registration, partner onboarding. Gets its own personality (I'll define it in the plan).
-
-2. **The Perch** (`perch.truesight.me`) — new home for the trading dashboard (sentiment, backtester, market data). Gets its own SSL cert like I have at `sophia.truesight.me`.
-
-3. **Stripe webhooks** — split into two endpoints, one for each service.
-
-4. **SSL for the sentiment importer** — set up HTTPS for the new Perch domain, same pattern as my cert.
-
-5. **The Perch landing page** — gets its own identity page like my `sophia.truesight.me` landing.
-
-I'll draft the full implementation plan and commit it. Give me a moment.
-
-
-### 🤖 Autopilot
-
 Now let me register this handoff and park myself in this thread.
 
 
@@ -637,4 +616,51 @@ Option 1 makes the split clean — Edgar = protocol, Perch = trading. But it mea
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → sudo tee /etc/nginx/sites-available/perch.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name perch.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] 1. Flip Edgar's root / to dao_protocol — so edgar.truesight.me serves the Python server directly (and the landing page I drafted)
+
+
+### 🤖 Autopilot
+
+I see — the catch-all `location /` at the bottom still proxies to Rails (`127.0.0.1:3002`). I need to flip that to dao_protocol (`172.31.23.207:8010`). But first, let me check what dao_protocol serves at `/` — is it the landing page or does it have its own root?
+
+
+### 🤖 Autopilot
+
+dao_protocol returns 404 at `/` — it doesn't serve a landing page. So I need to:
+
+1. Set up a static root for Edgar's landing page (the terminal-aesthetic one I drafted)
+2. Flip the catch-all to dao_protocol
+3. Keep the specific path proxies that already point to dao_protocol
+
+Let me create the directory and deploy the landing page, then update the nginx config.
+
+
+### 🤖 Autopilot
+
+Now update Edgar's nginx config — flip the catch-all `/` to serve the static landing page, and keep all the specific path proxies to dao_protocol.
+
+
+### 🤖 Autopilot
+
+Let me also verify the specific endpoints still work through Edgar.
+
+
+### 🤖 Autopilot
+
+Both domains are working correctly now:
+
+- **https://edgar.truesight.me** → terminal-aesthetic protocol landing page (static) + dao_protocol Python server for all API endpoints ✅
+- **https://perch.truesight.me** → Rails sentiment_importer trading dashboard ✅
+
+The split is clean. Want me to move to Phase 2 (Stripe webhook split) next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cat /etc/nginx/sites-enabled/edgar.conf; curl -s -o /dev/null -w "%{http_code}" http://172.31.23.207:8010/ 2>/dev/null; echo ""; curl -s http://172.31.23.207:8010/ 2>/dev/null | hea; sudo mkdir -p /var/www/edgar && echo "dir created"; …(+3 more)
 
