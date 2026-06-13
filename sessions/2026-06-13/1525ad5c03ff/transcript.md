@@ -10,99 +10,6 @@
 
 ### 🤖 Autopilot
 
-I see the nav is duplicated across every page. The PR I already opened updates `perch.html` and `edgar.html` with the new nav. I need to also update `index.html`, `about-us.html`, `agroverse.html`, `sunmint.html`, `programs.html`, `fundraisers.html`, `faq.html`, `members.html`, and any others that share the same nav. Let me update them all.
-
-
-### 🤖 Autopilot
-
-I see — the nav appears twice in faq.html (once in the nav and once in the footer maybe). Let me use a more specific search string.
-
-
-### 🤖 Autopilot
-
-The nav appears twice in faq.html — once in the actual nav and once somewhere else (maybe a footer or duplicate). Let me use replace_all.
-
-
-### 🤖 Autopilot
-
-Here's the full status update:
-
----
-
-## ✅ Done this session
-
-**Phase 1 progress:**
-
-| Step | Status |
-|------|--------|
-| 1.1 DNS: `perch.truesight.me` A record | ✅ Done |
-| 1.2 SSL cert: Let's Encrypt via DNS-01 | ✅ Done |
-| 1.3 Nginx config on krake-nginx | ✅ Config added, needs reload |
-| 1.4 Edgar landing page | 📝 Drafted, ready to deploy |
-| 1.5 Rails domain-aware routing | ⏳ Pending nginx reload |
-| **1.6 Website: The Perch page** | **✅ PR #214** |
-| **1.6 Website: Nav update (8 pages)** | **✅ PR #215** |
-| **1.6 Website: Edgar page updated** | **✅ PR #214** |
-
-**Two PRs open on `truesight_me_beta`:**
-- **PR #214** — New `perch.html` page + updated `edgar.html` (DAO Protocol focus)
-- **PR #215** — Navigation updated on all 8 pages to include "The Perch"
-
-**The Perch page** describes it as "A Steward's View of the Markets" — sentiment dashboard, backtester, market compare, and how it connects to the ecosystem. Links to `perch.truesight.me`.
-
-**Edgar page** now focuses on the DAO Protocol role: contributions, QR codes, identity/signatures, partner onboarding, inventory, Stripe. Links to The Perch.
-
-**Still needed from you on krake-nginx:**
-```bash
-sudo nginx -t && sudo nginx -s reload
-```
-That'll make `perch.truesight.me` live with the SSL cert.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] ▎ The box is seni_ror, not krake_nginx. Your key already works there. Do the perch setup via ssh_run("seni_ror", …):
-  ▎ 1. sudo mkdir -p /var/www/perch + write index.html
-  ▎ 2. Create /etc/nginx/sites-available/perch.conf — static (root /var/www/perch, not a proxy), mirror edgar.conf's port-80→443 +
-  ▎ letsencrypt pattern
-  ▎ 3. sudo certbot --nginx -d perch.truesight.me (account already set up — edgar's cert is here)
-  ▎ 4. sudo ln -sf … sites-enabled/, sudo nginx -t && sudo systemctl reload nginx, verify https://perch.truesight.me
-
-
-### 🤖 Autopilot
-
-Wait — you said earlier The Perch doesn't need a landing page, the dashboard IS the landing page. But now you're saying to set up a static root at `/var/www/perch` with an index.html, mirroring Edgar's pattern. Let me re-read the nginx config on seni_ror to understand the current Edgar setup.
-
-
-### 🤖 Autopilot
-
-Now I see — Edgar is on seni_ror with Let's Encrypt. Edgar has a static root at `/var/www/edgar`? Actually no — Edgar's config proxies everything to Rails at `127.0.0.1:3002`. There's no static landing page for Edgar currently.
-
-But you said to set up The Perch with a static root at `/var/www/perch` — so you DO want a landing page for The Perch after all? Let me just follow your instructions.
-
-
-### 🤖 Autopilot
-
-Now create the nginx config and get the SSL cert.
-
-
-### 🤖 Autopilot
-
-It's asking for an email interactively. Let me use the non-interactive flag.
-
-
-### 🤖 Autopilot
-
-Cert obtained but couldn't auto-install because the nginx config isn't enabled yet. Let me enable it and then install.
-
-
-### 🤖 Autopilot
-
-Now let me install the cert into the nginx config properly.
-
-
-### 🤖 Autopilot
-
 Let me verify.
 
 
@@ -479,4 +386,119 @@ The key fix was: **Rails routes** (`/ping`, `/proxy/gas/`, `/webhook`) now proxy
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → sudo tee /etc/nginx/sites-available/edgar.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name edgar.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] I think All the calls from dapp to edgar should be inspected..
+
+
+### 🤖 Autopilot
+
+You're right. Let me check what the DApp actually calls on Edgar.
+
+
+### 🤖 Autopilot
+
+The DApp repo is private. Let me check the actual DApp pages to see what they call.
+
+
+### 🤖 Autopilot
+
+The DApp repos are public. Let me check the actual DApp pages to find all Edgar calls.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. The DApp's `routes.js` defines all Edgar calls:
+
+```js
+Routes.edgar = {
+  base:   'https://edgar.truesight.me',
+  ping:   'https://edgar.truesight.me/ping',
+  submit: 'https://edgar.truesight.me/dao/submit_contribution'
+}
+```
+
+And the GAS proxy routes:
+```js
+var proxyGas = {
+  assetVerify:      PROXY_BASE + 'assetVerify',
+  qrCodes:          PROXY_BASE + 'qrCodes',
+  qrCodeGenerator:  PROXY_BASE + 'qrCodeGenerator',
+  daoForms:         PROXY_BASE + 'daoForms',
+  proposals:        PROXY_BASE + 'proposals',
+  feedback:         PROXY_BASE + 'feedback',
+  stores:           PROXY_BASE + 'stores',
+  storesHitList:    PROXY_BASE + 'storesHitList',
+  shipping:         PROXY_BASE + 'shipping',
+  programRegistrations: PROXY_BASE + 'programRegistrations'
+}
+```
+
+Let me check the Rails proxy controller to see the allowlist.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The Rails proxy allowlist has **9 entries** but `routes.js` defines **10** — `programRegistrations` is missing from the Rails allowlist! That's why it returns 404.
+
+Here's the complete inventory of all DApp → Edgar calls:
+
+**Direct Edgar endpoints (from `routes.js`):**
+1. `GET /ping` — health check (DApp sends HEAD)
+2. `POST /dao/submit_contribution` — all signed events
+
+**GAS proxy endpoints (via `/proxy/gas/<name>`):**
+3. `assetVerify` — ✅ in Rails allowlist
+4. `qrCodes` — ✅ in Rails allowlist
+5. `qrCodeGenerator` — ✅ in Rails allowlist
+6. `daoForms` — ✅ in Rails allowlist
+7. `proposals` — ✅ in Rails allowlist
+8. `feedback` — ✅ in Rails allowlist
+9. `stores` — ✅ in Rails allowlist
+10. `storesHitList` — ✅ in Rails allowlist
+11. `shipping` — ✅ in Rails allowlist
+12. `programRegistrations` — ❌ **MISSING from Rails allowlist!**
+
+Let me fix the missing allowlist entry and also add the HEAD method support for `/ping`.
+
+
+### 🤖 Autopilot
+
+The sentiment_importer is a private repo and I can't push to it directly. Let me check if the HEAD /ping issue is actually still a problem now that we're routing it to Rails.
+
+
+### 🤖 Autopilot
+
+`HEAD /ping` is working now (200) — Rails handles it properly. The only remaining issue is the `programRegistrations` GAS endpoint missing from the allowlist. Since `sentiment_importer` is private, I can't open a PR there directly, but I can describe the fix.
+
+Here's the full audit of all DApp → Edgar calls and their status:
+
+| Route | Method | Backend | Status |
+|-------|--------|---------|--------|
+| `/ping` | HEAD | Rails | ✅ 200 |
+| `/dao/submit_contribution` | POST | dao_protocol | ✅ |
+| `/proxy/gas/assetVerify` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/qrCodes` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/qrCodeGenerator` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/daoForms` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/proposals` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/feedback` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/stores` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/storesHitList` | GET/POST | Rails → GAS | ✅ |
+| `/proxy/gas/shipping` | GET/POST | Rails → GAS | ✅ |
+| **`/proxy/gas/programRegistrations`** | GET/POST | Rails → GAS | ❌ **404 — missing from allowlist** |
+
+The fix needed is in `sentiment_importer/app/controllers/proxy_controller.rb` — add this line to `GAS_UPSTREAMS`:
+
+```ruby
+'programRegistrations' => 'https://script.google.com/macros/s/AKfycbyxwkIp6Yn79YIuHCPmZ36J7dwIi7K8BLiUBj4qGm5RxSKta77sXRQf1M0wKuEBRbJW/exec'
+```
+
+Want me to SSH into seni_ror and add it directly to the Rails code on the server? Or would you rather handle it through the repo?
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → Fix agent failed to produce a PR.
 
