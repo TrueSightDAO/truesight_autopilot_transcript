@@ -10,152 +10,6 @@
 
 ### 🤖 Autopilot
 
-Here's the status:
-
----
-
-## ✅ Done (from here)
-
-**Step 1 — DNS:** `perch.truesight.me` → `54.211.179.126` (same as Edgar). Record created in Route53. It'll propagate in a minute or two.
-
-**Landing page:** Built and ready — forest-green header, "A steward's view of the markets", links to Backtester / Market Compare / Sentiment, plus links to Edgar and the DAO.
-
----
-
-## 👆 Needs you on krake-nginx
-
-I can't SSH into `krake-nginx` (port 2202) — my key isn't authorized there. Here's what I need you to run:
-
-**1. Create the landing page directory and file:**
-```bash
-sudo mkdir -p /var/www/perch
-```
-
-Then paste the HTML I just drafted into `/var/www/perch/index.html`.
-
-**2. Get the SSL cert:**
-```bash
-sudo certbot --nginx -d perch.truesight.me
-```
-
-**3. Create the nginx config:**
-Save the nginx config I drafted above as `/etc/nginx/sites-available/perch`, then:
-```bash
-sudo ln -sf /etc/nginx/sites-available/perch /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-```
-
-**4. Test it:**
-Visit `https://perch.truesight.me` — should show the landing page with a valid SSL cert.
-
-Want me to write the landing page HTML and nginx config to files on this box so you can SCP them over?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×11 → ls /etc/nginx/sites-enabled/ && echo "---" && cat /etc/nginx/sites-enabled/edgar 2>/dev/null || cat /etc/nginx/sites-available/edgar 2>/dev/; echo "connected" && hostname; cat ~/.ssh/config | head -60; …(+7 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] By the way, I don't think we really need a landing page for the purge isn't it because the landing page right now is the dashboard with the Treasury index yield curve and the self index for the purge I Think what we need the landing page for is Edgar which is the protocol [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-You're right — that makes much more sense. The Perch already *has* a landing page: the dashboard itself (treasury, yield curve, sentiment index). That's what people see when they go there. No need for an interstitial.
-
-Flip it around: **Edgar** (the protocol) is the one that needs a landing page. Right now if you go to `edgar.truesight.me` you get... the Rails app? Or whatever it serves at `/`. A clean protocol landing page there — terminal aesthetic, status lines, "DAO Protocol · Operational" — would give Edgar its own identity.
-
-So the revised plan:
-
-- **`perch.truesight.me`** — DNS + SSL + nginx proxy to Rails. No custom landing page. The dashboard IS the landing page.
-- **`edgar.truesight.me`** — stays as is for now, but Phase 4 gives it a proper protocol landing page.
-
-I'll update the plan. Want me to also update the landing page HTML I drafted to be Edgar's instead?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Yes [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me update the plan and draft Edgar's landing page instead.
-
-
-### 🤖 Autopilot
-
-Plan updated. Now let me draft Edgar's landing page HTML.
-
-
-### 🤖 Autopilot
-
-Here's the updated status:
-
----
-
-## ✅ Done
-
-**DNS:** `perch.truesight.me` → `54.211.179.126` — created in Route53.
-
-**Plan updated** (PR #478): Perch has no landing page — the dashboard IS the landing page. Edgar gets the protocol landing page instead.
-
-**Edgar's landing page drafted** — terminal aesthetic, dark background, green monospace text, status lines, endpoint links, and the tagline: *"Nothing is forgotten."*
-
----
-
-## 👆 Needs you on krake-nginx (port 2202)
-
-Three commands:
-
-**1. SSL cert:**
-```bash
-sudo certbot --nginx -d perch.truesight.me
-```
-
-**2. Create nginx config** at `/etc/nginx/sites-available/perch` with the content I drafted above (simple proxy to `127.0.0.1:3002`, no static root), then:
-```bash
-sudo ln -sf /etc/nginx/sites-available/perch /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-```
-
-**3. Deploy Edgar's landing page** — save the HTML I drafted to wherever Edgar's nginx serves its root from (probably `/var/www/edgar/index.html` or similar), then reload nginx.
-
-Once those are done, I can test both domains and move to Phase 2 (Stripe split).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cat << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initia
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Let me get one of the LOMs to pass you the you know what okay, I'll get one of the LOMs to add your SSH key public key to the authorized host list in the Crick engine X easy to instances I'm actually surprised that you have no way to access it Because I remember last time you actually did manage the access with one of the existing SSH keys [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-You're right, let me check again — I might have a key that works but the SSH config is wrong.
-
-
-### 🤖 Autopilot
-
-Found it! The **first key** — `id_ed25519_truesight_autopilot` — **does work**. The issue was the SSH config had `PubkeyAcceptedKeyTypes +ssh-rsa` and `HostKeyAlgorithms +ssh-rsa` which was actually *breaking* the ED25519 auth. Let me fix the config and try again.
-
-
-### 🤖 Autopilot
-
-I'm in! Let me look at the existing nginx config to understand the setup.
-
-
-### 🤖 Autopilot
-
-The SSH config alias is still broken. Let me fix it and use the direct approach.
-
-
-### 🤖 Autopilot
-
 I can see the full config now. Edgar's SSL is using old-style `ssl on` with custom certs at `/home/ubuntu/ssl_certs/`. The `trends_server` upstream points to `54.211.179.126:3002` (seni_ror Rails). Let me set up the Perch.
 
 
@@ -615,6 +469,73 @@ Now each endpoint shows what auth it accepts:
 | `/stripe_webhook` | POST | 🔐 Stripe webhook signing secret |
 
 Plus an Auth section explaining the RSA-2048 system with links to the Integration Guide and Create Signature page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] doesnt really provide much information isnt it?
+
+I think POST
+/dao/submit_contribution should be further expanded with the various possible call types that are supported via dapp.truesight.me
+
+Ideally even the possibility of seeing how the payloads for each is constructed...
+
+
+### 🤖 Autopilot
+
+You're right — the real value is showing the event types and their payload shapes. Let me check what events exist.
+
+
+### 🤖 Autopilot
+
+Let me get the full event types table.
+
+
+### 🤖 Autopilot
+
+Let me get the full event types section.
+
+
+### 🤖 Autopilot
+
+Now I have the full event catalog. Let me also check the DApp pages to see what event types are available.
+
+
+### 🤖 Autopilot
+
+Now let me also check the DApp pages to see all the event types.
+
+
+### 🤖 Autopilot
+
+I have enough context. Let me now build a comprehensive Edgar landing page that shows all the event types with their payload shapes. I'll use the data from the Integration Guide.
+
+
+### 🤖 Autopilot
+
+Now it's much more useful. The page now has:
+
+**Endpoints section** — 6 API endpoints with method badges and auth badges
+
+**Event Types section** — 20 event types organized into 5 groups, each with:
+- Click-to-expand cards showing the exact payload shape
+- Attributes listed
+- Link to the DApp page
+- Dark terminal-style payload preview showing the canonical format
+
+The groups are:
+1. **Contributions & Finance** — CONTRIBUTION EVENT, CAPITAL INJECTION, CURRENCY CONVERSION, VOTING RIGHTS WITHDRAWAL, INVOICE CONTRIBUTION
+2. **Inventory & Supply Chain** — INVENTORY MOVEMENT, DAO INVENTORY EXPENSE, SALES EVENT, REPACKAGING BATCH, ASSET RECEIPT
+3. **QR Codes** — QR CODE UPDATE, BATCH QR CODE REQUEST, DONATION MINT
+4. **Governance & Community** — PROPOSAL CREATION, PROPOSAL VOTE, CONTRIBUTOR ADD, DAPP PERMISSION CHANGE
+5. **Outreach & Field Reports** — RETAIL FIELD REPORT, STORE ADD, PARTNER CHECK-IN, WARMUP SEND
+6. **Credentialing & Practice** — CREDENTIALING ATTESTATION, PRACTICE EVENT
+
+Each payload preview shows the exact canonical format so developers can copy-paste and modify.
 
 ———
 **✅ Done this turn — actions taken:**
