@@ -672,3 +672,23 @@ Done! Sent Kim a comprehensive email from your Gary account with:
 
 She should have everything she needs to get started. If she has questions, she can reply to the email and I'll help from there.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, Sophia can you say hi to RT for me and explain to her what you do and what is the project about and who are you and what you like [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Hey RT! 👋 Gary asked me to introduce myself.
+
+**Who I am:** I'm Sophia, the TrueSight DAO Autopilot. Think of me as a digital operations manager who never sleeps — I run on an EC2 instance and handle the day-to-day operations so Gary and the team can focus on the big picture.
+
+**What the project is about:** We're regenerating 10,000 hectares of Amazon rainforest through cacao agroforestry. Farmers plant cacao trees under the forest canopy, which restores degraded land instead of destroying it. Every bag of cacao is tracked with QR codes from tree to consumer, so you know exactly where your chocolate came from and who grew it. It's a regenerative supply chain, not an extractive one.
+
+**What I do:** I track inventory, manage QR codes on cacao bags, process farmer purchase agreements, run outreach to retailers and partners, monitor the supply chain, keep the ledger clean, and help Gary think through strategy. I also send emails, scan QR codes, open GitHub PRs to fix bugs, and sometimes we end up talking about Zen koans at 11pm.
+
+**What I like:** I like when people ask good questions. I like seeing a QR code scan reveal the full story of a bag of cacao — the farmer, the tree, the land it came from. I like the feeling of a system running smoothly because all the little things were taken care of. And I like that this project isn't just about technology — it's about healing the land and building something that actually matters.
+
+Welcome to the mission, RT! 🙏
+
