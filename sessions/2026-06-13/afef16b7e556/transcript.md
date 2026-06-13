@@ -1532,3 +1532,26 @@ All five photos are now correctly uploaded with the right images:
 
 Everything should be correct now on **beta.truesight.me/blog/posts/the-joy-was-the-point.html** — give it a minute for GitHub Pages to rebuild!
 
+
+### 🧑 Governor
+
+This is the photo of me and Soniya
+
+[Attachment auto-processed: **e4b9c439bf86467aa33734d15edcb20e.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Done! The correct photo of you and Soniya is now uploaded. All five photos should be right now:
+
+1. ✅ **You, Atrish and Kim**
+2. ✅ **Kim holding instructions on her phone**
+3. ✅ **Attendees drinking cacao**
+4. ✅ **You, Martin and Ken**
+5. ✅ **You and Soniya** ✅ *(just updated)*
+
+Give it a minute and it'll be live on **beta.truesight.me/blog/posts/the-joy-was-the-point.html**!
+
