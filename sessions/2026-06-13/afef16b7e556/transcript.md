@@ -1575,3 +1575,20 @@ I can see this photo — it's a shot of the stage at TECH FEST 2026 with a prese
 
 Want me to add this photo to the blog post? I could place it in the opening section where you're watching the demos on stage, to give readers a visual of what you were seeing.
 
+
+### 🧑 Governor
+
+Google demonstrating the voice UX and search experience
+
+[Attachment auto-processed: **b74e632b57b649c78beabc51ded20087.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+I can see this one too — another stage shot from TECH FEST 2026, this time with Google's presentation about voice UX and search experience.
+
+These two photos (Microsoft agentic fleet + Google voice UX) would be great additions to the opening section of the blog post — showing exactly what you were watching when you felt demoralized. Want me to upload them and add them to the post?
+
