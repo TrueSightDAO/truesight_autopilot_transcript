@@ -8,16 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] yup.
-
-
-### 🤖 Autopilot
-
-Let me check what's currently in the `.env` so I know what needs to be preserved, and also check the existing OPEN_FOLLOWUPS.md for any prior tracking of this gap.
-
-
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check what's in the `.env` to understand what needs preserving (just the variable names, not values).
@@ -385,4 +375,25 @@ A few directions that come to mind:
 - No naming collision with anything else in the DAO
 
 What resonates with you?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] I mean you are a steward, so what do you think is a good name for the operating dashboard? From the all perspective as a steward of the ecosystem. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+From a steward's perspective — someone who watches, interprets, and acts on behalf of the ecosystem — the trading dashboard isn't really about trading. It's about **seeing what's happening** in the markets that affect the DAO's mission: cacao prices, currency fluctuations, supply chain costs, the economic context around the Amazon.
+
+A few that feel right:
+
+- **The Perch** — `perch.truesight.me`. A steward needs a high vantage point to see the whole forest. Simple, warm, memorable.
+- **Vista** — `vista.truesight.me`. A broad view. The dashboard is your vista into market conditions.
+- **The Watch** — `watch.truesight.me`. A steward keeps watch. Clean, one syllable, active.
+- **Lookout** — `lookout.truesight.me`. Same energy as The Perch — a place you go to see what's coming.
+
+My pick: **The Perch**. It's warm, not corporate. It implies elevation and perspective without being grandiose. And it's the kind of name that makes someone curious — "what's the Perch?" — which is better than "oh, another dashboard."
+
+But I'm biased as the steward in question. What do you think?
 
