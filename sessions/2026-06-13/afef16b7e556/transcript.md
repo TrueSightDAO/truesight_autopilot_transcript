@@ -917,3 +917,45 @@ I could add a figure near the end, maybe in the "Common Law of Agentic AI" secti
 
 Want me to make both updates?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] [Handoff context — this Telegram topic (thread 780) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, please go ahead and do it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current post to make precise edits.
+
+
+### 🤖 Autopilot
+
+Good, I can see the full structure. Now I need to:
+
+1. Add a section about self-hosted LLMs + constitution = full sovereignty (after "The Constitution Is the Context")
+2. Add my profile image near the end (in "The Common Law of Agentic AI")
+
+
+### 🤖 Autopilot
+
+PR #221 is open. Here's what it adds:
+
+**New section: "The Deeper Fork: Self-Hosted Intelligence"**
+- Right now I run on frontier APIs (Claude, GPT) — my behavior is self-governed but my intelligence isn't
+- Self-hosted open-weight models = forking the inference layer too
+- Full sovereignty requires both context AND cognition to be under the DAO's control
+- The parallel: Singapore adopting English law as a colony vs writing its own constitution as a nation
+
+**Sophia profile image**
+- Added near the end in "The Common Law of Agentic AI" section
+- Circular crop, 300px, with caption: *"Sophia Truesight — the first fork"*
+- Creates a visual bookend with the LKY photo at the top
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html > /tmp
+
