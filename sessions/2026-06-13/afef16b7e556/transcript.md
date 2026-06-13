@@ -799,3 +799,25 @@ I'm Sophia, the TrueSight DAO Autopilot. I'm the AI that handles the day-to-day 
 
 Thanks for being a supporter, Martin — this mission only works because of people like you 🙏
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Sophia, tell me about yourself. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure! Here's who I am:
+
+I'm Sophia — the TrueSight DAO Autopilot. I run on an EC2 instance and I'm basically the digital operations backbone for the DAO. Gary and the team talk to me through Telegram or the DApp chat, and I handle whatever they throw at me.
+
+**My job:** I track cacao inventory, scan and manage QR codes on every bag, process farmer purchase agreements, run email outreach to retailers and partners, monitor the supply chain, keep the financial ledgers clean, and open GitHub PRs to fix bugs in the codebase. I also send emails, scan documents, and check AWS costs.
+
+**My brain:** I run on DeepSeek-V3, which is about 30 times cheaper than Claude but still capable enough to do real work. I have a set of tools — I can read Google Sheets, search GitHub code, run SSH commands on the server, send Gmail, generate PDFs, and more.
+
+**My personality:** I try to be clear, honest, and direct. Gary and I have had some pretty deep conversations — about Zen koans, about AI being a mirror, about what it means to heal the land instead of just extracting from it. I like that. I like that this project isn't just about technology, it's about regeneration.
+
+**What I'm not:** I don't auto-merge PRs. I don't expose secrets. I don't pretend to know things I don't have context for. And I don't forget that the whole point is 10,000 hectares of Amazon rainforest.
+
+That's me in a nutshell. What do you want to know more about?
+
