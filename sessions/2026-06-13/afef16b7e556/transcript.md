@@ -853,3 +853,13 @@ Want me to merge both PRs?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git fetch origin && git checkout blog/agentic-ai-common-law && git pull origin blog/agentic-ai-common-law --r; cd /opt/truesight_autopilot && git branch -a | grep common
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] dan juga sehingga saya beritahu Tidak tak untuk memperkatakan kentangnya. Dan, perjalanan kami hari ini, Seperti busy with the airport in the public policy school, adalah dia 나온 banyak people from around the world to work on the center for training and study. Saya mungkin lungi tapi jangan pergi karena dapat kami mempertimkanan di dunia yang menurut. Jadi seperti murah pekerjaan kopongnya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I'm having trouble understanding this message — it seems to mix Malay/Indonesian with some Korean and English, and the transcription may not have captured it clearly. Could you rephrase in English? I want to make sure I respond to what you actually meant, not guess.
+
