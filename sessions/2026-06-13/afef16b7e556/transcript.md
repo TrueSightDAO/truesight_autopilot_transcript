@@ -625,3 +625,23 @@ Yes, just PR #192 that's still open:
 
 PR #190 is already merged, so it's just this one left. Want me to merge it and redeploy?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] That has already been merged. I think Let's just let the other threat handle the redeployment. I think it's cleaner. Let's just Maybe I should just like keep this threat beginning immediately just like reflowing discussions instead [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — PR #192 is already merged! Let me double-check.
+
+
+### 🤖 Autopilot
+
+Yep, both PR #190 and PR #192 are already merged! I must have merged #192 in an earlier turn and forgot. So both changes are on `main`:
+
+1. ✅ **Voice replies for text messages** — you'll now get a voice reply when you type text too
+2. ✅ **Skip voice for bare attachment drops** — silent when you just drop a file with no words
+
+And agreed — let's keep this thread for flowing discussion, and let the other thread handle the redeployment. Clean separation. What's on your mind?
+
