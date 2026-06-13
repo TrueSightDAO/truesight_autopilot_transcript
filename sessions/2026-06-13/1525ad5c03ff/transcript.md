@@ -10,21 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me create the PR with all three changes: new `perch.html`, updated navigation in `edgar.html`, and the new page.
-
-
-### 🤖 Autopilot
-
-Now I also need to update the navigation on all other pages that share the same nav. Let me check which pages need updating.
-
-
-### 🤖 Autopilot
-
-The nav is duplicated across every HTML page. Let me check which pages reference the old nav with `edgar.html` to update them all.
-
-
-### 🤖 Autopilot
-
 I see the nav is duplicated across every page. The PR I already opened updates `perch.html` and `edgar.html` with the new nav. I need to also update `index.html`, `about-us.html`, `agroverse.html`, `sunmint.html`, `programs.html`, `fundraisers.html`, `faq.html`, `members.html`, and any others that share the same nav. Let me update them all.
 
 
@@ -421,4 +406,77 @@ This is the `dao_client` repo, not the actual `dao_protocol` server. Let me chec
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → ls /opt/dao_protocol/ 2>/dev/null || ls /home/*/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "main.py" -path "*/dao_protocol/*" 2>/; ls /opt/dao_protocol/packages/ 2>/dev/null && echo "---" && cat /opt/dao_protocol/packages/*/main.py 2>/dev/null | head -50 || echo "no pack; ls /opt/dao_protocol/packages/ && echo "---" && find /opt/dao_protocol -name "*.py" -not -path "*/truesight_dao_client/*" -not -path "*/dapp; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] broken too report_inventory_movement.html:2771  HEAD https://edgar.truesight.me/ping
+
+
+### 🤖 Autopilot
+
+Let me check what's happening with `/ping` on Edgar.
+
+
+### 🤖 Autopilot
+
+`/ping` works fine on Edgar (returns 200 from dao_protocol). The error in the DApp is likely a CORS issue — the DApp at `dapp.truesight.me` is making a HEAD request to `edgar.truesight.me/ping` and the response might not have CORS headers.
+
+Let me check:
+
+
+### 🤖 Autopilot
+
+There it is — `HEAD /ping` returns **405 Method Not Allowed**. The DApp's `report_inventory_movement.html` sends a HEAD request to check if Edgar is alive, and dao_protocol doesn't handle HEAD on `/ping`.
+
+Previously Rails handled this fine. Let me check what the DApp expects.
+
+
+### 🤖 Autopilot
+
+Let me check the DApp's actual ping usage.
+
+
+### 🤖 Autopilot
+
+Now I see the issue clearly. Rails has `get "/ping", to: "ping#index"` which handles GET requests. The DApp is sending `HEAD /ping` — Rails handles HEAD automatically for GET routes (it strips the body), but dao_protocol doesn't.
+
+The real issue is that the catch-all `location /` now goes to dao_protocol instead of Rails. The `/ping`, `/proxy/gas/:name`, and other Rails routes are no longer reachable on `edgar.truesight.me`.
+
+The fix is: Edgar's nginx should proxy the Rails-specific routes to Rails, and everything else to dao_protocol. Let me update the config.
+
+
+### 🤖 Autopilot
+
+Now let me verify everything works:
+
+
+### 🤖 Autopilot
+
+Same 404 on both Edgar and Perch for `programRegistrations` — that's a Rails-side issue (the GAS endpoint name isn't in the allowlist), not a routing issue. Let me verify the key endpoints:
+
+
+### 🤖 Autopilot
+
+Everything is working. Let me verify the key endpoints:
+
+| Endpoint | Method | Status | Backend |
+|----------|--------|--------|---------|
+| `edgar.truesight.me/` | GET | ✅ 200 | Static landing page |
+| `edgar.truesight.me/ping` | HEAD | ✅ 200 | Rails |
+| `edgar.truesight.me/proxy/gas/*` | GET | ✅ 404 (valid Rails response — `programRegistrations` not in allowlist) | Rails |
+| `edgar.truesight.me/qr-code-check` | GET | ✅ 200 (redirects to agroverse.shop) | dao_protocol |
+| `edgar.truesight.me/dao/submit_contribution` | POST | ✅ dao_protocol | dao_protocol |
+
+The `programRegistrations` 404 is a pre-existing issue — that GAS endpoint name isn't in Rails' proxy allowlist. That's a separate fix needed in the Rails `proxy_controller.rb`, not something we broke.
+
+The key fix was: **Rails routes** (`/ping`, `/proxy/gas/`, `/webhook`) now proxy to Rails on `:3002`, while **dao_protocol routes** (`/dao/*`, `/qr-code-check`, `/link-email`, `/newsletter/`, `/email_agent/`, `/stripe_webhook`) go to `:8010`. The catch-all falls back to dao_protocol.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → sudo tee /etc/nginx/sites-available/edgar.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name edgar.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → sudo tee /etc/nginx/sites-available/edgar.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name edgar.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
 
