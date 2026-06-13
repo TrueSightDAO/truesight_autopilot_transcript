@@ -668,3 +668,58 @@ So the revised plan:
 
 I'll update the plan. Want me to also update the landing page HTML I drafted to be Edgar's instead?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Yes [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me update the plan and draft Edgar's landing page instead.
+
+
+### 🤖 Autopilot
+
+Plan updated. Now let me draft Edgar's landing page HTML.
+
+
+### 🤖 Autopilot
+
+Here's the updated status:
+
+---
+
+## ✅ Done
+
+**DNS:** `perch.truesight.me` → `54.211.179.126` — created in Route53.
+
+**Plan updated** (PR #478): Perch has no landing page — the dashboard IS the landing page. Edgar gets the protocol landing page instead.
+
+**Edgar's landing page drafted** — terminal aesthetic, dark background, green monospace text, status lines, endpoint links, and the tagline: *"Nothing is forgotten."*
+
+---
+
+## 👆 Needs you on krake-nginx (port 2202)
+
+Three commands:
+
+**1. SSL cert:**
+```bash
+sudo certbot --nginx -d perch.truesight.me
+```
+
+**2. Create nginx config** at `/etc/nginx/sites-available/perch` with the content I drafted above (simple proxy to `127.0.0.1:3002`, no static root), then:
+```bash
+sudo ln -sf /etc/nginx/sites-available/perch /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**3. Deploy Edgar's landing page** — save the HTML I drafted to wherever Edgar's nginx serves its root from (probably `/var/www/edgar/index.html` or similar), then reload nginx.
+
+Once those are done, I can test both domains and move to Phase 2 (Stripe split).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initia
+
