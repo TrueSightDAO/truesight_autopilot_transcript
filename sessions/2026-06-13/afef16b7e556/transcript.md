@@ -1399,3 +1399,30 @@ Give it a minute for GitHub Pages to rebuild and it'll be live at **beta.truesig
 • `ssh run` → ls -la /tmp/tg_attachments/338b9cced1f940d0a9215225f075ee7a.jpg /tmp/tg_attachments/22e2b924de4948368e52b42fd8d142aa.jpg /tmp/tg_attachments
 • `merge pr` ×2 → ✅ PR #206 on truesight_me_beta merged successfully (sha: b2a9d7b7f84eab2b457ea2327bf3c854942c93b1). Pull Request successfully merged; ✅ PR #207 on truesight_me_beta merged successfully (sha: 044d67c99d6782a093462fedc894a6c125e42e75). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] By the way the cacao booth was made available upon the invitation by Soniya who did all the heavy lifting
+
+
+### 🤖 Autopilot
+
+Ah, that's important context! Let me update the Soniya section to reflect that she not only organized the event but specifically invited you to have the cacao booth there.
+
+
+### 🤖 Autopilot
+
+Done! The Soniya section now reads:
+
+> *"Soniya organized the entire event through Orbis86 and invited us to have a cacao booth there. She did all the heavy lifting — bringing 500+ tech professionals, founders, and investors together at the India Community Center in Milpitas. She is a DAO supporter. Without people like her, none of these moments happen."*
+
+Should be live on beta.truesight.me in a minute or two.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #208 on truesight_me_beta merged successfully (sha: b27c9cd5c1bb767b23495755c0c045433a6fdfb8). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #208 on truesight_me_beta merged successfully (sha: b27c9cd5c1bb767b23495755c0c045433a6fdfb8). Pull Request successfully merged
+
