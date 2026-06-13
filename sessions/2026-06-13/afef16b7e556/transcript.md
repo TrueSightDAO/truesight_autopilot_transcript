@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-The file is truncated in the read. Let me get the full content from the raw file.
-
-
-### 🤖 Autopilot
-
 Let me get the full raw content without truncation.
 
 
@@ -958,4 +953,33 @@ Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html > /tmp
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] [Handoff context — this Telegram topic (thread 780) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, go ahead and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! 🎉 The post is now live on beta with all layers:
+
+1. **LKY photo** at the top — the historical anchor
+2. **Singapore's legal history** — the fork from English common law
+3. **The fork is a feature** — open source + agentic AI
+4. **The constitution is the context** — vote → constitution → context → behavior
+5. **The deeper fork: self-hosted intelligence** — full sovereignty requires owning the inference layer too
+6. **Anti-micro-management design** — LKY's self-imposed constraints → Gary's DAO design
+7. **Sophia's profile image** at the end — "the first fork"
+8. **The common law of agentic AI** — a legal tradition, alive in code
+
+URL: **https://beta.truesight.me/blog/posts/agentic-ai-and-the-common-law-tradition.html**
+
+Want me to promote to production?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #221 on truesight_me_beta merged successfully (sha: 82fd794f3482d89b7b1f40edc18ec1c83e673854). Pull Request successfully merged
 
