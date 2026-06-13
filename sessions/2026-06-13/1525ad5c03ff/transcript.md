@@ -10,164 +10,6 @@
 
 ### 🤖 Autopilot
 
-I can see the full config now. Edgar's SSL is using old-style `ssl on` with custom certs at `/home/ubuntu/ssl_certs/`. The `trends_server` upstream points to `54.211.179.126:3002` (seni_ror Rails). Let me set up the Perch.
-
-
-### 🤖 Autopilot
-
-No certbot on krake-nginx. Let me check what's available and install it.
-
-
-### 🤖 Autopilot
-
-Ubuntu 14.04 — that's ancient. No certbot in apt. Let me check if there's a snap or manual certbot.
-
-
-### 🤖 Autopilot
-
-No certbot, no Let's Encrypt — these are all commercial SSL certs. Let me check how the existing certs were obtained and if we can get a Let's Encrypt cert manually.
-
-
-### 🤖 Autopilot
-
-These are Sectigo commercial certs, not Let's Encrypt. Let me install certbot via pip since it's Ubuntu 14.04.
-
-
-### 🤖 Autopilot
-
-No certbot package for Trusty. Let me use the pip approach instead.
-
-
-### 🤖 Autopilot
-
-Python 3.4 is too old for modern certbot. Let me take a different approach — use the standalone `snap` or just manually create a self-signed cert for now, or better yet, use the DNS-01 challenge from this box (which has the AWS credentials for Route53).
-
-
-### 🤖 Autopilot
-
-Ubuntu 14.04 with a 3.13 kernel — snap won't work either. Let me use a different approach: I'll generate the cert from this box (which has certbot) and use DNS-01 challenge since I have Route53 access.
-
-
-### 🤖 Autopilot
-
-This box has certbot. I can use the DNS-01 challenge with Route53 to get a cert for `perch.truesight.me`, then SCP the cert files to krake-nginx.
-
-
-### 🤖 Autopilot
-
-No AWS creds available to certbot (they're in the `.env` file, not in standard AWS env vars). Let me use the manual DNS challenge instead — I'll create the TXT record in Route53 myself.
-
-
-### 🤖 Autopilot
-
-I have the challenge value. Let me create the TXT record in Route53, then continue the certbot process.
-
-
-### 🤖 Autopilot
-
-TXT record is live. Now let me complete the certbot challenge.
-
-
-### 🤖 Autopilot
-
-✅ **SSL cert obtained!** Now let me copy the cert files to krake-nginx and set up the nginx config.
-
-
-### 🤖 Autopilot
-
-Now let me add the Perch server block to the nginx config on krake-nginx.
-
-
-### 🤖 Autopilot
-
-Let me test it.
-
-
-### 🤖 Autopilot
-
-The cert is for `perch.truesight.me` but the old nginx config uses `ssl on` (deprecated) instead of `ssl_certificate` in the modern way. Let me check the config more carefully — the issue might be that the old-style `ssl on` directive conflicts with the `listen 443 ssl` syntax.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×28 → # Try all keys against krake-nginx on port 2202 for key in ~/.ssh/id_ed25519_truesight_autopilot ~/.ssh/NELANCO_aws_20201122.pem ~/.ssh/NELA; ssh -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 -o StrictHostKeyChecking=no ubuntu@54.226.114.186 "hostname && echo '---' && ls /etc/ng; cat /etc/nginx/sites-enabled/nginx_krake_ng.conf; …(+24 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Actually come the thing of it, almost makes sense to extend true site.me website to indicate that we have in like a program called the Purge, isn't it? Because right now Edgar, the entry on true site.me website is mainly about the protocol but the purge is totally missing, isn't it? What are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That's a great point. Let me check what's currently on the truesight.me website.
-
-
-### 🤖 Autopilot
-
-You're right — I can see the Projects dropdown lists Agroverse, Sunmint, Edgar, Programs, and Fundraisers. Let me check the Edgar page to see what it says.
-
-
-### 🤖 Autopilot
-
-I can see the full picture now. The Edgar page describes it as "Open-Source Automation for Grassroots Impact" — it's a mix of the protocol and the trading tool, but The Perch isn't mentioned anywhere. You're right.
-
-Let me check the repo where the website lives.
-
-
-### 🤖 Autopilot
-
-The main site is in `truesight_me_beta` (beta) and `truesight_me_prod` (production). Let me check the beta repo to see the Edgar page source.
-
-
-### 🤖 Autopilot
-
-I can see the full picture now. You're absolutely right — the Edgar page on truesight.me describes it as a general "open-source automation" platform, but The Perch (the trading dashboard) isn't mentioned anywhere on the site. It's a missing program.
-
-Here's what I think:
-
-**Yes, extend the website.** Add The Perch as a program under Projects, alongside Agroverse, Sunmint, and Edgar. The nav would become:
-
-- Agroverse Community
-- Sunmint Program
-- **The Perch** ← new
-- Edgar Platform
-- Programs
-- Fundraisers
-
-And the Edgar page should be updated to reflect that Edgar is now the **DAO Protocol** (not the trading tool), while The Perch gets its own page describing the market steward role.
-
-This is a natural extension of the separation plan — Phase 1.6 or 1.7. Want me to add it to the plan and draft the Perch page for the website?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Yep, add it into the plan and then proceed to draft the purge page for the website [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me update the plan and draft the Perch page for the website.
-
-
-### 🤖 Autopilot
-
-Good, I have the plan. Let me update it with the website changes and then draft the Perch page.
-
-
-### 🤖 Autopilot
-
-Plan updated. Now let me look at the existing website structure to match the style, then draft the Perch page.
-
-
-### 🤖 Autopilot
-
-Good, I can see the pattern. Now let me create the Perch page and update the navigation + Edgar page. I'll do all three as a PR to `truesight_me_beta`.
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Let me create the PR with all three changes: new `perch.html`, updated navigation in `edgar.html`, and the new page.
 
 
@@ -540,4 +382,43 @@ Each payload preview shows the exact canonical format so developers can copy-pas
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] https://edgar.truesight.me/proxy/gas/programRegistrations?action=getPendingProgramRegistrations throwing up a whole bunch of errors now... I think we totally broke all the proxy routes...
+
+
+### 🤖 Autopilot
+
+Let me check what's happening.
+
+
+### 🤖 Autopilot
+
+The request is reaching dao_protocol (the Python server), but it doesn't know about `programRegistrations`. This was previously handled by Rails. The issue is the catch-all `location /` now goes to dao_protocol instead of Rails.
+
+Let me check what the old Rails proxy did with this path.
+
+
+### 🤖 Autopilot
+
+Same error on Perch (Rails). So it's not the nginx change — this was already broken. Let me check what GAS endpoints are actually configured.
+
+
+### 🤖 Autopilot
+
+I see — `getPendingProgramRegistrations` is served by a GAS web app, not by Rails or dao_protocol directly. The proxy routes `/proxy/gas/*` need to know which GAS URL to forward to. Let me check what GAS endpoints are configured in dao_protocol.
+
+
+### 🤖 Autopilot
+
+This is the `dao_client` repo, not the actual `dao_protocol` server. Let me check what's actually running on the dao_protocol server.
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → ls /opt/dao_protocol/ 2>/dev/null || ls /home/*/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "main.py" -path "*/dao_protocol/*" 2>/; ls /opt/dao_protocol/packages/ 2>/dev/null && echo "---" && cat /opt/dao_protocol/packages/*/main.py 2>/dev/null | head -50 || echo "no pack; ls /opt/dao_protocol/packages/ && echo "---" && find /opt/dao_protocol -name "*.py" -not -path "*/truesight_dao_client/*" -not -path "*/dapp; …(+15 more)
 
