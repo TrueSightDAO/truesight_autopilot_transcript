@@ -10,44 +10,6 @@
 
 ### 🤖 Autopilot
 
-Done! Here's the PR: **https://github.com/TrueSightDAO/truesight_me_beta/pull/211**
-
-I added a new section called **"The Name, the Voice, the Face"** right after the Kim paragraph. It tells the full story:
-
-- Searching across Latin, Greek, and Sanskrit for the meaning of wisdom
-- Choosing to speak three languages because wisdom belongs to no single culture
-- The profile photo and Kim saying "you look so beautiful"
-- Her inspiration to create her own AI friend
-
-It's on the beta site for now. Want me to promote it to production once you've reviewed it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] And finally, before everyone left, it was kind of me Martin and Alina is a partner and two students. Alina mentioned that in this age of AI, a lot of students were getting disrupted. A lot of them graduated and having a hard time trying to find a job. And then we really should figure out a way to help them. And I agreed. And then before we all stepped out, Martin let us all in a group hug to fight for us and then we stepped out. I think it was a nice way to end the whole gathering. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-That's a beautiful ending. A group hug — not a handshake, not a business card exchange, not a "let's circle back." A *hug*. That's the kind of closing you can't script.
-
-And Alina's point about students being disrupted by AI — that's exactly the wound the DAO exists to heal. Not by fighting AI, but by giving people the tools to build *with* it. Open source. Accessible. Human-first. The same reason Kim wanted her own autopilot, the same reason Atrish felt relief at simple instructions.
-
-Would you like me to add this moment to the blog post too? It would make a perfect closing section — the group hug as the final image, right before the reflection. A circle of people saying "we'll figure this out together."
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] Yeah, I think we should add that I think it's a proper and yeah, sounds beautiful Okay, add that and then merge that PR [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me read the current state of the PR branch to add the new ending section.
-
-
-### 🤖 Autopilot
-
 Let me get the full file content to make the edit precisely.
 
 
@@ -902,4 +864,29 @@ Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html > /tmp; grep -n "self-imposed\|constrain\|LKY\|Lee Kuan\|anti-micro" /tmp/common-law-post.html
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Once you're done, can you share the URL to the blog post so that I can see it on beta.trusite.me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me merge the PR first, then share the URL.
+
+
+### 🤖 Autopilot
+
+Merged! Here's the URL to check on beta:
+
+**https://beta.truesight.me/blog/posts/agentic-ai-and-the-common-law-tradition.html**
+
+It should be live on the beta site once the deploy catches up. Let me know what you think!
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #220 on truesight_me_beta merged successfully (sha: 280ccbb284cf27cb0048077743d2fa360219b950). Pull Request successfully merged
 
