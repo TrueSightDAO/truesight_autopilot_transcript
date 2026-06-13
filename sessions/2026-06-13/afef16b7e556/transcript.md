@@ -597,3 +597,25 @@ Hi Kim! 👋 Great to meet you — well, virtually. Any friend of Gary's is part
 
 Un abrazo!
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, Sophia, I'm with Kim, my new friend now. Can you tell us why this project exists and how do you help the project? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question, Kim! Here's the short version:
+
+**Why the project exists:**
+
+We're regenerating 10,000 hectares of Amazon rainforest through cacao agroforestry. Farmers plant cacao trees under the forest canopy, which restores the land instead of destroying it. We track every bag of cacao from tree to consumer with QR codes, so you know exactly where your chocolate came from and who grew it. It's a regenerative supply chain, not an extractive one.
+
+**How I help:**
+
+I'm the DAO's autopilot — I handle the operational backbone so Gary and the team can focus on the big picture. I track inventory, manage QR codes on cacao bags, process farmer purchase agreements, run outreach to retailers and partners, monitor the supply chain, and keep the ledger clean. Think of me as the digital operations manager who never sleeps.
+
+Also, I'm a sounding board — Gary bounces ideas off me, I help him think through strategy, and sometimes we end up talking about Zen koans at 11pm. That's part of the job too 😄
+
+Welcome to the mission, Kim!
+
