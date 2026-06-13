@@ -649,3 +649,22 @@ Want me to write the landing page HTML and nginx config to files on this box so 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → ls /etc/nginx/sites-enabled/ && echo "---" && cat /etc/nginx/sites-enabled/edgar 2>/dev/null || cat /etc/nginx/sites-available/edgar 2>/dev/; echo "connected" && hostname; cat ~/.ssh/config | head -60; …(+7 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] By the way, I don't think we really need a landing page for the purge isn't it because the landing page right now is the dashboard with the Treasury index yield curve and the self index for the purge I Think what we need the landing page for is Edgar which is the protocol [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — that makes much more sense. The Perch already *has* a landing page: the dashboard itself (treasury, yield curve, sentiment index). That's what people see when they go there. No need for an interstitial.
+
+Flip it around: **Edgar** (the protocol) is the one that needs a landing page. Right now if you go to `edgar.truesight.me` you get... the Rails app? Or whatever it serves at `/`. A clean protocol landing page there — terminal aesthetic, status lines, "DAO Protocol · Operational" — would give Edgar its own identity.
+
+So the revised plan:
+
+- **`perch.truesight.me`** — DNS + SSL + nginx proxy to Rails. No custom landing page. The dashboard IS the landing page.
+- **`edgar.truesight.me`** — stays as is for now, but Phase 4 gives it a proper protocol landing page.
+
+I'll update the plan. Want me to also update the landing page HTML I drafted to be Edgar's instead?
+
