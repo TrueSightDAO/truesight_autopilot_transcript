@@ -611,3 +611,17 @@ To recap where we are:
 
 What would you like?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you share the links to the two open PRs or, wait, it's PR192, right? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, just PR #192 that's still open:
+
+**https://github.com/TrueSightDAO/truesight_autopilot/pull/192**
+
+PR #190 is already merged, so it's just this one left. Want me to merge it and redeploy?
+
