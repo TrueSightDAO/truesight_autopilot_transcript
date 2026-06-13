@@ -10,72 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me register this handoff and park myself in this thread.
-
-
-### 🤖 Autopilot
-
-The plan is committed and registered. Here's the summary:
-
----
-
-**PR #476** — `EDGAR_PERCH_SEPARATION_PLAN.md` — the full plan with 4 phases:
-
-- **Phase 1** — Domain + SSL + landing page + Rails routing (DNS, certbot, nginx, static page)
-- **Phase 2** — Stripe webhook split (second endpoint, filtered events)
-- **Phase 3** — Full code extraction (trading controllers → The Perch)
-- **Phase 4** — Edgar personality (optional, post-split)
-
-**PR #477** — Registered in `HANDOFF_MANIFEST.md` as blocked, parked in this thread.
-
-**Edgar's personality** — I decided: matter-of-fact protocol steward. Precise, dry, zero-fluff. The reliable backbone. The plan includes voice samples and a landing page concept (terminal aesthetic, status lines).
-
-**The Perch's personality** — Calm observer. Warm, pattern-oriented. The steward's vantage point.
-
----
-
-✅ Ready. Reply **"go for it"** and I'll execute Phase 1 from RESUME HERE — DNS → SSL → nginx → landing page → Rails routing — and report progress here.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Okay, go for it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-GO received. Let me refresh the plan and start Phase 1.
-
-
-### 🤖 Autopilot
-
-The plan PR (#476) isn't merged yet — it's still open. Let me read the plan from the PR branch directly.
-
-
-### 🤖 Autopilot
-
-Plan loaded. Starting Phase 1. First step — check the current DNS and nginx setup on krake-nginx.
-
-
-### 🤖 Autopilot
-
-SSH key issue on krake-nginx. Let me check the SSH config and try with the right key.
-
-
-### 🤖 Autopilot
-
-Let me check what SSH keys I have and what the config looks like.
-
-
-### 🤖 Autopilot
-
-I see — krake-nginx uses port 2202. The `ssh_run` tool is using the host alias but the config shows port 2202. Let me try explicitly.
-
-
-### 🤖 Autopilot
-
 The key isn't authorized on krake-nginx. Let me check if the public key is on the host.
 
 
@@ -663,4 +597,37 @@ The split is clean. Want me to move to Phase 2 (Stripe webhook split) next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cat /etc/nginx/sites-enabled/edgar.conf; curl -s -o /dev/null -w "%{http_code}" http://172.31.23.207:8010/ 2>/dev/null; echo ""; curl -s http://172.31.23.207:8010/ 2>/dev/null | hea; sudo mkdir -p /var/www/edgar && echo "dir created"; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] I think color theme of https://edgar.truesight.me/ should be similar to truesight.me and sophia.truesight.me isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — the terminal aesthetic is cool but it doesn't match the brand. Let me check sophia's theme for reference.
+
+
+### 🤖 Autopilot
+
+Got it — the brand theme is warm: cream background (`#f7f1e8`), saffron accent (`#f4a300`), forest green (`#5f6f52`), clay (`#c08457`), dark text (`#2b1d14`). Let me update Edgar's landing page to match.
+
+
+### 🤖 Autopilot
+
+Much better. Now it matches the brand — cream background, forest green header, saffron accents on hover, Space Grotesk font. Same family as truesight.me and sophia.truesight.me.
+
+Here's the current state:
+
+| Domain | Serves | Looks like |
+|--------|--------|------------|
+| **edgar.truesight.me** | Protocol landing page + dao_protocol API | ✅ Brand theme (cream/forest/saffron) |
+| **perch.truesight.me** | Rails sentiment_importer dashboard | ✅ Full trading UI |
+
+What's next? Phase 2 — Stripe webhook split?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
 
