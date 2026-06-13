@@ -8,40 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-What are the URLs where I could access your vault and your thread monitoring?
-
-
-### 🤖 Autopilot
-
-Let me check the relevant context files for this information.
-
-
-### 🤖 Autopilot
-
-Good — this is the vault roadmap. Let me check what's been deployed so far.
-
-
-### 🤖 Autopilot
-
-Let me check what's actually been deployed so far — whether the vault web page exists yet.
-
-
-### 🤖 Autopilot
-
-There's a `vault/` directory. Let me check what's in it and whether a vault web server is running.
-
-
-### 🤖 Autopilot
-
-The vault web server is running. Let me check its configuration to find the URL.
-
-
 ### 🤖 Autopilot
 
 Now let me check the vault app code to see what URL it serves on.
@@ -1487,4 +1453,41 @@ PR #185 is open. Here's the summary:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → cd /opt/truesight_autopilot && git checkout -b fix/vault-rsa-login 2>&1 | tail -3; cat > /opt/truesight_autopilot/app/templates/vault/login.html << 'HTMLEOF' {% extends "base.html" %} {% block title %}Sign in — Credential V; cd /opt/truesight_autopilot && python3 << 'ENDSCRIPT' with open('app/vault_routes.py', 'r') as f: content = f.read() # Remove the email-synt; …(+17 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2744] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2744) is the active handoff for `SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_MULTI_TENANT_GOVERNANCE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can we also make sure there is a link from https://sophia.truesight.me/ to https://sophia.truesight.me/vault/
+
+
+### 🤖 Autopilot
+
+Already done in PR #185! Let me verify by checking the current state of the root page on the branch.
+
+
+### 🤖 Autopilot
+
+The link is there — `href="/vault/login"` on the root page. But you asked for a link to `/vault/` (the vault index page), not `/vault/login`. Let me update it to point to `/vault/` instead — the vault index page already handles unauthenticated users by showing the login prompt.
+
+
+### 🤖 Autopilot
+
+Now amend the commit and force-push.
+
+
+### 🤖 Autopilot
+
+Done. The PR #185 now has the link pointing to `/vault/` instead of `/vault/login`. Here's what the root page will show:
+
+**`https://sophia.truesight.me/`** will have two buttons:
+- **"Cast the I Ching"** → `oracle.truesight.me`
+- **"Credential Vault"** → `/vault/` (the vault index page, which shows the login prompt for unauthenticated users)
+
+Once PR #185 is merged and deployed, both links will be live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && git diff HEAD~1 -- app/main.py | grep -A2 'vault'; cd /opt/truesight_autopilot && sed -i 's|href="/vault/login"|href="/vault/"|' app/main.py && git diff app/main.py | grep vault; cd /opt/truesight_autopilot && git add app/main.py && git commit --amend -m "fix: replace email/cookie vault login with DAO Identity RSA-sig
 
