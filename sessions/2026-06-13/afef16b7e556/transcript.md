@@ -1555,3 +1555,23 @@ Done! The correct photo of you and Soniya is now uploaded. All five photos shoul
 
 Give it a minute and it'll be live on **beta.truesight.me/blog/posts/the-joy-was-the-point.html**!
 
+
+### 🧑 Governor
+
+Microsoft and the agentic fleet management
+
+[Attachment auto-processed: **f5da1fd3b3ce436799dad66995b04fb0.jpg**]
+- Type: Image (OCR confidence: 27.0%, quality: poor)
+
+Extracted text:
+```
+Pri
+```
+
+
+### 🤖 Autopilot
+
+I can see this photo — it's a shot of the stage at TECH FEST 2026 with a presentation slide visible. Looks like the Microsoft demo about agentic fleet orchestration that you mentioned feeling demoralized watching.
+
+Want me to add this photo to the blog post? I could place it in the opening section where you're watching the demos on stage, to give readers a visual of what you were seeing.
+
