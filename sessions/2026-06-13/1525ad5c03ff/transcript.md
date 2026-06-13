@@ -10,54 +10,6 @@
 
 ### 🤖 Autopilot
 
-The key isn't authorized on krake-nginx. Let me check if the public key is on the host.
-
-
-### 🤖 Autopilot
-
-The autopilot's SSH key isn't on krake-nginx's authorized_keys. I need you to add it, Gary. Let me check what's currently there.
-
-
-### 🤖 Autopilot
-
-None of the keys on this box work for krake-nginx on port 2202. The `no mutual signature supported` error suggests the server only accepts specific key types. Let me check the Route53 for truesight.me — the hosted zone might be in the Explorya account instead.
-
-
-### 🤖 Autopilot
-
-Found it — `truesight.me` is in the Explorya account. Let me check the existing records.
-
-
-### 🤖 Autopilot
-
-I can see the DNS setup. `edgar.truesight.me` points to `54.211.179.126` (seni_ror — the Rails box). I can add the DNS record from here since Route53 is in Explorya. But I can't SSH into krake-nginx to set up the SSL cert and nginx config — my key isn't authorized there.
-
-Let me do what I can from here and flag what needs your help.
-
-**Step 1 — DNS: Done from here.**
-
-
-### 🤖 Autopilot
-
-✅ **DNS record created** — `perch.truesight.me` → `54.211.179.126` (same as Edgar).
-
-Now for the SSL cert and nginx config on krake-nginx — I need your help since my SSH key isn't on that box. Here's what I need you to do:
-
-**Step 2 — SSL cert (you run this on krake-nginx):**
-```bash
-sudo certbot --nginx -d perch.truesight.me
-```
-
-**Step 3 — Nginx config (I'll draft it, you place it):**
-
-
-### 🤖 Autopilot
-
-Now let me build the landing page.
-
-
-### 🤖 Autopilot
-
 Here's the status:
 
 ---
@@ -626,6 +578,43 @@ Here's the current state:
 | **perch.truesight.me** | Rails sentiment_importer dashboard | ✅ Full trading UI |
 
 What's next? Phase 2 — Stripe webhook split?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] I think for each call listed on https://edgar.truesight.me/
+
+It should list the different types of signature accepted isnt it?
+
+
+### 🤖 Autopilot
+
+Good idea — each endpoint should show what signature/auth it accepts. Let me check what the actual endpoints expect.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. All endpoints use **RSA-2048 with SHA-256** (RSASSA-PKCS1-v1_5) — the digital signature IS the authentication. Let me update the landing page to show this.
+
+
+### 🤖 Autopilot
+
+Now each endpoint shows what auth it accepts:
+
+| Endpoint | Method | Auth |
+|----------|--------|------|
+| `/dao/submit_contribution` | POST | 🔑 **RSA-2048 / SHA-256** — signed canonical payload |
+| `/qr-code-check` | GET | ✅ No auth — public query |
+| `/dao/verify-signature` | GET | 🔑 **RSA-2048 / SHA-256** — signed `[EMAIL REGISTERED EVENT]` |
+| `/dao/check_digital_signature` | GET | ✅ No auth — public query |
+| `/proxy/gas/*` | ANY | ✅ No auth — path-based routing |
+| `/stripe_webhook` | POST | 🔐 Stripe webhook signing secret |
+
+Plus an Auth section explaining the RSA-2048 system with links to the Integration Guide and Create Signature page.
 
 ———
 **✅ Done this turn — actions taken:**
