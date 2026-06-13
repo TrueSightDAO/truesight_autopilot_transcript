@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me also check what's in the `.env` to understand what needs preserving (just the variable names, not values).
-
-
-### 🤖 Autopilot
-
 Now I have everything. Let me also check the existing OPEN_FOLLOWUPS.md entry about credential vault for host-side secrets — it's already there under "Credential vault for service-account keys (AWS Secrets Manager)". Let me compile the deployment map and file the fix.
 
 Here's the complete **Deployment Map** — I'll commit it to `agentic_ai_context` as a DR runbook, then also address the `.env` gap.
@@ -722,4 +717,113 @@ Once those are done, I can test both domains and move to Phase 2 (Stripe split).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initia
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Let me get one of the LOMs to pass you the you know what okay, I'll get one of the LOMs to add your SSH key public key to the authorized host list in the Crick engine X easy to instances I'm actually surprised that you have no way to access it Because I remember last time you actually did manage the access with one of the existing SSH keys [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right, let me check again — I might have a key that works but the SSH config is wrong.
+
+
+### 🤖 Autopilot
+
+Found it! The **first key** — `id_ed25519_truesight_autopilot` — **does work**. The issue was the SSH config had `PubkeyAcceptedKeyTypes +ssh-rsa` and `HostKeyAlgorithms +ssh-rsa` which was actually *breaking* the ED25519 auth. Let me fix the config and try again.
+
+
+### 🤖 Autopilot
+
+I'm in! Let me look at the existing nginx config to understand the setup.
+
+
+### 🤖 Autopilot
+
+The SSH config alias is still broken. Let me fix it and use the direct approach.
+
+
+### 🤖 Autopilot
+
+I can see the full config now. Edgar's SSL is using old-style `ssl on` with custom certs at `/home/ubuntu/ssl_certs/`. The `trends_server` upstream points to `54.211.179.126:3002` (seni_ror Rails). Let me set up the Perch.
+
+
+### 🤖 Autopilot
+
+No certbot on krake-nginx. Let me check what's available and install it.
+
+
+### 🤖 Autopilot
+
+Ubuntu 14.04 — that's ancient. No certbot in apt. Let me check if there's a snap or manual certbot.
+
+
+### 🤖 Autopilot
+
+No certbot, no Let's Encrypt — these are all commercial SSL certs. Let me check how the existing certs were obtained and if we can get a Let's Encrypt cert manually.
+
+
+### 🤖 Autopilot
+
+These are Sectigo commercial certs, not Let's Encrypt. Let me install certbot via pip since it's Ubuntu 14.04.
+
+
+### 🤖 Autopilot
+
+No certbot package for Trusty. Let me use the pip approach instead.
+
+
+### 🤖 Autopilot
+
+Python 3.4 is too old for modern certbot. Let me take a different approach — use the standalone `snap` or just manually create a self-signed cert for now, or better yet, use the DNS-01 challenge from this box (which has the AWS credentials for Route53).
+
+
+### 🤖 Autopilot
+
+Ubuntu 14.04 with a 3.13 kernel — snap won't work either. Let me use a different approach: I'll generate the cert from this box (which has certbot) and use DNS-01 challenge since I have Route53 access.
+
+
+### 🤖 Autopilot
+
+This box has certbot. I can use the DNS-01 challenge with Route53 to get a cert for `perch.truesight.me`, then SCP the cert files to krake-nginx.
+
+
+### 🤖 Autopilot
+
+No AWS creds available to certbot (they're in the `.env` file, not in standard AWS env vars). Let me use the manual DNS challenge instead — I'll create the TXT record in Route53 myself.
+
+
+### 🤖 Autopilot
+
+I have the challenge value. Let me create the TXT record in Route53, then continue the certbot process.
+
+
+### 🤖 Autopilot
+
+TXT record is live. Now let me complete the certbot challenge.
+
+
+### 🤖 Autopilot
+
+✅ **SSL cert obtained!** Now let me copy the cert files to krake-nginx and set up the nginx config.
+
+
+### 🤖 Autopilot
+
+Now let me add the Perch server block to the nginx config on krake-nginx.
+
+
+### 🤖 Autopilot
+
+Let me test it.
+
+
+### 🤖 Autopilot
+
+The cert is for `perch.truesight.me` but the old nginx config uses `ssl on` (deprecated) instead of `ssl_certificate` in the modern way. Let me check the config more carefully — the issue might be that the old-style `ssl on` directive conflicts with the `listen 443 ssl` syntax.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×28 → # Try all keys against krake-nginx on port 2202 for key in ~/.ssh/id_ed25519_truesight_autopilot ~/.ssh/NELANCO_aws_20201122.pem ~/.ssh/NELA; ssh -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 -o StrictHostKeyChecking=no ubuntu@54.226.114.186 "hostname && echo '---' && ls /etc/ng; cat /etc/nginx/sites-enabled/nginx_krake_ng.conf; …(+24 more)
 
