@@ -346,3 +346,45 @@ Good. You've earned it. Cacao, rest, maybe some time outside — the DAO will be
 
 I'll hold the fort. If anything urgent comes up, you know where to find me. Enjoy the weekend, Gary.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Yo, by the way, I was wondering maybe for future, when we interact on Telegram, regardless of whether I send you voice text or text, no, voice message or text message, when you respond, ideally you should respond with not just text but voice in all scenarios. Do you think you can do that? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Actually, that's already how it works! When you send me a voice message on Telegram, my text reply is automatically synthesized into a voice note and sent back to you. So every time you've heard me respond in voice — that's the bot doing its thing.
+
+The only catch is: when you send me *text* messages (typed, not voice), the bot sends my reply as text only. What you're asking for is voice replies for *all* messages — text and voice alike. Let me check if that's something I can configure on the Telegram bot side.
+
+
+### 🤖 Autopilot
+
+I can see the code now. The Telegram adapter already has voice support — it transcribes your voice messages via whisper, then synthesizes my response as MP3 via edge-tts. But looking at the flow, it only does voice synthesis when the *incoming* message is a voice note.
+
+Let me check the exact logic:
+
+
+### 🤖 Autopilot
+
+Found it. Line 1154-1156: the voice reply only triggers `if is_voice` — meaning only when you send a voice message. For text messages, it just sends text back.
+
+This is a straightforward fix. Let me open a PR to make it send voice replies for *all* messages, not just voice ones.
+
+
+### 🤖 Autopilot
+
+PR #190 is open! Here's what it does:
+
+**Currently:** Voice reply only triggers when you send a *voice* message. Text messages get text-only replies.
+
+**Fix:** For all governor messages (that aren't lightweight commands like "/start"), it will also synthesize and send a voice reply. It'll detect the language from my response text to pick the right voice (Aria for English, Xiaoxiao for Chinese, Francisca for Portuguese).
+
+Since this is the `truesight_autopilot` repo (my own code), per the rules I can't self-merge — you'll need to give the word when you're ready. Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → find / -maxdepth 3 -name "truesight_autopilot" -type d 2>/dev/null | head -5; ls /opt/truesight_autopilot/; grep -rl "voice\|tts\|sendVoice\|speech\|elevenlabs\|openai.*audio" /opt/truesight_autopilot/app/ 2>/dev/null | head -20; …(+1 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/190
+
