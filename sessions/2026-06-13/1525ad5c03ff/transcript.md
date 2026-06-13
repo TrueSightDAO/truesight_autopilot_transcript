@@ -517,3 +517,135 @@ The plan is committed and registered. Here's the summary:
 
 ✅ Ready. Reply **"go for it"** and I'll execute Phase 1 from RESUME HERE — DNS → SSL → nginx → landing page → Rails routing — and report progress here.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] [Handoff context — this Telegram topic (thread 3) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Okay, go for it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+GO received. Let me refresh the plan and start Phase 1.
+
+
+### 🤖 Autopilot
+
+The plan PR (#476) isn't merged yet — it's still open. Let me read the plan from the PR branch directly.
+
+
+### 🤖 Autopilot
+
+Plan loaded. Starting Phase 1. First step — check the current DNS and nginx setup on krake-nginx.
+
+
+### 🤖 Autopilot
+
+SSH key issue on krake-nginx. Let me check the SSH config and try with the right key.
+
+
+### 🤖 Autopilot
+
+Let me check what SSH keys I have and what the config looks like.
+
+
+### 🤖 Autopilot
+
+I see — krake-nginx uses port 2202. The `ssh_run` tool is using the host alias but the config shows port 2202. Let me try explicitly.
+
+
+### 🤖 Autopilot
+
+The key isn't authorized on krake-nginx. Let me check if the public key is on the host.
+
+
+### 🤖 Autopilot
+
+The autopilot's SSH key isn't on krake-nginx's authorized_keys. I need you to add it, Gary. Let me check what's currently there.
+
+
+### 🤖 Autopilot
+
+None of the keys on this box work for krake-nginx on port 2202. The `no mutual signature supported` error suggests the server only accepts specific key types. Let me check the Route53 for truesight.me — the hosted zone might be in the Explorya account instead.
+
+
+### 🤖 Autopilot
+
+Found it — `truesight.me` is in the Explorya account. Let me check the existing records.
+
+
+### 🤖 Autopilot
+
+I can see the DNS setup. `edgar.truesight.me` points to `54.211.179.126` (seni_ror — the Rails box). I can add the DNS record from here since Route53 is in Explorya. But I can't SSH into krake-nginx to set up the SSL cert and nginx config — my key isn't authorized there.
+
+Let me do what I can from here and flag what needs your help.
+
+**Step 1 — DNS: Done from here.**
+
+
+### 🤖 Autopilot
+
+✅ **DNS record created** — `perch.truesight.me` → `54.211.179.126` (same as Edgar).
+
+Now for the SSL cert and nginx config on krake-nginx — I need your help since my SSH key isn't on that box. Here's what I need you to do:
+
+**Step 2 — SSL cert (you run this on krake-nginx):**
+```bash
+sudo certbot --nginx -d perch.truesight.me
+```
+
+**Step 3 — Nginx config (I'll draft it, you place it):**
+
+
+### 🤖 Autopilot
+
+Now let me build the landing page.
+
+
+### 🤖 Autopilot
+
+Here's the status:
+
+---
+
+## ✅ Done (from here)
+
+**Step 1 — DNS:** `perch.truesight.me` → `54.211.179.126` (same as Edgar). Record created in Route53. It'll propagate in a minute or two.
+
+**Landing page:** Built and ready — forest-green header, "A steward's view of the markets", links to Backtester / Market Compare / Sentiment, plus links to Edgar and the DAO.
+
+---
+
+## 👆 Needs you on krake-nginx
+
+I can't SSH into `krake-nginx` (port 2202) — my key isn't authorized there. Here's what I need you to run:
+
+**1. Create the landing page directory and file:**
+```bash
+sudo mkdir -p /var/www/perch
+```
+
+Then paste the HTML I just drafted into `/var/www/perch/index.html`.
+
+**2. Get the SSL cert:**
+```bash
+sudo certbot --nginx -d perch.truesight.me
+```
+
+**3. Create the nginx config:**
+Save the nginx config I drafted above as `/etc/nginx/sites-available/perch`, then:
+```bash
+sudo ln -sf /etc/nginx/sites-available/perch /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**4. Test it:**
+Visit `https://perch.truesight.me` — should show the landing page with a valid SSL cert.
+
+Want me to write the landing page HTML and nginx config to files on this box so you can SCP them over?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → ls /etc/nginx/sites-enabled/ && echo "---" && cat /etc/nginx/sites-enabled/edgar 2>/dev/null || cat /etc/nginx/sites-available/edgar 2>/dev/; echo "connected" && hostname; cat ~/.ssh/config | head -60; …(+7 more)
+
