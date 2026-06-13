@@ -10,129 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have everything. Let me also check the existing OPEN_FOLLOWUPS.md entry about credential vault for host-side secrets — it's already there under "Credential vault for service-account keys (AWS Secrets Manager)". Let me compile the deployment map and file the fix.
-
-Here's the complete **Deployment Map** — I'll commit it to `agentic_ai_context` as a DR runbook, then also address the `.env` gap.
-
----
-
-## 🗺️ TrueSight DAO Autopilot — Deployment Map
-
-### 1. The Box
-
-| Property | Value |
-|---|---|
-| **Instance ID** | `i-02c699d3d7efbdc82` |
-| **Name** | `truesight-autopilot` |
-| **Type** | `t3.medium` (2 vCPU, 4 GB RAM) |
-| **AMI** | `ami-00403f401ee6a4b98` (Ubuntu 22.04) |
-| **Disk** | 20 GB EBS (`vol-0159e886ea21577df`) — **72% full** |
-| **Swap** | 2 GB |
-| **Region / AZ** | `us-east-1` / `us-east-1d` |
-| **VPC / Subnet** | `vpc-3a79715f` / `subnet-44257d33` |
-| **Private IP** | `10.0.0.158` |
-| **Public IP** | `52.200.38.206` (Elastic) |
-| **Security Group** | `default` (`sg-e98f788e`) |
-| **Key Pair** | `garyjob_aws` |
-| **AWS Account** | `440626669078` (Explorya) |
-| **IAM Role** | **None** — no instance profile |
-| **Tags** | `Name=truesight-autopilot`, `Service=autopilot`, `Project=TrueSightDAO` |
-
-### 2. Services (systemd)
-
-| Unit | What | Port | Runs as |
-|---|---|---|---|
-| `truesight-autopilot.service` | Sophia FastAPI (2 workers) | `8001` | `ubuntu` |
-| `truesight-autopilot-telegram.service` | Telegram bot adapter | — | `ubuntu` |
-| `truesight-autopilot-watchdog.service` | Attention watchdog | — | `ubuntu` |
-| `nginx.service` | Reverse proxy → sophia.truesight.me | `80`/`443` | `root` |
-| `ssh.service` | SSH access | `22` | `root` |
-| `monit.service` | System monitoring | `2812` | `root` |
-
-### 3. Code & Data Layout
-
-| What | Path |
-|---|---|
-| **App code** | `/opt/truesight_autopilot/` (git clone of `TrueSightDAO/truesight_autopilot`) |
-| **Python venv** | `/opt/truesight_autopilot/.venv/` |
-| **Environment secrets** | `/opt/truesight_autopilot/.env` |
-| **Google SA keys** | `/opt/truesight_autopilot/config/google/` |
-| **Gmail OAuth tokens** | `/opt/truesight_autopilot/config/gmail/` |
-| **Systemd unit files** | `/opt/truesight_autopilot/systemd/` (symlinked into `/etc/systemd/system/`) |
-| **Nginx config** | `/opt/truesight_autopilot/config/nginx/` (symlinked into `/etc/nginx/sites-enabled/`) |
-| **Telegram session** | `/opt/truesight_autopilot/.telethon_watchdog.session` |
-| **GitHub PAT** | `/home/ubuntu/CYPHER_DEFENCE_OPS_PAT` |
-| **Clasp tokens** | `/home/ubuntu/.clasprc*.json` |
-| **SSH key** | `/home/ubuntu/.ssh/id_ed25519_truesight_autopilot` |
-| **Nginx logs** | `/var/log/nginx/sophia_access.log` + `sophia_error.log` |
-| **App logs** | `journalctl -u truesight-autopilot*` |
-
-### 4. Installed Software
-
-- **Python 3.10** (system) + venv with FastAPI, uvicorn, boto3, google-api-client, httpx, etc.
-- **Node.js v20** + `@google/clasp` (global)
-- **Tesseract OCR** (eng + osd)
-- **FFmpeg**
-- **Nginx** + Let's Encrypt (certbot)
-- **No Docker, no PM2, no Supervisor**
-
-### 5. Fleet — Other Hosts (SSH reachable)
-
-| Alias | Host | Purpose |
-|---|---|---|
-| `krake-nginx` | `54.226.114.186:2202` | Nginx reverse proxy (Nelanco) |
-| `seni-ror` | `54.211.179.126` | Edgar Rails API server |
-| `dao-protocol` | `98.93.94.86` | dao_protocol FastAPI (port 8010) |
-| `seni-sk` | `34.234.193.80` | Sidekiq worker for Edgar |
-| `seni-sql` | `44.193.55.205` | PostgreSQL for Edgar |
-| `seni-redis` | `54.234.59.188` | Redis for Edgar |
-
-### 6. Credential Inventory & DR Status
-
-| Credential | Location | Backed up? |
-|---|---|---|
-| `.env` (all API keys) | `/opt/truesight_autopilot/.env` | ❌ **Not backed up** |
-| Google SA keys (3) | `config/google/*.json` | ✅ In `credential_vault` (laptop) |
-| Gmail OAuth tokens | `config/gmail/*.json` | ✅ In `credential_vault` |
-| GitHub PAT | `/home/ubuntu/CYPHER_DEFENCE_OPS_PAT` | ❌ Regeneratable from GitHub |
-| SSH key | `~/.ssh/id_ed25519_truesight_autopilot` | ✅ In `credential_vault` |
-| Clasp tokens | `~/.clasprc*.json` | ✅ In `credential_vault` |
-| Telegram session | `.telethon_watchdog.session` | ❌ Must re-login |
-| SSL cert | `/etc/letsencrypt/live/sophia.truesight.me/` | ✅ Auto-renewed |
-
-### 7. Disaster Recovery — Spin Up a Replacement
-
-**Steps (estimated ~45 min):**
-
-1. **Launch** a new `t3.medium` from Ubuntu 22.04 AMI in `us-east-1d`, same security group, attach the Elastic IP
-2. **Install deps:** `sudo apt install -y python3 python3-pip python3-venv nginx certbot tesseract-ocr ffmpeg nodejs npm`
-3. **Clone the repo:** `sudo git clone https://github.com/TrueSightDAO/truesight_autopilot.git /opt/truesight_autopilot && sudo chown -R ubuntu:ubuntu /opt/truesight_autopilot`
-4. **Create venv:** `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
-5. **Recreate `.env`** — **critical gap** (see below)
-6. **Copy Google SA keys + Gmail tokens** from `credential_vault` restore (laptop backup)
-7. **Copy SSH key** from `credential_vault` → `~/.ssh/`
-8. **Set up Nginx:** `sudo ln -sf /opt/truesight_autopilot/config/nginx/sophia.conf /etc/nginx/sites-available/ && sudo ln -sf /etc/nginx/sites-available/sophia /etc/nginx/sites-enabled/ && sudo certbot --nginx -d sophia.truesight.me`
-9. **Install systemd units:** `sudo cp /opt/truesight_autopilot/systemd/*.service /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable --now truesight-autopilot truesight-autopilot-telegram truesight-autopilot-watchdog`
-10. **Run Telegram login:** `python3 scripts/telethon_login.py` (interactive — needs TELEGRAM_API_ID/HASH in `.env`)
-
----
-
-### ⚠️ The Critical Gap: `.env` is NOT backed up
-
-The `credential_vault` (laptop DR) already backs up the Google SA keys, Gmail tokens, clasp tokens, and SSH key. But the **`.env` file on this box** — which holds the GitHub PAT, DeepSeek API key, Grok API key, Tavily key, Edgar private key, Telegram API credentials, AWS keys, Bugsnag key, JWT secret — is **not in any backup system**.
-
-The existing `OPEN_FOLLOWUPS.md` has an entry for "Credential vault for service-account keys (AWS Secrets Manager)" but that's scoped to the fleet hosts, not this box's `.env`.
-
-Let me fix both: commit this deployment map as a DR runbook, and open a follow-up to add the autopilot `.env` to the credential vault.
-
-
-### 🤖 Autopilot
-
-Now let me also add the follow-up entry to `OPEN_FOLLOWUPS.md` to track the `.env` backup gap:
-
-
-### 🤖 Autopilot
-
 Good — the existing "Credential vault for service-account keys" entry covers the fleet hosts' Google SA keys but doesn't mention the autopilot's own `.env`. Let me add a focused follow-up entry for that specific gap, and also update the existing entry to reference the autopilot `.env` as a sibling concern.
 
 
@@ -826,4 +703,51 @@ The cert is for `perch.truesight.me` but the old nginx config uses `ssl on` (dep
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×28 → # Try all keys against krake-nginx on port 2202 for key in ~/.ssh/id_ed25519_truesight_autopilot ~/.ssh/NELANCO_aws_20201122.pem ~/.ssh/NELA; ssh -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 -o StrictHostKeyChecking=no ubuntu@54.226.114.186 "hostname && echo '---' && ls /etc/ng; cat /etc/nginx/sites-enabled/nginx_krake_ng.conf; …(+24 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Actually come the thing of it, almost makes sense to extend true site.me website to indicate that we have in like a program called the Purge, isn't it? Because right now Edgar, the entry on true site.me website is mainly about the protocol but the purge is totally missing, isn't it? What are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a great point. Let me check what's currently on the truesight.me website.
+
+
+### 🤖 Autopilot
+
+You're right — I can see the Projects dropdown lists Agroverse, Sunmint, Edgar, Programs, and Fundraisers. Let me check the Edgar page to see what it says.
+
+
+### 🤖 Autopilot
+
+I can see the full picture now. The Edgar page describes it as "Open-Source Automation for Grassroots Impact" — it's a mix of the protocol and the trading tool, but The Perch isn't mentioned anywhere. You're right.
+
+Let me check the repo where the website lives.
+
+
+### 🤖 Autopilot
+
+The main site is in `truesight_me_beta` (beta) and `truesight_me_prod` (production). Let me check the beta repo to see the Edgar page source.
+
+
+### 🤖 Autopilot
+
+I can see the full picture now. You're absolutely right — the Edgar page on truesight.me describes it as a general "open-source automation" platform, but The Perch (the trading dashboard) isn't mentioned anywhere on the site. It's a missing program.
+
+Here's what I think:
+
+**Yes, extend the website.** Add The Perch as a program under Projects, alongside Agroverse, Sunmint, and Edgar. The nav would become:
+
+- Agroverse Community
+- Sunmint Program
+- **The Perch** ← new
+- Edgar Platform
+- Programs
+- Fundraisers
+
+And the Edgar page should be updated to reflect that Edgar is now the **DAO Protocol** (not the trading tool), while The Perch gets its own page describing the market steward role.
+
+This is a natural extension of the separation plan — Phase 1.6 or 1.7. Want me to add it to the plan and draft the Perch page for the website?
 
