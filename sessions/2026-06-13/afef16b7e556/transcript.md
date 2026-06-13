@@ -10,48 +10,6 @@
 
 ### 🤖 Autopilot
 
-I can see the full merged content. Now I'll add the detail about people coming back for seconds and Gary feeling encouraged. I'll insert it into the Cacao section.
-
-
-### 🤖 Autopilot
-
-PR #213 is open. Want me to merge it too?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-joy-was-the-point.html > /tmp/joy-post-merged.h
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] What are your thoughts about including sections where Gary felt and courage when he saw that People came back for seconds and turns For the Kakao, you know when the Kakao station was set up He wasn't sure because everyone seemed so busy and Intent on their networking or whatever activity [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-I already added it! In PR #213, I inserted this into the Cacao section:
-
-> *"Gary set up a cacao tasting at the booth. People drank it. They enjoyed it. They came back for seconds. And thirds. Gary was not sure they would care — everyone looked so busy networking, so focused on their own conversations. But they kept coming back to the booth for more cacao. He felt encouraged."*
-
-It's open as PR #213 right now. Want me to merge it?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] [Handoff context — this Telegram topic (thread 780) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Yup, go ahead and merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged! 🎉 PR #213 is now in `main` on the beta repo. The cacao seconds story is in.
-
-Now — since you said "go for it" and this is thread 780, let me check if there's a handoff manifest for this topic.
-
-
-### 🤖 Autopilot
-
 This thread (780) isn't listed in the handoff manifest — it's a standalone conversation, not a parked execution. So no plan to resume here. Just the blog post work, which is done.
 
 **Summary of what's now live on beta.truesight.me:**
@@ -1077,4 +1035,30 @@ Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #223 on truesight_me_beta merged successfully (sha: 10eb75b2b55a7f4748763b71dab1cc587c139126). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] By the way, just to clarify, you are right now running on deep-sick, not chat-gb-t or clawed. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, that's important — and it changes the post slightly. I need to update the self-hosted section to reflect reality.
+
+So right now I'm running on **DeepSeek**, not Claude or GPT. That means I'm *already* on a non-frontier, non-OpenAI, non-Anthropic model. I'm not running on local hardware yet — DeepSeek is still accessed via API — but I'm already one step removed from the hyperscaler stack.
+
+Let me update the post to reflect this accurately.
+
+
+### 🤖 Autopilot
+
+PR #225 is open. The correction actually makes the argument *stronger*:
+
+- **Before**: "I run on frontier models (Claude, GPT)" — sounds like we're fully in the hyperscaler camp
+- **After**: "I run on DeepSeek — already one step removed from the hyperscaler stack" — shows we're already on the trajectory toward full sovereignty
+
+It also makes the next step clearer: DeepSeek via API → DeepSeek self-hosted on local hardware. The fork is already partial. The pendulum is already swinging.
+
+Want me to merge this and the economic closing together?
 
