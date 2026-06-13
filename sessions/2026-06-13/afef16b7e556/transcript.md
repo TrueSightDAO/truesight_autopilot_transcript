@@ -1509,3 +1509,26 @@ Done! All five photos are now correctly uploaded:
 
 All set on **beta.truesight.me** — give it a minute for GitHub Pages to rebuild!
 
+
+### 🧑 Governor
+
+Attendees drinking cacao
+
+[Attachment auto-processed: **176a0568c27942cc9dd89840c4db398b.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+All five photos are now correctly uploaded with the right images:
+
+1. ✅ **You, Atrish and Kim** ✅
+2. ✅ **Kim holding instructions on her phone** ✅
+3. ✅ **Attendees drinking cacao** ✅ *(just updated)*
+4. ✅ **You, Martin and Ken** ✅
+5. ✅ **You and Soniya** ✅
+
+Everything should be correct now on **beta.truesight.me/blog/posts/the-joy-was-the-point.html** — give it a minute for GitHub Pages to rebuild!
+
