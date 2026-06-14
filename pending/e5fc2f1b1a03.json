@@ -119,17 +119,10 @@
     "created_at": "2026-06-11T01:08:28Z"
   },
   {
-    "title": "Merge PR #197 on truesight_autopilot",
+    "title": "Merge PR #235 on truesight_me_beta",
     "qr_code": "",
-    "summary": "Unit 3: Wire SSH, GitHub, and GAS deploy tools to resolve credentials from the vault as a fallback.\n\nCurrently:\n- ssh_tools.py hardcodes ~/.ssh/sophia_infra key path \u2014 should also try vault.get_value(",
+    "summary": "Re-order the sections on the landing page (index.html) to follow a \"Human first \u2192 Platform \u2192 System health & stats \u2192 The how\" narrative arc.\n\nCurrent section order in the <div class=\"page\">:\n1. Hero (",
     "action": "merge_pr",
-    "created_at": "2026-06-14T19:23:39Z"
-  },
-  {
-    "title": "Merge PR #199 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Sign-out on the vault page is broken: the /logout route doesn't exist (404), the JWT cookie 'governor_chat_session' is never cleared server-side, and the onclick only tries localStorage.removeItem sil",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T19:29:27Z"
+    "created_at": "2026-06-14T19:50:35Z"
   }
 ]
