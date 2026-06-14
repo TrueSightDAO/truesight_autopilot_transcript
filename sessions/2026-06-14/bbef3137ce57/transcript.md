@@ -69,11 +69,23 @@ Want me to check anything about the Nginx config that routes `edgar.truesight.me
 ### 🤖 Autopilot
 
 Let me check what `dao_protocol` currently serves and how it's deployed to understand the migration scope.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the README says `dao_protocol` was renamed to `dao_client` and is now a Python/FastAPI package. Let me check what's actually deployed on the `dao_protocol` host and what the Nginx config looks like.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -180,4 +192,46 @@ That way everything lives in one repo and one service. Want me to proceed with t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → hostname -I && cat /etc/nginx/sites-enabled/edgar.conf; cat /etc/nginx/sites-enabled/edgar.conf | grep -n 'proxy_pass\|root\|location'; hostname -I
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] Can we move this • Static landing page at /var/www/edgar/index.html served from seni_ror's filesystem over to dao_protocol host
+
+
+### 🤖 Autopilot
+
+Yes, let me first read the current static landing page to know what we're moving, then plan the migration.
+
+
+### 🤖 Autopilot
+
+Good, I have the full HTML. Let me also check the FastAPI server's current routes to see if there's already a root handler.
+
+
+### 🤖 Autopilot
+
+No root `/` handler exists on the FastAPI side. Here's the plan:
+
+**Yes, we can move it.** Here's what's involved:
+
+### Migration steps
+
+1. **Add the static HTML to `dao_protocol` repo** — create `truesight_dao_client/server/static/index.html` with the current landing page content
+2. **Add a root route** in FastAPI that serves the static HTML at `/`
+3. **Update Nginx on `seni_ror`** — remove the `root /var/www/edgar; index index.html;` and `try_files $uri $uri/ @dao_protocol;` pattern, just proxy `/` straight to `dao_protocol:8010`
+4. **Clean up** — remove `/var/www/edgar/index.html` from `seni_ror`
+
+### What this achieves
+- **Everything** for `edgar.truesight.me` comes from one service (`dao_protocol:8010`)
+- The landing page is version-controlled in the repo
+- No more split-brain between Nginx static files and the FastAPI backend
+
+Want me to proceed? I'll:
+1. Open a PR in `dao_protocol` adding the static file + root route
+2. Then update the Nginx config on `seni_ror` (after you approve the PR)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat /var/www/edgar/index.html; grep -rn "root\|index\|landing\|static\|home\|@app.get\|@router.get" /home/ubuntu/dao_protocol/truesight_dao_client/server/main.py /home/ubu
 
