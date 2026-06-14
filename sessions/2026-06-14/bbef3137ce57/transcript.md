@@ -1193,6 +1193,7 @@ GitHub Pages hasn't deployed yet. Let me register a watcher so I can tell you wh
 ### 🤖 Autopilot
 
 I'm already in a Telegram topic (thread 4439), but the watcher didn't register. Let me check again in a moment.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1200,11 +1201,13 @@ I'm already in a Telegram topic (thread 4439), but the watcher didn't register. 
 Still 404 — GitHub Pages takes a minute or two to rebuild after a sync. The file **is** on the `dapp_prod` repo's `main` branch (confirmed via `read_repo_file`), it just hasn't been deployed by Pages yet.
 
 I'll check again in a moment.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 404. GitHub Pages can take a few minutes to deploy. The file **is** on the `dapp_prod` repo's `main` branch — Pages just needs to rebuild. I'll keep checking.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1334,4 +1337,158 @@ Here's what changed:
 - **All functionality preserved** — live payload preview, RSA signing, Edgar submission
 
 Want me to merge and promote to prod?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] Governor Name should be a drop down isnt it?
+
+
+### 🤖 Autopilot
+
+Let me check how other DApp pages handle the governor name field.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+Let me check the `report_contribution.html` more carefully for how it handles the governor field.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me also check `partner_check_in.html` for reference.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+You're right — the DApp convention uses a **dropdown** for governor name, populated from local storage. Let me check how `report_contribution.html` does it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the exact pattern used in `report_contribution.html` for the governor dropdown.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Now I see the pattern. Let me also check `partner_check_in.html` for its governor field.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Both use the same pattern — a `<select>` dropdown populated from `localStorage` with stored identities. Let me fix the `partner_add.html` to match.
+
+
+### 🤖 Autopilot
+
+The file was rewritten in the previous PR. Let me read the current version to find the exact content.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact content. The PR #46 branch is based on `main`, not on the `fix/partner-add-ux-convention` branch. Let me check what's on `main` currently.
+
+
+### 🤖 Autopilot
+
+OK, so `main` still has the **original** light-themed version. PR #46 (the UX convention fix) hasn't been merged yet. Let me first merge PR #46, then fix the governor dropdown on top of it.
+
+Actually, let me do both in one go — I'll update PR #46 to also include the dropdown fix, then merge and promote.
+
+Let me update the branch with the governor dropdown fix.
+
+
+### 🤖 Autopilot
+
+The branch has the old version. Let me check what's actually on that branch.
+
+
+### 🤖 Autopilot
+
+OK, the branch has the dark-themed version. The search string didn't match because of whitespace differences. Let me find the exact text around the governor name field.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact text. The issue is the `<div class="help-text"` line is truncated. Let me get the rest.
+
+
+### 🤖 Autopilot
+
+Now I have the exact text. Let me use the exact search strings.
+
+
+### 🤖 Autopilot
+
+There must be a whitespace difference. Let me read the raw file directly from the branch.
+
+
+### 🤖 Autopilot
+
+The raw file is only 4318 bytes — that's the **old** light-themed version! The branch wasn't updated with the dark theme. Let me check what happened — the `git_push_changes` said it wrote the file but the raw content shows the old version. Let me check the actual commit on that branch.
+
+
+### 🤖 Autopilot
+
+The commit exists with the dark theme. The raw.githubusercontent.com URL might be cached. Let me check the tree to see the actual file.
+
+
+### 🤖 Autopilot
+
+The file is 18813 bytes on the branch — that's the dark-themed version. The raw.githubusercontent.com was returning a cached version. Let me get the actual content from the blob API.
+
+
+### 🤖 Autopilot
+
+The blob API returns base64 content. Let me decode it to find the exact text around the governor name field.
+
+
+### 🤖 Autopilot
+
+The raw.githubusercontent.com is returning only 4318 bytes — it's truncating the file! The blob API says the file is 18813 bytes. The CDN is serving a truncated version. Let me use the blob API's base64 content instead.
+
+
+### 🤖 Autopilot
+
+I can see the base64 content. Let me decode the relevant part to find the exact text around the governor name field. The base64 shows:
+
+```
+PGxhYmVsIGZvcj0iZ292ZXJub3JOYW1lIj5Hb3Zlcm5vciBOYW1lICo8L2xhYmVsPgogICAgICAgICAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0iZ292ZXJub3JOYW1lIiBwbGFjZWhvbGRlcj0iZS5nLiBHYXJ5IFRlaCIgYXV0b2NvbXBsZXRlPSJvZmYiPgogICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImhlbHAtdGV4dCI+WW91ciBuYW1lIGFzIHRoZSBnb3Zlcm5vciBzdWJtaXR0aW5nIHRoaXMgcGFydG5lci48L2Rpdj4KICAgICAgICAgICAgICAgICA8L2Rpdj4=
+```
+
+Decoded: `<label for="governorName">Governor Name *</label>\n                    <input type="text" id="governorName" placeholder="e.g. Gary Teh" autocomplete="off">\n                    <div class="help-text">Your name as the governor submitting this partner.</div>\n                </div>`
+
+The issue is the indentation uses spaces but the exact number might differ. Let me try the edit with the exact text from the base64.
+
+
+### 🤖 Autopilot
+
+The indentation must be different. Let me use a different approach — I'll write the entire file with the governor dropdown fix included.
+
+
+### 🤖 Autopilot
+
+The blob API returns base64. I need to decode it to find the exact whitespace. Let me decode the relevant portion.
+
+The base64 around the governor field (from earlier read):
+`PGxhYmVsIGZvcj0iZ292ZXJub3JOYW1lIj5Hb3Zlcm5vciBOYW1lICo8L2xhYmVsPgogICAgICAgICAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0iZ292ZXJub3JOYW1lIiBwbGFjZWhvbGRlcj0iZS5nLiBHYXJ5IFRlaCIgYXV0b2NvbXBsZXRlPSJvZmYiPgogICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImhlbHAtdGV4dCI+WW91ciBuYW1lIGFzIHRoZSBnb3Zlcm5vciBzdWJtaXR0aW5nIHRoaXMgcGFydG5lci48L2Rpdj4KICAgICAgICAgICAgICAgICA8L2Rpdj4=`
+
+Let me decode this to see the exact whitespace.
+
+
+### 🤖 Autopilot
+
+Let me just decode the base64 manually. The base64 decodes to:
+
+```
+<label for="governorName">Governor Name *</label>
+                    <input type="text" id="governorName" placeholder="e.g. Gary Teh" autocomplete="off">
+                    <div class="help-text">Your name as the governor submitting this partner.</div>
+                 </div>
+```
+
+The indentation is 20 spaces (the `                    ` before `<input`). But the `git_push_changes` tool is still failing. Let me try a completely different approach — write the whole file with the dropdown fix included.
+
+
+### 🤖 Autopilot
+
+PR is open: **https://github.com/TrueSightDAO/dapp_beta/pull/47**
+
+This PR includes **both** fixes:
+1. ✅ **Dark theme + gold accents** — matches DApp UX convention
+2. ✅ **Governor Name dropdown** — populated from `localStorage` identities, auto-selects if only one
+
+Want me to merge and promote to prod?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/fix/partner-add-ux-convention/partner_add.html" | grep -n "governorName" |; echo 'PGxhYmVsIGZvcj0iZ292ZXJub3JOYW1lIj5Hb3Zlcm5vciBOYW1lICo8L2xhYmVsPgogICAgICAgICAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0iZ292ZXJub3
 
