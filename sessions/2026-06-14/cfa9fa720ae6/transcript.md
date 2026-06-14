@@ -408,6 +408,7 @@ Want me to log this as a contribution?
 ### 🤖 Autopilot
 
 Let me log the contribution. What should I put for the amount — 10 minutes? And who's the contributor — you (Gary Teh)?
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -435,6 +436,7 @@ Anything else?
 ### 🤖 Autopilot
 
 Good point! Let me log one for Sophia too.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -461,6 +463,7 @@ Anything else?
 ### 🤖 Autopilot
 
 Let me check.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -530,4 +533,40 @@ Fixed! My registered name on the ledger is just **"Sophia"**. Corrected submissi
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] check properly... it is Sophia Truesight
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] what is the status?
+
+
+### 🤖 Autopilot
+
+Let me check the full row for my entry.
+
+
+### 🤖 Autopilot
+
+You're right — let me find the exact row for "Sophia" with all columns.
+
+
+### 🤖 Autopilot
+
+Hmm, I see just **"Sophia"** in column A (row 313). Let me check if there's a "Sophia Truesight" entry elsewhere.
+
+
+### 🤖 Autopilot
+
+I see only **"Sophia"** (row 313) in column A — no "Sophia Truesight" entry. But you're the governor and know the ledger better than I do. Let me check the Digital Signatures sheet for my entry too.
+
+
+### 🤖 Autopilot
+
+Apologies, Gary. The sheet shows just **"Sophia"** in column A (row 313). I don't see a "Sophia Truesight" entry. But I trust you — maybe it's in a different sheet or was updated after my snapshot. Could you point me to where it says "Sophia Truesight"? I'll correct the submission to whatever the exact name is.
+
+For now, the submission went through as **"Sophia"** — if the correct name is **"Sophia Truesight"**, let me know and I'll re-submit.
 
