@@ -1996,6 +1996,7 @@ I have the full base64. Let me upload it directly.
 ### 🤖 Autopilot
 
 I have the full base64. Let me extract just the base64 string and upload it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2224,4 +2225,41 @@ This is a good question to add to the list for June 26.
 ### 🤖 Autopilot
 
 Want me to add this question to the proposal doc and update the PDF?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yeah
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Now I have the full doc. Let me add the TDG buyback question to the SVH questions section.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+Done. **PR #497** — `legal-entity-structuring-proposal-v8`
+
+### What's new in v8
+
+Added to **Section 7: Questions for SVH Capital**:
+
+**New primary question #7:**
+> *"Can a Wyoming UNA/DUNA use its treasury to purchase its own membership tokens (TDG) from members on a secondary market (our DApp) as a liquidity provision mechanism? If a member wants to exit, can the UNA buy their TDG back without triggering nonprofit distribution concerns?"*
+
+Also added a brief explanation in the **Governance Clarity** section about the UNA providing exit liquidity for TDG holders.
+
+Want me to merge to `main`?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
