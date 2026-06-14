@@ -601,6 +601,7 @@ It failed to start. Let me check the logs.
 ### 🤖 Autopilot
 
 Port 8010 is already in use by the old process. Let me kill it and restart.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -718,4 +719,48 @@ Here's the current status of the landing page migration:
 | **Old static file** | 🟡 | `/var/www/edgar/index.html` still exists on `seni_ror` but is no longer referenced by Nginx |
 
 **One loose end:** The old `/var/www/edgar/index.html` on `seni_ror` is orphaned. Want me to remove it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] This is the outdated content though 
+
+https://edgar.truesight.me/
+
+The previous one had more details
+
+
+### 🤖 Autopilot
+
+Let me check what's currently being served vs what was in the old static file.
+
+
+### 🤖 Autopilot
+
+I see — the current landing page is the **new content** I moved over (the Edgar API documentation page). But you're saying the **previous** landing page had more details — the market overview dashboard with date navigation, period selectors, and Gemini-powered market analysis.
+
+That was the Rails `landing_page.html.erb` which was **not** the static file I moved. Let me check what was actually at `/var/www/edgar/index.html` before I replaced it.
+
+
+### 🤖 Autopilot
+
+So the old static file on `seni_ror` is the same content I moved — the Edgar API docs page. The **previous** landing page you're referring to (with market overview, date navigation, Gemini analysis) was the **Rails** `landing_page.html.erb` from `sentiment_importer`. That was the one that was served before the cutover to the static page.
+
+Let me check if the Rails app is still running and can serve it.
+
+
+### 🤖 Autopilot
+
+The Rails app (`seni_ror`) is **stopped/failed** — it was taken down during the cutover. The old market dashboard landing page is in `landing_page.html.erb` but the Rails server isn't running.
+
+So the question is: **do you want the old market dashboard back?** If so, we have two options:
+
+1. **Port the Rails landing page to FastAPI** — rebuild `landing_page.html.erb` as a static HTML or FastAPI-served page in `dao_protocol`
+2. **Restart the Rails app** — but that brings back the whole `sentiment_importer` stack which was intentionally cut over
+
+Which direction? Or was there a different landing page you had in mind?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ls -la /var/www/edgar/; cat /var/www/edgar/index.html | head -c 500; sudo systemctl status seni_ror 2>/dev/null | head -5; echo "---"; ls /home/ubuntu/sentiment_importer/app/views/static_pages/ 2>/dev/null
 
