@@ -697,3 +697,68 @@ Production (`truesight.me`) still has the **old** content — no Platform Servic
 
 The `sync_beta_to_prod` failed earlier due to a merge conflict (3 open PRs on prod + CNAME divergence). To get this to production, we need to resolve that conflict. Want me to look at what the 3 open prod PRs contain so we can figure out how to unblock the sync?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Still not seeing the 3 community initiative on the same row
+
+
+### 🤖 Autopilot
+
+Let me check what's actually deployed on beta now:
+
+
+### 🤖 Autopilot
+
+The beta site is still serving the **old content** — it still has 4 Community Initiative cards (Agroverse, SunMint, Edgar, Lineage) and no Platform Services section. GitHub Pages hasn't deployed the new commits yet.
+
+The issue is that GitHub Pages on `truesight_me_beta` might not be configured to auto-deploy from `main`. Let me check if there's a `gh-pages` branch or a different deploy mechanism:
+
+
+### 🤖 Autopilot
+
+No `gh-pages` branch. The beta site is being served from the `main` branch directly (GitHub Pages project site from `/` root). But the content hasn't updated. Let me check if GitHub Pages is even enabled on this repo by looking at the repo settings via API:
+
+
+### 🤖 Autopilot
+
+GitHub Pages API returns 404 for `truesight_me_beta` — Pages is **not enabled** on this repo. The CNAME file exists but Pages isn't active. The beta site must be deployed through a different mechanism.
+
+Let me check how `truesight_me_prod` (the production site) is deployed:
+
+
+### 🤖 Autopilot
+
+Both return 404. The Pages API might need different auth. Let me check the DNS — `truesight.me` resolves to `185.199.108.153` which is a GitHub Pages IP, and `www.truesight.me` → `TrueSightDAO.github.io`. So production is served via GitHub Pages from the `truesight_me_prod` repo.
+
+The beta site `beta.truesight.me` → `truesightdao.github.io` — this is a CNAME to the org's GitHub Pages. The org Pages site serves from the `truesightdao/truesightdao.github.io` repo, which doesn't exist (returns 404). So the beta site might actually be served from the `truesight_me_prod` repo on a different branch.
+
+Let me check if there's a `beta` branch on `truesight_me_prod`:
+
+
+### 🤖 Autopilot
+
+The prod repo has `CNAME = truesight.me`. The beta repo has `CNAME = beta.truesight.me`. But the Pages API returns 404 for both — this might be a permissions issue with the token.
+
+Let me check what the actual deployed beta page contains vs what's in the repo:
+
+
+### 🤖 Autopilot
+
+The repo has the new content (Platform Services: 1, Sophia: 2, Edgar in Community Initiatives: 0). But the beta site is still serving old content.
+
+The DNS `beta.truesight.me` → `truesightdao.github.io` — this is a **user/org Pages** CNAME, not a project Pages CNAME. User/org Pages sites serve from the `truesightdao/truesightdao.github.io` repo's `main` branch. That repo doesn't exist (404), so the beta site must be served from somewhere else.
+
+Let me check if there's a `truesightdao.github.io` repo:
+
+
+### 🤖 Autopilot
+
+Doesn't exist. So `beta.truesight.me` CNAME points to a non-existent GitHub Pages site. The beta site is actually being served from the `truesight_me_prod` repo's Pages, configured with a custom domain of `beta.truesight.me` — but the CNAME file in `truesight_me_prod` says `truesight.me`, not `beta.truesight.me`.
+
+This is getting complex. The simplest path forward: since the beta repo has the right content on `main`, let me just copy the updated `index.html` directly to the production repo to get it live. Want me to do that?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/truesight_me_beta && git branch -a | grep -i pages; cd /tmp/truesight_me_beta && grep -c "Platform Services" index.html && grep -c "Sophia" index.html && grep -c "AI Agent for Transparent Impa
+
