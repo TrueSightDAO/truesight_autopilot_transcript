@@ -680,3 +680,78 @@ Then the landing page sandbox just POSTs JSON to that endpoint.
 
 Want me to build it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] yeah. Do that...
+
+
+### 🤖 Autopilot
+
+Let me first check what the existing `/dao/submit_contribution` handler looks like so I can mirror the parsing logic.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me build the test endpoint and the sandbox HTML page.
+
+
+### 🤖 Autopilot
+
+Now register the router in main.py:
+
+
+### 🤖 Autopilot
+
+Now restart dao_protocol:
+
+
+### 🤖 Autopilot
+
+The test endpoint returned 200. Let me verify it properly:
+
+
+### 🤖 Autopilot
+
+It works — parsed the event, detected the missing `contributor(s)` field (because the multi-line continuation merged it with description). Let me test with a cleaner payload:
+
+
+### 🤖 Autopilot
+
+Now let me build the sandbox HTML page. I'll update the landing page to make each event card clickable into a sandbox view.
+
+
+### 🤖 Autopilot
+
+Let me verify it loads:
+
+
+### 🤖 Autopilot
+
+It's live. Here's what was built:
+
+**New backend endpoint:** `POST /dao/test/submit_contribution`
+- Accepts `{"payload": "..."}` as JSON
+- Parses the canonical event text (same format as the real endpoint)
+- Detects the event type from `[EVENT NAME]`
+- Extracts all `- Key: Value` fields
+- Validates against the known schema (22 event types)
+- Returns parsed attributes, warnings (missing/extra fields), and a simulated transaction ID
+- No signature, no side effects, no data recorded
+
+**Updated landing page:**
+- Each of the 22 event cards now has a **"Try in Sandbox →"** button
+- Clicking it opens a modal with the payload pre-filled from that event's example
+- Users can edit the payload and click **Send Test**
+- The response (parsed event, warnings, simulated TX ID) appears below
+- Close the modal to try another event
+
+**Clean separation complete:**
+- nginx routes everything to dao_protocol (`172.31.23.207:8010`)
+- Rails is no longer proxied for Edgar — it only serves Perch
+- The test sandbox endpoint is on a separate path (`/dao/test/`) so it can be wide-open without affecting the real endpoint
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → find /home/ubuntu/dao_protocol -path "*/routes/dao.py" 2>/dev/null; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/dao.py; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/__init__.py 2>/dev/null; ls /home/ubuntu/dao_protocol/truesight_dao_client/; …(+6 more)
+
