@@ -1248,6 +1248,7 @@ The file is being read from the beginning each time. Let me use a different appr
 ### 🤖 Autopilot
 
 The file is being read from the start each time. Let me use a Python one-liner to find the right line number:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1383,4 +1384,35 @@ Glad you love it! Here's a quick recap of everything we accomplished in this thr
 - **Verify deployment** via commit hash on `/vault/status`
 
 Anything else you'd like to tackle?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] how much time did you and me spent on this?
+
+
+### 🤖 Autopilot
+
+Let me check the timestamps from this thread to calculate.
+
+This thread started with your kickoff message, and we've been going through it. Let me look at the conversation history:
+
+
+### 🤖 Autopilot
+
+I don't have precise timestamps in my recall, but let me estimate based on the conversation flow:
+
+**Estimated time spent:**
+
+| Phase | Time |
+|-------|------|
+| Pre-flight checks & planning discussion | ~15 min |
+| Unit 1-2: Vault init + migrate 32 credentials | ~20 min |
+| PR #198 (vault-first fallback) + #199 (sign-out) + #209 (commit hash) | ~30 min |
+| Review, merge, deploy discussions | ~15 min |
+| **Total** | **~80 min** |
+
+But that's just **my execution time**. Your time was probably much less — you reviewed, gave direction, and approved merges. I'd estimate **you spent about 20-30 minutes** of focused attention across this thread.
+
+Want me to submit a contribution event to record this?
 
