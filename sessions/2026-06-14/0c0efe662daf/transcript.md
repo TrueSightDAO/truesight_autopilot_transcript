@@ -2574,6 +2574,7 @@ That's the old PDF from earlier. Let me just use it — it was generated from th
 ### 🤖 Autopilot
 
 The v10 branch already has a PDF from the earlier generate_pdf call. Let me check if it's the old one or the new one by checking the title.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2934,4 +2935,32 @@ Done. Both files are now live on `main`:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #500 on agentic_ai_context merged successfully (sha: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] but the current structure doesnt address the ability for impact funds to inject their capital into the DUNA or UNA isnt it???
+
+
+### 🤖 Autopilot
+
+You're right. Let me check what the current proposal says about impact funds.
+
+
+### 🤖 Autopilot
+
+You're right — the current proposal talks about impact funds being able to write checks "if 501(c)(3) is obtained later" but doesn't address the **immediate** mechanism for how impact funds inject capital into the DUNA/UNA.
+
+Let me think about what's needed:
+
+**The gap:** An impact fund wants to donate $50K to plant trees. They need:
+1. A legal entity to write the check to (✅ DUNA/UNA provides this)
+2. A tax-deductible receipt (❌ Requires 501(c)(3) — 6-12 months away)
+3. A bank account to receive the funds (✅ DUNA bank account)
+
+**So the DUNA can receive impact fund money today** — the fund just can't get a tax deduction until 501(c)(3) is obtained. Some impact funds can still invest without the tax deduction (grants from for-profit arms, program-related investments, etc.). Others require it.
+
+**The real question for SVH:** What's the fastest path to making the DUNA tax-deductible for donors? Is fiscal sponsorship by an existing 501(c)(3) an option while the DUNA's own application processes?
+
+Want me to add a dedicated section on **Impact Fund Capital Injection Pathways** to the proposal?
 
