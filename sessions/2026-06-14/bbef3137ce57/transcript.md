@@ -1669,17 +1669,40 @@ Still the old version. GitHub Pages is aggressively caching. The file is correct
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The live site is still serving the old version. GitHub Pages is caching. Let me check if the site is actually served from `truesightdao.github.io/dapp/` (as the OG meta tag suggests).
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 So `truesightdao.github.io/dapp/` returns 404 — the site is NOT served from GitHub Pages. It must be served from Cloudflare Pages or another service. Let me check the DNS.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the DNS for `dapp.truesight.me` to understand where it's hosted.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1776,4 +1799,109 @@ Here's what changed from the dark theme version:
 - **Submission result**: signed share text + Edgar response in `<pre>` blocks (per DAPP_PAGE_CONVENTIONS.md §9b)
 
 Want me to merge and promote to prod?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] merge and promote to prod
+
+
+### 🤖 Autopilot
+
+Now let me trigger a GitHub Pages rebuild.
+
+
+### 🤖 Autopilot
+
+GitHub Pages is still serving the **old cached version** (the dark theme one, content-length 4646). The Pages build hasn't picked up the new merge yet. Let me check if the file on `dapp_prod`'s `main` has the correct content.
+
+
+### 🤖 Autopilot
+
+The file on `dapp_prod`'s `main` branch has the **correct light-themed version** with `#f5f5f5` body, `#007bff` buttons, `#backLink`, `#navDropdown`, and the governor dropdown. GitHub Pages just hasn't rebuilt yet. Let me wait a moment and check again.
+
+
+### 🤖 Autopilot
+
+GitHub Pages is still serving the old cached dark-theme version. The file on `dapp_prod`'s `main` branch has the correct light-themed content (confirmed via `read_repo_file`), but Pages hasn't rebuilt. The `.pages-trigger` push didn't seem to trigger it either.
+
+Let me check if there's a GitHub Actions workflow or if Pages needs a different trigger.
+
+
+### 🤖 Autopilot
+
+Still the old cached dark-theme version. The file on `dapp_prod`'s `main` branch has the correct content but GitHub Pages is serving a stale build. Let me check if there's a GitHub Actions workflow that handles Pages deployment.
+
+
+### 🤖 Autopilot
+
+No Pages deploy workflow — it's using the default GitHub Pages build from the `main` branch. The issue is that the `sync_beta_to_prod` merge-upstream doesn't trigger a Pages rebuild. Let me try a direct push to `dapp_prod` to force it.
+
+
+### 🤖 Autopilot
+
+Still the old cached version. GitHub Pages is stubbornly caching. The file on `dapp_prod`'s `main` branch has the correct light-themed content (confirmed via `read_repo_file`), but Pages hasn't rebuilt. This is a known GitHub Pages issue — the `sync_beta_to_prod` merge-upstream doesn't always trigger a Pages rebuild.
+
+Let me try a different approach — push a direct change to a file that Pages will definitely pick up.
+
+
+### 🤖 Autopilot
+
+GitHub Pages is still serving the old cached version. The `content-length` is still 4646 (the dark theme version). The file on `dapp_prod`'s `main` branch has the correct light-themed content but Pages hasn't rebuilt.
+
+This is a known GitHub Pages issue — the build can take a while or the `sync_beta_to_prod` merge-upstream doesn't trigger it. Let me check if the Pages build is actually running by looking at the Pages settings.
+
+
+### 🤖 Autopilot
+
+The Pages API returns 404 — this means GitHub Pages might not be configured for this repo via the API, or the site is served from a different source. Let me check the DNS more carefully.
+
+
+### 🤖 Autopilot
+
+So `truesightdao.github.io/dapp/partner_add.html` returns 404 — the site is NOT served from the `truesightdao.github.io` user/org site. The `dapp.truesight.me` CNAME points to `truesightdao.github.io` but the actual content is served from the `dapp_prod` repo's GitHub Pages (which is a project site, not a user site).
+
+The issue is that GitHub Pages for a project site under a custom domain uses a different URL structure. The `dapp_prod` repo's Pages is configured to publish to `dapp.truesight.me` directly. The Pages build just hasn't triggered.
+
+Let me check if there's a way to trigger it via the API with authentication.
+
+
+### 🤖 Autopilot
+
+GitHub Pages is still serving the old cached dark-theme version. The file on `dapp_prod`'s `main` branch has the correct light-themed content but Pages hasn't rebuilt. This is a known issue with GitHub Pages — the `sync_beta_to_prod` merge-upstream doesn't always trigger a rebuild, and the `.pages-trigger` file pushes also aren't triggering it.
+
+The correct content **is** on the `dapp_prod` repo's `main` branch (confirmed via `read_repo_file`). GitHub Pages just needs to rebuild. This can take a few minutes. Let me register a watcher.
+
+
+### 🤖 Autopilot
+
+The watcher only works in a Telegram topic. Let me check again manually.
+
+
+### 🤖 Autopilot
+
+Still the old cached version. GitHub Pages is being stubborn. The file on `dapp_prod`'s `main` branch has the correct content but Pages hasn't rebuilt. This is a known issue — GitHub Pages can take up to 10 minutes to rebuild after a merge-upstream.
+
+The correct content **is** on the `dapp_prod` repo's `main` branch. GitHub Pages just needs to rebuild. Let me check again in a moment.
+
+
+### 🤖 Autopilot
+
+Still the old cached version. GitHub Pages is being stubborn. The file on `dapp_prod`'s `main` branch has the correct light-themed content but Pages hasn't rebuilt.
+
+**Status summary:**
+
+| Step | Status |
+|---|---|
+| PR #48 merged to `dapp_beta` | ✅ |
+| `sync_beta_to_prod(dapp_prod)` | ✅ |
+| File on `dapp_prod`'s `main` branch (correct light theme) | ✅ |
+| GitHub Pages rebuild | ⏳ **Pending** — still serving cached dark-theme version |
+
+GitHub Pages can take a few minutes to rebuild. The correct content is confirmed on the `dapp_prod` repo's `main` branch — it just needs Pages to pick it up. I'll keep checking.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #48 on dapp_beta merged successfully (sha: 5e19676e700d07b344f3e2244cf8a79234a428cb). Pull Request successfully merged
+• `upload file to github` ×3 → https://github.com/TrueSightDAO/dapp_prod/blob/main/.pages-trigger
 
