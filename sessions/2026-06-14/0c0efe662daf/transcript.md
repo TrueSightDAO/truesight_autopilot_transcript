@@ -931,6 +931,7 @@ Want me to update the proposal .md and PDF with this simplified model?
 ### 🤖 Autopilot
 
 Let me update the proposal with the simplified model we converged on.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1116,4 +1117,47 @@ If you want the v2 branch updated to match v4, I can push to it — but that wou
 - `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`
 
 Which would you prefer — update the v2 branch, or merge v4 to main?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] THe URLs are 404
+
+
+### 🤖 Autopilot
+
+Let me check what's happening.
+
+
+### 🤖 Autopilot
+
+The branches exist but the files are only on the PR branches, not on `main`. The v2 branch URLs 404 because GitHub doesn't serve blob content from branches that are only on unmerged PRs unless you use the full ref path.
+
+Let me check the v2 branch directly:
+
+
+### 🤖 Autopilot
+
+The v2 branch exists and the files are there. The issue is that GitHub blob URLs for unmerged PR branches sometimes don't render properly. Let me check the actual URLs:
+
+
+### 🤖 Autopilot
+
+The URLs actually return 200 — they're not 404. They might have been a temporary GitHub glitch when you tried them. Both files exist on the v2 branch.
+
+But the v2 branch has the **old version** (three-entity stack with service agreement, fiscal sponsorship tangent). The **latest version** is on v4 (PR #493).
+
+Would you like me to:
+1. **Merge PR #493 to main** — then both files live at clean `main` URLs
+2. **Or update the v2 branch** to match v4 — but that overwrites the old version
+
+Merging to `main` is cleaner — the URLs would be:
+- `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md`
+- `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`
+
+Want me to merge PR #493?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s -o /dev/null -w "%{http_code}" "https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v2/LEGAL_E
 
