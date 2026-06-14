@@ -636,6 +636,7 @@ Now let me verify the landing page is served correctly through the full chain.
 ### 🤖 Autopilot
 
 Let me also verify the API routes still work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -647,6 +648,12 @@ The problem is that `app.mount("/", StaticFiles(...))` catches everything. I nee
 2. Use a custom middleware/route that only serves the static file for exact `/` match
 
 Let me fix this by adding a root route instead of a static mount.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -665,16 +672,24 @@ Let me fix this by adding a root route instead of a static mount.
 ### 🤖 Autopilot
 
 You're right — that's exactly what I just did. Let me pull the fix and restart the service.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify both the landing page and API routes work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both work. Now let me verify through the full chain via Nginx on `seni_ror`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -742,6 +757,7 @@ The previous one had more details
 ### 🤖 Autopilot
 
 Let me check what's currently being served vs what was in the old static file.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -749,6 +765,12 @@ Let me check what's currently being served vs what was in the old static file.
 I see — the current landing page is the **new content** I moved over (the Edgar API documentation page). But you're saying the **previous** landing page had more details — the market overview dashboard with date navigation, period selectors, and Gemini-powered market analysis.
 
 That was the Rails `landing_page.html.erb` which was **not** the static file I moved. Let me check what was actually at `/var/www/edgar/index.html` before I replaced it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -756,6 +778,7 @@ That was the Rails `landing_page.html.erb` which was **not** the static file I m
 So the old static file on `seni_ror` is the same content I moved — the Edgar API docs page. The **previous** landing page you're referring to (with market overview, date navigation, Gemini analysis) was the **Rails** `landing_page.html.erb` from `sentiment_importer`. That was the one that was served before the cutover to the static page.
 
 Let me check if the Rails app is still running and can serve it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -782,16 +805,29 @@ Which direction? Or was there a different landing page you had in mind?
 ### 🤖 Autopilot
 
 Let me check the current landing page content and the `dao_protocol` repo for the PARTNER ADD EVENT.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the SCHEMA.md for the PARTNER ADD EVENT format and the current landing page HTML to see where to add it.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the PARTNER ADD EVENT format in the SCHEMA.md and the GAS scripts.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -872,4 +908,18 @@ Merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → grep -n 'Governance\|PARTNER\|event-group\|h3>' /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html | head -30; sed -n '180,192p' /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] Never mind, I was confused. can we ensure to have PARTNER ADD EVENT also in https://edgar.truesight.me/ I dont see it
+
+
+### 🤖 Autopilot
+
+You already asked this and I already created the PR! 😄
+
+**PR #111** is open: https://github.com/TrueSightDAO/dao_protocol/pull/111
+
+It adds the `[PARTNER ADD EVENT]` card to the **Governance & Treasury** section of the landing page. Want me to merge and deploy it?
 
