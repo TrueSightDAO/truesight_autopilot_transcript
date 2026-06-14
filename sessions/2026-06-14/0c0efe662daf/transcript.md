@@ -1616,6 +1616,7 @@ So the flow is:
 ### 🤖 Autopilot
 
 Let me check what OtoCo and the DUNA statute require for membership identification.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1663,12 +1664,24 @@ Does this match your expectations?
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_google_sheet, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me look at the actual voting distribution to see who crosses the 25% threshold.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the top holders to see who has significant control.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1821,4 +1834,27 @@ Want me to merge to `main`?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] merge it so that I can view the latest here https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+Ready for the SVH Capital conversation on the 26th.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #495 on agentic_ai_context merged successfully
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #495 on agentic_ai_context merged successfully (sha: 6e5622c897cefff6c27089bffbfdbc756f62ad0c). Pull Request successfully merged
 
