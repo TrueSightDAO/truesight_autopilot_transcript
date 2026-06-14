@@ -1254,16 +1254,19 @@ The file is being read from the start each time. Let me use a Python one-liner t
 ### 🤖 Autopilot
 
 The file is being read from the start each time because `start_line` is 1. Let me use Python to find the right section:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is being read from the start because `start_line=1`. Let me use a different approach — use Python to find the system-status endpoint:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try a different approach — use Python to find the line number:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1415,4 +1418,37 @@ I don't have precise timestamps in my recall, but let me estimate based on the c
 But that's just **my execution time**. Your time was probably much less — you reviewed, gave direction, and approved merges. I'd estimate **you spent about 20-30 minutes** of focused attention across this thread.
 
 Want me to submit a contribution event to record this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] Report contribution for the both of us. Make sure to use proper name for yourself
+
+
+### 🤖 Autopilot
+
+Let me check the proper identity format to use:
+
+
+### 🤖 Autopilot
+
+My registered name on the DAO ledger is **Sophia Truesight** (admin+sophia@truesight.me). Let me submit the contribution:
+
+
+### 🤖 Autopilot
+
+Done! Contribution submitted:
+
+| Field | Value |
+|-------|-------|
+| **Title** | Vault Credential Migration — Sophia Truesight + Gary Teh |
+| **Contributors** | Gary Teh, Sophia Truesight |
+| **Time** | 80 minutes |
+| **TDG Issued** | 80 |
+| **PRs** | #198, #199, #209 |
+| **Submitted as** | Sophia Truesight (admin+sophia@truesight.me) |
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
