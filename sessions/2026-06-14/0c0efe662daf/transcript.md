@@ -1012,3 +1012,36 @@ This is the leanest, fastest path — ~$50 and 1-2 days to entity formation, the
 
 Want me to add this as the primary recommended action in the proposal?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] That way we dont even need a TrueTEch Inc business account isnt it??
+
+
+### 🤖 Autopilot
+
+You're right. If the UNA opens its own bank account, then:
+
+- **No need for a TrueTech Inc business account** as an interim step
+- **No need for TrueTech Inc to act as custodian**
+- Funds flow directly: **Nora → UNA bank account → tree planting**
+- Gary's personal account is completely out of the picture
+
+The flow becomes even simpler:
+
+```
+Before (current):
+Nora → Gary's personal account → tree planting
+
+After (with UNA bank account):
+Nora → UNA bank account → tree planting
+```
+
+TrueTech Inc's role stays the same — import, distribution, TDG-compensated DAO member. It just doesn't need to be a bank custodian anymore.
+
+**The only question:** Will a Wyoming UNA (freshly formed, no credit history, no operating track record) be able to open a US bank account? Some banks require a minimum of 6-12 months of operations or a minimum deposit. If that's a blocker, TrueTech Inc opening an account as an interim custodian is still a useful backup plan.
+
+But if the UNA can open an account directly — yes, that eliminates the need for a TrueTech Inc business account entirely. Cleanest path.
+
+Want me to update the proposal with this even simpler flow?
+
