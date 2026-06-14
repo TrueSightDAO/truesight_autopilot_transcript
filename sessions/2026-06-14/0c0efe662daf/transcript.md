@@ -2582,11 +2582,13 @@ The v10 branch already has a PDF from the earlier generate_pdf call. Let me chec
 The PDF on the v10 branch has the title "Legal Entity Structuring Proposal \204 TrueSight DAO" — that's the old version from the earlier generate_pdf call. The new one I just generated has the updated content with Wise as the single banking layer. Let me try to get the full base64 and upload it.
 
 The issue is the base64 is ~18KB and the parameter limit is being hit. Let me try a different approach — write it to a local file using a Python script via the tool.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is 18,397 bytes. Let me use a Python script approach to write it to a file on the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2963,4 +2965,89 @@ Let me think about what's needed:
 **The real question for SVH:** What's the fastest path to making the DUNA tax-deductible for donors? Is fiscal sponsorship by an existing 501(c)(3) an option while the DUNA's own application processes?
 
 Want me to add a dedicated section on **Impact Fund Capital Injection Pathways** to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] [Handoff context — this Telegram topic (thread 3966) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+yeah. Go for it.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then update the proposal.
+
+
+### 🤖 Autopilot
+
+This isn't a handoff execution — it's a direct conversation. Let me update the proposal with the Impact Fund Capital Injection Pathways section.
+
+
+### 🤖 Autopilot
+
+Now I have the full doc. Let me update it with the final structure — TrueTech Inc as a DAO-operated facility (not a member), TDG buyback → burn, and impact fund capital injection pathways.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Let me save the PDF locally and upload it.
+
+
+### 🤖 Autopilot
+
+SSH is having issues. Let me use the upload_file_to_github with the base64 from the artifact directly.
+
+
+### 🤖 Autopilot
+
+Let me get the full base64 and upload it.
+
+
+### 🤖 Autopilot
+
+The base64 is 15,749 bytes. Let me try uploading it directly — the parameter limit should handle 16KB.
+
+
+### 🤖 Autopilot
+
+Both files are on the v13 branch. Let me merge to main.
+
+
+### 🤖 Autopilot
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new in the final version
+
+**New Section 4: Impact Fund Capital Injection Pathways** — the core addition you asked for:
+
+| Pathway | Timeline | Tax Deductible? |
+|---------|----------|-----------------|
+| **A: Direct donation to DUNA** | Immediate after DUNA formed | ❌ No (but funds can still donate via PRIs, corporate ESG, etc.) |
+| **B: Fiscal sponsorship bridge** | 1-3 months | ✅ Yes (via sponsor like The Giving Block) |
+| **C: DUNA's own 501(c)(3)** | 6-12 months | ✅ Yes (directly from DUNA) |
+
+**The key line:** *"The DUNA is the prerequisite for all three pathways. Without it, impact funds have no entity to write checks to at all."*
+
+**Other updates:**
+- TrueTech Inc = DAO-operated facility (not a member, no TDG compensation)
+- Two separate bank accounts (TrueTech Inc for import expenses + TDG buyback → burn; DUNA for partner contributions + impact fund capital)
+- TDG buyback → burn mechanism documented
+- All 8 SVH questions updated
+- Service provider reference includes fiscal sponsors (The Giving Block, Endaoment)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 << 'PYEOF' import base64, json, sys # Read the artifact b64 = open('/dev/stdin', 'r').read() if False else "" # The base64 is in the
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v13/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+• `merge pr` → ✅ PR #498 on agentic_ai_context merged successfully (sha: 0e16a5ccc2391613abbe5d4e3e84551d3025ec12). Pull Request successfully merged
 
