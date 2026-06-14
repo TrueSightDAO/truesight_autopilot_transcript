@@ -3215,6 +3215,11 @@ Let me look at the treasury-cache which had the balance data earlier.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the tokenomics SCHEMA.md for the buyback budget line item and the Wix dashboard script.
 
 
@@ -3384,4 +3389,81 @@ Done. Both files are now live on `main`:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #501 on agentic_ai_context merged successfully (sha: 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I dont see it merged on https://github.com/TrueSightDAO/agentic_ai_context
+
+
+### 🤖 Autopilot
+
+Let me check the PR status.
+
+
+### 🤖 Autopilot
+
+I see the issue — PR #498 was merged (the one I said was #501), but the latest version with the parallel Wise accounts and buyback infra is on **PR #497** which is still open. Let me check what's on `main` currently.
+
+
+### 🤖 Autopilot
+
+The file on `main` is the v12 version (from PR #498). The latest updates (parallel Wise accounts, existing buyback infra) are on **PR #497** which is still open. Let me merge it.
+
+
+### 🤖 Autopilot
+
+There's a merge conflict. Let me check what's different and resolve it.
+
+
+### 🤖 Autopilot
+
+The v7 branch has the old version (TrueTech Inc as DAO member, not facility). The `main` branch has the newer version (TrueTech Inc as facility). The conflict is because v7 is behind. Let me create a fresh PR with the latest updates based on what's currently on `main`.
+
+
+### 🤖 Autopilot
+
+I see — the `main` branch already has the v12 version (TrueTech Inc as facility, two bank accounts, TDG buyback → burn, impact fund pathways). The updates about **parallel Wise accounts** (TrueTech Inc opens this week while UNA account opens in 2-4 weeks) and the **existing buyback infrastructure** aren't in there yet. Let me create a fresh PR from `main` with just those additions.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Now let me merge PR #499 to main.
+
+
+### 🤖 Autopilot
+
+Now both files are live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new in this version
+
+**Parallel Wise accounts timeline:**
+- Track A: TrueTech Inc opens Wise Business account this week (1-2 days) for commercial transactions
+- Track B: UNA formed via OtoCo this week (~$50 gas)
+- Track C: UNA opens its own Wise account in 2-4 weeks
+- No dependency between tracks
+
+**Existing buyback infrastructure documented:**
+- `getDailyTdgBuyBackBudget()` — live GAS function
+- `buyback_sol_to_tdg.ts` — live TypeScript execution
+- `daily-buyback.yml` — live GitHub Action
+- Current budget: $0.093/day (scales with impact fund capital)
+
+**Impact fund strategy:**
+- Pitch TDG-for-capital after UNA is live
+- Don't pitch tax write-offs until 501(c)(3)
+- Existing buyback infra handles member exits at current scale
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request; ✅ PR #499 on agentic_ai_context merged successfully (sha: 59bee8003964cfeb7a15f0095a8dd15d1fb89c22). Pull Request successfully merged
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v15/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
 
