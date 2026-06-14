@@ -575,3 +575,35 @@ So the framing should be:
 
 Does that reframe feel more accurate? If so, I can update the proposal to lead with **"the DAO needs a legal entity — full stop"** and position the tax write-off as a powerful but secondary benefit.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I think it is not this Sign contracts with partners (Nora, Matheus, farmers)
+
+Since TrueTEch inc can do that.
+
+
+### 🤖 Autopilot
+
+You're right. TrueTech Inc already handles the commercial side — importing, distributing, paying suppliers. That's not the gap.
+
+So what's actually turning red is narrower:
+
+| What's turning red | Why |
+|-------------------|-----|
+| 🔴 **Member liability shield** | As we add more partners and token holders, the Ooki DAO precedent becomes real. Without a DAO wrapper, every TDG holder could be treated as a general partner with unlimited liability |
+| 🔴 **DAO bank account** | The DAO's funds flow through Gary's personal account. More volume = more personal risk and tax complexity |
+| 🔴 **Tax-deductible donation channel** | Impact funds, foundations, and corporate ESG need a 501(c)(3) or equivalent to write checks. TrueTech Inc can't issue tax receipts |
+| 🟢 **Contract signing** | TrueTech Inc handles this fine |
+| 🟢 **Supply chain** | TrueTech Inc + Matheus's CNPJ handle this fine |
+
+So the red signals are really **three distinct things**:
+
+1. **Liability protection for the growing DAO membership** — the Ooki risk
+2. **A bank account that belongs to the DAO, not Gary** — the commingling risk
+3. **A donation-receiving entity** — the fundraising channel
+
+The DUNA solves all three. TrueTech Inc solves none of them (it's a separate for-profit entity).
+
+Does this sharper framing feel right?
+
