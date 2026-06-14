@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me verify it loads:
-
-
-### 🤖 Autopilot
-
 It's live. Here's what was built:
 
 **New backend endpoint:** `POST /dao/test/submit_contribution`
@@ -761,4 +756,45 @@ This is getting complex. The simplest path forward: since the beta repo has the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/truesight_me_beta && git branch -a | grep -i pages; cd /tmp/truesight_me_beta && grep -c "Platform Services" index.html && grep -c "Sophia" index.html && grep -c "AI Agent for Transparent Impa
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] can we ensure the .card.card--media-top of the Community Initiatives on the landing pages are all on the same row in the Desk top view. for https://beta.truesight.me/ check to make sure
+
+
+### 🤖 Autopilot
+
+Let me check the actual CSS that controls the card grid layout:
+
+
+### 🤖 Autopilot
+
+The grid is `repeat(auto-fit, minmax(280px, 1fr))`. With 3 cards at 280px min each = 840px minimum width needed for all 3 in one row. The container max-width is 960px, so on desktop it should fit 3 in a row.
+
+But the beta site is still serving the **old 4-card layout** (Agroverse, SunMint, Edgar, Lineage) — GitHub Pages hasn't deployed the new commits. So the 4 cards would wrap: 3 on top row, 1 below. That's the broken look you're seeing.
+
+The fix is twofold:
+1. **Get the new content deployed** — the new layout has 3 cards (Agroverse, SunMint, Lineage) which will fit in one row
+2. **The CSS is already correct** — `auto-fit, minmax(280px, 1fr)` will put 3 cards in one row on desktop
+
+The real problem is the beta site isn't updating. Let me try to force a GitHub Pages rebuild by pushing a trivial change:
+
+
+### 🤖 Autopilot
+
+Let me check if the beta site is actually served from the `truesight_me_prod` repo by checking what's on prod's main:
+
+
+### 🤖 Autopilot
+
+The prod repo's `index.html` also has the **old content** — it still has the Edgar card under Community Initiatives and no Platform Services. The beta site is serving from the prod repo's main branch (since `beta.truesight.me` → `truesightdao.github.io` which serves the org's Pages).
+
+The issue is clear now: **both beta and production are served from `truesight_me_prod`**, not `truesight_me_beta`. The beta repo's changes never made it to prod.
+
+The fastest way to get the changes live is to push the updated `index.html` directly to `truesight_me_prod`. Want me to do that?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep -A15 "\.card-grid" /tmp/truesight_me_beta/styles/main.css; cd /tmp/truesight_me_beta && git log --oneline -3
 
