@@ -2032,6 +2032,7 @@ That's the old PDF from earlier. Let me check if the generate_pdf with output_pa
 ### 🤖 Autopilot
 
 The PDF wasn't saved to /tmp/tg_attachments. Let me use a Python script approach to write the base64 to a file.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2399,4 +2400,15 @@ Yes, absolutely. Wise Business accounts are available to US corporations like Tr
 **One thing to check:** Wise may ask about the nature of TrueTech Inc's business (cacao import). As long as it's clearly documented as agricultural commodity import, it should be fine. Wise has been known to ask follow-up questions for crypto-adjacent businesses, but TrueTech Inc is a straightforward import/ distribution company — no crypto treasury, no token sales.
 
 Want me to add Wise as the recommended bank for TrueTech Inc's interim account in the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Does WISE allow for API access?
+
+
+### 🤖 Autopilot
+
+Let me check.
+[1 tool result(s) compacted: web_search — parameter: query, value: "Wise Business API access features 2026"]
 
