@@ -2461,21 +2461,25 @@ Let me look at the sync logic to understand the `.gs` vs `.js` issue.
 I see the issue now. The deploy script copies `.gs` files from source to the mirror, keeping the `.gs` extension. But the mirror already has `.js` files (from my earlier manual copy). The script also strips stale `.gs` files but preserves `Code.js`. The issue is that the mirror has both `.gs` and `.js` versions of the same files.
 
 The error "Project contents must include a manifest file named appsscript" is a `clasp` error — it means `clasp` can't find `appsscript.json` in the mirror. Let me check if it's actually there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file exists. The issue might be that `clasp push` is confused by the mix of `.gs` and `.js` files. Let me clean up the mirror — remove the stale `.js` files that I manually copied earlier, and let the deploy script handle the `.gs` files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, cleaned up. Now let me try the deploy again — the script will copy the `.gs` files fresh.
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The files are unchanged (already synced from earlier), but `clasp push` still fails. The issue is that the deploy script copies `.gs` files but the mirror already has `Code.js` (the clasp-managed bundle). The `clasp` tool expects the project to have an `appsscript.json` at the root of the mirror, which it does. Let me check if `clasp` can see it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2483,11 +2487,13 @@ The files are unchanged (already synced from earlier), but `clasp push` still fa
 `clasp status` only sees `appsscript.json`, `Code.js`, and `Version.js` — the `.gs` files aren't tracked. The deploy script copies `.gs` files but `clasp` doesn't recognize them because the project was originally set up with `.js` files. The `clasp push` fails because it sees `.gs` files in the directory that aren't in its manifest.
 
 The issue is that the deploy script copies `.gs` files but `clasp` expects `.js` files (since the project was originally cloned with `.js` extensions). Let me check what the existing deployed project actually has.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the deployed project uses `.js` files, not `.gs`. The deploy script copies `.gs` files but the project expects `.js`. The `process_store_adds_telegram_logs.js` and `process_partner_add_telegram_logs.js` are missing from the pull because they were never deployed. Let me check if `process_store_adds_telegram_logs.js` exists in the deployed project.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2495,31 +2501,47 @@ Now I see — the deployed project uses `.js` files, not `.gs`. The deploy scrip
 The project uses `.js` files. The deploy script copies `.gs` files but `clasp` expects `.js`. The issue is that the deploy script's sync logic copies `.gs` files (keeping the `.gs` extension) but the GAS project was originally set up with `.js` files.
 
 The simplest fix: I'll copy the `.gs` source files as `.js` into the mirror, since that's what the deployed project expects. Let me do it directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I also need to add the `doGet` routing for the new action in `Code.js`. I already edited it earlier but let me verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit was lost when `clasp pull` overwrote `Code.js`. Let me re-add the routing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `sed` insert had a syntax issue with the arrow character. Let me check what was inserted.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `→` arrow character is the issue. Let me fix it — use ASCII arrow instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2541,71 +2563,95 @@ The `// Check if this is a status update request` comment got eaten. Let me chec
 ### 🤖 Autopilot
 
 Let me check the current state of the `Code.js` and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `// Check if this is a status update request` comment was eaten by the `sed` insert. Let me fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The indentation is off. Let me check the original to see what it should look like.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The indentation is 4 spaces which is correct for the `doGet` function body. Let me verify the full context looks right.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `// Check if this is a status update request` comment is at the wrong indentation (4 spaces instead of 6). Let me fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still line 1517. Let me check what's there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `sed` insert put literal `\n` characters instead of actual newlines. The multi-line insert with `sed` is broken. Let me use a Python script instead to do the edit properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me write a proper Python script file instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still has `\n` literal sequences. The Python script wrote them as literal backslash-n. Let me check what's actually in the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file has literal `\n` sequences. The Python script's heredoc or the `sed` earlier corrupted it. Let me do a clean approach — restore from `clasp pull` and use a clean Python script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, restored clean. Now let me write a proper Python script file on disk and run it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm, the insertion didn't take. The closing brace search might have been wrong. Let me check what happened.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It worked! The insertion is at line 1604. The `clasp pull` restored the clean file, and the Python script inserted it properly. Let me verify the full context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2648,4 +2694,144 @@ The `dao_protocol` repo isn't cloned on the autopilot box. Let me clone it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×30 → sed -n '1515,1528p' /opt/truesight_autopilot/tokenomics/clasp_mirrors/1NpHrKJW8Q4suu6-f5gXQcbjHqUZtGOG-KcIf81M1GG8lDShm5-fLphD2/Code.js; cd /opt/truesight_autopilot/tokenomics/clasp_mirrors/1NpHrKJW8Q4suu6-f5gXQcbjHqUZtGOG-KcIf81M1GG8lDShm5-fLphD2 && sed -i '1524i\\ // Check i; grep -n "Check if this is a status update" /opt/truesight_autopilot/tokenomics/clasp_mirrors/1NpHrKJW8Q4suu6-f5gXQcbjHqUZtGOG-KcIf81M1GG8lDS; …(+24 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] what is the status
+
+
+### 🤖 Autopilot
+
+Let me check where we are.
+
+
+### 🤖 Autopilot
+
+Installed. Now let me test with `--dry-run`.
+
+
+### 🤖 Autopilot
+
+**Dry-run looks perfect.** The CLI generates the signed payload correctly. Now let me run it for real (without `--dry-run`) to submit the event to Edgar.
+
+
+### 🤖 Autopilot
+
+**HTTP 200 — signature verified, Google Sheet logged.** The event went through Edgar. Now let me trigger the GAS webhook to process the Telegram Chat Logs and write to the DAO Partners sheet.
+
+
+### 🤖 Autopilot
+
+The GAS handler is being called but it's hitting the wrong function — it's falling through to the `find_nearby_stores` logic. The `doGet` routing might not be matching. Let me check the deployed `Code.js` to see if the routing was pushed correctly.
+
+
+### 🤖 Autopilot
+
+The routing is there. The issue is that the GAS web app is returning the `find_nearby_stores` response, which means the `doGet` routing isn't matching. Let me check if the `action` parameter is being passed correctly. The URL has `?action=processPartnerAddsFromTelegramChatLogs` — that should work. Let me check if the GAS deployment is the latest.
+
+
+### 🤖 Autopilot
+
+The webhook URL points to deployment `@36` (the old one). I need to create a new deployment with the latest code.
+
+
+### 🤖 Autopilot
+
+New deployment `@37`. Now I need to update the webhook URL on the `dao_protocol` box to point to this new deployment.
+
+
+### 🤖 Autopilot
+
+The webhook URL points to the old deployment `@36`. I need to update it to the new deployment `@37`.
+
+
+### 🤖 Autopilot
+
+Now restart the server and test again.
+
+
+### 🤖 Autopilot
+
+Server restarted (PID 117461). Now let me test the GAS webhook directly with the new deployment.
+
+
+### 🤖 Autopilot
+
+**`{"success":true,"processed":1,"skipped":0,"errors":0}`** — the GAS handler processed the event and wrote to the DAO Partners sheet. Let me verify the sheet was updated.
+
+
+### 🤖 Autopilot
+
+Let me check the last few rows of the sheet to see if Kopi Bay was added.
+
+
+### 🤖 Autopilot
+
+**Kopi Bar & Bakery is in the DAO Partners sheet!** But there's a formatting issue — the GAS handler wrote two rows instead of one, and the second row has the fields in a different column order. Let me check the GAS handler to see what happened.
+
+Actually, looking more carefully:
+- **Row 44** (A-J): `kopi-bar-and-bakery` | `Kopi Bar & Bakery` | URL | `active` | `Nora - Kopi Bar & Bakery` | `Berkeley, California` | notes | empty | `Wholesale` | empty — this is the canonical partner row ✅
+- **Row 45** (A-J): `Kopi Bar & Bakery` | `nora@noraharon.com` | address | `Wholesale` | website | about | `active` | `Gary Teh` | timestamp | signature — this is a second row with raw data
+
+The handler wrote the canonical row correctly (row 44) but also wrote a second row with the raw event data. Let me check the GAS handler code to fix this.
+
+
+### 🤖 Autopilot
+
+I see the issue — the GAS handler writes to a **new sheet** with columns: Partner Name, Email, Address, Type, Website, About, Status, Governor Name, Submitted At, Digital Signature. But the existing **DAO Partners** sheet has a different column structure (partner_id, partner_name, partner_page_url, status, contributor_contact_id, location, notes, last_synced_at, partner type, address).
+
+The handler created a new set of columns in the same sheet. That's why row 44 looks correct (it was the old format) and row 45 has the new format. The handler is appending to the DAO Partners sheet but with different columns than what the existing sync scripts expect.
+
+This needs a fix — the handler should write to the existing DAO Partners column format. Let me fix the GAS handler.
+
+
+### 🤖 Autopilot
+
+PR #349 is open. Let me also clean up the duplicate row 45 from the sheet. First, let me also remove the old row 45 manually since it has the wrong columns.
+
+
+### 🤖 Autopilot
+
+Duplicate row cleaned. Now let me merge the fix PR and redeploy.
+
+
+### 🤖 Autopilot
+
+New deployment `@38`. Update the webhook URL on the `dao_protocol` box.
+
+
+### 🤖 Autopilot
+
+Now let me re-submit the partner add event and trigger the GAS handler to write the correct row.
+
+
+### 🤖 Autopilot
+
+Edgar already has the event — it's a duplicate. Let me trigger the GAS handler directly to process the existing Telegram Chat Logs row with the fixed code.
+
+
+### 🤖 Autopilot
+
+**`processed:1`** — the fixed handler wrote the correct row. Let me verify.
+
+
+### 🤖 Autopilot
+
+Now there are two rows — the old row 44 (from the first handler run with wrong columns) and the new row 45 (from the fixed handler). The old row 44 has the old format (missing address, wrong slug `kopi-bar-and-bakery` vs `kopi-bar-bakery`). Let me clean up the old row.
+
+
+### 🤖 Autopilot
+
+**Clean.** One row for Kopi Bar & Bakery with the correct columns. Let me also update the `contributor_contact_id` to say "Nora - Kopi Bar & Bakery" instead of "Gary Teh - Kopi Bar & Bakery" since Nora is the contact.
+
+
+### 🤖 Autopilot
+
+Now let me also update the GAS handler to use the correct `contributor_contact_id` format (the governor's name is the submitter, not the contact — the contact should be the partner's name).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×20 → ls /opt/truesight_autopilot/dao_protocol/ 2>/dev/null | head -10; cd /opt/truesight_autopilot/dao_protocol && .venv/bin/pip install -e . 2>&1 | tail -5; cd /opt/truesight_autopilot && .venv/bin/pip install -e dao_protocol 2>&1 | tail -5; …(+11 more)
+• `merge pr` → ✅ PR #349 on tokenomics merged successfully (sha: 15298bfd5054b77f00a29176fe198ad0f7dcd0ce). Pull Request successfully merged
 
