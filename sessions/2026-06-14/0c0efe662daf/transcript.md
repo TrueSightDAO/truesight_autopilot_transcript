@@ -3121,3 +3121,127 @@ Impact fund → contributes capital to UNA
 
 Want me to add this interim strategy to the proposal?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] check our provisions for buyback on our ledger as well as the script running in our tokenomics we already have mechanism for that isnt it?
+
+
+### 🤖 Autopilot
+
+Let me check the tokenomics repo for the buyback mechanism and the ledger provisions.
+
+
+### 🤖 Autopilot
+
+Now let me check the ledger for buyback provisions.
+
+
+### 🤖 Autopilot
+
+Let me check the ledger for the buyback budget line item.
+
+
+### 🤖 Autopilot
+
+Let me check the sheet names first.
+
+
+### 🤖 Autopilot
+
+That's the Ledger History sheet. Let me find the Main Ledger sheet.
+
+
+### 🤖 Autopilot
+
+Let me look at the treasury-cache which had the balance data earlier.
+
+
+### 🤖 Autopilot
+
+Now let me check the tokenomics SCHEMA.md for the buyback budget line item and the Wix dashboard script.
+
+
+### 🤖 Autopilot
+
+Let me check the Wix dashboard script for the buyback budget line item.
+
+
+### 🤖 Autopilot
+
+Let me search for the specific buyback budget function in that script.
+
+
+### 🤖 Autopilot
+
+Let me search for the specific buyback budget function within this large file.
+
+
+### 🤖 Autopilot
+
+The file is too large to read in one go. Let me search for the specific function.
+
+
+### 🤖 Autopilot
+
+Let me grep for the function definition in the file.
+
+
+### 🤖 Autopilot
+
+Now let me check the Performance Statistics sheet for the buyback budget line item.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the answer:
+
+---
+
+**Yes, we already have the buyback mechanism in place.**
+
+### What exists today
+
+| Component | What it does | Status |
+|-----------|-------------|--------|
+| **`getDailyTdgBuyBackBudget()`** (GAS) | Fetches daily buyback budget from Performance Statistics sheet | ✅ Live |
+| **`buyback_sol_to_tdg.ts`** (TypeScript) | Executes the buyback on Raydium (SOL → TDG swap) | ✅ Live |
+| **`daily-buyback.yml`** (GitHub Action) | Runs the buyback script daily at 05:00 UTC | ✅ Live |
+| **Performance Statistics** sheet | Row 4: `TDG_DAILY_BUY_BACK_BUDGET` = **$0.093/day** | ✅ Live |
+
+### The current flow
+
+```
+Performance Statistics sheet → TDG_DAILY_BUY_BACK_BUDGET ($0.093/day)
+    → buyback_sol_to_tdg.ts reads budget
+    → Swaps SOL for TDG on Raydium
+    → TDG is bought from the open market
+```
+
+### What would need to change for the UNA/TrueTech Inc buyback model
+
+Currently the buyback buys from the **Raydium open market** (SOL → TDG). For the model we discussed (TrueTech Inc buys TDG from members exiting via the DApp), we'd need:
+
+1. **A new buyback path** — instead of Raydium, buy directly from the DApp's internal order book or from a member's wallet
+2. **The burn mechanism** — currently the bought TDG goes to a treasury wallet. We'd need to add a burn step
+3. **A larger budget** — $0.093/day is tiny. For meaningful member exit liquidity, the budget needs to scale with impact fund capital
+
+**But the infrastructure is already there.** The budget line item, the automation pipeline, and the swap execution all exist. It's a matter of adding a new "buy from DApp → burn" path alongside the existing "buy from Raydium" path.
+
+### The interim strategy (updated)
+
+| What | When | Why |
+|------|------|-----|
+| **Form UNA via OtoCo** | This week (~$50) | Legal entity to receive impact fund capital |
+| **Open UNA Wise account** | Next 2-4 weeks | Bank account for fund contributions |
+| **Pitch impact funds on TDG-for-capital** | After UNA is live | "Fund tree planting, get governance stake + impact reports + future carbon credits" |
+| **Use existing buyback infra for member exits** | Already live | $0.093/day budget — small but functional. Scale when impact fund capital arrives. |
+| **Don't pitch tax write-offs yet** | Until 501(c)(3) | Honest positioning |
+| **When 501(c)(3) is obtained** | 6-12 months | Convert existing fund contributions to tax-deductible status |
+
+Want me to add this to the proposal?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 -c " import urllib.request, json url = 'https://raw.githubusercontent.com/TrueSightDAO/tokenomics/mai
+
