@@ -229,3 +229,19 @@ Want me to merge it?
 • `ssh run` ×8 → diff <(curl -s https://beta.truesight.me/styles/main.css | wc -c) <(wc -c < /tmp/truesight_me_beta/styles/main.css); echo "Live CSS: $(curl -s https://beta.truesight.me/styles/main.css | wc -c) bytes"; echo "Repo CSS: $(wc -c < /tmp/truesight_me_beta/styles; curl -s https://beta.truesight.me/styles/main.css | grep -c "card-grid"; …(+5 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_me_beta/pull/228
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3827] merge it
+
+
+### 🤖 Autopilot
+
+Merged! The inline style now reads `repeat(3, minmax(0, 1fr))` so all 3 Community Initiative cards (Agroverse, SunMint, Lineage) will sit on the same row in desktop view.
+
+The change will be live on **beta.truesight.me** after the next deploy. Want me to deploy it now?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #228 on truesight_me_beta merged successfully (sha: e254eb08101d2dbed560627b98bf4c73e6c6eadc). Pull Request successfully merged
+
