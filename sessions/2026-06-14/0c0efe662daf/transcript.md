@@ -1308,6 +1308,11 @@ That's the contribution ledger (TDG tracking), not the cash balance sheet. Let m
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the treasury-cache repo which should have the balance sheet data.
 
 
@@ -1383,4 +1388,23 @@ Already caught and corrected in v5 (PR #494). The proposal now shows:
 The OtoCo UNA path (~$50 gas) is still easily affordable at ~1.2% of available treasury. The Brazilian LTDA ($1K-$3K) would be 24-73% — doable but significant.
 
 Want me to merge PR #494 to `main` so the corrected version is live at the clean URLs?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] merge it
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+Corrected treasury figure ($4,126.73 available, not $15K+) and the DUNA-owned CNPJ structure are both in there. Ready for the SVH Capital conversation on the 26th.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #494 on agentic_ai_context merged successfully (sha: 0d0b1fdd19a39432bd4c08b41173cc15b33d45d3). Pull Request successfully merged
 
