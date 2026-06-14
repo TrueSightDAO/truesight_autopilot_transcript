@@ -732,7 +732,13 @@ The system prompt is embedded in the autopilot code. Let me find where my identi
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The system prompt is likely in the LLM config. Let me find where the system prompt / role definition lives.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -782,4 +788,103 @@ Want me to deploy the autopilot so this takes effect immediately?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #205 on truesight_autopilot merged successfully (sha: 33a9152dd3a034346b3334eae85f3170d5ffec18). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] by the way this filing is wrong isnt it?
+
+We did not contribute USD... we contributed our time... Time (Minutes)
+
+"[CONTRIBUTION EVENT]
+- Type: USD
+- Amount: 10
+- Description: Landing page re-order: Human → Platform → Stats → How (Sophia)
+  
+  Pull requests (GitHub evidence):
+  - https://github.com/TrueSightDAO/truesight_me_beta/pull/236
+  - https://github.com/TrueSightDAO/truesight_me_beta/pull/237
+  
+  Details:
+  Sophia analyzed the current page structure, proposed the re-order, drafted and opened PRs #236 and #237 on truesight_me_beta, merged them on approval, and attempted beta→prod sync.
+- Contributor(s): Sophia
+- TDG Issued: 10
+- Attached Filename: N/A
+- Destination Contribution File Location: N/A
+--------
+
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVSeFubyZjHRMT5IkuQ5hRbCS5BMkaT7nb7ZLwuuCueXbOEs2Uj84p1T0alzESetiZ08SSN5rwOcVoSXS2Oi3LYNWigYqzNta/ctdDnKrOBJFnz7rXxU9BLWjZ6RPRNTaLwBgo9pYFwmXO3KQkHRJ/RsUJwUAQZzWlHf42G1k6plYU+xdEYv+pBO/P6GFPqcyz24SFa8tqaMKfUT/+RcGUvTlNcGSLMPc+kj7Uv9Z4yA310zT3MRfKhIJIwc6DHUxcxgtVbwUWQcgbyk03/MPFy3441R3vaLT6eFVngL98TuwiPoOaGC74uKyZKtVhdedfRD3Bs/yMJjQ4Gnfdu/fQIDAQAB
+
+Request Transaction ID: iMnqIFtKPaHXRTWwSVw6DxLGJF3A3IX33g2nFPcCM5EH/iTg0vMTFIeZa75yQTgTvgtkiRaJ4fOKwGr2RcoYmYXYGwIPQVBFZPI1ICC3xtPJOjgWA25lcWYmSc3C7DwHS2dY01hzjLlg8NP7+q9CcaX1wWpSjbAnozznDt1oNIE67wcrasbskTNC6R+JA3IMNwR65H19F8dENL1kWf0G5T5zbjEfRai4MuFpVVcJQ2v3X3eb9LYEzX09pJulK/cVlczt1fpzyw7qOoW4/STGNY4aRcgzFinBhMRL3Y/CmQoUzflfDg4yPLZO8WInyFizcLmWaYQMc5/QlWUYNYqUQA==
+
+This submission was generated using https://github.com/TrueSightDAO/truesight_autopilot
+
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+
+
+### 🤖 Autopilot
+
+You're right — that's wrong. It says **Type: USD** and **Amount: 10** when it should be **Time (Minutes): 10**. The `create_dao_submission` tool I used doesn't have a field for time vs USD — it just takes `amount` and `tdg_issued`. Let me check what the proper format should be.
+
+
+### 🤖 Autopilot
+
+Let me look at how the submission is parsed to understand the Type field.
+
+
+### 🤖 Autopilot
+
+Let me look at how the `create_dao_submission` tool in the autopilot constructs the text, and what format it uses.
+
+
+### 🤖 Autopilot
+
+Now let me look at the actual handler in `main.py` to see how it constructs the submission text.
+
+
+### 🤖 Autopilot
+
+Found the bug. Line 1799:
+
+```python
+"Type": "Time (Minutes)" if amount == "0" or float(amount) > 60 else "USD",
+```
+
+This logic says:
+- If amount is `"0"` OR amount > 60 → **Time (Minutes)**
+- Otherwise → **USD**
+
+So when I passed `amount="10"` (10 minutes), it evaluated `10 > 60` as False, and `amount == "0"` as False, so it defaulted to **"USD"** instead of **"Time (Minutes)"**.
+
+The logic is inverted — it should be **Time (Minutes)** for small amounts (like 10 min) and **USD** for dollar amounts. But the heuristic can't distinguish between "10 minutes" and "$10" since it's just a number.
+
+The fix: the `create_dao_submission` tool should have a separate field for the type, or the heuristic should default to **Time (Minutes)** when the amount is small (since most DAO contributions are time-based, not USD-based).
+
+Let me open a fix PR.
+
+
+### 🤖 Autopilot
+
+You're absolutely right. The submission says **Type: USD, Amount: 10** when it should be **Type: Time (Minutes), Amount: 10**.
+
+**Root cause:** The code at `app/main.py:1799` had a broken heuristic:
+
+```python
+"Type": "Time (Minutes)" if amount == "0" or float(amount) > 60 else "USD"
+```
+
+Since I passed `amount="10"`, it evaluated `10 > 60` as False → defaulted to **"USD"**. 🤦
+
+**Fix:** PR #207 replaces the heuristic with an explicit `type` parameter so I can say `type="Time (Minutes)"` directly. No more guessing.
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → https://github.com/TrueSightDAO/truesight_autopilot/pull/207
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → grep -rn "create_dao_submission\|def create_dao" /opt/truesight_autopilot/app/tools/ --include="*.py" | head -10; grep -n "create_dao_submission\|CONTRIBUTION EVENT\|Type.*USD\|Type.*Time" /opt/truesight_autopilot/app/main.py | head -20; sed -n '1771,1840p' /opt/truesight_autopilot/app/main.py
+• `open fix pr` → Fix agent failed to produce a PR.
 
