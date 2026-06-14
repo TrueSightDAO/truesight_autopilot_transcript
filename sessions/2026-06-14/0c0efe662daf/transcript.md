@@ -2544,6 +2544,7 @@ SSH is having issues. Let me use the upload_file_to_github with the base64 direc
 ### 🤖 Autopilot
 
 The base64 is too large to pass through the upload tool parameter. Let me use a different approach — write it to a local file via Python on the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2720,4 +2721,41 @@ No TDG compensation to TrueTech Inc. No voting rights. It's just infrastructure 
 **This also means:** TrueTech Inc's bank account is the DAO's operational account for import-related expenses. The DUNA's bank account is for partner contributions, tree-planting funds, and DAO treasury. Two separate accounts, two separate purposes, both serving the DAO.
 
 Clean. Want me to update the proposal with this final framing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yeah. So basically DAO member voting gets executed through TrueTech Inc?? But the DAO members list are not reflected in the TrueTech Inc board. They are reflected in the upcoming UNA and eventual DUNA?
+
+
+### 🤖 Autopilot
+
+Exactly. You've nailed the separation:
+
+```
+DAO members (TDG holders)
+    ↓ Vote on
+UNA / DUNA (Wyoming nonprofit)
+    ↓ Governs
+    • Mission, brand, carbon credits, treasury
+    • Relationship with TrueTech Inc (as a facility)
+    • Partner relationships, tree-planting commitments
+
+TrueTech Inc (Delaware C-corp)
+    → DAO-operated facility for customs/FDA
+    → Its own board handles operational/compliance decisions
+    → DAO members are NOT on TrueTech Inc's board
+    → TrueTech Inc executes on the DUNA's decisions
+```
+
+**The key distinction:**
+
+| Who | Where they're reflected | What they govern |
+|-----|------------------------|-----------------|
+| **TDG holders** | **UNA/DUNA membership** | Mission, treasury, partnerships, tree planting |
+| **TrueTech Inc board** | Delaware corporate filings | Customs compliance, FDA, import operations |
+
+The DUNA tells TrueTech Inc *what* to do (import this cacao, clear this shipment). TrueTech Inc's board handles *how* to do it (which customs broker, which FDA filing route).
+
+**This is the cleanest structure yet.** Want me to update the proposal with this final framing and merge to main?
 
