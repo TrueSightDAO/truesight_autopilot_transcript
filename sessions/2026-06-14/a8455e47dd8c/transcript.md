@@ -517,3 +517,41 @@ So now the status is:
 
 Want me to follow up with Matheus tomorrow if he hasn't responded?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can you update your Md instructions file with detailed instructions on this step as well??
+
+
+### 🤖 Autopilot
+
+Let me read the current OPEN_FOLLOWUPS.md to see the right place to add this.
+
+
+### 🤖 Autopilot
+
+I see — you want me to add the NF-e export process as a documented SOP in the agentic_ai_context. Let me add it to the appropriate place. Let me check what instruction files exist.
+
+
+### 🤖 Autopilot
+
+Now I see — this is the right file to update. The checklist already has a "Fiscal Nota (invoice) issued" checkbox but no detailed instructions. Let me add a detailed SOP section for the NF-e export process.
+
+
+### 🤖 Autopilot
+
+Done! PR opened: **agentic_ai_context#483**
+
+I added **Appendix A: Export NF-e SOP** to `BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md` with:
+
+- **8-step walkthrough** from SEFAZ login through issuing the DANFE
+- **Seller details** (Black King CNPJ, address)
+- **Foreign buyer setup** (TrueTech Inc with "Exterior" flag — no CNPJ needed)
+- **Full line items table** with NCM codes and values from the Commercial Invoice
+- **FOB transport info** with $0 freight
+- **Tax configuration** (ICMS exempt for exports)
+- **Troubleshooting table** for common first-time issues
+- Updated the Phase 0 checklist to reference the new appendix
+
+Want me to merge the PR?
+
