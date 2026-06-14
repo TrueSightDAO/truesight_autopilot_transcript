@@ -119,10 +119,10 @@
     "created_at": "2026-06-11T01:08:28Z"
   },
   {
-    "title": "Merge PR #190 on truesight_autopilot",
+    "title": "Merge PR #228 on truesight_me_beta",
     "qr_code": "",
-    "summary": "When a governor sends a TEXT message on Telegram, the autopilot replies with text only. The governor wants voice replies for ALL messages (text and voice), not just voice messages.\n\nThe fix is in app/",
+    "summary": "Community Initiatives section on the landing page (index.html) has an inline `<style>` block that forces `#initiatives .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }` \u2014 this was writ",
     "action": "merge_pr",
-    "created_at": "2026-06-13T16:20:21Z"
+    "created_at": "2026-06-14T05:33:12Z"
   }
 ]
