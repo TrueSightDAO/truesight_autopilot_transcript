@@ -3210,6 +3210,11 @@ Let me look at the treasury-cache which had the balance data earlier.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the tokenomics SCHEMA.md for the buyback budget line item and the Wix dashboard script.
 
 
@@ -3324,4 +3329,59 @@ Both accounts on Wise. Same platform. Separate purposes.
 No dependency between them. TrueTech Inc's account handles the commercial side immediately. The UNA account handles the mission side when it's ready.
 
 Want me to add this parallel timeline to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yup.
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in repository]
+
+[1 tool result(s) compacted: read_tool_result — detail in repository]
+
+Now I have the full doc. Let me update it with the parallel Wise accounts timeline and the existing buyback infrastructure.
+[1 tool result(s) compacted: git_push_changes — detail in repository]
+
+Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in repository]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in repository]
+
+The base64 was too large again. Let me use the local file approach.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in repository]
+
+Both files are on the v14 branch. Let me merge to main.
+[1 tool result(s) compacted: merge_pr — detail in repository]
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new in the final version
+
+**Parallel timeline added:**
+| Track | What | When |
+|-------|------|------|
+| **TrueTech Inc Wise** | Opens this week for commercial transactions | 1-2 days |
+| **UNA OtoCo** | Formed this week (~$50 gas) | 1 day |
+| **UNA Wise** | Opens after EIN received | 2-4 weeks |
+
+**Existing buyback infrastructure documented:**
+- `getDailyTdgBuyBackBudget()` — live GAS function
+- `buyback_sol_to_tdg.ts` — live TypeScript execution
+- `daily-buyback.yml` — live GitHub Action
+- Current budget: $0.093/day (scales with impact fund capital)
+
+**Impact fund strategy updated:**
+- Pitch TDG-for-capital after UNA is live
+- Don't pitch tax write-offs until 501(c)(3)
+- Existing buyback infra handles member exits at current scale
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #501 on agentic_ai_context merged successfully (sha: 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b). Pull Request successfully merged
 
