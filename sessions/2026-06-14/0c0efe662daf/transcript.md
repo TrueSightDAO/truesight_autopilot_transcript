@@ -2950,6 +2950,7 @@ Done. Both files are now live on `main`:
 ### 🤖 Autopilot
 
 You're right. Let me check what the current proposal says about impact funds.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2980,46 +2981,60 @@ yeah. Go for it.
 ### 🤖 Autopilot
 
 Let me check the handoff registry first, then update the proposal.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This isn't a handoff execution — it's a direct conversation. Let me update the proposal with the Impact Fund Capital Injection Pathways section.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full doc. Let me update it with the final structure — TrueTech Inc as a DAO-operated facility (not a member), TDG buyback → burn, and impact fund capital injection pathways.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me save the PDF locally and upload it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH is having issues. Let me use the upload_file_to_github with the base64 from the artifact directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the full base64 and upload it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is 15,749 bytes. Let me try uploading it directly — the parameter limit should handle 16KB.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files are on the v13 branch. Let me merge to main.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3130,31 +3145,67 @@ Want me to add this interim strategy to the proposal?
 ### 🤖 Autopilot
 
 Let me check the tokenomics repo for the buyback mechanism and the ledger provisions.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the ledger for buyback provisions.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the ledger for the buyback budget line item.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the sheet names first.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the Ledger History sheet. Let me find the Main Ledger sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the treasury-cache which had the balance data earlier.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3244,4 +3295,33 @@ Want me to add this to the proposal?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 -c " import urllib.request, json url = 'https://raw.githubusercontent.com/TrueSightDAO/tokenomics/mai
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] actually immediate we can even open a Wise account for TrueTEch inc for all commercial related transactions while the UNA wise account is being open too
+
+
+### 🤖 Autopilot
+
+Exactly. Two parallel tracks, no waiting:
+
+```
+This week:
+├── TrueTech Inc → opens Wise Business account → commercial transactions (import, customs, FDA)
+└── Gary + TrueTech Inc → sign OtoCo → UNA formed → UNA opens its own Wise account → mission/treasury
+
+Both accounts on Wise. Same platform. Separate purposes.
+```
+
+**The split:**
+
+| Account | Purpose | Opens When |
+|---------|---------|-----------|
+| **TrueTech Inc Wise** | Import payments, customs bonds, FDA fees, commercial sales | This week (1-2 days) |
+| **UNA Wise** | Partner contributions (Nora), impact fund capital, tree planting, TDG buyback | 2-4 weeks (after UNA formed + EIN) |
+
+No dependency between them. TrueTech Inc's account handles the commercial side immediately. The UNA account handles the mission side when it's ready.
+
+Want me to add this parallel timeline to the proposal?
 
