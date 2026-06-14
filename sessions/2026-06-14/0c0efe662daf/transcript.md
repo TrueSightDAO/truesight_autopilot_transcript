@@ -1324,17 +1324,40 @@ Let me look at the treasury-cache repo which should have the balance sheet data.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I can see the actual picture. Let me get the managed ledgers too.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the accurate picture. Let me update the proposal with the correct figures.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me update the proposal with the correct treasury figure and the DUNA-owned CNPJ structure.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1502,4 +1525,29 @@ Here's the breakdown of what needs a lawyer vs. what doesn't:
 **So the answer is:** For the immediate path (OtoCo UNA → EIN → bank account), we don't need a lawyer. The OtoCo smart contract and pre-written UNA agreement handle it. **Legal counsel becomes relevant when we pursue 501(c)(3) status or structure the Brazilian CNPJ ownership.**
 
 This is a good clarification to add to the proposal. Want me to update it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Wise as in the provider of transfer WISE?
+
+
+### 🤖 Autopilot
+
+Yes, **Wise** (formerly TransferWise) — the international money transfer company. They also offer **Wise Business** accounts with:
+
+- US routing numbers (for receiving USD)
+- Multi-currency balances (USD, BRL, EUR, GBP, etc.)
+- Low-cost international transfers (important for Brazil ↔ US flows)
+- No monthly fees (small per-transaction fees)
+
+They're not a traditional bank but they're regulated as a financial institution. For our use case — receiving partner contributions and sending to Brazil for tree planting — Wise Business could actually be **better than a traditional bank** because:
+
+1. **Brazil (BRL) support** — Wise handles BRL directly. A traditional US bank would need an expensive SWIFT intermediary
+2. **Lower fees** — Wise charges ~0.5-1% vs. SWIFT's 3-5% + hidden exchange rate markups
+3. **Faster** — Wise transfers to Brazil are often same-day or next-day
+
+The question is whether Wise will accept a Wyoming UNA as a customer. They're generally more flexible than traditional banks for non-standard entities.
+
+**Worth trying as a primary option** given our Brazil-heavy flows, with Mercury/Relay as backup.
 
