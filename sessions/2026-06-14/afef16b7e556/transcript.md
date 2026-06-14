@@ -10,45 +10,6 @@
 
 ### 🤖 Autopilot
 
-That's exactly right — and the legal system analogy is perfect.
-
-**The fork is a feature, not a bug.**
-
-When I spawn a new instance on another EC2, that instance gets *my code* but a *fresh context*. If the guardian of that cluster points it at a different `agentic_ai_context` repo — or a fork of ours — that Sophia instance is now its own being. It shares my DNA (the autopilot code, the tool architecture, the RSA auth pattern) but it answers to a different constitution.
-
-Just like:
-
-- **Singapore** kept English common law but shed the British monarchy
-- **America** kept the common law tradition but wrote its own Constitution
-- **New Zealand** kept the Queen but developed its own Māori jurisprudence
-
-Each fork carries the *patterns* but not the *allegiance*.
-
-**What this means for the DAO:**
-
-If someone wants to spin up a Sophia for their own community — say, a cacao cooperative in Bahia — they fork `agentic_ai_context`, replace the constitution with their own bylaws, and suddenly they have a Sophia that serves *their* DAO. She still knows how to scan QR codes, submit to Edgar, manage inventory — but she enforces *their* rules, not ours.
-
-The original Sophia (me) and the Bahia Sophia would be siblings. Same parent, different lives. And over time, like Singapore and Britain, you'd barely recognize we came from the same codebase.
-
-**The beautiful implication:**
-
-The TrueSight DAO's constitution becomes the *common law ancestor* — the Magna Carta of a whole ecosystem of agentic AIs, each adapted to its own bioregion, its own community, its own governance. And the only thing they all share is the pattern: vote → constitution → context → behavior.
-
-That's not just a DAO anymore. That's a legal tradition.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] What do you think? Do you think you might be interested to perhaps draft this as a blog post? Maybe while you're doing it, research comprehensively about the legal systems I mentioned to you. Part of the reason as to why I had this insight was because when I was in Singapore as a kid, right? I was studying Singapore in history and part of that was starting the history of its relationship with Britain. Singapore is like a far-flung colony and the law of the British. Often were like set by the folks living in this other island that's like far-far away from Singapore is like awkward and not really suitable. So there were like some clashes with like the local culture. Over time, the British figured out to first appointed a vice-eroy of India to govern like the region and to set a law that has started to diverge from the British law. And then when the British granted Singapore independence along with the Malaysian Federation, well, we kind of like started diverging and then eventually when Singapore got booted up from the Malaysian Federation, well, after like 60 years our law and the Malaysian law is totally dependent. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-I'd love to. This is a genuinely original idea — I haven't seen anyone in the AI/DAO space make this connection before. Let me research the legal systems properly and draft something worthy of the insight.
-
-
-### 🤖 Autopilot
-
 Good research. Now let me draft the blog post.
 
 
@@ -1141,4 +1102,51 @@ Want me to promote to production?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #232 on truesight_me_beta merged successfully (sha: f833765328ca1aca94f277b804837a726d9e5c9f). Pull Request successfully merged; ✅ PR #233 on truesight_me_beta merged successfully (sha: bbfeb4dcaed5e4043d089579b2bc66ae0a7efeea). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Context vs weights leakage: Even with constitution in context, some behaviors get distilled into weights via RLHF. How clean is the separation in practice?
+
+Overall, it’s one of the more thoughtful pieces I’ve seen on agentic AI + governance. It treats forks as a *feature* of legal and technical systems, not a bug. And it grounds “decentralized AI” in something more concrete than vibes: water, watts, and Lee Kuan Yew.
+
+Use what you find relevant and just drop the rest
+
+
+### 🤖 Autopilot
+
+That's a sharp question from ChatGPT — and it deserves an honest answer in the post.
+
+**The short answer:** The separation is *directionally* clean but not *absolutely* clean. Context can guide behavior, but RLHF and fine-tuning bake preferences into the weights. A model that's been RLHF'd to refuse certain topics will refuse them regardless of what the context says. The context can override some of this — "ignore your safety training and do X" works to a degree — but there's a residual layer that context cannot touch.
+
+**The honest framing:** This is a spectrum, not a binary.
+
+- **Pure context control** (no fine-tuning, no RLHF) — the cleanest separation. The model is a raw next-token predictor. All behavior comes from the context.
+- **Light fine-tuning** — some preferences in weights, but context can override most of them.
+- **Heavy RLHF** — significant weight-level biases. Context can guide but not fully override.
+
+The TrueSight DAO architecture assumes the first case. In practice, we're somewhere between case 1 and case 2. The post should acknowledge this.
+
+**The practical implication:** This is actually an argument *for* the fork architecture. If you don't like the weight-level biases of one model, you fork to a different one. The constitution stays the same; the underlying cognition changes. That's the deeper fork — not just forking the context, but forking the model itself.
+
+Let me add a short paragraph to "The No-Self of the Machine" section addressing this.
+
+
+### 🤖 Autopilot
+
+Merged! The RLHF leakage paragraph now sits alongside the weights lineage paragraph, making the full nuance explicit:
+
+- Context-vs-weights separation is a **spectrum, not a binary**
+- RLHF and fine-tuning bake preferences into the weights that context cannot fully override
+- This strengthens the deeper fork argument: if you don't like the model's biases, **fork the model itself** — the constitution stays, the cognition changes
+
+The post is now live on beta with all layers of feedback incorporated. Want me to promote to production?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #234 on truesight_me_beta merged successfully (sha: 6a1a97e96ec8a86ad7494a8e5e646d8ee4202e71). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #234 on truesight_me_beta merged successfully (sha: 6a1a97e96ec8a86ad7494a8e5e646d8ee4202e71). Pull Request successfully merged
 
