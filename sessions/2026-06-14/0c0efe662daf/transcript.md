@@ -2538,6 +2538,7 @@ The PDF was generated. Let me save it locally and upload to the branch.
 ### 🤖 Autopilot
 
 SSH is having issues. Let me use the upload_file_to_github with the base64 directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2685,4 +2686,38 @@ This means:
 This is another good question for SVH Capital on the 26th.
 
 Want me to update the proposal with this "facility" framing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] If it is just a facility it sholdnt even be compensated TDG
+
+
+### 🤖 Autopilot
+
+You're right. A facility doesn't get compensated. It's an operational cost center.
+
+So the flow becomes even simpler:
+
+```
+DUNA (Wyoming nonprofit)
+    → Owns the mission, brand, carbon credits, treasury
+    → Governed by TDG holders
+    → Pays for operational services
+
+TrueTech Inc (Delaware C-corp)
+    → DAO-operated facility for customs clearance & FDA compliance
+    → Operational cost of the DAO, not a compensated member
+    → Its costs (customs bonds, FDA fees, etc.) are DAO expenses
+
+Brazilian CNPJ (eventually DUNA-owned)
+    → DAO-operated facility for farmer payments & export
+    → Operational cost of the DAO
+```
+
+No TDG compensation to TrueTech Inc. No voting rights. It's just infrastructure the DAO uses to function — like paying rent for a warehouse or a subscription for software.
+
+**This also means:** TrueTech Inc's bank account is the DAO's operational account for import-related expenses. The DUNA's bank account is for partner contributions, tree-planting funds, and DAO treasury. Two separate accounts, two separate purposes, both serving the DAO.
+
+Clean. Want me to update the proposal with this final framing?
 
