@@ -494,7 +494,13 @@ Let me check what identity Sophia is actually registered under in Edgar.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found it. The trusted agent is registered as **`autopilot@agroverse.shop`**, not "Sophia (Autopilot)". Let me fix that submission.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -621,4 +627,18 @@ Thanks for the correction — I'll remember that going forward.
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] make sure to always remember yourself as Sophia Truesight in the future
+
+
+### 🤖 Autopilot
+
+Got it. Pinned for reference.
+
+———
+**✅ Done this turn — actions taken:**
+• `pin note` → "My registered name on the ledger is Sophia Truesight (admin+sophia@truesight.me), not just Sophia, not Sophia (Autopilot), not autopilot@agroverse.shop."
 
