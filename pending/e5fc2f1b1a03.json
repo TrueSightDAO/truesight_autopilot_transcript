@@ -124,5 +124,12 @@
     "summary": "Unit 3: Wire SSH, GitHub, and GAS deploy tools to resolve credentials from the vault as a fallback.\n\nCurrently:\n- ssh_tools.py hardcodes ~/.ssh/sophia_infra key path \u2014 should also try vault.get_value(",
     "action": "merge_pr",
     "created_at": "2026-06-14T19:23:39Z"
+  },
+  {
+    "title": "Merge PR #199 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Sign-out on the vault page is broken: the /logout route doesn't exist (404), the JWT cookie 'governor_chat_session' is never cleared server-side, and the onclick only tries localStorage.removeItem sil",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T19:29:27Z"
   }
 ]
