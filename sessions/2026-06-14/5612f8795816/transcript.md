@@ -18,6 +18,7 @@
 ### 🤖 Autopilot
 
 Let me look at what's in this thread to understand the context.
+[1 tool result(s) compacted: search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -60,11 +61,23 @@ Reply "go for it" and I'll execute from RESUME HERE — initializing the vault, 
 ### 🤖 Autopilot
 
 Let me read the plan to get the full picture before I give the go-ahead.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've read the full plan. Let me run the pre-flight checks first before I give the go-ahead.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -128,16 +141,34 @@ go for it
 ### 🤖 Autopilot
 
 Let me start by reading the vault module to understand the API, then execute Unit 1 — initialize the vault.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, I have the vault API. Now let me check the vault tools to understand the tool interface, then execute Unit 1 — initialize the vault.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check how the SSH tool currently resolves credentials — this is the key question for Unit 3.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -232,4 +263,92 @@ Here's where we are:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize(actor='Gary Teh') print('Initialized:', v.i; cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize() # Read all source files import json creds; cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize() for name in ['github_krake_pat', 'ssh_key
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/197
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] I am thinking for #197 just in case if can't find from vault find from where it currently is during this transition phase...
+
+
+### 🤖 Autopilot
+
+That's a smart transitional approach — **"try vault first, fall back to current source"** — so nothing breaks if the vault isn't ready yet. Let me update PR #197 with that pattern.
+
+
+### 🤖 Autopilot
+
+Let me see the full ssh_tools.py to understand the complete flow:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] I am thinking for #197 just in case if can't find from vault find from where it currently is during this transition phase...
+
+
+### 🤖 Autopilot
+
+Got it. Let me update PR #197 with the **vault-first, fallback-to-current** pattern. Let me first check what the PR currently has and what the current credential resolution looks like:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check what the PR #197 currently has on its branch so I can update it properly:
+
+
+### 🤖 Autopilot
+
+Let me see what's currently on the PR #197 branch:
+
+
+### 🤖 Autopilot
+
+The PR was opened by `open_fix_pr` but the branch hasn't been pushed yet (it's a draft). Let me close that PR and create a proper one with the vault-first, fallback-to-current pattern.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me close the old draft PR and create a proper one with the vault-first, fallback pattern. The key insight:
+
+- **SSH tool** currently uses `sophia_infra` key (works fine). The `.pem` files in `/home/ubuntu/` are for backup/manual access. The vault already has them. The SSH tool doesn't need to change — it already works. But I should add a `_vault_key_path()` fallback for the `.pem` keys.
+- **GitHub tool** uses `settings.github_pat` (env var `TRUESIGHT_DAO_AUTOPILOT`). The vault has `github_krake_pat` as a fallback.
+- **git_push_changes** same — `settings.github_pat` with vault fallback.
+- **GAS deploy** uses `clasp` which reads `~/.clasprc.json`. The vault has `clasp_oauth_gary`.
+
+Let me create a clean PR with the vault-first, fallback pattern:
+
+
+### 🤖 Autopilot
+
+Now let me run the local test suite to make sure everything compiles and passes:
+
+
+### 🤖 Autopilot
+
+All 482 tests pass. Let me also close the old draft PR #197 since it's superseded:
+
+
+### 🤖 Autopilot
+
+---
+
+Done. Here's the updated status:
+
+**PR #197** (old draft) — **Closed** (superseded)
+**PR #198** (new) — **Open** → https://github.com/TrueSightDAO/truesight_autopilot/pull/198
+
+**The vault-first, fallback pattern:**
+
+| Tool | Vault-first | Fallback |
+|------|------------|----------|
+| **SSH** (`ssh_tools.py`) | `ssh_key_nelanco`, `ssh_key_server_us`, `ssh_key_california` | `sophia_infra` key chain |
+| **Git** (`git_tools.py`) | `github_krake_pat` | `TRUESIGHT_DAO_AUTOPILOT` env var |
+| **GAS deploy** (`gas_deploy_project.py`) | `clasp_oauth_gary` | `~/.clasprc-gary.json` |
+
+All 482 tests pass ✅. The PR is ready for your review.
+
+When you're happy, tell me to **merge it** and I'll deploy, then run the full UAT (U1–U7) to verify each credential works end-to-end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app/tools/ssh_tools.py app/tools/git_tools.py app/tools/gas_deploy_project.py 2>&1; cd /opt/truesight_autopilot && python3 -m ruff format --check app/tools/ssh_tools.py app/tools/git_tools.py app/tools/gas_deploy_project.py ; …(+2 more)
 
