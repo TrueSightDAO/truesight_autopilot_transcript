@@ -489,6 +489,11 @@ Now let me rewrite the proposal with the corrected framing — leading with the 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me generate the PDF.
 
 
@@ -786,4 +791,34 @@ This means:
 The only thing to figure out with SVH is: **can a Wyoming DUNA legally issue TDG tokens as compensation to a for-profit C-corp under a service agreement?** The DUNA is a nonprofit — it can't distribute profits, but paying a service fee in tokens should be fine as long as it's at fair market value for services rendered.
 
 This is a solid, coherent structure. Want me to add this to the proposal doc?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] why is there even a need for a service agreement? TrueTEch INc similar to other DAO members do it on voluntary basis isnt it?
+
+
+### 🤖 Autopilot
+
+You're right. If TrueTech Inc is just another DAO member contributing voluntarily — same as Nora, Kirsten, Matheus — then there's no need for a service agreement.
+
+**The simpler model:**
+
+```
+TrueTech Inc = DAO member (voluntary contributor)
+    • Provides import, distribution, bank custody as contributions
+    • Gets compensated in TDG (like any other contributor)
+    • TDG = voting rights in the DUNA
+
+DUNA = the DAO's legal wrapper
+    • Holds the mission, brand, carbon credits
+    • Governed by TDG holders
+    • TrueTech Inc is one of many TDG holders
+```
+
+No inter-entity agreement needed. No service fee. No principal-agent complexity. TrueTech Inc is just a member who happens to also run the operational side.
+
+**The only thing that changes vs. today:** the bank account. Right now it's Gary's personal account. If TrueTech Inc opens a business account and holds it as a DAO member's contribution to the community, that's fine — the funds are managed per the DAO's governance decisions.
+
+This is much cleaner. Does this feel right?
 
