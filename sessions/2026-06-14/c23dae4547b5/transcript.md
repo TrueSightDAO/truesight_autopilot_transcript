@@ -234,3 +234,48 @@ Once I have all 4, I can proceed with the full technical onboarding:
 
 Want to send the other bag photos or codes?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **efd4b68d43274a17b224200a48dc172b.jpg**]
+- Type: Image (OCR confidence: 87.8%, quality: good)
+
+Extracted text:
+```
+6:12 eal LTE 2) < + 80S = ooo © me 3:42PM © aq to norav Dear Agroverse Supporter, Glad you have scanned your unique QR code! We're thrilled to have you join our mission to plant trees in the Amazon rainforest. You've successfully submitted your email to stay informed about your tree. We'll notify you when your tree is planted and provide updates on its growth. In the meantime, you can track the status of your tree here: 20240SCAR_20260330_32 Thank you for supporting our efforts to reforest the Amazon rainforest! Best regards, Tha Aaraunaren Taam © Reply __ © Forward ) (
+```
+
+
+### 🤖 Autopilot
+
+The QR code isn't scannable from the screenshot, but the email text gives us the code: **`2024OSCAR_20260330_32`**. Let me look it up.
+
+
+### 🤖 Autopilot
+
+Got the second one. Let me also persist both screenshots to the transcript.
+
+
+### 🤖 Autopilot
+
+No problem — the data is captured in this conversation. Here's the updated table:
+
+---
+
+### QR Codes Found (2 of 4)
+
+| QR Code | Status | Email | Currency |
+|---------|--------|-------|----------|
+| `2024OSCAR_20250711_NIBS_19` | **SOLD** ✅ | nora@noraharon.com | 8 oz Kraft Pouch |
+| `2024OSCAR_20260330_32` | **SOLD** ✅ | nora@noraharon.com | Ceremonial Cacao Kraft Pouch |
+
+Both are already marked **SOLD** under your management, so the ledger is in good shape for those two.
+
+Still need the other **2 bag codes** to complete the set. Can you send the remaining screenshots/photos?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+
