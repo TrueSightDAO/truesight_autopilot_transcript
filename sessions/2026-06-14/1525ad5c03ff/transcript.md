@@ -10,23 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now restart Rails to pick up the change.
-
-
-### 🤖 Autopilot
-
-502 means the proxy is now reaching the GAS endpoint but GAS is returning an error (likely needs auth or the action isn't implemented on that GAS deployment). That's a GAS-side issue, not a routing issue anymore. The proxy is working.
-
-Let me verify the full chain is intact:
-
-
-### 🤖 Autopilot
-
-Hmm, `/ping` is now 502 too. Rails might not have restarted properly or there's a different issue.
-
-
-### 🤖 Autopilot
-
 The systemd service ran `git pull origin master` which pulled the latest code, and the latest code has a syntax error or dependency issue. Let me check the actual error.
 
 
@@ -696,4 +679,39 @@ Want me to deploy to beta for review?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/truesight_me_beta && python3 << 'PYEOF' with open('index.html') as f: content = f.read() # Find the two sections platform_start = ' ; cd /tmp/truesight_me_beta && grep -n "section id=" index.html | head -10; cd /tmp/truesight_me_beta && git add index.html && git commit -m "Swap order: Community Initiatives above Platform Services" && git push ori
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] On https://edgar.truesight.me/
+
+click on .endpoints li a should just bring the user down to the .event-group section otherwise it feels like a broken experience
+
+
+### 🤖 Autopilot
+
+Good catch — the endpoint links currently point to `/sandbox/submit` which doesn't exist. Let me make them anchor links that scroll to the event cards section instead.
+
+
+### 🤖 Autopilot
+
+Now add the `id="events"` anchor to the event types section:
+
+
+### 🤖 Autopilot
+
+Let me verify the anchor links work:
+
+
+### 🤖 Autopilot
+
+Fixed. Now clicking any endpoint path (like `/dao/submit_contribution` or `/dao/test/submit_contribution`) scrolls the user down to the event cards section where they can explore payloads and use the sandbox — instead of hitting a broken page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → sudo sed -i 's|<a href="/sandbox/submit">/dao/submit_contribution</a>|<a href="#events">/dao/submit_contribution</a>|g; s|<a href="/sandbox/submit">/dao/test/submit_contribution</a>|<a href="#events">/dao/test/submit_contribution</a>|g' /var/www/edgar/index.html && echo "done"; sudo sed -i 's|<div class="section-title">Event Types| <div id="events"></div>\n\n        <div class="section-title">Event Types|' /var/www/edgar/index.html && echo "done"
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → sudo sed -i 's|<a href="/sandbox/submit">/dao/submit_contribution</a>|<a href="#events">/dao/submit_contribution</a>|g; s|<a href="/sandbox/; sudo sed -i 's|<div class="section-title">Event Types| <div id="events"></div> <div class="section-title">Event Types|' /var/www/edgar/index
 
