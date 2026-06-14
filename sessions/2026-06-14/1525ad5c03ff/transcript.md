@@ -10,82 +10,6 @@
 
 ### 🤖 Autopilot
 
-There it is — `HEAD /ping` returns **405 Method Not Allowed**. The DApp's `report_inventory_movement.html` sends a HEAD request to check if Edgar is alive, and dao_protocol doesn't handle HEAD on `/ping`.
-
-Previously Rails handled this fine. Let me check what the DApp expects.
-
-
-### 🤖 Autopilot
-
-Let me check the DApp's actual ping usage.
-
-
-### 🤖 Autopilot
-
-Now I see the issue clearly. Rails has `get "/ping", to: "ping#index"` which handles GET requests. The DApp is sending `HEAD /ping` — Rails handles HEAD automatically for GET routes (it strips the body), but dao_protocol doesn't.
-
-The real issue is that the catch-all `location /` now goes to dao_protocol instead of Rails. The `/ping`, `/proxy/gas/:name`, and other Rails routes are no longer reachable on `edgar.truesight.me`.
-
-The fix is: Edgar's nginx should proxy the Rails-specific routes to Rails, and everything else to dao_protocol. Let me update the config.
-
-
-### 🤖 Autopilot
-
-Now let me verify everything works:
-
-
-### 🤖 Autopilot
-
-Same 404 on both Edgar and Perch for `programRegistrations` — that's a Rails-side issue (the GAS endpoint name isn't in the allowlist), not a routing issue. Let me verify the key endpoints:
-
-
-### 🤖 Autopilot
-
-Everything is working. Let me verify the key endpoints:
-
-| Endpoint | Method | Status | Backend |
-|----------|--------|--------|---------|
-| `edgar.truesight.me/` | GET | ✅ 200 | Static landing page |
-| `edgar.truesight.me/ping` | HEAD | ✅ 200 | Rails |
-| `edgar.truesight.me/proxy/gas/*` | GET | ✅ 404 (valid Rails response — `programRegistrations` not in allowlist) | Rails |
-| `edgar.truesight.me/qr-code-check` | GET | ✅ 200 (redirects to agroverse.shop) | dao_protocol |
-| `edgar.truesight.me/dao/submit_contribution` | POST | ✅ dao_protocol | dao_protocol |
-
-The `programRegistrations` 404 is a pre-existing issue — that GAS endpoint name isn't in Rails' proxy allowlist. That's a separate fix needed in the Rails `proxy_controller.rb`, not something we broke.
-
-The key fix was: **Rails routes** (`/ping`, `/proxy/gas/`, `/webhook`) now proxy to Rails on `:3002`, while **dao_protocol routes** (`/dao/*`, `/qr-code-check`, `/link-email`, `/newsletter/`, `/email_agent/`, `/stripe_webhook`) go to `:8010`. The catch-all falls back to dao_protocol.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → sudo tee /etc/nginx/sites-available/edgar.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name edgar.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → sudo tee /etc/nginx/sites-available/edgar.conf > /dev/null << 'NGINX_EOF' server { listen 80; listen [::]:80; server_name edgar.truesight.me; sudo nginx -t && sudo systemctl reload nginx && echo "reloaded"
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] I think All the calls from dapp to edgar should be inspected..
-
-
-### 🤖 Autopilot
-
-You're right. Let me check what the DApp actually calls on Edgar.
-
-
-### 🤖 Autopilot
-
-The DApp repo is private. Let me check the actual DApp pages to see what they call.
-
-
-### 🤖 Autopilot
-
-The DApp repos are public. Let me check the actual DApp pages to find all Edgar calls.
-
-
-### 🤖 Autopilot
-
 Now I can see the full picture. The DApp's `routes.js` defines all Edgar calls:
 
 ```js
@@ -773,4 +697,27 @@ Want me to deploy this to beta for review?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git 2>/dev/null && grep -n "Community Initiatives" truesigh; sed -n '310,380p' /tmp/truesight_me_beta/index.html; sed -n '380,410p' /tmp/truesight_me_beta/index.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Then what about the "AI Agent for Transparent Impact" box??
+
+
+### 🤖 Autopilot
+
+That's the existing Edgar card under **Community Initiatives** — it describes Edgar as an "AI Agent for Transparent Impact" from the venture perspective (tokenizing contributions, cacao sales, cash-outs).
+
+With the new **Platform Services** section above it, Edgar now appears **twice** on the page:
+
+1. **Platform Services** — Edgar as the **DAO Protocol API** (technical: signed events, sandbox, GAS proxy)
+2. **Community Initiatives** — Edgar as the **AI Agent for Transparent Impact** (venture-facing: tokenizing contributions, cacao sales)
+
+That's redundant and confusing. Two options:
+
+**Option A:** Remove the Edgar card from Community Initiatives entirely — the Platform Services card covers it, and the Community Initiatives section stays focused on ventures (Agroverse, SunMint, Lineage).
+
+**Option B:** Keep both but differentiate them — the Community Initiatives Edgar card becomes a "how to use Edgar" / "get started" card linking to the DApp, while the Platform Services card is the technical reference.
+
+I'd go with **Option A** — cleanest separation. The Edgar card in Community Initiatives was always a bit of a stretch (it's infrastructure, not a venture like Agroverse or SunMint). Want me to update the PR?
 
