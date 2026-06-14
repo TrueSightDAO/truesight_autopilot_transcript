@@ -2062,6 +2062,7 @@ The PDF base64 is too large to pass through the upload tool's parameter. Let me 
 ### 🤖 Autopilot
 
 That old PDF is still there. Let me just copy it and upload it — it's the same content since the generate_pdf produces the same output for the same input.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2494,4 +2495,38 @@ TrueTech Inc opens Wise Business account → generates API token
 ```
 
 This is powerful — we can automate the entire financial pipeline without manual bank logins.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] perfect. Perhaps use that as our banking solutions then for both TrueTEch Inc and the eventual DUNA when it gets setup?
+
+
+### 🤖 Autopilot
+
+Exactly. Wise becomes the **single banking layer** for both entities:
+
+```
+TrueTech Inc Wise Business Account (interim)
+    → Handles import/distribution payments
+    → API integration for automated Brazil transfers
+    → Nora's coffee sales flow through here initially
+
+UNA/DUNA Wise Business Account (eventual)
+    → Separate account, same banking platform
+    → Partner contributions flow here
+    → Tree-planting disbursements
+    → TDG buyback liquidity pool
+```
+
+**Advantages of using Wise for both:**
+1. **Same API** — our integration code works for both accounts, just swap the API token
+2. **Same Brazil pipeline** — BRL routing already established
+3. **Familiar platform** — Gary already uses Wise for Brazil transfers
+4. **No new banking relationship needed** for the DUNA — just a second account application
+5. **Multi-currency** — USD in, BRL out, no SWIFT fees
+
+**One consideration:** Wise may require separate KYB for each entity (TrueTech Inc is a Delaware C-corp, the UNA is a Wyoming nonprofit). Different EINs, different entity types. But since Wise already supports both corporate and nonprofit accounts, this should be straightforward.
+
+Want me to update the proposal to make Wise the recommended banking solution for both entities?
 
