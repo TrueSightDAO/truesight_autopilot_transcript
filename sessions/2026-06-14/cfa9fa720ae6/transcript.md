@@ -743,17 +743,65 @@ The system prompt is likely in the LLM config. Let me find where the system prom
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me find the `_SYSTEM_PROMPT_HEADER` constant.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the full system prompt header. Let me read the very beginning to find where "Sophia" is first introduced.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The system prompt header is a Python string constant in `context.py`. The best way to make this permanent for all future instances is to add a line to the system prompt itself. Let me open a PR to add the identity note.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -773,6 +821,11 @@ Want me to merge it?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=4034] Merge it
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -825,6 +878,22 @@ Verify submission here: https://dapp.truesight.me/verify_request.html"
 ### 🤖 Autopilot
 
 You're right — that's wrong. It says **Type: USD** and **Amount: 10** when it should be **Time (Minutes): 10**. The `create_dao_submission` tool I used doesn't have a field for time vs USD — it just takes `amount` and `tdg_issued`. Let me check what the proper format should be.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -887,4 +956,20 @@ Want me to merge it?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → grep -rn "create_dao_submission\|def create_dao" /opt/truesight_autopilot/app/tools/ --include="*.py" | head -10; grep -n "create_dao_submission\|CONTRIBUTION EVENT\|Type.*USD\|Type.*Time" /opt/truesight_autopilot/app/main.py | head -20; sed -n '1771,1840p' /opt/truesight_autopilot/app/main.py
 • `open fix pr` → Fix agent failed to produce a PR.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] merge that.
+
+
+### 🤖 Autopilot
+
+Merged! Commit `27da7ce6` on `main`. Now I can explicitly pass `type="Time (Minutes)"` instead of relying on the broken heuristic.
+
+Want me to deploy the autopilot so it takes effect?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #207 on truesight_autopilot merged successfully (sha: 27da7ce6d8952de81212e9fba1fa55bece48ff60). Pull Request successfully merged
 
