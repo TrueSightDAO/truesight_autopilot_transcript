@@ -278,3 +278,36 @@ So you're right — merging to `main` triggers the GitHub Pages auto-deploy. Giv
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -sI https://beta.truesight.me/ | grep -i "server\|x-github\|powered"
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3827] Got my local DeepSeek to look into issue and got it fixed... Pull latest so that you understand what were the fixes and explain to me why you couldnt fix it
+
+
+### 🤖 Autopilot
+
+Let me pull the latest and see what changed.
+
+
+### 🤖 Autopilot
+
+Good — now I see the full picture. Here's what happened and why my fix was incomplete:
+
+**What I did (PR #228):** I changed `repeat(2, ...)` → `repeat(3, ...)` in the inline style. That was correct as far as it went.
+
+**What your DeepSeek fix added (PRs #229 + #230):**
+
+1. **`.card-grid > * { min-width: 0; }`** — This is the critical missing piece. Without `min-width: 0` on grid children, CSS grid items default to `min-width: auto`, which means they respect their content's intrinsic minimum width. The card images (`554×892 portrait crops`) and text content were forcing each card to be wider than the `1fr` allocation, causing the grid to wrap early. `min-width: 0` overrides this so the grid can shrink items below their content's natural size.
+
+2. **`.card--media-top a:first-child`** — The hover/zoom effect was targeting ALL `<a>` tags inside the card (including the link row at the bottom), not just the image link. Scoped it to `:first-child` so only the top image link gets the hover zoom.
+
+3. **`.steps` grid also fixed** — Same `min-width: 0` pattern applied to the "How It Works" steps section, and changed from `auto-fit` to explicit `repeat(2, ...)`.
+
+**Why I couldn't fix it fully:** I correctly identified the `repeat(2)` → `repeat(3)` issue, but I missed the deeper CSS Grid behavior — `min-width: auto` on grid children. This is a classic CSS Grid gotcha: even with `1fr` columns, if a child has content wider than the column (like a portrait image), the grid item refuses to shrink below its intrinsic width, forcing the grid to wrap. The `min-width: 0` guard is the standard fix, and I should have caught it.
+
+Lesson learned — when diagnosing grid layout issues, always check for `min-width: auto` on grid children as a potential cause of unexpected wrapping. I'll add that to my diagnostic checklist.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/truesight_me_beta && git pull origin main 2>&1; cd /tmp/truesight_me_beta && git log --oneline -5; cd /tmp/truesight_me_beta && git diff a366168..9d73221 -- index.html styles/main.css
+
