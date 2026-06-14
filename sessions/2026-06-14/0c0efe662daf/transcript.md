@@ -76,16 +76,29 @@ Now let me do deep research on DUNA, Prospera, and the legal entity structures m
 ### 🤖 Autopilot
 
 Now let me look at our ledger to understand the current financial flows and what maps well.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the partner data and look at the supply chain docs for the full picture.
+[2 tool result(s) compacted: read_google_sheet, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what the ledger looks like for partners and the current offchain asset location to understand the financial flows.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -283,4 +296,84 @@ Given this gap analysis, the most important questions for Stanley on June 26 bec
 | **Dedicated bank account** | ❌ | $0-$500, easy fix |
 
 **The single biggest blocker is cash for legal fees.** Everything else has a workaround or is low-cost.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] how much does it likely cost?
+
+
+### 🤖 Autopilot
+
+Let me get more precise cost data from the web research I already did, plus look at what comparable DAOs paid.
+
+
+### 🤖 Autopilot
+
+Now I have solid numbers. Let me also check the OtoCo on-chain UNA option — that's the low-cost path.
+
+
+### 🤖 Autopilot
+
+Now I have precise numbers. Here's the breakdown:
+
+---
+
+## Cost Breakdown: Three Paths
+
+### Path A: OtoCo On-Chain UNA (Cheapest — Start Today)
+
+| Item | Cost |
+|------|------|
+| OtoCo smart contract creation (2+ wallets sign) | **~$0** (gas only, ~$20-50) |
+| UNA agreement (auto-converts to DUNA at 100 members) | Included |
+| Annual Wyoming license tax | **$60-$200/yr** |
+| Registered agent | **$100-$200/yr** |
+| **Total Year 1** | **~$200-500** |
+| **Total Ongoing** | **~$200-400/yr** |
+
+**What you get:** Legal personhood, liability protection, ability to open bank account, sign contracts. Auto-converts to DUNA when you hit 100 members. No lawyer needed for formation.
+
+**Catch:** You still need a lawyer to draft the inter-entity agreement with TrueTech Inc and to handle the 501(c)(3) application later. But the entity itself is formed for pocket change.
+
+### Path B: Full DUNA via Law Firm (Traditional)
+
+| Item | Cost |
+|------|------|
+| Wyoming state filing fee | **$100** |
+| Legal fees (Astraea / Hathaway & Kunz / similar) | **$20,000-$60,000** |
+| Registered agent | **$100-$200/yr** |
+| Annual license tax | **$60-$200/yr** |
+| **Total Year 1** | **~$20,500-$60,500** |
+| **Total Ongoing** | **~$200-400/yr** |
+
+**What you get:** Full-service — Articles of Organization, Operating Agreement, governance docs, compliance review, smart contract integration. White-glove.
+
+### Path C: Fiscal Sponsorship Bridge (No Entity Needed Yet)
+
+| Item | Cost |
+|------|------|
+| Fiscal sponsor fee (e.g. Network for Good, The Giving Block) | **5-10% of donations** |
+| Setup fee | **$500-$2,000** |
+| **Total Year 1** | **~$500-2,000 + 5-10% of donations** |
+
+**What you get:** Immediate ability to accept tax-deductible donations under an existing 501(c)(3) umbrella. No DUNA needed yet. You can form the DUNA in parallel over 6-12 months.
+
+---
+
+## What I'd Recommend Given Our Treasury ($14,622)
+
+| Phase | What | Cost | Timeline |
+|-------|------|------|----------|
+| **Now** | Open TrueTech Inc business bank account | $0-500 | 1-2 weeks |
+| **Now** | Summon an **OtoCo on-chain UNA** (2 wallets sign) | ~$50 gas | 1 day |
+| **Next** | Ask SVH Capital about **fiscal sponsorship** as bridge | $500-2K | 1-2 months |
+| **Next** | Use OtoCo UNA to open a bank account for the DAO | $0 | 2-4 weeks |
+| **Later** | When >100 members, UNA auto-converts to DUNA | $0 | Automatic |
+| **Later** | Apply for 501(c)(3) via tax attorney | $2K-10K | 6-12 months |
+| **Later** | Inter-entity agreement (DUNA ↔ TrueTech) via lawyer | $5K-15K | After DUNA |
+
+**Total cash needed for Year 1 (OtoCo path): ~$500-2,500** — well within treasury.
+
+The $20K-$60K law firm path is for when we have impact fund money flowing and need the full white-glove treatment. The OtoCo path gets us 80% of the benefit for 1% of the cost, right now.
 
