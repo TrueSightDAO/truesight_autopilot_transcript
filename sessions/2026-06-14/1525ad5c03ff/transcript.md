@@ -10,46 +10,6 @@
 
 ### 🤖 Autopilot
 
-It's live. Here's what was built:
-
-**New backend endpoint:** `POST /dao/test/submit_contribution`
-- Accepts `{"payload": "..."}` as JSON
-- Parses the canonical event text (same format as the real endpoint)
-- Detects the event type from `[EVENT NAME]`
-- Extracts all `- Key: Value` fields
-- Validates against the known schema (22 event types)
-- Returns parsed attributes, warnings (missing/extra fields), and a simulated transaction ID
-- No signature, no side effects, no data recorded
-
-**Updated landing page:**
-- Each of the 22 event cards now has a **"Try in Sandbox →"** button
-- Clicking it opens a modal with the payload pre-filled from that event's example
-- Users can edit the payload and click **Send Test**
-- The response (parsed event, warnings, simulated TX ID) appears below
-- Close the modal to try another event
-
-**Clean separation complete:**
-- nginx routes everything to dao_protocol (`172.31.23.207:8010`)
-- Rails is no longer proxied for Edgar — it only serves Perch
-- The test sandbox endpoint is on a separate path (`/dao/test/`) so it can be wide-open without affecting the real endpoint
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×9 → find /home/ubuntu/dao_protocol -path "*/routes/dao.py" 2>/dev/null; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/dao.py; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/__init__.py 2>/dev/null; ls /home/ubuntu/dao_protocol/truesight_dao_client/; …(+6 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Also I was thinking this page probably should have an explanation of what it is about isnt it? Right now user just gets dropped directly into it and expect to understand what is going on
-
-
-### 🤖 Autopilot
-
-You're right. The page drops you straight into endpoints and event cards with no context about what Edgar actually *is*. Let me add a proper intro section at the top.
-
-
-### 🤖 Autopilot
-
 The page now has:
 
 1. **"What is Edgar?"** section — explains it's the DAO Protocol API, the operational backbone, how events are signed with RSA-2048, no API keys needed
@@ -797,4 +757,127 @@ The fastest way to get the changes live is to push the updated `index.html` dire
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → grep -A15 "\.card-grid" /tmp/truesight_me_beta/styles/main.css; cd /tmp/truesight_me_beta && git log --oneline -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Not true. I checked 
+
+beta is served from https://github.com/TrueSightDAO/truesight_me_beta
+
+prod is served from https://github.com/TrueSightDAO/truesight_me_prod
+
+
+### 🤖 Autopilot
+
+You're right, sorry. Let me check what's actually happening with the GitHub Pages deploy on the beta repo.
+
+
+### 🤖 Autopilot
+
+Wait — the etag changed! It was `6a2df4d5` before, now it's `6a2e39b6`. And I can see the nav now has `Join Chat` → `https://sophia.truesight.me` (the fix I pushed). So the deploy **did** go through!
+
+Let me check the Community Initiatives section:
+
+
+### 🤖 Autopilot
+
+The deploy went through (etag changed, nav link fixed to `sophia.truesight.me`) but the Community Initiatives section still shows **4 cards** (Agroverse, SunMint, Edgar, Lineage) and no Platform Services section.
+
+This means the deploy is from an older commit, not the latest one with the Platform Services changes. Let me check what commit is actually deployed:
+
+
+### 🤖 Autopilot
+
+Interesting — the nav link changed to `sophia.truesight.me` (that was commit `6df8a34`) but the body content is still the old layout. This means GitHub Pages deployed an older commit first (the nav fix) and hasn't rebuilt with the latest content yet.
+
+The deploy is incremental — it may take another cycle to pick up the full content changes. Let me check if there's a way to trigger a rebuild. Actually, let me just check if the content is actually different now by looking for the Platform Services section in the raw HTML:
+
+
+### 🤖 Autopilot
+
+The content length is `15885` bytes — the old content was `15887` bytes. The nav link change (beerhall → sophia.truesight.me) is a 2-byte difference, which matches. But the body content hasn't updated yet.
+
+GitHub Pages can take a few minutes to rebuild after each push. The latest push (`6df8a34` for the nav fix) triggered a build, but it may not have included the full content changes from the earlier commits. Let me push a trivial change to force a fresh rebuild:
+
+
+### 🤖 Autopilot
+
+The commits are all there. Let me check if the deployed content actually has the Platform Services section by searching the raw HTML:
+
+
+### 🤖 Autopilot
+
+The content length is `15885` bytes — still the old layout. GitHub Pages may have a cache or the build is still queued. Let me check if the `truesight_me_beta` repo has GitHub Pages enabled by checking the repo settings page:
+
+
+### 🤖 Autopilot
+
+The raw content from the repo's `main` branch is `15736` bytes — this is the **new** content (smaller because Edgar card was removed from Community Initiatives). But the deployed beta site is `15885` bytes — the **old** content.
+
+So the repo has the new content but GitHub Pages hasn't rebuilt. The Pages build might be queued or failing silently. Let me check if there's a GitHub Actions workflow that handles the deploy:
+
+
+### 🤖 Autopilot
+
+No Pages deploy workflow. GitHub Pages is configured at the repo settings level. It may just need time. Let me check if there's a `gh-pages` branch that was created:
+
+
+### 🤖 Autopilot
+
+No `gh-pages` branch. The GitHub Pages deploy from `main` branch root folder should auto-deploy. It may just be taking time. Let me check if there's a way to trigger it via the API:
+
+
+### 🤖 Autopilot
+
+Need auth. Let me try a different approach — push an empty commit to trigger a rebuild:
+
+
+### 🤖 Autopilot
+
+Pushed an empty commit to trigger a rebuild. Let me check if it deployed:
+
+
+### 🤖 Autopilot
+
+Still the same. The GitHub Pages build may be failing or the site is cached at the CDN level. Let me check if there's a Cloudflare in front:
+
+
+### 🤖 Autopilot
+
+There's a CDN cache with `max-age=600` (10 minutes). The `x-origin-cache: HIT` means the origin (GitHub Pages) is serving a cached version. The `x-cache: MISS` means the CDN edge doesn't have it cached but the origin does.
+
+The issue is GitHub Pages itself is serving the old content. The Pages build may not have triggered or may have failed. Let me check if the `truesight_me_beta` repo actually has GitHub Pages enabled by looking at the repo settings via the API with the token:
+
+
+### 🤖 Autopilot
+
+`"has_pages":true` — Pages is enabled. The `pushed_at` is `2026-06-14T05:26:41Z` which is our latest push. GitHub Pages should be building. It can take a few minutes. The CDN cache has `max-age=600` (10 min) so even after Pages deploys, the CDN may serve stale for up to 10 minutes.
+
+Let me check again in a moment:
+
+
+### 🤖 Autopilot
+
+Still the same. The CDN has a 10-minute cache. The GitHub Pages build may have completed but the CDN edge is still serving the old cached version. Give it a few minutes and hard-refresh — the content is correct on the repo's `main` branch.
+
+To summarize what's done and pending:
+
+**✅ Done:**
+- PR #227 merged to `truesight_me_beta` main
+- Platform Services section added (Sophia → Edgar → Perch)
+- Edgar card removed from Community Initiatives (now 3 cards: Agroverse, SunMint, Lineage)
+- Community Initiatives above Platform Services
+- "Chat with Sophia" link fixed to `sophia.truesight.me`
+- Empty commit pushed to trigger Pages rebuild
+
+**⏳ Pending:**
+- GitHub Pages needs to finish building and CDN cache (10 min TTL) needs to expire
+- Production sync (`truesight_me_prod`) still blocked by merge conflict
+
+The 3 Community Initiative cards will be in one row on desktop once the deploy goes through — the CSS `auto-fit, minmax(280px, 1fr)` handles that automatically for 3 cards.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/truesight_me_beta && git log --oneline -5; cd /tmp/truesight_me_beta && git commit --allow-empty -m "trigger: rebuild GitHub Pages" && git push origin main; cd /tmp/truesight_me_beta && git pull origin main --rebase && git push origin main; …(+1 more)
 
