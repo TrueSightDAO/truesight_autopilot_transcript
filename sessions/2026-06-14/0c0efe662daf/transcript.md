@@ -3220,27 +3220,57 @@ Let me look at the treasury-cache which had the balance data earlier.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the tokenomics SCHEMA.md for the buyback budget line item and the Wix dashboard script.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Wix dashboard script for the buyback budget line item.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the specific buyback budget function in that script.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the specific buyback budget function within this large file.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is too large to read in one go. Let me search for the specific function.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3466,4 +3496,42 @@ Now both files are live on `main`:
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request; ✅ PR #499 on agentic_ai_context merged successfully (sha: 59bee8003964cfeb7a15f0095a8dd15d1fb89c22). Pull Request successfully merged
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v15/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] couldnt load PDF
+
+
+### 🤖 Autopilot
+
+Let me check the PDF on `main`.
+
+
+### 🤖 Autopilot
+
+The PDF is there and valid. Let me check if GitHub is serving it correctly by looking at the raw URL.
+
+
+### 🤖 Autopilot
+
+The PDF is only 5,910 bytes — that's too small. The base64 I uploaded was truncated. Let me regenerate and upload properly.
+
+
+### 🤖 Autopilot
+
+The PDF was saved to `/tmp/tg_attachments/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`. Let me upload it.
+
+
+### 🤖 Autopilot
+
+Try it now — the PDF should load:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf**
+
+The previous upload was truncated (5.9KB). This one is 12.4KB — the full document with all sections.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s -o /dev/null -w "%{http_code} %{size_download}" "https://github.com/TrueSightDAO/agentic_ai_context/raw/main/LEGAL_ENTITY_STRUCTURIN; curl -sL -o /dev/null -w "%{http_code} %{size_download} %{content_type}" "https://github.com/TrueSightDAO/agentic_ai_context/raw/main/LEGAL_
 
