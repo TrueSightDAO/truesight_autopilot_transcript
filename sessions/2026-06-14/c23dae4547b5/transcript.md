@@ -1051,26 +1051,71 @@ You're right to push back. Let me check what's already in place — the SOP ment
 ### 🤖 Autopilot
 
 Let me check the Edgar API — it already has a `CONTRIBUTOR ADD EVENT` endpoint that writes to the sheet. Let me see how it works.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the Edgar `submit_contribution` endpoint handles `[CONTRIBUTOR ADD EVENT]` and writes to the sheet. The `submit_contribution` tool I used earlier calls this Edgar endpoint. Let me check what actually happened with that call.
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what the actual `submit_contribution` call returned.
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `submit_contribution` call was made but the result was compacted into an artifact. Let me read that artifact to see what actually happened.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the wrong artifact. Let me find the actual result of the `submit_contribution` call.
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1082,6 +1127,7 @@ So the answer to your question is:
 **Yes, there IS a protocol already in place.** The Edgar `submit_contribution` endpoint (on `seni_ror`) handles `[CONTRIBUTOR ADD EVENT]` and writes to the Contributors sheet — that's the canonical path. The issue is that my `submit_contribution` tool requires a frontend approval gate (JSON proposal → Approve button), and the earlier call showed the proposal but the actual submission didn't fire.
 
 Let me re-submit it properly now:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1105,16 +1151,39 @@ Once approved, Edgar handles the Contributors sheet write automatically — no d
 ### 🤖 Autopilot
 
 Let me check the dao_client repo for the CLI tool.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's no `dao_client` repo in the org. Let me check if it's a CLI tool installed on the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is! Let me check if there's an `onboard_retail_partner` or `add_contributor` command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1214,4 +1283,92 @@ What's your call?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → which dao_client 2>/dev/null || find /opt -name "*dao_client*" -o -name "*dao*client*" 2>/dev/null | head -20; pip3 list 2>/dev/null | grep ; cd /opt/truesight_autopilot && .venv/bin/python3 -c "import truesight_dao_client; print(truesight_dao_client.__file__)" 2>&1; find /opt/true; cd /opt/truesight_autopilot && .venv/bin/truesight-dao-client --help 2>&1 || .venv/bin/python3 -m truesight_dao_client --help 2>&1 || true; ; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] I think 3. I file a PR to add a [PARTNER ADD EVENT] handler to Edgar so this is automated going forward makes a lot of sense for this isnt it? Makes the protocol mature?
+
+
+### 🤖 Autopilot
+
+Absolutely. This is exactly the kind of improvement that makes the protocol self-sustaining. Let me file a PR to add a `[PARTNER ADD EVENT]` handler to Edgar.
+
+Let me first understand the existing pattern — how does the `[CONTRIBUTOR ADD EVENT]` work in Edgar's codebase?
+
+
+### 🤖 Autopilot
+
+Let me read the full `submit_contribution` method to understand the pattern.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the `submit_contribution` method to see how it handles the `[CONTRIBUTOR ADD EVENT]` pattern.
+
+
+### 🤖 Autopilot
+
+The artifact nesting is getting deep. Let me read the actual file directly from the server instead.
+
+
+### 🤖 Autopilot
+
+Now I see the pattern. Let me look at the full `submit_contribution` method to understand how event types are dispatched.
+
+
+### 🤖 Autopilot
+
+Now let me see the `[CONTRIBUTOR ADD EVENT]` handler and the webhook pattern.
+
+
+### 🤖 Autopilot
+
+Now I see the full pattern. Edgar dispatches events to GAS webhooks. Let me also check the `[CONTRIBUTOR ADD EVENT]` GAS handler to understand the pattern, then I'll create a similar `[PARTNER ADD EVENT]` handler.
+
+
+### 🤖 Autopilot
+
+Now let me look at the Contributor Add handler to understand the pattern.
+
+
+### 🤖 Autopilot
+
+The file exists in the GAS project but not in the repo source. Let me check the clasp mirror instead.
+
+
+### 🤖 Autopilot
+
+The GAS handler lives in the deployed project but not in the repo source. Let me check the clasp mirror directory.
+
+
+### 🤖 Autopilot
+
+The clasp mirror for the Contributor Add handler project doesn't exist locally. Let me check the deployed GAS project directly to understand the pattern, then I'll create the PR.
+
+
+### 🤖 Autopilot
+
+The webhook is live and working. Now I have enough context to create the PR. Let me also check the `application.rb` config to see how webhook URLs are configured.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me create the PR. The change involves:
+
+1. **Edgar (`sentiment_importer`)**: Add `[PARTNER ADD EVENT]` handler in `dao_controller.rb` that dispatches to a GAS webhook
+2. **GAS (`tokenomics`)**: Create a new `process_partner_add_telegram_logs.gs` handler that reads from Telegram Chat Logs and appends to the DAO Partners sheet
+3. **Config**: Add `partner_add_processing_webhook_url` to `application.rb`
+
+Let me open the fix PR.
+
+
+### 🤖 Autopilot
+
+The automated fix agent failed. Let me create the PR manually by making the changes directly.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cat /var/www/sentiment_importer/app/controllers/dao_controller.rb | head -400; find /var/www -name "dao_controller.rb" 2>/dev/null; find /var/www -maxdepth 3 -type d 2>/dev/null | head -20; find /var/www/edgar -name "dao_controller.rb" 2>/dev/null; ls /var/www/edgar/; …(+12 more)
+• `open fix pr` → Fix agent failed to produce a PR.
 
