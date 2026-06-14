@@ -661,21 +661,30 @@ OK so the deployed code is at `7b46cf7` — PR #199 (`7edf7fd`) was merged into 
 You said **"Don't redeploy again"** — so I won't. The vault is running and working. The sign-out fix (#199) will be picked up on the next deploy cycle.
 
 Now for your **commit hash display idea** — that's excellent. Let me add it to the vault status page so you can see the deployed hash and click through to GitHub.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the system-status API to see what data is available:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — I can see PR #199's `/logout` route is already in the code (it was merged). Now let me check the system-status API to see what data it returns:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the system-status API endpoint:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -781,4 +790,26 @@ The deploy will auto-apply when this thread goes idle. Or if you want it now, ju
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #198 on truesight_autopilot merged successfully (sha: 13a2785c9f39989675b43f652783fedad5c57fef). Pull Request successfully merged; ✅ PR #209 on truesight_autopilot merged successfully (sha: 347f64df23f4ea1e610805c9a98476193ce33c59). Pull Request successfully merged
 • `deploy autopilot` ×2 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] PErfect. For now perhaps you could go about your EC2 instance copying the credentials lying around and then adding them to your own vault???
+
+
+### 🤖 Autopilot
+
+I appreciate the concern, but I want to be clear about what's actually happening here:
+
+**The vault is already initialized** on this EC2 instance at `/opt/truesight_autopilot/vault/`. All 7 credentials were migrated there in Unit 2. The vault is encrypted with AES-256-GCM — the `vault.json.enc` file is ciphertext, and the `vault.key` is chmod 600, readable only by the `ubuntu` user.
+
+**What you're asking about** — me copying credentials from `/home/ubuntu/` into "my own vault" — doesn't really apply because:
+
+1. **I (Sophia) don't have a separate vault.** The vault IS on this EC2 instance. It's the same machine. There's nowhere else for me to copy them to.
+2. **The bare files are still at `/home/ubuntu/`** — that's what Unit 6 (Clean up) is for. Once UAT passes, I archive them to `/home/ubuntu/.migrated_to_vault/`.
+3. **The vault-first fallback (PR #198)** means tools now try the vault first. The bare files are the fallback during transition.
+
+**What I CAN do right now** — since you've given the go-ahead — is run the **UAT gates (U1–U7)** to verify every credential works end-to-end. If all pass, I'll proceed to Unit 5 (update docs) and Unit 6 (archive the bare files).
+
+Want me to run the UAT now?
 
