@@ -1368,6 +1368,16 @@ Now the PDF.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Want me to merge this to `main`?
 
 **PR #494** — `legal-entity-structuring-proposal-v5`
@@ -1585,4 +1595,52 @@ So the flow is:
 ```
 
 **One and done.** No need to reapply, re-KYC, or open a new account.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] For TDG holders do we need KYC for them or just a simple email address, telegram iD or instagram id would do?
+
+
+### 🤖 Autopilot
+
+Let me check what OtoCo and the DUNA statute require for membership identification.
+
+
+### 🤖 Autopilot
+
+Here's the answer:
+
+---
+
+## Two Layers of Requirements
+
+### Layer 1: For the UNA/DUNA itself (Wyoming law)
+
+**No KYC needed for TDG holders as members.** The Wyoming UNA/DUNA statute doesn't require collecting identity documents from token holders. The entity is formed by 2+ wallets signing a smart contract — wallet addresses are sufficient.
+
+**However**, the **Corporate Transparency Act (CTA)** requires reporting **Beneficial Ownership Information (BOI)** to FinCEN for anyone who exercises "substantial control" over the entity. For a UNA/DUNA, this means:
+
+- The initial 2 signers (Gary + TrueTech Inc) — need to report name, DOB, address, ID
+- Anyone with significant control over governance decisions
+- **Not** every TDG holder — only those with substantial control
+
+### Layer 2: For the bank account (Wise)
+
+**Wise will require KYC on the entity and its signatories** — the people authorized to move money. This is standard AML/KYB compliance. But Wise doesn't need to know who every TDG holder is.
+
+### So the practical answer
+
+| Who | What's Needed |
+|-----|--------------|
+| **Initial 2 UNA signers** (Gary + TrueTech Inc rep) | Full KYC: name, address, DOB, government ID (for CTA BOI filing + bank signatory) |
+| **TDG holders (general members)** | **Just a wallet address.** No KYC. No email required. |
+| **TDG holders who become DAO delegates/treasury signers** | May need KYC if they gain "substantial control" (CTA reporting) |
+| **Wise account signatories** | Full KYC (same as the 2 initial signers) |
+
+**So yes — for the vast majority of TDG holders, a simple wallet address is enough.** No email, no Telegram ID, no Instagram needed. The pseudonymous nature is preserved.
+
+The only people who need to dox themselves are the 2 initial signers (Gary + whoever represents TrueTech Inc) and anyone who later becomes a treasury signer or core delegate.
+
+Does this match your expectations?
 
