@@ -495,6 +495,7 @@ Now let me rewrite the proposal with the corrected framing — leading with the 
 ### 🤖 Autopilot
 
 Now let me generate the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -821,4 +822,76 @@ No inter-entity agreement needed. No service fee. No principal-agent complexity.
 **The only thing that changes vs. today:** the bank account. Right now it's Gary's personal account. If TrueTech Inc opens a business account and holds it as a DAO member's contribution to the community, that's fine — the funds are managed per the DAO's governance decisions.
 
 This is much cleaner. Does this feel right?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] [Handoff context — this Telegram topic (thread 3966) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+yup. how does that impact our implementation plan?
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and the current proposal to see what needs updating.
+
+
+### 🤖 Autopilot
+
+This isn't a handoff execution — it's a strategic planning conversation. Let me update the proposal with the simplified model we just converged on.
+
+The key insight from our conversation: **TrueTech Inc is just another DAO member contributing voluntarily, compensated in TDG like everyone else.** No service agreement needed. No principal-agent complexity.
+
+Here's how the implementation plan changes:
+
+---
+
+## Updated Implementation Plan
+
+### What changes vs. the current proposal
+
+| Before | After |
+|--------|-------|
+| Three-entity stack (DUNA + TrueTech Inc + Brazilian LTDA) with service agreement | **Two-entity stack** (DUNA + Brazilian LTDA) — TrueTech Inc is a DAO member, not a separate layer |
+| TrueTech Inc compensated via service fee | TrueTech Inc compensated in TDG like any other contributor |
+| Inter-entity agreement needed | No agreement needed — TrueTech Inc is a voluntary member |
+| Bank account custody under service agreement | TrueTech Inc opens a business account as a DAO member's contribution |
+
+### The simplified model
+
+```
+TrueTech Inc = DAO member (voluntary contributor)
+  • Opens business bank account as member contribution
+  • Handles import, distribution, payment processing
+  • Gets compensated in TDG (same as Nora, Kirsten, Matheus)
+  • TDG = voting rights in the DUNA
+
+DUNA = the DAO's legal wrapper
+  • Holds mission, brand, carbon credits
+  • Governed by all TDG holders
+  • TrueTech Inc is one voice among many
+
+Brazilian LTDA (CNPJ) = export entity in Brazil
+  • Owned by or affiliated with the DUNA
+  • Handles farmer payments, export documentation
+```
+
+### What this means for the June 26 SVH conversation
+
+The questions simplify too:
+
+1. **DUNA formation:** What's the leanest path to a Wyoming DUNA for a DAO that already has a for-profit C-corp as a voluntary member?
+2. **TDG as compensation:** Can a Wyoming DUNA issue TDG tokens to a for-profit C-corp as compensation for voluntary contributions?
+3. **501(c)(3) pathway:** Once DUNA is formed, what's the realistic timeline and cost for IRS exemption?
+4. **Brazilian entity:** Can a Wyoming DUNA own or affiliate with a Brazilian LTDA, or does that need a separate structure?
+
+### Immediate actions (this week)
+
+| Action | Cost | Who |
+|--------|------|-----|
+| Open TrueTech Inc business bank account | $0-500 | Gary |
+| Summon OtoCo on-chain UNA (2 wallets) | ~$50 gas | Gary + 1 more |
+| Use UNA to open DAO bank account | $0 | After UNA formed |
+
+Want me to update the proposal .md and PDF with this simplified model?
 
