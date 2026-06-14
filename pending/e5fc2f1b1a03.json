@@ -145,5 +145,12 @@
     "summary": "Fix two issues on the Kopi Bar & Bakery partner pages:\n\n1. **Partners listing page (partners/index.html)** \u2014 the Kopi Bar card references `kopi-bar-and-bakery-logo.jpg` but the logo was uploaded as `.",
     "action": "merge_pr",
     "created_at": "2026-06-14T23:12:29Z"
+  },
+  {
+    "title": "Merge PR #176 on agroverse_shop_beta",
+    "qr_code": "",
+    "summary": "On the Pacific West Coast path page (cacao-journeys/pacific-west-coast-path/index.html), the JavaScript rendering logic has a special case for Kopi Bar & Bakery that currently uses `kopi-bar-and-baker",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T23:17:33Z"
   }
 ]
