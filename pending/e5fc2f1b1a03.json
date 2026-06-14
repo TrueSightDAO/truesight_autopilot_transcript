@@ -124,5 +124,12 @@
     "summary": "Re-order the sections on the landing page (index.html) to follow a \"Human first \u2192 Platform \u2192 System health & stats \u2192 The how\" narrative arc.\n\nCurrent section order in the <div class=\"page\">:\n1. Hero (",
     "action": "merge_pr",
     "created_at": "2026-06-14T19:50:35Z"
+  },
+  {
+    "title": "Merge PR #236 on truesight_me_beta",
+    "qr_code": "",
+    "summary": "Re-order the landing page (index.html) sections to follow a \"Human first \u2192 Platform \u2192 System health \u2192 How it works\" narrative arc.\n\nCurrent order:\n1. Hero (mission + CTA buttons)\n2. Stats grid (treasu",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T19:55:33Z"
   }
 ]
