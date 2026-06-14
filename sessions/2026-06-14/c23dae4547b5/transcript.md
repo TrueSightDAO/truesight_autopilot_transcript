@@ -808,46 +808,60 @@ Let me look at the stockist list section directly in the wholesale page.
 ### 🤖 Autopilot
 
 Now I have all the context I need. Let me also look at the partners index page and the SOHA partner page template more carefully, then make all the changes.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me proceed with all the changes. I'll make the git push with all the code changes for the partner page, wholesale stockist list, partner_locations.json, and the partners index page.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have all the context. Let me also check the stockist list section in the wholesale page to find where to add Kopi Bay.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the partners index page to find where to add Kopi Bay's card. Let me look at the USA venue partners section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have all the context I need. Let me make all the changes at once. I'll create the partner page, update the wholesale stockist list, update partner_locations.json, and update the partners index page.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already exists remotely. Let me use a different branch name.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the partner page and locations file are pushed. Now I need to update the wholesale stockist list and the partners index page. Let me do those as edits.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool won't let me push to the same branch. Let me use a different approach — I'll make a new branch with all remaining changes.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also update the DAO Partners sheet and the Contributors sheet. Let me add Nora to the Contributors sheet and the DAO Partners sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -855,6 +869,7 @@ Now let me also update the DAO Partners sheet and the Contributors sheet. Let me
 The service account doesn't have write permission to the sheet. Let me use the upload_file_to_github approach instead — I'll create a DAO submission that records the onboarding, and note the sheet writes need to be done manually or via a different approach.
 
 Actually, let me check what permissions the SA has.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -892,6 +907,11 @@ Want me to try one of those for the sheet writes, or would you prefer to add wri
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=3926] what is the email address associated with that key?
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -970,4 +990,63 @@ Here's the honest answer to your question:
 3. **You do the sheet writes manually** — just two rows
 
 What's your preference?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] is there no protocol we already have in place to handle this? do you absolutely need to have editing access rights. let me know?
+
+
+### 🤖 Autopilot
+
+You're right to push back. Let me check what's already in place — the SOP mentions Edgar events and the GAS scripts that handle sheet writes.
+
+
+### 🤖 Autopilot
+
+Let me check the Edgar API — it already has a `CONTRIBUTOR ADD EVENT` endpoint that writes to the sheet. Let me see how it works.
+
+
+### 🤖 Autopilot
+
+Now I see — the Edgar `submit_contribution` endpoint handles `[CONTRIBUTOR ADD EVENT]` and writes to the sheet. The `submit_contribution` tool I used earlier calls this Edgar endpoint. Let me check what actually happened with that call.
+
+
+### 🤖 Autopilot
+
+Let me check what the actual `submit_contribution` call returned.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` call was made but the result was compacted into an artifact. Let me read that artifact to see what actually happened.
+
+
+### 🤖 Autopilot
+
+That's the wrong artifact. Let me find the actual result of the `submit_contribution` call.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` call earlier returned a proposal JSON (the Approve/Reject buttons), but the actual Edgar submission never fired because the tool requires the frontend approval gate. You approved it in chat, but the tool itself needs the JSON proposal to be rendered and the Approve button clicked in the UI.
+
+So the answer to your question is:
+
+**Yes, there IS a protocol already in place.** The Edgar `submit_contribution` endpoint (on `seni_ror`) handles `[CONTRIBUTOR ADD EVENT]` and writes to the Contributors sheet — that's the canonical path. The issue is that my `submit_contribution` tool requires a frontend approval gate (JSON proposal → Approve button), and the earlier call showed the proposal but the actual submission didn't fire.
+
+Let me re-submit it properly now:
+
+
+### 🤖 Autopilot
+
+Here's the proposal — please **Approve** this and it will go through to Edgar, which writes to the Contributors sheet automatically:
+
+
+
+Once approved, Edgar handles the Contributors sheet write automatically — no direct sheet access needed. For the **DAO Partners sheet** row (Step 3.3), that's a separate write that Edgar doesn't cover yet, but we can cross that bridge after Step 1 goes through.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → ⏳ Waiting for your approval to submit this transaction. Click Approve to proceed, or Reject to cancel.
 
