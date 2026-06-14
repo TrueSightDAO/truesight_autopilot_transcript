@@ -446,3 +446,54 @@ Let me clean up the actionable path:
 
 Does this feel like the right framing for the 26th?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] can you generate this as an md file as well as a pdf?
+
+
+### 🤖 Autopilot
+
+Let me update the existing proposal with the corrected framing and generate both files.
+
+
+### 🤖 Autopilot
+
+Now let me rewrite the proposal with the corrected framing — leading with the **fundraising/institutional channel** rather than Nora's café, and removing the fiscal sponsorship tangent.
+
+
+### 🤖 Autopilot
+
+Now let me generate the PDF.
+
+
+### 🤖 Autopilot
+
+The PDF was generated but the output path wasn't in /tmp/tg_attachments. Let me find it and upload.
+
+
+### 🤖 Autopilot
+
+Both files are delivered. Here's the summary:
+
+---
+
+**PR #491** on `agentic_ai_context` — branch `legal-entity-structuring-proposal-v2`
+
+| File | Link |
+|------|------|
+| **Markdown** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.md` (in PR) |
+| **PDF** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf` (same branch) |
+
+### Key changes from the first version
+
+1. **Reframed the thesis** — the tax-write-off facility is about **unlocking institutional fundraising channels** (impact funds, corporate ESG, foundations, HNW donors), not just Nora's café receipts
+2. **Removed the fiscal sponsorship tangent** — SVH Capital is a venture firm, not a fiscal sponsor. That line is gone
+3. **Added the OtoCo on-chain UNA path** — ~$50 gas, 2 wallets sign, instant legal personhood, auto-converts to DUNA at 100 members. This is the lean path that fits our $14K treasury
+4. **Cleaned up the SVH questions** — 4 focused questions about DUNA counsel referrals, OtoCo viability, 501(c)(3) pathway, and TDG-as-compensation
+5. **Added resource gap analysis** — what we have (mission, governance, supply chain, tree-planting pipeline) vs. what we're missing (legal counsel, cash for full-service fees, Brazilian lawyer, bank account)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → find /tmp -name "*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -5; find /tmp -name "*.pdf" 2>/dev/null | head -10; ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
+
