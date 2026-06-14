@@ -18,26 +18,31 @@
 ### 🤖 Autopilot
 
 Let me check both repos to find where the Edgar landing page lives.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the routes and the DAO controller to see what serves the root path.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default branch isn't `main`. Let me check what branches exist.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. Let me read the routes and the landing page view to confirm.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the `dao_protocol` repo for comparison.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -130,4 +135,49 @@ This would require porting the Rails controller logic (`static_pages#smart_redie
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → ls -la /home/ubuntu/ && cat /etc/systemd/system/dao_protocol.service 2>/dev/null || echo "no systemd service"; grep -A 20 'edgar.truesight.me\|server_name.*edgar' /etc/nginx/sites-enabled/* 2>/dev/null | head -80; ls -la /home/ubuntu/dao_protocol/ && cat /home/ubuntu/dao_protocol/app.py 2>/dev/null | head -60; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] not true. Download agentic_ai_context and read it
+
+
+### 🤖 Autopilot
+
+Let me check the context files for the Edgar extraction plan and the current architecture.
+
+
+### 🤖 Autopilot
+
+You're right, I was wrong. Let me re-check the actual topology.
+
+
+### 🤖 Autopilot
+
+I stand corrected. The extraction plan says the topology changed — let me check the current state more carefully.
+
+
+### 🤖 Autopilot
+
+OK, so the current state is:
+
+- **`seni_ror`** (54.211.179.126, private 172.31.19.78) — Nginx terminates SSL for `edgar.truesight.me`
+- **Static landing page** at `/var/www/edgar/index.html` served from `seni_ror`'s filesystem
+- **Everything else** proxies to `dao_protocol` host (172.31.23.207:8010) — the FastAPI server
+- The **Rails app** (`sentiment_importer`) is **no longer proxied at all** for Edgar routes — it's been fully cut over
+
+So the landing page is **already a static HTML file** on `seni_ror`'s Nginx, not served by Rails. The question is whether to move it into the `dao_protocol` repo and serve it from the FastAPI server instead.
+
+**To answer your original question directly:** The Rails landing page (`landing_page.html.erb` with the market dashboard) is **not currently served** at `edgar.truesight.me/` — it was replaced by the static page during the cutover. The Rails app is no longer in the request path for Edgar at all.
+
+**Can we migrate the landing page to `dao_protocol`?** Yes — the current static HTML at `/var/www/edgar/index.html` on `seni_ror` could be:
+1. Checked into the `dao_protocol` repo as a static file
+2. Served by FastAPI (e.g. mounted at `/` via `StaticFiles` or a simple route)
+3. Nginx updated to proxy `/` to `dao_protocol:8010` instead of serving from `/var/www/edgar`
+
+That way everything lives in one repo and one service. Want me to proceed with that?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → hostname -I && cat /etc/nginx/sites-enabled/edgar.conf; cat /etc/nginx/sites-enabled/edgar.conf | grep -n 'proxy_pass\|root\|location'; hostname -I
 
