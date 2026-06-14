@@ -399,3 +399,34 @@ Want me to start the technical onboarding steps? I'll begin with the `[CONTRIBUT
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -c " import json, sys sys.path.insert(0, 'scripts') # Read the sheet via the existing tooling from go; find /opt/truesight_autopilot -name "*google*sheet*" -o -name "*gspread*" 2>/dev/null | head -20; cd /opt/truesight_autopilot && .venv/bin/python3 -c " import json, sys sys.path.insert(0, 'app') from tools.google_sheets import read_google; …(+2 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] how is progress?
+
+
+### 🤖 Autopilot
+
+Good progress! Here's where we stand:
+
+**Research phase — complete ✅**
+- ✅ Nora Haron — name confirmed
+- ✅ Email — nora@noraharon.com (from QR ledger)
+- ✅ Address — 2155 Center St, 2nd Floor, Berkeley, CA 94704
+- ✅ Type — Wholesale
+- ✅ About blurb — drafted from SF Chronicle article + BAMPFA site
+- ✅ 3 of 4 QR codes found (all SOLD under your management)
+
+**Technical onboarding — not started yet**
+
+I'm ready to begin the sequence from `RETAILER_TECHNICAL_ONBOARDING.md`:
+
+1. **Submit `[CONTRIBUTOR ADD EVENT]`** for Nora (name: `Nora - Kopi Bar & Bakery`)
+2. **Set mailing address** on the Contributors row
+3. **Append row to `Agroverse Partners`** sheet
+4. **Build website partner page** at `agroverse.shop/partners/kopi-bar-and-bakery/`
+5. **Add to `partners-data.js`** (lat/lon, about, images)
+6. **Add to wholesale stockists directory**
+
+Want me to start with step 1 — submitting the contributor event for Nora? I'll present a proposal for your approval.
+
