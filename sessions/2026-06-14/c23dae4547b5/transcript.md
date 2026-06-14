@@ -161,3 +161,76 @@ Great research so far! Here's what I've gathered:
 
 **Now — I need the QR codes** for the 4 bags you dropped off. Can you share them (or a photo)? Once I look them up, I'll find Nora's email and we can proceed with the full technical onboarding.
 
+
+### 🧑 Governor
+
+screenshot of the email senrt to her
+
+[Attachment auto-processed: **7b0d524f5d5744bda314e1b179554591.jpg**]
+- Type: Image (OCR confidence: 90.6%, quality: good)
+
+Extracted text:
+```
+5:52 eat) LTE (92) < +O8g & - Best regards, The Agroverse Team € me 5:42PM © 4 to noray Dear Agroverse Supporter, Glad you have scanned your unique QR code! We're thrilled to have you join our mission to plant trees in the Amazon rainforest. You've successfully submitted your email to stay informed about your tree. We'll notify you when your tree is planted and provide updates on its growth. In the meantime, you can track the status of your tree here: 20240SCAR_20250711_NIBS_19 mS a
+```
+
+
+### 🤖 Autopilot
+
+Let me scan the QR code from this image to find Nora's email.
+
+
+### 🤖 Autopilot
+
+The screenshot shows the email but the QR code isn't clearly visible in it. However, I can see the QR code value in the email text itself:
+
+**QR Code: `2024OSCAR_20250711_NIBS_19`**
+
+Let me look it up.
+
+
+### 🤖 Autopilot
+
+Got it. Let me also check if there are other QR codes for the other 3 bags.
+
+
+### 🤖 Autopilot
+
+Only one in the cache. Let me search for nearby codes that might be the other 3 bags.
+
+
+### 🤖 Autopilot
+
+OK — I have the one QR code from the screenshot. Let me also check if there are other recent QR codes you might have looked up.
+
+
+### 🤖 Autopilot
+
+Here's what I've got so far:
+
+---
+
+### From the QR code lookup
+
+| QR Code | Status | Email | Manager | Currency |
+|---------|--------|-------|---------|----------|
+| `2024OSCAR_20250711_NIBS_19` | **SOLD** ✅ | nora@noraharon.com | Gary Teh | 8 oz Kraft Pouch |
+
+So Nora's email is **nora@noraharon.com** — that's the one from the QR registration.
+
+### What I still need
+
+You mentioned she bought **4 bags** — I only see one QR code (`_19`). Do you have the other 3 QR codes? If you can send photos of the bags or the codes, I can look them all up.
+
+Once I have all 4, I can proceed with the full technical onboarding:
+
+1. ✅ **Nora's name** — Nora Haron
+2. ✅ **Email** — nora@noraharon.com
+3. ✅ **Address** — 2155 Center St, 2nd Floor, Berkeley, CA 94704
+4. ✅ **Type** — Wholesale
+5. ✅ **About blurb** — drafted above (Indonesian-Singaporean café at BAMPFA)
+6. ⏳ **QR codes** — have 1 of 4, need the other 3
+7. ✅ **Bags already bought** — so no INVENTORY MOVEMENT needed, just ledger recording
+
+Want to send the other bag photos or codes?
+
