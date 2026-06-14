@@ -127,3 +127,105 @@ Let me check the actual rendered page to see if there's an issue:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → grep -n "community-initiatives\|community initiatives\|card--media-top\|initiatives-grid\|initiatives-cards\|initiatives__grid\|initiatives_; ls /home/ubuntu/ 2>/dev/null; cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git 2>&1 | tail -3; …(+15 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3827] Are you sure... I spun up the local copy of main I am still seeing 2 at row one and 1 at row two. Did you commit your code?
+
+
+### 🤖 Autopilot
+
+You're right — I didn't commit anything yet, I was just reading the code to diagnose. Let me actually check the rendered page to see what's happening.
+
+
+### 🤖 Autopilot
+
+Interesting — the web_extract shows the page content but it's rendering the Community Initiatives section as flat markdown (images followed by text), not as card-grid HTML. That's just the text extraction though, not the actual rendered DOM.
+
+Let me look more carefully at the actual CSS. The issue is likely that the cards have a lot of content (images, headings, bullet lists, link rows) making them taller than expected, and with `auto-fit` + `minmax(280px, 1fr)` the grid should still put them on one row width-wise. But let me check if there's something else going on.
+
+Let me look at the actual rendered page via a browser-like check:
+
+
+### 🤖 Autopilot
+
+The live CSS on beta is only 11KB — that's the **old/minified** version, not the full CSS I read from the repo. The repo has the full ~60KB CSS. Let me check what's actually deployed:
+
+
+### 🤖 Autopilot
+
+The live beta site has an **old CSS** (11KB, etag `6a2e3bcd`) that doesn't have the card-grid or card--media-top styles at all! The repo has the new CSS but it hasn't been deployed. Let me check what's in the live CSS for card-grid:
+
+
+### 🤖 Autopilot
+
+The live CSS on beta.truesight.me is only 11KB — it's an **old version** that doesn't have the `.card-grid`, `.card--media-top`, or the new card styles at all. The repo has the full ~60KB CSS with those styles, but it's not deployed.
+
+So the issue is clear: the **live site** is serving an old CSS that doesn't have the card-grid layout. The HTML has `<div class="card-grid">` with `<article class="card card--media-top">` cards, but since the CSS for `.card-grid` (grid layout) and `.card--media-top` doesn't exist on the live site, the cards are just stacking as block elements — 2 on row 1, 1 on row 2.
+
+Let me deploy the updated CSS:
+
+
+### 🤖 Autopilot
+
+OK, same size. The earlier fetch was truncated. So the CSS IS deployed. Let me check if the `.card-grid` CSS is actually in the live version:
+
+
+### 🤖 Autopilot
+
+The CSS is there. So the grid IS set up correctly with `repeat(auto-fit, minmax(280px, 1fr))`. With 3 cards and a container ~1056px wide, each card gets ~352px — they should all fit on one row.
+
+Let me check if there's an issue with the card content making them too wide, or if there's a max-width on the images:
+
+
+### 🤖 Autopilot
+
+The CSS looks correct. Let me check if the issue is that the images are too large or there's some other constraint. Let me look at the actual rendered page more carefully — maybe the issue is that the images have intrinsic sizes that force the cards wider:
+
+
+### 🤖 Autopilot
+
+**Found it!** There's an **inline `<style>` block** that overrides the grid:
+
+```css
+#initiatives .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+```
+
+This forces the Community Initiatives section to only 2 columns, which is why you see 2 on row 1 and 1 on row 2. Let me see the full context:
+
+
+### 🤖 Autopilot
+
+There it is. The inline style forces `repeat(2, minmax(0, 1fr))` — 2 columns. Let me see the full comment to understand the intent:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The comment says "Four initiative tiles" — but there are only **3** cards (Agroverse, SunMint, Lineage). The inline style forces 2 columns, so with 3 cards you get 2 on row 1 and 1 on row 2.
+
+The fix is simple: change `repeat(2, ...)` to `repeat(3, ...)` since there are 3 cards. Let me also check if Edgar was removed or if there used to be 4:
+
+Looking at the HTML, the Community Initiatives section has exactly 3 cards: Agroverse, SunMint, and Lineage. The inline style was written when there were 4 cards (presumably including Edgar), but Edgar was moved to the Platform Services section below.
+
+Let me fix this:
+
+
+### 🤖 Autopilot
+
+**Found the root cause.** There's an inline `<style>` block in `index.html` that overrides the card grid to 2 columns:
+
+```css
+#initiatives .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+```
+
+The comment says "Four initiative tiles" — but there are only **3 cards** now (Agroverse, SunMint, Lineage). Edgar was moved to the Platform Services section below, but the inline style wasn't updated. So you get 2 on row 1, 1 on row 2.
+
+**PR #228** is open with the fix: changing `repeat(2, ...)` → `repeat(3, ...)` so all 3 cards sit on the same row on desktop.
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → diff <(curl -s https://beta.truesight.me/styles/main.css | wc -c) <(wc -c < /tmp/truesight_me_beta/styles/main.css); echo "Live CSS: $(curl -s https://beta.truesight.me/styles/main.css | wc -c) bytes"; echo "Repo CSS: $(wc -c < /tmp/truesight_me_beta/styles; curl -s https://beta.truesight.me/styles/main.css | grep -c "card-grid"; …(+5 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_me_beta/pull/228
+
