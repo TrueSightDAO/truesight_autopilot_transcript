@@ -279,3 +279,123 @@ Still need the other **2 bag codes** to complete the set. Can you send the remai
 **✅ Done this turn — actions taken:**
 • `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] Well, if you look to the agroverse QR code she and did a search of the QR codes matching the same email address, you'll be able to find the out of two. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great idea — let me search for all QR codes registered to Nora's email.
+
+
+### 🤖 Autopilot
+
+The GitHub code search won't find it since QR data lives in the ledger sheet. Let me check the Agroverse QR codes sheet directly.
+
+
+### 🤖 Autopilot
+
+That's a massive sheet. Let me search it more efficiently by filtering for Nora's email.
+
+
+### 🤖 Autopilot
+
+I can see `nora@noraharon.com` appears multiple times. Let me find the exact row numbers to get the QR codes.
+
+
+### 🤖 Autopilot
+
+The sheet is huge. Let me use a more targeted approach — I'll search for Nora's email in the sheet data programmatically.
+
+
+### 🤖 Autopilot
+
+The data is truncated in the response. Let me use a script to find the exact rows.
+
+
+### 🤖 Autopilot
+
+Let me try a different approach — use the existing `read_google_sheet` tool but with a more targeted range.
+
+
+### 🤖 Autopilot
+
+The response is truncated. Let me try reading just the columns I need (A for QR code, L for email) in a more targeted way.
+
+
+### 🤖 Autopilot
+
+I can see the QR codes but the sheet is too large to get the email column alongside in one call. Let me use a different approach — I already know two codes from the screenshots. Let me look up the ones that were in the same batch as the ones Nora scanned.
+
+From the screenshots, Nora scanned:
+1. `2024OSCAR_20250711_NIBS_19` (from the first screenshot)
+2. `2024OSCAR_20260330_32` (from the second screenshot)
+
+Let me look up the nearby codes in those batches to find the other 2.
+
+
+### 🤖 Autopilot
+
+Found them! `2024OSCAR_20260330_33` is also Nora's. Let me check if there's a 4th one.
+
+
+### 🤖 Autopilot
+
+Now let me also check if there are more Nora codes in the `2024OSCAR_20250711_NIBS` batch.
+
+
+### 🤖 Autopilot
+
+OK, so from the two batches, Nora's codes are:
+
+1. **`2024OSCAR_20250711_NIBS_19`** — SOLD — nora@noraharon.com — 8 oz Kraft Pouch
+2. **`2024OSCAR_20260330_32`** — SOLD — nora@noraharon.com — Ceremonial Cacao Kraft Pouch
+3. **`2024OSCAR_20260330_33`** — SOLD — nora@noraharon.com — Ceremonial Cacao Kraft Pouch
+
+That's 3 of 4. Let me search the sheet more broadly for any other Nora codes.
+
+
+### 🤖 Autopilot
+
+Alright, I've found 3 of the 4 bags. Let me check if there are any other codes registered to Nora's email that I might have missed.
+
+
+### 🤖 Autopilot
+
+OK, so from the ledger I've found **3 QR codes** registered to Nora's email. You said she bought 4 bags. The 4th one may not have had its QR code scanned/registered yet, or it could be a different batch. Here's what I've found:
+
+---
+
+### Nora's QR Codes Found (3 of 4)
+
+| QR Code | Status | Currency |
+|---------|--------|----------|
+| `2024OSCAR_20250711_NIBS_19` | **SOLD** ✅ | 8 oz Kraft Pouch |
+| `2024OSCAR_20260330_32` | **SOLD** ✅ | Ceremonial Cacao Kraft Pouch |
+| `2024OSCAR_20260330_33` | **SOLD** ✅ | Ceremonial Cacao Kraft Pouch |
+
+All 3 are SOLD under your management with Nora's email. The 4th bag might not have been scanned yet — do you have the code for it?
+
+In the meantime, I have enough to proceed with the technical onboarding. Here's the full picture:
+
+### Ready to Onboard — Kopi Bar & Bakery
+
+| Field | Value |
+|-------|-------|
+| **Contact** | Nora Haron |
+| **Email** | nora@noraharon.com |
+| **Store** | Kopi Bar & Bakery (Kopi Bay) |
+| **Address** | 2155 Center Street, 2nd Floor, Berkeley, CA 94704 |
+| **Type** | Wholesale |
+| **Website** | thekopibar.com |
+| **About** | Indonesian-Singaporean café inside Berkeley Art Museum & PFA. Chef Nora Haron (Tartine, Blue Bottle alum) brings Cal-Indonesian pastries, avocado coffee, and sourdough with a 10-year-old starter. Open to all, no museum admission needed. |
+| **QR Codes** | 3 found (1 more pending) |
+
+Want me to start the technical onboarding steps? I'll begin with the `[CONTRIBUTOR ADD EVENT]` for Nora.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -c " import json, sys sys.path.insert(0, 'scripts') # Read the sheet via the existing tooling from go; find /opt/truesight_autopilot -name "*google*sheet*" -o -name "*gspread*" 2>/dev/null | head -20; cd /opt/truesight_autopilot && .venv/bin/python3 -c " import json, sys sys.path.insert(0, 'app') from tools.google_sheets import read_google; …(+2 more)
+
