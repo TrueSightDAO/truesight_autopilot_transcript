@@ -1437,6 +1437,11 @@ Want me to merge PR #494 to `main` so the corrected version is live at the clean
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged. Both files are now live on `main`:
 
 - **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
@@ -1457,26 +1462,31 @@ Corrected treasury figure ($4,126.73 available, not $15K+) and the DUNA-owned CN
 ### 🤖 Autopilot
 
 Let me research both.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get more detail on the specific banks and the Skala pricing for UNA.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me get the Skala UNA pricing specifically and check Nouns DAO's Mercury experience.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Skala page doesn't show UNA pricing inline (it says "Custom Pricing — Contact us"). Let me check OtoCo directly since that was our original path.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also clarify the "why do we need legal counsel" question.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1724,4 +1734,35 @@ Looking at the **Contributors voting weight** sheet, here are the top holders:
 ### What This Means for Nora, Kirsten, Matheus, etc.
 
 They hold TDG but at fractions of a percent. They are **not** beneficial owners under the CTA. They don't need to provide any identity documents. Their wallet addresses are sufficient for membership in the UNA/DUNA.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] what does substantial control mean? Could you check https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=1460794618#gid=1460794618 "Contributors voting weight" and let me know
+
+
+### 🤖 Autopilot
+
+Already answered this above — but let me make it concrete with the data from the sheet.
+
+**"Substantial control" under the CTA** means anyone who:
+
+1. Is a **senior officer** (CEO, CFO, etc.)
+2. Can **appoint or remove** senior officers or board members
+3. Has **substantial influence over important decisions** (bank accounts, contracts, governance parameters, treasury)
+
+**Plus:** Anyone who owns **≥25%** of the entity's ownership interests is automatically a beneficial owner regardless of control.
+
+### From the Sheet — Who Gets Triggered
+
+| Contributor | % Controlled | CTA Trigger? |
+|------------|-------------|--------------|
+| **Gary Teh** | **40.76%** | ✅ **Yes** — >25% threshold + substantial control |
+| Garis Pang | 2.89% | ❌ No |
+| Fatima Toledo | 2.81% | ❌ No |
+| Everyone else | <3% each | ❌ No |
+
+**Result:** Only **Gary** needs to report name, DOB, address, and ID for the CTA BOI filing. The other ~350 TDG holders remain pseudonymous — wallet address only.
+
+This is a key advantage of the UNA/DUNA structure: the vast majority of contributors never need to dox themselves.
 
