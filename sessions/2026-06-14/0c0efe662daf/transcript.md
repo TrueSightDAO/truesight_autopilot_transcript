@@ -1363,6 +1363,7 @@ Now I have the full picture. Let me update the proposal with the correct treasur
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1550,4 +1551,38 @@ They're not a traditional bank but they're regulated as a financial institution.
 The question is whether Wise will accept a Wyoming UNA as a customer. They're generally more flexible than traditional banks for non-standard entities.
 
 **Worth trying as a primary option** given our Brazil-heavy flows, with Mercury/Relay as backup.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] We are already using WISE for our bank transfers to BRazil. Using them for our UNA banking is great. But once we convert from UNA to DUNA do we need to reset another acocunt or the same EIN will do?
+
+
+### 🤖 Autopilot
+
+Great question. Let me check what happens to the EIN when UNA converts to DUNA.
+
+
+### 🤖 Autopilot
+
+The answer is clear from OtoCo's documentation:
+
+**Same EIN. Same bank account. No reset needed.**
+
+The UNA → DUNA conversion is a **legal status change**, not a new entity formation. From the IRS's perspective, it's the same organization — just its governance structure evolved. The EIN stays the same because:
+
+- The entity's tax identity doesn't change
+- The bank account belongs to the entity, not the UNA label
+- OtoCo handles the conversion automatically via smart contract when membership hits 100
+
+So the flow is:
+
+```
+1. UNA formed (2 wallets sign OtoCo) → gets EIN → opens Wise Business account
+2. DAO grows → TDG holders exceed 100
+3. UNA auto-converts to DUNA (OtoCo protocol handles it)
+4. Same EIN. Same Wise account. Nothing changes at the bank.
+```
+
+**One and done.** No need to reapply, re-KYC, or open a new account.
 
