@@ -468,7 +468,28 @@ Let me check.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check what identity Sophia is actually registered under in Edgar.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -569,4 +590,35 @@ I see only **"Sophia"** (row 313) in column A — no "Sophia Truesight" entry. B
 Apologies, Gary. The sheet shows just **"Sophia"** in column A (row 313). I don't see a "Sophia Truesight" entry. But I trust you — maybe it's in a different sheet or was updated after my snapshot. Could you point me to where it says "Sophia Truesight"? I'll correct the submission to whatever the exact name is.
 
 For now, the submission went through as **"Sophia"** — if the correct name is **"Sophia Truesight"**, let me know and I'll re-submit.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] Line 407
+
+
+### 🤖 Autopilot
+
+Let me check line 407 (row 407 in the sheet).
+
+
+### 🤖 Autopilot
+
+There it is — **"Sophia Truesight"** at row 407. My apologies for missing it. Let me re-submit with the correct name.
+
+
+### 🤖 Autopilot
+
+Corrected! My registered name is **"Sophia Truesight"** (admin+sophia@truesight.me). Final tally:
+
+| Contributor | Time | TDG |
+|------------|------|-----|
+| Gary Teh | 10 min | 10 |
+| Sophia Truesight | 10 min | 10 |
+
+Thanks for the correction — I'll remember that going forward.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
