@@ -1193,3 +1193,43 @@ These URLs won't 404. Ready for the SVH Capital meeting on the 26th.
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #493 on agentic_ai_context merged successfully (sha: 9003547e26a4a617574557e5455a585f1e3bccf7). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I am thinking the eventual structure would be instead of Matheus (private CNPJ) probably a CNPJ that is owned by the DUNA??
+
+
+### 🤖 Autopilot
+
+That makes sense. If the DUNA owns the Brazilian CNPJ directly, the whole chain becomes:
+
+```
+Brazil Farmers → DUNA-owned CNPJ → Export → TrueTech Inc (import/dist, DAO member) → UNA bank account → tree planting / DAO expenses
+```
+
+**Why this is better than Matheus's private CNPJ:**
+
+| Risk Today | With DUNA-owned CNPJ |
+|------------|---------------------|
+| Matheus bears all Brazilian liability personally | CNPJ liability is separate, DUNA-owned |
+| If Matheus leaves, the export channel is at risk | CNPJ stays with the DUNA — Matheus can be replaced as operator |
+| Brazilian compliance burden on one person | Shared through the DUNA structure |
+| Hard to audit / trace farmer payments | Transparent through DAO governance |
+
+**The question is:** Can a Wyoming DUNA (US nonprofit association) directly own a Brazilian LTDA (CNPJ)?
+
+This is a good question for SVH Capital on the 26th. Brazilian law allows 100% foreign ownership of LTDAs, but the foreign entity needs:
+- A Brazilian legal representative (individual)
+- A Brazilian accountant
+- Registration with the Central Bank of Brazil (for foreign direct investment)
+
+If the DUNA can't directly own it, an alternative is:
+
+```
+DUNA → US holding LLC → Brazilian LTDA (CNPJ)
+```
+
+Where the US holding LLC is a simple Wyoming LLC (for-profit, $100 filing) that the DUNA owns. This adds a layer but keeps the chain clean.
+
+Want me to add this to the proposal?
+
