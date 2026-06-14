@@ -478,6 +478,7 @@ Does this feel like the right framing for the 26th?
 ### 🤖 Autopilot
 
 Let me update the existing proposal with the corrected framing and generate both files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -692,4 +693,61 @@ So the priority stack flips to:
 No blocker. Nora's flow works today through TrueTech Inc. The DUNA is the next horizon, not a prerequisite.
 
 Want me to update the proposal with this simplified framing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] then how do we answer when folks holding DAO voting rights come to us and ask which legal entity is the voting right for? Also when I share with them the story we are running a community project and the voting rights is for the managment of the community project how do we resolve that story to the legal structure??
+
+
+### 🤖 Autopilot
+
+This is the real knot. Let me untangle it.
+
+**The problem:** TDG tokens represent voting rights in the DAO. But if the DAO has no legal entity, what are people voting on? And if TrueTech Inc is the operating entity, are TDG holders voting on TrueTech Inc's decisions? That doesn't work — TrueTech Inc is a Delaware C-corp with its own board and officers.
+
+**The honest answer has three layers:**
+
+### Layer 1: Today (no DUNA yet)
+
+TDG voting rights govern the **community project** — the mission, the brand, the partner network, the tree-planting pipeline. TrueTech Inc is a **service provider** to the DAO, not the DAO itself. Think of it like:
+
+> *"TDG holders govern the TrueSight DAO community — its mission, its partnerships, its reforestation commitments. TrueTech Inc is a for-profit entity that we've engaged as our operational arm for import, distribution, and payment processing. It executes on the community's decisions."*
+
+This is truthful and defensible. The DAO is the principal; TrueTech Inc is the agent.
+
+### Layer 2: With a DUNA
+
+The DUNA becomes the legal wrapper for exactly what TDG holders are voting on. The story becomes clean:
+
+> *"TDG holders govern the TrueSight DUNA — a Wyoming nonprofit association. The DUNA holds the mission, the brand, the carbon credit rights, and the relationship with TrueTech Inc (our operational service provider). When you vote with TDG, you're voting on DUNA matters."*
+
+### Layer 3: The inter-entity agreement
+
+The key document is a **Service Agreement** between the DUNA and TrueTech Inc:
+
+```
+DUNA (principal) ← Service Agreement → TrueTech Inc (agent)
+```
+
+- DUNA owns: mission, brand, IP, carbon credits, partner relationships
+- TrueTech Inc does: import, distribution, payment processing, bank account custody
+- TrueTech Inc gets paid a service fee by the DUNA (or pays the DUNA a license fee)
+- TDG holders vote on DUNA governance — which includes approving/renewing the TrueTech Inc service agreement
+
+### The gap today
+
+Without the DUNA, the answer to "what entity am I voting on?" is:
+
+> *"You're voting on the DAO community itself. TrueTech Inc is our operational partner, not the DAO. We're in the process of forming a Wyoming DUNA that will become the formal legal wrapper for the DAO — at which point your TDG voting rights will govern the DUNA directly."*
+
+This is honest and shows the roadmap. The DUNA formation isn't blocking operations (TrueTech Inc handles that), but it **is** blocking clean governance storytelling.
+
+### What to ask SVH about this specifically
+
+On June 26, add this to the list:
+
+> *"We have a for-profit C-corp (TrueTech Inc) handling operations and a DAO with token voting rights governing the community mission. How do we structure the inter-entity agreement so TDG holders are clearly voting on DUNA matters, and TrueTech Inc is clearly a service provider — not the thing being governed?"*
+
+This is the **governance clarity** question, separate from the tax question.
 
