@@ -138,5 +138,12 @@
     "summary": "Update the Kopi Bar & Bakery partner detail page (partners/kopi-bar-and-bakery/index.html) with new images and improved layout.\n\n**Images to add (from /tmp/tg_attachments/):**\n1. Nora holding a bag of",
     "action": "merge_pr",
     "created_at": "2026-06-14T23:05:03Z"
+  },
+  {
+    "title": "Merge PR #175 on agroverse_shop_beta",
+    "qr_code": "",
+    "summary": "Fix two issues on the Kopi Bar & Bakery partner pages:\n\n1. **Partners listing page (partners/index.html)** \u2014 the Kopi Bar card references `kopi-bar-and-bakery-logo.jpg` but the logo was uploaded as `.",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T23:12:29Z"
   }
 ]
