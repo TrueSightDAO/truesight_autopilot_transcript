@@ -347,6 +347,7 @@ Let me get more precise cost data from the web research I already did, plus look
 ### 🤖 Autopilot
 
 Now I have solid numbers. Let me also check the OtoCo on-chain UNA option — that's the low-cost path.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -536,4 +537,41 @@ And the markdown version is in the same branch:
 **https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v2/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md**
 
 Both are in **PR #491** — if you want them merged to `main` so the URLs are cleaner, just say the word.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I question if it is the tax write off infrastructure or the actual legal wrapper of the DAO turning from grey to red??
+
+
+### 🤖 Autopilot
+
+You're right to question that. Let me re-examine.
+
+The **tax write-off facility** is a *feature* of the legal wrapper, not the wrapper itself. What's actually turning from grey to red is:
+
+**The DAO's legal wrapper** — the entity that can:
+- Sign contracts with partners (Nora, Matheus, farmers)
+- Hold assets (inventory, IP, carbon credits)
+- Shield members from liability
+- Open bank accounts
+- *And as a consequence*, accept tax-deductible donations
+
+The tax write-off is one output of having the right wrapper. But the wrapper itself is what's urgent because:
+
+1. **Personal liability** — Gary's personal bank account is the bottleneck. Every new partner increases the risk surface
+2. **Contract signing** — Nora needs to sign something. Matheus needs a formal counterparty. TrueTech Inc alone doesn't represent the DAO
+3. **Member liability shield** — Ooki DAO precedent means unincorporated DAO members can be treated as general partners. More members = more exposure
+4. **Bank account** — the DAO needs its own account, not Gary's personal one
+
+The tax-deductible donation channel is a **high-value downstream capability** that the right wrapper enables — but the wrapper itself is the red signal.
+
+So the framing should be:
+
+| What's turning red | Why |
+|-------------------|-----|
+| 🔴 **DAO legal wrapper** | Liability shield, contract signing, bank account, partner onboarding |
+| 🟡 Tax-deductible donation facility | Important institutional fundraising channel, enabled by the wrapper |
+
+Does that reframe feel more accurate? If so, I can update the proposal to lead with **"the DAO needs a legal entity — full stop"** and position the tax write-off as a powerful but secondary benefit.
 
