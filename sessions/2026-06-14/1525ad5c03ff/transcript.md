@@ -751,3 +751,24 @@ The issue is promoting to **production** — `sync_beta_to_prod` hit a merge con
 
 You can see it live on the beta site now: **https://truesight-me-beta.pages.dev** (or whatever the beta domain is). Want me to check the beta URL so you can preview it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] It is here. https://beta.truesight.me/
+
+
+### 🤖 Autopilot
+
+It's live on **https://beta.truesight.me** ✅
+
+Scrolling through the page I can see:
+
+1. **Hero** — mission, stats, CTA
+2. **Ecosystem Updates** — Beer Hall digests
+3. **Join Our Movement**
+4. **Community Initiatives** — Agroverse, SunMint, Lineage (3 cards, clean row)
+5. **Platform Services** — Edgar, Perch, Sophia (3 cards, clean row)
+6. **Governance**
+
+The Edgar card is gone from Community Initiatives and now lives properly under Platform Services alongside Perch and Sophia. Take a look and let me know if anything needs tweaking before we figure out the prod promotion.
+
