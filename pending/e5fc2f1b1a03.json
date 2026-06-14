@@ -131,5 +131,12 @@
     "summary": "Fix three issues on the Agroverse shop beta site:\n\n1. **Add Kopi Bar & Bakery to partners-data.js** \u2014 Add a new entry for Kopi Bar & Bakery (Berkeley, CA) to the partners data array in `js/partners-da",
     "action": "merge_pr",
     "created_at": "2026-06-14T22:55:29Z"
+  },
+  {
+    "title": "Merge PR #174 on agroverse_shop_beta",
+    "qr_code": "",
+    "summary": "Update the Kopi Bar & Bakery partner detail page (partners/kopi-bar-and-bakery/index.html) with new images and improved layout.\n\n**Images to add (from /tmp/tg_attachments/):**\n1. Nora holding a bag of",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T23:05:03Z"
   }
 ]
