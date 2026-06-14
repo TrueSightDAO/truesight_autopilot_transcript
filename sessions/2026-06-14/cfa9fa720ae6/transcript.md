@@ -259,6 +259,11 @@ It's a draft PR — review it on the beta site when it deploys, and let me know 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged! Commit `638172d7` on `main`. It'll deploy to the beta site shortly — take a look at `truesight.me` and let me know if anything looks off or needs tweaking.
 
 ———
@@ -299,6 +304,11 @@ Want me to open another PR to move Ecosystem Updates down below Community Initia
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PR #237 is open: https://github.com/TrueSightDAO/truesight_me_beta/pull/237
 
 New flow will be:
@@ -319,6 +329,11 @@ Want me to merge it?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=4034] merge it
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -345,6 +360,11 @@ Take a look when it deploys and let me know if anything needs adjusting.
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=4034] looks pretty cool! promote to production
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -461,6 +481,51 @@ Fixed! The registered identity is **`autopilot@agroverse.shop`**, not "Sophia (A
 |------------|------|-----|
 | Gary Teh | 10 min | 10 |
 | autopilot@agroverse.shop | 10 min | 10 |
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] Uh... your email address is admin+sophia@truesight.me. Check what your name is on column A
+
+
+### 🤖 Autopilot
+
+Let me check the Contributors sheet directly.
+
+
+### 🤖 Autopilot
+
+Hmm, I don't see myself there. Let me check the Digital Signatures sheet where the trusted agents are listed.
+
+
+### 🤖 Autopilot
+
+Let me search for my entry specifically.
+
+
+### 🤖 Autopilot
+
+There I am — **"Sophia"** (row ~178). Not "Sophia (Autopilot)", not "autopilot@agroverse.shop". Just **Sophia**.
+
+Let me fix the submission.
+
+
+### 🤖 Autopilot
+
+Fixed! My registered name on the ledger is just **"Sophia"**. Corrected submission logged.
+
+| Contributor | Time | TDG |
+|------------|------|-----|
+| Gary Teh | 10 min | 10 |
+| Sophia | 10 min | 10 |
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
 ———
 **✅ Done this turn — actions taken:**
