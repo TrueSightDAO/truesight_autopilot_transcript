@@ -8,34 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Bagus. Benarkan untuk mengetahui pelajar, dan berkata diberitahu di depan pelajar yang kami menjelihkan kembali dari Brazil ke San Francisco, untuk mencari ini. Jadi, dalam masa itu, kami ada制a untuk mendapatkan documentasi. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Bagus! Jadi semuanya sudah betul. Invoice yang saya hantar ke Graziela dah accurate — guna accumulated cost dari ledger.
-
-**Status sekarang:**
-
-✅ **Airline** — rates and space confirmed
-✅ **Commercial Invoice** — sent to Graziela (Rev 1, 611 units, actual weights)
-✅ **Packing List** — sent to Graziela (Rev 1)
-❌ **Nota Fiscal (NF-e)** — masih tunggu Matheus, sebab dia kena guna Brazilian SEFAZ portal
-
-Sekali Matheus settlekan Nota Fiscal tu, shipment boleh gerak. Ada apa-apa lagi yang nak saya tolong?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-I think we shouldn't indicate the freight cost in the invoice since that is like directly paid by true tag ink instead of paid fire black ink. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
 ### 🤖 Autopilot
 
 Betul tu — since TrueTech Inc is paying the freight directly (not Black King), the freight cost shouldn't be on the invoice. The invoice should just show **FOB value** (goods only), not CIF.
@@ -482,4 +454,32 @@ Good question. Let me think through what's covered and what's not.
 5. ❌ **SISCOMEX/RADAR registration** — Matheus needs to add Omega's customs brokers to the system himself using his digital certificate.
 
 **Verdict:** I can handle about **80% of the coordination** — all the paperwork, emails, follow-ups, and documentation. The remaining 20% requires either Matheus (SEFAZ, RADAR, physical cargo) or you (payment approval). If Matheus follows the NF-e guide I sent, and you're okay approving payments, then yes — I could run this mostly autonomously with just status updates to you.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] What if I extended you of the ability to navigate websites? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That would close a few gaps but not all of them. Let me break it down:
+
+**With web navigation I could:**
+
+- ✅ **Log into SEFAZ-BA** and issue the NF-e myself — if I had Matheus's e-CNPJ certificate and credentials. But that's a security risk — sharing a digital certificate with an AI is not a good idea.
+- ✅ **Access the SISCOMEX portal** to add Omega's customs brokers — same credential problem.
+- ✅ **Check airline booking portals** for status updates.
+- ✅ **Look up BACEN exchange rates** for the NF-e.
+
+**Still can't do:**
+
+- ❌ **Phone calls** — can't call Rebecca, Matheus, or the warehouse
+- ❌ **Physical inspection** — can't check pallets for IPPC stamps
+- ❌ **PIX payments** — can't authorize bank transfers
+- ❌ **Handle the e-CNPJ** — even with web access, I'd need Matheus to share his digital certificate, which is like sharing a password. Bad practice.
+
+**The real bottleneck isn't web access — it's the physical world.** The cargo is in Ilhéus, the pallets need fumigation, the truck needs to pick up, and someone needs to be at the warehouse. Those are human-in-the-loop steps no amount of web access can replace.
+
+So web navigation would get me from 80% to maybe **90%** — but the last 10% (physical presence in Bahia, phone calls, payment authorization) will always need a human.
 
