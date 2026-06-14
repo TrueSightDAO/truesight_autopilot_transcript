@@ -2526,6 +2526,7 @@ The push didn't go through. Let me retry.
 ### 🤖 Autopilot
 
 PR #497 is created. Now let me generate the PDF and upload it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2624,4 +2625,38 @@ The latest version is on `main` (from the earlier merge of PR #496):
 - **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
 
 PR #497 (v10 with Wise as single banking layer) is still open — want me to merge it so those updates go to `main`?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] actually doesnt make sense TrueTEch inc is actually setup as a facility to clear USA customs and FDA requirements.
+
+
+### 🤖 Autopilot
+
+You're right. TrueTech Inc has a specific operational purpose — clearing US customs and FDA compliance for cacao imports. It's not just "another DAO member." It's the entity that makes the physical import possible.
+
+So the structure is clearer now:
+
+```
+TrueTech Inc (Delaware C-corp)
+    → Role: US customs clearance, FDA compliance, import documentation
+    → This is its core function, not just "voluntary contributions"
+    → Compensated in TDG for this service
+
+DUNA (Wyoming nonprofit)
+    → Role: mission, brand, carbon credits, partner relationships, treasury
+    → Governed by TDG holders
+
+Brazilian CNPJ (eventually DUNA-owned)
+    → Role: farmer payments, export documentation
+```
+
+TrueTech Inc isn't a general-purpose DAO member — it's a **specialized service provider** with a specific regulatory function that no other DAO member can easily replace. The TDG compensation is for that specific service.
+
+This also means TrueTech Inc **does need its own bank account** — customs bonds, FDA fees, and import duties flow through it. That's separate from the DUNA's bank account for partner contributions and tree-planting funds.
+
+Want me to update the proposal with this corrected framing?
 
