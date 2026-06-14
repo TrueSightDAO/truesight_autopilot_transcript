@@ -1233,3 +1233,66 @@ Where the US holding LLC is a simple Wyoming LLC (for-profit, $100 filing) that 
 
 Want me to add this to the proposal?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Also note that only cash sitting in main ledger is available for deployment into this structure not those on managed ledgers since those are ear marked for very specific purposes most of them for cacao shipment related financing so your reference to USD$15K++ is not accurate
+
+
+### 🤖 Autopilot
+
+You're right. Let me check the main ledger to get the accurate figure.
+
+
+### 🤖 Autopilot
+
+That's the contribution ledger (TDG tracking), not the cash balance sheet. Let me find the actual treasury/cash sheet.
+
+
+### 🤖 Autopilot
+
+Let me look at the treasury-cache repo which should have the balance sheet data.
+
+
+### 🤖 Autopilot
+
+Now I can see the actual picture. Let me get the managed ledgers too.
+
+
+### 🤖 Autopilot
+
+Now I have the accurate picture. Let me update the proposal with the correct figures.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me update the proposal with the correct treasury figure and the DUNA-owned CNPJ structure.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Want me to merge this to `main`?
+
+**PR #494** — `legal-entity-structuring-proposal-v5`
+
+### Key corrections in v5
+
+| What changed | Before | After |
+|-------------|--------|-------|
+| **Available treasury** | ~$14,622 (wrong — included managed ledgers) | **~$4,126.73** (Main Ledger only) |
+| **Brazil CNPJ ownership** | Matheus's private CNPJ | **DUNA-owned CNPJ** (eventual structure) |
+| **Risk assessment** | 6 risks | Added **single-person dependency (Brazil)** as 🔴 High |
+| **Cost as % of treasury** | Not shown | Added % columns so it's clear what's affordable |
+| **OtoCo viability** | "well within treasury" | Still true — $50 of $4,126 is ~1.2% |
+
+The OtoCo UNA path (~$50 gas) is still easily affordable. The Brazilian LTDA ($1K-$3K) would consume 24-73% of available cash — doable but significant. The full-service DUNA law firm path ($20K-$60K) is out of reach without fundraising first.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
+
