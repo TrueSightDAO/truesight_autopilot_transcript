@@ -2912,6 +2912,7 @@ Edgar already has the event — it's a duplicate. Let me trigger the GAS handler
 ### 🤖 Autopilot
 
 Now there are two rows — the old row 44 (from the first handler run with wrong columns) and the new row 45 (from the fixed handler). The old row 44 has the old format (missing address, wrong slug `kopi-bar-and-bakery` vs `kopi-bar-bakery`). Let me clean up the old row.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3077,4 +3078,18 @@ You said "go for it" — everything's already done! Let me confirm the full stat
 **One housekeeping item:** PR #168 on `agroverse_shop_beta` is superseded by #169 and still open — you can close it manually when convenient.
 
 Anything else you'd like me to tackle?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] what is the URL of kopi bar where I can review their page?
+
+
+### 🤖 Autopilot
+
+Here it is:
+
+**https://agroverse.shop/partners/kopi-bar-and-bakery/**
+
+It's live on production now. Want me to make any tweaks to the page?
 
