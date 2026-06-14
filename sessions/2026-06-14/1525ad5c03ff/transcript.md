@@ -678,3 +678,22 @@ Also — what should `sophia.truesight.me` actually serve? Right now it's just t
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/truesight_me_beta && grep -n "Chat with Sophia" index.html; cd /tmp/truesight_me_beta && sed -i 's|https://truesight.me/beerhall|https://sophia.truesight.me|' index.html && git add index.html && git c
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] did you merge it?
+
+
+### 🤖 Autopilot
+
+No — I pushed directly to `main` on the beta repo (since the PR was already merged and I was making follow-up fixes). But the production sync is still blocked by the merge conflict.
+
+Let me check what's on `truesight.me` (production) right now:
+
+
+### 🤖 Autopilot
+
+Production (`truesight.me`) still has the **old** content — no Platform Services, no Perch, no Sophia. The beta repo changes are on `main` but the production repo (`truesight_me_prod`) hasn't been synced.
+
+The `sync_beta_to_prod` failed earlier due to a merge conflict (3 open PRs on prod + CNAME divergence). To get this to production, we need to resolve that conflict. Want me to look at what the 3 open prod PRs contain so we can figure out how to unblock the sync?
+
