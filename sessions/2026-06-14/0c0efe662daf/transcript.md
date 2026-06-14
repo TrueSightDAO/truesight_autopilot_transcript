@@ -1045,3 +1045,55 @@ But if the UNA can open an account directly — yes, that eliminates the need fo
 
 Want me to update the proposal with this even simpler flow?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yup.
+
+
+### 🤖 Autopilot
+
+Now let me rewrite the proposal with the even simpler flow — UNA opens its own bank account, no TrueTech Inc business account needed.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Done. Here's the final version:
+
+---
+
+**PR #493** on `agentic_ai_context` — branch `legal-entity-structuring-proposal-v4`
+
+| File | URL |
+|------|-----|
+| **Markdown** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.md` |
+| **PDF** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf` |
+
+### What changed in v4
+
+**The path is now 3 simple phases:**
+
+| Phase | What | Cost | Timeline |
+|-------|------|------|----------|
+| **1. This week** | Gary + TrueTech Inc sign OtoCo → UNA formed | ~$50 gas | 1 day |
+| **2. Next 2-4 weeks** | UNA gets EIN → opens its own bank account | $0-$500 | 2-4 weeks |
+| **3. Ongoing** | Route partner contributions through UNA account | $0 | After bank account |
+
+**No TrueTech Inc business account needed.** No TrueTech Inc custodian role. The UNA opens its own bank account directly. Gary's personal account is completely out of the flow.
+
+**Financial flow becomes:**
+```
+Nora / partners → UNA bank account → tree planting / DAO expenses
+```
+
+TrueTech Inc continues handling import and distribution as a DAO member, compensated in TDG. It doesn't touch the DAO's money.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
+
