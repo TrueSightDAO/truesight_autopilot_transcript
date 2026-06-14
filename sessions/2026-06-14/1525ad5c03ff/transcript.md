@@ -10,26 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me get the full event types table.
-
-
-### 🤖 Autopilot
-
-Let me get the full event types section.
-
-
-### 🤖 Autopilot
-
-Now I have the full event catalog. Let me also check the DApp pages to see what event types are available.
-
-
-### 🤖 Autopilot
-
-Now let me also check the DApp pages to see all the event types.
-
-
-### 🤖 Autopilot
-
 I have enough context. Let me now build a comprehensive Edgar landing page that shows all the event types with their payload shapes. I'll use the data from the Integration Guide.
 
 
@@ -655,4 +635,48 @@ All working. Here's the final state:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → grep -i "environment\|stripe" /home/ubuntu/dao_protocol/.env 2>/dev/null || echo "no .env found"; cat /home/ubuntu/dao_protocol/truesight_da; grep -n "environment\|stripe\|Value error\|sk_live\|sk_test" /home/ubuntu/dao_protocol/truesight_dao_client/server/config.py | head -20; echo "DAO_PROTOCOL_ENVIRONMENT=production" >> /home/ubuntu/dao_protocol/.env && echo "added" && grep "ENVIRONMENT" /home/ubuntu/dao_protocol; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] for https://edgar.truesight.me/
+
+What are your thoughts if clicking each to each page 
+
+POST
+/dao/submit_contribution
+
+it brings up a sandbox testing html view... where user can experiment to see what are the various expected payloads and responses??
+
+
+### 🤖 Autopilot
+
+That's a great idea. It turns the landing page from documentation into a **live sandbox** — developers and governors can experiment without needing to craft signed payloads manually.
+
+Here's what I'm thinking:
+
+**For each event type**, clicking it opens an interactive sandbox that:
+1. Shows the expected payload format (already have this in the expandable cards)
+2. Has a **form** with fields pre-filled with example data
+3. Has a **"Send Test"** button that POSTs to `/dao/submit_contribution` with a **simulated signature** (or a "test mode" flag)
+4. Shows the raw response below
+
+The tricky part is the **RSA signature** — the real endpoint requires a valid signed payload. Options:
+
+**Option A: Add a `/dao/test/submit_contribution` endpoint** on dao_protocol that accepts unsigned JSON and returns what the real endpoint *would* do (validate the payload shape, show the parsed event, return a fake transaction ID). No crypto needed.
+
+**Option B: Client-side signing** — embed a test keypair in the page, sign on the client, submit to the real endpoint. More realistic but more complex.
+
+**Option C: Server-side test mode** — add `?test=true` to the real endpoint that bypasses signature verification and returns the parsed event + a simulated response.
+
+I'd recommend **Option A** — a dedicated `/dao/test/submit_contribution` endpoint that:
+- Accepts `Content-Type: application/json` (no multipart signing)
+- Parses the canonical event text from a `payload` field
+- Validates the event type is recognized
+- Returns the parsed attributes + a simulated transaction ID
+- No crypto, no side effects
+
+Then the landing page sandbox just POSTs JSON to that endpoint.
+
+Want me to build it?
 
