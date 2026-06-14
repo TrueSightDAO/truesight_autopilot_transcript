@@ -10,70 +10,6 @@
 
 ### 🤖 Autopilot
 
-I have enough context. Let me now build a comprehensive Edgar landing page that shows all the event types with their payload shapes. I'll use the data from the Integration Guide.
-
-
-### 🤖 Autopilot
-
-Now it's much more useful. The page now has:
-
-**Endpoints section** — 6 API endpoints with method badges and auth badges
-
-**Event Types section** — 20 event types organized into 5 groups, each with:
-- Click-to-expand cards showing the exact payload shape
-- Attributes listed
-- Link to the DApp page
-- Dark terminal-style payload preview showing the canonical format
-
-The groups are:
-1. **Contributions & Finance** — CONTRIBUTION EVENT, CAPITAL INJECTION, CURRENCY CONVERSION, VOTING RIGHTS WITHDRAWAL, INVOICE CONTRIBUTION
-2. **Inventory & Supply Chain** — INVENTORY MOVEMENT, DAO INVENTORY EXPENSE, SALES EVENT, REPACKAGING BATCH, ASSET RECEIPT
-3. **QR Codes** — QR CODE UPDATE, BATCH QR CODE REQUEST, DONATION MINT
-4. **Governance & Community** — PROPOSAL CREATION, PROPOSAL VOTE, CONTRIBUTOR ADD, DAPP PERMISSION CHANGE
-5. **Outreach & Field Reports** — RETAIL FIELD REPORT, STORE ADD, PARTNER CHECK-IN, WARMUP SEND
-6. **Credentialing & Practice** — CREDENTIALING ATTESTATION, PRACTICE EVENT
-
-Each payload preview shows the exact canonical format so developers can copy-paste and modify.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → sudo tee /var/www/edgar/index.html > /dev/null << 'EDGAR_HTML' <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="vi
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] https://edgar.truesight.me/proxy/gas/programRegistrations?action=getPendingProgramRegistrations throwing up a whole bunch of errors now... I think we totally broke all the proxy routes...
-
-
-### 🤖 Autopilot
-
-Let me check what's happening.
-
-
-### 🤖 Autopilot
-
-The request is reaching dao_protocol (the Python server), but it doesn't know about `programRegistrations`. This was previously handled by Rails. The issue is the catch-all `location /` now goes to dao_protocol instead of Rails.
-
-Let me check what the old Rails proxy did with this path.
-
-
-### 🤖 Autopilot
-
-Same error on Perch (Rails). So it's not the nginx change — this was already broken. Let me check what GAS endpoints are actually configured.
-
-
-### 🤖 Autopilot
-
-I see — `getPendingProgramRegistrations` is served by a GAS web app, not by Rails or dao_protocol directly. The proxy routes `/proxy/gas/*` need to know which GAS URL to forward to. Let me check what GAS endpoints are configured in dao_protocol.
-
-
-### 🤖 Autopilot
-
-This is the `dao_client` repo, not the actual `dao_protocol` server. Let me check what's actually running on the dao_protocol server.
-
-
-### 🤖 Autopilot
-
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → ls /opt/dao_protocol/ 2>/dev/null || ls /home/*/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "main.py" -path "*/dao_protocol/*" 2>/; ls /opt/dao_protocol/packages/ 2>/dev/null && echo "---" && cat /opt/dao_protocol/packages/*/main.py 2>/dev/null | head -50 || echo "no pack; ls /opt/dao_protocol/packages/ && echo "---" && find /opt/dao_protocol -name "*.py" -not -path "*/truesight_dao_client/*" -not -path "*/dapp; …(+15 more)
@@ -754,4 +690,29 @@ It's live. Here's what was built:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → find /home/ubuntu/dao_protocol -path "*/routes/dao.py" 2>/dev/null; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/dao.py; cat /home/ubuntu/dao_protocol/truesight_dao_client/server/routes/__init__.py 2>/dev/null; ls /home/ubuntu/dao_protocol/truesight_dao_client/; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Also I was thinking this page probably should have an explanation of what it is about isnt it? Right now user just gets dropped directly into it and expect to understand what is going on
+
+
+### 🤖 Autopilot
+
+You're right. The page drops you straight into endpoints and event cards with no context about what Edgar actually *is*. Let me add a proper intro section at the top.
+
+
+### 🤖 Autopilot
+
+The page now has:
+
+1. **"What is Edgar?"** section — explains it's the DAO Protocol API, the operational backbone, how events are signed with RSA-2048, no API keys needed
+2. **"How It Works"** — three-step flow: Compose → Sign → Submit, with icons and brief descriptions
+3. Then the existing endpoints list and event cards with sandbox
+
+The page now tells a first-time visitor what Edgar is, why it exists, and how to use it before they hit the event cards.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sudo sed -i '/<div class="container">/a\ \ <div class="intro-section" style="margin-bottom:2rem; background:#fff9f0; border:1px solid rgba(9
 
