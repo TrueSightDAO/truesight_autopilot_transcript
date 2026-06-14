@@ -1404,26 +1404,71 @@ Now I see the full pattern. Edgar dispatches events to GAS webhooks. Let me also
 ### 🤖 Autopilot
 
 Now let me look at the Contributor Add handler to understand the pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file exists in the GAS project but not in the repo source. Let me check the clasp mirror instead.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS handler lives in the deployed project but not in the repo source. Let me check the clasp mirror directory.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clasp mirror for the Contributor Add handler project doesn't exist locally. Let me check the deployed GAS project directly to understand the pattern, then I'll create the PR.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook is live and working. Now I have enough context to create the PR. Let me also check the `application.rb` config to see how webhook URLs are configured.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1435,6 +1480,7 @@ Now I have the full picture. Let me create the PR. The change involves:
 3. **Config**: Add `partner_add_processing_webhook_url` to `application.rb`
 
 Let me open the fix PR.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1455,26 +1501,86 @@ The automated fix agent failed. Let me create the PR manually by making the chan
 ### 🤖 Autopilot
 
 Let me check the latest state of the agentic_ai_context repo.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the local Mac workspace context — not the latest on GitHub. Let me check the actual GitHub repo for recent changes.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I don't see a `sentiment` or `sentiment_importer` split — they're both private repos. Let me check the actual deployed Edgar code on `seni_ror` to see if it's been split.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still the same single `sentiment_importer` on the server. Let me check the GitHub repos for the split.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `[PARTNER ADD EVENT]` string already exists in the codebase! Let me check the latest state of the relevant files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1482,4 +1588,126 @@ The `[PARTNER ADD EVENT]` string already exists in the codebase! Let me check th
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls /home/ubuntu/ 2>/dev/null; ls /home/ubuntu/sentiment_importer/app/controllers/ 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] can you download and read the latest agentic_ai_context? there has been some changes to edgar. Its been split into two
+
+
+### 🤖 Autopilot
+
+Let me pull the latest agentic_ai_context from GitHub to see the changes.
+
+
+### 🤖 Autopilot
+
+This is the Mac workspace context — not the latest. Let me check the actual GitHub repo for recent changes and look for the Edgar split.
+
+
+### 🤖 Autopilot
+
+I see `sentiment` and `sentiment_importer` as separate repos. Let me check the latest agentic_ai_context for the Edgar split documentation.
+
+
+### 🤖 Autopilot
+
+Let me check the latest commits on agentic_ai_context to see what changed.
+
+
+### 🤖 Autopilot
+
+I see the context files reference `sentiment_importer` as "Perch" (formerly Edgar). Let me check the latest commits on agentic_ai_context to see what changed recently.
+
+
+### 🤖 Autopilot
+
+Now I see the picture clearly. The Edgar split is:
+
+1. **Perch (Rails)** — `sentiment_importer` on `seni_ror_200250915` — the original Rails API that handles `POST /dao/submit_contribution`, signature verification, Google Sheets logging, and Sidekiq webhook dispatch
+2. **Edgar (Python/FastAPI)** — `dao_protocol` on `dao_protocol_nelanco` — the new Python port on port 8010
+
+Let me check the `dao_protocol` repo to understand its structure and see if it already has a `[PARTNER ADD EVENT]` handler.
+
+
+### 🤖 Autopilot
+
+Now I see — the repo was renamed from `dao_protocol` to `dao_client`. Let me check the actual FastAPI server code to see how events are handled.
+
+
+### 🤖 Autopilot
+
+OK — I see `dao_protocol` is still the repo name in the org. The README says it was renamed from `dao_protocol` to `dao_client` but the GitHub repo is still `dao_protocol`. Let me check the actual FastAPI server code.
+
+
+### 🤖 Autopilot
+
+I see — the `dao_protocol` repo on GitHub is actually the `dao_client` Python library (CLI tools), not the FastAPI server. The actual FastAPI server that runs on `dao_protocol_nelanco` (port 8010) must be a different codebase. Let me check what's actually running on that host.
+
+
+### 🤖 Autopilot
+
+The FastAPI server is at `/home/ubuntu/dao_protocol`. Let me check its code structure.
+
+
+### 🤖 Autopilot
+
+Now let me look at the dispatch module — that's where event routing happens.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `dao_protocol` FastAPI server has a dispatch system that routes events to GAS webhooks. There's already a `[CONTRIBUTOR ADD EVENT]` handler that dispatches to `processContributorAddsFromTelegramChatLogs` and `sendOnboardingInvitation`.
+
+The `[PARTNER ADD EVENT]` doesn't exist yet in the dispatch table. Let me also check the `main.py` to see the full server code and understand how the `submit_contribution` endpoint works.
+
+
+### 🤖 Autopilot
+
+Now let me check the `dao` route to see the `submit_contribution` endpoint.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the `truesight_dao_client` CLI modules to see how the `report_contribution` module works — that's the pattern I'd follow for a new `add_partner` module.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me also check the `pyproject.toml` to see how console scripts are registered.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me summarize what I've found and present the plan.
+
+---
+
+Gary, I've now fully mapped the Edgar split. Here's the architecture:
+
+### Current Architecture (Post-Split)
+
+| Service | Host | Code | Role |
+|---------|------|------|------|
+| **Perch (Rails)** | `seni_ror_200250915` (Nelanco) | `sentiment_importer` (private repo) | Original Rails API — still handles `POST /dao/submit_contribution` |
+| **Edgar (Python/FastAPI)** | `dao_protocol_nelanco` (Nelanco, port 8010) | `dao_protocol` repo → `truesight_dao_client/server/` | Python port — same endpoint, same dispatch logic |
+
+The **dispatch engine** lives in `/home/ubuntu/dao_protocol/truesight_dao_client/server/dispatch.py` and routes events to GAS webhooks. It already handles `[CONTRIBUTOR ADD EVENT]` which dispatches to `processContributorAddsFromTelegramChatLogs` and `sendOnboardingInvitation`.
+
+### What I'm Proposing
+
+To make the protocol mature, I'll add a **`[PARTNER ADD EVENT]`** end-to-end:
+
+1. **`dispatch.py`** — Add a routing entry for `[PARTNER ADD EVENT]` → `processPartnerAddsFromTelegramChatLogs`
+2. **New CLI module** — `truesight_dao_client/modules/add_partner.py` with `truesight-dao-add-partner` console script
+3. **GAS handler** — A new `processPartnerAddsFromTelegramChatLogs` function in the tokenomics GAS project that reads from Telegram Chat Logs and appends to the DAO Partners sheet
+4. **Env config** — `DAO_PROTOCOL_WEBHOOK_PARTNER_ADD_PROCESSING` on the `dao_protocol` box
+
+This mirrors the exact pattern of `[CONTRIBUTOR ADD EVENT]` — the same flow: signed event → Edgar → Telegram Chat Logs → GAS webhook → sheet write.
+
+Want me to proceed with creating the PR for the `dao_protocol` repo with the dispatch + CLI module changes? The GAS handler would be a separate PR on `tokenomics`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → ls /opt/ 2>/dev/null; find /opt -maxdepth 3 -name "*.py" -path "*/app/*" 2>/dev/null | head -20; systemctl list-units --type=service --state; sudo ls /opt/ 2>/dev/null; sudo find /opt -maxdepth 3 -type d 2>/dev/null | head -20; sudo systemctl list-units --type=service --state=runni; sudo ls -la /opt/ 2>/dev/null; sudo find / -maxdepth 3 -name "dao*" -type d 2>/dev/null | head -20; ps aux | grep -i dao 2>/dev/null | head ; …(+6 more)
 
