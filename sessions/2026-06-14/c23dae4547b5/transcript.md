@@ -2657,36 +2657,78 @@ It worked! The insertion is at line 1604. The `clasp pull` restored the clean fi
 ### 🤖 Autopilot
 
 There's an orphaned `const newInstagram` line. Let me fix that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean. Now push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **GAS handler deployed successfully.** Now let me also deploy the `dao_protocol` changes. The PR was merged but the server needs to be restarted to pick up the new code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's running as a direct process (PID 116856). Let me restart it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Server restarted with new PID 117229. Now let me test the end-to-end flow by running the CLI with `--dry-run` first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CLI isn't installed yet — the PR was merged but the package needs to be reinstalled. Let me install it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `dao_protocol` repo isn't cloned on the autopilot box. Let me clone it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2704,66 +2746,94 @@ The `dao_protocol` repo isn't cloned on the autopilot box. Let me clone it.
 ### 🤖 Autopilot
 
 Let me check where we are.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Installed. Now let me test with `--dry-run`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Dry-run looks perfect.** The CLI generates the signed payload correctly. Now let me run it for real (without `--dry-run`) to submit the event to Edgar.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **HTTP 200 — signature verified, Google Sheet logged.** The event went through Edgar. Now let me trigger the GAS webhook to process the Telegram Chat Logs and write to the DAO Partners sheet.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS handler is being called but it's hitting the wrong function — it's falling through to the `find_nearby_stores` logic. The `doGet` routing might not be matching. Let me check the deployed `Code.js` to see if the routing was pushed correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The routing is there. The issue is that the GAS web app is returning the `find_nearby_stores` response, which means the `doGet` routing isn't matching. Let me check if the `action` parameter is being passed correctly. The URL has `?action=processPartnerAddsFromTelegramChatLogs` — that should work. Let me check if the GAS deployment is the latest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook URL points to deployment `@36` (the old one). I need to create a new deployment with the latest code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New deployment `@37`. Now I need to update the webhook URL on the `dao_protocol` box to point to this new deployment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook URL points to the old deployment `@36`. I need to update it to the new deployment `@37`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now restart the server and test again.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Server restarted (PID 117461). Now let me test the GAS webhook directly with the new deployment.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **`{"success":true,"processed":1,"skipped":0,"errors":0}`** — the GAS handler processed the event and wrote to the DAO Partners sheet. Let me verify the sheet was updated.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the last few rows of the sheet to see if Kopi Bay was added.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2834,4 +2904,42 @@ Now let me also update the GAS handler to use the correct `contributor_contact_i
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → ls /opt/truesight_autopilot/dao_protocol/ 2>/dev/null | head -10; cd /opt/truesight_autopilot/dao_protocol && .venv/bin/pip install -e . 2>&1 | tail -5; cd /opt/truesight_autopilot && .venv/bin/pip install -e dao_protocol 2>&1 | tail -5; …(+11 more)
 • `merge pr` → ✅ PR #349 on tokenomics merged successfully (sha: 15298bfd5054b77f00a29176fe198ad0f7dcd0ce). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] yup.
+
+
+### 🤖 Autopilot
+
+Here's the full status summary:
+
+### ✅ Kopi Bar & Bakery — Fully Onboarded
+
+**Technical onboarding — complete:**
+
+| Step | Status |
+|------|--------|
+| ✅ **Step 1** — Contributor Add via Edgar (`dao_client`) | **Done** — Nora added to Contributors sheet |
+| ✅ **Step 2** — Mailing address on Contributors sheet | **Done** — 2155 Center St, Berkeley, CA 94704 |
+| ✅ **Step 3** — DAO Partners sheet row | **Done** — Row 44, correct columns |
+| ✅ **Step 4** — Website partner page | **Done** — PR #169 on `agroverse_shop_beta` (partner page + `partner_locations.json`) |
+| ✅ **Step 5** — Wholesale stockist list + partners index | **Done** — PR #170 on `agroverse_shop_beta` |
+| ✅ **Step 6** — QR codes recorded | **Done** — 3 of 4 bags SOLD under your management |
+
+**Protocol improvement — complete:**
+
+| # | Change | Status |
+|---|--------|--------|
+| 1 | `dao_protocol` — dispatch routing + CLI module | ✅ Merged & deployed |
+| 2 | `tokenomics` — GAS handler for DAO Partners sheet | ✅ Merged & deployed |
+| 3 | Webhook URL configured on `dao_protocol` box | ✅ Done |
+| 4 | GAS handler deployed to `find_nearby_stores` project | ✅ Done (deployment @38) |
+
+**What's left for you:**
+- **Review & merge PRs #169 and #170** on `agroverse_shop_beta` — the partner page and wholesale directory updates. Once merged, Kopi Bay will appear live on the beta site.
+- **The 4th QR code** — if you have it, I can look it up and add it to Nora's record.
+
+Want me to promote the beta changes to prod once you've reviewed them?
 
