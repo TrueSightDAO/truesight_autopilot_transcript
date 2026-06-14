@@ -1290,6 +1290,7 @@ Here's what's live now on [agroverse.shop/partners/kopi-bar-and-bakery](https://
 ### 🤖 Autopilot
 
 Let me check both pages to see what's happening.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1300,6 +1301,7 @@ I can see the issues:
 2. **Pacific West Coast path** — the stops are dynamically rendered from `partners-data.js`. Let me check if the data was actually added in the earlier PR.
 
 Let me check both issues.
+[3 tool result(s) compacted: http_fetch, http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1378,4 +1380,51 @@ Here's what's fixed:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #175 on agroverse_shop_beta merged successfully (sha: 2b9fa7c5ef7271118169d47792314928d038b78d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4512] can we use this image https://www.agroverse.shop/assets/partners/headers/kopi-bar-and-bakery-nora-cacao.jpg for this page instead? https://agroverse.shop/cacao-journeys/pacific-west-coast-path/index.html
+
+
+### 🤖 Autopilot
+
+Let me check the current state of that image and the Pacific West Coast page to see how it renders stops.
+
+
+### 🤖 Autopilot
+
+The image exists and loads fine. Now let me check how the Pacific West Coast page renders its stops — it uses JavaScript to dynamically render them from `partners-data.js`. Each stop likely shows a logo/photo. Let me look at the page's JS rendering logic.
+
+
+### 🤖 Autopilot
+
+The page loads `partners-data.js` from the root `/js/` path and renders stops dynamically. The stops are rendered with the partner's logo from the logos folder. The Nora photo is a different image — it's a portrait photo, not a logo.
+
+The Pacific West Coast path page renders each stop as a **card with the partner's logo** (from `assets/partners/logos/`). The Nora photo is a full portrait — it wouldn't fit the logo card format.
+
+However, I could add it as a **featured image** for the Kopi Bar stop specifically. Let me check how the rendering JS works to see if there's a way to add a photo per stop.
+
+
+### 🤖 Autopilot
+
+Let me look at the JavaScript that renders the stops to understand how images are used.
+
+
+### 🤖 Autopilot
+
+Excellent! I can see the rendering logic. The page already has a **special case for Kopi Bar** that uses `kopi-bar-and-bakery-exterior.jpg` as the stop image. But you want to use the **Nora with cacao bag** photo instead.
+
+The Nora photo is at `assets/partners/headers/kopi-bar-and-bakery-nora-cacao.jpg`. Let me update the rendering logic to use that instead.
+
+
+### 🤖 Autopilot
+
+**PR #176** is open. It changes the Kopi Bar stop image on the Pacific West Coast path from the exterior photo to the **Nora holding cacao bag** photo.
+
+Want me to merge and promote?
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/176
 
