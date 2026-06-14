@@ -574,11 +574,28 @@ The PR isn't merged yet. I need to merge it first. You said "go for it" — let 
 ### 🤖 Autopilot
 
 Merged. Now pull on the host and restart.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It failed to start. Let me check the logs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -678,4 +695,27 @@ The old `/var/www/edgar/index.html` on `seni_ror` is now unused — want me to c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/dao_protocol && git pull origin main; sudo fuser -k 8010/tcp 2>/dev/null; sleep 1; sudo systemctl restart truesight-dao-protocol && sleep 2 && sudo systemctl status truesight-dao; curl -s http://localhost:8010/ | head -c 100 && echo "---" && curl -s http://localhost:8010/ping; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] what is the status now?
+
+
+### 🤖 Autopilot
+
+Here's the current status of the landing page migration:
+
+### ✅ Complete — Landing page migrated to `dao_protocol`
+
+| Component | Status | Detail |
+|---|---|---|
+| **Landing page in repo** | ✅ | `dao_protocol/truesight_dao_client/server/static/index.html` — version-controlled |
+| **FastAPI root route** | ✅ | `@app.get("/")` serves `FileResponse(static/index.html)` |
+| **FastAPI API routes** | ✅ | `/ping` returns `{"status":"ok","service":"dao_protocol"}` — not overridden |
+| **Nginx on `seni_ror`** | ✅ | Proxies **everything** (`/` and all paths) to `dao_protocol:8010` |
+| **Full chain** | ✅ | `https://edgar.truesight.me/` → Nginx → `dao_protocol:8010` → landing page |
+| **Old static file** | 🟡 | `/var/www/edgar/index.html` still exists on `seni_ror` but is no longer referenced by Nginx |
+
+**One loose end:** The old `/var/www/edgar/index.html` on `seni_ror` is orphaned. Want me to remove it?
 
