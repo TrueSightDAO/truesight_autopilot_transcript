@@ -607,21 +607,30 @@ Port 8010 is already in use by the old process. Let me kill it and restart.
 ### 🤖 Autopilot
 
 Service is running. Let me verify the landing page is being served.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Landing page is served from FastAPI. Now let me update the Nginx on `seni_ror` to proxy `/` to `dao_protocol:8010` instead of serving the static file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need to update the Nginx config to proxy `/` directly to `dao_protocol:8010` instead of trying the static file first. The simplest change: remove the `root` and `index` directives and the `try_files` line, and just proxy everything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the landing page is served correctly through the full chain.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -763,4 +772,104 @@ Which direction? Or was there a different landing page you had in mind?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /var/www/edgar/; cat /var/www/edgar/index.html | head -c 500; sudo systemctl status seni_ror 2>/dev/null | head -5; echo "---"; ls /home/ubuntu/sentiment_importer/app/views/static_pages/ 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] Never mind, I was confused. can we ensure to have PARTNER ADD EVENT also in https://edgar.truesight.me/ I dont see it
+
+
+### 🤖 Autopilot
+
+Let me check the current landing page content and the `dao_protocol` repo for the PARTNER ADD EVENT.
+
+
+### 🤖 Autopilot
+
+Let me check the SCHEMA.md for the PARTNER ADD EVENT format and the current landing page HTML to see where to add it.
+
+
+### 🤖 Autopilot
+
+Let me search for the PARTNER ADD EVENT format in the SCHEMA.md and the GAS scripts.
+
+
+### 🤖 Autopilot
+
+Let me search for the PARTNER ADD EVENT format specifically.
+
+
+### 🤖 Autopilot
+
+Now I have the PARTNER ADD EVENT format. Let me also check the current HTML to find the exact insertion point.
+
+
+### 🤖 Autopilot
+
+Let me find the exact section where I need to add the PARTNER ADD EVENT card. Let me look at the Governance & Community section.
+
+
+### 🤖 Autopilot
+
+Now let me find the Governance & Community section to add the PARTNER ADD EVENT there.
+
+
+### 🤖 Autopilot
+
+Let me read the actual HTML file directly from the repo to get the exact content.
+
+
+### 🤖 Autopilot
+
+Let me find the Governance & Community section to add the PARTNER ADD EVENT card.
+
+
+### 🤖 Autopilot
+
+I see the page has sections: **Governance & Community**, **Inventory & Supply Chain**, **Identity & Credentials**. The PARTNER ADD EVENT fits in **Governance & Community**. Let me find the exact Governance section in the HTML.
+
+
+### 🤖 Autopilot
+
+Now I see the structure. The **Governance & Community** section is the first event group (starts with `<h3>Governance & Community</h3>`). Let me find where it starts.
+
+
+### 🤖 Autopilot
+
+I see — the first event group is **Finance & Treasury**, not Governance. Let me find the Governance section. Let me look at the beginning of the DAO Events section.
+
+
+### 🤖 Autopilot
+
+Let me just get the exact HTML from the file on the dao_protocol host.
+
+
+### 🤖 Autopilot
+
+Now I see the structure. The first group is **Governance & Treasury** (line 93). The PARTNER ADD EVENT should go in Governance. Let me find the exact line after the last card in Governance & Treasury (before line 190 where Inventory starts).
+
+
+### 🤖 Autopilot
+
+Perfect. I need to insert the PARTNER ADD EVENT card right before line 188 (`</div>`) which closes the Governance & Treasury group. Let me create the PR.
+
+
+### 🤖 Autopilot
+
+PR is open. You said "go for it" earlier — want me to merge and deploy?
+
+Here's what the card will look like when added:
+
+**`[PARTNER ADD EVENT]` — Onboard a new partner to the DAO**
+- Attributes: `Partner Name`, `Email`, `Type`, `Address`, `About`, `Governor Name`
+- Links to `https://dapp.truesight.me/partner_add.html`
+- Payload preview: `[PARTNER ADD EVENT]` → `Fazenda Boa Vista`, `contato@fazendabv.com.br`, etc.
+
+It sits at the end of the **Governance & Treasury** section, right before **Inventory & Supply Chain**.
+
+Merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep -n 'Governance\|PARTNER\|event-group\|h3>' /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html | head -30; sed -n '180,192p' /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html
 
