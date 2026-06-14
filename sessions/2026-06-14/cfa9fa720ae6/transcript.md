@@ -225,11 +225,13 @@ Let me check the handoff registry and see where we are.
 This thread (4034) isn't in the handoff manifest — this is a direct conversation, not a handoff pickup. You said **"go for it"** on the landing page re-order, so let me check: I haven't started the PR yet because you asked "how is progress?" right after saying go.
 
 Let me get moving now. I'll read the full index.html, draft the re-ordered version, and open a PR on `truesight_me_beta`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is very large (58K+ chars). Let me use `open_fix_pr` to handle this — it can read, edit, and open a PR in one go. I'll describe the re-order clearly.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -425,6 +427,40 @@ Done! Both logged:
 | Sophia (Autopilot) | 10 min | 10 |
 
 Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] | Sophia (Autopilot) | 10 min | 10 | this will get rejected isnt it? Check what your actual registered name on the ledger is.
+
+
+### 🤖 Autopilot
+
+Let me check.
+
+
+### 🤖 Autopilot
+
+Let me check what identity Sophia is actually registered under in Edgar.
+
+
+### 🤖 Autopilot
+
+Found it. The trusted agent is registered as **`autopilot@agroverse.shop`**, not "Sophia (Autopilot)". Let me fix that submission.
+
+
+### 🤖 Autopilot
+
+Fixed! The registered identity is **`autopilot@agroverse.shop`**, not "Sophia (Autopilot)". Corrected submission logged under that name.
+
+| Contributor | Time | TDG |
+|------------|------|-----|
+| Gary Teh | 10 min | 10 |
+| autopilot@agroverse.shop | 10 min | 10 |
 
 ———
 **✅ Done this turn — actions taken:**
