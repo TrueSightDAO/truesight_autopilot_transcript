@@ -229,6 +229,22 @@ Does that reframe match what you're thinking? If so, I can update the proposal t
 ### 🤖 Autopilot
 
 Great question. Let me assess what we have vs. what we'd need.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -320,6 +336,12 @@ Given this gap analysis, the most important questions for Stanley on June 26 bec
 ### 🤖 Autopilot
 
 Let me get more precise cost data from the web research I already did, plus look at what comparable DAOs paid.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -496,4 +518,22 @@ Both files are delivered. Here's the summary:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → find /tmp -name "*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -5; find /tmp -name "*.pdf" 2>/dev/null | head -10; ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] what is the URL of the pdf?
+
+
+### 🤖 Autopilot
+
+The PDF is on the `legal-entity-structuring-proposal-v2` branch:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v2/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf**
+
+And the markdown version is in the same branch:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v2/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md**
+
+Both are in **PR #491** — if you want them merged to `main` so the URLs are cleaner, just say the word.
 
