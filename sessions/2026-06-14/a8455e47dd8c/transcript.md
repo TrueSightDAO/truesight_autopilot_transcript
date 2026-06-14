@@ -659,3 +659,134 @@ But none of these are Nota Fiscal documents. The Nota Fiscal (NF-e) is a Brazili
 
 Were you looking for a specific Nota Fiscal from a past shipment with Coopercabruca, or just checking if there were any examples in the repo?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Matheus who runs black king is probably issuing a nota fiscal for the first time for export. He might end up getting stuck with system configuration. 
+
+Can you analyze the documents and then extract the steps that he needs to perform to issue the nota fiscal for TrueTech Inc in the documents 
+
+Reference the commercial invoice you generated earlier
+
+
+### 🤖 Autopilot
+
+Let me look through the Coopercabruca documents to find any Nota Fiscal examples or export documentation that could guide Matheus.
+
+
+### 🤖 Autopilot
+
+Let me look at the invoice documents more carefully and also check the Black King entity for any Nota Fiscal references.
+
+
+### 🤖 Autopilot
+
+I found a Nota Fiscal in the Black King directory! Let me look at it.
+
+
+### 🤖 Autopilot
+
+That's a Nota Fiscal from Oscar (a farmer selling to Black King), not an export NF-e. Let me also check the commercial invoice examples and look for any export NF-e references.
+
+
+### 🤖 Autopilot
+
+Now let me also look at the Black King commercial invoice example to understand the format used before.
+
+
+### 🤖 Autopilot
+
+Good — I've now reviewed the Black King entity profile and the Nota Fiscal from Oscar. Let me also check if there's any export NF-e guidance in the repo.
+
+
+### 🤖 Autopilot
+
+There's a Nota Fiscal from CEPOTX too. Let me check it.
+
+
+### 🤖 Autopilot
+
+Good — I've now reviewed the existing Nota Fiscal documents in the repo. Let me compile the step-by-step guide for Matheus based on what I've found.
+
+Here's what I found in the repo:
+
+**Existing Nota Fiscal examples in the repo:**
+1. `suppliers/black_king/20250218_nota_fiscal_from_oscar.pdf` — This is a Nota Fiscal that Oscar issued **to** Black King (incoming, not export)
+2. `suppliers/cepotx/20250402_nota_fiscal_330_kg_cacao_almonds.pdf` — This is a Nota Fiscal from CEPOTX (another supplier)
+
+**Key insight:** Neither of these is an **export NF-e** (Nota Fiscal de Exportação). The export NF-e is a different type — it's a "Nota Fiscal de Exportação" with specific fields for the foreign buyer (TrueTech Inc), the Incoterms (FOB), and the customs destination.
+
+Here's the step-by-step guide I can send to Matheus:
+
+---
+
+## Step-by-Step: Issuing the Export NF-e (Nota Fiscal de Exportação)
+
+### What Matheus needs to do in the SEFAZ system:
+
+**1. Access the SEFAZ Portal**
+- Go to the Bahia SEFAZ portal (SEFAZ-BA since Black King is registered in Ilhéus, BA)
+- Log in with Black King's CNPJ certificate (e-CNPJ or digital certificate)
+
+**2. Create a new NF-e with type "Exportação"**
+- Operation type: **"Exportação"** (código 6.501 or similar)
+- Nature of operation: **"Exportação definitiva de mercadorias"**
+
+**3. Fill in the seller (Black King)**
+- CNPJ: 50.042.585/0001-80
+- Name: MATHEUS REIS PEREIRA
+- Trade name: BLACK KING
+- Address: Avenida Tancredo Neves, 4900, Quadra H, Casa 9, Nossa Senhora da Vitória, Ilhéus - BA, 45655-650
+
+**4. Fill in the buyer (TrueTech Inc)**
+- Since TrueTech is a foreign company, use the **"Exterior"** option for the buyer
+- Name: TrueTech Inc
+- Country: United States (código 2496 - Estados Unidos)
+- Address: 1423 Hayes St, San Francisco, CA 94117
+- EIN: 88-3411514 (use as foreign ID)
+- **Important:** No Brazilian CNPJ/CPF needed for foreign buyers
+
+**5. Fill in the line items from the Commercial Invoice**
+
+| Item | NCM/SH | Qty | Unit | Unit Value (USD) | Total (USD) |
+|------|--------|-----|------|-----------------|-------------|
+| Cacao Nibs Kraft Pouch 8oz | 1801.00.00 | 137 | UN | $6.64 | $909.68 |
+| Cacao Husk (KG) | 1803.10.00 | 20 | KG | $17.79 | $355.71 |
+| Cacao Mass Bar 500g | 1803.10.00 | 37 | UN | $15.70 | $580.90 |
+| Cacao Nibs (KG) Main | 1801.00.00 | 80 | KG | $24.62 | $1,969.48 |
+| Cacao Almonds (KG) AGL8 | 1801.00.00 | 10 | KG | $0.00 | $0.00 |
+| Cacao Tea (KG) AGL8 | 2106.90.00 | 12 | KG | $0.00 | $0.00 |
+| Ceremonial Cacao Pouch 200g | 1803.10.00 | 169 | UN | $10.37 | $1,752.53 |
+| Cacao Almonds (KG) AGL13 | 1801.00.00 | 15 | KG | $7.87 | $118.05 |
+| Cacao Nibs (KG) AGL13 | 1801.00.00 | 100 | KG | $10.18 | $1,018.23 |
+| Cacao Tea (KG) AGL13 | 2106.90.00 | 21 | KG | $10.18 | $213.83 |
+| Cacao Almonds (KG) AGL14 | 1801.00.00 | 10 | KG | $11.41 | $114.12 |
+
+**6. Set the financial/transport info**
+- Incoterms: **FOB** (freight paid by buyer)
+- Total invoice value: **$7,032.53** (USD)
+- Transport mode: **Aéreo** (air)
+- Airport of departure: **SSA** (Salvador)
+- Airport of destination: **SFO** (San Francisco)
+
+**7. Issue and print**
+- The system will generate an XML (the official NF-e)
+- Print the DANFE (Documento Auxiliar da Nota Fiscal Eletrônica) — this is the paper version
+- Send the XML to Graziela's team for the export process
+
+### Common first-time issues:
+
+1. **"Exterior" buyer setup** — The system may need the foreign buyer to be registered first. If TrueTech isn't in the system, Matheus may need to add it manually with the "Exterior" flag.
+
+2. **Currency** — The NF-e supports USD for export operations. Make sure to select "Dólar Americano" (USD) as the currency.
+
+3. **CIF/FOB** — Since it's FOB, the freight value should be **R$ 0,00** on the NF-e (freight is paid by the buyer separately).
+
+4. **ICMS** — Export operations are typically **ICMS-free** (immunity for exports under Brazilian law). No ICMS should be charged.
+
+5. **System configuration** — If Matheus has never issued an export NF-e before, his SEFAZ profile may need to be configured for export operations. He may need to contact SEFAZ-BA support or his accountant to enable this.
+
+---
+
+Want me to send this guide to Matheus in an email?
+
