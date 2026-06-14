@@ -10,103 +10,6 @@
 
 ### 🤖 Autopilot
 
-Done! The corrected PDF v4 is at:
-**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/freight_profit_analysis_2026-06-11_v4.pdf**
-
-All references updated from "Upper Taekri" to **"apothecaries"** throughout. The numbers are the same — $20/lb for husk and tea to apothecaries, adding **$2,337** in revenue.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-What are the instructions I gave you regarding how to understand and analyze and assess the items in the manifest for profit and loss purpose? Can you come up with a comprehensive documentation so that future incarnations of yourself as well as other LLMs will know that this is the instructions to follow when doing the analysis for the profit and loss? By the way, I love the way you generated all the sections. They are very detailed and it's very helpful for all of us. So yeah, perhaps update this in the Agente AI context. Thank you very much. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Thank you! Let me capture this as a proper runbook in the agentic_ai_context so future incarnations follow the same methodology.
-
-
-### 🤖 Autopilot
-
-Done! The methodology document is now in a PR at:
-**https://github.com/TrueSightDAO/agentic_ai_context/pull/445**
-
-Here's what I captured in `FREIGHT_PROFIT_ANALYSIS_METHODOLOGY.md`:
-
-### The 14-section runbook covers:
-
-1. **Core Principle** — what the analysis answers
-2. **Data Sources** — where to find manifest, freight costs, COGS, prices
-3. **Pricing Structure** — your stated pricing ($25/$17 retail/wholesale, $50 mass bars, $20/lb to apothecaries, etc.)
-4. **Revenue Calculation** — how to handle bulk repacking, fixed-price channels, three scenarios
-5. **Freight Cost** — current breakdown + potential increases + worst case
-6. **COGS** — how to pull cost basis from treasury cache + packaging costs
-7. **P&L Statements** — the four required scenarios with full line items
-8. **Unit Economics** — per-kg, per-item, break-even formulas
-9. **Cash Flow & Capital Position** — available cash, cash required, ROI
-10. **Risk & Sensitivity** — risk table + sell-through sensitivity + time to profitability
-11. **Summary Table** — all scenarios side by side
-12. **Output Format** — verbal summary + PDF report + styling rules
-13. **Version History** — v1 through v4
-14. **Related Documents** — links to all source files
-
-Want me to merge the PR, or would you like to review it first?
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Yes, merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Merged! The methodology is now live in the context repo at `FREIGHT_PROFIT_ANALYSIS_METHODOLOGY.md`. Future incarnations of me — and any other LLM working on DAO freight analysis — will have a clear, consistent playbook to follow.
-
-Glad you found the analysis helpful, Gary. 🙏
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #445 on agentic_ai_context merged successfully (sha: a1d6129687bdac106e8d41457ae6888021c056d9). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Share with me the URL of this methodology. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Here it is:
-
-**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/FREIGHT_PROFIT_ANALYSIS_METHODOLOGY.md**
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Graziela is asking for this from Matheus…
-
-I wonder which of these does he really need to get involved with or can I just have you handle it? 
-
-We are missing the Invoice, Packing List, and Nota Fiscal
-
-
-### 🤖 Autopilot
-
-Let me check what Graziela is asking for and what we can handle from our side.
-
-
-### 🤖 Autopilot
-
 Let me read the latest exchange to see exactly what Graziela asked for and what you replied.
 
 
@@ -789,4 +692,67 @@ Here's the step-by-step guide I can send to Matheus:
 ---
 
 Want me to send this guide to Matheus in an email?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can you generate this as a PDF, and then save it in the Agent API column? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me generate the PDF guide and save it to the agentic_ai_context repo.
+
+
+### 🤖 Autopilot
+
+Now let me save this PDF to the agentic_ai_context repo.
+
+
+### 🤖 Autopilot
+
+Now let me upload the NF-e guide PDF.
+
+
+### 🤖 Autopilot
+
+Wait — I need to generate the NF-e guide PDF properly. The previous generate_pdf call created it but I need to find the output path.
+
+
+### 🤖 Autopilot
+
+Let me find the NF-e guide PDF that was just generated.
+
+
+### 🤖 Autopilot
+
+The generate_pdf returned the base64 but the file wasn't saved to disk. Let me save it directly.
+
+
+### 🤖 Autopilot
+
+Wait — the output_path didn't work because the file was already at that path from a previous call. Let me check.
+
+
+### 🤖 Autopilot
+
+The file exists and was uploaded. Let me verify it's in the repo.
+
+
+### 🤖 Autopilot
+
+It's there. Here's a summary of everything saved to the agentic_ai_context repo:
+
+**Files saved to `agentic_ai_context/exports/`:**
+
+1. **`2026-06-11_export_nfe_guide_black_king_to_truetech.pdf`** — Step-by-step guide for Matheus to issue the export NF-e
+2. **`2026-06-11_commercial_invoice_black_king_to_truetech_rev2_fob.pdf`** — Final Commercial Invoice (Rev 2, FOB)
+3. **`2026-06-11_packing_list_black_king_to_truetech_rev1.pdf`** — Packing List (Rev 1)
+4. **`2026-06-11_commercial_invoice_black_king_to_truetech_original.pdf`** — Original version for reference
+
+The NF-e guide covers all 8 steps from accessing SEFAZ-BA through issuing the DANFE, plus common first-time issues like configuring the foreign buyer, enabling the export profile, and handling $0 value items.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/autopilot_pdf_*.pdf 2>/dev/null | tail -5; ls -la /tmp/autopilot_pdf_nfe_guide.pdf 2>/dev/null
 
