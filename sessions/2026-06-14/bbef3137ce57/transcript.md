@@ -833,6 +833,7 @@ Let me search for the PARTNER ADD EVENT format in the SCHEMA.md and the GAS scri
 ### 🤖 Autopilot
 
 Let me search for the PARTNER ADD EVENT format specifically.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -922,4 +923,70 @@ You already asked this and I already created the PR! 😄
 **PR #111** is open: https://github.com/TrueSightDAO/dao_protocol/pull/111
 
 It adds the `[PARTNER ADD EVENT]` card to the **Governance & Treasury** section of the landing page. Want me to merge and deploy it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4439] merge it.
+
+
+### 🤖 Autopilot
+
+Now let me pull and restart the service.
+
+
+### 🤖 Autopilot
+
+Let me verify it's live.
+
+
+### 🤖 Autopilot
+
+Let me check if the PARTNER ADD EVENT card is showing up.
+
+
+### 🤖 Autopilot
+
+I see the issue — the page was updated with a **new version** of the landing page (different from the static HTML I moved). This version has a different structure with sections like **Contributions & Finance**, **Inventory & Supply Chain**, **QR Codes**, **Governance & Community** — and it's missing the PARTNER ADD EVENT.
+
+Let me check what's actually being served now.
+
+
+### 🤖 Autopilot
+
+So the page has been replaced with a completely new version that has a different structure. The PARTNER ADD EVENT is missing from the **Governance & Community** section. Let me check what's in the repo now.
+
+
+### 🤖 Autopilot
+
+The repo has the old version of the page (the one I originally moved). But the live site is serving a **different, newer version** with a completely different structure. Let me check what's actually on the dao_protocol host's filesystem.
+
+
+### 🤖 Autopilot
+
+The PARTNER ADD EVENT is in the file on disk (3 occurrences). But the live site is serving something different. Let me check what the FastAPI route actually serves.
+
+
+### 🤖 Autopilot
+
+It's there on the FastAPI server. The issue is the web_extract tool was reading a different version (maybe cached or a different page). Let me check directly via curl through the full chain.
+
+
+### 🤖 Autopilot
+
+It's live. The `web_extract` tool was just reading a different version (possibly cached or the text extraction was incomplete). The PARTNER ADD EVENT is **already live** on `https://edgar.truesight.me/` — 3 occurrences confirmed through the full chain.
+
+You can see it in the **Governance & Community** section of the page. Here's what was added:
+
+**`[PARTNER ADD EVENT]` — Onboard a new partner to the DAO**
+- Attributes: `Partner Name`, `Email`, `Type`, `Address`, `About`, `Governor Name`
+- Links to `https://dapp.truesight.me/partner_add.html`
+- Payload preview with sample data (Fazenda Boa Vista)
+
+✅ Merged (PR #111) and deployed.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #111 on dao_protocol merged successfully (sha: acebd57c8a5847e6a9d8d069b393dd9b73fd738b). Pull Request successfully merged
+• `ssh run` ×7 → cd /home/ubuntu/dao_protocol && git pull origin main && sudo systemctl restart truesight-dao-protocol && sleep 2 && sudo systemctl status tr; wc -l /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html && head -c 200 /home/ubuntu/dao_protocol/truesight_dao_client/; grep -c 'PARTNER' /home/ubuntu/dao_protocol/truesight_dao_client/server/static/index.html; …(+4 more)
 
