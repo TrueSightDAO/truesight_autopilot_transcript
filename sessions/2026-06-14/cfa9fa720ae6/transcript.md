@@ -110,7 +110,13 @@ Let me try a different approach — I'll use `grep`-like search to find the sect
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the actual page on the web to see the sections.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -331,4 +337,16 @@ Take a look when it deploys and let me know if anything needs adjusting.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #237 on truesight_me_beta merged successfully (sha: 208d4a2dcb38d2c498facda023d53fda48d68dd6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] looks pretty cool! promote to production
+
+
+### 🤖 Autopilot
+
+There's a merge conflict syncing beta → prod. This is likely the intentional CNAME divergence (beta and prod have different domain configs). A human needs to reconcile this — I can't force it.
+
+Could you take a look at the conflict on `truesight_me_prod` and resolve it manually? The changes are just the section re-ordering from PRs #236 and #237 on the beta branch — should be straightforward to merge into prod.
 
