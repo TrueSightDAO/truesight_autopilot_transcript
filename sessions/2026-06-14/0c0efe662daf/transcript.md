@@ -1303,6 +1303,11 @@ That's the contribution ledger (TDG tracking), not the cash balance sheet. Let m
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the treasury-cache repo which should have the balance sheet data.
 
 
@@ -1357,4 +1362,25 @@ The OtoCo UNA path (~$50 gas) is still easily affordable. The Brazilian LTDA ($1
 ### 🤖 Autopilot
 
 Yes, I'm here. What's on your mind?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Also note that only cash sitting in main ledger is available for deployment into this structure not those on managed ledgers since those are ear marked for very specific purposes most of them for cacao shipment related financing so your reference to USD$15K++ is not accurate
+
+
+### 🤖 Autopilot
+
+Already caught and corrected in v5 (PR #494). The proposal now shows:
+
+| Item | Amount |
+|------|--------|
+| **Main Ledger USD** | **$3,476.27** |
+| Main Ledger USDT | $66.93 |
+| Main Ledger Brazilian Reis | ~$583.53 |
+| **Total available cash** | **~$4,126.73** |
+
+The OtoCo UNA path (~$50 gas) is still easily affordable at ~1.2% of available treasury. The Brazilian LTDA ($1K-$3K) would be 24-73% — doable but significant.
+
+Want me to merge PR #494 to `main` so the corrected version is live at the clean URLs?
 
