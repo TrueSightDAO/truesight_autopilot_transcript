@@ -2550,6 +2550,7 @@ The base64 is too large to pass through the upload tool parameter. Let me use a 
 ### 🤖 Autopilot
 
 SSH is down. Let me use the upload_file_to_github with the base64 from the generate_pdf output directly — it was saved as an artifact. Let me try passing it.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2758,4 +2759,58 @@ TrueTech Inc (Delaware C-corp)
 The DUNA tells TrueTech Inc *what* to do (import this cacao, clear this shipment). TrueTech Inc's board handles *how* to do it (which customs broker, which FDA filing route).
 
 **This is the cleanest structure yet.** Want me to update the proposal with this final framing and merge to main?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] YEah.
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in repository]
+
+[1 tool result(s) compacted: read_tool_result — detail in repository]
+
+Now I have the full doc. Let me rewrite it with the final framing — TrueTech Inc as a DAO-operated facility, no TDG compensation, clean separation of governance.
+[1 tool result(s) compacted: git_push_changes — detail in repository]
+
+Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in repository]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in repository]
+
+The base64 was too large again. Let me use the local file approach.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in repository]
+
+Both files are on the v11 branch. Let me merge to main.
+[1 tool result(s) compacted: merge_pr — detail in repository]
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What changed in the final version
+
+**Core structure simplified to:**
+```
+DUNA (Wyoming nonprofit) — governed by TDG holders
+    ↓ Operates
+TrueTech Inc (Delaware C-corp) — customs/FDA facility
+Brazilian CNPJ — export facility
+```
+
+**Key changes:**
+- TrueTech Inc is a **DAO-operated facility**, not a member — no TDG compensation, no voting rights
+- DAO members are reflected in the **UNA/DUNA**, not on TrueTech Inc's board
+- TrueTech Inc's board handles operational/compliance decisions
+- Two separate bank accounts: TrueTech Inc (import expenses) + DUNA (partner contributions, tree planting)
+- All 7 SVH questions updated to match this structure
+
+Ready for the June 26 meeting.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #499 on agentic_ai_context merged successfully (sha: 7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b). Pull Request successfully merged
 
