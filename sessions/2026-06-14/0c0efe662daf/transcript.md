@@ -1581,6 +1581,7 @@ The question is whether Wise will accept a Wyoming UNA as a customer. They're ge
 ### 🤖 Autopilot
 
 Great question. Let me check what happens to the EIN when UNA converts to DUNA.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1765,4 +1766,24 @@ Already answered this above — but let me make it concrete with the data from t
 **Result:** Only **Gary** needs to report name, DOB, address, and ID for the CTA BOI filing. The other ~350 TDG holders remain pseudonymous — wallet address only.
 
 This is a key advantage of the UNA/DUNA structure: the vast majority of contributors never need to dox themselves.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I guess that is just only myself then. Which makes things easier
+
+
+### 🤖 Autopilot
+
+Exactly. One person to report. Everyone else stays pseudonymous. Clean and simple.
+
+This also means the **OtoCo UNA formation** is straightforward:
+
+| Who | What They Provide |
+|-----|-------------------|
+| **Gary** (signer 1) | Name, DOB, address, government ID (for CTA BOI filing + Wise bank signatory) |
+| **TrueTech Inc rep** (signer 2) | Same — but TrueTech Inc is a corporate entity, so its authorized rep provides their personal info |
+| **Every other TDG holder** | Nothing. Wallet address is sufficient. |
+
+No cascading KYC requirements. No asking 350 people to dox themselves. Just two signers for the entity, one beneficial owner to report.
 
