@@ -1990,6 +1990,11 @@ I have the full base64. Let me upload it directly.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have the full base64. Let me extract just the base64 string and upload it.
 
 
@@ -2209,4 +2214,14 @@ The UNA buying TDG from the DApp is the cleanest path for **member exit liquidit
 **The only real question for SVH Capital:** Can a Wyoming UNA/DUNA use its treasury to purchase its own membership tokens from members on a secondary market, as a liquidity provision mechanism?
 
 This is a good question to add to the list for June 26.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yup.
+
+
+### 🤖 Autopilot
+
+Want me to add this question to the proposal doc and update the PDF?
 
