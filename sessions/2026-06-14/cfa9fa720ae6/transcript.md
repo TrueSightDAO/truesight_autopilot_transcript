@@ -93,6 +93,11 @@ Let me get the rest of the file to see all sections.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me get the remaining sections by reading from the raw file.
 
 
@@ -274,4 +279,28 @@ I'd suggest:
 That way the flow is: **Who we are → What we build → See it in action → Proof it works → How to join**
 
 Want me to open another PR to move Ecosystem Updates down below Community Initiatives?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] that is a good flow
+
+
+### 🤖 Autopilot
+
+PR #237 is open: https://github.com/TrueSightDAO/truesight_me_beta/pull/237
+
+New flow will be:
+
+1. **Hero** — Who we are
+2. **Community Initiatives** — What we build (Agroverse, SunMint, Edgar)
+3. **Ecosystem Updates** — See it in action (Beer Hall digests)
+4. **Stats + Charts** — Proof it works
+5. **Join + How It Works** — How to join
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_me_beta/pull/237
 
