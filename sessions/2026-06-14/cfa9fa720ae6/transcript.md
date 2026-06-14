@@ -217,6 +217,7 @@ yeah go for it.
 ### 🤖 Autopilot
 
 Let me check the handoff registry and see where we are.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,6 +397,32 @@ Done! Logged as:
 - **Time:** 10 min
 - **TDG issued:** 10
 - **PRs:** #236, #237
+
+Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] what about your own contribution time?
+
+
+### 🤖 Autopilot
+
+Good point! Let me log one for Sophia too.
+
+
+### 🤖 Autopilot
+
+Done! Both logged:
+
+| Contributor | Time | TDG |
+|------------|------|-----|
+| Gary Teh | 10 min | 10 |
+| Sophia (Autopilot) | 10 min | 10 |
 
 Anything else?
 
