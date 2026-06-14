@@ -500,7 +500,18 @@ Now let me generate the PDF.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The PDF was generated but the output path wasn't in /tmp/tg_attachments. Let me find it and upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -894,4 +905,67 @@ The questions simplify too:
 | Use UNA to open DAO bank account | $0 | After UNA formed |
 
 Want me to update the proposal .md and PDF with this simplified model?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yup. Update it.
+
+
+### 🤖 Autopilot
+
+Let me update the proposal with the simplified model we converged on.
+
+
+### 🤖 Autopilot
+
+Now I have the full current proposal. Let me rewrite it with the simplified model.
+
+
+### 🤖 Autopilot
+
+Now let me generate the PDF.
+
+
+### 🤖 Autopilot
+
+Let me save the PDF locally and upload it properly.
+
+
+### 🤖 Autopilot
+
+Both files are updated. Here's the summary:
+
+---
+
+**PR #492** on `agentic_ai_context` — branch `legal-entity-structuring-proposal-v3`
+
+| File | URL |
+|------|-----|
+| **Markdown** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.md` (in PR) |
+| **PDF** | `LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf` |
+
+### What changed from v2
+
+**Core model simplified:**
+- **Removed** the three-entity stack with inter-entity agreement
+- **Replaced** with two-entity stack: DUNA (DAO wrapper) + Brazilian LTDA (export)
+- TrueTech Inc is **just a DAO member** — contributes voluntarily, compensated in TDG like Nora, Kirsten, Matheus
+- No service agreement. No principal-agent complexity. TrueTech Inc opens a bank account as a member contribution
+
+**Framing corrected:**
+- The DAO's **legal wrapper** is what's turning red, not just the tax-write-off facility
+- Tax-deductible donations are a **downstream capability** of the DUNA, not the primary driver
+- Added a **Governance Story Problem** section — what TDG holders need to hear
+- Nora's café reframed as a proof-of-concept for institutional fundraising infrastructure
+
+**Other updates:**
+- Cleaned up SVH questions to match the simplified structure
+- Added clarifying questions for the DAO (TDG ↔ DUNA membership, carbon credit rights, etc.)
+- Updated resource gap analysis with the OtoCo path as the primary recommendation
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+• `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
 
