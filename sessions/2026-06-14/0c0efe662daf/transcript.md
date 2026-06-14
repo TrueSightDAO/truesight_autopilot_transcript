@@ -2532,6 +2532,7 @@ PR #497 is created. Now let me generate the PDF and upload it.
 ### 🤖 Autopilot
 
 The PDF was generated. Let me save it locally and upload to the branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2659,4 +2660,29 @@ TrueTech Inc isn't a general-purpose DAO member — it's a **specialized service
 This also means TrueTech Inc **does need its own bank account** — customs bonds, FDA fees, and import duties flow through it. That's separate from the DUNA's bank account for partner contributions and tree-planting funds.
 
 Want me to update the proposal with this corrected framing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Actually I wonder if it shold even be consider a member or just a DAO operated facility?
+
+
+### 🤖 Autopilot
+
+That's a cleaner framing. TrueTech Inc isn't a "member" with voting rights — it's a **DAO-operated facility** that serves a specific function.
+
+Like a warehouse or a truck — the DAO owns or operates it for a purpose. TrueTech Inc is the DAO's **customs clearance and FDA compliance facility**.
+
+This means:
+
+- TrueTech Inc doesn't hold TDG voting rights as a member
+- TrueTech Inc is compensated in TDG for its operational services (like paying a contractor)
+- The TDG it receives can be used however the DAO decides — held, sold, or used for governance if the DAO chooses to give it voting power
+- The DUNA is the DAO's legal wrapper; TrueTech Inc is an asset/facility of the DAO
+
+**The question this raises:** Can a Wyoming DUNA own or operate a Delaware C-corp as a facility? Or does the C-corp need to be owned by a separate entity (like a Wyoming LLC) that the DUNA controls?
+
+This is another good question for SVH Capital on the 26th.
+
+Want me to update the proposal with this "facility" framing?
 
