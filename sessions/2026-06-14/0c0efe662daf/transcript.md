@@ -516,6 +516,21 @@ The PDF was generated but the output path wasn't in /tmp/tg_attachments. Let me 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both files are delivered. Here's the summary:
 
 ---
@@ -968,4 +983,32 @@ Both files are updated. Here's the summary:
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
 • `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Or how about Gary and TrueTEch Inc go for OtoCo on-chain UNA and then use that to open DAO bank account??
+
+
+### 🤖 Autopilot
+
+That's exactly the path. Let me clarify the roles:
+
+**Gary** — as a DAO member, one of the 2+ wallets that signs the OtoCo smart contract to summon the UNA
+**TrueTech Inc** — as a DAO member, another wallet that signs. Also opens the business bank account as a member contribution to the DAO
+
+The flow:
+
+```
+1. Gary + TrueTech Inc (2 wallets) → sign OtoCo smart contract → UNA formed (~$50 gas)
+2. UNA gets an EIN from the IRS (free, online)
+3. UNA uses EIN → opens bank account at a DAO-friendly bank
+4. TrueTech Inc's existing account can receive funds as custodian until the UNA account is live
+```
+
+The UNA is the DAO's legal personhood. The bank account belongs to the UNA, not to Gary personally. TrueTech Inc is just helping set it up as a member.
+
+This is the leanest, fastest path — ~$50 and 1-2 days to entity formation, then 2-4 weeks for the bank account. All within our $14K treasury.
+
+Want me to add this as the primary recommended action in the proposal?
 
