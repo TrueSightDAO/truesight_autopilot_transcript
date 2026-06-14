@@ -1585,6 +1585,76 @@ The `[PARTNER ADD EVENT]` string already exists in the codebase! Let me check th
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls /home/ubuntu/ 2>/dev/null; ls /home/ubuntu/sentiment_importer/app/controllers/ 2>/dev/null
@@ -1598,26 +1668,41 @@ The `[PARTNER ADD EVENT]` string already exists in the codebase! Let me check th
 ### 🤖 Autopilot
 
 Let me pull the latest agentic_ai_context from GitHub to see the changes.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the Mac workspace context — not the latest. Let me check the actual GitHub repo for recent changes and look for the Edgar split.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see `sentiment` and `sentiment_importer` as separate repos. Let me check the latest agentic_ai_context for the Edgar split documentation.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the latest commits on agentic_ai_context to see what changed.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the context files reference `sentiment_importer` as "Perch" (formerly Edgar). Let me check the latest commits on agentic_ai_context to see what changed recently.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1710,4 +1795,119 @@ Want me to proceed with creating the PR for the `dao_protocol` repo with the dis
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → ls /opt/ 2>/dev/null; find /opt -maxdepth 3 -name "*.py" -path "*/app/*" 2>/dev/null | head -20; systemctl list-units --type=service --state; sudo ls /opt/ 2>/dev/null; sudo find /opt -maxdepth 3 -type d 2>/dev/null | head -20; sudo systemctl list-units --type=service --state=runni; sudo ls -la /opt/ 2>/dev/null; sudo find / -maxdepth 3 -name "dao*" -type d 2>/dev/null | head -20; ps aux | grep -i dao 2>/dev/null | head ; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] [Handoff context — this Telegram topic (thread 3926) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+draft implementation plan, roadmap and checklist before proceeding.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and then draft the plan.
+
+
+### 🤖 Autopilot
+
+Good — this thread (3926) isn't a formal handoff in the manifest. It's a direct conversation with you about onboarding Kopi Bay. Let me draft the implementation plan for the `[PARTNER ADD EVENT]` protocol.
+
+---
+
+## Implementation Plan: `[PARTNER ADD EVENT]` Protocol
+
+### Problem
+Onboarding a new retail partner (like Kopi Bay) requires manually writing to the DAO Partners sheet. The `cypher_defense` SA is read-only, and there's no automated event handler for partner additions. This means every new partner requires either sheet access delegation or manual data entry.
+
+### Solution
+Add a `[PARTNER ADD EVENT]` end-to-end, mirroring the existing `[CONTRIBUTOR ADD EVENT]` pattern:
+
+```
+Signed Event → Edgar (FastAPI) → Telegram Chat Logs → GAS Webhook → DAO Partners sheet
+```
+
+### Files to Change
+
+**Repo: `dao_protocol` (FastAPI server)**
+
+| File | Change |
+|------|--------|
+| `truesight_dao_client/server/dispatch.py` | Add `[PARTNER ADD EVENT]` routing entry → `PARTNER_ADD_PROCESSING` webhook |
+| `truesight_dao_client/modules/add_partner.py` | **New file** — CLI module using `build_event_cli` with canonical fields: Partner Name, Email, Address, Type (Wholesale/Consignment), Website, About, Governor Name |
+| `pyproject.toml` | Add `truesight-dao-add-partner` console script entry point |
+
+**Repo: `tokenomics` (GAS scripts)**
+
+| File | Change |
+|------|--------|
+| `google_app_scripts/edgar_webhook_handler/Code.gs` or new file | Add `processPartnerAddsFromTelegramChatLogs` — reads from Telegram Chat Logs sheet, appends row to DAO Partners sheet |
+
+**Infrastructure (autopilot box)**
+
+| Resource | Change |
+|----------|--------|
+| `.env` on `dao_protocol` host | Add `DAO_PROTOCOL_WEBHOOK_PARTNER_ADD_PROCESSING` pointing to the GAS webhook URL |
+
+### Data Flow
+
+```
+1. Governor runs: truesight-dao-add-partner \
+     --partner-name "Kopi Bar & Bakery" \
+     --email "nora@noraharon.com" \
+     --address "2155 Center St, 2nd Floor, Berkeley, CA 94704" \
+     --type "Wholesale" \
+     --website "thekopibar.com" \
+     --about "Indonesian-Singaporean café at BAMPFA..." \
+     --governor-name "Gary Teh"
+
+2. CLI signs [PARTNER ADD EVENT] payload → POST to edgar.truesight.me/dao/submit_contribution
+
+3. Edgar (FastAPI) verifies signature → logs to Telegram Chat Logs sheet → 
+   dispatches background task → fires GAS webhook
+
+4. GAS handler reads the latest row from Telegram Chat Logs →
+   extracts partner fields → appends to DAO Partners sheet
+```
+
+### Checklist
+
+| # | Step | Status |
+|---|------|--------|
+| **1** | **PR: `dao_protocol` — Add dispatch routing** | ⬜ |
+| 1.1 | Add `[PARTNER ADD EVENT]` entry to `ROUTING` in `dispatch.py` | ⬜ |
+| 1.2 | Add env key `PARTNER_ADD_PROCESSING` → `processPartnerAddsFromTelegramChatLogs` | ⬜ |
+| **2** | **PR: `dao_protocol` — New CLI module** | ⬜ |
+| 2.1 | Create `modules/add_partner.py` with `build_event_cli` | ⬜ |
+| 2.2 | Register `truesight-dao-add-partner` in `pyproject.toml` | ⬜ |
+| **3** | **PR: `tokenomics` — GAS webhook handler** | ⬜ |
+| 3.1 | Create `processPartnerAddsFromTelegramChatLogs` function | ⬜ |
+| 3.2 | Deploy via `gas_deploy_project` | ⬜ |
+| **4** | **Infrastructure: Configure webhook URL** | ⬜ |
+| 4.1 | Set `DAO_PROTOCOL_WEBHOOK_PARTNER_ADD_PROCESSING` on `dao_protocol` box | ⬜ |
+| **5** | **Test: End-to-end dry run** | ⬜ |
+| 5.1 | Submit `[PARTNER ADD EVENT]` with `--dry-run` | ⬜ |
+| 5.2 | Verify row appears in DAO Partners sheet | ⬜ |
+| **6** | **Onboard Kopi Bay using the new protocol** | ⬜ |
+| 6.1 | Run `truesight-dao-add-partner` for Kopi Bay | ⬜ |
+| 6.2 | Verify DAO Partners sheet updated | ⬜ |
+
+### Gates
+
+- **Gate A**: PRs reviewed and merged by you before deployment
+- **Gate B**: GAS webhook URL configured and tested with a dry-run event
+- **Gate C**: Kopi Bay row verified in DAO Partners sheet
+
+### RESUME HERE
+
+Once you approve this plan, I'll:
+1. Create PR #1 on `dao_protocol` (dispatch + CLI module)
+2. Create PR #2 on `tokenomics` (GAS handler)
+3. Configure the webhook URL on the `dao_protocol` box
+4. Test end-to-end with a dry run
+5. Then onboard Kopi Bay using the new protocol
+
+---
+
+Thoughts on this plan? Any changes before I proceed?
 
