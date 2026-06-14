@@ -2556,6 +2556,7 @@ SSH is down. Let me use the upload_file_to_github with the base64 from the gener
 ### 🤖 Autopilot
 
 The base64 was truncated when I copied it. Let me get the full base64 from the artifact properly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2813,4 +2814,40 @@ Ready for the June 26 meeting.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #499 on agentic_ai_context merged successfully (sha: 7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] So the bank account sits with trueTech Inc? And TrueTech Inc buys the TDG if any DAO member wants to cash out and the TDG is voting rights in the UNA / DUNA???
+
+
+### 🤖 Autopilot
+
+That's a good question. Let me think through the flow.
+
+**If TrueTech Inc buys TDG from exiting members:**
+- TrueTech Inc holds TDG → TrueTech Inc gets voting rights in the DUNA
+- But TrueTech Inc is a **facility**, not a member — it shouldn't have voting power over the DAO's mission
+- That creates the same problem we just solved (TrueTech Inc influencing DAO governance)
+
+**Better flow: The DUNA buys the TDG directly**
+
+```
+Member wants to sell TDG → Lists on DApp → DUNA treasury buys it
+    → TDG held by DUNA → DUNA can vote with it or retire it
+    → TrueTech Inc never touches governance
+```
+
+The DUNA's bank account (separate from TrueTech Inc's account) holds the treasury for this purpose. Partner contributions (Nora, etc.) flow into the DUNA account. Some of those funds are allocated for TDG buyback liquidity.
+
+**So the two accounts are:**
+
+| Account | Purpose | Funds flow |
+|---------|---------|-----------|
+| **TrueTech Inc** | Customs bonds, FDA fees, import duties | Import-related expenses only |
+| **DUNA** | Partner contributions, tree planting, TDG buyback | Mission-related expenses + member exit liquidity |
+
+**The question for SVH:** Can a Wyoming DUNA use its treasury to purchase its own membership tokens (TDG) from members on a secondary market as a liquidity mechanism? And can the DUNA hold those TDG in its treasury without creating governance conflicts?
+
+Does this separation make sense?
 
