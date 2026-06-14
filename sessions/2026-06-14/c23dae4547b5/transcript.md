@@ -791,6 +791,7 @@ Let me find the stockist list section in the wholesale page.
 ### 🤖 Autopilot
 
 Let me find the stockist list section in the wholesale page.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -880,4 +881,22 @@ There are other service accounts available too:
 - `agroverse_market_research`
 
 Want me to try one of those for the sheet writes, or would you prefer to add write access to `cypher_defense` on the Contributors and DAO Partners sheets?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] what is the email address associated with that key?
+
+
+### 🤖 Autopilot
+
+The email address for the `cypher_defense` service account is:
+
+**`cypher-defense@get-data-io.iam.gserviceaccount.com`**
+
+If you add this email as an **Editor** on the Main Ledger spreadsheet (`1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`), I'll be able to write the sheet updates for Nora's onboarding.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 -c " import json with open('config/google/cypher_defense_gdrive_key.json') as f: data = json.load(f)
 
