@@ -1787,3 +1787,38 @@ This also means the **OtoCo UNA formation** is straightforward:
 
 No cascading KYC requirements. No asking 350 people to dox themselves. Just two signers for the entity, one beneficial owner to report.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] perfect, can you update your proposal then?
+
+
+### 🤖 Autopilot
+
+Now I have the full current proposal. Let me update it with the CTA clarification — only Gary needs to report, everyone else stays pseudonymous.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Done. **PR #495** — `legal-entity-structuring-proposal-v6`
+
+### What's new in v6
+
+Added a dedicated **Section 3: CTA Beneficial Ownership — Who Reports** with:
+
+- Clear definition of "substantial control" under the CTA
+- Table from the Contributors Voting Weight ledger showing only Gary (40.76%) crosses the threshold
+- Confirmation that ~350 other TDG holders remain pseudonymous — wallet address only
+- This is now listed as a key advantage throughout the proposal
+
+Want me to merge to `main`?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
