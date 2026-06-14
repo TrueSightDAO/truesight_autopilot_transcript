@@ -131,5 +131,12 @@
     "summary": "Re-order the landing page (index.html) sections to follow a \"Human first \u2192 Platform \u2192 System health \u2192 How it works\" narrative arc.\n\nCurrent order:\n1. Hero (mission + CTA buttons)\n2. Stats grid (treasu",
     "action": "merge_pr",
     "created_at": "2026-06-14T19:55:33Z"
+  },
+  {
+    "title": "Merge PR #237 on truesight_me_beta",
+    "qr_code": "",
+    "summary": "Move the Ecosystem Updates section (Beer Hall digests) down below Community Initiatives on the landing page index.html.\n\nCurrent order after PR #236:\n1. Hero\n2. Ecosystem Updates (Beer Hall digests)\n3",
+    "action": "merge_pr",
+    "created_at": "2026-06-14T20:00:33Z"
   }
 ]
