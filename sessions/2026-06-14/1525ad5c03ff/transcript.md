@@ -721,3 +721,54 @@ That's redundant and confusing. Two options:
 
 I'd go with **Option A** — cleanest separation. The Edgar card in Community Initiatives was always a bit of a stretch (it's infrastructure, not a venture like Agroverse or SunMint). Want me to update the PR?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] OPtion A then . But it means that the "Community Initiatives" will have 3 boxes. 2 at the top and one below... Looks awful isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — a 3-card grid with 2 on top and 1 below looks broken. The `card-grid` is a 3-column layout, so 3 cards would stack as one row of 3, which is fine. Let me check:
+
+
+### 🤖 Autopilot
+
+It's `auto-fit, minmax(280px, 1fr)` — so 3 cards will sit in one row on desktop, and stack on mobile. That's fine.
+
+But wait — the Community Initiatives section currently has **4** cards: Agroverse, SunMint, Edgar, Lineage. If I remove Edgar, that leaves 3 (Agroverse, SunMint, Lineage) — which is a clean 3-column row.
+
+Let me update the PR to remove the Edgar card from Community Initiatives.
+
+
+### 🤖 Autopilot
+
+The branch was already pushed. Let me force-push the updated commit.
+
+
+### 🤖 Autopilot
+
+Now add the Platform Services section:
+
+
+### 🤖 Autopilot
+
+PR updated: https://github.com/TrueSightDAO/truesight_me_beta/pull/227
+
+The page now has:
+
+**Platform Services** (new section, 3 cards in a row):
+| Edgar | Perch | Sophia |
+|-------|-------|--------|
+| DAO Protocol API | Market Steward | Autopilot — AI SRE |
+
+**Community Initiatives** (3 cards in a row):
+| Agroverse | SunMint | Lineage |
+|-----------|---------|---------|
+
+Clean 3-column grids, no orphan cards, no duplication. Want me to deploy to beta for review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → grep -A5 "card-grid" /tmp/truesight_me_beta/styles/main.css 2>/dev/null || grep -A5 "card-grid" /tmp/truesight_me_beta/styles/*.css 2>/dev/n; cd /tmp/truesight_me_beta && git checkout main && git pull origin main && git branch -D add/perch-sophia-services-section 2>/dev/null; git c; cd /tmp/truesight_me_beta && python3 << 'PYEOF' with open('index.html') as f: content = f.read() # Find the Edgar card in Community Initiati; …(+2 more)
+
