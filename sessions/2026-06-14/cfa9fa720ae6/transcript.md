@@ -1041,6 +1041,22 @@ Want me to deploy the autopilot so it takes effect?
 ### 🤖 Autopilot
 
 You mean the response text isn't showing up in Telegram? Let me check if there's an issue with the bot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1120,4 +1136,22 @@ Want me to merge and deploy?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → sed -n '422,460p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '462,490p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '833,885p' /opt/truesight_autopilot/app/telegram_adapter.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] merge it but dont deploy yet
+
+
+### 🤖 Autopilot
+
+Merged! Commit `77813404` on `main`. Not deployed — will wait for your go-signal.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #208 on truesight_autopilot merged successfully (sha: 778134042b9f417deb1b32212366f51f2c635a1e). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #208 on truesight_autopilot merged successfully (sha: 778134042b9f417deb1b32212366f51f2c635a1e). Pull Request successfully merged
 
