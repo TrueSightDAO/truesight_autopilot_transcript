@@ -10,11 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now let me verify everything through the public endpoint:
-
-
-### 🤖 Autopilot
-
 All working. Here's the final state:
 
 **nginx now routes everything to dao_protocol (`172.31.23.207:8010`):**
@@ -661,4 +656,30 @@ Or from a **user journey** perspective:
 - **Perch** — if you're a strategist monitoring markets
 
 What order feels right to you?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] which one do you think is more appropriate for a new visitor to the DAO that doesnt know anything
+
+
+### 🤖 Autopilot
+
+For a **new visitor who knows nothing**:
+
+**Sophia → Edgar → Perch**
+
+Why:
+
+1. **Sophia first** — She's the most approachable entry point. "An autonomous agent that helps manage the DAO" is immediately understandable. New visitors can *talk to her* in Telegram. She's the human face of the infrastructure.
+
+2. **Edgar second** — Once they understand there's an agent, the next question is "what's the backend?" Edgar is the API, the protocol, the signed events. It's more technical but it's the natural next layer.
+
+3. **Perch third** — Market intelligence is the most niche. It matters to treasury ops and strategists, not to a first-time visitor.
+
+This way the page reads like a funnel: **Talk to someone → Learn how it works → Dive into strategy** — instead of starting with the most technical service.
+
+Want me to reorder the cards?
 
