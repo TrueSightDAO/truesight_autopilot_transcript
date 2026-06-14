@@ -1348,6 +1348,21 @@ Let me search for the JavaScript that renders the stops on the Pacific West Coas
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 OK so the Pacific West Coast page renders stops dynamically from `partners-data.js` (loaded from the root `/js/` path). The stops are rendered with a logo image from the partners logos folder. Since Kopi Bar IS in the data file, it should appear on the map/list. The issue you're seeing might be:
 
 1. **Browser cache** — try a hard refresh (Ctrl+Shift+R / Cmd+Shift+R)
@@ -1450,4 +1465,32 @@ Want me to merge and promote?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #176 on agroverse_shop_beta merged successfully (sha: c46760a59dc9774fca2c7d8148b2a8c226073083). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+use this for their logo instead
+
+[Attachment auto-processed: **04a6a6775418436ca7b2bc6d1c262fe6.jpg**]
+- Type: Image (OCR confidence: 68.2%, quality: good)
+
+Extracted text:
+```
+Ss KOPI BAR AND BAKERY
+```
+
+
+### 🤖 Autopilot
+
+Great — this is a photo of their actual storefront signage with "KOPI BAR AND BAKERY" — perfect for a logo. Let me upload it and update the logo reference.
+
+
+### 🤖 Autopilot
+
+Wait — I uploaded to `main` on beta, but the prod page already has the `.png` reference (from the earlier fix). Let me also push this to the prod branch so it's live.
+
+
+### 🤖 Autopilot
+
+**✅ Done!** The Kopi Bar logo on both the [partners listing page](https://agroverse.shop/partners/index.html) and the [Kopi Bar detail page](https://agroverse.shop/partners/kopi-bar-and-bakery/index.html) now shows the storefront signage photo instead of the previous logo. Try a hard refresh to see it.
 
