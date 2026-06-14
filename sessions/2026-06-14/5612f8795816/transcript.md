@@ -689,6 +689,11 @@ Let me find the system-status API endpoint:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The system-status API is in the vault_app.py. Let me check:
 
 
@@ -812,4 +817,101 @@ I appreciate the concern, but I want to be clear about what's actually happening
 **What I CAN do right now** — since you've given the go-ahead — is run the **UAT gates (U1–U7)** to verify every credential works end-to-end. If all pass, I'll proceed to Unit 5 (update docs) and Unit 6 (archive the bare files).
 
 Want me to run the UAT now?
+
+
+### 🧑 Governor
+
+I am only seeing this key in there. What about the credentials for AWS API, EC2 instance ssh, clasp push github PAT as well as google shee or google drive read writes...??
+
+[Attachment auto-processed: **061d74f66810447e9c8fa63144372ad8.jpg**]
+- Type: Image (OCR confidence: 84.4%, quality: good)
+
+Extracted text:
+```
+Credentials NAME PURPOSE VERSION ae CREATED ACTIONS Sophia TrueSight Google Oauth Sophia TrueSight Google Oauth wl Gary Teh 2026-06- Rotate | Credential Credential 14
+```
+
+
+### 🤖 Autopilot
+
+Great catch — you're right. The vault currently only has the **Google OAuth** credential that was auto-added. The 7 credentials I migrated earlier need to be verified. Let me check what's actually in the vault right now:
+
+
+### 🤖 Autopilot
+
+There's the problem. Only **1 credential** is in the vault — the Google OAuth one. The 7 I "migrated" earlier apparently didn't persist. Let me investigate what happened:
+
+
+### 🤖 Autopilot
+
+The encrypted file is 5004 bytes — that's big enough for 7+ credentials. Let me check if the vault module has a different key than what was used to write:
+
+
+### 🤖 Autopilot
+
+Confirmed — only 1 credential is in the vault. My earlier migration attempt failed silently. Let me check what happened by looking at the audit log and re-running the migration properly:
+
+
+### 🤖 Autopilot
+
+The audit log confirms — only the Google OAuth credential was ever added. My earlier migration script had a bug. Let me fix this properly now by adding all the credentials that should be there:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me also check the env vars and the clasp files:
+
+
+### 🤖 Autopilot
+
+Now let me also check the env vars that the tools actually use:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. There's a LOT more credentials than just the 7 I originally listed. Let me also check the Google service account keys:
+
+
+### 🤖 Autopilot
+
+Now I have the complete inventory. Let me add ALL of these to the vault properly:
+
+
+### 🤖 Autopilot
+
+The parameter is `created_by`, not `actor`. Let me fix and re-run:
+
+
+### 🤖 Autopilot
+
+Now let me verify:
+
+
+### 🤖 Autopilot
+
+Now **32 credentials** are in the vault. Refresh your vault page and you'll see them all. Here's the full inventory:
+
+**Credentials now in vault (32 total):**
+
+| Category | Credentials |
+|----------|------------|
+| **🔑 GitHub PATs** | `github_krake_pat`, `github_cypher_defence_pat`, `krake_llm_playground_pat` |
+| **🔑 SSH Keys** | `ssh_key_nelanco`, `ssh_key_server_us`, `ssh_key_california`, `ssh_key_sophia_infra`, `ssh_key_dao_protocol_beta` |
+| **💳 Stripe** | `stripe_test_key`, `stripe_beta_dao_protocol` |
+| **☁️ AWS** | `aws_key_nelanco`, `aws_secret_nelanco`, `aws_key_explorya`, `aws_secret_explorya` |
+| **📧 Gmail** | `gmail_token_admin`, `gmail_token_gary` |
+| **🔬 Google SAs** | `google_sa_cypher_defense`, `google_sa_tdg_scoring`, `google_sa_upc_barcode`, `google_sa_edgar_dapp_listener`, `google_sa_agroverse_qr`, `google_sa_agroverse_market_research` |
+| **🔄 Clasp OAuth** | `clasp_oauth_gary`, `clasp_oauth_admin` |
+| **🔌 API Keys** | `deepseek_api_key`, `tavily_api_key`, `telegram_bot_token`, `grok_api_key`, `npm_token`, `bigmodel_cn_api`, `bugsnag_api` |
+| **🤖 Auto-added** | `Sophia TrueSight Google Oauth Credential` |
+
+**Go refresh your vault page** at `https://sophia.truesight.me/vault` — you should see all 32 listed now.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → Full credential inventory and migration to vault (32 credentials)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() refs = v.list_refs() for r in refs: print(f'{r[\"name\"]; cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() refs = v.list_refs() for r in refs: print(f'{r.name:40s}; ls -la /opt/truesight_autopilot/vault/; …(+14 more)
 
