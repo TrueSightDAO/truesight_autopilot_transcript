@@ -2568,6 +2568,7 @@ The base64 is 18,397 bytes — too large to pass through the upload_file_to_gith
 ### 🤖 Autopilot
 
 That's the old PDF from earlier. Let me just use it — it was generated from the same content before the Wise updates. Actually, let me check what's on the v10 branch currently.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2881,4 +2882,56 @@ Member wants to sell → Lists on DApp → TrueTech Inc buys → TDG burned
 **The question for SVH becomes:** Can a Delaware C-corp (TrueTech Inc) buy and burn tokens that represent voting rights in a Wyoming DUNA, as an operational expense under a service/facility arrangement? This is cleaner than the DUNA buying its own tokens.
 
 Want me to add this to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] yeah. And then update the proposal to relfect this structure for both .md and pdf
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in repository]
+
+[1 tool result(s) compacted: read_tool_result — detail in repository]
+
+Now I have the full doc. Let me update it with the TDG buyback → burn mechanism and the two-account structure.
+[1 tool result(s) compacted: git_push_changes — detail in repository]
+
+Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in repository]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in repository]
+
+The base64 was too large again. Let me use the local file approach.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in repository]
+
+Both files are on the v12 branch. Let me merge to main.
+[1 tool result(s) compacted: merge_pr — detail in repository]
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new in the final structure
+
+**Two-account system:**
+| Account | Purpose |
+|---------|---------|
+| **TrueTech Inc** | Customs bonds, FDA fees, import duties, TDG buyback |
+| **DUNA** | Partner contributions, tree planting, DAO treasury |
+
+**TDG buyback → burn:**
+- TrueTech Inc buys TDG from DApp when members want to exit
+- TDG is burned immediately — no voting power held by TrueTech Inc
+- Deflationary mechanism rewards remaining holders
+- Cost is an operational expense of the DAO
+
+**SVH question updated:**
+> *"Can TrueTech Inc (Delaware C-corp, DAO-operated facility) buy and burn TDG tokens from the DApp as an operational expense, without creating governance or nonprofit distribution concerns?"*
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #500 on agentic_ai_context merged successfully (sha: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b). Pull Request successfully merged
 
