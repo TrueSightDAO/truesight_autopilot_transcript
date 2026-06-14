@@ -245,3 +245,36 @@ The change will be live on **beta.truesight.me** after the next deploy. Want me 
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #228 on truesight_me_beta merged successfully (sha: e254eb08101d2dbed560627b98bf4c73e6c6eadc). Pull Request successfully merged
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3827] if it is already merged, it will auto deploy based on github action isnt it?
+
+
+### 🤖 Autopilot
+
+Let me check if there's a GitHub Actions deploy workflow set up for truesight_me_beta.
+
+
+### 🤖 Autopilot
+
+No deploy workflow in truesight_me_beta. Let me check if the deploy happens from the prod repo or elsewhere.
+
+
+### 🤖 Autopilot
+
+No deploy workflow exists in truesight_me_beta. The site is hosted on GitHub Pages — let me check:
+
+
+### 🤖 Autopilot
+
+It's served by **GitHub Pages**. GitHub Pages auto-deploys from the repo's default branch — so yes, since the PR was merged to `main`, it should deploy automatically within a few minutes.
+
+The `visual-consistency.yml` workflow even confirms this — it triggers on `deployment_status` for the `github-pages` environment, meaning GitHub Pages is the deploy target.
+
+So you're right — merging to `main` triggers the GitHub Pages auto-deploy. Give it a couple minutes and the fix should be live on **beta.truesight.me**. Refresh and you should see all 3 Community Initiative cards on the same row.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -sI https://beta.truesight.me/ | grep -i "server\|x-github\|powered"
+
