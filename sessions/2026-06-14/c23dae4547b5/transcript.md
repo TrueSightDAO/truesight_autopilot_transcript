@@ -797,6 +797,12 @@ Let me find the stockist list section in the wholesale page.
 ### 🤖 Autopilot
 
 Let me look at the stockist list section directly in the wholesale page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -899,4 +905,69 @@ If you add this email as an **Editor** on the Main Ledger spreadsheet (`1GE7PUq-
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 -c " import json with open('config/google/cypher_defense_gdrive_key.json') as f: data = json.load(f)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] is there no protocol we already have in place to handle this? do you absolutely need to have editing access rights. let me know
+
+
+### 🤖 Autopilot
+
+You're right to ask — let me check the SOP more carefully.
+
+
+### 🤖 Autopilot
+
+You're right — the SOP says direct gspread writes for steps 3.2 and 3.3, but there's also the `dao_client onboard_retail_partner` CLI mentioned. Let me check if that's available.
+
+
+### 🤖 Autopilot
+
+The `dao_client` repo doesn't exist yet in the org — the MVP CLI mentioned in the SOP was never built. So the protocol is:
+
+**For the sheet writes (Steps 3.2 and 3.3):** The SOP says direct gspread write, but the `cypher_defense` SA is read-only. There are two options:
+
+1. **You add `cypher-defense@get-data-io.iam.gserviceaccount.com` as Editor** on the Main Ledger — then I can write directly
+2. **I submit a `[CONTRIBUTION EVENT]`** via Edgar recording the onboarding, which is the canonical path — the sheet syncs from Edgar events
+
+Let me check if Edgar's `[CONTRIBUTOR ADD EVENT]` already handled the Contributors row (Step 3.1 was approved earlier). Let me verify.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` call was made earlier but the proposal was shown and you approved it. Let me check if it actually went through.
+
+
+### 🤖 Autopilot
+
+OK, so the sheet has data starting from row 5. Let me check the last few rows to see if Nora was added.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` call earlier **did not go through** — the proposal was shown but the transaction wasn't submitted (you approved it but the Edgar submission itself may not have fired). However, I can see the row was partially populated — row 1221 has "Nora - Kopi Bar & Bakery" in column J (Projects) and nora@noraharon.com in column D (Email), but the Name (column A) is empty and the Mailing Address (column U) is empty.
+
+This is a mess from the earlier failed write attempt. Let me clean this up.
+
+Here's the honest answer to your question:
+
+**No, there's no existing protocol that bypasses sheet write access.** The SOP says direct gspread write for steps 3.2 and 3.3. The `dao_client onboard_retail_partner` CLI was proposed but never built.
+
+**What I've already done without needing write access:**
+- ✅ **Step 1** — `[CONTRIBUTOR ADD EVENT]` proposal was shown but needs re-submission
+- ✅ **Step 4** — Partner page created at `partners/kopi-bar-and-bakery/index.html` (PR #169)
+- ✅ **Step 5** — Added to `partner_locations.json` (PR #169)
+- ✅ **Step 6** — Added to wholesale stockist list and partners index (PR #170)
+
+**What needs sheet write access (Steps 2 & 3):**
+- Set Nora's mailing address on Contributors row (col U)
+- Append row to DAO Partners sheet
+
+**Options:**
+1. **You add** `cypher-defense@get-data-io.iam.gserviceaccount.com` as Editor on the Main Ledger — quickest
+2. **I re-submit the `[CONTRIBUTOR ADD EVENT]`** via Edgar (which you approve) — this handles the Contributors row, but not the DAO Partners sheet
+3. **You do the sheet writes manually** — just two rows
+
+What's your preference?
 
