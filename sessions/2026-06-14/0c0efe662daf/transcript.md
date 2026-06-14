@@ -2008,6 +2008,7 @@ The base64 is split across multiple artifact reads. Let me use a different appro
 ### 🤖 Autopilot
 
 The PDF was generated but the output_path parameter didn't save it there. Let me use the base64 directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2290,4 +2291,44 @@ TrueTech Inc account → used only for import/distribution expenses
 **This doesn't change the UNA plan** — it just gives us a working bank account in the 2-4 weeks while the UNA is being formed and applying for its own account. No blocker, no dependency.
 
 Want me to add this as a parallel track in the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yeah
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Now I have the full doc. Let me add the TrueTech Inc interim bank account as a parallel track.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+Done. **PR #498** — `legal-entity-structuring-proposal-v9`
+
+### What's new in v9
+
+Added a **parallel interim track** throughout the proposal:
+
+**Implementation Timeline updated:**
+| Phase | What | Cost | Timeline |
+|-------|------|------|----------|
+| Phase 1a: This week | TrueTech Inc opens business bank account (interim) | $0-500 | 1-2 weeks |
+| Phase 1b: This week | Gary + TrueTech Inc sign OtoCo → UNA formed | ~$50 gas | 1 day |
+| Phase 2: Next 2-4 weeks | UNA gets EIN → opens its own bank account | $0 | 2-4 weeks |
+| Phase 3: After UNA account | Migrate partner flows to UNA account | $0 | After UNA account |
+
+**Financial flow section updated** to show both the interim and target flows.
+
+**Risk mitigation added:** If the UNA can't open a bank account quickly, TrueTech Inc's account serves as backup custodian — no operational delay.
+
+Want me to merge to `main`?
 
