@@ -126,17 +126,10 @@
     "created_at": "2026-06-14T19:50:35Z"
   },
   {
-    "title": "Merge PR #205 on truesight_autopilot",
+    "title": "Merge PR #173 on agroverse_shop_beta",
     "qr_code": "",
-    "summary": "Add Sophia's registered ledger name to the system prompt. The governor (Gary Teh) confirmed that Sophia's registered name on the Contributors sheet (row 407, email admin+sophia@truesight.me) is \"Sophi",
+    "summary": "Fix three issues on the Agroverse shop beta site:\n\n1. **Add Kopi Bar & Bakery to partners-data.js** \u2014 Add a new entry for Kopi Bar & Bakery (Berkeley, CA) to the partners data array in `js/partners-da",
     "action": "merge_pr",
-    "created_at": "2026-06-14T21:26:30Z"
-  },
-  {
-    "title": "Merge PR #209 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Add deployed commit hash to the vault System Status page. Currently the status page shows active tracks and vault health but doesn't show which git commit is deployed. The governor wants to see the co",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T21:53:44Z"
+    "created_at": "2026-06-14T22:55:29Z"
   }
 ]
