@@ -947,11 +947,13 @@ Now I have the complete inventory. Let me add ALL of these to the vault properly
 ### 🤖 Autopilot
 
 The parameter is `created_by`, not `actor`. Let me fix and re-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1001,26 +1003,31 @@ Credentials NAME PURPOSE VERSION ae CREATED ACTIONS Sophia TrueSight Google Oaut
 You're right — the vault web page is only showing 1 credential because the vault module running in the **web process** (port 8002) is a different process from the one I just populated via CLI. The web server was started before I added the 32 credentials, so it's reading an older snapshot.
 
 Let me check and fix this:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault file has 32 credentials (66380 bytes) and the CLI sees them all. The web API requires auth. Let me check if the web process is running and serving the right data:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault web process (port 8002) was started at **21:20** — that's BEFORE I added the 32 credentials at **22:00**. The workers were forked before the data was added. Let me restart the vault web process so it picks up the latest data:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The process was killed but the supervisor hasn't restarted it yet. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's managed by systemd (`truesight-vault.service`). It auto-restarted. Let me verify it's serving the right data now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1081,16 +1088,24 @@ Here's what you'll see:
 ### 🤖 Autopilot
 
 Exactly right. Let me verify that's how the vault works:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check the web API to confirm what the frontend exposes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the template to see what the frontend actually shows:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1150,11 +1165,18 @@ Make the code changes, merge but dont redeploy yet
 ### 🤖 Autopilot
 
 Already done! PR #209 was merged earlier — it adds the commit hash display to the System Status page. Let me verify it's in the deployed code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH key issue. Let me check via the local filesystem:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1162,31 +1184,47 @@ SSH key issue. Let me check via the local filesystem:
 It's already there! PR #209 was merged earlier. The **System Status** page at `/vault/status` already has the "Deployed Version" card with a clickable commit hash link.
 
 Let me verify the backend API returns the commit hash:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the system-status API endpoint that returns the commit hash:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GitHub search only indexes the default branch. The PR #209 changes are on a merged branch but the code on disk has them. Let me check the actual API endpoint on disk:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the system-status endpoint in the codebase:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is large. Let me search for the system-status endpoint directly:
+[1 tool result(s) compacted: grep — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH is broken. Let me use the local filesystem:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1273,4 +1311,43 @@ The current deployed hash is **`347f64d`** — this includes:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && git log --oneline -5; cd /opt/truesight_autopilot && git log --oneline -5 2>&1; grep -n "system.status\|commit_hash\|api/system\|def get_system" /opt/truesight_autopilot/app/vault_routes.py 2>&1
+
+
+### 🧑 Governor
+
+I am still not seeing the commit hash here  when I go to this page https://sophia.truesight.me/vault/ If it is because the latest code is not deployed yet. I am fine
+
+[Attachment auto-processed: **2cc227eb7f34487493b035001080ba97.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+You're right — the commit hash is on the **System Status** page (`/vault/status`), not the main vault page (`/vault`). The screenshot shows the main vault page where you see the credentials list.
+
+But also — the code may not be fully deployed yet since the deploy was deferred. Let me check what's actually running:
+
+
+### 🤖 Autopilot
+
+Good — the **System Status** page (`/vault/status`) is live and has the **"Deployed Version"** card. But the JavaScript that fetches the commit hash from the API may not be working yet because the API endpoint needs the latest code.
+
+The issue is the **deploy was deferred** — the vault web process is still running the old code. The new code (PR #209 with the commit hash API endpoint) is on disk but not loaded into the running process.
+
+You said you're fine with it not being deployed yet. But actually — I restarted the vault process earlier when you saw the 32 credentials appear. Let me check if the API endpoint exists:
+
+
+### 🤖 Autopilot
+
+The API endpoint exists (returns 401, not 404 — meaning the route is registered). The code IS deployed. The issue is that the API requires you to be **signed in** to return the commit hash.
+
+So when you visit `/vault/status` while signed in, the JavaScript calls `/vault/api/system-status` with your JWT cookie and gets back the commit hash. When you're not signed in, it returns 401 and the "Deployed Version" card shows "Loading…" forever.
+
+**Two things:**
+1. **Sign in** at `https://sophia.truesight.me/vault` first, then navigate to **System Status** — you'll see the commit hash.
+2. If you'd also like the commit hash visible **without signing in** (on the public status page), I can make that change — just say the word.
+
+Want me to make the commit hash visible without requiring sign-in?
 
