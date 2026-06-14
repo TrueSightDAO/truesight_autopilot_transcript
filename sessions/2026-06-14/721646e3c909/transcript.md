@@ -1363,12 +1363,18 @@ Let me search for the JavaScript that renders the stops on the Pacific West Coas
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 OK so the Pacific West Coast page renders stops dynamically from `partners-data.js` (loaded from the root `/js/` path). The stops are rendered with a logo image from the partners logos folder. Since Kopi Bar IS in the data file, it should appear on the map/list. The issue you're seeing might be:
 
 1. **Browser cache** — try a hard refresh (Ctrl+Shift+R / Cmd+Shift+R)
 2. **The photo/logo** — each stop shows the partner's logo. The Kopi Bar logo is at `kopi-bar-and-bakery-logo.png` (works) but the partners listing page references `.jpg` (404)
 
 Let me fix the two confirmed issues:
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1493,4 +1499,19 @@ Wait — I uploaded to `main` on beta, but the prod page already has the `.png` 
 ### 🤖 Autopilot
 
 **✅ Done!** The Kopi Bar logo on both the [partners listing page](https://agroverse.shop/partners/index.html) and the [Kopi Bar detail page](https://agroverse.shop/partners/kopi-bar-and-bakery/index.html) now shows the storefront signage photo instead of the previous logo. Try a hard refresh to see it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4512] can we make sure to promote to prod?
+
+
+### 🤖 Autopilot
+
+The logo was already uploaded directly to the prod repo in the last step, so it's live. But let me also make sure the beta-to-prod sync is fully in sync by checking if there were any other changes that need promoting.
+
+
+### 🤖 Autopilot
+
+**✅ All synced.** The logo was already uploaded directly to prod, and the beta-to-prod sync is up to date. Everything should be live now — try a hard refresh on the [partners listing](https://agroverse.shop/partners/index.html) and [Kopi Bar detail page](https://agroverse.shop/partners/kopi-bar-and-bakery/index.html) to see the storefront signage logo.
 
