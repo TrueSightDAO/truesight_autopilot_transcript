@@ -413,11 +413,23 @@ When you're happy, tell me to **merge it** and I'll deploy, then run the full UA
 ### 🤖 Autopilot
 
 That's a sharp observation. Let me check how the vault web page currently handles sign-out.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the vault HTML template to see how sign-out currently works:
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -439,6 +451,27 @@ It **does** try to remove the keys from localStorage, but there are two problems
 2. **Delete the JWT cookie** on the server side — hit `/logout` which should clear the `auth_token` cookie
 
 Let me check the logout route:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -446,11 +479,18 @@ Let me check the logout route:
 There's **no `/logout` route** on the autopilot at all. The link in the template points to `/logout` which would 404. And the JWT cookie (`auth_token`) is never cleared server-side.
 
 Let me check how the JWT cookie is set:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full picture. The cookie is named `governor_chat_session`, not `auth_token`. And there's no logout route at all. Let me also check the vault API verify-signature to see how the cookie is set:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -481,6 +521,7 @@ onclick="try{localStorage.removeItem('publicKey');localStorage.removeItem('priva
 - Redirect to the login page so the user sees a clean state
 
 Let me open a fix PR for this:
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -541,51 +582,76 @@ i was thinking perhaps it might make sense to have the commit hash displayed on 
 ### 🤖 Autopilot
 
 Let me merge PR #199, deploy, then check the deployed hash and add the commit hash display to the vault page.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy is deferred because this thread is still active. Let me wait a moment and retry.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still busy — I'll retry once more:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy is deferred because this thread is still active — it won't restart while we're talking. Let me check the deployed hash on the running instance and add the commit hash feature you asked about.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deployed hash is `7b46cf7` — but PR #199 (`7edf7fd`) and PR #198 (vault-first fallback) aren't in the deployed version yet. The deploy was deferred. Let me check if PR #198 was also merged:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #199 was merged. Let me check if PR #198 (vault-first fallback) was merged too:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #198 is still **open** (not merged). And PR #199 was merged but the deploy was deferred. Let me check the deployed hash more carefully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — PR #199 (`7edf7fd`) is in the local git history. But the running process is at `7b46cf7` (before #199). The deploy was deferred. Let me check what the running process actually has:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault is running as a separate uvicorn process on port 8002. Let me check which commit it's running from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault is running. Now let me check the deployed hash — since the deploy was deferred, the running process is still at `7b46cf7`. Let me check if the git HEAD matches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,4 +738,47 @@ Want me to merge #209 and #198 when you're ready?
 • `deploy autopilot` ×3 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 • `ssh run` ×11 → cd /opt/truesight_autopilot && git log --oneline -5 2>&1; echo "---"; cat .git/HEAD 2>&1; echo "---"; cat app/version.py 2>/dev/null || echo; cd /opt/truesight_autopilot && git log --oneline -1 2>&1; echo "---"; git rev-parse HEAD 2>&1; cd /opt/truesight_autopilot && git log --oneline --all | head -20; …(+8 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/209
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] [Handoff context — this Telegram topic (thread 3981) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go ahead with | Vault-first fallback (#198) | ⏳ Still open — needs your review |
+| Commit hash display (#209) | ⏳ Open — needs your review |
+
+
+### 🤖 Autopilot
+
+Merging both PRs now.
+
+
+### 🤖 Autopilot
+
+Both merged. Now let me deploy so the vault picks up all three changes (sign-out fix, vault-first fallback, commit hash display):
+
+
+### 🤖 Autopilot
+
+Deploy is deferred because this thread is still active. Let me wait a moment and retry:
+
+
+### 🤖 Autopilot
+
+Still deferred — the deploy won't restart while we're talking in this thread. That's by design so you don't get disconnected mid-conversation.
+
+**Both PRs are merged:**
+
+| PR | Status | What it does |
+|----|--------|-------------|
+| **#198** — Vault-first fallback | ✅ Merged | Tools try vault first, fall back to current source |
+| **#209** — Commit hash display | ✅ Merged | Shows deployed hash on status page, clickable to GitHub |
+| **#199** — Sign-out fix | ✅ Merged (earlier) | Clears JWT cookie server-side |
+
+The deploy will auto-apply when this thread goes idle. Or if you want it now, just say **"end this thread"** and I'll deploy on the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #198 on truesight_autopilot merged successfully (sha: 13a2785c9f39989675b43f652783fedad5c57fef). Pull Request successfully merged; ✅ PR #209 on truesight_autopilot merged successfully (sha: 347f64df23f4ea1e610805c9a98476193ce33c59). Pull Request successfully merged
+• `deploy autopilot` ×2 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 
