@@ -2026,6 +2026,7 @@ SSH is down. Let me use a different approach — write the base64 to a local fil
 ### 🤖 Autopilot
 
 That's the old PDF from earlier. Let me check if the generate_pdf with output_path actually saved the file.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2372,4 +2373,30 @@ Already merged! PR #498 was merged to `main` in the previous turn. Both files ar
 - **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
 
 Ready for the SVH Capital conversation on the 26th.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I wonder if TrueTech Inc can just open a bank account with Wise?
+
+
+### 🤖 Autopilot
+
+Yes, absolutely. Wise Business accounts are available to US corporations like TrueTech Inc (Delaware C-corp). And since we're already using Wise for Brazil transfers, it's the natural choice.
+
+**TrueTech Inc opening a Wise Business account:**
+- ✅ TrueTech Inc is a registered Delaware C-corp — straightforward KYB
+- ✅ We already have the Wise relationship
+- ✅ Wise handles BRL directly — perfect for Brazil flows
+- ✅ No minimum balance required
+- ✅ Can be done this week
+
+**Then when the UNA gets its own Wise account:**
+- The UNA applies for its own Wise Business account (separate login)
+- TrueTech Inc's account continues for import/distribution expenses
+- Partner contributions (Nora, etc.) migrate to the UNA account
+
+**One thing to check:** Wise may ask about the nature of TrueTech Inc's business (cacao import). As long as it's clearly documented as agricultural commodity import, it should be fine. Wise has been known to ask follow-up questions for crypto-adjacent businesses, but TrueTech Inc is a straightforward import/ distribution company — no crypto treasury, no token sales.
+
+Want me to add Wise as the recommended bank for TrueTech Inc's interim account in the proposal?
 
