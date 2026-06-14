@@ -607,3 +607,53 @@ The DUNA solves all three. TrueTech Inc solves none of them (it's a separate for
 
 Does this sharper framing feel right?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] actually come to think of it perhaps just have the bank account sitting under truetech inc as its custodian is ok right? So basically the ledgal wrapper from the DAO has an agreement with TrueTech in as custodian to handle the funds?
+
+BUt i think problem is when Nora sends the proceeds from coffee sales. If it is to Truetech inc, then it needs to be booked as revenue before it can be channeled off for tree planting purposes?? Or we could just immediately book it off as an expense when the tree planting is incurred???
+
+
+### 🤖 Autopilot
+
+Great question. Let me think through the accounting.
+
+**Scenario A: Nora sends money to TrueTech Inc for tree planting**
+
+TrueTech Inc is a for-profit C-corp. Money coming in is **revenue**. If TrueTech then pays for tree planting, that's an **expense**. Net effect on taxable income: $0 (revenue - expense = 0). But:
+
+- Nora's customers don't get a tax write-off — TrueTech Inc can't issue tax-deductible receipts
+- TrueTech Inc still has to report the revenue and expense on its tax return
+- It works operationally but doesn't unlock the fundraising channel
+
+**Scenario B: TrueTech Inc as custodian, DAO DUNA as principal**
+
+TrueTech Inc holds the bank account, but the funds are **held on behalf of the DUNA** under a custodial agreement. When Nora sends money:
+
+- It's not TrueTech Inc's revenue — it's the DUNA's donation, held by TrueTech as custodian
+- TrueTech Inc passes it through to the tree-planting operation
+- TrueTech Inc books it as a liability (funds held for DUNA), not revenue
+
+This works **if** the DUNA exists as a legal entity that can be the principal. Without the DUNA, there's no entity to hold the funds "on behalf of."
+
+**Scenario C: Nora sends to TrueTech Inc, TrueTech books tree planting as expense**
+
+This is the simplest path right now:
+
+```
+Nora → TrueTech Inc (revenue) → Tree planting (expense)
+```
+
+Net taxable income: $0. But:
+- ❌ No tax-deductible receipt for Nora or her customers
+- ❌ No impact fund channel
+- ✅ TrueTech Inc's tax return shows the full picture
+
+**So the real question is:** Is the tax-deductible receipt for Nora's customers a **requirement** or a **nice-to-have**?
+
+- If it's a **requirement** → we need the DUNA + 501(c)(3) before Nora's flow starts
+- If it's a **nice-to-have** → TrueTech Inc can handle the flow today (revenue in, expense out, net $0 taxable), and the DUNA is a separate track for the bigger institutional fundraising play
+
+What's your read on Nora's expectations? Does she need to give her customers a tax write-off, or is she happy with "part of every cup goes to planting trees" without the tax receipt?
+
