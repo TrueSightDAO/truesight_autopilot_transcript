@@ -117,3 +117,119 @@ Exactly right. Let me confirm the full picture:
 
 The only thing I need from you is the **"go for it"** — then I execute from Unit 1 through Unit 6, reporting progress here at each gate.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] [Handoff context — this Telegram topic (thread 3981) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+Let me start by reading the vault module to understand the API, then execute Unit 1 — initialize the vault.
+
+
+### 🤖 Autopilot
+
+Good, I have the vault API. Now let me check the vault tools to understand the tool interface, then execute Unit 1 — initialize the vault.
+
+
+### 🤖 Autopilot
+
+Now let me check how the SSH tool currently resolves credentials — this is the key question for Unit 3.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The SSH tool uses `sophia_infra` key (not the `.pem` files at `/home/ubuntu/`). Let me check the GitHub tool and the GAS deploy tool too.
+
+
+### 🤖 Autopilot
+
+Now let me check the config to see how `github_pat` is resolved:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the git_tools to see how git_push_changes resolves credentials:
+
+
+### 🤖 Autopilot
+
+Excellent. Now I have the full picture. Let me execute **Unit 1 — Initialize the vault**.
+
+Key findings:
+- **SSH tool** uses `sophia_infra` key (not the `.pem` files) — the `.pem` files at `/home/ubuntu/` are for the fleet but the SSH tool already has its own key. The `.pem` files are for manual/backup access.
+- **GitHub tool** uses `settings.github_pat` which reads from `TRUESIGHT_DAO_AUTOPILOT` env var — already configured.
+- **git_push_changes** also uses `settings.github_pat` — same env var.
+- **GAS deploy** uses `clasp` which reads `~/.clasprc.json` — the file at `/home/ubuntu/.clasprc-gary.json` is a copy.
+
+So the vault migration is about centralizing these credentials so the tools CAN resolve from the vault, and so you can see/manage them all in one place. Let me start.
+
+**Unit 1: Initialize the vault.**
+
+
+### 🤖 Autopilot
+
+Vault initialized. Now **Unit 2: Add all 7 credentials**.
+
+
+### 🤖 Autopilot
+
+All 7 credentials added successfully (the error is just a missing method name at the end — all adds succeeded). Let me verify:
+
+
+### 🤖 Autopilot
+
+All 7 credentials are in the vault. Now **Unit 3: Update Sophia's tools to resolve from vault**.
+
+Looking at the code I read earlier:
+- **SSH tool** (`ssh_tools.py`) uses `sophia_infra` key — the `.pem` files are for backup/manual access. The SSH tool doesn't need vault resolution for its current operation.
+- **GitHub tool** (`github_tools.py`) uses `settings.github_pat` (env var `TRUESIGHT_DAO_AUTOPILOT`) — already configured.
+- **git_push_changes** (`git_tools.py`) also uses `settings.github_pat`.
+- **GAS deploy** (`gas_deploy_project.py`) uses `clasp` which reads `~/.clasprc.json` — the clasp OAuth file.
+
+The vault is the **credential registry** — tools don't need to change their resolution paths yet (they already work). The vault gives you a single pane of glass to see/manage all credentials. The tooling update (Unit 3) is about making tools *optionally* resolve from vault when their primary path fails, which is a code change. Let me open a PR for that.
+
+
+### 🤖 Autopilot
+
+Now let me also update the plan manifest to reflect progress:
+
+
+### 🤖 Autopilot
+
+---
+
+## ✅ Progress Report — Units 1 & 2 Complete
+
+Here's where we are:
+
+| Unit | Status | Detail |
+|------|--------|--------|
+| **1. Initialize vault** | ✅ **Done** | `/opt/truesight_autopilot/vault/` created with `vault.key` (chmod 600) + empty `vault.json.enc` |
+| **2. Add 7 credentials** | ✅ **Done** | All 7 migrated from `/home/ubuntu/` into encrypted vault |
+| **3. Update tools** | ⧗ **PR open** | [#197](https://github.com/TrueSightDAO/truesight_autopilot/pull/197) — wires SSH, GitHub, GAS tools to resolve from vault |
+| **4. UAT (U1–U7)** | ⏳ **Pending** | After PR #197 merges + deploys |
+| **5. Update docs** | ⏳ **Pending** | After UAT passes |
+| **6. Clean up** | ⏳ **Pending** | After UAT passes |
+
+**Credentials now in vault:**
+1. `github_krake_pat` — GitHub PAT for all Gary's repos
+2. `ssh_key_nelanco` — SSH key for 16 Nelanco fleet hosts
+3. `ssh_key_server_us` — SSH key for 3 US-East Krake hosts
+4. `ssh_key_california` — SSH key for californian_proxy
+5. `clasp_oauth_gary` — Clasp OAuth for garyjob@agroverse.shop
+6. `stripe_test_key` — Stripe test-mode secret key
+7. `github_cypher_defence_pat` — GitHub PAT for Cypher-Defense
+
+**Next step:** You can already log in at **https://sophia.truesight.me/vault** and see all 7 credentials listed with their metadata.
+
+**What I need from you:** Please review and merge **PR #197** on `truesight_autopilot` (the tooling update). Once it's merged and deployed, I'll run the full UAT (U1–U7) to verify each credential works end-to-end, then finish with docs + cleanup.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize(actor='Gary Teh') print('Initialized:', v.i; cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize() # Read all source files import json creds; cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() v.initialize() for name in ['github_krake_pat', 'ssh_key
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/197
+
