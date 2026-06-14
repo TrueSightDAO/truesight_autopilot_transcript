@@ -1713,11 +1713,18 @@ Now I see the picture clearly. The Edgar split is:
 2. **Edgar (Python/FastAPI)** — `dao_protocol` on `dao_protocol_nelanco` — the new Python port on port 8010
 
 Let me check the `dao_protocol` repo to understand its structure and see if it already has a `[PARTNER ADD EVENT]` handler.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the repo was renamed from `dao_protocol` to `dao_client`. Let me check the actual FastAPI server code to see how events are handled.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1910,4 +1917,130 @@ Once you approve this plan, I'll:
 ---
 
 Thoughts on this plan? Any changes before I proceed?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] [Handoff context — this Telegram topic (thread 3926) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I approve the plan. Go ahead with the execution and update of edgar once done. Utilize it to onboard Nora and her cafe
+
+
+### 🤖 Autopilot
+
+Let me first refresh the agentic_ai_context to make sure I have the latest, then start executing.
+
+
+### 🤖 Autopilot
+
+Good, context is fresh. Now let me start executing. First, let me look at the existing `dispatch.py` and `report_contribution.py` patterns more carefully to write the code correctly.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `edgar_client.py` to understand `build_event_cli` and the existing `add_partner` module if it exists.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `build_event_cli` function in the edgar_client to understand the pattern.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the existing GAS webhook handler for `processContributorAddsFromTelegramChatLogs` to understand the GAS pattern.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The Rails `dao_controller.rb` has the `trigger_immediate_processing` method that dispatches events. Let me find the relevant section.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. The Rails `dao_controller.rb` has the same dispatch chain. The FastAPI `dispatch.py` is the Python port. I need to add `[PARTNER ADD EVENT]` to both, but since the FastAPI is the active server, that's where I'll focus.
+
+Let me now create the PR for `dao_protocol` with the dispatch routing + CLI module.
+
+
+### 🤖 Autopilot
+
+I need to provide the actual file content. Let me create the new module file and the edits.
+
+
+### 🤖 Autopilot
+
+PR #108 is open. Now let me also add the routing to the Rails `dao_controller.rb` for completeness (the Rails side still handles some events), and then create the GAS handler PR.
+
+
+### 🤖 Autopilot
+
+The Rails `application.rb` is mostly market-data config. The webhook URLs for the dispatch are set in the Rails config. Let me check the relevant section for the contributor add webhook.
+
+
+### 🤖 Autopilot
+
+Now I see the full pattern. The Rails `application.rb` has webhook URLs for each event type. The `[PARTNER ADD EVENT]` would need a similar config entry. But since the FastAPI `dispatch.py` is the active server, the env var `DAO_PROTOCOL_WEBHOOK_PARTNER_ADD_PROCESSING` is what matters.
+
+Now let me create the GAS handler PR on the `tokenomics` repo. Let me first check the existing contributor add handler to understand the GAS pattern.
+
+
+### 🤖 Autopilot
+
+The contributor add handler is `process_contributor_add_telegram_logs.gs` in the `tdg_identity_management` project (scriptId `1m8IZPs1...`). Let me read it to understand the pattern.
+
+
+### 🤖 Autopilot
+
+The file is listed in the manifest but doesn't exist in the repo source. It's only in the deployed GAS project. Let me check the clasp mirror for the actual code.
+
+
+### 🤖 Autopilot
+
+The clasp mirror for the `tdg_identity_management` project doesn't exist locally. Let me check the deployed GAS web app directly to understand the pattern, then write the handler based on the established convention.
+
+
+### 🤖 Autopilot
+
+The GAS web app is live and accepts `action=processContributorAddsFromTelegramChatLogs`. Now I understand the pattern. The GAS handler reads from Telegram Chat Logs and writes to the Contributors sheet. I need to create a similar handler for partner adds.
+
+Let me look at the existing partner check-in handler to understand the DAO Partners sheet write pattern.
+
+
+### 🤖 Autopilot
+
+That's the `find_nearby_stores` endpoint. The partner check-in handler is a different action. Let me check the actual GAS source for the partner check-in handler in the clasp mirror.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the existing `doGet` in the `find_nearby_stores` project to see how actions are routed.
+
+
+### 🤖 Autopilot
+
+The `doGet` routing is in the clasp mirror's `Code.js` (the deployed version). The source files here are the canonical handlers. The `doGet` in the clasp mirror dispatches by `action` parameter.
+
+Now I have enough context. Let me create the GAS handler for `[PARTNER ADD EVENT]`. I'll add it to the `find_nearby_stores` project since that's where the partner-related handlers live.
+
+
+### 🤖 Autopilot
+
+Both PRs are open. Now let me configure the webhook URL on the `dao_protocol` box so the dispatch actually works. First, let me check what env vars are already set.
+
+
+### 🤖 Autopilot
+
+I can see the pattern. The `CONTRIBUTOR_ADD_PROCESSING` webhook points to the `tdg_identity_management` GAS project. For the `PARTNER_ADD_PROCESSING`, I should point it to the same `find_nearby_stores` GAS deployment since that's where the partner handlers live. Let me check which script ID the `find_nearby_stores` project uses.
+
+
+### 🤖 Autopilot
+
+The `find_nearby_stores` project has scriptId `1NpHrKJW8Q4suu6-f5gXQcbjHqUZtGOG-KcIf81M1GG8lDShm5-fLphD2`. The webhook URL for `RETAIL_FIELD_REPORT_PROCESSING`, `STORE_ADD_PROCESSING`, and `PARTNER_CHECK_IN_PROCESSING` all point to the same deployment URL: `https://script.google.com/macros/s/AKfycbwB2zqNV9nMCMWs2hSa8FecjA36Oh-mSVuz3pk8TpXrXcy9dvqOqgbWIirNka2LmacgPw/exec`.
+
+I should use the same deployment URL for `PARTNER_ADD_PROCESSING` since the `doGet` routes by `action` parameter. Let me add the env var to the `dao_protocol` box.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main && git reset --hard origin/main 2>&1 | tail -5; find /opt/truesight_autopilot/context/tokenomics -name "process_contributor*" -o -name "ContributorAdd*" 2>/dev/null | head -10; find /opt/truesight_autopilot -name "process_contributor*" -o -name "ContributorAdd*" 2>/dev/null | head -10; find /opt/truesight_autopilot ; …(+4 more)
 
