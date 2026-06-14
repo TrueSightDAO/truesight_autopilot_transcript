@@ -2917,6 +2917,11 @@ Now there are two rows — the old row 44 (from the first handler run with wrong
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Clean.** One row for Kopi Bar & Bakery with the correct columns. Let me also update the `contributor_contact_id` to say "Nora - Kopi Bar & Bakery" instead of "Gary Teh - Kopi Bar & Bakery" since Nora is the contact.
 
 
@@ -3092,4 +3097,19 @@ Here it is:
 **https://agroverse.shop/partners/kopi-bar-and-bakery/**
 
 It's live on production now. Want me to make any tweaks to the page?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] is it already deployed in beta?
+
+
+### 🤖 Autopilot
+
+Yes — both PRs (#169 and #170) were merged into `agroverse_shop_beta` and then promoted to production via `sync_beta_to_prod`. So it's live on both:
+
+- **Beta:** `agroverse.shop/partners/kopi-bar-and-bakery/` (same domain — beta and prod share the same CNAME)
+- **Production:** Also live since the sync completed
+
+Want me to check if there are any visual issues with the page?
 
