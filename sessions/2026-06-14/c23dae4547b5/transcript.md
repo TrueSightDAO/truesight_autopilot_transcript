@@ -78,3 +78,86 @@ Before I can start executing, I need:
 
 Want to start filling those in, or shall we discuss any questions first?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] 1. Nora Haron
+2. 
+
+Her website is here
+https://thekopibar.com/
+i wonder if you can do the necessary research online to gather the information? 
+
+3. REsearch online to find exact address. Somewhere in Berkeley
+
+She is wholesale. 
+
+
+6. can you go figure out yourself and come back to me
+
+7. Dont worry about it. I already dropped off the bags and she bought 4 of them.
+8. The bags have already been bought by her. Check the Agroverse QR code for her email address.
+
+
+### 🤖 Autopilot
+
+Let me research Kopi Bay online and check the QR codes.
+
+
+### 🤖 Autopilot
+
+Good — address found. Now let me check the QR codes for Nora's email and see what's on the ledger.
+
+
+### 🤖 Autopilot
+
+You mentioned the QR codes have Nora's email. Let me look up the QR codes that might be associated with Kopi Bay. You said she bought 4 bags — do you have the QR codes handy? Or can you tell me what they are so I can look them up?
+
+Alternatively, let me check if there are any recent QR codes that might have been moved.
+
+
+### 🤖 Autopilot
+
+Gary — I need the QR codes for the 4 bags you dropped off to Nora. You said to check them for her email — can you share the QR code values (or a photo of them)? Once I have those, I can:
+
+1. **Look up the QR codes** → find Nora's email from the ledger
+2. **Research Kopi Bay's about/mission** from their website
+3. Then proceed with the full technical onboarding
+
+In the meantime, here's what I've gathered so far:
+
+**Kopi Bay (Kopi Bar and Bakery)**
+- **Address:** 2155 Center Street, 2nd Floor, Berkeley, CA 94704 (inside Berkeley Art Museum & Pacific Film Archive)
+- **Website:** thekopibar.com
+- **Type:** Wholesale ✅
+- **Contact:** Nora Haron
+
+Let me grab more about their story from the web.
+
+
+### 🤖 Autopilot
+
+Excellent — I've got a rich picture of Kopi Bay. Now I just need the QR codes to find Nora's email. Let me ask:
+
+---
+
+Great research so far! Here's what I've gathered:
+
+### Kopi Bar & Bakery (Kopi Bay) — Profile
+
+| Field | Value |
+|-------|-------|
+| **Owner** | Chef Nora Haron |
+| **Address** | 2155 Center Street, 2nd Floor, Berkeley, CA 94704 (inside Berkeley Art Museum & Pacific Film Archive) |
+| **Type** | Wholesale ✅ |
+| **Website** | thekopibar.com |
+| **Instagram** | @kopibar.us |
+| **Story** | Singaporean-Indonesian café with a California sensibility. Nora is an experienced baker (Tartine, Blue Bottle alum) who brings Indonesian flavors — avocado coffee, calamansi olive oil cakes, sambal mushroom sandwiches, sourdough with a 10-year-old starter. Located inside BAMPFA, open to the public without museum admission. |
+
+### About blurb (draft):
+> *Kopi Bar & Bakery is the project of Chef Nora Haron, bringing Indonesian-Singaporean flavors to Berkeley with a distinctly Californian sensibility. Located inside the Berkeley Art Museum & Pacific Film Archive, the café offers sustainably sourced coffee, handmade pastries, and savory dishes inspired by Nora's heritage — from avocado coffee to sambal mushroom sandwiches and calamansi olive oil cakes. Open to all, with or without museum admission.*
+
+---
+
+**Now — I need the QR codes** for the 4 bags you dropped off. Can you share them (or a photo)? Once I look them up, I'll find Nora's email and we can proceed with the full technical onboarding.
+
