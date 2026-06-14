@@ -484,6 +484,7 @@ Let me update the existing proposal with the corrected framing and generate both
 ### 🤖 Autopilot
 
 Now let me rewrite the proposal with the corrected framing — leading with the **fundraising/institutional channel** rather than Nora's café, and removing the fiscal sponsorship tangent.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -750,4 +751,39 @@ On June 26, add this to the list:
 > *"We have a for-profit C-corp (TrueTech Inc) handling operations and a DAO with token voting rights governing the community mission. How do we structure the inter-entity agreement so TDG holders are clearly voting on DUNA matters, and TrueTech Inc is clearly a service provider — not the thing being governed?"*
 
 This is the **governance clarity** question, separate from the tax question.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] TrueTech Inc gets paid a service fee - but paid in TDG voting rights similar with other partners.
+
+
+### 🤖 Autopilot
+
+That's elegant. It closes the loop perfectly.
+
+**The flow becomes:**
+
+```
+TrueTech Inc provides operational services (import, distribution, bank custody)
+        ↓
+TrueTech Inc gets compensated in TDG tokens (like any other partner)
+        ↓
+TDG tokens = voting rights in the DUNA
+        ↓
+TrueTech Inc's TDG holdings give it a voice in DUNA governance
+        ↓
+But the DUNA (governed by all TDG holders) holds the ultimate authority
+```
+
+This means:
+
+- **TrueTech Inc is aligned** — it holds TDG and participates in governance, but doesn't control it
+- **TDG holders govern the DUNA** — clean, no confusion
+- **TrueTech Inc is compensated in the same currency the DAO uses** — no cash drain from the DAO treasury
+- **The service agreement is self-reinforcing** — TrueTech Inc does good work → DUNA thrives → TDG appreciates → TrueTech Inc's compensation grows
+
+The only thing to figure out with SVH is: **can a Wyoming DUNA legally issue TDG tokens as compensation to a for-profit C-corp under a service agreement?** The DUNA is a nonprofit — it can't distribute profits, but paying a service fee in tokens should be fine as long as it's at fair market value for services rendered.
+
+This is a solid, coherent structure. Want me to add this to the proposal doc?
 
