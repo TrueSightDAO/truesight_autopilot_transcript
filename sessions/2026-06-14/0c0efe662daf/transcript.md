@@ -132,6 +132,7 @@ Now let me generate the PDF version.
 ### 🤖 Autopilot
 
 Now let me upload the PDF to GitHub alongside the .md file.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -409,4 +410,39 @@ So the question for SVH Capital on June 26 would be:
 They might have a referral or know which sponsors are crypto-friendly.
 
 Does that clarify? Or were you thinking SVH Capital themselves might offer some kind of fiscal sponsorship arrangement?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I see. | Next | Ask SVH Capital about fiscal sponsorship as bridge | $500-2K | 1-2 months | this not interesting then
+
+
+### 🤖 Autopilot
+
+You're right. Scratch that line. SVH Capital is a venture firm — they're not a fiscal sponsor, and asking them about it would be a tangent.
+
+Let me clean up the actionable path:
+
+---
+
+## Clean Path Forward
+
+| Phase | What | Cost | Timeline |
+|-------|------|------|----------|
+| **Now** | Open TrueTech Inc business bank account | $0-500 | 1-2 weeks |
+| **Now** | Summon **OtoCo on-chain UNA** (2 wallets sign, ~$50 gas) | ~$50 | 1 day |
+| **Now** | Use UNA to open a bank account for the DAO entity | $0 | 2-4 weeks |
+| **June 26** | Ask SVH Capital about **DUNA formation** and **legal counsel referrals** — not fiscal sponsorship | $0 | One conversation |
+| **Next** | Engage a Wyoming DAO lawyer (via SVH referral or OtoCo's network) for inter-entity agreement (DUNA ↔ TrueTech) | $5K-15K | After SVH |
+| **Later** | When >100 members, UNA auto-converts to DUNA | $0 | Automatic |
+| **Later** | 501(c)(3) application via tax attorney | $2K-10K | 6-12 months |
+
+### What to actually ask SVH Capital on June 26
+
+1. **DUNA formation:** Do you work with or can you refer us to a Wyoming law firm that specializes in DUNA formation for DAOs? (Hathaway & Kunz, Astraea, etc.)
+2. **Cost efficiency:** What's the leanest way to get a DUNA in place — full-service law firm or is OtoCo's on-chain UNA → DUNA path sufficient for our stage?
+3. **501(c)(3) pathway:** Once DUNA is formed, what's the realistic timeline and cost for the IRS exemption application for a DAO that plants trees?
+4. **TDG as compensation:** Would your referred counsel consider a partial TDG token grant to reduce the cash outlay?
+
+Does this feel like the right framing for the 26th?
 
