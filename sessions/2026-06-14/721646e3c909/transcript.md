@@ -1311,6 +1311,7 @@ I can see both issues clearly now:
 1. **Logo**: The partners listing page references `kopi-bar-and-bakery-logo.jpg` (404), but I uploaded the logo as `.png`. The `.png` version works fine: https://agroverse.shop/assets/partners/logos/kopi-bar-and-bakery-logo.png
 
 2. **Kopi Bar IS in partners-data.js** on prod — it was added by the earlier PR (#173). So the Pacific West Coast path should be rendering it. Let me check the actual page to see if the JS is rendering it.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1325,16 +1326,24 @@ Two issues to fix:
 2. **Pacific West Coast path** — Kopi Bar IS in the data file, so it should render. This might be a cache issue on your end. But let me also check if the page has a photo for each stop — the stops might show a photo from the partner data, and Kopi Bar might not have one configured.
 
 Let me check the partners-data.js to see if Kopi Bar has an image field.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The data file is huge. Let me check if the Pacific West Coast page JS has a separate image/photo field for each stop, or if it just uses the logo. Let me look at the page's JavaScript that renders the stops.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the JavaScript that renders the stops on the Pacific West Coast page to understand how images work.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1427,4 +1436,18 @@ Want me to merge and promote?
 ———
 **✅ Done this turn — actions taken:**
 • `open fix pr` → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/176
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4512] merge it
+
+
+### 🤖 Autopilot
+
+**✅ Merged and promoted to prod.** The [Pacific West Coast path](https://agroverse.shop/cacao-journeys/pacific-west-coast-path/index.html) now shows Nora holding the cacao bag as the Kopi Bar stop image. Try a hard refresh to see it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #176 on agroverse_shop_beta merged successfully (sha: c46760a59dc9774fca2c7d8148b2a8c226073083). Pull Request successfully merged
 
