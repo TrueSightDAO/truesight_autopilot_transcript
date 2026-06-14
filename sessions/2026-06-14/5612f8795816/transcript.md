@@ -1230,16 +1230,19 @@ SSH is broken. Let me use the local filesystem:
 ### 🤖 Autopilot
 
 The file is huge. Let me search for the system-status endpoint more efficiently:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is repeating because it's being read from the start each time. Let me look for the system-status endpoint by searching for the right section:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is being read from the beginning each time. Let me use a different approach — search for the system-status endpoint using Python:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1350,4 +1353,34 @@ So when you visit `/vault/status` while signed in, the JavaScript calls `/vault/
 2. If you'd also like the commit hash visible **without signing in** (on the public status page), I can make that change — just say the word.
 
 Want me to make the commit hash visible without requiring sign-in?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] Very cool! Love it
+
+
+### 🤖 Autopilot
+
+Glad you love it! Here's a quick recap of everything we accomplished in this thread:
+
+**✅ Vault Credential Migration — Complete**
+
+| What | Status |
+|------|--------|
+| Vault initialized at `/opt/truesight_autopilot/vault/` | ✅ |
+| **32 credentials** migrated (GitHub PATs, SSH keys, AWS, Gmail, Google SAs, Stripe, API keys, clasp OAuth) | ✅ |
+| Sign-out fix — clears JWT cookie server-side | ✅ Merged & deployed |
+| Vault-first fallback — tools try vault, fall back to current source | ✅ Merged & deployed |
+| Commit hash on System Status page — clickable to GitHub | ✅ Merged & deployed |
+| Vault web process restarted to pick up all changes | ✅ |
+
+**What governors can do:**
+- **See** all credential names, purposes, versions at `https://sophia.truesight.me/vault`
+- **Rotate** credentials (update values)
+- **Add** new credentials
+- **Never see secret values** — the API never exposes them
+- **Verify deployment** via commit hash on `/vault/status`
+
+Anything else you'd like to tackle?
 
