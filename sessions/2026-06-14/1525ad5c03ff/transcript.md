@@ -10,30 +10,6 @@
 
 ### 🤖 Autopilot
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×18 → ls /opt/dao_protocol/ 2>/dev/null || ls /home/*/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "main.py" -path "*/dao_protocol/*" 2>/; ls /opt/dao_protocol/packages/ 2>/dev/null && echo "---" && cat /opt/dao_protocol/packages/*/main.py 2>/dev/null | head -50 || echo "no pack; ls /opt/dao_protocol/packages/ && echo "---" && find /opt/dao_protocol -name "*.py" -not -path "*/truesight_dao_client/*" -not -path "*/dapp; …(+15 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] broken too report_inventory_movement.html:2771  HEAD https://edgar.truesight.me/ping
-
-
-### 🤖 Autopilot
-
-Let me check what's happening with `/ping` on Edgar.
-
-
-### 🤖 Autopilot
-
-`/ping` works fine on Edgar (returns 200 from dao_protocol). The error in the DApp is likely a CORS issue — the DApp at `dapp.truesight.me` is making a HEAD request to `edgar.truesight.me/ping` and the response might not have CORS headers.
-
-Let me check:
-
-
-### 🤖 Autopilot
-
 There it is — `HEAD /ping` returns **405 Method Not Allowed**. The DApp's `report_inventory_movement.html` sends a HEAD request to check if Edgar is alive, and dao_protocol doesn't handle HEAD on `/ping`.
 
 Previously Rails handled this fine. Let me check what the DApp expects.
@@ -715,4 +691,86 @@ The page now tells a first-time visitor what Edgar is, why it exists, and how to
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → sudo sed -i '/<div class="container">/a\ \ <div class="intro-section" style="margin-bottom:2rem; background:#fff9f0; border:1px solid rgba(9
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Nice! I am thinking that probably landing page of truesight.me right now missing separation of mention of perch and also  only edgar is mentioned but not sophia isnt it??? Thoughts of what to do?
+
+
+### 🤖 Autopilot
+
+You're right. The current `truesight.me` landing page is a single monolithic page that doesn't distinguish between the three services. Let me check what's there now.
+
+
+### 🤖 Autopilot
+
+Let me see the full page structure to find where to add the services section.
+
+
+### 🤖 Autopilot
+
+Confirmed — none of the three services are mentioned on the truesight.me landing page. Let me find the right spot to add a services section. Let me look at the full page structure.
+
+
+### 🤖 Autopilot
+
+Let me find the section after the hero/stats where I should add the services cards.
+
+
+### 🤖 Autopilot
+
+The file is truncated. Let me get the full content to find the right insertion point.
+
+
+### 🤖 Autopilot
+
+The file is too large for the read API. Let me use the production site to find the right insertion point.
+
+
+### 🤖 Autopilot
+
+Let me find the section after the stats grid where I should insert the services section.
+
+
+### 🤖 Autopilot
+
+Now I can see the full page structure. The "Community Initiatives" section already has Agroverse, SunMint, and Edgar cards — but no Perch or Sophia. Let me make the PR to add them.
+
+
+### 🤖 Autopilot
+
+The exact whitespace doesn't match. Let me check the actual file content.
+
+
+### 🤖 Autopilot
+
+Now I see the actual structure — it uses `card-grid` with `card card--media-top` articles. Let me add a "Platform Services" section before the Community Initiatives, with cards for Edgar, Perch, and Sophia.
+
+
+### 🤖 Autopilot
+
+PR is open: https://github.com/TrueSightDAO/truesight_me_beta/pull/227
+
+Here's what it does:
+
+**New "Platform Services" section** (above Community Initiatives) with three cards:
+
+| Service | Tagline | What it does |
+|---------|---------|-------------|
+| **Edgar** | DAO Protocol API | The operational backbone — signed events, sandbox, GAS proxy, Stripe webhooks |
+| **Perch** | Market Steward | News ingestion, sentiment scoring, market signals for treasury |
+| **Sophia** | Autopilot — AI SRE & Developer Assistant | Infrastructure monitoring, QR scanning, PR creation, oracle readings |
+
+Each card has a description, feature list, and direct link. The existing Community Initiatives section (Agroverse, SunMint, Edgar, Lineage) stays untouched below it.
+
+The distinction is clear:
+- **Platform Services** = the three infrastructure services that run the DAO
+- **Community Initiatives** = the ventures and programs the DAO supports
+
+Want me to deploy this to beta for review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git 2>/dev/null && grep -n "Community Initiatives" truesigh; sed -n '310,380p' /tmp/truesight_me_beta/index.html; sed -n '380,410p' /tmp/truesight_me_beta/index.html
 
