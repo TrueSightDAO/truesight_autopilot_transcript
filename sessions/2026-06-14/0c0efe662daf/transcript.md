@@ -657,3 +657,39 @@ Net taxable income: $0. But:
 
 What's your read on Nora's expectations? Does she need to give her customers a tax write-off, or is she happy with "part of every cup goes to planting trees" without the tax receipt?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] it is a nice to have
+
+
+### 🤖 Autopilot
+
+Then the path clarifies significantly.
+
+**TrueTech Inc can handle everything operationally right now:**
+
+```
+Nora's coffee sales → TrueTech Inc (revenue) → Tree planting (expense)
+```
+
+Net taxable income: $0. TrueTech Inc's tax return shows revenue and matching expense. No tax receipt for Nora's customers, but the tree planting happens.
+
+**The DUNA becomes a separate, parallel track** — not blocking anything, but building toward:
+
+1. **Member liability shield** — as the DAO grows, this becomes real
+2. **Institutional fundraising** — impact funds, foundations, corporate ESG
+3. **Tax-deductible receipts** — when Nora's customers eventually want them
+
+So the priority stack flips to:
+
+| Priority | What | Why Now? |
+|----------|------|----------|
+| 🔴 **This week** | Open TrueTech Inc business bank account | Stops personal commingling, enables Nora's flow |
+| 🟡 **June 26** | Ask SVH about DUNA | Long-term liability shield + fundraising channel |
+| 🟢 **Later** | Form DUNA + 501(c)(3) | When impact fund money is on the table |
+
+No blocker. Nora's flow works today through TrueTech Inc. The DUNA is the next horizon, not a prerequisite.
+
+Want me to update the proposal with this simplified framing?
+
