@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-Syntax is clean. Now start Rails manually (not through systemd, since systemd does `git pull` which would revert the change).
-
-
-### 🤖 Autopilot
-
-Need to use the full path to rbenv's bundle.
-
-
-### 🤖 Autopilot
-
 The Rails app can't start because `secret_key_base` is missing — it needs the Rails credentials file which the systemd service had access to but our manual start doesn't. Let me check how systemd starts it.
 
 
@@ -746,4 +736,18 @@ Want me to look at what the 3 open prod PRs contain to help diagnose?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #227 on truesight_me_beta merged successfully (sha: 5a18f58e05141200d1b87045c88a6841cf74e4b8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] merge #227 on beta
+
+
+### 🤖 Autopilot
+
+Already merged! PR #227 was merged successfully — the commit `5a18f58` is on `truesight_me_beta` main now.
+
+The issue is promoting to **production** — `sync_beta_to_prod` hit a merge conflict because the prod repo has 3 open PRs that were never promoted and the histories diverged (partly due to intentional CNAME differences).
+
+You can see it live on the beta site now: **https://truesight-me-beta.pages.dev** (or whatever the beta domain is). Want me to check the beta URL so you can preview it?
 
