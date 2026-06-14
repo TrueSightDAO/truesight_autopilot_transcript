@@ -779,11 +779,13 @@ Let me check what the PR actually changed to make sure it did the right things.
 ### 🤖 Autopilot
 
 I can see the data file doesn't have Kopi Bar yet. Let me check if the PR actually added it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the PR diff to see what changes were actually made.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -941,4 +943,50 @@ So the plan would be:
 3. Add an inline `<img>` in the story section for Nora's photo
 
 Want me to go ahead with this?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **657f0f6660e341c4af0cbc69eef90bdb.jpg**]
+- Type: Image (OCR confidence: 53.9%, quality: good)
+
+Extracted text:
+```
+. x a | ae q L Poe 34 “Ss 4 iE = 7 Aa 1 i ye Wed-Sun | TWAM=7 Pan == | | \ | \ \ { \ 1] i | | |
+```
+
+
+### 🤖 Autopilot
+
+The OCR picked up some text from signage — "Wed-Sun | 7AM-7PM" — which is the cafe's hours. Let me look at the image visually to understand what we're working with.
+
+
+### 🤖 Autopilot
+
+Good — this is a photo of the Kopi Bar exterior signage with their hours (Wed-Sun, 7AM-7PM). 
+
+So now we have **three images** to work with:
+1. **Nora holding a bag of our ceremonial cacao** — personal, authentic, shows the partnership
+2. **Exterior of the cafe/building** — shows the actual location
+3. **Exterior signage with hours** — shows the cafe name and operating hours
+
+Here's my suggested layout for the Kopi Bar detail page:
+
+| Image | Placement | Purpose |
+|---|---|---|
+| **Exterior of cafe/building** | Hero background (replaces current 404) | Visual anchor, shows the location |
+| **Nora with cacao bag** | Inline in "About" section | Personal connection, shows real partnership |
+| **Signage with hours** | In the Partner Details sidebar | Practical info for visitors |
+
+Want me to go ahead and:
+1. Upload all three images to the assets folder
+2. Update the page to use them
+
+I'll need to resize the hero image appropriately. Shall I proceed?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
 
