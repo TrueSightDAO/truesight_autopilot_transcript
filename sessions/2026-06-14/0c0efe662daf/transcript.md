@@ -860,6 +860,7 @@ yup. how does that impact our implementation plan?
 ### 🤖 Autopilot
 
 Let me check the handoff registry and the current proposal to see what needs updating.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1096,4 +1097,23 @@ TrueTech Inc continues handling import and distribution as a DAO member, compens
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] can we make sure to update this https://github.com/TrueSightDAO/agentic_ai_context/blob/legal-entity-structuring-proposal-v2/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf then?
+
+
+### 🤖 Autopilot
+
+The v2 branch is a static branch from an old PR. The latest version is on **v4** (PR #493). Let me check if you want me to update the v2 branch specifically, or if you just want the latest version accessible from a cleaner URL.
+
+The v2 branch (`legal-entity-structuring-proposal-v2`) is frozen from an earlier iteration. The v4 branch has the fully simplified model we converged on. 
+
+If you want the v2 branch updated to match v4, I can push to it — but that would overwrite the old version. Alternatively, if you just want a clean URL on `main`, I can merge PR #493 and both files will be at:
+
+- `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md`
+- `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`
+
+Which would you prefer — update the v2 branch, or merge v4 to main?
 
