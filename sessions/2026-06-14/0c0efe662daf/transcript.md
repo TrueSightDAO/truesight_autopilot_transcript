@@ -1068,12 +1068,29 @@ Want me to update the proposal with this even simpler flow?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me rewrite the proposal with the even simpler flow — UNA opens its own bank account, no TrueTech Inc business account needed.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1140,6 +1157,7 @@ Which would you prefer — update the v2 branch, or merge v4 to main?
 ### 🤖 Autopilot
 
 Let me check what's happening.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1147,11 +1165,18 @@ Let me check what's happening.
 The branches exist but the files are only on the PR branches, not on `main`. The v2 branch URLs 404 because GitHub doesn't serve blob content from branches that are only on unmerged PRs unless you use the full ref path.
 
 Let me check the v2 branch directly:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v2 branch exists and the files are there. The issue is that GitHub blob URLs for unmerged PR branches sometimes don't render properly. Let me check the actual URLs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1178,6 +1203,11 @@ Want me to merge PR #493?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=3966] merge it.
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1242,11 +1272,33 @@ Want me to add this to the proposal?
 ### 🤖 Autopilot
 
 You're right. Let me check the main ledger to get the accurate figure.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the contribution ledger (TDG tracking), not the cash balance sheet. Let me find the actual treasury/cash sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1295,4 +1347,14 @@ The OtoCo UNA path (~$50 gas) is still easily affordable. The Brazilian LTDA ($1
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → find /tmp -name "autopilot_pdf_*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] you there?
+
+
+### 🤖 Autopilot
+
+Yes, I'm here. What's on your mind?
 
