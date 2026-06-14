@@ -3937,3 +3937,1825 @@ The Rails app isn't running on `seni_ror` anymore. The landing page at `edgar.tr
 
 [1 tool result(s) consolidated the above into a single response]
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3926] what is the outcome?
+
+
+### 🤖 Autopilot
+
+Two issues to address. Let me check both.
+
+**1. Edgar landing page — `[PARTNER ADD EVENT]` missing**
+
+The landing page at `edgar.truesight.me` is served by the Rails `sentiment_importer` app (proxied to `127.0.0.1:3002`). But the Rails app isn't running anymore — it was replaced by the FastAPI `dao_protocol`. The landing page HTML is likely a static view in the Rails app that needs updating. Let me find it.
+
+**2. Pacific West Coast Path — Kopi Bay missing**
+
+Let me check the page.
+[1 tool result(s) compacted: web_extract — detail in parameters]
+
+Let me check the actual HTML source of the Pacific West Coast Path page.
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
+[1 tool result(s) compacted: read_repo_file — detail in parameters]
+
