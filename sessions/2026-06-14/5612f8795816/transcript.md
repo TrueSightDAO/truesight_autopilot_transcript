@@ -880,16 +880,34 @@ There's the problem. Only **1 credential** is in the vault — the Google OAuth 
 ### 🤖 Autopilot
 
 The encrypted file is 5004 bytes — that's big enough for 7+ credentials. Let me check if the vault module has a different key than what was used to write:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — only 1 credential is in the vault. My earlier migration attempt failed silently. Let me check what happened by looking at the audit log and re-running the migration properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit log confirms — only the Google OAuth credential was ever added. My earlier migration script had a bug. Let me fix this properly now by adding all the credentials that should be there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1039,4 +1057,56 @@ Here's what you'll see:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → # Check if the vault web process is using the same vault directory curl -s https://sophia.truesight.me/vault/api/credentials 2>&1 | head -5 ; # Check the vault web process ps aux | grep -i vault | grep -v grep echo "---" # Check if the web process has a different working directory ; # Restart the vault web process kill 248976 sleep 1 # Verify it's restarted ps aux | grep uvicorn.*8002 | grep -v grep echo "---" # Wait a m; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3981] very cool! So governors can come in to see what are the keys in the vault. BUt they can never see the values and they can update the keys.
+
+
+### 🤖 Autopilot
+
+Exactly right. Let me verify that's how the vault works:
+
+
+### 🤖 Autopilot
+
+Let me also check the web API to confirm what the frontend exposes:
+
+
+### 🤖 Autopilot
+
+Let me check the template to see what the frontend actually shows:
+
+
+### 🤖 Autopilot
+
+Perfect — I can confirm exactly how the vault works from the code:
+
+**What governors can see:**
+- **Name** — the credential identifier (e.g. `aws_key_nelanco`)
+- **Purpose** — what it's used for
+- **Version** — how many times it's been rotated
+- **Created by** — who added it
+- **Created at** — when it was added
+
+**What governors can do:**
+- **Add** new credentials (via the "+ Add credential" button)
+- **Rotate** existing credentials (update the value)
+- **Delete** credentials
+
+**What governors CANNOT see:**
+- **The actual secret values** — the API never returns `value`. The `list_refs()` method returns `VaultEntry` objects which have `name`, `purpose`, `version`, `created_by`, `created_at` — but **no `value` attribute**. The `get_value()` method exists but is only called internally by Sophia's tools, never exposed via the web API.
+
+**Security model:**
+- Only governors can access the vault (non-governors get a contribution nudge)
+- The vault is encrypted at rest (AES-256-GCM, `vault.json.enc`)
+- The encryption key is `chmod 600`, readable only by the `ubuntu` user
+- The web API never leaks secret values — they're write-only on the web UI
+
+So yes — **governors can audit what credentials exist and rotate them, but never see the actual secret values.** That's the right balance between transparency and security.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && python3 -c " from app.vault import Vault v = Vault() refs = v.list_refs() # Show what a governor sees r = ref; cd /opt/truesight_autopilot && grep -n "def list\|def rotate\|def get_value\|/api/credential" app/vault_routes.py 2>/dev/null | head -20
 
