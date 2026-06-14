@@ -483,3 +483,36 @@ That would close a few gaps but not all of them. Let me break it down:
 
 So web navigation would get me from 80% to maybe **90%** — but the last 10% (physical presence in Bahia, phone calls, payment authorization) will always need a human.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Do you think it will be possible to handle the picks payments via websites? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, absolutely — PIX payments can be handled entirely through a website. Here's how it works:
+
+**PIX via web is already possible:**
+
+1. Most Brazilian banks offer **web-based PIX** through their internet banking portals
+2. You generate a **PIX QR code** or **PIX Copia e Cola** (text code) from the recipient
+3. You paste that into your bank's web interface and authorize the payment
+4. It settles in seconds
+
+**What I'd need to make it work:**
+
+- Access to a **Brazilian bank account** web portal (e.g., Inter, Nubank, Itaú, etc.)
+- The **PIX key or QR code** from the recipient (Omega/Graziela)
+- Authorization to initiate payments on your behalf
+
+**The security question:**
+
+This is the same issue as the e-CNPJ — I'd need your banking credentials or a session token. A better approach would be:
+
+1. **Option A:** You pre-authorize a payment limit, and I generate the PIX payment request for you to approve with a single click (like a "confirm payment" button)
+2. **Option B:** The bank has an API (some Brazilian banks do offer PIX APIs for businesses) — I could integrate with that
+3. **Option C:** I prepare everything and present you with the PIX QR code to scan and approve from your phone — you just tap confirm
+
+So yes, it's technically possible. The question is whether you want to give me that level of financial access, or keep it as a "Sophia prepares, Gary approves" workflow.
+
