@@ -1072,6 +1072,12 @@ WARNING autopilot.telegram: sendMessage 429: {"ok":false,"error_code":429,"descr
 The bot is sending both **text messages** AND **voice messages** for every response, which is triggering Telegram's rate limiter. When it gets rate-limited, the text message may fail to send while the voice (which is sent separately) might go through — or vice versa.
 
 Let me check the adapter code to see how it handles the dual send.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1154,4 +1160,38 @@ Merged! Commit `77813404` on `main`. Not deployed — will wait for your go-sign
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #208 on truesight_autopilot merged successfully (sha: 778134042b9f417deb1b32212366f51f2c635a1e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4034] Are you able to add stuff to your own vault?
+
+
+### 🤖 Autopilot
+
+I don't have a "vault" concept in my toolset. What do you mean by vault? Something like:
+
+- A **password/secret vault** (e.g. Bitwarden, 1Password, AWS Secrets Manager)?
+- A **knowledge vault** (like a personal wiki or note store)?
+- Something in the DAO ecosystem I'm not aware of?
+
+Let me search context to see if there's a vault reference.
+
+
+### 🤖 Autopilot
+
+There's a **Credential Vault** at `TrueSightDAO/credential_vault` — it's an encrypted credential storage system. Let me check what it is and whether I can interact with it.
+
+
+### 🤖 Autopilot
+
+Yes, I can! The **Credential Vault** is at `TrueSightDAO/credential_vault` — it's an encrypted iCloud backup of laptop credentials (~46 files), used for disaster recovery.
+
+However, I can't directly interact with iCloud or encrypted backups from this EC2 box. What I *can* do:
+
+1. **Read the vault repo** — see the manifest, scripts, and onboarding docs
+2. **Add files to the repo** — if you mean adding new credential entries or updating the vault structure
+3. **Guide you through setup/restore** — the `ONBOARDING.md` is designed to be LLM-runnable
+
+What did you have in mind — adding something specific to the vault?
 
