@@ -2562,6 +2562,7 @@ The base64 was truncated when I copied it. Let me get the full base64 from the a
 ### 🤖 Autopilot
 
 The base64 is 18,397 bytes — too large to pass through the upload_file_to_github parameter. Let me try a different approach — write it to a local file using Python on the autopilot box via a different method.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2850,4 +2851,34 @@ The DUNA's bank account (separate from TrueTech Inc's account) holds the treasur
 **The question for SVH:** Can a Wyoming DUNA use its treasury to purchase its own membership tokens (TDG) from members on a secondary market as a liquidity mechanism? And can the DUNA hold those TDG in its treasury without creating governance conflicts?
 
 Does this separation make sense?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Actually what about when members want to cash out their TDG, TrueTEch Inc pays out via the DApp and the TDG is just figuratively destroyed as soon as TrueTech Inc buys it
+
+
+### 🤖 Autopilot
+
+That's a clean solution. If the TDG is **destroyed** (burned) upon buyback:
+
+1. TrueTech Inc buys TDG from the DApp → TDG is burned
+2. No TDG held by TrueTech Inc → no voting rights issue
+3. The exiting member gets their payout
+4. Total TDG supply decreases, potentially increasing value for remaining holders
+
+**The flow:**
+```
+Member wants to sell → Lists on DApp → TrueTech Inc buys → TDG burned
+```
+
+**Why this works:**
+- TrueTech Inc is a facility, not a member — it doesn't hold governance power
+- Burning avoids the circularity concern entirely
+- It's a deflationary mechanism — rewards long-term holders
+- The cost is an operational expense of the DAO (facility maintenance)
+
+**The question for SVH becomes:** Can a Delaware C-corp (TrueTech Inc) buy and burn tokens that represent voting rights in a Wyoming DUNA, as an operational expense under a service/facility arrangement? This is cleaner than the DUNA buying its own tokens.
+
+Want me to add this to the proposal?
 
