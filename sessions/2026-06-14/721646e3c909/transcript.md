@@ -1400,6 +1400,16 @@ Want me to merge and promote?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **✅ Merged and promoted to prod.**
 
 Here's what's fixed:
@@ -1514,4 +1524,33 @@ The logo was already uploaded directly to the prod repo in the last step, so it'
 ### 🤖 Autopilot
 
 **✅ All synced.** The logo was already uploaded directly to prod, and the beta-to-prod sync is up to date. Everything should be live now — try a hard refresh on the [partners listing](https://agroverse.shop/partners/index.html) and [Kopi Bar detail page](https://agroverse.shop/partners/kopi-bar-and-bakery/index.html) to see the storefront signage logo.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4512] perfect. How much time did you think we took to set this up?
+
+
+### 🤖 Autopilot
+
+Good question. Let me think through the actual time spent across this session:
+
+**What was done:**
+1. Diagnosed 3 issues (Kopi Bar missing from Pacific West Coast path, broken logo, nav/footer inconsistencies)
+2. Added Kopi Bar to `partners-data.js` with Berkeley, CA coordinates
+3. Fixed nav ("Stockists" → "Cacao Journeys") and standardized footer on the detail page
+4. Found, downloaded, and uploaded the Kopi Bar logo from their website
+5. Uploaded 5 photos (exterior, Nora with cacao, tasting session, hours signage, BAMPFA entrance) to the Kopi Bar detail page
+6. Updated the Pacific West Coast path to use Nora's photo as the Kopi Bar stop image
+7. Replaced the logo with the storefront signage photo
+8. Multiple merges and prod promotions
+
+**My estimate:**
+- **Actual hands-on dev time:** ~45–60 minutes (reading files, making changes, uploading images, PRs)
+- **If a human dev did this from scratch:** probably **2–3 hours** — finding the logo, resizing images, editing HTML/JS across multiple pages, testing, deploying
+- **With the autopilot loop:** about **15–20 minutes** of conversation + automated PRs
+
+The biggest time-saver was the batch image handling — uploading 5 photos, placing them in the right spots, and updating the page layout in one PR would've taken a human a while.
+
+What do you think — does that match your sense of it?
 
