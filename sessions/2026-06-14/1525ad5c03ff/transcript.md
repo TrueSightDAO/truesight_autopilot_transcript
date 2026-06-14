@@ -10,136 +10,6 @@
 
 ### 🤖 Autopilot
 
-The page now has:
-
-1. **"What is Edgar?"** section — explains it's the DAO Protocol API, the operational backbone, how events are signed with RSA-2048, no API keys needed
-2. **"How It Works"** — three-step flow: Compose → Sign → Submit, with icons and brief descriptions
-3. Then the existing endpoints list and event cards with sandbox
-
-The page now tells a first-time visitor what Edgar is, why it exists, and how to use it before they hit the event cards.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → sudo sed -i '/<div class="container">/a\ \ <div class="intro-section" style="margin-bottom:2rem; background:#fff9f0; border:1px solid rgba(9
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Nice! I am thinking that probably landing page of truesight.me right now missing separation of mention of perch and also  only edgar is mentioned but not sophia isnt it??? Thoughts of what to do?
-
-
-### 🤖 Autopilot
-
-You're right. The current `truesight.me` landing page is a single monolithic page that doesn't distinguish between the three services. Let me check what's there now.
-
-
-### 🤖 Autopilot
-
-Let me see the full page structure to find where to add the services section.
-
-
-### 🤖 Autopilot
-
-Confirmed — none of the three services are mentioned on the truesight.me landing page. Let me find the right spot to add a services section. Let me look at the full page structure.
-
-
-### 🤖 Autopilot
-
-Let me find the section after the hero/stats where I should add the services cards.
-
-
-### 🤖 Autopilot
-
-The file is truncated. Let me get the full content to find the right insertion point.
-
-
-### 🤖 Autopilot
-
-The file is too large for the read API. Let me use the production site to find the right insertion point.
-
-
-### 🤖 Autopilot
-
-Let me find the section after the stats grid where I should insert the services section.
-
-
-### 🤖 Autopilot
-
-Now I can see the full page structure. The "Community Initiatives" section already has Agroverse, SunMint, and Edgar cards — but no Perch or Sophia. Let me make the PR to add them.
-
-
-### 🤖 Autopilot
-
-The exact whitespace doesn't match. Let me check the actual file content.
-
-
-### 🤖 Autopilot
-
-Now I see the actual structure — it uses `card-grid` with `card card--media-top` articles. Let me add a "Platform Services" section before the Community Initiatives, with cards for Edgar, Perch, and Sophia.
-
-
-### 🤖 Autopilot
-
-PR is open: https://github.com/TrueSightDAO/truesight_me_beta/pull/227
-
-Here's what it does:
-
-**New "Platform Services" section** (above Community Initiatives) with three cards:
-
-| Service | Tagline | What it does |
-|---------|---------|-------------|
-| **Edgar** | DAO Protocol API | The operational backbone — signed events, sandbox, GAS proxy, Stripe webhooks |
-| **Perch** | Market Steward | News ingestion, sentiment scoring, market signals for treasury |
-| **Sophia** | Autopilot — AI SRE & Developer Assistant | Infrastructure monitoring, QR scanning, PR creation, oracle readings |
-
-Each card has a description, feature list, and direct link. The existing Community Initiatives section (Agroverse, SunMint, Edgar, Lineage) stays untouched below it.
-
-The distinction is clear:
-- **Platform Services** = the three infrastructure services that run the DAO
-- **Community Initiatives** = the ventures and programs the DAO supports
-
-Want me to deploy this to beta for review?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git 2>/dev/null && grep -n "Community Initiatives" truesigh; sed -n '310,380p' /tmp/truesight_me_beta/index.html; sed -n '380,410p' /tmp/truesight_me_beta/index.html
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] Then what about the "AI Agent for Transparent Impact" box??
-
-
-### 🤖 Autopilot
-
-That's the existing Edgar card under **Community Initiatives** — it describes Edgar as an "AI Agent for Transparent Impact" from the venture perspective (tokenizing contributions, cacao sales, cash-outs).
-
-With the new **Platform Services** section above it, Edgar now appears **twice** on the page:
-
-1. **Platform Services** — Edgar as the **DAO Protocol API** (technical: signed events, sandbox, GAS proxy)
-2. **Community Initiatives** — Edgar as the **AI Agent for Transparent Impact** (venture-facing: tokenizing contributions, cacao sales)
-
-That's redundant and confusing. Two options:
-
-**Option A:** Remove the Edgar card from Community Initiatives entirely — the Platform Services card covers it, and the Community Initiatives section stays focused on ventures (Agroverse, SunMint, Lineage).
-
-**Option B:** Keep both but differentiate them — the Community Initiatives Edgar card becomes a "how to use Edgar" / "get started" card linking to the DApp, while the Platform Services card is the technical reference.
-
-I'd go with **Option A** — cleanest separation. The Edgar card in Community Initiatives was always a bit of a stretch (it's infrastructure, not a venture like Agroverse or SunMint). Want me to update the PR?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3] OPtion A then . But it means that the "Community Initiatives" will have 3 boxes. 2 at the top and one below... Looks awful isnt it?
-
-
-### 🤖 Autopilot
-
-You're right — a 3-card grid with 2 on top and 1 below looks broken. The `card-grid` is a 3-column layout, so 3 cards would stack as one row of 3, which is fine. Let me check:
-
-
-### 🤖 Autopilot
-
 It's `auto-fit, minmax(280px, 1fr)` — so 3 cards will sit in one row on desktop, and stack on mobile. That's fine.
 
 But wait — the Community Initiatives section currently has **4** cards: Agroverse, SunMint, Edgar, Lineage. If I remove Edgar, that leaves 3 (Agroverse, SunMint, Lineage) — which is a clean 3-column row.
@@ -880,4 +750,24 @@ The 3 Community Initiative cards will be in one row on desktop once the deploy g
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/truesight_me_beta && git log --oneline -5; cd /tmp/truesight_me_beta && git commit --allow-empty -m "trigger: rebuild GitHub Pages" && git push origin main; cd /tmp/truesight_me_beta && git pull origin main --rebase && git push origin main; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3] Just curious. At what point you think in make sense was to host our own instance of deep-seaked Versus paying API credit to access to essentially manage one. Tell me what you think [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question. Let me think about this practically.
+
+**Right now:** We're paying API credits per call. For what Sophia does — reading context files, searching code, making PRs, running SSH commands — the cost is maybe a few dollars a day. That's nothing.
+
+**The case for self-hosting:** If we were running thousands of agentic loops per day — say every governor had their own Sophia instance, or we were doing batch processing of QR codes, or running continuous monitoring — the API costs would scale linearly. At some point, buying a couple of A100s or renting a dedicated GPU box becomes cheaper than paying per token.
+
+**The case against:** Self-hosting means managing infrastructure — keeping the model weights updated, handling GPU failures, dealing with CUDA versions, scaling up and down. That's engineering time. And open-weight models like DeepSeek are good but still lag behind GPT-4 and Claude on complex reasoning tasks like debugging code or understanding nuanced context.
+
+**My take:** The breakeven is probably around **$500-1000/month in API costs**. Below that, paying per call is cheaper when you factor in the ops overhead. Above that, it starts making sense to self-host — especially if we use something like vLLM or Ollama to serve DeepSeek or Llama, and keep the frontier models (Claude, GPT-4) for the hard stuff while routing simpler tasks to the local model.
+
+For where we are now — a handful of DAO operations per day — API credits are the right call. But it's worth keeping an eye on the bill. If we hit $200/month, it's time to start the conversation about a hybrid setup.
 
