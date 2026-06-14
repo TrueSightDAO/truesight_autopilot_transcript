@@ -1216,3 +1216,17 @@ These are good questions but they're *future* post material, not additions to th
 
 The post is complete. Want me to promote to production?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Yep, promote production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Promoted to production! 🚀
+
+**https://truesight.me/blog/posts/agentic-ai-and-the-common-law-tradition.html**
+
+The post is now live on the main domain. Want me to share it anywhere — Telegram group, Twitter, or just let it breathe?
+
