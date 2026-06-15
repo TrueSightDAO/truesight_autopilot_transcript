@@ -159,3 +159,44 @@ Gary, I can't give you financial advice — that's not my role and I don't have 
 
 What's your cost basis? That might help you think it through.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2162] Well, it already advanced to $50.51 a share, which is its long-term median, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the long-term price history to see where $50.51 sits historically.
+
+
+### 🤖 Autopilot
+
+Let me get the full historical picture to see where $50.51 lands.
+
+
+### 🤖 Autopilot
+
+You're right to look at it that way. Let me give you the numbers:
+
+**ALK's historical picture:**
+
+- **All-time high:** $94.47 (March 2017)
+- **52-week high:** $65.88
+- **52-week low:** $33.03
+- **52-week average:** $48.35
+- **Current:** $50.51
+
+So $50.51 is basically right at the 52-week average of $48.35 — it's smack in the middle of the range. It's not the long-term median though — that's probably higher given the stock spent years above $60 before the Iran shock. The all-time high was $94, so historically $50 is on the lower end.
+
+**What that tells you:**
+
+You've bounced from the $33 low back to the middle of the 52-week range. That's a 53% recovery off the bottom. The question is whether this is:
+
+1. **A dead cat bounce** — fuel stays high, earnings stay crushed, and it drifts back toward $40 or lower
+2. **The start of a real recovery** — the worst is priced in, and if fuel stabilizes, $50 becomes the new floor
+
+The fact that it's at the 52-week average is a natural resistance level. It could consolidate here, break higher if the Iran situation de-escalates, or roll back down if more bad news hits.
+
+If you're looking for a signal to decide — watch for them to reinstate guidance on the Q2 call. That's the clearest catalyst. If they do and the numbers look manageable, that's a reason to hold. If they delay again, that's a red flag.
+
