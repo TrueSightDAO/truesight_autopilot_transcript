@@ -3579,16 +3579,29 @@ Let me also check the DApp repo for the full withdrawal flow.
 [1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 Now I understand the flow. Let me update the proposal to reflect the actual mechanism.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full doc. Let me update the buyback section to reflect the actual flow — no Raydium, members submit via the DApp withdraw page, cash is issued via receipt channel, TDG balance deducted.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3743,4 +3756,104 @@ The Wise API automates the payout — no manual bank logins, no manual record-ke
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #502 on agentic_ai_context merged successfully (sha: 655c1709b6036205ca7218d24abea85e3194bd43). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Buyback budget is alrady automatically caculated since a long time isnt it? SO is the buy back price
+
+
+### 🤖 Autopilot
+
+You're right. Let me check the existing automation.
+
+
+### 🤖 Autopilot
+
+Let me find the specific buyback budget and price functions.
+
+
+### 🤖 Autopilot
+
+Now let me also check the buyback price logic.
+
+
+### 🤖 Autopilot
+
+Now let me also check the Performance Statistics sheet for the current values.
+
+
+### 🤖 Autopilot
+
+You're absolutely right. The buyback budget and price are already fully automated:
+
+**Buyback budget** — `setDailyTdgBuyBackBudget()` runs automatically:
+- Formula: `(Last 30 days sales / 30) × min(Asset Per TDG, 1 - Treasury yield)`
+- Current: **$0.093/day** (from $759.35 in 30-day sales × $0.0067 asset/TDG)
+- Written to Performance Statistics sheet automatically
+
+**Buyback price** — `ASSET_PER_TDG_ISSUED` is the price:
+- Formula: Total DAO assets ÷ Total TDG issued
+- Current: **$0.0067/TDG**
+- Updated automatically by the GAS script
+
+**Buyback execution** — `createDailyTdgBuyBackTransactions()` runs daily:
+- Creates two ledger entries (deduction from off-chain funds + provision for cash-out)
+- Capped by Gary's available USD balance
+- All automated, no manual intervention
+
+So the "Who authorizes" row in the proposal should reflect that it's already automated — not "Gary manually" today. Let me fix it.
+
+
+### 🤖 Autopilot
+
+The file is in a different location. Let me find it.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact text. The local copy is slightly different from what's on GitHub (the PR #502 merge may not have been pulled locally). Let me update using the exact text from the local file.
+
+
+### 🤖 Autopilot
+
+The file on GitHub has different whitespace/encoding. Let me read it fresh from GitHub and use the exact content.
+
+
+### 🤖 Autopilot
+
+Now I have the exact text. Let me use the precise content from GitHub.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What changed
+
+**"Who authorizes" row corrected:**
+- Before: "Gary manually" → "DUNA governance sets buyback budget"
+- After: **"Automated — GAS script calculates budget daily"** → "Same — DUNA governance can adjust formula"
+
+**Added buyback automation detail:**
+| Metric | Formula | Current Value |
+|--------|---------|--------------|
+| Buyback budget | (30-day sales ÷ 30) × min(Asset/TDG, 1 - Treasury yield) | **$0.093/day** |
+| Buyback price | Total DAO assets ÷ Total TDG issued | **$0.0067/TDG** |
+| Execution | `createDailyTdgBuyBackTransactions()` | ✅ Automated |
+
+The only thing that changes with the DUNA is the **source account** — from Gary's personal account to TrueTech Inc's Wise account. The automation stays the same.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → grep -n "getDailyTdgBuyBackBudget\|buyBackBudget\|buyback.*price\|TDG_DAILY_BUY_BACK\|assetPerIssuedTdg\|ASSET_PER_TDG" /opt/truesight_autop; sed -n '1906,1920p' /opt/truesight_autopilot/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; sed -n '1855,1910p' /opt/truesight_autopilot/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; …(+6 more)
+• `merge pr` → ✅ PR #503 on agentic_ai_context merged successfully (sha: d93f469e69b46a892c63aa0d8ddbafa67dc43e80). Pull Request successfully merged
 
