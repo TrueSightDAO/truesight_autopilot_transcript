@@ -20,46 +20,90 @@ Can you look into this error?
 ### 🤖 Autopilot
 
 Let me look into this GitHub Actions run failure.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page errored on load. Let me try the raw logs API to get the actual failure output.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try the workflow run API to get the annotated step info.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API confirms step 6 ("Run sync (dry-run on schedule, mode-driven on dispatch)") failed, but I can't get the raw log text without admin rights. Let me look at the workflow file itself and the sync script to understand what could have gone wrong.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the sync script itself.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the script. The failure is in step 6 — "Run sync (dry-run on schedule, mode-driven on dispatch)". The script ran with `--dry-run` (since it was a scheduled run at 03:00 UTC). Let me check the requirements file and see if there's a dependency issue.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script itself looks fine — it's a v1 skeleton that only does dry-run reads. The failure happened very quickly (step 6 started at 08:45:35, completed at 08:45:36 — just 1 second). That's too fast for a sheet read with 100+ rows. Let me check the actual error annotation from the run page more carefully.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The HTML is too large to parse. Let me try the annotations API directly.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The annotations only show the generic "Process completed with exit code 1" — the actual stderr/stdout isn't exposed via the API without admin rights. Let me look at the workflow run more carefully. The run was triggered on schedule (03:00 UTC), and the script ran `--dry-run`. Let me check what commit was on main at that time and see if there's a recent change that could have broken it.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -232,4 +276,22 @@ The `sync_cohort.py` script's `open_sheet()` function calls `gspread.open_by_key
 After that, re-run the workflow (or wait for the next scheduled run at 03:00 UTC).
 
 Want me to open a PR to add better error handling to the script so the next failure is more descriptive?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] Ya, kenapa apa-apa? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, sorry — I got carried away with the deep dive. Let me give you the short version.
+
+**The Sync ERA Cohort workflow is failing because the Google service account hasn't been given access to the ERA Cohort Roster sheet.**
+
+The script tries to open the sheet, gets a 403 Permission Denied, and crashes immediately. This has been failing on every single scheduled run — 24 attempts, zero successes. The mint_cohort_trees workflow uses the same service account and has the same problem — 49 runs, zero successes.
+
+**The fix is simple:** Share the ERA Cohort Roster sheet with `butterfly-effect-club@get-data-io.iam.gserviceaccount.com` as an Editor. That's the service account email. Once Bilal or whoever owns the sheet adds it, both workflows will start working.
+
+Want me to open a PR to add better error handling to the sync script so it gives a clearer message next time?
 
