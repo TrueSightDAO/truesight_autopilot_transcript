@@ -152,5 +152,12 @@
     "summary": "On the Pacific West Coast path page (cacao-journeys/pacific-west-coast-path/index.html), the JavaScript rendering logic has a special case for Kopi Bar & Bakery that currently uses `kopi-bar-and-baker",
     "action": "merge_pr",
     "created_at": "2026-06-14T23:17:33Z"
+  },
+  {
+    "title": "Merge PR #113 on dao_protocol",
+    "qr_code": "",
+    "summary": "Replace the hardcoded version \"1.0.0\" on the EDGAR DAO Protocol landing page with the actual Git commit hash, served dynamically from the API and clickable to the exact commit on GitHub.\n\n**Problem:**",
+    "action": "merge_pr",
+    "created_at": "2026-06-15T00:26:12Z"
   }
 ]
