@@ -1251,6 +1251,7 @@ The file seems to be repeating — let me check the actual file size and read th
 ### 🤖 Autopilot
 
 The file is 519 lines but the read is looping. Let me read the last 200 lines directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1376,4 +1377,22 @@ Alright. So to recap what happened:
 The `github_autopilot_pat` in the vault didn't have the right scope for repo variables, but we didn't end up needing it anyway.
 
 Anything else you want me to look at?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] what was the implication of that error anyways
+
+
+### 🤖 Autopilot
+
+Good question. The error had two implications:
+
+**1. The ERA Cohort sync never ran — ever.** For 24 scheduled runs (at 3am UTC every day), the script crashed immediately because it tried to open a sheet with ID `""` (empty string). So no cohort data was ever synced — no new members added, no roster updates, nothing. The butterfly-effect-club was flying blind on its membership data.
+
+**2. The mint_cohort_trees workflow had the same problem.** 49 runs, zero successes. That means no cohort trees were ever minted either — which is the actual output of the butterfly effect program. New members who joined the cohort never got their trees minted.
+
+So the practical impact: **the entire butterfly-effect-club automation pipeline has been dead since it was set up.** No cohort syncing, no tree minting. It's been silently failing every night.
+
+Now that it's fixed, the next scheduled run at 3am UTC should work, and you'll start seeing actual cohort data flowing through. Want me to trigger a run of the `mint_cohort_trees` workflow too to see if that one also works now?
 
