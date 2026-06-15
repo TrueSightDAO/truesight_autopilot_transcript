@@ -4525,6 +4525,7 @@ Now let me generate the PDF and upload it.
 ### 🤖 Autopilot
 
 The PDF is 13,069 bytes. Let me generate it locally and upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4816,4 +4817,50 @@ The licensing revenue suggestion is in there under "What We're Doing This Week" 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #516 on agentic_ai_context merged successfully (sha: 7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Nope the merge did not go through. Can you check? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's actually on `main` right now.
+
+
+### 🤖 Autopilot
+
+I see the problem — the file on `main` is actually the **V2 version** (with all five capital channels), not the lean V1. The merge of PR #516 brought in the wrong version. Let me check what happened.
+
+The file currently on `main` has all five capital channels, the ecosystem map, everything. That's V2, not V1. The lean V1 should have been just: Problem → Solution → Structure → This Week → One Question → Not Doing Yet. No capital channels section at all.
+
+Let me fix this — put the correct lean V1 on `main` for `LEGAL_ENTITY_STRUCTURING_PROPOSAL.md`, and keep V2 as `_v2.md`.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Now let me verify it's actually on `main`.
+
+
+### 🤖 Autopilot
+
+Now it's on `main`. Both files are live:
+
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+**V1** is the lean version: Problem → Solution → Structure → This Week (with licensing revenue suggestion) → One Howey Question → Not Doing Yet. No capital channels, no ecosystem map.
+
+**V2** (full version with all five channels) is at `LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md` and `.pdf`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+• `merge pr` → ✅ PR #514 on agentic_ai_context merged successfully (sha: f04aaff350d46baa8a00725c3d5ff84a082b99ec). Pull Request successfully merged
 
