@@ -126,38 +126,10 @@
     "created_at": "2026-06-14T19:50:35Z"
   },
   {
-    "title": "Merge PR #173 on agroverse_shop_beta",
+    "title": "Merge PR #3 on butterfly-effect-club",
     "qr_code": "",
-    "summary": "Fix three issues on the Agroverse shop beta site:\n\n1. **Add Kopi Bar & Bakery to partners-data.js** \u2014 Add a new entry for Kopi Bar & Bakery (Berkeley, CA) to the partners data array in `js/partners-da",
+    "summary": "The sync_cohort.py script fails immediately because ERA_SHEET_ID env var is set to empty string (from an unset GitHub Actions variable), so os.environ.get(\"ERA_SHEET_ID\", ERA_SHEET_ID_DEFAULT) returns",
     "action": "merge_pr",
-    "created_at": "2026-06-14T22:55:29Z"
-  },
-  {
-    "title": "Merge PR #174 on agroverse_shop_beta",
-    "qr_code": "",
-    "summary": "Update the Kopi Bar & Bakery partner detail page (partners/kopi-bar-and-bakery/index.html) with new images and improved layout.\n\n**Images to add (from /tmp/tg_attachments/):**\n1. Nora holding a bag of",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T23:05:03Z"
-  },
-  {
-    "title": "Merge PR #175 on agroverse_shop_beta",
-    "qr_code": "",
-    "summary": "Fix two issues on the Kopi Bar & Bakery partner pages:\n\n1. **Partners listing page (partners/index.html)** \u2014 the Kopi Bar card references `kopi-bar-and-bakery-logo.jpg` but the logo was uploaded as `.",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T23:12:29Z"
-  },
-  {
-    "title": "Merge PR #176 on agroverse_shop_beta",
-    "qr_code": "",
-    "summary": "On the Pacific West Coast path page (cacao-journeys/pacific-west-coast-path/index.html), the JavaScript rendering logic has a special case for Kopi Bar & Bakery that currently uses `kopi-bar-and-baker",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T23:17:33Z"
-  },
-  {
-    "title": "Merge PR #113 on dao_protocol",
-    "qr_code": "",
-    "summary": "Replace the hardcoded version \"1.0.0\" on the EDGAR DAO Protocol landing page with the actual Git commit hash, served dynamically from the API and clickable to the exact commit on GitHub.\n\n**Problem:**",
-    "action": "merge_pr",
-    "created_at": "2026-06-15T00:26:12Z"
+    "created_at": "2026-06-15T14:02:09Z"
   }
 ]
