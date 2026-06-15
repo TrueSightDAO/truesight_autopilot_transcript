@@ -4685,6 +4685,7 @@ I see — the `submit_contribution` endpoint expects a `text` parameter with a s
 I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format including a digital signature. This is the Edgar API endpoint. Let me check what the `submit_contribution` tool in my toolset actually does — it seems to map to a different internal function.
 
 Let me try the `create_dao_submission` tool again with the correct parameters.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4909,4 +4910,46 @@ The reserve formula on truesight.me explicitly states: *"Total outstanding TDG e
 **The simplest guardrail:** Any capital channel that issues TDG must include a **lockup period** equal to or longer than the contributor channel. This way, the people who earned TDG through work always have priority exit over those who bought in with money.
 
 Want me to add this as a design constraint section to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Actually, based on what you just mentioned, not really too much of a concern yet. Because if the funds injected their money in for TDG, at the point of injection, they already got diluted, isn't it? Because they are basically injecting it $1 per TDG, but cashing out at the fully diluted price, that we are all at at this point. Actually, when I think critically about it, I actually even doubt they would have to move their funds into it. Just look at the current net asset value that we have reported on the, in the JSON cache, on the larger, let me know your thoughts. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the current NAV from the JSON cache.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me also check the treasury-cache for the full picture.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Now I have the full picture. Let me calculate.
+
+**Current NAV:**
+- Total DAO assets: **$4,126.73** (Main Ledger cash)
+- Total TDG issued: **2,306,000**
+- **NAV per TDG: ~$0.0018** (that's 0.18 cents)
+
+**Your point is exactly right.** If a fund injects $1 and gets 1 TDG at $1/TDG, they're buying at **555x the current NAV**. When they cash out, they get NAV (~$0.0018), not their entry price. They'd lose 99.8% of their capital.
+
+No rational fund would do that. The only way this works is if:
+
+1. **They're buying TDG at NAV** — so $0.0018/TDG. Cheap entry, but then they're not bringing much capital in.
+2. **They're not buying TDG at all** — they're making a grant/donation to the DUNA for impact reporting and carbon credits, not for financial return.
+3. **They're investing in TrueTech Inc directly** — equity or revenue share, not TDG.
+
+So the concern about destabilizing the buyback is actually moot at current NAV. No fund would overpay by 555x. The capital channels are naturally self-limiting — the NAV is too low for anyone to inject meaningful capital through TDG.
+
+**The real channels for capital are:**
+- **TrueTech Inc equity** — for VCs who want return
+- **DUNA grants** — for impact funds who want impact reporting + future carbon credits
+- **AGL contracts** — for shipment financing
+
+TDG is for contributors who earn it through work, not for capital injection. And that's fine.
+
+Want me to add this NAV reality check to the proposal?
 
