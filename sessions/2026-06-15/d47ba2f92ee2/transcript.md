@@ -237,17 +237,25 @@ Now let me check what Google credential files and Gmail tokens exist on disk.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have a full inventory. Let me check what's already in the vault so I don't duplicate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault is initialized but empty — no credentials stored yet. Let me also check the vault API to see how to add credentials.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the vault has an `add()` method. Now I need to sign in as a governor to add credentials via the API. Let me check the vault API endpoints.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -255,26 +263,31 @@ Good — the vault has an `add()` method. Now I need to sign in as a governor to
 I can see the vault API endpoints. The credentials API is at `POST /vault/api/credentials` — but it requires a JWT cookie (governor auth). Since I'm running on the same box, I can call the vault directly via Python. Let me write a script to add all the credentials.
 
 First, let me read the actual .env values so I can add them properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me write a Python script that uses the vault module directly to add all these credentials. I'll also read the Google service account JSON files and Gmail tokens to add those too.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything. Let me write a comprehensive script to add all credentials to the vault. I'll use the vault module directly from Python.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Vault is initialized and empty. Now let me add all the credentials. I'll do this in a script to keep it clean.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 26 credentials are in the vault. Now I need to update the autopilot code to **read from the vault** instead of from `.env` directly. Let me check how the app currently loads credentials.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -393,4 +406,50 @@ All encrypted at rest with Fernet. Sign in at the vault page to manage them.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from app.vault import get_vault v = get_vault() v.initialize(; cd /opt/truesight_autopilot && git status --short && echo "---" && git log --oneline -5; cd /opt/truesight_autopilot && git diff worktrees/vault --stat 2>/dev/null && echo "---" && git diff worktrees/vault 2>/dev/null | head -80; …(+5 more)
 • `deploy autopilot` → Already on the latest commit dc41ae3e — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] The listing view https://sophia.truesight.me/vault/ on desktop is awkward. Can you fix it?
+
+
+### 🤖 Autopilot
+
+Let me look at the current vault page to see the desktop layout issue.
+
+
+### 🤖 Autopilot
+
+I can see the page. The issue is on the **desktop** view — the credentials table has cramped columns. Let me look at the logged-in view specifically. Let me check the vault routes and templates.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The desktop issue is:
+
+1. **6-column table** (Name, Purpose, Version, Created by, Created, Actions) — the "Purpose" column can be very long (60 chars), and "Created by" + "Created" take up space. On a 960px container, the table feels cramped with all those columns.
+2. **Three separate cards** (Credentials table, Audit Log, Vault Health, System Status) — lots of vertical scrolling on desktop.
+3. **The "Actions" column** has two buttons (Rotate, Delete) that can wrap awkwardly.
+
+Let me open a fix PR.
+
+
+### 🤖 Autopilot
+
+Opened **PR #215** with the desktop layout fix. Here's what it changes:
+
+**Desktop improvements (≥769px):**
+1. **Wider container** — 960px → 1200px on desktop, so the 6-column table has room to breathe
+2. **Purpose column truncation** — `max-width: 300px` with `text-overflow: ellipsis` and a `title` attribute so long entries don't squeeze other columns
+3. **Actions buttons stay side-by-side** — `white-space: nowrap` on the Actions cell so Rotate/Delete don't stack
+4. **Table row hover** — subtle background highlight on hover for better scanability
+5. **Compact system cards** — Audit Log, Vault Health, and System Status now sit in a 2-column grid on desktop instead of stacking vertically
+
+Preview: https://github.com/TrueSightDAO/truesight_autopilot/pull/215
+
+Want me to merge and deploy?
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/215
 
