@@ -450,22 +450,41 @@ The file is huge. Let me search for the specific init function that shows "Verif
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me search for the `isOnline` function usage in the HTML file and the init flow.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub code search isn't finding it. Let me search the HTML file directly for the init function.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the init function — the one that runs on page load.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the init function that runs on page load — the one that shows "Verifying your digital signature".
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -480,6 +499,7 @@ The problem: the FastAPI `/ping` route only handles `GET`, not `HEAD`. FastAPI r
 The fix needs to be in the **dao_protocol FastAPI server** — add HEAD support to the `/ping` endpoint. Let me also check if there's a simpler fix on the dapp side (change HEAD to GET).
 
 Let me check the `isOnline` function usage more carefully:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -503,6 +523,7 @@ The page init flow:
 So the page itself should load fine. The `isOnline()` issue only affects the **submission** path — when the user submits an expense report, it tries to POST to `EDGAR_SUBMIT`, and if that fails, it falls back to `isOnline()` to check if the server is reachable.
 
 But wait — the user said the page shows "Verifying your digital signature..." and is stuck. Let me check if the `DaoMembersCache.findByPublicKey` is working.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -635,4 +656,23 @@ The expense report submission flow will now correctly detect the server as onlin
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #114 on dao_protocol merged successfully (sha: 493514de976c0371ffc708c3ee554e8c961c0802). Pull Request successfully merged
 • `ssh run` ×6 → cd /home/ubuntu/dao_protocol && git pull origin main 2>&1; sudo systemctl restart dao_protocol 2>&1 && sleep 2 && sudo systemctl status dao_protocol --no-pager -l 2>&1 | head -20; ps aux | grep -E 'uvicorn|dao_protocol|fastapi' | grep -v grep 2>&1; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5066] Can you indicate that you and me spent around 15 minutes diagnosing and defaking this issue? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me submit a contribution event for this.
+
+
+### 🤖 Autopilot
+
+Done — logged a 15-minute contribution for both of us diagnosing and fixing the HEAD /ping 405 issue. PR #114 merged and deployed.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
