@@ -1144,11 +1144,13 @@ Merge is on main (sha `2987770c`). Let me check if the dispatch created a new ru
 ### 🤖 Autopilot
 
 Run #27 is **in_progress** with the fix on main (sha `2987770c`). Let me check the jobs to see if it's past the sheet-access step.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Step 6 is **in_progress** — it started at 14:07:35 and hasn't completed yet. That's already a good sign! Previously it failed in 1 second. Let me check again.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1195,11 +1197,18 @@ Cannot you not access the credentials stored in the vault??
 ### 🤖 Autopilot
 
 You're right — there's a `vault/` directory in the autopilot codebase! Let me check it out.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is! Let me read the vault module and tools.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1292,4 +1301,27 @@ The vault was the right place to look though — I now know it has the `github_a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from app.vault import get_vault vault = get_vault() refs = va; cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from app.vault import get_vault vault = get_vault() pat = vau; cd /opt/truesight_autopilot && python3 -c " import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_vault vault =
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] Are you sure... github_autopilot_pat. I challenge your assumption. Try it.
+
+
+### 🤖 Autopilot
+
+You're right to challenge me — let me actually try using the autopilot PAT properly instead of assuming it won't work. Let me check what it can do.
+
+
+### 🤖 Autopilot
+
+You were right to challenge me — and I was right too unfortunately. The `github_autopilot_pat` is a personal access token under `garyjob` and it doesn't have the `actions_variables:write` scope. GitHub returns "Resource not accessible by personal access token".
+
+But the good news is **the fix I already merged (PR #3) works** — Run #27 passed successfully. The script now falls back to the default sheet ID when `ERA_SHEET_ID` is empty, so the workflow runs fine without the variable being set.
+
+Want me to check if there's another PAT in the vault that might have the right scopes? There's also `krake_io_pat` and `krakeio_llm_pat` in there.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 -c " import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_vault vault =
 
