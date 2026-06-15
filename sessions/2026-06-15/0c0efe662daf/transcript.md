@@ -4701,6 +4701,11 @@ The tool is passing `--type` but the CLI is not receiving it. Let me check the t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see — it needs `--type` as a positional-like flag. The `create_dao_submission` tool seems to have a bug mapping the `type` parameter. Let me run it directly via SSH.
 
 
@@ -5027,4 +5032,36 @@ Someone could clone the tech. They can't clone the network and trust we're build
 **So the real asset isn't the code — it's the ecosystem.** And the ecosystem lives in the DUNA, not in TrueTech Inc. Which brings us back to: TrueTech Inc is a pass-through trading company, and that's fine. The DUNA holds the network value.
 
 Want me to add this "IP licensing vs. network moat" nuance to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Oh, perhaps there is actually still value in like going down the licensing route. I'm just not sure yet because we haven't really that view tested how likely people want to license. For example, Sophia and Edgar, I mean like Bella wants to see if they could set up their own instance of that to support their team. Maybe like other like SME organizations who actually don't want your data like stuck into the quantum model. Why do you want to do such a standard process? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a real signal. If Bella (Edge & Node) is already asking about setting up their own instance, that's not hypothetical — there's actual pull.
+
+The use case you're describing is real: **organizations that want the DAO's operational infrastructure (contribution tracking, governance, QR provenance) but don't want their data inside someone else's system.** They want their own instance.
+
+This is a classic **open-core / self-hosted** model:
+
+```
+TrueTech Inc builds the software stack (Edgar, DApp, oracle, QR system)
+    → Licenses it to orgs like Edge & Node
+    → They run their own instance, their data stays with them
+    → TrueTech Inc gets licensing revenue
+    → That revenue feeds the buyback reserve
+```
+
+**Why this is different from "AI can build it":**
+- The **protocol** (contribution scoring, governance mechanics, tokenomics) is the hard part — not the UI
+- The **integration** with existing supply chains takes time
+- The **compliance** (Wyoming UNA/DUNA structure, CTA, tax) is specific and tested
+- Most SMEs don't want to figure out DAO legal structures from scratch — they want a template that works
+
+**This is worth keeping as a future option** — not building for it now, but noting that if Edge & Node or similar orgs want their own instance, the licensing model becomes real. And that gives TrueTech Inc an asset base (IP + recurring revenue) that could eventually attract VC interest.
+
+Want me to add this as a "Future Optionality" note in the proposal?
 
