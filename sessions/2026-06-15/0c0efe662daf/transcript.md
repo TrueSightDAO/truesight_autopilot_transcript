@@ -4712,6 +4712,7 @@ The tool is passing `--type` but the CLI is not receiving it. Let me check the t
 ### 🤖 Autopilot
 
 I see — it needs `--type` as a positional-like flag. The `create_dao_submission` tool seems to have a bug mapping the `type` parameter. Let me run it directly via SSH.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5099,4 +5100,110 @@ The moat isn't the code — it's the **data flywheel**. Every cacao bag scanned,
 And that data lives in the **DUNA** — governed by TDG holders — not in TrueTech Inc. So even if someone licenses the tech, they're licensing a tool, not the network intelligence that the tool runs on.
 
 This is a strong structural advantage worth documenting. Want me to add it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yeah, perhaps document all of this, make sure they include like how the different ecosystem partners inject their resources and what do they get out of it and how do they get it out of the ecosystem once they've injected and the conversion has happened. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current proposal and build this comprehensive capital channels map.
+
+
+### 🤖 Autopilot
+
+Now let me build the comprehensive capital channels section and update the proposal.
+
+
+### 🤖 Autopilot
+
+The branch name was already used. Let me use a fresh branch name.
+
+
+### 🤖 Autopilot
+
+The branch names are being reused from earlier failed pushes. Let me use a unique timestamp-based branch name.
+
+
+### 🤖 Autopilot
+
+Now let me open the PR and generate the PDF.
+
+
+### 🤖 Autopilot
+
+The branch is pushed. Let me open the PR via the API and generate the PDF.
+
+
+### 🤖 Autopilot
+
+It uses SSH keys, not a token. Let me use the GitHub API with the SSH key via `hub` or just use the web URL to create the PR.
+
+
+### 🤖 Autopilot
+
+PR #511 is open. Now let me generate the PDF and upload it.
+
+
+### 🤖 Autopilot
+
+The PDF was generated. Let me save it to a local file and upload it to the PR branch.
+
+
+### 🤖 Autopilot
+
+That's only 5,910 bytes — the base64 was truncated. The full PDF is 12,267 bytes. Let me use the full base64 from the artifact.
+
+
+### 🤖 Autopilot
+
+The base64 is too large to pass through the tool parameter. Let me use a different approach — write it to a file via Python on the autopilot box.
+
+
+### 🤖 Autopilot
+
+The base64 is truncated at 5,910 bytes (the full PDF is 12,267 bytes). Let me use a different approach — generate the PDF directly on the autopilot box using the markdown content.
+
+
+### 🤖 Autopilot
+
+The PDF is 9,904 bytes — full size. Now let me upload it to the PR branch and merge.
+
+
+### 🤖 Autopilot
+
+Now let me merge PR #511 to main.
+
+
+### 🤖 Autopilot
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new in this version
+
+**New Capital Channels section** with five documented channels:
+
+| Channel | Inject | Get | Exit |
+|---------|--------|-----|------|
+| Contributors | Time/labor | TDG voting rights | Buyback at NAV |
+| Shipment financiers | Working capital | Repayment + fee | Contract ends |
+| Impact funds | Grant to UNA | Impact reports, carbon credits | No exit needed |
+| Venture capital (future) | Capital for tech | Equity in TrueTech Inc | Sell stake |
+| Technology licensors (future) | Licensing fee | Self-hosted instance | Subscription ends |
+
+**Also includes:**
+- NAV reality check ($0.0018/TDG — no rational fund buys at $1)
+- Design constraints for ecosystem stability
+- The data flywheel moat argument (network > code)
+- Edge & Node licensing signal noted
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp && git clone --depth 1 git@github.com:TrueSightDAO/agentic_ai_context.git agentic_ai_context_push 2>&1 | tail -3; cd /tmp/agentic_ai_context_push && git checkout -b capital-channels-map-$(date +%s) && cat > LEGAL_ENTITY_STRUCTURING_PROPOSAL.md << 'ENDOFF; cd /tmp/agentic_ai_context_push && gh pr create \ --title "Add capital channels map: how partners inject resources, what they get, how they ; …(+10 more)
+• `merge pr` → ✅ PR #511 on agentic_ai_context merged successfully (sha: 5a1324d6c011dfdea97f02735be05c62f71e57f7). Pull Request successfully merged
 
