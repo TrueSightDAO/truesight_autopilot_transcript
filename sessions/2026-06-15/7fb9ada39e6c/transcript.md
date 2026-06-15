@@ -106,3 +106,69 @@ Looks like the blog index was rebuilt at some point (probably when the site was 
 
 Want me to add them back to the index page? I could add a "Previous Posts" section below the current grid, or integrate them chronologically.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5100] Yeah, please add them back in and then promote production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first get the full list of all blog posts and their dates so I can build a complete chronological index.
+
+
+### 🤖 Autopilot
+
+I have the dates from the existing posts. Now let me extract dates from the older posts that are missing from the index. Let me check a batch of them.
+
+
+### 🤖 Autopilot
+
+Good — I now have the dates for the 16 posts already on the index. Now I need to extract dates from the older posts. Let me batch-read the remaining ones to get their published dates.
+
+
+### 🤖 Autopilot
+
+I now have enough data to build the complete index. Let me also grab the remaining posts' dates quickly.
+
+
+### 🤖 Autopilot
+
+I now have all the dates I need. Let me also grab the remaining few posts' dates.
+
+
+### 🤖 Autopilot
+
+Now I have all the data. Let me build the complete index.html with all posts chronologically. I'll work on the truesight_me_beta repo first (beta-first flow), then promote to prod.
+
+
+### 🤖 Autopilot
+
+Good — the beta repo has the same content. Now let me build the complete index with all 46 posts in chronological order. I'll create the full HTML and push it to the beta repo.
+
+
+### 🤖 Autopilot
+
+I have all the data I need. Now let me build the complete blog index with all posts. I'll push to the beta repo first.
+
+
+### 🤖 Autopilot
+
+The PR is up on the beta repo. Let me check it's ready and then promote to prod since you said to go ahead.
+
+The PR is at https://github.com/TrueSightDAO/truesight_me_beta/pull/238 — it adds all 46 blog posts to the index, sorted newest-first. The older posts from 2024-2025 that were missing are now included.
+
+Since you said "add them back in and then promote production" — I'll go ahead and sync beta to prod now.
+
+
+### 🤖 Autopilot
+
+There's a merge conflict when syncing beta to prod — the histories have diverged, which is expected since prod and beta have different CNAME configurations. This needs a human to reconcile.
+
+Here's what happened:
+
+1. **PR opened on beta**: https://github.com/TrueSightDAO/truesight_me_beta/pull/238 — adds all 46 blog posts to the index
+2. **Prod sync blocked**: The beta→prod sync hit a merge conflict (expected — prod and beta intentionally have different CNAMEs)
+
+**What I need from you**: Can you merge the beta PR (#238) and then I'll try the prod sync again? Or if you'd prefer, I can apply the same change directly to prod's `main` branch since it's a single file change.
+
