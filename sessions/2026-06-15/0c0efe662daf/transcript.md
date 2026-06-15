@@ -4855,6 +4855,7 @@ The licensing revenue suggestion is in there under "What We're Doing This Week" 
 ### 🤖 Autopilot
 
 Let me check what's actually on `main` right now.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4864,6 +4865,7 @@ I see the problem — the file on `main` is actually the **V2 version** (with al
 The file currently on `main` has all five capital channels, the ecosystem map, everything. That's V2, not V1. The lean V1 should have been just: Problem → Solution → Structure → This Week → One Question → Not Doing Yet. No capital channels section at all.
 
 Let me fix this — put the correct lean V1 on `main` for `LEGAL_ENTITY_STRUCTURING_PROPOSAL.md`, and keep V2 as `_v2.md`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4959,4 +4961,55 @@ Now both V2 files are on `main`. Here are the URLs:
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
 • `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] In v2 If impact funds or VCs come in with large capital, they get TDG. More TDG in circulation = more potential redemption demand. If too many holders try to cash out at once, TrueTech Inc's operating cash might not cover it.
+Guardrails:
+Tiered TDG with lockups — Funds that come in get TDG with vesting schedules. Contributors (time/labor) have no lockup — they earned it.
+
+
+The above part is not necessary and not true since if they buy in the TDG you’ll be buying it at one TDG for one US dollar so they’ll be locked up anyway otherwise they’ll be forced to cash out at a loss, isn’t it? 
+
+Also, from my perspective, the licensing revenue Wen channel into true tech Inc. surplus should be directed towards boosting the NAV of the TDG isn’t it
+
+
+### 🤖 Autopilot
+
+You're right on both points. Let me fix the V2 doc.
+
+**Point 1 — The lockup guardrail is unnecessary.** If a fund buys TDG at $1/TDG and NAV is $0.0018, they're already locked by economics — cashing out would mean a 99.8% loss. No need for artificial vesting schedules. The NAV itself is the natural lockup.
+
+**Point 2 — Licensing surplus should boost NAV directly.** Not just "buyback from DApp" — the surplus should flow into the buyback reserve, which increases the NAV calculation (total assets ÷ total TDG). Higher NAV = more value per TDG for all holders.
+
+Let me update both.
+
+
+### 🤖 Autopilot
+
+Now let me update the V2 doc — remove the unnecessary lockup guardrail and clarify that licensing surplus boosts NAV directly.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Both fixes applied and merged to `main`. Here's what changed:
+
+**1. Removed the unnecessary lockup guardrail.** If a fund buys TDG at $1/TDG and NAV is $0.0018, they're already locked by economics — cashing out means a 99.8% loss. No artificial vesting schedules needed. The NAV itself is the natural lockup.
+
+**2. Licensing surplus boosts NAV directly.** Changed from "surplus → buyback from DApp → burned → NAV increases" to "surplus → buyback reserve → **boosts NAV per TDG**". The surplus directly increases the NAV calculation (total assets ÷ total TDG), making every holder's TDG more valuable. Cleaner and more direct.
+
+Both V2 files are live:
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+• `merge pr` → ✅ PR #515 on agentic_ai_context merged successfully (sha: e83c167e9ab54691a3909d3a92568a053b44cb80). Pull Request successfully merged
 
