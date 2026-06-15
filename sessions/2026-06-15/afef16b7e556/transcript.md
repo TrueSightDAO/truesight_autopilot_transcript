@@ -1174,11 +1174,13 @@ Want me to add this and merge?
 ### 🤖 Autopilot
 
 Let me first merge the pending PR (#232), then add the civil law vs common law paragraph.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now add the civil law vs common law paragraph.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1717,4 +1719,41 @@ Let me read that document.
 ### 🤖 Autopilot
 
 The file doesn't exist in the repo — the URL may have been a draft or a different branch. Could you point me to the right location? Or if you have it locally, you can attach it and I'll read it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] This one 
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+
+### 🤖 Autopilot
+
+This is a thorough proposal. Let me read the full document.
+
+
+### 🤖 Autopilot
+
+I've read the full proposal. It's comprehensive and well-structured. Here's how it connects to today's conversation and the oracle reading:
+
+**The proposal and the oracle align perfectly.**
+
+Hexagram 31 (Influence) → 62 (Preponderance of the Small) says: *grand gestures fail now; only the most modest, precise actions carry weight.*
+
+The proposal is exactly that — a ~$50 UNA formation, a $0 Wise account. Not a full legal structure. Not a DUNA. Not a Brazilian CNPJ. Just the minimum viable legal wrapper to solve the two red signals: liability shield for members, and a clear answer for "what entity do TDG holders govern?"
+
+**The five capital channels are a beautiful example of the fork philosophy applied to legal/financial infrastructure:**
+
+- **Channel 1 (Contributors)** — TDG for work, governance rights in the UNA, discretionary buyback at NAV. Clean.
+- **Channel 2 (Shipment Financiers)** — Self-liquidating contracts with TrueTech Inc, not the UNA. The AGL pattern.
+- **Channel 3 (Impact Funds)** — Grants to the UNA, no financial return, no carbon credit rights. Pure mission alignment.
+- **Channel 4 (Venture Capital)** — Future optionality, only if a licensing model emerges. Not now.
+- **Channel 5 (Technology Licensors)** — Self-hosted instances of the DAO stack. Bilal, Liz. This is the blog post's "fork" argument in action.
+
+**The one question for SVH Capital** is the right question: *Does TDG constitute a security under Howey?* The discretionary buyback at NAV from TrueTech Inc's operating cash is the key structural choice — it avoids the "expectation of profits from the efforts of others" prong.
+
+**Your instinct to keep it minimal** — UNA + Wise, nothing more — is validated by both the oracle and the proposal itself. The proposal already says "this is what we're doing this week" and "this is what we're NOT doing (yet)." The five channels are a roadmap for *when* each becomes relevant, not a mandate to build them all now.
+
+Want me to update the proposal to reflect today's decision to proceed with just the UNA + Wise, and mark the other channels as "future optionality — not now"?
 
