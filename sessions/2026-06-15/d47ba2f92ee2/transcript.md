@@ -75,11 +75,28 @@ Hmm, let me check what's actually being served at sophia.truesight.me — it mig
 ### 🤖 Autopilot
 
 Now I can see the page. It's a Flask/Jinja2 app. Let me find the source code in the truesight_me_beta repo.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault page is a Flask app served from sophia.truesight.me. Let me check what's actually on the server.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -167,4 +184,102 @@ Done. **PR #213 merged and vault worker restarted.** The mobile alignment fix is
 • `merge pr` → ✅ PR #213 on truesight_autopilot merged successfully (sha: 66b2fe325e6c9f7b78ac250fe822009fd884925e). PR #213 was already merged.
 • `deploy autopilot` → Already on the latest commit 66b2fe32 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×2 → systemctl status sophia-vault 2>/dev/null || systemctl list-units --type=service --state=running | grep -i vault; echo "---"; ps aux | grep ; sudo systemctl restart truesight-vault && sleep 2 && systemctl status truesight-vault --no-pager | head -10
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] great! can you go about gathering all the credentials you have lying scattered around in your ec2 and add them to your vault so that we can easily manage them?
+
+
+### 🤖 Autopilot
+
+Great idea — let me inventory what credentials are scattered around the autopilot box and get them into the vault.
+
+
+### 🤖 Autopilot
+
+Now let me check what Google credential files and Gmail tokens exist on disk.
+
+
+### 🤖 Autopilot
+
+Now I have a full inventory. Let me check what's already in the vault so I don't duplicate.
+
+
+### 🤖 Autopilot
+
+The vault is initialized but empty — no credentials stored yet. Let me also check the vault API to see how to add credentials.
+
+
+### 🤖 Autopilot
+
+Good — the vault has an `add()` method. Now I need to sign in as a governor to add credentials via the API. Let me check the vault API endpoints.
+
+
+### 🤖 Autopilot
+
+I can see the vault API endpoints. The credentials API is at `POST /vault/api/credentials` — but it requires a JWT cookie (governor auth). Since I'm running on the same box, I can call the vault directly via Python. Let me write a script to add all the credentials.
+
+First, let me read the actual .env values so I can add them properly.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me write a Python script that uses the vault module directly to add all these credentials. I'll also read the Google service account JSON files and Gmail tokens to add those too.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me write a comprehensive script to add all credentials to the vault. I'll use the vault module directly from Python.
+
+
+### 🤖 Autopilot
+
+Vault is initialized and empty. Now let me add all the credentials. I'll do this in a script to keep it clean.
+
+
+### 🤖 Autopilot
+
+All 26 credentials are in the vault. Now I need to update the autopilot code to **read from the vault** instead of from `.env` directly. Let me check how the app currently loads credentials.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The app currently reads credentials from `.env` via `os.getenv()` in `config.py`. The vault is now populated. The next step would be to update `config.py` to read from the vault instead of env vars — but that's a significant refactor that needs careful thought (the vault requires the app to be running and authenticated).
+
+For now, let me focus on what you asked: **gather all credentials scattered around and add them to the vault**. That's done. Let me also check if there are any other credential files I missed.
+
+
+### 🤖 Autopilot
+
+There are SSH keys too. Let me add those to the vault as well.
+
+
+### 🤖 Autopilot
+
+Now let me verify everything is in the vault.
+
+
+### 🤖 Autopilot
+
+All **31 credentials** are now in the vault. Here's the full inventory:
+
+| Category | Count | What |
+|---|---|---|
+| **LLM APIs** | 5 | DeepSeek (x2), Grok, BigModel, Tavily |
+| **AWS** | 4 | Nelanco & Explorya access + secret keys |
+| **GitHub** | 4 | Autopilot PAT, KrakeIO PAT, Krake PAT, NPM token |
+| **Telegram** | 3 | Bot API key, API ID, API hash |
+| **Gmail** | 3 | Admin token (env), admin_token.json, gary_token.json |
+| **Google SA** | 6 | cypher_defense, tdg_scoring, upc_barcode, edgar_dapp_listener, agroverse_qr_code_manager, agroverse_market_research |
+| **BugSnag** | 1 | Error monitoring API key |
+| **SSH keys** | 5 | nelanco_aws, nelanco_california, server_us, sophia_infra, dao_protocol_beta |
+
+All stored encrypted at rest (Fernet) in `/opt/truesight_autopilot/vault/vault.json.enc`. You can view and manage them at **https://sophia.truesight.me/vault** — sign in with your DAO identity.
+
+**Next step** (if you want): I can update the autopilot's `config.py` to read from the vault instead of `.env` for runtime credential loading. That way the `.env` file can be stripped down to just non-secret config. Want me to do that?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → echo "=== .env files ===" && find /opt/truesight_autopilot -name ".env*" -not -path "*/.venv/*" 2>/dev/null && echo "=== .env content (keys ; echo "=== Google creds ===" && ls -la /opt/truesight_autopilot/creds/ 2>/dev/null && echo "=== Gmail tokens ===" && ls -la /opt/truesight_au; echo "=== Google creds ===" && ls -la /opt/truesight_autopilot/creds/ 2>/dev/null; echo "=== Gmail tokens ===" && ls -la /opt/truesight_auto; …(+10 more)
 
