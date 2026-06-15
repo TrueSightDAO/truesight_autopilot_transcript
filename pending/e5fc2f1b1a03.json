@@ -138,5 +138,12 @@
     "summary": "The `/ping` endpoint only handles GET requests, but the DApp's `isOnline()` function sends HEAD requests to `https://edgar.truesight.me/ping` to check server availability. FastAPI returns 405 Method N",
     "action": "merge_pr",
     "created_at": "2026-06-15T16:47:44Z"
+  },
+  {
+    "title": "Merge PR #213 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "Mobile alignment issues on vault pages (sophia.truesight.me/vault)\n\nThe vault pages have several alignment/overflow issues on mobile viewports:\n\n1. **Credentials table** (index.html) \u2014 6 columns (Name",
+    "action": "merge_pr",
+    "created_at": "2026-06-15T22:01:37Z"
   }
 ]
