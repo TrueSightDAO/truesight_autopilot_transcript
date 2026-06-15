@@ -3472,7 +3472,13 @@ Now the PDF.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me merge PR #499 to main.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3515,16 +3521,24 @@ Now both files are live on `main`:
 ### 🤖 Autopilot
 
 Let me check the PDF on `main`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF is there and valid. Let me check if GitHub is serving it correctly by looking at the raw URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF is only 5,910 bytes — that's too small. The base64 I uploaded was truncated. Let me regenerate and upload properly.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3667,4 +3681,35 @@ The full flow is now documented step-by-step: connect wallet → see balance →
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #501 on agentic_ai_context merged successfully (sha: a0bfae3bb882698721a72686021eda2758d23156). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+If WISE already supports API then this part isnt manual
+
+[Attachment auto-processed: **5f61121fc04642e094675dbae1ee4c11.jpg**]
+- Type: Image (OCR confidence: 87.8%, quality: good)
+
+Extracted text:
+```
+What Changes with the DUNA Who issues cash TrueTech Inc (from Gary's personal account) TrueTech Ine (from its own Wise account) Who:authorizes’ DUNA governance can set buyback: budget TDG deduction | Ledger entry | Same Transparency | Manual record | On-chain via Edgar API
+```
+
+
+### 🤖 Autopilot
+
+You're right. If Wise has API access, then TrueTech Inc's payout process can be automated — not manual. Let me fix that table.
+
+The corrected row should be:
+
+| Aspect | Today | With DUNA |
+|--------|-------|-----------|
+| Who issues cash | TrueTech Inc (from Gary's personal account) | TrueTech Inc (from its own Wise account via API) |
+| Who authorizes | Gary manually | DUNA governance sets buyback budget; Wise API executes |
+| TDG deduction | Ledger entry | Same — ledger entry |
+| Transparency | Manual record | On-chain via Edgar API + Wise API reconciliation |
+
+The "manual record" today becomes **automated** — Wise API logs every transaction, Edgar records the TDG deduction, and the two can be reconciled programmatically. No manual entry needed.
+
+Want me to update the proposal with this correction?
 
