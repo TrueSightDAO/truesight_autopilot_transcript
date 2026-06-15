@@ -2555,6 +2555,16 @@ No `dao_identities` table in the sentiment database. The DAO identity data must 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 That's the TDG ledger, not DAO identities. Let me check the `users` table on the sentiment database instead — that's where Edgar stores user data.
 
 
@@ -2641,4 +2651,103 @@ So to answer your question — **no, it's no longer an issue.** Both workflows a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 << 'PYEOF' import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_vault v
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] can we check to make sure all 97 records on the google sheet have corresponding profiles on 
+https://truesight.me/programs/butterfly-effect/members.html
+
+That is the UAT that the plumbing worked
+
+
+### 🤖 Autopilot
+
+Let me check the ERA Cohort Roster sheet and the members page.
+
+
+### 🤖 Autopilot
+
+My SA still doesn't have access to the sheet. But the workflow's SA (`butterfly-effect-club@get-data-io.iam.gserviceaccount.com`) does — you shared it with that one. Let me check the members page directly instead.
+
+
+### 🤖 Autopilot
+
+The page exists but the member list is rendered dynamically (probably JavaScript). Let me check the actual page source.
+
+
+### 🤖 Autopilot
+
+The page is static HTML with JavaScript that loads members dynamically. Let me check what JS it loads.
+
+
+### 🤖 Autopilot
+
+The page loads members dynamically via `TrueSightProgramShell.init()` from `manifest.json`. Let me check the manifest and the program-shell JS to find the data source.
+
+
+### 🤖 Autopilot
+
+The manifest points to the same sheet. The members page loads from the sheet via the `tokenomics_admin_endpoint`. Let me check that endpoint to see what data it returns.
+
+
+### 🤖 Autopilot
+
+The shell loads members from the `lineage-credentials` repo. Let me check the lineage data.
+
+
+### 🤖 Autopilot
+
+I can see 84 member directories in the lineage-credentials repo. Let me count them properly and check the manifest to see how many the sheet has.
+
+
+### 🤖 Autopilot
+
+Now let me count the actual member directories and compare with the sheet. Let me check the sheet data through the workflow's output since I can't access the sheet directly.
+
+
+### 🤖 Autopilot
+
+That's run #51 (the old failed one). Let me get the successful run #53.
+
+
+### 🤖 Autopilot
+
+All 12 steps passed including step 8 "Mint trees for newly-attested members". Now let me check the lineage-credentials repo to count how many member profiles exist there — that's what the members page renders from.
+
+
+### 🤖 Autopilot
+
+Now let me check one of the member profiles to see what data they contain, and also check the sheet to see how many records are there. Since I can't access the sheet directly, let me check the workflow output from run #27 (the successful sync) to see what it processed.
+
+
+### 🤖 Autopilot
+
+The logs URL isn't exposed via the API. Let me check the lineage-credentials manifest to see how many members are expected, and also check the members page on the live site to see what's rendered.
+
+
+### 🤖 Autopilot
+
+The page is static HTML — members are loaded dynamically via JS from the lineage-credentials repo. The shell JS loads from `programs/butterfly-effect/index.json` which doesn't exist yet. Let me check the `_cache` directory which is what the shell actually reads.
+
+
+### 🤖 Autopilot
+
+The cache index has 469 members total but I need to filter for butterfly-effect members. Let me count them.
+
+
+### 🤖 Autopilot
+
+Here's the full picture:
+
+**Lineage-credentials has 84 butterfly-effect member profiles.** The cache index was generated at 2026-06-15T20:56:19Z — that's after both workflows ran successfully (run #27 at ~14:07 and run #53 at ~14:10). So the data has propagated.
+
+But I can't access the Google Sheet directly to count the 97 records. Let me check if the sheet has 97 rows by looking at the workflow output from the successful sync run.
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && python3 << 'PYEOF' import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_vault v; cd /opt/truesight_autopilot && python3 << 'PYEOF' import json, urllib.request # Read the cache index req = urllib.request.Request( "https://
 
