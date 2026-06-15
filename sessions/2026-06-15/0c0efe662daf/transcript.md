@@ -3642,6 +3642,7 @@ Withdrawal Method
 ### 🤖 Autopilot
 
 Ah, you mean the **withdrawal method** — the mechanism by which the cash is sent to the exiting member. Let me check what's actually in the DApp and ledger.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3657,16 +3658,29 @@ Now I see it clearly. The withdrawal method is a dropdown on the DApp page with 
 - **Western Union** — International
 
 Let me update the proposal to use the correct term "Withdrawal Method" and list the actual options.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the buyback section with the correct term "Withdrawal Method" and list the actual options from the DApp.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3735,6 +3749,31 @@ Want me to update the proposal with this correction?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged. Both files are now live on `main`:
 
 - **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
@@ -3766,21 +3805,50 @@ The Wise API automates the payout — no manual bank logins, no manual record-ke
 ### 🤖 Autopilot
 
 You're right. Let me check the existing automation.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the specific buyback budget and price functions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the buyback price logic.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the Performance Statistics sheet for the current values.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3803,6 +3871,12 @@ You're absolutely right. The buyback budget and price are already fully automate
 - All automated, no manual intervention
 
 So the "Who authorizes" row in the proposal should reflect that it's already automated — not "Gary manually" today. Let me fix it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3856,4 +3930,111 @@ The only thing that changes with the DUNA is the **source account** — from Gar
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → grep -n "getDailyTdgBuyBackBudget\|buyBackBudget\|buyback.*price\|TDG_DAILY_BUY_BACK\|assetPerIssuedTdg\|ASSET_PER_TDG" /opt/truesight_autop; sed -n '1906,1920p' /opt/truesight_autopilot/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; sed -n '1855,1910p' /opt/truesight_autopilot/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; …(+6 more)
 • `merge pr` → ✅ PR #503 on agentic_ai_context merged successfully (sha: d93f469e69b46a892c63aa0d8ddbafa67dc43e80). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Some updates after chatting with Claude
+
+I’ll consolidate this into a clean brief for Sophia. Give me a moment to pull it together as a single coherent prompt.
+
+PROMPT FOR SOPHIA: Legal Entity Structuring Document Revision
+
+Based on governance discussion with Gary, update the legal entity structuring document with the following corrections and clarifications:
+
+§3 — Corporate Transparency Act (COMPLETE REWRITE)
+
+The CTA section is now moot. As of FinCEN’s March 2025 interim final rule, all U.S.-formed entities and their U.S. beneficial owners are exempt from BOI reporting. “Reporting company” now means only foreign-formed entities registered to do business in a U.S. state. A Wyoming UNA/DUNA is U.S.-formed, so neither the entity nor Gary files BOI to FinCEN.
+
+The live risk is state transparency laws, not federal: New York’s LLC Transparency Act took effect January 1, 2026; California is advancing its own version. Reframe this section from “who reports to FinCEN” to “which state regimes touch us and what’s our compliance path.”
+
+§1 & §5 — DUNA Auto-Conversion (CORRECTION)
+
+The statute’s automatic conversion runs downward only: if a DUNA falls below 100 members, it auto-converts into a plain Wyoming UNA. There is no statutory auto-upgrade from UNA to DUNA. To form a DUNA, you must elect to form under the DUNA Act and meet its requirements: at least 100 members joined by mutual consent under an agreement, with blockchain-based governance.
+
+Verify with OtoCo whether they actually automate DUNA formation via smart contract, or if that’s a claim to confirm directly. Internal consistency check: the doc states ~350 contributors but also implies the entity is currently below 100 members. Clarify whether those 350 are “members by mutual consent” under the governing agreement — this determines if DUNA formation is possible now or if UNA is the current stopgap.
+
+TDG & Governance (CLARIFICATION)
+
+TDG tokens represent voting rights in the DAO entity (UNA or DUNA form). They are issued to contributors for work (cacao logistics, contribution scoring, etc.) and grant governance power over the organization’s direction, budget allocation, and program funding. TDG is not a financial security or profit-sharing instrument — it is a governance right that happens to be transferable/tradeable.
+
+TrueTech Inc — Independent Entity (STRUCTURAL CLARIFICATION)
+
+TrueTech Inc is a separate, independent entity — not a subsidiary of the DUNA. It has its own cap table and shareholders (Gary). TrueTech operates the commercial side: cacao imports, sales, revenue generation.
+
+The relationship is contractual, not structural:
+
+ • TrueTech runs commercial operations independently.
+ • When a TDG holder wants liquidity, TrueTech may buy back tokens at NAV (total DAO assets ÷ total TDG issued) using its own operating cash reserves — this is a business decision, not a DUNA obligation.
+ • TrueTech may also participate in secondary markets for TDG as a buyer if strategically sensible (e.g., buying at discount to retire and consolidate governance power).
+
+This separation is legally critical: if the DUNA owned TrueTech as a subsidiary, nonprofit form would trigger UBIT issues and 501(c)(3) jeopardy. Keeping them independent avoids that.
+
+Buyback Reserve Mechanism (CLARIFICATION)
+
+There is no separate “impact fund” backend or committed buyback reserve. TrueTech’s buyback capacity is simply its available operating cash flow.
+
+TrueTech publishes a reserve formula (e.g., “X percent of monthly sales volume”) on the website. This formula determines what portion of TrueTech’s revenue gets set aside for potential token redemptions versus reinvestment, operations, and growth.
+
+Buybacks are thus:
+
+ • Not guaranteed or promised — available based on current reserves calculated by the published formula.
+ • Transparent and tied to business performance — if sales grow, reserve capacity grows; if sales decline, redemption capacity declines.
+ • Discretionary on TrueTech’s side — TrueTech commits to the formula, not to individual redemption demands if reserves are insufficient.
+
+
+### 🤖 Autopilot
+
+Let me read the current document and apply all these corrections.
+
+
+### 🤖 Autopilot
+
+Now I have the full document. Let me apply all the corrections from Gary's prompt.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### Summary of all changes applied
+
+**§3 — CTA section completely rewritten:**
+- Federal CTA is now **moot** (FinCEN March 2025 rule — U.S.-formed entities exempt)
+- Reframed to **state transparency laws** as the live risk (NY LLC Transparency Act, CA advancing its own)
+- Wyoming has no beneficial ownership registry — this is an advantage of forming here
+
+**§1 & §5 — DUNA auto-conversion corrected:**
+- No statutory auto-upgrade from UNA to DUNA — conversion runs **downward only** (DUNA → UNA if below 100 members)
+- To form a DUNA, must elect under the DUNA Act with 100+ members by mutual consent
+- Added action item: verify OtoCo's DUNA claims directly
+- Added question: do our ~350 contributors qualify as "members by mutual consent"?
+
+**TrueTech Inc — structural clarification:**
+- TrueTech Inc is now documented as an **independent entity** with its own cap table and shareholders
+- Relationship with DUNA is **contractual, not structural**
+- This avoids UBIT and 501(c)(3) jeopardy for the DUNA
+
+**Buyback reserve mechanism clarified:**
+- No separate "impact fund" backend or committed buyback reserve
+- TrueTech publishes a **reserve formula** on the website (e.g. X% of monthly sales)
+- Buybacks are **not guaranteed** — discretionary, tied to business performance
+- TrueTech may also buy TDG on secondary markets at a discount
+
+**TDG governance rights clarified:**
+- TDG = voting rights in the DAO entity, not a financial security or profit-sharing instrument
+- Issued for work (cacao logistics, contribution scoring, development, onboarding)
+- Transferable/tradeable governance right
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #504 on agentic_ai_context merged successfully (sha: ec2b1c81735967ff3a3f14260d0127160fb6cae0). Pull Request successfully merged
 
