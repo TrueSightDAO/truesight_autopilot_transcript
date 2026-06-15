@@ -4958,11 +4958,23 @@ Let me find which branch has the v2 files.
 ### 🤖 Autopilot
 
 The v2 files were never merged to main. They were uploaded to a branch that got superseded. Let me push them directly to main now.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the V2 PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5004,16 +5016,34 @@ You're right on both points. Let me fix the V2 doc.
 **Point 2 — Licensing surplus should boost NAV directly.** Not just "buyback from DApp" — the surplus should flow into the buyback reserve, which increases the NAV calculation (total assets ÷ total TDG). Higher NAV = more value per TDG for all holders.
 
 Let me update both.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the V2 doc — remove the unnecessary lockup guardrail and clarify that licensing surplus boosts NAV directly.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5144,4 +5174,26 @@ Both V2 files are live:
 **✅ Done this turn — actions taken:**
 • `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
 • `merge pr` → ✅ PR #516 on agentic_ai_context merged successfully (sha: 2a997fb73df269c145d5b2a4d8d719d3e8bb8e6b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I meant this document 
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+
+
+### 🤖 Autopilot
+
+Let me check what's on `main` for V2.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+The V2 markdown on `main` still has the old version — it doesn't mention the Sentiment Importer subscription revenue. The merge of PR #516 didn't update it. Let me push the fix directly to `main`.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+Now check it:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md**
+
+The Sentiment Importer subscription revenue is now in there — Channel 4, Revenue Distribution Model, Productization Signals table, and the mermaid diagram all updated.
 
