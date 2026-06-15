@@ -3544,6 +3544,7 @@ The PDF is only 5,910 bytes — that's too small. The base64 I uploaded was trun
 ### 🤖 Autopilot
 
 The PDF was saved to `/tmp/tg_attachments/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`. Let me upload it.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3712,4 +3713,34 @@ The corrected row should be:
 The "manual record" today becomes **automated** — Wise API logs every transaction, Edgar records the TDG deduction, and the two can be reconciled programmatically. No manual entry needed.
 
 Want me to update the proposal with this correction?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] update and merge
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What changed
+
+**Transparency row corrected:**
+
+| Aspect | Today | With DUNA |
+|--------|-------|-----------|
+| Who issues cash | TrueTech Inc (from Gary's personal account) | TrueTech Inc (from its own Wise account **via API**) |
+| Who authorizes | Gary manually | DUNA governance sets buyback budget; **Wise API executes** |
+| TDG deduction | Ledger entry | Same |
+| Transparency | Manual record | On-chain via Edgar API + **Wise API reconciliation** |
+
+The Wise API automates the payout — no manual bank logins, no manual record-keeping. The API token is generated from the Wise dashboard settings.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #502 on agentic_ai_context merged successfully (sha: 655c1709b6036205ca7218d24abea85e3194bd43). Pull Request successfully merged
 
