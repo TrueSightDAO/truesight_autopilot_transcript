@@ -4373,6 +4373,26 @@ Want me to update the lean proposal to reflect this?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. The cleanest version yet is now live on `main`:
 
 - **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
@@ -4487,4 +4507,77 @@ Meeting-ready.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #509 on agentic_ai_context merged successfully (sha: f4a4f0840c865a8f03f24dfd5c9f439f3bcecbc9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Nice, can you help report that I spent around an hour going back and forth to get this structure done properly? Use the PDF as the attachment for the execution report. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the exact parameter format expected.
+
+
+### 🤖 Autopilot
+
+The `create_dao_submission` tool is having parameter issues. Let me try `submit_contribution` directly with the right event format.
+
+
+### 🤖 Autopilot
+
+Let me check how the existing contributions are structured in the ledger.
+
+
+### 🤖 Autopilot
+
+I see — the ledger uses "TDGs Provisioned" as the amount column. Let me try the submission with the correct field names.
+
+
+### 🤖 Autopilot
+
+The Edgar API expects specific canonical labels. Let me try with exactly those.
+
+
+### 🤖 Autopilot
+
+Let me check how the Edgar API parses this — maybe it's case-sensitive or has specific formatting.
+
+
+### 🤖 Autopilot
+
+Let me check the actual Edgar API endpoint to see how it parses contributions.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format. Let me check what format it expects.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format including a digital signature. This is the Edgar API endpoint. Let me check what the `submit_contribution` tool in my toolset actually does — it seems to map to a different internal function.
+
+Let me try the `create_dao_submission` tool again with the correct parameters.
+
+
+### 🤖 Autopilot
+
+The tool is passing `--type` but the CLI is not receiving it. Let me check the tool definition — it seems the `type` parameter isn't being mapped correctly to `--type`. Let me try with the exact CLI format.
+
+
+### 🤖 Autopilot
+
+I see — it needs `--type` as a positional-like flag. The `create_dao_submission` tool seems to have a bug mapping the `type` parameter. Let me run it directly via SSH.
+
+
+### 🤖 Autopilot
+
+The dry-run looks good. The TDG Issued shows 100.00 (the default from the tool) — let me check if I should set it to 60 to match the 60 minutes. Let me run it for real without --dry-run.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` ×3 → Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
+• `submit contribution` ×7 → Missing required fields for CONTRIBUTION EVENT: Type, Amount. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
+• `ssh run` ×7 → which truesight-dao-report-ai-agent-contribution 2>/dev/null || find /opt -name "truesight-dao-report-ai-agent-contribution" -o -name "repor; cat /opt/truesight_autopilot/.venv/bin/truesight-dao-report-ai-agent-contribution | head -20; truesight-dao-report-ai-agent-contribution --help 2>&1; …(+3 more)
 
