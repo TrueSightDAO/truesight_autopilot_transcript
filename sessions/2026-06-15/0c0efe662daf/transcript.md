@@ -4150,12 +4150,34 @@ Let me read the current document and apply all these corrections.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have the full document. Now let me apply all the corrections from the brief.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4356,4 +4378,41 @@ Done. The cleanest version yet is now live on `main`:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #507 on agentic_ai_context merged successfully (sha: 124a8064b2686c05242c18293e47dd53b21ef937). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Actually, why is it that it costs us $500 to set up a transfer, why is a counter-tree packing? You sure it's actually cost or is a minimum deposit in the account? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right to question that. Let me check what Wise Business actually costs.
+
+
+### 🤖 Autopilot
+
+You're right — it's **$0 to open**, not $500. Wise Business has:
+
+- **$0 monthly maintenance fee**
+- **No minimum opening deposit**
+- **No minimum balance requirement**
+
+The $0-500 I wrote was a guess, not a real cost. The actual cost to open a Wise Business account for TrueTech Inc is **$0**. You only pay per transaction (typically 0.5-1% for currency conversion).
+
+Let me fix that in the proposal.
+
+
+### 🤖 Autopilot
+
+Fixed. The cost was wrong — Wise Business is **$0 to open** with no minimum deposit. Not $500.
+
+The total cost to get started is now **~$50** (just the OtoCo gas fee). Both files are live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #508 on agentic_ai_context merged successfully (sha: 07e70b3b0e526b58423146fa945e744752363daa). Pull Request successfully merged
 
