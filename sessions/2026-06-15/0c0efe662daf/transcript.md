@@ -4871,11 +4871,28 @@ Let me fix this — put the correct lean V1 on `main` for `LEGAL_ENTITY_STRUCTUR
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify it's actually on `main`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5012,4 +5029,21 @@ Both V2 files are live:
 **✅ Done this turn — actions taken:**
 • `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
 • `merge pr` → ✅ PR #515 on agentic_ai_context merged successfully (sha: e83c167e9ab54691a3909d3a92568a053b44cb80). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Mereka bagus. Mereka boleh mempunyai kata-kata yang berlaku? Saya rasa mungkin sudah terlalu terlalu terlalu terlalu terlalu terlalu terlalu terlalu. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Saya rasa awak cakap "mereka bagus" — maksudnya V1 dan V2 dah siap dan memuaskan. Dan mungkin "terlalu" banyak pusingan untuk dokumen ni?
+
+Kalau ya — setuju. Kita dah melalui 15+ pusingan dan 515 PR untuk sampai ke sini. Dua dokumen dah siap:
+
+**V1** — ringkas, untuk SVH, satu soalan Howey
+**V2** — penuh, semua saluran modal, peta ekosistem, model pengagihan hasil
+
+Siap untuk mesyuarat 26 Jun. Ada apa-apa lagi yang nak dibincangkan atau kita tutup topik ni?
 
