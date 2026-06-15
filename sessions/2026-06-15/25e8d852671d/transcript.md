@@ -104,7 +104,13 @@ Let me see the full file to find the gallery section.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me read the full file directly to see the gallery section.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -209,4 +215,18 @@ Once you've reviewed and are happy with it, just say the word and I'll promote i
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #177 on agroverse_shop_beta merged successfully (sha: 3ea8d84d9f3937dcc3c0c137eceb3cb643a19a61). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4813] promote to prod
+
+
+### 🤖 Autopilot
+
+Promoted to production. The new hero (interior counter shot) is now live at:
+
+**https://www.agroverse.shop/partners/kopi-bar-and-bakery/**
+
+The exterior building photo has been demoted to the gallery section below.
 
