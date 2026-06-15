@@ -148,11 +148,13 @@ That's the default sheet ID — my default SA (cypher_defense) doesn't have acce
 ### 🤖 Autopilot
 
 The default SA doesn't have access, but the workflow uses a different SA (the one from `GOOGLE_CREDENTIALS_JSON_B64`). Let me check the workflow's `mint_cohort_trees.yml` to see if that one runs successfully — it uses the same SA.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check if there's a manifest file referenced.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -168,21 +170,25 @@ The 1-second failure suggests it crashed on one of these. Let me look more caref
 The most likely cause: **the service account (`butterfly-effect-club@get-data-io.iam.gserviceaccount.com`) doesn't have access to the ERA Cohort Roster sheet** (ID: `1pApVCRqsDw9AjPUTc3fMUfMh-8H4Ne1HYuQ_d6xItog`). The `gspread` library would throw a `gspread.exceptions.APIError` (403 Permission Denied) when trying to `open_by_key()`, which would cause the script to exit with code 1.
 
 Let me verify by checking if there's a recent successful run of this workflow.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the previous runs to see if any succeeded.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Zero successful runs ever.** Let me check if there were any successful runs of the `mint_cohort_trees` workflow (which uses the same SA).
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both workflows are failing. Let me check the mint_cohort_trees run to see if it has the same error pattern.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -202,16 +208,19 @@ The workflow sets `GOOGLE_APPLICATION_CREDENTIALS=/tmp/creds.json` via `$GITHUB_
 The most likely cause: **the service account (`butterfly-effect-club@get-data-io.iam.gserviceaccount.com`) doesn't have Editor access to the ERA Cohort Roster sheet** (`1pApVCRqsDw9AjPUTc3fMUfMh-8H4Ne1HYuQ_d6xItog`). The `gspread` library would throw a `gspread.exceptions.APIError` (403) when trying `open_by_key()`, which the script doesn't catch — it would crash with exit code 1.
 
 Let me check if the sheet exists and who has access by trying with the `agroverse_qr_code_manager` SA (which is the same `get-data-io` project).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That SA also doesn't have access. Let me check the `edgar_dapp_listener` SA too.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 None of my SAs have access. Let me check the `tdg_scoring` SA too.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -219,6 +228,7 @@ None of my SAs have access. Let me check the `tdg_scoring` SA too.
 None of my SAs have access. The workflow uses a **different** SA — `butterfly-effect-club@get-data-io.iam.gserviceaccount.com` — which is decoded from the `GOOGLE_CREDENTIALS_JSON_B64` secret. That SA needs to be invited as an Editor on the sheet.
 
 Let me check if there's a `ERA_SHEET_ID` repo variable set that might point to a different sheet than the default.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -248,6 +258,7 @@ ERA_SHEET_TAB: ${{ vars.ERA_SHEET_TAB }}
 If these `vars` aren't set on the repo, they'd be empty strings. The script's `open_sheet()` would then use the defaults (`ERA_SHEET_ID_DEFAULT` and `COHORT_TAB_DEFAULT`), which should be fine.
 
 Let me check if the SA key might be expired or invalid. Let me look at the `mint_cohort_trees` workflow which uses the same SA — it also fails consistently. Let me check one of its runs.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -307,6 +318,7 @@ Want me to open a PR to add better error handling to the sync script so it gives
 ### 🤖 Autopilot
 
 Got it — you've shared the sheet. Let me trigger the workflow now and we'll see.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -324,6 +336,12 @@ Or if you want, I can open a PR to add better error handling while we wait.
 ### 🤖 Autopilot
 
 Let me check what's in my vault.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,4 +397,73 @@ Still failing — step 6 completed in **1 second** again (13:52:57 → 13:52:58)
 ### 🤖 Autopilot
 
 Still 403 from my SAs (which are different from the workflow's SA). The workflow uses `butterfly-effect-club@get-data-io.iam.gserviceaccount.com` — that's the one that needs access. Did you share the sheet with that specific email? It's `butterfly-effect-club@get-data-io.iam.gserviceaccount.com` — not one of my SAs.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] Okay, I know that there's an SA account of yours that's specifically to you. Can you tell me what is the email address associated with that? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check which service accounts I have access to.
+
+
+### 🤖 Autopilot
+
+That's my DAO identity keypair. Let me check the actual Google service account credentials.
+
+
+### 🤖 Autopilot
+
+Let me check the actual SA email used by the tools I have.
+
+
+### 🤖 Autopilot
+
+Let me check the actual service account JSON files that the tools use.
+
+
+### 🤖 Autopilot
+
+Let me check the actual service account credentials that the autopilot tools use. They're likely stored as environment variables or in the tool configuration.
+
+
+### 🤖 Autopilot
+
+The SA credentials aren't stored as JSON files on disk — they're likely loaded from environment variables or passed in via the tool configuration. Let me check the autopilot source code to find how the SA emails are configured.
+
+
+### 🤖 Autopilot
+
+Found them! Let me check the key files to get the SA emails.
+
+
+### 🤖 Autopilot
+
+Found it. The SA email for the cypher_defense account is:
+
+**`cypher-defense@get-data-io.iam.gserviceaccount.com`**
+
+But wait — that's the SA I use for my `read_google_sheet` tool. The workflow uses a **different** SA: `butterfly-effect-club@get-data-io.iam.gserviceaccount.com`. Let me check the other key files to confirm.
+
+
+### 🤖 Autopilot
+
+OK, so here are the SA emails I have access to:
+
+1. **`cypher-defense@get-data-io.iam.gserviceaccount.com`** — my default SA
+2. **`agroverse-qr-code-manager@get-data-io.iam.gserviceaccount.com`** — QR code manager SA
+
+But the **workflow** uses a different one: **`butterfly-effect-club@get-data-io.iam.gserviceaccount.com`** — that's the one that needs access to the ERA Cohort Roster sheet.
+
+So the email you need to share the sheet with is:
+
+**`butterfly-effect-club@get-data-io.iam.gserviceaccount.com`**
+
+That's the service account the GitHub workflow uses. Not one of my personal SAs — it's a dedicated one for the butterfly-effect-club repo.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → find /home/ubuntu -name "*.json" -path "*cred*" -o -name "*service*account*" 2>/dev/null; ls /home/ubuntu/tokenomics/ 2>/dev/null | head -20; find /home/ubuntu/tokenomics -name "*.json" | grep -i "cred\|service\|account\|key\|secret\|auth" | head -20; ls /home/ubuntu/tokenomics/scr; find /home/ubuntu/tokenomics -name "*.json" -not -path "*/node_modules/*" -not -path "*/.git/*" | head -30; …(+16 more)
 
