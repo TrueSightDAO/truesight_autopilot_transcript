@@ -4041,6 +4041,11 @@ Let me read the current document and apply all these corrections.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the full document. Let me apply all the corrections from Gary's prompt.
 
 
@@ -4225,4 +4230,56 @@ Everything else is either:
 The $5K-15K legal counsel, $2K-10K tax attorney, $1K-3K Brazilian rep — none of that blocks the UNA. We can form it for $50 today and figure the rest out as revenue grows.
 
 Want me to strip the proposal down to this lean version?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yes, strip it all the way down to the lean version. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me strip the proposal down to the lean version — just what matters.
+
+
+### 🤖 Autopilot
+
+Now let me strip it down to the lean version.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Done. The lean version is now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What the lean version says
+
+**One page. Three sections.**
+
+1. **The Problem** — three red signals (no DAO wrapper, no impact fund channel, personal bank account)
+2. **The Solution** — form a Wyoming UNA via OtoCo this week for ~$50. That's it.
+3. **The One Question for SVH** — does TDG pass the Howey Test? Everything else is resolved.
+
+**What we're doing this week:**
+- Form UNA (~$50 gas)
+- Open TrueTech Inc Wise account ($0-500)
+- Get UNA EIN ($0)
+- Open UNA Wise account ($0)
+
+**What we're NOT doing (yet):**
+- 501(c)(3) — $2K-10K, not needed until impact funds require tax receipts
+- Brazilian CNPJ ownership — Matheus's private CNPJ works for now
+- DUNA formation — UNA works as stopgap until we hit 100 members by mutual consent
+- Multi-entity accounting — not needed at current scale
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #506 on agentic_ai_context merged successfully (sha: 5180376d134027ad9d942933bc8787d450bbfcc7). Pull Request successfully merged
 
