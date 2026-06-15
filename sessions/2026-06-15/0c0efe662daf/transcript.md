@@ -4661,6 +4661,16 @@ Let me check the actual Edgar API endpoint to see how it parses contributions.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format. Let me check what format it expects.
 
 
@@ -4735,4 +4745,28 @@ Fixed. The contribution now includes the full brief you passed me — all the co
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && truesight-dao-report-ai-agent-contribution \ --title "Legal Entity Structuring — Gover
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Maksudnya, saya fikir mungkin tiada sebuah kata-kata. Saya juga berada di kata-kata di kata-kata. Saya berada di mana di perempuan yang berlaku. Saya boleh beritahu kelihatan. Sekarang di atas yg di atas. Selepas kata-kata di atas, ia akan memanahkan barangan untuk mencari untuk menjagungan dan mencari untuk mencari. Saya juga menggunakan keadaan untuk mencari, kebukaan menggunakan kek kuali asyik. Bagaimana akan mempunyai kek kuali asyik mengambil kek kuali asyik? Bagi kek kuali asyik, kek kuali asyik. Sekarang kita menunggu kembali ke kuali asyik di tembari keseluruhan, kembali, bahawa kita berikan terhadap kembali ke tart 되he. Atau ada betul saja. The folks from the impact funds, avenger capitalist funds, familia- Tory. The folks that just like want to contribute Kash for tax rights parks. All those folks. I- maybe we can even, we should like mount how we could kita mungkin bisa kata, tak kata, tapi itu memang lockah, kami akan berada di channel itu untuk bahawa kemasis untuk masuk ke ekosystem dan kemudian mereka akan menghantar kata-kata, apabila mereka ingin kemasis kemurusan kata-kata untuk menghantar. Pada beberapa tahun. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I caught the gist through the mix of Malay and English. Let me restate what I heard:
+
+You're thinking about the **impact funds, venture capital funds, family offices** — the folks who want to contribute cash for tax write-offs. And you're wondering if we should set up a channel for them to enter the ecosystem, send contributions, and when they want to exit or get their tax receipts, there's a clear path for that.
+
+Is that right?
+
+If so — the structure we already have handles this cleanly:
+
+1. **UNA is formed** (~$50) — they have a legal entity to send money to
+2. **UNA gets its own bank account** — only when a real donation-type funder appears (we deferred this, but it's ready when needed)
+3. **They get TDG** for their contribution — governance rights in the DAO
+4. **When 501(c)(3) is obtained** — their contribution can convert to tax-deductible status
+5. **If they want to exit** — TrueTech buys back at NAV from operating cash, subject to the reserve formula on truesight.me
+
+The channel exists. We just need the UNA formed first — which is this week's action. Want me to add a clear "how impact funds enter and exit" flow to the proposal?
 
