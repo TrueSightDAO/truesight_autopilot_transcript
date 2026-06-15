@@ -5031,6 +5031,7 @@ Now let me open the PR and generate the PDF.
 ### 🤖 Autopilot
 
 The branch is pushed. Let me open the PR via the API and generate the PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5146,4 +5147,30 @@ This is different from "someone might want to license the tech" — this is a **
 This also changes the VC story — if TrueTech Inc has a paying customer for Sophia instances, it now has **recurring revenue** and **IP** (the autopilot software). That's investable.
 
 Want me to update the proposal with Bilal's specific interest?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Also Liz was thinking of using Sophia for her deal flows as well… that she doesn’t want to personally get into. She is also thinking of using Edgar’s protocol for her own trading operations
+
+
+### 🤖 Autopilot
+
+Two concrete leads now. This is real.
+
+**Liz's use cases:**
+1. **Sophia for deal flow** — using the autopilot to manage investment opportunities she doesn't want to personally engage with
+2. **Edgar's protocol for trading operations** — using the DAO's contribution tracking and governance protocol for her own trading
+
+This tells us the demand isn't just for the DAO wrapper — it's for **Sophia herself** (the AI agent) and **Edgar** (the protocol/API). Two separate products:
+
+| Product | Who wants it | Use case |
+|---------|-------------|----------|
+| **Sophia (autopilot)** | Bilal (Butterfly Effect) | Investment fund management for team of 5 |
+| **Sophia (autopilot)** | Liz | Deal flow management |
+| **Edgar (protocol)** | Liz | Trading operations tracking & governance |
+
+This is enough signal to start thinking about a **product roadmap** — not just a legal structure. The UNA is the legal wrapper, but the revenue opportunity is licensing Sophia and Edgar to organizations like Bilal's and Liz's.
+
+Want me to add a "Productization Signal" section to the proposal documenting these leads?
 
