@@ -4913,6 +4913,11 @@ It uses SSH keys, not a token. Let me use the GitHub API with the SSH key via `h
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PR #511 is open. Now let me generate the PDF and upload it.
 
 
@@ -5165,4 +5170,55 @@ The DAO doesn't touch the money directly (nonprofit constraint), but it controls
 ---
 
 This is a complete economic model. Want me to add this full ecosystem map to the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yeah, added to the proposal in the Markdown format, make sure it's a mermaid diagram. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the current proposal and add the ecosystem map with a mermaid diagram.
+
+
+### 🤖 Autopilot
+
+I have the full document. Now let me add the ecosystem map with a mermaid diagram and the revenue distribution model. Let me also fix the names (Bilal, not Bella).
+
+
+### 🤖 Autopilot
+
+Now let me generate the PDF and upload it.
+
+
+### 🤖 Autopilot
+
+The PDF is 13,069 bytes. Let me generate it locally and upload.
+
+
+### 🤖 Autopilot
+
+Done. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What's new
+
+**Mermaid ecosystem diagram** in the markdown — maps all five layers:
+1. Supply Chain (farmers → TrueTech Inc → retailers)
+2. DAO Governance (contributors + impact funds → UNA)
+3. Technology Licensing (Bilal, Liz → TrueTech Inc)
+4. Capital Investment (VCs → TrueTech Inc)
+5. Revenue Distribution (licensing surplus → buyback → NAV growth)
+
+**Revenue Distribution Model** — TrueTech Inc collects licensing fees, DAO governance sets the terms, surplus flows to TDG buyback. UNA never touches the money.
+
+**Names corrected** — Bilal (Butterfly Effect Club), not Bella. Liz added for deal flow + Edgar protocol interest.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+• `merge pr` → ✅ PR #512 on agentic_ai_context merged successfully (sha: 2a4ac8986d464ead7fe2c1fd50db41c6aece77e4). Pull Request successfully merged
 
