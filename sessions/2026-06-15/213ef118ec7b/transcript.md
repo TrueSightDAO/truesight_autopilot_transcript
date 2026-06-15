@@ -120,6 +120,7 @@ The script ran for only **1 second** (08:45:35 → 08:45:36). That's suspicious.
 4. `ERA_SHEET_ID` or `ERA_SHEET_TAB` vars not set
 
 Let me check if those vars are set on the repo.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -294,4 +295,21 @@ The script tries to open the sheet, gets a 403 Permission Denied, and crashes im
 **The fix is simple:** Share the ERA Cohort Roster sheet with `butterfly-effect-club@get-data-io.iam.gserviceaccount.com` as an Editor. That's the service account email. Once Bilal or whoever owns the sheet adds it, both workflows will start working.
 
 Want me to open a PR to add better error handling to the sync script so it gives a clearer message next time?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] I just shut the ERA co-hotnoster sheet to modify it back. I can trigger off the workflow and see if the errors do happen. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — you've shared the sheet. Let me trigger the workflow now and we'll see.
+
+
+### 🤖 Autopilot
+
+I don't have a GitHub token to trigger the workflow directly. Could you trigger it manually from the Actions tab? Just go to the **Sync ERA Cohort** workflow and click **Run workflow** → **Run now**.
+
+Or if you want, I can open a PR to add better error handling while we wait.
 
