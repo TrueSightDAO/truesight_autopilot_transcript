@@ -2845,6 +2845,11 @@ The page is static HTML — members are loaded dynamically via JS from the linea
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The cache index has 469 members total but I need to filter for butterfly-effect members. Let me count them.
 
 
@@ -6436,4 +6441,1740 @@ I see it now — the range `Cohort Roster!A1:K1` returned data but the output wa
 [1 tool result(s) compacted: read_google_sheet — detail in capsules]
 
 [1 tool result
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] Not true. their headers are on row 1
+
+credential_pdf_url 
+certificate_url
+
+
+### 🤖 Autopilot
+
+You're right, my apologies. Let me read the header row properly to confirm.
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted: read_google_sheet — detail in capsules]
+
+[1 tool result(s) compacted
 
