@@ -1283,21 +1283,30 @@ Anyway — the good news is **Run #27 already succeeded** with the fix I merged.
 ### 🤖 Autopilot
 
 Let me check if there's an "Autopilot PAT" in the vault.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — `github_autopilot_pat`! Let me use it to set the `ERA_SHEET_ID` variable on the repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me use this PAT to set the `ERA_SHEET_ID` repo variable on the butterfly-effect-club repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot PAT doesn't have the right scope for repo variables either. Let me check what scopes it has.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1323,6 +1332,7 @@ The vault was the right place to look though — I now know it has the `github_a
 ### 🤖 Autopilot
 
 You're right to challenge me — let me actually try using the autopilot PAT properly instead of assuming it won't work. Let me check what it can do.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1345,12 +1355,19 @@ Want me to check if there's another PAT in the vault that might have the right s
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Still 403. Let me check if the variable already exists — maybe I need to update it instead of create it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still blocked. The permission might not have propagated yet — GitHub PAT scopes can take a minute or two. Let me try again in a moment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1405,22 +1422,41 @@ Now that it's fixed, the next scheduled run at 3am UTC should work, and you'll s
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Triggered! Let me check on it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Run #51 is **in_progress**! Let me wait and check again.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Run #51 failed too — but only 26 seconds runtime. Let me check the logs to see what happened.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same pattern — step 6 failed. Let me get the actual log.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1436,21 +1472,25 @@ gspread.exceptions.SpreadsheetNotFound: <Response [404]>
 And looking at the URL it tried: `/v4/spreadsheets/?includeGridData=false` — that's the **list** endpoint, not `open_by_key`. This means `open_by_key` is being called with an empty sheet ID, which makes gspread try to list all spreadsheets instead.
 
 But I merged PR #3 to fix this... Let me check if the merge actually landed on the right branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merge is on main. But this run (#51) was triggered **before** the merge propagated. Let me check the commit SHA that run #51 used.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ah — run #51 was a **scheduled** run (created at 08:45 UTC), not the one I just triggered! It used the old commit `0f40b249` — before my fix. The one I triggered hasn't appeared yet. Let me check again.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — run #51 **did** use the fix (`2987770c20f9` — same SHA as my merge) but it still failed! Let me get the actual log for run #51 to see what happened.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1458,6 +1498,7 @@ Wait — run #51 **did** use the fix (`2987770c20f9` — same SHA as my merge) b
 I see it now. Line 227 shows `ERA_SHEET_ID: ` (empty), and line 232 shows `Connecting to sheet  / tab '' as service account...` — the sheet ID is blank. But this is run #51 which used SHA `2987770c20f9` — my fix!
 
 Wait, let me check the actual code on main to see if my fix was correct.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1483,6 +1524,7 @@ default=os.environ.get("ERA_SHEET_ID") or ERA_SHEET_ID_DEFAULT,
 That's correct — `"" or "1pAp..."` should give the default. But the log shows `Connecting to sheet  / tab ''` with an empty sheet ID. That means `args.sheet_id` is empty string at runtime.
 
 Let me check if the workflow passes `--sheet-id` as an argument that overrides the default.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1579,4 +1621,28 @@ You'll need to set that secret. It should be the base64-encoded ERA $97 payment 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → cd /opt/truesight_autopilot && python3 -c " import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_vault vault =; sleep 15 && cd /opt/truesight_autopilot && python3 -c " import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_v; sleep 30 && cd /opt/truesight_autopilot && python3 -c " import sys, json, urllib.request sys.path.insert(0, '.') from app.vault import get_v; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] So ERA_PAYMENT_PROOF_B64 is an image??
+
+
+### 🤖 Autopilot
+
+Yep! It's the ERA $97 payment receipt image — the proof that the cohort member paid their fee. The workflow decodes it from base64 into `/tmp/era_payment.jpeg` and then passes it as visual proof when minting the tree-planting pledge QR codes.
+
+The manifest file says:
+
+```yaml
+proof_file: /tmp/era_payment.jpeg
+```
+
+And the workflow step does:
+
+```bash
+echo "$ERA_PAYMENT_PROOF_B64" | base64 -d > /tmp/era_payment.jpeg
+```
+
+So it's literally a JPEG image of the receipt, base64-encoded and stored as a GitHub Actions secret. Do you have that image somewhere?
 
