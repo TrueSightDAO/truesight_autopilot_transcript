@@ -20,26 +20,56 @@ https://sophia.truesight.me/vault/
 ### 🤖 Autopilot
 
 Let me look at the vault page to understand the alignment issue.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That URL is a frontend page, not a public API. Let me find the source code for the vault page in the dapp_beta repo.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault page is served from `sophia.truesight.me` — let me check the truesight_me_beta repo for the frontend code.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `sophia.truesight.me` is the main DAO landing page — that's `truesight_me_beta` (or `truesight_me_prod`). Let me search for vault-related code there.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm, let me check what's actually being served at sophia.truesight.me — it might be a separate app.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -111,4 +141,30 @@ Want me to merge it, or would you like to review first?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → grep -r "sophia\|vault" /etc/nginx/sites-enabled/ 2>/dev/null | head -20; grep -r "sophia\|vault" /etc/nginx/sites-enabled/ 2>/dev/null; grep -r "sophia" /etc/nginx/conf.d/ 2>/dev/null; echo "---"; ls /etc/nginx/si; cat /etc/nginx/sites-enabled/sophia; …(+3 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/213
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] merge and deploye
+
+
+### 🤖 Autopilot
+
+Let me merge the PR first, then deploy.
+
+
+### 🤖 Autopilot
+
+Already on the latest commit — the vault worker runs from the same codebase and reloads on the next request (FastAPI with `reload=True` or the process picks up the new code). Let me verify the vault worker picks it up.
+
+
+### 🤖 Autopilot
+
+Done. **PR #213 merged and vault worker restarted.** The mobile alignment fix is live at https://sophia.truesight.me/vault — give it a refresh on your phone and let me know if it looks better or if anything's still off.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #213 on truesight_autopilot merged successfully (sha: 66b2fe325e6c9f7b78ac250fe822009fd884925e). PR #213 was already merged.
+• `deploy autopilot` → Already on the latest commit 66b2fe32 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` ×2 → systemctl status sophia-vault 2>/dev/null || systemctl list-units --type=service --state=running | grep -i vault; echo "---"; ps aux | grep ; sudo systemctl restart truesight-vault && sleep 2 && systemctl status truesight-vault --no-pager | head -10
 
