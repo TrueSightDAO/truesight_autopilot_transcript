@@ -4650,7 +4650,13 @@ Let me check how the Edgar API parses this — maybe it's case-sensitive or has 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the actual Edgar API endpoint to see how it parses contributions.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4706,6 +4712,25 @@ Done. The contribution has been submitted successfully:
 - **Ledger recorded** in the Telegram Chat Logs sheet
 
 All good. The proposal is finalized and the session is logged. Ready for June 26.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && truesight-dao-report-ai-agent-contribution \ --title "Legal Entity Structuring — Gover
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] What about the input? I just passed you
+
+
+### 🤖 Autopilot
+
+You're right — I didn't include the input you passed me. Let me check what you sent — it was the full brief from Claude with all the corrections. Let me re-submit with the proper context.
+
+
+### 🤖 Autopilot
+
+Fixed. The contribution now includes the full brief you passed me — all the corrections from Claude, the CTA rewrite, DUNA correction, buyback clarification, withdrawal methods, and the SVH approach reset. All logged with the PDF attached.
 
 ———
 **✅ Done this turn — actions taken:**
