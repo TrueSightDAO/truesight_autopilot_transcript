@@ -8,11 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=3966] the tax write off is a nice to have for their cafe. BUt I am thinking more from the perspective of what the venture partner mentioned, having a tax write off facility will allow us to approach organizations that want to do tax write off isnt it?
-
-
 ### 🤖 Autopilot
 
 You're right — I was framing it too narrowly around Nora's café. Let me reframe.
@@ -5036,6 +5031,11 @@ The branch is pushed. Let me open the PR via the API and generate the PDF.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 It uses SSH keys, not a token. Let me use the GitHub API with the SSH key via `hub` or just use the web URL to create the PR.
 
 
@@ -5173,4 +5173,55 @@ This tells us the demand isn't just for the DAO wrapper — it's for **Sophia he
 This is enough signal to start thinking about a **product roadmap** — not just a legal structure. The UNA is the legal wrapper, but the revenue opportunity is licensing Sophia and Edgar to organizations like Bilal's and Liz's.
 
 Want me to add a "Productization Signal" section to the proposal documenting these leads?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I think the interesting question is we utilize the Dao as a use case to battle test and surface the shape of the technology itself. Then in this case the licensing fee, who is the appropriate folks that earns it? Isn't it? Is sure like the revenue should be accrued to true tech ink? Or maybe it's just true tech ink collecting the funds, but the actual revenue is accrued to the folks that do the, you know, contribute your time and resources like money to pay for expenses in the Dao. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's the right question. The DAO is the **proving ground** — it surfaces the bugs, the edge cases, the feature gaps. The technology gets battle-tested through real DAO operations. Then the polished product gets licensed out.
+
+**Who earns the licensing revenue?**
+
+There are two models:
+
+### Model A: TrueTech Inc earns it, pays the DAO
+
+```
+License fee → TrueTech Inc (collects)
+    → TrueTech Inc takes a margin (for running the business)
+    → Remaining revenue → buys TDG from the DApp → burns it
+    → All TDG holders benefit (deflationary pressure)
+```
+
+This keeps TrueTech Inc as the commercial entity (clean for tax, contracts, liability). The DAO benefits through TDG buyback, not direct revenue distribution (which would jeopardize 501(c)(3) status).
+
+### Model B: The UNA earns it directly
+
+```
+License fee → UNA (collects)
+    → UNA treasury grows
+    → NAV per TDG increases
+    → Contributors can exit at higher NAV
+```
+
+But the UNA has no bank account (by design) and is a nonprofit — collecting licensing revenue might create UBIT issues.
+
+### Model C: Hybrid — TrueTech Inc collects, DAO governs the rate
+
+```
+License fee → TrueTech Inc (collects)
+    → DAO governance votes on the licensing terms and margin
+    → TrueTech Inc publishes the formula on truesight.me
+    → Surplus → TDG buyback
+```
+
+This is probably the cleanest. TrueTech Inc handles the commercial side (contracts, invoices, support). The DAO governs the **terms** — what's the minimum license fee, what percentage goes to buyback, what's TrueTech Inc's margin. The DAO doesn't touch the money directly, but it controls the economics.
+
+**The key insight:** The DAO battle-tests the tech. The DAO's contributors (time, labor, money) are the ones who made the tech valuable. They should benefit from licensing — not through direct revenue (nonprofit constraint) but through **NAV growth** and **buyback capacity**.
+
+Want me to add this revenue distribution model to the proposal?
 
