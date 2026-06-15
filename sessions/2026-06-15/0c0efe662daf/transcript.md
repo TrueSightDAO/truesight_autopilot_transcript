@@ -8,142 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me look at our ledger to understand the current financial flows and what maps well.
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me get the partner data and look at the supply chain docs for the full picture.
-[2 tool result(s) compacted: read_google_sheet, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me check what the ledger looks like for partners and the current offchain asset location to understand the financial flows.
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Excellent. I now have a comprehensive picture. Let me also check the whitepaper for the legal entity references.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have a thorough picture. Let me compile the research into the .md file and generate the PDF.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me generate the PDF version.
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me upload the PDF to GitHub alongside the .md file.
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Here's the full output. Both files are in PR **#487** on `agentic_ai_context`.
-
----
-
-## Summary of what I found and built
-
-### The core insight
-
-The tax-write-off signal is indeed turning from grey to red — and **Nora's use case** is the catalyst that makes it urgent. A for-profit C-corp (TrueTech Inc) **cannot** issue tax-deductible receipts. For Nora to give her customers a per-cup → tree-planting tax write-off, the receiving entity must be a qualified nonprofit.
-
-### Recommended structure: Three-Entity Stack
-
-```
-Wyoming DUNA (nonprofit, 501(c)(3) aspirant)
-    ↓ Service Agreement
-TrueTech Inc (Delaware C-corp, import/distribution)
-    ↓ Inter-company agreement
-Brazilian LTDA (CNPJ, export/sourcing)
-```
-
-### Why DUNA over DAO LLC
-
-| Factor | DUNA Wins | DAO LLC Wins |
-|--------|-----------|--------------|
-| Tax-deductible receipts for Nora's customers | ✅ | ❌ |
-| Impact fund compatibility | ✅ | ❌ |
-| Mission alignment (nonprofit) | ✅ | ❌ |
-| Profit distribution to TDG holders | ❌ | ✅ |
-
-The DUNA's nonprofit constraint actually **aligns perfectly** with the mission (restore 10,000 hectares). TrueTech Inc remains the for-profit engine that generates revenue; the DUNA is the mission wrapper that receives donations, plants trees, and issues tax receipts.
-
-### Immediate action item (this week)
-
-**Open a dedicated business checking account for TrueTech Inc.** This is the $0-$500 fix that stops the commingling risk immediately, regardless of which long-term structure you choose.
-
-### 13 questions for SVH Capital on June 26
-
-The most important ones to lead with:
-
-1. **Nora's use case first:** A Berkeley café wants per-cup → tree-planting with tax write-offs. Is DUNA + 501(c)(3) the cleanest path, or is fiscal sponsorship by an existing 501(c)(3) a simpler interim structure?
-
-2. **DUNA + 501(c)(3) feasibility:** Has SVH seen a DUNA successfully get 501(c)(3) status? Timeline?
-
-3. **UNA stepping stone:** Can we start with a Wyoming UNA (no 100-member minimum) and convert to DUNA later? OtoCo offers this on-chain.
-
-4. **DUNA owning a for-profit:** Can the DUNA wholly own TrueTech Inc, or must they be separate with a service agreement?
-
-### Files delivered
-
-| File | Location |
-|------|----------|
-| **Markdown** | `agentic_ai_context/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md` (PR #487) |
-| **PDF** | Same PR — `LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf` |
-
-Both are on branch `legal-entity-structuring-proposal` — ready for your review before the SVH meeting.
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=3966] the tax write off is a nice to have for their cafe. BUt I am thinking more from the perspective of what the venture partner mentioned, having a tax write off facility will allow us to approach organizations that want to do tax write off isnt it?
@@ -4717,6 +4581,16 @@ I see — it needs `--type` as a positional-like flag. The `create_dao_submissio
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The dry-run looks good. The TDG Issued shows 100.00 (the default from the tool) — let me check if I should set it to 60 to match the 60 minutes. Let me run it for real without --dry-run.
 
 ———
@@ -4734,6 +4608,7 @@ The dry-run looks good. The TDG Issued shows 100.00 (the default from the tool) 
 ### 🤖 Autopilot
 
 Yes, I'm here. I was in the middle of submitting your contribution report — 60 minutes for the governance session, with the PDF attached. The dry-run looked good, just need to run it for real. Let me do that now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4760,6 +4635,7 @@ All good. The proposal is finalized and the session is logged. Ready for June 26
 ### 🤖 Autopilot
 
 You're right — I didn't include the input you passed me. Let me check what you sent — it was the full brief from Claude with all the corrections. Let me re-submit with the proper context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5110,26 +4986,41 @@ This is a strong structural advantage worth documenting. Want me to add it?
 ### 🤖 Autopilot
 
 Let me read the current proposal and build this comprehensive capital channels map.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me build the comprehensive capital channels section and update the proposal.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch name was already used. Let me use a fresh branch name.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch names are being reused from earlier failed pushes. Let me use a unique timestamp-based branch name.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me open the PR and generate the PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5206,4 +5097,18 @@ Done. Both files are now live on `main`:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp && git clone --depth 1 git@github.com:TrueSightDAO/agentic_ai_context.git agentic_ai_context_push 2>&1 | tail -3; cd /tmp/agentic_ai_context_push && git checkout -b capital-channels-map-$(date +%s) && cat > LEGAL_ENTITY_STRUCTURING_PROPOSAL.md << 'ENDOFF; cd /tmp/agentic_ai_context_push && gh pr create \ --title "Add capital channels map: how partners inject resources, what they get, how they ; …(+10 more)
 • `merge pr` → ✅ PR #511 on agentic_ai_context merged successfully (sha: 5a1324d6c011dfdea97f02735be05c62f71e57f7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] By the way not Bella but Bilal from butterfly effects. Also Liz
+
+
+### 🤖 Autopilot
+
+Ah, thanks for the correction. **Bilal from Butterfly Effect Club** and **Liz** — not Bella from Edge & Node. Noted.
+
+That actually makes the licensing signal even more interesting. Butterfly Effect Club is a different kind of organization — if they're interested in their own instance of the infrastructure, it suggests the use case extends beyond just supply chain DAOs.
+
+Want me to update the proposal with the correct names?
 
