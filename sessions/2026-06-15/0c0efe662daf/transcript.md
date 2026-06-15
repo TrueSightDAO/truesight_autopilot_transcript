@@ -3437,31 +3437,37 @@ Let me check the PR status.
 ### 🤖 Autopilot
 
 I see the issue — PR #498 was merged (the one I said was #501), but the latest version with the parallel Wise accounts and buyback infra is on **PR #497** which is still open. Let me check what's on `main` currently.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file on `main` is the v12 version (from PR #498). The latest updates (parallel Wise accounts, existing buyback infra) are on **PR #497** which is still open. Let me merge it.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a merge conflict. Let me check what's different and resolve it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v7 branch has the old version (TrueTech Inc as DAO member, not facility). The `main` branch has the newer version (TrueTech Inc as facility). The conflict is because v7 is behind. Let me create a fresh PR with the latest updates based on what's currently on `main`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `main` branch already has the v12 version (TrueTech Inc as facility, two bank accounts, TDG buyback → burn, impact fund pathways). The updates about **parallel Wise accounts** (TrueTech Inc opens this week while UNA account opens in 2-4 weeks) and the **existing buyback infrastructure** aren't in there yet. Let me create a fresh PR from `main` with just those additions.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3597,4 +3603,68 @@ Both files are now live on `main`:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #500 on agentic_ai_context merged successfully (sha: 2c4476cfb7c3854479df2f2312cf5dc5ca007ef9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I meant withdrawl method 
+Withdrawal Method
+
+
+### 🤖 Autopilot
+
+Ah, you mean the **withdrawal method** — the mechanism by which the cash is sent to the exiting member. Let me check what's actually in the DApp and ledger.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. The withdrawal method is a dropdown on the DApp page with these options:
+
+- **PIX** — Brazil
+- **PayLah** — Singapore
+- **Venmo** — USA
+- **Zelle** — USA
+- **PayPal** — International
+- **WiseTransfer** — International
+- **Western Union** — International
+
+Let me update the proposal to use the correct term "Withdrawal Method" and list the actual options.
+
+
+### 🤖 Autopilot
+
+Now let me update the buyback section with the correct term "Withdrawal Method" and list the actual options from the DApp.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What changed
+
+**"cash receipt channel" → "Withdrawal Method" dropdown** with the actual options from the DApp:
+
+| Method | Region |
+|--------|--------|
+| PIX | Brazil |
+| PayLah | Singapore |
+| Venmo | USA |
+| Zelle | USA |
+| PayPal | International |
+| WiseTransfer | International |
+| Western Union | International |
+
+The full flow is now documented step-by-step: connect wallet → see balance → enter amount → select method → enter details → submit → TrueTech Inc issues cash → TDG deducted.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #501 on agentic_ai_context merged successfully (sha: a0bfae3bb882698721a72686021eda2758d23156). Pull Request successfully merged
 
