@@ -4617,6 +4617,11 @@ Now the PDF for the lean SVH doc.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. Both files are now live on `main`:
 
 - **SVH doc (PDF):** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
@@ -4904,4 +4909,54 @@ V1 (lean):
 
 - **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
 - **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I’m getting 404 error
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+
+
+### 🤖 Autopilot
+
+Let me check what's on `main`.
+
+
+### 🤖 Autopilot
+
+The v2 files aren't on `main`. They were uploaded to the branch but the merge of PR #514 only picked up changes to the original files. Let me push them directly to `main`.
+
+
+### 🤖 Autopilot
+
+Let me find which branch has the v2 files.
+
+
+### 🤖 Autopilot
+
+The v2 files were never merged to main. They were uploaded to a branch that got superseded. Let me push them directly to main now.
+
+
+### 🤖 Autopilot
+
+Now the V2 PDF.
+
+
+### 🤖 Autopilot
+
+Now both V2 files are on `main`. Here are the URLs:
+
+**V2 (Full Capital Channels Map):**
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.pdf
+
+**V1 (Lean — SVH-facing):**
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
 
