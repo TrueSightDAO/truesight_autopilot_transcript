@@ -313,27 +313,57 @@ The dao_protocol repo seems to have no code indexed by GitHub search. Let me loo
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the main server file to see how routes are mounted.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me check the proxy router to see if it handles the `/proxy/gas/assetVerify` endpoint that the dapp page calls.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the GAS upstreams to see what's configured.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full picture. Let me check what the dapp page actually does — it calls `Routes.edgar.ping` (which is `https://edgar.truesight.me/ping`) and `Routes.edgar.submit` (`https://edgar.truesight.me/dao/submit_contribution`). Let me look at the JavaScript in the HTML to see the exact flow.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the beginning of the HTML file to find the signature verification logic.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -348,21 +378,25 @@ return response.ok;
 It sends a **HEAD** request to `https://edgar.truesight.me/ping`. The FastAPI server only has a `GET /ping` route, not a `HEAD /ping` route. FastAPI returns **405 Method Not Allowed** for HEAD requests to a GET-only route. So `response.ok` is `false`, and `isOnline()` returns `false`.
 
 But wait — let me check what the page does with `isOnline()`. Let me look at the init flow.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the init function to see the full flow.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the init function — the part that runs on page load and does the "Verifying your digital signature..." check.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the init function that runs on page load.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -382,26 +416,36 @@ Let me look at the very beginning of the inline script — the init function tha
 ### 🤖 Autopilot
 
 Let me look at the init function to understand the exact flow, then fix the issue.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find the init function that runs on page load — the "Verifying your digital signature..." part.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual init function — the one that shows "Verifying your digital signature...".
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the escaped version. Let me read the actual file from the repo directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is huge. Let me search for the specific init function that shows "Verifying your digital signature" and the `isOnline` call.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -546,4 +590,49 @@ Once you approve and merge the PR, I'll need to restart the dao_protocol service
 ———
 **✅ Done this turn — actions taken:**
 • `open fix pr` → https://github.com/TrueSightDAO/dao_protocol/pull/114
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5066] merge and deploy
+
+
+### 🤖 Autopilot
+
+Now deploy to the server — pull the latest and restart the service.
+
+
+### 🤖 Autopilot
+
+Now let me verify the fix works:
+
+
+### 🤖 Autopilot
+
+Both HEAD and GET return 200 now. Let me also verify the dapp page loads correctly:
+
+
+### 🤖 Autopilot
+
+**Done.** Here's the summary:
+
+## ✅ Merged & Deployed
+
+**PR #114** merged and deployed to `dao_protocol` (FastAPI on port 8010).
+
+### What changed
+Added a HEAD handler to `/ping` (and `/healthz`) in `truesight_dao_client/server/routes/health.py`. The DApp's `isOnline()` function sends `HEAD /ping` — it now returns **200** instead of **405 Method Not Allowed**.
+
+### Verification
+```
+HEAD /ping → HTTP 200 ✅
+GET  /ping → HTTP 200 ✅
+```
+
+The expense report submission flow will now correctly detect the server as online and POST to Edgar instead of falling back to clipboard/share mode.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #114 on dao_protocol merged successfully (sha: 493514de976c0371ffc708c3ee554e8c961c0802). Pull Request successfully merged
+• `ssh run` ×6 → cd /home/ubuntu/dao_protocol && git pull origin main 2>&1; sudo systemctl restart dao_protocol 2>&1 && sleep 2 && sudo systemctl status dao_protocol --no-pager -l 2>&1 | head -20; ps aux | grep -E 'uvicorn|dao_protocol|fastapi' | grep -v grep 2>&1; …(+3 more)
 
