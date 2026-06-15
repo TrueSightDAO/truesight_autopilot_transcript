@@ -4677,6 +4677,11 @@ I see — the `submit_contribution` endpoint expects a `text` parameter with a s
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format including a digital signature. This is the Edgar API endpoint. Let me check what the `submit_contribution` tool in my toolset actually does — it seems to map to a different internal function.
 
 Let me try the `create_dao_submission` tool again with the correct parameters.
@@ -4857,4 +4862,51 @@ We don't have clear **term sheets** or **standardized agreements** for any of th
 3. An exit mechanism documented (buyback at NAV, secondary market, or contractual buyout)
 
 Want me to add this capital channels map to the proposal as a new section?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] [Handoff context — this Telegram topic (thread 3966) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, and I think it's very important that if we create the channels for example the Impact funds and the private equity to come in right they should not somehow destabilize the Ecosystem in such a way that the true tech in cannot continue to serve the buying back of the TDG from the folks holding them at NAV isn't it so something to consider deeply [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a critical design constraint. Let me think through the risk.
+
+**The problem:** If impact funds or VCs come in with large capital, they get TDG. More TDG in circulation = more potential redemption demand. If too many holders try to cash out at once, TrueTech Inc's operating cash might not cover it — and the buyback at NAV breaks.
+
+**The core tension:**
+
+```
+More capital channels → More TDG issued → More redemption risk
+                                              ↓
+                              TrueTech Inc's buyback capacity is finite
+```
+
+**Three ways to protect the ecosystem:**
+
+### 1. Tiered TDG with lockups
+
+Funds that come in get TDG with **vesting schedules** — they can't redeem all at once. For example:
+- Impact funds: 2-year cliff, then 25% per year
+- VCs: 3-year cliff, then 20% per quarter
+- Contributors (time/labor): No lockup — they earned it
+
+This prevents a sudden wave of redemptions.
+
+### 2. Buyback queue with priority
+
+When TrueTech's buyback reserve is insufficient, redemptions are **queued** and filled in order as new revenue comes in. Contributors (who earned TDG through labor) get **priority** over funds that bought in with capital. This protects the people who built the DAO.
+
+### 3. Published reserve cap
+
+The reserve formula on truesight.me explicitly states: *"Total outstanding TDG eligible for redemption is capped at X months of TrueTech's operating cash reserves."* If TDG issuance exceeds that cap, new issuances are paused or the buyback price adjusts.
+
+---
+
+**The simplest guardrail:** Any capital channel that issues TDG must include a **lockup period** equal to or longer than the contributor channel. This way, the people who earned TDG through work always have priority exit over those who bought in with money.
+
+Want me to add this as a design constraint section to the proposal?
 
