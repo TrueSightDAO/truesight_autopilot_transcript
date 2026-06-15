@@ -4393,6 +4393,11 @@ Want me to update the lean proposal to reflect this?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. The cleanest version yet is now live on `main`:
 
 - **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
@@ -4421,6 +4426,7 @@ Done. The cleanest version yet is now live on `main`:
 ### 🤖 Autopilot
 
 You're right to question that. Let me check what Wise Business actually costs.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4434,6 +4440,27 @@ You're right — it's **$0 to open**, not $500. Wise Business has:
 The $0-500 I wrote was a guess, not a real cost. The actual cost to open a Wise Business account for TrueTech Inc is **$0**. You only pay per transaction (typically 0.5-1% for currency conversion).
 
 Let me fix that in the proposal.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4480,6 +4507,27 @@ He's right on both points. Let me fix them.
 **Point 2 — The impact fund contradiction.** The Problem says "counterparty for impact funds" but the Structure gives the UNA no bank account and routes everything through TrueTech Inc (a for-profit C-corp). Those are incompatible. The fix: drop the impact fund claim from The Problem, or clarify that partner contributions are commercial revenue, not grants.
 
 Let me update both.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4516,32 +4564,88 @@ Meeting-ready.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the exact parameter format expected.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `create_dao_submission` tool is having parameter issues. Let me try `submit_contribution` directly with the right event format.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the existing contributions are structured in the ledger.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the ledger uses "TDGs Provisioned" as the amount column. Let me try the submission with the correct field names.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Edgar API expects specific canonical labels. Let me try with exactly those.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the Edgar API parses this — maybe it's case-sensitive or has specific formatting.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4580,4 +4684,30 @@ The dry-run looks good. The TDG Issued shows 100.00 (the default from the tool) 
 • `create dao submission` ×3 → Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
 • `submit contribution` ×7 → Missing required fields for CONTRIBUTION EVENT: Type, Amount. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
 • `ssh run` ×7 → which truesight-dao-report-ai-agent-contribution 2>/dev/null || find /opt -name "truesight-dao-report-ai-agent-contribution" -o -name "repor; cat /opt/truesight_autopilot/.venv/bin/truesight-dao-report-ai-agent-contribution | head -20; truesight-dao-report-ai-agent-contribution --help 2>&1; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] How's progress, you there? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, I'm here. I was in the middle of submitting your contribution report — 60 minutes for the governance session, with the PDF attached. The dry-run looked good, just need to run it for real. Let me do that now.
+
+
+### 🤖 Autopilot
+
+Done. The contribution has been submitted successfully:
+
+- **60 minutes logged** for Gary Teh
+- **100 TDG issued**
+- **PDF attached** to GitHub at `.github/assets/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf`
+- **Ledger recorded** in the Telegram Chat Logs sheet
+
+All good. The proposal is finalized and the session is logged. Ready for June 26.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && truesight-dao-report-ai-agent-contribution \ --title "Legal Entity Structuring — Gover
 
