@@ -26,11 +26,13 @@ Extracted text:
 ### 🤖 Autopilot
 
 Let me take a closer look at this image. It appears to be a screenshot of the **EDGAR DAO Protocol** interface — likely from a mobile device (WhatsApp or similar). Let me scan it for QR codes as well.
+[1 tool result(s) compacted: scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No QR code detected. Let me also persist this to the transcript.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -70,21 +72,25 @@ What would you like me to do with this, Gary? A few possibilities:
 ### 🤖 Autopilot
 
 That's a great idea, Gary. Let me check the current state of the dao_protocol repo to see what's deployed and how the version display works.
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the dao_protocol repo to see how the version is currently set and what the deployed code looks like.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual FastAPI server that's running on the dao_protocol host to see how it serves the version info.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what's actually on the server and look at the repo structure.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -136,4 +142,84 @@ Want me to open a PR for this? I'd go with **Option A** — serve the commit has
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → ls -la /opt/dao_protocol/ 2>/dev/null || ls -la ~/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "dao_protocol" -type d 2>/dev/null |; find /opt/dao_protocol/truesight_dao_client/server -type f -name "*.py" 2>/dev/null | head -20; find /opt/dao_protocol -name "*.py" -path "*/server/*" 2>/dev/null; find /opt/dao_protocol -name "main.py" 2>/dev/null | head -10; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4857] [Handoff context — this Telegram topic (thread 4857) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, I think that the approach is the best go for it and once you're done merge and then deploy [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff context first, then proceed with the fix.
+
+
+### 🤖 Autopilot
+
+This thread (4857) isn't a registered handoff — it's a fresh conversation about the dao_protocol version display. Let me proceed with the fix.
+
+The plan: **Option A** — serve the Git commit hash as the version from the API, have the landing page fetch it dynamically, and make it a clickable link to the exact commit on GitHub.
+
+Let me open the PR.
+
+
+### 🤖 Autopilot
+
+PR is open at **dao_protocol#113**. You said to merge and deploy, so let me merge it now.
+
+
+### 🤖 Autopilot
+
+Merged. Now let me deploy it to the server.
+
+
+### 🤖 Autopilot
+
+Let me verify it's working.
+
+
+### 🤖 Autopilot
+
+Let me check the version card section specifically to confirm the dynamic JS is working.
+
+
+### 🤖 Autopilot
+
+Let me check the JS at the bottom of the page to confirm the dynamic version fetch.
+
+
+### 🤖 Autopilot
+
+Everything's working. Let me now submit the contribution for this work.
+
+
+### 🤖 Autopilot
+
+Done! Here's the summary:
+
+**✅ Merged, deployed, and live.**
+
+| What | Detail |
+|---|---|
+| **PR** | [#113 — dao_protocol](https://github.com/TrueSightDAO/dao_protocol/pull/113) |
+| **Merge** | ✅ Squash-merged `6c7ab60` |
+| **Deploy** | ✅ Service restarted on the server |
+| **Live at** | [edgar.truesight.me](https://edgar.truesight.me) |
+
+**What changed:**
+- The **Version** card now shows the **Git commit hash** (e.g. `6c7ab60`) instead of the meaningless `1.0.0`
+- It's a **clickable link** — tap it and it opens `https://github.com/TrueSightDAO/dao_protocol/commit/6c7ab60` on GitHub
+- The version is fetched **live from the API** (`/ping`), so every deploy automatically updates it — no manual HTML edits needed
+- The `/ping` endpoint also returns the hash now: `{"version": "6c7ab60", ...}`
+
+So next time you deploy, the version card will automatically show the new commit hash and link to the right place.
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/dao_protocol/pull/113
+• `merge pr` → ✅ PR #113 on dao_protocol merged successfully (sha: 6c7ab6001fa557be9a7410194897ea371cacf186). Pull Request successfully merged
+• `ssh run` ×2 → cd ~/dao_protocol && git pull origin main; sudo systemctl restart truesight-dao-protocol && sleep 2 && sudo systemctl status truesight-dao-protocol --no-pager -l | head -15
+• `create dao submission` → Contribution submitted
 
