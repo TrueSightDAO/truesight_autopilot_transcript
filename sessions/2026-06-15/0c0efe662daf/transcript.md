@@ -4519,6 +4519,7 @@ I have the full document. Now let me add the ecosystem map with a mermaid diagra
 ### 🤖 Autopilot
 
 Now let me generate the PDF and upload it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4774,4 +4775,45 @@ Kept it brief, framed as a suggestion, and noted it's not a commitment — consi
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #515 on agentic_ai_context merged successfully (sha: 3e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] How come I don't see it merged? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+The markdown on `main` doesn't have the licensing revenue suggestion. The merge didn't go through. Let me check the PR.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
+
+PR #515 was merged but the content isn't there. Let me check the branch.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+The branch has the content. Let me check what happened with the merge — it might have been a squash that conflicted with the earlier v2 file push. Let me just push directly to main.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+Now it's merged. Check it:
+
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+
+The licensing revenue suggestion is in there under "What We're Doing This Week" — after the action table, framed as a suggestion for consideration, not a commitment.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #516 on agentic_ai_context merged successfully (sha: 7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b). Pull Request successfully merged
 
