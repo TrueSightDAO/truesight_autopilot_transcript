@@ -131,5 +131,12 @@
     "summary": "The sync_cohort.py script fails immediately because ERA_SHEET_ID env var is set to empty string (from an unset GitHub Actions variable), so os.environ.get(\"ERA_SHEET_ID\", ERA_SHEET_ID_DEFAULT) returns",
     "action": "merge_pr",
     "created_at": "2026-06-15T14:02:09Z"
+  },
+  {
+    "title": "Merge PR #114 on dao_protocol",
+    "qr_code": "",
+    "summary": "The `/ping` endpoint only handles GET requests, but the DApp's `isOnline()` function sends HEAD requests to `https://edgar.truesight.me/ping` to check server availability. FastAPI returns 405 Method N",
+    "action": "merge_pr",
+    "created_at": "2026-06-15T16:47:44Z"
   }
 ]
