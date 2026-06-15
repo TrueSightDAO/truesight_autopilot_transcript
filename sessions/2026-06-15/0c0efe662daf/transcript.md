@@ -3881,17 +3881,45 @@ So the "Who authorizes" row in the proposal should reflect that it's already aut
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The file is in a different location. Let me find it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the exact text. The local copy is slightly different from what's on GitHub (the PR #502 merge may not have been pulled locally). Let me update using the exact text from the local file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file on GitHub has different whitespace/encoding. Let me read it fresh from GitHub and use the exact content.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4037,4 +4065,90 @@ Merged. Both files are now live on `main`:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #504 on agentic_ai_context merged successfully (sha: ec2b1c81735967ff3a3f14260d0127160fb6cae0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Contributors can see in real time what liquidity capacity exists. If a contributor wants to exit, they can either:
+
+ 1. Sell on the secondary market (if liquidity exists and a buyer appears), or
+ 2. Request redemption from TrueTech at NAV, subject to available reserves.
+
+Impact Funding & SVH Meeting (STRATEGIC RESET)
+
+There is no current commitment from impact funds to back buybacks or working capital. The original SVH approach was to seek advisory input on governance structure — that work is now complete via this discussion.
+
+The only remaining legal gate is a narrow Howey analysis: does issuing governance tokens to contributors for work count as a security offering under SEC law? This is a counsel question, not a strategic workshop.
+
+Approach to SVH: bring the corrected doc, flag the Howey question as the one thing requiring their legal review, and clarify that you’re not seeking capital or advisory on impact mechanics — the structure is resolved.
+
+Minor Fix
+
+§6 claims Wise API can push to Venmo, Zelle, and Western Union. This is overstated. Wise pays to bank accounts and some local rails (PIX yes), but not to Venmo/Zelle handles or Western Union. Confirm actual payout coverage before committing Wise as the withdrawal architecture.
+
+That’s the full brief. Pass it to Sophia and have her update the doc accordingly.
+
+Sure.
+
+Withdrawal Methods: If Wise can’t handle a particular rail — like Venmo, Zelle, or Western Union — you manually process it from TrueTech’s bank account. Just note in the doc: “Wise handles standard bank transfers; Gary manually executes non-standard rails from TrueTech bank account as needed.”
+
+Reserve Formula Publication: The buyback reserve formula isn’t published on TrueTech’s website. It’s published on TrueSight DAO’s website instead. That’s the right place since the formula governs how much redemption capacity TrueSight DAO contributors can expect.
+
+So update §6 to say: “TrueTech’s buyback reserve formula is published on truesight.me and calculated as [formula]. Reserve capacity scales with TrueTech sales volume per this published policy.”
+
+
+### 🤖 Autopilot
+
+Let me read the current document and apply all these corrections.
+
+
+### 🤖 Autopilot
+
+I have the full document. Now let me apply all the corrections from the brief.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Merged. Both files are now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### Summary of all changes applied
+
+**§6 — Withdrawal Methods corrected:**
+- Wise handles **standard bank transfers and PIX** only
+- Venmo, Zelle, Western Union noted as **executed manually** from TrueTech bank account by Gary
+- Added explicit payout coverage note
+
+**§6 — Reserve formula publication corrected:**
+- Changed from "TrueTech publishes on its website" to **"published on truesight.me"**
+- Formula: `Reserve = X% of monthly sales volume`
+- Reserve capacity scales with TrueTech sales volume per this published policy
+
+**§6 — Member exit options clarified:**
+- Contributors can see **real-time liquidity capacity**
+- Two options: (1) sell on secondary market, or (2) request redemption from TrueTech at NAV subject to available reserves
+
+**§8 — SVH approach reset:**
+- Governance structure work is **complete** — not seeking advisory on that
+- The only remaining legal gate is a **narrow Howey analysis**: does issuing TDG to contributors for work count as a security offering?
+- This is a **counsel question, not a strategic workshop**
+- Not seeking capital or advisory on impact mechanics
+
+**§8 — Howey question added as primary question #4:**
+> *"TDG is issued to contributors for work (cacao logistics, contribution scoring, development, onboarding) and grants governance rights. It is not a financial security or profit-sharing instrument. Does this pass the Howey Test?"*
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #505 on agentic_ai_context merged successfully (sha: bc2ab0ec53ad172d23090a9783dae328266e3f3a). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #505 on agentic_ai_context merged successfully (sha: bc2ab0ec53ad172d23090a9783dae328266e3f3a). Pull Request successfully merged
 
