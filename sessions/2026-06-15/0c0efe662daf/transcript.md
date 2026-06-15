@@ -4918,37 +4918,54 @@ It uses SSH keys, not a token. Let me use the GitHub API with the SSH key via `h
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PR #511 is open. Now let me generate the PDF and upload it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF was generated. Let me save it to a local file and upload it to the PR branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's only 5,910 bytes — the base64 was truncated. The full PDF is 12,267 bytes. Let me use the full base64 from the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is too large to pass through the tool parameter. Let me use a different approach — write it to a file via Python on the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is truncated at 5,910 bytes (the full PDF is 12,267 bytes). Let me use a different approach — generate the PDF directly on the autopilot box using the markdown content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF is 9,904 bytes — full size. Now let me upload it to the PR branch and merge.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me merge PR #511 to main.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5221,4 +5238,70 @@ Done. Both files are now live on `main`:
 **✅ Done this turn — actions taken:**
 • `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
 • `merge pr` → ✅ PR #512 on agentic_ai_context merged successfully (sha: 2a4ac8986d464ead7fe2c1fd50db41c6aece77e4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Both fixes from last round landed cleanly — the Howey question now names the buyback, and Channel 3 plus “What We’re NOT Doing” resolve the impact-fund contradiction. But the expansion added a lot of new surface area, and two of the new sections quietly work against the very thing the doc is trying to establish. The headline first, because it’s the one that matters:
+
+The Revenue Distribution Model argues that TDG is a security — in the same document where you ask whether it is. The section says it plainly: licensing revenue → TrueTech → surplus → buyback → burn → “all TDG holders benefit via NAV growth,” and again “TDG holders benefit through NAV growth (deflationary pressure).” That is the Howey profit-prong written out longhand: holders putting in value with an expectation of gain derived from the enterprise’s commercial efforts. A securities lawyer who reads page 3 will answer your page-4 question before you finish asking it. You’ve built the strongest possible case that TDG is a security and stapled it to a request for an opinion on whether TDG is a security. And it undercuts your own best defense — the “$0.0018 NAV, nobody would rationally buy this” argument on page 2 is a good point, but the Revenue Model two sections later promises the NAV will grow, which is exactly the profit expectation that revives the risk.
+
+There are really two documents fighting inside this PDF. One is “form a $50 UNA, TDG is governance-only, here’s one narrow Howey question” — tight, honest, meeting-ready. The other is “full capital-formation strategy, five channels, value-accrual tokenomics, NAV-growth flywheel” — genuinely good strategic thinking, but it’s a different artifact with far more legal exposure, and it contradicts the clean posture of the first. For June 26, the first document is the one that serves you. I’d pull the Revenue Distribution Model and most of the channel economics into a separate internal strategy memo and keep the SVH doc lean. Handing a capital provider (and their counsel) the flywheel narrative alongside “is my token a security?” is arguing the wrong side of your own case.
+
+Three more specific things in the new material:
+
+ 1. Channel 3 brings back the carbon-credit quid-pro-quo — for the third time. “Grant or donation to the UNA → get impact reports, verified data, and future carbon credit rights,” with “converts to tax-deductible.” Carbon credit rights have fair market value; the moment a donor gets them back, the gift stops being deductible to that extent. Deductible donation and credits-in-return can’t share a row. Sophia keeps regenerating this — worth a firm standing instruction to her: credits go to commercial funders (Channel 2/5 side), never to donors.
+ 2. Channel 2 is its own securities question the doc ignores. Soliciting individuals to finance shipments for “repayment + fee from sale proceeds” is a return contingent on others’ efforts — that’s a promissory-note / investment-contract pattern (Reves), possibly with lending or money-transmission overtones. It may well fit an exemption, but it’s not obviously clean, and “the structure is resolved, we just need a narrow opinion on TDG” overstates things. If anything, Channel 2 is a sharper securities question than the governance token. At minimum it deserves its own line in the counsel ask.
+ 3. “Capital-injected TDG” (Design Constraint) contradicts your own channels. No channel actually issues TDG for capital — labor gets TDG, everyone else gets repayment, credits, or equity. So where does “capital-injected TDG” with vesting lockups come from? Either token-for-capital is secretly on the table (which makes those tokens clearly securities and breaks the “issued for work” premise of your Howey question), or it’s a leftover and should be cut. Pin it down.
+
+Net: the strategy thinking is strong and worth keeping — just not in the meeting doc. Want me to split it into a lean SVH one-pager plus a separate internal capital-strategy memo, and give you a tight Sophia prompt for each?
+
+
+### 🤖 Autopilot
+
+He's right on all three points. Let me fix them.
+
+**The core problem:** The Revenue Distribution Model explicitly describes NAV growth from buybacks — which is the Howey profit prong. We can't ask "is TDG a security?" while simultaneously documenting how holders profit from the enterprise's efforts.
+
+**The fix:** Strip the Revenue Distribution Model and the flywheel narrative from the SVH doc. Move them to a separate internal strategy memo. The SVH doc stays lean — just the UNA, the structure, and the one Howey question.
+
+Let me also fix the three specific issues.
+
+
+### 🤖 Autopilot
+
+Now let me create the lean SVH doc and the separate internal strategy memo.
+
+
+### 🤖 Autopilot
+
+Now the PDF for the lean SVH doc.
+
+
+### 🤖 Autopilot
+
+Done. Both files are now live on `main`:
+
+- **SVH doc (PDF):** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **SVH doc (Markdown):** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+- **Internal memo (Markdown only):** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/INTERNAL_CAPITAL_STRATEGY_MEMO.md
+
+### What changed
+
+**Revenue Distribution Model removed from SVH doc.** It was arguing the Howey profit prong in the same document asking whether TDG is a security. Moved to `INTERNAL_CAPITAL_STRATEGY_MEMO.md` along with the data flywheel narrative and productization signals.
+
+**Three specific fixes:**
+
+1. **Carbon credits** — Channel 3 no longer grants carbon credit rights to donors. Credits have fair market value and would reduce deductibility. Credits go to commercial funders only. This was the third time Sophia regenerated this — now fixed with a firm standing instruction.
+
+2. **AGL securities question** — Channel 2 now has a note for counsel: "This pattern may raise a separate securities question under Reves (promissory note / investment contract). Not covered by the TDG Howey analysis below." Also added to the SVH question section as a secondary ask.
+
+3. **"Capital-injected TDG" removed** — The Design Constraint referenced lockups for capital-injected TDG, but no channel actually issues TDG for capital. Removed from the SVH doc. The internal memo keeps it as a future guardrail with a note that it's not currently planned.
+
+**The SVH doc is now lean, honest, and internally consistent.** One question, one narrow opinion needed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+• `merge pr` → ✅ PR #513 on agentic_ai_context merged successfully (sha: 43d0bfd28b00526a78eb55cadedf6de3e93d7aed). Pull Request successfully merged
 
