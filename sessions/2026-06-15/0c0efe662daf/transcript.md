@@ -4706,6 +4706,11 @@ The tool is passing `--type` but the CLI is not receiving it. Let me check the t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see — it needs `--type` as a positional-like flag. The `create_dao_submission` tool seems to have a bug mapping the `type` parameter. Let me run it directly via SSH.
 
 
@@ -5064,4 +5069,34 @@ TrueTech Inc builds the software stack (Edgar, DApp, oracle, QR system)
 **This is worth keeping as a future option** — not building for it now, but noting that if Edge & Node or similar orgs want their own instance, the licensing model becomes real. And that gives TrueTech Inc an asset base (IP + recurring revenue) that could eventually attract VC interest.
 
 Want me to add this as a "Future Optionality" note in the proposal?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] And from my perspective the ecosystem is what provides the raw data to help challenge and improve the technology as well as the LLM, not the LLM, the agentic AI that you're isn't. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's the key insight. The ecosystem isn't just a customer of the technology — it's the **training ground** for it.
+
+The data flow is:
+
+```
+Ecosystem (farmers, partners, contributors, shipments)
+    ↓ Generates raw operational data
+TrueSight DAO operations (QR scans, contributions, governance votes, supply chain events)
+    ↓ Feeds
+Sophia (autopilot) + Edgar (API)
+    ↓ Learns and improves
+Better automation, better decisions, better protocols
+    ↓ Gets licensed back to
+New orgs (Edge & Node, SMEs) who want their own instance
+```
+
+The moat isn't the code — it's the **data flywheel**. Every cacao bag scanned, every contribution logged, every governance vote cast makes the system smarter. A new org licensing the tech gets the software, but they start with zero data. The ecosystem's data is what makes the AI useful.
+
+And that data lives in the **DUNA** — governed by TDG holders — not in TrueTech Inc. So even if someone licenses the tech, they're licensing a tool, not the network intelligence that the tool runs on.
+
+This is a strong structural advantage worth documenting. Want me to add it?
 
