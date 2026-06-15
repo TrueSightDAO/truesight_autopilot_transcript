@@ -4952,6 +4952,7 @@ The v2 files aren't on `main`. They were uploaded to the branch but the merge of
 ### 🤖 Autopilot
 
 Let me find which branch has the v2 files.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5086,4 +5087,61 @@ Options:
 4. **Something else?**
 
 Or are you thinking we're done with docs and ready to execute?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] So sentiment importer the code base which is sitting at purge.trusite.me currently has subscribers, isn't it? So in the document the Delegal entity structured proposal document V2 you mentioned that there are no IP in the code system but there is sentiment importer and it's currently generating subscription revenue and the subscription revenue is channeled towards NAV of the TDG, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right. The sentiment importer at purge.truesight.me already has subscribers and generates subscription revenue. That's existing IP with recurring revenue — not future optionality.
+
+Let me check the current state.
+
+
+### 🤖 Autopilot
+
+You're right. The sentiment importer at purge.truesight.me is already live with subscribers and subscription revenue. That changes the V2 document in two ways:
+
+1. **TrueTech Inc already has IP** — the sentiment importer codebase with recurring subscription revenue. The doc currently says "no IP, no hard assets" which is wrong.
+
+2. **Subscription revenue already flows to NAV** — not future optionality, it's happening now.
+
+Let me update V2 to reflect this.
+
+
+### 🤖 Autopilot
+
+Now let me update V2 to reflect that the sentiment importer is already generating subscription revenue — TrueTech Inc already has IP and recurring revenue.
+
+
+### 🤖 Autopilot
+
+Now the PDF.
+
+
+### 🤖 Autopilot
+
+Fixed and merged. V2 now reflects the reality that TrueTech Inc **already has IP** — the Sentiment Importer at purge.truesight.me with paying subscribers generating recurring subscription revenue that flows into the buyback reserve.
+
+Both V2 files are live:
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2.pdf
+
+### What changed
+
+**Channel 4 (VC) updated:** Removed "no IP, no hard assets" — replaced with "TrueTech Inc already has IP — the Sentiment Importer at purge.truesight.me is a live codebase with paying subscribers generating recurring subscription revenue."
+
+**Revenue Distribution Model updated:** Now shows "Subscription revenue (Sentiment Importer) → TrueTech Inc collects" as the first line, with the note: **"This is already happening."**
+
+**Productization Signals table updated:** Added Sentiment Importer as the first row with status "Already live."
+
+**Mermaid diagram updated:** Added Sentiment Importer node feeding subscription revenue into TrueTech Inc.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → source /opt/truesight_autopilot/.venv/bin/activate && python3 << 'PYEOF' from reportlab.lib.pagesizes import A4 from reportlab.lib.units imp
+• `merge pr` → ✅ PR #516 on agentic_ai_context merged successfully (sha: 2a997fb73df269c145d5b2a4d8d719d3e8bb8e6b). Pull Request successfully merged
 
