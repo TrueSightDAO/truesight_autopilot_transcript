@@ -4145,6 +4145,7 @@ So update §6 to say: “TrueTech’s buyback reserve formula is published on tr
 ### 🤖 Autopilot
 
 Let me read the current document and apply all these corrections.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4328,4 +4329,31 @@ So the timeline gets even simpler:
 The UNA bank account becomes a "maybe later" item — only if and when impact fund capital starts flowing and needs a separate home. No rush.
 
 Want me to update the lean proposal to reflect this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Yeah, maybe update this. Yeah, I think it makes all those sense. It's really clean now. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Done. The cleanest version yet is now live on `main`:
+
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.pdf
+- **Markdown:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCTURING_PROPOSAL.md
+
+### What changed
+
+**UNA bank account removed.** TrueTech Inc handles all money flows — commercial, partner contributions, buybacks. The UNA just exists as the legal wrapper and governance entity. No need for its own account.
+
+**This week's actions down to two:**
+1. Form UNA via OtoCo — ~$50 gas
+2. Open TrueTech Inc Wise account — $0-500
+
+**Total cost: ~$50-550.** That's it. Clean.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #507 on agentic_ai_context merged successfully (sha: 124a8064b2686c05242c18293e47dd53b21ef937). Pull Request successfully merged
 
