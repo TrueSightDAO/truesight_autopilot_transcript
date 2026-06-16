@@ -1648,11 +1648,13 @@ Only 2 uses. The `getCredentials()` function must be defined in the GAS editor b
 The simplest approach: let me check if the `getCredentials()` function is defined in the GAS project by looking at the old deployment's code. But actually, the easiest fix is to just add the `getCredentials()` function to the source `.gs` file so it gets pushed with the rest of the code.
 
 Let me check what `getCredentials()` should return by looking at how it's used in other GAS files.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the `web_app.gs` file which is in the same folder and has `getCredentials`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1660,6 +1662,7 @@ Let me check the `web_app.gs` file which is in the same folder and has `getCrede
 I see — `web_app.gs` also calls `getCredentials()` and says "Assumed to be defined elsewhere". This is a separate GAS project (scriptId `1rLl94jQ9tDYdRvudnP0prPY5SEjvM07R4gPs6-vRyZEpSJhUqbiE3CZY`), not the same one.
 
 For our script (`1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn`), the `getCredentials()` function must be defined in the GAS editor but wasn't pulled by clasp. Let me check if there's a separate credentials file in the GAS project by looking at the clasp open command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1671,16 +1674,29 @@ Actually, the simplest approach: the old deployment @15 works. Let me just use t
 Wait — the old deployment @15 has the old code without `triggerSync`. The new deployment @16 has `triggerSync` but is missing `getCredentials()`.
 
 The real fix is to add `getCredentials()` to the source `.gs` file. Let me check what credentials it needs by looking at the `creds` usage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `getCredentials()` function returns `WIX_API_KEY` and `QUICKNODE_API_KEY`. These are stored as GAS Properties (ScriptProperties or UserProperties) in the GAS editor. Let me check how other files define `getCredentials`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same pattern — `getCredentials()` is called but not defined in the source. It must be defined in the GAS editor as a separate file. Let me check if there's a `Credentials.gs` file somewhere in the repo.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1688,6 +1704,7 @@ Same pattern — `getCredentials()` is called but not defined in the source. It 
 The `getCredentials()` function is not in the repo at all — it's defined directly in the GAS editor UI as a separate file. This is a common pattern where credentials are stored as GAS Script Properties and the function reads them.
 
 The fix is simple: I need to add the `getCredentials()` function to the source `.gs` file so it gets pushed with clasp. Let me check what the function should look like by examining the pulled `.js` file more carefully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1695,11 +1712,28 @@ The fix is simple: I need to add the `getCredentials()` function to the source `
 The `getCredentials()` function is called but not defined in the pulled file either. It must be in a separate file in the GAS editor that clasp didn't pull. Let me check if clasp has a way to list all files.
 
 Actually, the simplest approach: let me just add the `getCredentials()` function to the source `.gs` file. It should read from `PropertiesService.getScriptProperties()`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mirror has conflicting files (`.gs` and `.js`). Let me clean it and try again.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1723,36 +1757,48 @@ The conflict is because the mirror has both `.gs` and `.js` files. Clasp only re
 Absolutely — I will **never** commit credentials to GitHub. The `getCredentials()` function I added reads from GAS ScriptProperties (set in the editor UI), not from hardcoded values. No secrets in the repo.
 
 Let me fix the clasp conflict and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Now I need to create a new deployment version so the web app picks up the code change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to create a new deployment version @17 with the updated code. Let me deploy it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New deployment @17 created. Now let me trigger the sync via the new deployment URL.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still failing — the `getCredentials()` function I added isn't being picked up. Let me check if the pushed `.gs` file actually has the function.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The function isn't in the mirror file! The mirror still has the old version. The deploy script syncs from source to mirror, but I copied the file manually earlier. Let me re-sync properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The source file doesn't have it either! The PR #354 was merged but the local checkout wasn't updated. Let me pull the latest from main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1850,4 +1896,24 @@ https://script.google.com/macros/s/AKfycbyf6DfLvGuVK-Mcw1DBIt37rePnHZTwJjhzqcNZU
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot/context/tokenomics/clasp_mirrors/1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn && rm -f tdg_wix_dash; cd /opt/truesight_autopilot/context/tokenomics/clasp_mirrors/1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn && clasp push --force; cd /opt/truesight_autopilot/context/tokenomics/clasp_mirrors/1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn && clasp deployments ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] So you're saying that the JSON cache on Github is already up. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+No, sorry — I misspoke. The JSON cache on GitHub is **not** set up yet. What's live is:
+
+1. **`BUY_BACK_RESERVE`** — the $41.26 value is now in the Performance Statistics sheet and served by the GAS web service (the same endpoint the homepage stats already use)
+2. **`triggerSync`** — the GAS web app now has a remote trigger action so I can call it to refresh stats
+
+The **JSON cache** (writing a structured file to a GitHub repo like `treasury-cache`) hasn't been built yet. That was the next step you suggested — having the GAS script write a cache file so the detail page can load historical transactions without hitting the GAS endpoint every time.
+
+Do you want me to build that now? It would mean:
+- GAS script writes a JSON file to a GitHub repo (e.g. `treasury-cache/buy-back-reserve.json`) with the current reserve and the list of daily provision transactions
+- The detail page loads from that cache instead of the GAS endpoint
+- The cache updates whenever `syncAllPerformanceStatistics` runs
 
