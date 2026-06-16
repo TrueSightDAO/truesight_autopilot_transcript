@@ -28,6 +28,7 @@ Extracted text:
 ### 🤖 Autopilot
 
 Let me take a look at that page.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -41,11 +42,38 @@ I see the issue. The page has several problems:
 3. **The "Replicate" section** is a copy-paste of the README that doesn't belong on a status/dashboard page. It's useful content but it's in the wrong place — it crowds out the actual status information.
 
 Let me look at the template to see what's going on.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault page is served by the `truesight_autopilot` repo itself. Let me find the template.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -119,4 +147,48 @@ Which direction do you want to go?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → find / -maxdepth 4 -name "*.py" -path "*vault*" 2>/dev/null; find / -maxdepth 4 -name "*.html" -path "*vault*" 2>/dev/null; find / -maxdepth; find /opt/truesight_autopilot -name "*.html" -o -name "*.j2" -o -name "*.jinja" 2>/dev/null | head -30; find /opt/truesight_autopilot -path "*/templates/vault*" -type f 2>/dev/null; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] I meant the words are spilling out of the right side of the box on mobile view. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, got it — it's a mobile layout issue, not a data-loading issue. The text is overflowing the card container on narrow screens. Let me check the CSS.
+
+
+### 🤖 Autopilot
+
+Found it. The mobile CSS has this rule:
+
+```css
+.card table, table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+}
+```
+
+That `white-space: nowrap` on tables is the culprit — it prevents text from wrapping inside table cells, so long values (like GitHub URLs, code snippets, commit hashes) push the cell wider than the screen. The `overflow-x: auto` should create a scrollbar, but the "Replicate" section's `<ol>` list items and `<p>` text aren't in tables — they're just regular block elements that don't have `overflow-wrap: break-word` or `word-break: break-word` set.
+
+The fix is to add `overflow-wrap: break-word` to the card and container on mobile. Let me open a PR.
+
+
+### 🤖 Autopilot
+
+**PR opened:** [#218 — Fix mobile text overflow on /vault/status page](https://github.com/TrueSightDAO/truesight_autopilot/pull/218)
+
+The fix adds two CSS rules inside the `@media (max-width: 768px)` block in `base.html`:
+
+1. **`.card, .container { overflow-wrap: break-word; }`** — wraps long text inside cards and the main container
+2. **`code { word-break: break-all; }`** — breaks inline code snippets (GitHub URLs, commit hashes, env var names) so they don't push past the right edge
+
+Want me to merge it, or do you want to review first?
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/218
 
