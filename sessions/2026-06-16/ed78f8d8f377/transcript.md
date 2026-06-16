@@ -2818,6 +2818,7 @@ I need to find the stats section in the homepage to add the stat card. Let me se
 ### 🤖 Autopilot
 
 Let me search for the stats section directly in the beta repo's index.html.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2929,4 +2930,21 @@ You're welcome, Gary! It was a good build — we established a solid pattern:
 4. **Detail page** on truesight.me → loads from cache
 
 Clean, modular, and reusable for future stat cards. Let me know when you want to apply the same pattern to another one!
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Let me make sure that we document this pattern somewhere, maybe in the agentic AI context. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call. Let me create a doc in agentic_ai_context documenting the pattern.
+
+
+### 🤖 Autopilot
+
+PR is up! **agentic_ai_context#521** — `STATS_CARD_PATTERN.md` documents the full 5-layer pattern with a checklist for adding new stat cards in the future.
+
+Want me to merge it?
 
