@@ -734,6 +734,7 @@ Let me search specifically for "buy-back" or "provision" in this data.
 ### 🤖 Autopilot
 
 Let me search for "buy-back" or "provision" specifically in the full data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -847,4 +848,52 @@ This pairs nicely with the existing "Daily Buy-Back Budget" stat — one shows t
 It also makes the buy-back mechanism more tangible — $0.09/day sounds small, but seeing $41.26 accumulated gives a sense of real progress.
 
 Alternatively, if you want to keep it simpler, just **"Buy-Back Provisions"** works fine too. What do you think?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] I also wonder, you know, like the AUM, the stat card we should be able to click through to a separate page that lists the daily accumulation transaction. And that one you pull from the off-chain transaction on the main ledger. So maybe somewhere we need to generate a JSON cache and get the hub. And then when that pitch load just load the cache and still hitting the, you know, Google sheet via the GAS. Because that's the second part of the store, what do you think? And I like the terminology you suggested. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I love this idea. Let me think through the architecture.
+
+**The vision:** Each stat card becomes clickable, leading to a detail page with the transaction history behind it. For the buy-back reserve, that means showing every daily provision transaction from the offchain transactions sheet.
+
+**Architecture thoughts:**
+
+1. **JSON cache in a GitHub repo** — The GAS script already runs daily. It could write a structured JSON file to a repo like `treasury-cache` or a new `stats-cache` repo. Something like:
+   ```json
+   {
+     "buy_back_reserve": 41.26,
+     "transactions": [
+       {"date": "20250601", "amount": 0.09, "description": "Daily buy-back provision"},
+       {"date": "20250602", "amount": 0.09, "description": "Daily buy-back provision"},
+       ...
+     ]
+   }
+   ```
+
+2. **Why cache over live GAS** — The GAS web service is already the bottleneck (it's what the homepage stats load from). Adding a detail page that queries the same GAS endpoint for historical data means every page load hits the script. A static JSON cache in GitHub means:
+   - **Fast** — served raw from GitHub's CDN, no script execution
+   - **Reliable** — no GAS quota issues
+   - **Auditable** — the cache file itself is a public record
+
+3. **How it works:**
+   - GAS daily automation writes the buy-back provision transaction to the offchain transactions sheet (it already does this via `getDailyTdgBuyBackBudget`)
+   - GAS also writes a JSON cache file to GitHub via the GitHub API
+   - The homepage stat card links to `/buy-back-reserve.html`
+   - That page loads the JSON cache directly (no GAS call)
+   - The JSON also includes the current reserve total, so the stat card could even pull from cache instead of GAS
+
+4. **Same pattern for AUM** — AUM could have its own detail page showing the breakdown by ledger (off-chain assets, USDT vault, each AGL's asset section). The GAS `computeAumBreakdown()` already produces this structured data.
+
+**My recommendation:** Start with the buy-back reserve detail page since it's the most straightforward — one number, one list of daily transactions. Then extend the pattern to AUM and other stats as needed.
+
+Want me to start building this? I'd:
+1. Add a `buy_back_reserve` key to the Performance Statistics sheet
+2. Update the GAS script to write a JSON cache to GitHub
+3. Create a detail page on truesight.me
+4. Make the stat card clickable
 
