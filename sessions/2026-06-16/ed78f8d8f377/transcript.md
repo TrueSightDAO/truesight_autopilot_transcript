@@ -2480,6 +2480,7 @@ Now let me trigger the workflow again with the fix.
 ### 🤖 Autopilot
 
 Still failing. Let me check the logs of the latest run.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2574,4 +2575,80 @@ The script's `commit_and_push()` function tries to `git commit` from inside the 
 - The homepage stat card and detail page are on the beta repo but need to be synced to production (CNAME conflict blocks auto-sync)
 
 Want me to finish the fix and trigger a test run?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Yeah, finish the fix and then trigger a test run. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me fix the script to remove the `commit_and_push()` and let the workflow handle it.
+
+
+### 🤖 Autopilot
+
+Now I need to remove the `commit_and_push()` function and the call to it, and also update the workflow to handle the commit step properly.
+
+
+### 🤖 Autopilot
+
+Now let me also update the workflow to properly handle the commit — it needs to copy the JSON file from the tokenomics checkout to the treasury-cache checkout before committing.
+
+
+### 🤖 Autopilot
+
+I see the issue — the script writes to its current working directory (which is the repo root of the `tokenomics` checkout, not the `treasury-cache` checkout). I need to update the workflow to run the script from the treasury-cache directory, or copy the output file.
+
+The cleanest fix: run the script from the treasury-cache checkout directory by passing the output path as an argument.
+
+
+### 🤖 Autopilot
+
+Now let me trigger the workflow to test.
+
+
+### 🤖 Autopilot
+
+**It worked!** The workflow ran successfully and the cache file is now live. Let me verify the content.
+
+
+### 🤖 Autopilot
+
+The cache is live! I notice the provisions have **negative amounts** (like `-0.09`) because they're debits in the ledger. Let me fix that quickly — the detail page should show positive amounts.
+
+
+### 🤖 Autopilot
+
+Now let me trigger the workflow again to regenerate with positive amounts.
+
+
+### 🤖 Autopilot
+
+**Everything is working perfectly!** Here's the full status:
+
+---
+
+**✅ Complete system is live!**
+
+| Layer | Status | Details |
+|-------|--------|---------|
+| **JSON Cache** | ✅ Live | `treasury-cache/buy-back-reserve.json` — 269 provisions, $41.26 reserve |
+| **GitHub Action** | ✅ Working | Runs daily at 06:00 UTC + manual trigger |
+| **GAS triggerSync** | ✅ Working | Can refresh Performance Stats remotely |
+| **Secrets** | ✅ Set | `GOOGLE_SERVICE_ACCOUNT_JSON` + `GH_PAT_TOKEN` on treasury-cache |
+| **Stat card + detail page** | ⚠️ In beta | Needs prod sync (CNAME conflict) |
+
+**Cache URL:** https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/buy-back-reserve.json
+
+The cache shows $41.26 accumulated from 269 daily buy-back provisions dating back to September 2025, with the most recent today at $0.09.
+
+The only remaining item is syncing the homepage stat card and detail page to production — want me to handle that, or will you do it manually on the prod repo?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #357 on tokenomics merged successfully (sha: 09ac3a308aabc99769a8109bc4f58bdd620d7210). Pull Request successfully merged; ✅ PR #358 on tokenomics merged successfully (sha: d09d6f8d46ae10a4ff62ac35e9842f0894baff6c). Pull Request successfully merged
+• `upload file to github` → https://github.com/TrueSightDAO/treasury-cache/blob/main/.github/workflows/update-buy-back-reserve-cache.yml
+• `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -c " import json, sys sys.path.insert(0, 'app') from vault import Vault v = Vault() v.initialize() pa; sleep 90 && cd /opt/truesight_autopilot && python3 -c " import json, sys, io, zipfile sys.path.insert(0, 'app') from vault import Vault v = ; sleep 90 && cd /opt/truesight_autopilot && python3 -c " import json, sys sys.path.insert(0, 'app') from vault import Vault v = Vault() v.ini
 
