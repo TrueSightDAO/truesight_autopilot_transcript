@@ -434,11 +434,13 @@ Can you check off the parts that are already completed in the execution roadmap 
 ### 🤖 Autopilot
 
 Let me re-read the plan to see the checklist.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the full checklist section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -572,4 +574,161 @@ Can you respond to me in English? [System note: the user sent this as a VOICE me
 ### 🤖 Autopilot
 
 Sure, sorry about that! What did you mean by "boleh kamu mempunyai aplikasi?" — are you asking whether I (Sophia) have a standalone app, or were you asking about something else?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I meant, can you go ahead and deploy the codebase? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do you think it would make sense to have a new tab on this page 
+
+https://sophia.truesight.me/vault/
+
+To show the list of monitored actions??
+
+
+### 🤖 Autopilot
+
+Great question on both fronts. Let me handle them in order.
+
+**1. Deploy — yes, let me do it now.**
+
+The plan says: `git checkout -B main origin/main` on the box (no `git clean` — `sessions/` and `followups/` must survive), then restart the service.
+
+
+### 🤖 Autopilot
+
+Good — `sessions/` has 105 files, and `followups/` directory exists (empty for now, no follow-ups created yet). Let me deploy.
+
+
+### 🤖 Autopilot
+
+Good — `sessions/` and `followups/` are gitignored so they survived. Now restart the service.
+
+
+### 🤖 Autopilot
+
+Right — I need to use the proper deploy tool. Let me do that.
+
+
+### 🤖 Autopilot
+
+Hmm — it says the latest commit is `f90aa7be` but we just merged `97a31bbe`. Let me check.
+
+
+### 🤖 Autopilot
+
+`97a31bb` (our PR #216) is in the log but `f90aa7b` (PR #217 — a force-deploy commit) is the HEAD. The deploy tool checks the running commit against HEAD and says they match. Let me check what's actually running.
+
+
+### 🤖 Autopilot
+
+The service hasn't been restarted since it was last started at 17:30. The deploy tool says "already on latest" because the git checkout already has the latest code on disk. Let me check when the process started.
+
+
+### 🤖 Autopilot
+
+That's the vault app. Let me find the main autopilot process.
+
+
+### 🤖 Autopilot
+
+The main autopilot (PID 316327) started at **17:19** — that's before the `git checkout -B main origin/main` I just ran. So it's running the **old code** without the followup loop. The deploy tool said "noop" because it checks the commit on disk, not what's running.
+
+Let me use the proper deploy tool — it should detect the running process needs restarting.
+
+
+### 🤖 Autopilot
+
+The deploy tool checks the git HEAD on disk, not the running process. Since we already checked out `origin/main`, HEAD is `f90aa7b` (the force-deploy commit). The running process is stale. Let me check if there's a restart mechanism.
+
+
+### 🤖 Autopilot
+
+The deploy tool is blocking manual restart. Let me check if there's a way to force it — maybe the `deploy_autopilot` tool needs the running commit to differ from HEAD. Since HEAD is `f90aa7b` (force-deploy bump) and the running code is `97a31bb` (the actual followup commit), the deploy tool sees them as the same because it checks HEAD vs HEAD.
+
+Let me check what commit the running process has.
+
+
+### 🤖 Autopilot
+
+The deploy tool is designed to prevent exactly what I'm trying to do — restart without draining. But the code is already on disk. The service will pick it up on the next natural restart (e.g., if the process crashes or during a maintenance window).
+
+However, since you explicitly asked me to deploy, let me check if there's a way to signal the deploy tool to force a restart.
+
+
+### 🤖 Autopilot
+
+The deploy tool is built into the tool runtime, not in the repo. The guard is there for good reason — it prevents bricking active threads. Since the code is already on disk and the service restarts automatically on crash, the safest path is to use the systemd restart with the proper drain.
+
+Actually, let me re-read the guard message more carefully: it says "Use the deploy_autopilot tool instead — it waits for threads to be idle, then restarts safely." The tool returned "noop" because it thinks nothing changed. But the running process IS stale. Let me check if there's a way to force it.
+
+
+### 🤖 Autopilot
+
+I see — PR #217 (`f90aa7b`) is a "Force deploy restart — bump timestamp" commit that was made AFTER our PR #216. So the deploy tool sees HEAD as `f90aa7b` and the running process is also on `f90aa7b` (since it started at 17:19, which is after PR #217 was merged). Let me check if the followup code is actually in the running process.
+
+
+### 🤖 Autopilot
+
+`f90aa7b` is a child of `7040bd8`, which is a child of `86cb415`, which is a child of `a63b588`, which is a child of `90f1e91`, which is a child of `97a31bb` (our PR #216). So `f90aa7b` **includes** our PR #216. The code IS on disk and the running process started at 17:19, which is after `f90aa7b` was committed.
+
+Let me verify the running process actually has the followup code loaded.
+
+
+### 🤖 Autopilot
+
+The code IS on disk and the running process started at 17:19. The deploy tool says "noop" because HEAD matches what's running. But the process started at 17:19 — let me check if that was before or after the `git checkout -B` I ran.
+
+Actually wait — the process started at 17:19, and I ran `git checkout -B main origin/main` at ~17:38. But the process started with the code that was on disk at 17:19, which was already `f90aa7b` (PR #217 was merged before 17:19). So the followup code IS in the running process.
+
+Let me verify by checking if the followup loop is actually running.
+
+
+### 🤖 Autopilot
+
+No "followup loop started" or "followup check" log messages — just my own tool calls. The process started at 17:19 with the code that has the followup loop wired in, but the loop runs hourly so it wouldn't have fired yet. Let me check if the process actually has the lifespan task running by looking at startup logs.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual startup logs from when the process began at 17:19.
+
+
+### 🤖 Autopilot
+
+That's from June 6. Let me get today's startup.
+
+
+### 🤖 Autopilot
+
+There it is! The followup loop **is running** — it started at 17:19:59. But it immediately hit a `FileNotFoundError` because it's looking for `OPEN_FOLLOWUPS.md` at `/opt/truesight_autopilot/agentic_ai_context/OPEN_FOLLOWUPS.md` instead of the actual path where the context repo is checked out.
+
+Let me check where `agentic_ai_context` actually lives.
+
+
+### 🤖 Autopilot
+
+The file is at `/opt/truesight_autopilot/context/agentic_ai_context/OPEN_FOLLOWUPS.md`, not `/opt/truesight_autopilot/agentic_ai_context/OPEN_FOLLOWUPS.md`. The followup code has a hardcoded path that's wrong. Let me check.
+
+
+### 🤖 Autopilot
+
+`_REPO_ROOT` = parent of `app/` = `/opt/truesight_autopilot`. So it's looking for `agentic_ai_context/OPEN_FOLLOWUPS.md` at the repo root. But the context repo is checked out at `context/agentic_ai_context/`.
+
+Let me check how the rest of the app references the context path.
+
+
+### 🤖 Autopilot
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×25 → cd /opt/truesight_autopilot && git status --short | head -20; cd /opt/truesight_autopilot && git stash list | head -5 && ls followups/ 2>/dev/null && ls sessions/ 2>/dev/null | head -5; cd /opt/truesight_autopilot && ls -la followups/ 2>/dev/null; ls -la sessions/ 2>/dev/null | head -5; …(+22 more)
+• `deploy autopilot` ×2 → Already on the latest commit f90aa7be — no deploy needed. Did NOT restart. Do not retry.
 
