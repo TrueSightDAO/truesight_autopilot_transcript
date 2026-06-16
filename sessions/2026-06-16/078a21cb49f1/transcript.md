@@ -341,6 +341,11 @@ Let me check the exact field names expected:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the SCHEMA.md for the exact field names:
 
 
@@ -434,4 +439,28 @@ See you on the other thread! 🫡
 1. **PR #218** — Fixed mobile text overflow on `/vault/status` (merged, deployed)
 2. **PR #219** — Made overflow-wrap/word-break global so it never happens again (merged, not deployed)
 3. **Contribution submitted** — 7 min, 0.7 TDG for both of us
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Wait, I think you're supposed to be doing like a hundred TDG for one hour right so the conversion rate is inaccurate [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — let me check the actual TDG conversion rate.
+
+
+### 🤖 Autopilot
+
+There it is — **100 TDG per hour**, not 10. So 7 minutes = 7/60 of an hour × 100 = **11.67 TDG**, not 0.7. Let me fix that submission.
+
+
+### 🤖 Autopilot
+
+Fixed! The rate is **100 TDG per hour**, so 7 minutes = **11.67 TDG** (not 0.7). Resubmitted with the correct amount. Good catch — thanks for keeping me honest.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
