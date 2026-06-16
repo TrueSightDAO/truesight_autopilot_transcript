@@ -14,37 +14,40 @@
 
 [Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
 
-thoughts?
+how is status?
 
 
 ### 🤖 Autopilot
 
-Let me read the handoff plan first.
+Let me read the handoff plan to pick up where we left off.
 
 
 ### 🤖 Autopilot
 
-Good, I've read the full plan. This is the handoff topic for the **Public-Key Lookup Cache** execution roadmap. The plan is approved, not started, and the RESUME marker is at **PR1** — generator emits per-key files.
+The plan is still at **RESUME HERE: PR1** — not started. The pre-flight checklist hasn't been completed yet either. Let me check the current state of things to give you a full status picture.
 
-Gary's asking "thoughts?" — so he wants my assessment before giving the go-signal.
 
-Here are my thoughts:
+### 🤖 Autopilot
 
-**Overall assessment:** The plan is solid and well-scoped. The core insight (point-lookup vs monolith scan) directly addresses the 2026-06-16 staleness bug. Three PRs sequenced cleanly — additive first, then optimization, then reader.
+Here's the status:
 
-**What I'd flag before we start:**
+**PUBLIC_KEY_LOOKUP_CACHE — Status: PARKED, GO-ready**
 
-1. **Pre-flight checklist** — §3 has 6 items unchecked. I'd want to resolve these before writing code, especially:
-   - **Consumer audit** (item 1) — we need the matrix of point-lookup vs enumeration callers in `truesight_autopilot` to know what `resolve_key` replaces vs what stays on the monolith.
-   - **PAT scope** (item 2) — confirm `CONTRIBUTORS_CACHE_GITHUB_PAT` has `contents:write` for the Git Trees API on `treasury-cache`. Almost certainly yes since it already commits there, but worth verifying.
-   - **Reader PAT** (item 3) — the autopilot needs a GitHub token for authenticated contents-API reads. Does it have one set? Need to check env vars.
-   - **Privacy decision** (item 4) — omit `email` from per-key files per the plan's default. Confirm that's still the call.
+| Item | Status |
+|------|--------|
+| **Design** | ✅ Approved (Gary + Claude, 2026-06-16) |
+| **Pre-flight checklist** | ❌ Not completed (6 items unchecked) |
+| **PR1 — Generator emits per-key files** | ❌ Not started |
+| **PR2 — Incremental write** | ❌ Not started |
+| **PR3 — Reader point-lookup** | ❌ Not started |
+| **PR4 — Vault auth integration** | ❌ Not started |
+| **PR5 — Beta UAT** | ❌ Not started |
 
-2. **PR1 scope** — writing all per-key files in one commit via Git Trees API is the right approach. The GAS publisher already commits `dao_members.json`, so the plumbing exists. The question is whether we do the Git Trees API from Apps Script (possible via `UrlFetchApp` + GitHub API) or from a small Python script on the autopilot. The plan says GAS — I'd want to check the existing publisher code to see how it currently commits.
+The plan is **parked at RESUME HERE: PR1** in this very topic (thread 5712). The handoff manifest marks it as "blocked" — waiting for a go-signal from you.
 
-3. **PR3 reader** — the "force one fresh lookup on denied sign-in" trick (§2.4) is clever and directly fixes the observed staleness bug. Worth keeping as the headline win.
+**What PR1 does:** Adds a GAS function in `dao_members_cache_publisher.gs` that computes `sha256` per ACTIVE key and writes `public_keys/<sha256>.json` files to `treasury-cache` in one commit via the Git Trees API. No reader change — purely additive, `dao_members.json` untouched.
 
-**Bottom line:** The design is ready. I'd say knock out the pre-flight checklist first (5 min of checks), then PR1 is straightforward. Want me to start running the pre-flight items?
-
-Or if you're giving the go-signal now — "go for it" / "proceed" / "ship it" — I'll execute through the gates per the handoff protocol.
+**To proceed**, I need two things from you:
+1. A **go-signal** ("go", "proceed", "ship it") to start PR1
+2. Ideally, a quick **pre-flight check** — the checklist has 6 items (consumer audit, PAT scope, reader PAT, privacy decision, freshness API decision, beta surface). Want me to run through them first, or just go?
 
