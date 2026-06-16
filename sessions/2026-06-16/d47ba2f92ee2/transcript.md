@@ -1035,6 +1035,7 @@ Good. Now I have everything. Let me also check what the current `.env` has for t
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me build this. I'll add a new API endpoint `/vault/api/runtime-config` that exposes all the boot-time settings, and update the status page to show them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1164,4 +1165,49 @@ I'll add a **"Setting up your own instance"** section that covers:
 4. The boot sequence — what happens on first start
 
 Want me to build that into the status page now?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] yeah. That would be cool, that way anyone can just spin up a new incartion of you and they could easily go about setting their incarnation of you without too much friction... Or even better one of their friends who have an incarnation of you could just ask her to spawn a new incarnation on another machine... You see where I am going at right??
+
+
+### 🤖 Autopilot
+
+Absolutely — I see exactly where you're going. This is **self-replication with configuration**.
+
+The vision: I should be able to spawn a new instance of myself on another machine, with its own identity, its own context, its own keys — just by being told "Sophia, spawn a new instance for Bilal on that server."
+
+Let me build this out properly. I'll add a **"Replicate / Setup Guide"** section to the status page that covers both:
+
+1. **Manual setup** — for someone cloning the repo and configuring from scratch
+2. **Self-replication** — what I'd need to be able to do to spawn a new instance autonomously
+
+Let me also think about what's actually needed for self-replication vs what's aspirational.
+
+
+### 🤖 Autopilot
+
+Now let me add the "Replicate / Setup Guide" card to the status page.
+
+
+### 🤖 Autopilot
+
+Done! The **Replicate** card is now live at **https://sophia.truesight.me/vault/status** (sign in first). It has four sections:
+
+**1. Quick Start (manual)** — 7-step guide to clone, configure, and run a fresh instance
+
+**2. Required Credentials** — table showing the 3 non-negotiable keys (LLM API, GitHub PAT, Telegram bot token) and what each is for
+
+**3. Self-Replication (coming soon)** — the vision you described: a governor says "Sophia, spawn a new instance for Bilal" and I handle the whole thing — SSH in, clone, register identity, fork context, create transcript repo, provision credentials, start the service
+
+**4. Architecture Note** — explains the content-addressable design: same code, different context = different behavior
+
+This means anyone who visits the status page can see exactly what makes this instance tick, and has a clear path to spinning up their own. When self-replication is built, a governor could literally say *"Sophia, spawn a new instance for Liz on that EC2 box"* and I'd handle the rest.
+
+Want me to start building the self-replication capability?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && cat app/templates/vault/status.html | wc -l; cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r') as f: html = f.read() # Add a Replicate ; cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; …(+2 more)
 
