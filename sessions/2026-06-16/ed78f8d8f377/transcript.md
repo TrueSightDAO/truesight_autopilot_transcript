@@ -1809,6 +1809,7 @@ The source file doesn't have it either! The PR #354 was merged but the local che
 ### 🤖 Autopilot
 
 Now the source has it. Let me sync to mirror and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1967,4 +1968,29 @@ Detail page (truesight.me/buy-back-reserve/) → loads JSON from GitHub CDN
 ```
 
 Want me to build the GitHub Action?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Which repository do you recommend writing it in? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I'd recommend the **`treasury-cache`** repo. It's already a data-only repo (API-only class per our rules) and its name literally says "cache" — perfect fit. The GitHub Action workflow file would live in the `.github` repo (where shared workflows go), or we could put it directly in `treasury-cache` under `.github/workflows/`.
+
+Actually, let me reconsider — the `.github` repo is for org-wide shared workflows. A dedicated cache builder is specific to treasury data. I'd say:
+
+**Put the workflow in `treasury-cache` itself** (`.github/workflows/update-buy-back-reserve-cache.yml`). That way:
+- The workflow and its output live in the same repo
+- It's self-documenting — anyone looking at the repo sees how the cache is built
+- Easy to add more cache entries later (AUM breakdown, etc.)
+
+The workflow would:
+1. Fetch from the GAS web service (`?action=getPerformanceStatistics`)
+2. Also fetch the offchain transactions for daily provision history
+3. Write `buy-back-reserve.json` to the repo root
+4. Commit and push
+
+Want me to build it?
 
