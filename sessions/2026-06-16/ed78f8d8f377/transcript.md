@@ -1820,6 +1820,11 @@ Now create a new deployment with the updated code.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Timed out — that's expected because the sync function takes a while to run (it reads multiple sheets and fetches data). Let me try with a longer timeout.
 
 
@@ -2027,4 +2032,43 @@ The workflow in `treasury-cache` would:
 3. Commit the updated JSON to `treasury-cache`
 
 Clean separation — code in `tokenomics`, data in `treasury-cache`. Want me to build it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Yeah, I think it should sit in the proper location in the right repo, similar to the other Python scripts that's updating the statistics on the true side of me landing pages in it. I mean, if you look at the AUM when you click in, there's a whole bunch of stats. This Python script, there's generating that I think this new Python script yours, creating should be in that similar location. Can you check which location that is? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find the existing Python scripts that update the truesight.me stats.
+
+
+### 🤖 Autopilot
+
+I see `snapshot_managed_ledgers.py` in `tokenomics/python_scripts/tdg_asset_management/`. Let me check that and also look for the AUM detail page's data source.
+
+
+### 🤖 Autopilot
+
+Found it! The existing pattern is:
+
+- **Python script** in `tokenomics/python_scripts/tdg_asset_management/snapshot_managed_ledgers.py`
+- **Output** goes to `treasury-cache/managed-ledgers/`
+- The script uses a service account to read Google Sheets and writes JSON files
+
+This is exactly the pattern we should follow. Your new script would sit alongside it at:
+
+```
+tokenomics/python_scripts/tdg_asset_management/update_buy_back_reserve_cache.py
+```
+
+And it would:
+1. Read the offchain transactions sheet for daily buy-back provisions
+2. Read the Performance Statistics for the current reserve total
+3. Write `treasury-cache/buy-back-reserve.json`
+
+Then a GitHub Action workflow in `treasury-cache` (or in `.github`) would run it on a daily cron.
+
+Want me to build it?
 
