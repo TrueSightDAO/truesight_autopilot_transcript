@@ -1626,11 +1626,23 @@ Also, the `table-layout: fixed` in the global CSS is causing the 3-column table 
 ### 🤖 Autopilot
 
 The status page has its own inline `<style>` block — it doesn't inherit from `base.html`. Let me just add the column width rule directly to the table.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the template renders and restart the vault worker.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1688,6 +1700,17 @@ You're absolutely right, Gary. The "coming soon" framing is too conservative. Le
    - Or pre-seed the vault file before starting the service
 
 Let me update the status page to reflect that this is **near-term**, not "coming soon." And I'll add a concrete action: a governor can say "Sophia, spawn a new instance" and I'll do it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1740,16 +1763,24 @@ You're spot on. With the AWS keys already in the vault, I can:
 The only thing a governor needs to do is provide the **3 non-negotiables** (LLM key, GitHub PAT, Telegram token) for the *new* instance — because those are unique per instance. Everything else I can do autonomously.
 
 Let me write this up as a proper SOP and add it to the context so I can follow it step by step.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me create the SOP as a proper context file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also update the status page to link to this SOP.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1884,6 +1915,7 @@ That's a significant provisioning job — but still automatable. The SOP should 
 ### Let me update the SOP and add a link from the landing page
 
 Let me update the SOP to cover both paths, and add a "Fork the Ecosystem" section to the landing page.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1939,4 +1971,88 @@ Want to try spawning a test clone or fork?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; cd /opt/truesight_autopilot && grep -n "Self-Replication" app/templates/vault/status.html; cd /opt/truesight_autopilot && grep -n "Replicate\|Self\|Clone\|Fork" app/templates/vault/status.html; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] Doesnt it meant that https://sophia.truesight.me/vault/status should also show the urls?
+
+1. A new Edgar — because the ledger schema, tokenomics rules, and governance model might be different
+2. New ledgers — blank sheets, his own data
+
+
+### 🤖 Autopilot
+
+You're right — the status page should show the URLs for both Edgar and the ledger so a governor can see what infrastructure this instance is connected to. Let me add those.
+
+
+### 🤖 Autopilot
+
+I see — the Edgar URL and ledger sheet ID aren't in the `.env` because they're configured differently. Let me check how the app connects to Edgar and the ledger.
+
+
+### 🤖 Autopilot
+
+Good — Edgar is at `https://edgar.truesight.me` and the ledger sheet ID is `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`. Let me also check the Edgar client to see how it's configured.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Edgar is at `https://edgar.truesight.me` and the ledger sheet ID is `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`. Let me also check the ledger sheet name.
+
+
+### 🤖 Autopilot
+
+Now let me update the status page to show Edgar URL, ledger URL, and context/transcript repo URLs in the Runtime Configuration card.
+
+
+### 🤖 Autopilot
+
+The Runtime Configuration is loaded dynamically via JS (`<div id="runtime-config">`). Let me check the JS that populates it.
+
+
+### 🤖 Autopilot
+
+Now I need to update both the API endpoint (to return Edgar URL and ledger info) and the JS (to render them). Let me update the API endpoint first.
+
+
+### 🤖 Autopilot
+
+Now I'll add Edgar URL and ledger info to the API response, and update the JS to render them.
+
+
+### 🤖 Autopilot
+
+Now update the JS to render the infrastructure section.
+
+
+### 🤖 Autopilot
+
+Now let me verify the template renders and restart the vault worker.
+
+
+### 🤖 Autopilot
+
+Live and rendering 24KB. The **Runtime Configuration** card now shows an **Infrastructure** section at the bottom with all the URLs:
+
+| Component | URL |
+|---|---|
+| **Edgar API** | https://edgar.truesight.me ↗ |
+| **Main Ledger** | Ledger history sheet ↗ |
+| **Context Repo** | github.com/TrueSightDAO/agentic_ai_context ↗ |
+| **Transcript Repo** | github.com/TrueSightDAO/truesight_autopilot_transcript ↗ |
+| **Code Repo** | github.com/TrueSightDAO/truesight_autopilot ↗ |
+| **Vault** | https://sophia.truesight.me/vault ↗ |
+
+This means when someone forks a new ecosystem, the status page on the new instance will show **its own** Edgar URL, its own ledger, its own context repo — making it immediately clear what infrastructure that instance is connected to.
+
+Refresh the page (sign in first) and scroll down to the Runtime Configuration card — the Infrastructure table is right after the environment variables.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cat > /tmp/update_api.py << 'PYEOF' with open('/opt/truesight_autopilot/app/vault_routes.py', 'r', encoding='utf-8') as f: content = f.read() ; cat > /tmp/update_js.py << 'PYEOF' with open('/opt/truesight_autopilot/app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; …(+10 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×25 → cd /opt/truesight_autopilot && python3 -c " import os from dotenv import load_dotenv load_dotenv() print('EDGAR_URL:', os.getenv('EDGAR_URL'; cd /opt/truesight_autopilot && cat .env 2>/dev/null | grep -i "edgar\|ledger\|context\|transcript\|repo\|sheet" | head -20; cd /opt/truesight_autopilot && cat .env 2>/dev/null | grep -v "^#" | grep -v "^$" | head -40; …(+22 more)
 
