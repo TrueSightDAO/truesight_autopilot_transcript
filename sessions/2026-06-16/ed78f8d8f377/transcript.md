@@ -317,6 +317,7 @@ Would you like me to open a PR to add it to the blog index?
 ### 🤖 Autopilot
 
 Let me check the current landing page to see if the buy-back blog link is still there, and also look at the blog index source to understand how posts are listed.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -328,11 +329,18 @@ Actually, the link **is still there** on the landing page — it's the ℹ️ ic
 > [Based on DAO treasury revenue, not total ecosystem sales](blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html)
 
 So the link is present on the homepage. But it's **not on the blog index** page. Let me now look at the source files to fix both issues.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The truesight.me site is a Wix site — the pages are managed through Wix's CMS, not in a GitHub repo. Let me check what's in the truesight_me repos.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -443,4 +451,20 @@ You'll need to manually reconcile the conflict on the `truesight_me_prod` repo. 
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #241 on truesight_me_beta merged successfully (sha: 7e527a78b1d7a4da3a4f1f573c487a37ed994743). PR #241 was already merged.
 • `deploy autopilot` → Already on the latest commit 86cb4159 — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Can you share the URL of the true site me prod production link to GitHub so that I can just go in and press the button? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the link to the production repo where you can manually apply the change:
+
+**https://github.com/TrueSightDAO/truesight_me_prod**
+
+You'll want to edit `blog/index.html` directly on the `main` branch — just add the same blog card that was added in the beta PR. The change is simple: insert the buy-back post card at the top of the blog grid, right before the "Agentic AI and the Common Law Tradition" card. You can copy the card HTML from the beta PR if you like.
+
+Alternatively, if you want me to push the change directly to the prod repo's main branch (bypassing the sync), just say the word and I'll do it.
 
