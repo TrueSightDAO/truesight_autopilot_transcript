@@ -445,6 +445,11 @@ Let me get the full checklist section.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Here's the completed checklist — I'll mark off everything that's been done:
 
 ---
@@ -487,26 +492,46 @@ So all the unit test passed or are there any unit tests in this at all make sure
 ### 🤖 Autopilot
 
 Let me check the actual test coverage for all the followup code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 test files exist. Let me check their content and count the actual tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `def test_` functions? Let me check what's actually in these files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 They use test classes, not standalone functions. Let me count the actual test methods.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **72 test methods** across 4 files. Let me run them specifically to confirm they all pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -600,41 +625,69 @@ Great question on both fronts. Let me handle them in order.
 **1. Deploy — yes, let me do it now.**
 
 The plan says: `git checkout -B main origin/main` on the box (no `git clean` — `sessions/` and `followups/` must survive), then restart the service.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — `sessions/` has 105 files, and `followups/` directory exists (empty for now, no follow-ups created yet). Let me deploy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — `sessions/` and `followups/` are gitignored so they survived. Now restart the service.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — I need to use the proper deploy tool. Let me do that.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm — it says the latest commit is `f90aa7be` but we just merged `97a31bbe`. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `97a31bb` (our PR #216) is in the log but `f90aa7b` (PR #217 — a force-deploy commit) is the HEAD. The deploy tool checks the running commit against HEAD and says they match. Let me check what's actually running.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service hasn't been restarted since it was last started at 17:30. The deploy tool says "already on latest" because the git checkout already has the latest code on disk. Let me check when the process started.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the vault app. Let me find the main autopilot process.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -642,11 +695,13 @@ That's the vault app. Let me find the main autopilot process.
 The main autopilot (PID 316327) started at **17:19** — that's before the `git checkout -B main origin/main` I just ran. So it's running the **old code** without the followup loop. The deploy tool said "noop" because it checks the commit on disk, not what's running.
 
 Let me use the proper deploy tool — it should detect the running process needs restarting.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy tool checks the git HEAD on disk, not the running process. Since we already checked out `origin/main`, HEAD is `f90aa7b` (the force-deploy commit). The running process is stale. Let me check if there's a restart mechanism.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -654,6 +709,7 @@ The deploy tool checks the git HEAD on disk, not the running process. Since we a
 The deploy tool is blocking manual restart. Let me check if there's a way to force it — maybe the `deploy_autopilot` tool needs the running commit to differ from HEAD. Since HEAD is `f90aa7b` (force-deploy bump) and the running code is `97a31bb` (the actual followup commit), the deploy tool sees them as the same because it checks HEAD vs HEAD.
 
 Let me check what commit the running process has.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -661,6 +717,7 @@ Let me check what commit the running process has.
 The deploy tool is designed to prevent exactly what I'm trying to do — restart without draining. But the code is already on disk. The service will pick it up on the next natural restart (e.g., if the process crashes or during a maintenance window).
 
 However, since you explicitly asked me to deploy, let me check if there's a way to signal the deploy tool to force a restart.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -731,4 +788,73 @@ Let me check how the rest of the app references the context path.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×25 → cd /opt/truesight_autopilot && git status --short | head -20; cd /opt/truesight_autopilot && git stash list | head -5 && ls followups/ 2>/dev/null && ls sessions/ 2>/dev/null | head -5; cd /opt/truesight_autopilot && ls -la followups/ 2>/dev/null; ls -la sessions/ 2>/dev/null | head -5; …(+22 more)
 • `deploy autopilot` ×2 → Already on the latest commit f90aa7be — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do you think it would make sense to have a new tab on this page 
+
+https://sophia.truesight.me/vault/
+
+To show the list of monitored actions??
+
+
+### 🤖 Autopilot
+
+Great question. Let me look at the vault page to understand what's there now.
+
+
+### 🤖 Autopilot
+
+Let me look at the vault page source directly — it's served by the autopilot itself.
+
+
+### 🤖 Autopilot
+
+Now let me check what the status page looks like and how tabs/navigation work.
+
+
+### 🤖 Autopilot
+
+Now let me check the base template to see how navigation/tabs work.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my analysis:
+
+---
+
+**Yes, I think it would make a lot of sense.** Here's why:
+
+The vault page already has a **navigation bar** in `base.html` with two tabs:
+- **Vault** (`/vault`) — credentials management
+- **System Status** (`/vault/status`) — active tracks, deploy controls, runtime config
+
+A **third tab** for "Monitored Actions" (or "Follow-ups") would fit right in. It would show:
+
+- All active ````followup` blocks from `OPEN_FOLLOWUPS.md`
+- Their status (pending / struck / escalated)
+- Days remaining until escalation
+- The originating Telegram thread
+- A button to close/resolve them
+
+The infrastructure is already there:
+- **Data source** — `followups/` state directory with per-followup JSON files (status, strikes, last-checked timestamps)
+- **API route** — could add a `/vault/api/followups` endpoint that reads the state directory
+- **Template** — a new `followups.html` extending `base.html`, with a table similar to the credentials table
+- **Nav bar** — just add one more `<a href="/vault/followups" class="nav-link">` in `base.html`
+
+Want me to build it? I'd:
+1. Add a `/vault/followups` route in `vault_routes.py`
+2. Add a `/vault/api/followups` JSON endpoint
+3. Create `templates/vault/followups.html`
+4. Add the nav link in `base.html`
+5. Run the full test suite before committing
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → find /opt/truesight_autopilot -path "*/vault*" -o -path "*vault*" | head -20; grep -n "templates\|static\|html\|route\|@router\|@app" /opt/truesight_autopilot/app/vault_routes.py | head -30; cat /opt/truesight_autopilot/app/templates/vault/index.html | head -80; …(+5 more)
 
