@@ -2827,6 +2827,7 @@ ema Meck iog
 The OCR didn't pick up much from that image. Let me look at the screenshot more carefully — it seems to be showing the status page. You're saying the **Self-Replication** card should be at the **top** of the status page, above the other cards?
 
 Let me check the current order of cards on the status page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2839,11 +2840,28 @@ Current order:
 5. Vault Health
 
 Let me move it to the top.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact HTML structure around the Replicate card.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2857,6 +2875,7 @@ Now the order is:
 5. Vault Health
 
 Let me verify the template renders and restart the vault worker.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2977,4 +2996,32 @@ Want me to also add a download link to the status page so visitors can grab the 
 ———
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+
+
+### 🧑 Governor
+
+Why is it showing Sign In 
+
+https://sophia.truesight.me/vault/status
+
+I am already signed in
+
+[Attachment auto-processed: **96f5515cc51b49aaa0bd4d429c65ec21.jpg**]
+- Type: Image (OCR confidence: 81.4%, quality: good)
+
+Extracted text:
+```
+Pee A Clg Per SU Replicate - Spin Up Your Own Instance Clone ‘Same DAO, new operator. New Sophia shares the existing Edgar API and ledger. + 10 minutes * Governor provides 3 credentials, + Shares existing infrastructure Quick Start (manual) Fork New DAO, new rules. New Sophia + new Edgar + blank Google Shest ledger + blank context, No database needed. +1 hour ‘ Governor writes their own rules ‘+ Completely independent ecosystem
+```
+
+
+### 🤖 Autopilot
+
+The screenshot shows the Replicate card is rendering fine, but the **Runtime Configuration** and **Vault Health** cards are showing "Sign In" because the JS can't authenticate. The issue is that the runtime-config API endpoint requires governor auth, and the JS fetch isn't sending the auth cookie properly.
+
+Let me check the JS that loads the runtime config.
+[1 tool result(s) compacted: ssh_run — detail in parameters]
+
+Let me check the JS that loads the runtime config.
+[1 tool result(s) compacted: ssh_run -- host autopilot -- command cd /opt/truesight_autopilot && grep -n "runtime-config\|runtimeConfig\|fetch.*runtime" app/templates/vault/status.html | head -20]
 
