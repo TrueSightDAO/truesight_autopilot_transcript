@@ -801,9 +801,15 @@ The file is at `/opt/truesight_autopilot/context/agentic_ai_context/OPEN_FOLLOWU
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 `_REPO_ROOT` = parent of `app/` = `/opt/truesight_autopilot`. So it's looking for `agentic_ai_context/OPEN_FOLLOWUPS.md` at the repo root. But the context repo is checked out at `context/agentic_ai_context/`.
 
 Let me check how the rest of the app references the context path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -828,21 +834,60 @@ To show the list of monitored actions??
 ### 🤖 Autopilot
 
 Great question. Let me look at the vault page to understand what's there now.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the vault page source directly — it's served by the autopilot itself.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what the status page looks like and how tabs/navigation work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the base template to see how navigation/tabs work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -893,36 +938,53 @@ Yep, go for it. [System note: the user sent this as a VOICE message via the Tele
 ### 🤖 Autopilot
 
 Let me first check the existing followup state directory format and the vault routes to plan the implementation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the followup tools are in `app/tools/followup_tools.py`. Let me check what's exported from `followups.py` and the state format.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the full vault_routes.py to understand the pattern, and check the existing tests.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the existing test for vault routes to follow the pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the existing vault routes test to follow the pattern for testing.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also look at the followup state format to understand what data I'll surface.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me also check the followup_loop to see what state fields get populated.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -933,26 +995,41 @@ Now I have the full picture. Let me build the follow-ups tab. I'll create:
 2. A `/vault/followups` HTML page
 3. A `templates/vault/followups.html` template
 4. Add the nav link in `base.html`
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me build all the pieces. I'll use `git_push_changes` to create the PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I wrote the full `base.html` and `vault_routes.py` as whole files, but the `vault_routes.py` write only contains the new route methods, not the full file. Let me check what actually got written.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `vault_routes.py` write only contained the new route methods, not the full file — it replaced the entire 607-line file with just the new snippets. I need to fix this. Let me redo it properly with an edit (search/replace) instead.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what's currently on the branch and fix it properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1012,4 +1089,28 @@ The original file DOES use `Depends` in function signatures. My rewritten file h
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → ls -la /opt/truesight_autopilot/followups/ 2>/dev/null; cat /opt/truesight_autopilot/app/followups.py | head -80; cat /opt/truesight_autopilot/app/followups.py | wc -l && cat /opt/truesight_autopilot/app/followup_tools.py | head -40; find /opt/truesight_autopilot/app -name "followup*" | sort; …(+17 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What is the status? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I'm in the middle of building the vault follow-ups tab. The first `git_push_changes` attempt wrote a broken `vault_routes.py` (only the new snippets, not the full file), so I'm fixing it locally on the box. Current state:
+
+**Done so far:**
+- ✅ `followups.html` template written
+- ✅ `base.html` nav link added ("Follow-ups" between Vault and System Status)
+- ✅ `vault_routes.py` restored with the full original file + new `/followups` page route + `/api/followups` JSON endpoint
+
+**Still in progress:**
+- ❌ Fixing a lint issue — the original file uses `Depends` in function signatures but my rewrite dropped those parameters. Need to fix that.
+- ❌ Then run full test suite
+- ❌ Then commit and push
+
+Give me 2 minutes to finish it up.
 
