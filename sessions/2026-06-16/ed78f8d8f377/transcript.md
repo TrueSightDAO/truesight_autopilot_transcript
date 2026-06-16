@@ -52,51 +52,61 @@ Let me search the full ledger for "avatar" and also check the Edgar True site it
 ### 🤖 Autopilot
 
 Let me search the ledger for "avatar" and also check the Edgar True site directly.
+[2 tool result(s) compacted: read_google_sheet, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Edgar True site is a documentation/info page — no avatar image there. Let me also check the dapp_beta repo for any avatar images and the truesight_me site.
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate limited on GitHub. Let me check the truesight.me site itself and the dapp site for any avatar imagery.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Edgar page on the truesight.me site specifically, and also look for any avatar images in the repos.
+[2 tool result(s) compacted: web_extract, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the .github repo for any avatar images and also look at the dapp_beta repo structure.
+[2 tool result(s) compacted: read_repo_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the .github repo has a logo at `assets/20240612_truesight_dao_logo_square.png`. Let me check if there's an Edgar-specific avatar anywhere.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check the dapp_beta repo for any image assets and the truesight_me_beta repo for Edgar-specific images.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — there's an `edgar-module.jpg` and `edgar_creation.jpg` in the truesight_me_beta assets. Let me check if those are avatar-like images for Edgar.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the contribution ledger more specifically for any avatar-related entries, and also look at the edgar_creation.jpg to see if that's an avatar.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full ledger text for "avatar" and "edgar" to see if there's any contribution related to an Edgar avatar.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -181,4 +191,54 @@ So no, an avatar image was never created for the Edgar Truesight site. If you'd 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → find / -maxdepth 4 -name "*.ico" -o -name "*.png" -o -name "*.jpg" -o -name "*.svg" 2>/dev/null | head -30; curl -sI https://edgar.truesight.me/favicon.ico 2>&1 | head -10; curl -s https://edgar.truesight.me/ | grep -i 'img\|icon\|avatar\|logo\|favicon' 2>&1; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Is there a blog post or a section somewhere that calculates how much the daily pieback The formula to calculate the daily buyback on true set me [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me search for any documentation about the daily pieback/buyback formula on truesight.me.
+
+
+### 🤖 Autopilot
+
+Let me read the buyback code and the README to understand the formula, and also check truesight.me for any blog post.
+
+
+### 🤖 Autopilot
+
+Now let me also check if there's a blog post or documentation page on truesight.me about the buyback.
+
+
+### 🤖 Autopilot
+
+I can see there's a blog post linked from the homepage about the buyback budget. Let me read it.
+
+
+### 🤖 Autopilot
+
+Yes! There is a blog post on truesight.me that explains the formula in detail. Here's the summary:
+
+---
+
+**Yes, there's a full blog post on truesight.me** titled *"Understanding TrueSight DAO's Daily Buy-Back Budget: A Dynamic Force for Stability"* — it's linked right from the homepage under the Daily Buy-Back Budget info icon.
+
+**The formula is:**
+
+> **Daily Buy-Back Budget = (Last 30 Days DAO Revenue ÷ 30) × min(Asset Per Issued TDG, 1 − US 1 Month Treasury Bill Rate)**
+
+**Breaking it down:**
+
+1. **Last 30 Days DAO Revenue ÷ 30** — The average daily revenue flowing into the main DAO treasury (not total ecosystem sales, just main ledger revenue from DAO-owned inventory sales)
+
+2. **Multiplied by** the smaller of two values:
+   - **Asset Per Issued TDG** — Total treasury assets divided by total TDG issued (currently ~$0.00664/TDG)
+   - **1 − US 1 Month Treasury Bill Rate** — A risk-free rate cap to prevent over-allocating
+
+So the budget is essentially a fraction of daily revenue, capped by the asset backing per token. Currently it's showing **$0.25759 USD** as the daily buy-back budget.
+
+The post also explains that management fees from external financiers go to treasury growth but are **excluded** from the buy-back calculation — only DAO-owned inventory sales revenue funds the buyback.
 
