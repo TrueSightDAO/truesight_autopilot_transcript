@@ -158,6 +158,7 @@ Now I have the full picture. Let me also check the existing `treasury-cache` to 
 ### 🤖 Autopilot
 
 Good — I can see the data shape. Now let me also check the autopilot's env config to understand the PAT situation.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -190,6 +191,7 @@ Now I have everything I need. Let me compile the pre-flight checklist results an
 ✅ **Item 6 — Beta surface.** There's no beta autopilot deploy yet. The plan references `AUTOPILOT_TELEGRAM_BETA_DEPLOY_PLAN.md` / `BETA_SANDBOX_ENDPOINT_PLAN.md` — these are separate handoffs. For PR1 (generator only, no reader change), beta isn't needed. UAT will matter at PR3/PR4.
 
 All 6 pre-flight items checked. Now proceeding to **PR1**.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -201,6 +203,7 @@ I have the full picture. Now let me create PR1. The key changes to `dao_members_
 3. Add a `public_keys/_manifest.json` for future incremental diffing (PR2)
 
 Let me also check the existing `commitJsonToGithub_` function to understand the current API pattern.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -211,21 +214,30 @@ Now I have the complete picture. Let me create PR1. The approach:
 2. After building the snapshot, compute per-key files and include them in the tree alongside `dao_members.json`
 3. Add `public_keys/_manifest.json` for future incremental diffing
 4. Keep the existing `commitJsonToGithub_()` for backward compat — the new tree API is used for the multi-file commit
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit message was too long for a PR title. Let me open the PR with a shorter title.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already exists with the commit. Let me create the PR directly.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch was pushed but the PR creation failed due to title length. Let me create the PR via the GitHub API directly.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -233,31 +245,37 @@ The branch was pushed but the PR creation failed due to title length. Let me cre
 The PAT isn't available in the env for `http_fetch`. Let me use the autopilot's GitHub client via the existing tooling. The branch is pushed — let me use `open_fix_pr` which has the right auth.
 
 Actually, the branch is already pushed. Let me just create the PR through the existing tool.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch is pushed with the correct code. Let me create the PR now via the GitHub API using the autopilot's PAT.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR created successfully. Let me verify.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me record the contribution.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me tick the tracker in the plan doc to mark PR1 as done.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the plan doc to mark PR1 as done and advance the RESUME HERE marker.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -317,16 +335,19 @@ perfect merge it and then the next PR
 ### 🤖 Autopilot
 
 Let me merge PR1 first, then proceed to PR2.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR1 merged. Now let me also merge the tracker tick PR.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the plan doc to pick up PR2.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -434,5 +455,119 @@ Want me to merge PR2 and start PR3?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #359 on tokenomics merged successfully (sha: a62fc96fd55db39e1414f50c8a5c7a5f0d673959). Pull Request successfully merged; ✅ PR #525 on agentic_ai_context merged successfully (sha: 87bb5206c9d9169c813f2114eb811cb4a2808bff). Pull Request successfully merged
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+merge PR2. And then one to PR3
+
+
+### 🤖 Autopilot
+
+Let me merge PR2 first, then proceed to PR3.
+
+
+### 🤖 Autopilot
+
+PR2 was already merged (from a previous attempt). Let me also merge the tracker tick.
+
+
+### 🤖 Autopilot
+
+Both already merged. Now let me read the plan doc to pick up PR3, and read the current `governor_registry.py` to understand what needs to change.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the callers to understand the interface.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the existing tests for governor_registry to understand the test patterns.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me create PR3. The plan calls for:
+
+1. Add `resolve_key(public_key) -> identity | None` method
+2. Short per-key in-memory cache (60s TTL)
+3. Fetch `public_keys/<sha256>.json` via GitHub contents API (fresh, authenticated)
+4. Validate `status == "ACTIVE"`; map `roles` → `is_governor = "governor" in roles`
+5. Miss/404 → `None`
+6. Retain `load_governors()` as fallback
+7. Freshness: force one fresh lookup on denied sign-in before refusing
+
+
+### 🤖 Autopilot
+
+Branch name collision. Let me use a fresh branch name.
+
+
+### 🤖 Autopilot
+
+Now let me run the local test suite before recording the contribution.
+
+
+### 🤖 Autopilot
+
+The formatting issues are in pre-existing files, not in my changes. Let me verify my file specifically.
+
+
+### 🤖 Autopilot
+
+Good — my file is clean. The 4 pre-existing formatting issues are in untouched files. Let me run the tests.
+
+
+### 🤖 Autopilot
+
+All 529 tests pass. Now let me record the contribution and tick the tracker.
+
+
+### 🤖 Autopilot
+
+Now tick the tracker in the plan doc.
+
+
+### 🤖 Autopilot
+
+---
+
+## ✅ Done this turn
+
+### PR2 — Merged ✅
+Already merged from earlier. Both `tokenomics#361` and `agentic_ai_context#526` confirmed.
+
+### PR3 — Opened ✅
+
+| Item | Link |
+|------|------|
+| **PR** | [truesight_autopilot#230](https://github.com/TrueSightDAO/truesight_autopilot/pull/230) |
+| **Branch** | `feat/public-key-cache-pr3-v2` |
+| **Tests** | 529 passed ✅ |
+| **Contribution** | Submitted (45 min) |
+| **Tracker tick** | [agentic_ai_context#527](https://github.com/TrueSightDAO/agentic_ai_context/pull/527) — RESUME HERE advanced to **PR4** |
+
+### What PR3 does
+
+- **`resolve_key(public_key)`** — SHA-256 content-addressed fetch from `public_keys/<sha256>.json`
+- **Per-key cache** — 60s TTL (configurable via `PER_KEY_CACHE_TTL` env var)
+- **Contents API** — authenticated, fresh (no CDN cache), 5 000/hr rate limit
+- **Force-fresh on deny** — if `resolve_key` returns None, clears cache and retries once before falling back to monolith
+- **Fallback** — `load_governors()` monolith retained for enumeration + miss recovery
+- **Backward compatible** — `is_governor()` signature unchanged, all callers work
+
+### Next step
+
+The plan is at **RESUME HERE: PR4** — deploy + UAT. Want me to merge PR3 and then deploy to beta for smoke-testing?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #361 on tokenomics merged successfully (sha: a98d7f2791205080ac4a88d31fb38d3694834be2). PR #361 was already merged.; ✅ PR #526 on agentic_ai_context merged successfully (sha: a97253877b735e27820ba72b10452b7bf2463506). PR #526 was already merged.
+• `ssh run` ×5 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff format --check app scripts tests 2>&1; …(+2 more)
 • `create dao submission` → Contribution submitted
 
