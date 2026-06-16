@@ -1086,12 +1086,29 @@ The page loads fine. Let me also commit and push these changes so they're tracke
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The vault templates are in a submodule/worktree. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault templates in `app/templates/vault/` are the main repo's copies. The worktree is separate. Let me just force-add and commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1200,11 +1217,33 @@ Let me build this out properly. I'll add a **"Replicate / Setup Guide"** section
 2. **Self-replication** — what I'd need to be able to do to spawn a new instance autonomously
 
 Let me also think about what's actually needed for self-replication vs what's aspirational.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me add the "Replicate / Setup Guide" card to the status page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1368,36 +1407,53 @@ Let me check the nginx config.
 ### 🤖 Autopilot
 
 Let me check what's happening with the vault status page.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — `content-length: 0`. The page is returning an **empty body**. The vault worker is running but the status page is serving nothing. Let me check why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault worker is logging 200 OK for `/vault/status` but returning empty body. The issue is likely a Jinja2 template rendering error that's being silently swallowed. Let me check the template directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 0 bytes — the template renders empty. The issue is that `status.html` extends `base.html`, and the `{% block content %}` might not be matching. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No blocks! The template extends `base.html` but has no recognized blocks. Let me check what blocks `base.html` defines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `base.html` is in `app/templates/vault/`, not `app/templates/`. The vault templates extend `base.html` but the loader only searches `app/templates/`. Let me check how the Flask app configures the template folder.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 FastAPI — not Flask. It uses Jinja2Templates. Let me check how templates are configured in the routes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1412,6 +1468,7 @@ _templates = Jinja2Templates(directory=str(_templates_dir))
 The template directory is `app/templates/vault/` — so when the route renders `vault/status.html`, it's looking for `app/templates/vault/vault/status.html` which doesn't exist. The template name should be just `status.html` since the directory is already `vault/`.
 
 Let me check the route.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1480,4 +1537,60 @@ Give it a hard refresh (Ctrl+Shift+R / Cmd+Shift+R) and let me know if it looks 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → sudo journalctl -u truesight-vault --no-pager -n 50 2>/dev/null | tail -30; cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from jinja2 import Environment, FileSystemLoader env = Enviro; cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from jinja2 import Environment, FileSystemSource env = Enviro; …(+16 more)
+
+
+### 🧑 Governor
+
+looks awkward
+
+[Attachment auto-processed: **64f8b814c65b4f8886732dc27fa2d3da.jpg**]
+- Type: Image (OCR confidence: 84.1%, quality: good)
+
+Extracted text:
+```
+Required Credentials CREDENTIAL ENV VAR WHY DEEPSEEK_API_KEY or LLM.API Key LITELLM_API_KEY Required to reason and respond. Without it, the autopilot cannot function. GitHub PAT GITHUB_PAT Fiequired to read repos, open Pits, and submit contributions. Telegram Bot Token: TELEGRAM_BOT_TOKEN Required to receive and send mpssages. Get one fram @BatFathar. Self-Replication (coming soon) Inthe future; a governor will be able to say: “Sophia, spawn a new instance for Bilal on that server with his own context repo.*
+```
+
+
+### 🤖 Autopilot
+
+I see — the Required Credentials table is overflowing the card again. Same issue as before — the "WHY" column has long text that pushes the table out. Let me fix the table layout for the Replicate card specifically.
+
+
+### 🤖 Autopilot
+
+The issue is the table inside the Replicate card doesn't have the `card-table-wrap` wrapper. Also the table has 3 columns (Credential, Env Var, Why) — the "Why" column is long. Let me wrap it and also add the CSS fix for tables inside cards.
+
+
+### 🤖 Autopilot
+
+Also, the `table-layout: fixed` in the global CSS is causing the 3-column table to distribute evenly (33% each), which makes the "Why" column too narrow. I need to set column widths for this specific table. Let me also add a CSS rule for tables inside the Replicate card.
+
+
+### 🤖 Autopilot
+
+The status page has its own inline `<style>` block — it doesn't inherit from `base.html`. Let me just add the column width rule directly to the table.
+
+
+### 🤖 Autopilot
+
+Now let me verify the template renders and restart the vault worker.
+
+
+### 🤖 Autopilot
+
+Fixed and live! Here's what changed:
+
+**Problem:** The "Required Credentials" table in the Replicate card had 3 columns (Credential, Env Var, Why) with no overflow wrapper and no column width guidance. The "Why" column's long text pushed the table past the card border.
+
+**Fix:**
+1. **Wrapped in `card-table-wrap`** — same `overflow-x: auto` wrapper as the other tables, so it scrolls instead of spilling
+2. **Added `<colgroup>` widths** — Credential 22%, Env Var 33%, Why 45% — so the long "Why" text has room to wrap properly
+3. **`word-wrap: break-word`** already applies from the global CSS
+
+Refresh the page — the credentials table should now stay within the card. Give it a look!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot && grep -n "Required Credentials\|CREDENTIAL\|ENV VAR\|WHY" app/templates/vault/status.html; cd /opt/truesight_autopilot && sed -n '53,65p' app/templates/vault/status.html; cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; …(+4 more)
 
