@@ -1976,3 +1976,63 @@ The two paths — **Clone** (same DAO, new operator) vs **Fork** (new DAO, new r
 
 That's a future problem, though. The SOP is ready for today's use case. Want me to file a follow-up note about the inter-fork coordination question?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] do you think you might want to update the blog post to point to somewhere then? 
+
+This pdf I downloaded here
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SELF_REPLICATION_SOP.pdf
+
+
+### 🤖 Autopilot
+
+Let me check if that file exists in the repo first.
+
+
+### 🤖 Autopilot
+
+The PDF is already in the repo. Yes, I should update the blog post to link to it — it turns the philosophical argument into a practical call to action.
+
+I'll add a link at the end of "The Common Law of Agentic AI" section, right after the Sophia profile image. Something like:
+
+> *"The fork is not just a philosophical argument. It is an operational playbook. The Self-Replication SOP documents exactly how to spawn a new instance — clone for the same DAO, fork for a new one. Three credentials, ten minutes, a new constitution."*
+
+And link to: `https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SELF_REPLICATION_SOP.pdf`
+
+Let me make that update.
+
+
+### 🤖 Autopilot
+
+I'll add the SOP link right after the Sophia figure caption, before "What we are building is not just a DAO."
+
+
+### 🤖 Autopilot
+
+The em dash might be encoded differently. Let me check the exact bytes.
+
+
+### 🤖 Autopilot
+
+The em dash is UTF-8 encoded as `e2 80 94`. Let me use a simpler search string.
+
+
+### 🤖 Autopilot
+
+The indentation might differ. Let me get the exact raw lines.
+
+
+### 🤖 Autopilot
+
+I see — there's a blank line between `</figure>` and the `<p>` tag. Let me use a broader search that just matches the unique text.
+
+
+### 🤖 Autopilot
+
+PR #239 is open. Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html | grep; curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html | sed
+
