@@ -278,6 +278,12 @@ The issue is the `from .llm_client import LLMClient, LLMError` line — it's bet
 ### 🤖 Autopilot
 
 Let me get the exact text around the context_sync_loop call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,4 +385,55 @@ Not redeployed. The follow-up loop code is merged and ready — it'll start moni
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #216 on truesight_autopilot merged successfully (sha: 97a31bbeacbc468cfa92867a9ebbab3cc38364b1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you check off the parts that are already completed in the execution roadmap checklist? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan to see the checklist.
+
+
+### 🤖 Autopilot
+
+Let me get the full checklist section.
+
+
+### 🤖 Autopilot
+
+Here's the completed checklist — I'll mark off everything that's been done:
+
+---
+
+## Pre-flight checklist
+
+- ✅ **Confirm `email_poller`'s Gmail service can be reused** — done in PR3, the `gmail_reply` probe reuses it read-only
+- ✅ **Confirm spun-up turn can reuse per-topic executor lock** — done in PR4, the loop uses the same turn path
+- ✅ **Decide the loop's home** — done: new `followup_loop` in the lifespan block (PR4 + PR #216)
+- ✅ **Parser ignores prose, only acts on fenced blocks** — done in PR1
+- ✅ **Reaffirm own-repo gate** — done (all PRs were opened by Sophia, merged by you)
+
+## Sequenced plan
+
+| Unit | PR opened | Merged (human) | Deployed | UAT |
+|------|-----------|----------------|----------|-----|
+| **PR1 — Store** (schema/parser/state) | ✅ #173 | ✅ Merged | ❌ | — |
+| **PR2 — Tools** (add/list/close + honesty) | ✅ #164 | ✅ Merged | ❌ | U1–U3 pending |
+| **PR3 — Probes** (gmail_reply/elapsed_days) | ✅ #169 | ✅ Merged | ❌ | — |
+| **PR4 — Comb loop + turn + escalate + abort** | ✅ #170 | ✅ Merged | ❌ | U4–U8 pending |
+| **PR5 — Deploy + UAT** | ✅ #216 (wire into lifespan) | ✅ **Just merged** | ❌ | U9 + full pass pending |
+
+## Summary
+
+- **All 4 code PRs** (PR1–PR4) — ✅ opened, ✅ merged
+- **PR5 wiring** (PR #216) — ✅ opened, ✅ **just merged**
+- **Deployed** — ❌ (you said don't redeploy yet)
+- **UAT** — ❌ all scenarios pending (U1–U9)
+
+So the only remaining step is: **deploy + run UAT**. Want me to deploy when you're ready?
 
