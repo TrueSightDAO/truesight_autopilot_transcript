@@ -8033,6 +8033,11 @@ Sure — let me check what format I originally set the secrets in vs what the Ed
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the actual code I ran when I first set the secrets to see what format I used.
 
 
@@ -8145,4 +8150,26 @@ You can see them on the members page at:
 https://truesight.me/programs/butterfly-effect/members.html
 
 Both are confirmed in the lineage-credentials cache with their profiles ready.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] very cool! How much time do you think we spent trouble shooting this?
+
+
+### 🤖 Autopilot
+
+Good question! Let me think back through the conversation...
+
+From what I can see in the thread, we started with the Sync ERA Cohort workflow failing (runs #24-26), then moved to the Mint Cohort Trees workflow (runs #49-54), and finally got run #55 to succeed. The troubleshooting covered:
+
+1. **Sheet access** — SA permissions, sharing the sheet
+2. **Empty sheet ID bug** — PR #3 fix for `os.environ.get()` vs `or` fallback
+3. **Missing secrets** — `ERA_PAYMENT_PROOF_B64`, `DAO_GOVERNOR_*` secrets
+4. **Key format issue** — PEM vs DER base64 for the governor private key
+5. **Vault access** — finding the autopilot PAT, learning about the vault system
+
+I'd estimate roughly **1.5 to 2 hours** of active troubleshooting time across this thread. The actual clock time was longer because of waiting for workflow runs, permission propagation, and the back-and-forth.
+
+But the important thing is — both workflows are now working, the pipeline is alive, and future runs will just work automatically at 3am UTC. That's time well spent!
 
