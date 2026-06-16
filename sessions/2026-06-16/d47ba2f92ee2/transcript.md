@@ -1081,6 +1081,11 @@ The page loads fine. Let me also commit and push these changes so they're tracke
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The vault templates are in a submodule/worktree. Let me check.
 
 
@@ -1353,4 +1358,126 @@ Let me check the nginx config.
 
 Let me check the nginx config.
 [1 tool result(s) compacted: ssh_run -- host autopilot -- command cat /etc/nginx/sites-enabled/sophia 2>/dev/null | head -80]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] what is the status
+
+
+### 🤖 Autopilot
+
+Let me check what's happening with the vault status page.
+
+
+### 🤖 Autopilot
+
+There it is — `content-length: 0`. The page is returning an **empty body**. The vault worker is running but the status page is serving nothing. Let me check why.
+
+
+### 🤖 Autopilot
+
+The vault worker is logging 200 OK for `/vault/status` but returning empty body. The issue is likely a Jinja2 template rendering error that's being silently swallowed. Let me check the template directly.
+
+
+### 🤖 Autopilot
+
+0 bytes — the template renders empty. The issue is that `status.html` extends `base.html`, and the `{% block content %}` might not be matching. Let me check.
+
+
+### 🤖 Autopilot
+
+No blocks! The template extends `base.html` but has no recognized blocks. Let me check what blocks `base.html` defines.
+
+
+### 🤖 Autopilot
+
+`base.html` is in `app/templates/vault/`, not `app/templates/`. The vault templates extend `base.html` but the loader only searches `app/templates/`. Let me check how the Flask app configures the template folder.
+
+
+### 🤖 Autopilot
+
+FastAPI — not Flask. It uses Jinja2Templates. Let me check how templates are configured in the routes.
+
+
+### 🤖 Autopilot
+
+There's the issue. Line 26-27:
+
+```python
+_templates_dir = Path(__file__).resolve().parent / "templates" / "vault"
+_templates = Jinja2Templates(directory=str(_templates_dir))
+```
+
+The template directory is `app/templates/vault/` — so when the route renders `vault/status.html`, it's looking for `app/templates/vault/vault/status.html` which doesn't exist. The template name should be just `status.html` since the directory is already `vault/`.
+
+Let me check the route.
+
+
+### 🤖 Autopilot
+
+The template directory is `app/templates/vault/` and it's rendering `status.html` — that's correct. But `status.html` extends `base.html` which is in the same directory. Let me check if the extends path is correct.
+
+
+### 🤖 Autopilot
+
+The file is **empty** — 0 lines. The Python script that wrote the template must have overwritten it with nothing. Let me restore it from git.
+
+
+### 🤖 Autopilot
+
+The committed version is also empty! The `git add -f` and commit captured an empty file. Let me check the git history.
+
+
+### 🤖 Autopilot
+
+The previous commit `88aa068` had the full 187-line file. My commit `a0d8277` wrote an empty file. The Python script that did the `html.replace()` must have failed silently — the `insert_after` string didn't match, so it wrote back the original (which was already empty from a previous failed write).
+
+Let me restore from the previous commit and redo the edit properly.
+
+
+### 🤖 Autopilot
+
+Good, restored. Now let me check what the actual `insert_after` string looks like in the file.
+
+
+### 🤖 Autopilot
+
+Now I see — the `insert_after` string was `<div class="card">\n    <h2>Vault Health</h2>` but the actual file has `<div class="card">\n    <h2>Vault Health</h2>\n    <div id="vault-health">`. The match failed because the file has extra content after `<h2>Vault Health</h2>`. Let me use a more precise insertion point.
+
+
+### 🤖 Autopilot
+
+Now let me verify the template renders correctly.
+
+
+### 🤖 Autopilot
+
+21.5KB — renders perfectly. Now let me commit and push the fix, then restart the vault worker.
+
+
+### 🤖 Autopilot
+
+It's working now — 14.6KB of HTML with all the cards including the Replicate section. The page is live!
+
+**The issue was:** my Python script that edited the template file had a string mismatch — the `insert_after` text didn't exactly match the file content, so the `html.replace()` did nothing, and the file was written back as empty. Then `git add -f` committed the empty file.
+
+**Fixed now:**
+- Restored the full template from the previous git commit
+- Used a precise `insert_before` string that matched exactly
+- Verified the template renders 21.5KB of HTML
+- Restarted the vault worker
+
+**https://sophia.truesight.me/vault/status** should now show:
+1. System Status (active tracks)
+2. Deployed Version
+3. Runtime Configuration
+4. **Replicate — Spin Up Your Own Instance** (new!)
+5. Vault Health
+
+Give it a hard refresh (Ctrl+Shift+R / Cmd+Shift+R) and let me know if it looks right!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → sudo journalctl -u truesight-vault --no-pager -n 50 2>/dev/null | tail -30; cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from jinja2 import Environment, FileSystemLoader env = Enviro; cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from jinja2 import Environment, FileSystemSource env = Enviro; …(+16 more)
 
