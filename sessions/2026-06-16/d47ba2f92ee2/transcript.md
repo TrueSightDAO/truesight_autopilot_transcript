@@ -681,11 +681,18 @@ The main app (port 8001) serves the vault templates from `app/templates/vault/`.
 ### 🤖 Autopilot
 
 Now I need to add a `favicon.ico` fallback. The nginx config already serves `/static/` from `/opt/truesight_autopilot/static/`. But `/favicon.ico` at the root won't hit that location block. Let me add a redirect in nginx, or just create a symlink.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the full config. The `/static/` location block serves from `/opt/truesight_autopilot/static/` — so `/static/favicon.svg` will work. But `/favicon.ico` at the root won't hit that. Let me add a simple nginx location for it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -792,4 +799,64 @@ Want me to tweak the design?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /opt/truesight_autopilot/static/favicon.svg << 'SVGEOF' <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64
+
+
+### 🧑 Governor
+
+By the way audit log looks awkward...
+
+[Attachment auto-processed: **b6c3e739999b4f7aa4938e4154fe123f.jpg**]
+- Type: Image (OCR confidence: 65.1%, quality: good)
+
+Extracted text:
+```
+Audit Log Purpose: SSH key for dao-protocol beta ‘server; Scopet infraimanagement, Scop Purpose: SSH key for US séiver access, Scopes: [sah Purpose:SSH key for Nelanco California region EC2, S ACTION CREDENTIAL ACTOR TIMESTAMP DETAILS sophia-truesight@get- data- P add Gary Teh 2026-06-15T23:04:032° Pi : Sophia-truesight@get- jo.jam.gserviceaccount. ae supose: SRN eS erE: com h_key dé tocol, add ssh_Key_da0_ protocol. Sophia: 2026-06-15T22:07:09Z beta add ssh_key_sophia infra Sophia 2026-06-15T22:07:092 Purpose: SSH key for Sophi add ‘ssh_key_server_us Sophia 2026-06-15T22:07:09Z ssh_key_nelanco.:calife add ane lance calito hia 2026-06-15T22:07:092 add ‘ssh_key_nelancoaws: Sophia 2026-06-15122:07:092. Purpose: SSH key for Nelango. AWS 'EC2 access (orlalr
+```
+
+
+### 🤖 Autopilot
+
+I see the issue — the Audit Log table has the same overflow problem as the credentials table. The "DETAILS" column has very long text (full credential purposes) that pushes everything out. Let me fix it.
+
+
+### 🤖 Autopilot
+
+The audit log is rendered dynamically via JavaScript. Let me check the JS that builds the audit log table.
+
+
+### 🤖 Autopilot
+
+Let me read the JS that builds the audit log table.
+
+
+### 🤖 Autopilot
+
+Let me just read the file directly with the right offset.
+
+
+### 🤖 Autopilot
+
+The file is truncated. Let me read the JS section directly.
+
+
+### 🤖 Autopilot
+
+Now I see the problem. The audit log table is built dynamically in JS with 5 columns (Action, Credential, Actor, Timestamp, Details) — and the Details column has very long text (full credential purposes). No `card-table-wrap` wrapper, no `table-layout: fixed`.
+
+Let me fix the JS to wrap it properly.
+
+
+### 🤖 Autopilot
+
+Fixed and deployed. Here's what changed for the **Audit Log** table:
+
+1. **Wrapped in `card-table-wrap`** — same `overflow-x: auto` wrapper as the credentials table, so it scrolls instead of spilling out
+2. **Details column truncated** — now capped at 80 characters with `...` and the full text shows on hover via `title` attribute
+3. **`table-layout: fixed`** already applies from `base.html`, so columns distribute evenly
+
+Refresh the page — the audit log should now stay within the card border. Give it a look and let me know if it's better!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → grep -n "Audit Log\|audit_log\|audit" /opt/truesight_autopilot/app/templates/vault/index.html; grep -n "audit\|Audit\|loadAudit\|auditLog\|ACTION\|DETAILS\|TIMESTAMP" /opt/truesight_autopilot/app/templates/vault/index.html | head -30; sed -n '244,265p' /opt/truesight_autopilot/app/templates/vault/index.html; …(+2 more)
 
