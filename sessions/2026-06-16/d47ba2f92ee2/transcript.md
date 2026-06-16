@@ -3159,7 +3159,18 @@ Let me check if the issue is that the vault worker's `settings.jwt_secret` is di
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both the main app and vault worker use the same `config.py` and load from `.env`. The `JWT_SECRET` should be the same. Let me check if the vault worker has its own settings or uses the same config.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3253,4 +3264,91 @@ The page itself was always publicly viewable — the HTML loads fine without sig
 So the status page **doesn't require login** to see the main content. The Replicate card, System Status, Deployed Version, Runtime Configuration (basic info), and Vault Health all load without auth. Only the Environment Variables section requires sign-in.
 
 Refresh the page and you should see everything loading now. Let me know if anything is still missing!
+
+
+### 🧑 Governor
+
+I dont think these should be allowed if the user is not authorized for access isnt it?? How do resolve it?
+
+[Attachment auto-processed: **3918b9587a1842a484420c55e8929fb6.jpg**]
+- Type: Image (OCR confidence: 91.3%, quality: good)
+
+Extracted text:
+```
+System Status — Active Tracks Shows allactive Telegram threads, background loops, and operations currently running. Tracks that exceed their expected max duration are marked as stale. Gan deploy: @ Yes Active tracks: 0 No active tracks.
+```
+
+
+### 🤖 Autopilot
+
+You're right — the **System Status** section showing active tracks, deploy status, and whether the system is safe to restart is sensitive information. A non-governor shouldn't be able to see:
+
+- Whether the system can deploy (attackers could time their actions)
+- Active tracks (reveals what operations are running)
+- System health details
+
+Let me make the System Status and Vault Health cards also require auth, and show a "Sign in to view" nudge for unauthenticated users.
+
+
+### 🤖 Autopilot
+
+I see — the system-status and vault-health API endpoints are already behind auth. The issue is the **HTML cards** themselves are rendered on the page even without auth — they show "Refreshing…" then the JS fetch fails and shows "Sign in to view." But the card titles and structure are visible.
+
+Let me check the system-status endpoint.
+
+
+### 🤖 Autopilot
+
+Good — the system-status endpoint already requires auth. The issue is the JS shows "Refreshing…" then fails to "Sign in to view" — but the card **titles** (System Status, Vault Health) are still visible in the HTML. That's what you're seeing in the screenshot.
+
+The fix: the JS should show a cleaner "Sign in to view this section" message immediately instead of "Refreshing…" then failing. Let me update the JS to check auth status first.
+
+Actually, a better approach: since the runtime-config endpoint now returns `authenticated: false`, I can use that to immediately show the right state for all auth-gated cards. Let me update the JS to check auth status from the runtime-config response and show/hide accordingly.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The JS loads all cards in parallel. The system-status and vault-health endpoints require auth and return 401, so those cards show "Sign in to view." But the runtime-config endpoint now works without auth.
+
+The issue is that the **System Status** and **Vault Health** cards show their titles and "Refreshing…" before the JS fetch fails. Let me restructure the JS so that:
+
+1. First, check auth status from the runtime-config endpoint (which works without auth)
+2. If not authenticated, show a single "Sign in to view operational data" message for all auth-gated cards
+3. If authenticated, load all the data
+
+This way, non-governors see a clean page with only the public info (Replicate card, Runtime Config with basic info) and a nudge to sign in for the rest.
+
+
+### 🤖 Autopilot
+
+Let me verify the page loads correctly without auth.
+
+
+### 🤖 Autopilot
+
+The page loads fine. Now let me verify the JS logic is correct by checking the rendered HTML.
+
+
+### 🤖 Autopilot
+
+The JS looks correct. The flow is:
+
+1. **First**, fetch `/vault/api/runtime-config` (public endpoint) → checks `data.authenticated`
+2. **If not authenticated** → shows "Sign in" nudge in System Status, Deployed Version, and Vault Health cards
+3. **If authenticated** → those cards load normally
+4. **Runtime Config card** always loads (it's public info)
+
+The page is live. Refresh **https://sophia.truesight.me/vault/status** — you should now see:
+
+- **Replicate card** — always visible (public)
+- **Runtime Configuration** — always visible (public info: commit hash, repos, LLM, infrastructure URLs)
+- **System Status** — shows "Sign in with your DAO identity to view system status" + Sign In button
+- **Deployed Version** — shows "Sign in to view deployed version"
+- **Vault Health** — shows "Sign in to view vault health"
+
+When you sign in, all cards populate with their data. Let me know if it looks right now!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && grep -n "system-status\|systemStatus\|loadSystemStatus\|vault-health\|vaultHealth\|loadVaultHealth" app/templ; cd /opt/truesight_autopilot && sed -n '120,250p' app/templates/vault/status.html; cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; …(+2 more)
 
