@@ -131,5 +131,12 @@
     "summary": "Desktop layout issues on the vault listing page (https://sophia.truesight.me/vault/):\n\n1. **Credentials table too cramped** \u2014 6 columns (Name, Purpose, Version, Created by, Created, Actions) in a 960p",
     "action": "merge_pr",
     "created_at": "2026-06-15T22:52:31Z"
+  },
+  {
+    "title": "Merge PR #351 on tokenomics",
+    "qr_code": "",
+    "summary": "Add BUY_BACK_RESERVE to Performance Statistics sync in tdg_wix_dashboard.gs\n\nThe file is at google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs\n\nI need two changes:\n\n1. Add a new function `ge",
+    "action": "merge_pr",
+    "created_at": "2026-06-16T13:38:48Z"
   }
 ]
