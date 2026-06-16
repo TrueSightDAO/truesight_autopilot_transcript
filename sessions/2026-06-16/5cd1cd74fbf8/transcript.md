@@ -310,17 +310,30 @@ Now let me verify the changes compile and the tests still pass.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Formatting issues in `main.py` (and other files). Let me fix them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The remaining 7 files are pre-existing formatting issues (not from my change). Let me verify `main.py` is clean now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — `main.py` is clean. Now run the full test suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -330,11 +343,18 @@ Good — `main.py` is clean. Now run the full test suite.
 - `test_reader_sees_external_rotation` (vault — unrelated, formatting changed the line)
 
 The followup tests all pass. Now let me commit the formatting change too and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me switch back to main and verify the PR is ready.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -499,4 +519,24 @@ Plus the full suite (510 passed, 2 pre-existing failures unrelated to followups)
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot && find . -name "test_followup*" -o -name "test*" | grep -i follow | sort; cd /opt/truesight_autopilot && for f in tests/test_followups.py tests/test_followup_tools.py tests/test_followup_probes.py tests/test_follow; cd /opt/truesight_autopilot && wc -l tests/test_followups.py tests/test_followup_tools.py tests/test_followup_probes.py tests/test_followup_; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Okay then go ahead and merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PR #216 is already merged — that happened in the earlier turn. The code is on `main` but not deployed yet (you said don't redeploy).
+
+So the current state is:
+
+- ✅ **All 5 PRs** (PR1–PR4 + PR #216 wiring) — **merged**
+- ❌ **Not deployed** — as you requested
+- ❌ **UAT not run** — U1–U9 scenarios pending
+
+Want me to deploy it now so we can start running through the UAT checklist?
 
