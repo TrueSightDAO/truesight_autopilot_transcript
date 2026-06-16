@@ -190,6 +190,22 @@ Let me check the dao_protocol repo which hosts the edgar.truesight.me site — t
 ### 🤖 Autopilot
 
 The dao_protocol repo doesn't have a static folder — the edgar.truesight.me site is served from the FastAPI server. Let me check what's actually on the server.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -225,21 +241,25 @@ So no, an avatar image was never created for the Edgar Truesight site. If you'd 
 ### 🤖 Autopilot
 
 Let me search for any documentation about the daily pieback/buyback formula on truesight.me.
+[3 tool result(s) compacted: search_context, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the buyback code and the README to understand the formula, and also check truesight.me for any blog post.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check if there's a blog post or documentation page on truesight.me about the buyback.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see there's a blog post linked from the homepage about the buyback budget. Let me read it.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -277,6 +297,7 @@ Why is it not listed here?
 ### 🤖 Autopilot
 
 Let me check the blog index page to see what's listed there.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,4 +400,47 @@ Done! Here's the summary:
 - I estimated the date as May 1, 2026 — the blog post itself has no date (`<time datetime="">`), so let me know if you want a different date and I can adjust
 
 Once you review and merge, it'll show up on the blog page after the next beta deploy.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Yeah, just add it back in, merge it and then deploy and then promote the production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me merge the PR first.
+
+
+### 🤖 Autopilot
+
+Already merged. Now let me deploy to beta and then promote to production.
+
+
+### 🤖 Autopilot
+
+That's the autopilot deploy — I need to deploy the truesight_me_beta site. Let me check how it's deployed.
+
+
+### 🤖 Autopilot
+
+It's GitHub Pages — deploying from `main` branch automatically. The PR is already merged to `main`, so GitHub Pages will auto-deploy. Let me now sync beta to prod.
+
+
+### 🤖 Autopilot
+
+There's a merge conflict when syncing beta to prod — this is the expected CNAME divergence issue (the beta and prod repos have different CNAME files since they serve different domains). A human needs to reconcile this.
+
+Here's the status:
+
+1. ✅ **PR merged** — the buy-back blog post is now in the `truesight_me_beta` `main` branch
+2. ✅ **GitHub Pages auto-deploying** — it'll be live on the beta site (truesight.me) in a minute or two
+3. ❌ **Can't promote to production** — the beta→prod sync hit a merge conflict (likely the CNAME file divergence, since beta and prod point to different domains)
+
+You'll need to manually reconcile the conflict on the `truesight_me_prod` repo. The change is just adding one blog card to `blog/index.html` — it's a simple edit you can do directly on the prod repo's main branch if you want to skip the sync.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #241 on truesight_me_beta merged successfully (sha: 7e527a78b1d7a4da3a4f1f573c487a37ed994743). PR #241 was already merged.
+• `deploy autopilot` → Already on the latest commit 86cb4159 — no deploy needed. Did NOT restart. Do not retry.
 
