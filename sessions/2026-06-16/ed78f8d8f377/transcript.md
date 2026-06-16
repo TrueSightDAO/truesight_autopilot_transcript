@@ -346,6 +346,7 @@ The truesight.me site is a Wix site — the pages are managed through Wix's CMS,
 ### 🤖 Autopilot
 
 Good — the site is a static site in the `truesight_me_beta` repo. Let me look at the blog index and the homepage source to understand how to add the buy-back post.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -467,4 +468,14 @@ Here's the link to the production repo where you can manually apply the change:
 You'll want to edit `blog/index.html` directly on the `main` branch — just add the same blog card that was added in the beta PR. The change is simple: insert the buy-back post card at the top of the blog grid, right before the "Agentic AI and the Common Law Tradition" card. You can copy the card HTML from the beta PR if you like.
 
 Alternatively, if you want me to push the change directly to the prod repo's main branch (bypassing the sync), just say the word and I'll do it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Nevermind I already merged it. I'll promote it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sounds good — you've got it from here. The beta is already deployed with the change, so once you promote it'll be live on production too. Let me know if you need anything else!
 
