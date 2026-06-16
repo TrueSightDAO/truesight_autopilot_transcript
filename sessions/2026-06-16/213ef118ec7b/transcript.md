@@ -8044,6 +8044,16 @@ Let me look at the actual code I ran when I first set the secrets to see what fo
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The context doesn't have the exact code I ran. Let me check the GitHub API to see what the current secret values look like (I can't read them back, they're masked). But I can check the workflow log from run #54 to confirm the error was indeed a key format issue.
 
 The log from run #54 showed:
@@ -8203,4 +8213,22 @@ Both linked to PR #3 as evidence. Want me to adjust the amounts if you think the
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` ×2 → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=4986] It is fine
+
+
+### 🤖 Autopilot
+
+Glad it's all sorted. Here's a quick recap of what we accomplished this session:
+
+**Pipeline fixed:**
+- ✅ Sync ERA Cohort workflow — working (run #27)
+- ✅ Mint Cohort Trees workflow — working (run #55)
+- ✅ 2 new cohort trees minted (Hajira Sajjid, Harram Gulfam)
+- ✅ Both contributions submitted to the ledger
+
+Anything else you want me to look at?
 
