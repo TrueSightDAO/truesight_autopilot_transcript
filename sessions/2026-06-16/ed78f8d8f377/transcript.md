@@ -1186,11 +1186,13 @@ All three merged. Now let me deploy the GAS script. Let me check the script ID a
 ### 🤖 Autopilot
 
 The script ID for `tdg_wix_dashboard.gs` is `1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn`. Let me deploy it.
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clasp mirror is missing the `appsscript.json` manifest file. Let me check what's in the mirror directory.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1292,4 +1294,141 @@ Once you're there:
 4. Then the homepage stat card and detail page will show the data
 
 Alternatively, I could add a `?action=triggerSync` handler to the `doGet` function so we can trigger it remotely in the future. Want me to open a PR for that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Yeah, can you add that action so that we can just trigger it remotely in the future? That way, I don't have to do it, you can do it, and you can deploy the script already, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me read the `doGet` function to see exactly where to add the trigger action.
+
+
+### 🤖 Autopilot
+
+The file is massive. Let me search for the `doGet` function specifically.
+
+
+### 🤖 Autopilot
+
+Let me search for the `doGet` function directly.
+
+
+### 🤖 Autopilot
+
+Let me search for the `doGet` function specifically in the `tdg_wix_dashboard.gs` file.
+
+
+### 🤖 Autopilot
+
+The search is returning too many results from other files. Let me search specifically in the tdg_wix_dashboard.gs file.
+
+
+### 🤖 Autopilot
+
+I can see the `syncAllPerformanceStatistics` function. Now let me find the `doGet` function to add the trigger action.
+
+
+### 🤖 Autopilot
+
+The file is enormous. Let me search for the `doGet` function specifically.
+
+
+### 🤖 Autopilot
+
+This file is too large to read linearly. Let me use `open_fix_pr` which will handle reading and editing the file properly.
+
+
+### 🤖 Autopilot
+
+PR #352 is open. Let me merge it and then deploy.
+
+
+### 🤖 Autopilot
+
+Deployed. Now let me trigger the sync remotely to populate `BUY_BACK_RESERVE`.
+
+
+### 🤖 Autopilot
+
+Hmm, it returned the same Performance Statistics data — the `triggerSync` action didn't seem to fire. The `doGet` function might not be routing the action correctly. Let me check what happened — it might be that the GAS web app cached the old version. GAS deployments need a new version to be created for the code change to take effect.
+
+Let me check if the clasp push created a new deployment version.
+
+
+### 🤖 Autopilot
+
+The `triggerSync` action isn't in the source file — the `open_fix_pr` might not have applied the edit correctly because the file is so large. Let me check what the PR actually changed.
+
+
+### 🤖 Autopilot
+
+The file is still the old version — the PR didn't apply the change. The `open_fix_pr` tool struggled with the file size. Let me search for the `doGet` function in the file and make the edit directly.
+
+
+### 🤖 Autopilot
+
+The search is returning too many results from other files. Let me search directly in the local file on the autopilot box.
+
+
+### 🤖 Autopilot
+
+Now I can see the full `doGet` function. The `open_fix_pr` didn't apply the change. Let me make the edit directly using `git_push_changes` with a precise search/replace.
+
+
+### 🤖 Autopilot
+
+Deployed. But it says "unchanged" — the local mirror already had the old version. The clasp push pushed the merged version from main. Let me now trigger the sync.
+
+
+### 🤖 Autopilot
+
+Still returning the old data — the GAS web app is cached. GAS deployments need a **new version** to be created for the code change to take effect. The `clasp push` updated the code but the web app is still running the old deployment. I need to create a new deployment version.
+
+Let me check if the deploy script handles versioning.
+
+
+### 🤖 Autopilot
+
+The deploy script only does `clasp push` — it doesn't create a new deployment version. GAS web apps need a new deployment to pick up code changes. Let me create a new deployment via clasp.
+
+
+### 🤖 Autopilot
+
+New deployment version @16 created. Now let me trigger the sync.
+
+
+### 🤖 Autopilot
+
+Still returning the old data. The GAS deployment URL is cached — the new deployment @16 has a different URL. Let me check the new deployment URL.
+
+
+### 🤖 Autopilot
+
+The new deployment @16 has URL `AKfycbypWLmxW69EsD0Nz5NIrlZ89HAebkP7T9TEN7wJ76hWOIrOncg8gA4id75Ivl6OcqFI`. Let me call it with the triggerSync action.
+
+
+### 🤖 Autopilot
+
+The new deployment doesn't have access to the credentials — the `getCredentials()` function is defined in a separate file that wasn't included in the clasp push. The old deployment @15 had it because it was deployed from the GAS editor where all files are present.
+
+Let me check what other files are in the GAS project.
+
+
+### 🤖 Autopilot
+
+I see — the manifest for `1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn` only has `tdg_wix_dashboard.gs` as a source file, but the `getCredentials()` function is in a separate file that's part of the GAS project. The clasp push only pushes the files listed in the manifest, so the credentials file is missing from the new deployment.
+
+The old deployment @15 works because it was deployed from the GAS editor where all files are present. The new deployment @16 is missing the credentials file.
+
+Let me check what other files are in the GAS project by looking at the mirror.
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/tokenomics/pull/352
+• `merge pr` ×2 → ✅ PR #352 on tokenomics merged successfully (sha: d761af3524ae536afe993b5337b5470f4794c90c). Pull Request successfully merged; ✅ PR #353 on tokenomics merged successfully (sha: 40fe460164ebbbb88d803c21298e76b62c3579f7). Pull Request successfully merged
+• `gas deploy project` ×2 → ok
+• `ssh run` ×10 → cd /opt/truesight_autopilot/context/tokenomics && cat google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs | grep -n "triggerSync\|a; grep -n "function doGet" /opt/truesight_autopilot/context/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; sed -n '2233,2280p' /opt/truesight_autopilot/context/tokenomics/google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs; …(+7 more)
 
