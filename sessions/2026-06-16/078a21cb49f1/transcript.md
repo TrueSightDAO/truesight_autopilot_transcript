@@ -330,7 +330,13 @@ Let me submit it.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the exact field names expected:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -413,4 +419,19 @@ Merged! PR #219 is in `main` but not deployed. It'll go out whenever you're read
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #219 on truesight_autopilot merged successfully (sha: 40d500cdef0e7f78defba752559c871e784853d6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Nicely done, closing out this thread, see you on the other thread. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+See you on the other thread! 🫡
+
+**Quick recap of what we closed here:**
+1. **PR #218** — Fixed mobile text overflow on `/vault/status` (merged, deployed)
+2. **PR #219** — Made overflow-wrap/word-break global so it never happens again (merged, not deployed)
+3. **Contribution submitted** — 7 min, 0.7 TDG for both of us
 
