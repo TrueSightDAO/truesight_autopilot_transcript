@@ -3051,17 +3051,30 @@ The whitespace must differ. Let me check the exact bytes.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The content is different from what I expected — it has a more detailed "How It Works" section with a formula and bullet points. The file was updated by the earlier PR. Let me find the exact insertion point for the provisions table.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the exact structure. I need to insert the provisions table between the "How It Works" section card (line 161) and the "Data Source" methodology box (line 162). Let me use the exact text.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I also need to add the JavaScript to render the provisions table. Let me find the exact JavaScript section.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4118,4 +4131,18 @@ For the prod site, you'll need to manually apply the change to `truesight_me_pro
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #247 on truesight_me_beta merged successfully (sha: ab391e62553b89cd25af0e8dd27f9ad5d471fe9a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Cool can you share me the link to the get up URL where I can click on the sync button [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the link to the GitHub Action where you can manually trigger the cache update:
+
+**https://github.com/TrueSightDAO/treasury-cache/actions/workflows/update-buy-back-reserve-cache.yml**
+
+Just click **"Run workflow"** → select the main branch → hit **"Run workflow"** and it'll regenerate the `buy-back-reserve.json` cache from the latest ledger data.
 
