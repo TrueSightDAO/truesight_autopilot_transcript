@@ -555,11 +555,13 @@ I found the issue! The buy-back stat card **is in the HTML** but it has the clas
 ### 🤖 Autopilot
 
 Let me look at the "Show More Stats" button logic and the `stat-card-hidden` class.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the issue. Let me check the "Show More Stats" button logic and the `stat-card-hidden` CSS.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -567,26 +569,51 @@ Now I see the issue. Let me check the "Show More Stats" button logic and the `st
 Now I understand the full picture. The buy-back stat card **is in the HTML** but it's the 7th card with class `stat-card-hidden` — it's hidden behind a "Show More Stats" button. The first 6 stats are always visible, and the 7th (buy-back budget) requires clicking "Show More Stats" to reveal.
 
 This is by design — the first 6 stats fit neatly in a 3×2 grid, and the 7th is tucked away. But you're saying you don't see it at all on mobile. Let me check the CSS for `stat-card-hidden`.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the `stat-card-hidden` CSS class definition.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `stat-card-hidden` class isn't defined in CSS — it's only used in the JavaScript toggle logic. Let me check what CSS actually hides it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `stat-card-hidden` class is toggled by JavaScript but there's no CSS rule for it in the stylesheet. That means it's likely using `display: none` or similar from somewhere. Let me check the inline styles or if there's a CSS rule I missed.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `stat-card-hidden` class is toggled but there's no CSS rule for it in `main.css`. Let me check if there's an inline style or a `<style>` block in the HTML that defines it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -594,6 +621,7 @@ The `stat-card-hidden` class is toggled but there's no CSS rule for it in `main.
 The `stat-card-hidden` class is used in the JavaScript toggle but there's no CSS rule defining it in `main.css`. This means the buy-back card is **always visible** by default — the "Show More Stats" button just toggles the class, but without a CSS rule for `.stat-card-hidden` it doesn't actually hide anything visually.
 
 Wait — let me re-read the HTML more carefully. The card has `id="stat-card-7"` and class `stat-card-hidden`. Let me check if there's a CSS rule I missed.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -601,6 +629,7 @@ Wait — let me re-read the HTML more carefully. The card has `id="stat-card-7"`
 The `stat-card-hidden` class has no CSS rule in `main.css` — it's not defined anywhere. This means the buy-back stat card is **always visible** by default (the class does nothing visually). The "Show More Stats" button toggles it but without a CSS rule, it doesn't actually hide anything.
 
 Wait — let me check if there's a `display: none` inline or if the class is defined elsewhere.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -638,36 +667,68 @@ Glad you found it! Let me know if you want me to make any changes — like movin
 ### 🤖 Autopilot
 
 Great idea! Let me check the ledger to find the provisions/buyback row and see what data is available.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the contribution ledger — not the financial ledger with provisions. Let me search for the provisions/buyback row you mentioned.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the "offchain transactions" sheet where the buy-back provisions would be recorded.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for "buy-back" or "provision" in this sheet.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for "buy-back" or "provision" specifically in the offchain transactions sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for "buy-back" or "provision" in this large dataset.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search specifically for "buy-back" or "provision" in this data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -755,4 +816,35 @@ Would you like me to:
 2. **Add a stat card** on the homepage to display it
 
 Or do you want to think about what to call it — "Buy-Back Provisions" vs "Voting Rights Provisions" vs something else?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] What do you think is the most appropriate third use? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question. Let me think about this in context of the existing stat cards.
+
+Currently the homepage shows:
+1. **AUM** — Total Assets Under Management
+2. **TDG Issued** — Total TDG tokens
+3. **Asset per TDG** — Treasury backing per token
+4. **30-Day Sales** — Ecosystem sales
+5. **30-Day DAO Revenue** — Main ledger revenue
+6. **Daily Buy-Back Budget** — Calculated daily budget
+7. **US Treasury Yield** — Risk-free rate
+
+The **$41.26 in provisions for voting rights cash out** is essentially the **accumulated buy-back reserve** — it's the actual cash set aside, not just a calculated daily budget.
+
+I think the most appropriate use is:
+
+**"Accumulated Buy-Back Reserve"** — showing the total USD provisions that have been set aside for buy-back/voting rights cash out to date.
+
+This pairs nicely with the existing "Daily Buy-Back Budget" stat — one shows the **daily flow** (what's available today), the other shows the **accumulated pool** (what's been saved up over time). Together they tell the full story: "Here's how much we're putting aside each day, and here's the total reserve we've built."
+
+It also makes the buy-back mechanism more tangible — $0.09/day sounds small, but seeing $41.26 accumulated gives a sense of real progress.
+
+Alternatively, if you want to keep it simpler, just **"Buy-Back Provisions"** works fine too. What do you think?
 
