@@ -133,10 +133,10 @@
     "created_at": "2026-06-15T22:52:31Z"
   },
   {
-    "title": "Merge PR #219 on truesight_autopilot",
+    "title": "Merge PR #232 on truesight_autopilot",
     "qr_code": "",
-    "summary": "Make overflow-wrap: break-word and word-break: break-all global CSS rules instead of mobile-only\n\nCurrently the vault base.html template has these rules only inside the @media (max-width: 768px) block",
+    "summary": "The deploy tool's no-op guard (deploy.py, ~line 150) checks `git rev-parse HEAD == origin/main` and returns noop if they match. But when code is pulled by a merge PR's auto-pull (not by the deploy too",
     "action": "merge_pr",
-    "created_at": "2026-06-16T17:46:39Z"
+    "created_at": "2026-06-16T23:22:02Z"
   }
 ]
