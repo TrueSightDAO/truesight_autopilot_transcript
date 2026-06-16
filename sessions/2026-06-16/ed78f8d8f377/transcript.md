@@ -479,3 +479,28 @@ Alternatively, if you want me to push the change directly to the prod repo's mai
 
 Sounds good — you've got it from here. The beta is already deployed with the change, so once you promote it'll be live on production too. Let me know if you need anything else!
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] the ℹ️-linked text under the Daily Buy-Back Budget stat card in index.html.
+
+Seems the entire thing is missing can you check?
+
+
+### 🤖 Autopilot
+
+Let me check the current live homepage to see if the buy-back stat card is still there.
+
+
+### 🤖 Autopilot
+
+The buy-back stat card **is still there** on the live site — I can see it clearly:
+
+> **Daily Buy-Back Budget ℹ️**
+> 0.25759 USD
+> [Based on DAO treasury revenue, not total ecosystem sales](blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html)
+
+The ℹ️ icon, the budget amount, and the linked text are all present. The link points to the correct blog post URL.
+
+So the homepage is fine — the stat card and its link are intact. The only thing that was missing was the blog post not appearing on the blog index page, which you've already merged and promoted. Should be all good now!
+
