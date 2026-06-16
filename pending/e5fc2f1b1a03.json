@@ -133,10 +133,10 @@
     "created_at": "2026-06-15T22:52:31Z"
   },
   {
-    "title": "Merge PR #218 on truesight_autopilot",
+    "title": "Merge PR #219 on truesight_autopilot",
     "qr_code": "",
-    "summary": "The /vault/status page has text spilling out of the right side of cards on mobile (narrow screens). The issue is in app/templates/vault/base.html \u2014 the mobile CSS at @media (max-width: 768px) is missi",
+    "summary": "Make overflow-wrap: break-word and word-break: break-all global CSS rules instead of mobile-only\n\nCurrently the vault base.html template has these rules only inside the @media (max-width: 768px) block",
     "action": "merge_pr",
-    "created_at": "2026-06-16T17:39:33Z"
+    "created_at": "2026-06-16T17:46:39Z"
   }
 ]
