@@ -252,11 +252,13 @@ Merged. Now let me deploy it so the fix goes live.
 ### 🤖 Autopilot
 
 The deploy hit a transient pip install failure (exit -15 on the dao_client dependency). The git pull step succeeded though. Let me retry the deploy — it's just a flaky pip timeout.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Already on the latest commit — the git pull from the first attempt already pulled the merge. The service is already running the fixed code. Let me verify the page loads properly now:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -323,6 +325,7 @@ Sure. Let me estimate the time and submit.
 - **Total:** 7 minutes
 
 Let me submit it.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,4 +399,18 @@ PR [#219](https://github.com/TrueSightDAO/truesight_autopilot/pull/219) is open.
 **✅ Done this turn — actions taken:**
 • `ssh run` → find /opt/truesight_autopilot -name "base.html" -type f 2>/dev/null
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/219
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Merge it but don't deploy it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! PR #219 is in `main` but not deployed. It'll go out whenever you're ready for the next deploy.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #219 on truesight_autopilot merged successfully (sha: 40d500cdef0e7f78defba752559c871e784853d6). Pull Request successfully merged
 
