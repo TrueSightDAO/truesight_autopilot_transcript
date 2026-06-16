@@ -3079,6 +3079,11 @@ Now I also need to add the JavaScript to render the provisions table. Let me fin
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The branch already exists from the previous push. Let me use a new branch name.
 
 
@@ -4145,4 +4150,18 @@ Here's the link to the GitHub Action where you can manually trigger the cache up
 **https://github.com/TrueSightDAO/treasury-cache/actions/workflows/update-buy-back-reserve-cache.yml**
 
 Just click **"Run workflow"** → select the main branch → hit **"Run workflow"** and it'll regenerate the `buy-back-reserve.json` cache from the latest ledger data.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] No, I meant what is the GitHub URL to the TrusatMe Proct repo so that I can click over and then click on sync so that the code from beta can go to Proct. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, got it! Here's the link:
+
+**https://github.com/TrueSightDAO/truesight_me_prod**
+
+From there, go to **Settings** → scroll to the bottom to the **"Sync fork"** section → click **"Sync fork"** → then **"Update branch"**. That'll pull the latest from the beta repo into prod.
 
