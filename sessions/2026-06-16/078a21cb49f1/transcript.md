@@ -128,6 +128,7 @@ Let me read the full template directly:
 ### 🤖 Autopilot
 
 Now let me check the API endpoint to see if it's actually serving data:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -135,16 +136,24 @@ Now let me check the API endpoint to see if it's actually serving data:
 There it is. The API endpoints require authentication (JWT cookie), but the page renders the HTML template without auth — so the JS fetch calls all return 401 and the "Loading…" placeholders never resolve.
 
 Let me check the vault_routes.py to see if the API endpoints have auth:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me check the API endpoints to see if they require auth:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the API endpoints at the bottom of the file to see if they require auth:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -186,6 +195,7 @@ Which direction do you want to go?
 ### 🤖 Autopilot
 
 Ah, got it — it's a mobile layout issue, not a data-loading issue. The text is overflowing the card container on narrow screens. Let me check the CSS.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -204,6 +214,7 @@ Found it. The mobile CSS has this rule:
 That `white-space: nowrap` on tables is the culprit — it prevents text from wrapping inside table cells, so long values (like GitHub URLs, code snippets, commit hashes) push the cell wider than the screen. The `overflow-x: auto` should create a scrollbar, but the "Replicate" section's `<ol>` list items and `<p>` text aren't in tables — they're just regular block elements that don't have `overflow-wrap: break-word` or `word-break: break-word` set.
 
 The fix is to add `overflow-wrap: break-word` to the card and container on mobile. Let me open a PR.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -225,6 +236,11 @@ Want me to merge it, or do you want to review first?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=5624] Yeah, just merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -342,4 +358,16 @@ Done! Submitted to the DAO ledger:
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×2 → Missing required fields for CONTRIBUTION EVENT: Type, Amount. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Yeah, actually also apply maybe option to [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sorry, the voice message cut off — it sounds like you were saying "apply maybe option to..." but I didn't catch the rest. 
+
+Were you referring to **Option 2** from earlier — making `overflow-wrap: break-word` and `word-break: break-all` **global** (not just mobile) so this class of bug never happens on any page? If so, I can open a quick PR for that.
 
