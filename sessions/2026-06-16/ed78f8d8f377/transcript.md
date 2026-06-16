@@ -2826,11 +2826,13 @@ Let me search for the stats section directly in the beta repo's index.html.
 The stat card **IS in the beta repo** at line 392! It's there as the 7th stat card with `stat-card-hidden` class (behind the "Show More Stats" button). The issue is that the **prod repo** doesn't have it because the sync failed.
 
 Let me verify the prod repo doesn't have it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It **IS in the prod repo too!** The earlier `sync_beta_to_prod` actually worked — the changes are in both repos. Let me check the live site again more carefully.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2947,4 +2949,18 @@ Good call. Let me create a doc in agentic_ai_context documenting the pattern.
 PR is up! **agentic_ai_context#521** — `STATS_CARD_PATTERN.md` documents the full 5-layer pattern with a checklist for adding new stat cards in the future.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Merge it! [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! The pattern is now documented in `STATS_CARD_PATTERN.md` in the agentic_ai_context repo. Next time we build a new stat card, we can just run through the checklist.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #521 on agentic_ai_context merged successfully (sha: 273da1da6f983386681c8d9fce743254d6c4bd87). Pull Request successfully merged
 
