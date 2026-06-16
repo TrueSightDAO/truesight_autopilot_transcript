@@ -144,6 +144,7 @@ So it appears an avatar/profile image for the Edgar True site was never commissi
 ### 🤖 Autopilot
 
 Let me search more specifically for "Edgar Truesight" — that might be a different entity than just "Edgar".
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -151,16 +152,29 @@ Let me search more specifically for "Edgar Truesight" — that might be a differ
 The code search results are just email templates with "TrueSight" in their paths — not related to an "Edgar Truesight" avatar.
 
 Let me also check the edgar.truesight.me site directly and look at the edgar_creation.jpg to understand what it is.
+[2 tool result(s) compacted: web_extract, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ah, I see — "Edgar Truesight" is the full name of the site at **edgar.truesight.me**. That's the documentation site for the Edgar DAO Protocol API. Let me check if there's an avatar/favicon on that site.
+[2 tool result(s) compacted: web_extract, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the dao_protocol repo which hosts the edgar.truesight.me site — that's where any avatar or branding image would live.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -241,4 +255,25 @@ Yes! There is a blog post on truesight.me that explains the formula in detail. H
 So the budget is essentially a fraction of daily revenue, capped by the asset backing per token. Currently it's showing **$0.25759 USD** as the daily buy-back budget.
 
 The post also explains that management fees from external financiers go to treasury growth but are **excluded** from the buy-back calculation — only DAO-owned inventory sales revenue funds the buyback.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] https://truesight.me/blog/index.html
+
+Why is it not listed here?
+
+
+### 🤖 Autopilot
+
+Let me check the blog index page to see what's listed there.
+
+
+### 🤖 Autopilot
+
+You're right — the buy-back budget blog post is **not listed** on the blog index page. It exists at `https://truesight.me/blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html` and is linked from the homepage (via the ℹ️ icon next to the Daily Buy-Back Budget number), but it's missing from the blog index.
+
+Looking at the index, it lists 11 posts — the most recent being *"We let an AI run our DAO"* and the oldest visible being *"Experience Economy: Signals Across the DAO"*. The buy-back post is a more technical/educational piece that probably got published but never added to the blog index page.
+
+Would you like me to open a PR to add it to the blog index?
 
