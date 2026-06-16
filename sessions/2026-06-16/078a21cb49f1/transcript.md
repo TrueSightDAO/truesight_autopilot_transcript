@@ -246,6 +246,7 @@ Want me to merge it, or do you want to review first?
 ### 🤖 Autopilot
 
 Merged. Now let me deploy it so the fix goes live.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -370,4 +371,29 @@ Done! Submitted to the DAO ledger:
 Sorry, the voice message cut off — it sounds like you were saying "apply maybe option to..." but I didn't catch the rest. 
 
 Were you referring to **Option 2** from earlier — making `overflow-wrap: break-word` and `word-break: break-all` **global** (not just mobile) so this class of bug never happens on any page? If so, I can open a quick PR for that.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Yes, apply option 2 [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it. I'll make `overflow-wrap: break-word` and `word-break: break-all` global in the base template so text never overflows on any page, any screen size.
+
+
+### 🤖 Autopilot
+
+Now I'll move the `overflow-wrap: break-word` and `word-break: break-all` rules from the mobile media query to the global styles so they apply everywhere:
+
+
+### 🤖 Autopilot
+
+PR [#219](https://github.com/TrueSightDAO/truesight_autopilot/pull/219) is open. It moves `overflow-wrap: break-word` and `word-break: break-all` from the mobile media query to the global styles, so they apply on every page at every screen size. Want me to merge and deploy?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → find /opt/truesight_autopilot -name "base.html" -type f 2>/dev/null
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/219
 
