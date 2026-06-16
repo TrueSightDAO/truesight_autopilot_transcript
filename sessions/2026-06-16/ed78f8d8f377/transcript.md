@@ -179,6 +179,16 @@ Let me check the dao_protocol repo which hosts the edgar.truesight.me site — t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The dao_protocol repo doesn't have a static folder — the edgar.truesight.me site is served from the FastAPI server. Let me check what's actually on the server.
 
 
@@ -276,4 +286,97 @@ You're right — the buy-back budget blog post is **not listed** on the blog ind
 Looking at the index, it lists 11 posts — the most recent being *"We let an AI run our DAO"* and the oldest visible being *"Experience Economy: Signals Across the DAO"*. The buy-back post is a more technical/educational piece that probably got published but never added to the blog index page.
 
 Would you like me to open a PR to add it to the blog index?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Yes and also I noticed that it's no longer linked to from the landing page anymore [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the current landing page to see if the buy-back blog link is still there, and also look at the blog index source to understand how posts are listed.
+
+
+### 🤖 Autopilot
+
+Actually, the link **is still there** on the landing page — it's the ℹ️ icon next to "Daily Buy-Back Budget" that links to the blog post. The text says:
+
+> **Daily Buy-Back Budget ℹ️**
+> 0.25759 USD
+> [Based on DAO treasury revenue, not total ecosystem sales](blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html)
+
+So the link is present on the homepage. But it's **not on the blog index** page. Let me now look at the source files to fix both issues.
+
+
+### 🤖 Autopilot
+
+The truesight.me site is a Wix site — the pages are managed through Wix's CMS, not in a GitHub repo. Let me check what's in the truesight_me repos.
+
+
+### 🤖 Autopilot
+
+Good — the site is a static site in the `truesight_me_beta` repo. Let me look at the blog index and the homepage source to understand how to add the buy-back post.
+
+
+### 🤖 Autopilot
+
+Now I can see the structure. Let me check the homepage for the buy-back budget section to see if the link is still there.
+
+
+### 🤖 Autopilot
+
+Let me search the homepage HTML for the buy-back section.
+
+
+### 🤖 Autopilot
+
+I can see the link **is still there** on the homepage — the buy-back budget stat card has:
+
+```html
+<a href="blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html">
+  Based on DAO treasury revenue, not total ecosystem sales
+</a>
+```
+
+So the link on the landing page is still present. But it's **not on the blog index page**. Let me now create a PR to add it to the blog index.
+
+
+### 🤖 Autopilot
+
+Let me find the exact insertion point in the blog index — I need to see where the first blog card starts so I can add the buy-back post at the top.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The buy-back blog post exists at `blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html` but is missing from the blog index. Let me also check if it has a blog card image.
+
+
+### 🤖 Autopilot
+
+Good. The blog post exists but has no date (`<time datetime=""></time>`) and no featured image. Let me check the assets folder for a suitable image, and also check what date it should have.
+
+
+### 🤖 Autopilot
+
+I can see there's already a Wix image for this blog post: `0e2cde_ac64c90d17cb4613a06680b228a7ff0d_mv2_Understanding TrueSight DAO’s Daily Buy-Back Budget_ A Dynamic Force for Stability.jpg`
+
+Now let me create the PR to add the buy-back post to the blog index.
+
+
+### 🤖 Autopilot
+
+Done! Here's the summary:
+
+**PR opened:** [#241 — Add buy-back budget blog post to blog index](https://github.com/TrueSightDAO/truesight_me_beta/pull/241)
+
+**What I found:**
+- The buy-back blog post link **is still present** on the homepage — it's the ℹ️-linked text under the Daily Buy-Back Budget stat card in `index.html`. So that's fine.
+- It was just **missing from the blog index page** (`blog/index.html`).
+
+**What the PR does:**
+- Adds the buy-back post as the first entry in the blog grid (using the existing Wix image as the card image)
+- I estimated the date as May 1, 2026 — the blog post itself has no date (`<time datetime="">`), so let me know if you want a different date and I can adjust
+
+Once you review and merge, it'll show up on the blog page after the next beta deploy.
 
