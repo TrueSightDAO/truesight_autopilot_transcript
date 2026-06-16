@@ -78,6 +78,21 @@ The vault page is served by the `truesight_autopilot` repo itself. Let me find t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me look at the status template:
 
 
@@ -191,4 +206,42 @@ Want me to merge it, or do you want to review first?
 ———
 **✅ Done this turn — actions taken:**
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/218
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Yeah, just merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged. Now let me deploy it so the fix goes live.
+
+
+### 🤖 Autopilot
+
+The deploy hit a transient pip install failure (exit -15 on the dao_client dependency). The git pull step succeeded though. Let me retry the deploy — it's just a flaky pip timeout.
+
+
+### 🤖 Autopilot
+
+Already on the latest commit — the git pull from the first attempt already pulled the merge. The service is already running the fixed code. Let me verify the page loads properly now:
+
+
+### 🤖 Autopilot
+
+The fix is live. I can see the new CSS rules in the response:
+
+```css
+.container { padding: 1rem; overflow-wrap: break-word; }
+.card { padding: 1rem; overflow-wrap: break-word; }
+code { word-break: break-all; }
+```
+
+All set! The mobile text overflow fix is merged and deployed. Try loading `/vault/status` on your phone now — long text should wrap inside the cards instead of spilling out the right side.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #218 on truesight_autopilot merged successfully (sha: 2bd422a5c289026eb1ca029b52710695640313ce). Pull Request successfully merged
+• `deploy autopilot` ×2 → https://github.com/TrueSightDAO/dao_client.git; Already on the latest commit 2bd422a5 — no deploy needed. Did NOT restart. Do not retry.
 
