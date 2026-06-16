@@ -20,11 +20,13 @@ how is status?
 ### 🤖 Autopilot
 
 Let me read the handoff plan to pick up where we left off.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan is still at **RESUME HERE: PR1** — not started. The pre-flight checklist hasn't been completed yet either. Let me check the current state of things to give you a full status picture.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -62,6 +64,7 @@ how is PR1?
 ### 🤖 Autopilot
 
 Let me check the current state of things — PR1 hasn't been started yet, so let me look at what needs to happen first.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -92,41 +95,64 @@ go for it
 Go-signal received. Let me start the pre-flight checklist first (per the plan), then PR1.
 
 **Pre-flight item 1 — Consumer audit.** Let me check all the `load_governors` / `is_governor` callers in the autopilot.
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot repo might not be indexed. Let me look at the actual source files.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find all callers of `is_governor` and `load_governors` in the autopilot.
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub code search isn't finding them (likely not indexed). Let me read the repo structure directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the callers — `auth.py`, `vault_routes.py`, `policy.py`, `daily_briefing.py`, `main.py`, `telegram_adapter.py`, and `vault.py`.
+[7 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a complete picture. Let me also check the GAS publisher to understand the current code.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the publisher to see how it currently writes to GitHub.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the existing `treasury-cache` to see what's there now.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -278,5 +304,135 @@ The plan is now at **RESUME HERE: PR2** (incremental write — diff-based). That
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 -c " import os, json, httpx pat = os.environ.get('TRUESIGHT_DAO_AUTOPILOT', '') if not pat: # try loa
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+perfect merge it and then the next PR
+
+
+### 🤖 Autopilot
+
+Let me merge PR1 first, then proceed to PR2.
+
+
+### 🤖 Autopilot
+
+PR1 merged. Now let me also merge the tracker tick PR.
+
+
+### 🤖 Autopilot
+
+Now let me read the plan doc to pick up PR2.
+
+
+### 🤖 Autopilot
+
+The plan doc hasn't been updated yet from the merge (the tick PR was merged but the doc on main still shows old status). Let me re-read the current main branch.
+
+
+### 🤖 Autopilot
+
+Good — the doc is updated and RESUME HERE is at PR2. Now let me read the current state of the publisher to understand what needs to change for PR2.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. PR2 needs to:
+
+1. Before building the tree, fetch the current `_manifest.json` from treasury-cache
+2. Diff current keys against the manifest — only create blobs for changed/added/removed keys
+3. Keys no longer ACTIVE → write `status:"REVOKED"` and drop from manifest
+4. Populate the manifest with blob SHAs for future diffs
+5. Confirm an unchanged run produces a no-op
+
+Let me also check what the current `_manifest.json` looks like (if it exists yet from PR1's first run).
+
+
+### 🤖 Autopilot
+
+Not yet — PR1 hasn't been deployed (it's merged but the GAS script hasn't been pushed to the Apps Script project). That's fine — PR2 needs to handle both the initial case (no manifest yet) and the incremental case.
+
+Let me also check what the current `dao_members.json` looks like to understand the key set.
+
+
+### 🤖 Autopilot
+
+Good — 74 active keys across 400 contributors. Now I have the full picture. Let me implement PR2.
+
+The key changes for PR2:
+1. Before building the tree, fetch the current `_manifest.json` from treasury-cache (handle 404 gracefully for first run)
+2. Build the current key set from the snapshot
+3. Diff against manifest — only create blobs for changed/added keys
+4. Keys no longer ACTIVE → write `status:"REVOKED"` and drop from manifest
+5. Populate manifest with blob SHAs for future diffs
+6. If nothing changed, skip the commit entirely (no-op)
+
+
+### 🤖 Autopilot
+
+Now I need to add the `fetchCurrentManifest_` helper function. Let me check if it's already in the file.
+
+
+### 🤖 Autopilot
+
+I need to add the `fetchCurrentManifest_` function. Let me check the end of the file.
+
+
+### 🤖 Autopilot
+
+I need to add the `fetchCurrentManifest_` function. Let me add it before the `computeSha256_` function.
+
+
+### 🤖 Autopilot
+
+The branch already has the first commit. Let me force-push the updated branch.
+
+
+### 🤖 Autopilot
+
+The tool doesn't force-push. Let me use a new branch name.
+
+
+### 🤖 Autopilot
+
+PR2 created. Now let me record the contribution and tick the tracker.
+
+
+### 🤖 Autopilot
+
+Now tick the tracker in the plan doc.
+
+
+### 🤖 Autopilot
+
+---
+
+## ✅ Done this turn
+
+### PR1 — Merged ✅
+- [tokenomics#359](https://github.com/TrueSightDAO/tokenomics/pull/359) merged
+- [agentic_ai_context#525](https://github.com/TrueSightDAO/agentic_ai_context/pull/525) merged (tracker tick)
+
+### PR2 — Opened ✅
+- [tokenomics#361](https://github.com/TrueSightDAO/tokenomics/pull/361) — incremental write via manifest diff
+- [agentic_ai_context#526](https://github.com/TrueSightDAO/agentic_ai_context/pull/526) — tracker tick (RESUME HERE advanced to PR3)
+
+### Summary
+
+| PR | Status | Link |
+|----|--------|------|
+| PR1 — Generator emits per-key files | ✅ Merged | [#359](https://github.com/TrueSightDAO/tokenomics/pull/359) |
+| PR2 — Incremental write (diff-based) | ✅ Open | [#361](https://github.com/TrueSightDAO/tokenomics/pull/361) |
+| PR3 — Reader point-lookup | ⏳ Next | `truesight_autopilot` |
+
+Want me to merge PR2 and start PR3?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #359 on tokenomics merged successfully (sha: a62fc96fd55db39e1414f50c8a5c7a5f0d673959). Pull Request successfully merged; ✅ PR #525 on agentic_ai_context merged successfully (sha: 87bb5206c9d9169c813f2114eb811cb4a2808bff). Pull Request successfully merged
 • `create dao submission` → Contribution submitted
 
