@@ -1815,6 +1815,7 @@ Now the source has it. Let me sync to mirror and push.
 ### 🤖 Autopilot
 
 Now create a new deployment with the updated code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1993,4 +1994,37 @@ The workflow would:
 4. Commit and push
 
 Want me to build it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] And where does the Python script sit? I don't think it should be sitting in the treasury cache, because that's basically just all the JSON output. I'm OK if the workflow from treasury cache will soon be script from another repository and runs it to update the treasury cache, JSON. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good point — `treasury-cache` should stay clean as just the JSON output. The script should live in a code repo.
+
+I'd recommend **`tokenomics`** — it already has the GAS scripts and the treasury logic. The Python cache builder would sit alongside the existing scripts, maybe in a `scripts/` or `cache_builders/` directory. Then the GitHub Action workflow in `treasury-cache` would reference it.
+
+**Structure:**
+```
+tokenomics/
+  scripts/
+    update_buy_back_reserve_cache.py   ← Python script
+    deploy_gas_project.py              ← existing
+
+treasury-cache/
+  .github/
+    workflows/
+      update-buy-back-reserve-cache.yml  ← workflow that checks out tokenomics, runs the script
+  buy-back-reserve.json                  ← output
+```
+
+The workflow in `treasury-cache` would:
+1. Check out `tokenomics` repo
+2. Run `python3 scripts/update_buy_back_reserve_cache.py`
+3. Commit the updated JSON to `treasury-cache`
+
+Clean separation — code in `tokenomics`, data in `treasury-cache`. Want me to build it?
 
