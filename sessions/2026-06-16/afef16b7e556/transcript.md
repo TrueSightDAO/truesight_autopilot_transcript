@@ -1764,6 +1764,17 @@ https://github.com/TrueSightDAO/agentic_ai_context/blob/main/LEGAL_ENTITY_STRUCT
 ### 🤖 Autopilot
 
 This is a thorough proposal. Let me read the full document.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2077,4 +2088,18 @@ But it can't auto-promote to production right now due to the conflict. Could you
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #239 on truesight_me_beta merged successfully (sha: da253ef2537b5f24f8fe03495c54956988efd642). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] PR #239 is open. merge it
+
+
+### 🤖 Autopilot
+
+Already merged! The beta site is up to date. The prod sync had a conflict though — the CNAME divergence between beta and prod repos. Want me to try the sync again, or would you like to resolve the conflict manually on the prod repo?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #239 on truesight_me_beta merged successfully (sha: da253ef2537b5f24f8fe03495c54956988efd642). PR #239 was already merged.
 
