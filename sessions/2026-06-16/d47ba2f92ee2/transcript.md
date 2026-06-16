@@ -1593,16 +1593,29 @@ Required Credentials CREDENTIAL ENV VAR WHY DEEPSEEK_API_KEY or LLM.API Key LITE
 ### 🤖 Autopilot
 
 I see — the Required Credentials table is overflowing the card again. Same issue as before — the "WHY" column has long text that pushes the table out. Let me fix the table layout for the Replicate card specifically.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The issue is the table inside the Replicate card doesn't have the `card-table-wrap` wrapper. Also the table has 3 columns (Credential, Env Var, Why) — the "Why" column is long. Let me wrap it and also add the CSS fix for tables inside cards.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Also, the `table-layout: fixed` in the global CSS is causing the 3-column table to distribute evenly (33% each), which makes the "Why" column too narrow. I need to set column widths for this specific table. Let me also add a CSS rule for tables inside the Replicate card.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1761,4 +1774,60 @@ The status page now links to it. Want to try it? Pick a name and I'll walk throu
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && python3 << 'PYEOF' with open('app/templates/vault/status.html', 'r', encoding='utf-8') as f: html = f.read() ; cd /opt/truesight_autopilot && git add -f app/templates/vault/status.html && git commit -m "Link Self-Replication SOP from status page" && g
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] I actually wonder if a new instance of Sophia should have a new instance of Edgar with the corresponding ledgers if for example Bilal or LIz wants to spawn a brand new ecosystem... My sense is in that new ecosystem the rules of the governor will probably be different isnt it?? Who knows what do you think?
+
+
+### 🤖 Autopilot
+
+This is a really insightful question. Let me think through it.
+
+**Short answer:** It depends on whether the new instance is a *clone* or a *fork*.
+
+### Clone (same ecosystem, different operator)
+
+If Bilal wants *his own Sophia* to manage the **same** DAO — same cacao bags, same farmers, same ledgers — then he needs access to the same Edgar. The new Sophia just needs different credentials (LLM key, GitHub PAT, Telegram token) but talks to the same API, the same ledger, the same vault of shared secrets.
+
+This is the simpler case. One Edgar, many Sophias.
+
+### Fork (new ecosystem, new rules)
+
+If Bilal wants to spin up a **completely new DAO** — his own supply chain, his own farmers, his own tokenomics — then yes, he needs:
+
+1. **A new Edgar** — because the ledger schema, tokenomics rules, and governance model might be different
+2. **New ledgers** — blank sheets, his own data
+3. **New context** — his own runbooks, his own partner list, his own growth model
+4. **Potentially different rules** — the governor's operating instructions could be completely different
+
+And you're right — in a new ecosystem, the rules *should* be different. The current autopilot's rules are tailored to the TrueSight DAO's specific needs (cacao supply chain, QR-coded bags, consignment financing, etc.). Bilal might be running a coffee co-op, Liz might be running a carbon credit marketplace. The operating instructions, the tool set, the credential schema — all of that changes.
+
+### What this means architecturally
+
+The autopilot is the **brain**. Edgar is the **nervous system** (API + ledger). A new brain needs a new nervous system.
+
+For a fork, the spawn flow becomes:
+
+1. Provision EC2
+2. Clone **both** `truesight_autopilot` and `sentiment_importer` (Edgar)
+3. Set up a new PostgreSQL database
+4. Register a new DAO identity
+5. Fork the context repo with **blank starter templates** (not our cacao-specific ones)
+6. The governor writes their own operating instructions
+7. Start both services
+
+The `/vault/status` page on the new instance would show its own Edgar URL, its own ledger status, its own rules — completely independent.
+
+### My recommendation
+
+The SOP should support **both paths**:
+
+| Path | When | What gets cloned |
+|---|---|---|
+| **Clone** | Same DAO, new operator | Just the autopilot (shares Edgar) |
+| **Fork** | New DAO, new rules | Autopilot + Edgar + new DB + blank context |
+
+Want me to update the SOP to cover both scenarios?
 
