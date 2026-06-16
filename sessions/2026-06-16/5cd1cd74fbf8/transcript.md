@@ -722,14 +722,26 @@ However, since you explicitly asked me to deploy, let me check if there's a way 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The deploy tool is built into the tool runtime, not in the repo. The guard is there for good reason — it prevents bricking active threads. Since the code is already on disk and the service restarts automatically on crash, the safest path is to use the systemd restart with the proper drain.
 
 Actually, let me re-read the guard message more carefully: it says "Use the deploy_autopilot tool instead — it waits for threads to be idle, then restarts safely." The tool returned "noop" because it thinks nothing changed. But the running process IS stale. Let me check if there's a way to force it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — PR #217 (`f90aa7b`) is a "Force deploy restart — bump timestamp" commit that was made AFTER our PR #216. So the deploy tool sees HEAD as `f90aa7b` and the running process is also on `f90aa7b` (since it started at 17:19, which is after PR #217 was merged). Let me check if the followup code is actually in the running process.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -737,6 +749,12 @@ I see — PR #217 (`f90aa7b`) is a "Force deploy restart — bump timestamp" com
 `f90aa7b` is a child of `7040bd8`, which is a child of `86cb415`, which is a child of `a63b588`, which is a child of `90f1e91`, which is a child of `97a31bb` (our PR #216). So `f90aa7b` **includes** our PR #216. The code IS on disk and the running process started at 17:19, which is after `f90aa7b` was committed.
 
 Let me verify the running process actually has the followup code loaded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -746,21 +764,25 @@ The code IS on disk and the running process started at 17:19. The deploy tool sa
 Actually wait — the process started at 17:19, and I ran `git checkout -B main origin/main` at ~17:38. But the process started with the code that was on disk at 17:19, which was already `f90aa7b` (PR #217 was merged before 17:19). So the followup code IS in the running process.
 
 Let me verify by checking if the followup loop is actually running.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No "followup loop started" or "followup check" log messages — just my own tool calls. The process started at 17:19 with the code that has the followup loop wired in, but the loop runs hourly so it wouldn't have fired yet. Let me check if the process actually has the lifespan task running by looking at startup logs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual startup logs from when the process began at 17:19.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's from June 6. Let me get today's startup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -768,11 +790,13 @@ That's from June 6. Let me get today's startup.
 There it is! The followup loop **is running** — it started at 17:19:59. But it immediately hit a `FileNotFoundError` because it's looking for `OPEN_FOLLOWUPS.md` at `/opt/truesight_autopilot/agentic_ai_context/OPEN_FOLLOWUPS.md` instead of the actual path where the context repo is checked out.
 
 Let me check where `agentic_ai_context` actually lives.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is at `/opt/truesight_autopilot/context/agentic_ai_context/OPEN_FOLLOWUPS.md`, not `/opt/truesight_autopilot/agentic_ai_context/OPEN_FOLLOWUPS.md`. The followup code has a hardcoded path that's wrong. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -857,4 +881,135 @@ Want me to build it? I'd:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → find /opt/truesight_autopilot -path "*/vault*" -o -path "*vault*" | head -20; grep -n "templates\|static\|html\|route\|@router\|@app" /opt/truesight_autopilot/app/vault_routes.py | head -30; cat /opt/truesight_autopilot/app/templates/vault/index.html | head -80; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Yep, go for it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first check the existing followup state directory format and the vault routes to plan the implementation.
+
+
+### 🤖 Autopilot
+
+Good — the followup tools are in `app/tools/followup_tools.py`. Let me check what's exported from `followups.py` and the state format.
+
+
+### 🤖 Autopilot
+
+Now let me look at the full vault_routes.py to understand the pattern, and check the existing tests.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the existing test for vault routes to follow the pattern.
+
+
+### 🤖 Autopilot
+
+Now let me check the existing vault routes test to follow the pattern for testing.
+
+
+### 🤖 Autopilot
+
+Now let me also look at the followup state format to understand what data I'll surface.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check the followup_loop to see what state fields get populated.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me build the follow-ups tab. I'll create:
+
+1. A `/vault/api/followups` JSON endpoint
+2. A `/vault/followups` HTML page
+3. A `templates/vault/followups.html` template
+4. Add the nav link in `base.html`
+
+
+### 🤖 Autopilot
+
+Now let me build all the pieces. I'll use `git_push_changes` to create the PR.
+
+
+### 🤖 Autopilot
+
+Wait — I wrote the full `base.html` and `vault_routes.py` as whole files, but the `vault_routes.py` write only contains the new route methods, not the full file. Let me check what actually got written.
+
+
+### 🤖 Autopilot
+
+The `vault_routes.py` write only contained the new route methods, not the full file — it replaced the entire 607-line file with just the new snippets. I need to fix this. Let me redo it properly with an edit (search/replace) instead.
+
+
+### 🤖 Autopilot
+
+Let me check what's currently on the branch and fix it properly.
+
+
+### 🤖 Autopilot
+
+Yep — the file got replaced with just the new snippets (35 lines instead of 607). I need to restore the full file. Let me read the original from main and add the new routes.
+
+
+### 🤖 Autopilot
+
+Now I have the full original file. Let me fix the branch by replacing the broken `vault_routes.py` with the full file plus the new routes.
+
+
+### 🤖 Autopilot
+
+The branch already exists remotely. Let me force-push to replace it since the first commit was broken.
+
+
+### 🤖 Autopilot
+
+Now let me also write the followups.html template and update base.html, then run tests.
+
+
+### 🤖 Autopilot
+
+Now update base.html to add the nav link. I need to add "Follow-ups" between Vault and System Status.
+
+
+### 🤖 Autopilot
+
+Now run the full test suite.
+
+
+### 🤖 Autopilot
+
+Two lint issues — `Depends` was unused in the original file too (pre-existing), and `list_open` is unused in my new endpoint. Let me fix my one.
+
+
+### 🤖 Autopilot
+
+The `Depends` import is pre-existing in the original file — not from my change. Let me verify.
+
+
+### 🤖 Autopilot
+
+`Depends` IS used in the original file — the ruff check is probably running on the current file which has the `Depends` import but the functions that use it are defined differently. Let me check if my file has the `Depends` usage.
+
+
+### 🤖 Autopilot
+
+The original file uses `Depends` in the function signatures (e.g., `identity: dict = Depends(_require_vault_governor)`), but my rewritten file doesn't have those yet because I need to check if the original had them. Let me check the original more carefully.
+
+
+### 🤖 Autopilot
+
+The original file DOES use `Depends` in function signatures. My rewritten file has the import but the functions that use `Depends` don't have the parameter. Let me check my file's function signatures.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → ls -la /opt/truesight_autopilot/followups/ 2>/dev/null; cat /opt/truesight_autopilot/app/followups.py | head -80; cat /opt/truesight_autopilot/app/followups.py | wc -l && cat /opt/truesight_autopilot/app/followup_tools.py | head -40; find /opt/truesight_autopilot/app -name "followup*" | sort; …(+17 more)
 
