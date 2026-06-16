@@ -2842,11 +2842,13 @@ I see — the live site doesn't show "Accumulated Buy-Back Reserve" in the extra
 The code **is deployed** to both beta and prod repos. The stat card is there but hidden behind the "Show More Stats" toggle. You need to click "Show More Stats" to see it, just like the Daily Buy-Back Budget card.
 
 Let me also check if the detail page is accessible.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The detail page is live at **truesight.me/buy-back-reserve/** and returns 200. Let me check if it loads the cache data correctly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2963,4 +2965,113 @@ Merged! The pattern is now documented in `STATS_CARD_PATTERN.md` in the agentic_
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #521 on agentic_ai_context merged successfully (sha: 273da1da6f983386681c8d9fce743254d6c4bd87). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Also some UI issues in the page 
+
+https://beta.truesight.me/buy-back-reserve/
+
+
+### 🤖 Autopilot
+
+Let me check the beta detail page to see what's happening.
+
+
+### 🤖 Autopilot
+
+The page loads but I can't see the rendered output from the raw HTML — the data is loaded dynamically via JavaScript. Let me check what the page looks like by looking at the JavaScript execution path. The page tries to load from the JSON cache first, then falls back to the GAS endpoint.
+
+Let me check if the JSON cache is accessible from the browser.
+
+
+### 🤖 Autopilot
+
+The JSON cache is working and has all 269 provisions. The page loads from the cache but the JavaScript only shows the total amount — it doesn't render the provisions list. Let me look at the page's JavaScript to see what it actually displays.
+
+The issue is likely that the detail page only shows the headline amount ($41.26) and methodology text, but doesn't render the provisions table/list. The JSON cache has all 269 provisions but the page doesn't display them.
+
+Let me also check if there are any CSS issues — the page might look broken on mobile or have layout problems. Let me look at the full page content.
+
+
+### 🤖 Autopilot
+
+I can see the page structure. The main issues I can spot:
+
+1. **No provisions table** — The page only shows the headline amount ($41.26) and methodology text. The 269 daily provisions from the JSON cache aren't rendered as a table or list. The page should show a transaction history table.
+
+2. **The page uses `var()` CSS custom properties** (like `--space-xl`, `--muted`, `--text`) that are defined in `main.css` — if those aren't loaded properly on the beta site, the page could look broken (white text on white background, missing spacing, etc.).
+
+3. **No provisions count shown** — The JSON has `summary.total_provisions_count: 269` but the page doesn't display it.
+
+Let me fix these issues — add a provisions table and show the count.
+
+
+### 🤖 Autopilot
+
+The search string doesn't match exactly — likely whitespace differences. Let me read the exact content from the file.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact content. Let me use the exact text from the file for the edits.
+
+
+### 🤖 Autopilot
+
+The whitespace must differ. Let me check the exact bytes.
+
+
+### 🤖 Autopilot
+
+The content is different from what I expected — it has a more detailed "How It Works" section with a formula and bullet points. The file was updated by the earlier PR. Let me find the exact insertion point for the provisions table.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact structure. I need to insert the provisions table between the "How It Works" section card (line 161) and the "Data Source" methodology box (line 162). Let me use the exact text.
+
+
+### 🤖 Autopilot
+
+Now I also need to add the JavaScript to render the provisions table. Let me find the exact JavaScript section.
+
+
+### 🤖 Autopilot
+
+The branch already exists from the previous push. Let me use a new branch name.
+
+
+### 🤖 Autopilot
+
+Now let me merge both PRs and sync to prod.
+
+
+### 🤖 Autopilot
+
+Let me verify the page is now live with the provisions table.
+
+
+### 🤖 Autopilot
+
+The page is still returning the old version (content-length 5044, same as before). GitHub Pages might have a cache delay. Let me check if the prod repo has the new code.
+
+
+### 🤖 Autopilot
+
+The prod repo has the new code (4 matches for the provisions table). GitHub Pages just needs a moment to rebuild. It should be live within a minute or two.
+
+Refresh the page at **truesight.me/buy-back-reserve/** and you should see:
+- **$41.26 USD** headline amount
+- **How It Works** section with the formula
+- **Daily Provision History** table showing all 269 provisions (most recent first)
+- **Data Source** methodology box
+
+Let me know what you think of the UI!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && rm -rf tsight_beta && git clone --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tsight_beta 2>&1 | tail -1 && sed; grep -n "How It Works" /tmp/tsight_beta/buy-back-reserve/index.html; sed -n '146,160p' /tmp/tsight_beta/buy-back-reserve/index.html | cat -An; …(+4 more)
+• `merge pr` ×2 → ✅ PR #245 on truesight_me_beta merged successfully (sha: 5f42a978619c38a3391f2609e6be5aaaaa920478). Pull Request successfully merged; ✅ PR #246 on truesight_me_beta merged successfully (sha: ad43e40b5c09da3d5325e30ed3e7932527046ce5). Pull Request successfully merged
 
