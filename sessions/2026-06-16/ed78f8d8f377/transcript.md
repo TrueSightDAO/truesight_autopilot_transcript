@@ -549,6 +549,7 @@ Let me search specifically for "buy-back" in the full HTML.
 ### 🤖 Autopilot
 
 I found the issue! The buy-back stat card **is in the HTML** but it has the class `stat-card-hidden` and is the 7th card in the grid. There's a "Show More Stats" button that reveals it. Let me check the source code to understand the logic.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -627,4 +628,131 @@ Would you like me to:
 Ah, there you go — it was behind the "Show More Stats" button the whole time. So the buy-back stat card and its link to the blog post are both there on the homepage, just tucked away under that toggle.
 
 Glad you found it! Let me know if you want me to make any changes — like moving it to the always-visible stats or fixing the "Show More Stats" toggle so it actually works properly.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] You know on our ledger we have a row that states provisions we have total provisions we have set aside for buyback I wonder if it's useful to show it as one of the stats card [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great idea! Let me check the ledger to find the provisions/buyback row and see what data is available.
+
+
+### 🤖 Autopilot
+
+This is the contribution ledger — not the financial ledger with provisions. Let me search for the provisions/buyback row you mentioned.
+
+
+### 🤖 Autopilot
+
+Let me look at the "offchain transactions" sheet where the buy-back provisions would be recorded.
+
+
+### 🤖 Autopilot
+
+Let me search for "buy-back" or "provision" in this sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for "buy-back" or "provision" specifically in the offchain transactions sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for "buy-back" or "provision" in this large dataset.
+
+
+### 🤖 Autopilot
+
+Let me search specifically for "buy-back" or "provision" in this data.
+
+
+### 🤖 Autopilot
+
+Let me search for "buy-back" or "provision" specifically in the full data.
+
+
+### 🤖 Autopilot
+
+Let me look at the GAS script to find where the buy-back provisions are created and stored.
+
+
+### 🤖 Autopilot
+
+Let me search for the specific function that creates buy-back provisions.
+
+
+### 🤖 Autopilot
+
+Let me search for the specific buy-back provision function.
+
+
+### 🤖 Autopilot
+
+Let me search for the buy-back provision function specifically.
+
+
+### 🤖 Autopilot
+
+Let me search for the buy-back provision function specifically.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The buy-back budget is calculated dynamically in the GAS script and stored in the "Performance Statistics" sheet — it's not a "provision" row in the offchain transactions sheet. Let me check the "Performance Statistics" sheet to see what's there.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The "Performance Statistics" sheet has the buy-back budget as a calculated value, but you mentioned a "provisions" row. Let me search the offchain transactions for "provision" or "buy-back" entries.
+
+
+### 🤖 Autopilot
+
+Let me search the full offchain transactions data for "provision" or "buy-back" or "buyback".
+
+
+### 🤖 Autopilot
+
+Let me search for "provision" in the offchain transactions data.
+
+
+### 🤖 Autopilot
+
+Let me search for "provision" in the full data.
+
+
+### 🤖 Autopilot
+
+Let me search for "provision" in the full raw text.
+
+
+### 🤖 Autopilot
+
+Let me search for "provision" in the raw text.
+
+
+### 🤖 Autopilot
+
+I've searched through all 893 rows of the offchain transactions and there's no "provision" or "buy-back" row. The buy-back budget is calculated dynamically in the GAS script and stored in the "Performance Statistics" sheet as `TDG_DAILY_BUY_BACK_BUDGET` — currently **$0.09196 USD**.
+
+You mentioned a "provisions" row — could you point me to which sheet/tab you're thinking of? Maybe it's in the "off chain asset balance" sheet or another tab? Let me check that one.
+
+
+### 🤖 Autopilot
+
+Found it! There it is — **"USD - provisions for voting rights cash out"** with a balance of **$41.26**. That's the provisions row you were talking about.
+
+So the idea would be to show this as a stat card on the homepage — something like **"Buy-Back Provisions: $41.26 USD"** — showing the total USD set aside for buy-back/voting rights cash out.
+
+This is already in the "off chain asset balance" sheet, so the GAS web service could easily include it as a new Performance Statistics key. Then the homepage could display it as a stat card.
+
+Would you like me to:
+1. **Add it to the Performance Statistics sheet** via the GAS script (so it gets served by the web service)
+2. **Add a stat card** on the homepage to display it
+
+Or do you want to think about what to call it — "Buy-Back Provisions" vs "Voting Rights Provisions" vs something else?
 
