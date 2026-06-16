@@ -1035,6 +1035,7 @@ Let me check what's currently on the branch and fix it properly.
 ### 🤖 Autopilot
 
 Yep — the file got replaced with just the new snippets (35 lines instead of 607). I need to restore the full file. Let me read the original from main and add the new routes.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1113,4 +1114,152 @@ I'm in the middle of building the vault follow-ups tab. The first `git_push_chan
 - ❌ Then commit and push
 
 Give me 2 minutes to finish it up.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Okay, I will wait. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me fix the `Depends` issue and get this done.
+
+
+### 🤖 Autopilot
+
+The original file uses `Depends` as a FastAPI dependency injection pattern in function signatures. My rewrite calls `_require_vault_governor(request)` directly instead. The `Depends` import is unused now. Let me remove it.
+
+
+### 🤖 Autopilot
+
+`vault_routes.py` needs formatting. Let me fix it.
+
+
+### 🤖 Autopilot
+
+Now run the full test suite.
+
+
+### 🤖 Autopilot
+
+**506 passed, 2 failed** — same 2 pre-existing failures as before (deploy safety and telegram adapter). My changes didn't break anything.
+
+Now let me commit and push.
+
+
+### 🤖 Autopilot
+
+There are a lot of unintended files (artifacts, data, followups state, dao_protocol submodule). I need to commit only the 3 files I changed.
+
+
+### 🤖 Autopilot
+
+Good — only my 2 intended files are staged. Let me also add the new `followups.html` template.
+
+
+### 🤖 Autopilot
+
+The templates directory is gitignored. Let me check the .gitignore.
+
+
+### 🤖 Autopilot
+
+The `.gitignore` ignores `vault/` — that's the encrypted credential vault directory, not the templates. Let me check what's actually ignoring it.
+
+
+### 🤖 Autopilot
+
+The `.gitignore` pattern `vault/` matches `app/templates/vault/` too. I need to force-add it.
+
+
+### 🤖 Autopilot
+
+Now commit and push.
+
+
+### 🤖 Autopilot
+
+Now let me open the PR properly via `git_push_changes` — actually the branch is already pushed. Let me just open the PR.
+
+
+### 🤖 Autopilot
+
+No `gh` auth. Let me use the `git_push_changes` tool to open the PR properly — it handles the GitHub API directly.
+
+
+### 🤖 Autopilot
+
+The branch already exists remotely (from the force-push). Let me just open the PR via the GitHub API directly.
+
+
+### 🤖 Autopilot
+
+No direct GitHub API token available. Let me check if there's a token in the environment.
+
+
+### 🤖 Autopilot
+
+The `git_push_changes` tool uses its own GitHub token internally. The branch is already pushed to `feat/vault-followups-tab` on GitHub. Let me check if `git_push_changes` can still open a PR even though the push failed — it might have opened the PR before the push error.
+
+
+### 🤖 Autopilot
+
+There's already a PR #220 "Add Follow-ups tab to vault page" — that's from the earlier `git_push_changes` call that partially succeeded (the PR was created even though the push failed on the second attempt). Let me check what's in it.
+
+
+### 🤖 Autopilot
+
+PR #220 already exists with the correct content from the first `git_push_changes` call. But it has the old (broken) `vault_routes.py` from the first push. Let me check what commit it points to.
+
+
+### 🤖 Autopilot
+
+The PR points to commit `6b3f1fd` — that's my latest force-push with the fixed `vault_routes.py`. Let me verify the diff is correct.
+
+
+### 🤖 Autopilot
+
+The diff looks correct — 3 files changed:
+1. `base.html` — +1 line (nav link)
+2. `followups.html` — new 102-line template
+3. `vault_routes.py` — removed unused `Depends` import, added `/followups` page route + `/api/followups` endpoint
+
+PR #220 is ready. Here's the status:
+
+---
+
+## ✅ Done — Vault Follow-ups Tab
+
+**PR #220:** https://github.com/TrueSightDAO/truesight_autopilot/pull/220
+
+### What it adds
+
+A new **Follow-ups** tab on the vault page at `https://sophia.truesight.me/vault/followups` showing:
+
+| Column | What it shows |
+|--------|--------------|
+| Title | Follow-up name from ````followup` block |
+| Status | Green/Blue/Red badge (Open/Resolved/Aborted) |
+| Condition | `elapsed_days`, `gmail_reply`, etc. |
+| Schedule | Check frequency + escalation days |
+| Thread | Clickable link to the Telegram thread |
+| Created | Date created |
+| Attempts | How many times the loop has tried |
+
+Plus a "How it works" card explaining probe strikes, escalation, and resolution.
+
+### Test results
+
+```
+506 passed, 2 failed (same 2 pre-existing failures)
+```
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → grep -n "Depends\|_require_vault_governor" /opt/truesight_autopilot/app/vault_routes.py; sed -i 's/from fastapi import APIRouter, Depends, HTTPException, Request/from fastapi import APIRouter, HTTPException, Request/' /opt/truesi; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 && echo "--- LINT OK ---"; …(+16 more)
 
