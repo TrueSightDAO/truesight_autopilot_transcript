@@ -372,21 +372,25 @@ I can see the link **is still there** on the homepage — the buy-back budget st
 ```
 
 So the link on the landing page is still present. But it's **not on the blog index page**. Let me now create a PR to add it to the blog index.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact insertion point in the blog index — I need to see where the first blog card starts so I can add the buy-back post at the top.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. The buy-back blog post exists at `blog/posts/understanding-truesight-dao-s-daily-buy-back-budget-a-dynamic-force-for-stability.html` but is missing from the blog index. Let me also check if it has a blog card image.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good. The blog post exists but has no date (`<time datetime=""></time>`) and no featured image. Let me check the assets folder for a suitable image, and also check what date it should have.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -394,6 +398,7 @@ Good. The blog post exists but has no date (`<time datetime=""></time>`) and no 
 I can see there's already a Wix image for this blog post: `0e2cde_ac64c90d17cb4613a06680b228a7ff0d_mv2_Understanding TrueSight DAO’s Daily Buy-Back Budget_ A Dynamic Force for Stability.jpg`
 
 Now let me create the PR to add the buy-back post to the blog index.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -421,21 +426,25 @@ Once you review and merge, it'll show up on the blog page after the next beta de
 ### 🤖 Autopilot
 
 Let me merge the PR first.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Already merged. Now let me deploy to beta and then promote to production.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the autopilot deploy — I need to deploy the truesight_me_beta site. Let me check how it's deployed.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's GitHub Pages — deploying from `main` branch automatically. The PR is already merged to `main`, so GitHub Pages will auto-deploy. Let me now sync beta to prod.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -492,6 +501,7 @@ Seems the entire thing is missing can you check?
 ### 🤖 Autopilot
 
 Let me check the current live homepage to see if the buy-back stat card is still there.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -515,21 +525,25 @@ So the homepage is fine — the stat card and its link are intact. The only thin
 ### 🤖 Autopilot
 
 Let me check the raw HTML of the live homepage to see what's happening on mobile — the web_extract tool may be showing the desktop version or the content may be hidden on smaller screens.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full HTML for the buy-back section to see if it's there.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full HTML for "buy-back" to see if it's in the source.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search specifically for "buy-back" in the full HTML.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -601,4 +615,16 @@ So the buy-back stat card **is there** on the page, both on desktop and mobile. 
 Would you like me to:
 1. **Add the CSS rule** so the "Show More Stats" button actually works (hides the 7th card by default, reveals on click)
 2. **Or just remove the hidden class and the button** so all 7 stats are always visible without needing to click anything
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Nevermind, I found it, it was hidden in the show more stats. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, there you go — it was behind the "Show More Stats" button the whole time. So the buy-back stat card and its link to the blog post are both there on the homepage, just tucked away under that toggle.
+
+Glad you found it! Let me know if you want me to make any changes — like moving it to the always-visible stats or fixing the "Show More Stats" toggle so it actually works properly.
 
