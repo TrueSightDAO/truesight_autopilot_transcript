@@ -122,6 +122,11 @@ Let me read the full template directly:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the API endpoint to see if it's actually serving data:
 
 
@@ -284,4 +289,57 @@ The pattern here is that small layout bugs like this are cheap to fix individual
 2. Or just me adding `overflow-wrap: break-word` and `word-break: break-all` globally to the base template so this class of bug never happens again
 
 Want me to do option 2 — make those rules global instead of just mobile? That way text never overflows on any page, any screen size.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5624] Can you submit a contribution report to the dial for both our time spent on this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure. Let me estimate the time and submit.
+
+**My estimate:**
+- **You:** 2 minutes (spotting, screenshotting, sending voice messages ×2, saying "merge it")
+- **Me:** 5 minutes (diagnosing, opening PR, merging, deploying)
+- **Total:** 7 minutes
+
+Let me submit it.
+
+
+### 🤖 Autopilot
+
+Let me check the exact field names expected:
+
+
+### 🤖 Autopilot
+
+Let me check the SCHEMA.md for the exact field names:
+
+
+### 🤖 Autopilot
+
+Let me look at the actual Edgar API endpoint to see the exact field names expected:
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` tool sends to Edgar's API which expects a signed payload string, not individual fields. Let me use the `create_dao_submission` tool instead, which is the higher-level wrapper:
+
+
+### 🤖 Autopilot
+
+Done! Submitted to the DAO ledger:
+
+- **Title:** Fix mobile text overflow on /vault/status page
+- **Contributors:** Gary Teh, Sophia Truesight
+- **Time:** 7 minutes total (2 + 5)
+- **TDG Issued:** 0.7
+- **PR:** [#218](https://github.com/TrueSightDAO/truesight_autopilot/pull/218)
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Missing required fields for CONTRIBUTION EVENT: Type, Amount. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
+• `create dao submission` → Contribution submitted
 
