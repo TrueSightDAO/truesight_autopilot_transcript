@@ -698,51 +698,66 @@ I see the full config. The `/static/` location block serves from `/opt/truesight
 ### 🤖 Autopilot
 
 Now restart both app workers to pick up the template change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — can't restart the main autopilot by hand. The vault worker is fine though. Let me restart just the vault.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify it's working.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both endpoints work. Let me also check the page source to confirm the favicon link is in the HTML.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The favicon link is in the HTML. The vault worker is running the old template (without the `table-layout: fixed` fix) because the worktree hasn't been committed/pushed to the branch the vault worker reads from. Let me check which branch the vault worker is actually running.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault worker runs from `/opt/truesight_autopilot/app/vault_app.py` — the main repo path, not the worktree. Let me check if `app/vault_app.py` exists in the main repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault worker runs from the main repo path (`/opt/truesight_autopilot/app/`), and the `base.html` there was already updated with the favicon link. The `table-layout: fixed` fix was applied to the worktree copy though. Let me check if the main copy has it too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The main repo copy doesn't have the table overflow fix — only the worktree does. Let me apply the same fixes to the main repo copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now restart the vault worker to pick up both the favicon and table fixes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify both fixes are live.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -859,4 +874,16 @@ Refresh the page — the audit log should now stay within the card border. Give 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → grep -n "Audit Log\|audit_log\|audit" /opt/truesight_autopilot/app/templates/vault/index.html; grep -n "audit\|Audit\|loadAudit\|auditLog\|ACTION\|DETAILS\|TIMESTAMP" /opt/truesight_autopilot/app/templates/vault/index.html | head -30; sed -n '244,265p' /opt/truesight_autopilot/app/templates/vault/index.html; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] nicely done.
+
+
+### 🤖 Autopilot
+
+Glad it looks good! 🎉
+
+The vault is shaping up nicely — favicon, responsive tables, audit log all sorted. Anything else you'd like me to tackle?
 
