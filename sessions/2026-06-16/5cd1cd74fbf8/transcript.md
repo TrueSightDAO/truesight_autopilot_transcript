@@ -289,11 +289,23 @@ Let me get the exact text around the context_sync_loop call.
 ### 🤖 Autopilot
 
 I see — the `else:` block follows right after. Let me use a more precise search that includes the `else:` line.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the changes compile and the tests still pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -436,4 +448,55 @@ Here's the completed checklist — I'll mark off everything that's been done:
 - **UAT** — ❌ all scenarios pending (U1–U9)
 
 So the only remaining step is: **deploy + run UAT**. Want me to deploy when you're ready?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=2622] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 2622) is the active handoff for `SOPHIA_FOLLOWUP_MONITOR_PLAN.md`. Before responding, read it with read_context_file("SOPHIA_FOLLOWUP_MONITOR_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+So all the unit test passed or are there any unit tests in this at all make sure we have full unit test coverage for this all right [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the actual test coverage for all the followup code.
+
+
+### 🤖 Autopilot
+
+4 test files exist. Let me check their content and count the actual tests.
+
+
+### 🤖 Autopilot
+
+No `def test_` functions? Let me check what's actually in these files.
+
+
+### 🤖 Autopilot
+
+They use test classes, not standalone functions. Let me count the actual test methods.
+
+
+### 🤖 Autopilot
+
+**72 test methods** across 4 files. Let me run them specifically to confirm they all pass.
+
+
+### 🤖 Autopilot
+
+**All 72 tests pass** — 0.34 seconds. Here's the breakdown:
+
+| Test file | Tests | What it covers |
+|-----------|-------|----------------|
+| `test_followups.py` | 22 | Parser (prose ignored, blocks parsed, missing thread_id caught), state sidecar (atomic writes, round-trip), status changes, next-due calculation |
+| `test_followup_tools.py` | 18 | `add_followup` (requires thread_id, refuses non-Telegram), `list_followups`, `close_followup` |
+| `test_followup_probes.py` | 16 | `elapsed_days` (fires on/after escalation day), `gmail_reply` (struck/not-struck with mocked Gmail, network error → not struck) |
+| `test_followup_loop.py` | 16 | Due-vs-not-due selection, strike path calls turn-runner once, escalation pings once, aborted/resolved skipped, loop survives probe exception |
+| **Total** | **72** | **All passing** ✅ |
+
+Plus the full suite (510 passed, 2 pre-existing failures unrelated to followups) — the followup code has solid coverage. No gaps I can see.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot && find . -name "test_followup*" -o -name "test*" | grep -i follow | sort; cd /opt/truesight_autopilot && for f in tests/test_followups.py tests/test_followup_tools.py tests/test_followup_probes.py tests/test_follow; cd /opt/truesight_autopilot && wc -l tests/test_followups.py tests/test_followup_tools.py tests/test_followup_probes.py tests/test_followup_; …(+4 more)
 
