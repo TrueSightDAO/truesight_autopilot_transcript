@@ -1921,31 +1921,77 @@ Let me update the SOP to cover both paths, and add a "Fork the Ecosystem" sectio
 ### 🤖 Autopilot
 
 Now let me update the SOP to cover both Clone and Fork paths, and update the status page to reflect the distinction.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the status page to reflect both paths.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is empty again! The Python script overwrote it with nothing. Let me restore from git.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, restored. The issue is the Python heredoc — the emoji characters are causing encoding issues. Let me write the file differently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, now I can see the exact content. Let me write the replacement using a file-based approach to avoid encoding issues.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The stash pop restored the other changes but the status.html change was already committed. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1984,16 +2030,69 @@ Want to try spawning a test clone or fork?
 ### 🤖 Autopilot
 
 You're right — the status page should show the URLs for both Edgar and the ledger so a governor can see what infrastructure this instance is connected to. Let me add those.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the Edgar URL and ledger sheet ID aren't in the `.env` because they're configured differently. Let me check how the app connects to Edgar and the ledger.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — Edgar is at `https://edgar.truesight.me` and the ledger sheet ID is `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`. Let me also check the Edgar client to see how it's configured.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2055,4 +2154,72 @@ Refresh the page (sign in first) and scroll down to the Runtime Configuration ca
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×25 → cd /opt/truesight_autopilot && python3 -c " import os from dotenv import load_dotenv load_dotenv() print('EDGAR_URL:', os.getenv('EDGAR_URL'; cd /opt/truesight_autopilot && cat .env 2>/dev/null | grep -i "edgar\|ledger\|context\|transcript\|repo\|sheet" | head -20; cd /opt/truesight_autopilot && cat .env 2>/dev/null | grep -v "^#" | grep -v "^$" | head -40; …(+22 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5112] by the way edgar dao_protocol has no postgresql, just google sheet, Google App script and github actions isnt it??
+
+
+### 🤖 Autopilot
+
+Let me check the Edgar architecture to confirm.
+
+
+### 🤖 Autopilot
+
+That's the old `sentiment_importer` (the original Krake/Seni Rails app). Let me check the current `dao_protocol` which is the Edgar API.
+
+
+### 🤖 Autopilot
+
+You're right, Gary. Let me check the actual Edgar (dao_protocol) architecture.
+
+
+### 🤖 Autopilot
+
+You're absolutely right, Gary. **Edgar (dao_protocol) has no PostgreSQL.** Its architecture is:
+
+**Edgar = FastAPI + Google Sheets + Google Apps Script + GitHub Actions**
+
+No database server at all. Here's how it works:
+
+| Component | Role |
+|---|---|
+| **FastAPI** (`dao_protocol`) | Receives signed events, verifies RSA signatures, writes to Google Sheets via service accounts |
+| **Google Sheets** | The ledger — all contributions, inventory movements, QR code states, identities live in sheets |
+| **Google Apps Script** | Email verification, inventory snapshots, webhook triggers — serverless functions called by the FastAPI server |
+| **GitHub Actions** | Scheduled jobs, cache refreshes, CI/CD |
+| **GitHub repos** (data repos) | Public caches (treasury-cache, places-cache, contributors-cache, etc.) — JSON snapshots published from sheets |
+
+So when I said "new PostgreSQL" in the fork scenario earlier, that was wrong. A fork of Edgar would need:
+
+1. **New FastAPI instance** — same code, different `.env`
+2. **New Google Sheet** — blank ledger
+3. **New Google Apps Script deployments** — pointing at the new sheet
+4. **New GitHub data repos** — for the public caches
+5. **New service accounts** — with access to the new sheet
+
+No database to provision. That actually makes forking **simpler** than I described — it's all API keys and sheet IDs, no PostgreSQL setup.
+
+Let me update the status page to reflect the correct architecture.
+
+
+### 🤖 Autopilot
+
+You're right — **Edgar has no PostgreSQL.** Its architecture is:
+
+**FastAPI → Google Sheets (ledger) + Google Apps Script (email/webhooks) + GitHub Actions (scheduled jobs) + GitHub data repos (public caches)**
+
+No database server to provision. This actually makes forking **simpler** — a fork just needs:
+- A new FastAPI instance (same code, new `.env`)
+- A new Google Sheet (blank ledger)
+- New Google Apps Script deployments
+- New GitHub data repos for caches
+
+The status page now reflects the correct architecture. Refresh and check the Fork description.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → ls /opt/dao_protocol/ 2>/dev/null || ls ~/dao_protocol/ 2>/dev/null || find / -maxdepth 3 -name "dao_protocol" -type d 2>/dev/null | head -5; cd /opt/truesight_autopilot && ls dao_protocol/ 2>/dev/null && echo "---" && ls -la dao_protocol/ 2>/dev/null | head -20; cd /opt/truesight_autopilot && cat dao_protocol/requirements-server.txt 2>/dev/null | head -20 && echo "===" && cat dao_protocol/pyproject.t; …(+6 more)
 
