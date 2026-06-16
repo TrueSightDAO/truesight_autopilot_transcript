@@ -133,17 +133,10 @@
     "created_at": "2026-06-15T22:52:31Z"
   },
   {
-    "title": "Merge PR #351 on tokenomics",
+    "title": "Merge PR #218 on truesight_autopilot",
     "qr_code": "",
-    "summary": "Add BUY_BACK_RESERVE to Performance Statistics sync in tdg_wix_dashboard.gs\n\nThe file is at google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs\n\nI need two changes:\n\n1. Add a new function `ge",
+    "summary": "The /vault/status page has text spilling out of the right side of cards on mobile (narrow screens). The issue is in app/templates/vault/base.html \u2014 the mobile CSS at @media (max-width: 768px) is missi",
     "action": "merge_pr",
-    "created_at": "2026-06-16T13:38:48Z"
-  },
-  {
-    "title": "Merge PR #352 on tokenomics",
-    "qr_code": "",
-    "summary": "Add a `?action=triggerSync` handler to the `doGet` function in `google_app_scripts/tdg_asset_management/tdg_wix_dashboard.gs` so the sync can be triggered remotely via HTTP GET.\n\nThe `doGet` function ",
-    "action": "merge_pr",
-    "created_at": "2026-06-16T13:45:37Z"
+    "created_at": "2026-06-16T17:39:33Z"
   }
 ]
