@@ -3046,6 +3046,7 @@ Now I can see the exact content. Let me use the exact text from the file for the
 ### 🤖 Autopilot
 
 The whitespace must differ. Let me check the exact bytes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4081,4 +4082,40 @@ The Pages API shows the latest deployment was at `2026-07-18T09:56:08Z`. The new
 
 Let me check if the Pages build is actually running by looking at the Pages settings.
 [1 tool result
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] Do you think perhaps we should have a link to https://dapp.truesight.me/withdraw_voting_rights.html
+
+From 
+
+https://beta.truesight.me/buy-back-reserve/
+
+Since that is the most appropriate action to take after seeing this view??
+
+
+### 🤖 Autopilot
+
+That's a great UX flow — see the reserve, then take action. Let me add that link to the detail page.
+
+
+### 🤖 Autopilot
+
+Now I can see the full page. Let me add a CTA button linking to the voting rights withdrawal page. I'll add it right after the "How It Works" section and before the provisions table.
+
+
+### 🤖 Autopilot
+
+The sync hit the CNAME conflict again. The changes are live on the beta site though. Here's the link:
+
+**https://beta.truesight.me/buy-back-reserve/**
+
+You should see a **"Withdraw Voting Rights →"** button between the How It Works section and the provisions table. It links to `dapp.truesight.me/withdraw_voting_rights.html` — the natural action after seeing the reserve.
+
+For the prod site, you'll need to manually apply the change to `truesight_me_prod/buy-back-reserve/index.html` — just add the CTA button section between the "How It Works" card and the provisions card. The exact HTML is in PR #247 on the beta repo if you want to copy it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #247 on truesight_me_beta merged successfully (sha: ab391e62553b89cd25af0e8dd27f9ad5d471fe9a). Pull Request successfully merged
 
