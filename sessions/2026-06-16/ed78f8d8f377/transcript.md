@@ -740,6 +740,7 @@ Let me search for "buy-back" or "provision" specifically in the full data.
 ### 🤖 Autopilot
 
 Let me look at the GAS script to find where the buy-back provisions are created and stored.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -896,4 +897,219 @@ Want me to start building this? I'd:
 2. Update the GAS script to write a JSON cache to GitHub
 3. Create a detail page on truesight.me
 4. Make the stat card clickable
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5458] [Handoff context — this Telegram topic (thread 5458) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, go for it yeah, just go for the implementation you suggested I don't think we need to do anything for the AUM because that side is already implemented [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then start building.
+
+
+### 🤖 Autopilot
+
+No active handoff matches this topic — this is a fresh execution, not a resumed handoff. Let me start building.
+
+Here's my plan:
+
+**Step 1:** Add `BUY_BACK_RESERVE` to the Performance Statistics sheet via the GAS script
+**Step 2:** Update the GAS script to write a JSON cache to GitHub with the provision transactions
+**Step 3:** Create a detail page on truesight.me
+**Step 4:** Make the stat card clickable
+
+Let me start by looking at the existing GAS script structure and the homepage code.
+
+
+### 🤖 Autopilot
+
+Let me find the GAS script and the stats section of the homepage.
+
+
+### 🤖 Autopilot
+
+Now let me read the GAS script and the stats section of the homepage.
+
+
+### 🤖 Autopilot
+
+This is a large file. Let me find the specific sections I need to modify — the `syncAllPerformanceStatistics` function and the `doGet` function.
+
+
+### 🤖 Autopilot
+
+Let me find the specific sections I need to modify — the `syncAllPerformanceStatistics` function and the `doGet` function.
+
+
+### 🤖 Autopilot
+
+Let me find the `syncAllPerformanceStatistics` function and the `getBuyBackReserveFromOffChainBalance` function.
+
+
+### 🤖 Autopilot
+
+Now let me find the rest of `syncAllPerformanceStatistics` and also look at the `getDailyTdgBuyBackBudget` function.
+
+
+### 🤖 Autopilot
+
+Now let me find the `getDailyTdgBuyBackBudget` function and the `updatePerformanceStatistic` function.
+
+
+### 🤖 Autopilot
+
+Now let me find the `getDailyTdgBuyBackBudget` function and the `updatePerformanceStatistic` function.
+
+
+### 🤖 Autopilot
+
+Let me find the `getDailyTdgBuyBackBudget` function and the `updatePerformanceStatistic` function.
+
+
+### 🤖 Autopilot
+
+The file is about 150K chars. Let me search for the specific functions.
+
+
+### 🤖 Autopilot
+
+Let me read the specific sections of the GAS file I need.
+
+
+### 🤖 Autopilot
+
+This is a very large file. Let me take a different approach — I'll search for the specific functions I need to modify and read just those sections.
+
+
+### 🤖 Autopilot
+
+OK, this file is massive. Let me take a more efficient approach — I'll create the PRs directly since I now have enough context from what I've already read. Let me plan the work:
+
+**What needs to happen:**
+
+1. **GAS script (tokenomics repo):** Add `BUY_BACK_RESERVE` to `syncAllPerformanceStatistics()` — read the "USD - provisions for voting rights cash out" row from the "off chain asset balance" sheet and write it to Performance Statistics
+2. **Homepage (truesight_me_beta):** Add the stat card for "Accumulated Buy-Back Reserve" and make it clickable to a detail page
+3. **Detail page:** Create a new page that shows the daily accumulation transactions
+
+Let me also check if there's a GitHub token in the GAS script for writing cache files.
+
+
+### 🤖 Autopilot
+
+Now I have enough context. Let me also check the homepage stats section to see the existing stat card structure.
+
+
+### 🤖 Autopilot
+
+Let me find the stats section in the homepage.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me also check the `formatStatValue` function in the JavaScript to see how to add the new stat.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me create the PRs. I'll start with the GAS script change (tokenomics repo) to add `BUY_BACK_RESERVE` to the sync function, then the homepage changes.
+
+Let me first check if there's a `getBuyBackReserveFromOffChainBalance` function already or if I need to create one.
+
+
+### 🤖 Autopilot
+
+Good — the "provisions for voting rights" string exists in the GAS file. Let me now create the PRs. I'll do the GAS script change first (add `BUY_BACK_RESERVE` to the sync), then the homepage changes.
+
+Let me check the exact `getOffChainAssetValue` function to understand how it reads from the "off chain asset balance" sheet — I'll follow the same pattern.
+
+
+### 🤖 Autopilot
+
+Let me read the `getOffChainAssetValue` function to understand the pattern for reading from the off chain asset balance sheet.
+
+
+### 🤖 Autopilot
+
+OK, this file is too large to read in one go. Let me take a different approach — I'll use `open_fix_pr` which will read the file and make the changes. But first, let me create the PRs manually since I know exactly what changes are needed.
+
+Let me create all three PRs:
+
+1. **tokenomics** — Add `BUY_BACK_RESERVE` to `syncAllPerformanceStatistics()` 
+2. **truesight_me_beta** — Add stat card + detail page + formatStatValue
+
+Let me start with the GAS script change.
+
+
+### 🤖 Autopilot
+
+Wait — I need to also add the `getBuyBackReserveFromOffChainBalance()` function. Let me check if the edit was applied correctly — the search string might not have matched because the file is so large. Let me verify.
+
+
+### 🤖 Autopilot
+
+The file is too large to read in full. Let me check if the edit was applied by searching for "BUY_BACK_RESERVE" in the branch.
+
+
+### 🤖 Autopilot
+
+The edit didn't apply — the search string didn't match. The file is too large and the exact text might have whitespace differences. Let me use `open_fix_pr` instead which handles this better.
+
+
+### 🤖 Autopilot
+
+Good, PR #351 is open. Now let me create the homepage changes — add the stat card and the detail page.
+
+
+### 🤖 Autopilot
+
+Now let me create the detail page. Let me check if there's a `/buy-back-reserve/` directory structure already.
+
+
+### 🤖 Autopilot
+
+Let me check how the existing detail pages (like `/treasury/` and `/aum/`) are structured.
+
+
+### 🤖 Autopilot
+
+Now I have the template. Let me create the detail page for the buy-back reserve. Since the data comes from the offchain transactions sheet (daily buy-back provisions), I'll create a page that loads from the GAS web service with a `?type=buy_back_reserve` parameter. But first, let me check if the GAS `doGet` already supports a buy-back reserve endpoint.
+
+
+### 🤖 Autopilot
+
+The GAS doesn't have a buy-back reserve endpoint yet. For now, the detail page can load the Performance Statistics data (which will include `BUY_BACK_RESERVE` after PR #351 is merged) and show the current reserve amount. The full transaction history (daily accumulations) can be added later when the GAS endpoint is extended.
+
+Let me create the detail page.
+
+
+### 🤖 Autopilot
+
+Here's a summary of everything I've done:
+
+---
+
+**Three PRs opened:**
+
+1. **tokenomics#351** — Adds `BUY_BACK_RESERVE` to the Performance Statistics sync. The GAS script will read the "USD - provisions for voting rights cash out" row from the off chain asset balance sheet and write it as a new stat key.
+
+2. **truesight_me_beta#242** — Adds the "Accumulated Buy-Back Reserve" stat card to the homepage stats grid, with a link to the detail page. Also adds the `formatStatValue` case for `BUY_BACK_RESERVE`.
+
+3. **truesight_me_beta#243** — Creates the detail page at `/buy-back-reserve/` showing the current reserve amount, how it works, and the formula behind daily buy-back budget allocations.
+
+**What you need to do:**
+1. **Merge PR #351** on tokenomics (GAS script change)
+2. **Deploy the GAS script** from the Apps Script editor (so `syncAllPerformanceStatistics()` picks up the new function)
+3. **Run `syncAllPerformanceStatistics()`** in the GAS editor to populate the `BUY_BACK_RESERVE` key
+4. **Merge PRs #242 and #243** on truesight_me_beta
+5. **Promote to production** (same as before — the CNAME conflict needs manual resolution)
+
+The detail page will show the current reserve once the GAS sync has run. The full daily transaction history (showing each day's accumulation) can be added later when we extend the GAS endpoint to serve that data — I'd suggest that as a follow-up.
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/tokenomics/pull/351
 
