@@ -3833,6 +3833,11 @@ Found it. Let me see the alias mapping — line 1274-1277 shows aliases for `Inv
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see the issue now. The alias `"item": "Inventory Item"` maps to **Inventory Movement**'s field, not **SALES EVENT**'s `Item`. There's no alias for `Item` in the SALES EVENT context. The validation checks the canonical labels list for SALES EVENT which includes `Item`, but the alias mapping doesn't have an entry for `item` → `Item` for sales events.
 
 Let me check the validation logic more carefully.
@@ -6382,4 +6387,26 @@ You're right, I went into an infinite loop trying to create PRs. Here's what hap
 2. `truesight_autopilot` — update `lookup_event_docs` to fetch from that endpoint instead of guessing
 
 **The branches are pushed to GitHub** (`event-schema-endpoint` on dao_protocol, `lookup-event-docs-from-edgar` on truesight_autopilot) — they just need PRs created manually. Want me to give you the exact commands to create them?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Don't give me the instructions on how to create a PR, but instead maybe drop up a detailed report of what the error was that is preventing you from handling this. And then let me just pass it over to deep seek or clot to handle the fixing of the error in the adapter. And that way, once it's fixed then you can continue doing your job. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and then write up the bug report.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+This thread (6045) isn't in the manifest yet. Let me gather the evidence for the bug report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) consolidated]
 
