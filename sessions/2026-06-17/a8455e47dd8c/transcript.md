@@ -1727,11 +1727,23 @@ Tables now show per-unit weight only — cleaner for Jerri to work with. Ready f
 ### 🤖 Autopilot
 
 Got it — remove gross weight columns entirely. Let me update both files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me regenerate the PDF without gross weight too.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1754,6 +1766,7 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Let me research the Chinese packaging requirements for imported food products.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1855,6 +1868,41 @@ Now let me regenerate the PDF with the chocolate bar included.
 3. ✅ **Gross weight columns removed** — per-unit net weight only
 4. ✅ **NCM 1806.32.00 added** to the pathway table in Section D
 5. ✅ **Packaging note** in Section H
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Don’t need to include estimated total and est declared value
+
+
+### 🤖 Autopilot
+
+Got it. Let me remove the "Est. Total" and "Est. Declared Value" lines from both Category A and B.
+
+
+### 🤖 Autopilot
+
+The file on `main` still has the old version. Let me write the full corrected file.
+
+
+### 🤖 Autopilot
+
+Now let me update the PDF too.
+
+
+### 🤖 Autopilot
+
+**PR #535** — `fix/gacc-remove-estimates` — ready for review.
+
+**All changes in one PR:**
+1. ✅ Removed "Est. Total" and "Est. Declared Value" from both Category A and B
+2. ✅ Added "Premium Dark Chocolate Bar 50g" (NCM 1806.32.00) to both tables
+3. ✅ "Vacuum bag" → "Sealed bag" throughout
+4. ✅ Gross weight columns removed
+5. ✅ Chocolate bar added to NCM/pathway table in Section D
+6. ✅ Packaging note in Section H
 
 Want me to merge it?
 
