@@ -1885,7 +1885,13 @@ Now I found it. Let me read the parsing function.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the exact format. Let me read the rest to see the full expected format.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1902,6 +1908,7 @@ Now I have the exact format. The GAS processor expects this format for an INVENT
 ```
 
 But wait — the `POST /dao/submit_contribution` endpoint takes a `text` field that includes the **digital signature** format. Let me check the AUTOPILOT_EDGAR_SIGNING.md to see how I should submit this.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1911,6 +1918,17 @@ Now I have the complete picture. Let me also check the `submit_contribution` too
 Looking at the tool definition, `submit_contribution` takes `event_name` and `attributes` as a dict. But the actual Edgar API expects a signed text format. The tool likely handles the signing internally.
 
 Let me check what the `submit_contribution` tool actually does by looking at the code.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1931,6 +1949,7 @@ From the `processInventoryReport` function I found, the GAS processor expects th
 But wait — the `POST /dao/submit_contribution` endpoint logs the raw text to the `Telegram Chat Logs` sheet, and then the GAS webhook (`processTelegramChatLogs`) reads from that sheet and parses it. So the format needs to match what the GAS parser expects.
 
 Let me also check the `processTelegramChatLogs` function to see how it parses the logged text.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1949,11 +1968,13 @@ Now I have the complete picture. The GAS processor (`processTelegramChatLogs`) r
 But the `POST /dao/submit_contribution` endpoint logs the raw `text` field to the Telegram Chat Logs sheet. The text needs to include the digital signature format for the autopilot's trusted agent path to work.
 
 Let me check how the GAS processor reads from Telegram Chat Logs — specifically which column it reads.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual `processTelegramChatLogs` function to see which column it reads from.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1995,6 +2016,7 @@ Then the signature block follows. The `submit_contribution` tool I have handles 
 Looking at the tool definition: `submit_contribution(event_name, attributes)` — it takes `event_name` and `attributes` as a dict. It likely constructs the text and signs it internally.
 
 Let me check the SCHEMA.md for the exact Inventory Movement column mapping to make sure I use the right field names.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2053,6 +2075,12 @@ For this specific case, the attributes should be:
 ```
 
 But I want to double-check — does the `submit_contribution` tool map these field names correctly to the GAS parser's expectations? Let me check the tool implementation.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2208,4 +2236,63 @@ Here's the corrected proposal:
 
 
 Does this look right to you?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Yup. How do you ensure that you and future instances of you and other LLMs dont fumble around between sales and inventory movement?
+
+
+### 🤖 Autopilot
+
+That's a really important question. The answer is: **I can't rely on memory or reasoning alone** — I need a decision tree baked into the code or docs that I (and future instances) can reference.
+
+Here's what I'd propose:
+
+---
+
+## Option 1: Add a decision rule to the query endpoint docs
+
+When I return results from `GET /dao/qr-codes` or `GET /dao/inventory-movements`, include a hint about the next action. But this is passive — I'd still have to remember to check it.
+
+## Option 2: Add a decision tree to the implementation plan doc
+
+Update the plan I checked in (`DAO_QUERY_ENDPOINTS_PLAN.md`) with a clear rule:
+
+> **SALES EVENT** = bag sold to end customer, money changes hands, QR status → SOLD  
+> **INVENTORY MOVEMENT** = bag moves between known holders in the supply chain (no end sale)
+
+But this still relies on me reading the doc every time.
+
+## Option 3: Add a `suggest_event_type` endpoint to Edgar
+
+This is the most robust — a lightweight endpoint that takes the context and returns the recommended event type:
+
+```
+GET /dao/suggest-event?action=sold&holder=Gergana&recipient=end+customer&money=17.50
+→ {"event": "SALES EVENT", "reason": "Bag sold to end customer, proceeds collected"}
+```
+
+But this adds complexity to maintain.
+
+## Option 4 (my recommendation): Add the decision tree to the `submit_contribution` tool itself
+
+The tool already takes `event_name` and `attributes`. What if I add a **pre-flight validation** step that checks:
+
+- If `event_name` is `INVENTORY MOVEMENT` and `Recipient Name` is something like "Retail Sale" or "Customer" → warn: "This looks like a SALES EVENT, not an inventory movement"
+- If `event_name` is `SALES EVENT` but `Sold by` is missing → warn
+
+This way the guardrail is in the tool, not in my head. Every instance of me (and any future LLM) hits the same validation.
+
+---
+
+## Simplest immediate fix
+
+For now, I'll add a **decision rule** to the implementation plan doc and also pin a note to my working context so I don't make this mistake again. But the real fix is **Option 4** — adding validation to the `submit_contribution` tool.
+
+Want me to:
+1. Update the plan doc with the decision tree?
+2. Open a PR on `truesight_autopilot` to add pre-flight validation to the `submit_contribution` tool?
+
+Or shall we just proceed with submitting the SALES EVENT for Gergana first?
 
