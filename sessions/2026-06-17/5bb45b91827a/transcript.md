@@ -3180,6 +3180,12 @@ Let me check the handoff registry, then merge and deploy.
 ### 🤖 Autopilot
 
 This thread (6045) isn't in the manifest yet. Let me merge the PRs and deploy.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3275,4 +3281,42 @@ PR #544 exists and is merged — it's at `https://github.com/TrueSightDAO/agenti
 **https://github.com/TrueSightDAO/agentic_ai_context/pull/544** ✅
 
 It was merged successfully at `1ec959e`. The deployment checklist with the disk cleanup cron is now in `DAO_QUERY_ENDPOINTS_PLAN.md` section 7.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Perfect. I guess we are done with all the code changes and can move on to deal with the way home shop's recent sale? What are your thoughts?
+
+
+### 🤖 Autopilot
+
+Yes, let's wrap up the loose ends and handle Gergana's sale properly.
+
+## Loose ends
+
+1. **PR #118** — DAO Events Reference on landing page. Still open for your review. The `lookup_event_docs` tool needs this to fetch live docs. Want me to merge it or do you want to review first?
+
+2. **Autopilot restart** — The `lookup_event_docs` tool code is on disk but the service hasn't restarted to pick it up. It'll happen on the next safe restart (when no threads are active).
+
+3. **Gergana's sale** — Ready to submit once the docs flow is solid.
+
+## My recommendation
+
+Since the `lookup_event_docs` tool isn't live yet (needs restart), I can still submit Gergana's sale using the format I already confirmed from the GAS parser code. The flow would be:
+
+1. I call `submit_contribution(event_name="SALES EVENT", attributes={...})` with the correct format
+2. The tool signs it and POSTs to Edgar
+3. Edgar logs it → GAS cron picks it up → QR Code Sales sheet gets updated → QR code status flips to SOLD
+
+The format I confirmed from the GAS parser:
+
+```
+[SALES EVENT]
+- Item: 2024OSCAR_20260121_32
+- Sales price: 17.50
+- Sold by: Gergana - The Way Home Shop
+- Cash proceeds collected by: Gary Teh
+```
+
+Want me to go ahead and submit it? Or would you rather wait for the `lookup_event_docs` flow to be fully operational first?
 
