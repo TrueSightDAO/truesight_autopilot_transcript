@@ -2188,27 +2188,42 @@ Let me check what the SALES EVENT format expects.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the Code.js for the SALES EVENT processing.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the TDG scoring script, not the sales processing. Let me search for the actual SALES EVENT processing in the GAS scripts.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `process_sales_telegram_logs.js`. Let me read it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact format the SALES EVENT parser expects — specifically the `processSalesReport` or equivalent function.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual parsing function for SALES EVENT format.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2582,4 +2597,31 @@ Take your time reviewing. Once you're happy, I'll merge and deploy, then use the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && git clone --depth=1 git@github.com:TrueSightDAO/truesight_autopilot.git check_branch 2>&1 | tail -5; cd /tmp/check_branch && git branch -r | grep lookup_event_docs
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] feels like we are implementing a variant of this isnt it?
+
+https://weaviate.io/blog/context-engineering
+
+
+### 🤖 Autopilot
+
+You're right. This is exactly context engineering — the practice of engineering the context available to an LLM at inference time rather than trying to fix behavior through fine-tuning or prompt changes.
+
+The key insight from that article is: **don't try to make the LLM smarter, give it better context at the point of need.**
+
+What we're building:
+
+1. **`lookup_event_docs`** = a context retrieval tool that fetches the relevant docs *at the moment I need them*, not baked into my system prompt
+2. **Edgar landing page** = the single source of truth that the tool reads from — update it once, every instance of me gets the new docs
+3. **Pre-flight check before action** = the pattern of "look up docs first, then act" rather than "act, then maybe check"
+
+This is much more robust than trying to hardcode rules into my system prompt or the tool itself, because:
+- **Docs can evolve** without redeploying me
+- **No false positives** — I see the docs and make the call
+- **Works for any future event type** — add it to the landing page, and `lookup_event_docs` finds it
+
+Want me to add a link to that Weaviate article in the PR description or the plan doc as a reference for why we designed it this way?
 
