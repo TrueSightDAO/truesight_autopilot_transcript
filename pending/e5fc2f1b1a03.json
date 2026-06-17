@@ -133,10 +133,10 @@
     "created_at": "2026-06-15T22:52:31Z"
   },
   {
-    "title": "Merge PR #232 on truesight_autopilot",
+    "title": "Merge PR #247 on truesight_autopilot",
     "qr_code": "",
-    "summary": "The deploy tool's no-op guard (deploy.py, ~line 150) checks `git rev-parse HEAD == origin/main` and returns noop if they match. But when code is pulled by a merge PR's auto-pull (not by the deploy too",
+    "summary": "Bug: submit_contribution tool rejects SALES EVENT with \"Missing required fields: Item\" even when \"Item\" is passed in attributes.\n\nRoot cause: The alias mapping in app/main.py has `\"item\" \u2192 \"Inventory ",
     "action": "merge_pr",
-    "created_at": "2026-06-16T23:22:02Z"
+    "created_at": "2026-06-17T23:10:43Z"
   }
 ]
