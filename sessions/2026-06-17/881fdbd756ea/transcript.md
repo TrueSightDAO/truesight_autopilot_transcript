@@ -238,11 +238,18 @@ PR #537 is merged. The GACC registration guide is now clean — all Coopercabruc
 ### 🤖 Autopilot
 
 The PDF is the companion document to the GACC registration guide — it's a formatted, print-ready version of the same content. Let me extract the text to tell you what's in it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's a binary PDF, so I can't read it directly from the repo. Let me download it and extract the text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -270,21 +277,25 @@ Here's what the PDF is — it's a **5-page formatted PDF** version of the GACC r
 ### 🤖 Autopilot
 
 "Copper Cup Rooka" — I love it. Let me read the updated markdown and regenerate the PDF.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The markdown file still has the old content on the main branch — the PR was merged but the main branch hasn't been updated yet. Let me check.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The main branch already has the updated markdown — Section F is now "Key Contacts" with no Coopercabruca. The merge went through. Now I just need to regenerate the PDF to match. Let me build the updated content and generate it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Now let me upload it to replace the old one.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -304,16 +315,24 @@ The PDF now has 4 pages (down from 5) — Section F is now Key Contacts with onl
 ### 🤖 Autopilot
 
 Let me update both the markdown guide and regenerate the PDF with that change.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see "Graziela Vedana (Seacos Logistic)" in the Key Contacts. Let me update the markdown and regenerate the PDF.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me regenerate the PDF with the updated content and upload it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -400,4 +419,88 @@ The raw.githubusercontent.com URL may still show the old version for a few minut
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #538 on agentic_ai_context merged successfully (sha: b6aba5a770e726d3c0ec2be220b73afc61183a16). Pull Request successfully merged
 • `ssh run` ×8 → curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf' ; ls -la /tmp/gacc_registration_black_king_china.pdf /tmp/gacc_fresh.pdf; python3 -c " import fitz doc = fitz.open('/tmp/gacc_registration_black_king_china.pdf') print(f'Pages: {doc.page_count}') full = '' for page; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Can you not find the correct contact information for omega services from my Gmail inbox?
+
+Make sure update it properly and then merge make sure the pdf is also updated
+
+
+### 🤖 Autopilot
+
+Let me search your Gmail for Omega Services contact info.
+
+
+### 🤖 Autopilot
+
+I can see the Omega Services contacts in the email thread. Let me read a couple of the key messages to get the full contact details.
+
+
+### 🤖 Autopilot
+
+Excellent! I now have the full Omega Services contact details from your Gmail. Let me update both the markdown and PDF with the correct information.
+
+Key contacts found:
+- **Ana Barros** — ana.barros@omegaservicos.com.br
+- **Isis Ribeiro** — isis.ribeiro@omegaservicos.com.br
+- **Helesson Bastos** — helesson.bastos@omegaservicos.com.br
+- **COMERCIAL** — comercial@omegaservicos.com.br
+- **EXPORTAÇÃO** — exportacao@omegaservicos.com.br
+
+Let me update the markdown guide first.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The markdown guide has "Omega Services" but just says "(contact via Gary Teh)" — no actual contact details. Let me update it with the real contacts from your Gmail.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF with the updated contact info and upload it.
+
+
+### 🤖 Autopilot
+
+The markdown is updated. Now let me generate the PDF with the same content and upload it.
+
+
+### 🤖 Autopilot
+
+Good, PDF generated. Let me verify it locally first, then upload.
+
+
+### 🤖 Autopilot
+
+PDF is clean — 4 pages, no Coopercabruca, no Seacos, no Graziela. Omega Serviços Logísticos with Ana Barros, Isis Ribeiro, and EXPORTAÇÃO contact details. Now let me upload it.
+
+
+### 🤖 Autopilot
+
+Now let me merge the markdown PR and verify the PDF on GitHub.
+
+
+### 🤖 Autopilot
+
+Everything is clean and updated. Here's the summary:
+
+**Both files are now merged and updated on `main`:**
+
+**Markdown guide** — PR #539 merged. Section F now shows:
+- **Freight Forwarder (Brazil):** Omega Serviços Logísticos — Ana Barros (ana.barros@omegaservicos.com.br) / Isis Ribeiro (isis.ribeiro@omegaservicos.com.br) / EXPORTAÇÃO (exportacao@omegaservicos.com.br)
+
+**PDF** — uploaded at commit `92ff888`. 4 pages, verified clean:
+- ✅ No Coopercabruca
+- ✅ No Seacos Logistic
+- ✅ No Graziela Vedana
+- ✅ Omega Serviços Logísticos with real contacts from your Gmail
+
+The raw.githubusercontent.com URL may take a few minutes to refresh the CDN cache, but the file on GitHub is correct.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 -c " import fitz doc = fitz.open('/tmp/gacc_registration_black_king_china.pdf') print(f'Pages: {doc.page_count}') full = '' for page; curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/92ff888c451ea35644bbaf23eb163d5fe7c0c965/exports/2026-06-16_gacc
+• `merge pr` → ✅ PR #539 on agentic_ai_context merged successfully (sha: dc46c48f1f77a49a162796a6a0aaa7d2a9d386e0). Pull Request successfully merged
 
