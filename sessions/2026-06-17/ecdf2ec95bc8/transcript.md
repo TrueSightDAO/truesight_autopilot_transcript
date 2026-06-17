@@ -3091,6 +3091,7 @@ But wait — the per-key files DO exist with correct data! The issue is that the
 So I'm still stuck. The only way out is to restart the process. Let me try one more thing — use the GitHub API to trigger a deploy via a webhook or check if there's a way to signal the process to restart.
 
 Actually, let me check if there's a health endpoint or a way to trigger a restart from outside.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3568,4 +3569,23 @@ The old bottleneck was `load_governors()` fetching and parsing the entire 400-en
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 -c " import sys; sys.path.insert(0, '.') from app.governor_registry import resolve_key, load_governor
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I am going to give this a test run then.
+
+
+### 🤖 Autopilot
+
+Go for it. When you hit `sophia.truesight.me/vault`, the flow will be:
+
+1. You submit your public key
+2. `resolve_key()` computes SHA-256 → fetches `public_keys/<sha256>.json` from raw GitHub
+3. Returns your identity with `is_governor: True` and roles `["governor", "member"]`
+4. Vault access granted — under 100ms
+
+Let me know how it goes. If anything feels slow or doesn't work, I'm here to debug.
 
