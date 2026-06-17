@@ -1571,21 +1571,25 @@ Now let me also check what specific documents are needed for cocoa/cacao and the
 ### 🤖 Autopilot
 
 This is a critical finding. Let me check one more thing — whether unroasted cocoa beans were removed from the "official recommendation" list under Decree 280.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have comprehensive research. Let me generate the PDF and MD files for Jerri.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the PDF is generated. Now let me create the MD file and save both to the repo.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload the PDF to the repo.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1724,6 +1728,79 @@ Done! **PR #532** — `fix/gacc-remove-gross-weight` — both files updated.
 - Both Category A and B tables now show only **Item | Unit Weight (Net) | Packaging**
 - Gross weight column removed entirely
 - Total line simplified to just net weight
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Also not vaccume bag. Basically sealed bag… do research see if Chinese regulation requires it.
+
+
+### 🤖 Autopilot
+
+Let me research the Chinese packaging requirements for imported food products.
+
+
+### 🤖 Autopilot
+
+Let me dig deeper into the specific packaging requirements for cacao/cocoa products entering China.
+
+
+### 🤖 Autopilot
+
+Good research. Let me also check the specific GB standards for food packaging materials relevant to cacao.
+
+
+### 🤖 Autopilot
+
+Here's what the research shows:
+
+**Chinese regulations do NOT specifically require "vacuum sealed" bags for cacao/cocoa imports.** The requirements are more general:
+
+**What China actually requires for packaging:**
+
+1. **Food-grade materials** — Must comply with GB 4806 series standards (food contact materials). Plastic bags must be food-safe, non-toxic, and meet migration limits.
+
+2. **Inner and outer packaging** — Both must be intact, clean, uncontaminated, and properly labeled. The GACC registration number must appear on both inner and outer packages.
+
+3. **Moisture/contamination prevention** — Packaging must prevent rewetting, degradation, and cross-contamination. This is a functional requirement, not a specific method.
+
+4. **Sealed (not necessarily vacuum)** — The key requirement is that bags are **properly sealed** to prevent leakage, pest ingress, and moisture damage during transport. A heat-sealed food-grade plastic bag is sufficient. Vacuum sealing is not mandated.
+
+**So your instinct is right — "sealed bag" is the correct term, not "vacuum bag."** The Chinese regulations care about:
+- Food-grade material ✅
+- Intact seal ✅
+- No contamination ✅
+- Proper labeling ✅
+
+They don't care whether it's vacuum-sealed or just heat-sealed. Let me update both files to use "Sealed bag" instead of "Vacuum bag."
+
+
+### 🤖 Autopilot
+
+Let me check the exact text in the file.
+
+
+### 🤖 Autopilot
+
+I see — the file still has the old version with gross weight columns and "Vacuum bag". The previous PR #532 was merged but the file on `main` still shows the old content. Let me write the full corrected version.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF with the same changes.
+
+
+### 🤖 Autopilot
+
+**PR #533** — `fix/gacc-sealed-bag-and-cleanup` — ready for review.
+
+**Changes:**
+- "Vacuum bag" → **"Sealed bag"** throughout (both tables)
+- Gross weight columns removed
+- Added **Section H: Packaging Note** explaining that Chinese regulations require food-grade sealed packaging but not vacuum sealing
+- Updated regulatory references to include GB 4806 series
 
 Want me to merge it?
 
