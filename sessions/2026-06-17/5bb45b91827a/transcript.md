@@ -3768,6 +3768,11 @@ The tool explicitly says the canonical label is `Item` but rejects it when I pas
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The dispatch logic is correct — `[SALES EVENT]` routes to `parseTelegramChatLogs` which calls `parseSalesEvent`. The issue is in the `submit_contribution` tool's validation layer, which is in the adapter (not in the repo). Let me check if the tool is looking for the QR code in a specific way.
 
 
@@ -3880,4 +3885,36 @@ What I should do is:
 This way the canonical labels live in one place (Edgar), and both the landing page and the tool read from the same source. No more alias mapping bugs.
 
 Want me to add that endpoint to Edgar and update `lookup_event_docs` to use it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think for every possible signed event, edgar should return the parameters to use isnt it? And then using the provided parameters, you get my approval and once I say yes, you use taht parameter to generate a signed request using the dao_client and submit back to Edgar... THis way, your guessing ends up gets reduced to a very small scope with little room for error, you just execute.. thoughts?
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+This thread (6045) isn't in the manifest yet. But your idea is exactly right.
+
+The flow becomes:
+
+1. **I call Edgar** → `GET /dao/event-schema/SALES EVENT`
+2. **Edgar returns** → `{"canonical_labels": ["Item", "Sales price", "Sold by", ...], "required": ["Item", "Sales price"], "format": "[SALES EVENT]\n- Item: <qr_code>\n- Sales price: <amount>\n..."}`
+3. **I present the proposal to you** with the exact parameters from Edgar
+4. **You approve** → I call `submit_contribution` with those exact canonical labels
+5. **dao_client signs and submits** → no guessing, no alias mapping, no bugs
+
+This eliminates:
+- The alias mapping bug (I use the exact labels Edgar gave me)
+- The format guessing (Edgar tells me the format)
+- The field name confusion (no more `item` vs `Item` vs `Inventory Item`)
+
+The only thing I need to reason about is **which event type** to use — and for that, the `lookup_event_docs` tool returns the when-to-use rules. If I'm unsure, I ask you.
+
+Want me to add the `GET /dao/event-schema/{event_type}` endpoint to Edgar and update the flow?
 
