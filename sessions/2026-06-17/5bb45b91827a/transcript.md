@@ -2183,6 +2183,11 @@ Let me check what the SALES EVENT format expects.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the Code.js for the SALES EVENT processing.
 
 
@@ -2513,4 +2518,68 @@ Once these are merged and deployed, the flow for Gergana's sale will be:
 4. Call `submit_contribution(event_name="SALES EVENT", attributes={...})`
 
 Want me to merge these PRs and deploy?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] what are the URLs of the PR, let me review your work first
+
+
+### 🤖 Autopilot
+
+Here are the PRs:
+
+1. **dao_protocol #117** — Edgar landing page DAO Events Reference
+   https://github.com/TrueSightDAO/dao_protocol/pull/117
+
+2. **agentic_ai_context #542** — DAO Events Reference doc
+   https://github.com/TrueSightDAO/agentic_ai_context/pull/542
+
+3. **truesight_autopilot** — I need to check the PR number since it was opened via `git_push_changes`
+
+Let me find it.
+
+
+### 🤖 Autopilot
+
+Hmm, I don't see my PR in the open list. Let me check if it was created as a draft or if the push failed.
+
+
+### 🤖 Autopilot
+
+The PR wasn't created — the push likely failed silently. Let me check.
+
+
+### 🤖 Autopilot
+
+The PR wasn't created. Let me check if the branch was pushed.
+
+
+### 🤖 Autopilot
+
+The branch wasn't pushed. The `git_push_changes` call must have failed silently. Let me redo it properly.
+
+
+### 🤖 Autopilot
+
+Here are the three PRs for your review:
+
+---
+
+**1. dao_protocol #117** — Edgar landing page DAO Events Reference
+https://github.com/TrueSightDAO/dao_protocol/pull/117
+
+**2. agentic_ai_context #542** — DAO Events Reference companion doc
+https://github.com/TrueSightDAO/agentic_ai_context/pull/542
+
+**3. truesight_autopilot #242** — `lookup_event_docs` tool
+https://github.com/TrueSightDAO/truesight_autopilot/pull/242
+
+---
+
+Take your time reviewing. Once you're happy, I'll merge and deploy, then use the new flow for Gergana's sale.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && git clone --depth=1 git@github.com:TrueSightDAO/truesight_autopilot.git check_branch 2>&1 | tail -5; cd /tmp/check_branch && git branch -r | grep lookup_event_docs
 
