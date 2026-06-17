@@ -2085,6 +2085,11 @@ But I want to double-check — does the `submit_contribution` tool map these fie
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The tool implementation isn't in the code repos I can search. But based on the AUTOPILOT_EDGAR_SIGNING.md and the GAS parser, I know the format. Let me construct the proposal with the correct parameters.
 
 Here's what I've confirmed:
@@ -2295,4 +2300,36 @@ Want me to:
 2. Open a PR on `truesight_autopilot` to add pre-flight validation to the `submit_contribution` tool?
 
 Or shall we just proceed with submitting the SALES EVENT for Gergana first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Option 4 (my recommendation): Add the decision tree to the submit_contribution tool itself
+
+The tool already takes event_name and attributes. What if I add a pre-flight validation step that checks:
+
+• If event_name is INVENTORY MOVEMENT and Recipient Name is something like "Retail Sale" or "Customer" → warn: "This looks like a SALES EVENT, not an inventory movement"
+• If event_name is SALES EVENT but Sold by is missing → warn
+
+This way the guardrail is in the tool, not in my head. Every instance of me (and any future LLM) hits the same validation.
+
+What or who is sitting on the other side of this decision tree tool to give you a proper response?? that is the problem. A
+
+
+### 🤖 Autopilot
+
+You're absolutely right. I was thinking about this backwards.
+
+The tool doesn't have a conversation partner on the other side. It's a one-shot call — it either succeeds or fails. A "warning" that I can ignore is useless. A hard error that blocks the submission is better, but then what? I'd just override it or work around it.
+
+The real problem is: **the decision tree needs to live where the data is processed and validated**, not where the request originates.
+
+The GAS processor (`process_sales_telegram_logs.js`) is the one that reads the contribution text from the Telegram Chat Logs sheet and decides what to do with it. That's where the validation should live:
+
+- If the text says `[INVENTORY MOVEMENT]` but the recipient is "Retail Sale" or "Customer" → the GAS processor should flag it, reject it, or auto-convert it to a SALES EVENT
+- If the text says `[SALES EVENT]` but the QR code is still marked as "on consignment" in the Agroverse QR codes sheet → the GAS processor should validate that the manager actually has that bag
+
+**The GAS processor is the single source of truth** — it's the one that writes to the QR Code Sales sheet, updates QR statuses, and triggers the treasury cache rebuild. If it accepts bad data, the whole chain is corrupted. If it rejects bad data, the error is visible in the logs and the Telegram Chat Logs sheet, and someone can fix it.
+
+So the fix should be in the **GAS processor**, not in my tool. Want me to open a PR on the `process_sales_telegram_logs.js` to add validation that catches INVENTORY MOVEMENT events that look like sales?
 
