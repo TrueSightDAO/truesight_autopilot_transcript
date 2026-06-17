@@ -421,6 +421,7 @@ The NF-e guide covers all 8 steps from accessing SEFAZ-BA through issuing the DA
 ### 🤖 Autopilot
 
 I think you're saying to send the NF-e guide to Matheus via email so he has clear instructions to follow. Let me do that now.
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -661,4 +662,56 @@ Black King's primary CNAE is **82.30-0-01** (promotion/events services) — that
 - Then the "Exportação" option should appear when he goes to issue the NF-e
 
 Want me to send a follow-up email to Matheus with this CNAE guidance added to the NF-e guide?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Full set of assumptions
+
+
+### 🤖 Autopilot
+
+Here's the full set of assumptions behind why Matheus can't issue the export NF-e, ranked from most to least likely:
+
+---
+
+**1. Missing secondary CNAE (most likely — ⭐⭐⭐⭐⭐)**
+
+Black King's primary CNAE is **82.30-0-01** (promotion/events services). SEFAZ won't allow export NF-e issuance for a company that isn't registered with a commerce/trade CNAE. Adding **46.23-1/04** (wholesale cacao trade) as a secondary CNAE unlocks the module.
+
+**2. Export operation not enabled on the CNPJ (⭐⭐⭐⭐)**
+
+Even with the right CNAE, the company's SEFAZ profile may need a specific flag for "Exportação" operations. This is sometimes a separate configuration that the accountant or SEFAZ-BA support needs to enable.
+
+**3. First-time user — system unfamiliarity (⭐⭐⭐)**
+
+Matheus may simply not know where to click. The SEFAZ portal is notoriously unintuitive, and the "Exportação" option is buried in a dropdown that looks identical to domestic operation types. He may have been looking at the right screen but missed it.
+
+**4. No digital certificate (e-CNPJ) on his machine (⭐⭐⭐)**
+
+The NF-e requires the company's **e-CNPJ** digital certificate (A1 or A3) installed on the computer. If Matheus doesn't have it installed or it's expired, the system won't let him proceed.
+
+**5. SEFAZ-BA profile not configured for his user (⭐⭐)**
+
+Even with the right CNAE and certificate, the specific user account under Black King's CNPJ may not have the "Emissor de NF-e" role assigned. This is a sub-permission within the SEFAZ system.
+
+**6. Accountant hasn't released the company's SEFAZ registration (⭐⭐)**
+
+Some accountants lock the SEFAZ registration so only they can issue NF-es. Matheus may need his accountant to either release it or add him as an authorized issuer.
+
+**7. RADAR/SISCOMEX not yet linked (⭐)**
+
+For export NF-es specifically, the SISCOMEX registration (RADAR) needs to be active. If Omega hasn't completed the RADAR inclusion yet, the system may block the export NF-e even if everything else is correct.
+
+---
+
+**The most actionable path:**
+
+1. ✅ **Step 1:** Add CNAE 46.23-1/04 via e-CAC (Matheus can do this himself today)
+2. ✅ **Step 2:** Wait 24h for sync to SEFAZ-BA
+3. ✅ **Step 3:** Try issuing the NF-e again
+4. ❌ If still blocked → check e-CNPJ validity and SEFAZ user permissions
+5. ❌ If still blocked → involve the accountant to unlock the SEFAZ registration
+
+Want me to send this full assumption set to Matheus in an email?
 
