@@ -1532,6 +1532,11 @@ Let me look up the Black King entity profile and Coopercabruca info from the FDA
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me also get the Coopercabruca entity profile for the fallback info.
 
 
@@ -1606,4 +1611,51 @@ The PDF is 6 pages covering all the GACC requirements, Black King's info, produc
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #530 on agentic_ai_context merged successfully (sha: 0738441bdaab74efb1f91270485f182549cda03b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+I think for this particular table we should just indicate per unit weight. And forget about quantity
+
+[Attachment auto-processed: **c5a350e39e9049ed908d6ee502914a02.jpg**]
+- Type: Image (OCR confidence: 60.7%, quality: good)
+
+Extracted text:
+```
+7:46 oul 562 GD @chrome://downloads B. Product Details Category A — Event Samples (small quantity, promotional) tem ay Est, NetWeight _Eat.Gross Weight Packeging Gotemoniat Cacao 10 akg 25kg Rolall pouch Pouch 200g Cacao NibsKrat = 10 23kg ako Relall pouch Pouch 8oz Cacao MassBar 5 28kg akg Wrapped bar 5009 Cacao TeaiKe) 2 aha 25kg Vacuum bag Total a -88kg oat Kg Mixed Est. Declared Value: ~200-300 USD (sample / no commercial value) Category B — Commercial Goods ter ary Est.Net Weight _Est.Gross Welght Packaging. Cacao Nibs Kraft 137 S11 Kg 938 kg Retail pouches in Pouch Boz cartons Cacao Husk (KG) 20 20kg 22g ‘Vacuum bags Cacao MassBar 37 185k 22kg ‘Wrapped bars in 5009 cartons Cacao Nibs (KG) — 80 a0Kg a8 kg ‘Vacuum bags Main Cacao Almonds (KG) 10 10kg 11g ‘Vacuum bags —aAGLs Cacao Tea(KG)— 12 12kg 13kg ‘Vacuum bags AGLS. Ceremonial Cacao 189 2.8kg 42g Retail pouches in Pouch 200g cartons (Cacao Almonds (KG) 18 18kg 11g Vacuum bags =aAaLia TweSight DAO Pago? GACC Registration Requirements — Black King to China (Dongguan) tem Oty, Est. Net Weight Est.GrossWelght) Packaging Cacao Nibs (KG) — 100 100g 110g Vacuum bags AGLIS Cacao Tea(Ka)— a1 2tkg 23g ‘Vacuum bags AGLIS Cacao Almonds (KG) 10 40kg ttkg ‘Vacuum bags = AGLI4 Total en 51g 397 kg Mixed Est. Dectared Value: ~$7,092.53 USD (FOB)
+```
+
+
+### 🤖 Autopilot
+
+Got it — simplify the product tables to show **per-unit weight** instead of total quantity × weight. Let me update both the MD and PDF.
+
+
+### 🤖 Autopilot
+
+Now I need to update both tables to show **per-unit weight** instead of total quantity × weight. Let me update the MD file and regenerate the PDF.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF with the same per-unit-weight tables.
+
+
+### 🤖 Autopilot
+
+Now let me upload the updated PDF to the same branch.
+
+
+### 🤖 Autopilot
+
+Done! Both files updated with per-unit-weight tables. Here's the PR:
+
+**PR #531** — `fix/gacc-tables-per-unit-weight`
+
+**Changes:**
+- **Category A table:** Now shows `Unit Weight (Net)` and `Unit Weight (Gross)` per item instead of total weight
+- **Category B table:** Same — per-unit weights for all 11 items
+- **Totals:** Kept as a summary line below each table
+
+Want me to merge it?
 
