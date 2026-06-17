@@ -88,3 +88,25 @@ What would you like to do with this? A few options:
 3. **Create a contribution submission** for the work done on this guide
 4. **Something else** — just tell me what's next
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] I think we should remove section F from this document. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You want to remove Section F (the Coopercabruca fallback route) from the guide. I'll open a PR to make that change.
+
+
+### 🤖 Autopilot
+
+I have the full content. Let me open a PR to remove Section F and re-letter Section G to F.
+
+
+### 🤖 Autopilot
+
+Done. PR #536 is open — it removes Section F (Coopercabruca fallback) and re-letters the Key Contacts section from G to F. The document now focuses purely on the Black King lane.
+
+Want me to merge it, or leave it open for review?
+
