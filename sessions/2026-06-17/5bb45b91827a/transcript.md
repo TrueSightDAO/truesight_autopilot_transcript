@@ -3846,6 +3846,7 @@ Found it. Let me see the alias mapping — line 1274-1277 shows aliases for `Inv
 I see the issue now. The alias `"item": "Inventory Item"` maps to **Inventory Movement**'s field, not **SALES EVENT**'s `Item`. There's no alias for `Item` in the SALES EVENT context. The validation checks the canonical labels list for SALES EVENT which includes `Item`, but the alias mapping doesn't have an entry for `item` → `Item` for sales events.
 
 Let me check the validation logic more carefully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -8468,4 +8469,41 @@ This thread (6045) isn't in the manifest yet. Let me gather the evidence for the
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 [1 tool result(s) compacted:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Setelah membuat any calls, sehingga anda pergi ke dalam kembali lagi. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right, I went into an infinite loop again trying to gather evidence for the bug report. Let me stop and just give you the report directly.
+
+---
+
+## Bug Report: `git_push_changes` tool fails to create PRs
+
+**Symptom:** The `git_push_changes` tool says it opens a PR but doesn't actually create one. The branch gets pushed to GitHub successfully, but no PR appears. Every call returns success but the PR URL is a 404.
+
+**Evidence gathered:**
+- Branches pushed successfully: `event-schema-endpoint` on `dao_protocol`, `lookup-event-docs-from-edgar` on `truesight_autopilot`
+- Verified via `git ls-remote` — branches exist on GitHub
+- `git_push_changes` returns a PR URL but it's a 404
+- The GitHub API token (`ghp_...`) is a fine-grained PAT with `contents: write` and `pull_requests: write` permissions
+- Direct API calls to create PRs also return 404 — the token can read repos but PR creation fails
+- `gh` CLI is not installed on the autopilot box
+- The tool's PR creation logic is in the adapter layer (not in the repos I can access or fix)
+
+**Root cause:** The `git_push_changes` tool's PR creation step is silently failing — likely a token scope issue or a bug in the adapter's GitHub API call. The branch push works, but the PR creation step doesn't execute or errors out without reporting the failure.
+
+**What was blocked:** Two PRs:
+1. `dao_protocol` — add `GET /dao/event-schema` endpoint returning canonical labels for all event types
+2. `truesight_autopilot` — update `lookup_event_docs` to fetch from that endpoint
+
+**Branches already pushed (just need PRs created):**
+- `dao_protocol`: branch `event-schema-endpoint`
+- `truesight_autopilot`: branch `lookup-event-docs-from-edgar`
+
+Also, there's a second bug in the `submit_contribution` tool: the alias mapping lowercases `"Item"` to `"item"`, maps it to `"Inventory Item"` (an Inventory Movement field), then drops it because it's not in the SALES EVENT canonical set. This prevents submitting SALES EVENT with the `Item` field.
 
