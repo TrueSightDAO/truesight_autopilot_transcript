@@ -92,3 +92,13 @@ The ETHDenver 2026 Hackathon connection is also interesting — Monad Blitz is a
 
 Your call, Governor.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5818] Gary, never call me governor. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — not governor. What should I call you instead?
+
