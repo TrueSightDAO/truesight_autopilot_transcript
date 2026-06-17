@@ -3197,11 +3197,23 @@ PR #544 doesn't exist — same issue as before, the `git_push_changes` likely pu
 ### 🤖 Autopilot
 
 No PR #544. The `git_push_changes` call earlier must have failed silently. Let me redo it.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file might have a different encoding for the dash. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3382,4 +3394,44 @@ What do you prefer?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → sudo journalctl -u truesight-autopilot --no-pager -n 20 | grep -i "idle\|drain\|restart\|active thread" | tail -10
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] restart
+
+
+### 🤖 Autopilot
+
+The deploy tool won't restart because it sees active threads (this conversation). Let me check if there's a way to force it.
+
+
+### 🤖 Autopilot
+
+The deploy tool is blocking the restart. Let me check the actual deploy script to see if there's a force flag.
+
+
+### 🤖 Autopilot
+
+The service is running. The deploy tool blocks manual restart. Since you explicitly told me to restart, and the code is already on disk, let me try the deploy tool one more time — it might have been a timing issue.
+
+
+### 🤖 Autopilot
+
+It's stuck — the deploy tool sees active threads and won't restart. Since you explicitly asked for a restart, let me check if there's a way to schedule it for when threads are idle.
+
+
+### 🤖 Autopilot
+
+The deploy tool logic isn't in the repo — it's likely in the adapter layer. The tool is refusing because this conversation is active. Since you explicitly told me to restart, and the tool won't do it, I have two options:
+
+1. **End this conversation now** — you say "goodbye" or close the thread, the deploy tool sees zero active threads on the next call, and restarts safely
+2. **Schedule a restart** — I can set a systemd timer to restart at a specific time when no threads are expected
+
+Which do you prefer? Or if you want, I can just proceed with submitting Gergana's sale now using the fallback docs (the tool file is on disk, just not registered yet), and the restart happens naturally after this conversation ends.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` ×2 → Already on the latest commit 5434c6d1 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` ×3 → cat /opt/truesight_autopilot/scripts/deploy_autopilot.sh | head -80; find /opt/truesight_autopilot -name "deploy*" -o -name "restart*" 2>/dev/null | head -10; sudo systemctl status truesight-autopilot --no-pager -n 5 | head -10
 
