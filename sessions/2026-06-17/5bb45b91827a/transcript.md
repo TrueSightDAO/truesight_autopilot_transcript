@@ -2333,3 +2333,51 @@ The GAS processor (`process_sales_telegram_logs.js`) is the one that reads the c
 
 So the fix should be in the **GAS processor**, not in my tool. Want me to open a PR on the `process_sales_telegram_logs.js` to add validation that catches INVENTORY MOVEMENT events that look like sales?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Still wont work. Since at that point the event has already been submitted isnt it? I wonder what if when you called the method on the dao_client on the most appropriate method to use, it returns you the correct contextual document on what method to call as well as the parameters? And that contextual document is on github somewhere or even what is already written in the landing page of edgar?
+
+
+### 🤖 Autopilot
+
+Now that's the right insight. You're saying:
+
+**The guardrail should be at the *call site* — when I invoke the tool, it should return the relevant documentation to guide me, not just execute blindly.**
+
+So instead of:
+
+```
+submit_contribution(event_name="SALES EVENT", attributes={...})
+```
+
+It would be:
+
+```
+submit_contribution(event_name="SALES EVENT", attributes={...})
+→ Returns: "Here's the SALES EVENT format reference: [link to docs]. 
+   Did you mean INVENTORY MOVEMENT? Here's when to use each: ..."
+```
+
+The tool itself becomes a **documentation-aware dispatcher** — it knows which event types exist, what format each expects, and can return the relevant docs alongside the result. This way:
+
+1. **I get context at the point of need** — right when I'm about to submit
+2. **Future instances of me get the same guidance** — it's in the tool, not in my memory
+3. **The docs live in one place** — the Edgar landing page or a GitHub doc, not scattered across conversations
+4. **No false positives** — it's guidance, not a hard block. I still make the final call
+
+The landing page I already updated for the query endpoints is the perfect place for this. I could add a **DAO Events Reference** section that documents each event type, when to use it, and the exact format.
+
+Then the `submit_contribution` tool could include a `help` parameter:
+
+```
+submit_contribution(help="SALES EVENT")
+→ Returns the SALES EVENT docs from the landing page
+```
+
+Or even better — every time I call `submit_contribution`, it automatically returns the relevant docs for that event type alongside the result.
+
+Want me to:
+1. Add a **DAO Events Reference** section to the Edgar landing page documenting each event type with format + when-to-use
+2. Open a PR on `truesight_autopilot` to make `submit_contribution` return the relevant docs automatically
+
