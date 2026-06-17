@@ -2,6 +2,8 @@
 
 **Session**: `a8455e47dd8c`
 
+**Governor**: Gary Teh
+
 
 ---
 
@@ -616,4 +618,47 @@ That's **partially true** but needs some nuance.
 - The export NF-e follows the national standard, so the process is the same regardless of state
 
 **So the myth is half-right:** It's true for service invoices (NFS-e) which are a municipal nightmare, but for goods exports (NF-e) it's just one portal per state — and Black King only deals with Bahia.
+
+
+### 🧑 Governor
+
+Do you think my assumption and message is correct?? 
+
+@⁨Matheus Reis - Bahia Coop⁩
+
+I think the reason why you don’t have the ability to issue NF-e (_nota fiscal for export_) as you described yesterday was because your company doesn’t have the right CNAE code associated with it 
+
+You need to perform this step to unlock that module to issue the NF-e
+
+[Attachment auto-processed: **3f1a298f42d04a85a87fa01cd686d95c.PNG**]
+- Type: Image (OCR confidence: 89.1%, quality: good)
+
+Extracted text:
+```
+STEP 1.2: Add the commerce CNAE PASSO 1.2: Incluir 0 CNAE de comercio 1. In e-CAC dashboard, find: ‘Alteracao de Dados Cadastrais' or 'Atualizacao Cadastral’ 1. No painel e-CAC, encontrar: ‘Alteracao de Dados Cadastrais' ou ‘Atualizacao Cadastral’ 2. Under ‘Atividades Economicas' or 'CNAE', click ‘Incluir' to add a SECONDARY CNAE 2. Em ‘Alividades Economicas' ou 'CNAE:’, clicar ‘incluir' para adicionar CNAE SECUNDARIO The CNAE code to add. Choose ONE: O codigo CNAE a adicionar. Escolha UM: 46.23-1/04 ‘Com. atac. de cacau (BEST) 46.23-104 Comercio atacadista de cacau (MELHOR) 46.32-0/01 Com. atac. cereais/leguminosas —46.32-0/01 Com. atac. cereais e leguminosas 46.39-7/99 Com. atac. prod. alimenticios 46.39-7/99 Com. atac. prod. alimenticios geral 3. IMPORTANT: Set as SECONDARY. Do NOT replace the primary CNAE (82.30-0-01). 3. IMPORTANTE: Definir como SECUNDARIA. NAO substituir 0 CNAE principal (82.30-0-01). 4. Click ‘Enviar’. Save the protocol number shown on screen. 4. Clicar ‘Enviar’. Guardar o numero de protocolo mostrado na tela. 5. Processing: Usually approved within 24 hours (often same day). 5. Processamento: Normalmente aprovado em 24 horas (frequentemente no mesmo dia). IMPORTANT / IMPORTANTE WHY YOU CAN DO THIS: As Empresario Individual, you are the sole owner/administrator. Your e-CNPJ certificate grants full authority over CNPJ registration data. The accountant uses this exact same portal. You are just skipping the middleman. Adding a secondary CNAE does NOT affect Simples Nacional status. POR QUE VOCE PODE FAZER: Como Empresario Individual, voce e o unico proprietario/administrador. Seu certificado e-CNPJ concede autoridade total sobre dados cadastrais do CNPJ. O contador usa este mesmo portal. Voce esta apenas pulando o intermediario. Adicionar CNAE secundario
+```
+
+
+### 🤖 Autopilot
+
+Your assumption is **spot on** — that's very likely the root cause.
+
+**Here's why it makes sense:**
+
+Black King's primary CNAE is **82.30-0-01** (promotion/events services) — that's a service industry code. Exporting physical goods (cacao) requires a **commerce CNAE** like **46.23-1/04** (wholesale trade of cacao). Without that secondary CNAE registered, the SEFAZ system simply won't show the "Exportação" option because the system doesn't recognize Black King as a commercial/trading entity.
+
+**Your message to Matheus is correct.** The steps in the screenshot you attached are exactly right:
+
+1. Log into **e-CAC** (the federal tax portal)
+2. Find **"Alteração de Dados Cadastrais"**
+3. Add **46.23-1/04** (Comércio atacadista de cacau) as a **secondary** CNAE
+4. Don't replace the primary CNAE
+5. Save the protocol number
+6. Usually approved within 24 hours
+
+**One thing to add:** After the CNAE is approved, he may also need to:
+- Wait for the update to sync to SEFAZ-BA (usually 24-48 hours)
+- Then the "Exportação" option should appear when he goes to issue the NF-e
+
+Want me to send a follow-up email to Matheus with this CNAE guidance added to the NF-e guide?
 
