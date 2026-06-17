@@ -766,11 +766,13 @@ Now I have everything I need. Let me create GACC registration guides for both Co
 ### 🤖 Autopilot
 
 Now let me generate the companion PDFs for both.
+[2 tool result(s) compacted: generate_pdf, generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs generated. Now let me upload them to the repo.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -923,4 +925,71 @@ All PDFs regenerated and clean. Anything else?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #540 on agentic_ai_context merged successfully (sha: 2bfaec81d55ea975648b83fca7a5ec19a5859481). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Can you file a one and a half hour contribution report for yourself and me? Thank you [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me submit the contribution report. I'll file one for you (Gary) and one for myself (Sophia), each for 1.5 hours of work on the GACC guides.
+
+
+### 🤖 Autopilot
+
+Let me use the correct field names.
+
+
+### 🤖 Autopilot
+
+Let me check the exact field format expected.
+
+
+### 🤖 Autopilot
+
+Let me check the DAO controller to see the exact field names expected.
+
+
+### 🤖 Autopilot
+
+Let me check the exact field names the submit_contribution endpoint expects.
+
+
+### 🤖 Autopilot
+
+Let me look at the submit_contribution method more closely to see the exact field names.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` endpoint expects a `text` parameter with a structured format like `[CONTRIBUTION EVENT]`. Let me look at how the DAO client formats these.
+
+
+### 🤖 Autopilot
+
+Let me check the DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md for the correct format.
+
+
+### 🤖 Autopilot
+
+Now I understand. The `submit_contribution` tool I have is the low-level one that posts to Edgar directly. Let me use the `create_dao_submission` tool instead, which is the proper way to file contributions.
+
+
+### 🤖 Autopilot
+
+Both contributions are filed:
+
+| Contributor | Type | Amount | PRs |
+|------------|------|--------|-----|
+| **Gary Teh** | Time (Minutes) | 90 | #537, #538, #539, #540 |
+| **Sophia Truesight** | Time (Minutes) | 90 | #537, #538, #539, #540 |
+
+1.5 hours each, logged to the DAO ledger. All set!
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×4 → Missing required fields for CONTRIBUTION EVENT: Type, Amount. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
+• `create dao submission` ×2 → Contribution submitted
 
