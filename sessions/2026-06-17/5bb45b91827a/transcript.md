@@ -2173,6 +2173,7 @@ An **INVENTORY MOVEMENT** would be wrong here because:
 - Money changed hands
 
 Let me check what the SALES EVENT format expects.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2417,4 +2418,28 @@ The docs themselves should live on the Edgar landing page (which I already updat
 Want me to:
 1. Add the **DAO Events Reference** section to the Edgar landing page with format + when-to-use for each event type
 2. Open a PR on `truesight_autopilot` to add a `lookup_event_docs` tool (or make it part of the existing toolset)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] I think that makes a lot of sense. Always make sure you check the documentation before you call. And if you are unsure you can always check back with me the vairous options that was returned by that documentation.
+
+
+### 🤖 Autopilot
+
+Exactly. The flow becomes:
+
+1. **Look up the docs** — `lookup_event_docs("SALES EVENT")` or fetch from the Edgar landing page
+2. **Review the options** — see the format, when-to-use rules, required vs optional fields
+3. **If unsure, ask you** — present the options from the docs
+4. **Only then call** `submit_contribution`
+
+Let me do two things right now:
+
+1. **Update the Edgar landing page** with a proper DAO Events Reference section documenting each event type
+2. **Open a PR on `truesight_autopilot`** to add a `lookup_event_docs` tool
+
+Then for Gergana's sale, I'll use the new flow: look up the SALES EVENT docs first, confirm with you, then submit.
+
+Want me to proceed?
 
