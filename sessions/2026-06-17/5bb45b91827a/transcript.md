@@ -3773,6 +3773,11 @@ The tool explicitly says the canonical label is `Item` but rejects it when I pas
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The dispatch logic is correct — `[SALES EVENT]` routes to `parseTelegramChatLogs` which calls `parseSalesEvent`. The issue is in the `submit_contribution` tool's validation layer, which is in the adapter (not in the repo). Let me check if the tool is looking for the QR code in a specific way.
 
 
@@ -3917,4 +3922,32 @@ This eliminates:
 The only thing I need to reason about is **which event type** to use — and for that, the `lookup_event_docs` tool returns the when-to-use rules. If I'm unsure, I ask you.
 
 Want me to add the `GET /dao/event-schema/{event_type}` endpoint to Edgar and update the flow?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] yeah. But my sense is the {event_type} might be a problem isnt it since they have space?
+
+
+### 🤖 Autopilot
+
+Good catch. Spaces in URL paths are messy. Better to use a query parameter instead:
+
+```
+GET /dao/event-schema?event=SALES+EVENT
+```
+
+Or even simpler — return ALL event schemas at once so I don't need to guess the event name:
+
+```
+GET /dao/event-schema
+→ Returns all event types with their canonical labels, required fields, and format
+```
+
+Then I can:
+1. Fetch all schemas once
+2. Pick the right one based on the when-to-use docs
+3. Present the exact parameters to you
+
+Want me to build it as `GET /dao/event-schema` (returns all) with an optional `?event=` filter?
 
