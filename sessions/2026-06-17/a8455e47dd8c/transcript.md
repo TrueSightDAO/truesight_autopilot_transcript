@@ -452,11 +452,13 @@ Want me to follow up with Matheus tomorrow if he hasn't responded?
 ### 🤖 Autopilot
 
 Let me read the current OPEN_FOLLOWUPS.md to see the right place to add this.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — you want me to add the NF-e export process as a documented SOP in the agentic_ai_context. Let me add it to the appropriate place. Let me check what instruction files exist.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1301,4 +1303,24 @@ This is a **very well-made document** — it's more detailed and polished than t
 2. **Or** update Appendix A to include the missing steps (IE, credentialing, Coopercabruca fallback)?
 
 Also — I notice the PDF mentions the **Coopercabruca fallback** as an alternative if Black King's self-service gets blocked. That's a smart contingency. Should I send this full PDF to Matheus as well?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] But this is the owner of the company [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, I see — you're saying **this PDF was already sent to Matheus** (the owner of Black King). So he already has the full self-service guide in his hands.
+
+That changes things. In that case:
+
+**What I should do now:**
+
+1. **Save this PDF to the repo** so it's in our permanent record alongside the checklist
+2. **Update the checklist** to reference this PDF as the canonical NF-e enablement guide (instead of my Appendix A)
+3. **Follow up with Matheus** in a couple of days if he hasn't acted on it
+
+Want me to save it to `agentic_ai_context/exports/` and update the checklist to point to it?
 
