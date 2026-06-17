@@ -3589,3 +3589,29 @@ Go for it. When you hit `sophia.truesight.me/vault`, the flow will be:
 
 Let me know how it goes. If anything feels slow or doesn't work, I'm here to debug.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+https://edgar.truesight.me/dao/check_digital_signature?signature=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnRE25zfLDKWNE1fCTp5GMHpepGw1cUHGmPFHp6IZ1XhxswYklW4%2FU%2FBU5FaEcNW6e7SvnfvsemEN69gmlaTkpL%2FmNikZ1LHjJmvZZPsqgLxKipvtYiz5TI1QUdLIlgeYXzd5uUybC3ZBeWSqS15hrqm0VNU9%2FJXPBJLO1hfcTMpN8EXX6CYQI1ydRsA1asSjiMsCmk1BqVv8x4MY39TP3GUoqXL8I09DqQlp%2FJDKvrZNW07%2FYrmK8EutOJRgT3d7OJJwU2%2FuX6SSepHWr85fk89Ivfb1R87m%2FWXgkddndCZPrcGlReKEeMEd01MMEBVyu%2BfbWCwN0yO85vwKEuOMLwIDAQAB 
+
+Returns 
+{"registered":true,"contributor_name":"Gary Teh","contributor_email":"garyjob@gmail.com"}
+
+BUt not governor role was assigned why?
+
+
+### 🤖 Autopilot
+
+Good catch. The Edgar endpoint returns `registered: true` but doesn't show the governor role. Let me check how the vault determines governor status — it might be using a different code path than `resolve_key`.
+
+
+### 🤖 Autopilot
+
+Found it. The `check_digital_signature` endpoint only returns `contributor_name` and `contributor_email` — it doesn't include roles. That's by design — it's a simple "is this key registered?" check for the DApp pages.
+
+The vault (`sophia.truesight.me/vault`) uses a different code path — it calls `resolve_key()` on the autopilot side, which DOES return roles including `"governor"`. The Edgar endpoint just confirms the key exists and is active.
+
+So the test you ran is correct — it's just a different endpoint with a different purpose. The vault flow will use `resolve_key()` which returns the full identity including roles. Want to test the vault directly?
+
