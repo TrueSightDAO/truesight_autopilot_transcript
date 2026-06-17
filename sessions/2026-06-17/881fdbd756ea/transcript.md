@@ -693,6 +693,11 @@ The PDF is there at `e797791944ed`. Let me check what blob SHA the `main` branch
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The file on `main` is 10,465 bytes — that's the updated version I uploaded. The old version was 12,607 bytes. The file **is correct on GitHub**. Let me verify by downloading from `main` directly one more time.
 
 
@@ -811,4 +816,69 @@ https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-cooperc
 https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/exports/2026-06-17_gacc_registration_cepotx_china.pdf
 
 Take a look and let me know if you want any changes before I merge.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Remove 
+
+Freight Forwarder (Brazil)
+Omega Serviços Logísticos
+Ana Barros (ana.barros@omegaservicos.com.br) / Isis Ribeiro (isis.ribeiro@omegaservicos.com.br) / EXPORTAÇÃO (exportacao@omegaservicos.com.br)
+ From CEPOTX since they are based in Para
+
+
+### 🤖 Autopilot
+
+Good point — CEPOTX is in Altamira, Pará, which is a different region from Omega's coverage in Bahia. Let me update both the markdown and PDF.
+
+
+### 🤖 Autopilot
+
+The pipe table formatting might differ. Let me check the exact content.
+
+
+### 🤖 Autopilot
+
+I see — the pipe table row has leading/trailing pipes. Let me use the exact content.
+
+
+### 🤖 Autopilot
+
+The branch has diverged because the PDF uploads added commits. Let me force-push to update the branch cleanly.
+
+
+### 🤖 Autopilot
+
+The PDF uploads added commits to the branch. Let me use the upload tool directly to update just the markdown file on the existing branch.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the CEPOTX PDF without Omega and upload it too.
+
+
+### 🤖 Autopilot
+
+Done. The CEPOTX guide and PDF are updated — Omega Serviços removed from both. The Key Contacts section now shows:
+
+| Role | Name | Contact |
+|------|------|---------|
+| Freight Forwarder (Brazil) | TBD — CEPOTX is in Pará, different region from Omega (Bahia) | — |
+
+The Coopercabruca guide still has Omega since they're both in Bahia and that's correct.
+
+Here are the updated links to inspect:
+
+**CEPOTX markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_CEPOTX.md
+
+**CEPOTX PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/exports/2026-06-17_gacc_registration_cepotx_china.pdf
+
+Want me to merge PR #540 now?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_CEPOTX.md
 
