@@ -396,11 +396,53 @@ Now let me check what read/query endpoints dao_protocol actually has live.
 ### 🤖 Autopilot
 
 Now let me check what routes dao_protocol actually exposes — I'll look at the actual FastAPI app structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the nginx on `seni_ror` (3.90.179.151) proxies to `172.31.23.207:8010` which is the **dao_protocol_nelanco** box. Let me check that box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -567,6 +609,7 @@ But I think before anything we should draft up implementation plan, roadmap and 
 ### 🤖 Autopilot
 
 You're right — let me check the handoff registry first, then read the relevant docs to understand the existing architecture properly before drafting anything.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -659,26 +702,91 @@ Make sure to generate and checkin the implementation plan, roadmap and check lis
 ### 🤖 Autopilot
 
 Absolutely right on both points. Let me first read the SCHEMA.md carefully to get the exact column mappings, then draft the plan.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — that's the full SCHEMA.md. Now let me also check the dao_protocol codebase structure to understand where to add the new endpoints.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — the README says `dao_client` is the Python/FastAPI server (formerly `dao_protocol`). Let me check the actual repo structure.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — so the FastAPI server running at `172.31.23.207:8010` is the `dao_protocol` repo (version `99c2ab6`). Let me check the actual repo structure on GitHub to understand where to add the new endpoints.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strange — the repo exists but GitHub search finds nothing. Let me check the default branch.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -718,4 +826,74 @@ Now I have the full picture. Let me also check the existing cache module structu
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → ls /opt/ 2>&1; echo "==="; find /opt -maxdepth 2 -name "*.py" -path "*/app/*" 2>/dev/null | head -20; find / -maxdepth 4 -name "*.py" -path "*/dao*" 2>/dev/null | head -20; echo "==="; find / -maxdepth 4 -name "main.py" 2>/dev/null | head -10; # The nginx proxies to 172.31.23.207:8010 which is the dao_protocol box # Let's check what's on that box via the nginx host curl -s http://1; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] I think you should also be able to reference edgar on the available APIs isnt it? And if something is missing you can always extend Edgar so that you dont need to fumble around as much later on?
+
+
+### 🤖 Autopilot
+
+You're absolutely right. Let me check what Edgar (dao_protocol) already exposes via its OpenAPI spec so I know what's available vs what needs extending.
+
+
+### 🤖 Autopilot
+
+Let me get a clean view of the OpenAPI spec by extracting just the paths.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Here's my analysis:
+
+---
+
+## Current Edgar (dao_protocol) API surface
+
+**Existing read endpoints that are relevant:**
+- `GET /qr-code-check` — single QR lookup
+- `GET /agroverse/qr-code-check` — same, under `/agroverse` prefix
+- `GET /dao/check_digital_signature` — resolve contributor by public key
+
+**What's missing (your four scenarios):**
+1. **Historical sales by partner** — no endpoint
+2. **QR codes by store/owner/manager** — no endpoint
+3. **QR codes through a person's hands** — no endpoint
+4. **QR codes by SKU** — no endpoint
+
+---
+
+## Your point is well taken
+
+Rather than me fumbling around reading raw Google Sheets every time, I should:
+
+1. **Reference what Edgar already has** — `GET /qr-code-check` exists for single lookups, but nothing for batch/query-by-attribute
+2. **Extend Edgar** with the query endpoints I need — then I just call `http_fetch('https://edgar.truesight.me/dao/transactions?partner=SOHA')` and get clean JSON back
+
+This way the query logic lives **in one place** (Edgar/dao_protocol), not scattered across my ad-hoc scripts or multiple sheet reads. And you're right — if I extend Edgar properly, I don't need to fumble around.
+
+---
+
+## Revised plan
+
+**PR1 — Add query endpoints to dao_protocol** (extend Edgar, don't build a separate tool):
+
+| Endpoint | What it does | Why I need it |
+|---|---|---|
+| `GET /dao/transactions` | `?partner=X&sku=Y&from=Z&to=W` — substring match on partner name | Scenario 1 |
+| `GET /dao/qr-codes` | `?manager=X&owner=Y&sku=Z&status=SOLD` — list QR codes by any attribute | Scenarios 2, 4 |
+| `GET /dao/inventory-movements` | `?person=X&role=sender\|recipient&from=Z&to=W` | Scenario 3 |
+
+All read from Google Sheets using the service accounts dao_protocol already has. All return JSON. All support substring matching on name fields (as you suggested).
+
+**PR2 — Document GitHub flat-file cache plan** (file away for later)
+
+---
+
+Want me to draft the implementation plan doc and check it into `agentic_ai_context/` first? Then we can proceed to PR1.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s http://172.31.23.207:8010/openapi.json 2>&1 | python3 -m json.tool 2>&1 | head -300; curl -s http://172.31.23.207:8010/openapi.json 2>&1 | python3 -c " import json, sys spec = json.load(sys.stdin) paths = spec.get('paths', {}
 
