@@ -3385,11 +3385,18 @@ PR #118 is now open. Let me merge it since you said to fix it.
 [1 tool result(s) compacted: merge_pr — detail in gestures]
 
 Now **Issue 2: Autopilot restart**. The deploy tool won't restart while there are active threads. But this conversation IS an active thread. Let me check if there's a way to force a restart or schedule one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No idle/drain messages. The deploy tool blocks restarts when there are active threads. Let me check if the `deploy_autopilot` tool has a force flag or if I can schedule a restart.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3411,6 +3418,11 @@ What do you prefer?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=6045] restart
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3474,4 +3486,56 @@ I'd recommend **option 2** — submit Gergana's sale now, then the restart happe
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → sudo systemctl list-timers --no-pager | head -20; # Create a systemd timer to restart the autopilot at 3am UTC (low traffic) sudo tee /etc/systemd/system/truesight-autopilot-restart.timer >
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+actually I noticed that  ✅ Autopilot deploy complete
+• Commit: 5434c6d
+• Back online in 8.9s
+
+So I think let's proceed to explore 2.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry, then proceed.
+
+
+### 🤖 Autopilot
+
+This thread (6045) isn't in the manifest yet. The autopilot was restarted (you confirmed it came back in 8.9s). Let me verify the `lookup_event_docs` tool is now registered.
+
+
+### 🤖 Autopilot
+
+No registration logs — the service was restarted but the tool registry might not have picked up the new tool yet. Let me check if the tool file is actually there and has the `TOOL_SPEC`.
+
+
+### 🤖 Autopilot
+
+The file is there with the `TOOL_SPEC` and fallback docs. The service was restarted but the tool registry might not have logged it. Let me check if the tool is actually callable by testing it.
+
+
+### 🤖 Autopilot
+
+The `lookup_event_docs` tool is live and working. It fell back to built-in docs because the Edgar landing page's DAO Events Reference section isn't deployed yet (PR #118 was just merged but needs a dao_protocol deploy). But the fallback docs have everything we need.
+
+Now let me proceed with **Gergana's sale**. The docs confirm:
+
+- **Event type:** `SALES EVENT` ✅
+- **Required:** `Item` (QR code), `Sales price`
+- **Optional:** `Sold by`, `Cash proceeds collected by`
+
+Here's the proposal to submit:
+
+
+
+Want me to submit it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → sudo journalctl -u truesight-autopilot --no-pager -n 30 | grep -i "tool_registry\|lookup_event\|registered" | tail -10; sudo journalctl -u truesight-autopilot --no-pager -n 100 | grep -i "tool_registry\|lookup_event\|registered\|TOOL_SPEC" | tail -20; ls -la /opt/truesight_autopilot/app/tools/lookup_event_docs.py 2>&1 && head -30 /opt/truesight_autopilot/app/tools/lookup_event_docs.py
 
