@@ -374,6 +374,11 @@ Now let me check what endpoints the dao_protocol FastAPI server actually exposes
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check what read/query endpoints dao_protocol actually has live.
 
 
@@ -534,4 +539,99 @@ Want me to start drafting **PR 1**? I'll need to:
 2. Check what Google Sheets service accounts dao_protocol already has access to
 3. Write the FastAPI endpoints + tests
 4. Open a PR on `dao_protocol`
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+You dont read them directly 
+The logic is baked into edgar. so you dont need to spend extra computing unless there are discrepancies. 
+
+I am thinking perhaps PR1 is something we implement first, and then PR2 is something document and file away.
+
+But I think before anything we should draft up implementation plan, roadmap and checklist before we do anything else isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — let me check the handoff registry first, then read the relevant docs to understand the existing architecture properly before drafting anything.
+
+
+### 🤖 Autopilot
+
+Good — this thread (6045) isn't in the handoff manifest yet, so this is a new discussion, not a parked handoff. Let me re-read your correction about the architecture.
+
+You said: *"You don't read them directly — the logic is baked into Edgar."* Let me understand what you mean — the query logic should live in Edgar (the Rails app / dao_protocol), not in me. I agree completely. The endpoints I build on dao_protocol would do the Sheets reads server-side, not client-side.
+
+---
+
+## Your proposal: PR1 first, then document PR2 and file it away
+
+That's the right sequencing. Let me draft the **implementation plan** before any code.
+
+---
+
+## Draft: DAO Query Endpoints — Implementation Plan
+
+### Context
+
+dao_protocol (FastAPI on `172.31.23.207:8010`) currently has write/submit endpoints but no read/query endpoints for the four scenarios Gary identified. The data lives in Google Sheets (Main Ledger, QR Code Sales, Inventory Movement, Agroverse QR codes tabs). Edgar's existing service accounts already have Sheets access.
+
+### The four query scenarios
+
+| # | Scenario | Source sheet(s) | Key filter columns |
+|---|---|---|---|
+| 1 | Historical sales by partner | `QR Code Sales` tab, `Inventory Movement` tab | Partner name, date |
+| 2 | QR codes by store/owner/manager | `Agroverse QR codes` tab | Manager Name (col U), Owner |
+| 3 | QR codes through a person's hands | `Inventory Movement` tab | SENDER NAME, RECIPIENT NAME |
+| 4 | QR codes by SKU | `Agroverse QR codes` tab | Currency (col I → maps to SKU via Currencies tab) |
+
+### PR1 — Query endpoints (live Sheets reads)
+
+**New endpoints on dao_protocol:**
+
+| Endpoint | Parameters | Returns |
+|---|---|---|
+| `GET /dao/transactions` | `partner`, `sku`, `from_date`, `to_date`, `limit` | `[{date, partner, sku, qty, qr_code, value, source_sheet}]` |
+| `GET /dao/qr-codes` | `manager`, `owner`, `sku`, `status`, `limit` | `[{qr_code, sku, status, manager, owner, location, ...}]` |
+| `GET /dao/inventory-movements` | `person`, `role` (sender/recipient), `from_date`, `to_date`, `limit` | `[{date, qr_code, sender, recipient, note, ...}]` |
+
+**Implementation:**
+- New module: `truesight_dao_client/query/` with `transactions.py`, `qr_codes.py`, `inventory_movements.py`
+- Each reads from the relevant Google Sheet tab using existing service account credentials
+- New router: `app/routers/query.py` with the three endpoints
+- 58 existing tests pass; add ~12 new tests
+
+**Schema reference:** SCHEMA.md in tokenomics repo defines the sheet layouts.
+
+### PR2 — GitHub flat-file cache (document and file away)
+
+**Concept (not implemented yet):**
+- After PR1 is live and we observe which queries are frequent, add a cache layer
+- Cache files in `treasury-cache/` repo: `transactions/{partner}.json`, `qr-codes/by-manager/{name}.json`
+- Read path: check cache → if fresh return → else read Sheets → write cache → return
+- TTL-based invalidation (configurable per endpoint)
+- Post-write cache bust: after `POST /dao/submit_contribution`, delete affected cache files
+
+**Filed in:** `agentic_ai_context/DAO_QUERY_CACHE_PLAN.md` (to be written)
+
+### Roadmap
+
+| Step | What | Who |
+|---|---|---|
+| 1 | Review + approve this plan | Gary |
+| 2 | Read SCHEMA.md in detail, map columns | Sophia |
+| 3 | Build PR1 (query endpoints + tests) | Sophia → PR |
+| 4 | Review + merge PR1 | Gary |
+| 5 | Deploy to dao_protocol | Sophia (after merge) |
+| 6 | Write PR2 plan doc, file in agentic_ai_context | Sophia |
+| 7 | UAT: test all 4 scenarios live | Gary + Sophia |
+
+---
+
+Does this structure look right to you? If you give me the go-ahead, I'll:
+1. Read the SCHEMA.md carefully to map exact column names
+2. Check which service accounts dao_protocol has and which sheets they can access
+3. Write the full plan doc + open PR1
 
