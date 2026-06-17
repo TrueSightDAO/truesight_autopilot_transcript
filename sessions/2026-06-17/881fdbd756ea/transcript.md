@@ -688,6 +688,7 @@ The PDF file isn't in the tree at the latest commit! The markdown guide is there
 ### 🤖 Autopilot
 
 The PDF is there at `e797791944ed`. Let me check what blob SHA the `main` branch has vs what I uploaded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -783,4 +784,31 @@ Want me to merge PR #540?
 ### 🤖 Autopilot
 
 Right — "C-Pox" is **CEPOTX** and "Copper Carburetor" is **Coopercabruca**. I've got them both in PR #540. Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Open the URL to let me inspect them. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here are the links to inspect everything:
+
+**PR #540 (all files):**
+https://github.com/TrueSightDAO/agentic_ai_context/pull/540
+
+**Coopercabruca markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_COOPERCABRUCA.md
+
+**Coopercabruca PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/exports/2026-06-17_gacc_registration_coopercabruca_china.pdf
+
+**CEPOTX markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_CEPOTX.md
+
+**CEPOTX PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/gacc-guides-coopercabruca-cepotx/exports/2026-06-17_gacc_registration_cepotx_china.pdf
+
+Take a look and let me know if you want any changes before I merge.
 
