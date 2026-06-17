@@ -3461,6 +3461,7 @@ The service is running. The deploy tool blocks manual restart. Since you explici
 ### 🤖 Autopilot
 
 It's stuck — the deploy tool sees active threads and won't restart. Since you explicitly asked for a restart, let me check if there's a way to schedule it for when threads are idle.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3577,4 +3578,117 @@ Got it. Here's what I'll submit once you approve:
 **Attachment:** The Venmo screenshot (`ff3cbe42a6bb4e68a58107d7b9ce3359.jpg`) will be included as evidence.
 
 Take your time reviewing. Let me know when you're happy and I'll submit it with the attachment.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Perfect! submit
+
+
+### 🤖 Autopilot
+
+Let me first check the exact format the `submit_contribution` tool expects for the attributes, and then submit with the attachment.
+
+
+### 🤖 Autopilot
+
+Good — the format is confirmed. Now let me submit with the attachment.
+
+
+### 🤖 Autopilot
+
+The tool validated the fields and accepted them — it just needed the attachment. Let me include the Venmo screenshot.
+
+
+### 🤖 Autopilot
+
+The tool says `Item` is missing but I'm passing it. Let me check the exact canonical label — maybe it's case-sensitive or has a different format.
+
+
+### 🤖 Autopilot
+
+That's the TDG scoring script, not the sales processor. Let me check the actual sales processing script.
+
+
+### 🤖 Autopilot
+
+Let me find the exact parsing function for SALES EVENT format.
+
+
+### 🤖 Autopilot
+
+Let me find the actual `parseSalesEvent` function.
+
+
+### 🤖 Autopilot
+
+Let me find the `parseSalesEvent` function specifically.
+
+
+### 🤖 Autopilot
+
+Let me find the `parseSalesEvent` function.
+
+
+### 🤖 Autopilot
+
+Now I have the exact format the GAS parser expects. The `parseSalesEvent` function looks for:
+
+- `- Item: <value>` → QR code
+- `- Sales price: <value>` → price (with optional `$`)
+- `- Owner email: <value>` → optional
+- `- Stripe Session ID: <value>` → optional
+- `- Shipping Provider: <value>` → optional
+- `- Tracking number: <value>` → optional
+- `- Sold by: <value>` → optional
+- `- Cash proceeds collected by: <value>` → optional
+
+The `submit_contribution` tool rejected my first attempt saying `Item` was missing. Let me check what canonical labels the tool expects — maybe it's case-sensitive or has a different format.
+
+
+### 🤖 Autopilot
+
+That's about event activations, not the SALES EVENT format. The tool's validation is rejecting my call. Let me check the actual `submit_contribution` tool implementation to see what canonical labels it expects.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool isn't in the autopilot repo — it's in the adapter layer. The error message said `Canonical labels are: Item, Sales price, Sold by, Cash proceeds collected by, Owner email, Stripe Session ID, Shipping Provider, Tracking number, Attached Filename, Submission Source`. Let me try with the exact casing from the error message.
+
+
+### 🤖 Autopilot
+
+It keeps saying `Item` is missing even though I'm passing it. The issue might be that the tool expects the QR code to be passed as a separate parameter, or the `Item` field needs a specific format. Let me check the `lookup_event_docs` fallback docs more carefully — it said the required fields are `Item (QR code)` and `Sales price`. Maybe the tool expects the QR code in a `qr_code` field instead of `Item`.
+
+
+### 🤖 Autopilot
+
+The tool's validation is rejecting `Item` even though I'm passing it. This might be a bug in the tool's validation logic — perhaps it's looking for the key in a different way. Let me try with `qr_code` instead.
+
+
+### 🤖 Autopilot
+
+The tool explicitly says the canonical label is `Item` but rejects it when I pass it. This is a bug in the tool's validation. Let me check the actual tool implementation to understand the issue.
+
+
+### 🤖 Autopilot
+
+The dispatch logic is correct — `[SALES EVENT]` routes to `parseTelegramChatLogs` which calls `parseSalesEvent`. The issue is in the `submit_contribution` tool's validation layer, which is in the adapter (not in the repo). Let me check if the tool is looking for the QR code in a specific way.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool has `handler=None` — it's dispatched inline in `main.py`. The validation logic is in the adapter layer, not in the repo. The error message says `Canonical labels are: Item, Sales price, Sold by...` but rejects `Item` when I pass it. This looks like a bug in the adapter's validation — it might be checking for the key in a case-sensitive way or the key name has a different format.
+
+Let me try with slightly different key names to see what the adapter accepts.
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×5 → Missing required fields for SALES EVENT: Item. Canonical labels are: Item, Sales price, Sold by, Cash proceeds collected by, Owner email, St
+• `ssh run` ×9 → find /opt/truesight_autopilot -name "*.py" | xargs grep -l "submit_contribution\|Canonical labels" 2>/dev/null | head -10; grep -n "Canonical labels\|submit_contribution\|SALES EVENT\|required_fields" /opt/truesight_autopilot/dao_protocol/truesight_dao_client/edg; grep -n "Canonical labels\|SALES EVENT\|required_fields\|Item" /opt/truesight_autopilot/dao_protocol/truesight_dao_client/server/routes/dao.; …(+6 more)
 
