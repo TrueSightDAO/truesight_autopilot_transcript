@@ -3428,16 +3428,34 @@ What do you prefer?
 ### 🤖 Autopilot
 
 The deploy tool won't restart because it sees active threads (this conversation). Let me check if there's a way to force it.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy tool is blocking the restart. Let me check the actual deploy script to see if there's a force flag.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service is running. The deploy tool blocks manual restart. Since you explicitly told me to restart, and the code is already on disk, let me try the deploy tool one more time — it might have been a timing issue.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3538,4 +3556,25 @@ Want me to submit it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → sudo journalctl -u truesight-autopilot --no-pager -n 30 | grep -i "tool_registry\|lookup_event\|registered" | tail -10; sudo journalctl -u truesight-autopilot --no-pager -n 100 | grep -i "tool_registry\|lookup_event\|registered\|TOOL_SPEC" | tail -20; ls -la /opt/truesight_autopilot/app/tools/lookup_event_docs.py 2>&1 && head -30 /opt/truesight_autopilot/app/tools/lookup_event_docs.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] let me review the parameters also can you make sure the image I shared with you is also included as an attaachment when submitting after I am done reviewing
+
+
+### 🤖 Autopilot
+
+Got it. Here's what I'll submit once you approve:
+
+**Event:** `SALES EVENT`
+**Attributes:**
+- `Item`: `2024OSCAR_20260121_32`
+- `Sales price`: `17.50`
+- `Sold by`: `Gergana - The Way Home Shop`
+- `Cash proceeds collected by`: `Gary Teh`
+
+**Attachment:** The Venmo screenshot (`ff3cbe42a6bb4e68a58107d7b9ce3359.jpg`) will be included as evidence.
+
+Take your time reviewing. Let me know when you're happy and I'll submit it with the attachment.
 
