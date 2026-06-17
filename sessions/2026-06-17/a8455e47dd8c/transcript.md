@@ -715,3 +715,590 @@ For export NF-es specifically, the SISCOMEX registration (RADAR) needs to be act
 
 Want me to send this full assumption set to Matheus in an email?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **06031ab73f52425d958f012f2054e2a4.pdf**]
+- Type: PDF (10 pages, 20485 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Export NF-e Enablement
+Habilitacao de NF-e de Exportacao - Self-Service Guide
+NO ACCOUNTANT NEEDED. YOU CAN DO ALL OF THIS YOURSELF.
+NAO PRECISA DE CONTADOR. VOCE PODE FAZER TUDO ISSO SOZINHO.
+Black King | MATHEUS REIS PEREIRA
+CNPJ 50.042.585/0001-80 | Ilheus, BA, Brasil
+Empresario Individual (Simples Nacional) | e-CNPJ: Ja possui
+As an Empresario Individual, Matheus IS the legal representative of Black King. With the e-CNPJ digital certificate he already owns,
+he can perform ALL steps directly on government portals. No accountant delegation, no waiting for third parties. Every step is
+self-service.
+Como Empresario Individual, Matheus E o representante legal da Black King. Com o certificado digital e-CNPJ que ele ja possui, ele pode
+realizar TODOS os passos diretamente nos portais do governo. Sem delegacao ao contador, sem esperar terceiros. Cada passo e
+autosservico.
+Estimated total: 1-2 weeks (self-service) vs. 1-2 months (via accountant)
+Tempo estimado: 1-2 semanas (autosservico) vs. 1-2 meses (via contador)
+Prepared 16 June 2026 | Preparado 16 junho 2026
+Pagina 1/10
+
+--- Page 2 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+BEFORE YOU START: What You Need
+ANTES DE COMECAR: O Que Voce Precisa
+STEP 0.1: You already have everything required
+PASSO 0.1: Voce ja tem tudo que precisa
+As an Empresario Individual (sole proprietor), Matheus Reis Pereira IS the legal owner and sole administrator of Black King. This
+means:
+Como Empresario Individual, Matheus Reis Pereira E o proprietario legal e unico administrador da Black King. Isso significa:
+1. You don't need an accountant to make CNPJ changes. You ARE the legal representative.
+1. Voce nao precisa de contador para alterar o CNPJ. Voce E o representante legal.
+2. You can access all government portals directly with your e-CNPJ certificate.
+2. Voce pode acessar todos os portais do governo diretamente com seu certificado e-CNPJ.
+3. The accountant's role is advisory, not gatekeeping. They can't block you from doing this.
+3. O papel do contador e consultivo, nao de controle. Ele nao pode bloquear voce de fazer isso.
+Checklist: items you already have / Checklist: itens que voce ja possui
+e-CNPJ certificate
+Sim, ja possui (usado no RADAR)
+Certificado e-CNPJ
+Sim, ja possui (usado no RADAR)
+SEFAZ password
+Obter se nao tiver
+Senha de Servicos SEFAZ
+Obter se nao tiver
+DTE adhesion
+Fazer adesao
+Adesao ao DTE
+Fazer adesao
+Computer + internet
+Qualquer navegador
+Computador + internet
+Qualquer navegador
+STEP 0.2: Get SEFAZ password + DTE (if not done yet)
+PASSO 0.2: Obter senha SEFAZ + DTE (se ainda nao fez)
+SEFAZ password: sefaz.ba.gov.br > Servicos > Senha de Servicos. Request with e-CNPJ certificate. Instant.
+Senha SEFAZ: sefaz.ba.gov.br > Servicos > Senha de Servicos. Solicitar com e-CNPJ. Instantaneo.
+DTE adhesion: sefaz.ba.gov.br > Domicilio Tributario Eletronico > Fazer adesao. Required for export. Also instant.
+Adesao DTE: sefaz.ba.gov.br > Domicilio Tributario Eletronico > Fazer adesao. Obrigatorio para exportacao. Tambem instantaneo.
+Pagina 2/10
+
+--- Page 3 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+STEP 1: Add Commerce CNAE to CNPJ
+PASSO 1: Incluir CNAE de Comercio no CNPJ
+WHO: Matheus, directly. You do this on the Receita Federal e-CAC portal with your e-CNPJ certificate. NO ACCOUNTANT.
+QUEM: Matheus, diretamente. Voce faz no portal e-CAC da Receita Federal com seu certificado e-CNPJ. SEM CONTADOR.
+STEP 1.1: Access the e-CAC portal
+PASSO 1.1: Acessar o portal e-CAC
+1. Open your browser, go to: https://cav.receita.fazenda.gov.br
+1. Abrir navegador, acessar: https://cav.receita.fazenda.gov.br
+2. Click 'Entrar com GOV.BR' then select 'Certificado Digital'
+2. Clicar 'Entrar com GOV.BR' e selecionar 'Certificado Digital'
+3. Select your e-CNPJ certificate for Black King (CNPJ 50.042.585/0001-80)
+3. Selecionar seu certificado e-CNPJ da Black King (CNPJ 50.042.585/0001-80)
+4. Enter the certificate PIN when prompted
+4. Digitar o PIN do certificado quando solicitado
+5. You are now logged in as representative of Black King
+5. Voce esta logado como representante da Black King
+IMPORTANT / IMPORTANTE
+CRITICAL: Use the e-CNPJ certificate (company), NOT your e-CPF (personal). The e-CNPJ authorizes CNPJ data changes. If you only see
+CPF services, you used the wrong certificate.
+CRITICO: Use o certificado e-CNPJ (empresa), NAO o e-CPF (pessoal). O e-CNPJ autoriza alteracoes no CNPJ. Se so ver servicos CPF, usou o
+certificado errado.
+STEP 1.2: Add the commerce CNAE
+PASSO 1.2: Incluir o CNAE de comercio
+1. In e-CAC dashboard, find: 'Alteracao de Dados Cadastrais' or 'Atualizacao Cadastral'
+1. No painel e-CAC, encontrar: 'Alteracao de Dados Cadastrais' ou 'Atualizacao Cadastral'
+2. Under 'Atividades Economicas' or 'CNAE', click 'Incluir' to add a SECONDARY CNAE
+2. Em 'Atividades Economicas' ou 'CNAE', clicar 'Incluir' para adicionar CNAE SECUNDARIO
+The CNAE code to add. Choose ONE:
+O codigo CNAE a adicionar. Escolha UM:
+46.23-1/04
+Com. atac. de cacau (BEST)
+46.23-1/04
+Comercio atacadista de cacau (MELHOR)
+46.32-0/01
+Com. atac. cereais/leguminosas
+46.32-0/01
+Com. atac. cereais e leguminosas
+46.39-7/99
+Com. atac. prod. alimenticios
+46.39-7/99
+Com. atac. prod. alimenticios geral
+3. IMPORTANT: Set as SECONDARY. Do NOT replace the primary CNAE (82.30-0-01).
+3. IMPORTANTE: Definir como SECUNDARIA. NAO substituir o CNAE principal (82.30-0-01).
+4. Click 'Enviar'. Save the protocol number shown on screen.
+4. Clicar 'Enviar'. Guardar o numero de protocolo mostrado na tela.
+5. Processing: Usually approved within 24 hours (often same day).
+5. Processamento: Normalmente aprovado em 24 horas (frequentemente no mesmo dia).
+IMPORTANT / IMPORTANTE
+WHY YOU CAN DO THIS: As Empresario Individual, you are the sole owner/administrator. Your e-CNPJ certificate grants full authority over
+CNPJ registration data. The accountant uses this exact same portal. You are just skipping the middleman. Adding a secondary CNAE does
+NOT affect Simples Nacional status.
+POR QUE VOCE PODE FAZER: Como Empresario Individual, voce e o unico proprietario/administrador. Seu certificado e-CNPJ concede autoridade
+total sobre dados cadastrais do CNPJ. O contador usa este mesmo portal. Voce esta apenas pulando o intermediario. Adicionar CNAE secundario
+Pagina 3/10
+
+--- Page 4 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+NAO afeta o Simples Nacional.
+Pagina 4/10
+
+--- Page 5 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+STEP 2: Request Inscricao Estadual (IE)
+PASSO 2: Solicitar Inscricao Estadual (IE)
+WHO: Matheus. Self-service on SEFAZ-BA portal with e-CNPJ. NO ACCOUNTANT.
+QUEM: Matheus. Autosservico no portal SEFAZ-BA com e-CNPJ. SEM CONTADOR.
+STEP 2.1: Wait for CNAE to appear (24h)
+PASSO 2.1: Aguardar CNAE aparecer (24h)
+Before proceeding, verify the CNAE is active. Go to solucoes.receita.fazenda.gov.br, enter CNPJ 50.042.585/0001-80, download the
+'Comprovante de Inscricao'. The new commerce CNAE must appear under 'Atividades Economicas Secundarias'.
+Antes de prosseguir, verificar CNAE ativo. Acessar solucoes.receita.fazenda.gov.br, informar CNPJ 50.042.585/0001-80, baixar
+'Comprovante de Inscricao'. O novo CNAE de comercio deve aparecer em 'Atividades Economicas Secundarias'.
+IMPORTANT / IMPORTANTE
+Do NOT request IE until the commerce CNAE is visible on the CNPJ card. SEFAZ-BA checks the CNPJ registry automatically and will reject if
+only service CNAEs are found. Check morning and evening. Usually takes less than 24 hours.
+NAO solicitar IE ate que o CNAE de comercio esteja visivel no cartao CNPJ. A SEFAZ-BA verifica o CNPJ automaticamente e rejeitara se encontrar
+apenas CNAEs de servico. Verificar de manha e a noite. Normalmente menos de 24 horas.
+STEP 2.2: Request IE at SEFAZ-BA
+PASSO 2.2: Solicitar IE na SEFAZ-BA
+1. Go to sefaz.ba.gov.br, login with e-CNPJ certificate
+1. Acessar sefaz.ba.gov.br, login com certificado e-CNPJ
+2. Navigate: Carta de Servicos > Cadastros > Inscricao Estadual
+2. Navegar: Carta de Servicos > Cadastros > Inscricao Estadual
+3. Select: 'Solicitacao de Inscricao no Cadastro de Contribuintes do ICMS'
+3. Selecionar: 'Solicitacao de Inscricao no Cadastro de Contribuintes do ICMS'
+4. The system auto-fills Black King's data from CNPJ. Verify:
+4. O sistema preenche automaticamente dados da Black King. Verificar:
+CNPJ:
+50.042.585/0001-80
+CNPJ:
+50.042.585/0001-80
+Razao Social:
+MATHEUS REIS PEREIRA
+Razao Social:
+MATHEUS REIS PEREIRA
+Nome Fantasia:
+BLACK KING
+Nome Fantasia:
+BLACK KING
+Endereco:
+Av. Tancredo Neves, 4900
+Endereco:
+Av. Tancredo Neves, 4900
+Qd H, Cs 9, Ilheus, BA 45655-650
+Qd H, Cs 9, Ilheus, BA 45655-650
+5. Set primary activity to the new commerce CNAE for ICMS purposes
+5. Definir atividade principal como o novo CNAE de comercio para fins de ICMS
+6. Upload documents if requested: updated CNPJ card (PDF), proof of address (IPTU or lease), RG and CPF
+6. Enviar documentos se solicitado: cartao CNPJ atualizado (PDF), comprovante de endereco (IPTU ou contrato), RG e CPF
+7. Submit. Save protocol number. Processing: 3-10 business days. Track on same portal.
+7. Enviar. Guardar protocolo. Processamento: 3-10 dias uteis. Acompanhar no mesmo portal.
+IMPORTANT / IMPORTANTE
+If SEFAZ-BA requests more documents, they notify via DTE (Domicilio Tributario Eletronico) or email. Respond fast -- delays here are the
+most common bottleneck. Keep your phone available.
+Se SEFAZ-BA solicitar mais documentos, notificam via DTE ou email. Responder rapido -- atrasos aqui sao o gargalo mais comum. Manter telefone
+disponivel.
+Pagina 5/10
+
+--- Page 6 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+STEP 3: NF-e Emission Credentialing
+PASSO 3: Credenciamento para Emissao de NF-e
+WHO: Matheus. Same SEFAZ-BA portal with e-CNPJ. Also self-service. NO ACCOUNTANT.
+QUEM: Matheus. Mesmo portal SEFAZ-BA com e-CNPJ. Tambem autosservico. SEM CONTADOR.
+STEP 3.1: Verify IE is active
+PASSO 3.1: Verificar IE ativa
+Before proceeding: sefaz.ba.gov.br > Consulta de Inscricao Estadual. Enter IE number. Status must show 'Ativo'.
+Antes de prosseguir: sefaz.ba.gov.br > Consulta de Inscricao Estadual. Informar IE. Status deve mostrar 'Ativo'.
+STEP 3.2: Request NF-e authorization
+PASSO 3.2: Solicitar autorizacao NF-e
+1. sefaz.ba.gov.br > login with e-CNPJ
+1. sefaz.ba.gov.br > login com e-CNPJ
+2. Navigate: Carta de Servicos > Notas Fiscais > Credenciamento NF-e
+2. Navegar: Carta de Servicos > Notas Fiscais > Credenciamento NF-e
+3. Request 'Autorizacao para Emissao de NF-e' (model 55)
+3. Solicitar 'Autorizacao para Emissao de NF-e' (modelo 55)
+4. Processing: Usually 24-48 hours. 'Emissao de NF-e' appears in SEFAZ menu.
+4. Processamento: 24-48 horas. 'Emissao de NF-e' aparece no menu SEFAZ.
+STEP 3.3: Choose NF-e emitter (all work without accountant)
+PASSO 3.3: Escolher emissor NF-e (todos funcionam sem contador)
+OPTION A (FREE, recommended): SEFAZ-BA web emitter. After credentialing approved, login to SEFAZ-BA > Emissao de NF-e.
+The web emitter is right there. No installation. Any browser.
+OPCAO A (GRATIS, recomendada): Emissor web SEFAZ-BA. Apos credenciamento aprovado, login SEFAZ-BA > Emissao de NF-e. O
+emissor web esta la. Sem instalacao. Qualquer navegador.
+OPTION B (FREE): National NF-e portal at nfe.fazenda.gov.br. Download free emitter for BA.
+OPCAO B (GRATIS): Portal nacional em nfe.fazenda.gov.br. Baixar emissor gratuito para BA.
+OPTION C (PAID): Commercial software. Only if issuing many NF-es regularly.
+OPCAO C (PAGA): Software comercial. So se emitir muitas NF-es regularmente.
+IMPORTANT / IMPORTANTE
+If the NF-e menu does not appear after approval, call SEFAZ-BA support. Sometimes manual profile activation is needed. They fix it on the
+same call.
+Se o menu NF-e nao aparecer apos aprovacao, ligar para suporte SEFAZ-BA. As vezes precisa ativacao manual. Resolvem na mesma ligacao.
+Pagina 6/10
+
+--- Page 7 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+STEP 4: Issue the Export NF-e
+PASSO 4: Emitir a NF-e de Exportacao
+WHO: Matheus. Using SEFAZ web emitter. Data from Commercial Invoice already prepared by Gary. NO ACCOUNTANT.
+QUEM: Matheus. Usando emissor web SEFAZ. Dados da Commercial Invoice ja preparados pelo Gary. SEM CONTADOR.
+STEP 4.1: NF-e Header (Cabecalho)
+PASSO 4.1: Cabecalho da NF-e
+Operation:
+Exportacao (codigo 6.501)
+Operacao:
+Exportacao (codigo 6.501)
+Nature:
+Exportacao definitiva de mercadoriasNatureza:
+Exportacao definitiva
+Model:
+55 (NF-e padrao)
+Modelo:
+55 (NF-e padrao)
+CFOP:
+7.101 (venda prod. propria)
+CFOP:
+7.101 (prod. propria)
+or 7.102 (revenda terceiros)
+ou 7.102 (revenda)
+Incoterms:
+FOB (frete pago pelo comprador)
+Incoterms:
+FOB
+Transport:
+Aereo | SSA (Salvador) > SFO (SF) Transporte:
+Aereo | SSA > SFO
+STEP 4.2: Seller - Black King (Emitente)
+PASSO 4.2: Vendedor - Black King (Emitente)
+CNPJ:
+50.042.585/0001-80
+CNPJ:
+50.042.585/0001-80
+IE:
+[NOVO NUMERO DA IE]
+IE:
+[NOVO NUMERO DA IE]
+Razao Social:
+MATHEUS REIS PEREIRA
+Razao Social:
+MATHEUS REIS PEREIRA
+Nome Fantasia:
+BLACK KING
+Nome Fantasia:
+BLACK KING
+Endereco:
+Av. Tancredo Neves, 4900
+Endereco:
+Av. Tancredo Neves, 4900
+Qd H, Cs 9, Ilheus, BA 45655-650
+Qd H, Cs 9, Ilheus, BA 45655-650
+STEP 4.3: Buyer - TrueTech Inc (Destinatario/Exterior)
+PASSO 4.3: Comprador - TrueTech Inc (Destinatario/Exterior)
+Select 'Exterior' as destination type. No Brazilian CNPJ/CPF needed.
+Selecionar 'Exterior' como tipo de destino. Nao precisa de CNPJ/CPF brasileiro.
+Nome:
+TrueTech Inc
+Nome:
+TrueTech Inc
+Pais:
+Estados Unidos (cod. 2496)
+Pais:
+Estados Unidos (cod. 2496)
+ID Exterior:
+EIN 88-3411514
+ID Exterior:
+EIN 88-3411514
+Endereco:
+1423 Hayes St
+Endereco:
+1423 Hayes St
+Cidade/UF/CEP:
+San Francisco, CA, 94117
+Cidade/UF/CEP:
+San Francisco, CA, 94117
+IMPORTANT / IMPORTANTE
+First-time: If TrueTech Inc is not in your system, use "Adicionar Destinatario" / "Novo Cliente" button. Select "Exterior" type. System accepts
+address without Brazilian CEP.
+Primeira vez: Se TrueTech Inc nao estiver no sistema, usar botao "Adicionar Destinatario". Selecionar tipo "Exterior". Sistema aceita endereco sem
+CEP brasileiro.
+STEP 4.4: Line Items (11 items from Invoice INV-2026-0611-001)
+PASSO 4.4: Itens (11 itens da Fatura INV-2026-0611-001)
+NCM
+Description
+Qtd
+Und
+Unit Val
+Total
+1801.00.00
+Cacao Nibs Kraft Pouch 8oz
+137
+UN
+6.64
+909.68
+1803.10.00
+Cacao Husk (KG) - Ilheus
+20
+KG
+17.79
+355.71
+1803.10.00
+Cacao Mass Bar 500g - Ilheus
+37
+UN
+15.70
+580.90
+1801.00.00
+Cacao Nibs (KG) - Ilheus
+80
+KG
+24.62
+1,969.48
+1801.00.00
+Cacao Almonds (KG) - AGL8
+10
+KG
+0.01
+0.10
+2106.90.00
+Cacao Tea (KG) - AGL8
+12
+KG
+0.01
+0.12
+1803.10.00
+Ceremonial Cacao Pouch 200g
+169
+UN
+10.37
+1,752.53
+1801.00.00
+Cacao Almonds (KG) - AGL13
+15
+KG
+7.87
+118.05
+1801.00.00
+Cacao Nibs (KG) - AGL13
+100
+KG
+10.18
+1,018.23
+Pagina 7/10
+
+--- Page 8 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+2106.90.00
+Cacao Tea (KG) - AGL13
+21
+KG
+10.18
+213.83
+1801.00.00
+Cacao Almonds (KG) - AGL14
+10
+KG
+11.41
+114.12
+Items 5 and 6 (AGL8): If system rejects $0, use $0.01 nominal value.
+Itens 5 e 6 (AGL8): Se sistema rejeitar $0, usar valor nominal $0.01.
+Pagina 8/10
+
+--- Page 9 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+STEP 4.5: Financial Summary & Transport
+PASSO 4.5: Resumo Financeiro e Transporte
+Valor total FOB:
+USD 7,032.53
+Valor total FOB:
+USD 7.032,53
+Moeda:
+Dolar Americano (USD)
+Moeda:
+Dolar Americano (USD)
+Valor do frete:
+USD 0.00 (comprador paga)
+Valor do frete:
+USD 0.00
+Peso bruto total:
+~342.3 kg
+Peso bruto total:
+~342,3 kg
+Peso liquido total:
+~307.3 kg
+Peso liquido total:
+~307,3 kg
+STEP 4.6: Taxes (Tributos) - Export immunity
+PASSO 4.6: Tributos - Imunidade de exportacao
+ICMS:
+Isento (imunidade constitucional)
+ICMS:
+Isento (imunidade const.)
+IPI:
+Isento
+IPI:
+Isento
+PIS:
+Suspensao (regime exportacao)
+PIS:
+Suspensao
+COFINS:
+Suspensao (regime exportacao)
+COFINS:
+Suspensao
+IMPORTANT / IMPORTANTE
+Exchange rate: If NF-e system asks for USD/BRL rate, use official BACEN rate for issue date: https://www.bcb.gov.br/conversao. This is the
+Central Bank converter.
+Taxa de cambio: Se o sistema pedir taxa USD/BRL, usar oficial do BACEN para a data: https://www.bcb.gov.br/conversao. E o conversor do Banco
+Central.
+STEP 4.7: Issue and send
+PASSO 4.7: Emitir e enviar
+1. Click 'Emitir' or 'Transmitir' in your NF-e emitter
+1. Clicar 'Emitir' ou 'Transmitir' no emissor NF-e
+2. System sends to SEFAZ for validation. Wait for 'Autorizacao de Uso' (usually seconds)
+2. Sistema envia para SEFAZ. Aguardar 'Autorizacao de Uso' (geralmente segundos)
+3. If approved: XML file generated (the official electronic NF-e) + protocol number
+3. Se aprovado: Arquivo XML gerado (NF-e eletronica oficial) + numero de protocolo
+4. If rejected: Read error message. Fix (common: CFOP, IE not found, exchange rate, export profile). Retry.
+4. Se rejeitado: Ler mensagem de erro. Corrigir (comum: CFOP, IE nao encontrada, taxa cambio, perfil exportacao). Tentar novamente.
+5. Print/save DANFE (Documento Auxiliar da NF-e)
+5. Imprimir/salvar DANFE (Documento Auxiliar da NF-e)
+IMPORTANT / IMPORTANTE
+Troubleshooting: (a) "Exportacao" not in dropdown: call SEFAZ-BA, they enable export profile on the phone. (b) "IE nao encontrada": wait a
+few hours for systems to sync. (c) $0 items rejected: use $0.01.
+Solucao de problemas: (a) "Exportacao" nao aparece: ligar SEFAZ-BA, habilitam perfil exportacao por telefone. (b) "IE nao encontrada": aguardar
+algumas horas para sincronizar sistemas. (c) Itens $0 rejeitados: usar $0.01.
+STEP 4.8: Email files to Graziela and Omega
+PASSO 4.8: Enviar arquivos para Graziela e Omega
+Graziela Vedana: Graziela@5cl.rs
+Isis Ribeiro (Omega Export Ops): isis.ribeiro@omegaservicos.com.br
+Ana Barros (Omega Pricing): ana.barros@omegaservicos.com.br
+Iolanda Santos (Omega Siscomex): iolanda.santos@omegaservicos.com.br
+Attach these files:
+Anexar estes arquivos:
+1. NF-e XML file (THE IMPORTANT ONE)
+Pagina 9/10
+
+--- Page 10 ---
+Black King | CNPJ 50.042.585/0001-80 | Ilheus / BA | Jun 2026
+1. Arquivo XML da NF-e (O IMPORTANTE)
+2. DANFE (PDF of printed NF-e)
+2. DANFE (PDF da NF-e impressa)
+3. Commercial Invoice and Packing List already sent by Gary on June 11
+3. Commercial Invoice e Packing List ja enviadas pelo Gary em 11 junho
+Summary: Complete Self-Service Timeline
+Resumo: Cronograma Completo Autosservico
+Day
+Step
+Where / Onde
+1
+Add commerce CNAE to CNPJ
+e-CAC (cav.receita.fazenda.gov.br)
+2
+Verify CNAE visible on CNPJ card
+solucoes.receita.fazenda.gov.br
+2-12
+Request IE at SEFAZ-BA
+sefaz.ba.gov.br > Cadastros > IE
+13-14
+Request NF-e credentialing
+sefaz.ba.gov.br > Notas Fiscais
+15+
+Issue export NF-e (11 items)
+Emissor web SEFAZ
+15+
+Email XML + DANFE to Omega
+Gmail / Email
+FASTEST PATH: 8 days total (self-service)
+CAMINHO MAIS RAPIDO: 8 dias total (autosservico)
+Monday: Add CNAE (Day 1). Tuesday: CNAE on CNPJ card, request IE (Day 2). IE approved by Friday (Day 6). Request NF-e
+credentialing Friday. Credentialing approved Monday (Day 8). Issue NF-e Monday, email to Omega Monday. Shipment proceeds.
+Segunda: Adicionar CNAE (Dia 1). Terca: CNAE no cartao CNPJ, solicitar IE (Dia 2). IE aprovada ate sexta (Dia 6). Solicitar credenciamento
+NF-e sexta. Credenciamento aprovado segunda (Dia 8). Emitir NF-e segunda, email para Omega segunda. Embarque prossegue.
+Alternative: Coopercabruca Route (Ships in Days)
+Alternativa: Rota Coopercabruca (Embarca em Dias)
+If anything in self-service timeline gets blocked, use this fallback:
+Se algo no cronograma travar, usar esta alternativa:
+Entidade:
+COOPERCABRUCA
+Entidade:
+COOPERCABRUCA
+CNPJ:
+31.948.811/0001-42
+CNPJ:
+31.948.811/0001-42
+CNAE:
+10.93-7-01 (fabr. cacau)
+CNAE:
+10.93-7-01 (fabr. cacau)
+Local:
+Itabuna, BA (mesma regiao)
+Local:
+Itabuna, BA (mesma regiao)
+IE + NF-e:
+JA POSSUI. Pronto p/ emitir.
+IE + NF-e:
+JA POSSUI. Pronto p/ emitir.
+FDA FSVP:
+VALIDO (FFR 17660066140)
+FDA FSVP:
+VALIDO (FFR 17660066140)
+Exp. anterior:
+100kg SSA->SFO Nov 2023
+Exp. anterior:
+100kg SSA->SFO Nov 2023
+Contato:
+coopercabruca@gmail.com
+Contato:
+coopercabruca@gmail.com
+Tel:
++55 73 9138-8884
+Tel:
++55 73 9138-8884
+How: Exportacao indireta. Black King issues simple domestic NF-e to Coopercabruca (CFOP 5501/6501, no IE needed).
+Coopercabruca issues export NF-e to TrueTech Inc (CFOP 7101/7102). They already shipped 100kg cacao via SSA->SFO with
+Omega in Nov 2023 -- same route, same freight forwarder.
+Como: Exportacao indireta. Black King emite NF-e domestica simples para Coopercabruca (CFOP 5501/6501, sem IE). Coopercabruca
+emite NF-e exportacao para TrueTech Inc (CFOP 7101/7102). Eles ja enviaram 100kg cacau via SSA->SFO com Omega em Nov/2023 --
+mesma rota, mesmo agente.
+Pagina 10/10
+```
+
+
+### 🤖 Autopilot
+
+This is an excellent document — comprehensive and well-structured. Let me check it against what I already have in the context.
+
+
+### 🤖 Autopilot
+
+This is a **very well-made document** — it's more detailed and polished than the Appendix A I added to the checklist. Let me compare:
+
+**What this PDF has that my Appendix A doesn't:**
+
+| Feature | My Appendix A | This PDF |
+|---------|:---:|:---:|
+| Step 0: Prerequisites (SEFAZ password, DTE adhesion) | ❌ | ✅ |
+| Step 1: Add CNAE via e-CAC (with screenshots-level detail) | ✅ | ✅ (better) |
+| Step 2: Request Inscrição Estadual (IE) at SEFAZ-BA | ❌ | ✅ |
+| Step 3: NF-e credentialing process | ❌ | ✅ |
+| Step 4: Issue the export NF-e (full line items) | ✅ | ✅ |
+| Exchange rate instructions (BACEN) | ❌ | ✅ |
+| CFOP codes (7101/7102) | ❌ | ✅ |
+| Troubleshooting per step | ✅ | ✅ (better) |
+| Timeline (8-day self-service) | ❌ | ✅ |
+| **Coopercabruca fallback route** | ❌ | ✅ |
+| Portuguese + English bilingual | ❌ | ✅ |
+
+**Verdict:** This PDF is **strictly better** than what I wrote. It covers the missing IE step (which is the actual bottleneck after the CNAE), the NF-e credentialing, and even has a fallback plan via Coopercabruca. The bilingual format is also great for Matheus.
+
+**Recommendation:** I should replace my Appendix A with this document's content, or better yet — just save this PDF to the repo and reference it. Want me to:
+
+1. **Save this PDF** to `agentic_ai_context/exports/` and update the checklist to reference it?
+2. **Or** update Appendix A to include the missing steps (IE, credentialing, Coopercabruca fallback)?
+
+Also — I notice the PDF mentions the **Coopercabruca fallback** as an alternative if Black King's self-service gets blocked. That's a smart contingency. Should I send this full PDF to Matheus as well?
+
