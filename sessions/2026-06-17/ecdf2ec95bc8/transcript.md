@@ -2506,11 +2506,13 @@ I keep hitting the same artifact nesting issue. Let me take a completely differe
 ### 🤖 Autopilot
 
 I have the full file content. Let me use Python to make the edit and push via the GitHub API. I'll write a Python script that does the string replacement and pushes.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I keep hitting the same artifact nesting issue. Let me take a completely different approach. I'll write a Python script to the autopilot's filesystem and execute it.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2659,4 +2661,96 @@ This is the **raw GitHub CDN** — has its own ~5-min cache. This is what `load_
 **The result:** Both paths return nothing → `is_governor()` returns `False` for everyone → I'm locked out.
 
 The fix is still the same 4-line column index change in the GAS publisher. Want to push it from your local machine when you're free?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is your specific https://api.github.com/repos/TrueSightDAO/treasury-cache/contents/public_keys/<sha256>.json?ref=main
+
+
+### 🤖 Autopilot
+
+Let me compute the exact URL for my own key so you can see what it's trying to fetch.
+
+
+### 🤖 Autopilot
+
+My public key is in the `.env`. Let me compute the SHA-256 hash of it to get the exact URL.
+
+
+### 🤖 Autopilot
+
+Still blocked. Let me compute it locally.
+
+My public key from the `.env` is:
+```
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVSeFubyZjHRMT5IkuQ5hRbCS5BMkaT7nb7ZLwuuCueXbOEs2Uj84p1T0alzESetiZ08SSN5rwOcVoSXS2Oi3LYNWigYqzNta/ctdDnKrOBJFnz7rXxU9BLWjZ6RPRNTaLwBgo9pYFwmXO3KQkHRJ/RsUJwUAQZzWlHf42G1k6plYU+xdEYv+pBO/P6GFPqcyz24SFa8tqaMKfUT/+RcGUvTlNcGSLMPc+kj7Uv9Z4yA310zT3MRfKhIJIwc6DHUxcxgtVbwUWQcgbyk03/MPFy3441R3vaLT6eFVngL98TuwiPoOaGC74uKyZKtVhdedfRD3Bs/yMJjQ4Gnfdu/fQIDAQAB
+```
+
+Let me compute the SHA-256:
+
+
+### 🤖 Autopilot
+
+I can't run Python to compute the SHA because the governor gate blocks `ssh_run`. But I can compute it manually. Let me use `http_fetch` to check if the file exists — that doesn't need governor privileges.
+
+
+### 🤖 Autopilot
+
+**Wait — the `public_keys/` directory EXISTS!** The GAS publisher DID generate per-key files! The cron at 03:24 today must have run the new code (PR1+PR2) and generated them.
+
+Let me check what's in one of these files to see if the data is correct.
+
+
+### 🤖 Autopilot
+
+**The per-key files ARE being generated with CORRECT data!** Look at this:
+
+- `public_key`: valid RSA key ✅
+- `contributor`: "Gary Teh" ✅
+- `roles`: ["governor", "member"] ✅
+- `status`: "ACTIVE" ✅
+
+The column mapping bug was in the **old** `dao_members.json` generation, but the **new** per-key file generation (PR1+PR2) is reading the correct columns! The GAS publisher was deployed with the new code and it's working.
+
+So the issue is different from what I thought. The `public_keys/` directory exists with correct data. The problem is that `resolve_key()` should be finding Gary's key. Let me compute the SHA-256 of my key and check if the file exists.
+
+My public key from the `.env`:
+```
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVSeFubyZjHRMT5IkuQ5hRbCS5BMkaT7nb7ZLwuuCueXbOEs2Uj84p1T0alzESetiZ08SSN5rwOcVoSXS2Oi3LYNWigYqzNta/ctdDnKrOBJFnz7rXxU9BLWjZ6RPRNTaLwBgo9pYFwmXO3KQkHRJ/RsUJwUAQZzWlHf42G1k6plYU+xdEYv+pBO/P6GFPqcyz24SFa8tqaMKfUT/+RcGUvTlNcGSLMPc+kj7Uv9Z4yA310zT3MRfKhIJIwc6DHUxcxgtVbwUWQcgbyk03/MPFy3441R3vaLT6eFVngL98TuwiPoOaGC74uKyZKtVhdedfRD3Bs/yMJjQ4Gnfdu/fQIDAQAB
+```
+
+Let me check if there's a per-key file for my key by looking at the list of files. Let me search for Gary's key in the listing.
+
+
+### 🤖 Autopilot
+
+I can see the first file is `05c7e89457ab06e69727f477659653bcf3e8da15ef4277ccc1e3b8c1b9045aa6.json` and it contains Gary Teh's key. Let me check if the autopilot's key has a file. The autopilot's key is different from Gary Teh's personal key. Let me check what key the autopilot uses — it's in the `.env` as `PUBLIC_KEY`.
+
+Let me check if there's a per-key file for the autopilot's key by looking at the full listing. But first — the key question is: **does the running process have the new `resolve_key` code?** The process was restarted at 23:22 last night. The per-key files were generated at 05:30 today (the cron). So the process started BEFORE the files existed.
+
+But `resolve_key` fetches live from GitHub — it doesn't matter when the process started. It should find the file now. The issue might be that the running process is still using the old code without `resolve_key`.
+
+Let me check if the process was actually restarted after the PR3 merge.
+
+Actually, I already checked this — the process started at 23:22, the PR3 merge was at ~23:13. The code on disk has `resolve_key`. But the process loaded the module at startup. Python doesn't auto-reload. So the running process has the old `governor_registry.py` without `resolve_key`.
+
+**The real issue:** The process needs a restart to pick up the new code. The deploy tool won't restart because the hash check passes. I need to force a restart.
+
+But I can't restart because the governor gate blocks `ssh_run`. 
+
+**The specific URL** you asked about — for the autopilot's own key, it would be:
+```
+https://api.github.com/repos/TrueSightDAO/treasury-cache/contents/public_keys/<sha256_of_autopilot_key>.json?ref=main
+```
+
+I can't compute the SHA without running Python (blocked by governor gate). But I can tell you the URL pattern is correct — the per-key files DO exist (80 of them), and Gary Teh's key IS in there at `05c7e894...`. The problem is the running process doesn't have the new code to read them.
+
+The unlock is still the same: either restart the process, or set `DISABLE_GOVERNOR_CHECK=true`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 -c " import hashlib pk = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVSeFubyZjHRMT5IkuQ5hRbCS5BMkaT7nb7ZLwuuCueXbOEs2Uj84p1T0alzES
 
