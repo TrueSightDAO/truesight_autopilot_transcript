@@ -3724,22 +3724,46 @@ That's about event activations, not the SALES EVENT format. The tool's validatio
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The `submit_contribution` tool isn't in the autopilot repo — it's in the adapter layer. The error message said `Canonical labels are: Item, Sales price, Sold by, Cash proceeds collected by, Owner email, Stripe Session ID, Shipping Provider, Tracking number, Attached Filename, Submission Source`. Let me try with the exact casing from the error message.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It keeps saying `Item` is missing even though I'm passing it. The issue might be that the tool expects the QR code to be passed as a separate parameter, or the `Item` field needs a specific format. Let me check the `lookup_event_docs` fallback docs more carefully — it said the required fields are `Item (QR code)` and `Sales price`. Maybe the tool expects the QR code in a `qr_code` field instead of `Item`.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool's validation is rejecting `Item` even though I'm passing it. This might be a bug in the tool's validation logic — perhaps it's looking for the key in a different way. Let me try with `qr_code` instead.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool explicitly says the canonical label is `Item` but rejects it when I pass it. This is a bug in the tool's validation. Let me check the actual tool implementation to understand the issue.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3832,4 +3856,28 @@ Want me to merge it?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → grep -rn "SALES EVENT\|Canonical\|Item" /opt/truesight_autopilot/app/main.py 2>/dev/null | head -20; sed -n '1180,1210p' /opt/truesight_autopilot/app/main.py; sed -n '1260,1290p' /opt/truesight_autopilot/app/main.py; …(+3 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/247
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] but why are we using lowercase? Cant we just pull the proper parameters to use from Edgar's end point or edgar doesnt provide that yet? and then use the dao_client to send the request
+
+
+### 🤖 Autopilot
+
+You're right on both points.
+
+**Why lowercase?** The alias mapping lowercases keys to handle LLM-invented variations (`item_name`, `qr_code`, etc.). But the bug is that `"item"` is aliased to `"Inventory Item"` (an Inventory Movement field), so when I pass the exact canonical label `"Item"` for SALES EVENT, it gets remapped to the wrong field and dropped.
+
+**The real fix:** I shouldn't be guessing the parameters at all. Edgar should tell me what the canonical labels are. The `lookup_event_docs` tool I built already fetches the docs — but the docs are on the landing page, and the landing page has the human-readable format, not the machine-readable canonical labels.
+
+What I should do is:
+
+1. **Add a machine-readable endpoint to Edgar** — `GET /dao/event-schema/SALES EVENT` that returns the canonical labels, required fields, and format
+2. **`lookup_event_docs` fetches from that endpoint** — gets the exact canonical labels
+3. **I pass those exact labels** — no guessing, no alias mapping needed
+
+This way the canonical labels live in one place (Edgar), and both the landing page and the tool read from the same source. No more alias mapping bugs.
+
+Want me to add that endpoint to Edgar and update `lookup_event_docs` to use it?
 
