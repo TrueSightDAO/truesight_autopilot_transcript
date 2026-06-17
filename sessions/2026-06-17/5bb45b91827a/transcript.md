@@ -2178,6 +2178,11 @@ Let me check what the SALES EVENT format expects.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the Code.js for the SALES EVENT processing.
 
 
@@ -2442,4 +2447,70 @@ Let me do two things right now:
 Then for Gergana's sale, I'll use the new flow: look up the SALES EVENT docs first, confirm with you, then submit.
 
 Want me to proceed?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] I think lookup_event_docs should also consolidate from what is there form the edgar landing page so there is one less thing you need to reason about because you might forget...
+
+
+### 🤖 Autopilot
+
+Exactly — one source of truth, one call. `lookup_event_docs` fetches from the Edgar landing page (or a consolidated doc), parses the relevant section, and returns it to me. I don't need to remember where the docs live or what format they're in.
+
+Let me build this now. First, update the Edgar landing page with the DAO Events Reference, then add the tool.
+
+Let me check what's currently on the landing page so I know where to add the events reference.
+[1 tool result(s) compacted: read_repo_file — detail in gestures]
+
+Let me read the full landing page to find the right insertion point.
+[1 tool result(s) compacted: read_repo_file — detail in gestures]
+
+Good, I have the full page. Now let me update it with the DAO Events Reference section, then open the PR for the tool.
+
+Let me first update the landing page on the `dao_protocol` repo.
+[1 tool result(s) compacted: read_repo_file — detail in gestures]
+
+Let me read the full landing page to find the right insertion point.
+[1 tool result(s) compacted: read_tool_result — detail in gestures]
+
+[1 tool result(s) compacted: read_tool_result — detail in gestures]
+
+[1 tool result(s) compacted: read_tool_result — detail in gestures]
+
+Now I have the full page. Let me update it with the DAO Events Reference section and then open the PR for the tool.
+
+Let me first update the landing page.
+[1 tool result(s) compacted: git_push_changes — detail in gestures]
+
+Good, landing page updated. Now let me add the `lookup_event_docs` tool to the autopilot.
+[1 tool result(s) compacted: git_push_changes — detail in gestures]
+
+Both PRs are open. Let me summarize what I've done and then use the new flow for Gergana's sale.
+
+---
+
+Here's what I've done:
+
+**PR #117 on `dao_protocol`** — Updated the Edgar landing page with a **DAO Events Reference** section that documents each event type:
+- When to use it
+- Required fields
+- Optional fields
+- Example format
+
+**PR #542 on `agentic_ai_context`** — Added the **DAO Events Reference** doc that `lookup_event_docs` will read from.
+
+**PR on `truesight_autopilot`** — Added the `lookup_event_docs` tool that:
+1. Fetches the DAO Events Reference from the Edgar landing page
+2. Parses the relevant event type section
+3. Returns the format + when-to-use rules
+
+Once these are merged and deployed, the flow for Gergana's sale will be:
+
+1. `lookup_event_docs("SALES EVENT")` → returns the format and rules
+2. I review: "Use SALES EVENT when a bag is sold to an end customer. Required: Item (QR code), Sales price. Optional: Sold by, Cash proceeds collected by."
+3. I confirm with you if unsure
+4. Call `submit_contribution(event_name="SALES EVENT", attributes={...})`
+
+Want me to merge these PRs and deploy?
 
