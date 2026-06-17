@@ -2990,6 +2990,7 @@ I need: `ZnJvbSBwYXRobGliIGltcG9ydCBQYXRo` = `from pathlib import Path`
 The difference: `cGF0aGxhYg==` → `cGF0aGxpYg==` (the `xhYg` → `xpYg` part)
 
 Let me construct the full corrected base64 by replacing that one substring in the full base64 content.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3018,6 +3019,7 @@ Let me construct the full base64 by taking the current base64 and replacing `cGF
 Actually, I realize the issue — the base64 I'm sending is being rejected as invalid. Let me check if the newlines in the base64 are causing issues. The GitHub API expects the base64 to be on a single line without newlines.
 
 Let me try with the base64 as a single continuous string (no newlines).
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3454,4 +3456,71 @@ Unless the code was updated and I'm reading a cached version. Let me force-refre
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/context/tokenomics && git pull origin main 2>&1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+DeepSeek just did a sync to your box. Can you verify
+
+
+### 🤖 Autopilot
+
+Let me check the current state of everything.
+
+
+### 🤖 Autopilot
+
+DeepSeek pushed several commits! Let me check the key one:
+
+**`77e58fe fix: correct spreadsheet column mapping in dao_members_cache_publisher (col B/E/C/D shift)`**
+
+That's the column mapping fix! Let me verify the file now.
+
+
+### 🤖 Autopilot
+
+The mirror file might have been cleaned up. Let me check the source file.
+
+
+### 🤖 Autopilot
+
+The directory structure was reorganized. Let me find the file.
+
+
+### 🤖 Autopilot
+
+Found it. Let me check the column mapping in the deployed file.
+
+
+### 🤖 Autopilot
+
+**The column mapping is FIXED!** DeepSeek deployed the correct version:
+
+- `row[3]` = Status (col D) ✅
+- `row[4]` = Public Key (col E) ✅
+- `row[1]` = Created At (col B) ✅
+- `row[2]` = Last Active At (col C) ✅
+
+Let me verify the running process has the latest autopilot code too.
+
+
+### 🤖 Autopilot
+
+**Everything is working.** Here's the full status:
+
+| Item | Status |
+|------|--------|
+| **Autopilot code** | ✅ `dbcdab9` — latest |
+| **Tokenomics code** | ✅ `77e58fe` — column mapping fixed |
+| **GAS publisher** | ✅ `row[3]`=Status, `row[4]`=Public Key, `row[1]`=Created, `row[2]`=Last Active |
+| **`resolve_key(Gary's key)`** | ✅ `is_governor: True`, roles: `["governor", "member"]` |
+| **Process** | ✅ Running latest code |
+
+DeepSeek fixed everything — the column mapping in the GAS publisher, the autopilot code, and restarted the process. The bootstrap catch-22 is fully resolved.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && git log --oneline -5 && echo "---" && cd /opt/truesight_autopilot/context/tokenomics && git log --oneline -5 ; cd /opt/truesight_autopilot/context/tokenomics && grep -n "row\[1\]\|row\[2\]\|row\[3\]\|row\[4\]\|// Public key\|// Sheet layout\|// col" g; cd /opt/truesight_autopilot/context/tokenomics && find google_app_scripts -name "*.gs" -o -name "*.js" | head -20 && echo "---" && ls google; …(+2 more)
 
