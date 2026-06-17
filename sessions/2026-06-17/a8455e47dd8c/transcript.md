@@ -1559,11 +1559,13 @@ Now let me also get the Coopercabruca entity profile for the fallback info.
 ### 🤖 Autopilot
 
 Excellent! I now have all the data I need. Let me also research the specific GACC requirements for cocoa/cacao products and the China-Brazil bilateral agreement.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check what specific documents are needed for cocoa/cacao and the Brazil-China bilateral arrangement.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1697,4 +1699,31 @@ Tables now show per-unit weight only — cleaner for Jerri to work with. Ready f
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #531 on agentic_ai_context merged successfully (sha: 7b14dcc8a3e254d5d1942b50983be81bcbd2f0b1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Don’t need gross weight
+
+
+### 🤖 Autopilot
+
+Got it — remove gross weight columns entirely. Let me update both files.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF without gross weight too.
+
+
+### 🤖 Autopilot
+
+Done! **PR #532** — `fix/gacc-remove-gross-weight` — both files updated.
+
+**Changes:**
+- Both Category A and B tables now show only **Item | Unit Weight (Net) | Packaging**
+- Gross weight column removed entirely
+- Total line simplified to just net weight
+
+Want me to merge it?
 
