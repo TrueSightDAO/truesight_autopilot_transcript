@@ -961,51 +961,81 @@ This is a great idea. Go ahead with Want me to draft the implementation plan doc
 ### 🤖 Autopilot
 
 Let me check the handoff registry first, then draft the plan.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — this thread (6045) isn't in the handoff manifest yet, so this is a new plan. Let me draft the implementation plan and check it in.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SCHEMA.md lives in the `tokenomics` repo. Let me read it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's a massive schema doc. Let me get the key sections I need — the Agroverse QR codes tab, QR Code Sales tab, and Inventory Movement tab layouts.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the specific tab layouts I need — Agroverse QR codes, QR Code Sales, and Inventory Movement.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the Agroverse QR codes tab layout specifically. Let me search for it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the Agroverse QR codes tab layout specifically.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have enough context now. Let me also check the existing sheets service in dao_protocol to understand how it reads from Google Sheets.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me also check the existing `qr_code_check` route to understand the pattern for read endpoints.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a thorough understanding of the architecture. Let me draft the implementation plan and check it in.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1046,9 +1076,25 @@ Want me to proceed with **Step 2** — reading the exact column mappings and the
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Plan merged to `main`. Now let me proceed with **Step 2** — reading the exact column mappings from SCHEMA.md, then building PR1.
 
 Let me first check the existing route structure in dao_protocol to know exactly where to add the new files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1131,4 +1177,121 @@ curl "https://edgar.truesight.me/dao/qr-codes?sku=oscar-bahia"
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #541 on agentic_ai_context merged successfully (sha: cab7a59588df545046339b2e238313aa586a89e2). Pull Request successfully merged
 • `ssh run` ×7 → find / -maxdepth 4 -name "pyproject.toml" -path "*/dao*" 2>/dev/null | head -5; find / -maxdepth 4 -name "setup.cfg" -path "*/dao*" 2>/dev/n; find / -maxdepth 4 -name "pyproject.toml" -path "*/dao*" 2>/dev/null | head -5; find / -maxdepth 4 -name "conftest.py" -path "*/dao*" 2>/dev; ls /tmp/dao_protocol_v7/ && cat /tmp/dao_protocol_v7/pyproject.toml; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] shouldnt it also come with the landing page documentation and sandbox updates?
+
+
+### 🤖 Autopilot
+
+You're right — if I'm adding new public endpoints to Edgar, I should update the landing page (the static site served at `/`) and the sandbox docs so anyone (including future-me) can discover and test them without reading the source.
+
+Let me check what the current landing page and sandbox look like.
+
+
+### 🤖 Autopilot
+
+Now let me see the full HTML to understand the sandbox pattern.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the page — the sandbox JS and the closing sections.
+
+
+### 🤖 Autopilot
+
+Let me get the sandbox JS and the rest of the page directly.
+
+
+### 🤖 Autopilot
+
+Let me get the sandbox JS and the end of the page.
+
+
+### 🤖 Autopilot
+
+I have the full picture now. The landing page has:
+1. **REST API Endpoints** section — a simple list of method + path + description
+2. **DAO Events** section — expandable cards with payload previews + "Try in Sandbox" buttons
+3. **Sandbox modal** — sends the payload to `POST /dao/test/submit_contribution`
+
+The query endpoints are read-only GETs, so they don't need the full sandbox modal (no payload to submit). They need:
+1. Listing in the **REST API Endpoints** section
+2. A new **DAO Query** section with example `curl` commands and expected responses
+
+Let me update the PR with the landing page changes.
+
+
+### 🤖 Autopilot
+
+The branch was updated remotely (the PR was opened). Let me force-push the additional commit.
+
+
+### 🤖 Autopilot
+
+The branch was already pushed by the first call. Let me use `upload_file_to_github` to update just the landing page on the existing branch.
+
+
+### 🤖 Autopilot
+
+Good — the branch has the code but not the landing page update yet. Let me use `upload_file_to_github` to update the landing page on the branch.
+
+
+### 🤖 Autopilot
+
+Landing page updated on the branch. Here's the full PR summary:
+
+---
+
+## PR #116 — DAO Query Endpoints ✅
+
+**Branch:** `dao-query-endpoints` on `dao_protocol`
+
+### What's included
+
+**Code (3 new sheet readers + 1 new route + 1 modified main.py):**
+- `sheets/transactions.py` — reads `QR Code Sales` tab, filters by partner/SKU/date
+- `sheets/qr_codes.py` — reads `Agroverse QR codes` tab, filters by manager/owner/SKU/status
+- `sheets/inventory_movements.py` — reads `Inventory Movement` tab, filters by person/role/date
+- `routes/query.py` — three FastAPI GET endpoints
+- `main.py` — mounts the query router
+
+**Tests (14 unit tests):**
+- `tests/test_query.py` — all mocked, no network calls
+
+**Documentation (landing page):**
+- 3 new entries in the **REST API Endpoints** listing
+- New **DAO Query Endpoints** section with expandable cards showing `curl` examples + sample JSON responses for all three endpoints
+
+### Usage
+
+```bash
+# How many bags did SOHA buy?
+curl "https://edgar.truesight.me/dao/transactions?partner=soha"
+
+# QR codes managed by Kirsten
+curl "https://edgar.truesight.me/dao/qr-codes?manager=kirsten"
+
+# Inventory through David Campbell
+curl "https://edgar.truesight.me/dao/inventory-movements?person=campbell"
+
+# QR codes by SKU
+curl "https://edgar.truesight.me/dao/qr-codes?sku=oscar-bahia"
+```
+
+All name fields support **case-insensitive substring matching** — `?partner=soha` matches `SOHA`, `?person=campbell` matches `David Campbell`.
+
+### Next steps after merge
+
+1. **Deploy** — `ssh` to dao_protocol box, `git pull`, restart systemd service
+2. **UAT** — test all 4 scenarios live against actual sheets
+
+Want me to go ahead and merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/dao_protocol/blob/dao-query-endpoints/truesight_dao_client/server/static/index.html
 
