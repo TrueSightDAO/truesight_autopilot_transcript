@@ -3191,6 +3191,7 @@ This thread (6045) isn't in the manifest yet. Let me merge the PRs and deploy.
 ### 🤖 Autopilot
 
 PR #544 doesn't exist — same issue as before, the `git_push_changes` likely pushed to an already-merged branch. Let me check.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3319,4 +3320,66 @@ The format I confirmed from the GAS parser:
 ```
 
 Want me to go ahead and submit it? Or would you rather wait for the `lookup_event_docs` flow to be fully operational first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Fix these two first.
+
+1. PR #118 — DAO Events Reference on landing page. Still open for your review. The lookup_event_docs tool needs this to fetch live docs. Want me to merge it or do you want to review first?
+
+2. Autopilot restart — The lookup_event_docs tool code is on disk but the service hasn't restarted to pick it up. It'll happen on the next safe restart (when no threads are active).
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry, then fix both issues.
+[1 tool result(s) compacted: read_context_file — detail in gestures]
+
+This thread (6045) isn't in the manifest yet. Let me fix both issues.
+
+**Issue 1: PR #118** — Let me check if it exists and what state it's in.
+[1 tool result(s) compacted: list_prs — detail in gestures]
+
+No PR #118 on dao_protocol. The `git_push_changes` call earlier must have failed. Let me check what's on the branch.
+[1 tool result(s) compacted: ssh_run — detail in gestures]
+
+No branch either. The landing page update was pushed directly to `main` via `upload_file_to_github` earlier (commit `18a9018`), never via a PR. Let me create the proper PR now.
+[1 tool result(s) compacted: read_repo_file — detail in gestures]
+
+Let me get the full file to find the right insertion point.
+[1 tool result(s) compacted: read_tool_result — detail in gestures]
+
+[1 tool result(s) compacted: read_tool_result — detail in gestures]
+
+Now I have the full page. Let me create the PR with the DAO Events Reference section.
+[1 tool result(s) compacted: git_push_changes — detail in gestures]
+
+PR #118 is now open. Let me merge it since you said to fix it.
+[1 tool result(s) compacted: merge_pr — detail in gestures]
+
+Now **Issue 2: Autopilot restart**. The deploy tool won't restart while there are active threads. But this conversation IS an active thread. Let me check if there's a way to force a restart or schedule one.
+
+
+### 🤖 Autopilot
+
+No idle/drain messages. The deploy tool blocks restarts when there are active threads. Let me check if the `deploy_autopilot` tool has a force flag or if I can schedule a restart.
+
+
+### 🤖 Autopilot
+
+The deploy tool won't restart while this conversation is active. But the code is already on disk — it just needs a service restart to pick up the new tool definition. Since I can't restart mid-conversation, the cleanest path is:
+
+1. **Finish this conversation** (submit Gergana's sale)
+2. **Then restart** — the deploy tool will see zero active threads and restart safely
+
+Alternatively, if you want the tool available *before* we submit the sale, I can end this thread now, restart, and you can ping me in a new thread to proceed.
+
+What do you prefer?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sudo journalctl -u truesight-autopilot --no-pager -n 20 | grep -i "idle\|drain\|restart\|active thread" | tail -10
 
