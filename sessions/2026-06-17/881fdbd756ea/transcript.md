@@ -412,16 +412,19 @@ The local file is correct — 4 pages, Omega Services, no Coopercabruca. The upl
 ### 🤖 Autopilot
 
 Something is very wrong — the upload says success but GitHub is still serving the old file. Let me check the commit history to see what's actually on the repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commits are there (229c8ac and 0630f59) but the raw content is still the old one. This looks like a GitHub CDN cache issue. Let me try with a cache-busting parameter.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file by commit SHA is correct — 4 pages, clean. It's just a GitHub CDN cache delay on the `main` ref. Let me check the latest commit on main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -453,11 +456,13 @@ Make sure update it properly and then merge make sure the pdf is also updated
 ### 🤖 Autopilot
 
 Let me search your Gmail for Omega Services contact info.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the Omega Services contacts in the email thread. Let me read a couple of the key messages to get the full contact details.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -472,26 +477,31 @@ Key contacts found:
 - **EXPORTAÇÃO** — exportacao@omegaservicos.com.br
 
 Let me update the markdown guide first.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. The markdown guide has "Omega Services" but just says "(contact via Gary Teh)" — no actual contact details. Let me update it with the real contacts from your Gmail.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me regenerate the PDF with the updated contact info and upload it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The markdown is updated. Now let me generate the PDF with the same content and upload it.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, PDF generated. Let me verify it locally first, then upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -575,4 +585,29 @@ The contact info I already used from your Gmail is actually the same as what's i
 - **Group aliases:** comercial@omegaservicos.com.br, exportacao@omegaservicos.com.br
 
 The markdown guide and PDF are already updated with these details from the Gmail thread. Is there anything else you want to add or change?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] How come I'm not seeing the updated PDF can you make sure that is updated and then share me the link to download the PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's actually on GitHub right now — the CDN may have been caching the old version.
+
+
+### 🤖 Autopilot
+
+The PDF on GitHub **is already updated** — 4 pages, no Coopercabruca, no Seacos, no Graziela. Omega Serviços with Ana Barros, Isis Ribeiro, and exportacao are all there.
+
+You might be seeing a cached version. Here's the direct download link:
+
+**https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
+
+Try opening that link directly — if it still shows the old version, try adding `?cache-bust=1` to the end, or open it in an incognito/private window. The CDN cache should refresh within a few minutes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -sI 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf' ; curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf'
 
