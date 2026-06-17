@@ -3779,6 +3779,7 @@ The tool explicitly says the canonical label is `Item` but rejects it when I pas
 ### 🤖 Autopilot
 
 The dispatch logic is correct — `[SALES EVENT]` routes to `parseTelegramChatLogs` which calls `parseSalesEvent`. The issue is in the `submit_contribution` tool's validation layer, which is in the adapter (not in the repo). Let me check if the tool is looking for the QR code in a specific way.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3950,4 +3951,60 @@ Then I can:
 3. Present the exact parameters to you
 
 Want me to build it as `GET /dao/event-schema` (returns all) with an optional `?event=` filter?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] I think that is a great idea. So the
+
+
+### 🤖 Autopilot
+
+Let me build it. I'll add the endpoint to Edgar (dao_protocol), update the landing page to reference it, and update `lookup_event_docs` to fetch from it.
+
+Let me check the current route structure to know where to add it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Good — I know the structure. Let me build the endpoint and update the tool.
+
+First, let me add the event schema endpoint to dao_protocol.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Now let me update the `lookup_event_docs` tool to fetch from this endpoint instead of the landing page.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Both PRs are open. Here's the summary:
+
+---
+
+**PR #119 on `dao_protocol`** — `GET /dao/event-schema` endpoint
+https://github.com/TrueSightDAO/dao_protocol/pull/119
+
+Returns all event types with canonical labels, required fields, and format:
+
+```json
+{
+  "SALES EVENT": {
+    "canonical_labels": ["Item", "Sales price", "Sold by", ...],
+    "required": ["Item", "Sales price"],
+    "format": "[SALES EVENT]\n- Item: <qr_code>\n- Sales price: <amount>\n..."
+  },
+  "INVENTORY MOVEMENT": { ... },
+  "CONTRIBUTION EVENT": { ... },
+  ...
+}
+```
+
+**PR #248 on `truesight_autopilot`** — Updated `lookup_event_docs` to fetch from Edgar
+https://github.com/TrueSightDAO/truesight_autopilot/pull/248
+
+The new flow:
+1. I call `lookup_event_docs("SALES EVENT")`
+2. It fetches `GET /dao/event-schema` from Edgar
+3. Returns the schema + when-to-use rules
+4. I present the exact parameters to you for approval
+5. You approve → I call `submit_contribution` with those exact canonical labels
+6. dao_client signs and submits — no guessing
+
+Want me to merge both and deploy?
 
