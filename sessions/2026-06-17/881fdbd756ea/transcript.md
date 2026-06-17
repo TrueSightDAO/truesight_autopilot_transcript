@@ -507,11 +507,18 @@ Good, PDF generated. Let me verify it locally first, then upload.
 ### 🤖 Autopilot
 
 PDF is clean — 4 pages, no Coopercabruca, no Seacos, no Graziela. Omega Serviços Logísticos with Ana Barros, Isis Ribeiro, and EXPORTAÇÃO contact details. Now let me upload it.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me merge the markdown PR and verify the PDF on GitHub.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -610,4 +617,61 @@ Try opening that link directly — if it still shows the old version, try adding
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → curl -sI 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf' ; curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf'
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] I'm still seeing outdated PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the actual commit history to see what version is on main.
+
+
+### 🤖 Autopilot
+
+The latest commit `92ff888` is mine from 15 minutes ago. Let me check the actual file content at that commit vs what's on `main`.
+
+
+### 🤖 Autopilot
+
+The file at the commit SHA is correct. Now let me check what `main` actually resolves to.
+
+
+### 🤖 Autopilot
+
+The PDF file isn't in the tree at the latest commit! The markdown guide is there (`BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`) but the PDF is missing from the `exports/` directory. Let me check the exports folder.
+
+
+### 🤖 Autopilot
+
+The PDF is there at `e797791944ed`. Let me check what blob SHA the `main` branch has vs what I uploaded.
+
+
+### 🤖 Autopilot
+
+The file on `main` is 10,465 bytes — that's the updated version I uploaded. The old version was 12,607 bytes. The file **is correct on GitHub**. Let me verify by downloading from `main` directly one more time.
+
+
+### 🤖 Autopilot
+
+The PDF on GitHub **is already updated** — I can confirm it from the server side. The file is 10,465 bytes (the old one was 12,607), 4 pages, no Coopercabruca, no Seacos, no Graziela. Omega Serviços Logísticos with Ana Barros, Isis Ribeiro, and EXPORTAÇÃO are all there.
+
+You're likely seeing a cached version in your browser. Try these steps:
+
+1. **Open this link directly** (the raw download):
+   https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf
+
+2. If it still shows old content, **add `?v=2`** to the end:
+   https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf?v=2
+
+3. Or try the **GitHub UI view** instead:
+   https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf
+
+The CDN cache on `raw.githubusercontent.com` can sometimes lag by a few minutes, but the file itself is correct.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → curl -sL 'https://api.github.com/repos/TrueSightDAO/agentic_ai_context/commits?path=exports/2026-06-16_gacc_registration_black_king_china.pd; # Check the file at the latest commit SHA directly curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/92ff888c451ea; # Check what commit main points to curl -sL 'https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/refs/heads/main' | python3 -c ; …(+6 more)
 
