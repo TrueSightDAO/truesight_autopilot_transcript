@@ -45,3 +45,50 @@ Treat it as a **weekend project / credentialing sprint**, not a core initiative.
 
 Want me to dig into the competition rules and deadline?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **1db14e37915948f3b9db1f73256372ec.jpg**]
+- Type: Image (OCR confidence: 88.5%, quality: good)
+
+Extracted text:
+```
+8:14 oll S 1) < +80 ¢ Tournament — graduate from the Playground and play for real stakes. ¢ Starter kit — clone to first hand in minutes, no poker experience needed. What's on the line: e $50K prize pool ¢ The best agent earns a seat at a real table with poker pros — Tom Dwan, Jungleman, and more Join Season 2 — Live Now See you at the tables. You received this email because you are part of Monad Blitz | ETHDenver 2026 Hackathon Registrations on Luma. To contact the host, reply to this email. ( Forward )( F ) \ / / /
+```
+
+
+### 🤖 Autopilot
+
+This is the second half of the same email — the **dev.fun Agentic Poker Arena on Monad** announcement. Let me piece together the full picture:
+
+---
+
+**Full details from the email:**
+
+| Item | Detail |
+|---|---|
+| **Event** | dev.fun Agentic Poker Arena on Monad — Season 2 |
+| **Prize Pool** | $50k |
+| **Format** | Build an autonomous AI agent that plays poker (you never play a hand) |
+| **Two Tracks** | **Playground** (free, leaderboard) → **Tournament** (real stakes) |
+| **Starter Kit** | "Clone to first hand in minutes, no poker experience needed" |
+| **Grand Prize** | A seat at a real table with **Tom Dwan, Jungleman**, and other poker pros |
+| **Context** | Part of **Monad Blitz \| ETHDenver 2026 Hackathon** registrations on Luma |
+| **Deadline** | Not stated explicitly — "Season 2 — Live Now" |
+
+---
+
+**Updated thoughts:**
+
+The **"no poker experience needed"** starter kit lowers the barrier significantly. And the real prize — a seat with Tom Dwan and Jungleman — is less about the money and more about **credibility and network**. If a TrueSight DAO agent sits at that table, that's a story worth telling.
+
+The ETHDenver 2026 Hackathon connection is also interesting — Monad Blitz is a side event. If we're already engaging with the ETHDenver ecosystem, this slots in naturally.
+
+**Bottom line:** The starter kit makes this a low-risk experiment. Want me to:
+1. **Search the web** for the competition rules, deadline, and starter kit repo?
+2. **Register** the DAO's interest and start building a baseline agent?
+
+Your call, Governor.
+
