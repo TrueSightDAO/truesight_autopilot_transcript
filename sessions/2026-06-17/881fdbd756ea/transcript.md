@@ -110,3 +110,25 @@ Done. PR #536 is open — it removes Section F (Coopercabruca fallback) and re-l
 
 Want me to merge it, or leave it open for review?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] What is the PDF URL that is going to be merged share the URL for it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The companion PDF is already in the repo at:
+
+**`exports/2026-06-16_gacc_registration_black_king_china.pdf`**
+
+That file isn't changed by this PR — only the markdown guide is. The PDF URL on GitHub is:
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf
+
+And the raw download link (for sharing with Jerri/Ling) is:
+
+https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf
+
+Want me to merge the PR now?
+
