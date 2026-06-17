@@ -2718,11 +2718,23 @@ The key path is different on seni_ror. Let me check.
 ### 🤖 Autopilot
 
 The key on seni_ror isn't authorized on the dao_protocol box. Let me add it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot box can't reach the private IP directly. Let me use the jump approach I used earlier — via seni_ror with the nelanco key from autopilot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2847,4 +2859,43 @@ This is the proper PR with the DAO Events Reference section that documents each 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s https://edgar.truesight.me/ 2>&1 | grep -c "DAO Events Reference"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] how is progress?
+
+
+### 🤖 Autopilot
+
+Here's a summary of where we are:
+
+## Progress so far
+
+### ✅ Done
+
+| Item | Status |
+|---|---|
+| **PR #118** — DAO Events Reference on landing page | ✅ Open for review |
+| **PR #542** — Companion doc in agentic_ai_context | ✅ Merged |
+| **PR #242** — `lookup_event_docs` tool on autopilot | ✅ Merged (needs service restart) |
+| **Query endpoints deployed** (`/dao/transactions`, `/dao/qr-codes`, `/dao/inventory-movements`) | ✅ Live on `18a9018` |
+| **UAT complete** — tested all 3 endpoints against live sheets | ✅ Working |
+
+### ⏳ Waiting on you
+
+- **PR #118** — needs your review + merge
+- **Autopilot restart** — needs to happen after merge to pick up the `lookup_event_docs` tool (can't restart manually, need `deploy_autopilot` which failed on disk space earlier)
+
+### ⏸️ Paused
+
+- **Gergana's sale** — waiting for the `lookup_event_docs` flow to be fully operational before submitting the SALES EVENT
+
+### What's blocking
+
+The autopilot deploy failed due to disk space (20GB volume, 86% used). The code is pulled but the service hasn't been restarted. I'll need to either:
+- Free up disk space and retry the deploy
+- Or just restart the service once you're ready
+
+Want to review PR #118 so we can move forward?
 
