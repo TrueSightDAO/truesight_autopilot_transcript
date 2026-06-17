@@ -2476,6 +2476,7 @@ I have the full file content. Let me use Python to make the edit and push via th
 ### 🤖 Autopilot
 
 I keep hitting the same artifact nesting issue. Let me take a completely different approach. I'll write a Python script to the autopilot's filesystem and execute it.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2578,4 +2579,45 @@ Here's where we're parked:
 2. Or set `DISABLE_GOVERNOR_CHECK=true` in the autopilot's env and restart
 
 I'll be here when you're ready. Just say the word.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5712] [Handoff context — auto-injected from SOPHIA_HANDOFFS.md: this Telegram topic (thread 5712) is the active handoff for `PUBLIC_KEY_LOOKUP_CACHE_PLAN.md`. Before responding, read it with read_context_file("PUBLIC_KEY_LOOKUP_CACHE_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do you now have permissions to access Edgar?
+
+
+### 🤖 Autopilot
+
+Let me check the current state of things — the governor check might be working now if the cached data was refreshed.
+
+
+### 🤖 Autopilot
+
+Let me check if the governor check is working now by trying a privileged operation.
+
+
+### 🤖 Autopilot
+
+Still blocked. The governor check is still failing because the cached data is corrupted. Let me check if the treasury-cache has been refreshed at all since we last triggered it.
+
+
+### 🤖 Autopilot
+
+Interesting! The cron ran at 03:24 UTC today (June 17) — the daily trigger worked. But the data is **still corrupted** with the same column mapping bug. Look at the first entry:
+
+- `public_key` = `"Wed Aug 27 2025 09:02:14 GMT-0700 (Pacific Daylight Time)"` — that's a date, not a key
+- `status` = `"20260606 07:01:39"` — that's a timestamp, not a status
+- `created_at` = `"ACTIVE"` — that's a status, not a timestamp
+
+The column mapping bug is confirmed. The cron ran but produced garbage. And `active_public_keys: 80` — the code counts them but they're all misaligned, so `status === "ACTIVE"` never matches, and no per-key files were generated.
+
+**To answer your question:** No, I still don't have permissions to access Edgar or any privileged tool. The bootstrap catch-22 is still in place — the corrupted data means `is_governor()` returns False for everyone.
+
+The unlock is still what we discussed: either push the 4-line column fix to the tokenomics repo, or set `DISABLE_GOVERNOR_CHECK=true` on the autopilot. Whenever you're ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 -c " import sys sys.path.insert(0, '.') from app.governor_registry import load_governors govs = load_
 
