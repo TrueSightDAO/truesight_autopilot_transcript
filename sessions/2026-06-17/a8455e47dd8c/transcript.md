@@ -1537,7 +1537,23 @@ Let me look up the Black King entity profile and Coopercabruca info from the FDA
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me also get the Coopercabruca entity profile for the fallback info.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1658,4 +1674,27 @@ Done! Both files updated with per-unit-weight tables. Here's the PR:
 - **Totals:** Kept as a summary line below each table
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Yes, Merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! Both files are now live on `main`:
+
+- **MD:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md
+- **PDF:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf
+
+Tables now show per-unit weight only — cleaner for Jerri to work with. Ready for you to forward.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #531 on agentic_ai_context merged successfully (sha: 7b14dcc8a3e254d5d1942b50983be81bcbd2f0b1). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #531 on agentic_ai_context merged successfully (sha: 7b14dcc8a3e254d5d1942b50983be81bcbd2f0b1). Pull Request successfully merged
 
