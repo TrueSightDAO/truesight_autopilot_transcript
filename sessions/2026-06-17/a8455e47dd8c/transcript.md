@@ -1294,6 +1294,7 @@ Pagina 10/10
 ### 🤖 Autopilot
 
 This is an excellent document — comprehensive and well-structured. Let me check it against what I already have in the context.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1420,4 +1421,27 @@ Two changes made:
 2. **Appendix A** — Added a companion guide box at the top pointing to the PDF, so both resources are available side by side
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Okay, go for it and merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merged! The checklist now references the bilingual PDF guide at the top of Appendix A. Here's the updated document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md**
+
+And the companion PDF is at:
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_export_nfe_enablement_black_king_self_service_guide.pdf**
+
+Anything else on this shipment?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #529 on agentic_ai_context merged successfully (sha: 21b1a0127aa1d1a1645b11c6d297b802f87be29f). Pull Request successfully merged
 
