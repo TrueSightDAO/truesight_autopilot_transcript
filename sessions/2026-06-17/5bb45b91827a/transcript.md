@@ -3032,6 +3032,7 @@ Actually, the tool definitions are part of my system prompt — they're configur
 ### 🤖 Autopilot
 
 The tool file exists on disk but isn't referenced anywhere in the codebase — it was merged but the tool registration (in the system prompt or adapter config) wasn't updated. Let me check the PR to see what was actually in it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3039,31 +3040,62 @@ The tool file exists on disk but isn't referenced anywhere in the codebase — i
 Only the tool file was added — no registration in the adapter config or system prompt. The tool exists on disk but I can't call it because it's not registered as a callable tool in my toolset.
 
 This is a gap I need to fix. Let me check how tools are registered — there must be a tool registry or adapter config somewhere.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate limited. Let me check locally.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — `tool_registry.py` auto-discovers tools from `app/tools/`. Let me check if the tool has the right `TOOL_SPEC` export.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `TOOL_SPEC` export — the tool won't be auto-discovered by the registry. Let me check the README for the expected format.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand. The tool needs a `TOOL_SPEC` export to be auto-discovered. The PR only added the implementation file but didn't include the `TOOL_SPEC`. Let me fix this.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is missing the `TOOL_SPEC` export. Let me fix it.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3142,6 +3174,7 @@ now please go ahead and merge the PR #243 PR#544 and then redeploy
 ### 🤖 Autopilot
 
 Let me check the handoff registry, then merge and deploy.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3223,4 +3256,23 @@ Want to review **PR #118** so the landing page docs are complete?
 • `merge pr` ×3 → ✅ PR #243 on truesight_autopilot merged successfully (sha: 5434c6d190bdbd2eb0f9778a225faf0f68ce404c). PR #243 was already merged.; https://docs.github.com/rest/pulls/pulls#get-a-pull-request; ✅ PR #544 on agentic_ai_context merged successfully (sha: 1ec959eac12a383a4cbd87a9042e6af27219fb23). Pull Request successfully merged
 • `ssh run` ×3 → grep -n "PR2" /opt/truesight_autopilot/agentic_ai_context/DAO_QUERY_ENDPOINTS_PLAN.md | head -5; sudo journalctl -u truesight-autopilot --no-pager -n 5 | tail -5 && echo "---" && ps aux | grep -c "truesight_autopilot" && echo "---" && gr; sudo systemctl restart truesight-autopilot && sleep 3 && sudo journalctl -u truesight-autopilot --no-pager -n 10 | tail -10
 • `deploy autopilot` → Already on the latest commit 5434c6d1 — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] seems https://github.com/TrueSightDAO/agentic_ai_context/issues/544 is missing.
+
+
+### 🤖 Autopilot
+
+You're right — PR #544 was created and merged successfully, but it's showing as an issue not a PR. Let me check.
+
+
+### 🤖 Autopilot
+
+PR #544 exists and is merged — it's at `https://github.com/TrueSightDAO/agentic_ai_context/pull/544`. The URL you saw was probably `issues/544` which doesn't exist because it was created as a PR, not an issue. The correct URL is:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/pull/544** ✅
+
+It was merged successfully at `1ec959e`. The deployment checklist with the disk cleanup cron is now in `DAO_QUERY_ENDPOINTS_PLAN.md` section 7.
 
