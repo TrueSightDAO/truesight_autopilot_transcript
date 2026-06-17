@@ -19,6 +19,7 @@ PDF: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-0
 ### 🤖 Autopilot
 
 Let me read both files to understand what's being shared.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -173,4 +174,22 @@ Done. The old PR #536 is superseded — new PR **#537** removes all Coopercabruc
 - **Section re-lettered** — G→F, H→G
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] What is the URL? Let me take a look for the PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The PDF companion file is at:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
+
+And the raw download link:
+
+**https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
+
+That PDF isn't changed by the PR — it's the same file. Only the markdown guide gets the Coopercabruca sections removed. Want me to merge PR #537?
 
