@@ -132,3 +132,45 @@ https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2
 
 Want me to merge the PR now?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Remove mention of Coopercabruca from this document
+
+
+### 🤖 Autopilot
+
+The PR I already opened removes the entire Section F (Coopercabruca fallback). Let me check if there are any other mentions of Coopercabruca elsewhere in the document.
+
+
+### 🤖 Autopilot
+
+There are also mentions of Coopercabruca in the **Key Contacts** section and the **Data Sources** section of the same document. Let me update the PR to catch those too.
+
+
+### 🤖 Autopilot
+
+There are two more Coopercabruca mentions in the same document — in the Key Contacts table and the Data Sources section. Let me update the PR to clean those out too.
+
+
+### 🤖 Autopilot
+
+The PR already exists with the first commit. Let me push additional commits to the same branch.
+
+
+### 🤖 Autopilot
+
+The branch already exists remotely. Let me force-push the updated version.
+
+
+### 🤖 Autopilot
+
+Done. The old PR #536 is superseded — new PR **#537** removes all Coopercabruca mentions from the GACC guide:
+
+- **Section F** (Coopercabruca fallback) — removed entirely
+- **Key Contacts table** — Coopercabruca row removed
+- **Data Sources** — Coopercabruca reference removed
+- **Section re-lettered** — G→F, H→G
+
+Want me to merge it?
+
