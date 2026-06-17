@@ -3797,6 +3797,7 @@ The dispatch logic is correct — `[SALES EVENT]` routes to `parseTelegramChatLo
 The `submit_contribution` tool has `handler=None` — it's dispatched inline in `main.py`. The validation logic is in the adapter layer, not in the repo. The error message says `Canonical labels are: Item, Sales price, Sold by...` but rejects `Item` when I pass it. This looks like a bug in the adapter's validation — it might be checking for the key in a case-sensitive way or the key name has a different format.
 
 Let me try with slightly different key names to see what the adapter accepts.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4077,4 +4078,62 @@ https://github.com/TrueSightDAO/dao_protocol/pull/120
 
 **truesight_autopilot PR #249:**
 https://github.com/TrueSightDAO/truesight_autopilot/pull/249
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Still getting 404
+
+
+### 🤖 Autopilot
+
+Something is wrong with the push. Let me debug.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+The branch was pushed but no PR was created. The `git_push_changes` tool says it opened a PR but GitHub doesn't show one. Let me check if there's a rate limit or permission issue.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+The branch exists on GitHub. Let me try creating the PR manually via the GitHub CLI.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+The `gh` CLI isn't installed. Let me use the GitHub API directly to create the PRs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Both PRs are now open. Here are the correct URLs:
+
+**dao_protocol PR #121:**
+https://github.com/TrueSightDAO/dao_protocol/pull/121
+
+**truesight_autopilot PR #250:**
+https://github.com/TrueSightDAO/truesight_autopilot/pull/250
+
+The issue was that `git_push_changes` was saying it opened a PR but wasn't actually creating one (likely a GitHub token scope issue with the tool). I created them manually via the API instead.
 
