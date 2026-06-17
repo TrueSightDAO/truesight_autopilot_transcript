@@ -552,26 +552,51 @@ The raw.githubusercontent.com URL may take a few minutes to refresh the CDN cach
 ### 🤖 Autopilot
 
 Let me search the FDA FSVP repo for Omega Services contact info.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's an `fda_fsvp` repo. Let me look at what's in it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No Omega Services in the FDA FSVP repo — it only has supplier entities (Black King, Cepotx, Coopercabruca, etc.), not freight forwarders. Let me check if there's anything else in the repo that might reference them.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I don't have a local clone of the fda_fsvp repo. Let me look at its structure more directly.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `freight_partners.json` in the `agroverse-freight-audit` repo. Let me check that.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -674,4 +699,62 @@ The CDN cache on `raw.githubusercontent.com` can sometimes lag by a few minutes,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → curl -sL 'https://api.github.com/repos/TrueSightDAO/agentic_ai_context/commits?path=exports/2026-06-16_gacc_registration_black_king_china.pd; # Check the file at the latest commit SHA directly curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/92ff888c451ea; # Check what commit main points to curl -sL 'https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/refs/heads/main' | python3 -c ; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Could you also generate a corresponding set of similar documents for copper carburetor and C-Pox cooperatives. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+"Copper Carburetor" and "C-Pox" — I love the phonetic translations! Let me search for the actual cooperative names in the context.
+
+
+### 🤖 Autopilot
+
+So "Copper Carburetor" = **Coopercabruca** and "C-Pox" = **CEPOTX**. Let me get their details from the FDA FSVP repo.
+
+
+### 🤖 Autopilot
+
+Now I have both entities. Let me also check the current GACC guide structure so I can model the new documents the same way.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me create GACC registration guides for both Coopercabruca and CEPOTX, modeled after the Black King guide. I'll create them as markdown files and generate companion PDFs.
+
+
+### 🤖 Autopilot
+
+Now let me generate the companion PDFs for both.
+
+
+### 🤖 Autopilot
+
+Both PDFs generated. Now let me upload them to the repo.
+
+
+### 🤖 Autopilot
+
+Everything's on the branch. Here's the summary:
+
+**PR #540** is open with two new GACC registration guides for your phonetic friends:
+
+### 📄 Copper Carburetor (Coopercabruca)
+- **Markdown:** `BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_COOPERCABRUCA.md`
+- **PDF:** `exports/2026-06-17_gacc_registration_coopercabruca_china.pdf`
+- **Supplier:** Itabuna, BA — CNPJ 31.948.811/0001-42 — FDA VALID
+- **Products:** Cacao nibs, mass, molasses
+
+### 📄 C-Pox (CEPOTX)
+- **Markdown:** `BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE_CEPOTX.md`
+- **PDF:** `exports/2026-06-17_gacc_registration_cepotx_china.pdf`
+- **Supplier:** Altamira, PA — CNPJ 22.568.369/0001-38 — FDA VALID
+- **Products:** Organic cacao almonds
+
+Both follow the same structure as the Black King guide — same freight forwarder (Omega), same China logistics (Jerri/Ling), same 10 clearance docs, same CIFER process.
+
+Want me to merge PR #540?
 
