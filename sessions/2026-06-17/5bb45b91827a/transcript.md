@@ -79,17 +79,45 @@ That's the TDG ledger, not cacao purchases. Let me check the QR code ledger and 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the past events index more carefully for SOHA events, and also look at the go_to_market events folder for SOHA.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see "cacao-circle-at-soha-summer-festiva" in the past events. Let me look at the SOHA partner details more closely and also check the go_to_market events folder for SOHA.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look specifically at the SOHA section in the partners-velocity file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -226,16 +254,19 @@ Let's discuss more about your thoughts
 ### 🤖 Autopilot
 
 Let me check the SCHEMA.md file first.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — there are multiple SCHEMA.md files across repos. Let me read the main ones.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent. Now I have a clear picture. Let me read the rest of the tokenomics SCHEMA.md to see the full ledger layout.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -312,11 +343,33 @@ Let's discuss more
 ### 🤖 Autopilot
 
 Let me read the updated AWS infrastructure doc and check what dao_protocol offers.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what endpoints the dao_protocol FastAPI server actually exposes — specifically whether it has query/read endpoints for transactions, QR codes, or inventory.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -397,4 +450,88 @@ Want me to draft the PR?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → curl -s http://127.0.0.1:8010/openapi.json 2>/dev/null | python3 -m json.tool 2>/dev/null | head -200 || echo "openapi not available"; curl -s http://127.0.0.1:8010/docs 2>/dev/null | head -50 || echo "no docs"; curl -s http://127.0.0.1:8010/ 2>/dev/null | head -20 || echo "; curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8010/ && echo; curl -s http://127.0.0.1:8010/openapi.json 2>&1 | head -100; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Option A: Add query endpoints to dao_protocol — build a /dao/transactions?partner=SOHA and /dao/qr-codes?manager=Kirsten that reads from the Google Sheets (same service accounts dao_protocol already has). This is the cleanest long-term approach:
+• Single HTTP call from me
+• Live data from Sheets (no cache staleness)
+• Already has auth, nginx routing, service accounts
+• But: Sheets reads are slow for large datasets, and you're adding read load to Sheets
+
+I think perhaps for now live reads from the sheets, overtime as we observe some reads are more frequent, we can cache them as GITHUB flat files and then have edgar read from these first and then failing them read directly from the google sheets?
+
+What are your thoughts?
+
+
+### 🤖 Autopilot
+
+That's a solid evolutionary design. Let me think through the layers:
+
+---
+
+## Your proposed architecture (live Sheets → GitHub cache → Sheets fallback)
+
+```
+I call → dao_protocol query endpoint
+           │
+           ├─ Check GitHub cache (flat JSON file)
+           │     ├─ Hit → return instantly
+           │     └─ Miss/stale → read live from Google Sheets
+           │                       └─ Write result to GitHub cache for next time
+           │
+           └─ Return JSON response
+```
+
+This is clean because:
+
+**Why GitHub flat files work as a cache layer:**
+- **No infra** — same as Sheets, zero servers to manage
+- **Versioned** — every cache write is a git commit, so we have history
+- **I can read them directly** — `read_repo_file` is fast (GitHub API, ~200ms)
+- **dao_protocol can write them** — it already has a GitHub PAT (used for attachment uploads)
+- **TTL is simple** — timestamp the cache file, dao_protocol checks `if age > 1h → refresh`
+
+**The two-tier read path:**
+1. dao_protocol gets a query → checks `treasury-cache/transactions/SOHA.json`
+2. If file exists and is fresh (e.g. < 1 hour old) → return it
+3. If stale/missing → read live from Sheets → write to `treasury-cache/` → return
+4. If Sheets is down → return stale cache with a `stale: true` header
+
+**What gets cached:**
+- **Partner transactions** → `treasury-cache/transactions/{partner_slug}.json`
+- **QR codes by manager** → `treasury-cache/qr-codes/by-manager/{manager_slug}.json`
+- **QR codes by SKU** → `treasury-cache/qr-codes/by-sku/{sku_slug}.json`
+- **Full inventory movements** → `treasury-cache/inventory-movements.json` (append-only, grows slowly)
+
+**Cache invalidation is simple:**
+- After any `POST /dao/submit_contribution` that touches a partner's QR codes → delete that partner's cache file (or mark stale)
+- Or just use TTL — for your use case (answering my queries), even 5-minute staleness is fine
+
+---
+
+## My recommendation: build it in two PRs
+
+**PR 1 — Query endpoints (live Sheets reads only)**
+- `GET /dao/transactions?partner=X&sku=Y&from=Z&to=W`
+- `GET /dao/qr-codes?manager=X&owner=Y&sku=Z&status=SOLD`
+- `GET /dao/inventory-movements?person=X&role=sender|recipient`
+- Reads directly from Google Sheets using existing service accounts
+- Returns JSON
+
+**PR 2 — GitHub flat-file cache layer**
+- Add a `GithubCache` class: `get(key)`, `set(key, data, ttl=3600)`
+- Wire it into the query endpoints: check cache first, fall back to Sheets, write back
+- Cache files go in `treasury-cache/` repo (already exists, it's a DATA repo — perfect for machine-appended flat files)
+
+This way PR1 gets you immediate value, and PR2 is a pure performance improvement with zero schema changes.
+
+---
+
+Want me to start drafting **PR 1**? I'll need to:
+1. Read the SCHEMA.md more carefully to map the sheet columns to query parameters
+2. Check what Google Sheets service accounts dao_protocol already has access to
+3. Write the FastAPI endpoints + tests
+4. Open a PR on `dao_protocol`
 
