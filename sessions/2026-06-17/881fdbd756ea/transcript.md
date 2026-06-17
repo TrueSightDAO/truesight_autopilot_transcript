@@ -100,11 +100,18 @@ What would you like to do with this? A few options:
 ### 🤖 Autopilot
 
 You want to remove Section F (the Coopercabruca fallback route) from the guide. I'll open a PR to make that change.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full content. Let me open a PR to remove Section F and re-letter Section G to F.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -247,4 +254,38 @@ Here's what the PDF is — it's a **5-page formatted PDF** version of the GACC r
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf'
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] I'm still seeing the outdated PDF file. Can you make sure to generate an updated one, with all mentions of Copper Cup Rooka removed from it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+"Copper Cup Rooka" — I love it. Let me read the updated markdown and regenerate the PDF.
+
+
+### 🤖 Autopilot
+
+The markdown file still has the old content on the main branch — the PR was merged but the main branch hasn't been updated yet. Let me check.
+
+
+### 🤖 Autopilot
+
+The main branch already has the updated markdown — Section F is now "Key Contacts" with no Coopercabruca. The merge went through. Now I just need to regenerate the PDF to match. Let me build the updated content and generate it.
+
+
+### 🤖 Autopilot
+
+PDF generated. Now let me upload it to replace the old one.
+
+
+### 🤖 Autopilot
+
+Done! The updated PDF is live. No more Copper Cup Rooka anywhere in it. Here's the link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
+
+The PDF now has 4 pages (down from 5) — Section F is now Key Contacts with only Black King listed, and all Coopercabruca references are gone.
 
