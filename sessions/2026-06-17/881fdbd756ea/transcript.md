@@ -602,6 +602,7 @@ There's a `freight_partners.json` in the `agroverse-freight-audit` repo. Let me 
 ### 🤖 Autopilot
 
 Found it. The `agroverse-freight-audit` repo has a `freight_partners.json` with the full Omega Serviços contact details. Let me also check the Black King entity profile in the FDA FSVP repo to see if it references Omega there.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -627,6 +628,12 @@ The markdown guide and PDF are already updated with these details from the Gmail
 ### 🤖 Autopilot
 
 Let me check what's actually on GitHub right now — the CDN may have been caching the old version.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -652,21 +659,30 @@ Try opening that link directly — if it still shows the old version, try adding
 ### 🤖 Autopilot
 
 Let me check the actual commit history to see what version is on main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The latest commit `92ff888` is mine from 15 minutes ago. Let me check the actual file content at that commit vs what's on `main`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file at the commit SHA is correct. Now let me check what `main` actually resolves to.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF file isn't in the tree at the latest commit! The markdown guide is there (`BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`) but the PDF is missing from the `exports/` directory. Let me check the exports folder.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -757,4 +773,14 @@ Everything's on the branch. Here's the summary:
 Both follow the same structure as the Black King guide — same freight forwarder (Omega), same China logistics (Jerri/Ling), same 10 clearance docs, same CIFER process.
 
 Want me to merge PR #540?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] CEPOTx and Coopercabruca
+
+
+### 🤖 Autopilot
+
+Right — "C-Pox" is **CEPOTX** and "Copper Carburetor" is **Coopercabruca**. I've got them both in PR #540. Want me to merge it?
 
