@@ -463,6 +463,11 @@ I see — you want me to add the NF-e export process as a documented SOP in the 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see — this is the right file to update. The checklist already has a "Fiscal Nota (invoice) issued" checkbox but no detailed instructions. Let me add a detailed SOP section for the NF-e export process.
 
 
@@ -1323,4 +1328,33 @@ That changes things. In that case:
 3. **Follow up with Matheus** in a couple of days if he hasn't acted on it
 
 Want me to save it to `agentic_ai_context/exports/` and update the checklist to point to it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] I think this document was already safe to the compacts checkered to make sure it's already there [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check if this PDF is already in the repo.
+
+
+### 🤖 Autopilot
+
+I see the PDF is at `/tmp/tg_attachments/06031ab73f52425d958f012f2054e2a4.pdf` but it's **not yet saved to the repo**. Let me also check the `exports/` directory in the repo.
+
+
+### 🤖 Autopilot
+
+Confirmed — the PDF is **not yet in the repo**. It's only on disk locally. Let me save it now.
+
+
+### 🤖 Autopilot
+
+Done! The PDF is now saved to the repo:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_export_nfe_enablement_black_king_self_service_guide.pdf**
+
+It wasn't there before — now it's safely stored alongside the other export documents. Want me to also update the checklist to reference this PDF as the canonical guide (replacing or supplementing Appendix A)?
 
