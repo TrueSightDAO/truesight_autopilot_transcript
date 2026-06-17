@@ -2740,6 +2740,7 @@ The autopilot box can't reach the private IP directly. Let me use the jump appro
 ### 🤖 Autopilot
 
 The jump host is rejecting the key. Let me check the SSH config on autopilot — it might have the right config already.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2898,4 +2899,141 @@ The autopilot deploy failed due to disk space (20GB volume, 86% used). The code 
 - Or just restart the service once you're ready
 
 Want to review PR #118 so we can move forward?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, can you go ahead and free up disk space? Also, can you make sure that there's a chrome job to free up disk space? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then tackle the disk space.
+
+
+### 🤖 Autopilot
+
+This thread (6045) isn't in the handoff manifest — this is a new execution. Let me check disk space and set up a cleanup cron.
+
+
+### 🤖 Autopilot
+
+Clear wins here. Let me free up space.
+
+
+### 🤖 Autopilot
+
+Freed up ~4.3GB. Now let me set up a cron job to keep it clean.
+
+
+### 🤖 Autopilot
+
+Now let me retry the autopilot deploy now that we have space.
+
+
+### 🤖 Autopilot
+
+Already on the latest commit. The `lookup_event_docs` tool is already merged and on disk. Let me verify the service picks it up.
+
+
+### 🤖 Autopilot
+
+The file is there but not registered in `__init__.py`. Let me check if the tool registration is done differently.
+
+
+### 🤖 Autopilot
+
+Empty `__init__.py`. Let me check how tools are registered — likely via a tool registry or the system prompt.
+
+
+### 🤖 Autopilot
+
+The PR #242 was merged but the `lookup_event_docs` tool isn't in the repo yet. Let me check what was actually in that PR.
+
+
+### 🤖 Autopilot
+
+PR #242 was merged. Let me check what files it actually added.
+
+
+### 🤖 Autopilot
+
+The file is there on disk at commit `2efec78`. The deploy tool said it's already on the latest commit. But the file isn't in `__init__.py` — that's fine, tools are likely loaded dynamically. Let me check how tools are discovered.
+
+
+### 🤖 Autopilot
+
+The file is there. Let me check how tools are loaded — likely via a dynamic import in the brain or adapter.
+
+
+### 🤖 Autopilot
+
+The file exists but nothing imports it yet. The tool is registered via the system prompt (the tool definitions I see at the top of this conversation). The deploy tool said it's already on the latest commit — so the service should have the code. Let me check if the service needs a restart to pick up the new tool definition in the system prompt.
+
+Actually, the tool definitions are part of my system prompt — they're configured in the autopilot's brain/adapter code, not auto-discovered from the filesystem. The `lookup_event_docs` tool needs to be registered in the tool definitions that the adapter sends to the LLM. Let me check how that works.
+
+
+### 🤖 Autopilot
+
+The tool file exists on disk but isn't referenced anywhere in the codebase — it was merged but the tool registration (in the system prompt or adapter config) wasn't updated. Let me check the PR to see what was actually in it.
+
+
+### 🤖 Autopilot
+
+Only the tool file was added — no registration in the adapter config or system prompt. The tool exists on disk but I can't call it because it's not registered as a callable tool in my toolset.
+
+This is a gap I need to fix. Let me check how tools are registered — there must be a tool registry or adapter config somewhere.
+
+
+### 🤖 Autopilot
+
+Rate limited. Let me check locally.
+
+
+### 🤖 Autopilot
+
+There it is — `tool_registry.py` auto-discovers tools from `app/tools/`. Let me check if the tool has the right `TOOL_SPEC` export.
+
+
+### 🤖 Autopilot
+
+No `TOOL_SPEC` export — the tool won't be auto-discovered by the registry. Let me check the README for the expected format.
+
+
+### 🤖 Autopilot
+
+Now I understand. The tool needs a `TOOL_SPEC` export to be auto-discovered. The PR only added the implementation file but didn't include the `TOOL_SPEC`. Let me fix this.
+
+
+### 🤖 Autopilot
+
+The file is missing the `TOOL_SPEC` export. Let me fix it.
+
+
+### 🤖 Autopilot
+
+Here's the summary of what's done:
+
+## Disk cleanup ✅
+
+| Action | Before | After |
+|---|---|---|
+| Freed space | 2.9GB free (86%) | **7.2GB free (63%)** |
+| Cron job | None | Daily at 3am — cleans stale temp dirs, old logs, pip cache |
+
+## Tool fix ✅
+
+**PR #243** — Added `TOOL_SPEC` to `lookup_event_docs` so the tool registry auto-discovers it
+https://github.com/TrueSightDAO/truesight_autopilot/pull/243
+
+Once merged and deployed, I'll be able to call `lookup_event_docs("SALES EVENT")` as a proper tool, get the docs back, and then submit Gergana's sale correctly.
+
+Still waiting on **PR #118** (DAO Events Reference on landing page) for your review too.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → df -h / && echo "---" && du -sh /tmp/* 2>/dev/null | sort -rh | head -10 && echo "---" && du -sh /home/ubuntu/.cache/* 2>/dev/null | sort -r; # Clean up stale git clones in /tmp — these are from old PR builds sudo rm -rf /tmp/agroverse_shop_beta /tmp/tsight_prod /tmp/tsight_beta /t; # Create a disk cleanup script sudo tee /usr/local/bin/disk-cleanup.sh > /dev/null << 'SCRIPT' #!/bin/bash # Disk cleanup for autopilot box ; …(+11 more)
+• `deploy autopilot` → Already on the latest commit 2efec78c — no deploy needed. Did NOT restart. Do not retry.
 
