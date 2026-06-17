@@ -1526,16 +1526,19 @@ The key was added. But the jump is still failing — likely because the SSH conf
 ### 🤖 Autopilot
 
 The jump host is trying the wrong keys — it's ignoring the `-i` flag for the jump host and using default keys. Let me use the SSH config approach instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can reach the dao_protocol box. Let me deploy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Code pulled. Now restart the service.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1727,4 +1730,33 @@ Want me to check the current status of those 10 QR codes to confirm which ones a
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Yes
+
+
+### 🤖 Autopilot
+
+Let me check the current status of all 10 QR codes to confirm which ones are still unsold.
+
+
+### 🤖 Autopilot
+
+All 10 are still `ON CONSIGNMENT` — none have been marked as sold yet. So the oldest one is the right pick.
+
+Here's the proposal:
+
+
+
+This will submit an **INVENTORY MOVEMENT** event to Edgar:
+- **QR code:** `2024OSCAR_20260121_32` (oldest of the 10, Jan 21 batch)
+- **From:** Gergana - The Way Home Shop
+- **To:** Retail sale (end customer)
+- **Date:** 2026-06-16
+- **Value:** $17.50
+- **Note:** Retail sale, QR inferred via FIFO (oldest unsold)
+
+If you approve, I'll submit it.
 
