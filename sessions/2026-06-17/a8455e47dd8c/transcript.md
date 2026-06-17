@@ -1355,6 +1355,7 @@ Want me to save it to `agentic_ai_context/exports/` and update the checklist to 
 ### 🤖 Autopilot
 
 Let me check if this PDF is already in the repo.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1444,4 +1445,117 @@ Anything else on this shipment?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #529 on agentic_ai_context merged successfully (sha: 21b1a0127aa1d1a1645b11c6d297b802f87be29f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Jerri from China responded with these requirements can you do the research and then generate the both a pdf and a MD file output for her (see screenshot) make sure to do comprehensive research on what are the details needed and then pulling the right information for Black KinG CNPJ. Basically the portion for the GACC 
+
+
+
+This is for the new Brazil to China freight lane 
+
+Perhaps create a new document to file this away for latter reference 
+
+This what she sent
+2. Cacao Import — Customs Clearance Progress
+
+Ling has been in touch with the freight forwarder regarding the Brazil → Dongguan route. The headline is: every food item being imported requires the manufacturer to have a GACC registration number from China Customs. One product, one registration. Without it, customs clearance simply can't proceed.
+
+This is something we'll need Gary's supplier in Brazil to help with. The forwarder needs the following to move forward:
+
+
+A. Supplier Info
+
+Company name, Brazil registration number
+Contact person, phone/email
+GACC registration number (if not yet obtained — application takes roughly 3–6 months, so ideally we start this ASAP)
+
+
+B. Product Details (split into Category A — Event Samples, and Category B — Commercial Goods)
+
+Product name, quantity, estimated net/gross weight, packaging type, volume/carton count
+Estimated declared value for both categories
+
+
+C. Clearance Documents
+
+Certificate of Origin, Health Certificate, Production/Packaging Date Certificate
+Ingredient list, composition test report
+Bilingual labels (Chinese + English/Spanish, for pre-packaged food)
+
+Once these are ready, the forwarder can provide a full logistics timeline and cost estimate.
+
+
+### 🤖 Autopilot
+
+Let me research the GACC registration requirements thoroughly, then pull Black King's info and generate the documents.
+
+
+### 🤖 Autopilot
+
+Good, I have comprehensive research. Now let me also check what Black King's info is in our context, and look up the Coopercabruca details for the China lane.
+
+
+### 🤖 Autopilot
+
+Let me look up the Black King entity profile and Coopercabruca info from the FDA repo.
+
+
+### 🤖 Autopilot
+
+Now let me also get the Coopercabruca entity profile for the fallback info.
+
+
+### 🤖 Autopilot
+
+Excellent! I now have all the data I need. Let me also research the specific GACC requirements for cocoa/cacao products and the China-Brazil bilateral agreement.
+
+
+### 🤖 Autopilot
+
+Now let me also check what specific documents are needed for cocoa/cacao and the Brazil-China bilateral arrangement.
+
+
+### 🤖 Autopilot
+
+This is a critical finding. Let me check one more thing — whether unroasted cocoa beans were removed from the "official recommendation" list under Decree 280.
+
+
+### 🤖 Autopilot
+
+Now I have comprehensive research. Let me generate the PDF and MD files for Jerri.
+
+
+### 🤖 Autopilot
+
+Good, the PDF is generated. Now let me create the MD file and save both to the repo.
+
+
+### 🤖 Autopilot
+
+Now let me upload the PDF to the repo.
+
+
+### 🤖 Autopilot
+
+Done! Here's what was created:
+
+**PR #530** — `feat/brazil-china-gacc-guide` — open for review
+
+**Two new files:**
+
+1. **Markdown guide:** [`BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`](https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/brazil-china-gacc-guide/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md)
+2. **PDF:** [`exports/2026-06-16_gacc_registration_black_king_china.pdf`](https://github.com/TrueSightDAO/agentic_ai_context/blob/feat/brazil-china-gacc-guide/exports/2026-06-16_gacc_registration_black_king_china.pdf)
+
+**Key findings from the research:**
+
+- **Good news:** Under Decree No. 280 (effective June 1, 2026), unroasted cocoa beans were **removed from the "Official Recommendation" list** — so Black King can do **self-application** via CIFER without needing MAPA's recommendation letter
+- **Bad news:** GACC registration still takes **3–6 months** — so starting ASAP is critical
+- **Brazil is on the approved list** of countries that can export unroasted cocoa beans to China
+- **10 documents needed** — Certificate of Origin, Health Certificate, bilingual labels, lab tests, etc.
+
+Want me to merge the PR and then send the PDF to Jerri?
 
