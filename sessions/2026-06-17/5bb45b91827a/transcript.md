@@ -2381,3 +2381,40 @@ Want me to:
 1. Add a **DAO Events Reference** section to the Edgar landing page documenting each event type with format + when-to-use
 2. Open a PR on `truesight_autopilot` to make `submit_contribution` return the relevant docs automatically
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] But if you executed that method, it would be too late already isnt it? Since the event has already been signed at that point and the record sent to edgar??
+
+submit_contribution(event_name="SALES EVENT", attributes={...})
+→ Returns: "Here's the SALES EVENT format reference: [link to docs]. 
+   Did you mean INVENTORY MOVEMENT? Here's when to use each: ..."
+
+
+### 🤖 Autopilot
+
+You're right again. By the time the tool returns docs, the event is already signed and submitted. The docs come back *after* the fact — useless as a guardrail.
+
+So the flow needs to be:
+
+**Before** I call `submit_contribution`, I should be able to check what the right event type and format is. Something like:
+
+```
+lookup_event_docs(event_name="SALES EVENT")
+→ Returns: "Use SALES EVENT when a bag is sold to an end customer. 
+   Format: [SALES EVENT]\n- Item: <qr_code>\n- Sales price: <amount>\n..."
+```
+
+Then I read the docs, construct the attributes correctly, and *then* call `submit_contribution`.
+
+This way:
+- **The docs come before the action**, not after
+- **I can correct myself** before submitting
+- **Future instances** hit the same lookup first
+
+The docs themselves should live on the Edgar landing page (which I already updated) — so `lookup_event_docs` is really just fetching from `https://edgar.truesight.me/` and parsing the relevant section.
+
+Want me to:
+1. Add the **DAO Events Reference** section to the Edgar landing page with format + when-to-use for each event type
+2. Open a PR on `truesight_autopilot` to add a `lookup_event_docs` tool (or make it part of the existing toolset)
+
