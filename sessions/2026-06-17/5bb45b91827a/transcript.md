@@ -1880,6 +1880,7 @@ These are the same file (Code.js is a copy). Let me search for the actual parsin
 ### 🤖 Autopilot
 
 Now I found it. Let me read the parsing function.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2109,4 +2110,102 @@ So the attributes dict should use the exact labels the GAS parser expects:
 
 
 Does that look right to you? If you approve, I'll submit it via the dao_client tool.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] are you sure inventory movement is the right call? a bag in her possession was literally sold by her and the money from the sales proceeds transferred to me. Think harder
+
+
+### 🤖 Autopilot
+
+You're right, I was thinking too narrowly. Let me think about this more carefully.
+
+**The situation:**
+- Gergana (The Way Home Shop) had 10 bags on consignment
+- She sold 1 bag to a customer for $17.50
+- She sent the $17.50 to you via Venmo
+
+This is a **SALES EVENT**, not an inventory movement. The bag moved from her inventory to an end customer, and the proceeds flowed to you.
+
+A **SALES EVENT** would:
+1. Record that QR code `2024OSCAR_20260121_32` was sold
+2. Record the sale value of $17.50
+3. Attribute the sale to Gergana / The Way Home Shop
+4. Update the QR code status from "on consignment" to "sold"
+
+An **INVENTORY MOVEMENT** would be wrong here because:
+- The bag didn't move to another known holder in the supply chain
+- It was sold to an end customer (retail sale)
+- Money changed hands
+
+Let me check what the SALES EVENT format expects.
+
+
+### 🤖 Autopilot
+
+Let me check the Code.js for the SALES EVENT processing.
+
+
+### 🤖 Autopilot
+
+This is the TDG scoring script, not the sales processing. Let me search for the actual SALES EVENT processing in the GAS scripts.
+
+
+### 🤖 Autopilot
+
+Found it — `process_sales_telegram_logs.js`. Let me read it.
+
+
+### 🤖 Autopilot
+
+Let me find the exact format the SALES EVENT parser expects — specifically the `processSalesReport` or equivalent function.
+
+
+### 🤖 Autopilot
+
+Let me find the actual parsing function for SALES EVENT format.
+
+
+### 🤖 Autopilot
+
+Let me find the actual `parseTelegramChatLogs` function that processes SALES EVENT messages.
+
+
+### 🤖 Autopilot
+
+Now I have the exact format. The `parseSalesEvent` function expects:
+
+```
+[SALES EVENT]
+- Item: <qr_code>
+- Sales price: <amount>
+- Owner email: <email> (optional)
+- Stripe Session ID: <id> (optional)
+- Shipping Provider: <provider> (optional)
+- Tracking number: <number> (optional)
+- Sold by: <name> (optional)
+- Cash proceeds collected by: <name> (optional)
+```
+
+So for Gergana's sale, the correct event is **SALES EVENT**, not INVENTORY MOVEMENT. The format should be:
+
+```
+[SALES EVENT]
+- Item: 2024OSCAR_20260121_32
+- Sales price: 17.50
+- Sold by: Gergana - The Way Home Shop
+- Cash proceeds collected by: Gary Teh
+```
+
+This will:
+1. Record the sale in the **QR Code Sales** sheet
+2. Update the QR code status to **SOLD** in the Agroverse QR codes sheet
+3. Properly attribute the sale to Gergana and the cash proceeds to you
+
+Here's the corrected proposal:
+
+
+
+Does this look right to you?
 
