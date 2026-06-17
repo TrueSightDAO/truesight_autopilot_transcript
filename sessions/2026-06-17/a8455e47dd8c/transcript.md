@@ -1620,6 +1620,11 @@ Want me to merge the PR and then send the PDF to Jerri?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged! Here are the URLs for you to send to Jerri:
 
 **Markdown guide:**
@@ -1651,21 +1656,25 @@ Extracted text:
 ### 🤖 Autopilot
 
 Got it — simplify the product tables to show **per-unit weight** instead of total quantity × weight. Let me update both the MD and PDF.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need to update both tables to show **per-unit weight** instead of total quantity × weight. Let me update the MD file and regenerate the PDF.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me regenerate the PDF with the same per-unit-weight tables.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload the updated PDF to the same branch.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1685,6 +1694,11 @@ Want me to merge it?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=10] Yes, Merge it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1801,6 +1815,46 @@ Now let me regenerate the PDF with the same changes.
 - Gross weight columns removed
 - Added **Section H: Packaging Note** explaining that Chinese regulations require food-grade sealed packaging but not vacuum sealing
 - Updated regulatory references to include GB 4806 series
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Also do include 50gram premium dark chocolate bars retail ready
+
+
+### 🤖 Autopilot
+
+Let me check the current product list to see where this fits.
+
+
+### 🤖 Autopilot
+
+I see — the file on `main` still has the old version (gross weight columns, vacuum bag). The PR #533 branch has the fixes but hasn't been merged yet. Let me add the 50g premium dark chocolate bar to both Category A and B, and include it in the same PR.
+
+
+### 🤖 Autopilot
+
+The branch already has commits from the previous push. Let me use a new branch name.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF with the chocolate bar included.
+
+
+### 🤖 Autopilot
+
+**PR #534** — `fix/gacc-add-chocolate-bar` — ready for review.
+
+**All changes in one PR:**
+
+1. ✅ **Added "Premium Dark Chocolate Bar 50g"** to both Category A and B — retail-ready wrapped bar, NCM 1806.32.00
+2. ✅ **"Vacuum bag" → "Sealed bag"** — confirmed by research: Chinese regulations require properly sealed food-grade packaging (GB 4806 series), not vacuum sealing
+3. ✅ **Gross weight columns removed** — per-unit net weight only
+4. ✅ **NCM 1806.32.00 added** to the pathway table in Section D
+5. ✅ **Packaging note** in Section H
 
 Want me to merge it?
 
