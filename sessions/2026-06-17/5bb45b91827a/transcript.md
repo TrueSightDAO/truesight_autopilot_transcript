@@ -792,11 +792,28 @@ Strange — the repo exists but GitHub search finds nothing. Let me check the de
 ### 🤖 Autopilot
 
 Wait — the `dao_protocol` repo's README says it's actually `dao_client` (the Python client library). The FastAPI server is deployed from a different source. Let me check what's actually on the server.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the architecture. The FastAPI server running on `172.31.23.207:8010` is `dao_protocol` (version `99c2ab6`), which was extracted from the Rails Edgar app. Let me check the actual repo structure.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -896,4 +913,92 @@ Want me to draft the implementation plan doc and check it into `agentic_ai_conte
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → curl -s http://172.31.23.207:8010/openapi.json 2>&1 | python3 -m json.tool 2>&1 | head -300; curl -s http://172.31.23.207:8010/openapi.json 2>&1 | python3 -c " import json, sys spec = json.load(sys.stdin) paths = spec.get('paths', {}
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] [Handoff context — this Telegram topic (thread 6045) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+This is a great idea. Go ahead with Want me to draft the implementation plan doc and check it into agentic_ai_context/ first? Then we can proceed to PR1.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then draft the plan.
+
+
+### 🤖 Autopilot
+
+Good — this thread (6045) isn't in the handoff manifest yet, so this is a new plan. Let me draft the implementation plan and check it in.
+
+
+### 🤖 Autopilot
+
+The SCHEMA.md lives in the `tokenomics` repo. Let me read it.
+
+
+### 🤖 Autopilot
+
+That's a massive schema doc. Let me get the key sections I need — the Agroverse QR codes tab, QR Code Sales tab, and Inventory Movement tab layouts.
+
+
+### 🤖 Autopilot
+
+Let me get the specific tab layouts I need — Agroverse QR codes, QR Code Sales, and Inventory Movement.
+
+
+### 🤖 Autopilot
+
+I need the Agroverse QR codes tab layout specifically. Let me search for it.
+
+
+### 🤖 Autopilot
+
+Let me search for the Agroverse QR codes tab layout specifically.
+
+
+### 🤖 Autopilot
+
+I have enough context now. Let me also check the existing sheets service in dao_protocol to understand how it reads from Google Sheets.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check the existing `qr_code_check` route to understand the pattern for read endpoints.
+
+
+### 🤖 Autopilot
+
+Now I have a thorough understanding of the architecture. Let me draft the implementation plan and check it in.
+
+
+### 🤖 Autopilot
+
+Plan is checked in. Here's the summary:
+
+---
+
+## Plan checked in ✅
+
+**PR:** [#541 — Plan: DAO Query Endpoints](https://github.com/TrueSightDAO/agentic_ai_context/pull/541)
+
+The plan covers:
+
+**PR1 — Three query endpoints on Edgar (dao_protocol):**
+
+| Endpoint | What it does | Source sheet |
+|---|---|---|
+| `GET /dao/transactions` | `?partner=SOHA&from=20260101&to=20260617` — substring match on partner name | `QR Code Sales` tab |
+| `GET /dao/qr-codes` | `?manager=Kirsten&sku=oscar&status=MINTED` — filter by any attribute | `Agroverse QR codes` tab |
+| `GET /dao/inventory-movements` | `?person=Campbell&role=recipient` — track through hands | `Inventory Movement` tab |
+
+All support **substring matching** (case-insensitive) on name fields as you requested.
+
+**PR2 — GitHub flat-file cache** (documented, filed away for later)
+
+**Checklist** includes: sheet reader modules, route files, tests, deploy, UAT.
+
+---
+
+Want me to proceed with **Step 2** — reading the exact column mappings and then building PR1? Or would you like to review the plan first?
 
