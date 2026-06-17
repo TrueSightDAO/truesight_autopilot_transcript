@@ -169,11 +169,13 @@ There are two more Coopercabruca mentions in the same document — in the Key Co
 ### 🤖 Autopilot
 
 The PR already exists with the first commit. Let me push additional commits to the same branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already exists remotely. Let me force-push the updated version.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -216,6 +218,7 @@ Yeah, just go ahead and merge it [System note: the user sent this as a VOICE mes
 ### 🤖 Autopilot
 
 Merging PR #537 now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -323,4 +326,78 @@ Both are updated. Here's the summary:
 
 Both files now show:
 - **Freight Forwarder (Brazil):** Omega Services (contact via Gary Teh)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Merged and make sure it's the PDF and everything is updated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify both files are clean.
+
+
+### 🤖 Autopilot
+
+Let me also verify the PDF content is clean.
+
+
+### 🤖 Autopilot
+
+Hmm — the PDF I just uploaded still shows the **old content** (Coopercabruca, Seacos, Graziela). It seems the `generate_pdf` tool produced a 5-page PDF with the old content. Let me check — the extracted text shows the old version. The upload went through but the file on GitHub still has the old content. Let me re-check what's actually on GitHub.
+
+
+### 🤖 Autopilot
+
+The PDF on GitHub is the new one (4 pages, creation date `20260617150420`). But the `extract_pdf_text` tool is reading the old cached file at `/tmp/gacc_verify.pdf`. Let me re-download and verify properly.
+
+
+### 🤖 Autopilot
+
+The PDF on GitHub is still the old one — 5 pages with Coopercabruca, Seacos, and Graziela. The upload succeeded but the file on GitHub still shows old content. Let me check what happened — the `upload_local_file_to_github` returned success but the file wasn't actually replaced. Let me try again with a fresh approach.
+
+
+### 🤖 Autopilot
+
+The PDF I generated is 10,812 bytes but the one on GitHub is 12,607 bytes — they're different files. The `upload_local_file_to_github` must have uploaded the wrong file or the old one is cached. Let me check the actual content of the generated file.
+
+
+### 🤖 Autopilot
+
+The local file is correct — 4 pages, Omega Services, no Coopercabruca. The upload to GitHub must have silently failed or cached. Let me force a fresh upload.
+
+
+### 🤖 Autopilot
+
+Something is very wrong — the upload says success but GitHub is still serving the old file. Let me check the commit history to see what's actually on the repo.
+
+
+### 🤖 Autopilot
+
+The commits are there (229c8ac and 0630f59) but the raw content is still the old one. This looks like a GitHub CDN cache issue. Let me try with a cache-busting parameter.
+
+
+### 🤖 Autopilot
+
+The file by commit SHA is correct — 4 pages, clean. It's just a GitHub CDN cache delay on the `main` ref. Let me check the latest commit on main.
+
+
+### 🤖 Autopilot
+
+The latest commit on main is `0630f5926a7b` — that's my upload. The file by commit SHA is clean. It's just a GitHub CDN cache delay on the `main`/`raw.githubusercontent.com` URL. The file is correct on the repo.
+
+**Everything is updated and merged:**
+
+- **Markdown guide** — PR #538 merged. Section F is Key Contacts with **Omega Services**, no Coopercabruca.
+- **PDF** — uploaded to main at commit `0630f59`. 4 pages, clean. Omega Services listed, no Coopercabruca, no Seacos, no Graziela.
+
+The raw.githubusercontent.com URL may still show the old version for a few minutes due to CDN caching, but the actual file on GitHub is correct. You can verify directly at:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #538 on agentic_ai_context merged successfully (sha: b6aba5a770e726d3c0ec2be220b73afc61183a16). Pull Request successfully merged
+• `ssh run` ×8 → curl -sL 'https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-16_gacc_registration_black_king_china.pdf' ; ls -la /tmp/gacc_registration_black_king_china.pdf /tmp/gacc_fresh.pdf; python3 -c " import fitz doc = fitz.open('/tmp/gacc_registration_black_king_china.pdf') print(f'Pages: {doc.page_count}') full = '' for page; …(+3 more)
 
