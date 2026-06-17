@@ -151,16 +151,19 @@ Want me to merge the PR now?
 ### 🤖 Autopilot
 
 The PR I already opened removes the entire Section F (Coopercabruca fallback). Let me check if there are any other mentions of Coopercabruca elsewhere in the document.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There are also mentions of Coopercabruca in the **Key Contacts** section and the **Data Sources** section of the same document. Let me update the PR to catch those too.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There are two more Coopercabruca mentions in the same document — in the Key Contacts table and the Data Sources section. Let me update the PR to clean those out too.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -288,4 +291,36 @@ Done! The updated PDF is live. No more Copper Cup Rooka anywhere in it. Here's t
 **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-16_gacc_registration_black_king_china.pdf**
 
 The PDF now has 4 pages (down from 5) — Section F is now Key Contacts with only Black King listed, and all Coopercabruca references are gone.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=5973] Freight forwarder should be omega services instead of SeaCoast logistic
+
+
+### 🤖 Autopilot
+
+Let me update both the markdown guide and regenerate the PDF with that change.
+
+
+### 🤖 Autopilot
+
+I see "Graziela Vedana (Seacos Logistic)" in the Key Contacts. Let me update the markdown and regenerate the PDF.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the PDF with the updated content and upload it.
+
+
+### 🤖 Autopilot
+
+Both are updated. Here's the summary:
+
+**Markdown guide** — PR #538 open with the fix (Seacos Logistic → Omega Services). Want me to merge it?
+
+**PDF** — already updated directly on main with Omega Services in the Key Contacts table.
+
+Both files now show:
+- **Freight Forwarder (Brazil):** Omega Services (contact via Gary Teh)
 
