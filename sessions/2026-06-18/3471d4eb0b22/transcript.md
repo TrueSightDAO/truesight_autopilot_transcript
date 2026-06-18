@@ -719,26 +719,31 @@ Want me to file this as a process note in the context repo so it's documented fo
 ### 🤖 Autopilot
 
 Let me read the relevant runbook first to find the right place to document this.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This doc is about optimal consignment quantity — not the right place. Let me check the OPERATING_INSTRUCTIONS.md or OPEN_FOLLOWUPS.md for where process rules live.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the OPEN_FOLLOWUPS.md and also look for the right place to add this FIFO rule.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — OPEN_FOLLOWUPS.md is the backlog. But this FIFO rule is a **process standard**, not a follow-up task. It should go in a runbook. Let me check what's the best place — probably a new section in an existing doc or a new process doc.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing FIFO rule. The best place is a new process doc in agentic_ai_context. Let me create it.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,6 +767,11 @@ Want me to merge it or leave it as a PR for you to review first?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged! The FIFO rule is now live in `agentic_ai_context/FIFO_QR_SELECTION_RULE.md`.
 
 So for Gergana's sale — under the new FIFO rule, the default pick is **`2024OSCAR_20260121_32`**. Ready to proceed with the transaction whenever you are.
@@ -781,6 +791,7 @@ Now go ahead and submit the sales event, the sales was done by her but the cash 
 ### 🤖 Autopilot
 
 Let me first look up the event docs to make sure I use the correct format.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -792,6 +803,7 @@ Since this is a single transaction, here's the proposal:
 ```json
 {"proposal": {"action": "submit_contribution", "title": "Sales Event: Gergana - The Way Home Shop", "summary": "Gergana sold 1 bag Ceremonial Cacao (QR: 2024OSCAR_20260121_32) for $17.50 via Venmo. Sold by Gergana, cash collected by Gary Teh."}}
 ```
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -804,6 +816,7 @@ Now go ahead and submit the sales event, the sales was done by her but the cash 
 ### 🤖 Autopilot
 
 Let me check the handoff registry and also look up the event docs to ensure correct format.
+[2 tool result(s) compacted: read_context_file, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -811,6 +824,7 @@ Let me check the handoff registry and also look up the event docs to ensure corr
 Good — this thread (6311) isn't in the handoff manifest, so this is a standalone transaction. Let me submit it now.
 
 The required fields are `Item`, `Sales price`, `Sold by`. I'll include the optional fields too for completeness.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -850,16 +864,19 @@ https://edgar.truesight.me/
 ### 🤖 Autopilot
 
 Let me fetch both pages to compare.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me get the actual report_sales.html page to see the form fields.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The web extract didn't capture the form fields well. Let me read the source code directly from the repo.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -971,4 +988,109 @@ Notice the Edgar docs use **`Buyer Name`** and **`Buyer Email`** and **`Amount`*
 Want me to:
 1. Update the Edgar docs to match what the DApp actually sends?
 2. Re-submit with the Venmo screenshot attached and Gergana's email (if you have it)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] This is the payload I generated when I submitted via the DApp
+
+"[SALES EVENT]
+- Item: 2024OSCAR_20260121_32
+- Sales price: $17.5
+- Sold by: Gergana - The Way Home Shop
+- Cash proceeds collected by: Gary Teh
+- Owner email: info@thewayhomeshop.com
+- Stripe Session ID: (none)
+- Shipping Provider: (none)
+- Tracking number: (none)
+- Attached Filename: None
+- Submission Source: https://dapp.truesight.me/report_sales.html
+--------
+
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB
+
+Request Transaction ID: Xf8sIx1hgiMThtNWKi3DxXlrpc/eBfo4CiIHDDb8CYn4RfZRlCBLMdSS1pbUR0f+eoGVgBg+hbH9OTPD+NZBLovR+ijCZpe5BBuYb7BiQfSCt5FRW4/uvsjuKoVbAY7v+YixXkKVLnA460fa+XVH8g42dMIQEgrD/fTAjll3MrMdRX0cHqfsgnnob1gNnoN2j9UND/TSeQaJeFaq6By4c+r771zQFt3PQr6PESs1EcvmuGqeo1kQzZyyss7He1YTO1zelV0Wc6ZEKCb1H9LEPys21ZACmm3wX/b2sM8X19oNenqFexZHQB+XVWDGSMgcy1goLqwUkksB8EZcH8bWbA==
+
+This submission was generated using https://dapp.truesight.me/report_sales.html
+
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+
+
+### 🤖 Autopilot
+
+Excellent — now I can do a precise comparison. Let me also check the Edgar docs page to see what it actually says.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the complete audit:
+
+---
+
+## Audit: DApp vs Edgar Docs vs Our CLI Submission
+
+### 1. What the DApp actually sends (your payload)
+
+```
+[SALES EVENT]
+- Item: 2024OSCAR_20260121_32
+- Sales price: $17.5
+- Sold by: Gergana - The Way Home Shop
+- Cash proceeds collected by: Gary Teh
+- Owner email: info@thewayhomeshop.com
+- Stripe Session ID: (none)
+- Shipping Provider: (none)
+- Tracking number: (none)
+- Attached Filename: None
+- Submission Source: https://dapp.truesight.me/report_sales.html
+```
+
+### 2. What the Edgar docs say (outdated)
+
+```
+[SALES EVENT] - QR Code: 2024OSCAR_20260121_12 - Buyer Name: Alice Wang - Buyer Email: alice@example.com - Amount: 35.00 - Currency: USD
+```
+
+### 3. What we submitted via CLI
+
+```
+[SALES EVENT]
+- Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121
+- Sales price: $17.50
+- Sold by: Gergana - The Way Home Shop
+- Cash proceeds collected by: Gary Teh
+- Submission Source: Venmo
+```
+
+### Gap Analysis
+
+| # | Field | DApp | Edgar Docs | Our CLI | Gap? |
+|---|-------|------|------------|---------|------|
+| 1 | **Item** | QR code ID (`2024OSCAR_...`) | `QR Code` | Product description | ⚠️ **Mismatch** — DApp uses QR code as Item, we used product name |
+| 2 | **Sales price** | `$17.5` | `Amount: 35.00` | `$17.50` | ✅ Fine |
+| 3 | **Sold by** | `Gergana - The Way Home Shop` | `Buyer Name` | ✅ | ✅ Fine |
+| 4 | **Cash proceeds collected by** | `Gary Teh` | *(not in docs)* | ✅ | ✅ Fine |
+| 5 | **Owner email** | `info@thewayhomeshop.com` | `Buyer Email` | ❌ **Missing** | 🚫 **We missed this** |
+| 6 | **Stripe Session ID** | `(none)` | *(not in docs)* | ❌ Missing | ✅ N/A for Venmo |
+| 7 | **Shipping Provider** | `(none)` | *(not in docs)* | ❌ Missing | ✅ N/A |
+| 8 | **Tracking number** | `(none)` | *(not in docs)* | ❌ Missing | ✅ N/A |
+| 9 | **Attached Filename** | `None` | *(not in docs)* | ❌ Missing | ✅ N/A (no QR image) |
+| 10 | **Submission Source** | `https://dapp.truesight.me/...` | *(not in docs)* | `Venmo` | ✅ Fine |
+| 11 | **Currency** | *(not in DApp)* | `Currency: USD` | ❌ Missing | ⚠️ **Edgar docs show it, DApp doesn't send it** |
+
+### Key Findings
+
+**🚫 Real gap: `Owner email`** — The DApp always sends it (`info@thewayhomeshop.com`). We didn't include it. We should re-submit with this field.
+
+**⚠️ `Item` field inconsistency** — The DApp uses the QR code ID as `Item`. We used a long product description. The DApp's approach is simpler and more traceable (the QR code is the canonical identifier). We should align.
+
+**📄 Edgar docs are stale** — They show `Buyer Name`, `Buyer Email`, `Amount`, `Currency` — but the DApp actually sends `Sold by`, `Cash proceeds collected by`, `Owner email`, `Sales price`. The docs need updating to match reality.
+
+### Recommended Fixes
+
+1. **Re-submit** with the correct fields matching the DApp format (including `Owner email: info@thewayhomeshop.com`)
+2. **Update the Edgar docs** to show the actual DApp payload format
+3. **Update the CLI `report_sales` module** to include `Owner email` as a required field
+
+Want me to proceed with all three?
 
