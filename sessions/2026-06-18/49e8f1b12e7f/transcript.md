@@ -412,41 +412,59 @@ Now I see the full picture. Let me check who has "TRUE" in column W (Is Sentinel
 ### 🤖 Autopilot
 
 Let me find the rows where "Is Sentinel" = TRUE and who they are.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the specific rows where "Is Sentinel" = TRUE by searching the raw data.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see it clearly. Let me check the GAS handler's auth logic to understand exactly what keyword it checks.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full auth logic. Let me read the rest to see the trusted agent check.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full auth flow. Let me read the rest of the function.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the auth function to see the trusted agent path.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the auth function to see the trusted agent path.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me read the rest of the auth function to find the trusted agent path.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -576,4 +594,37 @@ And the `loadSentinels()` function on the members page filters for `m.roles.inde
 3. **Update the GAS auth code** (`process_movement_telegram_logs.js`) to either add `"Sophia Truesight"` to `TRUSTED_AGENTS`, or better, add a sentinel check that reads the `Contributors Contact Information` sheet and treats sentinel-signed + governor-approved submissions as authorized
 
 Want me to open a PR for items 2 & 3? For item 1 (the status change), you'd need to update that cell manually since I can't write to the Main Ledger.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] I already changed the verifying to active. 
+
+I am confused. The page shows way more than just 17 members
+
+https://truesight.me/members.html
+
+
+### 🤖 Autopilot
+
+You're right — the live page shows 471 members, but `dao_members.json` only has 17 contributors. That's because the members page loads from **two different sources**:
+
+1. **`INDEX_URL`** — the credential index (which has all 471 members) — this populates the Governors and Members grids
+2. **`DAO_MEMBERS_URL`** (`dao_members.json`) — this only populates the **Sentinels** section
+
+So the 17-contributor count in `dao_members.json` is only used for the Sentinels section. The main member list comes from a different source entirely.
+
+Let me check what `INDEX_URL` is.
+
+
+### 🤖 Autopilot
+
+So the two sources are:
+
+- **`INDEX_URL`** = `lineage-credentials/_cache/index.json` — this has the 471 members (credentialed practitioners)
+- **`DAO_MEMBERS_URL`** = `treasury-cache/dao_members.json` — this has the 17 contributors and is only used for the **Sentinels** section
+
+The Sentinels section is currently hidden because `dao_members.json` has nobody with `roles: ['sentinel']`. Now that you've changed the key status to ACTIVE, the next step is to fix the `DaoMembersCache.js` publisher to read `Contributors Contact Information` Column W and include `"sentinel"` in the roles.
+
+Want me to open a PR for that?
 
