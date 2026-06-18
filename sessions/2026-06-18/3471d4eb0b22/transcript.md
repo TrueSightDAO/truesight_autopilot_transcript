@@ -506,6 +506,7 @@ Let me search the treasury cache for "Way Home" or "Gergana" in the managers sec
 ### 🤖 Autopilot
 
 I don't see "Way Home" or "Gergana" in the treasury cache managers. Let me check the dao_members.json and also search the QR code sales sheet more broadly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -664,4 +665,28 @@ I'd pick **`2024OSCAR_20260330_29`** — the last one in the sequence.
 Alternatively, if you want to be most conservative, I'd pick **`2024OSCAR_20260121_32`** — the very first one in the list — on the logic that she's been carrying these since January and the oldest stock should move first.
 
 Your call — which way do you lean?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] I think we should adopt FIFO standards for future scenarios like this. Does it make sense?
+
+
+### 🤖 Autopilot
+
+Yes, **FIFO (First In, First Out)** makes perfect sense here. Here's why:
+
+**For this case:** The oldest batch is `2024OSCAR_20260121` (Jan 21) vs `2024OSCAR_20260330` (Mar 30). Under FIFO, we'd pick **`2024OSCAR_20260121_32`** — the first QR code from the oldest batch.
+
+**Why FIFO fits:**
+- **Inventory accuracy** — matches standard inventory accounting. Oldest stock moves first, which is what you'd do physically with perishable/fresh cacao.
+- **Predictable rule** — no ambiguity about which code to pick when the governor doesn't specify. Just sort by date then by sequence number.
+- **Auditable** — anyone looking at the ledger later can reconstruct: "first bag sold = first QR code in the oldest batch."
+- **Matches the offchain asset location sheet** — that sheet already tracks quantities per holder per batch, so FIFO aligns with how the inventory is structured.
+
+**Proposed rule:** When a consignment holder sells a bag and doesn't specify which QR code, default to the lowest-numbered code from the oldest batch under their management.
+
+So for this transaction: **`2024OSCAR_20260121_32`** would be the FIFO pick.
+
+Want me to file this as a process note in the context repo so it's documented for future?
 
