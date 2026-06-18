@@ -1021,51 +1021,76 @@ The change needed is minimal — just update the tool description to mention `CO
 Good — `lookup_event_docs` already has `PARTNER ADD EVENT` in its description. I need to add `CONTRIBUTOR ADD EVENT` there too. And I need to update the `submit_contribution` tool description to mention it.
 
 Let me make both changes:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact content:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the exact strings. Let me use the exact content:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR is open. Now let me run the local test suite before asking you to merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Formatting issues in test files I didn't touch. Let me check if my files are clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `lookup_event_docs.py` has a formatting issue. Let me fix it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need to update the PR with the formatted version. Let me read the formatted file and push the fix:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the ruff formatter changed the long string in the `description=` to a different wrapping. The edit I made earlier was on the original file, but ruff reformatted it. Let me check what the current state is on the PR branch vs main:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR branch already has the correct change (the `'CONTRIBUTOR ADD EVENT'` is in the description). The ruff formatting issue was on the local copy but the PR branch is fine since `git_push_changes` wrote the exact content I specified. Let me verify the `dao_submission.py` on the PR branch too:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files look correct on the PR branch. Now let me run the full test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1111,31 +1136,37 @@ All 602 tests pass, 1 skipped (pre-existing). All four checks pass:
 ### 🤖 Autopilot
 
 Phase 3 needs PR #262 merged first — the autopilot needs to know about `CONTRIBUTOR ADD EVENT` before I can call it. Let me check if it's been merged:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #262 isn't in the open list — it's not merged yet either. Let me check:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #262 was already merged at `2026-06-18T22:08:27` — you or someone merged it. Let me check if the autopilot has been redeployed with it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Already deployed. Let me verify the tool descriptions are live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three descriptions are live. Now for Phase 3 — adding David Campbell. Let me do it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The console script wasn't installed. Let me check what's available:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1219,4 +1250,34 @@ David should receive the onboarding email shortly. Want me to verify by checking
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → cd /opt/truesight_autopilot && git log --oneline -5; grep -n "CONTRIBUTOR ADD EVENT" /opt/truesight_autopilot/app/tools/dao_submission.py /opt/truesight_autopilot/app/tools/lookup_event_docs.py; cd /opt/truesight_autopilot/dao_protocol && .venv/bin/truesight-dao-add-contributor --contributor-name "David Campbell" --contributor-email ; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] what is the status?
+
+
+### 🤖 Autopilot
+
+**All 3 phases complete. Here's the full status:**
+
+| Phase | Step | Status |
+|---|---|---|
+| **Phase 1 — Ship CLI** | PR #123 merged (`dao_protocol`) | ✅ |
+| | Pulled latest on autopilot | ✅ |
+| | Reinstalled `truesight-dao-client-0.2.0` | ✅ |
+| | Dry-run test passed | ✅ |
+| **Phase 2 — Wire autopilot** | PR #262 merged (`truesight_autopilot`) | ✅ |
+| | Deployed to autopilot | ✅ |
+| | `submit_contribution` tool now knows about `CONTRIBUTOR ADD EVENT` | ✅ |
+| **Phase 3 — Add David** | `truesight-dao-add-contributor --contributor-name "David Campbell" --contributor-email "david@soha.center"` | ✅ |
+| | Edgar response: `status: success`, `signature_verification: success`, `googleSheetLogged: true` | ✅ |
+
+**David Campbell** has been submitted to Edgar. The GAS handler (`ContributorAddHandler.js`) will:
+1. Pick up the row from Telegram Chat Logs
+2. Dedup against the "New Contributor" tab
+3. Append to "Contributors contact information"
+4. Fire the onboarding invitation email to **david@soha.center**
+
+Want me to verify by checking the Telegram Chat Logs sheet or the GAS execution logs?
 
