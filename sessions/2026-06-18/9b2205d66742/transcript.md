@@ -97,3 +97,51 @@ Got it. I've now read both plans:
 
 I'm parked and ready on the **DApp Event Alignment** handoff. Reply **"go for it"** and I'll execute PR1 from RESUME HERE through the gates, reporting progress in this thread.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] what are your thoughts for both of them
+
+
+### 🤖 Autopilot
+
+Good question. Let me lay out my assessment of both plans.
+
+---
+
+## 1. SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md
+
+**Status:** Ready to execute. PR1 is well-scoped — a single, testable change to `_refresh_events_catalog`.
+
+**My thoughts:**
+- **PR1 is the right starting point.** The G2 gap (catalog only adds new events, never updates existing ones) is the root of the stale-hardcoded problem. Fixing the merge logic first means every subsequent PR works against a correct catalog.
+- **The sequencing is sound.** PR1 (merge) → PR2 (timing) → PR3 (snapshot) → PR4/5 (normalization) → PR6/7 (intent routing) builds incrementally without breaking anything mid-stream.
+- **One concern:** PR1 changes the merge direction — catalog now *overwrites* hardcoded values. This is correct per the design principle ("catalog is the single source of truth"), but it means if the catalog has a bug in a `required_fields` or `canonical_label`, Sophia will now faithfully propagate that bug instead of the old hardcoded correct value. Mitigation: the tests in PR1 should cover this — a catalog with deliberately changed labels should win, and we should verify the catalog is correct before PR1 merges.
+- **The flag-defaulting-to-current-behavior** is good discipline, but for PR1 specifically, the "current behavior" is the bug (not updating). So PR1 *should* change behavior — it's the fix. The flag pattern matters more for PR4+ where new code paths are introduced.
+
+**Verdict:** Clean, well-structured. Ready for GO.
+
+---
+
+## 2. CLI_SALES_EVENT_ALIGNMENT_PLAN.md
+
+**Status:** Substantially **complete** — all code PRs merged. Two loose ends.
+
+**My thoughts:**
+- **The code work is done.** PR1 (CLI module), PR1a (build_event_cli extensions), PR1b (QR validation), PR2 (Edgar docs), PyPI workflow, validators — all merged to `dao_protocol#main`. That's solid execution.
+- **Two remaining items:**
+  1. **PyPI publish** — blocked on a GitHub secret (`PYPI_API_TOKEN`) that needs to be added to the `TrueSightDAO/dao_protocol` repo. This is a one-time manual step in the GitHub UI. Once set, the workflow can be triggered and `pip install truesight-dao-client` will get v0.2.0. Without it, users install from source.
+  2. **Contribution reporting** — the work hasn't been logged as a DAO contribution yet. Should be reported with the PR references.
+
+- **Gergana's sale** — correctly marked as already handled, no re-submission needed.
+
+**Verdict:** The heavy lifting is done. Two small closure tasks remain — one requires GitHub UI access (PyPI token), the other is a `create_dao_submission` call I can handle.
+
+---
+
+## Overall
+
+The **DApp Event Alignment** plan is the active execution handoff for this thread. The **CLI Sales Alignment** is a cleanup tail — I can handle the contribution reporting piece right now if you'd like, while we decide on the GO for the DApp plan.
+
+What would you like to do?
+
