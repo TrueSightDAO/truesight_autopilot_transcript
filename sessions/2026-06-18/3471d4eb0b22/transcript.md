@@ -512,6 +512,7 @@ I don't see "Way Home" or "Gergana" in the treasury cache managers. Let me check
 ### 🤖 Autopilot
 
 Gergana isn't in the DAO members list either. Let me search the QR Code Sales sheet for "Way Home" or "Gergana" — the full text of the sales log messages might contain it.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -689,4 +690,48 @@ Yes, **FIFO (First In, First Out)** makes perfect sense here. Here's why:
 So for this transaction: **`2024OSCAR_20260121_32`** would be the FIFO pick.
 
 Want me to file this as a process note in the context repo so it's documented for future?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] yeah. Please do so
+
+
+### 🤖 Autopilot
+
+Let me read the relevant runbook first to find the right place to document this.
+
+
+### 🤖 Autopilot
+
+This doc is about optimal consignment quantity — not the right place. Let me check the OPERATING_INSTRUCTIONS.md or OPEN_FOLLOWUPS.md for where process rules live.
+
+
+### 🤖 Autopilot
+
+Let me check the OPEN_FOLLOWUPS.md and also look for the right place to add this FIFO rule.
+
+
+### 🤖 Autopilot
+
+Good — OPEN_FOLLOWUPS.md is the backlog. But this FIFO rule is a **process standard**, not a follow-up task. It should go in a runbook. Let me check what's the best place — probably a new section in an existing doc or a new process doc.
+
+
+### 🤖 Autopilot
+
+No existing FIFO rule. The best place is a new process doc in agentic_ai_context. Let me create it.
+
+
+### 🤖 Autopilot
+
+Done! PR opened: **TrueSightDAO/agentic_ai_context#548** — **"Add FIFO QR code selection rule for consignment sales"**
+
+Here's what the new doc covers:
+
+- **The rule:** FIFO — oldest batch, lowest sequence number first
+- **The algorithm:** Group by batch date → sort ascending → pick the first
+- **Example:** Gergana's case → `2024OSCAR_20260121_32`
+- **When it doesn't apply:** If the holder specifies a code, the governor overrides, or the sale was via the shop checkout
+
+Want me to merge it or leave it as a PR for you to review first?
 
