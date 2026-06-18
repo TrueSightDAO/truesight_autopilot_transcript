@@ -1960,6 +1960,7 @@ OK, let me just fix the test file directly. The fix is:
 ### 🤖 Autopilot
 
 The fix: import `app.main` as a module and reference `_catalog_last_refresh` through it, since floats are immutable and `from app.main import _catalog_last_refresh` creates a local copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1968,41 +1969,59 @@ Now let me fix the test file. I need to:
 1. Add `import app.main as app_main` 
 2. Change the assertion to use `app_main._catalog_last_refresh`
 3. Fix the `_reset_globals` fixture to use `app_main._catalog_last_refresh`
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact content of the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The whitespace looks fine. Let me try with exact content from the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 spaces indent. Let me try the edit again with the exact content.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There might be trailing whitespace or encoding issues. Let me read the raw file content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The content is exactly `'    assert _catalog_last_refresh > 0'` with 4 spaces. Let me try the edit with the exact repr content.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check if the file on GitHub (the PR branch) has different content than what's on disk locally.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the file on GitHub has the exact content. The issue with `git_push_changes` is likely that the search string has some invisible character or whitespace mismatch. Let me try a different approach — write the whole file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2021,7 +2040,13 @@ I see — the file on GitHub has the exact content. The issue with `git_push_cha
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Pushed! CI should re-trigger on PR #256. Let me switch back to main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2107,4 +2132,41 @@ Now let me create PR3. I'll use `open_fix_pr` with a clear description.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot && ls -la app/data/ 2>/dev/null || echo "app/data/ does not exist"; cd /opt/truesight_autopilot && grep -n "events_catalog\|_refresh_events_catalog\|_CANONICAL_LABELS\|_VALIDATE_REQUIRED_FIELDS\|snapshot\|fal; cd /opt/truesight_autopilot && sed -n '1192,1260p' app/main.py; …(+8 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/259
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] why the PRs keep failing??? https://github.com/TrueSightDAO/truesight_autopilot/pull/259
+
+
+### 🤖 Autopilot
+
+Let me check the CI logs for PR #259.
+
+
+### 🤖 Autopilot
+
+**Test passed** ✅ but **smoke failed** ❌. Let me check the annotations.
+
+
+### 🤖 Autopilot
+
+Same issue as before — **`git` failed with exit code 128** on the smoke workflow. This is a **transient GitHub Actions runner issue**, not a code problem. The runner couldn't clone the repo.
+
+The **test workflow** passed fine (same commit, same code). The smoke workflow just hit a bad runner node.
+
+Let me re-trigger it.
+
+
+### 🤖 Autopilot
+
+Don't have the token to re-run from here. But the root cause is clear:
+
+**The failure is NOT a code issue.** It's the same transient `git` checkout error on GitHub's runners that we saw with PR2. The **test** workflow (which runs the actual tests) passed successfully ✅ — only the **smoke** workflow (which does `ruff format --check` on all files) failed because the runner couldn't clone the repo.
+
+**Two options:**
+1. **Push another no-op commit** to re-trigger CI (like we did for PR2)
+2. **You click "Re-run failed jobs"** on the PR page at https://github.com/TrueSightDAO/truesight_autopilot/pull/259
+
+Want me to push a no-op amend?
 
