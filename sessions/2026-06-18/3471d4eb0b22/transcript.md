@@ -882,11 +882,13 @@ The web extract didn't capture the form fields well. Let me read the source code
 ### 🤖 Autopilot
 
 Let me read the form section of the HTML to see all the input fields.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the form fields in the HTML — looking for the input elements and the JavaScript that builds the payload.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1093,4 +1095,74 @@ Now I have the full picture. Here's the complete audit:
 3. **Update the CLI `report_sales` module** to include `Owner email` as a required field
 
 Want me to proceed with all three?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] I think we should update the CLI to enforce the parameters isnt it? For the values of the various fields in the DApp for example Sold by: and Cash proceeds collected by: and Select QR Code: its pulling from the github JSON cache, isnt it?
+
+
+### 🤖 Autopilot
+
+You're right on both points. Let me verify where the DApp pulls those dropdown values from.
+
+
+### 🤖 Autopilot
+
+Now let me check the `list_with_members` response to see exactly what fields the DApp gets for the dropdowns.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the DApp JavaScript to see how it populates the Sold by and Cash proceeds dropdowns.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Here's the analysis:
+
+---
+
+## Yes — the DApp pulls from the GAS endpoint, which reads the Google Sheet
+
+Here's the data flow:
+
+### QR Code dropdown
+**Source:** `?list=true` → GAS reads **Column A** of the `Agroverse QR codes` sheet → returns all QR codes where status ≠ SOLD
+
+### Sold by & Cash proceeds dropdowns
+**Source:** `?list_with_members=true` → GAS reads **Column U (Manager Name)** from the same sheet → deduplicates unique names → populates both dropdowns
+
+So the DApp's dropdown values come from **the Google Sheet**, not from a GitHub JSON cache. The `contributor_name` is literally the `Manager Name` column (column U) in the Agroverse QR codes sheet.
+
+### What this means for the CLI
+
+The CLI's `truesight-dao-report-sales` should mirror the DApp exactly. Currently it doesn't. Here's what needs updating:
+
+| CLI Field | Current | Should be |
+|-----------|---------|-----------|
+| `--item` | Free-text product description | Should accept QR code ID (like DApp) |
+| `--owner-email` | Optional | Should be **required** (DApp always sends it) |
+| `--sold-by` | Free-text | Should validate against the GAS `list_with_members` data |
+| `--cash-proceeds-collected-by` | Free-text | Should validate against same list |
+| `--submission-source` | Free-text | Should default to `CLI` or accept URL |
+| `--attr "Stripe Session ID"` | Not available | Missing field |
+| `--attr "Shipping Provider"` | Not available | Missing field |
+| `--attr "Tracking number"` | Not available | Missing field |
+| `--attr "Attached Filename"` | Not available | Missing field |
+
+### Proposed plan
+
+1. **Update the CLI `report_sales` module** to:
+   - Accept `--qr-code` as the primary item identifier (matching DApp)
+   - Make `--owner-email` required
+   - Add optional `--stripe-session-id`, `--shipping-provider`, `--tracking-number`
+   - Auto-attach `--submission-source` as `CLI` or the provided URL
+   - Validate `--sold-by` and `--cash-proceeds-collected-by` against the GAS endpoint's contributor list
+
+2. **Update the Edgar docs page** to show the actual DApp payload format (not the stale `Buyer Name`/`Buyer Email`/`Amount`/`Currency` version)
+
+3. **Re-submit Gergana's sale** with the correct format including `Owner email: info@thewayhomeshop.com`
+
+Want me to start with all three?
 
