@@ -145,5 +145,12 @@
     "summary": "## PR1 \u2014 Catalog merge: UPDATE existing events, not just add (G2)\n\n### Problem\n`_refresh_events_catalog()` in `app/main.py` has two bugs that prevent the live Edgar catalog from correcting stale hardc",
     "action": "merge_pr",
     "created_at": "2026-06-18T20:31:23Z"
+  },
+  {
+    "title": "Merge PR #256 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "PR2 \u2014 Catalog load timing: close the boot-window gap (G1)\n\nProblem: The events catalog refresh loop (`_catalog_refresh_loop`) sleeps 120 seconds before the first fetch. During those 120 seconds, only ",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T20:51:12Z"
   }
 ]
