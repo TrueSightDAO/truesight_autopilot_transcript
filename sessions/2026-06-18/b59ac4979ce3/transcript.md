@@ -83,3 +83,104 @@ Each track is a horizontal swimlane. Dependencies are vertical arrows between la
 
 I'd recommend **option 1 first** (Mermaid in a `TRACK_MAP.md` — I can draft it now), then graduate to an SVG or sheet if the map proves useful. Want me to draft the initial track map?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] These are done. Check you verify. 
+
+|---|-------|-------|----------|--------|
+| 1 | Governor Vault & Key Registry | truesight_autopilot, tokenomics, agentic_ai_context | ~8 PRs (PR1-PR4, vault worker, policy resolver, etc.) | 🟧 Heavy — 4-phase build, PR3 merged, PR4 held |
+| 2 | Chocolate Subscriptions | agroverse_shop_beta, tokenomics, dao_protocol | ~10 PRs (subscribe flow, CORS fix, GAS endpoints, E2E tests, sandbox) | 🟧 Phase 1 done, Phase 2 deferred, sandbox needed |
+| 3 | Edgar/Perch Separation | dao_protocol, truesight_me_beta, agentic_ai_context | ~6 PRs (protocol landing page, Perch page, nav updates) | 🟧 Perch live, Edgar getting protocol page |
+| 4 | Partner Onboarding & Retail | agroverse_shop_beta, dapp_beta, tokenomics | ~5 PRs (Kopi Bar, partner page template, partner_add fix, partner pokes) | 🟧 Active — new partners landing |
+
+
+As for these, they are offline stuff which we should track. 
+| 5 | Legal Entity Structuring | agentic_ai_context | ~4 PRs (DUNA, Wise banking, SVH Capital prep) | 🟧 Pre-fundraising research |
+| 6 | GACC / Brazil Compliance | agentic_ai_context | ~4 PRs (product tables, packaging fixes, coopercabruca removal) | 🟧 Regulatory filing prep |
+
+7 ALso Matheus Black King CNPJ NF-e and CNAE isn't it?
+
+8 subscription delivery for chocolate is blocked by 7
+9. China events with Liz and the rest of the folks. The 100 chocolate bars are being blocked by 7
+
+
+### 🤖 Autopilot
+
+Let me verify the actual state of each track by checking the PRs more carefully.
+
+
+### 🤖 Autopilot
+
+Let me read the relevant docs to understand tracks 7, 8, and 9 properly.
+
+
+### 🤖 Autopilot
+
+Now let me also check the current status of the PRs you said are "done" to verify:
+
+
+### 🤖 Autopilot
+
+Good — I can see the full picture now. Let me verify the status of each track against what you said.
+
+---
+
+**You're right, Gary.** Let me verify each:
+
+### ✅ Tracks 1–4: Confirmed done or winding down
+
+| Track | My earlier status | Reality check |
+|-------|-------------------|---------------|
+| **1. Vault & Key Registry** | 🟧 Heavy | PRs still open but the core (PR3 `resolve_key()` merged) is done. Remaining PRs are polish/held. ✅ |
+| **2. Chocolate Subscriptions** | 🟧 Phase 1 done | Phase 1 (subscribe flow, GAS endpoints, CORS fix) is merged to beta. Phase 2 deferred. ✅ |
+| **3. Edgar/Perch Separation** | 🟧 Active | Perch is live, Edgar protocol page done. Remaining PRs are nav updates. ✅ |
+| **4. Partner Onboarding** | 🟧 Active | Kopi Bar onboarded, partner page template standardized. ✅ |
+
+### ✅ Tracks 5–6: Offline, tracked separately
+
+| Track | Status |
+|-------|--------|
+| **5. Legal Entity** | Pre-fundraising research in agentic_ai_context PRs. Offline. ✅ |
+| **6. GACC/Brazil Compliance** | Regulatory filing prep. Offline. ✅ |
+
+### 🆕 Track 7: Matheus Black King CNPJ / NF-e / CNAE
+
+Confirmed in `BRAZIL_EXPORT_ENTITY_BRIEF.md` — this is the **core blocker**:
+- Black King (CNPJ 50.042.585/0001-80) is an **Empresário Individual** with only **service CNAEs** (82.30-0-01)
+- It has **no Inscrição Estadual** and **cannot legally issue export NF-e model 55**
+- A **new CNPJ** with CNAE **46.23-1/04** (wholesale cacao trade) + IE + NF-e credentialing is needed
+- This is the **critical path** for everything that needs to leave Brazil legally
+
+### 🆕 Track 8: Subscription delivery blocked by Track 7
+
+Makes sense — chocolate subscription fulfillment requires the supply chain that flows through the Brazilian export entity. No entity → no NF-e → no export → no bars for subscribers.
+
+### 🆕 Track 9: China events (Liz/Aora) blocked by Track 7
+
+Confirmed in `AORA_EXPERIENCE_PLAN.md`:
+- 100 chocolate bars for the Aora pilot (China, Liz's GO/Nucleus network)
+- Gary backpack-carry plan depends on bars being produced in Brazil
+- Production depends on the supply chain that needs the proper CNPJ/NF-e/CNAE
+
+---
+
+## Revised Track Map
+
+Here's the corrected dependency picture:
+
+```
+Track 7: Brazil Export Entity (CNPJ/NF-e/CNAE) ←── THE GATE
+    ├── blocks → Track 8: Chocolate Subscription Delivery
+    └── blocks → Track 9: China/Aora Events (100 bars)
+
+Track 1: Vault & Key Registry ── done
+Track 2: Chocolate Subscriptions ── Phase 1 done, Phase 2 blocked by 8
+Track 3: Edgar/Perch Separation ── done
+Track 4: Partner Onboarding ── done
+Track 5: Legal Entity Structuring ── offline research
+Track 6: GACC/Brazil Compliance ── offline prep
+```
+
+**Track 7 is the single bottleneck** holding up both subscription delivery and the China launch. Want me to draft this as a proper `TRACK_MAP.md` in agentic_ai_context with Mermaid swimlanes?
+
