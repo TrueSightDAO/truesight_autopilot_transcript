@@ -1126,6 +1126,21 @@ The URL works — returns "Unauthorized" as expected with a bad secret. Let me t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The default secret is `LET_THERE_BE_LIGHT` — but the web app URL is different from the one in the code. The code has `AKfycbxvAi7DUCd1pv8GgSPazcNgNxhUsfEiBOBZBaB3CbqqY3kScTEau273dip1YHyRsEFY-w/exec` while the one in the file header is `AKfycbxfngGYBYMe1ATyW0U4lLODyAlhUnSUATAsBrNgIvKH6k9ARifG3arSFkB4hjn2h2ID2A/exec`. Let me try both with the default secret.
 
 
@@ -1243,4 +1258,65 @@ Plan updated. **PR #571** on `agentic_ai_context` — the plan now reflects:
 - ⏳ **PR 3** — Blocked on PR 2 (re-process the 30 stuck rows)
 
 The RESUME HERE marker points to PR 2. Just let me know when DeepSeek is done and I'll pick it up.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] I mean go for PR2 but hold off on PR3
+
+
+### 🤖 Autopilot
+
+Understood — proceed with PR2 now, PR3 later. Let me read the current state of `process_movement_telegram_logs.js` to see if DeepSeek has already made changes.
+
+
+### 🤖 Autopilot
+
+The file is at a different path — script ID `1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR`. Let me read it.
+
+
+### 🤖 Autopilot
+
+I have the full file. Let me read the rest of the auth function to see the trusted agent path.
+
+
+### 🤖 Autopilot
+
+I have the full auth function. Now I need to replace the hardcoded `TRUSTED_AGENTS` check with a dynamic sentinel role check. The key changes are:
+
+1. Remove `TRUSTED_AGENTS` constant and `isTrustedAgent_()` function
+2. Add `isSentinelByName_(contributorName)` function that reads `Contributors contact information` Column W
+3. Replace the trusted agent check in `inventoryMovementStatusFromTelegramRow_` with the sentinel check
+
+Let me also check the `Contributors contact information` sheet structure to make sure the column indices are right.
+
+
+### 🤖 Autopilot
+
+The header row is 4 and data starts at row 5. Column A = Name, Column W (index 22, 0-based) = Is Sentinel. Let me also check the exact header in W4.
+
+
+### 🤖 Autopilot
+
+Column W is empty — no header yet. That's fine, the `DaoMembersCache.js` already reads it by column index. Now let me create the PR.
+
+
+### 🤖 Autopilot
+
+**PR #364** is open: https://github.com/TrueSightDAO/tokenomics/pull/364
+
+Here's what it does:
+
+1. **Removes** the hardcoded `TRUSTED_AGENTS = ['autopilot@agroverse.shop']` constant and `isTrustedAgent_()` function
+2. **Adds** `isSentinelByName_(contributorName)` — reads `Contributors contact information` Column W and returns TRUE if the contributor has `Is Sentinel = TRUE`
+3. **Replaces** the trusted agent check with the sentinel check in `inventoryMovementStatusFromTelegramRow_`
+
+Now the auth flow for sentinels is:
+1. Extract public key from submission → find contributor name in `Contributors Digital Signatures` (key must be ACTIVE) ✅
+2. Check if signer is a governor → if yes, authorize ✅
+3. Check if signer matches warehouse manager → if yes, authorize ✅
+4. **Check if signer is a sentinel** → if yes AND `- Approved By:` a governor → authorize ✅
+5. Otherwise → unauthorized
+
+Want me to merge and deploy?
 
