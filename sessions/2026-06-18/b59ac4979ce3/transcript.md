@@ -372,11 +372,13 @@ Let me find the right file — it should be the most recent .jpg:
 ### 🤖 Autopilot
 
 Good — `15c43caa9bfa42c79f337f452ecabffd.jpg` is the one. Let me upload it to `.github` and update the track map.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update the track map with the expected dates and the screenshot link:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -526,4 +528,58 @@ You said this should be its own separate thread. Want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Sorry I meant separact track.
+
+And also Nora Haron from Kopi Bar and Cafe wants to organize a 10th July gathering for us to taste chocolate. this one is riding on the Matheus track. Matheus track we need to indicate that after he cleared his part Omega services and SeaCoast Logistics need to handle their part all the way till Kirsten receives.
+
+
+### 🤖 Autopilot
+
+Got it — two things:
+
+1. **Graeme Read** → separate track in the map (not a Telegram thread)
+2. **Nora Haron / Kopi Bar** → riding on the Brazil Export Entity track, with downstream logistics chain
+
+Let me update the track map.
+
+
+### 🤖 Autopilot
+
+Also need to upload the Graeme Read screenshot to `.github`:
+
+
+### 🤖 Autopilot
+
+Updated. Here's what changed in the track map:
+
+---
+
+### 🆕 Graeme Read / Amazon Restoration Partnership
+New exploratory track. Mission-aligned — he's doing the exact same thing (10,000 hectares, single-estate cacao, QR traceability). Screenshot saved to `.github`.
+
+### 📦 Brazil Export Entity — downstream chain now visible
+```
+Matheus (CNPJ/NF-e/CNAE) → Omega Services (logistics) → SeaCoast Logistics (freight) → Kirsten (receives)
+```
+And riding on top:
+- **Jul 10** — Nora Haron / Kopi Bar chocolate tasting (bars must clear the full chain)
+
+### Dependency diagram
+```
+Graeme Read ── exploratory, no deps
+
+Legal Entity Structuring ──→ Brazil Export Entity ──→ Chocolate Subscription Delivery
+GACC / Brazil Compliance ──→ Brazil Export Entity ──→ China / Aora Events (100 bars)
+                                                    └── Jul 10 Kopi Bar tasting
+```
+
+PR at **agentic_ai_context#562**. Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/agentic_ai_context && python3 << 'PYEOF' content = open('TRACK_MAP.md').read() # 1. Add Graeme Read as a new track before the depend; cd /tmp/agentic_ai_context && git diff TRACK_MAP.md; cd /tmp/agentic_ai_context && git add TRACK_MAP.md && git commit -m "Add Graeme Read track + Kopi Bar tasting + downstream logistics chain"
 
