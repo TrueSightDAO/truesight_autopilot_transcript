@@ -2887,6 +2887,11 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. Pushed an empty commit to PR #260's branch — CI should be re-running now at https://github.com/TrueSightDAO/truesight_autopilot/pull/260
 
 ———
@@ -2901,6 +2906,11 @@ Done. Pushed an empty commit to PR #260's branch — CI should be re-running now
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **PR4 merged.** ✅ Moving to **PR5**.
 
 ### PR5 — Stop silently dropping non-canonical keys (G3b) — needs PR4
@@ -2908,11 +2918,28 @@ Done. Pushed an empty commit to PR #260's branch — CI should be re-running now
 When a supplied key can't be mapped to a canonical label, **surface it** (warn + pass through / attach), never drop blind. Builds on PR4's normalizer.
 
 Let me check the current code to understand where keys are being silently dropped.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the legacy path to see where keys are silently dropped.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2924,11 +2951,23 @@ For PR5, I need to:
 2. In the **catalog path**: log a warning when a key doesn't match any canonical label
 
 Let me also check the existing test file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the legacy path test for dropped keys.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2940,11 +2979,13 @@ Good. Now I have the full picture. For PR5 I need to:
 3. **Tests**: Verify that dropped keys are now surfaced with a warning
 
 Let me also check if there's a logger available in the module.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — `logger` is available. Now let me create PR5.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3034,4 +3075,77 @@ No existing tests for `lookup_event_docs`. Now I have the full picture. Let me c
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /opt/truesight_autopilot && grep -n "lookup_event_docs\|def lookup_event_docs\|system_prompt\|SYSTEM_PROMPT\|intent\|disambiguat\|event.*; cd /opt/truesight_autopilot && find app/ -name "*.py" | xargs grep -l "lookup_event_docs" 2>/dev/null; cd /opt/truesight_autopilot && grep -n "event\|submit_contribution\|SALES\|INVENTORY\|intent\|disambiguat" app/context.py | head -30; …(+6 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/263
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] I merged
+
+
+### 🤖 Autopilot
+
+**PR6 merged.** ✅ Moving to **PR7**.
+
+### PR7 — Enforce lookup-before-submit (G4b) — needs PR6
+
+`submit_contribution` requires a prior in-session `lookup_event_docs` for the event type, else it injects the catalog spec inline before validating.
+
+Let me check the current `submit_contribution` tool code.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` handler is inline in `main.py`. Let me find the inline handler.
+
+
+### 🤖 Autopilot
+
+Now I see the full `submit_contribution` handler. The enforcement point should be at the beginning of the handler (around line 1721), before it processes the submission. Let me also check how the session history is structured to implement the "prior in-session lookup" check.
+
+
+### 🤖 Autopilot
+
+Now I see the exact insertion point. The `submit_contribution` handler starts at line 1721. I need to add a lookup-before-submit check right after the duplicate guard. Let me also check the existing tests for `submit_contribution`.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. For PR7, I need to:
+
+1. **In `app/main.py`** (the `submit_contribution` handler at line 1721): After the duplicate guard, check if `lookup_event_docs` was called in-session for this event type. If not, inject the catalog spec inline before validating.
+
+2. **Add tests** in `tests/test_submit_contribution_gate.py` or a new file.
+
+The enforcement logic:
+- Scan `history` for prior `lookup_event_docs` calls with matching event_name
+- If found → proceed normally
+- If not found → call `lookup_event_docs` internally, inject the spec into the response, and proceed
+
+Let me create PR7.
+
+
+### 🤖 Autopilot
+
+**PR7 is open!** 🎉
+
+**PR #264** — https://github.com/TrueSightDAO/truesight_autopilot/pull/264
+
+**What it does:**
+- **Lookup-before-submit enforcement** — scans conversation history for a prior `lookup_event_docs` call matching the event type
+- **Auto-injection fallback** — if no prior lookup found, calls `lookup_event_docs` internally and injects the spec inline before proceeding
+- **Tests** for: prior lookup → proceeds, no prior lookup → injects, wrong event lookup → still injects
+
+**Gate status:** ✅ PR7 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR8** (deploy + UAT — needs PR7 merged first).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && find app/ -name "*.py" | xargs grep -l "submit_contribution\|def submit_contribution" 2>/dev/null; cd /opt/truesight_autopilot && grep -n "submit_contribution\|_run_tool\|def _run_tool" app/main.py | head -20; cd /opt/truesight_autopilot && sed -n '1627,1725p' app/main.py; …(+4 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/264
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && find app/ -name "*.py" | xargs grep -l "submit_contribution\|def submit_contribution" 2>/dev/null; cd /opt/truesight_autopilot && grep -n "submit_contribution\|_run_tool\|def _run_tool" app/main.py | head -20; cd /opt/truesight_autopilot && sed -n '1721,1960p' app/main.py; …(+2 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/264
 
