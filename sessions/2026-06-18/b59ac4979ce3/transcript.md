@@ -842,16 +842,24 @@ Let me build it. I'll create the roadmap page with the Mermaid diagram embedded.
 ### 🤖 Autopilot
 
 Now let me also read the merged TRACK_MAP.md to get the exact content:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me also check the existing roadmap page to see if there are other files in that directory:
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me build the roadmap page. I'll create a beautiful static HTML page with the Mermaid diagram embedded.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1047,4 +1055,2081 @@ And the SOP itself tells them the exact steps — which repo, which files, which
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #563 on agentic_ai_context merged successfully (sha: 1b1c2422985289b97fe9d88270ae9ea385d754d8). Pull Request successfully merged; ✅ PR #564 on agentic_ai_context merged successfully (sha: b241f36c9243be7e368e22218642310e93a6954a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+By the way, some documents shared by Jerri on the China events track
+
+[Attachment auto-processed: **fd53af73193140dabf821835b1ec6e54.pdf**]
+- Type: PDF (40 pages, 65236 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+FINAL VERSION_V1.0: AORA ×
+AGROVERSE Cacao Rainforest
+Adventure Event Plan
+—— Complete Event Plan for July Beta and Autumn Public Launch ——
+Plan One: July "Cacao Explorer" Seed Family Beta
+Test
+Core Concept
+Using the "Cacao Explorer Gift Set" as a carrier, 10-15 seed families will be invited
+to an experience co-creation session. The goal is to validate the event skeleton,
+the attractiveness of the gift set, and willingness to pay, while accumulating case
+studies and feedback.
+TEDx Benchmarking: Internal Rehearsal / Dry Run — Refining content and process
+on a small scale to ensure quality meets the standard before public launch.
+Narrative Benchmarking: Mystic Manor at Hong Kong Disneyland — Linear
+narrative. Gary is "Lord Henry" (Guardian of the Cacao Rainforest), and Aora Kuku
+is "Albert" (the Clue Spirit). Children enter the story the moment they create their
+Aora online. Upon arrival, they complete their identity transformation at the "Aora
+Certification Station" and are personally invited by Gary into the cacao rainforest.
+Narrative Structure Reference: Drawing on the linear narrative rhythm of Mystic
+Manor at Hong Kong Disneyland — visitors step into the master's domain,
+experience atmosphere building in the waiting area, receive a personal welcome
+from the master, follow a story clue that runs throughout, gradually delve into
+multiple themed scenes, accumulate emotions through exploration and
+interaction, and finally conclude with a warm sharing session before leaving with
+an exclusive keepsake. We are not copying its scenes or technology, but
+referencing its holistic experience design methodology of "linear narrative,
+character guidance, and emotional accumulation."
+
+--- Page 2 ---
+Dimension
+Content
+Positioning
+First beta experience and co-creation of the "Cacao
+Explorer" Gift Set
+Audience
+10-15 seed families (parents and children aged 6-12),
+co-invited by Teacher Evan and Liz
+Participation
+Method
+Invitation-only. Participants can pre-order the "Cacao
+Explorer Gift Set" and are required to provide in-depth
+feedback.
+Venue
+Controllable indoor venue (Air conditioning and mosquito
+protection are essential given July's heat and rain; must
+allow partitioning to support a linear flow.)
+Technical Plan
+Four selectable tiers: 1A Full-Venue Projection + Physical
+Teaching Aids, 1B Partial Projection + Physical Teaching
+Aids, 1C Main Experience Area Projection Only + Physical
+Teaching Aids (Recommended), 1D Manual Slideshow +
+Physical Teaching Aids as the ultimate fallback.
+Time
+Mid-to-late July (Specific date pending confirmation by three
+parties.)
+Business Logic and Gift Set Delivery Explanation
+The "Cacao Explorer Gift Set" is the core product of the event, including: a custom
+chocolate mold, a Fair Trade cacao raw material pack, exploration tools, and an
+exclusive Aora character card (with a QR code that links to the child's created
+Aora story picture book). This first beta test will operate on a "pre-sale/preview"
+model:
+
+Best Case: Display a complete physical sample set on-site.
+
+Second Best: Display product renderings and commercial photographs on
+a screen.
+
+Must Clarify in Both Cases: The estimated delivery cycle after pre-order.
+
+Post-Event Extension: Children can create their own Aora stories on the
+AORA website, with the system generating a 12-panel digital story picture
+book. The QR code on the exclusive character card in the gift set will link to
+this picture book, realizing a closed-loop experience of "online creation —
+offline physical item — scan back to online."
+Core Narrative Framework
+Gary is the "Guardian of the Cacao Rainforest" — a true explorer. Aora Kuku is the
+first magical companion he met in the rainforest, and also the "Clue Spirit" who
+discovered the secret of the cacao bean. Children create their own Aora
+companions online and bring them to Gary's cacao rainforest. Following Aora
+Kuku's trail, they explore hands-on with physical teaching aids and immerse
+themselves through visual scenes, experiencing the complete journey from
+
+--- Page 3 ---
+rainforest to chocolate. Finally, they meet Gary himself and hear him tell his true
+story.
+Key Roles
+Role
+Person
+Positioning and Responsibilities
+Guardian of the
+Cacao Rainforest Gary
+Founder of Agroverse. The narrative core of the event.
+Personally welcomes and leads children in during the
+"Rainforest Gate" segment. The sharer at the "Starlit
+Campfire" (~8 minutes). Takes photos and bids farewell
+to children in the epilogue. All on-site execution work is
+handled by the facilitator and volunteers.
+Clue Spirit
+Aora
+Kuku
+Gary's Aora companion. Appears throughout the event in
+dual form: physical materials (footprint stickers, standee
+cards, stamps, pre-recorded sound effects) and visual
+scene imagery.
+Chief Curator
+Liz
+Operator of TEDxSSL. Sets the tone for the event,
+controls brand quality and replicability.
+Educational
+Advisor
+Teacher
+Evan
+Provides professional advice on educational logic,
+interaction methods, and child suitability during the
+event design phase. Lends educational quality credibility
+to the event. Does not take on an execution role on-site.
+Project
+Coordinator
+Jerrie
+Responsible for technical liaison, material preparation,
+plan integration, and on-site execution.
+Facilitator
+TBD
+Gary's "Exploration Assistant." Leads children through all
+gameplay and operational segments. Serves as the "Aora
+Certification Officer" during the entry segment.
+Complete Experience Flow (Online-Offline Full Chain)
+Phase One: Online Pre-Heat (1-2 weeks before the event)
+Step
+Content
+Create Aora
+Children create their own Aora companions via the AORA webpage.
+The system generates an exclusive Aora image and QR code. Image
+resolution must simultaneously meet requirements for: clear thermal
+sticker printing + clear A4 printing + projection device scanning and
+recognition.
+Educational
+Pre-Heat
+Gary records a 60-second short video, "The Story of Aora Kuku and
+Me," introducing the cacao rainforest and Aora Kuku.
+Gift Set Preview The "Cacao Explorer Gift Set" preview is released; on-site priority
+pre-order is available.
+Phase Two: On-Site Event (Approx. 90 minutes, including entry and epilogue)
+
+--- Page 4 ---
+Benchmark
+ing Mystic
+Manor
+Aora ×
+Agroverse
+Flow
+Duration
+Content
+Physical
+Teaching Aids /
+Materials
+Visual Scene
+Aora Kuku's
+Participation
+Gary's
+Participation
+Queue
+Area
+Atmospher
+e Building
+Prologue:
+Gathering of
+Explorers · C
+all of the
+Mysterious
+Rainforest
+15-20min
+Children arrive at the
+"Aora Certification
+Station," complete
+Aora badge
+certification, and enter
+the prelude area. The
+facilitator tells the story
+of Aora Kuku's
+discovery. A "Cacao
+Explorer Gift Set"
+sample display area
+(physical or screen
+display) is set up in the
+prelude area, where
+the facilitator briefly
+introduces the set's
+contents and pre-order
+method.
+Thermal printer,
+adhesive photo
+paper, blank
+badges, Aora
+Kuku stamp,
+Aora Kuku
+poster, Gary's
+photos, dried
+cacao pod
+specimens, gift
+set
+samples/display
+screen.
+Misty image
+of the
+mysterious
+rainforest
+entrance, with
+morning light
+passing
+through the
+canopy and
+the faint
+silhouette of
+Aora Kuku.
+Aora Kuku
+stamp serves
+as the
+"certification
+seal."
+Can observe
+naturally
+within or
+near the
+prelude
+area.
+Boarding
+the
+Trackless
+Vehicle
+Act One:
+The
+Rainforest
+Gate · The
+Guardian's
+Invitation
+2-3min
+Gary personally steps
+out from behind a
+curtain, gives a brief
+welcome, and opens
+the curtain. Rainforest
+sound effects rise.
+Children follow him
+into the exploration
+area.
+Curtain/door,
+rainforest sound
+effects.
+The Rainforest
+Gate slowly
+opens.
+—
+Core
+Appearance
+1: Personally
+welcomes
+and leads
+the entry.
+Fantastical
+Scene
+Act Two:
+Sensory
+Wonders · R
+ainforest
+Whispers
+20min
+Children rotate
+through 4 physical
+sensory stations. The
+visual scene changes
+with each station,
+revealing the
+Agroforestry
+ecosystem layer by
+layer. The facilitator
+describes the
+ecological scenes with
+words.
+Physical
+teaching aids
+detailed in the
+list below.
+Changes with
+stations
+(Cacao Trees
+and Flowers
+→Shade
+Trees and
+Fungal
+Networks →
+The Microbial
+World →
+Rainforest
+Symphony →
+Symbiotic
+Cacao
+Rainforest
+Panorama).
+Physical cards
+provide clues.
+Free to
+observe or
+take a break.
+Fantastical
+Scene
+Act Three:
+Expedition
+Team
+Formation ·
+Aora
+Rainforest
+Companion
+Check-in
+Station
+(Included
+in Act Two)
+Children send their
+Aora into the rainforest
+(scan into scene / paste
+on backdrop wall),
+officially becoming
+expedition team
+members.
+A4 printer/tablet
+(1A/1B/1C);
+Physical
+backdrop wall +
+Aora stickers
+(1D).
+Symbiotic
+Cacao
+Rainforest
+Panorama.
+Welcomes
+new Aora in
+the visual
+scene.
+Free to
+observe or
+take a break.
+
+--- Page 5 ---
+Benchmark
+ing Mystic
+Manor
+Aora ×
+Agroverse
+Flow
+Duration
+Content
+Physical
+Teaching Aids /
+Materials
+Visual Scene
+Aora Kuku's
+Participation
+Gary's
+Participation
+Fantastical
+Scene
+Act Four:
+The Great
+Bean
+Adventure ·
+A Fantastical
+Journey
+from
+Rainforest to
+Hand
+15min
+Children play the role
+of a cacao bean on a
+physical Supply Chain
+map, complete station
+tasks, make a Fair
+Trade choice, and
+receive a Cacao
+Explorer Chocolate
+Medal.
+Physical
+teaching aids
+detailed in the
+list below.
+Changes with
+stations
+(Fermentation
+and Drying →
+Transport and
+Choice →
+Chocolate
+Factory and
+Completion).
+Station
+stamps;
+Pre-recorded
+sound effects;
+Accompanies
+in the visual
+scene.
+Free to
+observe or
+take a break.
+Fantastical
+Scene
+Act Five:
+The Magic
+Workshop ·
+A Sweet and
+Wonderful
+Transformati
+on
+15min
+Children use physical
+chocolate molds and
+ingredients to make
+chocolate by hand.
+Physical
+teaching aids
+detailed in the
+list below.
+The Warm
+Cacao
+Workshop,
+amber tones.
+Quoted;
+Accompanies
+in the visual
+scene.
+Quietly
+appears to
+observe or
+assist.
+Final
+Scene
+Act Six:
+Starlit
+Campfire · T
+he
+Guardian's
+Story Time
+8min
+Gary shares his true
+story with Aora Kuku.
+—
+Nighttime
+rainforest,
+campfire
+flickering, all
+Aora
+gathered
+around the
+edge of the
+scene.
+Together with
+all children's
+Aora in the
+scene.
+Core
+Appearance
+2: 8-minute
+sharing
+session.
+Leaving
+the Manor
+Epilogue:
+Rainforest
+Wishes · Co
+ntinue the
+Adventure
+with
+Sweetness
+2-3min
+Chocolate is boxed,
+certificates are
+awarded, Gary takes
+photos and bids
+farewell. The facilitator
+reminds children they
+can create Aora story
+picture books on the
+AORA website after the
+event.
+Explorer
+certificates,
+packaging
+boxes.
+The glow of
+the rainforest
+exit, all Aora
+wave
+goodbye.
+Certificate
+stamp; Waves
+goodbye in
+the scene.
+Takes
+photos,
+signs
+autographs,
+and bids
+farewell with
+the children.
+Phase Three: Online Continuation (1-2 weeks after the event)
+Step
+Content
+Aora Story Creation
+Children create their own Aora's story on the AORA webpage. The system generates a
+12-panel digital story picture book.
+Gift Set Pre-order and
+Shipping
+Gift sets pre-ordered at the event are shipped according to the promised timeline.
+When children receive the set, they can scan the QR code on the exclusive character
+card to view their created picture book.
+Unboxing Video
+Children record an "My Cacao Explorer Gift Set Unboxing" video, showcasing the
+chocolate, certificate, Aora badge, character card, and Cacao Explorer Chocolate
+Medal.
+Family Challenge
+An online task to "Track the journey of one food item in your home."
+Aora Community
+Official release of "The Story of Gary and Aora Kuku," inviting more children to create
+Aora.
+
+--- Page 6 ---
+Detailed Physical Teaching Aid List
+Planned according to the activities and materials actually designed in Gary's
+'Agroforestry' and 'Supply Chain' module documents.
+Agroforestry Module · Sensory Exploration Teaching Aids
+Station
+Teaching Aid
+Quantity
+Source Basis
+Smell
+Station
+Cacao bean samples
+(unroasted)
+3-5 small
+bags
+Document: "Getting to know
+the products of the cacao
+tree"
+Moist soil (sealed box)
+3-5 boxes Document: "Organic matter
+in the forest floor layer"
+Vanilla pods
+3-5 pods
+Document: "Vanilla is often
+planted as a companion
+crop in cacao agroforestry
+systems"
+Sealed smell boxes
+15 units
+For individual use
+Touch
+Station
+Moss samples (moist
+preserved)
+3-5 boxes
+Document: "Moss and
+humus in the forest floor
+layer"
+Bark pieces from different
+tree species
+5-8
+pieces
+Document: "Shade trees
+provide protection for cacao
+trees"
+Dried cacao pod husk
+3-5
+pieces
+Document: "The structure of
+the cacao pod"
+Touch bags (opaque cloth
+bags)
+15 units
+Designed for a sense of
+mystery
+Sight
+Station
+Enlarged micrographs of
+fungal networks (printed)
+5-8
+sheets
+Document: "The symbiotic
+relationship between fungi
+and root systems"
+Large Agroforestry system
+layering diagram
+1 large
+sheet
+Core teaching content of
+document AF-3
+Botanical diagram of
+cacao tree parts
+1 sheet
+Document: "Getting to know
+the various parts of the
+cacao tree"
+Sound
+Station
+Headphones
+15 sets
+For individual listening
+Pre-recorded rainforest
+animal sounds (played on
+phone/tablet)
+1 device
+Document: "Agroforestry
+systems provide habitats for
+birds and insects"
+Animal picture cards
+1 of each
+type
+For sound matching
+Interactive
+Zone
+Aora Kuku footprint
+stickers
+10-15
+sheets
+Narrative clues
+Aora Kuku standee cards
+for sensory stations
+4-5 units
+Document: "Clue guidance"
+method
+
+--- Page 7 ---
+Supply Chain Module · Bean Journey Game Teaching Aids
+Station
+Teaching Aid
+Quantity
+Source Basis
+General
+Large Supply Chain
+map (floor layout)
+1 sheet
+Core teaching aid of
+document SC-2
+Station identification
+signs
+7 units
+Document: "Each link in the
+Supply Chain"
+Large dice (foam/soft
+rubber)
+2-3 units
+Game design
+Cacao bean character
+pawns
+15 units
+Document SC-2: "Playing the
+role of a cacao bean"
+Task cards
+20-30
+cards
+Document SC-2: "Complete
+a task at each station"
+Aora Kuku stamps
+2 units
+Narrative necessity
+Fermentation
+Station
+Cacao bean samples at
+different fermentation
+stages
+3-4 small
+bags
+Document SC-3:
+"Fermentation is key to
+developing cacao bean
+flavor"
+"Flavor" stamp
+1 unit
+Task reward
+Drying Station Cacao bean drying
+rack model
+1 unit
+Document SC-3: "The drying
+stage requires constant
+turning of the beans"
+Transport
+Station
+Transport route card
+1 sheet
+Document SC-2: "The beans
+are loaded into sacks and
+transported to the port"
+Small burlap sacks
+(props)
+2-3 units
+Tactile experience
+Fair Trade
+Station
+Fair Trade vs.
+Conventional Trade
+comparison card
+1 set
+Document SC-4: "The ethical
+choice between Fair Trade
+and direct trade"
+Choice task cards
+10-15
+cards
+Document SC-2: "Make a
+choice at the Fair Trade
+station"
+Route fork indicator
+sign
+1 unit
+Visual cue
+Chocolate
+Factory Station
+Cacao Explorer
+Chocolate Medal
+15
+medals
+Narrative necessity, echoing
+document SC-3
+Chocolate making
+process flow card
+1 set
+Document SC-3: "The
+processing flow of the
+chocolate factory"
+
+--- Page 8 ---
+Creation Segment · Chocolate Making Teaching Aids
+Teaching Aid
+Quantity
+Source Basis
+Custom chocolate molds
+15 units
+Echoes the chocolate mold Gary
+designed for Brazil
+Fair Trade chocolate liquid
+For 15 servings
+Extension of documents SC-3 and
+SC-4
+Optional toppings (nut pieces,
+dried fruit, sea salt)
+Several portions of
+each
+For autonomous choice
+Disposable aprons
+15 units
+Hygiene assurance
+Workstation mats
+15 sheets
+Cleanliness assurance
+Portable refrigerator
+1 unit
+For chocolate solidification
+Packaging boxes
+15 units
+Part of the "Cacao Explorer Gift
+Set"
+Materials Dedicated to the 1D Fallback Plan
+Material
+Quantity
+Purpose
+Aora Rainforest
+physical backdrop wall
+1 panel (approx.
+2m x 1.5m)
+Large-format print of a cacao rainforest scene,
+including Aora Kuku and other rainforest
+animal figures
+Extra Aora stickers for
+children
+1 extra print per
+child
+For sticking onto the backdrop wall
+Pre-made Aora Kuku
+stickers
+Several
+To be pre-pasted onto the backdrop wall
+Technical Plan Tiering
+Plan
+Visual
+Equipment
+Agroforestry
+Scenes
+Supply Chain
+Scenes
+Total
+Scenes Aora Entry July Deliverability Positioning
+1A
+Professional
+Projectors ×2
+4
+independen
+t scenes
+4
+independent
+scenes
+14
+Scan into
+projection
+Low
+Ideal
+High-Spec
+1B
+Professional
+Projectors
+×1-2
+2 merged
+scenes
+3 merged
+scenes
+9
+Scan into
+projection
+Medium
+Pragmatic
+Alternative
+1C
+Professional
+Projector ×1
+1 panorama
++ facilitator
+guidance
+3 scenes
+revealed
+station by
+station
+6
+Scan into
+projection
+High
+(Recommended)
+Core
+Highlight
+
+--- Page 9 ---
+1D
+Venue's own
+giant
+projection
+screen
+preferred /
+Large-screen
+TV as backup
++ Laptop +
+Presentation
+Remote
+1 panorama
+image +
+facilitator's
+verbal
+description
+2 images +
+facilitator's
+verbal
+description
+6-8
+slides
+Physical
+backdrop
+wall
+collage
+Extremely High
+Ultimate
+Fallback
+Decision Logic:
+1. Immediately contact the supplier to confirm: July availability, customization
+cycle for 6 scenes, support for A4 paper scanning/electronic upload, and
+the feasibility of Aora character persistence during scene transitions.
+2. If 6 scenes are deliverable: Lock in 1C. Simultaneously prepare 1D
+materials as a parallel insurance policy.
+3. If the timeline is too tight but equipment is rentable: Ask about ready-made
+rainforest/supply chain templates.
+4. If the equipment is unavailable: Switch directly to 1D.
+5. 1A/1B are only for long-term or incremental consideration.
+
+--- Page 10 ---
+Plan One: Executable Verification Checklist
+1. Ticketing (Entry Authentication)
+Online Pre-Heat and Aora Creation
+
+[ ] The online Aora creation webpage/H5 has been developed and tested.
+
+[ ] After creation, a savable/screenshotable Aora image and a scannable QR
+code are generated. The resolution meets the requirements for thermal
+sticker printing, A4 printing, and projection scanning.
+
+[ ] The list of invited families has been jointly confirmed by Teacher Evan
+and Liz; the invitation letter (including the Aora creation entry point) has
+been sent.
+Aora Certification Station (On-site Entry Verification) — Independent of the visual
+equipment system
+
+[ ] The "Aora Certification Station" signage has been designed and
+produced.
+
+[ ] Portable thermal printers (1-2 units) have been procured and are in place;
+adhesive photo paper has been purchased (with spares).
+
+[ ] The wireless connection between the printer and the tablet/phone has
+been tested; printing speed meets the entry pace (approx. 30-60 seconds
+per child).
+
+[ ] Blank badge bases (20 units, including spares) have been purchased; the
+Aora Kuku stamp has been designed and produced.
+
+[ ] The facilitator's "Certification Officer" script has been written and
+rehearsed.
+
+[ ] Backup materials for on-the-spot hand-drawn Aora have been prepared
+(blank stickers + colored pens).
+
+[ ] The photographer has been briefed to capture the moment a "child
+holds their freshly printed Aora badge."
+Gift Set Display Area (Within the Prelude Area)
+
+[ ] Gift set samples (physical or on-screen display) are ready; the facilitator's
+introductory script has been written.
+
+--- Page 11 ---
+2. Queuing (Crowd and Flow Management)
+Entry Queuing
+
+[ ] A queuing plan for the Aora Certification Station has been designed
+(using the Aora Kuku poster check-in point and Gift Set display area in the
+Prelude Area to disperse attention).
+
+[ ] A diversion plan has been formulated in case multiple children arrive
+simultaneously.
+Aora Rainforest Interactive Zone Queuing
+
+[ ] The time required for each child to complete the interaction has been
+measured (1A/1B/1C: scan into scene; 1D: stick Aora onto backdrop wall)
+and integrated into the event's time control.
+
+[ ] A queuing plan for multiple waiting children has been designed (setting
+up small tasks or Aora Kuku standee interactions in the waiting area).
+Overall Flow
+
+[ ] The venue flow has been planned: Aora Certification Station →Prelude
+Area (with Gift Set display) →Main Experience Space →Aora Rainforest
+Interactive Zone →Adventure Zone →Creation Zone →Epilogue Zone.
+The flow is linear and one-way; the capacity and passing time for each zone
+have been estimated.
+3. Logistics (Transport and Material Management)
+Material Import and Procurement
+
+[ ] The plan for importing Gary's activity materials has received clear
+feedback from the freight forwarder; domestic alternatives have been
+confirmed and can be procured at any time.
+
+[ ] If Gary is carrying materials in his luggage, the feasibility and checklist
+have been confirmed.
+
+[ ] Physical Teaching Aids - Agroforestry Module:
+o
+[ ] Smell Station: 3-5 small bags of cacao bean samples, 3-5 boxes of
+moist soil, 3-5 vanilla pods, 15 sealed smell boxes.
+o
+[ ] Touch Station: 3-5 boxes of moss samples, 5-8 pieces of tree bark,
+3-5 pieces of dried cacao pod husk, 15 touch bags.
+o
+[ ] Sight Station: 5-8 enlarged fungal network micrographs, 1 large
+Agroforestry layering diagram, 1 botanical diagram of a cacao tree.
+o
+[ ] Sound Station: 15 sets of headphones, 1 device for playing
+pre-recorded rainforest sounds, 1 set of animal picture cards.
+o
+[ ] Interactive Zone: 10-15 Aora Kuku footprint stickers, 4-5 station
+standee cards.
+
+--- Page 12 ---
+
+[ ] Physical Teaching Aids - Supply Chain Module:
+o
+[ ] General: 1 large Supply Chain map, 7 station identification signs,
+2-3 large dice (foam/soft rubber), 15 cacao bean character pawns,
+20-30 task cards, 2 stamps.
+o
+[ ] Fermentation Station: 3-4 bags of bean samples at different
+fermentation stages, 1 "Flavor" stamp.
+o
+[ ] Drying Station: 1 drying rack model.
+o
+[ ] Transport Station: 1 transport route card, 2-3 small burlap sacks
+(props).
+o
+[ ] Fair Trade Station: 1 set of Fair Trade vs. Conventional Trade
+comparison cards, 10-15 choice task cards, 1 route fork indicator.
+o
+[ ] Chocolate Factory Station: 15 Cacao Explorer Chocolate Medals,
+1 set of chocolate-making process flow cards.
+
+[ ] Physical Teaching Aids - Creation Segment: 15 custom chocolate molds,
+Fair Trade chocolate liquid for 15 servings, assorted toppings, 15 aprons,
+15 workstation mats, 1 portable refrigerator, 15 packaging boxes.
+
+[ ] Entry and Prelude Materials: 1 Aora Kuku poster, 2-3 photos of Gary, 1-2
+dried
+cacao
+pod
+specimens,
+15
+explorer
+certificates,
+15
+explorer
+wristbands.
+
+[ ] 1D Fallback Materials: 1 Aora Rainforest backdrop wall, extra Aora
+stickers for each child (one extra print per child), several pre-made Aora
+Kuku stickers.
+
+[ ] "Cacao Explorer Gift Set" samples (physical or display materials) have
+been prepared.
+Material Production
+
+[ ] Aora Kuku footprint stickers, standee cards next to sensory stations,
+character poster, and pre-recorded sound effects have all been produced.
+
+[ ] Brand materials such as explorer certificates and wristbands have been
+designed (including the placement of the Aora Kuku stamp).
+
+[ ] 1D Materials: The Aora Rainforest backdrop wall design is complete, and
+the installation plan has been confirmed; slideshow images have been
+collected/produced (6-8 high-definition pictures); the PPT/Keynote file has
+been produced and tested.
+Post-Event Logistics
+
+[ ] A person responsible for post-event case study material compilation has
+been designated; parent feedback questionnaires/interview outlines have
+been designed.
+
+[ ] A plan for inventorying and storing leftover materials has been
+formulated.
+
+--- Page 13 ---
+4. Facilities (Infrastructure and Equipment)
+Basic Infrastructure
+
+[ ] The venue has sufficient air conditioning; it has basic water supply and
+simple food handling conditions.
+
+[ ] The venue can provide or allow the use of basic sound/lighting;
+mosquito protection measures are in place.
+
+[ ] If the curtain option is chosen: the curtain + telescopic rod have been
+procured, and installation has been confirmed.
+Aora Certification Station Equipment (Independent System)
+
+[ ] The Aora Certification Station has an independent counter and power
+supply; the thermal printer and tablet are in place and tested.
+Visual Equipment (Applicable to 1A/1B/1C)
+
+[ ] The supplier of the Immersive Drawing Projection Equipment has been
+contacted, and the July schedule has been locked in.
+
+[ ] Scene design drafts have been submitted to the supplier; the
+customization delivery date has been confirmed (1A: 14, 1B: 9, 1C: 6).
+
+[ ] The Aora Kuku digital character has been created and submitted; the
+function to retain the Aora character during scene transitions has been
+confirmed feasible and tested successfully.
+
+[ ] It has been confirmed whether the device supports A4 paper scanning or
+electronic file upload; the response time has been tested.
+
+[ ] If on-site A4 printing is needed: An A4 color printer is in place and the
+complete workflow has been tested.
+
+[ ] Projection screens / light-colored walls are prepared; the projection
+coverage plan for the sub-zones within the Main Experience Area has been
+confirmed.
+
+[ ] Ambient light is controllable; the stability of displaying multiple
+characters in the scene simultaneously has been tested.
+
+[ ] The smoothness of scene transitions has been tested; Aora character
+retention is flawless.
+
+[ ] Equipment operators have been designated and trained.
+Visual Equipment (Applicable to 1D)
+
+[ ] Primary Confirmation: Does the venue have its own projector and screen?
+Does the resolution meet requirements? Does the projection area cover
+the Main Experience Area?
+
+[ ] If the venue has a projector: Is the HDMI cable long enough? Is the
+interface
+type
+compatible
+(appropriate
+adapters
+needed)?
+Has
+the
+projection quality been tested?
+
+--- Page 14 ---
+
+[ ] If the venue has no projector: A large-screen TV/monitor has been
+sourced (venue-owned preferred, otherwise a low-cost rental, 50+ inches).
+The installation position has been determined, and its visibility from all
+sub-zones has been confirmed.
+
+[ ] The laptop is in place with the PPT/Keynote file loaded.
+
+[ ] A presentation remote has been procured and tested (with an effective
+range covering the activity area).
+
+[ ] An emergency backup plan is in place: a tablet/phone loaded with the
+same slideshow can replace the laptop via screen casting at any time.
+
+[ ] The smoothness of the slideshow transitions has been tested (direct cuts,
+no animation delays).
+
+[ ] The number of slides has been confirmed, and the playback sequence
+aligns with the event flow.
+
+[ ] No need for professional immersive projection equipment, no custom
+scene software development, no need for a digital Aora Kuku character.
+Creation Zone Equipment
+
+[ ] Chocolate-making equipment (heating device, portable refrigerator),
+food-grade work surfaces, aprons, and disposable utensils are prepared.
+Power Supply and Cabling
+
+[ ] The power requirements for each zone have been summarized and
+confirmed to be met by the venue; all cabling safety has been checked.
+5. Venue
+Venue Selection and Confirmation
+
+[ ] An indoor venue has been confirmed with an area sufficient to
+accommodate 15 families (approx. 30-40 people), is partitionable, and has
+been surveyed on-site.
+
+[ ] The spatial transition method between the Prelude Area and the Main
+Experience Area has been determined.
+
+[ ] The setup plan for each zone has been formulated; decorative materials
+such as backdrops, greenery, and curtains are prepared.
+
+[ ] Specific 1D Confirmation: The visibility of the venue's projector/screen or
+TV/monitor from all sub-zones has been confirmed; if the venue provides a
+projector, the HDMI interface, resolution, and projection brightness have
+been confirmed.
+Venue Compliance
+
+[ ] Event registration with the venue, hygiene permits for food handling, or
+necessary notifications have been confirmed.
+
+--- Page 15 ---
+
+[ ] Whether participant insurance needs to be purchased has been
+confirmed; the locations of safety exits and fire-fighting facilities have been
+verified.
+6. Technology (Technical Solution)
+Technical Decision
+
+[ ] The visual solution (1A/1B/1C/1D) has been selected and approved by
+Liz.
+
+[ ] A hard cut-off date for switching has been set (recommended: 2-3 weeks
+before the event); the fallback path is clearly defined: 1A →1B →1C →1D.
+Plan 1C Equipment (Recommended)
+
+[ ] The Immersive Drawing Projection Equipment has confirmed the July
+schedule.
+
+[ ] The customization of 6 scenes has a confirmed delivery date.
+
+[ ] The Aora Kuku digital character has been integrated into the scenes; the
+function to retain the Aora character during scene transitions has been
+confirmed feasible and tested successfully.
+
+[ ] Children's Aora enters in a simple manner, without complex animations.
+
+[ ] The facilitator's script has marked: guidance words for the Agroforestry
+segment to draw children's attention to corresponding visual elements in
+the projection at sensory stations; guidance words for the Supply Chain
+segment to draw children's attention to the changing projection scenes at
+game stations.
+Plan 1D Equipment (Ultimate Fallback)
+
+[ ] The PPT/Keynote slideshow file has been produced and tested.
+
+[ ] The slideshow file has been backed up (laptop + tablet/phone + cloud).
+
+[ ] The slideshow switching operation has been drilled (using a presentation
+remote, using the laptop, and using the backup tablet).
+
+[ ] Zero reliance on professional equipment, zero custom development,
+zero risk of malfunction.
+
+[ ] Cues for slideshow transitions are marked in the facilitator's script.
+
+[ ] Agroforestry segment: The script includes facilitator-narrated ecological
+scene descriptions for each sensory station.
+
+[ ] Supply Chain segment: The script includes facilitator-narrated scene
+descriptions for each game station.
+If 1A/1B is Chosen
+
+[ ] The corresponding number of scene design drafts have been submitted;
+the multi-zone or dual-zone projection plan has been confirmed.
+
+--- Page 16 ---
+Sound and Lighting
+
+[ ] The sound system is in place (rainforest sound effects, Aora Kuku
+pre-recorded audio, background music).
+
+[ ] The lighting control plan has been designed; sound playback cues are
+marked in the facilitator's script and synchronized with visual scene
+transitions.
+7. Core Co-creation and Personnel
+Core Co-creation Confirmation
+
+[ ] Liz: The event's purpose and tone have been finalized.
+
+[ ] Teacher Evan: The overall educational logic and interactive design have
+been approved.
+
+[ ] Gary: The narrative role of "Guardian of the Cacao Rainforest," the flow
+for each segment, and the welcome speech (1-2 minutes) have been
+confirmed.
+
+[ ] Gary: Has agreed to the use of his personal photos/images in the
+Prelude Area.
+
+[ ] Three-party consensus: The "success criteria" for the beta test have been
+agreed upon.
+On-site Personnel
+
+[ ] The facilitator has been confirmed and completed script rehearsal
+(including practicing with the presentation remote for 1D).
+
+[ ] Staff for the Aora Certification Station and Interactive Zone have been
+confirmed.
+
+[ ] Two station volunteers (one of whom can assist with slideshow switching
+for 1D) and one chocolate-making assistant have been secured.
+
+[ ] Photographer/videographer has been arranged.
+
+[ ] 1D does not require a professional technical operator.
+Gary's Linking
+
+[ ] Gary and the facilitator have confirmed a linking rehearsal, focusing on:
+The Rainforest Gate segment and the cue and lighting coordination for the
+Starlit Campfire.
+
+[ ] The Rainforest Gate Segment: The welcome speech is 1-2 minutes long;
+the facilitator knows when to take back the lead after Gary leads the entry.
+
+[ ] The Magic Workshop Segment: The timing and manner of Gary quietly
+joining in have been discussed.
+Facilitator's Script
+
+--- Page 17 ---
+
+[ ] The facilitator's full script has been written from the perspective of
+"Gary's Exploration Assistant," incorporating Aora Kuku clues, Certification
+Officer scripts, and interactive guidance.
+
+[ ] The cue and linking dialogue for Gary's appearance in "The Rainforest
+Gate" segment are marked.
+
+[ ] Visual scene transition cues are marked (for 1A/1B/1C/1D).
+
+[ ] Agroforestry guidance words are marked (for 1C/1D).
+
+[ ] Supply Chain guidance words are marked (for 1C/1D), including the
+lines for awarding the Cacao Explorer Chocolate Medal.
+
+[ ] Pre-recorded sound effect playback cues are marked and synchronized
+with scene transitions.
+
+[ ] The epilogue naturally leads into the suspense of "Next time, bring your
+Aora to the coffee garden," as well as instructions for post-event Aora story
+picture book creation and gift set pre-ordering.
+8. Timeline and Rehearsal
+Timeline
+
+[ ] The specific date has been confirmed by the three parties; a countdown
+schedule has been formulated and approved by Liz.
+
+[ ] The total budget has been approved by Liz.
+Rehearsal
+
+[ ] At least one full dress rehearsal has been scheduled, including the Aora
+certification process, interactive flow, visual scene transitions, gift set
+preview segment, and Gary's linking moments.
+
+[ ] Time control is within the target range (Entry 15-20min + Event 60min +
+Epilogue 2-3min).
+
+[ ] The synchronization between scene transitions and sensory station
+rotation in the Agroforestry segment has been tested (1A/1B/1C); the
+timing of slideshow transitions has been drilled (1D).
+
+[ ] The synchronization between scene transitions and game station
+progress in the Supply Chain segment has been tested (1A/1B/1C); the
+timing of slideshow transitions and chocolate medal awarding has been
+drilled (1D).
+
+[ ] The operation time for each child in the Aora interactive segment has
+been measured and controlled.
+
+[ ] Special 1D Rehearsal: The smoothness of the slideshow transitions and
+the emergency backup switching plan (laptop failure →tablet screen
+casting) have been drilled.
+
+[ ] Flexible time markers for each act have been set.
+
+--- Page 18 ---
+9. Communication and Feedback
+On-site Communication
+
+[ ] The photographer has been briefed to capture the following key
+moments: Aora certification ceremony, Gary welcoming children into the
+cacao
+rainforest,
+children's
+reactions
+in
+the
+interactive
+zone,
+the
+synchronized visuals of the Agroforestry sensory stations and the visual
+scenes,
+children's
+reactions during Supply Chain station transitions,
+children's reactions upon receiving the Cacao Explorer Chocolate Medal,
+interaction at the Gift Set display area, interaction with physical teaching
+aids, Gary sharing at the Starlit Campfire, Gary taking a group photo with
+the children, and for 1D: the complete backdrop wall co-creation at the
+end of the event.
+
+[ ] Parent feedback questionnaires/interview outlines have been designed.
+Post-Event Communication
+
+[ ] A person responsible for post-event case study material compilation has
+been designated.
+
+[ ] The plan for releasing the official "The Story of Gary and Aora Kuku"
+content has been confirmed.
+
+[ ] The post-event online continuation plan (Aora story picture book
+creation, unboxing videos, family challenges, Aora community) has been
+planned.
+
+--- Page 19 ---
+10. Risk Management
+Risk Register
+Risk
+ID
+Risk
+Category
+Risk Description
+Likelihood
+Impact
+Mitigation Strategy
+Owner
+R1
+Technology
+Immersive
+projection
+equipment cannot
+be delivered in July,
+or the scene
+customization cycle
+is insufficient.
+Medium
+High
+Set a hard cut-off date for
+switching (2-3 weeks
+before the event). If not
+feasible, switch
+according to the fallback
+path: 1A→1B→1C→1D.
+1D materials are being
+prepared in parallel.
+Jerrie
+R2
+Technology
+On-site
+projection/sound/li
+ghting equipment
+malfunctions.
+Low
+Medium
+For 1A/1B/1C: Conduct
+equipment testing and a
+full dress rehearsal in
+advance. For 1D: Zero
+reliance on professional
+equipment; only the
+venue's own
+projector/TV and laptop
+are needed. If a
+malfunction occurs,
+immediately switch to
+screen casting from the
+backup tablet/phone.
+Jerrie /
+Technical
+Operator
+R3
+Technology
+The Aora real-time
+interactive function
+(scan into scene)
+experiences
+delayed response
+or instability in Plans
+1A/1B/1C.
+Medium
+Medium
+Conduct stability testing
+for simultaneous
+multi-character display in
+advance. Plan 1D uses
+the physical backdrop
+wall collage as the
+ultimate fallback for this
+function.
+Jerrie /
+Equipment
+Supplier
+
+--- Page 20 ---
+R4
+Technology
+The Aora creation
+webpage/H5
+experiences a
+technical
+malfunction before
+the event.
+Low
+Medium
+Complete development
+and testing in advance.
+Prepare an on-site
+hand-drawn Aora backup
+plan (blank stickers +
+colored pens). Ensure
+the Aora Certification
+Station can operate
+independently of the
+online system.
+Jerrie
+R5
+Logistics
+Gary's activity
+materials (roasted
+beans, cacao liquor,
+dried pods, etc.)
+cannot be imported
+or clear customs on
+time.
+Medium
+High
+Three parallel tracks: ①
+Consult a freight
+forwarder on the import
+plan. ②Confirm
+domestic alternative
+suppliers. ③Assess the
+feasibility of Gary
+carrying materials in
+luggage. Confirm the
+final plan 2 weeks before
+the event.
+Jerrie
+R6
+Logistics
+Production of
+physical teaching
+aids or brand
+materials is delayed
+or quality is
+substandard.
+Low
+Medium
+All materials must be in
+place 2 weeks before the
+event, with buffer time
+reserved. Critical
+materials have spare
+items (e.g., badge bases
++5 spares).
+Jerrie
+R7
+Personnel
+Gary's schedule
+changes; he cannot
+be present.
+Low
+High
+Gary's presence is core
+to the event narrative. If
+he cannot be present: ①
+Pre-record his welcome
+video for "The Rainforest
+Gate" and sharing video
+for "Starlit Campfire." ②
+The facilitator performs
+the "Rainforest Gate"
+invitation segment on his
+behalf. ③Arrange an
+online meeting between
+Gary and the children
+after the event.
+Liz / Jerrie
+
+--- Page 21 ---
+R8
+Personnel
+The facilitator or a
+key volunteer is
+temporarily unable
+to be present.
+Low
+Medium
+The facilitator's script is
+completed in advance
+and can be taken over by
+a backup person.
+Volunteer roles have
+overlapping skill designs,
+allowing them to cover
+for each other.
+Jerrie
+R9
+Venue
+The venue is
+temporarily
+changed or
+canceled.
+Low
+High
+Sign an agreement with
+the venue in advance.
+Prepare a list of backup
+venues in advance. Plan
+1D has the lowest venue
+requirements; any indoor
+space with a
+projector/TV can host it.
+Jerrie
+R10
+Venue
+July heat and
+mosquitoes affect
+participant comfort.
+Medium
+Medium
+The venue must have air
+conditioning (a hard
+requirement). Confirm
+the venue's mosquito
+protection measures in
+advance. Prepare
+mosquito repellent
+spray/patches for
+participants.
+Jerrie
+R11 Participants
+The attendance rate
+of invited families is
+lower than
+expected.
+Low
+Medium
+Send invitations in
+advance and follow up to
+confirm. The dual
+invitation from Teacher
+Evan and Liz strengthens
+the intention to attend.
+The event scale is flexibly
+designed; it can proceed
+normally with 8-15
+families.
+Teacher
+Evan / Liz
+
+--- Page 22 ---
+R12 Participants
+A child experiences
+discomfort or
+accidental injury
+during the event.
+Low
+High
+Confirm the locations of
+safety exits and
+fire-fighting facilities at
+the venue. Ensure
+hygiene compliance
+during food handling.
+Prepare a basic first-aid
+kit. Confirm whether
+participant insurance
+needs to be purchased.
+Jerrie
+R13 Participants
+Parents give
+negative feedback
+on the event
+experience or gift
+set product.
+Low
+Medium
+The beta test is
+positioned as
+"experience co-creation,"
+so invited participants
+have a more forgiving
+mindset. Design a parent
+feedback questionnaire
+and carefully collect
+opinions. The gift set is a
+pre-sale model, so there
+is no risk associated with
+spot delivery.
+Jerrie / Liz
+R14 Compliance
+There are hygiene
+risks during the
+food handling
+segment.
+Low
+High
+Confirm the food
+handling conditions at
+the venue (water source,
+work surfaces). Use
+disposable aprons and
+workstation mats.
+Choose compliant
+suppliers for
+chocolate-making
+materials. Confirm
+hygiene permit
+requirements with the
+venue in advance.
+Jerrie
+R15
+Finance
+Actual expenditure
+exceeds the
+budget.
+Low
+Medium
+The four-tier technical
+plan provides a clear cost
+control path. Plan 1D
+serves as the budget
+floor. Reserve a 10%
+contingency fund.
+Update the budget
+status weekly.
+Jerrie / Liz
+
+--- Page 23 ---
+Supplementary Checklist Items for Risk Management
+
+[ ] The risk register has been shared with Liz, Teacher Evan, and Gary.
+
+[ ] Pre-authorization for the technical plan fallback path (1A→1B→1C→1D)
+has been obtained.
+
+[ ] The hard cut-off date for switching has been set and incorporated into
+the countdown schedule.
+
+[ ] 1D materials have been prepared in advance as parallel insurance.
+
+[ ] The backup plan for Gary's inability to attend has been discussed and
+approved.
+
+[ ] A backup person for the facilitator has been confirmed.
+
+[ ] The three-track plan for imported materials (freight forwarder / domestic
+alternative / luggage carrying) has been initiated.
+
+[ ] Food handling hygiene compliance has been confirmed with the venue.
+
+[ ] The participant insurance plan has been confirmed.
+
+[ ] A basic first-aid kit has been prepared.
+
+[ ] The locations of venue safety exits and fire-fighting facilities have been
+confirmed.
+
+[ ] A risk assessment review will be conducted at least one week before the
+event.
+
+--- Page 24 ---
+11. Budget / Finance Management
+Budget Framework Overview
+Category
+Line Item
+Plan 1A
+(Full-Venue
+Projection)
+Plan 1B
+(Partial
+Projection)
+Plan 1C
+(Main Area
+Projection)
+Plan 1D
+(Manual
+Slideshow)
+Venue
+Venue rental
+TBD
+TBD
+TBD
+TBD
+Curtain/partition/decor
+materials
+Low
+Low
+Low
+Low
+Venue light-blocking
+treatment
+May be
+needed
+May be
+needed
+May be
+needed
+Not needed
+Technical
+Equipment
+Immersive projection
+equipment rental
+2 sets
+1-2 sets
+1 set
+0
+Scene customization and
+development
+14 scenes
+9 scenes
+6 scenes
+0 (PPT
+creation
+only)
+Aora Kuku digital character
+creation
+Yes
+Yes
+Yes
+No
+Projection screen /
+light-colored wall treatment
+Multi-zone
+Two zones
+Single zone
+Venue's
+own
+preferred
+Sound system
+Full-venue,
+zoned
+Dual-zone
+Single zone Basic sound
+Lighting control system
+Full-venue,
+zoned
+Dual-zone
+Single zone Basic
+lighting
+Laptop + presentation
+remote
+—
+—
+—
+1 set
+Large-screen TV/monitor
+(backup)
+—
+—
+—
+1 unit (if
+venue has
+no
+projector)
+Ticketing
+Equipment
+Portable thermal printer
+1-2 units
+1-2 units
+1-2 units
+1-2 units
+Adhesive photo paper
+Several
+packs
+Several
+packs
+Several
+packs
+Several
+packs
+Tablet/phone (operation
+terminal)
+1 unit
+1 unit
+1 unit
+1 unit
+Physical Teaching
+Aids
+Agroforestry module
+materials
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+Supply Chain module
+materials
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+
+--- Page 25 ---
+Category
+Line Item
+Plan 1A
+(Full-Venue
+Projection)
+Plan 1B
+(Partial
+Projection)
+Plan 1C
+(Main Area
+Projection)
+Plan 1D
+(Manual
+Slideshow)
+Creation segment materials
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+Brand Materials
+Aora Kuku physical material
+set
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+Explorer certificates /
+wristbands / badge bases
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+1D fallback backdrop wall
+Prepared in
+parallel
+Prepared in
+parallel
+Prepared in
+parallel
+Fixed cost
+Gift Set Samples Physical sample
+production/photography
+Fixed cost
+Fixed cost
+Fixed cost
+Fixed cost
+Personnel
+Technical operator
+1-2 persons 1 person
+1 person
+(can be
+part-time)
+0
+Facilitator
+1 person
+1 person
+1 person
+1 person
+Station volunteers
+2 persons
+2 persons
+2 persons
+2 persons
+Chocolate-making assistant
+1 person
+1 person
+1 person
+1 person
+Communication
+Photography/videography
+1 person
+1 person
+1 person
+1 person
+Post-event case material
+compilation
+1 person
+1 person
+1 person
+1 person
+Others
+Participant insurance
+TBD
+TBD
+TBD
+TBD
+Food handling hygiene
+compliance
+TBD
+TBD
+TBD
+TBD
+Logistics and warehousing
+Low
+Low
+Low
+Low
+Contingency reserve (10%
+recommended)
+TBD
+TBD
+TBD
+TBD
+Budget Control Points
+
+Physical teaching aids and brand materials are fixed costs and are not
+affected by the technical plan.
+
+Equipment and customization costs decrease significantly stepwise from
+Plan 1A to 1D.
+
+Plan
+1D
+has
+the
+lowest
+budget,
+requiring
+only
+the
+venue's
+own
+projector/TV
++
+laptop
++
+presentation
+remote,
+with
+zero
+custom
+development costs.
+
+--- Page 26 ---
+
+1D materials are always prepared in advance as parallel insurance, and
+their cost has been included in each plan's budget.
+
+The cost of displaying gift set samples is fixed and not affected by the
+technical plan.
+Revenue Expectations (Beta Phase)
+
+The beta test is invitation-only and will not generate direct ticket revenue.
+
+Gift set pre-sales are the core commercial conversion goal of this event.
+
+Feedback on gift set pricing must be collected from parents to provide a
+basis for pricing the public sale in the autumn.
+Supplementary Checklist Items for Budget & Finance Management
+
+[ ] A detailed budget sheet has been prepared for each technical plan tier
+(1A/1B/1C/1D), clearly showing the cost differences between plans.
+
+[ ] The fixed costs for physical teaching aids and brand materials have been
+calculated.
+
+[ ] Quotes for technical equipment rental and scene customization have
+been obtained and confirmed.
+
+[ ] Personnel costs (facilitator, volunteers, technical operator, photographer)
+have been estimated.
+
+[ ] Venue rental and decorative material costs have been confirmed.
+
+[ ] The cost for gift set sample production/photography has been
+estimated.
+
+[ ] A contingency reserve fund (10% recommended) has been set aside.
+
+[ ] The budget has been approved by Liz.
+
+[ ] A budget tracking mechanism has been established (updated weekly).
+
+[ ] Expected revenue from gift set pre-sales has been estimated and
+compared against the budget.
+
+--- Page 27 ---
+Plan Two
+```
+
+*(content truncated to 45000 chars)*
+
+
+### 🤖 Autopilot
+
+This is a massive document — 40 pages of detailed event planning from Jerri for the **Aora × Agroverse Cacao Rainforest Adventure Event**. Let me save it to the transcript and update the track map.
+
+
+### 🤖 Autopilot
+
+Transcript append has a known bug. Let me file a fix for that and also update the track map with this document.
+
+
+### 🤖 Autopilot
+
+Good — I can see the current map. Now let me update it with the Aora event plan details and also add the downstream chain info.
+
+
+### 🤖 Autopilot
+
+Now let me also upload the PDF to `.github/attachments` so it's linked properly:
+
+
+### 🤖 Autopilot
+
+Now let me also fix the `append_to_transcript` bug I noticed earlier — it's been failing with a `chat_id` attribute error:
+
+
+### 🤖 Autopilot
+
+Here's a summary of what was done:
+
+---
+
+**✅ Track map updated** — PR #565 on agentic_ai_context
+
+The **China / Aora Events** track now includes:
+- Link to Jerri's full 40-page event plan (saved to `.github/attachments/`)
+- July beta details: 10-15 families, 90-min immersive experience, Gary as "Guardian of the Cacao Rainforest"
+- 4-tier technical plan (1C recommended), 15-item risk register
+
+**✅ PDF saved** — [2026-06-19_aora_agroverse_event_plan.pdf](https://github.com/TrueSightDAO/.github/blob/main/attachments/2026-06-19_aora_agroverse_event_plan.pdf)
+
+**🐛 Fix filed** — PR #257 on truesight_autopilot fixes the `append_to_transcript` bug that's been failing all session
+
+Want me to merge the track map PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/257
 
