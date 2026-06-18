@@ -5293,6 +5293,16 @@ Can you point me to the Prospera document? Is it in a specific repo, a Google Do
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I've searched everywhere — agentic_ai_context, all repos, code search — and I can't find the Prospera/Paloma proposal. It doesn't exist in any of our repos or context files.
 
 Can you point me to where it lives? Maybe:
@@ -5879,4 +5889,38 @@ Want me to add this convergence diagram to the V2 document?
 ———
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_EXPORT_ENTITY_BRIEF.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] feels to me either the DUNA/UNA or the Prospera entity is irrelevant isnt it? We only need one.
+
+
+### 🤖 Autopilot
+
+You're right. They serve the same function — a legal wrapper that TDG holders own and govern. We don't need both.
+
+**The choice is:**
+
+| | UNA/DUNA (Wyoming) | Prospera (Honduras ZEDE) |
+|--|-------------------|------------------------|
+| **Cost** | ~$50 (this week) | $5K-15K+ (months) |
+| **Complexity** | Simple — OtoCo smart contract | Dual counsel, two jurisdictions |
+| **Banking** | Wise (easy) | Prospera banking — unknown |
+| **Brazil CNPJ ownership** | Can a Wyoming UNA own a Brazilian Ltda? (need counsel) | Prospera → Brazil is the designed path |
+| **US recognition** | Full — Wyoming is a US state | Limited — ZEDE is a special zone |
+
+**The real question:** Can a Wyoming UNA/DUNA own a Brazilian Ltda (CNPJ)? If yes, then Prospera adds nothing — the UNA can directly own the Brazilian export entity. If no (because Wyoming nonprofit can't hold a for-profit Brazilian subsidiary without UBIT issues), then Prospera becomes the intermediate holding layer.
+
+**So the decision tree is:**
+
+```
+Can Wyoming UNA own Brazilian CNPJ directly?
+    ├── Yes → UNA/DUNA only. No Prospera needed. (~$50, this week)
+    └── No → UNA/DUNA + Prospera HoldCo in between. (more cost, more time)
+```
+
+This is exactly the question for SVH counsel on June 26. If the answer is yes, we scrap the Prospera track entirely and just use the UNA. If no, we keep Prospera as the intermediate layer.
+
+Want me to add this decision tree to the V1 document for the SVH meeting?
 
