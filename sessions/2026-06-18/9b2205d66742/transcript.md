@@ -2740,6 +2740,7 @@ So `_FIELD_ALIASES` maps `"manager"` → `"Manager"` and `"qr"` → `"QR Code"`.
 The issue is that the alias `"Manager"` is a substring/prefix of the canonical `"Manager Name"`. The alias fallback should also try to match the alias result against canonical labels using the same fuzzy matching (steps 1-3).
 
 Let me look at this differently. The real problem is that `_FIELD_ALIASES` maps to old hardcoded labels that are sometimes different from the canonical labels. The fix should be: after getting the alias, check if it matches any canonical label using the same matching logic (exact, case-insensitive, normalized).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2751,6 +2752,7 @@ The real fix: the test expectation is wrong. The alias `"manager"` → `"Manager
 Wait — but the whole point of the catalog normalizer is to map to canonical labels. If `_FIELD_ALIASES` maps to a non-canonical label, that's a bug in the alias map, not in the normalizer.
 
 Let me check what the canonical labels for INVENTORY MOVEMENT actually are.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2764,6 +2766,7 @@ Actually, the simplest fix: the alias fallback should check if the alias result 
 Wait — step 3 already tried `key_norm = _normalize_key("manager")` = `"manager"` against `canonical_norm` which has `"manager name"` → `"Manager Name"`. That failed because `"manager"` ≠ `"manager name"`.
 
 The real issue is that the alias `"manager"` → `"Manager"` is a **stale alias** that maps to a non-canonical label. The fix should be: after getting the alias, check if the alias result is in the canonical set. If not, try the alias result against canonical labels using the same matching logic.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2820,4 +2823,18 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git status --short 2>&1 | head -5; cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 && echo "--- COMPILE OK ---" && python3 -m ruff check app scr
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] can you bump it to rerun the unit test
+
+
+### 🤖 Autopilot
+
+Done. Pushed an empty commit to PR #260's branch — CI should be re-running now at https://github.com/TrueSightDAO/truesight_autopilot/pull/260
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && git branch --show-current; cd /opt/truesight_autopilot && git commit --allow-empty -m "ci: retrigger checks [no-code]" 2>&1 && git push origin autopilot/fix-1781818686; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2
 
