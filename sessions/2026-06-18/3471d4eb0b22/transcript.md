@@ -639,6 +639,7 @@ These are the full list I found
 ### 🤖 Autopilot
 
 You're right — there are more! The `list_matching_qr_codes` tool only returned 3 because it was matching the prefix `2024OSCAR_20260121_` exactly. Let me look up the full set you listed.
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -832,4 +833,142 @@ The bag is now recorded as sold from Gergana's consignment inventory. Anything e
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] Can we do an audit of this page which is the canonical source of truth for all parameters
+https://dapp.truesight.me/report_sales.html
+
+to figure out if there are any parameters that are  generated here today but not included in 
+the sales event submission 
+
+as well as the documentation on 
+https://edgar.truesight.me/
+
+
+### 🤖 Autopilot
+
+Let me fetch both pages to compare.
+
+
+### 🤖 Autopilot
+
+Now let me get the actual report_sales.html page to see the form fields.
+
+
+### 🤖 Autopilot
+
+The web extract didn't capture the form fields well. Let me read the source code directly from the repo.
+
+
+### 🤖 Autopilot
+
+Let me read the form section of the HTML to see all the input fields.
+
+
+### 🤖 Autopilot
+
+Let me search for the form fields in the HTML — looking for the input elements and the JavaScript that builds the payload.
+
+
+### 🤖 Autopilot
+
+Let me search for the specific input IDs in the HTML.
+
+
+### 🤖 Autopilot
+
+Let me read the full HTML file to find the form and JavaScript payload construction.
+
+
+### 🤖 Autopilot
+
+Now let me find the JavaScript that constructs the payload to see what fields are actually sent to Edgar.
+
+
+### 🤖 Autopilot
+
+Now let me find the part where the payload is constructed and submitted.
+
+
+### 🤖 Autopilot
+
+Now let me find the actual payload construction and submission code.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me compare what the DApp sends vs what we submitted via the CLI.
+
+---
+
+## Audit: DApp `report_sales.html` vs CLI `submit_contribution` / `truesight-dao-report-sales`
+
+### What the DApp actually sends (from the JavaScript)
+
+The DApp constructs this payload text:
+
+```
+[SALES EVENT]
+- Item: {qrParam}
+- Sales price: ${salePrice}
+- Sold by: {soldByName}
+- Cash proceeds collected by: {cashName}
+- Owner email: {ownerEmailVal || '(none)'}
+- Stripe Session ID: {stripeSessionVal || '(none)'}
+- Shipping Provider: {shippingProvVal || '(none)'}
+- Tracking number: {trackingVal || '(none)'}
+- Attached Filename: {fileName || 'None'}
+- Submission Source: {window.location.href}
+--------
+```
+
+### Comparison: DApp fields vs what we submitted
+
+| # | DApp Field | In our submission? | Notes |
+|---|-----------|-------------------|-------|
+| 1 | **Item** (QR Code) | ✅ Yes | Passed as `Item` + `QR Code` |
+| 2 | **Sales price** | ✅ Yes | Passed as `Sales price` |
+| 3 | **Sold by** | ✅ Yes | Passed as `Sold by` |
+| 4 | **Cash proceeds collected by** | ✅ Yes | Passed as `Cash proceeds collected by` |
+| 5 | **Owner email** | ❌ **Missing** | We didn't include Gergana's email |
+| 6 | **Stripe Session ID** | ❌ **Missing** | N/A for Venmo — optional |
+| 7 | **Shipping Provider** | ❌ **Missing** | N/A for in-person — optional |
+| 8 | **Tracking number** | ❌ **Missing** | N/A — optional |
+| 9 | **Attached Filename** | ❌ **Missing** | We didn't attach the Venmo screenshot |
+| 10 | **Submission Source** | ✅ Yes | We used `Submission Source: Venmo` |
+
+### Key findings
+
+**1. Missing `Owner email`** — The DApp always includes it. We should have included Gergana's email. Do you have it?
+
+**2. Missing `Attached Filename`** — The DApp attaches the QR code image. We could have attached the Venmo screenshot as evidence. Want me to re-submit with the screenshot attached?
+
+**3. The DApp also sends `Stripe Session ID`, `Shipping Provider`, `Tracking number`** — these are optional and N/A for this Venmo/in-person sale, so no issue there.
+
+**4. The DApp's `Item` field is the QR code itself** — we used a longer product description. The DApp uses the QR code ID as the Item. This is a discrepancy worth noting.
+
+### Also: Edgar's documented canonical fields vs the DApp
+
+From the Edgar docs page, the canonical `[SALES EVENT]` format shows:
+
+```
+[SALES EVENT] - QR Code: 2024OSCAR_20260121_12 - Buyer Name: Alice Wang - Buyer Email: alice@example.com - Amount: 35.00 - Currency: USD
+```
+
+Notice the Edgar docs use **`Buyer Name`** and **`Buyer Email`** and **`Amount`** and **`Currency`** — but the DApp actually sends **`Sold by`**, **`Cash proceeds collected by`**, **`Owner email`**, and **`Sales price`** instead. **The Edgar docs are outdated** — they don't match what the DApp actually sends.
+
+### Summary of gaps
+
+| Gap | Impact |
+|-----|--------|
+| **Owner email** missing from our submission | Should fix — do you have Gergana's email? |
+| **Attached Filename** missing | Could attach the Venmo screenshot as evidence |
+| **Edgar docs outdated** (show `Buyer Name`/`Buyer Email`/`Amount`/`Currency` instead of actual DApp fields) | Docs need updating |
+| **Item field** — DApp uses QR code ID, we used product description | Minor — both work but inconsistent |
+
+Want me to:
+1. Update the Edgar docs to match what the DApp actually sends?
+2. Re-submit with the Venmo screenshot attached and Gergana's email (if you have it)?
 
