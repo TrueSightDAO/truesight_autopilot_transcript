@@ -111,6 +111,12 @@ As for these, they are offline stuff which we should track.
 ### 🤖 Autopilot
 
 Let me verify the actual state of each track by checking the PRs more carefully.
+[3 tool result(s) compacted: recall_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -327,4 +333,57 @@ Each track links to its key docs so anyone can jump in. Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && rm -rf agentic_ai_context && git clone git@github.com:TrueSightDAO/agentic_ai_context.git 2>&1 && cd agentic_ai_context && git ch
+
+
+### 🧑 Governor
+
+Perhaps also list the expected follow update dates
+
+Matheus mentioined 5 business day. We should save this screenshot somewhere on .github and the link to it. And then on the track.md indicate
+
+[Attachment auto-processed: **15c43caa9bfa42c79f337f452ecabffd.jpg**]
+- Type: Image (OCR confidence: 94.5%, quality: good)
+
+Extracted text:
+```
+& Matheus Reis - Bahia Coop Choose your own colors and wallpaper for this chat. View themes "To change or add a CNAE (business activity code) to a Microempresa (ME), the process takes 5 to 20 business days and costs an estimated R$ 400 to R$ 2,100, depending on your state and whether you hire accounting services. Cost Breakdown The total investment is the sum of mandatory government fees and professional fees: Junta Comercial Fee: Ranges from R$ 100 to R$ 600 (charged by the state government to register the contractual amendment). Digital Certificate (e-CNPJ): Costs around R$ 150 to R$ 250 (if you don't already have an active one to digitally sign the documents). Accountant's Fee: Ranges from R$ 300 to R$ 1,500 (specialized service required to prepare the contr... Read more 7:42 AM A
+```
+
+
+### 🤖 Autopilot
+
+Let me save the screenshot and update the track map.
+
+
+### 🤖 Autopilot
+
+Let me find the right file — it should be the most recent .jpg:
+
+
+### 🤖 Autopilot
+
+Good — `15c43caa9bfa42c79f337f452ecabffd.jpg` is the one. Let me upload it to `.github` and update the track map.
+
+
+### 🤖 Autopilot
+
+Now update the track map with the expected dates and the screenshot link:
+
+
+### 🤖 Autopilot
+
+Updated. The PR now includes:
+
+**Brazil Export Entity track** now has:
+- **Expected timeline:** 5–20 business days, R$400–R$2,100
+- **Next check-in:** ~2026-06-26 (earliest possible completion)
+- **Source:** [Screenshot saved to .github](https://github.com/TrueSightDAO/.github/blob/main/attachments/2026-06-19_matheus_cnae_timeline.jpg)
+
+Also added a **Next Check-in** column to the quick reference table so it's scannable at a glance.
+
+Want me to merge the PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -lt /tmp/tg_attachments/*.jpg 2>/dev/null | head -5; cd /tmp/agentic_ai_context && cat > TRACK_MAP.md << 'ENDOFFILE' # TrueSight DAO — Active Track Map > **Live dependency map.** Updated as tra
 
