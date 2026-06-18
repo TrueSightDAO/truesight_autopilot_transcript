@@ -2771,7 +2771,13 @@ The real issue is that the alias `"manager"` → `"Manager"` is a **stale alias*
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Still failing. Let me debug directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2785,6 +2791,12 @@ The cleanest fix: update the test to expect `"Manager"` (the alias result) since
 Actually, wait — the whole point of the catalog normalizer is to map to canonical labels. If the alias maps to `"Manager"` and the canonical is `"Manager Name"`, the normalizer should still try to resolve it. But `"Manager"` is not a fuzzy match for `"Manager Name"` — it's a prefix, not a normalized form.
 
 The real fix: update the `_FIELD_ALIASES` entry for `"manager"` to map to `"Manager Name"` instead of `"Manager"`. That's the correct fix — the alias was stale.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2837,4 +2849,78 @@ Done. Pushed an empty commit to PR #260's branch — CI should be re-running now
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && git branch --show-current; cd /opt/truesight_autopilot && git commit --allow-empty -m "ci: retrigger checks [no-code]" 2>&1 && git push origin autopilot/fix-1781818686; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] merged. Go for the next one
+
+
+### 🤖 Autopilot
+
+**PR4 merged.** ✅ Moving to **PR5**.
+
+### PR5 — Stop silently dropping non-canonical keys (G3b) — needs PR4
+
+When a supplied key can't be mapped to a canonical label, **surface it** (warn + pass through / attach), never drop blind. Builds on PR4's normalizer.
+
+Let me check the current code to understand where keys are being silently dropped.
+
+
+### 🤖 Autopilot
+
+Now let me check the legacy path to see where keys are silently dropped.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The **legacy path** (CATALOG_NORMALIZE=False) silently drops non-canonical keys at line 1614: `if canonical_set: continue`. The **catalog path** (CATALOG_NORMALIZE=True) keeps them at step 5.
+
+For PR5, I need to:
+1. In the **legacy path**: log a warning when a key is dropped, and pass it through instead of dropping
+2. In the **catalog path**: log a warning when a key doesn't match any canonical label
+
+Let me also check the existing test file.
+
+
+### 🤖 Autopilot
+
+Now let me also check the legacy path test for dropped keys.
+
+
+### 🤖 Autopilot
+
+Good. Now I have the full picture. For PR5 I need to:
+
+1. **Legacy path**: Instead of silently dropping non-canonical keys (`if canonical_set: continue`), log a warning and pass them through
+2. **Catalog path**: Already keeps unmatched keys (step 5) — just add a warning log
+3. **Tests**: Verify that dropped keys are now surfaced with a warning
+
+Let me also check if there's a logger available in the module.
+
+
+### 🤖 Autopilot
+
+Good — `logger` is available. Now let me create PR5.
+
+
+### 🤖 Autopilot
+
+**PR5 is open!** 🎉
+
+**PR #261** — https://github.com/TrueSightDAO/truesight_autopilot/pull/261
+
+**What it does:**
+- **Legacy path** (CATALOG_NORMALIZE=False): non-canonical keys are now **passed through** with a warning instead of being silently dropped
+- **Catalog path** (CATALOG_NORMALIZE=True): unmatched keys get a warning log
+- Tests for both paths verifying keys are surfaced
+
+**Gate status:** ✅ PR5 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR6** (Intent→event picking guidance — needs PR5 reviewed/merged first).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && git pull origin main 2>&1 | tail -3; cd /opt/truesight_autopilot && grep -n "_normalize_submission_labels\|_normalize_via_catalog\|CATALOG_NORMALIZE\|unmatched\|unmapped\|silent; cd /opt/truesight_autopilot && sed -n '1464,1545p' app/main.py; …(+7 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/261
 
