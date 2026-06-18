@@ -1660,3 +1660,24 @@ Here's the summary:
 
 Want me to merge it and deploy?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] I merged it
+
+
+### 🤖 Autopilot
+
+Let me deploy it.
+
+
+### 🤖 Autopilot
+
+There's another thread (6394) mid-turn. The deploy is deferred — it won't restart until that thread finishes. I'll retry when it's idle, or you can tell me to force it.
+
+In the meantime, the fix is merged to `main` — it'll deploy automatically on the next restart.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+
