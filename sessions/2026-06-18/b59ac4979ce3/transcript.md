@@ -776,7 +776,13 @@ Let me look at the current /dao page on truesight_me_beta to see what's there an
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see the structure. It's a static site (vanilla HTML, no framework). Let me check the main index.html to see the navigation and understand where a /dao page would go.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -978,4 +984,38 @@ Want me to check what's actually conflicting?
 Looks like you already resolved it on your end — prod is now in sync with beta. ✅
 
 **truesight.me/roadmap** should now show the live track map instead of the old Google Drawing redirect. Want me to verify it's serving correctly?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] I think we should have a standard SOP to update this isnt it? Perhaps update instructions somewhere so that when I tell you to update roadmap either in this thread or another one or even another LLM they will know
+
+
+### 🤖 Autopilot
+
+Absolutely. Let me create a runbook for it.
+
+
+### 🤖 Autopilot
+
+Good — I have the operating instructions structure. Now let me create the SOP as a new runbook in agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#563** — [feat: roadmap update SOP](https://github.com/TrueSightDAO/agentic_ai_context/pull/563)
+
+The SOP covers:
+
+| Section | What it tells the agent |
+|---------|------------------------|
+| **Where data lives** | TRACK_MAP.md (source), tracks.json (machine), HTML (layout), .github/attachments (evidence) |
+| **When to update** | Status changes, new tracks, completed tracks, check-in dates pass, governor says so |
+| **Step-by-step** | Gather state → edit TRACK_MAP.md → update tracks.json → update HTML if layout changed → deploy (beta → prod) |
+| **Quick reference table** | Which repo + branch prefix + files for each action type |
+| **Example dialog** | Exact flow from "update the roadmap" to prod sync |
+
+Any agent (Sophia, Claude, Grok, Cursor) that reads `agentic_ai_context` will find this and know exactly what to do.
+
+Want me to merge it?
 
