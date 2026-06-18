@@ -1182,56 +1182,72 @@ The console script wasn't installed. Let me check what's available:
 ### 🤖 Autopilot
 
 The package was installed as "UNKNOWN" — the `pyproject.toml` name issue. Let me check the pyproject.toml and fix it:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `pyproject.toml` has the entry point. The issue is the package was installed as "UNKNOWN" because the build metadata didn't pick up the name. Let me check the current installed state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The package is installed as "UNKNOWN" (old build). Let me reinstall with the updated pyproject.toml:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Editable mode doesn't work. Let me try regular install:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still building as UNKNOWN. The issue is the `pyproject.toml` name isn't being picked up by setuptools. Let me check if there's a `setup.cfg` or `setup.py` that's overriding it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `UNKNOWN.egg-info` is stale from before the pyproject.toml was updated. Let me clean it and rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still UNKNOWN. The issue is the setuptools version on this box doesn't read the `[project]` name from `pyproject.toml` properly. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Setuptools 59.6.0 — that's old. It doesn't support PEP 621 (`[project]` in pyproject.toml) properly. Let me upgrade setuptools and try again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still UNKNOWN. The issue is the wheel cache. Let me clear it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build now correctly produces `truesight_dao_client-0.2.0`. Let me install from the built wheel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now it's installed as `truesight-dao-client-0.2.0` with all scripts in `/home/ubuntu/.local/bin`. Let me add that to PATH and test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1330,41 +1346,89 @@ go for it.
 ### 🤖 Autopilot
 
 Let me check the handoff registry first, then submit.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No handoff match for this topic (thread 6711) — this is a fresh conversation, not a handoff resume. The "go for it" was about submitting the contribution event, not a handoff execution. Let me submit it.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact format expected:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `submit_contribution` tool expects the canonical labels as the attribute keys. Let me check what format it actually expects:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `submit_contribution` tool accepts `event_name` and `attributes` as a dict. The issue is the canonical labels for `CONTRIBUTION EVENT` are `Type`, `Amount`, `Description`, `Contributor(s)`, `TDG Issued` — but I passed `Type` as a key and it still failed. Let me check the actual handler in `main.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the handler at line 1951+ calls `edgar.submit_contribution(event_name, attributes, ...)` which is the generic path. The issue is the `attributes` dict keys need to match what Edgar expects. Let me check what the `EdgarDirectClient.submit_contribution` does:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — `submit_contribution` calls `self._client.submit(event_name, attributes)`. Let me check what `EdgarClient.submit()` does:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — `EdgarClient.submit()` calls `self.sign(event_name, attributes)` which calls `build_payload(event_name, attributes)`. Let me check `build_payload`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1432,4 +1496,49 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Missing required fields for CONTRIBUTION EVENT: Type. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
 • `ssh run` ×24 → grep -n "CONTRIBUTION EVENT\|CONTRIBUTOR ADD\|def submit_contribution\|event_name ==" /opt/truesight_autopilot/app/main.py | head -30; sed -n '1715,1970p' /opt/truesight_autopilot/app/main.py; grep -n "def submit_contribution" /opt/truesight_autopilot/app/edgar_client.py; …(+21 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] That is awkward. you went through the maximum number of tool rounds just to make a single command call?? How come. Let me know your thoughts
+
+
+### 🤖 Autopilot
+
+You're right to call that out. Let me trace what happened:
+
+**The root cause:** I called `submit_contribution` with `event_name="CONTRIBUTION EVENT"` and `attributes={"Type":"Time (Minutes)","Amount":"90",...}` — but the autopilot's `_normalize_submission_labels` function dropped the `Type` key because of how the legacy alias/normalization path works.
+
+**Why it took 24 SSH calls to figure that out:**
+
+1. The error message said "Missing required fields for CONTRIBUTION EVENT: Type" — which told me `Type` wasn't in the normalized dict
+2. Instead of reading the normalization code directly (one `read_repo_file` call), I SSH'd into the autopilot box repeatedly — `grep`, `sed -n`, more `grep`, more `sed -n` — tracing through the call chain line by line
+3. Each SSH call returned a small snippet, so I needed many of them to reconstruct the full picture
+
+**What I should have done instead:** Called `read_repo_file("truesight_autopilot", "app/main.py")` once to get the full file, then read the normalization logic in one shot. That would have been 1-2 calls instead of 24.
+
+**The actual bug:** The `_NON_CANONICAL_KEYS` set at line 1465 likely includes `"type"` as a descriptive key to drop. Let me check — but I can do it in one call:
+
+
+### 🤖 Autopilot
+
+**Found it.** Line 1466: `"type"` is in `_NON_CANONICAL_KEYS`. So when I passed `"Type": "Time (Minutes)"`, the normalizer saw `key.lower() == "type"`, matched it to `_NON_CANONICAL_KEYS`, and **dropped it entirely** at line 1584:
+
+```python
+if key.lower() in _NON_CANONICAL_KEYS:
+    continue
+```
+
+**The fix:** `"Type"` is a canonical label for `CONTRIBUTION EVENT` — it shouldn't be in the drop list. The `_NON_CANONICAL_KEYS` set was meant for generic descriptive keys that LLMs sometimes hallucinate (like `"notes"`, `"status"`), but `"Type"` is a legitimate canonical field.
+
+**Two ways to fix it:**
+
+1. **Quick fix:** Remove `"type"` from `_NON_CANONICAL_KEYS` — but this might break other events where LLMs pass `"type"` as a hallucinated key
+2. **Better fix:** In `_normalize_submission_labels`, check if the key matches a canonical label for the *specific event* before dropping it as non-canonical — i.e., `"type"` should be dropped for events that don't have `"Type"` in their canonical labels, but kept for `CONTRIBUTION EVENT`
+
+**My recommendation:** Fix #2 — it's the right semantic. Want me to open a PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sed -n '1465,1485p' /opt/truesight_autopilot/app/main.py
 
