@@ -652,6 +652,12 @@ You're right — the live page shows 471 members, but `dao_members.json` only ha
 So the 17-contributor count in `dao_members.json` is only used for the Sentinels section. The main member list comes from a different source entirely.
 
 Let me check what `INDEX_URL` is.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -879,4 +885,63 @@ Done — the plan is checked in:
 It's a plan-only PR (no code changes yet). Once merged, I'll also register it in the handoff manifest so it's findable cross-session.
 
 Ready when you are — say **"go for it"** and I'll start executing **Step 1** (PR1 for `dao_members_cache_publisher.gs`).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] [Handoff context — this Telegram topic (thread 6874) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it.
+
+
+### 🤖 Autopilot
+
+Let me first refresh the context to make sure I have the latest plan, then start PR1.
+
+
+### 🤖 Autopilot
+
+The PR hasn't been merged yet. Let me read from the branch.
+
+
+### 🤖 Autopilot
+
+Plan confirmed. Starting **Step 1** — PR1 for `dao_members_cache_publisher.gs`. Let me first read the current file to understand the exact code structure.
+
+
+### 🤖 Autopilot
+
+The file is at a different path — it's in the `1m8IZPs...` folder as `DaoMembersCache.js`. Let me read it.
+
+
+### 🤖 Autopilot
+
+Now I have the full file. Let me also check the Contributors Contact Information sheet to see the exact column layout.
+
+
+### 🤖 Autopilot
+
+Column W (index 22, 0-based) = "Is Sentinel". Now let me also check what row Sophia Truesight is on.
+
+
+### 🤖 Autopilot
+
+Let me find Sophia Truesight's row in this sheet.
+
+
+### 🤖 Autopilot
+
+Row 407 (0-indexed row 406 in the data array) — Sophia Truesight with `Is Sentinel = TRUE` in column W. Now I have everything I need. Let me create the PR.
+
+
+### 🤖 Autopilot
+
+**Step 1 complete.** PR #362 is open: https://github.com/TrueSightDAO/tokenomics/pull/362
+
+Here's what it does:
+1. Adds `Contributors Contact Information` to the sheets read by the publisher
+2. Reads columns A (name) and W (Is Sentinel) — finds Sophia Truesight, Claude Anthropic, and Kimi Moon as sentinels
+3. Adds `'sentinel'` to their `roles` array in `dao_members.json`
+
+**Gate:** This needs to be merged and deployed (via `clasp push`) before Step 2 (trigger cache refresh). Want me to merge the PR and deploy?
 
