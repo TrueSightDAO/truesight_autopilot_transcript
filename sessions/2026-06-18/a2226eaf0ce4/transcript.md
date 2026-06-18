@@ -163,6 +163,7 @@ Here's the full breakdown of all 40 bags:
 ### 🤖 Autopilot
 
 Let me first check the event documentation for the correct format.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -210,11 +211,38 @@ Good to hear it's sorted. If you ever want me to review what Claude changed and 
 ### 🤖 Autopilot
 
 Let me check the latest commits and PRs on the autopilot repo to see what changed.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the relevant PRs — #251, #252, #253, #254 all relate to the `submit_contribution` approval-gate fix. Let me check if the current running version includes those.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -281,6 +309,11 @@ All merged and live. The `submit_contribution` tool now submits directly without
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 All 40 bags found. Let me summarize the possession status:
 
 ## Results — All 40 QR Codes
@@ -307,46 +340,95 @@ Notably, **2024OSCAR_20260330_14** — which was under **Gary Teh** earlier toda
 ### 🤖 Autopilot
 
 Let me search for "SOHA" across our context and codebase to understand who this partner is.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the agroverse shop to see how SOHA is listed there, and also check our contributors ledger.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — SOHA is mentioned as a partner in our context. Now let me check the agroverse shop to see how SOHA is listed there, and also check our contributors ledger.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Main Ledger directly — the Agroverse QR codes sheet and the Contributors sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the Ledger History tab, not Contributors. Let me check what tabs exist.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the Telegram & Submissions workbook for the QR Code Sales tab to find SOHA's sales records, and also check the contributors-cache.
+[2 tool result(s) compacted: read_google_sheet, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for SOHA in the sales data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for "SOHA" specifically in the sales data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me take a different approach and check the agroverse shop site directly for SOHA, and also look at the Inventory Movement sheet for SOHA records.
+[2 tool result(s) compacted: web_extract, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -412,4 +494,50 @@ I've now scanned the full contributor list. Let me also check the Contributors s
 ### 🤖 Autopilot
 
 Let me check the SOHA section specifically in the partners-velocity data.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] [Handoff context — this Telegram topic (thread 6394) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry to see if this thread has a plan to resume.
+
+
+### 🤖 Autopilot
+
+This thread is **6394** — let me check which handoff plan is associated with this thread. Looking at the manifest, none of the active plans list thread 6394. Let me check if there's a plan file that matches this conversation context.
+
+The conversation so far has been about checking QR codes under Kirsten's possession and the SOHA partner question. Let me check if there's a plan file for this thread or if the "go for it" was about the SOHA question you asked just before.
+
+Let me re-read the manifest more carefully — thread 6394 isn't listed. But you said "go for it" right after my SOHA response. Let me check if there's a plan related to SOHA or partner onboarding.
+
+
+### 🤖 Autopilot
+
+No plan file is registered for thread 6394. Since you said "go for it" right after I answered your SOHA question, I think you were giving me the go-ahead on that question. Let me give you the answer I had ready:
+
+---
+
+**Answer: No, SOHA does NOT have a corresponding contributor profile on our ledger.**
+
+I checked:
+1. **Main Ledger (Ledger history)** — 498 contributor records. No "David Campbell", "Molly Rush", "SOHA", or "Sanctuary of Healing Arts" appears anywhere.
+2. **Contributors cache** — same result.
+3. **QR Code Sales sheet** — no SOHA-related sales or owner emails found.
+4. **Inventory Movement sheet** — no SOHA-related movements.
+
+**What SOHA is on our books:**
+- Listed as a **Wholesale partner** on [agroverse.shop/partners/soha](https://www.agroverse.shop/partners/soha)
+- In the sell-through report as partner `soha` — **SOHA - Sanctuary of Healing Arts**, Philomath, Oregon
+- Partner type: **Wholesale**
+- Carries 2 SKUs: `ceremonial-cacao-fazenda-santa-ana-2023-200g` and `oscar-bahia-ceremonial-cacao-200g`
+- Monthly sales: **1.667 units/month** (one of our better-performing partners)
+- Run by **David Campbell** and **Molly Rush**
+
+**Gap:** They're a partner on the shop but have no contributor identity (no email, no TDG grants, no DAO registration). If you want to onboard them as contributors, they'd need a DAO identity registered so their sales can be tracked against a contributor profile.
 
