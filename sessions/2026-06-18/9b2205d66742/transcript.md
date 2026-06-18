@@ -145,3 +145,37 @@ The **DApp Event Alignment** plan is the active execution handoff for this threa
 
 What would you like to do?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] did we ever had this PYPI_API_TOKEN ??
+
+
+### 🤖 Autopilot
+
+Let me search the context and codebase for any reference to this token.
+
+
+### 🤖 Autopilot
+
+Let me also check the dao_protocol repo for the workflow file to see what it expects.
+
+
+### 🤖 Autopilot
+
+The `dao_client` repo doesn't exist as a standalone repo — the CLI lives inside `dao_protocol`. Let me check the workflow file there.
+
+
+### 🤖 Autopilot
+
+Interesting — the workflow uses **trusted publishing** (OIDC `id-token: write`), not a `PYPI_API_TOKEN` secret at all. It doesn't reference `PYPI_API_TOKEN` anywhere.
+
+So the answer is: **No, we never had a `PYPI_API_TOKEN` — and we don't need one.** The workflow is configured for PyPI's trusted publishing (OIDC), which means PyPI itself needs to trust the GitHub Actions OIDC identity for the `TrueSightDAO/dao_protocol` repo. That's a one-time setup on **pypi.org** (Project Settings → "Add a new publisher" → GitHub, enter `TrueSightDAO/dao_protocol` as the repo, workflow name as the workflow filename).
+
+The plan file's mention of `PYPI_API_TOKEN` was incorrect/outdated — the actual workflow uses the modern OIDC approach. The blocker is:
+
+1. **On pypi.org:** The `truesight-dao-client` project needs a "pending publisher" configured for `TrueSightDAO/dao_protocol` with workflow filename `pypi-publish-dao-client.yml`.
+2. **Then trigger the workflow** — either push to `main` with a `pyproject.toml` version bump, or use `workflow_dispatch` from the GitHub UI.
+
+Do you have PyPI access to set that up, or would you like me to check if it's already configured?
+
