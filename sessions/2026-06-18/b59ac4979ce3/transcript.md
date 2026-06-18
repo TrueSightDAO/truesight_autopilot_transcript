@@ -448,16 +448,24 @@ The file already had the change from the previous push. Let me verify:
 ### 🤖 Autopilot
 
 Let me check the full Legal Entity Structuring section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The previous push didn't include the meeting info. Let me add it properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The backticks are causing shell issues. Let me use a heredoc approach:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -633,4 +641,53 @@ PR at **agentic_ai_context#562**. Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/agentic_ai_context && python3 << 'PYEOF' content = open('TRACK_MAP.md').read() # Update the "Riding on this" line to include Chives ; cd /tmp/agentic_ai_context && git diff TRACK_MAP.md; cd /tmp/agentic_ai_context && git add TRACK_MAP.md && git commit -m "Add Chives Root + Michael Johnson consignment as blocked by Brazil Expo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] merge it. I wonder if all these active tracks should be published as a graph on truesight me so that visitors know what are the separate stuff going on right now? If so where on the page. What are your thoughts?
+
+
+### 🤖 Autopilot
+
+Merged. ✅
+
+Now on your question — **should the track map be published on truesight.me?**
+
+**Yes, I think it should.** Here's my reasoning:
+
+---
+
+### Why publish it
+
+| Reason | Detail |
+|--------|--------|
+| **Transparency** | Visitors see exactly what's in motion — not just a finished product but a *living project*. Builds trust. |
+| **Recruitment signal** | A contributor sees "Graeme Read / Amazon Restoration" or "Brazil Export Entity" and knows where they could plug in. |
+| **Partner confidence** | Nora, Chives Root, Michael Johnson, Graeme — they all see their names on a public roadmap. That's a relationship signal. |
+| **DAO differentiator** | Most projects show a polished front page. Showing the messy, real work-in-progress is the TrueSight ethos. |
+
+### Where on the page
+
+I'd put it on the **/community** or **/dao** page, not the homepage. The homepage should stay focused on the mission (10,000 hectares, cacao, QR traceability). The track map belongs one level deeper — where someone who's already interested goes to understand *how* we work.
+
+Specifically:
+
+- **truesight.me/dao** → a new "Active Tracks" section below the mission statement
+- Rendered as a **Mermaid diagram** (GitHub-flavored markdown renders it natively, and we can embed it on the page via a Mermaid JS renderer)
+- Each track name links to the relevant doc in agentic_ai_context
+
+### What I'd recommend against
+
+- **Homepage** — too much noise for a first-time visitor
+- **Gantt chart** — you already said it's hard to decipher
+- **A separate page** — /dao is the natural home
+
+---
+
+Want me to open a PR on `truesight_me_beta` to add an "Active Tracks" section to the /dao page with the embedded Mermaid diagram?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #562 on agentic_ai_context merged successfully (sha: 2752a8760de1a4fdc64b5864d20d5b10fb327455). Pull Request successfully merged
 
