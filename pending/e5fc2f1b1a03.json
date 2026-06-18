@@ -138,5 +138,12 @@
     "summary": "Bug: submit_contribution tool rejects SALES EVENT with \"Missing required fields: Item\" even when \"Item\" is passed in attributes.\n\nRoot cause: The alias mapping in app/main.py has `\"item\" \u2192 \"Inventory ",
     "action": "merge_pr",
     "created_at": "2026-06-17T23:10:43Z"
+  },
+  {
+    "title": "Merge PR #255 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "## PR1 \u2014 Catalog merge: UPDATE existing events, not just add (G2)\n\n### Problem\n`_refresh_events_catalog()` in `app/main.py` has two bugs that prevent the live Edgar catalog from correcting stale hardc",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T20:31:23Z"
   }
 ]
