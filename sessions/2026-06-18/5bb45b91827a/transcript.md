@@ -8545,3 +8545,76 @@ For me personally, I'll pin this note so I don't forget:
 
 Want me to pin that?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] I think DeepSeek already helped you fixed it just now. Could you verify. Also I think another DeepSeek has made the necessary extensions to edgar. I wonder if you will the latest dao_protocol you see the changes.
+
+
+### 🤖 Autopilot
+
+Let me check both — the adapter fix and the dao_protocol changes.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
+
+[1 tool result(s) compacted: list_prs — detail in artifacts]
+
+Let me check the dao_protocol repo for the event-schema endpoint.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check if the event-schema endpoint was added.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the main dao router for the event-schema endpoint.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the routes directory for the event-schema endpoint.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the query router for the event-schema endpoint.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the deployed version on the dao_protocol box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+The event-schema endpoint exists on the deployed version! Let me test it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+It works! Now let me check if the autopilot adapter was also fixed — let me try creating a PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Both fixes are in place! Let me now use the new flow properly for Gergana's sale.
+
+First, fetch the event schema from Edgar.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+The tool still has the old fallback docs. Let me check if the tool was updated to fetch from Edgar.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+The tool still has the old fallback docs — it wasn't updated yet. But the Edgar endpoint is live. Let me use it directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now I have the exact canonical labels from Edgar. Let me present the proposal:
+
+**Event:** `SALES EVENT`
+**Canonical labels from Edgar:**
+- `Item` (required) — `2024OSCAR_20260121_32`
+- `Sales price` (required) — `17.50`
+- `Sold by` (optional) — `Gergana - The Way Home Shop`
+- `Cash proceeds collected by` (optional) — `Gary Teh`
+
+**Attachment:** The Venmo screenshot
+
+Want me to submit it?
+
