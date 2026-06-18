@@ -561,12 +561,34 @@ There it is — the members page already has a **Sentinels** section that lists 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see it. The members page already has a **Sentinels** section with a `.sentinel` badge and `.sentinel-card` styling. Let me find the JavaScript that loads the data — it reads from `dao_members.json`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find the `loadSentinels` function to see how it reads sentinel data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -574,6 +596,7 @@ Now let me find the `loadSentinels` function to see how it reads sentinel data.
 Now I see the full picture. The `loadSentinels()` function reads from `dao_members.json` and filters for `m.roles.indexOf('sentinel') >= 0`. The `DaoMembersCache.js` publisher doesn't read `Contributors Contact Information` Column W, so it never sets `roles: ['sentinel']` for anyone.
 
 Let me check the current `dao_members.json` to confirm.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -751,4 +774,86 @@ On **"go for it"**, execute **Step 1** (PR1 for `dao_members_cache_publisher.gs`
 ---
 
 Thoughts? Any tasks I'm missing or want to reorder?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] [Handoff context — this Telegram topic (thread 6874) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also we shouldnt hard code this • The GAS inventory movement auth (process_movement_telegram_logs.js) has a trusted-agent path (TRUSTED_AGENTS = ['autopilot@agroverse.shop']) but no sentinel path
+
+We should be based on if the signer has ['sentinel'] role isnt it? If has then we should allow the inventory movement transaction to pass through
+
+Can we make sure to update the plan with that?
+
+
+### 🤖 Autopilot
+
+Absolutely — the sentinel check should be role-based, not a hardcoded list. The `dao_members.json` (once Task 1 is done) will have `roles: ['sentinel', 'member']` for Sophia, so the GAS handler can read that and check dynamically.
+
+Let me also check what the trusted-agent path currently does — the `isTrustedAgent_` check is hardcoded to `['autopilot@agroverse.shop']`, which is brittle. We should replace that entire path with the sentinel role check.
+
+Updated plan:
+
+---
+
+## Implementation Plan: Sentinel Role in dao_members.json + GAS Auth
+
+### Context
+- `dao_members_cache_publisher.gs` reads 3 sheets but **not** `Contributors Contact Information` Column W ("Is Sentinel")
+- The members page has a Sentinels section that filters `dao_members.json` for `roles: ['sentinel']` — currently hidden
+- The GAS inventory movement auth has a **hardcoded** trusted-agent path (`TRUSTED_AGENTS = ['autopilot@agroverse.shop']`) — brittle and doesn't match Sophia's actual contributor name
+- The autopilot's key is now ACTIVE; the contributor name resolves to `"Sophia Truesight"`
+- **Better approach**: replace the hardcoded trusted-agent check with a dynamic sentinel role check — if the signer has `roles: ['sentinel']` in the DAO registry, they're authorized to submit governor-approved inventory movements
+
+### Tasks
+
+**Task 1 — Add sentinel role to `dao_members_cache_publisher.gs`**
+- Read `Contributors Contact Information` sheet (columns A = name, W = Is Sentinel)
+- Build a `sentinelsByName` lookup
+- In the roles assembly, add `'sentinel'` for matching names
+- This makes the Sentinels section on `members.html` light up AND provides the data source for the GAS auth check
+
+**Task 2 — Replace hardcoded trusted-agent with dynamic sentinel role check in `process_movement_telegram_logs.js`**
+- Remove the `TRUSTED_AGENTS` constant and `isTrustedAgent_()` function
+- Add a new function `isSentinelByName_(contributorName)` that reads `Contributors Contact Information` Column W and returns TRUE if the contributor has `Is Sentinel = TRUE`
+- In `inventoryMovementStatusFromTelegramRow_`, replace:
+  ```javascript
+  // OLD: hardcoded trusted agent check
+  if (isTrustedAgent_(res.contributorName)) {
+    const approvedBy = extractApprovedBy_(contribution);
+    if (approvedBy && isGovernorApproved_(approvedBy)) return 'NEW';
+  }
+  ```
+  With:
+  ```javascript
+  // NEW: dynamic sentinel role check
+  if (isSentinelByName_(res.contributorName)) {
+    const approvedBy = extractApprovedBy_(contribution);
+    if (approvedBy && isGovernorApproved_(approvedBy)) return 'NEW';
+  }
+  ```
+
+**Task 3 — Trigger a fresh `dao_members.json` publish**
+- After Task 1 deploys, trigger the cache refresh so the Sentinels section appears on the live site
+
+**Task 4 — Re-process the 30 stuck inventory movements**
+- After Task 2 deploys, either re-run the GAS handler or manually flip their STATUS to "NEW"
+
+### Execution Roadmap
+
+| Step | What | Repo | PR | Gate |
+|------|------|------|----|------|
+| 1 | Add `Contributors Contact Information` read + sentinel role to `dao_members_cache_publisher.gs` | `tokenomics` | PR1 | Merge + deploy |
+| 2 | Trigger cache refresh → verify Sentinels section appears on `truesight.me/members.html` | — | — | Gary confirms |
+| 3 | Replace hardcoded `TRUSTED_AGENTS` with dynamic sentinel role check in `process_movement_telegram_logs.js` | `tokenomics` | PR2 | Merge + deploy |
+| 4 | Re-process the 30 stuck rows (flip STATUS or re-trigger handler) | — | — | Gary confirms |
+| 5 | File a follow-up in OPEN_FOLLOWUPS.md documenting the fix | `agentic_ai_context` | PR3 | Merge |
+
+### RESUME HERE
+On **"go for it"**, execute **Step 1** (PR1 for `dao_members_cache_publisher.gs`), then stop and report.
+
+---
+
+Does this look right? If so, say **"go for it"** and I'll start with PR1.
 
