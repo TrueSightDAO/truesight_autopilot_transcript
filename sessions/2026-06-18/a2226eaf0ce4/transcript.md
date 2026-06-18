@@ -87,11 +87,13 @@ Let me get the remaining records I haven't seen yet — the 2024SA_ series and t
 ### 🤖 Autopilot
 
 Let me get the tail of the data — the 2024SA_ series records.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested escaping is making this hard to read. Let me just look up the remaining codes I haven't confirmed yet — the 2024SA_ series and the last few 2024OSCAR ones.
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -295,4 +297,119 @@ All 40 bags found. Let me summarize the possession status:
 Notably, **2024OSCAR_20260330_14** — which was under **Gary Teh** earlier today — has already been moved to Kirsten. Looks like Claude handled that transfer successfully.
 
 **Summary:** ✅ 40/40 bags — all under **Kirsten Ritschel**, all MINTED, all in inventory.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] Does SOHA partner listed on agroverse have a corresponding contributor profile on our ledger?
+
+
+### 🤖 Autopilot
+
+Let me search for "SOHA" across our context and codebase to understand who this partner is.
+
+
+### 🤖 Autopilot
+
+Let me look at the agroverse shop to see how SOHA is listed there, and also check our contributors ledger.
+
+
+### 🤖 Autopilot
+
+Good — SOHA is mentioned as a partner in our context. Now let me check the agroverse shop to see how SOHA is listed there, and also check our contributors ledger.
+
+
+### 🤖 Autopilot
+
+Let me check the Main Ledger directly — the Agroverse QR codes sheet and the Contributors sheet.
+
+
+### 🤖 Autopilot
+
+That's the Ledger History tab, not Contributors. Let me check what tabs exist.
+
+
+### 🤖 Autopilot
+
+Now let me check the Telegram & Submissions workbook for the QR Code Sales tab to find SOHA's sales records, and also check the contributors-cache.
+
+
+### 🤖 Autopilot
+
+Let me search for SOHA in the sales data.
+
+
+### 🤖 Autopilot
+
+Let me search for "SOHA" specifically in the sales data.
+
+
+### 🤖 Autopilot
+
+Let me take a different approach and check the agroverse shop site directly for SOHA, and also look at the Inventory Movement sheet for SOHA records.
+
+
+### 🤖 Autopilot
+
+I don't see SOHA listed on the agroverse.shop partners page or in the Inventory Movement sheet. Let me check the QR Code Sales sheet for SOHA specifically, and also look at the contributors-cache and the Main Ledger for a contributors tab.
+
+
+### 🤖 Autopilot
+
+Let me search the Inventory Movement data for "SOHA" and also check the QR Code Sales sheet for SOHA.
+
+
+### 🤖 Autopilot
+
+Let me search the QR Code Sales sheet for "SOHA" directly.
+
+
+### 🤖 Autopilot
+
+Let me search the Remarks column for "SOHA" and also check the Owner email column.
+
+
+### 🤖 Autopilot
+
+No SOHA in the Owner email column either. Let me check the agroverse shop site for a SOHA partner page specifically, and also search the QR Code Sales Remarks column for SOHA.
+
+
+### 🤖 Autopilot
+
+SOHA is indeed a partner on agroverse.shop — **Sanctuary of Healing Arts** in Philomath, Oregon, run by David Campbell and Molly Rush. Let me check the partners-velocity and sell-through data for SOHA, and also look at the contributors ledger.
+
+
+### 🤖 Autopilot
+
+Now let me check the contributors ledger for David Campbell / SOHA.
+
+
+### 🤖 Autopilot
+
+Let me search the ledger for "David Campbell" or "SOHA" or "Molly".
+
+
+### 🤖 Autopilot
+
+Let me search the ledger for "David Campbell" or "SOHA" or "Molly" directly.
+
+
+### 🤖 Autopilot
+
+The nested escaping is making this unreadable. Let me take a more direct approach and search the ledger text for "David" or "Campbell" or "SOHA" or "Molly".
+
+
+### 🤖 Autopilot
+
+I can see the full list of contributor names. Let me search for "David", "Campbell", "Molly", "SOHA" in this list.
+
+
+### 🤖 Autopilot
+
+I've now scanned the full contributor list. Let me also check the Contributors sheet specifically (not Ledger history) and the partners-velocity for SOHA's contact info.
+
+
+### 🤖 Autopilot
+
+Let me check the SOHA section specifically in the partners-velocity data.
 
