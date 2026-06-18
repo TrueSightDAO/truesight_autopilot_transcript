@@ -217,3 +217,31 @@ That's it. Three active tracks, one bottleneck.
 
 Want me to draft a `TRACK_MAP.md` into agentic_ai_context with just these three tracks and their dependency arrows? I can also add a "who owns what" column if you want to assign owners to each track.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] These are not done. They are just offline Track 5: Legal Entity Structuring ── offline research
+Track 6: GACC/Brazil Compliance ── offline prep
+
+
+### 🤖 Autopilot
+
+Got it — my mistake. Tracks 5 and 6 are **offline but active** — they're just not code PRs. Let me correct the map:
+
+---
+
+## Active Tracks (June 2026)
+
+```
+Track 5: Legal Entity Structuring ── offline research (DUNA vs Próspera, Wise banking, SVH Capital)
+Track 6: GACC/Brazil Compliance ── offline prep (product tables, packaging, coopercabruca)
+
+Track 7: Brazil Export Entity (CNPJ/NF-e/CNAE) ←── THE GATE
+    ├── blocks → Track 8: Chocolate Subscription Delivery
+    └── blocks → Track 9: China/Aora Events (100 bars)
+```
+
+**6 active tracks.** 3 online (code PRs), 3 offline (research/regulatory). One single bottleneck (Track 7) holding up two delivery tracks.
+
+Want me to draft the `TRACK_MAP.md` with this structure plus owners?
+
