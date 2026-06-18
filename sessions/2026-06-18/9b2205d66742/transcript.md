@@ -1628,6 +1628,7 @@ Let me also check the existing tests to see if there's a test file for the catal
 ### 🤖 Autopilot
 
 Good — the test file from PR1 exists. Now let me create PR2. I'll use `open_fix_pr` with a clear description.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1680,6 +1681,7 @@ Want me to merge PR2?
 ### 🤖 Autopilot
 
 Let me check the CI failure.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1771,4 +1773,187 @@ Done. Pushed an empty commit to PR2's branch — CI should re-trigger in a momen
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && git fetch origin && git checkout autopilot/fix-1781815776 2>&1 | tail -3; cd /opt/truesight_autopilot && git commit --allow-empty -m "ci: retrigger checks [no-code]" 2>&1 && git push origin autopilot/fix-1781815776; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] [Handoff context — this Telegram topic (thread 6416) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+=================================== FAILURES ===================================
+__________________ test_startup_preload_loads_catalog __________________
+tests/test_events_catalog.py:261: in test_startup_preload_loads_catalog
+    assert _catalog_last_refresh > 0
+E   assert 0.0 > 0
+=============================== warnings summary ===============================
+../../../../../opt/hostedtoolcache/Python/3.10.20/x64/lib/python3.10/site-packages/google/api_core/_python_version_support.py:255
+  /opt/hostedtoolcache/Python/3.10.20/x64/lib/python3.10/site-packages/google/api_core/_python_version_support.py:255: FutureWarning: You are using a Python version (3.10.20) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2026-10-04). Please upgrade to the latest Python version, or at least Python 3.11, to continue receiving updates for google.api_core past that date.
+    warnings.warn(message, FutureWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_events_catalog.py::test_startup_preload_loads_catalog - assert 0.0 > 0
+============= 1 failed, 582 passed, 1 skipped, 1 warning in 4.62s ==============
+Error: Process completed with exit code 1.
+
+
+### 🤖 Autopilot
+
+The test `test_startup_preload_loads_catalog` is failing because `_catalog_last_refresh` is `0.0` — meaning the startup preload didn't actually run. Let me look at the test and the code to understand why.
+
+
+### 🤖 Autopilot
+
+Good — the startup preload code is there. Let me look at the test to understand why it's failing.
+
+
+### 🤖 Autopilot
+
+I see the issue. The test calls `_refresh_events_catalog()` directly, but the test file imports `_refresh_events_catalog` from `app.main`. The problem is that `_catalog_last_refresh` is a module-level variable in `app.main`, and the test checks it. But the test might be importing a stale reference.
+
+Let me check the test imports and the actual error more carefully.
+
+
+### 🤖 Autopilot
+
+The test passes locally on the autopilot box but fails in CI. The difference is likely the **test ordering** — in CI, other tests run first and may have already set `_catalog_last_refresh` to a non-zero value, but this test expects it to be `0.0` at the start.
+
+Wait — the test asserts `_catalog_last_refresh > 0` AFTER calling `_refresh_events_catalog()`. If the mock is working, it should set the timestamp. Let me check if the mock is actually being hit.
+
+
+### 🤖 Autopilot
+
+It's failing locally too! Let me check if the mock is actually being called.
+
+
+### 🤖 Autopilot
+
+It works when run in isolation! The issue is **test ordering** — when run in the full suite, another test (likely `test_startup_preload_http_failure_keeps_fallbacks`) runs first and patches `httpx.AsyncClient` differently, and the mock doesn't get reset properly between tests.
+
+Let me check the test ordering.
+
+
+### 🤖 Autopilot
+
+It fails when run in the full suite but passes in isolation. The issue is that `test_catalog_http_error_no_change` (test #6) patches `httpx.AsyncClient` and the mock doesn't call `_refresh_events_catalog` successfully, so `_catalog_last_refresh` stays at `0.0`. But the test at #8 expects it to be set.
+
+Wait — actually the issue is that `test_catalog_http_error_no_change` runs first and the mock from that test might interfere. But each test uses `with patch(...)` so it should be scoped correctly.
+
+Let me check if the issue is that the `_mock_response` helper returns a mock where `raise_for_status()` raises an exception.
+
+
+### 🤖 Autopilot
+
+I see the issue now. The `_mock_response` uses `AsyncMock(spec=httpx.Response)` for the response object. But `resp.json` is a `MagicMock` (sync), which is correct. However, the `raise_for_status` is also a `MagicMock` (sync), and the code calls `resp.raise_for_status()` which is sync.
+
+Let me look at the actual `_refresh_events_catalog` code to see how it calls these.
+
+
+### 🤖 Autopilot
+
+The code looks correct. The issue is that when `test_catalog_http_error_no_change` runs before `test_startup_preload_loads_catalog`, it patches `httpx.AsyncClient` and the mock returns a 503 response. But the `with patch(...)` should restore the original after the test.
+
+Let me check if there's a module-level state issue. The `_catalog_last_refresh` is a module-level variable. When `test_catalog_http_error_no_change` runs, it calls `_refresh_events_catalog()` which fails (503), so `_catalog_last_refresh` stays at `0.0`. Then `test_startup_preload_loads_catalog` runs — but the mock might not be working because the `httpx.AsyncClient` import was already resolved.
+
+Wait — the issue is that `httpx.AsyncClient` is imported at the top of `main.py`, so `patch("app.main.httpx.AsyncClient")` patches the reference in `app.main`'s namespace. This should work. Let me debug more carefully.
+
+
+### 🤖 Autopilot
+
+It works fine in sequence! The issue must be something specific to the pytest test file. Let me check if there's a module-level fixture or conftest that's interfering.
+
+
+### 🤖 Autopilot
+
+The conftest looks fine. Let me check if the issue is that `_catalog_last_refresh` is being reset by another test. Let me add some debug logging.
+
+
+### 🤖 Autopilot
+
+It fails even in isolation! But my Python script above worked. The difference must be in how the test imports things. Let me check the test imports.
+
+
+### 🤖 Autopilot
+
+Found it! The `_reset_globals` fixture saves `_catalog_last_refresh` at the start of each test and restores it after. But the problem is:
+
+1. Test starts → `_reset_globals` saves `_catalog_last_refresh` (which is `0.0`)
+2. Test runs → calls `_refresh_events_catalog()` → sets `_catalog_last_refresh` to a non-zero value
+3. Test asserts `_catalog_last_refresh > 0` → **this checks the module-level variable, which IS set**
+4. Test ends → `_reset_globals` restores `_catalog_last_refresh` to `0.0`
+
+Wait, that should work. The issue is that the test imports `_catalog_last_refresh` as a **module-level name** — it's an `int`/`float`, so it's **immutable**. When the test does `from app.main import _catalog_last_refresh`, it gets a copy of the value `0.0`. When `_refresh_events_catalog()` sets `app.main._catalog_last_refresh = time.time()`, it updates the module variable, but the test's local `_catalog_last_refresh` still points to the old `0.0`.
+
+That's the bug! The test imports `_catalog_last_refresh` by value (since it's a float), so it never sees the updated value.
+
+Let me fix the test to reference `app.main._catalog_last_refresh` instead.
+
+
+### 🤖 Autopilot
+
+The fix is to use `app.main._catalog_last_refresh` instead of the imported `_catalog_last_refresh` (which is a copy of the float value). Let me also check the `_reset_globals` fixture — it has the same issue with `globals()["_catalog_last_refresh"]`.
+
+
+### 🤖 Autopilot
+
+OK, let me just fix the test file directly. The fix is:
+1. Import `app.main` as a module reference
+2. Use `app.main._catalog_last_refresh` in the assertion
+3. Fix the `_reset_globals` fixture to use `app.main._catalog_last_refresh` too
+
+
+### 🤖 Autopilot
+
+The fix: import `app.main` as a module and reference `_catalog_last_refresh` through it, since floats are immutable and `from app.main import _catalog_last_refresh` creates a local copy.
+
+
+### 🤖 Autopilot
+
+Now let me fix the test file. I need to:
+1. Add `import app.main as app_main` 
+2. Change the assertion to use `app_main._catalog_last_refresh`
+3. Fix the `_reset_globals` fixture to use `app_main._catalog_last_refresh`
+
+
+### 🤖 Autopilot
+
+Let me check the exact content of the file.
+
+
+### 🤖 Autopilot
+
+The whitespace looks fine. Let me try with exact content from the file.
+
+
+### 🤖 Autopilot
+
+4 spaces indent. Let me try the edit again with the exact content.
+
+
+### 🤖 Autopilot
+
+There might be trailing whitespace or encoding issues. Let me read the raw file content.
+
+
+### 🤖 Autopilot
+
+The content is exactly `'    assert _catalog_last_refresh > 0'` with 4 spaces. Let me try the edit with the exact repr content.
+
+
+### 🤖 Autopilot
+
+Let me check if the file on GitHub (the PR branch) has different content than what's on disk locally.
+
+
+### 🤖 Autopilot
+
+I see — the file on GitHub has the exact content. The issue with `git_push_changes` is likely that the search string has some invisible character or whitespace mismatch. Let me try a different approach — write the whole file.
+
+
+### 🤖 Autopilot
+
+**All 10 tests pass!** Now let me push the fix and run the full suite.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×26 → cd /opt/truesight_autopilot && git fetch origin && git checkout autopilot/fix-1781815776 2>&1 | tail -2; cd /opt/truesight_autopilot && grep -n "_catalog_last_refresh\|_refresh_events_catalog\|startup_preload\|async def lifespan" app/main.py | h; cd /opt/truesight_autopilot && sed -n '398,430p' app/main.py; …(+21 more)
 
