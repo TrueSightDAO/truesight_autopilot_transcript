@@ -122,11 +122,13 @@ Let me verify the actual state of each track by checking the PRs more carefully.
 ### 🤖 Autopilot
 
 Let me read the relevant docs to understand tracks 7, 8, and 9 properly.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the current status of the PRs you said are "done" to verify:
+[2 tool result(s) compacted: list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -386,4 +388,84 @@ Want me to merge the PR?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -lt /tmp/tg_attachments/*.jpg 2>/dev/null | head -5; cd /tmp/agentic_ai_context && cat > TRACK_MAP.md << 'ENDOFFILE' # TrueSight DAO — Active Track Map > **Live dependency map.** Updated as tra
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] And there is an invitation from Layon Costa for the legal entity read this email in my inbox https://mail.google.com/mail/u/0/#inbox/FMfcgzQgMVdmsZHHWLjGkbgqPPMHXqrW
+
+
+### 🤖 Autopilot
+
+Let me read that email.
+
+
+### 🤖 Autopilot
+
+Got it. Here's the key info:
+
+---
+
+**Layon Costa** (toolsforthecommons.com) has invited you to:
+
+> **True sight DAO + FounderDesk/DAZ**
+> 📅 **Mon, Jun 22, 2026 · 11:00–11:30 AM PDT**
+> 📍 Google Meet: `meet.google.com/eht-bdgp-tdh`
+> 📞 Phone (BR): +55 11 4949-9715 · PIN: 354112914
+> 
+> **Attendees:** Layon (organizer), Breno Marques Pereira, Gary, Paloma (optional)
+
+This is directly relevant to **Track: Legal Entity Structuring** — Layon is the counsel you've been working with on the DUNA/Próspera/CNPJ structuring. Let me update the track map to include this meeting as the next milestone.
+
+
+### 🤖 Autopilot
+
+The file already had the change from the previous push. Let me verify:
+
+
+### 🤖 Autopilot
+
+Let me check the full Legal Entity Structuring section:
+
+
+### 🤖 Autopilot
+
+The previous push didn't include the meeting info. Let me add it properly:
+
+
+### 🤖 Autopilot
+
+The backticks are causing shell issues. Let me use a heredoc approach:
+
+
+### 🤖 Autopilot
+
+Updated. The **Legal Entity Structuring** track now has:
+
+| **Next milestone** | Mon Jun 22, 2026 · 11am PDT — call with Layon Costa (counsel), Breno, Paloma. [Google Meet](https://meet.google.com/eht-bdgp-tdh) |
+
+Also let me persist the attachment content to the transcript for future recall:
+
+
+### 🤖 Autopilot
+
+Transcript append has a bug — I'll note that for a fix later. The important thing is done.
+
+---
+
+**Summary of what's in the PR now:**
+
+| Track | Key Update |
+|-------|-----------|
+| **Legal Entity Structuring** | 🗓️ **Mon Jun 22, 11am PDT** — call with Layon, Breno, Paloma |
+| **Brazil Export Entity** | ⏱️ 5–20 business days, next check-in ~Jun 26 |
+| **Chocolate Subscription** | 🟡 Blocked by export entity |
+| **China/Aora Events** | 🟡 Blocked by export entity |
+
+The PR is at **agentic_ai_context#562**. Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/agentic_ai_context && sed -i 's/| **Dependencies** | None — parallel work |/| **Next milestone** | Mon Jun 22, 2026 · 11am PDT — cal; cd /tmp/agentic_ai_context && python3 -c " content = open('TRACK_MAP.md').read() content = content.replace( '| **Dependencies** | None — par; cd /tmp/agentic_ai_context && grep -A2 "Legal Entity Structuring" TRACK_MAP.md | head -20; …(+5 more)
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
 
