@@ -948,6 +948,16 @@ Now let me find the actual payload construction and submission code.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the full picture. Let me compare what the DApp sends vs what we submitted via the CLI.
 
 ---
@@ -1051,6 +1061,7 @@ Verify submission here: https://dapp.truesight.me/verify_request.html"
 ### 🤖 Autopilot
 
 Excellent — now I can do a precise comparison. Let me also check the Edgar docs page to see what it actually says.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1319,4 +1330,48 @@ Want me to check any of those to confirm the pipeline worked?
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] nicely done! Can you make sure we report this contribution we both did?
+
+
+### 🤖 Autopilot
+
+Let me check the contributors cache to see what's been reported recently and then submit the contribution.
+
+
+### 🤖 Autopilot
+
+Now let me check the contributors cache to see the latest contributions and submit ours.
+
+
+### 🤖 Autopilot
+
+The contributors-cache repo is empty. Let me check the treasury-cache for the contributors section.
+
+
+### 🤖 Autopilot
+
+Let me submit the contribution for this work. I'll use `create_dao_submission` which is the proper way to report a contribution with evidence.
+
+
+### 🤖 Autopilot
+
+✅ **Contribution reported!**
+
+| Detail | Value |
+|--------|-------|
+| **Title** | Sales submissions: Gergana - The Way Home Shop (3 bags, $52.50 total) |
+| **Contributors** | Gary Teh, Sophia Truesight |
+| **Time** | 30 minutes |
+| **Evidence** | PR #548 (FIFO rule) + 3 sales submissions |
+| **Type** | Time (Minutes) |
+
+The contribution is now logged in the DAO ledger. Anything else on this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
