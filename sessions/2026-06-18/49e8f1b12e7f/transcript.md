@@ -470,6 +470,7 @@ Now I have the full picture. Let me read the rest of the auth function to find t
 ### 🤖 Autopilot
 
 Let me read the rest of the auth function to find the trusted agent path.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -490,6 +491,12 @@ Now I have the full picture. Let me look at the exact auth flow in `inventoryMov
 **Issue 2 — The TRUSTED_AGENTS list has `'autopilot@agroverse.shop'` but the autopilot's contributor name in the sheet would be `"Sophia Truesight"` (row 408 in Contributors Contact Information) or `"truesight-autopilot"` (row 406).** Neither matches `'autopilot@agroverse.shop'`.
 
 **Issue 3 — dao_members.json.** The `dao_members_cache_publisher` (triggered by `contributor_add`) doesn't seem to read the `Contributors Contact Information` sheet's Column W ("Is Sentinel") when compiling. Let me check the publisher code.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -625,6 +632,39 @@ So the two sources are:
 - **`DAO_MEMBERS_URL`** = `treasury-cache/dao_members.json` — this has the 17 contributors and is only used for the **Sentinels** section
 
 The Sentinels section is currently hidden because `dao_members.json` has nobody with `roles: ['sentinel']`. Now that you've changed the key status to ACTIVE, the next step is to fix the `DaoMembersCache.js` publisher to read `Contributors Contact Information` Column W and include `"sentinel"` in the roles.
+
+Want me to open a PR for that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] How come dao_members.json has nobody with roles: ['sentinel']?
+
+
+### 🤖 Autopilot
+
+Because the `DaoMembersCache.js` publisher never reads `Contributors Contact Information` at all. Let me trace exactly what it reads.
+
+
+### 🤖 Autopilot
+
+Now I see the exact code. The publisher builds the `roles` array like this:
+
+```javascript
+const roles = ['member'];
+if (governorsByName[k]) roles.unshift('governor');
+```
+
+It only adds `'member'` and optionally `'governor'`. There's **no code** to read `Contributors Contact Information` Column W and add `'sentinel'`.
+
+The reason `dao_members.json` has nobody with `roles: ['sentinel']` is simply that **the publisher was never written to check for sentinels**. It reads from three sheets:
+1. `Contributors Digital Signatures` — for names, keys, statuses
+2. `Contributors voting weight` — for TDG/voting power
+3. `Governors` — for governor flag
+
+It never reads `Contributors Contact Information` at all, so Column W ("Is Sentinel") is invisible to it.
+
+The fix is to add a fourth sheet read — `Contributors Contact Information` — and build a lookup of which contributor names have `Is Sentinel = TRUE`, then add `'sentinel'` to their roles array.
 
 Want me to open a PR for that?
 
