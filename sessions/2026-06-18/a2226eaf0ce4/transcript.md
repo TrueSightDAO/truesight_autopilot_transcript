@@ -434,26 +434,31 @@ Let me take a different approach and check the agroverse shop site directly for 
 ### 🤖 Autopilot
 
 I don't see SOHA listed on the agroverse.shop partners page or in the Inventory Movement sheet. Let me check the QR Code Sales sheet for SOHA specifically, and also look at the contributors-cache and the Main Ledger for a contributors tab.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the Inventory Movement data for "SOHA" and also check the QR Code Sales sheet for SOHA.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the QR Code Sales sheet for "SOHA" directly.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the Remarks column for "SOHA" and also check the Owner email column.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No SOHA in the Owner email column either. Let me check the agroverse shop site for a SOHA partner page specifically, and also search the QR Code Sales Remarks column for SOHA.
+[2 tool result(s) compacted: web_extract, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -540,4 +545,35 @@ I checked:
 - Run by **David Campbell** and **Molly Rush**
 
 **Gap:** They're a partner on the shop but have no contributor identity (no email, no TDG grants, no DAO registration). If you want to onboard them as contributors, they'd need a DAO identity registered so their sales can be tracked against a contributor profile.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] what about David Campbell?
+
+
+### 🤖 Autopilot
+
+Good question — let me search the ledger specifically for "David Campbell".
+
+
+### 🤖 Autopilot
+
+No **David Campbell** in the ledger. There is a **David Berget** (different person — Neil Berget's relative, involved in the early trading system) but no David Campbell.
+
+Let me also check if there's a "Molly" anywhere.
+
+
+### 🤖 Autopilot
+
+No David Campbell or Molly Rush anywhere in the ledger. Same answer — **David Campbell has no contributor profile on our ledger.**
+
+To summarize the gap:
+
+| Person | Role at SOHA | In Partner List? | In Contributor Ledger? |
+|---|---|---|---|
+| **David Campbell** | Co-owner, SOHA | ✅ (via SOHA partner record) | ❌ Not found |
+| **Molly Rush** | Co-owner, SOHA | ✅ (via SOHA partner record) | ❌ Not found |
+
+SOHA is a **Wholesale partner** doing ~1.67 units/month in sales, but neither David nor Molly has a DAO identity. If you want to bring them into the contributor ecosystem, they'd need a DAO registration so their sales can be attributed to a contributor profile for TDG rewards.
 
