@@ -5303,6 +5303,26 @@ Can you point me to the Prospera document? Is it in a specific repo, a Google Do
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I've searched everywhere — agentic_ai_context, all repos, code search — and I can't find the Prospera/Paloma proposal. It doesn't exist in any of our repos or context files.
 
 Can you point me to where it lives? Maybe:
@@ -5965,4 +5985,30 @@ The SVH meeting on June 26 is probably not needed anymore — Layon can answer t
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #557 on agentic_ai_context merged successfully (sha: 9fdd01a9835da50d2f4daf2eb94d33b17d844595). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] the construction of the bridge to China is underway. GACC registration is happening right now for Coopercabruca, CEPOTX and Black King. I think we need to have a CNPJ up and running so that we can have that registered too. So that minimal duplication of paperwork moving foward with China import.
+
+
+### 🤖 Autopilot
+
+That changes the timeline. If GACC registration for China is happening now, we need the Brazilian CNPJ **before** the registration is finalized — otherwise we'll have to re-register later when the entity changes from Matheus's personal CNPJ to the new one.
+
+**The urgency:**
+- GACC registration is underway for Coopercabruca, CEPOTX, and Black King
+- If we register under Black King (Matheus's personal CNPJ) now, we'll need to re-register when the new entity takes over
+- That means duplicate paperwork, fees, and timeline delays for China imports
+
+**This pushes us toward the fastest path to a CNPJ.** Which is:
+
+1. **UNA/DUNA path** — if Layon confirms a Wyoming UNA can own a Brazilian Ltda, we form the UNA this week (~$50) and start the Brazilian CNPJ incorporation immediately
+2. **Prospera path** — if UNA can't own a Brazilian Ltda, we need Prospera first, which takes longer
+
+**Either way, the Brazilian CNPJ incorporation is the bottleneck.** The holding entity (UNA or Prospera) can be formed in parallel, but the CNPJ needs to exist before GACC registration is finalized.
+
+**Question for Layon Costa:** What's the fastest timeline to get a new Brazilian Ltda incorporated with RADAR habilitation? Can we start the CNPJ process now while the holding entity question is being resolved?
+
+Want me to add this China timeline urgency to the Brazil Export Entity Brief?
 
