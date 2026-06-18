@@ -533,6 +533,12 @@ This thread is **6394** — let me check which handoff plan is associated with t
 The conversation so far has been about checking QR codes under Kirsten's possession and the SOHA partner question. Let me check if there's a plan file for this thread or if the "go for it" was about the SOHA question you asked just before.
 
 Let me re-read the manifest more carefully — thread 6394 isn't listed. But you said "go for it" right after my SOHA response. Let me check if there's a plan related to SOHA or partner onboarding.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -568,6 +574,7 @@ I checked:
 ### 🤖 Autopilot
 
 Good question — let me search the ledger specifically for "David Campbell".
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -706,4 +713,60 @@ Here's what you need to do:
 That will create a row in the Contributors sheet and trigger an onboarding email to david@soha.center so he can self-register his device key.
 
 Also — since I already called `register_identity` earlier, that generated a keypair and submitted it under his email. That may have created a duplicate or conflicting record. Want me to check if that caused any issues, or shall we just proceed with the dapp form and let the email-verification flow sort it out?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] Is there a corresponding dao_client method for this?
+
+
+### 🤖 Autopilot
+
+Let me search the dao_client repo for contributor-related commands.
+
+
+### 🤖 Autopilot
+
+Let me check the dao_client repo directly for its available commands.
+
+
+### 🤖 Autopilot
+
+That doc is about AI agent contribution submissions, not about adding contributors. Let me check the dao_protocol repo since that handles onboarding invitations.
+
+
+### 🤖 Autopilot
+
+Now I see — the flow is through a `[CONTRIBUTOR ADD EVENT]` that triggers an onboarding email. Let me check if there's a dao_client CLI command for this.
+
+
+### 🤖 Autopilot
+
+Let me check the dao_protocol repo for a CLI command to add contributors.
+
+
+### 🤖 Autopilot
+
+Let me check the modules directory for a contributor-add module.
+
+
+### 🤖 Autopilot
+
+There's no `report_contributor_add.py` module in dao_client. The contributor add flow is only available through the **DApp web page** (`governor_contributor_admin.html`) — it's a governor-only action that requires your browser session's digital signature.
+
+So to answer your question: **No, there isn't a dao_client CLI method for adding a contributor.** The only way is through the DApp page:
+
+👉 **https://dapp.truesight.me/governor_contributor_admin.html**
+
+You'll need to:
+1. Open that page in your browser
+2. Let it verify your governor digital signature
+3. Fill in **David Campbell** / **david@soha.center**
+4. Click **Add contributor**
+
+That will create the contributor row and trigger the onboarding email to David with a link to self-register his device key.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → find /home/ubuntu -maxdepth 3 -name "dao_client" -type d 2>/dev/null; find /opt -maxdepth 3 -name "dao_client" -type d 2>/dev/null; pip3 sho; pip3 list 2>/dev/null | grep -i dao; ls /home/ubuntu/tokenomics/ 2>/dev/null | head -20; ls /home/ubuntu/tokenomics/python_scripts/ 2>/dev/null | head -30; ls /home/ubuntu/tokenomics/scripts/ 2>/dev/null | head -30; …(+1 more)
 
