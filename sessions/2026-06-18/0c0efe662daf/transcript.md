@@ -5278,6 +5278,21 @@ Can you point me to the Prospera document? Is it in a specific repo, a Google Do
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I've searched everywhere — agentic_ai_context, all repos, code search — and I can't find the Prospera/Paloma proposal. It doesn't exist in any of our repos or context files.
 
 Can you point me to where it lives? Maybe:
@@ -5313,4 +5328,555 @@ But the actual proposal document — the "TrueSightDAO Brazil Export entity brie
 I can't find the actual Prospera proposal document anywhere in our repos. The only reference is that one line in `truetech_inc.entity.json` saying the Brazilian export entity would be "owned via a Próspera-jurisdiction company."
 
 Can you upload the document here? Or tell me where it lives — Google Drive, a specific repo folder, or an old chat?
+
+
+### 🧑 Governor
+
+This is the document. Can we save it somewhere for future reference.
+
+[Attachment auto-processed: **f07d372321f043cbb975856934233807.pdf**]
+- Type: PDF (8 pages, 18546 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 1
+Brazil Export Entity — Structuring Brief
+A bot-enabled agriculture export bridge from Northern Brazil — TrueSight DAO /
+Agroverse
+Prepared for
+Paloma — FounderHaus (to brief introduced legal counsel)
+Counsel sought
+(1) Próspera-jurisdiction incorporation counsel; (2) Brazilian foreign-trade / customs
+& tax counsel
+Prepared by
+TrueSight DAO — Gary Teh (Zhiwen Teh), President, TrueTech Inc
+Date
+26 May 2026
+Classification
+Confidential — business & personal identifiers enclosed
+This document gives introduced counsel everything needed for a first working session: who we are, the US import
+entity already in place, the problem with the current Brazilian export arrangement, the proposed structure, the specific
+legal questions we need answered, and the verified supplier base the new entity will serve.
+
+--- Page 2 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 2
+1 · Purpose of this brief
+TrueSight DAO operates Agroverse, a regenerative-agriculture network. The venture we are formalising
+here is a bot-enabled agricultural export bridge from Northern Brazil — beginning in the
+cacao-producing regions of Bahia and Pará — that moves verified produce from farming cooperatives and
+producers to buyers abroad. We are starting with cacao products, where the supplier base is already
+operating and FDA/FSVP-compliant, and will extend the same bridge to other Northern-Brazilian
+agricultural commodities over time.
+The first destination market — the United States — is already fully formalised on the import side under a
+Delaware company, TrueTech Inc, the FDA-FSVP importer of record and the US Customs importer of
+record. We also intend to export to China and Europe, each served by its own dedicated importer entity
+(jurisdictions and details to be determined).
+The Brazilian export side is not yet formalised in a dedicated entity. Today, exports leave Brazil
+through the personal CNPJ of one of our community members (Matheus Reis Pereira, trading as “Black
+King”). That arrangement does not scale, concentrates Brazilian tax exposure on an individual, and cannot
+be operated by software agents. We want to establish a purpose-built export entity instead.
+We are asking FounderHaus (Paloma) to introduce us to two sets of counsel and to use this brief as the
+shared starting context:
+•
+Próspera-jurisdiction incorporation counsel — to form the holding / operating company in the
+Próspera ZEDE that will own and control the Brazilian export entity.
+•
+Brazilian foreign-trade, customs & tax counsel — to incorporate the new Brazilian CNPJ, obtain its
+RADAR habilitation and Siscomex access, and structure it for tax efficiency and software-driven
+operation.
+2 · Executive summary
+We intend to incorporate a new entity in the Próspera jurisdiction which will, in turn, own / control a new
+Brazilian company (CNPJ) dedicated to exporting agricultural products out of Northern Brazil (Bahia and
+Pará), starting with cacao. The Brazilian entity will hold its own RADAR license and Siscomex access so it
+can file export declarations in its own name, independent of any individual’s personal CNPJ. The
+medium-term goal is for these export operations (document preparation, declaration filing orchestration,
+ledger reconciliation) to be run largely by autonomous AI agents, with licensed human professionals (e.g.
+a despachante aduaneiro) in the loop where Brazilian law requires.
+Crucially, the Próspera entity is owned by the DAO’s contributors — the people on our contributor
+ledger, in proportion to the governance tokens (TDG) they have earned — not by a single founder (see
+§6).
+In one line:
+DAO contributors  →  Próspera HoldCo  →  Brazilian Export CNPJ (RADAR + Siscomex), Bahia & Pará  → 
+dedicated importers: US (TrueTech Inc, live), China & Europe (TBD)  →  Agroverse reseller network.
+3 · Background — who we are
+
+--- Page 3 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 3
+TrueSight DAO
+TrueSight DAO is a values-driven, open-source organisation building social ventures and recording its
+operations transparently (governance, treasury, and supply-chain data are published publicly). Agroverse
+is its flagship program.
+Agroverse
+Agroverse is a regenerative-agriculture network: it connects Northern-Brazilian (Amazonian and Bahian)
+farmers and cooperatives directly to conscious buyers, removing the chain of intermediaries that
+historically captured most of the value. The network handles farm onboarding, FDA/FSVP certification,
+community warehousing in Brazil and abroad, and last-mile distribution to resellers. Public reference:
+truesight.me/agroverse.
+The demand side is already live. A network of 30+ retail and venue partners — apothecaries, cafés,
+wellness and ceremonial venues, and community hubs — already carries Agroverse cacao. The current,
+public partner list is at agroverse.shop/partners. This existing distribution network is exactly what the
+export bridge is built to supply — at greater volume, across more product lines, and into more destination
+markets.
+TrueTech Inc — the existing US import entity
+TrueTech Inc is the Delaware company that already anchors the US side. It is the FSVP importer of
+record and the US Customs importer of record for every supplier in the network. It will remain the US
+import partner under the new structure; the new Brazilian entity sits on the export side, upstream of it.
+Legal name
+TRUETECH INC
+Form
+C-Corporation, Delaware (IRS Form 1120 filer)
+EIN (US tax ID)
+88-3411514
+US Customs
+importer-of-record no.
+88-341151400 — CBP Form 5106 on file (no bond)
+FDA Food Facility
+Registration
+12202640780 (status: VALID, exp. 2026-12-31)
+D-U-N-S
+11-903-5208
+Registered / mailing
+address
+8 The Green, Ste A, Dover, DE 19901, USA
+Officer
+Zhiwen Teh (Gary Teh), President
+
+--- Page 4 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 4
+4 · Current state & the problem to solve
+Brazilian exports currently flow through “Black King” — the individual CNPJ of Matheus Reis Pereira
+(CNPJ 50.042.585/0001-80), an Empresário Individual (micro-enterprise, Simples Nacional) based in
+Ilhéus, Bahia. He buys finished cacao from farms (e.g. via nota fiscal from producer Oscar Martins da Silva
+Miranda) and the goods are exported under his personal registration.
+Why this must change:
+•
+Personal tax liability. Routing a growing, DAO-scale export flow through Matheus’s individual CNPJ
+accumulates Brazilian tax exposure on him personally — disproportionate to his role and unsustainable
+as volume grows.
+•
+Not automatable. We intend to operate exports with autonomous AI agents. Building that automation on
+an individual’s personal registration is inappropriate and risky; it needs a dedicated corporate vehicle.
+•
+Single point of failure / governance. A community-wide operation should not depend on one person’s
+personal legal standing, banking, and RADAR limits.
+•
+Scale & financing. A Simples Nacional micro-enterprise has limited RADAR capacity and is a poor base
+for the export volumes and pre-purchase financing the network is moving toward.
+5 · Proposed structure
+•
+Tier 1 — Próspera HoldCo. A new entity incorporated in the Próspera jurisdiction (introduced by
+FounderHaus) acts as the holding / operating company and owner of the Brazilian export entity.
+•
+Tier 2 — Brazilian Export CNPJ. A new Brazilian company, owned/controlled by the Próspera HoldCo,
+incorporated to export Northern-Brazilian agricultural products (Bahia & Pará), starting with cacao. It
+obtains RADAR habilitation from Receita Federal and operates in Portal Único Siscomex (filing the
+DU-E export declaration) in its own name.
+•
+Tier 3 — destination-market importers (one per market). Each export market is served by its own
+dedicated importer of record: United States — TrueTech Inc (already established; FDA/FSVP + CBP);
+China and Europe — dedicated importer entities to be established (jurisdictions / details TBD). Importers
+feed the Agroverse reseller network (agroverse.shop/partners).
+•
+Operating model. Autonomous AI agents prepare documents, reconcile the ledger, and orchestrate
+filings; a licensed Brazilian customs broker (despachante aduaneiro) and accountants remain in the loop
+as required by law.
+We are deliberately leaving the final legal form to counsel. The constraints that matter to us are: (a) relieve Matheus’s
+personal CNPJ; (b) be cleanly ownable by the Próspera HoldCo; (c) be tax-efficient for recurring exports; and (d) be
+operable by software agents with minimal manual intervention.
+6 · Ownership — mapped to the DAO contributor ledger
+The Próspera HoldCo is not owned by a single founder. Consistent with TrueSight DAO’s
+contribution-based ethos, its beneficial ownership is intended to map to the DAO’s existing, transparent
+contributor ledger: the individuals recorded in the Main Ledger’s “Contributors contact information” tab,
+
+--- Page 5 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 5
+each owning in proportion to the governance tokens (TDG) they have earned, as recorded in the
+“Contributors voting weight” tab.
+•
+Contribution-based & dynamic. Ownership is earned through verified contributions of time and
+out-of-pocket capital, and it updates as contributors earn TDG. The live ledger — not a fixed founder cap
+table — is the canonical source of truth.
+•
+Two lenses, both already tracked. The ledger records both economic ownership (share of total TDG
+controlled) and quadratic voting power (governance influence, deliberately de-concentrated so no single
+holder dominates votes). Counsel should expect to map both onto the entity’s ownership and governance
+documents.
+Snapshot — 26 May 2026
+As of this snapshot, 316 contributors hold a non-zero TDG balance across ~2,263,640 TDG issued.
+Representative top holders below; the full, continuously-updated list lives in the ledger:
+#
+Contributor
+TDG controlled
+Ownership %
+Quad. vote %
+1
+Gary Teh
+955,459
+40.77%
+7.28%
+2
+Garis Pang
+67,653
+2.89%
+1.94%
+3
+Fatima Toledo
+65,853
+2.81%
+1.91%
+4
+Val Lapidus
+62,143
+2.65%
+1.86%
+5
+Jacob Nelan
+60,726
+2.59%
+1.84%
+6
+Priscilla Huang
+58,590
+2.50%
+1.80%
+7
+Kelvin Chew
+58,360
+2.49%
+1.80%
+8
+Vlatko Gigov
+50,584
+2.16%
+1.68%
+9
+Aléksa Mil
+44,820
+1.91%
+1.58%
+10
+Johnson Teh
+38,665
+1.65%
+1.46%
+11
+Anika Giftge
+37,560
+1.60%
+1.44%
+12
+Gautam Mittal
+33,450
+1.43%
+1.36%
+13
+Richard Chu
+30,243
+1.29%
+1.30%
+14
+Matheus Reis
+29,693
+1.27%
+1.28%
+15
+Emelin
+25,621
+1.09%
+1.19%
+…
++ 301 more contributors (non-zero TDG)
+≈ 644,000
+≈ 28.5%
+—
+Live source of truth — Main Ledger & Operations, tabs “Contributors contact information” & “Contributors voting weight”:
+docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU
+Translating this fluid, tokenised, ~316-holder base into a legally recognised ownership / membership structure for the
+Próspera entity — and how that flows down to the Brazilian subsidiary — is a core question for counsel (see §7).
+7 · What we need from counsel
+For Brazilian foreign-trade / customs & tax counsel
+
+--- Page 6 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 6
+•
+What is the most suitable Brazilian legal form (e.g. Sociedade Limitada — Ltda) for an export-only entity
+that will be foreign-owned (by the Próspera HoldCo)?
+•
+Foreign-ownership mechanics: requirement for a resident legal representative, CPF/CNPJ registration
+of foreign quotaholders, and RDE / foreign-capital registration with the Banco Central.
+•
+RADAR habilitation: which modality (Expressa / Limitada / Ilimitada), documentation, capacity proof,
+and realistic timeline for a newly formed entity.
+•
+Siscomex / Portal Único access and the DU-E export-declaration workflow — and to what extent it can
+be filed via API / programmatically vs. requiring a despachante aduaneiro.
+•
+Tax regime selection (Simples vs. Lucro Presumido vs. Lucro Real) for a low-margin, high-frequency
+export operation, and treatment of export-related tax exemptions/credits (ICMS, PIS/COFINS, IPI on
+exports).
+•
+Transfer-pricing / intercompany pricing posture between the Brazilian entity, the Próspera HoldCo, and
+TrueTech Inc (US).
+•
+Clean migration path from the current Black King (Matheus) arrangement without disrupting existing
+FDA/FSVP supplier registrations.
+•
+Brazilian-side implications of exporting to multiple destination markets (US, China, EU) and multiple
+agricultural product lines beyond cacao — NCM classification, MAPA / phytosanitary certification, and
+per-destination export certificates.
+For Próspera-jurisdiction incorporation counsel
+•
+Appropriate Próspera entity type to act as a holding company owning a Brazilian operating subsidiary.
+•
+Banking, substance, and reporting requirements; how a Próspera entity is recognised as a foreign
+quotaholder in Brazil.
+•
+Interaction with TrueTech Inc (US) — whether the Próspera HoldCo should also sit above TrueTech or
+remain Brazil-side only.
+•
+Suitability of the structure for DAO / tokenised governance and for AI-agent-operated subsidiaries.
+On ownership & securities (for both counsel)
+•
+How to translate a ~316-holder, continuously-updating, TDG-weighted contributor base (see §6) into
+recognised ownership of the Próspera entity — e.g. direct membership interests to a defined snapshot, a
+foundation / SPV that holds for the DAO, or a tokenised cap table.
+•
+Securities-law treatment of TDG-as-ownership across the Próspera jurisdiction, Brazil, and the US.
+•
+Snapshot / cut-off mechanics for an ownership base that changes as contributions accrue; treatment of
+pseudonymous holders and any KYC needed for owners of record.
+
+--- Page 7 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 7
+8 · The Brazilian supply base the entity will serve
+These are the verified suppliers already onboarded under TrueTech Inc’s FSVP program. All Brazilian
+suppliers below hold active FDA Food Facility Registrations and have written assurances on file. Full
+records (CNPJ certificates, D&B, FDA registrations, written assurances, site-visit reports) live in the public
+repository github.com/TrueSightDAO/fda_fsvp; a machine-readable entity.json now sits in each
+supplier folder.
+Trade name
+Legal name
+CNPJ
+Location
+Products
+FDA FFR
+Coopercabru
+ca
+Cooperativa dos Cacauicultores
+do Sul da Bahia
+31.948.811/0001-
+42
+Itabuna, BA
+cacao nibs, mass,
+molasses
+17660066140
+Black King*
+Matheus Reis Pereira
+(Empresário Individual)
+50.042.585/0001-
+80
+Ilhéus, BA
+nibs, mass, molasses, tea,
+husk, ceremonial cacao
+19088052616
+CEPOTX
+Coop. Central de Produção
+Orgânica da Transamazônica e
+Xingu
+22.568.369/0001-
+38
+Altamira, PA
+organic cacao almonds
+14674182470
+Mu Gelato
+Mu Gelato Sorvetes Artesanais
+Ltda
+23.655.374/0001-
+40
+Florianópolis,
+SC
+chocolate-coated coffee
+bean candy
+19657644518
+Hau Cacau
+Hau Cacau Superalimentos Ltda
+(CNPJ on
+D&B/FDA file)
+Porto Alegre,
+RS
+cacao mass
+18719939322
+* “Black King” is the personal CNPJ of Matheus Reis Pereira — i.e. it is both a verified supplier and the individual currently
+used as the export vehicle this project replaces.
+Cacao is the first commodity through the bridge because the supplier base and FDA/FSVP compliance
+are already in place. The same Brazilian export entity is designed to carry additional Northern-Brazilian
+agricultural products (Bahia & Pará) as they are onboarded, and to ship them to the US, China, and
+Europe.
+Outside Brazil (for context): the network also sources cacao mass from Koala V & S E.I.R.L. (trade
+name Koala Detalles) in Jaén, Cajamarca, Peru (FDA FFR 16425142318). This is noted only to show the
+network already spans more than one origin country; it is outside the scope of the Brazilian export CNPJ.
+9 · Key person
+Name
+Gary Teh — legal/registered name Zhiwen Teh
+Role
+TrueSight DAO contributor; President of TrueTech Inc (US); proposed responsible principal
+for the new structure
+Brazilian CPF
+039.733.078-22
+Email
+garyjob@truesight.me / garyjob@agroverse.shop
+Gary already holds a Brazilian CPF and is the natural responsible principal on the Brazilian side, whether as a named
+officer of the new CNPJ or as the representative of the Próspera HoldCo — counsel to advise on the cleanest
+configuration.
+10 · Data room & compliance status
+
+--- Page 8 ---
+TrueSight DAO  ·  Agroverse  ·  CONFIDENTIAL — for FounderHaus & introduced legal counsel only
+Page 8
+•
+FSVP / FDA compliance: all suppliers above carry VALID FDA Food Facility Registrations (exp.
+2026-12-31) and written assurances under TrueTech Inc’s FSVP small-importer program.
+•
+Public document repository: github.com/TrueSightDAO/fda_fsvp — supplier folders hold CNPJ
+certificates, D&B records, FDA registrations, written assurances, supplier-evaluation declarations, and
+site-visit reports.
+•
+Machine-readable profiles: each supplier folder now contains entity.json and the US entity is in
+truetech_inc.entity.json (identifiers, addresses, products, FSVP status, document index) for fast
+future review by counsel or AI agents. FDA PINs and personal CPF are deliberately excluded from those
+public files.
+•
+Transparency surfaces: truesight.me (DAO), truesight.me/agroverse (program).
+11 · Glossary (cross-jurisdiction)
+CNPJ
+Cadastro Nacional da Pessoa Jurídica — Brazilian company tax/registration ID.
+CPF
+Cadastro de Pessoas Físicas — Brazilian individual tax ID.
+RADAR
+Receita Federal license that authorises a Brazilian entity to operate in foreign trade
+(import/export) via Siscomex; modalities Expressa / Limitada / Ilimitada.
+Siscomex / Portal Único
+Brazil’s Integrated Foreign Trade System; the platform for filing export declarations.
+DU-E
+Declaração Única de Exportação — the single export declaration filed in Portal Único Siscomex.
+Despachante aduaneiro
+Licensed Brazilian customs broker who files customs declarations.
+FSVP
+FDA Foreign Supplier Verification Program — US importer obligation to verify foreign food
+suppliers.
+FDA FFR
+FDA Food Facility Registration number.
+D-U-N-S
+Dun & Bradstreet business identifier (used as FDA UFI).
+EIN
+US Employer Identification Number (federal tax ID).
+Próspera (ZEDE)
+Special economic / governance jurisdiction; the proposed home of the holding company.
+TDG
+TrueSight DAO governance token — earned through verified contributions; defines economic
+ownership and (quadratically) voting weight.
+Quadratic voting
+Voting scheme where influence scales with the square root of tokens held, deliberately
+de-concentrating governance away from the largest holders.
+```
+
+
+### 🤖 Autopilot
+
+Got it. Let me save this to the context repo for future reference, then give you my comparison.
+
+
+### 🤖 Autopilot
+
+Saved. Now let me give you my comparison of the two tracks.
+
+---
+
+## Comparison: Prospera Track vs. UNA/DUNA Track
+
+### Prospera Track (Brazil Export Entity Brief)
+
+```
+DAO contributors → Próspera HoldCo → Brazilian Export CNPJ → TrueTech Inc (US import)
+```
+
+**Purpose:** Solve the Brazilian export problem — replace Matheus's personal CNPJ with a dedicated, foreign-owned export entity that can be operated by AI agents.
+
+**Key features:**
+- Próspera ZEDE (Honduras special economic zone) as the holding jurisdiction
+- Brazilian Ltda as the operating subsidiary with its own RADAR/Siscomex
+- Ownership mapped to TDG holders via the contributor ledger
+- Designed for AI-agent operation (bot-enabled exports)
+- Requires two sets of counsel (Próspera + Brazilian)
+
+**Cost:** Unknown — likely $5K-15K+ for dual counsel, incorporation, RADAR application
+
+**Timeline:** Unknown — likely 2-6 months
+
+### UNA/DUNA Track (Legal Entity Structuring Proposal)
+
+```
+DAO contributors → Wyoming UNA/DUNA (governance wrapper)
+TrueTech Inc (Delaware C-corp, independent facility)
+```
+
+**Purpose:** Provide a legal wrapper for the DAO itself — liability shield for members, governance structure for TDG holders, counterparty for impact funds.
+
+**Key features:**
+- Wyoming UNA formed via OtoCo (~$50 gas, this week)
+- TrueTech Inc remains independent (not a subsidiary) — avoids UBIT
+- Two separate bank accounts (TrueTech Inc for commercial, UNA for mission)
+- One narrow Howey question for counsel
+
+**Cost:** ~$50 (OtoCo gas) + $0 (Wise Business account)
+
+**Timeline:** This week
+
+### Where They Overlap
+
+| Aspect | Prospera Track | UNA/DUNA Track |
+|--------|---------------|----------------|
+| **Purpose** | Brazilian export entity | DAO legal wrapper |
+| **Ownership** | TDG holders → Próspera HoldCo | TDG holders → UNA/DUNA |
+| **TrueTech Inc** | US import partner (separate) | Independent facility (separate) |
+| **Matheus's CNPJ** | Replaced by new Brazilian entity | Not addressed |
+| **AI-agent operation** | Core requirement | Not addressed |
+| **Cost** | $5K-15K+ | ~$50 |
+| **Timeline** | 2-6 months | This week |
+
+### My Thoughts
+
+**They're complementary, not competing.** They solve different problems:
+
+1. **UNA/DUNA** solves the **DAO governance wrapper** problem — who are we legally, how do TDG holders govern, what entity receives impact funds. This is the foundation. Do it this week for $50.
+
+2. **Prospera** solves the **Brazilian export vehicle** problem — how do we get cacao out of Brazil in a scalable, automatable way without relying on Matheus's personal CNPJ. This is the operational infrastructure. Do it when counsel is engaged.
+
+**The dependency:** The UNA/DUNA doesn't depend on Prospera. But the Prospera structure's ownership model (TDG holders → Próspera HoldCo) could benefit from the UNA/DUNA as the recognized membership entity — the UNA could be the formal member of the Próspera HoldCo, rather than trying to map 316 individual TDG holders directly.
+
+**The question for SVH:** Could the Wyoming UNA/DUNA serve as the recognized member/owner of the Próspera HoldCo, simplifying the ownership mapping? That would make the two tracks converge into one clean structure:
+
+```
+TDG holders → Wyoming UNA/DUNA (governance wrapper, ~$50 this week)
+                  ↓ owns
+              Próspera HoldCo (Brazil export holding)
+                  ↓ owns
+              Brazilian Export CNPJ (RADAR + Siscomex)
+                  ↓ exports to
+              TrueTech Inc (US import, independent facility)
+```
+
+Want me to add this convergence diagram to the V2 document?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_EXPORT_ENTITY_BRIEF.md
 
