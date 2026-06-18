@@ -942,9 +942,15 @@ MErge PR.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged. ✅
 
 Now let me promote it to production since you approved the design:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3132,4 +3138,35 @@ Want me to merge the track map PR?
 **✅ Done this turn — actions taken:**
 • `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/257
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] I am thinking the GACC and the China Events are two different tracks isnt it?
+
+
+### 🤖 Autopilot
+
+You're right. GACC is about regulatory compliance for exporting cacao from Brazil to China — it's a prerequisite, not the same thing as the Aora events themselves.
+
+Let me separate them in the map.
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#566**
+
+Here's the corrected dependency picture:
+
+```
+Legal Entity Structuring ──→ Brazil Export Entity (CNPJ/NF-e/CNAE) ──→ Chocolate Subscription Delivery
+GACC / Brazil Compliance ──→ Brazil Export Entity (CNPJ/NF-e/CNAE) ──→ China / Aora Events (100 bars)
+                                                                     ──→ Chives Root Consignment (10 bags)
+                                                                     ──→ Michael Johnson Consignment
+                                                                     ──→ Kopi Bar Jul 10 Tasting
+```
+
+**GACC** is a regulatory prerequisite for exporting to China — it blocks the Brazil Export Entity, not the events themselves. **China/Aora Events** is the downstream execution track, blocked by the export entity.
+
+Want me to merge it?
 
