@@ -1415,11 +1415,13 @@ The response shape changed — no `busy_threads` key anymore. Let me look at the
 I see — the code returns `"noop"` when HEAD matches origin/main (the hash check happens *before* the idle-drain guard). The test sets up `_active_streams` but the deploy code first checks if the local commit matches origin/main, finds it does, and returns `"noop"` before ever checking `_active_streams`.
 
 The test needs to mock the hash check to return a different SHA so it reaches the idle-drain guard. Let me look at the full test.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The test needs to mock the git hash check so it doesn't short-circuit with "noop". Let me look at how the hash check works.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1427,16 +1429,24 @@ The test needs to mock the git hash check so it doesn't short-circuit with "noop
 I see — the hash check runs `git fetch origin main` and `git rev-parse`. In the test environment, this will fail or return the same SHA. The test needs to mock `_run_local` to return different SHAs so it passes the hash check and reaches the idle-drain guard.
 
 Let me update the test properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me run the full suite to confirm everything is green.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Down to 1 failure — `test_reader_sees_external_rotation`. Let me check if that's also pre-existing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1510,4 +1520,83 @@ Ready for your review! Want me to merge it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot && git checkout pr-branch 2>&1 && python3 -m compileall -q app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff format --check app scripts tests 2>&1; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] Merged
+
+
+### 🤖 Autopilot
+
+PR #255 is merged. Let me clean up the local branches and move to **PR2**.
+
+
+### 🤖 Autopilot
+
+Now let me re-read the plan for **PR2** details.
+
+
+### 🤖 Autopilot
+
+**PR1 merged.** ✅ Moving to **PR2**.
+
+### PR2 — Catalog load timing: close the boot-window gap (G1)
+
+Load the catalog **synchronously at startup** (or block the first `submit_contribution` until the first load completes), with a capped fetch timeout and snapshot fallback.
+
+Let me read the current startup/loop code to understand the timing.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The catalog refresh loop sleeps **120 seconds** before the first fetch. During those 120 seconds, only the 9 hardcoded events are available.
+
+Let me also check the lifespan function to see how startup works.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The fix for PR2 is:
+
+**Current behavior:** `_catalog_refresh_loop()` sleeps 120s before first fetch. During those 120s, only 9 hardcoded events exist.
+
+**Fix:** Call `_refresh_events_catalog()` **synchronously at startup** in the lifespan (with a short timeout and graceful failure), THEN start the background loop. This way the catalog is loaded before any user message can arrive.
+
+Let me also check if there's a snapshot fallback mechanism already.
+
+
+### 🤖 Autopilot
+
+No snapshot file exists yet — that's PR3's job. For PR2, I'll add a synchronous catalog fetch at startup with a short timeout, and if it fails, the existing hardcoded fallbacks remain (no regression).
+
+Let me also check the existing tests to see if there's a test file for the catalog.
+
+
+### 🤖 Autopilot
+
+Good — the test file from PR1 exists. Now let me create PR2. I'll use `open_fix_pr` with a clear description.
+
+
+### 🤖 Autopilot
+
+**PR2 is open!** 🎉
+
+**PR #256** — https://github.com/TrueSightDAO/truesight_autopilot/pull/256
+
+**What it does:**
+- Calls `_refresh_events_catalog()` **synchronously at startup** in the lifespan (15s timeout)
+- If Edgar is reachable → catalog is loaded before any user message arrives
+- If Edgar is unreachable → logs warning, hardcoded fallbacks remain (no regression)
+- Reduces the background loop's first sleep from 120s → 30s (since initial load already happened)
+- Adds tests for: startup load succeeds, startup load fails gracefully, background loop still works
+
+**Gate status:** ✅ PR2 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR3** (auto-generated fallback snapshot).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && git checkout main && git pull origin main 2>&1 | tail -5 && git branch -d pr-branch 2>&1 && git push origin -; cd /opt/truesight_autopilot && grep -n "_refresh_events_catalog\|events_catalog\|startup\|async def main\|async def start\|@app.on_event\|li; cd /opt/truesight_autopilot && sed -n '1193,1265p' app/main.py; …(+3 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/256
 
