@@ -464,11 +464,13 @@ No SOHA in the Owner email column either. Let me check the agroverse shop site f
 ### 🤖 Autopilot
 
 SOHA is indeed a partner on agroverse.shop — **Sanctuary of Healing Arts** in Philomath, Oregon, run by David Campbell and Molly Rush. Let me check the partners-velocity and sell-through data for SOHA, and also look at the contributors ledger.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the contributors ledger for David Campbell / SOHA.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -576,4 +578,43 @@ To summarize the gap:
 | **Molly Rush** | Co-owner, SOHA | ✅ (via SOHA partner record) | ❌ Not found |
 
 SOHA is a **Wholesale partner** doing ~1.67 units/month in sales, but neither David nor Molly has a DAO identity. If you want to bring them into the contributor ecosystem, they'd need a DAO registration so their sales can be attributed to a contributor profile for TDG rewards.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] Do you think can you find their email addresses on their websites?
+
+
+### 🤖 Autopilot
+
+Good idea — let me check the SOHA partner page on agroverse.shop and their own website for contact info.
+
+
+### 🤖 Autopilot
+
+No email on the agroverse partner page. Let me check their own website and social media.
+
+
+### 🤖 Autopilot
+
+Found it. Let me verify by checking their website.
+
+
+### 🤖 Autopilot
+
+Found them. Here's what I pulled from soha.center:
+
+**Contact details for SOHA / David Campbell:**
+
+| Field | Value |
+|---|---|
+| **General email** | **admin@SoHA.center** |
+| **David's email** | **david@soha.center** (from Facebook post) |
+| **David's phone** | **707-373-9966** (text preferred per their site) |
+| **Address** | 23321 Alsea Hwy, Philomath, OR 97370 |
+| **Website** | soha.center |
+| **Instagram** | @soha.center |
+| **Facebook** | facebook.com/4SOHA |
+
+So yes — **david@soha.center** and **admin@SoHA.center** are both findable. If you want to reach out to David Campbell to invite him to register as a DAO contributor, I can draft an email or create a draft for your review.
 
