@@ -522,11 +522,13 @@ ee ) Sustainability _ ~ =* / Jonathan, ~Graeme Read, +65 8158 6449, You | Grean~
 ### 🤖 Autopilot
 
 Let me read the full image more carefully to understand the introduction.
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also persist this to the transcript:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -572,11 +574,23 @@ Got it — two things:
 2. **Nora Haron / Kopi Bar** → riding on the Brazil Export Entity track, with downstream logistics chain
 
 Let me update the track map.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Also need to upload the Graeme Read screenshot to `.github`:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -621,6 +635,17 @@ Also same with Michael Johnson
 ### 🤖 Autopilot
 
 Let me add those to the track map too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -753,4 +778,44 @@ That's **radical transparency** — and it's exactly the TrueSight ethos.
 ---
 
 Want me to open a PR on `truesight_me_beta` that replaces the `/roadmap` redirect with a proper track map page? I'll pull the content from the merged `TRACK_MAP.md` and render it as a static HTML page with the Mermaid diagram.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] that would be very cool!
+
+
+### 🤖 Autopilot
+
+Let me build it. I'll create the roadmap page with the Mermaid diagram embedded.
+
+
+### 🤖 Autopilot
+
+Now let me also read the merged TRACK_MAP.md to get the exact content:
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check the existing roadmap page to see if there are other files in that directory:
+
+
+### 🤖 Autopilot
+
+Now let me build the roadmap page. I'll create a beautiful static HTML page with the Mermaid diagram embedded.
+
+
+### 🤖 Autopilot
+
+PR is up: **truesight_me_beta#249** — [feat: live track map](https://github.com/TrueSightDAO/truesight_me_beta/pull/249)
+
+Here's what the page looks like:
+
+1. **Mermaid dependency diagram** at the top — color-coded arrows showing the single bottleneck
+2. **Quick-reference table** — all 9 tracks with status, owner, next check-in, blocker
+3. **Detail cards** — each track expanded with goal, key docs, downstream chain
+
+The old `/roadmap` (which just redirected to a Google Drawing) is replaced with this. It's already linked in the nav under **Resources → Roadmap**.
+
+Want me to deploy it to the beta site so you can preview it before we promote to prod?
 
