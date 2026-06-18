@@ -773,22 +773,76 @@ Let me check the dao_client repo directly for its available commands.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 That doc is about AI agent contribution submissions, not about adding contributors. Let me check the dao_protocol repo since that handles onboarding invitations.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the flow is through a `[CONTRIBUTOR ADD EVENT]` that triggers an onboarding email. Let me check if there's a dao_client CLI command for this.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the dao_protocol repo for a CLI command to add contributors.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the modules directory for a contributor-add module.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -856,6 +910,7 @@ Once the movement lands:
 
 ### My Recommendation
 **Option B (batch)** — one `[INVENTORY MOVEMENT]` with all 40 QR codes. Let me check the event docs to confirm the format supports this.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -953,4 +1008,97 @@ Write a Python script that loops through all 40 QR codes and submits them via `s
 **I recommend Option C** — let me write a quick loop that submits all 40 movements in sequence. Each one is a separate `[INVENTORY MOVEMENT]` event, signed by me (autopilot), which the GAS handler will process as a trusted agent submission.
 
 But first — David needs to be in the contributor ledger. Want me to proceed with that DApp step first, or shall I start the batch movement submissions and let the auto-add handle it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] [Handoff context — this Telegram topic (thread 6394) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I have already added David as a contributor on our ledger. You can check that he is there first if you like. Then go ahead and generated the batch script. I wonder if the batch script should be part of the dao_client or just a standalone for now...
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] Seems of the 40, only 30 were submitted and all the 30 have unauthorized listed on column N https://docs.google.com/spreadsheets/d/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ/edit?gid=83682662#gid=83682662 "Inventory Movement" Why?
+
+
+### 🤖 Autopilot
+
+Let me check both things — David's contributor record and the Inventory Movement sheet to understand the unauthorized status.
+
+
+### 🤖 Autopilot
+
+Let me look at the recent rows — the ones with "unauthorized" status.
+
+
+### 🤖 Autopilot
+
+I can see the recent rows — let me look at the tail of the sheet to find the "unauthorized" ones.
+
+
+### 🤖 Autopilot
+
+Let me look at the very last rows to find the "unauthorized" ones.
+
+
+### 🤖 Autopilot
+
+I don't see "unauthorized" entries in the last 20 rows. Let me search for them specifically.
+
+
+### 🤖 Autopilot
+
+There they are — the last 2 rows are "unauthorized". Let me read those specific rows to see what happened.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me also check if David Campbell is in the Contributors sheet.
+
+
+### 🤖 Autopilot
+
+I can see **"SOHA - David Campbell"** is in the Contributors sheet (row ~88 in the A300:D400 range). Now let me understand the unauthorized issue.
+
+Let me look at the two unauthorized submissions more carefully. They were submitted by **me (autopilot)** with my digital signature. The GAS handler checks:
+
+1. Is the Telegram row marked as Governor (Column S = YES)? **No** — these came via Edgar Direct, not a governor-signed Telegram message.
+2. Does the digital signature match a known contributor? **Yes** — my autopilot key.
+3. Is the signer a governor? **No** — autopilot is a trusted agent, not a governor.
+4. Is the signer a trusted agent with governor approval? **Yes** — but the `extractApprovedBy_` check looks for `- Approved By:` in the contribution text, which my submissions don't have.
+
+That's the root cause. My submissions as autopilot need an `- Approved By: Gary Teh` line to pass the trusted-agent authorization check.
+
+Now, regarding your question about the batch script — here's my analysis:
+
+---
+
+## Two Issues Found
+
+### 1. David Campbell IS in the Contributors Sheet ✅
+He's listed as **"SOHA - David Campbell"** — so the contributor record exists.
+
+### 2. Why the 2 submissions are "unauthorized" ❌
+The two unauthorized rows (Edgar_20260505222109_061 and Edgar_20260505222235_063) were submitted by **me (autopilot)**. The GAS handler's auth logic requires:
+
+- Either the Telegram row has **Governor = YES** (these don't — they're Edgar Direct)
+- Or the signer is a **governor** (I'm not)
+- Or the signer is a **trusted agent** (I am) **AND** the contribution text contains `- Approved By: Gary Teh`
+
+My submissions were missing the `- Approved By: Gary Teh` line. That's why they landed as "unauthorized" — the GAS handler correctly rejected them because I didn't include your approval marker.
+
+### 3. Only 30 of 40 submitted?
+You mentioned only 30 were submitted. Looking at the sheet, I only see **2 unauthorized submissions** (for `2024OSCAR_20260330_35` and `2024OSCAR_20260330_14`). The other 38 QR codes don't appear in the Inventory Movement sheet at all — meaning they were never submitted. So it seems only 2 were attempted, not 30.
+
+### The Fix
+For the batch script approach, each submission needs to include:
+```
+- Approved By: Gary Teh
+```
+in the contribution text. This tells the GAS handler that a governor approved the movement, even though the autopilot (trusted agent) is the one submitting.
+
+### Where should the script live?
+I think a **standalone script** makes more sense for now — it's a one-off batch operation, not a recurring CLI command. We can add it to `dao_client` later if batch movements become a regular pattern. I'd put it in `truesight_autopilot/scripts/` as a Python script that loops through the 40 QR codes and calls `submit_contribution` for each one with the `- Approved By: Gary Teh` marker.
+
+Want me to write that script and submit all 40?
 
