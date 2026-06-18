@@ -3070,6 +3070,11 @@ Now let me check the system prompt to see how events are described to the LLM.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the full picture. PR6 needs to:
 
 1. **Strengthen `lookup_event_docs` output** — add intent→event guidance (e.g., "sale" → SALES EVENT, "transfer" → INVENTORY MOVEMENT) and important canonical fields to include
@@ -3077,11 +3082,18 @@ Now I have the full picture. PR6 needs to:
 3. **Add tests** — "sales" intent → SALES EVENT with cash-proceeds; "transfer" → INVENTORY MOVEMENT
 
 Let me also check if there are existing tests for `lookup_event_docs`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing tests for `lookup_event_docs`. Now I have the full picture. Let me create PR6.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3124,21 +3136,40 @@ No existing tests for `lookup_event_docs`. Now I have the full picture. Let me c
 `submit_contribution` requires a prior in-session `lookup_event_docs` for the event type, else it injects the catalog spec inline before validating.
 
 Let me check the current `submit_contribution` tool code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `submit_contribution` handler is inline in `main.py`. Let me find the inline handler.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full `submit_contribution` handler. The enforcement point should be at the beginning of the handler (around line 1721), before it processes the submission. Let me also check how the session history is structured to implement the "prior in-session lookup" check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the exact insertion point. The `submit_contribution` handler starts at line 1721. I need to add a lookup-before-submit check right after the duplicate guard. Let me also check the existing tests for `submit_contribution`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3155,6 +3186,7 @@ The enforcement logic:
 - If not found → call `lookup_event_docs` internally, inject the spec into the response, and proceed
 
 Let me create PR7.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3197,6 +3229,7 @@ Let me create PR7.
 **PR7 merged.** ✅ Moving to **PR8** — the final gate.
 
 Let me re-read the plan for PR8 details.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3206,16 +3239,19 @@ Let me re-read the plan for PR8 details.
 > **PR8 — (rollout, not a PR) deploy + UAT — see §6.**
 
 Let me read §6 for the UAT details.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 You said deployment was successful. Let me verify the deploy is live and then run the UAT scenarios.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — PR7 (#264) is merged. But you said deployment was successful. Let me check if the autopilot was actually deployed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3334,4 +3370,43 @@ The **DApp Event Alignment** plan is complete. Want me to log the contribution f
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot && git log --oneline -5; cd /opt/truesight_autopilot && git log --oneline -1 && echo "---" && systemctl --user show -p ActiveState truesight-autopilot 2>/dev/null ||; systemctl --user start truesight-autopilot 2>&1; sleep 2; systemctl --user is-active truesight-autopilot 2>&1; …(+8 more)
 • `deploy autopilot` → Already on the latest commit b76bfadf — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] don't redeploy again. Deployment has been successful. what next?
+
+
+### 🤖 Autopilot
+
+The **DApp Event Alignment** plan is fully complete! Here's the final tally:
+
+| PR | Status | Description |
+|----|--------|-------------|
+| PR1 | ✅ Merged | Catalog merge fix — catalog always wins |
+| PR2 | ✅ Merged | Catalog load timing — synchronous startup preload |
+| PR3 | ✅ Merged | Snapshot fallback — 30 events offline |
+| PR4 | ✅ Merged | Catalog-driven field normalizer |
+| PR5 | ✅ Merged | Non-canonical keys surfaced, not dropped |
+| PR6 | ✅ Merged | Intent→event guidance in `lookup_event_docs` |
+| PR7 | ✅ Merged | Lookup-before-submit enforcement |
+| PR8 | ✅ UAT passed | All 5 scenarios green |
+
+**UAT results:** All 5 scenarios pass ✅ — sales recording, non-hardcoded events, boot-window gap closed, snapshot fallback, natural field normalization.
+
+---
+
+**What's next?** We have two remaining items from earlier:
+
+1. **CLI Sales Event Alignment** — cleanup tail. The code is all merged. Remaining:
+   - **Contribution reporting** — I can log the DAO contribution for the CLI work with all PR references
+   - **PyPI publish** — already done! `truesight-dao-client` v0.2.0 is live
+
+2. **New work** — whatever you want to tackle next. Some ideas:
+   - **Oracle / attention direction** — morning readings
+   - **Partner outreach** — check the hit list
+   - **Inventory / QR code work** — Kirsten's cacao bags
+   - **Something else?**
+
+What would you like to do?
 
