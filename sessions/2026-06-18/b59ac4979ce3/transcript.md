@@ -997,6 +997,11 @@ Want me to check what's actually conflicting?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Looks like you already resolved it on your end — prod is now in sync with beta. ✅
 
 **truesight.me/roadmap** should now show the live track map instead of the old Google Drawing redirect. Want me to verify it's serving correctly?
@@ -3167,6 +3172,59 @@ GACC / Brazil Compliance ──→ Brazil Export Entity (CNPJ/NF-e/CNAE) ──�
 ```
 
 **GACC** is a regulatory prerequisite for exporting to China — it blocks the Brazil Export Entity, not the events themselves. **China/Aora Events** is the downstream execution track, blocked by the export entity.
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Legal Entity Structuring 🟡 Offline Gary / Paloma Jun 22 call w/ Layon
+
+doesnt block 
+Brazil Export Entity 🔴 Gate Matheus / Paloma / Gary
+
+
+
+GACC / Brazil Compliance 🟡 Offline Gary / Paloma —
+
+
+### 🤖 Autopilot
+
+You're right — Legal Entity Structuring doesn't block Brazil Export Entity. They're parallel tracks. And GACC doesn't block it either. Let me fix the dependencies.
+
+
+### 🤖 Autopilot
+
+The file has changed since the last edit. Let me read the current state:
+
+
+### 🤖 Autopilot
+
+I see — the previous PR #566 wasn't merged yet, so the file still has the old content. Let me work from the actual current state:
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#567**
+
+Here's the corrected picture:
+
+```
+Legal Entity Structuring ── parallel ──┐
+GACC / Brazil Compliance ── parallel ──┤
+                                        ▼
+                              Brazil Export Entity (THE GATE)
+                                        │
+                    ┌───────────────────┼───────────────────┐
+                    ▼                   ▼                   ▼
+          Chocolate Subscription   China/Aora Events   Chives Root
+          Delivery                 (100 bars)          Consignment
+                    ▼                   ▼
+          Michael Johnson           Kopi Bar Jul 10
+          Consignment               Tasting
+```
+
+**No track blocks the Brazil Export Entity.** It's the single gate, and everything downstream waits on it.
 
 Want me to merge it?
 
