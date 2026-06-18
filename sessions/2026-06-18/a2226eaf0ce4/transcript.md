@@ -475,17 +475,25 @@ Now let me check the contributors ledger for David Campbell / SOHA.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me search the ledger for "David Campbell" or "SOHA" or "Molly".
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the ledger for "David Campbell" or "SOHA" or "Molly" directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested escaping is making this unreadable. Let me take a more direct approach and search the ledger text for "David" or "Campbell" or "SOHA" or "Molly".
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -617,4 +625,46 @@ Found them. Here's what I pulled from soha.center:
 | **Facebook** | facebook.com/4SOHA |
 
 So yes — **david@soha.center** and **admin@SoHA.center** are both findable. If you want to reach out to David Campbell to invite him to register as a DAO contributor, I can draft an email or create a draft for your review.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] can we add David Campbell as a DAO member and use his email address david@soha.center
+
+
+### 🤖 Autopilot
+
+Let me check the event documentation for the correct format to register a new DAO identity.
+
+
+### 🤖 Autopilot
+
+That's for adding a partner, not a DAO member. Let me check the right event for registering a DAO contributor identity.
+
+
+### 🤖 Autopilot
+
+That's for logging contributions. To register a new DAO identity, I should use the `register_identity` tool. Let me do that.
+
+
+### 🤖 Autopilot
+
+**Done!** David Campbell (david@soha.center) has been registered as a DAO member.
+
+**What happened:**
+- ✅ RSA-2048 keypair generated and submitted to Edgar
+- ✅ Signature verified successfully
+- ✅ Logged to the Google Sheet ledger
+- ✅ Public key stored in the autopilot's `.env` for future reference
+
+David now has a DAO identity. Next steps you might want to consider:
+1. **Link his SOHA partner record** to his new contributor identity so his wholesale sales earn TDG
+2. **Send him a welcome email** introducing the DAO and how to submit contributions
+3. **Add him as a contributor** with an initial TDG grant for past sales
+
+Want me to draft a welcome email to david@soha.center?
+
+———
+**✅ Done this turn — actions taken:**
+• `register identity`
 
