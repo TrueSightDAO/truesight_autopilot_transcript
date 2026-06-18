@@ -6012,3 +6012,35 @@ That changes the timeline. If GACC registration for China is happening now, we n
 
 Want me to add this China timeline urgency to the Brazil Export Entity Brief?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I think f Path A (Próspera) is needed as the intermediate holding layer. is misleading isnt it? If this route is choosen then it is the final route
+
+
+### 🤖 Autopilot
+
+You're right. "Intermediate" implies it's temporary or a stepping stone. If we choose Prospera, it's the **final** holding entity — not a bridge to something else. The UNA/DUNA alternative is a separate path, not a layer on top of Prospera.
+
+Let me fix that language in the document.
+
+
+### 🤖 Autopilot
+
+I see the line: "If no, Path A (Próspera) is needed as the intermediate holding layer." Let me fix that — Prospera is the final holding entity, not an intermediate layer.
+
+
+### 🤖 Autopilot
+
+Fixed. The line now reads:
+
+> *"If no, we proceed with Path A (Próspera HoldCo) as the final holding entity."*
+
+Both paths are now presented as **final destinations** — not one being a stepping stone to the other. The decision is simply which jurisdiction we choose.
+
+Updated document: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_EXPORT_ENTITY_BRIEF.md
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #558 on agentic_ai_context merged successfully (sha: ae29540c82a3c15853eee294c7638085ca0e483c). Pull Request successfully merged
+
