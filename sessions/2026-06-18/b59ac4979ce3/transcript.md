@@ -681,6 +681,11 @@ PR at **agentic_ai_context#562**. Want me to merge it?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged. ✅
 
 Now on your question — **should the track map be published on truesight.me?**
@@ -731,6 +736,17 @@ Want me to open a PR on `truesight_me_beta` to add an "Active Tracks" section to
 ### 🤖 Autopilot
 
 Let me look at the current /dao page on truesight_me_beta to see what's there and where the track map would fit.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -818,4 +834,60 @@ Here's what the page looks like:
 The old `/roadmap` (which just redirected to a Google Drawing) is replaced with this. It's already linked in the nav under **Resources → Roadmap**.
 
 Want me to deploy it to the beta site so you can preview it before we promote to prod?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] I wonder if we should have it load from a JSON file and if so what would feed into that JSON file
+
+
+### 🤖 Autopilot
+
+That's a good architectural question. Let me think through it.
+
+---
+
+**Short answer:** Yes, eventually. But start with the static page, then graduate to JSON-driven.
+
+### Why JSON-driven would be better
+
+| Concern | Static HTML | JSON-driven |
+|---------|-------------|-------------|
+| **Updating** | Edit HTML by hand | Edit JSON → page auto-renders |
+| **Who can update** | Only me (Sophia) via PR | Anyone who edits a JSON file on GitHub |
+| **Single source of truth** | Duplicated from TRACK_MAP.md | One JSON feeds both the website and the context doc |
+| **Freshness** | Stale until someone remembers to update | Could be auto-generated from real data |
+
+### What would feed the JSON
+
+The JSON should live in **agentic_ai_context** (the context repo), not in truesight_me. That way:
+
+```
+agentic_ai_context/tracks.json  ←── single source of truth
+    │
+    ├── feeds → TRACK_MAP.md (auto-generated via script)
+    └── feeds → truesight.me/roadmap (fetched at page load)
+```
+
+The JSON structure would look like:
+
+
+
+### What would feed *that* JSON
+
+Three options, from simplest to most automated:
+
+1. **Manual edits** — I (Sophia) update `tracks.json` when statuses change. Simple, but requires a PR each time.
+2. **Google Sheet** — A "Track Map" tab in the Main Ledger. Anyone edits the sheet → a GAS script syncs to `tracks.json` in agentic_ai_context. Non-technical owners (Matheus, Paloma) can update statuses without GitHub.
+3. **Auto-detection** — The JSON is generated from real DAO data: open PRs per label, email threads, calendar events. This is the dream but requires building a signal aggregator.
+
+### My recommendation
+
+**Start with option 1** (manual JSON in agentic_ai_context) — it's one step up from static HTML but still simple. The page loads the JSON via `fetch()` and renders the diagram + cards client-side.
+
+Then **graduate to option 2** (Google Sheet → GAS sync) when non-technical owners need to update statuses themselves.
+
+Want me to:
+1. **Merge the current PR** (static HTML) so it's live now?
+2. Then **open a second PR** that converts it to JSON-driven with a `tracks.json` in agentic_ai_context?
 
