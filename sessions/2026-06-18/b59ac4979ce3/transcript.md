@@ -771,6 +771,11 @@ Let me look at the current /dao page on truesight_me_beta to see what's there an
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see the structure. It's a static site (vanilla HTML, no framework). Let me check the main index.html to see the navigation and understand where a /dao page would go.
 
 
@@ -961,4 +966,16 @@ A human needs to reconcile this. The options are:
 3. **We force-sync** — but the instructions say never force (CNAME divergence is intentional)
 
 Want me to check what's actually conflicting?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Merge synced it manually
+
+
+### 🤖 Autopilot
+
+Looks like you already resolved it on your end — prod is now in sync with beta. ✅
+
+**truesight.me/roadmap** should now show the live track map instead of the old Google Drawing redirect. Want me to verify it's serving correctly?
 
