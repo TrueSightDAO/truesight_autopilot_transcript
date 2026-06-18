@@ -363,16 +363,29 @@ I see the vault page. Let me check if there's an API endpoint to read credential
 ### 🤖 Autopilot
 
 It's an HTML page. Let me check if there's a login or API endpoint to access the vault contents.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's a login page. Let me check what repo serves this vault app — it might be part of `dao_protocol` or a separate service.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the vault is a web app served by the autopilot itself. Let me check the vault routes to see if there's an API endpoint I can use to read credentials.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -537,4 +550,194 @@ Or if you see a different page than expected — could you send me a screenshot?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → python3 -c " import json, sys sys.path.insert(0, '/opt/truesight_autopilot') from app.vault import get_vault vault = get_vault() val = vault
+
+
+### 🧑 Governor
+
+what to fill up in this fields
+
+[Attachment auto-processed: **dbadf9e3bf744e84a65ddecfe3f1f8f1.pdf**]
+- Type: PDF (5 pages, 4020 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Your account
+ Your projects
+ Your organizations
+ Account settings
+ Publishing
+Trusted Publisher Management
+OpenID Connect (OIDC) provides a flexible, credential-free mechanism for delegating publishing
+authority for a PyPI package to a trusted third party service, like GitHub Actions.
+PyPI users and projects can use trusted publishers to automate their release processes, without
+needing to use API tokens or passwords.
+You can read more about trusted publishers and how to use them here.
+Manage publishers
+Projects with active publishers
+No publishers are currently configured. Publishers for existing projects can be added in the
+publishing configuration for each individual project.
+Pending publishers
+No pending publishers are currently configured. Publishers for projects that don't exist yet can be
+added below.
+Add a new pending publisher
+Type '/' to search projects
+
+ sophia_truesight 
+6/18/26, 1:24 PM
+Trusted Publisher Management · PyPI
+https://pypi.org/manage/account/publishing/
+1/5
+
+--- Page 2 ---
+GitHub
+GitLab
+Google
+ActiveState
+You can use this page to register "pending" trusted publishers.
+These publishers behave similarly to trusted publishers registered against specific projects, except
+that they allow users to create the project if it doesn't already exist. Once the project is created, the
+"pending" publisher becomes an ordinary trusted publisher. You can read more about "pending"
+and ordinary trusted publishers here.
+Read more about GitHub Actions' OpenID Connect support here.
+PyPI Project Name (required)
+project name
+The project that will be created on PyPI when this publisher is
+used
+Owner (required)
+owner
+The GitHub organization name or GitHub username that owns the
+repository
+Repository name (required)
+repository
+Configuring a "pending" publisher for a project name does not reserve that name. Until the
+project is created, any other user may create it, including via their own "pending" publisher.
+6/18/26, 1:24 PM
+Trusted Publisher Management · PyPI
+https://pypi.org/manage/account/publishing/
+2/5
+
+--- Page 3 ---
+The name of the GitHub repository that contains the publishing
+workflow
+Workflow name (required)
+workflow.yml
+The filename of the publishing workflow. This file should exist in
+the .github/workflows/  directory in the repository configured
+above.
+Environment name (optional)
+pypi
+The name of the GitHub Actions environment that the above
+workflow uses for publishing. This should be configured under
+the repository's settings. While not required, a dedicated
+publishing environment is strongly encouraged, especially if your
+repository has maintainers with commit access who shouldn't
+have PyPI publishing access.
+Help
+Installing packages
+About PyPI
+PyPI Blog
+Contributing to PyPI
+Bugs and feedback
+
+
+Add
+6/18/26, 1:24 PM
+Trusted Publisher Management · PyPI
+https://pypi.org/manage/account/publishing/
+3/5
+
+--- Page 4 ---
+Uploading packages
+User guide
+Project name retention
+FAQs
+Infrastructure dashboard
+Statistics
+Logos & trademarks
+Our sponsors
+Contribute on GitHub
+Translate PyPI
+Sponsor PyPI
+Development credits
+Using PyPI
+Terms of Service
+Report security issue
+Code of conduct
+Privacy Notice
+Acceptable Use Policy
+Status: All Systems Operational
+Developed and maintained by the Python community, for the Python community.
+Donate today!
+"PyPI", "Python Package Index", and the blocks logos are registered trademarks of the Python
+Software Foundation
+.
+© 2026 Python Software Foundation
+Site map
+Deployed from 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0145360 
+6/18/26, 1:24 PM
+Trusted Publisher Management · PyPI
+https://pypi.org/manage/account/publishing/
+4/5
+
+--- Page 5 ---
+English  español  français  日本語 português (Brasil)  українська  Ελληνικά  Deutsch  中文 (简体)  中文 (繁體)  русский  עברית Esperanto  한국어
+Switch to desktop version
+
+AWS
+Cloud computing
+and Security
+Sponsor
+Datadog
+Monitoring
+Depot
+Continuous
+Integration
+Fastly
+CDN
+Google
+Download Analytics
+Pingdom
+Monitoring
+Sentry
+Error logging
+StatusPage
+Status page
+6/18/26, 1:24 PM
+Trusted Publisher Management · PyPI
+https://pypi.org/manage/account/publishing/
+5/5
+```
+
+
+### 🤖 Autopilot
+
+Perfect — you're on the right page! This is the **Pending Publishers** section. Fill it in like this:
+
+| Field | Value |
+|---|---|
+| **PyPI Project Name** | `truesight-dao-client` |
+| **Owner** | `TrueSightDAO` |
+| **Repository name** | `dao_protocol` |
+| **Workflow name** | `pypi-publish-dao-client.yml` |
+| **Environment name** | *(leave blank — optional)* |
+
+Then click **"Add"**.
+
+Once you do that, tell me and I'll trigger the workflow to publish v0.2.0!
 
