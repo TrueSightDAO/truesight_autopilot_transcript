@@ -827,46 +827,80 @@ Now the dry-run test:
 ### 🤖 Autopilot
 
 The console script isn't on PATH. Let me check where it was installed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script entry is in `pyproject.toml` but pip installed it as "UNKNOWN" (the package name in `pyproject.toml` is `truesight-dao-client` but the build metadata says UNKNOWN). Let me check if the entry points were actually installed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The module isn't in site-packages. The `pip3 install .` installed from the old cached build. Let me force a clean reinstall:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still UNKNOWN. The issue is the package name in `pyproject.toml` is `truesight-dao-client` but the wheel metadata isn't picking it up. Let me check if the entry points were actually generated:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No entry_points.txt and no modules directory. The package didn't actually install the source. Let me check what's going on:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The package isn't installing properly. Let me check the `pyproject.toml` more carefully — the `[project]` name is `truesight-dao-client` but the build is producing UNKNOWN. This might be a setuptools version issue. Let me try installing in editable mode instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No setup.py. Let me check how the existing scripts like `truesight-dao-add-partner` are installed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a virtualenv! The package is installed in `.venv`, not the system pip. Let me use that:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -905,21 +939,50 @@ Now test:
 ### 🤖 Autopilot
 
 Let me first read the exact area in `main.py` where `submit_contribution` is dispatched, so I know exactly what to change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full `submit_contribution` handler from the actual file on disk:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the actual raw file content to work with:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is huge (186K+ chars). Let me find the exact lines I need to modify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -927,6 +990,22 @@ The file is huge (186K+ chars). Let me find the exact lines I need to modify:
 Now I see the exact code. The `submit_contribution` handler at line 1952 already calls `edgar.submit_contribution(event_name, attributes, ...)` — which means **it already works for any event name**, including `CONTRIBUTOR ADD EVENT`. The issue is just that the system prompt doesn't know about it.
 
 But wait — let me check what the tool definition looks like (the schema that tells the LLM what parameters to pass):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -934,6 +1013,7 @@ But wait — let me check what the tool definition looks like (the schema that t
 Now I see the full picture. The `submit_contribution` tool already works generically — it takes any `event_name` and `attributes` and passes them to Edgar. The handler at line 1952 calls `edgar.submit_contribution(event_name, attributes, ...)` which works for any event.
 
 The change needed is minimal — just update the tool description to mention `CONTRIBUTOR ADD EVENT` as a valid event name, so the LLM knows it can use it. Let me also check the `lookup_event_docs` tool to see if it already covers this:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1017,4 +1097,126 @@ All 602 tests pass, 1 skipped (pre-existing). All four checks pass:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → grep -n "submit_contribution\|CONTRIBUTOR ADD\|INVENTORY MOVEMENT\|QR CODE REGISTRATION\|SALES EVENT\|PARTNER ADD" /opt/truesight_autopilot/; sed -n '1715,1960p' /opt/truesight_autopilot/app/main.py; grep -n "submit_contribution\|CONTRIBUTOR ADD\|def submit_contribution\|event_name ==" /opt/truesight_autopilot/app/main.py | head -30; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] I guess phase 3?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] Seem your redeployment was successful. So phase 3?
+
+
+### 🤖 Autopilot
+
+Phase 3 needs PR #262 merged first — the autopilot needs to know about `CONTRIBUTOR ADD EVENT` before I can call it. Let me check if it's been merged:
+
+
+### 🤖 Autopilot
+
+PR #262 isn't in the open list — it's not merged yet either. Let me check:
+
+
+### 🤖 Autopilot
+
+PR #262 was already merged at `2026-06-18T22:08:27` — you or someone merged it. Let me check if the autopilot has been redeployed with it:
+
+
+### 🤖 Autopilot
+
+Already deployed. Let me verify the tool descriptions are live:
+
+
+### 🤖 Autopilot
+
+All three descriptions are live. Now for Phase 3 — adding David Campbell. Let me do it:
+
+
+### 🤖 Autopilot
+
+The console script wasn't installed. Let me check what's available:
+
+
+### 🤖 Autopilot
+
+The package was installed as "UNKNOWN" — the `pyproject.toml` name issue. Let me check the pyproject.toml and fix it:
+
+
+### 🤖 Autopilot
+
+The `pyproject.toml` has the entry point. The issue is the package was installed as "UNKNOWN" because the build metadata didn't pick up the name. Let me check the current installed state:
+
+
+### 🤖 Autopilot
+
+The package is installed as "UNKNOWN" (old build). Let me reinstall with the updated pyproject.toml:
+
+
+### 🤖 Autopilot
+
+Editable mode doesn't work. Let me try regular install:
+
+
+### 🤖 Autopilot
+
+Still building as UNKNOWN. The issue is the `pyproject.toml` name isn't being picked up by setuptools. Let me check if there's a `setup.cfg` or `setup.py` that's overriding it:
+
+
+### 🤖 Autopilot
+
+The `UNKNOWN.egg-info` is stale from before the pyproject.toml was updated. Let me clean it and rebuild:
+
+
+### 🤖 Autopilot
+
+Still UNKNOWN. The issue is the setuptools version on this box doesn't read the `[project]` name from `pyproject.toml` properly. Let me check:
+
+
+### 🤖 Autopilot
+
+Setuptools 59.6.0 — that's old. It doesn't support PEP 621 (`[project]` in pyproject.toml) properly. Let me upgrade setuptools and try again:
+
+
+### 🤖 Autopilot
+
+Still UNKNOWN. The issue is the wheel cache. Let me clear it:
+
+
+### 🤖 Autopilot
+
+The build now correctly produces `truesight_dao_client-0.2.0`. Let me install from the built wheel:
+
+
+### 🤖 Autopilot
+
+Now it's installed as `truesight-dao-client-0.2.0` with all scripts in `/home/ubuntu/.local/bin`. Let me add that to PATH and test:
+
+
+### 🤖 Autopilot
+
+**David Campbell has been submitted.** Edgar responded:
+
+| Field | Value |
+|---|---|
+| **Status** | ✅ `success` |
+| **Google Sheet Logged** | ✅ Yes (Telegram Chat Logs) |
+| **Signature Verification** | ✅ `success` |
+| **File Uploaded** | N/A (no attachment) |
+
+The GAS handler (`ContributorAddHandler.js`) will pick this up from Telegram Chat Logs, dedup against "New Contributor" tab, append to "Contributors contact information", and fire the onboarding invitation email to David.
+
+**All 3 phases complete:**
+
+| Phase | What | Status |
+|---|---|---|
+| **Phase 1** | CLI module + PR #123 merged + installed | ✅ |
+| **Phase 2** | Autopilot tool descriptions updated + PR #262 merged + deployed | ✅ |
+| **Phase 3** | David Campbell added via CLI | ✅ |
+
+David should receive the onboarding email shortly. Want me to verify by checking the Telegram Chat Logs sheet?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /opt/truesight_autopilot && git log --oneline -5; grep -n "CONTRIBUTOR ADD EVENT" /opt/truesight_autopilot/app/tools/dao_submission.py /opt/truesight_autopilot/app/tools/lookup_event_docs.py; cd /opt/truesight_autopilot/dao_protocol && .venv/bin/truesight-dao-add-contributor --contributor-name "David Campbell" --contributor-email ; …(+14 more)
 
