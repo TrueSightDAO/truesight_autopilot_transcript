@@ -152,5 +152,12 @@
     "summary": "PR6 \u2014 Intent\u2192event picking guidance (G4a)\n\nStrengthen lookup_event_docs output + the system-prompt so the LLM reliably picks the right event for an intent and fills important canonical fields.\n\nChange",
     "action": "merge_pr",
     "created_at": "2026-06-18T22:14:51Z"
+  },
+  {
+    "title": "Merge PR #264 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "PR7 \u2014 Enforce lookup-before-submit (G4b) \u2014 needs PR6 merged\n\n`submit_contribution` requires a prior in-session `lookup_event_docs` for the event type, else it injects the catalog spec inline before va",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T22:18:31Z"
   }
 ]
