@@ -499,11 +499,13 @@ The nested escaping is making this unreadable. Let me take a more direct approac
 ### 🤖 Autopilot
 
 I can see the full list of contributor names. Let me search for "David", "Campbell", "Molly", "SOHA" in this list.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've now scanned the full contributor list. Let me also check the Contributors sheet specifically (not Ledger history) and the partners-velocity for SOHA's contact info.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -521,6 +523,7 @@ go for it
 ### 🤖 Autopilot
 
 Let me check the handoff registry to see if this thread has a plan to resume.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -667,4 +670,40 @@ Want me to draft a welcome email to david@soha.center?
 ———
 **✅ Done this turn — actions taken:**
 • `register identity`
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] sorry for the confusion, instead of registering email, it is via the corresponding dao_client for this
+
+https://dapp.truesight.me/governor_contributor_admin.html
+
+
+### 🤖 Autopilot
+
+No problem! Let me check the dao_client repo to understand how this works.
+
+
+### 🤖 Autopilot
+
+That doc is for service-identity onboarding (bots). For a human contributor like David Campbell, the flow is through the **dapp** page you linked. Let me check that page and the dao_client tooling.
+
+
+### 🤖 Autopilot
+
+I see — this is a **web form** on the dapp that you need to fill in as a governor. It's not something I can submit via an API tool — it requires your governor session on the dapp.
+
+Here's what you need to do:
+
+1. Go to **https://dapp.truesight.me/governor_contributor_admin.html**
+2. It will verify your digital signature (governor gate)
+3. Fill in:
+   - **Display name:** `David Campbell`
+   - **Email:** `david@soha.center`
+   - **Initial public key:** *(leave blank — he'll self-register via email verification)*
+4. Click **Add contributor**
+
+That will create a row in the Contributors sheet and trigger an onboarding email to david@soha.center so he can self-register his device key.
+
+Also — since I already called `register_identity` earlier, that generated a keypair and submitted it under his email. That may have created a duplicate or conflicting record. Want me to check if that caused any issues, or shall we just proceed with the dapp form and let the email-verification flow sort it out?
 
