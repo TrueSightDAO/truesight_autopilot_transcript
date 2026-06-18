@@ -186,3 +186,34 @@ Understood. I'll note that for self-improvement — can you tell me what the bug
 
 Good to hear it's sorted. If you ever want me to review what Claude changed and incorporate it into my codebase, just let me know — happy to learn from the fix.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] I think the new changes has already been deployed.. Could you check?
+
+
+### 🤖 Autopilot
+
+Let me check the latest commits and PRs on the autopilot repo to see what changed.
+
+
+### 🤖 Autopilot
+
+I can see the relevant PRs — #251, #252, #253, #254 all relate to the `submit_contribution` approval-gate fix. Let me check if the current running version includes those.
+
+
+### 🤖 Autopilot
+
+Yes — the fix is already deployed. The running code on this box is at **d9df81c**, which includes all four fix PRs:
+
+1. **#251** — removed the approval gate (the core bug that was blocking execution)
+2. **#252** — hotfix for the `UnboundLocalError` crash on the execute path
+3. **#253** — regression test for the gate/execute path
+4. **#254** — updated the prompt instructions to match the new no-gate flow
+
+All merged and live. The `submit_contribution` tool now submits directly without needing a separate approval step — exactly as the current prompt says.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /home/ubuntu/truesight_autopilot && git log --oneline -10; which sophia 2>/dev/null; ls /home/ubuntu/ 2>/dev/null; ls /opt/ 2>/dev/null; systemctl list-units --type=service --state=running 2>/dev/nul; ls /home/ubuntu/truesight_autopilot/ 2>/dev/null && cd /home/ubuntu/truesight_autopilot && git log --oneline -5 && echo "---" && git remote ; …(+3 more)
+
