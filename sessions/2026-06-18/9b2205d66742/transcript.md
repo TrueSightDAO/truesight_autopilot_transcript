@@ -91,6 +91,11 @@ I'm parked and ready. Reply **"go for it"** and I'll execute PR1 from RESUME HER
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it. I've now read both plans:
 
 1. **`SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md`** — RESUME HERE = **PR1**: Catalog merge — make `_refresh_events_catalog` UPDATE existing events (G2 fix). One PR per turn, own-repo gate.
@@ -237,4 +242,60 @@ pip install truesight-dao-client
 ---
 
 **Do you have PyPI owner access for `truesight-dao-client`?** If not, we'd need to create the project first. If you want, I can check whether the project already exists on PyPI.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] I just added PYPI_API_TOKEN to your vault. 
+
+Do you think you could try to setup the project with PyPI?
+
+
+### 🤖 Autopilot
+
+Let me check what's in the vault and whether the project already exists on PyPI.
+
+
+### 🤖 Autopilot
+
+The project doesn't exist on PyPI yet. Let me check the vault for the token and also look at the `pyproject.toml` to see the current version.
+
+
+### 🤖 Autopilot
+
+Good — `pyproject.toml` is ready at v0.2.0. Now let me find the token you added to the vault.
+
+
+### 🤖 Autopilot
+
+The vault is a macOS credential backup system — not where you'd store a PyPI token for server-side use. Let me check the MANIFEST to see what's actually in the vault.
+
+
+### 🤖 Autopilot
+
+I see — the vault backs up `.env` files from various repos. Let me check if `dao_protocol` has a `.env` or if the token was added somewhere specific.
+
+
+### 🤖 Autopilot
+
+The `.env` isn't in the repo (correct — it's gitignored). You said you added `PYPI_API_TOKEN` to "your vault" — could you clarify where exactly you put it?
+
+Here's the thing though — **the workflow doesn't use `PYPI_API_TOKEN`**. It uses **trusted publishing (OIDC)**. So even if we have the token, the workflow won't read it.
+
+We have two paths:
+
+### Option A: Trusted Publishing (recommended — no tokens needed)
+I set up the trusted publisher on PyPI's website. You'd need to:
+1. Log into **pypi.org** (do you have an account?)
+2. Create the project `truesight-dao-client`
+3. Add the trusted publisher config (GitHub → `TrueSightDAO/dao_protocol` → workflow `pypi-publish-dao-client.yml`)
+
+Then I trigger the workflow from GitHub Actions and it publishes automatically.
+
+### Option B: Token-based (if you prefer)
+We'd need to modify the workflow to use `PYPI_API_TOKEN` as a GitHub secret, then I can add the secret to the repo via GitHub API.
+
+---
+
+**Which route do you want to take?** Option A is simpler and more secure — one-time PyPI setup, then it just works. If you have a PyPI account, I can walk you through the 3 clicks needed.
 
