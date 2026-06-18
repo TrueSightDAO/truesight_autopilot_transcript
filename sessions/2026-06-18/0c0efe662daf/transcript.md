@@ -5340,6 +5340,21 @@ Once I have it, I'll read both tracks side by side and give you my thoughts.
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found it. The Prospera track is referenced in the notes of `truetech_inc.entity.json`:
 
 > *"The proposed Brazilian export entity (owned via a Próspera-jurisdiction company) would sit upstream of TrueTech on the Brazil export side; TrueTech remains the US import partner / importer of record."*
@@ -6043,4 +6058,65 @@ Updated document: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/B
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #558 on agentic_ai_context merged successfully (sha: ae29540c82a3c15853eee294c7638085ca0e483c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] we should also take into account Black King export NFe. Which means that where the CNPJ is registered it needs to also be able to have the necessary  CNAE to be able to export otherwise no point
+
+
+### 🤖 Autopilot
+
+Good catch. The CNPJ needs the right **CNAE** (Classificação Nacional de Atividades Econômicas) codes to issue export NF-e (Nota Fiscal eletrônica). Without the correct CNAE, the entity can't legally export — making the whole structure pointless.
+
+Let me check what CNAE codes are needed and add this to the brief.
+
+
+### 🤖 Autopilot
+
+The key CNAE codes for agricultural exports are:
+- **46.21-0** — Comércio atacadista de produtos agrícolas (wholesale agricultural products)
+- **46.47-3** — Distribuição de produtos agrícolas (agricultural distribution)
+
+Let me also check what CNAE Black King currently uses.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The freight pre-flight checklist already documents the Black King CNAE problem:
+
+> **Black King currently CANNOT issue NF-e.** The CNPJ has only service CNAEs (82.30-0-01, events/fairs), no Inscrição Estadual (IE), and no NF-e credentialing at SEFAZ-BA.
+
+So Black King's CNAE is **82.30-0-01** (events/fairs) — a service CNAE, not a commerce or export CNAE. That's why it can't issue export NF-e.
+
+The new CNPJ needs at minimum:
+- **46.21-0** — Comércio atacadista de produtos agrícolas (wholesale agricultural products)
+- Plus Inscrição Estadual (IE) at SEFAZ-BA
+- Plus NF-e model 55 credentialing
+
+Let me add this CNAE requirement to the Brazil Export Entity Brief.
+
+
+### 🤖 Autopilot
+
+Added. The Brazil Export Entity Brief now includes **reason #5** in the problem section:
+
+> **Wrong CNAE for exports** — Black King's CNPJ has only service CNAEs (82.30-0-01, events/fairs), no Inscrição Estadual (IE), and no NF-e model 55 credentialing at SEFAZ-BA. This means it **cannot legally issue export NF-e**, which is required for DU-E registration in Siscomex. A new CNPJ with the correct commerce/export CNAE is essential.
+
+The new CNPJ needs at minimum:
+- **CNAE 46.21-0** — Comércio atacadista de produtos agrícolas
+- **Inscrição Estadual (IE)** at SEFAZ-BA
+- **NF-e model 55** credentialing
+
+Without these, the entity can't export — making the whole structure pointless regardless of which holding path we choose.
+
+Updated document: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_EXPORT_ENTITY_BRIEF.md
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #559 on agentic_ai_context merged successfully (sha: 0f22d55d126db6a81cab8c89a2135acc686d20ec). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #559 on agentic_ai_context merged successfully (sha: 0f22d55d126db6a81cab8c89a2135acc686d20ec). Pull Request successfully merged
 
