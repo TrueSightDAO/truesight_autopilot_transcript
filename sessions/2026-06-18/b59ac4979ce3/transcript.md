@@ -22,6 +22,7 @@ My sense is if there is a PERT chart or Flow chart or some form not GANTT (which
 Gary, you're right — there are several active tracks running in parallel, and without a visual map it's easy for members (and even me) to lose the thread of which task belongs to which track.
 
 Let me pull together what's actually live right now so we can design the right artifact.
+[4 tool result(s) compacted: read_context_file, read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -183,4 +184,36 @@ Track 6: GACC/Brazil Compliance ── offline prep
 ```
 
 **Track 7 is the single bottleneck** holding up both subscription delivery and the China launch. Want me to draft this as a proper `TRACK_MAP.md` in agentic_ai_context with Mermaid swimlanes?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] I think we should just drop those tracks that are already done.
+
+
+### 🤖 Autopilot
+
+Agreed. No point carrying dead weight in the map. Here's the lean version:
+
+---
+
+## Active Tracks (June 2026)
+
+```
+Track 7: Brazil Export Entity (CNPJ/NF-e/CNAE) ←── THE GATE
+    ├── blocks → Track 8: Chocolate Subscription Delivery
+    └── blocks → Track 9: China/Aora Events (100 bars)
+```
+
+That's it. Three active tracks, one bottleneck.
+
+**Track 7** — New Brazilian CNPJ with correct CNAE (46.23-1/04), Inscrição Estadual, and NF-e model 55 credentialing. Replaces Black King's personal CNPJ as the export vehicle.
+
+**Track 8** — Subscription fulfillment for chocolate bars. Can't ship until Track 7 clears.
+
+**Track 9** — Aora/China pilot with Liz. 100 bars for Gary to backpack-carry. Same blocker.
+
+---
+
+Want me to draft a `TRACK_MAP.md` into agentic_ai_context with just these three tracks and their dependency arrows? I can also add a "who owns what" column if you want to assign owners to each track.
 
