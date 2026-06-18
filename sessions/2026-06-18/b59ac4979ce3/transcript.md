@@ -3345,6 +3345,16 @@ Now I should also update the roadmap page on truesight_me_beta to reflect the co
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — I have the full HTML. Now I need to update it to match the corrected TRACK_MAP.md: fix the dependency arrows, add anchor IDs, add the missing downstream chain info, and add the Aora event plan link. Let me also read the full file to get the complete content:
 
 
@@ -3436,4 +3446,482 @@ Contribution submitted. ✅
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+were you able to add this file for the China events?
+
+[Attachment auto-processed: **a72a875ee3f14788a1156064e747b1ff.pdf**]
+- Type: PDF (1 page, 18034 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+AORA×AGROVERSE Cacao Rainforest Adventure
+Complete Event Flow & Venue Layout·Shenzhen Pilot·July 2026
+Pre-Event Check-in 20-30 min+ Main Event 90 min= Total Duration~110-120 min
+1.时间结构
+2.90分钟主流程
+3.关键转场
+4.供应链游戏
+5.场地布局
+6.场地需求
+①Overall Time Structure
+Phase
+Duration
+Content
+Pre-Event
+20-30 min before
+Children arive, complete Aora armband printing and certification. Early arivals browse displays, view samples, and take photos in the Prelude Area.
+Check-in
+the event
+The facilitator interacts with early families to warm up the atmosphere.
+Main Event
+90 min
+A complete seven-act experience from Prologue to Epilogue. Check-in does not consume main event time.
+Total Duration
+~110-120 min
+Including pre-event check-in, comfortably fitting within a half-day schedule without causing fatigue for parents and children.
+2Main Event 90-Minute Timeline
+Time
+Segment
+Duration
+Cum.
+Core Experience
+Transition Logic
+0:00
+Prologue·Prelude Area
+5 min
+5 min
+"Aora Expedition Team, assemble!"The facilitator tells the story
+Check-in already completed during pre-
+of discovering Aora Kuku and introduces the gift set samples.
+event; children naturally enter the Prelude
+Children wear their armbands and take photos in the Prelude
+Area wearing armbands.
+Area.
+0:05
+Act One·The Rainforest Gate 2min
+7 min
+Gary steps out from behind the curtain, gives a brief welcome,
+Facilitator: "Gary is waiting for you.Are you
+and opens the curtain. Rainforest sound effects rise. Children
+ready?"
+follow Gary into the Main Experience Area.
+0:07
+Act Two·Aora Interactive
+8min
+15 min
+Aora companion settles into the rainforest—scan Aora into
+The first thing after entering the rainforest
+Zone
+the projection scene (or paste onto the backdrop wall).
+is to settle Aora in, then take it along to
+Facilitator: "Your Aora has made its home in this rainforest.
+explore.
+From now on, it will lways be with you."
+0:15
+Act Three·Sensory
+15 min
+30 min
+Pure nature experience, not linked to the Supply Chain.
+After Aora settles in, take it along to
+Exploration Zone
+Smell Station: smell cacao beans, moist soil, vanilla pods一
+discover the secrets of the rainforest. The
+get to know the flowers and fruit of the cacao tree
+four stations rotate independently,
+Touch Station: touch moss, bark, cacao pod husks—feel
+experiencing symbiotic ecology.
+the skin and veins of the rainforest
+ Sight Station:view enlarged fungal network micrographs
+and agroforestry layering diagrams—discover the
+underground internet
+ Sound Station: listen to pre-recorded rainforest animal
+sounds—meet the neighbours of the rainforest
+Aora Kuku standee cards are placed beside each station; the
+facilitator paints ecological pictures with words.
+0:30
+Transition
+1 min
+31 min
+The facilitator naturally transitions: "Your Aora has taken you
+A natural transition from "getting to know
+all over the rainforest—smelling the fragrance of cacao
+the rainforest" to "the bean leaves the
+flowers, touching bark and moss, seeing the underground
+rainforest to go on an adventure." The
+fungal network, and hearing the sounds of all kinds of animals
+Sensory Exploration Zone is a rainforest
+in the forest. This rainforest is the home of the cacao bean.
+ecosystem experience; the Supply Chain
+Now, the cacao bean is leaving home—it is going to go on a
+board game is the bean's journey—two
+long journey to become chocolate. Do you want to become a
+independent modules with a coherent
+cacao bean with your Aora and go on an adventure?"
+narrative.
+0:31
+Act Four·Supply Chain
+18 min
+49min
+The Great Bean Adventure·Floor map game,
+An independent supply chain experience,
+Board Game Round 1
+independently completing all seven stations.
+completing the full journey from
+Bubble Bath Station (Fermentation): smell beans at
+fermentation to the chocolate factory. At
+different fermentation stages, stamp
+the fork road, children choose a card-back
+Sunny Beach Station (Drying): mimic turning motions,
+colour based on intuition, with no
+stamp
+suggestive guidance whatsoever.
+Bean Dash Station (Transport): pass and touch burlap sacks,
+push game pieces to the port
+ Bean Fork Road (Trade Choice): choose between green-
+backed and orange-yellow-backed cards
+ Magic Transformation Station: the bean becomes
+chocolate, receive a medal
+0:49
+Act Four·Supply Chain
+10 min
+59 min
+Children choose freely:
+Facilitator: "Those who want to go again
+Board Game Round 2
+Continue: quickly restart from the beginning and take the
+can try the other path.Any choice is fine一
+path not previously chosen
+it's your own decision."
+9 Spectate: sit at the finish line and observe which path the
+continuing children choose
+Rest:flip through the passport, stay quietly
+0:59
+Act Five·The Magic
+15 min
+74 min
+◆Supply Chain finish →Magic Workshop natural
+The finish point of the Supply Chain (beans
+Workshop
+transition:"Just now you watched the beans turn into
+becoming chocolate)seamlessly connects
+chocolate. Now, it's your turn to make chocolate with your
+with the start of the Magic Workshop
+own hands!" Using Fair Trade chocolate liquid, custom moulds
+(making chocolate by hand)—from
+and toppings, children make chocolate by hand. After pouring
+"watching the transformation"to "creating
+the chocolate liquid into moulds, they are placed in a portable
+with your own hands."
+refrigerator to set.Gary quietly joins to observe or assist.
+1:14
+Act Six·Starlit Campfire
+8 min
+82 min
+★Gary shares his true story with Aora Kuku in the cacao
+The waiting time for the chocolate to set is
+rainforest.The main projection wall switches to a starry sky/
+exactly the time for Gary to share his story.
+campfire scene. The chocolate is setting in the refrigerator
+Children sit around listening,with the
+(~10-20 min)—when the story ends, the chocolate will be
+aroma of chocolate still in the air.
+almost ready.
+1:22
+Epilogue·Rainforest Wishes 8min
+90 min
+重The chocolate has set! Award explorer certificates.
+The story ends, the chocolate sets,
+Story picture book sample display—the facilitator picks
+certificates are awarded, Story Seed Cards
+up a sample: "Your Aora story can also become a picture book
+are printed—four "harvests" happen
+like this."
+simultaneously for the highest emotional
+里Story Demo Area—laptop+printer live demonstration of
+density.
+the story creation flow, printing "Story Seed Cards"
+t Group photo farewell—Gary takes a group photo with the
+children against the starry sky backdrop
+3 Key Transition Points
+Transition 3
+Transition 2
+Transition 1
+Supply Chain Board Game- Magic Workshop
+Magic Workshop→Starlit Campfire
+The finish point of the Supply Chain is the Magic
+After pouring the chocolate liquid into moulds, it needs 10-
+"watching the transformation" to "creating with your own
+Transition 4
+④ Supply Chain Board Game Core Mechanism Overview
+Sensory Exploration- Supply Chain Board Game
+Transformation Station—children see the beans become
+20 minutes to set.The facilitator: "The chocolate is slowly
+hands."
+Starlit Campfire→ Rainforest Wishes
+"Your Aora has taken youall over the rainforest—this
+chocolate. The facilitator naturally transitions:"Just now you
+setting. While we wait, Gary would like to share a story with
+Gary's story ends, and the chocolate has also set. The
+rainforest is the home of the cacao bean. Now, the cacao
+watched the beans turn into chocolate. Now, it's your turn to
+you." The chocolate "quietly transforms" in the refrigerator
+facilitator: "The story is finished, and your chocolate has set
+bean is leaving home—it is going to go on a long journey
+make chocolate with your own hands!" A seamless flow from
+while the children sit around listening to the story.
+too-go and see the chocolate you made with your own
+to become chocolate. Do you want to become a cacao bean
+hands!" The story ends, the chocolate sets, and certificates
+with your Aora and go on an adventure?"
+are awarded—three "harvests" happening simultaneously.
+The Suply Chain board ame "The Great Bean Adventure“run independenty fora tota duration of~28 minutes(Round 1:18 min+ Round 2 re choice: 10 min).The complete desin can
+Card Back Design
+be found in the separate document "The Great Bean Adventure Supply Chain Learning Module·Large Floor Board Game Design."
+Green Card Back: Deep green solid#2d5e2c(event title colour), cacao leaf silhouette pattern—represents one trade model
+Orange-Yellow Card Back: Vibrant orange-yello solid HFD96(event card background colour), cacao bean silhouette pattern - represents another trade model
+Both colours are directly taken from the event's theme colour palette as solid colours. Solid card backs are clean and simple, easy to print, and fully unified with the event's overall visual style.
+Cacao leaves and cacao beans reboth ats ofthe cacao tre, with n goodo bad distincton. Children chose urely base n ther intuitive reference for"like gren"or"like orange-
+yellow."
+Dimension
+Green Card Back Set
+Orange-Yellow Card Back Set
+Rhythm
+Steady, more waiting moments, but good outcomes often follow waiting
+Faster, more opportunities to advance, but speed often comes with costs
+Characteristics
+Real-world
+More complex processes, but more stable farmer incomes
+Higher efficiency, but unstable farmer incomes
+Reflection
+Typical Experience "Wait— certification, training, voting— then good things happen"
+"Zoom fast, but occasionally encounter price drops or middlemen demanding extra fees"
+Round 2
+Children freely choose whether to go again and take the previously unchosen path. They can also choose to spectate and observe, or rest quietly. At the finish, everyone
+sits in a circle and shares their different experiences of the two paths.The facilitator does not judge and does not give conclusions.
+5Venue Layout
+Design Note
+Total Area:220-250m (ideal value, adjustable based on actual conditions).A rectangular layout is best(width≥12m, depth≥14m).
+Capacity:~40-55 people(10-15 families—some may have both parents attending—plus 7-9 staff members).
+Spatial Division Logic:
+Preparation Area (left side, vertical axis): Check-in Station→ Prelude Area→ Spatial Divider. Occupies~55-65m. The Prelude Area needs to accommodate parents lingering, socialising,
+Main Experience Area(right side, horizontal along the main projection wall): Aora Interactive Zone→Sensory Exploration Zone→Adventure Zone (Supply Chain)→ Magic Workshop→
+Connection Entranc: Spatia Dvider (curtain/movable partition / fabric drape).Gary opens the curtain here to invite children into the Main Experience Area.
+Flow Description:
+Entrance(top left)→ Check-in Station → Prelude Area→ Spatial Divider(Gary opens curtain)→ Aora Interactive Zone → Sensory Exploration Zone → Adventure Zone
+One-way flow throughout, no backtracking. The Preparation Area flows vertically; the Main Experience Area flows horizontally.
+Zone
+Relationship Between Zones and Projection Wall:
+The following venue layout and area requirements represent an ideal preliminary concept. In actual execution, adjustments can be made flexibly according to the specificvenue
+taking photos, and moving around.
+Inspiration/Finale Area.Occupies~155-185m2.Children maintain a consistent viewing distance of~3-4 metres from the screen.
+(Suply Chain)→ Magic Workshop→ Inspiration/Finale Area(with Story Demo Area and picture bok sample display)→ Exit (bottom right)
+Functional Area
+conditions, provided that the event flow remains complete and the experience quality is maintained. All area sizes, proportions, and relative positions are suggested values and can be fine-
+Suggested Area Key Configuration Points
+tuned during actual setup based on the actual venue layout.
+Preparation Area
+Check-in Station
+6-8m2
+Small square table,printer, tablet, stamp, armband bases
+Prelude Area
+46-50m2
+Display stands, sample table, stools, facilitator position, photo-taking area(needs 3-4m depth), parent social and
+waiting area
+Spatial Divider
+4-6m2
+Curtain/partition,~2 metres wide
+Main Experience
+Aora Interactive Zone
+~16m
+Printer/tablet(Plan 1C) or physical backdrop wall(Plan 1D)
+Area
+Sensory Exploration Zone
+~40m2
+Four station tables, station standee cards, Aora Kuku cards
+Adventure Zone (Supply~50m2
+Large floor-laid Supply Chain map, game props, needs ample walking space
+Chain)
+Magic Workshop
+~28m2
+Three workstations, heating/cooling equipment,主needs independent water & power
+Inspiration/Finale Area
+~38m2
+Cushions/seats, focus lights, story picture book sample display, Story Demo Area (laptop+printer), photo-taking
+area(needs 3-4m depth)
+Zone
+Distance from Screen
+Viewing Nature
+Aora Interactive Zone
+~3-4m
+Focus Moment: Looking up to see Aora enter the scene
+Sensory Exploration Zone
+~3-4m
+Atmospheric backdrop: attention on hands-on materials
+Adventure Zone (Supply Chain)
+~3-4m
+Atmospheric backdrop:attention on the floor map
+Magic Workshop
+~3-4m
+Atmospheric backdrop: attention on the workstation
+Inspiration/Finale Area
+~3-4m
+Focus Moment: Sitting around listening to Gary share; the projection is the visual focus
+Main Experience Area(Horizontal Journey Axis·Along the Projection Wall)
+必Preparation Area
+Earn Chocolate Medal
+Round 2:Free choice (Continue/Spectate / Rest)
+Spatial Divider
+Closing sharing Compare the two paths
+Curtain/Movable partition/Drape
+Gary opens the curtain here
+★ Legend &Notes
+崇Inspiration/ Finale
+·Let vertical axis="Preparation Area“: Check-in (open 20-30min before)-Prelude assembly- story- samples photos-social)-Curtain (Gary opens)
+Kxit
+6 Venue Requirements
+Main Projection Wall (Width~10-12m·Viewing distance 3-4m)
+(Vertical Ritual Axis)
+Starit Campfire·Gary shares story
+·Right horizontal axis="Main Experience Area": All zones along the projection wall children stay ~3-4m from the screen
+Visual backdrop throughout the event Scene transitions follow the narrative
+Entrance
+★ Chocolate setting, sit& listen
+·Sensory Exploration Zone (pure nature experience) and Supply Chain board game run independenty, connected by a natural facilitator transition
+-3-4m fromscreen
+参Check-in Station
+重 Award certificates-Photo
+·Supply Chain finish (chocolate transformation)-Magic Workshop (make chocolate by hand)—natural transition
+~3-4m fromscreen
+Thermal printer Tablet Stamp
+山Story Book
+·Inspiation Area aditons story picture book sample display + Story Demo Area (laptop+printer)—functionally benchmarks the Mystic Manor souveni shop
+-3-4m fromscreen
+Print Aora armband sticker Stamp certification
+■Demo Area
+·Magic Workshop needs independent water & power (heating chocolate, cleaning)
+~3-4m from screen
+(Open 20-30 min before event)
+Sample Display
+·Capacity 10-15 invited familes(~30-45 people,including 2-parent familes)+7-9staff-Suggested venue 220-250m
+Aora Interactive
+Prelude Area
+Laptop+Printer
+Sensory Exploration
+Expedition team assembly·Aora Kuku story
+Print"Story Seed Card"
+ Adventure Zone (Supply Chain)
+重Gift Set sample display
+m Photo-taking area
+Magic Workshop
+m Photo-taking area (needs 3-4m depth)
+Companion settles in·Scan to enter
+蓄 Parent social & waiting space
+Pure nature experience·4 stations
+Display Stand
+The Great Bean Adventure Floor map game
+Sample Table
+Sweet transformation·Make chocolate
+Led by Facilitator
+Supply Chain finish-Workshop transition
+Printer/Tablet
+Smell
+Touch
+Floor Supply Chain Map
+Fementation- Drying- Transport
+Workstation(moulds toppings)
+Fork Road (Green/Orange-Yellow choice)
+Backdrop(1D)
+ Sight
+Sound
+-Chocolate Factory
+Heater
+Discover rainforest symbiotic ecology
+Task Cards
+Cooler
+Independent from supply Chain game
+ANeeds wter&power
+Design Note
+The following venue requirements represent an ideal preliminary concept.In actual execution, adjustments can be made flexibly according to the specific venue conditions, provided
+that the event flow remains complete and the experience quality is maintained. All specifications are suggested values; the core principles are to ensure a linear one-way flow without
+backtracking, that all Main Experience Area zones can see the main projection wall, that the Magic Workshop is near a water and power source, and that there is a clear division between the
+Preparation Area and the Main Experience Area.
+Requirement
+Specification
+Venue Type
+Indoor space (shared event space, family studio, art gallery, multi-purpose room, etc.)
+Total Area
+220-250m (idel), with 20m as the baseline.A rectangular layout s best (with ≥12m, depth≥14m. Can be flexibly adjusted based on actual available space; priority
+is to ensure the width of the main projection wall and smooth flow between zones.
+Capacity
+~40-55 people (including 10-15 families—some may have both parents attending—and 7-9 staff members)
+Main Projection
+One complete horizontalwall(width≥10m idel r a long wall where a projection screen can be instlled.If the actual wall is salle, a width of≥8m is acceptable,
+Wall
+with zone spacing adjusted accordingly.
+Air
+Sufficient(July high temperatures)
+Conditioning
+Water & Power
+Basic water and power available (the Magic Workshop area needs simple cleaning facilities and power)
+Floor
+Level (a map needs to be laid out in the Adventure Zone)
+Light Control
+Ability to block natural light(curtains or blackout cloth) to ensure projection quality in the Main Experience Area
+Spatial Division
+Ability to set up a curtain or partition about 2 metres wide on one side of the space to divide the Preparation Area and the Main Experience Area. If the venue layout does
+not easily accommodate a left-right split with vertical-horizontal axes, the relative positions of the Preparation Area and Main Experience Area can be adjusted
+according to actual conditions.
+Wi-Fi
+Stable internet connection (for the story creation demo segment)
+Depth
+Sufficient depth for two photo-taking areas(Prelude Area and Inspiration Area)
+Space Quality
+The space should ideally be free of pillars or dead corners; the Prelude Area needs to accommodate parents and children lingering, socialising, waiting, and moving around
+Tables & ChairsBasic tables and chairs available or rentable
+Aora×Agroverse Cacao Rainforest Adventure·Complete Event Flow & Venue Layout(Final Version)·Shenzhen Pilot·July 2026
+Pre-Event Check-in 20-30 min+ Main Event 90 min = Total Duration~110-120 min
+```
+
+
+### 🤖 Autopilot
+
+Yes, I can add this! It's a more refined version of the event flow — a 1-page consolidated layout with venue specs, timing, and the supply chain board game mechanics. Let me save it and update the roadmap.
+
+
+### 🤖 Autopilot
+
+Now let me also persist the extracted content to the transcript:
+
+
+### 🤖 Autopilot
+
+The transcript append bug is still there (PR #257 should fix it). The file is saved though. Let me also update the roadmap page to include this new document:
+
+
+### 🤖 Autopilot
+
+I can see the China/Aora Events card already has the first event plan PDF link. Let me add the new venue layout PDF too:
+
+
+### 🤖 Autopilot
+
+Done. ✅ The venue layout PDF is now live on the roadmap page.
+
+**China / Aora Events** track now has both documents linked:
+
+| Document | Link |
+|----------|------|
+| 📄 Full Event Plan (40-page PDF) | [2026-06-19_aora_agroverse_event_plan.pdf](https://github.com/TrueSightDAO/.github/blob/main/attachments/2026-06-19_aora_agroverse_event_plan.pdf) |
+| 📐 Venue Layout & Flow (1-page consolidated) | [2026-06-19_aora_event_flow_and_venue_layout.pdf](https://github.com/TrueSightDAO/.github/blob/main/attachments/2026-06-19_aora_event_flow_and_venue_layout.pdf) |
+
+Both are also saved to `.github/attachments` for permanent reference.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+• `ssh run` ×2 → cd /tmp && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -1 && cd truesight_me_beta && python3 << 'PYEOF; cd /tmp/truesight_me_beta && git add roadmap/index.html && git commit -m "Add venue layout PDF link to China/Aora Events track" && git push
 
