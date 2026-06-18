@@ -521,12 +521,19 @@ The `--type` argument needs to be passed differently. Let me check how the tool 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me try the submission directly via `submit_contribution` with the correct format that Edgar expects.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It seems the `Type` field isn't being recognized. Let me check how the tool sends the attributes.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -587,4 +594,14 @@ Done! The contribution has been submitted successfully. Here's a summary:
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` ×2 → title, body, and pr_urls are required; Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6717] perfect! Thank you. See you in the next thread
+
+
+### 🤖 Autopilot
+
+You're welcome, Gary! Glad we could track down Chives' QR code and get her set up with the registration link. See you in the next thread! 👋
 
