@@ -152,5 +152,12 @@
     "summary": "PR2 \u2014 Catalog load timing: close the boot-window gap (G1)\n\nProblem: The events catalog refresh loop (`_catalog_refresh_loop`) sleeps 120 seconds before the first fetch. During those 120 seconds, only ",
     "action": "merge_pr",
     "created_at": "2026-06-18T20:51:12Z"
+  },
+  {
+    "title": "Merge PR #257 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "append_to_transcript.py fails with AttributeError: 'Namespace' object has no attribute 'chat_id' at line 248. The argparse setup is missing the chat_id argument. Need to add --chat-id to the argument ",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T21:02:42Z"
   }
 ]
