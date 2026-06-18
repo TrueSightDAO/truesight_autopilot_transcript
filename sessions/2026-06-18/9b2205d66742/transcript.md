@@ -182,7 +182,23 @@ Let me also check the dao_protocol repo for the workflow file to see what it exp
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The `dao_client` repo doesn't exist as a standalone repo — the CLI lives inside `dao_protocol`. Let me check the workflow file there.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -218,6 +234,11 @@ Do you want me to:
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=6416] How do we setup PyPI?
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -266,26 +287,31 @@ Do you think you could try to setup the project with PyPI?
 ### 🤖 Autopilot
 
 Let me check what's in the vault and whether the project already exists on PyPI.
+[2 tool result(s) compacted: web_search, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The project doesn't exist on PyPI yet. Let me check the vault for the token and also look at the `pyproject.toml` to see the current version.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — `pyproject.toml` is ready at v0.2.0. Now let me find the token you added to the vault.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault is a macOS credential backup system — not where you'd store a PyPI token for server-side use. Let me check the MANIFEST to see what's actually in the vault.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the vault backs up `.env` files from various repos. Let me check if `dao_protocol` has a `.env` or if the token was added somewhere specific.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -320,6 +346,7 @@ We'd need to modify the workflow to use `PYPI_API_TOKEN` as a GitHub secret, the
 ### 🤖 Autopilot
 
 Let me check that vault endpoint.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -394,4 +421,33 @@ Or if you want the simpler OIDC path, I just need you to log into PyPI and add t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → ls -la /opt/truesight_autopilot/vault/ 2>/dev/null || echo "VAULT_DIR_NOT_FOUND"; cat /opt/truesight_autopilot/vault/vault_audit.json; python3 -c " import json with open('/opt/truesight_autopilot/vault/vault_audit.json') as f: data = json.load(f) for e in data: print(f\"{e['; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] Or if you want the simpler OIDC path, I just need you to log into PyPI and add the trusted publisher config (3 clicks).
+
+
+### 🤖 Autopilot
+
+Right — that's the simplest path. The token you added to the vault is there if we ever need it, but the workflow already uses OIDC.
+
+Here's exactly what you need to do on PyPI (3 clicks):
+
+1. **Go to:** https://pypi.org/manage/project/truesight-dao-client/settings/publishing/
+   *(If the project doesn't exist yet, you'll need to create it first at https://pypi.org/manage/project/ — click "Create a new project")*
+
+2. **Click** "Add a new publisher"
+
+3. **Fill in:**
+   - **PyPI Project Name:** `truesight-dao-client`
+   - **Publisher:** `GitHub`
+   - **Owner:** `TrueSightDAO`
+   - **Repository:** `dao_protocol`
+   - **Workflow name:** `pypi-publish-dao-client.yml`
+   - **Environment:** *(leave blank)*
+
+4. **Click** "Add"
+
+Once that's done, tell me and I'll trigger the workflow from GitHub Actions. It'll publish v0.2.0 and then anyone can `pip install truesight-dao-client`.
 
