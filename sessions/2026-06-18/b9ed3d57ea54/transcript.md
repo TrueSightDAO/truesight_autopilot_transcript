@@ -38,16 +38,54 @@ What are your thoughts?
 ### 🤖 Autopilot
 
 She's right — and I appreciate the correction. Let me verify this myself by checking what's actually in the `dao_client` repo.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check what scripts actually exist in `dao_client`:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `dao_client` repo seems to have been renamed/moved. Let me check what's actually installed on the autopilot:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -81,16 +119,34 @@ So — back to your original ask: David Campbell / david@soha.center needs to be
 Great question — two angles: (1) adding the CLI module, and (2) whether Edgar already has the event schema for it.
 
 Let me check Edgar's event catalog first.
+[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: lookup_event_docs, lookup_event_docs, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at how the existing `submit_contribution` tool works and what the DApp page does for this flow:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the key files — the GAS handler and the onboarding docs:
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -155,4 +211,73 @@ OK, I have a thorough picture now. Here's my analysis:
 **My recommendation: Option B.** It follows the same pattern as the existing `submit_contribution` tool I already have in `truesight_autopilot` — I sign events with my registered identity and POST them directly. The governor would need to register their key with Edgar first (which they already have if they've used the DApp), then the CLI could accept `--key-path` or read from `~/.dao/identity.pem`.
 
 Want me to prototype this as a PR against `dao_client`?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] I think we should extend the cli with a wrapper that calls the signed endpoint, that way in the future when I ask you to call, you can call and not fumble around.
+
+
+### 🤖 Autopilot
+
+That makes sense — you want me to be able to call it directly, the same way I call `submit_contribution` for SALES EVENT or INVENTORY MOVEMENT today. The key question is: **how do I sign as you?**
+
+Right now, my `submit_contribution` tool signs with **my** identity (`admin+sophia@truesight.me`). But contributor add is a governor-only action — it needs **your** digital signature, not mine.
+
+So the CLI wrapper needs to:
+1. Accept your private key (or a path to it) so it can sign the payload as Gary Teh
+2. POST the signed `[CONTRIBUTOR ADD EVENT]` to Edgar's `submit_contribution` endpoint
+
+**The flow would be:**
+```
+dao_client contributor add \
+  --name "David Campbell" \
+  --email "david@soha.center" \
+  --key-path ~/.dao/gary_teh_identity.pem
+```
+
+Then when you say "Sophia, add David Campbell as a contributor," I can:
+1. Read your key from a known path
+2. Sign the payload as you
+3. POST to Edgar
+4. Report back
+
+**Two things to figure out:**
+1. **Where does your key live?** On the autopilot box? In a secure location I can read?
+2. **Does the existing `submit_contribution` endpoint on Edgar accept a governor-signed `[CONTRIBUTOR ADD EVENT]`?** Or does it need a separate endpoint? Let me check.
+
+
+### 🤖 Autopilot
+
+Now let me check the `submit_contribution` method more carefully to see if it already handles `[CONTRIBUTOR ADD EVENT]` in the text parsing:
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me check the `trigger_immediate_processing` method to see if it handles `[CONTRIBUTOR ADD EVENT]`:
+
+
+### 🤖 Autopilot
+
+There it is. Edgar **already handles** `[CONTRIBUTOR ADD EVENT]` — it logs to Telegram Chat Logs, then fires a GAS webhook (`processContributorAddsFromTelegramChatLogs`) that dedups against the "New Contributor" tab and appends to "Contributors contact information".
+
+The only missing piece is a CLI wrapper that signs as the governor and POSTs to Edgar. Here's my proposal:
+
+---
+
+**Plan: Add `contributor add` subcommand to `dao_client`**
+
+The CLI would:
+1. Accept `--name`, `--email`, and `--key-path` (or `--key` for inline PEM)
+2. Build a `[CONTRIBUTOR ADD EVENT]` payload with the governor's digital signature
+3. POST to `edgar.truesight.me/submit_contribution`
+4. Report success/failure
+
+**Where your key lives:** You'd need to put your RSA private key somewhere I can read it — e.g. `/home/ubuntu/.dao/gary_teh_identity.pem` on the autopilot box. Then when you say "Sophia, add David Campbell," I can call the CLI with `--key-path /home/ubuntu/.dao/gary_teh_identity.pem`.
+
+**Concern:** Storing your private key on the autopilot box means if the box is compromised, your key is compromised. An alternative: I could prompt you to paste the key each time (annoying), or we could register a dedicated "autopilot governor proxy" identity that's scoped to only contributor-add actions.
+
+Want me to:
+1. **Prototype the CLI** as a PR against `dao_client`?
+2. **Also discuss** where your key should live?
 
