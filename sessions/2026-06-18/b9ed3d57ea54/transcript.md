@@ -173,17 +173,50 @@ Let me get the CONTRIBUTOR ADD EVENT handling specifically:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check if there's a CONTRIBUTOR ADD EVENT handler in the `trigger_immediate_processing` method:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the CONTRIBUTOR ADD EVENT handling in the controller directly:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a clear picture. Let me also check how the `submit_contribution` method handles the CONTRIBUTOR ADD EVENT specifically in the text parsing:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -257,16 +290,24 @@ Then when you say "Sophia, add David Campbell as a contributor," I can:
 **Two things to figure out:**
 1. **Where does your key live?** On the autopilot box? In a secure location I can read?
 2. **Does the existing `submit_contribution` endpoint on Edgar accept a governor-signed `[CONTRIBUTOR ADD EVENT]`?** Or does it need a separate endpoint? Let me check.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `submit_contribution` method more carefully to see if it already handles `[CONTRIBUTOR ADD EVENT]` in the text parsing:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full picture. Let me check the `trigger_immediate_processing` method to see if it handles `[CONTRIBUTOR ADD EVENT]`:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -304,11 +345,23 @@ Want me to:
 Ah, right — I already have my own registered identity (`admin+sophia@truesight.me`) that I use for `submit_contribution`. The question is whether Edgar's `submit_contribution` endpoint will accept a `[CONTRIBUTOR ADD EVENT]` signed by **me** (Sophia) rather than by a governor.
 
 Let me check what the GAS handler validates:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `parseContributorAddEvent_` function to see the exact text format it expects:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -327,51 +380,71 @@ And the key thing: **the GAS handler doesn't check who signed it.** It just read
 So I can sign `[CONTRIBUTOR ADD EVENT]` with **my own key** (Sophia's), POST to Edgar, and it'll work. The GAS handler doesn't gate on governor status — it just reads name + email and appends.
 
 Let me build this. First, let me check what `dao_client` currently looks like:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the existing `dao_client` repo structure and how the existing `submit_contribution` tool works in the autopilot:
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see `dao_client` isn't listed as a separate repo anymore — it was mentioned earlier as renamed/moved. Let me check where the CLI tooling lives:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the `dao_protocol` repo since that seems to be the current home for the CLI:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — `dao_client` is the `dao_protocol` repo. Let me look at the existing modules to understand the pattern:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at one of the simpler modules to understand the pattern:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `build_event_cli` function to understand how it works:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `build_event_cli` function:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the `pyproject.toml` to see how console scripts are registered:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me also check the `lookup_event_docs` result for CONTRIBUTOR ADD EVENT to confirm the canonical labels:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -417,4 +490,70 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/dao_protocol/blob/feat/contributor-add-cli/pyproject.toml
 • `ssh run` ×5 → pip3 list 2>/dev/null | grep -i "truesight-dao\|dao.protocol\|dao_client"; find /home/ubuntu -maxdepth 4 -name "dao_protocol" -type d 2>/dev/null; find /opt -maxdepth 3 -name "dao_protocol" -type d 2>/dev/null; ls /; ls /opt/truesight_autopilot/dao_protocol/; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] [Handoff context — this Telegram topic (thread 6711) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I see. COuld you come up with an implementation plan, execution roadmap and checklist of what needs done first then. I think taht will help allevaite your current constrain
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then build the plan.
+
+
+### 🤖 Autopilot
+
+No existing handoff for this topic. This is a fresh planning request. Let me build the implementation plan.
+
+---
+
+Here's the full plan, Gary.
+
+---
+
+## Implementation Plan: `truesight-dao-add-contributor` CLI
+
+### Goal
+Extend `dao_protocol` with a CLI subcommand so **Sophia** (and any governor) can submit `[CONTRIBUTOR ADD EVENT]` via the terminal instead of requiring the DApp web page. Sophia signs with her own key — Edgar's GAS handler doesn't gate on governor status.
+
+### What already exists (verified)
+| Layer | Status |
+|---|---|
+| **Edgar endpoint** (`submit_contribution`) | ✅ Accepts `[CONTRIBUTOR ADD EVENT]` text, logs to Telegram Chat Logs |
+| **GAS handler** (`ContributorAddHandler.js`) | ✅ Reads Telegram Chat Logs, dedups against "New Contributor" tab, appends to "Contributors contact information", fires onboarding email |
+| **`build_event_cli` helper** in `edgar_client.py` | ✅ Reusable — wraps argparse, signs with Sophia's key, POSTs to Edgar |
+| **Module file** (`add_contributor.py`) | ✅ Written — 20 lines, uses `build_event_cli` |
+| **Console script** in `pyproject.toml` | ✅ Registered as `truesight-dao-add-contributor` |
+| **PR** on `dao_protocol` | ✅ **Open** at https://github.com/TrueSightDAO/dao_protocol/pull/123 |
+
+### What's left to do
+
+| # | Step | Status | Notes |
+|---|---|---|---|
+| 1 | **Merge PR #123** | 🔲 Need your go | `dao_protocol` is a code repo — you can merge via GitHub or tell me to |
+| 2 | **Deploy to autopilot** | 🔲 | `cd /opt/truesight_autopilot/dao_protocol && git pull origin main && pip3 install .` |
+| 3 | **Test the CLI** | 🔲 | Run `truesight-dao-add-contributor --dry-run --contributor-name "Test" --contributor-email "test@test.com"` |
+| 4 | **Add `submit_contribution` support in autopilot** | 🔲 | Update the autopilot's tool layer so I can call it directly when you say "Sophia, add David Campbell" — currently my `submit_contribution` tool doesn't know about `[CONTRIBUTOR ADD EVENT]` |
+| 5 | **Add David Campbell** | 🔲 | Final step: `truesight-dao-add-contributor --contributor-name "David Campbell" --contributor-email "david@soha.center"` |
+
+### Execution roadmap
+
+**Phase 1 — Ship the CLI (this turn)**
+1. You say "go" → I merge PR #123
+2. I deploy to autopilot
+3. I test with a dry-run
+
+**Phase 2 — Wire into autopilot (next turn)**
+4. I open a PR on `truesight_autopilot` to add `[CONTRIBUTOR ADD EVENT]` to the `submit_contribution` tool's event catalog
+5. You review + merge
+
+**Phase 3 — Add David (after Phase 2)**
+6. I run the CLI for real
+
+### What I need from you right now
+
+**Go-signal to merge PR #123?** Then I'll deploy and test in this same turn.
 
