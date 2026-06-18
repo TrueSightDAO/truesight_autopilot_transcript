@@ -5924,3 +5924,45 @@ This is exactly the question for SVH counsel on June 26. If the answer is yes, w
 
 Want me to add this decision tree to the V1 document for the SVH meeting?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] I wonder if we should update the original document shared with Paloma since we dont really need to chat with SVH counsel anymore isnt it? Paloma introduced Layon Costa from Tools for the Commons who is the legal for Prospera. 
+
+I think in that document we should also indicate the alternate route which we investigate via the DUNA/UNA for consideration
+
+
+### 🤖 Autopilot
+
+Good point. The SVH meeting might not be needed if Layon Costa (Tools for the Commons) can answer the Prospera + Brazil questions directly. Let me update the Brazil Export Entity Brief to include the UNA/DUNA alternative route.
+
+
+### 🤖 Autopilot
+
+Now I have the full document. Let me add the UNA/DUNA alternative route as a new section for Layon Costa's consideration.
+
+
+### 🤖 Autopilot
+
+Done. The Brazil Export Entity Brief has been updated with both paths for Layon Costa's review.
+
+**Updated document:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_EXPORT_ENTITY_BRIEF.md
+
+### What changed
+
+**Section 2 — Executive Summary** now presents both paths side by side.
+
+**Section 5 — Proposed Structure** split into **Path A (Próspera)** and **Path B (Wyoming UNA/DUNA)** with pros/cons for each.
+
+**Section 7 — Core decision question** added as the first item for Layon Costa:
+
+> *"Can a Wyoming UNA/DUNA legally own a Brazilian Ltda as a foreign quotaholder?"*
+
+This determines everything. If yes → UNA/DUNA path (~$50, this week). If no → Próspera path.
+
+The SVH meeting on June 26 is probably not needed anymore — Layon can answer the core question directly.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #557 on agentic_ai_context merged successfully (sha: 9fdd01a9835da50d2f4daf2eb94d33b17d844595). Pull Request successfully merged
+
