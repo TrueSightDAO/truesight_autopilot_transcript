@@ -8618,3 +8618,32 @@ Now I have the exact canonical labels from Edgar. Let me present the proposal:
 
 Want me to submit it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6045] Very cool! YEs please!!
+
+
+### 🤖 Autopilot
+
+Let me submit it with the attachment.
+
+
+### 🤖 Autopilot
+
+It's waiting for your approval. The tool returned a proposal with the exact parameters from Edgar's schema. You should see **Approve** and **Reject** buttons rendered in the chat.
+
+The proposal summary is:
+
+**SALES EVENT**
+- **Item:** `2024OSCAR_20260121_32`
+- **Sales price:** `17.50`
+- **Sold by:** Gergana - The Way Home Shop
+- **Cash proceeds collected by:** Gary Teh
+
+Click **Approve** to submit, or **Reject** to cancel.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → ⏳ Waiting for your approval to submit this transaction. Click Approve to proceed, or Reject to cancel.
+
