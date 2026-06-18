@@ -3263,6 +3263,12 @@ The autopilot service is **inactive** — the PRs are merged but the service has
 ### 🤖 Autopilot
 
 The code is at the latest commit but the service is inactive. Let me start it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3436,4 +3442,21 @@ What's next on your list?
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] Nice! see you in the other thread!
+
+
+### 🤖 Autopilot
+
+See you there! 🚀
+
+Closing out this thread (6416) with the full tally:
+
+**DApp Event Alignment** — ✅ Complete (PR1–PR8, UAT passed)
+**CLI Sales Event Alignment** — ✅ Complete (all code merged, PyPI published, contribution logged)
+
+On to the next thread whenever you're ready.
 
