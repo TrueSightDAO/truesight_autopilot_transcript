@@ -556,17 +556,25 @@ So Gergana has **10 bags** of this specific product in her inventory. Now let me
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_matching_qr_codes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check if there are more QR codes in this batch — the inventory says she has 10 bags but I only found 3 QR codes so far.
+[1 tool result(s) compacted: list_matching_qr_codes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the full batch range to see all QR codes in this series.
+[1 tool result(s) compacted: list_matching_qr_codes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look up the details on these 3 QR codes to see their status.
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -760,4 +768,68 @@ So for Gergana's sale — under the new FIFO rule, the default pick is **`2024OS
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #548 on agentic_ai_context merged successfully (sha: 69fe204b73c1491d8347ad4b11da156e1a7c660d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] [Handoff context — this Telegram topic (thread 6311) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Now go ahead and submit the sales event, the sales was done by her but the cash was collected by me since we have the venmo proof.
+
+
+### 🤖 Autopilot
+
+Let me first look up the event docs to make sure I use the correct format.
+
+
+### 🤖 Autopilot
+
+Good — `Owner email` is optional, `Sold by` and `Sales price` are required. Now let me submit. I need to present the proposal JSON first for approval.
+
+Since this is a single transaction, here's the proposal:
+
+```json
+{"proposal": {"action": "submit_contribution", "title": "Sales Event: Gergana - The Way Home Shop", "summary": "Gergana sold 1 bag Ceremonial Cacao (QR: 2024OSCAR_20260121_32) for $17.50 via Venmo. Sold by Gergana, cash collected by Gary Teh."}}
+```
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] [Handoff context — this Telegram topic (thread 6311) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Now go ahead and submit the sales event, the sales was done by her but the cash was collected by me since we have the venmo proof.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and also look up the event docs to ensure correct format.
+
+
+### 🤖 Autopilot
+
+Good — this thread (6311) isn't in the handoff manifest, so this is a standalone transaction. Let me submit it now.
+
+The required fields are `Item`, `Sales price`, `Sold by`. I'll include the optional fields too for completeness.
+
+
+### 🤖 Autopilot
+
+✅ **Sales event submitted successfully!**
+
+**Summary:**
+| Field | Value |
+|---|---|
+| **Item** | Ceremonial Cacao Kraft Pouch + 8oz Pouch |
+| **QR Code** | `2024OSCAR_20260121_32` |
+| **Sales price** | $17.50 |
+| **Sold by** | Gergana - The Way Home Shop |
+| **Cash collected by** | Gary Teh |
+| **Source** | Venmo |
+| **FIFO rule** | Applied (oldest batch, lowest seq number) |
+
+The bag is now recorded as sold from Gergana's consignment inventory. Anything else on this one?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
