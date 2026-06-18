@@ -461,27 +461,67 @@ Now let me also register the console script in `pyproject.toml`:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The PR was already created from the first push. Let me update it via the PR directly:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first push already created the PR with just the module file. Let me push the pyproject.toml update to the same branch by using `upload_file_to_github`:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also update the autopilot's `submit_contribution` tool to handle `[CONTRIBUTOR ADD EVENT]` — so I can call it directly when you say "Sophia, add David Campbell":
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `submit_contribution` tool is built into the autopilot's tool system (not a Python module in the repo). But I can now call the CLI directly since it's in `dao_protocol`. Let me check if the autopilot has `dao_protocol` installed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `dao_protocol` is installed at `/opt/truesight_autopilot/dao_protocol/` but the new `add_contributor.py` module isn't there yet (it's only on the PR branch). Let me check if it's installed as a package:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -504,6 +544,7 @@ I see. COuld you come up with an implementation plan, execution roadmap and chec
 ### 🤖 Autopilot
 
 Let me check the handoff registry first, then build the plan.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -568,26 +609,31 @@ Extend `dao_protocol` with a CLI subcommand so **Sophia** (and any governor) can
 ### 🤖 Autopilot
 
 Absolutely. Let me first check the exact PR number and current state of things.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — PR #123 is open. Now let me read the exact module file I created to make sure I have the precise content:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the `build_event_cli` helper to understand exactly what it does:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `build_event_cli` function specifically:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the autopilot's current `submit_contribution` tool implementation to understand what needs changing there:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,4 +718,119 @@ Right now, when you say "Sophia, add David Campbell as a contributor," my `submi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → grep -n "submit_contribution\|CONTRIBUTOR ADD\|add_contributor" /opt/truesight_autopilot/app/main.py | head -30; sed -n '1670,1970p' /opt/truesight_autopilot/app/main.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] [Handoff context — this Telegram topic (thread 6711) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+make sure this implementation plan is committed first and then go for it
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then commit the plan and execute.
+
+
+### 🤖 Autopilot
+
+This is a fresh task — no existing handoff for the contributor-add CLI. Let me commit the plan first, then execute.
+
+
+### 🤖 Autopilot
+
+Good — this is a fresh task, no existing handoff. Let me commit the plan first, then execute Phase 1.
+
+
+### 🤖 Autopilot
+
+Plan committed. Now let me merge it and proceed with execution.
+
+
+### 🤖 Autopilot
+
+Plan merged to `main`. Now executing Phase 1 — merging PR #123 on `dao_protocol`:
+
+
+### 🤖 Autopilot
+
+Now deploy to autopilot — pull latest and reinstall:
+
+
+### 🤖 Autopilot
+
+Now the dry-run test:
+
+
+### 🤖 Autopilot
+
+The console script isn't on PATH. Let me check where it was installed:
+
+
+### 🤖 Autopilot
+
+The script entry is in `pyproject.toml` but pip installed it as "UNKNOWN" (the package name in `pyproject.toml` is `truesight-dao-client` but the build metadata says UNKNOWN). Let me check if the entry points were actually installed:
+
+
+### 🤖 Autopilot
+
+The module isn't in site-packages. The `pip3 install .` installed from the old cached build. Let me force a clean reinstall:
+
+
+### 🤖 Autopilot
+
+Still UNKNOWN. The issue is the package name in `pyproject.toml` is `truesight-dao-client` but the wheel metadata isn't picking it up. Let me check if the entry points were actually generated:
+
+
+### 🤖 Autopilot
+
+No entry_points.txt and no modules directory. The package didn't actually install the source. Let me check what's going on:
+
+
+### 🤖 Autopilot
+
+The package isn't installing properly. Let me check the `pyproject.toml` more carefully — the `[project]` name is `truesight-dao-client` but the build is producing UNKNOWN. This might be a setuptools version issue. Let me try installing in editable mode instead:
+
+
+### 🤖 Autopilot
+
+No setup.py. Let me check how the existing scripts like `truesight-dao-add-partner` are installed:
+
+
+### 🤖 Autopilot
+
+There's a virtualenv! The package is installed in `.venv`, not the system pip. Let me use that:
+
+
+### 🤖 Autopilot
+
+Now test:
+
+
+### 🤖 Autopilot
+
+**Dry-run passes.** The CLI correctly generates a signed `[CONTRIBUTOR ADD EVENT]` payload with:
+- Contributor Name: Test User
+- Contributor Email: test@test.com
+- Sophia's digital signature
+- Request Transaction ID
+
+---
+
+**Phase 1 complete.** Here's the status:
+
+| # | Step | Status |
+|---|---|---|
+| 1.1 | Merge PR #123 (`dao_protocol`) | ✅ Merged |
+| 1.2 | Pull latest on autopilot | ✅ `git pull origin main` |
+| 1.3 | Reinstall package | ✅ `pip install .` via `.venv` |
+| 1.4 | Dry-run test | ✅ Signed payload generated correctly |
+| 1.5 | Verify output | ✅ All fields present, signature valid |
+
+**Ready for Phase 2** — wiring `CONTRIBUTOR ADD EVENT` into the autopilot's `submit_contribution` tool. Want me to proceed with that PR on `truesight_autopilot`?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #569 on agentic_ai_context merged successfully (sha: 01b1c6d8497b0d83c80aba5f83706ed23589048a). Pull Request successfully merged; ✅ PR #123 on dao_protocol merged successfully (sha: 4dfd65a3505459d1cc9456b7b7106a825d1deeea). Pull Request successfully merged
+• `ssh run` ×17 → cd /opt/truesight_autopilot/dao_protocol && git pull origin main 2>&1; cd /opt/truesight_autopilot/dao_protocol && pip3 install . 2>&1 | tail -10; truesight-dao-add-contributor --dry-run --contributor-name "Test User" --contributor-email "test@test.com" 2>&1; …(+14 more)
 
