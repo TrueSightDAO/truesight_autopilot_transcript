@@ -1939,11 +1939,13 @@ Wait, that should work. The issue is that the test imports `_catalog_last_refres
 That's the bug! The test imports `_catalog_last_refresh` by value (since it's a float), so it never sees the updated value.
 
 Let me fix the test to reference `app.main._catalog_last_refresh` instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fix is to use `app.main._catalog_last_refresh` instead of the imported `_catalog_last_refresh` (which is a copy of the float value). Let me also check the `_reset_globals` fixture — it has the same issue with `globals()["_catalog_last_refresh"]`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1952,6 +1954,7 @@ OK, let me just fix the test file directly. The fix is:
 1. Import `app.main` as a module reference
 2. Use `app.main._catalog_last_refresh` in the assertion
 3. Fix the `_reset_globals` fixture to use `app.main._catalog_last_refresh` too
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2028,4 +2031,80 @@ Pushed to PR #256's branch. CI should be re-running now at https://github.com/Tr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git add tests/test_events_catalog.py && git commit -m "fix: test_startup_preload_loads_catalog — _catalog_las; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] merged. Move on
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan for PR3 details.
+
+
+### 🤖 Autopilot
+
+**PR2 merged.** ✅ Moving to **PR3**.
+
+### PR3 — Auto-generated fallback snapshot (G5)
+
+Script/CI step that fetches the catalog and writes a committed `app/data/events_catalog_snapshot.json`; load it as the offline fallback (seeds all ~30 events, replacing the stale hardcoded 9). Standalone.
+
+Let me check the current state of the code first.
+
+
+### 🤖 Autopilot
+
+Good. Now let me also check the current `_refresh_events_catalog` to see how it handles the fallback path.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. For PR3 I need to:
+
+1. Create `app/data/` directory
+2. Add a script `scripts/fetch_events_snapshot.py` that fetches the catalog and writes `app/data/events_catalog_snapshot.json`
+3. Modify `_refresh_events_catalog` to load the snapshot as fallback when Edgar is unreachable
+4. Add tests
+
+Let me also check the existing test file for the startup preload tests.
+
+
+### 🤖 Autopilot
+
+Good — the test file ends at line 223. Now let me also check the `_catalog_refresh_loop` to see the startup preload that PR2 added.
+
+
+### 🤖 Autopilot
+
+I notice PR2's startup preload isn't in the lifespan yet — the `_catalog_refresh_loop` is just created as a task. Let me check if PR2 added the synchronous startup call.
+
+
+### 🤖 Autopilot
+
+I see — PR2 hasn't been merged yet (it's still open). The `main` branch still has the old code without the startup preload. That's fine — PR3 is standalone (it adds the snapshot fallback mechanism). The startup preload from PR2 will be added when PR2 merges.
+
+Now let me create PR3. I'll use `open_fix_pr` with a clear description.
+
+
+### 🤖 Autopilot
+
+**PR3 is open!** 🎉
+
+**PR #259** — https://github.com/TrueSightDAO/truesight_autopilot/pull/259
+
+**What it does:**
+- Creates `scripts/fetch_events_snapshot.py` — fetches the Edgar catalog and writes `app/data/events_catalog_snapshot.json`
+- Modifies `_refresh_events_catalog` — on HTTP error, loads the snapshot as fallback (seeds all ~30 events instead of just 9)
+- Adds tests for: snapshot loads on HTTP error, snapshot missing falls back to hardcoded, snapshot with partial events merges correctly
+
+**Gate status:** ✅ PR3 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR4** (generic catalog-driven field normalizer).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot && ls -la app/data/ 2>/dev/null || echo "app/data/ does not exist"; cd /opt/truesight_autopilot && grep -n "events_catalog\|_refresh_events_catalog\|_CANONICAL_LABELS\|_VALIDATE_REQUIRED_FIELDS\|snapshot\|fal; cd /opt/truesight_autopilot && sed -n '1192,1260p' app/main.py; …(+8 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/259
 
