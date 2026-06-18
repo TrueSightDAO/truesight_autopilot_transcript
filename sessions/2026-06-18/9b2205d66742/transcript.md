@@ -57,6 +57,7 @@ Reply "go for it" and I will execute from RESUME HERE through the gates, reporti
 ### 🤖 Autopilot
 
 Let me check the handoff registry and the plan file.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -178,4 +179,20 @@ The plan file's mention of `PYPI_API_TOKEN` was incorrect/outdated — the actua
 2. **Then trigger the workflow** — either push to `main` with a `pyproject.toml` version bump, or use `workflow_dispatch` from the GitHub UI.
 
 Do you have PyPI access to set that up, or would you like me to check if it's already configured?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] We never used PIPI_API. Doesnt seem like we need one isnt it? I think KIMI was probably hallucinating
+
+
+### 🤖 Autopilot
+
+Exactly right. The workflow uses **trusted publishing (OIDC)** — no token needed. The `PYPI_API_TOKEN` mention in the plan was a hallucination by whoever wrote it (likely KIMI or another model that assumed a token-based workflow).
+
+The actual blocker is just the **PyPI trusted publisher configuration** — a one-time setup on pypi.org to tell PyPI "GitHub Actions from `TrueSightDAO/dao_protocol` is authorized to publish `truesight-dao-client`." Once that's done, any push to `main` that touches `pyproject.toml` (or a manual `workflow_dispatch`) will publish automatically.
+
+Do you want me to:
+1. **Check if the trusted publisher is already configured** on PyPI (I can try to look it up)?
+2. **Or just move on** — the CLI code is all merged and working, the PyPI publish is a nice-to-have for `pip install` convenience but the CLI works fine installed from source via `pip install -e .`?
 
