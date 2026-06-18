@@ -166,5 +166,12 @@
     "summary": "PR3 \u2014 Auto-generated fallback snapshot (G5)\n\nCreate a script that fetches the Edgar events catalog and writes it as a committed JSON snapshot (`app/data/events_catalog_snapshot.json`). Modify `_refres",
     "action": "merge_pr",
     "created_at": "2026-06-18T21:14:48Z"
+  },
+  {
+    "title": "Merge PR #260 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "PR4 \u2014 Generic catalog-driven field normalizer (G3a)\n\nAdd a catalog-driven field normalizer that maps LLM-supplied attribute keys to canonical labels for ALL event types, not just the ~4 events with ha",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T21:39:31Z"
   }
 ]
