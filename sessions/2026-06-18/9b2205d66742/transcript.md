@@ -2801,17 +2801,40 @@ The real fix: update the `_FIELD_ALIASES` entry for `"manager"` to map to `"Mana
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I also need to revert the alias fallback logic back to the simpler version since the alias now maps directly to the canonical label.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **18/18 passed!** Now let me run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **602 passed, 0 failed!** 🎉 Full green suite. Now let me push to the PR branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2830,6 +2853,16 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **602 passed, 0 failed, 1 skipped** ✅ All green.
 
 ———
@@ -2840,6 +2873,16 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=6416] can you bump it to rerun the unit test
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2923,4 +2966,72 @@ Good — `logger` is available. Now let me create PR5.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot && git pull origin main 2>&1 | tail -3; cd /opt/truesight_autopilot && grep -n "_normalize_submission_labels\|_normalize_via_catalog\|CATALOG_NORMALIZE\|unmatched\|unmapped\|silent; cd /opt/truesight_autopilot && sed -n '1464,1545p' app/main.py; …(+7 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/261
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] MErged. what next?
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan for PR6 details.
+
+
+### 🤖 Autopilot
+
+**PR5 merged.** ✅ Moving to **PR6**.
+
+### PR6 — Intent→event picking guidance (G4a)
+
+Strengthen `lookup_event_docs` output + the system-prompt so the LLM reliably picks the right event for an intent and fills important canonical fields. Standalone (lookup/prompt only).
+
+Let me check the current `lookup_event_docs` tool and the system prompt.
+
+
+### 🤖 Autopilot
+
+Now let me check the system prompt to see how events are described to the LLM.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. PR6 needs to:
+
+1. **Strengthen `lookup_event_docs` output** — add intent→event guidance (e.g., "sale" → SALES EVENT, "transfer" → INVENTORY MOVEMENT) and important canonical fields to include
+2. **Strengthen the system prompt** — add event disambiguation guidance so the LLM picks the right event
+3. **Add tests** — "sales" intent → SALES EVENT with cash-proceeds; "transfer" → INVENTORY MOVEMENT
+
+Let me also check if there are existing tests for `lookup_event_docs`.
+
+
+### 🤖 Autopilot
+
+No existing tests for `lookup_event_docs`. Now I have the full picture. Let me create PR6.
+
+
+### 🤖 Autopilot
+
+**PR6 is open!** 🎉
+
+**PR #263** — https://github.com/TrueSightDAO/truesight_autopilot/pull/263
+
+**What it does:**
+- **`lookup_event_docs`** now returns `intent_guidance` (common intents → correct event type) and `important_fields` (fields most commonly missed per event)
+- **System prompt** updated with event disambiguation rules — never conflate SALES EVENT with INVENTORY MOVEMENT, always call `lookup_event_docs` before `submit_contribution`
+- **Tests** for: sales intent → SALES EVENT, transfer → INVENTORY MOVEMENT, work → CONTRIBUTION EVENT, unknown intent
+
+**Gate status:** ✅ PR6 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR7** (Enforce lookup-before-submit — needs PR6 merged first).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && git pull origin main 2>&1 | tail -3; cd /opt/truesight_autopilot && grep -n "lookup_event_docs\|def lookup_event_docs\|system_prompt\|SYSTEM_PROMPT\|intent\|disambiguat\|event.*pick\|pick.*event" app/main.py | head -30; cd /opt/truesight_autopilot && find app/ -name "*.py" | xargs grep -l "lookup_event_docs" 2>/dev/null; …(+7 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/263
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot && grep -n "lookup_event_docs\|def lookup_event_docs\|system_prompt\|SYSTEM_PROMPT\|intent\|disambiguat\|event.*; cd /opt/truesight_autopilot && find app/ -name "*.py" | xargs grep -l "lookup_event_docs" 2>/dev/null; cd /opt/truesight_autopilot && grep -n "event\|submit_contribution\|SALES\|INVENTORY\|intent\|disambiguat" app/context.py | head -30; …(+6 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/263
 
