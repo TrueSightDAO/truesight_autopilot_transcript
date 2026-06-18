@@ -144,66 +144,79 @@ Let me check what sheets exist in this spreadsheet.
 ### 🤖 Autopilot
 
 Let me check the process_movement_telegram_logs.js code more carefully to understand exactly which sheet it writes to and how the auth flow works.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the auth logic to see the full picture.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest to see the main processing function and how it reads the Telegram Chat Logs.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the main processing function that scans Telegram Chat Logs.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the main function that processes Telegram Chat Logs rows — the one that Edgar triggers.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a clear picture. Let me read the rest to see the auth status determination and the Inventory Movement sheet name.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me check the Inventory Movement sheet on the Telegram compilation workbook (the same spreadsheet as Telegram Chat Logs).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the Inventory Movement sheet. Let me check the bottom of it for the 30 new submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the very bottom of the Inventory Movement sheet to see if the 30 new submissions are there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the very last rows of the Inventory Movement sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the very last rows to see if the 30 new June 18 submissions are there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the very end of the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the very last rows of the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -335,4 +348,142 @@ The `- Approved By: Gary Teh` line is present in the submission text, but the co
 **Option B — Fix the 30 stuck rows manually** by changing their STATUS from "unauthorized" to "NEW" in the Inventory Movement sheet. Then the second GAS handler (`processInventoryMovementToLedgers`) will pick them up and process them into the ledgers.
 
 Option A is the permanent fix. Want me to do either (or both)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] Your analysis is not true. MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlJTFcRP5UGCIe4HsSEqicbYpSlWohOfGM1UyoqYVhG2ckyX8wx5OSrZlUNxK5/Er5wORrtcbKZqC4qZ5H8en8noFVP5hR/raeu2coXXNTONQyfyEOf9fJdM50R+16d4dsxWdhtayp2/fDZk0vKVKD9umktW6ZVP+Z/ddMsY1YXYYhzXXQo35vaJa3c6wy1YOxMl6Kk2BBGgLvYeu/Uv3CJThRNlU4lhyPPMv/Iwow5845nHflEbbTD9s4coK101+u3xzO20j0tCh2HRoyP3+kDqa3JQZgqD7G/z/w8pRw2IS2I8dyZjdhvT5ywY+4P5Q4uvElu93RRuPGO+mi1s2WwIDAQA is on row 119 of https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=577022511#gid=577022511 "Contributors Digital Signatures"
+
+The issue is that the GAS checks if you are a governor. You are not, you are a sentinel. This keyword or the appropriate keyword should appear here.
+
+Also I noticed that the latest version of https://github.com/TrueSightDAO/treasury-cache/blob/main/dao_members.json
+
+Does not take account https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=577022511#gid=577022511
+"Contributors contact information" column W when being compiled... I wonder what happened.
+
+
+### 🤖 Autopilot
+
+You're right — let me re-examine. Let me check row 119 of the Contributors Digital Signatures sheet and the latest dao_members.json.
+
+
+### 🤖 Autopilot
+
+You're right on both counts. Let me check the full dao_members.json for the autopilot entry and the Contributors Contact Information sheet.
+
+
+### 🤖 Autopilot
+
+I see — the autopilot key is on row 119 with Status = **"VERIFYING"**, not "ACTIVE". And the dao_members.json doesn't include me at all. Let me check the Contributors Contact Information sheet for column W.
+
+
+### 🤖 Autopilot
+
+Let me get the full picture — which rows have "TRUE" in column W and who they correspond to.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me check who has "TRUE" in column W (Is Sentinel) and cross-reference with the dao_members.json.
+
+
+### 🤖 Autopilot
+
+Let me find the rows where "Is Sentinel" = TRUE and who they are.
+
+
+### 🤖 Autopilot
+
+Let me find the specific rows where "Is Sentinel" = TRUE by searching the raw data.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. Let me check the GAS handler's auth logic to understand exactly what keyword it checks.
+
+
+### 🤖 Autopilot
+
+Now I see the full auth logic. Let me read the rest to see the trusted agent check.
+
+
+### 🤖 Autopilot
+
+Now I see the full auth flow. Let me read the rest of the function.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the auth function to see the trusted agent path.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the auth function to see the trusted agent path.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me read the rest of the auth function to find the trusted agent path.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the auth function to find the trusted agent path.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me look at the exact auth flow in `inventoryMovementStatusFromTelegramRow_`:
+
+1. `isTelegramGovernorYes_(telegramRow)` → Column S = "YES"? → No (these are Edgar Direct, Column S is empty)
+2. Extract public key → found
+3. `findContributorNameByDigitalSignature_(pk)` → looks up in Contributors Digital Signatures sheet
+   - Row 119 has the key with Status = **"VERIFYING"** (not "ACTIVE")
+   - The code checks `String(status || '').trim().toUpperCase() === 'ACTIVE'` → "VERIFYING" !== "ACTIVE" → returns `{ contributorName: null, error: 'Signature not ACTIVE' }`
+4. Since `!res.contributorName` → returns `'unauthorized'`
+
+**Two issues:**
+
+**Issue 1 — The autopilot key status is "VERIFYING" not "ACTIVE".** The GAS code requires `ACTIVE` to return the contributor name. Even though the key is registered, the status blocks it.
+
+**Issue 2 — The TRUSTED_AGENTS list has `'autopilot@agroverse.shop'` but the autopilot's contributor name in the sheet would be `"Sophia Truesight"` (row 408 in Contributors Contact Information) or `"truesight-autopilot"` (row 406).** Neither matches `'autopilot@agroverse.shop'`.
+
+**Issue 3 — dao_members.json.** The `dao_members_cache_publisher` (triggered by `contributor_add`) doesn't seem to read the `Contributors Contact Information` sheet's Column W ("Is Sentinel") when compiling. Let me check the publisher code.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `DaoMembersCache.js` reads from `Contributors Digital Signatures` (columns A-H, which includes email at column F) and `Contributors voting weight` — but it does **not** read `Contributors Contact Information` at all, so Column W ("Is Sentinel") is never consulted.
+
+Here's my corrected analysis:
+
+---
+
+**You're right on both counts.** Let me correct my analysis:
+
+**1. The key IS registered** — Row 119 of `Contributors Digital Signatures` has the autopilot's key with Status = **"VERIFYING"**. The GAS code checks for `=== 'ACTIVE'` — "VERIFYING" fails that check, so `findContributorNameByDigitalSignature_` returns `null`, and the auth flow short-circuits to `'unauthorized'` before ever reaching the trusted-agent check.
+
+**2. The auth flow needs a "sentinel" path.** The GAS code's `inventoryMovementStatusFromTelegramRow_` has these paths:
+- Governor (Column S = YES) → NEW
+- Signer is a governor → NEW
+- Signer matches warehouse manager → NEW
+- **Trusted agent** (`TRUSTED_AGENTS = ['autopilot@agroverse.shop']`) + `- Approved By:` governor → NEW
+- Otherwise → unauthorized
+
+The trusted agent check uses `'autopilot@agroverse.shop'` but my contributor name in the Digital Signatures sheet is empty (row 119 has no name), and in Contributors Contact Information I'm listed as `"Sophia Truesight"` (row 408) with `Is Sentinel = TRUE`. Neither matches `'autopilot@agroverse.shop'`.
+
+**3. dao_members.json gap** — The `DaoMembersCache.js` only reads `Contributors Digital Signatures` (columns A-H) and `Contributors voting weight`. It never touches `Contributors Contact Information`, so Column W ("Is Sentinel") is invisible to it. That's why the autopilot doesn't appear in `dao_members.json` at all.
+
+**Three things to fix:**
+
+1. **Change the autopilot's key status** from "VERIFYING" → "ACTIVE" in the `Contributors Digital Signatures` sheet (row 119, column D)
+
+2. **Update the GAS auth code** to either:
+   - Add `"Sophia Truesight"` to `TRUSTED_AGENTS`, OR
+   - Add a sentinel check that reads `Contributors Contact Information` Column W and treats sentinel-signed + governor-approved submissions as authorized
+
+3. **Update `DaoMembersCache.js`** to also read `Contributors Contact Information` Column W and include a `"is_sentinel"` flag in the JSON output
+
+Want me to open a PR for the GAS code changes (items 2 & 3)? For item 1 (status change), I can't write to the sheet directly — you'd need to change that cell to "ACTIVE" manually, or I can open a PR that adds a GAS endpoint to do it.
 
