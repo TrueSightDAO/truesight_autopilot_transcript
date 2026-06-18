@@ -3173,6 +3173,7 @@ Want me to merge the track map PR?
 You're right. GACC is about regulatory compliance for exporting cacao from Brazil to China — it's a prerequisite, not the same thing as the Aora events themselves.
 
 Let me separate them in the map.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3209,16 +3210,19 @@ GACC / Brazil Compliance 🟡 Offline Gary / Paloma —
 ### 🤖 Autopilot
 
 You're right — Legal Entity Structuring doesn't block Brazil Export Entity. They're parallel tracks. And GACC doesn't block it either. Let me fix the dependencies.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file has changed since the last edit. Let me read the current state:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the previous PR #566 wasn't merged yet, so the file still has the old content. Let me work from the actual current state:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3255,31 +3259,37 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 That's a great UX insight — the Mermaid diagram and the detail cards should be **anchor-linked** so clicking a dependency name scrolls you to that track's card. Let me add HTML anchor IDs to each track section.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file still has the old content from before the dependency fix PR was merged. Let me check what's actually on main:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — PR #567 (dependency fix) hasn't been merged yet, so main still has the old arrows. Let me merge it first, then add anchors.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good. Now let me also merge PR #566 (the one with the Aora event plan and downstream tracks) since it was sitting unmerged:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's fine — PR #566 conflicts with #567 which was merged after it. The important one (#567 with the correct dependencies) is merged. Now let me add the anchor links:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the dependency fix is merged. Now let me add anchor IDs and cross-links. I also need to add the missing downstream tracks (Chives Root, Michael Johnson, Kopi Bar) that were in PR #566 but got lost in the conflict:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3387,4 +3397,22 @@ Want me to check if the conflict is just the CNAME file so you know it's safe to
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -3 && grep -n "T5\[Legal" truesight_me_beta/roa; grep -n "T5\|T6\|T7\|T8\|T9\|Legal Entity\|GACC\|Brazil Export\|Chocolate Sub\|China / Aora\|Chives Root\|Michael Johnson\|Kopi Bar\|Graeme ; grep -n "Blocks:\|Dependencies:\|blocker-note\|gate-note\|chain\|AORA_EXPERIENCE\|event plan\|Event plan\|July beta\|Jul 10\|Chives Root\|Mi; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] done
+
+
+### 🤖 Autopilot
+
+Prod is already in sync — you must have merged it manually. ✅
+
+**truesight.me/roadmap** now shows the live track map with:
+
+- ✅ Corrected dependencies (Legal Entity & GACC parallel, not blocking)
+- ✅ Anchor IDs on every track card (click a dependency name → scrolls to it)
+- ✅ Aora event plan PDF link + July beta summary
+- ✅ All downstream tracks (Chives Root, Michael Johnson, Kopi Bar)
+- ✅ Downstream logistics chain (Matheus → Omega → SeaCoast → Kirsten)
 
