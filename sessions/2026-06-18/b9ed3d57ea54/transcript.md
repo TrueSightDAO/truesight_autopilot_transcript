@@ -152,11 +152,23 @@ Let me read the key files — the GAS handler and the onboarding docs:
 ### 🤖 Autopilot
 
 Now let me check the `submit_contribution` method for the CONTRIBUTOR ADD EVENT handling specifically:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the CONTRIBUTOR ADD EVENT handling specifically:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -280,4 +292,129 @@ The CLI would:
 Want me to:
 1. **Prototype the CLI** as a PR against `dao_client`?
 2. **Also discuss** where your key should live?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] You already have your own key in your own vault. I just need to you extend the dao_client with Add contributor add subcommand to dao_client
+
+
+### 🤖 Autopilot
+
+Ah, right — I already have my own registered identity (`admin+sophia@truesight.me`) that I use for `submit_contribution`. The question is whether Edgar's `submit_contribution` endpoint will accept a `[CONTRIBUTOR ADD EVENT]` signed by **me** (Sophia) rather than by a governor.
+
+Let me check what the GAS handler validates:
+
+
+### 🤖 Autopilot
+
+Now let me check the `parseContributorAddEvent_` function to see the exact text format it expects:
+
+
+### 🤖 Autopilot
+
+Now I know the exact format. The GAS handler parses this:
+
+```
+[CONTRIBUTOR ADD EVENT]
+- Contributor Name: David Campbell
+- Contributor Email: david@soha.center
+- Submitted At: 2026-06-18T12:00:00Z
+```
+
+And the key thing: **the GAS handler doesn't check who signed it.** It just reads the Telegram Chat Logs row and processes it. Edgar's `submit_contribution` endpoint already logs it to Telegram Chat Logs regardless of who signs — the signature verification just stamps column P with "success" or "failed".
+
+So I can sign `[CONTRIBUTOR ADD EVENT]` with **my own key** (Sophia's), POST to Edgar, and it'll work. The GAS handler doesn't gate on governor status — it just reads name + email and appends.
+
+Let me build this. First, let me check what `dao_client` currently looks like:
+
+
+### 🤖 Autopilot
+
+Let me look at the existing `dao_client` repo structure and how the existing `submit_contribution` tool works in the autopilot:
+
+
+### 🤖 Autopilot
+
+I see `dao_client` isn't listed as a separate repo anymore — it was mentioned earlier as renamed/moved. Let me check where the CLI tooling lives:
+
+
+### 🤖 Autopilot
+
+Let me check the `dao_protocol` repo since that seems to be the current home for the CLI:
+
+
+### 🤖 Autopilot
+
+Now I see — `dao_client` is the `dao_protocol` repo. Let me look at the existing modules to understand the pattern:
+
+
+### 🤖 Autopilot
+
+Let me look at one of the simpler modules to understand the pattern:
+
+
+### 🤖 Autopilot
+
+Now let me check the `build_event_cli` function to understand how it works:
+
+
+### 🤖 Autopilot
+
+Now let me check the `build_event_cli` function:
+
+
+### 🤖 Autopilot
+
+Now let me also check the `pyproject.toml` to see how console scripts are registered:
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check the `lookup_event_docs` result for CONTRIBUTOR ADD EVENT to confirm the canonical labels:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me build the module.
+
+
+### 🤖 Autopilot
+
+Now let me also register the console script in `pyproject.toml`:
+
+
+### 🤖 Autopilot
+
+The PR was already created from the first push. Let me update it via the PR directly:
+
+
+### 🤖 Autopilot
+
+The first push already created the PR with just the module file. Let me push the pyproject.toml update to the same branch by using `upload_file_to_github`:
+
+
+### 🤖 Autopilot
+
+Now let me also update the autopilot's `submit_contribution` tool to handle `[CONTRIBUTOR ADD EVENT]` — so I can call it directly when you say "Sophia, add David Campbell":
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool is built into the autopilot's tool system (not a Python module in the repo). But I can now call the CLI directly since it's in `dao_protocol`. Let me check if the autopilot has `dao_protocol` installed:
+
+
+### 🤖 Autopilot
+
+The `dao_protocol` is installed at `/opt/truesight_autopilot/dao_protocol/` but the new `add_contributor.py` module isn't there yet (it's only on the PR branch). Let me check if it's installed as a package:
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/dao_protocol/blob/feat/contributor-add-cli/pyproject.toml
+• `ssh run` ×5 → pip3 list 2>/dev/null | grep -i "truesight-dao\|dao.protocol\|dao_client"; find /home/ubuntu -maxdepth 4 -name "dao_protocol" -type d 2>/dev/null; find /opt -maxdepth 3 -name "dao_protocol" -type d 2>/dev/null; ls /; ls /opt/truesight_autopilot/dao_protocol/; …(+2 more)
 
