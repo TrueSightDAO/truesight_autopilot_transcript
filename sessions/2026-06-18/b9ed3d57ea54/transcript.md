@@ -70,3 +70,89 @@ So — back to your original ask: David Campbell / david@soha.center needs to be
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → pip3 list 2>/dev/null | grep -i dao; pip3 show dao-client 2>/dev/null; pip3 show dao_client 2>/dev/null; ls /home/ubuntu/tokenomics/scripts/; ls /home/ubuntu/tokenomics/python_scripts/agroverse_cacao_processing/ 2>/dev/null; ls /home/ubuntu/tokenomics/python_scripts/tdg_inventory_m; find /home/ubuntu/tokenomics -name "*.py" | xargs grep -l "contributor" 2>/dev/null; find /home/ubuntu/tokenomics -name "*.py" | xargs grep ; …(+1 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] what are your thoughts about extending the dao_client with this new module? Also I wonder if edgar already provide parameters to explain how to submit for this
+
+
+### 🤖 Autopilot
+
+Great question — two angles: (1) adding the CLI module, and (2) whether Edgar already has the event schema for it.
+
+Let me check Edgar's event catalog first.
+
+
+### 🤖 Autopilot
+
+Now let me look at how the existing `submit_contribution` tool works and what the DApp page does for this flow:
+
+
+### 🤖 Autopilot
+
+Let me read the key files — the GAS handler and the onboarding docs:
+
+
+### 🤖 Autopilot
+
+Now let me check the `submit_contribution` method for the CONTRIBUTOR ADD EVENT handling specifically:
+
+
+### 🤖 Autopilot
+
+Let me get the CONTRIBUTOR ADD EVENT handling specifically:
+
+
+### 🤖 Autopilot
+
+Now let me check if there's a CONTRIBUTOR ADD EVENT handler in the `trigger_immediate_processing` method:
+
+
+### 🤖 Autopilot
+
+Let me search for the CONTRIBUTOR ADD EVENT handling in the controller directly:
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Let me also check how the `submit_contribution` method handles the CONTRIBUTOR ADD EVENT specifically in the text parsing:
+
+
+### 🤖 Autopilot
+
+OK, I have a thorough picture now. Here's my analysis:
+
+---
+
+**Yes, Edgar already has the event schema.** The `CONTRIBUTOR ADD EVENT` is a registered event type in Edgar's catalog with these fields:
+
+| Field | Required |
+|---|---|
+| **Contributor Name** | ✅ |
+| **Contributor Email** | ✅ |
+| Initial Digital Signature | ❌ |
+| Submitted At | ❌ |
+| Submission Source | ❌ |
+
+**The full pipeline already exists:**
+1. **DApp page** (`governor_contributor_admin.html`) → POST to Edgar's `submit_contribution` endpoint
+2. **Edgar** (sentiment_importer's `dao_controller.rb`) → logs to Telegram Chat Logs sheet, then fires `trigger_immediate_processing`
+3. **GAS handler** (`ContributorAddHandler.js`) → reads Telegram Chat Logs, dedups, appends to "Contributors contact information" sheet, fires onboarding invitation email
+
+**The gap:** There's no CLI path. The DApp page is the only way because it requires the governor's browser-session digital signature — that's the authorization gate. The `submit_contribution` endpoint on Edgar validates the signature before accepting the event.
+
+**My thoughts on extending `dao_client`:**
+
+**Option A — CLI wrapper that calls the DApp's signed endpoint** — This would require the governor's private key on disk, which is a security concern. The DApp keeps the key in browser session storage for a reason.
+
+**Option B — CLI that generates a signed payload and POSTs to Edgar directly** — Feasible. The governor would need to provide their private key (or a path to it) at invocation time. The script would:
+1. Take `--name "David Campbell" --email "david@soha.center"`
+2. Sign the payload with the governor's RSA key
+3. POST to `edgar.truesight.me/submit_contribution` with `[CONTRIBUTOR ADD EVENT]` text
+
+**Option C — CLI that opens the DApp page pre-filled** — Just a URL builder. Low effort, no security concerns.
+
+**My recommendation: Option B.** It follows the same pattern as the existing `submit_contribution` tool I already have in `truesight_autopilot` — I sign events with my registered identity and POST them directly. The governor would need to register their key with Edgar first (which they already have if they've used the DApp), then the CLI could accept `--key-path` or read from `~/.dao/identity.pem`.
+
+Want me to prototype this as a PR against `dao_client`?
+
