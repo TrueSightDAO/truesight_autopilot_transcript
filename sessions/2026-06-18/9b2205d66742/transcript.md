@@ -1687,16 +1687,19 @@ Let me check the CI failure.
 ### 🤖 Autopilot
 
 The CI is failing on the **PR1 branch** (`autopilot/fix-1781814626`), not PR2. Let me check the logs to see what's failing.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The **format check (ruff)** failed on PR1's branch. Let me get the logs.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Need admin rights for logs. Let me check the format check output via the step's conclusion — it failed on format. The issue is likely that the pre-existing formatting issues in 17 files are caught by CI's `ruff format --check`. But wait — those pre-existing files weren't touched by my PR. Let me check what the CI workflow actually checks.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1706,6 +1709,7 @@ I see — the CI runs `ruff format --check app tests scripts` on **all** files, 
 Actually, looking more carefully — the failing run is on the **PR1 branch** (`autopilot/fix-1781814626`), not on `main`. The PR was merged despite CI failing because you merged it manually. The format check failure is the pre-existing 17-file formatting issue that exists on `main` too.
 
 Let me check if `main`'s CI also fails on format.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1713,6 +1717,7 @@ Let me check if `main`'s CI also fails on format.
 The merge to `main` passed CI (run #235, conclusion: `success`). The failing run was on the PR branch before merge — the **smoke workflow** (which includes format check) failed, but the **test workflow** (which is what runs on push to main) passed.
 
 So the PR1 merge to main is clean. The failing CI you're seeing is likely **PR2** (#256). Let me check.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1720,21 +1725,25 @@ So the PR1 merge to main is clean. The failing CI you're seeing is likely **PR2*
 The failing CI is on the **PR1 branch** (`autopilot/fix-1781814626`), not PR2. The format check failed because `ruff format --check` catches the 17 pre-existing formatting issues. But PR1 was already merged to `main` and the merge commit's CI passed (different workflow — `test.yml` vs `smoke.yml`).
 
 Wait — you said "PR is failing" — are you looking at **PR2** (#256)? Let me check PR2's CI status.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2 (#256) is open and has no CI status yet (just created). Let me check its check runs.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both **test** and **smoke** checks failed on PR2. Let me get the annotations to see what went wrong.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The error is `The process '/usr/bin/git' failed with exit code 128` — this is a **git checkout failure** in CI, not a code issue. This is a common transient GitHub Actions runner issue. Let me check the smoke annotations too.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1742,6 +1751,7 @@ The error is `The process '/usr/bin/git' failed with exit code 128` — this is 
 Both failures are the same — **`git` failed with exit code 128** during checkout. This is a **transient GitHub Actions runner issue** (runner couldn't clone the repo), not a code problem. It happens sometimes when GitHub's runners have connectivity issues.
 
 Let me re-run the failed checks.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1763,7 +1773,18 @@ Want me to push a no-op amend to re-trigger CI?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Pushed a no-op commit to re-trigger CI. Let me switch back to main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1799,11 +1820,23 @@ Error: Process completed with exit code 1.
 ### 🤖 Autopilot
 
 The test `test_startup_preload_loads_catalog` is failing because `_catalog_last_refresh` is `0.0` — meaning the startup preload didn't actually run. Let me look at the test and the code to understand why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the startup preload code is there. Let me look at the test to understand why it's failing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1811,6 +1844,7 @@ Good — the startup preload code is there. Let me look at the test to understan
 I see the issue. The test calls `_refresh_events_catalog()` directly, but the test file imports `_refresh_events_catalog` from `app.main`. The problem is that `_catalog_last_refresh` is a module-level variable in `app.main`, and the test checks it. But the test might be importing a stale reference.
 
 Let me check the test imports and the actual error more carefully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1818,11 +1852,13 @@ Let me check the test imports and the actual error more carefully.
 The test passes locally on the autopilot box but fails in CI. The difference is likely the **test ordering** — in CI, other tests run first and may have already set `_catalog_last_refresh` to a non-zero value, but this test expects it to be `0.0` at the start.
 
 Wait — the test asserts `_catalog_last_refresh > 0` AFTER calling `_refresh_events_catalog()`. If the mock is working, it should set the timestamp. Let me check if the mock is actually being hit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's failing locally too! Let me check if the mock is actually being called.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1830,6 +1866,12 @@ It's failing locally too! Let me check if the mock is actually being called.
 It works when run in isolation! The issue is **test ordering** — when run in the full suite, another test (likely `test_startup_preload_http_failure_keeps_fallbacks`) runs first and patches `httpx.AsyncClient` differently, and the mock doesn't get reset properly between tests.
 
 Let me check the test ordering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1839,6 +1881,12 @@ It fails when run in the full suite but passes in isolation. The issue is that `
 Wait — actually the issue is that `test_catalog_http_error_no_change` runs first and the mock from that test might interfere. But each test uses `with patch(...)` so it should be scoped correctly.
 
 Let me check if the issue is that the `_mock_response` helper returns a mock where `raise_for_status()` raises an exception.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1846,6 +1894,7 @@ Let me check if the issue is that the `_mock_response` helper returns a mock whe
 I see the issue now. The `_mock_response` uses `AsyncMock(spec=httpx.Response)` for the response object. But `resp.json` is a `MagicMock` (sync), which is correct. However, the `raise_for_status` is also a `MagicMock` (sync), and the code calls `resp.raise_for_status()` which is sync.
 
 Let me look at the actual `_refresh_events_catalog` code to see how it calls these.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1855,21 +1904,25 @@ The code looks correct. The issue is that when `test_catalog_http_error_no_chang
 Let me check if there's a module-level state issue. The `_catalog_last_refresh` is a module-level variable. When `test_catalog_http_error_no_change` runs, it calls `_refresh_events_catalog()` which fails (503), so `_catalog_last_refresh` stays at `0.0`. Then `test_startup_preload_loads_catalog` runs — but the mock might not be working because the `httpx.AsyncClient` import was already resolved.
 
 Wait — the issue is that `httpx.AsyncClient` is imported at the top of `main.py`, so `patch("app.main.httpx.AsyncClient")` patches the reference in `app.main`'s namespace. This should work. Let me debug more carefully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It works fine in sequence! The issue must be something specific to the pytest test file. Let me check if there's a module-level fixture or conftest that's interfering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The conftest looks fine. Let me check if the issue is that `_catalog_last_refresh` is being reset by another test. Let me add some debug logging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It fails even in isolation! But my Python script above worked. The difference must be in how the test imports things. Let me check the test imports.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1956,4 +2009,23 @@ I see — the file on GitHub has the exact content. The issue with `git_push_cha
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×26 → cd /opt/truesight_autopilot && git fetch origin && git checkout autopilot/fix-1781815776 2>&1 | tail -2; cd /opt/truesight_autopilot && grep -n "_catalog_last_refresh\|_refresh_events_catalog\|startup_preload\|async def lifespan" app/main.py | h; cd /opt/truesight_autopilot && sed -n '398,430p' app/main.py; …(+21 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] push
+
+
+### 🤖 Autopilot
+
+Pushed! CI should re-trigger on PR #256. Let me switch back to main.
+
+
+### 🤖 Autopilot
+
+Pushed to PR #256's branch. CI should be re-running now at https://github.com/TrueSightDAO/truesight_autopilot/pull/256
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && git add tests/test_events_catalog.py && git commit -m "fix: test_startup_preload_loads_catalog — _catalog_las; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2
 
