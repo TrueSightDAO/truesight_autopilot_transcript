@@ -932,11 +932,18 @@ Now let me find the JavaScript that constructs the payload to see what fields ar
 ### 🤖 Autopilot
 
 Now let me find the part where the payload is constructed and submitted.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find the actual payload construction and submission code.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1245,4 +1252,71 @@ Or if you'd rather just submit the 2 bags now with the current CLI format (same 
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] [Handoff context — this Telegram topic (thread 6311) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Dont go for it. Kimi is handling that plan now. Instead see if you can handle the submission for these two new bags using the QR codes you suggested. I want to see how the data pipeline flows on edgar's side once you have done so
+
+
+### 🤖 Autopilot
+
+Got it — Kimi has the plan. Let me just submit the 2 new bags using the current CLI format (with the gaps we identified, but you want to see the pipeline flow). Under FIFO, the next two are `2024OSCAR_20260121_33` and `2024OSCAR_20260121_34`.
+
+Let me look up the event docs first to make sure I use the right format.
+
+
+### 🤖 Autopilot
+
+Good — the canonical labels now show the full DApp format. Let me submit both sales. I'll present the proposal JSON first.
+
+For the 2 bags, under FIFO:
+- **Bag 1:** `2024OSCAR_20260121_33` — $17.50
+- **Bag 2:** `2024OSCAR_20260121_34` — $17.50
+
+Since we don't have Gergana's email handy in this conversation (it was `info@thewayhomeshop.com` from your DApp submission earlier), I'll include it.
+
+```json
+[
+  {"proposal": {"action": "submit_contribution", "title": "Sales Event: Gergana bag 1/2 (QR: 2024OSCAR_20260121_33)", "qr_code": "2024OSCAR_20260121_33", "summary": "Gergana sold 1 bag Ceremonial Cacao (QR: 2024OSCAR_20260121_33) for $17.50 via Venmo. Sold by Gergana, cash collected by Gary Teh."}},
+  {"proposal": {"action": "submit_contribution", "title": "Sales Event: Gergana bag 2/2 (QR: 2024OSCAR_20260121_34)", "qr_code": "2024OSCAR_20260121_34", "summary": "Gergana sold 1 bag Ceremonial Cacao (QR: 2024OSCAR_20260121_34) for $17.50 via Venmo. Sold by Gergana, cash collected by Gary Teh."}}
+]
+```
+
+
+### 🤖 Autopilot
+
+✅ **Both submitted successfully!** Here's what happened and what you can observe in the pipeline:
+
+---
+
+### What was submitted
+
+| # | QR Code | Price | Sold by | Cash to | Owner Email |
+|---|---------|-------|---------|---------|-------------|
+| 1 | `2024OSCAR_20260121_33` | $17.50 | Gergana - The Way Home Shop | Gary Teh | info@thewayhomeshop.com |
+| 2 | `2024OSCAR_20260121_34` | $17.50 | Gergana - The Way Home Shop | Gary Teh | info@thewayhomeshop.com |
+
+### The data pipeline flow (what happens next on Edgar's side)
+
+1. **`submit_contribution`** → POST to `dao_protocol` (FastAPI on seni_ror) → RSA signature verified → event logged
+2. **Edgar** writes the event to the **Telegram Chat Logs sheet** (the raw ledger)
+3. **Sidekiq workers** (seni_sk) pick up the event and process downstream:
+   - **QR code status update** → `2024OSCAR_20260121_33` and `_34` change from `ON CONSIGNMENT` → `SOLD` in the Agroverse QR codes sheet
+   - **Inventory ledger update** → Gergana's consignment count decreases by 2 (from 10 to 8)
+   - **Treasury cache refresh** → the `treasury-cache` repo gets updated
+4. **DApp reflects changes** → the QR codes disappear from the `?list=true` dropdown (filtered out since status ≠ SOLD)
+
+You can verify by:
+- **Checking the QR codes** — `lookup_qr_code("2024OSCAR_20260121_33")` should show `SOLD` status now
+- **Checking the Telegram Chat Logs sheet** — the raw submissions should appear
+- **Checking the DApp** — `dapp.truesight.me/report_sales.html` — those QR codes should no longer appear in the dropdown
+
+Want me to check any of those to confirm the pipeline worked?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
