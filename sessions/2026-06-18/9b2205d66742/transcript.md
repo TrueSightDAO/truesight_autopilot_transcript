@@ -426,6 +426,11 @@ Let me get the full audit log to see all credential names.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 There it is — **`PYPI_API_TOKEN`** was added to the vault at `2026-06-18T20:19:19Z` by "Vault UI" (that's you, Gary, via the web interface). It's in the encrypted vault on the autopilot box.
 
 Now, the question is: **how do we use it?** The current workflow (`pypi-publish-dao-client.yml`) uses **trusted publishing (OIDC)**, not a token. So we have two options:
@@ -517,21 +522,25 @@ Actually, let me just use the token you already put in the vault and handle this
 3. Then trigger the publish workflow
 
 Let me start by reading the token from the vault.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the token. Now let me check if the project already exists on PyPI and create it if not.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — project doesn't exist. Let me create it via the PyPI API using the token.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The legacy API doesn't allow direct project creation. Let me use the modern PyPI API (XML-RPC or the new JSON API).
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -756,11 +765,18 @@ Once you do that, tell me and I'll trigger the workflow to publish v0.2.0!
 ### 🤖 Autopilot
 
 Let me trigger the publish workflow now.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the GitHub PAT to trigger the workflow. Let me grab it from the vault.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -896,4 +912,101 @@ Make `_refresh_events_catalog` UPDATE `required_fields` + `canonical_labels` for
 - Own-repo gate: `truesight_autopilot` — open PR only, no self-merge
 
 Say **"go for it"** and I'll execute PR1.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] [Handoff context — this Telegram topic (thread 6416) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it.
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan to get the exact PR1 details.
+
+
+### 🤖 Autopilot
+
+Got it. Let me now look at the current code to understand the merge logic in `_refresh_events_catalog`.
+
+
+### 🤖 Autopilot
+
+The `truesight_autopilot` repo exists but the code search returned nothing — let me read the main file directly.
+
+
+### 🤖 Autopilot
+
+This is a large file. Let me search for the specific functions related to the events catalog.
+
+
+### 🤖 Autopilot
+
+The code search isn't finding these in the GitHub index. Let me look at the local running code on the autopilot box.
+
+
+### 🤖 Autopilot
+
+Found it. Let me read the relevant section of main.py.
+
+
+### 🤖 Autopilot
+
+Let me read the specific section around the events catalog functions.
+
+
+### 🤖 Autopilot
+
+Now I can see the bug clearly. Let me look at the full merge logic:
+
+```python
+# Current buggy logic:
+if event_name not in _CANONICAL_LABELS or not _CANONICAL_LABELS.get(event_name):
+    _CANONICAL_LABELS[event_name] = labels
+    added += 1
+elif len(labels) > len(_CANONICAL_LABELS.get(event_name, [])):
+    _CANONICAL_LABELS[event_name] = labels
+    updated += 1
+if required and event_name not in _VALIDATE_REQUIRED_FIELDS:
+    _VALIDATE_REQUIRED_FIELDS[event_name] = required
+```
+
+**The bugs:**
+1. For `_CANONICAL_LABELS`: only updates if the event is missing OR if the catalog has *more* labels than the hardcoded version. If the catalog has *fewer* or *different* labels, the hardcoded stale version wins.
+2. For `_VALIDATE_REQUIRED_FIELDS`: only adds if the event is NOT already in the dict. **Never updates** an existing event's required fields.
+
+Let me also check the test files.
+
+
+### 🤖 Autopilot
+
+No existing tests for the catalog merge. Now I have a clear picture. Let me also check the `lookup_event_docs.py` tool since the plan mentions it.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me create the PR.
+
+
+### 🤖 Autopilot
+
+**PR1 is open!** 🎉
+
+**PR #255** — https://github.com/TrueSightDAO/truesight_autopilot/pull/255
+
+**What it does:**
+- Changes `_refresh_events_catalog()` so the **catalog always wins** — both `canonical_labels` and `required_fields` are overwritten from the catalog for existing events
+- Previously: only added new events, never updated existing ones
+- Now: tracks `added` vs `updated` counts in the log
+- Includes tests for: changed labels adopted, changed required fields adopted, new events added, catalog-with-fewer-labels scenario, empty catalog no-crash
+
+**Gate status:** ✅ PR1 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** again and I'll execute **PR2** (catalog load timing — close the boot-window gap).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → grep -rn "_refresh_events_catalog\|_CANONICAL_LABELS\|_VALIDATE_REQUIRED_FIELDS\|events_catalog" /opt/truesight_autopilot/app/ 2>/dev/null |; sed -n '1185,1250p' /opt/truesight_autopilot/app/main.py; sed -n '1250,1320p' /opt/truesight_autopilot/app/main.py; …(+2 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/255
 
