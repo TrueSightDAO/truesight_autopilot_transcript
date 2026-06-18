@@ -1089,16 +1089,39 @@ I can trigger it via Edgar's Sidekiq worker. Let me check if there's an Edgar AP
 ### 🤖 Autopilot
 
 Rails env has issues. Let me try a different approach — trigger the Sidekiq worker directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Can't SSH to seni_sk directly. Let me try triggering via the GAS web app URL directly — I'll call it and see if it works without the secret (it'll return unauthorized, but that confirms the URL is right). Then I'll try from seni_ror with the env vars.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The URL works — returns "Unauthorized" as expected with a bad secret. Let me try to get the secret from the environment on seni_ror.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1190,4 +1213,34 @@ The Sentinels section on `truesight.me/members.html` should now light up (it loa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1m8IZPs1vFN99cuu-39kbC-OGXggRVtJtXq5rfSB0M1sCQjMdolEUDuGU && clasp deploy ; curl -s https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json | python3 -c " import json, sys data = json.load
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] [Handoff context — this Telegram topic (thread 6874) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Hold off on this ⏳ Next — Step 3: Replace the hardcoded TRUSTED_AGENTS check in process_movement_telegram_logs.js with a dynamic sentinel role check. Want me to proceed with that PR?
+
+DeepSeek is doing a change right now
+
+
+### 🤖 Autopilot
+
+Understood. Holding on Step 3. Let me update the plan file to reflect the current state.
+
+
+### 🤖 Autopilot
+
+The plan file is stale — it still shows PR 2 as "Not started" and doesn't reflect what we actually did (PR merged, deployed, cache refreshed). Let me update it.
+
+
+### 🤖 Autopilot
+
+Plan updated. **PR #571** on `agentic_ai_context` — the plan now reflects:
+
+- ✅ **PR 1** — Done (merged, deployed, cache refreshed, 4 sentinels live)
+- ⏳ **PR 2** — On hold (waiting for DeepSeek's change to `process_movement_telegram_logs.js`)
+- ⏳ **PR 3** — Blocked on PR 2 (re-process the 30 stuck rows)
+
+The RESUME HERE marker points to PR 2. Just let me know when DeepSeek is done and I'll pick it up.
 
