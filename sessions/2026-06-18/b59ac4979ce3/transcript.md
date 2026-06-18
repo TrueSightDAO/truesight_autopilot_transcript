@@ -470,11 +470,17 @@ The backticks are causing shell issues. Let me use a heredoc approach:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Updated. The **Legal Entity Structuring** track now has:
 
 | **Next milestone** | Mon Jun 22, 2026 · 11am PDT — call with Layon Costa (counsel), Breno, Paloma. [Google Meet](https://meet.google.com/eht-bdgp-tdh) |
 
 Also let me persist the attachment content to the transcript for future recall:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -690,4 +696,61 @@ Want me to open a PR on `truesight_me_beta` to add an "Active Tracks" section to
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #562 on agentic_ai_context merged successfully (sha: 2752a8760de1a4fdc64b5864d20d5b10fb327455). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] /dao
+
+
+### 🤖 Autopilot
+
+Let me look at the current /dao page on truesight_me_beta to see what's there and where the track map would fit.
+
+
+### 🤖 Autopilot
+
+Now I see the structure. It's a static site (vanilla HTML, no framework). Let me check the main index.html to see the navigation and understand where a /dao page would go.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check the existing roadmap page too since there's already a `/roadmap` link:
+
+
+### 🤖 Autopilot
+
+Interesting — the existing `/roadmap` just redirects to a Google Drawing. That's the old Gantt-style roadmap you mentioned is hard to decipher.
+
+Here's my recommendation:
+
+---
+
+**Yes, publish it on truesight.me.** Here's exactly where and how:
+
+### Where: Replace the `/roadmap` page
+
+The current `/roadmap` just redirects to a Google Drawing. Instead, we turn it into a **live, rendered track map** — the Mermaid diagram from `TRACK_MAP.md` embedded directly on the page. This is the natural home because:
+
+- "Roadmap" is what people expect to see for "what's happening now"
+- It's already linked in the nav under **Resources → Roadmap**
+- It replaces a dead redirect with something genuinely useful
+
+### How it would look
+
+A single page with:
+1. **The Mermaid flowchart** — dependency arrows, color-coded (gate/blocked/new)
+2. **The quick-reference table** — track, status, owner, next check-in
+3. **Detail sections** — each track expanded with goal, key docs, downstream chain
+4. **Last updated** timestamp — so visitors know it's live
+
+### What it communicates to visitors
+
+> "This is what we're working on right now. Here's the bottleneck. Here's who owns what. Here's when things are expected to move."
+
+That's **radical transparency** — and it's exactly the TrueSight ethos.
+
+---
+
+Want me to open a PR on `truesight_me_beta` that replaces the `/roadmap` redirect with a proper track map page? I'll pull the content from the merged `TRACK_MAP.md` and render it as a static HTML page with the Mermaid diagram.
 
