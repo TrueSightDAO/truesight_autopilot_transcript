@@ -450,11 +450,13 @@ Now I have everything I need. Let me also check the `lookup_event_docs` result f
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me build the module.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also register the console script in `pyproject.toml`:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -556,4 +558,118 @@ Extend `dao_protocol` with a CLI subcommand so **Sophia** (and any governor) can
 ### What I need from you right now
 
 **Go-signal to merge PR #123?** Then I'll deploy and test in this same turn.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] can we make it more detailed on the steps you specifically need to do?
+
+
+### 🤖 Autopilot
+
+Absolutely. Let me first check the exact PR number and current state of things.
+
+
+### 🤖 Autopilot
+
+Good — PR #123 is open. Now let me read the exact module file I created to make sure I have the precise content:
+
+
+### 🤖 Autopilot
+
+Now let me read the `build_event_cli` helper to understand exactly what it does:
+
+
+### 🤖 Autopilot
+
+Now let me check the `build_event_cli` function specifically:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the autopilot's current `submit_contribution` tool implementation to understand what needs changing there:
+
+
+### 🤖 Autopilot
+
+Now let me check how the `submit_contribution` tool is actually dispatched in `main.py`:
+
+
+### 🤖 Autopilot
+
+Let me find the `submit_contribution` handler in main.py:
+
+
+### 🤖 Autopilot
+
+Let me search for the specific `submit_contribution` handler in main.py:
+
+
+### 🤖 Autopilot
+
+Now let me check the `EdgarLogger.submit_contribution` method to see how it formats and sends:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me also check the `add_partner.py` module as a reference since it's the closest sibling:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the detailed, step-by-step plan:
+
+---
+
+## Detailed Implementation Plan: `truesight-dao-add-contributor` CLI
+
+### What's already done ✅
+
+| Item | Detail |
+|---|---|
+| **Module file** | `truesight_dao_client/modules/add_contributor.py` — 20 lines, uses `build_event_cli` |
+| **Console script** | `truesight-dao-add-contributor` registered in `pyproject.toml` |
+| **PR #123** | Open at `dao_protocol` — contains both of the above |
+| **Edgar backend** | Already accepts `[CONTRIBUTOR ADD EVENT]` — logs to Telegram Chat Logs |
+| **GAS handler** | `ContributorAddHandler.js` already reads Telegram Chat Logs, dedups, appends to "Contributors contact information", fires onboarding email |
+
+### Step-by-step execution checklist
+
+**Phase 1 — Ship the CLI (this turn)**
+
+| # | Step | What I do | What you do |
+|---|---|---|---|
+| 1.1 | **Merge PR #123** | Call `merge_pr(dao_protocol, 123)` | Say "go" or "merge it" |
+| 1.2 | **Pull latest on autopilot** | `ssh_run(autopilot, "cd /opt/truesight_autopilot/dao_protocol && git pull origin main")` | — |
+| 1.3 | **Reinstall package** | `ssh_run(autopilot, "cd /opt/truesight_autopilot/dao_protocol && pip3 install .")` | — |
+| 1.4 | **Dry-run test** | `ssh_run(autopilot, "truesight-dao-add-contributor --dry-run --contributor-name 'Test User' --contributor-email 'test@test.com'")` | — |
+| 1.5 | **Verify output** | Check the dry-run prints the signed payload without hitting Edgar | — |
+
+**Phase 2 — Wire into autopilot's tool layer (next turn)**
+
+| # | Step | What I do | What you do |
+|---|---|---|---|
+| 2.1 | **Open PR on `truesight_autopilot`** | Modify `app/main.py` to handle `CONTRIBUTOR ADD EVENT` in the `submit_contribution` tool dispatch (line 1715 area) — currently it only special-cases `INVENTORY MOVEMENT` and `QR CODE REGISTRATION`. For `CONTRIBUTOR ADD EVENT`, it should call `EdgarLogger.submit_contribution()` directly (same as the default path) | — |
+| 2.2 | **Review PR** | — | You review and merge |
+| 2.3 | **Deploy autopilot** | `deploy_autopilot()` | — |
+
+**Phase 3 — Add David Campbell (after Phase 2)**
+
+| # | Step | What I do | What you do |
+|---|---|---|---|
+| 3.1 | **Run the CLI** | `truesight-dao-add-contributor --contributor-name "David Campbell" --contributor-email "david@soha.center"` | — |
+| 3.2 | **Verify in GAS** | Check the "New Contributor" tab in the Telegram Chat Logs sheet for the row | — |
+| 3.3 | **Confirm onboarding email sent** | Check David's inbox or the GAS execution logs | — |
+
+### Why Phase 2 is needed
+
+Right now, when you say "Sophia, add David Campbell as a contributor," my `submit_contribution` tool calls `EdgarLogger.submit_contribution()` which calls `EdgarClient.submit()` — that **already works** for any event name. The issue is my system prompt doesn't know `CONTRIBUTOR ADD EVENT` is a valid event I can submit. Phase 2 adds it to the tool's awareness so I can call it directly without fumbling.
+
+### What I need from you
+
+**Say "go" or "merge it"** and I'll execute Phase 1 (merge → pull → install → dry-run test) right now.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep -n "submit_contribution\|CONTRIBUTOR ADD\|add_contributor" /opt/truesight_autopilot/app/main.py | head -30; sed -n '1670,1970p' /opt/truesight_autopilot/app/main.py
 
