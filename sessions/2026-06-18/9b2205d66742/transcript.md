@@ -3257,6 +3257,7 @@ Good — PR7 (#264) is merged. But you said deployment was successful. Let me ch
 ### 🤖 Autopilot
 
 The autopilot service is **inactive** — the PRs are merged but the service hasn't been restarted. Let me deploy it.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3409,4 +3410,30 @@ The **DApp Event Alignment** plan is fully complete! Here's the final tally:
    - **Something else?**
 
 What would you like to do?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] completed 1.
+
+
+### 🤖 Autopilot
+
+Let me log the contribution for the CLI Sales Event Alignment work.
+
+
+### 🤖 Autopilot
+
+Done! Contribution logged. 🎉
+
+**CLI Sales Event Alignment** — fully complete:
+- ✅ All code PRs merged
+- ✅ `truesight-dao-client` v0.2.0 on PyPI
+- ✅ Contribution logged (120 min, 120 TDG)
+
+What's next on your list?
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
