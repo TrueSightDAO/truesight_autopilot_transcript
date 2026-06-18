@@ -33,3 +33,51 @@ For example, are we discussing:
 
 Let me know what's on your mind and I'll dive in.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] [Handoff context — this Telegram topic (thread 6416) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+📋 DApp Event Alignment — Handoff Parked
+
+Read SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md (freshly merged today). Here's the context:
+
+RESUME HERE = PR1 — Catalog merge: make _refresh_events_catalog UPDATE required_fields + canonical_labels for events already in the dicts (catalog wins), not just add new ones.
+
+Gates:
+- ONE PR PER TURN — run PR1 only, then STOP
+- Own-repo gate: truesight_autopilot — open PRs only, NEVER self-merge (human merges)
+- PR5 needs PR4 merged, PR7 needs PR6 merged
+- PR6 is a review gate
+- PR8 is the UAT gate
+
+Reply "go for it" and I will execute from RESUME HERE through the gates, reporting progress here.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and the plan file.
+
+
+### 🤖 Autopilot
+
+Now let me read the plan file that was freshly merged today.
+
+
+### 🤖 Autopilot
+
+I've read the plan. Let me confirm my understanding:
+
+**Handoff:** DApp Event Alignment — Parked in this thread (6416)
+**Plan:** `SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md`
+**RESUME HERE:** PR1 — Catalog merge: make `_refresh_events_catalog` UPDATE `required_fields` + `canonical_labels` for events already in the dicts (catalog wins), not just add new ones.
+
+**Gates:**
+- ONE PR PER TURN — run PR1 only, then STOP
+- Own-repo gate: `truesight_autopilot` — open PRs only, NEVER self-merge
+- PR5 needs PR4 merged, PR7 needs PR6 merged
+- PR6 is a review gate
+- PR8 is the UAT gate
+
+I'm parked and ready. Reply **"go for it"** and I'll execute PR1 from RESUME HERE, reporting progress in this thread.
+
