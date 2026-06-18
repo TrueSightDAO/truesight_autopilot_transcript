@@ -173,5 +173,12 @@
     "summary": "PR4 \u2014 Generic catalog-driven field normalizer (G3a)\n\nAdd a catalog-driven field normalizer that maps LLM-supplied attribute keys to canonical labels for ALL event types, not just the ~4 events with ha",
     "action": "merge_pr",
     "created_at": "2026-06-18T21:39:31Z"
+  },
+  {
+    "title": "Merge PR #261 on truesight_autopilot",
+    "qr_code": "",
+    "summary": "PR5 \u2014 Stop silently dropping non-canonical keys (G3b)\n\nWhen a supplied key can't be mapped to a canonical label, surface it (warn + pass through), never drop blind.\n\nChanges needed:\n1. In `_normalize_",
+    "action": "merge_pr",
+    "created_at": "2026-06-18T22:05:00Z"
   }
 ]
