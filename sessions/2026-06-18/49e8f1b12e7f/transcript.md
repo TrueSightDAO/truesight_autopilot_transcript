@@ -501,6 +501,11 @@ Now I have the full picture. Let me look at the exact auth flow in `inventoryMov
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see the full picture. The `DaoMembersCache.js` reads from `Contributors Digital Signatures` (columns A-H, which includes email at column F) and `Contributors voting weight` — but it does **not** read `Contributors Contact Information` at all, so Column W ("Is Sentinel") is never consulted.
 
 Here's my corrected analysis:
@@ -545,11 +550,13 @@ https://truesight.me/members.html
 ### 🤖 Autopilot
 
 Let me check the members page source to see how it's structured.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — the members page already has a **Sentinels** section that lists "Sophia Truesight" as a Sentinel. Let me check the source code to see how it reads the data.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -667,4 +674,81 @@ It never reads `Contributors Contact Information` at all, so Column W ("Is Senti
 The fix is to add a fourth sheet read — `Contributors Contact Information` — and build a lookup of which contributor names have `Is Sentinel = TRUE`, then add `'sentinel'` to their roles array.
 
 Want me to open a PR for that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6874] [Handoff context — this Telegram topic (thread 6874) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I guess we should draft up an implementation plan, execution roadmap and checklist first
+
+Include this as one of the tasks
+
+And then additional task for the GAs that handles inventory movement, if the signer has sentinel role, it should be authorized as well. Dont you think?
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and the current state of things before drafting.
+
+
+### 🤖 Autopilot
+
+Good — this is a fresh topic (thread 6874), not a parked handoff. So we're drafting a new plan. Let me also check the GAS handler code to understand the exact auth flow for the inventory movement, so I can scope the tasks properly.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the draft plan:
+
+---
+
+## Implementation Plan: Sentinel Role in dao_members.json + GAS Auth
+
+### Context
+- `dao_members_cache_publisher.gs` reads 3 sheets: `Contributors Digital Signatures`, `Contributors voting weight`, `Governors` — but **not** `Contributors Contact Information`
+- Column W of `Contributors Contact Information` = "Is Sentinel" (TRUE/FALSE)
+- The members page (`members.html`) has a Sentinels section that filters `dao_members.json` for `roles: ['sentinel']` — currently hidden because nobody has that role
+- The GAS inventory movement auth (`process_movement_telegram_logs.js`) has a trusted-agent path (`TRUSTED_AGENTS = ['autopilot@agroverse.shop']`) but no sentinel path
+- The autopilot's key status is now ACTIVE (you just changed it), but the contributor name resolves to `"Sophia Truesight"` which doesn't match `'autopilot@agroverse.shop'`
+
+### Tasks
+
+**Task 1 — Add sentinel role to `dao_members_cache_publisher.gs`**
+- Read `Contributors Contact Information` sheet (columns A = name, W = Is Sentinel)
+- Build a `sentinelsByName` lookup
+- In the roles assembly, add `'sentinel'` for matching names
+- This makes the Sentinels section on `members.html` light up
+
+**Task 2 — Add sentinel auth path to `process_movement_telegram_logs.js`**
+- After the trusted-agent check, add a sentinel check:
+  - Look up the signer's contributor name in `Contributors Contact Information` Column W
+  - If `Is Sentinel = TRUE` AND the contribution has `- Approved By:` a governor → return `'NEW'`
+- This authorizes Sophia (sentinel) to submit inventory movements with Gary's approval
+
+**Task 3 — Trigger a fresh `dao_members.json` publish**
+- After Task 1 deploys, trigger the cache refresh so the Sentinels section appears on the live site
+
+**Task 4 — Re-process the 30 stuck inventory movements**
+- The 30 June 18 submissions are sitting in the Inventory Movement sheet with STATUS = "unauthorized"
+- After Task 2 deploys, either:
+  - (a) Re-run the GAS handler against those rows, OR
+  - (b) Manually flip their STATUS to "NEW" so the second handler picks them up
+
+### Execution Roadmap
+
+| Step | What | Repo | PR | Gate |
+|------|------|------|----|------|
+| 1 | Add `Contributors Contact Information` read + sentinel role to `dao_members_cache_publisher.gs` | `tokenomics` | PR1 | Merge + deploy |
+| 2 | Trigger cache refresh → verify Sentinels section appears on `truesight.me/members.html` | — | — | Gary confirms |
+| 3 | Add sentinel auth path to `process_movement_telegram_logs.js` | `tokenomics` | PR2 | Merge + deploy |
+| 4 | Re-process the 30 stuck rows (flip STATUS or re-trigger handler) | — | — | Gary confirms |
+| 5 | File a follow-up in OPEN_FOLLOWUPS.md documenting the fix | `agentic_ai_context` | PR3 | Merge |
+
+### RESUME HERE
+On **"go for it"**, execute **Step 1** (PR1 for `dao_members_cache_publisher.gs`), then stop and report.
+
+---
+
+Thoughts? Any tasks I'm missing or want to reorder?
 
