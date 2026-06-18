@@ -63,6 +63,7 @@ Let me check the handoff registry and the plan file.
 ### 🤖 Autopilot
 
 Now let me read the plan file that was freshly merged today.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -195,4 +196,45 @@ The actual blocker is just the **PyPI trusted publisher configuration** — a on
 Do you want me to:
 1. **Check if the trusted publisher is already configured** on PyPI (I can try to look it up)?
 2. **Or just move on** — the CLI code is all merged and working, the PyPI publish is a nice-to-have for `pip install` convenience but the CLI works fine installed from source via `pip install -e .`?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] How do we setup PyPI?
+
+
+### 🤖 Autopilot
+
+Here's the step-by-step to set it up. Takes about 2 minutes:
+
+### 1. Go to PyPI and add a trusted publisher
+
+1. Browse to **https://pypi.org/manage/project/truesight-dao-client/settings/publishing/** (you'll need to be logged in as the owner of the `truesight-dao-client` project)
+2. Click **"Add a new publisher"**
+3. Fill in:
+   - **PyPI Project Name:** `truesight-dao-client`
+   - **Publisher:** `GitHub`
+   - **Owner:** `TrueSightDAO`
+   - **Repository:** `dao_protocol`
+   - **Workflow name:** `pypi-publish-dao-client.yml`
+   - **Environment:** *(leave blank)*
+4. Click **"Add"**
+
+### 2. Trigger the publish
+
+Once the trusted publisher is configured, you have two options:
+
+- **Option A (automatic):** Push a version bump to `pyproject.toml` on `main` — the workflow fires automatically on pushes that touch `pyproject.toml`
+- **Option B (manual):** Go to GitHub → `TrueSightDAO/dao_protocol` → Actions → `Publish truesight-dao-client to PyPI` → "Run workflow" dropdown → click "Run workflow"
+
+### 3. Verify
+
+```bash
+pip install truesight-dao-client
+# Should get v0.2.0
+```
+
+---
+
+**Do you have PyPI owner access for `truesight-dao-client`?** If not, we'd need to create the project first. If you want, I can check whether the project already exists on PyPI.
 
