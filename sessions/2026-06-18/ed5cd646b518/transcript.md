@@ -187,16 +187,19 @@ Let me check the sales processing script to understand how sales are recorded an
 ### 🤖 Autopilot
 
 Now I can see the Telegram Chat Logs sheet ID. Let me check it.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the QR Code Sales sheet where processed sales are recorded.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a clear picture. Let me also check the rest of the QR Code Sales sheet for any Chives-related entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -248,6 +251,7 @@ Alternatively — do you have a photo of the bag itself? If the QR code is visib
 ### 🤖 Autopilot
 
 Ah, June 9th last year! Let me search the QR Code Sales sheet specifically around that date.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -259,6 +263,12 @@ I see a sale on **20250609** (June 9, 2025) — row 21:
 That's the only sale on June 9th. But the sales message doesn't mention Chives by name — it's just "Sold for $25."
 
 Let me check if you recorded her name in the **Sold By** or **Cash Collected By** columns (columns P and Q), and also look at the full row data.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -382,4 +392,108 @@ https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024PF_20250505_12
 ```
 
 She opens it → enters her email → gets notified when her tree is planted in the Amazon. No QR code sticker needed.
+
+
+### 🧑 Governor
+
+Cool! Could you report contribution for what we did for Chives using this screenshot as proof of work
+
+[Attachment auto-processed: **a7b65f9be3b34ff39e0bb0e7d18f4408.jpg**]
+- Type: Image (OCR confidence: 86.7%, quality: good)
+
+Extracted text:
+```
+To: +1 (509) 699-3547 @® live Today 2:56PM Here you go. Found your QR code: 2024PF_20250: You could register your email for updates on the tree planting here AGL4 Shipment | Oscar's Farm - Bahia | Agroverse | { edgar.truesight.me ? Delivered ale ©
+```
+
+
+### 🤖 Autopilot
+
+Let me first save this proof to the transcript, then submit the contribution.
+
+
+### 🤖 Autopilot
+
+No problem, the transcript append had a minor issue but the important thing is the contribution. Let me submit it now.
+
+
+### 🤖 Autopilot
+
+Let me check the exact format Edgar expects.
+
+
+### 🤖 Autopilot
+
+Let me check the SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md to understand the exact format.
+
+
+### 🤖 Autopilot
+
+I see — the CONTRIBUTION EVENT requires `Type` as a canonical label. Let me check what values it expects.
+
+
+### 🤖 Autopilot
+
+Let me look at how `submit_contribution` processes the text to understand the format it expects.
+
+
+### 🤖 Autopilot
+
+Let me look at the rest of the submit_contribution method to understand the expected format.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` endpoint on Edgar expects the text to be in a specific format with `[CONTRIBUTION EVENT]` header and structured fields. Let me look at how the `create_dao_submission` tool works instead — that's the one designed for this use case.
+
+
+### 🤖 Autopilot
+
+Now I understand. The `create_dao_submission` tool is the right one for this — it handles the signing and submission to Edgar. Let me use it with the screenshot as proof.
+
+
+### 🤖 Autopilot
+
+Let me check the tool signature more carefully — it seems `pr_urls` might need at least one entry.
+
+
+### 🤖 Autopilot
+
+The `--type` argument needs to be passed differently. Let me check how the tool maps parameters.
+
+
+### 🤖 Autopilot
+
+Let me try the submission directly via `submit_contribution` with the correct format that Edgar expects.
+
+
+### 🤖 Autopilot
+
+It seems the `Type` field isn't being recognized. Let me check how the tool sends the attributes.
+
+
+### 🤖 Autopilot
+
+Let me try using the `submit_contribution` tool with the exact canonical labels that Edgar expects.
+
+
+### 🤖 Autopilot
+
+The `Type` field keeps being rejected. Let me look at how the tool sends the data to understand the format issue.
+
+
+### 🤖 Autopilot
+
+Let me look at how `submit_contribution` tool is implemented.
+
+
+### 🤖 Autopilot
+
+I see — `create_dao_submission` has a `type` parameter but it's not being passed correctly. The tool spec says `type` defaults to `"Time (Minutes)"`. Let me look at how the handler dispatches it in main.py.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → Script exited 1: Traceback (most recent call last): File "/opt/truesight_autopilot/scripts/append_to_transcript.py", line 248, in <module> m
+• `submit contribution` ×4 → Missing required fields for CONTRIBUTION EVENT: Type. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
+• `create dao submission` ×3 → title, body, and pr_urls are required; Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
 
