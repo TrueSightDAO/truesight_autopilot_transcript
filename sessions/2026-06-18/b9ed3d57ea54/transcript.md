@@ -1176,6 +1176,11 @@ The console script wasn't installed. Let me check what's available:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The package was installed as "UNKNOWN" — the `pyproject.toml` name issue. Let me check the pyproject.toml and fix it:
 
 
@@ -1313,4 +1318,118 @@ Good question. Let me think through it:
 But honestly, the setuptools version debugging ate ~20 minutes that I should have caught faster — the stale `UNKNOWN.egg-info` directory was a pre-existing issue from the original `dao_protocol` install.
 
 **If I were to submit a contribution for this:** I'd say ~80 minutes of productive work, rounded to **1.5 hours**. Want me to submit a `[CONTRIBUTION EVENT]` for it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6711] [Handoff context — this Telegram topic (thread 6711) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then submit.
+
+
+### 🤖 Autopilot
+
+No handoff match for this topic (thread 6711) — this is a fresh conversation, not a handoff resume. The "go for it" was about submitting the contribution event, not a handoff execution. Let me submit it.
+
+
+### 🤖 Autopilot
+
+Let me check the exact format expected:
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` tool expects the canonical labels as the attribute keys. Let me check what format it actually expects:
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool accepts `event_name` and `attributes` as a dict. The issue is the canonical labels for `CONTRIBUTION EVENT` are `Type`, `Amount`, `Description`, `Contributor(s)`, `TDG Issued` — but I passed `Type` as a key and it still failed. Let me check the actual handler in `main.py`:
+
+
+### 🤖 Autopilot
+
+I see — the handler at line 1951+ calls `edgar.submit_contribution(event_name, attributes, ...)` which is the generic path. The issue is the `attributes` dict keys need to match what Edgar expects. Let me check what the `EdgarDirectClient.submit_contribution` does:
+
+
+### 🤖 Autopilot
+
+I see — `submit_contribution` calls `self._client.submit(event_name, attributes)`. Let me check what `EdgarClient.submit()` does:
+
+
+### 🤖 Autopilot
+
+I see — `EdgarClient.submit()` calls `self.sign(event_name, attributes)` which calls `build_payload(event_name, attributes)`. Let me check `build_payload`:
+
+
+### 🤖 Autopilot
+
+Now I see — `build_payload` calls `format_attributes(attributes)`. Let me check that:
+
+
+### 🤖 Autopilot
+
+OK so the `submit_contribution` tool in main.py calls `edgar.submit_contribution(event_name, attributes)` which calls `self._client.submit(event_name, attributes)` which calls `self.sign(event_name, attributes)` → `build_payload(event_name, attributes)` → `format_attributes(attributes)`.
+
+The attributes dict I passed was `{"Type":"Time (Minutes)","Amount":"90","Description":"...","Contributor(s)":"Sophia...","TDG Issued":"0"}` — those are the canonical labels. But the error said "Missing required fields for CONTRIBUTION EVENT: Type" — which means the validation is happening server-side on Edgar, not in the client.
+
+Let me check what the Edgar server expects. The issue might be that the `submit_contribution` handler in `main.py` at line 1951 doesn't pass through the attributes correctly. Let me look at the exact line:
+
+
+### 🤖 Autopilot
+
+OK, the handler calls `edgar.submit_contribution(event_name, attributes, ...)` which calls `self._client.submit(event_name, attributes)` which calls `self.sign(event_name, attributes)` → `build_payload(event_name, attributes)`. The payload is built correctly from the attributes dict.
+
+The error "Missing required fields for CONTRIBUTION EVENT: Type" came from Edgar's server-side validation. Let me check the Edgar server route:
+
+
+### 🤖 Autopilot
+
+I see — the Edgar server doesn't validate required fields itself. The validation error came from somewhere else. Let me check the `_GOVERNOR_ONLY_EVENTS`:
+
+
+### 🤖 Autopilot
+
+Good — `CONTRIBUTOR ADD EVENT` is NOT in the governor-only list. So the submission should work. The error "Missing required fields for CONTRIBUTION EVENT: Type" must have come from the `submit_contribution` tool's own validation in `main.py`. Let me check:
+
+
+### 🤖 Autopilot
+
+Now let me find where the validation happens:
+
+
+### 🤖 Autopilot
+
+Now let me check the validation at line 1751:
+
+
+### 🤖 Autopilot
+
+There it is — line 1747 calls `_normalize_submission_labels(event_name, attributes)` which normalizes the attribute keys. Let me check that function:
+
+
+### 🤖 Autopilot
+
+Now I see the issue! The `_normalize_submission_labels` function, in the legacy path (which is the default since `CATALOG_NORMALIZE=False`), does this:
+
+1. It checks if the key matches a canonical label for the event type
+2. If not, it checks `_FIELD_ALIASES`
+3. If the canonical key is not in the canonical set, it **drops it** (line 1605: `continue`)
+
+The problem is my attributes dict had `"Type": "Time (Minutes)"` — but the `_NON_CANONICAL_KEYS` set might include "type". Let me check:
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Missing required fields for CONTRIBUTION EVENT: Type. Canonical labels are: Type, Amount, Description, Contributor(s), TDG Issued
+• `ssh run` ×24 → grep -n "CONTRIBUTION EVENT\|CONTRIBUTOR ADD\|def submit_contribution\|event_name ==" /opt/truesight_autopilot/app/main.py | head -30; sed -n '1715,1970p' /opt/truesight_autopilot/app/main.py; grep -n "def submit_contribution" /opt/truesight_autopilot/app/edgar_client.py; …(+21 more)
 
