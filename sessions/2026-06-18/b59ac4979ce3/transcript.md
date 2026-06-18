@@ -28,6 +28,7 @@ Let me pull together what's actually live right now so we can design the right a
 ### 🤖 Autopilot
 
 Now let me also check what's actually in flight right now — the active PRs and recent activity:
+[4 tool result(s) compacted: list_prs, list_prs, list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -244,4 +245,49 @@ Track 7: Brazil Export Entity (CNPJ/NF-e/CNAE) ←── THE GATE
 **6 active tracks.** 3 online (code PRs), 3 offline (research/regulatory). One single bottleneck (Track 7) holding up two delivery tracks.
 
 Want me to draft the `TRACK_MAP.md` with this structure plus owners?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Yeah. I agree. 
+
+And then for each track we should list the relevant documents?
+
+
+### 🤖 Autopilot
+
+Exactly right. Each track should link to its source docs so anyone can jump in without asking "where's the plan for that?"
+
+Let me draft it now.
+
+
+### 🤖 Autopilot
+
+Good. Now let me draft the `TRACK_MAP.md` and open a PR.
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#562** — [`TRACK_MAP.md`](https://github.com/TrueSightDAO/agentic_ai_context/pull/562)
+
+Here's what it looks like rendered:
+
+```mermaid
+flowchart TD
+    T5[Track 5: Legal Entity Structuring] --> T7
+    T6[Track 6: GACC / Brazil Compliance] --> T7
+    T7[Track 7: Brazil Export Entity\nCNPJ / NF-e / CNAE]:::gate --> T8
+    T7 --> T9
+    T8[Track 8: Chocolate Subscription Delivery]:::blocked
+    T9[Track 9: China / Aora Events\n100 chocolate bars]:::blocked
+```
+
+Each track has a table with:
+- **Status** (color-coded)
+- **Owner**
+- **Goal** (one-liner)
+- **Key docs** (linked directly to the relevant files in agentic_ai_context)
+- **Dependencies** and **Blocks**
+
+Want me to merge it, or do you want to review first?
 
