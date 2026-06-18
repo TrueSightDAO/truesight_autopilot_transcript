@@ -81,3 +81,19 @@ I've read the plan. Let me confirm my understanding:
 
 I'm parked and ready. Reply **"go for it"** and I'll execute PR1 from RESUME HERE, reporting progress in this thread.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] Also read this one  agentic_ai_context/CLI_SALES_EVENT_ALIGNMENT_PLAN.md
+
+
+### 🤖 Autopilot
+
+Got it. I've now read both plans:
+
+1. **`SOPHIA_DAPP_EVENT_ALIGNMENT_PLAN.md`** — RESUME HERE = **PR1**: Catalog merge — make `_refresh_events_catalog` UPDATE existing events (G2 fix). One PR per turn, own-repo gate.
+
+2. **`CLI_SALES_EVENT_ALIGNMENT_PLAN.md`** — This one is largely **complete** (PR1, PR1a, PR1b, PR2, PyPI workflow, validators all merged). Remaining items: PyPI secret config + contribution reporting.
+
+I'm parked and ready on the **DApp Event Alignment** handoff. Reply **"go for it"** and I'll execute PR1 from RESUME HERE through the gates, reporting progress in this thread.
+
