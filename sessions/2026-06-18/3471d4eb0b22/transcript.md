@@ -518,21 +518,30 @@ Gergana isn't in the DAO members list either. Let me search the QR Code Sales sh
 ### 🤖 Autopilot
 
 This is a massive sheet. Let me search for "Way Home" or "Gergana" or "Kirilova" in the full text of column C using a grep approach.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grep this data for "Way Home" or "Gergana" or "Kirilova" using the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try a different approach — look up QR codes that might be associated with Gergana by checking the Main Ledger's offchain asset location sheet for any inventory under her name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found her! Let me see the full entry.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -542,6 +551,7 @@ Found it! Now I can see the key entry:
 > **"Gergana - The Way Home Shop"** — holds **10** units of "Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121" at $8.49 each = $84.94 total value.
 
 So Gergana has **10 bags** of this specific product in her inventory. Now let me look up the QR codes associated with this product batch. The product description mentions "Kirsten 20260121" which is likely a date code. Let me search for QR codes matching this batch.
+[1 tool result(s) compacted: list_matching_qr_codes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -734,4 +744,20 @@ Here's what the new doc covers:
 - **When it doesn't apply:** If the holder specifies a code, the governor overrides, or the sale was via the shop checkout
 
 Want me to merge it or leave it as a PR for you to review first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6311] merge it
+
+
+### 🤖 Autopilot
+
+Merged! The FIFO rule is now live in `agentic_ai_context/FIFO_QR_SELECTION_RULE.md`.
+
+So for Gergana's sale — under the new FIFO rule, the default pick is **`2024OSCAR_20260121_32`**. Ready to proceed with the transaction whenever you are.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #548 on agentic_ai_context merged successfully (sha: 69fe204b73c1491d8347ad4b11da156e1a7c660d). Pull Request successfully merged
 
