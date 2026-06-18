@@ -2350,17 +2350,35 @@ One unused variable. Let me fix it.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 19 pre-existing files would reformat — none of them are my test file. Let me verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My test file needs formatting too. Let me fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now run the tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2372,6 +2390,17 @@ Two issues:
 2. **`test_snapshot_network_error_loads_snapshot`** — Same issue.
 
 The fix: the snapshot fallback path in `_refresh_events_catalog` should NOT update `_catalog_last_refresh` when it falls back to snapshot (since the live fetch failed). Let me check the code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2379,6 +2408,7 @@ The fix: the snapshot fallback path in `_refresh_events_catalog` should NOT upda
 I see the issue — `_catalog_last_refresh = time.time()` is set at line 1283 regardless of whether the data came from Edgar or the snapshot. The tests expect it to stay `0.0` when the snapshot was used (because the live fetch failed).
 
 The fix: only update `_catalog_last_refresh` when the data came from Edgar (the live fetch), not from the snapshot fallback. Let me modify the code to track the source.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2386,11 +2416,23 @@ The fix: only update `_catalog_last_refresh` when the data came from Edgar (the 
 I need to add a flag `_catalog_from_live` that tracks whether the last successful load came from Edgar (live) vs snapshot. Then only update `_catalog_last_refresh` when it's a live fetch.
 
 Actually, simpler approach: just set a flag in the snapshot fallback path so the timestamp update is skipped. Let me modify the code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cleanest approach: add a `_catalog_from_live` flag that's set to `True` when data comes from Edgar, and only update `_catalog_last_refresh` when that flag is `True`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2453,4 +2495,66 @@ Check CI at https://github.com/TrueSightDAO/truesight_autopilot/pull/259
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /opt/truesight_autopilot && sed -n '1226,1240p' app/main.py; cd /opt/truesight_autopilot && python3 -c " with open('/opt/truesight_autopilot/app/main.py') as f: content = f.read() content = content.rep; cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 && echo "--- COMPILE OK ---"; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6416] merged.
+
+
+### 🤖 Autopilot
+
+Let me re-read the plan for PR4 details.
+
+
+### 🤖 Autopilot
+
+**PR3 merged.** ✅ Moving to **PR4**.
+
+### PR4 — Generic catalog-driven field normalizer (G3a)
+
+Add a normalizer that maps LLM-supplied keys to the catalog's `canonical_labels` for **all** event types (exact + case/space/underscore-insensitive + catalog `aliases` if present), behind `CATALOG_NORMALIZE` flag (default off; old `_FIELD_ALIASES` stays as fallback).
+
+Let me check the current state of the code.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the `_CANONICAL_LABELS` dict to see the current state.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the test file to see what's there.
+
+
+### 🤖 Autopilot
+
+Now let me create PR4. The plan says:
+
+**PR4 — Generic catalog-driven field normalizer (G3a)**
+Add a normalizer that maps LLM-supplied keys to the catalog's `canonical_labels` for **all** event types (exact + case/space/underscore-insensitive + catalog `aliases` if present), behind `CATALOG_NORMALIZE` flag (default off; the old `_FIELD_ALIASES` stays as fallback).
+
+
+### 🤖 Autopilot
+
+**PR4 is open!** 🎉
+
+**PR #260** — https://github.com/TrueSightDAO/truesight_autopilot/pull/260
+
+**What it does:**
+- Adds `CATALOG_NORMALIZE` flag (default `False` — old behavior unchanged)
+- Adds `_normalize_via_catalog()` — maps LLM keys to canonical labels for ALL event types using exact, case-insensitive, and space/underscore/hyphen normalized matching
+- Modifies `_normalize_submission_labels` to use the catalog normalizer when flagged on
+- Old `_FIELD_ALIASES` stays as fallback when flag is off
+- Tests for ≥5 event types including ones with no old alias map
+
+**Gate status:** ✅ PR4 done — ONE PR PER TURN, stopping here.
+
+**Next turn:** Say **"go for it"** and I'll execute **PR5** (stop silently dropping non-canonical keys — needs PR4 merged first).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && git pull origin main 2>&1 | tail -3; cd /opt/truesight_autopilot && grep -n "_FIELD_ALIASES\|CATALOG_NORMALIZE\|def normalize\|def _normalize" app/main.py 2>/dev/null | head -20; cd /opt/truesight_autopilot && sed -n '1395,1530p' app/main.py; …(+2 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/260
 
