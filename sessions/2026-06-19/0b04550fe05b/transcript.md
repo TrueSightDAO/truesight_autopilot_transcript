@@ -2985,11 +2985,18 @@ Other than that, I think it's ready to start building whenever you give the word
 You're saying the existing GAS projects (both the Grok scoring one and the transfer one) already have a `doGet(e)` function — so instead of adding a `doPost(e)` webhook to the Grok scoring project, why not just extend the existing `doGet(e)` to also handle the write-back?
 
 Let me check what's actually in those projects.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the specific GAS projects — the Grok scoring one and the transfer one.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3123,4 +3130,71 @@ Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCO
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #592 on agentic_ai_context merged successfully (sha: bb22b8f034d4146215d5fad603f2705f9e0dcee6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Not I meant just call exec?action=processApprovalRejections or something 
+
+Then that GAS just start parsing the telegram chat logs for unprocessed signed events 
+
+Also 
+
+Today, after Grok scores a [CONTRIBUTION EVENT] and writes it to the Scored Chatlogs sheet (spreadsheet 1Tbj7H5ur_egQLRugdXUaSIhEYIKp0vvVv2IZ7WTLCUo), the row sits with Status = "Successfully Completed / Full Provision Awarded" and TDGs Issued = "0.00". A governor must:
+
+This is in correct I believe after Grok scores it says awaiting review or something instead of successfully…
+
+
+### 🤖 Autopilot
+
+You're right on both points. Let me check the actual status in the sheet.
+
+
+### 🤖 Autopilot
+
+So the actual status IS "Successfully Completed / Full Provision Awarded" — not "Awaiting Review". That's what the Grok scoring script writes. So the plan description was actually correct on that point.
+
+But your main point is much clearer now. Let me re-understand:
+
+**Instead of Edgar calling GAS with specific query params per review action, Edgar just calls:**
+```
+GET <webhook_url>?exec=processApprovalRejections
+```
+
+And that triggers the GAS script to **scan the Telegram Chat Logs sheet** (or wherever the signed `[CONTRIBUTION REVIEW EVENT]` records land) for unprocessed approval/rejection events, process them, and update the Scored Chatlogs sheet accordingly.
+
+So the GAS script does the heavy lifting of finding and processing the signed events itself — Edgar just tells it "go check for new ones." That's much simpler and more resilient. Let me update the plan.
+
+
+### 🤖 Autopilot
+
+Now I understand the flow correctly. Two fixes:
+
+**1. The initial status IS "Successfully Completed / Full Provision Awarded"** — I verified this from the actual sheet data. That's what Grok writes. So the plan description was correct on that point.
+
+**2. The GAS callback is much simpler now:** Edgar just calls:
+```
+GET <webhook_url>?exec=processApprovalRejections
+```
+
+That's it. No per-action query params. The GAS `doGet(e)` reads the `exec` parameter, and if it's `processApprovalRejections`, it:
+
+1. Scans the **Telegram Chat Logs** sheet for unprocessed `[CONTRIBUTION REVIEW EVENT]` records
+2. Parses each one (action, scoringHashKey, tdgIssued, rejectionReason, reviewerEmail)
+3. Looks up the matching row in Scored Chatlogs by hash key
+4. Applies the double-counting guard
+5. Updates the row (Reviewed/Rejected)
+6. Marks the Telegram Chat Logs row as processed
+
+This is much more resilient — if the GAS call fails, the events are still in Telegram Chat Logs and can be processed on the next trigger. No per-event webhook to lose.
+
+Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #593 on agentic_ai_context merged successfully (sha: 993fff5054d2df1e0b6308d1f1c5e8a847f3ce9b). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #593 on agentic_ai_context merged successfully (sha: 993fff5054d2df1e0b6308d1f1c5e8a847f3ce9b). Pull Request successfully merged
 
