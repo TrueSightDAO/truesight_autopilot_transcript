@@ -6276,16 +6276,19 @@ Now I have the full pattern. Let me also check the `query.py` router since the p
 ### 🤖 Autopilot
 
 Now I have the full pattern. The `GET /dao/review_queue` endpoint fits perfectly in the `query.py` router since it's a read-only data query. Let me also check the `config.py` to understand how settings work.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me build PR2 — the `GET /dao/review_queue` endpoint. I'll add it to the `query.py` router since it's a read-only data query.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me add the `review_queue` handler function and the `github_review_queue_repo` config setting.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6305,36 +6308,58 @@ Good — the imports are there. Now I need to add the `review_queue` endpoint an
 ### 🤖 Autopilot
 
 Let me continue with PR2 — I need to add the `review_queue` endpoint function and the config setting. Let me check the current state of the branch.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the imports are already there from the first edit. Now I need to add the `review_queue` endpoint and the helper function. Let me also add the config setting for the review queue repo.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch was already pushed with the first edit. Let me use `upload_file_to_github` to update the files directly on the branch.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch has the first edit (imports) but not the endpoint yet. Let me push the full file with the endpoint added.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me add the config setting.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me merge PR2 and update the handoff manifest.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update the handoff manifest.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6363,16 +6388,39 @@ Now update the handoff manifest.
 ### 🤖 Autopilot
 
 Resuming at PR3 — the `[CONTRIBUTION REVIEW EVENT]` handler in Edgar. Let me check the plan for the exact spec.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the PR3 section specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full PR3 spec. Let me check the existing event handlers in `dao_protocol` to understand the pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6447,4 +6495,122 @@ Now let me merge PR3 and update the manifest.
 **✅ Done this turn — actions taken:**
 • `upload file to github` ×2 → https://github.com/TrueSightDAO/dao_protocol/blob/pr3/contribution-review-handler/truesight_dao_client/server/config.py; https://github.com/TrueSightDAO/dao_protocol/blob/pr3/contribution-review-handler/truesight_dao_client/server/dispatch.py
 • `merge pr` ×2 → ✅ PR #126 on dao_protocol merged successfully (sha: ab2fa527ff5706a8d315b43e7c3d3d32fb9200ec). Pull Request successfully merged; ✅ PR #598 on agentic_ai_context merged successfully (sha: db3b17853d7fb9ea499022978ad43c7aa1244ab2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] [Handoff context — this Telegram topic (thread 7191) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Okay, go ahead to the next one. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Resuming at PR4 — the GAS `doGet` function in the Grok scoring project. Let me check the plan spec and the existing project structure.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+Let me read the PR4 section specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Now let me check the existing Grok scoring project structure to understand where to add the `doGet`.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the existing `telegram_webhook_listener.js` to understand the current `doPost` pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Now I have the full picture. Let me build PR4 — the `doGet` function in `telegram_webhook_listener.js` that processes approval/rejection events from Telegram Chat Logs.
+
+The function needs to:
+1. Accept `?exec=processApprovalRejections`
+2. Scan Telegram Chat Logs for unprocessed `[CONTRIBUTION REVIEW EVENT]` rows
+3. For each, look up the matching row in Scored Chatlogs by hash key
+4. Apply the double-counting guard (check if already Reviewed/Rejected/Transferred)
+5. Update the Scored Chatlogs row (Status + TDGs Issued + Rejection Reason + Transaction ID)
+6. Mark the Telegram Chat Logs row as processed (Col X = TRUE, Col Y = Transaction ID)
+
+Let me also check the Scored Chatlogs sheet columns to make sure I have the right indices.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+Good — I can see the columns. Let me also check the Telegram Chat Logs sheet columns.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+Now I have the full picture. Let me build the `doGet` function.
+
+The Scored Chatlogs sheet columns (from the schema):
+- A: Timestamp
+- B: Contributor Name
+- C: Contribution Description
+- D: Contribution Type
+- E: TDGs Provisioned (Grok's estimate)
+- F: Status (Pending Review → Reviewed/Rejected)
+- G: TDGs Issued (governor's final amount)
+- H: Hash Key (the scoring hash key)
+- I: Found in Contributors (TRUE / FALSE / RESOLVE FAILED)
+- J: Contributor Email
+- K: Telegram Chat Logs Row ID
+- L-N: (other fields)
+- O: Rejection Reason (new column for rejected rows)
+
+The Telegram Chat Logs sheet columns (from telegram_raw_log.py):
+- A: update_id
+- B: chatroom_id
+- C: chatroom_name
+- D: message_id
+- E: "Edgar"
+- F: ""
+- G: contribution_made (the event text)
+- H: "Unknown"
+- I: ""
+- J: "Pending"
+- K: ""
+- L: date
+- M: ""
+- N: ""
+- O: ""
+- P: signature_verification
+- Q: status_info
+- R: api_response
+- S: governor_authority
+- T: is_sentinel
+- X: Review Processed (new column)
+- Y: Review Transaction ID (new column)
+
+Let me build the GAS code.
+
+
+### 🤖 Autopilot
+
+Now update the manifest.
+
+
+### 🤖 Autopilot
+
+**PR4 done.** Here's the summary:
+
+**PR #367 on `tokenomics`** — `doGet(e)` with `processApprovalRejections` merged.
+
+**What was built in `telegram_webhook_listener.js`:**
+- **`doGet(e)`** — handles `?exec=processApprovalRejections` (and returns health check JSON for other requests)
+- **`processApprovalRejections()`** — core function that:
+  1. Reads **Telegram Chat Logs** sheet for unprocessed `[CONTRIBUTION REVIEW EVENT]` rows (Col X empty)
+  2. Parses each event: Action, Scoring Hash Key, TDGs Issued, Rejection Reason, Transaction ID
+  3. Looks up matching row in **Scored Chatlogs** by hash key (Col H)
+  4. **Double-counting guard:** skips if status is already terminal (Reviewed/Rejected/Transferred/Ignored/Entry Error)
+  5. **Approve:** sets Status → `Reviewed`, TDGs Issued → parsed value
+  6. **Reject:** sets Status → `Rejected`, Rejection Reason → parsed value
+  7. Marks Telegram Chat Logs row as processed (Col X = TRUE, Col Y = Transaction ID)
+- **`handleReviewCallback()`** — backward-compat POST handler
+- **`extractField()` / `escapeRegex()`** — helpers
+
+**Resuming at PR5 next turn** — the DApp review queue page with infinite scroll, three-action panel, and contributor resolution dropdown.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #367 on tokenomics merged successfully (sha: f306a19d28408dd65f2132d04c3e2d4cea2746c0). Pull Request successfully merged; ✅ PR #599 on agentic_ai_context merged successfully (sha: ed4a31ff8eaa4a15177ca5530048cb365b9e1a33). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #367 on tokenomics merged successfully (sha: f306a19d28408dd65f2132d04c3e2d4cea2746c0). Pull Request successfully merged; ✅ PR #599 on agentic_ai_context merged successfully (sha: ed4a31ff8eaa4a15177ca5530048cb365b9e1a33). Pull Request successfully merged
 
