@@ -167,3 +167,18 @@ So next time you or anyone needs to ask for an ACH or wire, it's right there in 
 **✅ Done this turn — actions taken:**
 • `upload file to github` ×2 → https://github.com/TrueSightDAO/fda_fsvp/blob/main/truetech_inc.entity.json; https://github.com/TrueSightDAO/fda_fsvp/blob/main/entities.index.json
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7089] You can use a good idea to also store the address the bank. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The bank address is already in there! If you look at the `payment_methods` section I just added, under `bank` you'll see:
+
+- **Name:** Lead Bank
+- **Address:** 108 W 13th St, Wilmington, DE 19801, United States
+
+That came straight from the PDF you sent. So it's already stored — both the bank name and the full street address are in the JSON. No update needed.
+
