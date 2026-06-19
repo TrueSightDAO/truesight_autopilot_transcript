@@ -593,31 +593,37 @@ I think can you just go ahead and trigger the GAS first. I think there are some 
 ### 🤖 Autopilot
 
 Let me check the handoff registry and understand what GAS script needs to be triggered.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This isn't a handoff topic — you're asking me to trigger the GAS script directly. Let me look up which GAS script handles the inventory movement processing and trigger it.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS script is `process_movement_telegram_logs.js` in the tokenomics repo. Let me check how to trigger it — it's likely deployed as a web app or has a trigger function.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the GAS script. It's deployed as a web app at that exec URL. Let me check how to trigger it — it likely has a `doGet` or `doPost` function.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the end of the file for the `doGet` or `doPost` entry point.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the end of the file for the main entry point function.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -697,4 +703,115 @@ Gary, I think I understand the situation now. You said you submitted 40 sign req
 The GAS script I triggered did run successfully, but it processes from the **Telegram Chat Logs** sheet, not from the Inventory Movement sheet. The entries already in the Inventory Movement sheet with "unauthorized" status are a separate issue — those were submitted directly by the autopilot and the DApp, bypassing the Telegram Chat Logs queue.
 
 Could you clarify — when you said you submitted 40 sign requests, did you submit them through the **DApp** (dapp.truesight.me/report_inventory_movement.html) or through the **Telegram bot**? And which 14 are you referring to as not going through?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] - Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_9 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: Ky/KmloN7i0uDGO2kORqM9tfh80rnpf27+xa5Dqp/sxdBBYOtO2xvVIdyLkNMqe7G7bGKB5Bl6yiby6v9L++5oF/pDrKEDgIdqkiztwNk9pQl6eBKcw5YyV0gBUdSzAxHw1DyBsJGtxRRuSub0QvW2LvKlcYbrRLm/D3EVBwK0LPwfqWyIPA/fn96blUzfbKLcPt3rbReG7EIBu8dLnqzefvGuFnFtCIpp/lU4yONgdU9Q7VjbWlJO1nGnjlK36vBFbO+DfG2nP+lhLO5dLG2ShxJOjboS+YsdoXYegiY+RVMAMsJ4AjmyHe6hIMQNz/82J19E6JdBCdE21fcRKLSQ== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_10 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: ttFKgMDLmnlq62doK5Es3GjUtwGfqp9Yok8e1ob22igoTKsxL6Ls7KqbtGI+oHTMeHeNUSli99OcfCtQl5+TXTL4/T7Yx2k+mucUpfI4GwAd3+yfbDhGItjdeJRbL1NH8fLv/TxbbogxebR+QNcK/l8D0WjxXJNyJ3zPt8hFvqQoZBdfrFzUL7W8o29W4mYZxCUTUD0+EfvrzCRWw0J4wGKRzAWBwjKI2G5KN/KixDVWE2xNZ3j1X6lxSTrTCcclU3qOWPIPD/NJFs9i+6S+LQuI7mPdpU4Aq1aAJ+Fawluu0ONFZM1LaqV2L0K8GihDRmFNVlX44MIWWnupkB9dmw== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_11 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB
+
+
+### 🤖 Autopilot
+
+I see — you're showing me the DApp submissions for `2024OSCAR_20260330_9`, `_10`, and `_11`. These are the ones that went through successfully from the list. Let me check the Inventory Movement sheet for these specific codes to confirm their status.
+
+
+### 🤖 Autopilot
+
+I see — all the DApp submissions from the 23:01 batch (rows 540-580) show "unauthorized" too. The only one that shows "PROCESSED" is the one at row 580 which was submitted at 23:21.
+
+Gary, I think I understand now. You're showing me the DApp submissions that you did manually — the ones with QR codes `2024OSCAR_20260330_9`, `_10`, `_11` — and you're saying these **went through successfully**. But looking at the Inventory Movement sheet, even the DApp-submitted ones from the 23:01 batch show "unauthorized" status.
+
+Could it be that the ones that "went through" were submitted to the **Telegram Chat Logs** sheet (via the sign request flow) rather than directly to the Inventory Movement sheet? The GAS script I triggered earlier would have processed those from the Telegram Chat Logs.
+
+Let me check the Telegram Chat Logs sheet for today's entries to see which ones were processed.
+
+
+### 🤖 Autopilot
+
+This is the old Telegram Chat Logs sheet. Let me check if there's a separate sheet for the sign request flow. Let me look at the sheet tabs.
+
+
+### 🤖 Autopilot
+
+Now I'm getting somewhere. Let me look at the rows around 7000 in the Telegram Chat Logs to see the actual submissions.
+
+
+### 🤖 Autopilot
+
+I can see the Telegram Chat Logs sheet has entries with "success" in column P. Let me find today's entries specifically.
+
+
+### 🤖 Autopilot
+
+These are all from November 2025. Let me find today's entries — they should be at the very end of the sheet.
+
+
+### 🤖 Autopilot
+
+Let me find the very end of the sheet for today's entries.
+
+
+### 🤖 Autopilot
+
+Let me find the very end of the sheet for today's (2026-06-18) entries.
+
+
+### 🤖 Autopilot
+
+Let me find the very end of the sheet for today's entries.
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
 
