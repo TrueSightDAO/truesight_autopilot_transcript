@@ -2811,11 +2811,28 @@ Now let me find the `build_event_cli` function.
 ### 🤖 Autopilot
 
 Let me find the `build_event_cli` function — it's likely in a separate file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the `build_event_cli` function — it's imported in the modules but must be defined somewhere.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2849,11 +2866,18 @@ I'd lean toward **the Grok scoring project** because:
 The transfer script can stay as-is — it already runs on a schedule and picks up "Reviewed" rows automatically.
 
 Let me update the plan to reflect this.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the plan to specify the GAS project explicitly and add the dao_client module.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2885,6 +2909,7 @@ The PR count is now **8** (the original 7 + the dao_client module).
 ### 🤖 Autopilot
 
 Good catch. Let me check the plan to see if this is already covered.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3013,4 +3038,47 @@ The updated plan is at:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → grep -n "function doGet\|function doPost" /tmp/dao_protocol_check/ -r 2>/dev/null; echo "---"; grep -rn "function doGet\|function doPost" /t; cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/tokenomics.git tokenomics_check 2>&1 | tail -1 && grep -rn "function doGet\|f
 • `merge pr` → ✅ PR #590 on agentic_ai_context merged successfully (sha: b2b1aca9c2e55c2ad5a4712d6d3beacc07756e97). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Yo, you know, do pose is that usually it gets blocked and called externally. I think we should also have a do get method in there that is not already there. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good point. The existing `doPost(e)` is deployed as a web app, but GAS web apps often have CORS or access issues when called externally (especially from Edgar which is on a different domain). A `doGet(e)` that acts as a health check or ping endpoint would let Edgar verify the webhook URL is reachable before sending callbacks.
+
+Let me check if the Grok scoring project already has a `doGet(e)` in the `telegram_webhook_listener.js` file.
+
+
+### 🤖 Autopilot
+
+Confirmed — `telegram_webhook_listener.js` has `doPost(e)` but **no `doGet(e)`**. The `doGet(e)` is in `Code.js` (the Grok scoring script), not in the webhook listener file.
+
+You're right — `doPost` can be blocked by CORS or content-type restrictions when called externally. A `doGet(e)` in the same file that acts as a simple health check/ping endpoint would let Edgar verify the webhook URL is reachable before sending callbacks. Let me update the plan.
+
+
+### 🤖 Autopilot
+
+Merged. And you're right — `doPost` can get blocked by CORS or content-type restrictions when called externally from Edgar. The `doGet` is universally allowed and acts as a simple health check.
+
+So PR 4 now adds two things to `telegram_webhook_listener.js`:
+
+1. **`doGet(e)`** — health check endpoint. Returns `{ status: "ok", project: "tdg_scoring", version: "1.0.0" }`. Edgar can GET this URL to verify the webhook is reachable before sending POST callbacks.
+
+2. **Extended `doPost(e)`** — route check at the top: if the JSON body contains `scoringHashKey`, route to `handleReviewCallback()` instead of the Telegram webhook handler.
+
+Same file, same deployment, same web app URL. The `doGet` is a 5-line addition that saves a lot of debugging time.
+
+Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #591 on agentic_ai_context merged successfully (sha: 4d7c77ac01f3179cbaee5437cac8cd1da15bb566). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep -n "function doGet" /tmp/tokenomics_check/google_app_scripts/1BHAGZd_T1I5mQnqnAFqUJKX2x_N8Uv05n1O2OohRA908Ja8wVwVxaR7K/telegram_webhook
+• `merge pr` → ✅ PR #591 on agentic_ai_context merged successfully (sha: 4d7c77ac01f3179cbaee5437cac8cd1da15bb566). Pull Request successfully merged
 
