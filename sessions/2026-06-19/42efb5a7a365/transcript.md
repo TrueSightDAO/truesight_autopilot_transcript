@@ -182,3 +182,20 @@ The bank address is already in there! If you look at the `payment_methods` secti
 
 That came straight from the PDF you sent. So it's already stored — both the bank name and the full street address are in the JSON. No update needed.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7089] Okay, perfect. Merge it then. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Those were direct commits to `main` on the `fda_fsvp` repo (single-file writes via the Contents API), not pull requests — so there's nothing to merge. They're already live on the main branch.
+
+Both files are committed and published:
+
+- **truetech_inc.entity.json** — commit `580d457`
+- **entities.index.json** — commit `cfc480a`
+
+All set!
+
