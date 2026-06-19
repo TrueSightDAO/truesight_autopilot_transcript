@@ -565,3 +565,78 @@ The 14 unauthorized ones are:
 
 Understood, Gary. Sorry about the mix-up on the QR codes. Let me know if you need any help verifying or tracking the manual submissions afterward.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] [Handoff context — this Telegram topic (thread 6939) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think can you just go ahead and trigger the GAS first. I think there are some transactions that probably did not go through and the cache is outdated.
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and understand what GAS script needs to be triggered.
+
+
+### 🤖 Autopilot
+
+This isn't a handoff topic — you're asking me to trigger the GAS script directly. Let me look up which GAS script handles the inventory movement processing and trigger it.
+
+
+### 🤖 Autopilot
+
+The GAS script is `process_movement_telegram_logs.js` in the tokenomics repo. Let me check how to trigger it — it's likely deployed as a web app or has a trigger function.
+
+
+### 🤖 Autopilot
+
+Now I understand the GAS script. It's deployed as a web app at that exec URL. Let me check how to trigger it — it likely has a `doGet` or `doPost` function.
+
+
+### 🤖 Autopilot
+
+Let me check the end of the file for the `doGet` or `doPost` entry point.
+
+
+### 🤖 Autopilot
+
+Let me look at the end of the file for the main entry point function.
+
+
+### 🤖 Autopilot
+
+The file is very long. Let me search for the main entry point function.
+
+
+### 🤖 Autopilot
+
+Let me check the SCHEDULE_TRIGGERS.md to understand how this GAS script is normally triggered.
+
+
+### 🤖 Autopilot
+
+Now I understand. The function to trigger is `processTelegramChatLogsToInventoryMovement()` and it's deployed as a web app. Let me trigger it via the webhook URL.
+
+
+### 🤖 Autopilot
+
+It doesn't have a `doPost` handler. Let me try a GET request instead — it might have a `doGet`.
+
+
+### 🤖 Autopilot
+
+The GAS script has been triggered successfully. It responded: **"✅ Inventory movements processed from Telegram Chat Logs"**
+
+The script has now scanned the Telegram Chat Logs sheet and processed any unprocessed inventory movement entries. Let me check if the 14 "unauthorized" ones got picked up and re-processed now.
+
+
+### 🤖 Autopilot
+
+The GAS script ran successfully but the 14 autopilot-submitted entries still show **"unauthorized"** status. That's because the GAS script's `processTelegramChatLogsToInventoryMovement()` function processes entries from the **Telegram Chat Logs** sheet (rows with status "NEW"), not from the Inventory Movement sheet itself. The autopilot submitted directly to the Inventory Movement sheet with "unauthorized" status — those are already in the destination sheet, not in the Telegram Chat Logs queue.
+
+The GAS script processes entries from **Telegram Chat Logs** that have status "NEW" — it doesn't re-process entries already in the Inventory Movement sheet.
+
+So the GAS trigger did run successfully, but the 14 entries were already written to the Inventory Movement sheet with "unauthorized" status. The GAS won't re-process them because they're not in the Telegram Chat Logs queue.
+
+**Here's what I'd suggest:** I can re-submit those 14 inventory movements using the DApp flow (which uses your Gary Teh governor key) so they get authorized properly. Want me to go ahead and do that?
+
