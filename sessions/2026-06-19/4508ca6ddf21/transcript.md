@@ -654,56 +654,72 @@ To find out how many she bought, I'd need access to the **Wix store orders dashb
 You're saying these chocolate bars DO have QR codes — the labels in the photos are QR code labels. Let me look more carefully at the images to try to extract the QR codes, or find them by the product info.
 
 Let me search the QR codes sheet for anything matching these products.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the currencies.json to see how the chocolate bars are tracked, and also check the QR code naming convention.
+[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the chocolate bars ARE in the currencies list! Let me search the QR codes sheet for these specific chocolate bar entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a huge sheet. Let me search it programmatically for the chocolate bar entries.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full sheet data from the artifact and search for chocolate bar entries.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full data for "81%" or "Dark Chocolate" or "chocolate bar" entries.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the sheet data more efficiently by reading specific columns where chocolate bar entries would be.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for "81%" or "Dark Chocolate" specifically in this data.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the specific chocolate bar currency names in the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the chocolate bar entries more efficiently by looking at the unique currency values.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it! Let me get the full summary.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -739,11 +755,43 @@ So Elizabeth bought the lion's share — 37 out of 43 chocolate bars from that p
 ### 🤖 Autopilot
 
 Let me look up the chocolate bar specs to find out how much cacao mass goes into each bar.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the chocolate bar spec sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -791,4 +839,21 @@ Want me to check the exact nib-to-bar yield with Kirsten or look up the producti
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 << 'PYEOF' import urllib.request, urllib.parse, json, jwt, time key_path = "/opt/truesight_autopilot/config/google/agrove
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7013] to produce 70 bar how many kilograms do you need? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+For **70 bars** at 50g each, **81% cacao**:
+
+- **Cacao mass per bar:** 50g × 81% = **40.5g**
+- **For 70 bars:** 70 × 40.5g = **2,835g** = **2.84 kg of cacao mass**
+
+With ~5-10% processing loss (nibs → cacao mass), you'd need roughly **3.0–3.1 kg of raw cacao nibs**.
+
+So about **3 kg of cacao** to produce 70 bars.
 
