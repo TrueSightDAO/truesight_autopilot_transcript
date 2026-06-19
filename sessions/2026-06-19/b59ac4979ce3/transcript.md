@@ -4158,6 +4158,7 @@ Black King CNPJ → New Export CNPJ (CNAE 46.23-1/04 + IE + NF-e)
     └── both CNPJ + GACC ──→ China cargo (Aora events, subscriptions)
                                   └── July samples: separate fast path via BoQiang
 ```
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4189,6 +4190,7 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Ahh — you're saying **Black King's existing CNPJ just needs its CNAE changed**, not a whole new CNPJ. That's much simpler. Let me fix that.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4216,16 +4218,19 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Got it — you're saying there's a **third parallel track** for the new entity (DUNA/Próspera) that will eventually own the export operation, separate from the immediate CNAE fix on Black King. Let me add it.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file has changed since the last PR. Let me read the current state:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the previous PRs (#575, #576, #577) were never merged, so main still has the old content. Let me write the full corrected file directly:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4257,11 +4262,13 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Got it — another parallel track. Paolo has financing for trees in Pará, waiting on planting. Let me add it to the map.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file on main still has the old content since PR #578 isn't merged yet. Let me just write the full file again with the Pará track added:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4401,4 +4408,29 @@ Here's what changed on the page:
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #580 on agentic_ai_context merged successfully (sha: bb5236a087fbc17703096ebfaaf513f554515df5). Pull Request successfully merged
 • `ssh run` ×5 → cd /tmp && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -1; cd /tmp && rm -rf truesight_me_beta && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -1; cd /tmp/truesight_me_beta && python3 << 'PYEOF' import re with open('roadmap/index.html', 'r') as f: html = f.read() # 1. Fix Mermaid diagra; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Why is this not updated 
+
+https://truesight.me/roadmap/
+
+
+### 🤖 Autopilot
+
+You're right — let me check what's actually live on prod.
+
+
+### 🤖 Autopilot
+
+Actually, it **is** updated! The prod page shows all the latest changes:
+
+- ✅ **Black King CNAE / IE / NF-e** — correct title, "no new CNPJ needed"
+- ✅ **New Export Entity (DUNA/Próspera)** — present
+- ✅ **Pará Tree Planting** — present
+- ✅ **GACC owner** — Gary / BoQiang (Paloma removed)
+- ✅ **USA vs China blockers** — split correctly
+
+The sync must have gone through at some point — or you merged it manually earlier and I didn't notice. The page at `truesight.me/roadmap` is showing the latest version.
 
