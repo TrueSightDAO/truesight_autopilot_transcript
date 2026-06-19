@@ -479,61 +479,78 @@ Let me check what happened with those submissions on Edgar's side.
 ### 🤖 Autopilot
 
 Now I understand the flow. Let me check the Telegram Chat Logs sheet to see the actual submissions and their status.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Inventory Movement sheet to see if there are any pending movements.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the recent rows in the Telegram Chat Logs to find today's inventory movement submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the most recent entries in the Telegram Chat Logs to find today's inventory movement submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs sheet seems to have a lot of empty rows. Let me look at the very end of the sheet for today's submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs sheet seems to have mostly empty rows with just "INVALID" in column N. Let me check the Inventory Movement sheet for today's entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the most recent rows in the Inventory Movement sheet to find today's submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the very end of the Inventory Movement sheet to find today's submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the very end of the Inventory Movement sheet for today's entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the very end of the sheet for today's entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the pattern now. These are from May 8 (20260508) and they're all PROCESSED. Let me check the very end of the sheet for today's submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the issue clearly! Let me read the rest of the entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -639,4 +656,45 @@ The GAS script processes entries from **Telegram Chat Logs** that have status "N
 So the GAS trigger did run successfully, but the 14 entries were already written to the Inventory Movement sheet with "unauthorized" status. The GAS won't re-process them because they're not in the Telegram Chat Logs queue.
 
 **Here's what I'd suggest:** I can re-submit those 14 inventory movements using the DApp flow (which uses your Gary Teh governor key) so they get authorized properly. Want me to go ahead and do that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] These are the ones that went through successfully from the list
+
+
+### 🤖 Autopilot
+
+Let me check which ones went through successfully so I know which 14 still need to be done.
+
+
+### 🤖 Autopilot
+
+I can see the autopilot-submitted ones are all "unauthorized". Let me look further back in the sheet to find the ones that went through successfully — the ones submitted via the DApp.
+
+
+### 🤖 Autopilot
+
+Those are from May. Let me look at the very end of the sheet for today's entries that went through successfully.
+
+
+### 🤖 Autopilot
+
+I see — the DApp-submitted ones are PROCESSED. Let me look at the full range of today's entries to see which ones went through.
+
+
+### 🤖 Autopilot
+
+I see — all the DApp-submitted ones from today are also showing "unauthorized". Let me look at the one that actually shows "PROCESSED" — row 580.
+
+
+### 🤖 Autopilot
+
+So only **one** entry shows PROCESSED — `2024OSCAR_20260121_26` submitted via the DApp at 23:21. All the others (both DApp and autopilot) show "unauthorized".
+
+Gary, I think I understand the situation now. You said you submitted 40 sign requests to Edgar — those 40 submissions went into the **Telegram Chat Logs** sheet, and the GAS script was supposed to process them into the Inventory Movement sheet. But only some got picked up.
+
+The GAS script I triggered did run successfully, but it processes from the **Telegram Chat Logs** sheet, not from the Inventory Movement sheet. The entries already in the Inventory Movement sheet with "unauthorized" status are a separate issue — those were submitted directly by the autopilot and the DApp, bypassing the Telegram Chat Logs queue.
+
+Could you clarify — when you said you submitted 40 sign requests, did you submit them through the **DApp** (dapp.truesight.me/report_inventory_movement.html) or through the **Telegram bot**? And which 14 are you referring to as not going through?
 
