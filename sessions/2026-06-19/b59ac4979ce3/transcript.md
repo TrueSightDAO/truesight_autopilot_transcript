@@ -3462,6 +3462,11 @@ Prod is already in sync — you must have merged it manually. ✅
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Contribution submitted. ✅
 
 **180 minutes** logged for the full track map build — TRACK_MAP.md, SOP, live HTML page, dependency corrections, and all the back-and-forth refinements.
@@ -3913,16 +3918,19 @@ Pre-Event Check-in 20-30 min+ Main Event 90 min = Total Duration~110-120 min
 ### 🤖 Autopilot
 
 Yes, I can add this! It's a more refined version of the event flow — a 1-page consolidated layout with venue specs, timing, and the supply chain board game mechanics. Let me save it and update the roadmap.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also persist the extracted content to the transcript:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript append bug is still there (PR #257 should fix it). The file is saved though. Let me also update the roadmap page to include this new document:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4094,6 +4102,51 @@ Brazil Export CNPJ (CNAE/IE/NF-e) ←── parallel ──→ GACC Registration
 ```
 
 **Key insight:** USA-bound cargo only needs the new CNPJ (TrueTech Inc already handles US import). China-bound cargo needs **both** CNPJ + GACC. And July event samples have a **separate fast path** via BoQiang using cooperative docs.
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] These are two separate things be black king feeds into both
+
+
+### 🤖 Autopilot
+
+Ah, I see — you're saying **Black King CNPJ** is the single source that feeds into **both** the USA and China export channels. It's not that the new CNPJ alone unblocks USA — the new CNPJ is the prerequisite for *all* exports, period. USA and China are just two different destination channels that both need the same CNPJ fix first.
+
+Let me simplify:
+
+```
+Black King CNPJ → New Export CNPJ (CNAE 46.23-1/04 + IE + NF-e)
+    │
+    ├── parallel ── GACC Registration (3-6 months, for China only)
+    │
+    ├── unblocks ── USA cargo (Chives Root, Michael Johnson, Kopi Bar)
+    │                  └── US import already live via TrueTech Inc
+    │
+    └── both CNPJ + GACC ──→ China cargo (Aora events, subscriptions)
+                                  └── July samples: separate fast path via BoQiang
+```
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#576**
+
+Here's the corrected picture:
+
+```
+Black King CNPJ → New Export CNPJ (CNAE 46.23-1/04 + IE + NF-e)
+    │
+    ├── parallel ── GACC Registration (3-6 months, China-only)
+    │
+    ├── alone unblocks ── USA cargo (Chives Root, Michael Johnson, Kopi Bar)
+    │
+    └── both CNPJ + GACC ──→ China cargo (Aora events, subscriptions)
+```
+
+**Black King CNPJ is the single source** feeding both channels. USA cargo only needs the new CNPJ (TrueTech Inc already handles US import). China cargo needs both CNPJ + GACC.
 
 Want me to merge it?
 
