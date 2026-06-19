@@ -2760,12 +2760,24 @@ The repo seems to have moved. Let me check what's actually in it.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The `dao_client` repo is actually a redirect to `dao_protocol`! Let me check the dao_protocol repo structure.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the structure. Let me check the existing modules to see the pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2850,4 +2862,42 @@ The PR count is now **8** (the original 7 + the dao_client module).
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #588 on agentic_ai_context merged successfully (sha: 776638a6ef8f584873316425be551b1b7ec15b46). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Yeah, one caveat, if the you know initial hash is not set then Edgar should just return the earliest from the earliest As I can cash storage, isn't it otherwise Edgar probably failed so there's like one of the boundary conditions to watch out for [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch. Let me check the plan to see if this is already covered.
+
+
+### 🤖 Autopilot
+
+The plan still has the old v5 content. Let me update it with the v6 changes AND add the boundary condition you mentioned.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the updated document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+The boundary condition is now explicitly documented in two places:
+
+1. **PR 2 (Edgar endpoint)** — under "What it does":
+   - *No cursor (first load):* If `after_filename` is not provided, return the first `limit` files from the directory (earliest = first alphabetically)
+   - *Cursor file deleted:* If `after_filename` IS provided but the file no longer exists (already approved), skip to the next available file — do NOT fail or return empty
+
+2. **Edge cases table (§9)** — two new rows:
+   - `after_filename not provided (first load)` → Edgar returns the first `limit` files
+   - `after_filename provided but file was already deleted` → Edgar skips to the next available file
+
+So the flow is: first load → no cursor → Edgar returns earliest files. Scrolling → cursor sent → Edgar skips past it. Cursor file deleted between loads → Edgar just advances to the next one. No failure states.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #589 on agentic_ai_context merged successfully (sha: aa2e202ec72ad0f7526c8d8a7ec44f6a1601b9cf). Pull Request successfully merged
 
