@@ -629,21 +629,35 @@ Let me look at the end of the file for the main entry point function.
 ### 🤖 Autopilot
 
 The file is very long. Let me search for the main entry point function.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the SCHEDULE_TRIGGERS.md to understand how this GAS script is normally triggered.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand. The function to trigger is `processTelegramChatLogsToInventoryMovement()` and it's deployed as a web app. Let me trigger it via the webhook URL.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It doesn't have a `doPost` handler. Let me try a GET request instead — it might have a `doGet`.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -651,6 +665,7 @@ It doesn't have a `doPost` handler. Let me try a GET request instead — it migh
 The GAS script has been triggered successfully. It responded: **"✅ Inventory movements processed from Telegram Chat Logs"**
 
 The script has now scanned the Telegram Chat Logs sheet and processed any unprocessed inventory movement entries. Let me check if the 14 "unauthorized" ones got picked up and re-processed now.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,26 +687,36 @@ So the GAS trigger did run successfully, but the 14 entries were already written
 ### 🤖 Autopilot
 
 Let me check which ones went through successfully so I know which 14 still need to be done.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the autopilot-submitted ones are all "unauthorized". Let me look further back in the sheet to find the ones that went through successfully — the ones submitted via the DApp.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Those are from May. Let me look at the very end of the sheet for today's entries that went through successfully.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the DApp-submitted ones are PROCESSED. Let me look at the full range of today's entries to see which ones went through.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — all the DApp-submitted ones from today are also showing "unauthorized". Let me look at the one that actually shows "PROCESSED" — row 580.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -763,6 +788,7 @@ My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI
 ### 🤖 Autopilot
 
 I see — you're showing me the DApp submissions for `2024OSCAR_20260330_9`, `_10`, and `_11`. These are the ones that went through successfully from the list. Let me check the Inventory Movement sheet for these specific codes to confirm their status.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -774,36 +800,83 @@ Gary, I think I understand now. You're showing me the DApp submissions that you 
 Could it be that the ones that "went through" were submitted to the **Telegram Chat Logs** sheet (via the sign request flow) rather than directly to the Inventory Movement sheet? The GAS script I triggered earlier would have processed those from the Telegram Chat Logs.
 
 Let me check the Telegram Chat Logs sheet for today's entries to see which ones were processed.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the old Telegram Chat Logs sheet. Let me check if there's a separate sheet for the sign request flow. Let me look at the sheet tabs.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'm getting somewhere. Let me look at the rows around 7000 in the Telegram Chat Logs to see the actual submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the Telegram Chat Logs sheet has entries with "success" in column P. Let me find today's entries specifically.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 These are all from November 2025. Let me find today's entries — they should be at the very end of the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the very end of the sheet for today's entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the very end of the sheet for today's (2026-06-18) entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -814,4 +887,93 @@ Let me find the very end of the sheet for today's entries.
 ### 🤖 Autopilot
 
 I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: cGkHflCrdLJYya9RHpq+53lVY747W3XdhvqX5HwnpTWrc8AfEGlhYHV9yFwoCHJ9ROKOHoDIdMV3c21QVKxQr4amU53TGUe3LqjQJxYQd5cq84yzXP/+e8d2gXmU4yK2I/E5egiK77dWkLT2nawlhXdMTP2PhAGq8skRpZ0DJ7/F/JQLNNFvsWuaQrWbRp/HcK3rUYuEFHw8ZjJnmCiqqBhqfeWmaORPbNTBcoePVSVOxIrGJHJBBbKHUpBY8oyABR+VY/bxkx8O7+08BulMmz2ZKBRrXUYmg+XzjgirKCrjVT+YWqMaSxLjLoY+n1NHWiO3w/1x8jJGuqYl0T8Acw== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_15 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: Z40dCggo4hLzKR9Xd9yQ8jo4iFbZctk+N5i/GGbg1jawtZLLOqkeel9LllucXemVLRgjiicuFJMKTEtuvgaWZW77jnxv1RF+t8WpGe+fZlUy6ynInUXSRAMdKcKFyKdUkI/rPiyXhADD3h+oJtaV48n3OMFSjwRsaMjwPfmx288mk16aJO5nY1qf9kFNmMiBMgGRQbqBCsT23XbbHzRctTB5OkKj3qKQkgx8fcl/SfviO10DEtzo0iDy9Mx23yvEfgmUzbNfRVurwtgYn4pCrJvVIZs1iXg54WYaLjZs86RYRN+L1z+8eBZr5i50sznFtOIZnlKZqlPBJuC2LexalQ== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_17 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: SclgkRTMxmMCr0u6NGs6Z3aytpcMFYW+oEHXbBQe/uXrPLLn2gy7br6/+2aezpmRdbJ/PqlwrZjbQwgHIfiXJnIRnjEw4HaxMKJu0COxbSA7vG1DiczIfvAV6z10Ti/uxZrbOe4JFaNKv597UpYaSSazppSfhVFfT8cy78cJO8jpAoZveiFp/RLD3KS2Jcl9AiMWBC0ldr+yVBwaPyzQaTCGDyqBTq51VHBBjVe4yc9xL9Bb2G9yeWYlfa8pQZMSqRKzxQQPhJkSc7kxKls5ZmTJdmDUcPaI+p/X27FxhQqBJKjurk3MDjkFK2rvJAgGow7qBei2SkJb58W0C+cVRQ== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell
+
+
+### 🤖 Autopilot
+
+I see — you're showing me the DApp submissions for the ones that went through. These are the **Kirsten Ritschel → SOHA - David Campbell** inventory movements for:
+
+- `2024OSCAR_20260330_9` (from earlier)
+- `2024OSCAR_20260330_10`
+- `2024OSCAR_20260330_11`
+- `2024OSCAR_20260330_15`
+- `2024OSCAR_20260330_17`
+
+These are the ones you submitted via the DApp with your digital signature. Let me check the Inventory Movement sheet to see if these specific ones show as PROCESSED.
+
+
+### 🤖 Autopilot
+
+I can see the issue now. All the DApp submissions from today (20260618) — including the ones you just showed me with your digital signature — are showing **"unauthorized"** in column U of the Inventory Movement sheet. Even the ones submitted via `dapp.truesight.me` with your Gary Teh key.
+
+Let me check if there's a specific one that shows "PROCESSED" to compare.
+
+
+### 🤖 Autopilot
+
+Now I see the pattern. Row 580 — `2024OSCAR_20260121_26` — shows **PROCESSED** with a value in column V (`3613,3614`). That's the one that went through. All the others show "unauthorized".
+
+The difference is: the PROCESSED one was submitted at **23:21** (row 580), while the "unauthorized" ones were submitted at **23:01** (rows 530-578). The GAS script's `processTelegramChatLogsToInventoryMovement()` ran at some point between 23:01 and 23:21 and processed the ones that were in the Telegram Chat Logs queue.
+
+So the ones you're showing me now — `2024OSCAR_20260330_9, _10, _11, _15, _17` — these were submitted via the DApp at 23:01 and they're all showing **"unauthorized"** in the sheet. They didn't get processed by the GAS script.
+
+The GAS script I triggered earlier did run successfully, but it processes from the **Telegram Chat Logs** sheet, not from the Inventory Movement sheet. These DApp submissions went directly to the Inventory Movement sheet with "unauthorized" status.
+
+**Here's what I think happened:** The DApp submits directly to the Inventory Movement sheet, but the authorization check (verifying your digital signature against the Contributors Digital Signatures sheet) is failing for some reason. The one that worked (`2024OSCAR_20260121_26` at 23:21) might have gone through a different path — perhaps via the Telegram Chat Logs queue.
+
+Would you like me to investigate why the authorization is failing for these DApp submissions? Or would you prefer to just re-submit them through the Telegram Chat Logs path instead?
 
