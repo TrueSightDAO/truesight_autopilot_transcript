@@ -280,6 +280,7 @@ Now let me find and upload the new version, and also save a markdown copy alongs
 ### 🤖 Autopilot
 
 Now let me also save a markdown/text version they can copy-paste and fill in directly.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -306,11 +307,13 @@ On your question about fillable PDFs — the current PDF generator renders stati
 ### 🤖 Autopilot
 
 Great request. Let me dig into our FDA FSVP compliance docs for our existing suppliers to extract the exact requirements, then build a consolidated roadmap PDF.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual FDA FSVP entity files and the freight preflight checklist to extract the exact requirements.
+[5 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -415,4 +418,40 @@ The rest of the document (FSVP docs, roadmap phases, timeline) stayed the same. 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] can you help file a contribution report for the both of us maybe actually to uh yeah use the pull request of this to the URL of the pull request for this to pdf that you committed. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the commit history to get the right PR/commit references.
+
+
+### 🤖 Autopilot
+
+The PDFs were uploaded directly to main (not via PR), so I'll use the commit URLs as evidence. Let me file the contribution.
+
+
+### 🤖 Autopilot
+
+Done — contribution filed. Here's the summary:
+
+**Contribution Report Submitted ✅**
+
+- **Title:** Created FSVP compliance roadmap & unit economics template for Indonesia cacao partner onboarding
+- **Contributors:** Gary Teh, Sophia Truesight
+- **Time:** 45 minutes
+- **Evidence:**
+  - Commit: FSVP roadmap PDF → `d467993`
+  - Commit: Unit economics PDF → `0a3eca8`
+  - PR #581: Editable markdown version
+
+Both PDFs are live and shareable with Jessey whenever you're ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
