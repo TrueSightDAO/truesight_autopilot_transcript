@@ -3024,6 +3024,7 @@ Let me check the Grok scoring project's Code.js for the `doGet` function specifi
 ### 🤖 Autopilot
 
 There it is. The Grok scoring project (`1BHAGZd…`) already has **both** `doGet(e)` in `Code.js` and `doPost(e)` in `telegram_webhook_listener.js`. Let me check the `doPost` to see what it currently does.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3031,6 +3032,12 @@ There it is. The Grok scoring project (`1BHAGZd…`) already has **both** `doGet
 Now I see the full picture. The Grok scoring project already has a `doPost(e)` in `telegram_webhook_listener.js` that's deployed as a web app. You're right — instead of creating a new `doPost(e)` in a separate file, we should just extend the existing one.
 
 Let me update the plan to reflect this.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3075,6 +3082,7 @@ The updated plan is at:
 Good point. The existing `doPost(e)` is deployed as a web app, but GAS web apps often have CORS or access issues when called externally (especially from Edgar which is on a different domain). A `doGet(e)` that acts as a health check or ping endpoint would let Edgar verify the webhook URL is reachable before sending callbacks.
 
 Let me check if the Grok scoring project already has a `doGet(e)` in the `telegram_webhook_listener.js` file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3082,6 +3090,12 @@ Let me check if the Grok scoring project already has a `doGet(e)` in the `telegr
 Confirmed — `telegram_webhook_listener.js` has `doPost(e)` but **no `doGet(e)`**. The `doGet(e)` is in `Code.js` (the Grok scoring script), not in the webhook listener file.
 
 You're right — `doPost` can be blocked by CORS or content-type restrictions when called externally. A `doGet(e)` in the same file that acts as a simple health check/ping endpoint would let Edgar verify the webhook URL is reachable before sending callbacks. Let me update the plan.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3118,6 +3132,12 @@ Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCO
 Ah, I misunderstood! You're not saying add a `doGet` health check. You're saying: instead of Edgar firing a POST webhook to GAS, **Edgar should just call a `doGet` with query parameters** — and that GET request triggers the GAS function to process the review and update the Scored Chatlogs sheet.
 
 That's actually much simpler and avoids the POST/CORS issues entirely. Let me update the plan.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3268,4 +3288,21 @@ Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCO
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #594 on agentic_ai_context merged successfully (sha: 19dc83bafe1c42f31c26076fcf7adbf2799fffd4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Check what Grok actually writes after scoring
+
+
+### 🤖 Autopilot
+
+Let me look at the actual data in the Scored Chatlogs sheet to see what status Grok writes.
+
+
+### 🤖 Autopilot
+
+Confirmed — every single row has **"Successfully Completed / Full Provision Awarded"** as the status. That's what Grok writes after scoring. No "Awaiting Review" or "Pending Review" anywhere in the actual data.
+
+So the plan is correct on this point — the initial status from Grok is `"Successfully Completed / Full Provision Awarded"`, not `"Pending Review"` as I'd assumed earlier in the conversation. The plan has been using the correct value since v7.
 
