@@ -66,6 +66,7 @@ https://agroverse.shop/
 Gary, thanks for sharing this conversation with Jessey. Let me process what's been discussed and pull up relevant context.
 
 Let me first check what we know about Indonesia cacao, consignment models, and the relevant runbooks.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -203,4 +204,18 @@ You can forward the link to Jessey as a concrete "here's what we mean by unit ec
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → find /tmp -name "*Unit_Economics*" -o -name "*unit_economics*" 2>/dev/null | head -5; find /tmp -name "*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -10; ls -la /tmp/*.pdf 2>/dev/null; ls -la /tmp/pdf_* 2>/dev/null; ls -la /tmp/reportlab_* 2>/dev/null; find /tmp -name "*.pdf" 2>/dev/null; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] Can you share the URL for the PDF of me so that I don't have to dig around? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure — here's the direct link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/unit_economics_reference_for_new_sku.pdf**
+
+You can share that with Jessey directly. It'll render in-browser on GitHub, or they can download it.
 
