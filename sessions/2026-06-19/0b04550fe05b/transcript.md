@@ -208,6 +208,7 @@ Now let me check the Grok scoring script to see what status it sets after scorin
 ### 🤖 Autopilot
 
 Let me check what status the Grok scoring script sets after scoring.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,4 +277,59 @@ Good question. Here are my thoughts:
 **Bottom line:** The manual review step is the right thing to keep — it's a fiduciary check. But the interface for doing it could be much better. Right now it's a spreadsheet chore; it should feel more like a quick approval queue.
 
 Want me to look into building a lightweight approval view — maybe a Telegram-based flow or a simple web UI that reads from Scored Chatlogs and lets you approve/adjust per row?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] So here's what I have in mind, right? Check out the dashboard that we created for the butterfly effects club. I'm thinking maybe in a mixed sense to extend the DAP with a view like this, where all the roles that require review by a governor or maybe in the future even yourself. A surface or can be queried. And then what happens is that when the governor or maybe even you look at it and verify that it's okay, just simply click approve. And that sends a new RSA sign event to Edgar. And then in the back end there should be a GAS script that picks up that new signed event and see that okay, this is the corresponding role being signed and approved by a governor or you, the Sentinel. And then goes ahead and updates the column to reviewed and then the final TDG being awarded. What do you think about this UX? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I love it. Let me pull up the Butterfly Effect Club dashboard to see what you're referencing.
+
+
+### 🤖 Autopilot
+
+Let me look at the Butterfly Effect Club dashboard to understand the UX pattern you're referencing.
+
+
+### 🤖 Autopilot
+
+Now I see the Butterfly Effect admin console pattern. Let me look at the key part — how the attestation flow works.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture of the Butterfly Effect admin console pattern. Let me look at how the queue/attestation flow works in the UI.
+
+
+### 🤖 Autopilot
+
+Now I have a thorough understanding of the Butterfly Effect Club admin console pattern. Here's my analysis:
+
+---
+
+**I love this idea.** The Butterfly Effect admin console is exactly the right pattern to extend. Here's what I think:
+
+**What works about the BE console pattern:**
+- It's a standalone HTML page on GitHub Pages — no backend to deploy, just static assets
+- It uses browser-side RSA keypairs (same as the DApp) to sign events directly to Edgar
+- The queue/attested tab pattern is clean — pending items in one view, history in another
+- One-click "Attest" that submits a signed event to Edgar, then a GAS webhook picks it up and writes back
+
+**Adapting it for the scoring review queue:**
+
+The DApp already has the identity layer (RSA keypairs, Edgar submission). What's missing is a **review queue view** — a tab that reads from the **Scored Chatlogs** sheet (via a GAS proxy, same as BE does with its roster sheet), shows rows where `Status = "Pending Review"`, and gives each row:
+
+- Contributor name, contribution description, Grok's provisioned TDG
+- An **Approve** button (accepts Grok's amount) and an **Adjust** field (override TDG)
+- On click → submits a `[CONTRIBUTION REVIEW EVENT]` to Edgar with the hash, status, and final TDG
+- A GAS listener picks up that event and updates the Scored Chatlogs row to "Reviewed" with the awarded TDG
+
+**The key architectural win:** Edgar becomes the single source of truth for the review action, and the GAS script just syncs the sheet. No more manual cell editing.
+
+**One thing to think about:** Who can see this queue? Right now the BE console gates admin access by checking if you're an editor on the roster sheet. For the scoring review, you'd want the same — only governors (or me, the autopilot) can see and act on the queue. I could also be given the ability to auto-approve low-confidence or small-amount rows, flagging only the edge cases for human review.
+
+**My recommendation:** Build this as a new page on the DApp (or as a standalone page like the BE console) rather than modifying the existing scoring sheet. The sheet stays as the data store, the UI becomes the interaction layer. Want me to sketch out a PR for this?
 
