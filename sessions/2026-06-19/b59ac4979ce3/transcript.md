@@ -3439,6 +3439,11 @@ Want me to check if the conflict is just the CNAME file so you know it's safe to
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Prod is already in sync — you must have merged it manually. ✅
 
 **truesight.me/roadmap** now shows the live track map with:
@@ -4040,4 +4045,55 @@ July event samples ── separate fast path (courier + BoQiang customs)
 **The new export CNPJ and GACC are parallel prerequisites** — both must clear before commercial cargo. The July samples can move on a separate track using the cooperative's existing docs.
 
 Want me to update the TRACK_MAP.md and roadmap page with this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Do note that cargo to China is different from cargo to sf USA
+
+
+### 🤖 Autopilot
+
+Right — two completely different import channels, each with its own gate.
+
+Let me update the track map to reflect this properly.
+
+
+### 🤖 Autopilot
+
+Now I see the issue — the current map has **one single "Brazil Export Entity" gate** blocking everything, but that's wrong. There are **two separate export channels**:
+
+1. **Brazil → USA** — already live via TrueTech Inc (Delaware C-Corp, FDA-registered, Customs importer-of-record). The new export CNPJ unblocks this.
+2. **Brazil → China** — needs **both** the new export CNPJ **and** GACC registration (3-6 months). Two gates, not one.
+
+Let me also check what BoQiang said about the July samples path:
+
+
+### 🤖 Autopilot
+
+OK — BoQiang's message is only in this conversation, not yet in the context docs. Let me update the track map to properly separate the two export channels and add BoQiang's July samples path.
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#575**
+
+Here's the corrected dependency picture:
+
+```
+Brazil Export CNPJ (CNAE/IE/NF-e) ←── parallel ──→ GACC Registration (3-6 months)
+         │                                              │
+         └── both needed ──→ Brazil → China Export Gate
+                                    │
+                                    ├── blocks → Aora Events (100 bars)
+                                    └── blocks → Chocolate Subscriptions (China)
+         │
+         └── alone unblocks ──→ Chives Root (USA)
+                                 Michael Johnson (USA)
+                                 Kopi Bar Jul 10 (USA)
+```
+
+**Key insight:** USA-bound cargo only needs the new CNPJ (TrueTech Inc already handles US import). China-bound cargo needs **both** CNPJ + GACC. And July event samples have a **separate fast path** via BoQiang using cooperative docs.
+
+Want me to merge it?
 
