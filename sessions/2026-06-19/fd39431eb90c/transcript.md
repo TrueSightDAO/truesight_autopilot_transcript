@@ -897,6 +897,26 @@ Let me find the very end of the sheet for today's entries.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
 
 
@@ -1075,4 +1095,83 @@ I think I understand what happened now. The DApp submits directly to the Invento
 Would you like me to:
 1. **Investigate why the authorization is failing** for these DApp submissions?
 2. Or just **re-submit these directly** via the autopilot using your Gary Teh key so they get authorized properly?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] Request Transaction ID: 32/qiSl7o9sf8CUMbeDYJaZsRzPuPsR4oJtPPK7qB3B/HZDWuBRtfJOQoAYOZqa0GiAiAgqHp+H+0yiN8gtJlECIRbuM0jAivKht156o4xXB/PbEusw4cYRm4gXOJe9QtpBXdQ/iHwRO3JVr93yN49JrhBgxDjO1Ca4CjizObAwxxDC0xQ0NbUAEELT6j9qjJjhGRU12Y7JIyZodfdxJaV89Uod9uHwBLAEjHVL2T6USKHaOZm4wFikSouclRoRbgrZ9OdmEZgpokPul+hLb4SaAVISoQdh+6ga3p4BmcKJ+L6FahiTPTXHNHnYQ7BL1GsO5byHWahWseOkHL2AfWA== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_4 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: L/FoYvJOiGFrQRHRGwMb+E4bppMLqw7+jZSgk8CZA89fZE372lwIIXCyiTDsLm4P9iXj8AHQ5HZKiMDbNHwiqQxi/eXvIwH8y4rswhA+F+wUKgGTm0PJtojs19Q8fe7lUPkrBK+B9X4XHX6Akh49DaY+Kt4bU5wVXJDKTcXCxAKm0/i1HdndYlPA4+Q6ecKTxPCr+Y6GZ/vrm5EPZ1Xv0ZopE9kKgrpz7Bc6RC2dMz8yl2l2wPJlzrKQxEsjbXCzp1/bS/zA2YzTDNhD7+ItRysLTr/6FVhEHj0oplCDYBbgndGexHHATgiGHrJ7gw7fgKqDJM1EmFEQL6DWhFy2rg== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_5 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: q5QHZdIzqgLbVFNmpomeIP5/wy+x7I9WjUy/YXXbdUdqIlHHJ8XuZxJosdY5pgJqCjdBxdVB87awKXuFbr2W8zvwuVdJT1Knl+rNbcc71CH3KjUVD/l/lpfHqKfgeGSmbgcaEi1bopj5bi0Ud3nXAq/HYJK23lGN1WR7QKbEFPTIlXmTDsxiHZMA3Z5ZOiOYXKAWnty2beopKAPoVyOd6k5R2bBBgB/8nZBgjqzQigcfD1/r2iKKBcPoeNjPQH5wnMUazVdUeCvlTdZIEYeso3h/3oLPiI7yI9Q9tFm7EWdlSX6E8rEsZzDfPSNp4vo0ZIxA1fb1vhGwwC2a3DU7xg== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_6 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+--------
+
+
+### 🤖 Autopilot
+
+I see you're continuing to show me the DApp submissions for the batch. Let me check the Inventory Movement sheet to see if these specific ones are already there.
+
+
+### 🤖 Autopilot
+
+Gary, I see you're sending me the DApp submissions one by one. These are all already in the Inventory Movement sheet — they were submitted at 23:01 and they're all showing **"unauthorized"** status.
+
+I think I understand what you're doing — you're showing me the ones that **went through** (the ones you submitted via the DApp that you believe were successful). But looking at the sheet, **all** the DApp submissions from the 23:01 batch show "unauthorized" — including the ones you just sent me (`2024OSCAR_20260330_1` through `_6`).
+
+The only one that shows **PROCESSED** is `2024OSCAR_20260121_26` which was submitted at 23:21.
+
+So it seems like the DApp submissions are going to the Inventory Movement sheet directly but the authorization check is failing for all of them. The GAS script I triggered earlier processes from the **Telegram Chat Logs** sheet, not from the Inventory Movement sheet — so it won't help these.
+
+Would you like me to investigate why the authorization is failing, or would you prefer to just re-submit these via a different path?
 
