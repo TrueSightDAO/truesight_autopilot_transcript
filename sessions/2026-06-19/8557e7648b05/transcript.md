@@ -72,6 +72,7 @@ Let me first check what we know about Indonesia cacao, consignment models, and t
 ### 🤖 Autopilot
 
 Good. I now have a solid picture. Let me also check the growth model for the consignment/partner distribution model we already have documented.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -218,4 +219,47 @@ Sure — here's the direct link:
 **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/unit_economics_reference_for_new_sku.pdf**
 
 You can share that with Jessey directly. It'll render in-browser on GitHub, or they can download it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] I think in the reference, let's not include any prices, let them feel it in, but just like indicate the unit for each slot they're supposed to feel in. Do you think the PDF you can allow those feels to be editable when you generate the PDF? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — showing our actual prices could anchor them wrong or set expectations that don't match Indonesia's cost structure. Better to just show the framework.
+
+On editability: the PDF is rendered as a static image from markdown, so it's not fillable. But I can do two things:
+
+1. **Regenerate the PDF** with all prices stripped out — just the blank template with slot labels like `$___ / kg` and `___ units`
+2. **Also save a markdown/text version** alongside it that they can copy-paste into their own doc and fill in
+
+Let me regenerate both.
+
+
+### 🤖 Autopilot
+
+Now let me find and upload the new version, and also save a markdown copy alongside it.
+
+
+### 🤖 Autopilot
+
+Now let me also save a markdown/text version they can copy-paste and fill in directly.
+
+
+### 🤖 Autopilot
+
+Alright, here's the updated situation:
+
+**New PDF (no prices, just blank slots):**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/unit_economics_template_for_new_sku.pdf
+
+**Also added an editable markdown version** (PR #581) — they can copy-paste it into a Google Doc or text editor and fill in the blanks directly. Once that PR is merged, the markdown will be at the same path with a `.md` extension.
+
+On your question about fillable PDFs — the current PDF generator renders static pages, so it can't do editable form fields. But the markdown version solves the same need: they just copy it into their own doc and fill it in. Want me to merge that PR so the markdown is live?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
