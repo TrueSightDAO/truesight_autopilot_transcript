@@ -1512,11 +1512,13 @@ OK, I see — all the DApp submissions from the 23:01 batch are **Kirsten Ritsch
 OK, I see — all the autopilot batch submissions (rows 500-530) are also **Kirsten Ritschel → SOHA - David Campbell**, all showing "unauthorized". And the DApp submissions (rows 540-578) are the same.
 
 Let me now trigger the GAS script again to process the new submissions I just made to Edgar.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS script timed out — it might still be processing from the previous trigger. Let me check the Inventory Movement sheet to see if my new submissions landed there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1530,6 +1532,17 @@ The one that **did** work — `2024OSCAR_20260121_26` at row 580 — was submitt
 **What I think needs to happen:** The DApp's `report_inventory_movement.html` should submit to the **Telegram Chat Logs** sheet first (like a sign request), and then the GAS script processes it from there. Or alternatively, the DApp needs to set the status correctly when writing directly.
 
 Let me check how the DApp actually submits.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1543,6 +1556,12 @@ Gary, I think the issue is clear now. The DApp submissions go directly to the In
 Let me try a different approach — I'll submit these directly to the Telegram Chat Logs sheet via the Edgar API, which should then get picked up by the GAS script.
 
 Actually, let me first check if there's a way to submit to the Telegram Chat Logs path. Let me look at how the one successful submission got there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1762,4 +1781,78 @@ The **12 remaining** under Kirsten Ritschel still need to be transferred. Want m
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×8 → https://agroverse.shop/agl4
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] Request Transaction ID: GjKcKlq7kExIyhtJJRXfnNBIGphdu117NMou8Eczd04Vbb1t6PX5VIRRXbioVkOfoSmaVOROYDndGM0LjL7QYLlIOAnLl8rNM1EBW2kH6gBjnjmm16MAYtR74onvSt3wbh7O34qAmjsdkU2pq9Wt7jyAlaIn13/B7j2RNx+x1o+DhCo9BBzGrAAJgXmFGGfmO2mbT2XzAHPnPZ46nUIISq0yeD61asOuGnjszcuSEWCqy9y70G/5SIQgWZvtEeZDF3aDljIBoP45brefJ1m0enbzRPOboBJ42w42Oa3SGraf8sEEhJXlbNRn9ImxJnnqCJBs0LbdtowKg2o0LrkZyw== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_22 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: Whqt6R9JHq3iKnW4pSjOETh9lw/Bvor1PTU2UODGCBByydtf03QGWYNvlTMQOe5lTF6aduPUSi4+tYOJwqecn0cb67/MMxvCYGDMFpWcuumrfRaW10HtMJUo3HCAV4xUQBWprGSmzk0/ZcUrJ+2VxoIbMoA1fc+k5UZc0LtqgA2+I3PgerWm44jZuZaH03vGToIjzdnFkdZeX7drbryQL0ceVsYnXt0rL9PH76KaB6sTvEACA+sCh5ik00FK1xultQ825+Md6moS+ILONv8ZKfpyCDLsOl/nGq9PyR0FDJIylXLgMF4cTEXBqcICa/Du5AD+jC5eCv+r3KXwybVcpA== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_30 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: Dk7y3TmsRr07Oe9osHN5ChGfXzIpQ7NHShBYOIw4VELhdgi27UlnKrSQM9ChNMKqgQ3kp36dPG2JwI2qtc4LWPowTeJtmvXTaAoYuJExj39T5AKVBlh8nCGpL7ojPbMSRfN0ob7v9fLOiizPe0YC84sAKmp2PBohR6D8IZJxmeuPrw1mFOFD7u18aX+mmMqbetXb1Xuot7wMkmyhSvL7fwuO326KaE010gxVCrdmXOJXjJFVKQhrzBEm9C6lNoecd7kussHwShL77ekmDHTKq9PRaS6EMluN5q08tWerER71RCl5x1RhbEXPC+HgIA096hufuRa2EemYdLBoWCXynw== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_34 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+--------
+
+
+### 🤖 Autopilot
+
+Gary, I see you're confirming the DApp submissions for `2024OSCAR_20260330_22`, `_30`, and `_34`. As I just checked — these are **already transferred** to SOHA - David Campbell in the ledger. The DApp submissions worked.
+
+The **12 that still need to be transferred** are:
+
+**Kirsten Ritschel → SOHA - David Campbell:**
+- 2024OSCAR_20260121: 27, 28, 29, 30, 31
+- 2024SA_20251227: 35, 36, 37, 38, 39, 40, 42
+
+Want me to submit those 12 now?
 
