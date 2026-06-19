@@ -3935,7 +3935,13 @@ The transcript append bug is still there (PR #257 should fix it). The file is sa
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I can see the China/Aora Events card already has the first event plan PDF link. Let me add the new venue layout PDF too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4147,6 +4153,33 @@ Black King CNPJ → New Export CNPJ (CNAE 46.23-1/04 + IE + NF-e)
 ```
 
 **Black King CNPJ is the single source** feeding both channels. USA cargo only needs the new CNPJ (TrueTech Inc already handles US import). China cargo needs both CNPJ + GACC.
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] U.S. bound cargo doesn’t readout need a new CNPJ. Minimal is black king got the cnae
+
+
+### 🤖 Autopilot
+
+Ahh — you're saying **Black King's existing CNPJ just needs its CNAE changed**, not a whole new CNPJ. That's much simpler. Let me fix that.
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#577**
+
+Corrected — **Black King's existing CNPJ just needs a CNAE amendment**, not a whole new entity. The track is now called **"Black King CNAE / IE / NF-e"** to reflect that.
+
+```
+Black King CNPJ (existing) → Change CNAE to 46.23-1/04 + IE + NF-e
+    │
+    ├── alone unblocks ── USA cargo (Chives Root, Michael Johnson, Kopi Bar)
+    │
+    └── both CNAE fix + GACC ──→ China cargo (Aora events, subscriptions)
+```
 
 Want me to merge it?
 
