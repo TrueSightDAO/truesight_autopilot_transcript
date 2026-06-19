@@ -332,21 +332,40 @@ Want me to look into building a lightweight approval view — maybe a Telegram-b
 ### 🤖 Autopilot
 
 I love it. Let me pull up the Butterfly Effect Club dashboard to see what you're referencing.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Butterfly Effect Club dashboard to understand the UX pattern you're referencing.
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the Butterfly Effect admin console pattern. Let me look at the key part — how the attestation flow works.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a clear picture of the Butterfly Effect admin console pattern. Let me look at how the queue/attestation flow works in the UI.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -490,21 +509,25 @@ Yeah, Druff, a very detailed implementation plan, execution roadmap and checklis
 ### 🤖 Autopilot
 
 Let me check the handoff registry first.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a new handoff — no existing plan file for this. Let me create the implementation plan and register it.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the existing scoring infrastructure more closely to make sure the plan is precise.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the key files — the Scored Chatlogs schema, the transfer script, and the Grok scoring script to understand the exact columns.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -594,4 +617,29 @@ I've created the full implementation plan and registered it as a handoff. Here's
 The plan file is at `SCORING_REVIEW_QUEUE_PLAN.md` in `agentic_ai_context` — PR [#582](https://github.com/TrueSightDAO/agentic_ai_context/pull/582). Manifest update is PR [#583](https://github.com/TrueSightDAO/agentic_ai_context/pull/583).
 
 When you're ready, just say **"go for it"** and I'll start with PR 1 — the GitHub Action cache generator.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Very cool, and you merged both of them into the main page and then share with me the URL to the review scoring queue Document so that I can share the rest of the dial members [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me merge both PRs.
+
+
+### 🤖 Autopilot
+
+Both merged. Here's the URL to the plan document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+That's the full architecture doc — the flow diagram, data schemas, column references, event definitions, the 7 PRs broken down, edge cases, and the authorization model. Feel free to share it with the DAO members for review.
+
+When everyone's had a look and you're ready to start building, just say **"go"** and I'll kick off PR 1 — the GitHub Action cache generator.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #582 on agentic_ai_context merged successfully (sha: 05061030b5d93a9b5b8aa4b734a373da3d681bf8). Pull Request successfully merged; ✅ PR #583 on agentic_ai_context merged successfully (sha: 94d4949fddd1351db2cb6f823facd25fcfafc7c6). Pull Request successfully merged
 
