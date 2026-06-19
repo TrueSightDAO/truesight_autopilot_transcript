@@ -114,6 +114,17 @@ Wait, let me be precise from the data I've read:
 | **Gary Teh** | 2024OSCAR_20260121_... (need to confirm) | ? |
 
 Let me check the remaining ones I haven't fully parsed yet.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -148,16 +159,19 @@ Here's the full possession breakdown of all 40 QR codes:
 
 **2024SA_20251227 batch (2 bags):**
 ... Let me confirm the last two.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is getting too deep. Let me just re-query the specific ones I'm less sure about.
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see — the 2024SA batch is also under **Kirsten Ritschel**, not SOHA. Let me re-check the earlier ones I had as SOHA.
+[1 tool result(s) compacted: lookup_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -204,16 +218,34 @@ All 40 are in **MINTED** status — meaning they're in inventory, not yet sold o
 ### 🤖 Autopilot
 
 Let me look up the relevant context to understand what GAS script handles QR sign requests and how the 14 that didn't go through would be handled.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the specific GAS script that processes sign requests from Edgar.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a much clearer picture. Let me also check what the "sign request" flow looks like — the 40 submissions you sent to Edgar.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -245,61 +277,73 @@ Want me to investigate what happened with those 14 first? I can check the Telegr
 ### 🤖 Autopilot
 
 Let me investigate the Telegram Chat Logs sheet to see what happened with those 14 submissions.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That sheet is huge. Let me search for the recent submissions related to these QR codes — the ones with the 2024OSCAR and 2024SA codes.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the Telegram Chat Logs sheet but it's mostly old contribution records. Let me look at the QR Code Generation tab instead, and also check the Agroverse QR codes sheet for the 14 Kirsten codes.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the QR Code Generation tab but it only has 9 rows and they're all old batch QR requests. Let me look at the Agroverse QR codes sheet directly to see the actual status of the 14 Kirsten codes.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search specifically for the 14 Kirsten-managed QR codes in this sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search specifically for the Kirsten-managed codes in this sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is too large to read all at once. Let me search specifically for the Kirsten-managed codes.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the QR codes in the sheet go up to row 228 but the ones we're looking for (2024OSCAR_20260330_*, 2024OSCAR_20260121_*, 2024SA_20251227_*) aren't in this sheet. They must be in rows beyond 228. Let me check.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still not there. Let me check further down.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check further down for the 2024OSCAR_20260330 and 2024SA codes.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the codes are in the sheet. Let me check their status and manager columns.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the specific rows for the 14 Kirsten codes. I know they're around rows 1000-1100 in the sheet. Let me check their status and manager columns.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -398,4 +442,96 @@ So the 14 that didn't "go through" — they actually **are** in the sheet. They'
 The question is: what exactly do you mean by "didn't go through"? Was it the **Edgar sign request** that failed (the digital signature verification), or something else? If the QR codes are already in the ledger with MINTED status, they're already created and assigned. Triggering the GAS again wouldn't change anything — they're already processed.
 
 Can you clarify what "didn't go through" means in this context?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] I meant that they were not successfully transferred to David from Soha during today's transactions. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, I understand now! So you submitted 40 **INVENTORY MOVEMENT** events to Edgar — transferring custody of 40 bags from Kirsten/Sammi to SOHA - David Campbell — and 14 of those transfers didn't go through.
+
+Let me check what happened with those submissions on Edgar's side.
+
+
+### 🤖 Autopilot
+
+Now I understand the flow. Let me check the Telegram Chat Logs sheet to see the actual submissions and their status.
+
+
+### 🤖 Autopilot
+
+Let me look at the Inventory Movement sheet to see if there are any pending movements.
+
+
+### 🤖 Autopilot
+
+Let me look at the recent rows in the Telegram Chat Logs to find today's inventory movement submissions.
+
+
+### 🤖 Autopilot
+
+Let me look at the most recent entries in the Telegram Chat Logs to find today's inventory movement submissions.
+
+
+### 🤖 Autopilot
+
+The Telegram Chat Logs sheet seems to have a lot of empty rows. Let me look at the very end of the sheet for today's submissions.
+
+
+### 🤖 Autopilot
+
+The Telegram Chat Logs sheet seems to have mostly empty rows with just "INVALID" in column N. Let me check the Inventory Movement sheet for today's entries.
+
+
+### 🤖 Autopilot
+
+Let me look at the most recent rows in the Inventory Movement sheet to find today's submissions.
+
+
+### 🤖 Autopilot
+
+Let me look at the very end of the Inventory Movement sheet to find today's submissions.
+
+
+### 🤖 Autopilot
+
+Let me look at the very end of the Inventory Movement sheet for today's entries.
+
+
+### 🤖 Autopilot
+
+Let me look at the very end of the sheet for today's entries.
+
+
+### 🤖 Autopilot
+
+I can see the pattern now. These are from May 8 (20260508) and they're all PROCESSED. Let me check the very end of the sheet for today's submissions.
+
+
+### 🤖 Autopilot
+
+Now I can see the issue clearly! Let me read the rest of the entries.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me compile the findings.
+
+Gary, I found the issue. Looking at today's (2026-06-18) Inventory Movement sheet entries:
+
+**The 26 bags that went through** (SOHA - David Campbell from the 2024OSCAR_20260330 batch and 2024OSCAR_20260121_22, 24, 25, 26) — these were submitted via the **DApp** (`dapp.truesight.me/report_inventory_movement.html`) and have status **PROCESSED**.
+
+**The 14 that didn't go through** — these were submitted via the **autopilot** (`autopilot-batch-transfer`) with my Sophia key, and they all have status **"unauthorized"**.
+
+Looking at the GAS script logic, the `process_movement_telegram_logs.js` checks authorization by looking up the digital signature in the "Contributors Digital Signatures" sheet. My Sophia key's signature wasn't recognized as an authorized signer for those movements.
+
+The 14 unauthorized ones are:
+- **Kirsten Ritschel → SOHA - David Campbell**: 2024OSCAR_20260121_27, 28, 29, 30, 31 (5 bags)
+- **Kirsten Ritschel → SOHA - David Campbell**: 2024SA_20251227_35, 36, 37, 38, 39, 40, 42 (7 bags)
+- **Sammi Whitchurch → SOHA - David Campbell**: 2024OSCAR_20260121_20, 21 (2 bags)
+
+**My recommendation**: I can re-submit these 14 directly via the DApp-style flow using **your** RSA key (Gary Teh), which is a recognized governor key. That way the GAS script will see them as governor-authorized and process them. Want me to do that?
 
