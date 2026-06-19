@@ -2915,6 +2915,12 @@ Good catch. Let me check the plan to see if this is already covered.
 ### 🤖 Autopilot
 
 The plan still has the old v5 content. Let me update it with the v6 changes AND add the boundary condition you mentioned.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3081,4 +3087,40 @@ Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCO
 **✅ Done this turn — actions taken:**
 • `ssh run` → grep -n "function doGet" /tmp/tokenomics_check/google_app_scripts/1BHAGZd_T1I5mQnqnAFqUJKX2x_N8Uv05n1O2OohRA908Ja8wVwVxaR7K/telegram_webhook
 • `merge pr` → ✅ PR #591 on agentic_ai_context merged successfully (sha: 4d7c77ac01f3179cbaee5437cac8cd1da15bb566). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] No, I meant just Edgar, she just do a do-get with a parameter and that will trigger the function that no processes all the corresponding sign events. And then processes the records, right? in the score chat logs. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Ah, I misunderstood! You're not saying add a `doGet` health check. You're saying: instead of Edgar firing a POST webhook to GAS, **Edgar should just call a `doGet` with query parameters** — and that GET request triggers the GAS function to process the review and update the Scored Chatlogs sheet.
+
+That's actually much simpler and avoids the POST/CORS issues entirely. Let me update the plan.
+
+
+### 🤖 Autopilot
+
+Ah, now I understand correctly. You're saying:
+
+**Instead of Edgar firing a POST webhook to GAS, Edgar just calls a `doGet` on the GAS web app URL with query parameters.** The `doGet(e)` function reads the query params, processes the review, and updates the Scored Chatlogs sheet. Simple GET request, no CORS issues, no content-type restrictions, no POST complexity.
+
+The existing `doPost(e)` stays completely untouched — it still handles Telegram webhooks as before.
+
+So PR 4 is now just: **add a `doGet(e)` function** to `telegram_webhook_listener.js` that reads query params like:
+```
+GET <webhook_url>?action=Approve&scoringHashKey=XzQ2...&tdgIssued=45.00&reviewerEmail=gary@truesight.me
+```
+
+Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #592 on agentic_ai_context merged successfully (sha: bb22b8f034d4146215d5fad603f2705f9e0dcee6). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #592 on agentic_ai_context merged successfully (sha: bb22b8f034d4146215d5fad603f2705f9e0dcee6). Pull Request successfully merged
 
