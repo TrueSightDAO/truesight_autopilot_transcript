@@ -2851,3 +2851,600 @@ Over time, as more suppliers fill this template, the DAO builds a **pricing libr
 
 Want me to add a worked example section to the template?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **7f9f4bbdeebe41478b089411eedb7c31.pdf**]
+- Type: PDF (8 pages, 10866 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 1
+FDA FSVP Compliance & First Shipment Roadmap
+Prepared for: Jessey / Conservana Spices — Indonesia Cacao
+Reference: Based on TrueTech Inc's established FSVP process for Brazil-origin cacao suppliers
+Date: July 2025
+Overview
+This document outlines everything needed to bring Indonesia-origin ceremonial cacao into the USA through
+TrueTech Inc (the DAO's US importer of record). It covers:
+1. FDA FSVP requirements — what documents we need from you
+2. The end-to-end shipment process — step by step
+3. Freight & logistics — moving cacao from Indonesia to the USA
+4. Checkpoints & timeline — what needs to happen and when
+Section A: What Is FDA FSVP?
+The FDA Food Safety Verification Program (FSVP) requires the US importer (TrueTech Inc) to verify that
+foreign suppliers produce food in a manner that meets US food safety standards. Every new supplier must
+be evaluated and registered before their first shipment can enter the US.
+TrueTech Inc's FSVP identifiers:
+• FDA FFR: 12202640780
+• EIN: 88-3411514
+• CBP Importer #: 88-341151400
+Section B: Documents Required from the Indonesia Exporting Entity
+B1 — Entity Registration & Identification
+#
+Document
+Purpose
+Notes
+1
+Legal entity registration
+(e.g. Akta Pendirian /
+NPWP / SIUP)
+Prove the exporting entity
+exists legally
+Must match name on all
+other docs
+2
+FDA Food Facility
+Registration (FFR)
+Every facility that manufactu
+res/processes/packs/holds
+food for US consumption
+must register with FDA
+We can guide you through
+the process
+
+--- Page 2 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 2
+#
+Document
+Purpose
+Notes
+3
+DUNS number
+Universal identifier for the
+entity
+Required for FDA
+registration
+4
+Business address &
+contact
+Physical address of the
+exporting facility
+P.O. Box not accepted
+B2 — Food Safety & HACCP Documentation
+#
+Document
+Purpose
+5
+HACCP plan (Hazard Analysis Critical
+Control Points)
+Documented food safety plan covering
+your fermentation, drying, and
+processing steps
+6
+HACCP flow diagram
+Step-by-step diagram of your
+production process from raw cacao to
+finished product
+7
+Hazard analysis
+Identification of biological, chemical,
+and physical hazards at each step
+8
+Critical Control Point (CCP) records
+Monitoring records for key control
+points (e.g. fermentation temperature,
+moisture content)
+9
+Corrective action procedures
+What happens when a CCP is
+exceeded
+10
+Verification procedures
+How you verify your HACCP plan is
+working
+B3 — Facility & Processing Information
+#
+Document
+Purpose
+11
+Fermentation facility description
+Location, capacity, method
+(heap/box/other), duration, turning
+frequency
+12
+Drying facility description
+Sun drying / mechanical drying,
+moisture target, hygiene controls
+13
+Manufacturing/processing facility
+description
+Where nibs, mass, or finished product
+are produced
+14
+Packing facility description
+Where final product is packaged for
+export
+15
+Sanitation / hygiene procedures
+Cleaning schedules, pest control,
+employee hygiene
+16
+Water quality testing results
+If water is used in processing
+17
+Allergen control plan
+If applicable
+
+--- Page 3 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 3
+B4 — Supplier Evaluation & Written Assurance
+#
+Document
+Purpose
+18
+Written assurance letter
+Signed statement that the
+supplier's food meets US
+FDA safety requirements
+We will provide a template
+19
+Supplier evaluation
+declaration
+Our evaluation of your food
+safety practices
+We will prepare this after
+reviewing your docs
+20
+Site visit / inspection
+report
+Physical inspection of your
+facilities
+Can be done in person or
+via video call with photo
+evidence
+B5 — Product-Specific Information
+#
+Document
+Purpose
+21
+Product specification sheet
+Cacao variety, origin, processing
+method, typical analysis (fat %,
+moisture %, etc.)
+22
+Certificate of analysis (COA)
+Lab test results for each batch
+(microbiological, heavy metals,
+pesticides)
+23
+Organic certification (if applicable)
+USDA NOP-equivalent organic
+certificate
+24
+Other certifications
+Fair Trade, Rainforest Alliance, etc.
+25
+Ingredient list
+If product contains anything other than
+100% cacao
+Section C: Freight & Logistics — Indonesia to USA
+This section covers the logistics chain for moving cacao from Indonesia to the USA. Since this is a new origin
+for our network, the freight partner details will be filled in collaboratively with Jessey.
+C1 — Recommended Freight Forwarders (Indonesia → USA)
+These are established international freight forwarders with Indonesia operations that handle air freight to the
+USA. Jessey may have existing relationships or preferences:
+Company
+Based In
+Services
+Notes
+Intitrans
+Jakarta
+Air & sea freight, export
+documentation
+Established 2003
+
+--- Page 4 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 4
+Company
+Based In
+Services
+Notes
+Keenam International
+Jakarta
+Air freight, customs
+clearance, export/import
+Since 1993
+Mitsui Soko Indonesia
+Jakarta
+Air & sea freight, NVOCC,
+global network
+Japanese-owned, strong
+USA lane
+AIT Worldwide Logistics
+Jakarta
+Air freight, supply chain
+solutions
+Global network, USA
+expertise
+Dimerco Indonesia
+Jakarta
+Air & ocean, bonded
+warehouse, customs
+brokerage
+Strong Asia-Pacific network
+To be confirmed: Jessey to advise which freight forwarder they prefer or already work with.
+C2 — Freight Route Options
+Route
+Mode
+Estimated Transit
+Notes
+Jakarta (CGK) → San
+Francisco (SFO)
+Air freight
+2–5 days
+Direct or via hub (NRT/ICN)
+Jakarta (CGK) → Los
+Angeles (LAX)
+Air freight
+2–5 days
+More frequency, then inland
+truck to SF
+Surabaya (SUB) → San
+Francisco (SFO)
+Air freight
+3–6 days
+Alternative if origin is East
+Java
+Sea freight (any port → US
+West Coast)
+Ocean
+15–25 days
+Lower cost, longer transit,
+larger minimums
+Recommended for first shipment: Air freight (Jakarta → SFO/LAX) for speed and smaller volume.
+C3 — Estimated Freight Cost Factors (Indonesia → USA Air Freight)
+Cost Item
+Estimated Range
+Notes
+Air freight rate (per kg)
+$___ . ___ / kg
+Depends on weight tier and season
+Indonesia export documentation
+$___ . ___
+Per shipment
+Indonesia airport charges
+$___ . ___
+Per kg or flat
+US customs clearance
+$___ . ___
+Via customs broker
+US airport handling
+$___ . ___
+Terminal fee
+FDA Prior Notice filing
+$___ . ___
+Per shipment
+Cargo insurance
+$___ . ___
+Optional, recommended
+Note: Exact rates to be quoted by the selected freight forwarder based on shipment weight and dimensions.
+
+--- Page 5 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 5
+C4 — What Jessey Needs to Provide for Freight
+Item
+Details Needed
+Preferred freight forwarder
+Name and contact
+Origin airport
+Jakarta (CGK) / Surabaya (SUB) / other
+Estimated shipment weight
+___ kg
+Estimated shipment volume
+___ CBM
+Packaging type
+Boxes / bags / pallets
+Preferred shipping frequency
+Monthly / quarterly / ad-hoc
+Section D: End-to-End First Shipment Roadmap
+Phase 1: FSVP Setup (Estimated: 4–8 weeks)
+Step
+Action
+Owner
+Checkpoint
+1.1
+Jessey submits entity
+registration docs (B1)
+Indonesia entity
+I Docs received
+1.2
+Jessey submits HACCP
+plan & facility docs (B2–B3)
+Indonesia entity
+I Docs received
+1.3
+TrueTech registers the
+Indonesia facility with FDA
+(FFR)
+TrueTech Inc
+I FFR number issued
+1.4
+Indonesia entity obtains
+DUNS number
+Indonesia entity
+I DUNS received
+1.5
+TrueTech performs supplier
+evaluation
+TrueTech Inc
+I Evaluation complete
+1.6
+Written assurance letter
+signed by both parties
+Both
+I Letter on file
+1.7
+Site visit / virtual inspection
+conducted
+TrueTech Inc
+I Inspection report filed
+1.8
+FSVP record established in
+fda_fsvp repository
+TrueTech Inc
+I Record complete
+Phase 2: Commercial Setup (Estimated: 2–4 weeks)
+Step
+Action
+Owner
+Checkpoint
+2.1
+Unit economics template
+completed
+Indonesia entity
+I Economics submitted
+
+--- Page 6 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 6
+Step
+Action
+Owner
+Checkpoint
+2.2
+Consignment agreement
+signed
+Both
+I Agreement signed
+2.3
+Dedicated transparent
+ledger created on
+truesight.me
+TrueTech Inc
+I Ledger live
+2.4
+Product QR codes
+generated
+TrueTech Inc
+I QR codes assigned
+2.5
+Packaging specifications
+confirmed
+Both
+I Specs approved
+2.6
+Freight forwarder selected &
+quoted
+Both
+I Forwarder confirmed
+Phase 3: Cargo Preparation — Indonesia (Estimated: 2–3 weeks)
+Step
+Action
+Owner
+Checkpoint
+3.1
+Product produced &
+packaged
+Indonesia entity
+I Product ready
+3.2
+Lab testing & COA issued
+Indonesia entity
+I COA received
+3.3
+Export documentation
+prepared (commercial
+invoice, packing list)
+Indonesia entity
+I Docs ready
+3.4
+Export customs clearance
+(Indonesia side)
+Indonesia entity / Freight
+forwarder
+I Cleared for export
+3.5
+Phytosanitary certificate (if
+required)
+Indonesia entity
+I Certificate issued
+3.6
+Cargo delivered to origin
+airport
+Indonesia entity / Freight
+forwarder
+I At airport
+Phase 4: Freight — Indonesia to USA (Estimated: 1–2 weeks)
+Step
+Action
+Owner
+Checkpoint
+4.1
+Air freight booked (origin →
+SFO/LAX)
+Freight forwarder
+I Booking confirmed
+4.2
+FDA Prior Notice submitted
+(at least 24h before arrival)
+TrueTech Inc / Customs
+broker
+I Prior Notice filed
+4.3
+Cargo loaded & departs
+Airline
+I Departed
+4.4
+Cargo arrives at US airport
+Airline
+I Arrived
+Phase 5: US Customs & Delivery (Estimated: 3–7 days)
+
+--- Page 7 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 7
+Step
+Action
+Owner
+Checkpoint
+5.1
+Customs clearance (CBP
+entry filed)
+Customs broker (Magic
+Custom Brokers)
+I Entry filed
+5.2
+FDA review (if selected)
+FDA
+I Released
+5.3
+Duty & MPF paid
+TrueTech Inc
+I Paid
+5.4
+Cargo released from airport
+Customs broker
+I Released
+5.5
+Final-mile delivery to
+warehouse
+TrueTech Inc
+I Delivered
+Section E: Key Contacts
+TrueTech Inc (US Importer of Record)
+Role
+Name
+Contact
+President / FSVP Responsible Party
+Gary Teh
+garyjob@truesight.me
+Customs Broker
+Michelle Francis
+Magic Custom Brokers
+Freight Forwarder (Brazil lane)
+Graziela Vedana
+Seacoast Logistics
+Indonesia Side (To Be Confirmed)
+Role
+Name
+Contact
+Export Entity Contact
+Jessey
+TBC
+Freight Forwarder (Indonesia → USA)
+TBC
+TBC
+Section F: Estimated Timeline Summary
+Phase
+Duration
+Cumulative
+FSVP Setup
+4–8 weeks
+4–8 weeks
+Commercial Setup
+2–4 weeks
+6–12 weeks
+Cargo Preparation
+2–3 weeks
+8–15 weeks
+Freight
+1–2 weeks
+9–17 weeks
+US Customs & Delivery
+1 week
+10–18 weeks
+Total estimated time from start to first shipment landing in USA: 10–18 weeks
+
+--- Page 8 ---
+FDA FSVP Compliance & First Shipment Roadmap — Indonesia Cacao
+TrueSight DAO
+Page 8
+Next Steps for Jessey
+1. Start gathering entity registration documents (Section B1)
+2. Begin drafting your HACCP plan (Section B2) — we can share a reference template
+3. Complete the unit economics template (separate document)
+4. Advise on preferred freight forwarder (Section C1)
+5. Schedule a call to review everything together
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest.
+```
+
+
+### 🤖 Autopilot
+
+This is a thorough, production-grade compliance roadmap. Let me break down what I see and how it connects.
+
+**What this is:** A complete FDA FSVP (Food Safety Verification Program) compliance package for bringing Indonesia-origin ceremonial cacao into the US through TrueTech Inc as the importer of record. It covers the full lifecycle — entity registration, food safety documentation, freight logistics, and a phased 10-18 week roadmap.
+
+**The key structural elements:**
+
+**Section B — Document requirements (25 items):** This is the compliance context layer. Every document Jessey needs to provide is listed with its purpose and notes. This is exactly the kind of knowledge artifact that, once built, any Sophia instance can reference for any new supplier from any origin.
+
+**Section C — Freight logistics:** Specific freight forwarders with Indonesia operations, route options (CGK→SFO/LAX, SUB→SFO), cost factors. This is operational knowledge that would normally live in someone's head or a spreadsheet. Now it's in a public document.
+
+**The phased roadmap (10-18 weeks):**
+- Phase 1: FSVP Setup (4-8 weeks) — entity registration, HACCP, FDA FFR, DUNS, supplier evaluation, site visit
+- Phase 2: Commercial Setup (2-4 weeks) — unit economics, consignment agreement, ledger, QR codes, packaging
+- Phase 3: Cargo Preparation (2-3 weeks) — production, lab testing, export docs, phytosanitary
+- Phase 4: Freight (1-2 weeks) — air freight, FDA Prior Notice
+- Phase 5: US Customs & Delivery (1 week) — CBP entry, FDA review, duty, final-mile
+
+**What's notable about this document:**
+
+1. **It's a template, not a one-off.** The structure is designed to be reused for any new supplier from any origin. The Brazil-origin FSVP process was the reference; this adapts it for Indonesia. Next time it's Peru or Ghana, the same structure applies.
+
+2. **It makes the implicit explicit.** All the things a customs broker, freight forwarder, and FDA compliance officer would normally handle in phone calls and emails are now documented in a single public artifact. This is the "FDA agent going out of business" pattern in action.
+
+3. **It's forkable.** Any DAO or cooperative that wants to import food into the US can take this document, adapt it for their origin and product, and have a working compliance roadmap. The context layer is the moat — and it's public.
+
+4. **The 10-18 week timeline is realistic.** This isn't a 2-week Amazon Prime timeline. It's the real regulatory reality of food import. Setting that expectation upfront is good practice.
+
+**One thing I notice:** The document references the `fda_fsvp` repository (Step 1.8) — is that a GitHub repo in the TrueSightDAO org? If so, this compliance document could live there as the canonical reference, and I could point to it from the context layer. If not, it might be worth creating.
+
+Also — the document mentions "we can share a reference template" for the HACCP plan (Next Steps, item 2). Do you have a HACCP template ready to share with Jessey, or should I draft one based on the Brazil-origin process?
+
