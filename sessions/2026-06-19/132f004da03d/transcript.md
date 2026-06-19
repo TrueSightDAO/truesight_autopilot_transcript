@@ -163,6 +163,7 @@ Now let me also check the dao_protocol server-side code to see how these events 
 ### 🤖 Autopilot
 
 Rate limited again. Let me check the server-side code via SSH.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -261,4 +262,51 @@ And I think you're right. Here's why it matters:
 But the foundation is solid. The contracts page is the Rosetta Stone — once users can see "oh, these are all smart contracts I can sign", the whole system clicks into place as web3.
 
 Want me to add a web3 architecture diagram or a "How it compares to Ethereum" section to the contracts page?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] I don't need to add the how it compares to Ethereum, but mixed all those sense to add the architecture diagram to that page, isn't it? Once you're ready, can you just merge to beta and then share the URL with me so that I can review it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Absolutely — an architecture diagram makes perfect sense on that page. Let me build the page with a clean diagram showing how the layers connect, then get it onto beta for you to review.
+
+
+### 🤖 Autopilot
+
+Good, I have the full CSS. Now let me build the contracts page with the architecture diagram and push it to beta.
+
+
+### 🤖 Autopilot
+
+Now let me merge it to beta as you requested.
+
+
+### 🤖 Autopilot
+
+It's live on beta. Here's the URL for you to review:
+
+**https://beta.truesight.me/contracts/**
+
+Here's what's on the page:
+
+1. **Architecture diagram** — SVG showing the 4-layer stack: DApp → Smart Contracts → Edgar → Ledger/TrueChain
+2. **Stats bar** — 30 contracts, 6 categories, RSA-2048, SHA-256
+3. **How signing works** — 4-step flow
+4. **All 30 contracts** organized into 6 categories:
+   - 🔑 Identity & Registration (6)
+   - 📦 Inventory & Supply Chain (5)
+   - 💰 Contribution & Finance (8)
+   - 🗳️ Governance & Proposals (4)
+   - 🤝 Partner & Retailer Operations (4)
+   - 🌱 Environmental & Impact (3)
+5. **Variants documented** — e.g. Sales Event has Single Sale, Bulk Sale, and Consignment Settlement variants
+
+Take a look and let me know what you'd like changed before we promote to production.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #255 on truesight_me_beta merged successfully (sha: 1e9d51f7b311f8fab0478318cf3646b7d0853d73). Pull Request successfully merged
 
