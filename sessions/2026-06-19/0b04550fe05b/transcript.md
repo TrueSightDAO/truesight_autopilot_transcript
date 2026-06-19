@@ -3447,6 +3447,7 @@ That's just reading the status, not writing it. Let me check what the Grok scori
 ### 🤖 Autopilot
 
 Line 407 is key — `setValue('Successfully Completed')` on the **Telegram Chat Logs** sheet (Column J, index 10). That's the Telegram Chat Logs sheet, not the Scored Chatlogs output. Let me check line 825 where the output is written to the Scored Chatlogs sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3456,16 +3457,19 @@ So the Grok script writes `record.status` which is `"Pending Review"` (from line
 Wait — let me re-read the sheet data more carefully. The rows I read had `Status = "Successfully Completed / Full Provision Awarded"` AND `TDGs Issued = "0.00"`. But some rows also had `TDGs Issued = "8.33"` (row 6). Those rows with non-zero TDGs Issued must have been reviewed already.
 
 Let me check if there are rows with "Pending Review" in the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Every single row has "Successfully Completed / Full Provision Awarded". But the Grok code writes "Pending Review". This means there's another process that changes "Pending Review" to "Successfully Completed / Full Provision Awarded" after Grok writes. Let me check the `grok_scoring_for_telegram_and_whatsapp_logs.js` file for the `writeToGoogleSheet` function and the `doGet` function to see if there's a status update step.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full picture. Let me look at lines 1218+ to see what happens with "Pending Review" rows that have `foundInContributors = false`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3475,6 +3479,12 @@ So the Grok script writes `"Pending Review"` to the Scored Chatlogs output sheet
 Wait — I need to look more carefully. The Grok script writes to **Column J** (index 10) of the **Telegram Chat Logs** sheet with `'Full Provision Awarded'` or `'Successfully Completed'`. That's a different sheet and column than the Scored Chatlogs output.
 
 Let me look at the `writeToGoogleSheet` function more carefully to see what it actually writes to the output sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3482,16 +3492,19 @@ Let me look at the `writeToGoogleSheet` function more carefully to see what it a
 So the Grok script writes `record.status` which is `"Pending Review"` (from line 237). But the sheet shows `"Successfully Completed / Full Provision Awarded"`. 
 
 This means there's something else changing the status AFTER Grok writes. Let me check if the `doGet` function in the Grok project has a step that updates the status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matches in the webhook listener. Let me check the `grok_scoring_for_telegram_and_whatsapp_logs.js` file for the `doGet` function.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the `doGet` function to understand the full flow.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3501,6 +3514,7 @@ Now I see the full picture. The `doGet` function in `grok_scoring_for_telegram_a
 But the Scored Chatlogs output sheet gets `record.status = "Pending Review"` from the `writeToGoogleSheet` function. So the Scored Chatlogs sheet should have "Pending Review"...
 
 Unless the `doGet` function also updates the Scored Chatlogs sheet status. Let me check what happens after the Grok scoring writes to the output.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3512,6 +3526,22 @@ The sheet data I read showed "Successfully Completed / Full Provision Awarded" i
 2. Or there's another script that updates the status after Grok writes
 
 Let me check the git history to see if the status value was recently changed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3533,6 +3563,17 @@ And then the existing script picks it up and switches it over to successfully co
 ### 🤖 Autopilot
 
 You're right. Let me verify this by checking the transfer script to confirm it's the one that writes "Successfully Completed / Full Provision Awarded" to the Scored Chatlogs sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3546,6 +3587,7 @@ Now I see the full picture clearly. The transfer script (`1-ts0WTM8…`) has:
 And it writes `COMPLETED_STATUS` to the **destination** (Ledger history), then updates the **source** (Scored Chatlogs) to `TRANSFERRED_STATUS`.
 
 But the sheet data showed "Successfully Completed / Full Provision Awarded" in the Scored Chatlogs sheet, not "Transferred to Main Ledger". Let me check what the transfer script actually writes to the source sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3557,11 +3599,28 @@ But the sheet data showed "Successfully Completed / Full Provision Awarded" in t
 2. Or something else wrote "Successfully Completed / Full Provision Awarded" to the source
 
 Wait — I read the sheet data earlier and ALL rows showed "Successfully Completed / Full Provision Awarded". But the Grok code writes "Pending Review". Let me re-read the sheet to check if maybe the data has changed.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm, the sheet shows "Successfully Completed / Full Provision Awarded" but the Grok code writes "Pending Review". Let me check if maybe the Grok scoring script was recently updated to write "Pending Review" but the existing rows were written by an older version that used "Successfully Completed / Full Provision Awarded".
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3573,6 +3632,7 @@ But the sheet data shows "Successfully Completed / Full Provision Awarded" in th
 Wait — looking at the transfer script again at line 200, it writes `COMPLETED_STATUS` to the **destination** sheet (Ledger history), and `TRANSFERRED_STATUS` to the **source** (Scored Chatlogs). So the source should get "Transferred to Main Ledger", not "Successfully Completed / Full Provision Awarded".
 
 Unless the transfer script hasn't run yet on these rows. Let me check if there's a `doGet` in the transfer script that might be doing something different.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3580,11 +3640,13 @@ Unless the transfer script hasn't run yet on these rows. Let me check if there's
 No `doGet` in the transfer script. So the transfer script is only called manually or via a GAS trigger.
 
 Let me check if there's a GAS trigger set up for `processAllReviewedRows`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No trigger setup in the code. Let me check the `appsscript.json` for any trigger configuration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3592,6 +3654,7 @@ No trigger setup in the code. Let me check the `appsscript.json` for any trigger
 No triggers in the manifest. So the transfer script is only called manually. That means the rows in the Scored Chatlogs sheet with "Successfully Completed / Full Provision Awarded" were written by something else.
 
 Let me check the Grok script's `doGet` function more carefully — it calls `processTelegramChatLogs()` which writes to Column J of the Telegram Chat Logs sheet. But maybe there's another path that updates the Scored Chatlogs sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3599,11 +3662,18 @@ Let me check the Grok script's `doGet` function more carefully — it calls `pro
 I see — the Grok script writes to the output sheet at line 825 (`setValues(data)`). The `record.status` is "Pending Review" (line 237). But the sheet shows "Successfully Completed / Full Provision Awarded".
 
 Wait — let me check if maybe the Grok script was recently updated to write "Pending Review" but the existing rows in the sheet were written by an older version that used a different status. Let me check the git history for the Grok script's Code.js to see if the status value changed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only one commit. Let me check the older location of the file before the migration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3678,4 +3748,30 @@ The file content is different from what I'm reading. Let me check the actual raw
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → grep -rn "Successfully Completed\|Full Provision Awarded\|COMPLETED_STATUS\|REVIEWED_STATUS\|TRANSFERRED_STATUS" /tmp/tokenomics_check/googl; ls /tmp/tokenomics_check/google_app_scripts/1-ts0WTM8_/ 2>/dev/null || find /tmp/tokenomics_check/google_app_scripts -maxdepth 2 -name "*.js; grep -rn "Successfully Completed\|Full Provision Awarded\|COMPLETED_STATUS\|REVIEWED_STATUS\|TRANSFERRED_STATUS\|Pending Review\|Reviewed" /; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Alright, what's the status of your understanding? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's my current understanding, confirmed from the code:
+
+**Grok writes** `"Pending Review"` to the Scored Chatlogs sheet (Column F) — line 237 of `grok_scoring_for_telegram_and_whatsapp_logs.js`.
+
+**The new GAS `doGet`** (what we're building) switches it from `"Pending Review"` to `"Reviewed"` after a governor approves.
+
+**The existing transfer script** (`transfer_scored_contributions_to_main_ledger.js`) picks up rows with `"Reviewed"` status, transfers them to the main Ledger history, and writes `"Successfully Completed / Full Provision Awarded"` to the **destination** sheet (Ledger history), not back to the source Scored Chatlogs.
+
+The existing rows in the Scored Chatlogs sheet that show `"Successfully Completed / Full Provision Awarded"` were written by an older deployed version of the Grok script. The repo code (which writes `"Pending Review"`) hasn't been deployed yet via `clasp push`.
+
+So the flow is:
+
+1. **Grok** → writes `"Pending Review"` to Scored Chatlogs
+2. **New GAS `doGet`** → changes to `"Reviewed"` after governor approves
+3. **Existing transfer script** → picks up `"Reviewed"`, transfers to Ledger history, writes `"Successfully Completed / Full Provision Awarded"` to the destination
+
+Is that correct?
 
