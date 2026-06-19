@@ -797,6 +797,7 @@ Let me look at the chocolate bar spec sheet.
 ### 🤖 Autopilot
 
 The sheet name has special characters. Let me list the sheet names first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -856,4 +857,16 @@ For **70 bars** at 50g each, **81% cacao**:
 With ~5-10% processing loss (nibs → cacao mass), you'd need roughly **3.0–3.1 kg of raw cacao nibs**.
 
 So about **3 kg of cacao** to produce 70 bars.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7013] How many kilograms is 11 bags of 225 grams? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+11 bags × 225g = **2,475g** = **2.475 kg**
+
+So about **2.5 kg**.
 
