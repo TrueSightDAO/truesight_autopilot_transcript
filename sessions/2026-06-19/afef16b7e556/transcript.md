@@ -3692,21 +3692,25 @@ Confirmed — the post was never actually created. The `git_push_changes` tool m
 ### 🤖 Autopilot
 
 Good, I can see the structure of the existing blog post. Now let me create the new post and add it to the blog index.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also add it to the blog index.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the blog index structure. Let me add the new post to it — I'll insert it right after the "Agentic AI and the Common Law Tradition" card.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me merge both PRs and promote.
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3984,4 +3988,42 @@ The prod conflict is the same CNAME issue as before — needs a manual resolve o
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #253 on truesight_me_beta merged successfully (sha: 828d4e4ce0c99559a2763d9d428d8abe2409e9cd). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey don't use the temp founder in the blog post, just indicate that yeah maybe you got how to reframe that part. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You mean the "tension at the heart of the design" section that talks about "running without Gary" — that framing implies the founder is a bottleneck. Let me reframe it to focus on the system's design philosophy rather than the founder personally.
+
+
+### 🤖 Autopilot
+
+Let me get the exact text of the "Tension at the Heart of the Design" section to replace it.
+
+
+### 🤖 Autopilot
+
+Now let me replace that section to remove the founder-centric framing.
+
+
+### 🤖 Autopilot
+
+Done. The section is now reframed as a general design question — "How Verification Scales" — rather than a founder-specific tension. It talks about two paths for any organization using the pattern, and how the right path depends on the domain.
+
+The post is live on beta. The prod sync still has the CNAME conflict whenever you want to resolve it.
+
+**https://beta.truesight.me/blog/posts/the-fda-agent-went-out-of-business.html**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #254 on truesight_me_beta merged successfully (sha: e3c7927e40b8f3b49fa833e9116ddcd4fa87b338). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-fda-agent-went-out-of-business.html | grep -n "
+• `merge pr` → ✅ PR #254 on truesight_me_beta merged successfully (sha: e3c7927e40b8f3b49fa833e9116ddcd4fa87b338). Pull Request successfully merged
 
