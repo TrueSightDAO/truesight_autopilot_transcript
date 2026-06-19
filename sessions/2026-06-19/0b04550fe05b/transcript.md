@@ -705,12 +705,24 @@ Now I can see the full picture. Let me look at the exact column mapping in the G
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me find where the Grok script writes to the output sheet to see the exact column mapping.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find where the Grok script writes the records to the output sheet to see the exact column mapping.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -799,4 +811,49 @@ No `Reviewer Email` in the signed payload. Edgar resolves the reviewer's email f
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #585 on agentic_ai_context merged successfully (sha: 32ee3dca5eb8a90ffe3bb6a4b4c7f8ce04bcb072). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] [Handoff context — this Telegram topic (thread 7191) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also, I don’t think that there should be the parameter. Since it will end up getting inaccurate as the GAS goes about deleting the records from get up as a processes that isn’t it instead the offset should be the some unique cash maybe that you know the I’m not even sure like how are you gonna name each of the Jason cash files in the folder but it should be the name of the file itself so that Edgar could quickly pull the list and see where it’s at and then just go ahead and do thatretrieval from there
+
+GET /dao/review_queue?limit=10&offset=0
+
+
+### 🤖 Autopilot
+
+You're right — using a numeric offset with a dynamic directory is fragile. Files get deleted as approvals happen, so offset 10 today might be a different set than offset 10 tomorrow. The standard fix is **cursor-based pagination** using the filename itself.
+
+Let me update the plan.
+
+
+### 🤖 Autopilot
+
+I see the plan still has the old v2 content (the v3 merge with the email simplification didn't persist — the file reverted). Let me rewrite the full file with both the email simplification AND the cursor-based pagination fix.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the updated document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+You're absolutely right — numeric offset pagination breaks when files get deleted from the directory. The fix is **cursor-based pagination** using the filename itself:
+
+**Before:** `GET /dao/review_queue?limit=10&offset=0` — fragile, offset shifts as files are deleted
+
+**After:** `GET /dao/review_queue?limit=10&after_filename=XzQ2EhAMD7MN8X0zFhvw`
+
+- Edgar lists the directory alphabetically, skips past the cursor filename, takes the next 10
+- Response includes `next_filename` and `has_more` — the DApp tracks the last filename instead of an offset
+- Even if files before the cursor get deleted, the cursor still points to the right place
+- If the cursor file itself was deleted (already approved), Edgar just skips to the next one
+
+The filename IS the cursor — clean, stable, no extra state needed.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #586 on agentic_ai_context merged successfully (sha: e13b011dfe19d939bc5ecd96edc76894356fb9ad). Pull Request successfully merged
 
