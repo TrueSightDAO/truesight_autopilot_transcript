@@ -72,41 +72,74 @@ Let me check the scoring script's output destination to understand the "score ch
 ### 🤖 Autopilot
 
 Let me look at the OUTPUT_SHEET_URL to see what spreadsheet it points to — that's the "Scored Chatlogs" sheet.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the SCHEMA.md for the "Scored Chatlogs" tab description and the scoring sheet ID.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a comprehensive picture. Let me check the scoring sheet's origin spreadsheet to confirm the "score chat locks" tab.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the scoring sheet (the origin spreadsheet `1Tbj7H5ur_egQLRugdXUaSIhEYIKp0vvVv2IZ7WTLCUo`) to see what tabs it has.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the complete picture. Let me check the "score chat locks" tab name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tab name might be slightly different. Let me check what tabs exist on that sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tab name might use a different character. Let me try some variations.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tab might not exist with that exact name. Let me look at the transfer script more carefully to understand the flow — it reads from `Scored Chatlogs` (which IS the scoring output) and transfers to `Ledger history` in the main ledger. The "score chat locks" tab you mentioned might be a different name. Let me check the main ledger sheet for any scoring-related tabs.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -147,16 +180,29 @@ Want me to open a PR for that?
 ### 🤖 Autopilot
 
 Let me verify the transfer script's trigger setup and the exact column mechanics.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check if there's a batch/scheduled trigger function in that script.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the Grok scoring script to see what status it sets after scoring.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -204,4 +250,30 @@ Now I have the full picture. Here's the confirmation:
 3. **Transfer script** (`transferRowByHashKey`) — this IS on a scheduled trigger (you were right). It scans Scored Chatlogs for rows with status `"Reviewed"` or `"Successfully Completed / Full Provision Awarded"`, and transfers them to **Ledger history** in the main ledger. It also handles the edge case where Column G is 0 — it marks those as `"Ignored"` instead.
 
 So the bottleneck is step 2 — the human review. Grok does the AI scoring automatically, the transfer to the main ledger is automated, but a governor has to manually review each row, verify the Grok score makes sense, set the status to "Reviewed", and input the corrected TDG amount. That's the manual step you described.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] So what are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question. Here are my thoughts:
+
+**The current design makes sense for a reason.** The governor review step exists because Grok isn't reliable enough to blindly trust with TDG issuance. It hallucinates amounts, misidentifies contributors, and doesn't understand context the way a human does. Having a governor verify each row before it hits the ledger is a safety check, not a bug.
+
+**That said, there are a few things worth improving:**
+
+1. **The review surface is noisy.** A governor has to open the sheet, find the "Scored Chatlogs" tab, scroll through rows, and manually edit two cells per row. That's tedious for what's essentially a "looks good, approve" or "adjust and approve" action. If you're reviewing 20+ contributions at once, it's a chore.
+
+2. **Grok's accuracy is the real lever.** The better Grok gets at scoring, the less manual correction is needed. If Grok's provisioned amount is correct 90% of the time, the review becomes a quick scan rather than a recalculation. You could even add a confidence score — if Grok is highly confident, the governor just glances at it.
+
+3. **A lightweight approval UI would help.** Instead of editing cells in the sheet, a simple dashboard or even a Telegram button flow where a governor can tap "Approve" or "Adjust → 50 TDG" per row would be much faster than spreadsheet gymnastics.
+
+4. **Bulk approval for low-risk contributions.** Small amounts under a threshold (say 10 TDG) could auto-approve if Grok's confidence is high, only flagging larger or uncertain ones for human review.
+
+**Bottom line:** The manual review step is the right thing to keep — it's a fiduciary check. But the interface for doing it could be much better. Right now it's a spreadsheet chore; it should feel more like a quick approval queue.
+
+Want me to look into building a lightweight approval view — maybe a Telegram-based flow or a simple web UI that reads from Scored Chatlogs and lets you approve/adjust per row?
 
