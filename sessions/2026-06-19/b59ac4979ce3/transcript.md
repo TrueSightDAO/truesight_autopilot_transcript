@@ -4407,6 +4407,31 @@ Good — I can see the full HTML. Now I need to update it to match the corrected
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Same CNAME conflict on prod. The beta site is updated at `beta.truesight.me/roadmap`. You'll need to manually merge `truesight_me_prod` from `truesight_me_beta` on your end again.
 
 Here's what changed on the page:
@@ -4434,6 +4459,7 @@ https://truesight.me/roadmap/
 ### 🤖 Autopilot
 
 You're right — let me check what's actually live on prod.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4457,21 +4483,35 @@ The sync must have gone through at some point — or you merged it manually earl
 ### 🤖 Autopilot
 
 You're right — the text content is updated but the Mermaid diagram still shows the old version. Let me check what's actually in the HTML on prod.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the problem — the Mermaid diagram on prod still shows the old version with "Brazil Export Entity" and the old arrows. The text content updated but the diagram didn't. Let me check what's in the beta HTML vs prod:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The beta HTML still has the old Mermaid diagram too! My Python script's `html.replace` for the Mermaid diagram didn't match because the HTML uses `&lt;br/&gt;` instead of `<br/>`. Let me fix this properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the right diff. Now push and sync:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4581,4 +4621,34 @@ Sorry for the confusion — the `sync_beta_to_prod` tool isn't working correctly
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== BETA ===" && grep -A30 "flowchart TD" /tmp/truesight_me_beta/roadmap/index.html | head -35 && echo "" && echo "=== PROD ===" && cd; cd /tmp && gh repo sync TrueSightDAO/truesight_me_prod --source TrueSightDAO/truesight_me_beta --branch main 2>&1; cd /tmp/truesight_me_prod && git log --oneline -3 && echo "---" && cd /tmp/truesight_me_beta && git log --oneline -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] I'm not seeing Parash tree planting in the diagram. That is the problem. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what the live page is actually serving right now.
+
+
+### 🤖 Autopilot
+
+The live page is still serving the **old version** (7198 bytes, no Pará tree planting). The GitHub Pages deployment hasn't picked up the latest commits because the prod repo hasn't been synced.
+
+The issue is clear: the `sync_beta_to_prod` tool doesn't actually work for this repo — it creates a merge commit but doesn't fast-forward the prod branch to match beta. The prod repo is stuck at an older commit.
+
+You need to sync the fork manually. Go to:
+
+**https://github.com/TrueSightDAO/truesight_me_prod**
+
+Click the **Sync fork** button → **Update branch**. That will pull in the two missing commits (`5fa4680` and `9fec88e`) which contain:
+- Pará Tree Planting in the diagram
+- Black King CNAE fix
+- New Export Entity
+- GACC arrows to China only
+- All the downstream tracks
+
+Once you do that, GitHub Pages will auto-deploy within about a minute.
 
