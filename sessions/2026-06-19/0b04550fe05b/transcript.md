@@ -213,17 +213,55 @@ Let me check what status the Grok scoring script sets after scoring.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check what status the Grok scoring script writes to the Scored Chatlogs sheet.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Grok scoring script's Code.js to see how it writes to the output sheet.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for where the Grok script writes to the output sheet and what status it sets.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -332,4 +370,48 @@ The DApp already has the identity layer (RSA keypairs, Edgar submission). What's
 **One thing to think about:** Who can see this queue? Right now the BE console gates admin access by checking if you're an editor on the roster sheet. For the scoring review, you'd want the same — only governors (or me, the autopilot) can see and act on the queue. I could also be given the ability to auto-approve low-confidence or small-amount rows, flagging only the edge cases for human review.
 
 **My recommendation:** Build this as a new page on the DApp (or as a standalone page like the BE console) rather than modifying the existing scoring sheet. The sheet stays as the data store, the UI becomes the interaction layer. Want me to sketch out a PR for this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] I'm actually thinking that anyone can view the list, right, when it's built out. And then, but only either the Sentinel or the governor can send the sign event to Edgar. Anyone trying to send a sign event to Edgar, Edgar will just check and if it's not a governor or a Sentinel, just reject. And then on the cashing side, because the line of records on the squad chat logs are very, very long. You don't really want to load everything into the admin sheet, isn't it? So what might actually make sense would be to have a separate GAS script that perhaps you know, generate a standalone JSON cache object for each record that requires review and put it maybe somewhere in the Treasury cache report or whatever in its own folder. And then that script will just go through and see which are the role of records that needs reviewing. And maybe we have a new column that indicates that the cache has been generated for this. Then what happens is that when the governor, myself or some other governor or you, the Sentinel, go and pull from Edgar, what Edgar does is that Edgar will pull the maybe top 10 most oldest records that needs reviewing. And surfaces did, right? Or whatever. Then when the governor hits a proof, then when the sign event happens, where the row has been changed to reviewed, the corresponding JSON object on the GitHub should probably be deleted or you know, changed to something else so that Edgar doesn't have to pass through the same set of already processed cache. JSON files on the GitHub repo, isn't it? So this speeds up performance. Then I'm thinking that on the UX of the depth, maybe an infinite scrolling. So when I scroll to the bottom of the list, then it should call Edgar and Edgar should be able to just see what is the latest that's already surfaced and then pick another 10 from the list that's not yet surfaced. Now regarding the GAS scripts that writes to the scored chat log, setting the value as review, right? And the final, the script should check that if it's already reviewed or transferred, it shouldn't try to impose its value again. It just ends up being a double write. You can't like don't want that because maybe it already got transferred and then if the script executes and sets it back to review, then the Dow contributor gets awarded two times is a double counting problem. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+This is a really well-thought-out architecture. Let me make sure I've got it all straight and then give you my take.
+
+**Your proposed flow:**
+
+1. **Separate GAS script** runs on a schedule, scans Scored Chatlogs for rows with `Status = "Pending Review"` that haven't been cached yet, generates a JSON cache file per record in a GitHub repo (treasury-cache or similar), and marks a "cache generated" column so it doesn't re-process.
+
+2. **DApp review page** — anyone can view the queue, but only governors/Sentinel can submit the approve action. The page calls Edgar, which pulls the top 10 oldest uncached records from the JSON cache folder and surfaces them with infinite scroll.
+
+3. **Governor clicks Approve** → browser signs a `[CONTRIBUTION REVIEW EVENT]` to Edgar. Edgar verifies the signer is a governor or Sentinel, rejects otherwise.
+
+4. **On approval**, the corresponding JSON cache file on GitHub gets deleted or marked as processed so Edgar doesn't surface it again.
+
+5. **GAS listener** picks up the approved event and updates the Scored Chatlogs row to "Reviewed" with the final TDG amount — but only if the row isn't already reviewed/transferred, preventing double-counting.
+
+**My thoughts:**
+
+This is solid. A few observations:
+
+**The cache-per-record approach is smart.** Loading the full Scored Chatlogs sheet into the DApp would be slow and wasteful. A GitHub JSON cache acts like a lightweight queue — each file is one pending review, and deleting it is the acknowledgment. No database needed.
+
+**The infinite scroll via Edgar pulling from the cache** — clean. Edgar doesn't need to know about the sheet at all. It just reads a directory of JSON files, serves the oldest 10, and when they're approved the files disappear. Simple state machine.
+
+**The double-counting guard is critical.** The GAS write-back script needs to check: is this row already "Reviewed" or "Transferred to Ledger"? If yes, skip. You could also have it check the hash against the Ledger history to be extra safe.
+
+**One thing to consider:** The cache generation GAS script and the write-back GAS script are two separate scripts with different schedules. The cache generator runs every few minutes, the write-back runs after an approval event lands. Make sure they don't race — e.g., the cache generator shouldn't re-cache a row that was just approved but the write-back hasn't run yet. A simple "Cache Generated" timestamp column handles this.
+
+**The authorization model is right.** Edgar already has the governor/Sentinel check built in — it verifies the RSA signature against the registered identities. The DApp page just needs to surface the queue; Edgar enforces who can act.
+
+Want me to start sketching this out? I'd begin with:
+1. The GAS cache-generator script
+2. The JSON cache schema
+3. The Edgar endpoint to serve the queue
+4. The DApp review page UI
+
+Or do you want to refine the design further first?
 
