@@ -3946,6 +3946,16 @@ I can see the China/Aora Events card already has the first event plan PDF link. 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. ✅ The venue layout PDF is now live on the roadmap page.
 
 **China / Aora Events** track now has both documents linked:
@@ -4180,6 +4190,47 @@ Black King CNPJ (existing) → Change CNAE to 46.23-1/04 + IE + NF-e
     │
     └── both CNAE fix + GACC ──→ China cargo (Aora events, subscriptions)
 ```
+
+Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] And the new Resulancy and feature for export is a parallel track [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — you're saying there's a **third parallel track** for the new entity (DUNA/Próspera) that will eventually own the export operation, separate from the immediate CNAE fix on Black King. Let me add it.
+
+
+### 🤖 Autopilot
+
+The file has changed since the last PR. Let me read the current state:
+
+
+### 🤖 Autopilot
+
+I see — the previous PRs (#575, #576, #577) were never merged, so main still has the old content. Let me write the full corrected file directly:
+
+
+### 🤖 Autopilot
+
+PR is up: **agentic_ai_context#578**
+
+Here's the final corrected picture:
+
+```
+Black King CNPJ (existing) → CNAE amendment to 46.23-1/04 + IE + NF-e
+    │
+    ├── alone unblocks ── USA cargo (Chives Root, Michael Johnson, Kopi Bar)
+    │
+    └── both CNAE fix + GACC ──→ China cargo (Aora events, subscriptions)
+
+New Export Entity (DUNA/Próspera) ── parallel, long-term structural track
+```
+
+Three parallel upstream tracks feeding into one gate (Black King CNAE fix), with GACC as an additional gate for China-only cargo. The new entity is a separate long-term track running in parallel.
 
 Want me to merge it?
 
