@@ -3917,6 +3917,7 @@ That one is correct — it's the new value I wrote (the transfer script writes "
 ### 🤖 Autopilot
 
 All the status references are now correct. Let me also check the remaining "Successfully Completed" occurrences to make sure they're all in the right context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3924,11 +3925,28 @@ All the status references are now correct. Let me also check the remaining "Succ
 Only one remaining, and it's correct — it's the transfer script writing "Successfully Completed / Full Provision Awarded" to the **Ledger history destination**. That's the right behavior.
 
 Now let me push this to GitHub.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch was pushed but no PR was auto-created. Let me create one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5828,4 +5846,62 @@ Want me to detail the UAT environment URLs in the plan? I'd suggest:
 - **Cache repo:** `treasury-cache/review-queue-test/` folder
 
 Should I update the plan with this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] I think the GAS should just be in the existing rock scoring project and yeah I think the cache repo is okay, you know, I mean it's like if this cache is cache So the beta should be beta dot at guard or true site dot me and beta dot depth dot true site dot me. Yeah [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it. Let me check if `beta.dapp.truesight.me` exists and what the DApp beta deploy setup looks like.
+
+
+### 🤖 Autopilot
+
+Good — the DApp is served via GitHub Pages at `truesightdao.github.io/dapp/`. The beta DApp would be at `beta.dapp.truesight.me` which would need a CNAME record pointing to GitHub Pages. Let me check if that DNS record exists.
+
+
+### 🤖 Autopilot
+
+Both DNS records already exist:
+
+- **`beta.edgar.truesight.me`** → `54.162.175.189` (the beta EC2 box, already provisioned)
+- **`beta.dapp.truesight.me`** → `truesightdao.github.io` (CNAME to GitHub Pages, already set up)
+
+Now let me update the plan with the UAT environment details.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan with the UAT environment details.
+
+
+### 🤖 Autopilot
+
+Done. Here's the UAT environment summary:
+
+**Both beta DNS records already exist:**
+- `beta.edgar.truesight.me` → `54.162.175.189` (beta EC2 box, already provisioned)
+- `beta.dapp.truesight.me` → `truesightdao.github.io` (CNAME, already set up)
+
+**Per component:**
+
+| Component | Beta URL | How |
+|-----------|----------|-----|
+| **Edgar API** | `beta.edgar.truesight.me` | Deploy new endpoints to the existing beta box |
+| **DApp page** | `beta.dapp.truesight.me/dapp/review_queue.html` | Same GitHub Pages site; page switches Edgar URL based on hostname |
+| **GAS webhook** | Same GAS project, new deployment version | GAS supports multiple deployments per project |
+| **Cache Action** | `treasury-cache/review-queue-test/` folder | Same Action, different folder based on branch/env var |
+
+Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #595 on agentic_ai_context merged successfully (sha: 948a8df4a4fea90e0f08ad17546183a9c965952b). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #595 on agentic_ai_context merged successfully (sha: 948a8df4a4fea90e0f08ad17546183a9c965952b). Pull Request successfully merged
 
