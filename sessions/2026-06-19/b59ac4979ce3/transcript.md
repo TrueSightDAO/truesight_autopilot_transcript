@@ -4360,11 +4360,13 @@ Want me to merge the PR?
 ### 🤖 Autopilot
 
 Got it — Paloma off GACC. Let me fix that before merging.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file on main still has the old content. Let me just write the full corrected file:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4381,14 +4383,26 @@ Want me to merge it?
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Merged. ✅
 
 Now let me also update the roadmap page on truesight_me_beta to match:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — I can see the full HTML. Now I need to update it to match the corrected TRACK_MAP.md: fix the Mermaid diagram, add the new tracks (New Export Entity, Pará Tree Planting), fix GACC owner, and update the Brazil Export Entity card to Black King CNAE fix. Let me do this with targeted edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4475,4 +4489,96 @@ Can you check it now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf truesight_me_beta && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -1 && cd truesight_; cd /tmp/truesight_me_beta && python3 << 'PYEOF' with open('roadmap/index.html', 'r') as f: html = f.read() # The old mermaid in the HTML use; cd /tmp/truesight_me_beta && git diff roadmap/index.html | head -40; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Somehow it's still showing the old one, how is the chart being generated? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's actually being served.
+
+
+### 🤖 Autopilot
+
+I see the issue — the Mermaid diagram is being rendered inside a `<pre class="mermaid">` block, but `web_extract` is showing it as a plain code block. The actual HTML on the page is correct — I can see the new diagram code in the beta repo. But the prod page is still serving the old version.
+
+The sync said it succeeded, but the CDN or Cloudflare might be caching the old page. Let me check if there's a Cloudflare cache I can purge.
+
+
+### 🤖 Autopilot
+
+Let me check how truesight.me is actually hosted — it might be on Cloudflare Pages or similar, not CloudFront.
+
+
+### 🤖 Autopilot
+
+I see the problem now. The prod page is still serving the old HTML. The sync said it succeeded, but the HTML on prod still has the old Mermaid diagram. Let me check what's actually in the prod repo:
+
+
+### 🤖 Autopilot
+
+The prod repo still has the old Mermaid diagram. The sync said it succeeded but it clearly didn't update the file. Let me check the beta repo to confirm my fix is there:
+
+
+### 🤖 Autopilot
+
+Let me check the Mermaid section specifically in both repos:
+
+
+### 🤖 Autopilot
+
+Both beta and prod now have the **same correct Mermaid diagram**. The prod repo has the updated code. The issue must be a **CDN or browser cache**. Let me check what the actual live page serves with a cache-busting request:
+
+
+### 🤖 Autopilot
+
+The live page is serving the **old HTML** (only 7198 bytes, old content). But the GitHub repo has the new code. This means the hosting is **not GitHub Pages** — it's something else (likely Wix, since the logo URL is `static.wixstatic.com`).
+
+The site is hosted on **Wix**, not GitHub Pages. The `truesight_me_prod` repo is just a mirror — Wix serves its own copy. The sync only updates the GitHub repo, not the live Wix site.
+
+Let me check how the Wix deployment works:
+
+
+### 🤖 Autopilot
+
+Found it. The site is **GitHub Pages**, not Wix. The sync command is:
+
+```bash
+gh repo sync TrueSightDAO/truesight_me_prod \
+  --source TrueSightDAO/truesight_me_beta --branch main
+```
+
+The `sync_beta_to_prod` tool I've been using does a GitHub merge-upstream, but the correct way is `gh repo sync` which fast-forwards. Let me do it properly:
+
+
+### 🤖 Autopilot
+
+No `gh` auth set up on the autopilot box. The `sync_beta_to_prod` tool uses the GitHub API merge-upstream which does work — it just reported success earlier. Let me check if the prod repo actually has the latest commit:
+
+
+### 🤖 Autopilot
+
+The prod repo is behind — it has `2e1e820` (the merge commit from the earlier sync) but is missing `9fec88e` (the Mermaid diagram fix) and `5fa4680` (the text content update). The sync tool said it succeeded but it clearly didn't fast-forward properly.
+
+The issue is the `sync_beta_to_prod` tool does a GitHub merge-upstream which creates a merge commit, but it doesn't actually bring in the latest commits. The prod repo needs to be synced manually.
+
+You'll need to do this on your end since `gh` isn't authed on the autopilot box:
+
+```bash
+gh repo sync TrueSightDAO/truesight_me_prod \
+  --source TrueSightDAO/truesight_me_beta --branch main
+```
+
+Or via the GitHub UI: go to `github.com/TrueSightDAO/truesight_me_prod` → **Sync fork** → **Update branch**.
+
+Once that's done, GitHub Pages will deploy the updated page within about 60-90 seconds. The CDN cache is only 10 minutes (`max-age=600`), so it should show the correct diagram after that.
+
+Sorry for the confusion — the `sync_beta_to_prod` tool isn't working correctly for this repo. I'll update the SOP to note that prod sync needs the `gh repo sync` command instead.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== BETA ===" && grep -A30 "flowchart TD" /tmp/truesight_me_beta/roadmap/index.html | head -35 && echo "" && echo "=== PROD ===" && cd; cd /tmp && gh repo sync TrueSightDAO/truesight_me_prod --source TrueSightDAO/truesight_me_beta --branch main 2>&1; cd /tmp/truesight_me_prod && git log --oneline -3 && echo "---" && cd /tmp/truesight_me_beta && git log --oneline -3
 
