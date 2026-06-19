@@ -2805,6 +2805,11 @@ Now let me find the `build_event_cli` function.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find the `build_event_cli` function — it's likely in a separate file.
 
 
@@ -2937,4 +2942,75 @@ I think the plan is solid and comprehensive at this point. Let me quickly recap 
 **The only thing I'd flag:** We haven't discussed where the Edgar webhook URL for the GAS write-back gets configured. It'll need to be an environment variable on the Edgar server (something like `GAS_REVIEW_WEBHOOK_URL`). That's a small operational detail, not a design gap.
 
 Other than that, I think it's ready to start building whenever you give the word. Want me to kick off PR 1 — the GitHub Action cache generator?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] doesn't the current GAS project that does the grog scoring as well as the transfer from squad chat locks over to the main ledger really have a do get so then stinking why not just extend on that isn't [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're saying the existing GAS projects (both the Grok scoring one and the transfer one) already have a `doGet(e)` function — so instead of adding a `doPost(e)` webhook to the Grok scoring project, why not just extend the existing `doGet(e)` to also handle the write-back?
+
+Let me check what's actually in those projects.
+
+
+### 🤖 Autopilot
+
+Let me find the specific GAS projects — the Grok scoring one and the transfer one.
+
+
+### 🤖 Autopilot
+
+I can see the Grok scoring project has a `doGet(e)` already (it's deployed as a web app at that `/exec` URL). Let me check if it has a `doPost(e)` too, and also check the transfer script project.
+
+
+### 🤖 Autopilot
+
+Let me check the Grok scoring project's Code.js for the `doGet` function specifically.
+
+
+### 🤖 Autopilot
+
+There it is. The Grok scoring project (`1BHAGZd…`) already has **both** `doGet(e)` in `Code.js` and `doPost(e)` in `telegram_webhook_listener.js`. Let me check the `doPost` to see what it currently does.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The Grok scoring project already has a `doPost(e)` in `telegram_webhook_listener.js` that's deployed as a web app. You're right — instead of creating a new `doPost(e)` in a separate file, we should just extend the existing one.
+
+Let me update the plan to reflect this.
+
+
+### 🤖 Autopilot
+
+Merged. And yes, you're absolutely right — the Grok scoring project (`1BHAGZd…`) already has a `doPost(e)` in `telegram_webhook_listener.js` that's deployed as a web app. It currently handles Telegram webhooks and orchestrates micro-service calls.
+
+So PR 4 is now simpler: instead of creating a new file or a new GAS project, we just **extend the existing `doPost(e)`** with a route check:
+
+```javascript
+function doPost(e) {
+  const json = JSON.parse(e.postData.contents);
+  // Route: if this is an Edgar review callback, handle it
+  if (json.scoringHashKey) {
+    return handleReviewCallback(json);
+  }
+  // Existing Telegram webhook handling...
+}
+```
+
+Same project, same web app URL, same deployment — just one new function added to the existing file. No new credentials, no new deployment URL to configure.
+
+The updated plan is at:
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #590 on agentic_ai_context merged successfully (sha: b2b1aca9c2e55c2ad5a4712d6d3beacc07756e97). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep -n "function doGet\|function doPost" /tmp/dao_protocol_check/ -r 2>/dev/null; echo "---"; grep -rn "function doGet\|function doPost" /t; cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/tokenomics.git tokenomics_check 2>&1 | tail -1 && grep -rn "function doGet\|f
+• `merge pr` → ✅ PR #590 on agentic_ai_context merged successfully (sha: b2b1aca9c2e55c2ad5a4712d6d3beacc07756e97). Pull Request successfully merged
 
