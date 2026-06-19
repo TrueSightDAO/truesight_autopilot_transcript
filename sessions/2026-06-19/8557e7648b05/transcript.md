@@ -146,3 +146,61 @@ This keeps the door open without you doing the work for him.
 
 Want me to draft that follow-up email, or shall we file this as a pending follow-up in OPEN_FOLLOWUPS.md to check back on in a few weeks?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] Based on historical unit cost economics, still think you can drop up a sample reference in a PDF format so they can share with Jesse. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull the actual unit cost economics from the ledger to build a concrete reference.
+
+
+### 🤖 Autopilot
+
+Let me get the actual unit cost data for our ceremonial cacao and the offchain asset location to build a realistic reference.
+
+
+### 🤖 Autopilot
+
+Good, I have the data. Now let me build a reference PDF that shows Jessey what "unit economics" looks like using our actual numbers as a template.
+
+
+### 🤖 Autopilot
+
+Good, the PDF is generated. Now let me save it to a known path and upload it to GitHub so it's shareable.
+
+
+### 🤖 Autopilot
+
+The PDF was generated but I need to find where it was saved. Let me check.
+
+
+### 🤖 Autopilot
+
+The generate_pdf tool created the PDF but I need to find the exact path. Let me check the most recently created PDF.
+
+
+### 🤖 Autopilot
+
+Done. The PDF is live. Here's the summary:
+
+---
+
+**Unit Economics Reference PDF** is now at:
+**`agentic_ai_context/references/unit_economics_reference_for_new_sku.pdf`**
+
+It includes:
+
+1. **Our actual cost stack** — Ceremonial cacao pouch breakdown (raw material $0.68, packaging $0.34, freight Brazil→US $1.80, landed cost $2.82, wholesale ~$8.50)
+2. **Freight line items** — Air freight rates, export docs, inland transport, customs, FDA — so they can see what goes into Indonesia→USA
+3. **Tree financing** — $0.93 per bag for 1 tree planted
+4. **A blank template** — Exactly what fields they need to fill: raw material cost, freight Indonesia→US, target wholesale price, tree cost per bag, first shipment volume, and financing source
+
+You can forward the link to Jessey as a concrete "here's what we mean by unit economics" reference. Want me to draft a short email to go with it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → find /tmp -name "*Unit_Economics*" -o -name "*unit_economics*" 2>/dev/null | head -5; find /tmp -name "*.pdf" -newer /tmp -mmin -5 2>/dev/null | head -10; ls -la /tmp/*.pdf 2>/dev/null; ls -la /tmp/pdf_* 2>/dev/null; ls -la /tmp/reportlab_* 2>/dev/null; find /tmp -name "*.pdf" 2>/dev/null; …(+1 more)
+
