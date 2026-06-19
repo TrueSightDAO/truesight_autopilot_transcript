@@ -5837,7 +5837,18 @@ I was investigating your question about whether there's a beta Edgar environment
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 There's already a plan for a beta Edgar sandbox at `beta.edgar.truesight.me` — but it hasn't been built yet. Let me also check the current production Edgar URL.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5876,11 +5887,33 @@ Should I update the plan with this?
 ### 🤖 Autopilot
 
 Got it. Let me check if `beta.dapp.truesight.me` exists and what the DApp beta deploy setup looks like.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the DApp is served via GitHub Pages at `truesightdao.github.io/dapp/`. The beta DApp would be at `beta.dapp.truesight.me` which would need a CNAME record pointing to GitHub Pages. Let me check if that DNS record exists.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5891,11 +5924,18 @@ Both DNS records already exist:
 - **`beta.dapp.truesight.me`** → `truesightdao.github.io` (CNAME to GitHub Pages, already set up)
 
 Now let me update the plan with the UAT environment details.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the plan with the UAT environment details.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5948,6 +5988,7 @@ Yeah kick off all the PRs [System note: the user sent this as a VOICE message vi
 ### 🤖 Autopilot
 
 Let me check the handoff manifest and plan to resume from where we left off.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6039,4 +6080,110 @@ PR1 is done — both files pushed directly to `treasury-cache` main. Now let me 
 **✅ Done this turn — actions taken:**
 • `upload file to github` ×2 → https://github.com/TrueSightDAO/treasury-cache/blob/main/.github/workflows/generate_review_cache.yml; https://github.com/TrueSightDAO/treasury-cache/blob/main/scripts/generate_review_cache.py
 • `merge pr` → ✅ PR #596 on agentic_ai_context merged successfully (sha: a158caaf5e765fffc65d735ae740176757381365). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] [Handoff context — this Telegram topic (thread 7191) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, just keep going. I believe you don't really need to stop once per 1 p.r. per turn. Just 1 p.r. per turn, but then once you finish your turn with that p.r. continue to the next turn. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — one PR per turn, but keep going turn after turn. Let me check the manifest and resume at PR2.
+
+
+### 🤖 Autopilot
+
+Resuming at PR2 — Edgar `GET /dao/review_queue` endpoint. Let me check the plan for the exact spec.
+
+
+### 🤖 Autopilot
+
+Let me read the PR2 section specifically.
+
+
+### 🤖 Autopilot
+
+Let me find the PR2 spec.
+
+
+### 🤖 Autopilot
+
+Let me find the PR2 section specifically.
+
+
+### 🤖 Autopilot
+
+Now I have the PR2 spec. Let me check the existing `dao_protocol` repo structure to understand the routing pattern.
+
+
+### 🤖 Autopilot
+
+The `dao_protocol` repo IS `dao_client` — it's the Python FastAPI server. Let me check the actual server structure.
+
+
+### 🤖 Autopilot
+
+The `dao_protocol` repo doesn't seem to have the FastAPI server code. Let me check what's actually in it.
+
+
+### 🤖 Autopilot
+
+This is a monorepo with a Node.js package. The FastAPI server must be elsewhere. Let me check the `sentiment_importer` repo — that's the Rails server that runs Edgar.
+
+
+### 🤖 Autopilot
+
+Let me check the NOTES_sentiment_importer.md to understand the architecture.
+
+
+### 🤖 Autopilot
+
+Now I understand — Edgar is a Rails app (`sentiment_importer`) on `seni_ror`, and `dao_protocol` is a FastAPI service on `dao_protocol_nelanco`. The `GET /dao/review_queue` endpoint should go in the `dao_protocol` FastAPI service since it's a read-only data endpoint. Let me check the dao_protocol service structure on the actual host.
+
+
+### 🤖 Autopilot
+
+The `dao_protocol` service isn't on `seni_ror`. Let me check the actual repo structure — the plan says PR2 goes in `dao_protocol` repo. Let me look at the repo more carefully.
+
+
+### 🤖 Autopilot
+
+There's a `server` directory!
+
+
+### 🤖 Autopilot
+
+Now let me check the `dao.py` router to understand the pattern.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the `query.py` router since the plan says `GET /dao/review_queue` — it might fit better there.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. The `GET /dao/review_queue` endpoint fits perfectly in the `query.py` router since it's a read-only data query. Let me also check the `config.py` to understand how settings work.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me build PR2 — the `GET /dao/review_queue` endpoint. I'll add it to the `query.py` router since it's a read-only data query.
+
+
+### 🤖 Autopilot
+
+Now let me add the `review_queue` handler function and the `github_review_queue_repo` config setting.
+
+
+### 🤖 Autopilot
+
+Good — the imports are there. Now I need to add the `review_queue` endpoint and the `_list_review_queue_files` helper. Let me also add the config setting.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls /home/ubuntu/dao_protocol/app/ 2>/dev/null || ls /home/ubuntu/dao_protocol/ 2>/dev/null | head -30; ls /home/ubuntu/dao_protocol/ 2>/dev/null | head -20
 
