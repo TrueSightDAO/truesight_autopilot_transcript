@@ -170,21 +170,45 @@ Let me get the actual unit cost data for our ceremonial cacao and the offchain a
 ### 🤖 Autopilot
 
 Good, I have the data. Now let me build a reference PDF that shows Jessey what "unit economics" looks like using our actual numbers as a template.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the PDF is generated. Now let me save it to a known path and upload it to GitHub so it's shareable.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF was generated but I need to find where it was saved. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generate_pdf tool created the PDF but I need to find the exact path. Let me check the most recently created PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -239,11 +263,18 @@ On editability: the PDF is rendered as a static image from markdown, so it's not
 2. **Also save a markdown/text version** alongside it that they can copy-paste into their own doc and fill in
 
 Let me regenerate both.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find and upload the new version, and also save a markdown copy alongside it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -333,6 +364,53 @@ Here's what's in it:
 So now you have two PDFs to share with Jessey:
 1. **Unit economics template** — blank slots for them to fill in their cost structure
 2. **FSVP compliance roadmap** — all the docs they need to gather + the full execution timeline
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] We also need to include in the new PDF file the details of the outbound freighting company that are handed the logistics of the Kakao from Indonesia to the USA. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good point — we don't have an Indonesia→USA freight partner on file yet since all our current routes are Brazil→SF. Let me search for any existing Indonesia logistics contacts we might have, and also do a web search for reliable Indonesia cacao freight forwarders.
+
+
+### 🤖 Autopilot
+
+No existing Indonesia logistics contacts in our context. Let me search the web for reputable Indonesia cacao freight forwarders that handle the USA lane.
+
+
+### 🤖 Autopilot
+
+Good — I have a list of potential freight forwarders. However, since we don't have an established relationship with any Indonesia freight partner yet (unlike Seacoast Logistics for Brazil), I should present this as a **placeholder section** in the PDF that Jessey can help fill in — since they're the ones on the ground in Indonesia and likely already have logistics relationships.
+
+Let me regenerate the PDF with the freight section added.
+
+
+### 🤖 Autopilot
+
+Now let me find and upload the updated PDF.
+
+
+### 🤖 Autopilot
+
+Updated and live. Same link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/fda_fsvp_compliance_and_first_shipment_roadmap.pdf**
+
+Here's what was added — a new **Section C: Freight & Logistics — Indonesia to USA** with:
+
+- **C1** — 5 recommended freight forwarders with Indonesia operations (Intitrans, Keenam International, Mitsui Soko, AIT Worldwide, Dimerco) — marked as **"To be confirmed — Jessey to advise"** since they're on the ground and may have existing relationships
+- **C2** — Route options (CGK→SFO/LAX by air, Surabaya alternative, sea freight as lower-cost option)
+- **C3** — Blank cost factor table for them to fill in once a forwarder quotes
+- **C4** — What we need from Jessey to proceed with freight (preferred forwarder, origin airport, estimated weight/volume)
+
+The rest of the document (FSVP docs, roadmap phases, timeline) stayed the same. So now when you share it with Jessey, they can see exactly what logistics info they need to provide on their end.
 
 ———
 **✅ Done this turn — actions taken:**
