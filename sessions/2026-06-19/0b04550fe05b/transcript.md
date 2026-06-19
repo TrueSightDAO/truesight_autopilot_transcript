@@ -727,7 +727,23 @@ Now let me find where the Grok script writes the records to the output sheet to 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me search for where the output rows are actually written to the sheet.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -856,4 +872,107 @@ The filename IS the cursor — clean, stable, no extra state needed.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #586 on agentic_ai_context merged successfully (sha: e13b011dfe19d939bc5ecd96edc76894356fb9ad). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] [Handoff context — this Telegram topic (thread 7191) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think in the implementation plan we have to state very clearly what the state of the role is after the GAS has successfully performed either the accept reject or skip isn't it because it assumes some status that is not like what the current status is so yeah in the columns we have to be very clear we need to be very very [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — the plan mentions the status transitions but doesn't lay them out in a clear, unambiguous table. Let me also check what the current transfer script expects so we don't accidentally break the downstream pipeline.
+
+
+### 🤖 Autopilot
+
+The file still has the old v2 content. Let me also check what the existing transfer script expects as status values so we don't break it.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture of the transfer script's status expectations. Let me also check the Grok scoring script to see what status it writes initially.
+
+
+### 🤖 Autopilot
+
+Now let me check the Grok scoring script to see what status it writes to the output sheet.
+
+
+### 🤖 Autopilot
+
+Let me find where the Grok script writes the status to the output sheet.
+
+
+### 🤖 Autopilot
+
+Let me find where the Grok script writes the status to the output sheet.
+
+
+### 🤖 Autopilot
+
+Rate limited. Let me check the actual sheet data to see what status values exist.
+
+
+### 🤖 Autopilot
+
+Interesting — the actual status in the sheet is "Successfully Completed / Full Provision Awarded", not "Pending Review". Let me check more rows to see the full range of statuses.
+
+
+### 🤖 Autopilot
+
+So the current Grok scoring script writes "Successfully Completed / Full Provision Awarded" as the initial status — not "Pending Review". Let me check if there are any "Pending Review" rows further down.
+
+
+### 🤖 Autopilot
+
+All rows have "Successfully Completed / Full Provision Awarded" — no "Pending Review" rows currently exist. This means the Grok scoring script currently writes "Successfully Completed / Full Provision Awarded" as the initial status, not "Pending Review". The plan needs to reflect the actual current state.
+
+Now I have a clear picture. Let me also check the Grok script to see where it writes the status.
+
+
+### 🤖 Autopilot
+
+Rate limited. Let me check the Grok script's Code.js for the status write.
+
+
+### 🤖 Autopilot
+
+Let me search for where the status is written in the Grok script.
+
+
+### 🤖 Autopilot
+
+I have enough context now. The Grok script writes "Successfully Completed / Full Provision Awarded" as the initial status (not "Pending Review"). The transfer script checks for "Reviewed" and "Successfully Completed / Full Provision Awarded" as valid pre-transfer statuses. Let me now update the plan with a clear, unambiguous status state machine table.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the updated document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+The key addition is **§7 — Status State Machine** — a complete reference for every possible status value in Column F. Here's what it covers:
+
+**The 8 statuses and who sets them:**
+
+| Status | Set by | Terminal? |
+|--------|--------|-----------|
+| `Successfully Completed / Full Provision Awarded` | Grok scoring script (initial) | No |
+| `Reviewed` | GAS write-back (on approve) | No |
+| `Rejected` | GAS write-back (on reject) | **Yes** |
+| `Ignored` | Transfer script (TDG=0) | **Yes** |
+| `Transferred to Main Ledger` | Transfer script | **Yes** |
+| `Entry Error` | Transfer script | **Yes** |
+| `Entry Error - Contributor Not Found` | Transfer script | **Yes** |
+
+**Also corrected:** The initial status from Grok is `"Successfully Completed / Full Provision Awarded"` (not `"Pending Review"` as earlier drafts assumed). I verified this from the actual sheet data — every row has that status. The plan now uses the correct value everywhere.
+
+The state machine diagram and the double-counting guard logic are both explicitly documented so there's zero ambiguity about what happens to Column F at each step.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #587 on agentic_ai_context merged successfully (sha: 496e834a5a651f2c16ce819ff1a993ce91d82a5b). Pull Request successfully merged
 
