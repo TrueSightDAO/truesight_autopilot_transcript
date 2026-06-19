@@ -533,11 +533,13 @@ Let me read the key files — the Scored Chatlogs schema, the transfer script, a
 ### 🤖 Autopilot
 
 Now let me check the Scored Chatlogs sheet columns and the scoring output format.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The headers seem to be in a different row. Let me look more carefully.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -642,4 +644,96 @@ When everyone's had a look and you're ready to start building, just say **"go"**
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #582 on agentic_ai_context merged successfully (sha: 05061030b5d93a9b5b8aa4b734a373da3d681bf8). Pull Request successfully merged; ✅ PR #583 on agentic_ai_context merged successfully (sha: 94d4949fddd1351db2cb6f823facd25fcfafc7c6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] I think there's also another column in there that says whether the resolve to an existing contributor exists is true or the resolve failed. Which means that in the reviewing step, this should show up clearly for the governor or for you. And then if it resolves to true, then the existing contributor should already be selected from the drop-down list in the UI. If resolve failed, then it should prompt the governor or you to select the right contributor to associate with this contribution record before submitting approval, isn't it? Then I think in the approval panel, there should be a proof or skip or reject. And then if reject, it should be able to state the reason for the rejection. Yeah, can you extend the document for that as well? And just merge it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good callouts. Let me check the existing column layout to confirm the contributor resolution field.
+
+
+### 🤖 Autopilot
+
+Let me look further down for the actual header row.
+
+
+### 🤖 Autopilot
+
+I see the columns. Let me check the SCHEMA.md for the exact column mapping.
+
+
+### 🤖 Autopilot
+
+Let me find the Scored Chatlogs schema specifically.
+
+
+### 🤖 Autopilot
+
+Let me look at the Grok scoring script to see exactly what column contains the "Existing Contributor" flag.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me look at the exact column mapping in the Grok script for the output sheet.
+
+
+### 🤖 Autopilot
+
+Now let me find where the Grok script writes to the output sheet to see the exact column mapping.
+
+
+### 🤖 Autopilot
+
+Now let me find where the Grok script writes the records to the output sheet to see the exact column mapping.
+
+
+### 🤖 Autopilot
+
+Let me search for where the output rows are actually written to the sheet.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the `resolveUnknownUsers` function to understand the column mapping. From the code I can see:
+
+- Column A (index 0) = Contributor Name
+- Column I (index 8) = Found in Contributors (TRUE / FALSE / "RESOLVE FAILED")
+- Column F (index 5) = Status
+
+Now let me update the plan document with all the refinements.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me update the plan document with all the refinements you mentioned.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the updated document URL:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+Here's what was added in v2:
+
+**1. Contributor resolution** — The cache file now includes `found_in_contributors` (Column I). In the UI:
+- ✓ Green badge = contributor resolved automatically
+- ⚠ Yellow badge = "RESOLVE FAILED" → governor must pick from a dropdown of all known contributors before approving
+
+**2. Three-action panel** — Instead of just Approve:
+- **✓ Approve** — accepts Grok's provisioned TDG or an adjusted amount
+- **→ Skip** — leaves the cache file, row re-appears on next load
+- **✕ Reject** — requires a reason text field (Edgar returns 400 if missing)
+
+**3. Rejection flow** — Rejected rows get `Status = "Rejected"` and the reason written to a new **Column O (Rejection Reason)**. Cache file is deleted. No TDG awarded.
+
+**4. Updated PR breakdown** — PR4 (GAS write-back) now handles both approve and reject. PR5 (DApp page) now includes the contributor dropdown + three-action panel with all states (loading, empty, error, submitting, success).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #584 on agentic_ai_context merged successfully (sha: 4e23f2ffb073e5d36b12a0530219dbceb7d216be). Pull Request successfully merged
 
