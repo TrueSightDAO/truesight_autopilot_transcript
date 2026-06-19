@@ -78,6 +78,7 @@ Good. I now have a solid picture. Let me also check the growth model for the con
 ### 🤖 Autopilot
 
 Now let me also check the DR_MANHATTAN principles since you referenced strategic thinking in your response to Jessey.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -157,11 +158,13 @@ Want me to draft that follow-up email, or shall we file this as a pending follow
 ### 🤖 Autopilot
 
 Let me pull the actual unit cost economics from the ledger to build a concrete reference.
+[2 tool result(s) compacted: read_google_sheet, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the actual unit cost data for our ceremonial cacao and the offchain asset location to build a realistic reference.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -258,6 +261,78 @@ https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/unit_eco
 **Also added an editable markdown version** (PR #581) — they can copy-paste it into a Google Doc or text editor and fill in the blanks directly. Once that PR is merged, the markdown will be at the same path with a `.md` extension.
 
 On your question about fillable PDFs — the current PDF generator renders static pages, so it can't do editable form fields. But the markdown version solves the same need: they just copy it into their own doc and fill it in. Want me to merge that PR so the markdown is live?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7106] And I will also need a second PDF document basically in it indicate the details that we need from the exporting entity from Indonesia that we have to file the FDA FSVP for. Also what are the steps that we will be going through before the first shipment can land in the USA. Basically the information that you need to provide to us about the form, the fermentation facility, the manufacturing facility, the packing, basically all the HASAP. If you dig into the documents filed in the FDA FSVP, I think for Copacabruca, Black King or C-Pox regarding the FDA FSVP compliance, yeah those are the ones. And yeah, generate the PDF so that we can have like a consolidated like execution roadmap. And what are the checkpoints? And then we can just share that PDF with Jesse. This will facilitate the discussion. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great request. Let me dig into our FDA FSVP compliance docs for our existing suppliers to extract the exact requirements, then build a consolidated roadmap PDF.
+
+
+### 🤖 Autopilot
+
+Let me read the actual FDA FSVP entity files and the freight preflight checklist to extract the exact requirements.
+
+
+### 🤖 Autopilot
+
+Now let me also read the freight preflight checklist to get the full shipment process steps.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check if there's a document listing the specific FDA FSVP requirements (written assurance, evaluation, etc.).
+
+
+### 🤖 Autopilot
+
+Now I have a thorough understanding of the FSVP process. Let me generate the consolidated PDF.
+
+
+### 🤖 Autopilot
+
+Now let me find and upload it.
+
+
+### 🤖 Autopilot
+
+Done. Here's the link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/references/fda_fsvp_compliance_and_first_shipment_roadmap.pdf**
+
+Here's what's in it:
+
+**Section A** — What FDA FSVP is and why it matters
+
+**Section B** — All 25 documents Jessey needs to provide, organized into 5 categories:
+- **B1** — Entity registration (legal docs, FDA FFR, DUNS, address)
+- **B2** — HACCP plan (hazard analysis, CCP records, corrective actions, verification)
+- **B3** — Facility info (fermentation, drying, manufacturing, packing, sanitation, water testing)
+- **B4** — Supplier evaluation & written assurance (we provide the templates)
+- **B5** — Product specs (COA, organic certs, ingredient list)
+
+**Section C** — End-to-end roadmap in 5 phases with checkpoints:
+- Phase 1: FSVP Setup (4–8 weeks)
+- Phase 2: Commercial Setup (2–4 weeks)
+- Phase 3: Cargo Prep in Indonesia (2–3 weeks)
+- Phase 4: Freight Indonesia→USA (1–2 weeks)
+- Phase 5: US Customs & Delivery (1 week)
+
+**Section D** — Key contacts (TrueTech Inc, customs broker, freight forwarder)
+
+**Section E** — Timeline summary: **10–18 weeks total** from start to first shipment landing
+
+So now you have two PDFs to share with Jessey:
+1. **Unit economics template** — blank slots for them to fill in their cost structure
+2. **FSVP compliance roadmap** — all the docs they need to gather + the full execution timeline
 
 ———
 **✅ Done this turn — actions taken:**
