@@ -969,6 +969,11 @@ Let me find where the Grok script writes the status to the output sheet.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find where the Grok script writes the status to the output sheet.
 
 
@@ -2631,4 +2636,63 @@ Let me check the existing GAS projects in the tokenomics repo.
 
 Let me check what GAS projects exist in the tokenomics repo.
 [1 tool result(s) compacted:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] And then finally, I think there should be a PR extension to the Dow Protocol Python client with this new sign event that you can use. Please include it in there with the states that are possible that are also possible, which is being generated via the DAP module but now you're going to use that via the Dow client. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — the `dao_client` Python package needs a `submit_contribution_review` method so I (and other automated processes) can submit review events programmatically, not just from the DApp browser. Let me check the existing dao_client structure first.
+
+
+### 🤖 Autopilot
+
+The repo seems to have moved. Let me check what's actually in it.
+
+
+### 🤖 Autopilot
+
+The `dao_client` repo is actually a redirect to `dao_protocol`! Let me check the dao_protocol repo structure.
+
+
+### 🤖 Autopilot
+
+Now I can see the structure. Let me check the existing modules to see the pattern.
+
+
+### 🤖 Autopilot
+
+Now I see the pattern. Let me also check the existing `build_event_cli` function to understand how to create a new module.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the `build_event_cli` function and the `pyproject.toml` for the console_scripts entry points.
+
+
+### 🤖 Autopilot
+
+Now let me find the `build_event_cli` function.
+
+
+### 🤖 Autopilot
+
+Let me find the `build_event_cli` function — it's likely in a separate file.
+
+
+### 🤖 Autopilot
+
+Let me find the `build_event_cli` function — it's imported in the modules but must be defined somewhere.
+
+
+### 🤖 Autopilot
+
+Now I have the full pattern. Let me also check the pyproject.toml for the console_scripts entry points.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → find / -maxdepth 3 -name "dao_client" -type d 2>/dev/null | head -10; pip show dao-client 2>/dev/null || pip show dao_client 2>/dev/null; echo "---"; find /home -maxdepth 4 -name "dao_client" -type d 2>/dev/nul; curl -s "https://api.github.com/repos/TrueSightDAO/dao_client" | jq '{name, default_branch, html_url, description}'; …(+5 more)
 
