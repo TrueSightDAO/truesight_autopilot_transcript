@@ -917,6 +917,16 @@ Let me find the very end of the sheet for today's entries.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
 
 
@@ -1174,4 +1184,109 @@ The only one that shows **PROCESSED** is `2024OSCAR_20260121_26` which was submi
 So it seems like the DApp submissions are going to the Inventory Movement sheet directly but the authorization check is failing for all of them. The GAS script I triggered earlier processes from the **Telegram Chat Logs** sheet, not from the Inventory Movement sheet — so it won't help these.
 
 Would you like me to investigate why the authorization is failing, or would you prefer to just re-submit these via a different path?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: 1Qd+g6CrZiyHM8akDWU7GfHzfa/AxIhk+oReqzcfEOGB2fCBZxX4fyhGJVCms3pdbedyROD9pgBDl5mDfNjB3aGRLPutuKivQCSCWYhaCB4UNTNvdISAOsk+fA7688UEwhq9oRg+wN6dcFMNt3PI4qwZrkEaAgkMPyYBmDN9WwgDARiMleQp7o3uR2wC8Oe/dRlWraWYZjp0kTPr85CLF/rTKnlTOhORLW/RAHf88328sH3XbKWpufnJTXeRQt39RYq+bIH6Fa4sWSehRN75o1DlWjgYvlLL40HnS2IqB4BXvU3a1zzv2XeBWaQZzua+FNcSEg5iqN7sIioyx0VaTw== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_7 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: dzt1Qb3mfs1IJkhvv4Ag6r8NpAX0F+FRFX/ee7bHkCNaSNc+c2o+UGo5NLu8t+wHge/X4zpzPl6Dv0P0fHN1MXfXGR7++96BZNWLWuHMB4e7JmCSp0yZypdW/1ORh1IFX0ALRNDbuhO085A5vabqTi270s7ulUGF6KlQAzLcNqOIpGGGXMK3J8nqfSdCL7YBiltJOB+Rujj8lVDH6Ejr6ZiAl0RMplBUJkhx/h60selSDtAYJNFipnqHPBLouIKJw9J3dB6/gep/21yAKo4HSJWl708VF313iZg6PTAAyVW27VTsQDs88FAKLQHVP9+v4Ms0FdDK1gM+WgjoPVhGoA== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_8 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: kbTVlt0Wu+z6nalqjWTOyKoAp9PcLvthP55u4cAdWXsasl0E2DKt9BYT5YgHHbEl1vqYMVLNTSDQIjuVS16Qri/5AawX44vr06osCSSEeTzhcEtNJ7BC+z8JimotDVNGajUysuNMgygQ5y2Eh55WbFk0OYL8oAW8+8fluEHGqhFf56lj989HQBLsf0m0LTlV8CrzfYF8EKClnTJHonWLMenFA4GTkbr2/OsFyfjaD84AtsUv9zBVVN9PMttXGwbe9Gq2+GiB8pqipg00Vuw2EHr+qFlXHa6bfLER5wQf1F8+eIq53PlDyOCkAhR4YtPDuPEtHYYtwzfQCOfN6FJS2A== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell
+
+
+### 🤖 Autopilot
+
+Gary, I see you're continuing to send me the DApp submissions. These are all already in the Inventory Movement sheet from the 23:01 batch — `2024OSCAR_20260330_7` and `_8` included. They're all showing **"unauthorized"**.
+
+I think I understand what you're trying to tell me now — you're showing me the ones that **you submitted successfully via the DApp** (the ones that got written to the sheet), and you want me to figure out why they show "unauthorized" and fix it.
+
+Let me investigate the authorization logic to understand why your Gary Teh signature isn't being recognized.
+
+
+### 🤖 Autopilot
+
+Now I understand the authorization logic. Let me check the key part — the function that determines the status. Let me read the rest of the function.
+
+
+### 🤖 Autopilot
+
+Now I understand the authorization logic clearly. The function `inventoryMovementStatusFromTelegramRow_` checks:
+
+1. Is the Telegram row a **Governor** (column S = YES)? → **NEW**
+2. Is it a **Sentinel** (column T = TRUE)? → **NEW**
+3. Extract the public key from the contribution → look up in **Contributors Digital Signatures** sheet
+4. If the signer is a **registered Governor** → **NEW**
+5. If the signer matches the **warehouse manager** → **NEW**
+6. If it's a **trusted agent** (autopilot) with governor approval → **NEW**
+7. Otherwise → **unauthorized**
+
+The key question is: **these DApp submissions went directly to the Inventory Movement sheet, not through the Telegram Chat Logs**. The function `inventoryMovementStatusFromTelegramRow_` is called when processing from Telegram Chat Logs. The DApp submissions go directly to the Inventory Movement sheet with status set by the DApp itself.
+
+Let me check how the DApp sets the status.
+
+
+### 🤖 Autopilot
+
+Gary, I now understand the full picture. The authorization logic in the GAS script works like this:
+
+The function `inventoryMovementStatusFromTelegramRow_` processes entries from the **Telegram Chat Logs** sheet. It checks:
+1. Is the Telegram row marked as **Governor** (column S = YES)?
+2. Is it a **Sentinel** (column T = TRUE)?
+3. Extract the public key → look up in **Contributors Digital Signatures** → is the signer a **Governor**?
+4. Does the signer match the **warehouse manager**?
+5. Is it a **trusted agent** (autopilot) with governor approval?
+
+The DApp submissions you sent go **directly to the Inventory Movement sheet** — they don't go through the Telegram Chat Logs queue. The GAS script I triggered earlier processes from Telegram Chat Logs, not from the Inventory Movement sheet.
+
+**The key issue:** The DApp submissions are landing in the Inventory Movement sheet with "unauthorized" status because the DApp's own submission flow doesn't go through the Telegram Chat Logs → GAS processing pipeline. The DApp writes directly to the Inventory Movement sheet with whatever status the DApp sets.
+
+**What I recommend:** Let me re-submit these 14 movements directly via the autopilot using **your Gary Teh governor key** — I'll submit them as INVENTORY MOVEMENT events to Edgar, which will write them to the Telegram Chat Logs sheet with your governor signature. Then the GAS script will process them and mark them as NEW → PROCESSED.
+
+Want me to go ahead and do that?
 
