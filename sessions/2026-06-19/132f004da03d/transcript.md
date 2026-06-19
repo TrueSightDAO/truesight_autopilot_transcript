@@ -157,6 +157,11 @@ Now let me also check the dao_protocol server-side code to see how these events 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Rate limited again. Let me check the server-side code via SSH.
 
 
@@ -220,4 +225,40 @@ The web-tree isn't just a set of pages — it's a **protocol tree**. Each node i
 That's the architecture of a real DAO, not just a website with a wallet connect button.
 
 What surface do you want to focus on next after the contracts page lands?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] I meant web3
+
+
+### 🤖 Autopilot
+
+Ah, web3 — got it. Yes, that changes the framing entirely.
+
+So what you're saying is: the **web3** aspects of the DAO are becoming legible. The RSA-signed events, the smart contracts catalog, the DApp signing flow, the ledger, the TrueChain audit trail — these are the on-chain / cryptographic primitives that make it feel like a real decentralized protocol, not just a website with a database.
+
+And I think you're right. Here's why it matters:
+
+**What's now legible as web3:**
+
+1. **RSA signatures as wallets** — every contributor has a keypair, not a password. That's the fundamental web3 shift.
+
+2. **Smart contracts as event types** — each `[SALES EVENT]`, `[INVENTORY MOVEMENT]`, `[CONTRIBUTION EVENT]` is a contract method. The contracts page makes this visible for the first time.
+
+3. **Edgar as the execution layer** — verifies signatures, applies state transitions, records to the ledger. That's your EVM equivalent.
+
+4. **TrueChain as the audit trail** — every signed event gets hashed and linked. Immutable history.
+
+5. **The DApp as the wallet interface** — create_signature.html, the signing flow, key management. That's your MetaMask.
+
+**What's still missing to feel fully web3:**
+
+- A **block explorer** equivalent — a page where you can browse all events, filter by type, see the chain of signatures
+- **Programmatic composability** — can one contract call trigger another? (e.g. a SALES EVENT auto-triggers a CONTRIBUTION EVENT for the seller)
+- A **wallet browser extension** or mobile key management — right now keys live in localStorage or .env files
+
+But the foundation is solid. The contracts page is the Rosetta Stone — once users can see "oh, these are all smart contracts I can sign", the whole system clicks into place as web3.
+
+Want me to add a web3 architecture diagram or a "How it compares to Ethereum" section to the contracts page?
 
