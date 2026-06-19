@@ -3180,6 +3180,7 @@ This is in correct I believe after Grok scores it says awaiting review or someth
 ### 🤖 Autopilot
 
 You're right on both points. Let me check the actual status in the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3305,4 +3306,151 @@ Let me look at the actual data in the Scored Chatlogs sheet to see what status G
 Confirmed — every single row has **"Successfully Completed / Full Provision Awarded"** as the status. That's what Grok writes after scoring. No "Awaiting Review" or "Pending Review" anywhere in the actual data.
 
 So the plan is correct on this point — the initial status from Grok is `"Successfully Completed / Full Provision Awarded"`, not `"Pending Review"` as I'd assumed earlier in the conversation. The plan has been using the correct value since v7.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Incorrect. 
+
+Grok actually sets the status to pending review 
+
+It is the other script that sets it to successfully completed / full provision awarded after transferring it to the main ledger
+
+
+### 🤖 Autopilot
+
+You're right — let me re-read the Grok scoring script more carefully to find where it actually writes the status.
+
+
+### 🤖 Autopilot
+
+Let me look at the Grok scoring script where it writes the status to the output sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for where the status is actually written in the Grok script — specifically where it sets the status value.
+
+
+### 🤖 Autopilot
+
+There it is. The Grok scoring script writes **"Pending Review"** as the status. Let me see the context around line 237 to understand the full write.
+
+
+### 🤖 Autopilot
+
+You're right — Grok writes **"Pending Review"** as the status. But the sheet data I read earlier showed "Successfully Completed / Full Provision Awarded". That means there's another script that changes it AFTER Grok writes it. Let me check what that script is.
+
+
+### 🤖 Autopilot
+
+Found it — the transfer script (`transfer_scored_contributions_to_main_ledger.js`) is the one that writes "Successfully Completed / Full Provision Awarded". Let me verify.
+
+
+### 🤖 Autopilot
+
+Now I see — the transfer script uses `COMPLETED_STATUS` as a constant but doesn't write it. Let me check where it actually writes that status.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The transfer script writes `COMPLETED_STATUS` ("Successfully Completed / Full Provision Awarded") to the **destination** sheet (Ledger history), not back to the Scored Chatlogs source. So the source sheet should still have "Pending Review" from Grok.
+
+But the sheet data I read showed "Successfully Completed / Full Provision Awarded" in the source sheet. Let me check if there's another script that updates the source sheet status.
+
+
+### 🤖 Autopilot
+
+I see — the transfer script writes `COMPLETED_STATUS` to the **destination** (Ledger history), not the source. The source sheet gets `TRANSFERRED_STATUS`, `IGNORED_STATUS`, `REVIEWED_STATUS`, or `ERROR_STATUS`. So the source Scored Chatlogs should have "Pending Review" from Grok.
+
+But the sheet data I read showed "Successfully Completed / Full Provision Awarded" in the source. Let me check if there's another script that updates the source status.
+
+
+### 🤖 Autopilot
+
+Let me check the `tdg_airdrop_refresher.js` and `Code.js` in the `177OJC0tVytZfSa6gMldKCqS5LxUZGnV_dT2NJ_FJE1uwvoGHzqC8HbyG` project — that's likely the one that updates the source sheet status.
+
+
+### 🤖 Autopilot
+
+That's just reading the status, not writing it. Let me check what the Grok scoring script does after writing — maybe there's a separate step that updates the status after Grok finishes.
+
+
+### 🤖 Autopilot
+
+Line 407 is key — `setValue('Successfully Completed')` on the **Telegram Chat Logs** sheet (Column J, index 10). That's the Telegram Chat Logs sheet, not the Scored Chatlogs output. Let me check line 825 where the output is written to the Scored Chatlogs sheet.
+
+
+### 🤖 Autopilot
+
+So the Grok script writes `record.status` which is `"Pending Review"` (from line 237) to the output sheet. But the sheet data I read showed `"Successfully Completed / Full Provision Awarded"`. 
+
+Wait — let me re-read the sheet data more carefully. The rows I read had `Status = "Successfully Completed / Full Provision Awarded"` AND `TDGs Issued = "0.00"`. But some rows also had `TDGs Issued = "8.33"` (row 6). Those rows with non-zero TDGs Issued must have been reviewed already.
+
+Let me check if there are rows with "Pending Review" in the sheet.
+
+
+### 🤖 Autopilot
+
+Every single row has "Successfully Completed / Full Provision Awarded". But the Grok code writes "Pending Review". This means there's another process that changes "Pending Review" to "Successfully Completed / Full Provision Awarded" after Grok writes. Let me check the `grok_scoring_for_telegram_and_whatsapp_logs.js` file for the `writeToGoogleSheet` function and the `doGet` function to see if there's a status update step.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Let me look at lines 1218+ to see what happens with "Pending Review" rows that have `foundInContributors = false`.
+
+
+### 🤖 Autopilot
+
+So the Grok script writes `"Pending Review"` to the Scored Chatlogs output sheet. But the sheet data shows `"Successfully Completed / Full Provision Awarded"`. 
+
+Wait — I need to look more carefully. The Grok script writes to **Column J** (index 10) of the **Telegram Chat Logs** sheet with `'Full Provision Awarded'` or `'Successfully Completed'`. That's a different sheet and column than the Scored Chatlogs output.
+
+Let me look at the `writeToGoogleSheet` function more carefully to see what it actually writes to the output sheet.
+
+
+### 🤖 Autopilot
+
+So the Grok script writes `record.status` which is `"Pending Review"` (from line 237). But the sheet shows `"Successfully Completed / Full Provision Awarded"`. 
+
+This means there's something else changing the status AFTER Grok writes. Let me check if the `doGet` function in the Grok project has a step that updates the status.
+
+
+### 🤖 Autopilot
+
+No matches in the webhook listener. Let me check the `grok_scoring_for_telegram_and_whatsapp_logs.js` file for the `doGet` function.
+
+
+### 🤖 Autopilot
+
+Let me look at the `doGet` function to understand the full flow.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The `doGet` function in `grok_scoring_for_telegram_and_whatsapp_logs.js` processes Telegram logs. It writes `"Full Provision Awarded"` or `"Successfully Completed"` to **Column J** of the **Telegram Chat Logs** sheet (not the Scored Chatlogs output sheet).
+
+But the Scored Chatlogs output sheet gets `record.status = "Pending Review"` from the `writeToGoogleSheet` function. So the Scored Chatlogs sheet should have "Pending Review"...
+
+Unless the `doGet` function also updates the Scored Chatlogs sheet status. Let me check what happens after the Grok scoring writes to the output.
+
+
+### 🤖 Autopilot
+
+I see — the `doGet` function in `grok_scoring_for_telegram_and_whatsapp_logs.js` calls `processTelegramChatLogs()` which writes to Column J of the **Telegram Chat Logs** sheet. But the Scored Chatlogs output sheet gets `record.status = "Pending Review"` from `writeToGoogleSheet`.
+
+The sheet data I read showed "Successfully Completed / Full Provision Awarded" in the Scored Chatlogs sheet. But the code writes "Pending Review". This means either:
+1. The code has been updated since those rows were written (the Grok script was changed to write "Pending Review" instead of "Successfully Completed / Full Provision Awarded")
+2. Or there's another script that updates the status after Grok writes
+
+Let me check the git history to see if the status value was recently changed.
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → grep -n '"Pending Review"' /tmp/tokenomics_check/google_app_scripts/1BHAGZd_T1I5mQnqnAFqUJKX2x_N8Uv05n1O2OohRA908Ja8wVwVxaR7K/Code.js 2>/dev; sed -n '230,250p' /tmp/tokenomics_check/google_app_scripts/1BHAGZd_T1I5mQnqnAFqUJKX2x_N8Uv05n1O2OohRA908Ja8wVwVxaR7K/Code.js; grep -rn '"Successfully Completed / Full Provision Awarded"' /tmp/tokenomics_check/google_app_scripts/ 2>/dev/null | head -20; …(+20 more)
 
