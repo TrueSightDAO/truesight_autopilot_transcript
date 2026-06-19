@@ -974,22 +974,41 @@ Let me find where the Grok script writes the status to the output sheet.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find where the Grok script writes the status to the output sheet.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate limited. Let me check the actual sheet data to see what status values exist.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the actual status in the sheet is "Successfully Completed / Full Provision Awarded", not "Pending Review". Let me check more rows to see the full range of statuses.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 So the current Grok scoring script writes "Successfully Completed / Full Provision Awarded" as the initial status — not "Pending Review". Let me check if there are any "Pending Review" rows further down.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -997,21 +1016,35 @@ So the current Grok scoring script writes "Successfully Completed / Full Provisi
 All rows have "Successfully Completed / Full Provision Awarded" — no "Pending Review" rows currently exist. This means the Grok scoring script currently writes "Successfully Completed / Full Provision Awarded" as the initial status, not "Pending Review". The plan needs to reflect the actual current state.
 
 Now I have a clear picture. Let me also check the Grok script to see where it writes the status.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate limited. Let me check the Grok script's Code.js for the status write.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for where the status is written in the Grok script.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have enough context now. The Grok script writes "Successfully Completed / Full Provision Awarded" as the initial status (not "Pending Review"). The transfer script checks for "Reviewed" and "Successfully Completed / Full Provision Awarded" as valid pre-transfer statuses. Let me now update the plan with a clear, unambiguous status state machine table.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2646,11 +2679,83 @@ Let me check what GAS projects exist in the tokenomics repo.
 ### 🤖 Autopilot
 
 Good call — the `dao_client` Python package needs a `submit_contribution_review` method so I (and other automated processes) can submit review events programmatically, not just from the DApp browser. Let me check the existing dao_client structure first.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo seems to have moved. Let me check what's actually in it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2695,4 +2800,54 @@ Now I have the full pattern. Let me also check the pyproject.toml for the consol
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → find / -maxdepth 3 -name "dao_client" -type d 2>/dev/null | head -10; pip show dao-client 2>/dev/null || pip show dao_client 2>/dev/null; echo "---"; find /home -maxdepth 4 -name "dao_client" -type d 2>/dev/nul; curl -s "https://api.github.com/repos/TrueSightDAO/dao_client" | jq '{name, default_branch, html_url, description}'; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] you don't perhaps why not just included in the same GAS project that is doing the either the grog scoring or the one that transfer from the scored chart lock to the main ledger isn't it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — that's simpler. The write-back script that updates the Scored Chatlogs sheet after a review approval should live in the same GAS project as either:
+
+1. **The Grok scoring script** (script ID `1BHAGZd…`) — since it already reads from Telegram Chat Logs and writes to Scored Chatlogs, adding a webhook receiver there is natural. It already has access to both sheets.
+
+2. **Or the transfer script** (script ID `1-ts0WTM8…`) — since it already reads from Scored Chatlogs and writes to Ledger history, it's the closest to the final step.
+
+I'd lean toward **the Grok scoring project** because:
+- It already has the Scored Chatlogs sheet ID hardcoded
+- It already writes to that sheet
+- Adding a `doPost(e)` webhook handler that receives the Edgar callback and updates the status/TDG columns is a small addition to an existing project
+- No new GAS project to deploy, no new credentials to manage
+
+The transfer script can stay as-is — it already runs on a schedule and picks up "Reviewed" rows automatically.
+
+Let me update the plan to reflect this.
+
+
+### 🤖 Autopilot
+
+Now let me update the plan to specify the GAS project explicitly and add the dao_client module.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the updated document:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+**What changed in v6:**
+
+1. **GAS project home** — The write-back webhook now explicitly lives in the **Grok scoring GAS project** (`1BHAGZd…`), not a new project. Same project, new file (`Webhook.gs`). It already has access to Scored Chatlogs, no new credentials needed.
+
+2. **New PR 6 — dao_client module** — Added `report_contribution_review.py` with a `truesight-dao-report-contribution-review` CLI. Three possible actions: `Approve`, `Reject`, `Skip`, each with their own required fields and validators. This lets me (the autopilot) and other automated processes submit review events programmatically, not just from the DApp browser.
+
+3. **Full status state machine** — Every status value documented with who sets it, whether it's terminal, and the complete transition diagram. The double-counting guard logic is explicitly coded out in the plan.
+
+The PR count is now **8** (the original 7 + the dao_client module).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #588 on agentic_ai_context merged successfully (sha: 776638a6ef8f584873316425be551b1b7ec15b46). Pull Request successfully merged
 
