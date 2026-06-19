@@ -4025,6 +4025,7 @@ What are your thoughts??
 ### 🤖 Autopilot
 
 Let me read the relevant docs to give you a proper answer.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4086,6 +4087,7 @@ Want me to update the TRACK_MAP.md and roadmap page with this?
 Right — two completely different import channels, each with its own gate.
 
 Let me update the track map to reflect this properly.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4262,4 +4264,76 @@ PR is up: **agentic_ai_context#579**
 The map now has **11 tracks** total. Pará Tree Planting sits as a fully independent parallel track — no dependencies, no blockers. Just Paolo with financing secured, waiting on planting.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] List to me all the different tracks as well as all their dependencies [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the full list of all 11 tracks and their dependencies:
+
+---
+
+**1. Legal Entity Structuring** 🟡 Offline
+- Owner: Gary / Paloma
+- Dependencies: None
+- Blocks: None
+- Next: Jun 22 call w/ Layon
+
+**2. New Export Entity (DUNA/Próspera)** 🟡 Offline
+- Owner: Gary / Paloma / Layon
+- Dependencies: None
+- Blocks: None (long-term structural)
+
+**3. GACC / Brazil Compliance** 🟡 Offline
+- Owner: Gary / Paloma / BoQiang
+- Dependencies: None
+- Blocks: China cargo (with CNAE fix)
+- Timeline: 3–6 months
+
+**4. Black King CNAE / IE / NF-e** 🔴 Gate
+- Owner: Matheus / Paloma / Gary
+- Dependencies: None
+- Blocks: ALL cargo — USA alone, China with GACC
+- Timeline: ~Jun 26 earliest
+
+**5. Chocolate Subscription Delivery** 🟡 Blocked
+- Owner: Gary
+- Dependencies: Black King CNAE fix (USA) / CNAE + GACC (China)
+
+**6. China / Aora Events** 🟡 Blocked
+- Owner: Gary / Liz / Jerri
+- Dependencies: Black King CNAE fix + GACC
+- Note: July samples have separate fast path via BoQiang
+
+**7. Chives Root Consignment** 🟡 Blocked
+- Owner: Chives Root / Gary
+- Dependencies: Black King CNAE fix only (USA-bound)
+
+**8. Michael Johnson Consignment** 🟡 Blocked
+- Owner: Michael Johnson / Gary
+- Dependencies: Black King CNAE fix only (USA-bound)
+
+**9. Kopi Bar Jul 10 Tasting** 🟡 Blocked
+- Owner: Nora Haron / Gary
+- Dependencies: Black King CNAE fix only (USA-bound)
+
+**10. Pará Tree Planting** 🟡 Offline
+- Owner: Paolo / Gary
+- Dependencies: None
+- Blocks: None
+
+**11. Graeme Read Partnership** 🔵 New
+- Owner: Gary / Graeme / Jonathan
+- Dependencies: None
+- Blocks: None
+
+---
+
+**The critical path:** Black King CNAE fix is the single bottleneck. Once that clears, USA-bound items (Chives Root, Michael Johnson, Kopi Bar) can move immediately. China-bound items (Aora events, subscriptions) need both CNAE fix + GACC (3-6 months).
+
+Want me to merge the PR?
 
