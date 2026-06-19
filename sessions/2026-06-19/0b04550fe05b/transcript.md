@@ -6425,7 +6425,13 @@ Now I have the full PR3 spec. Let me check the existing event handlers in `dao_p
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the `dao` router to understand the event submission pattern — that's where `[CONTRIBUTION REVIEW EVENT]` should be handled.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6433,11 +6439,13 @@ Now let me check the `dao` router to understand the event submission pattern —
 Now I have the full pattern. The `dao.py` router handles `POST /dao/submit_contribution` with signature verification, governor checks, and Telegram Chat Logs recording. PR3 needs to add a `[CONTRIBUTION REVIEW EVENT]` handler that follows the same pattern but also deletes the cache file and calls the GAS webhook.
 
 Let me also check the `dispatch` module and the `telegram_raw_log` module to understand the patterns.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full pattern. Let me also check the `telegram_raw_log` module to understand how records are appended.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6450,6 +6458,7 @@ Now I have the full picture. Let me build PR3. I need to:
 4. Add the dispatch routing entry
 
 Let me check if there's a `github_upload` module that I can model the cache deletion after.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6613,4 +6622,69 @@ Now update the manifest.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #367 on tokenomics merged successfully (sha: f306a19d28408dd65f2132d04c3e2d4cea2746c0). Pull Request successfully merged; ✅ PR #599 on agentic_ai_context merged successfully (sha: ed4a31ff8eaa4a15177ca5530048cb365b9e1a33). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] Alright, go on to the next PR. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Resuming at PR5 — the DApp review queue page. Let me check the plan spec and the existing DApp structure.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+Let me read the PR5 section specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Now let me check the existing DApp structure to understand the pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Let me check the Butterfly Effect Club admin console for the UX pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Now I have the full pattern. The DApp is a static HTML/CSS/JS site served via GitHub Pages. The Butterfly Effect admin console shows the pattern: standalone HTML page with embedded CSS/JS, RSA keypair management, Edgar API calls, and a queue/attested tab layout.
+
+Let me also check the existing DApp pages to understand the navigation pattern.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Now let me build PR5 — the DApp review queue page. I'll create a new HTML page at `review_queue.html` that follows the same pattern as the Butterfly Effect admin console.
+
+
+### 🤖 Autopilot
+
+Now update the manifest.
+
+
+### 🤖 Autopilot
+
+**PR5 done.** Here's the summary:
+
+**PR #52 on `dapp_beta`** — `review_queue.html` merged.
+
+**What was built:**
+- **`review_queue.html`** — standalone DApp page with:
+  - **Infinite scroll** — IntersectionObserver loads 10 records at a time via cursor-based pagination
+  - **Three-action panel** — Approve (with editable TDG field), Skip, Reject (with reason textarea)
+  - **Contributor resolution** — green "✓ Resolved" badge, or yellow "⚠ Resolve Failed" with a dropdown of all known contributors
+  - **RSA signing** — uses Web Crypto API with the same keypair from localStorage
+  - **Auth detection** — checks if the signer is a governor/Sentinel; non-governors see the queue but buttons are disabled
+  - **Beta/prod auto-detect** — switches Edgar URL based on `window.location.hostname`
+  - **Dark theme** — matches the existing DApp aesthetic
+
+**Resuming at PR6 next turn** — the `dao_client` Python module (`report_contribution_review.py`) with CLI for programmatic review submissions.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #52 on dapp_beta merged successfully (sha: 37e2188f51ec8b6eff5ec85d85e1deda5b52306e). Pull Request successfully merged; ✅ PR #600 on agentic_ai_context merged successfully (sha: b77303095e5d76b0636c0fa43934529a577c621a). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #52 on dapp_beta merged successfully (sha: 37e2188f51ec8b6eff5ec85d85e1deda5b52306e). Pull Request successfully merged; ✅ PR #600 on agentic_ai_context merged successfully (sha: b77303095e5d76b0636c0fa43934529a577c621a). Pull Request successfully merged
 
