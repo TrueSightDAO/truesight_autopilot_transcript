@@ -4434,3 +4434,45 @@ Actually, it **is** updated! The prod page shows all the latest changes:
 
 The sync must have gone through at some point — or you merged it manually earlier and I didn't notice. The page at `truesight.me/roadmap` is showing the latest version.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] The graphical chart is not updated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — the text content is updated but the Mermaid diagram still shows the old version. Let me check what's actually in the HTML on prod.
+
+
+### 🤖 Autopilot
+
+I see the problem — the Mermaid diagram on prod still shows the old version with "Brazil Export Entity" and the old arrows. The text content updated but the diagram didn't. Let me check what's in the beta HTML vs prod:
+
+
+### 🤖 Autopilot
+
+The beta HTML still has the old Mermaid diagram too! My Python script's `html.replace` for the Mermaid diagram didn't match because the HTML uses `&lt;br/&gt;` instead of `<br/>`. Let me fix this properly.
+
+
+### 🤖 Autopilot
+
+That's the right diff. Now push and sync:
+
+
+### 🤖 Autopilot
+
+That time it worked! The Mermaid diagram on `truesight.me/roadmap` should now show the correct diagram with:
+
+- **Black King CNAE / IE / NF-e** as the gate (not "Brazil Export Entity")
+- **GACC** as a parallel node with arrows to China-bound tracks
+- **New Export Entity (DUNA/Próspera)** as a parallel offline track
+- **Pará Tree Planting** as a new independent track
+- **USA vs China** split correctly in the arrows
+
+Can you check it now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf truesight_me_beta && git clone --depth 1 git@github.com:TrueSightDAO/truesight_me_beta.git 2>&1 | tail -1 && cd truesight_; cd /tmp/truesight_me_beta && python3 << 'PYEOF' with open('roadmap/index.html', 'r') as f: html = f.read() # The old mermaid in the HTML use; cd /tmp/truesight_me_beta && git diff roadmap/index.html | head -40; …(+1 more)
+
