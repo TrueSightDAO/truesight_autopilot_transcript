@@ -278,6 +278,11 @@ I found the key piece. Let me look at what `record.status` is set to in the Grok
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the full picture. Here's the confirmation:
 
 **You're exactly right.** Here's the verified flow:
@@ -473,4 +478,120 @@ So the architecture becomes:
 4. **GAS write-back script** (triggered by Edgar webhook) → updates Scored Chatlogs row to "Reviewed" with final TDG
 
 Clean, transparent, auditable. Want me to start drafting the Action and the cache schema?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] [Handoff context — this Telegram topic (thread 7191) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, Druff, a very detailed implementation plan, execution roadmap and checklist. And make sure that every single PR is really a very technical scope, the PR that's like standalone, so that no individual PR or execution steps are so big that your complex window gets flooded. And make sure in the implementation plan, really provide very detailed information of the architecture and the various processes associated with where the records are read, where the cache is generated, and what are the events that's being signed and sent over to Edgar. Yeah, basically the whole flow in as much detail as possible so that there's no mistake or ambiguities. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first.
+
+
+### 🤖 Autopilot
+
+This is a new handoff — no existing plan file for this. Let me create the implementation plan and register it.
+
+
+### 🤖 Autopilot
+
+Now let me look at the existing scoring infrastructure more closely to make sure the plan is precise.
+
+
+### 🤖 Autopilot
+
+Let me read the key files — the Scored Chatlogs schema, the transfer script, and the Grok scoring script to understand the exact columns.
+
+
+### 🤖 Autopilot
+
+Now let me check the Scored Chatlogs sheet columns and the scoring output format.
+
+
+### 🤖 Autopilot
+
+The headers seem to be in a different row. Let me look more carefully.
+
+
+### 🤖 Autopilot
+
+Now I have the full column layout. Let me also check the Grok scoring script to see what status it sets on output.
+
+
+### 🤖 Autopilot
+
+Let me check what status the Grok scoring script writes to the output.
+
+
+### 🤖 Autopilot
+
+Let me find where the Grok script writes the status to the output sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for what status the Grok script writes — it might be "Successfully Completed" not "Pending Review".
+
+
+### 🤖 Autopilot
+
+I see from the sheet data that the Grok script writes "Successfully Completed / Full Provision Awarded" as the status, not "Pending Review". Let me check the Grok script to confirm.
+
+
+### 🤖 Autopilot
+
+Now I see — the Grok script writes "Successfully Completed" to Column J of the Telegram Chat Logs sheet (the source), not to the Scored Chatlogs output. Let me check what status it writes to the Scored Chatlogs output.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. The Grok script writes `status: "Pending Review"` and `tdgIssued: "0.00"` to the Scored Chatlogs output. Let me also check the treasury-cache repo to see if it's the right place for the cache files.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me create the implementation plan.
+
+
+### 🤖 Autopilot
+
+Now let me register this handoff in the manifest.
+
+
+### 🤖 Autopilot
+
+The branch already exists from the first push. Let me update the manifest via a separate PR.
+
+
+### 🤖 Autopilot
+
+Here's the summary, Gary:
+
+---
+
+I've created the full implementation plan and registered it as a handoff. Here's what's in the plan:
+
+**The plan covers 7 PRs, each standalone:**
+
+1. **PR 1** — GitHub Action cache generator (Python, reads Scored Chatlogs, writes JSON files to `treasury-cache/review-queue/`)
+2. **PR 2** — Edgar `GET /dao/review_queue` endpoint (paginated, serves oldest 10)
+3. **PR 3** — Edgar `[CONTRIBUTION REVIEW EVENT]` handler (verifies governor/Sentinel, deletes cache file, fires webhook)
+4. **PR 4** — GAS write-back script (receives webhook, updates sheet with double-counting guard)
+5. **PR 5** — DApp `review_queue.html` page (infinite scroll, Approve button for governors, read-only for everyone else)
+6. **PR 6** — Beta deploy + UAT
+7. **PR 7** — Promote to production
+
+**Key architectural decisions baked in:**
+- Cache files live in `treasury-cache/review-queue/<hash_key>.json` — one file per pending review
+- Approval deletes the file — simple state machine, no database needed
+- Three-layer double-counting guard (cache deletion + GAS status check + transfer script check)
+- Anyone can view the queue; only governors/Sentinels can approve (enforced by Edgar's RSA signature verification)
+
+The plan file is at `SCORING_REVIEW_QUEUE_PLAN.md` in `agentic_ai_context` — PR [#582](https://github.com/TrueSightDAO/agentic_ai_context/pull/582). Manifest update is PR [#583](https://github.com/TrueSightDAO/agentic_ai_context/pull/583).
+
+When you're ready, just say **"go for it"** and I'll start with PR 1 — the GitHub Action cache generator.
 
