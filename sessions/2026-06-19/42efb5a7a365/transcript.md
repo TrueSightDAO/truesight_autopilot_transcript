@@ -199,3 +199,30 @@ Both files are committed and published:
 
 All set!
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7089] Hey, can you tell me what are the banking details of true tech ink so that someone can perform an ACH? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure, let me pull it from the FSVP repo where we just stored it.
+
+
+### 🤖 Autopilot
+
+Here are the ACH details for TrueTech Inc:
+
+**For domestic ACH (US bank account):**
+
+| Field | Value |
+|---|---|
+| **Account holder** | TrueTech Inc |
+| **Account number** | 219045313237 |
+| **Account type** | Checking |
+| **Routing number** | 101019628 |
+| **Bank** | Lead Bank, 108 W 13th St, Wilmington, DE 19801 |
+
+The same routing number works for both ACH and wire transfers. ACH is low-cost and takes about 2–3 working days to arrive.
+
