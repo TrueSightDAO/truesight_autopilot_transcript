@@ -3002,11 +3002,23 @@ Let me find the specific GAS projects — the Grok scoring one and the transfer 
 ### 🤖 Autopilot
 
 I can see the Grok scoring project has a `doGet(e)` already (it's deployed as a web app at that `/exec` URL). Let me check if it has a `doPost(e)` too, and also check the transfer script project.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Grok scoring project's Code.js for the `doGet` function specifically.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3197,4 +3209,63 @@ Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCO
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #593 on agentic_ai_context merged successfully (sha: 993fff5054d2df1e0b6308d1f1c5e8a847f3ce9b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] I think we also need to ensure that the GAS script doesn't keep processing the same sign event over and over again because that would just cause it to slow down an eventually timeout, isn't it? So maybe there should be a new column in the SCOT chat block that indicates the transaction ID of the sign event that resulted in this role of being converted to being review. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch. The GAS script needs a way to know which rows in Telegram Chat Logs it has already processed, otherwise every call to `processApprovalRejections` re-scans the entire sheet. A processed-flag column on the Telegram Chat Logs sheet is the right fix.
+
+Let me check what columns the Telegram Chat Logs sheet currently has.
+
+
+### 🤖 Autopilot
+
+Let me find the correct spreadsheet ID for Telegram Chat Logs.
+
+
+### 🤖 Autopilot
+
+Let me find the Telegram Chat Logs sheet ID from the Grok scoring script.
+
+
+### 🤖 Autopilot
+
+Let me find the actual Telegram Chat Logs sheet ID from the credentials/config.
+
+
+### 🤖 Autopilot
+
+The sheet IDs are in Credentials.gs which isn't in the repo (secrets). But I know from the Grok scoring script that it reads from the Telegram Chat Logs sheet and writes to the Scored Chatlogs sheet. The key point is clear though — let me update the plan with the processed-flag column approach.
+
+
+### 🤖 Autopilot
+
+Good catch. Without a processed-flag, every call to `processApprovalRejections` would re-scan the entire Telegram Chat Logs sheet, re-parse every `[CONTRIBUTION REVIEW EVENT]` it's ever seen, and waste time skipping already-processed ones. As the sheet grows, this gets slower and slower until it times out.
+
+The fix is two new columns on the **Telegram Chat Logs** sheet:
+
+- **Col X: "Review Processed"** (boolean) — TRUE after GAS has processed this event
+- **Col Y: "Review Transaction ID"** (string) — Edgar's internal transaction ID for audit trail
+
+The GAS script now:
+1. Filters to only rows where `Col X` is empty or FALSE
+2. Processes them
+3. Sets `Col X = TRUE` and `Col Y = transactionId`
+
+Next call: those rows are skipped instantly. If the script times out mid-batch, the unprocessed rows stay FALSE and get picked up next time. No duplicate processing, no timeout spiral.
+
+Updated plan: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/SCORING_REVIEW_QUEUE_PLAN.md**
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #594 on agentic_ai_context merged successfully (sha: 19dc83bafe1c42f31c26076fcf7adbf2799fffd4). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #594 on agentic_ai_context merged successfully (sha: 19dc83bafe1c42f31c26076fcf7adbf2799fffd4). Pull Request successfully merged
 
