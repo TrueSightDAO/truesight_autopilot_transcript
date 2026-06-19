@@ -273,6 +273,7 @@ Now I can see the key detail. Let me check what status the Grok script sets.
 ### 🤖 Autopilot
 
 I found the key piece. Let me look at what `record.status` is set to in the Grok scoring script.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -445,4 +446,31 @@ Good instinct. Let me think through the trade-offs.
 The GAS scripts stay for what they're good at — the Grok scoring (which needs to be in GAS because it reads the Telegram Chat Logs sheet directly) and the write-back (which needs to update the sheet). The cache generation is a pure data pipeline step that fits Python better.
 
 Want me to sketch out the architecture doc and start building?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7191] You know, I actually kind of don't really want everything to be lumped into Sophia because otherwise it becomes very hard to have visibility over what the process is. And anyways, you're supposed to be independent. Imagine you generating the hash and then signing it and approving it. That's awkward. I think doing it via the GitHub action makes more sense. And anyone can just go and see, hey, okay, what are the new caches that's being generated? And then, yeah, at least that's how I'm thinking about it. Yeah, what are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're absolutely right. That's a better call for a few reasons:
+
+**Transparency.** GitHub Actions has a public log — anyone can see when the cache generator ran, how many records it found, what files it created. If it runs on the autopilot, it's a black box. You'd have to SSH in or ask me to check logs. That defeats the purpose of a DAO — visibility is trust.
+
+**Separation of concerns.** I should be the reviewer, not the pipeline. If I'm both generating the cache and approving records, that's a conflict. The cache generator should be a dumb, deterministic process that anyone can inspect. My role is on the other side — looking at the surfaced records and approving them.
+
+**GitHub Actions is the right home for this.** The cache files live in a GitHub repo (treasury-cache or similar). The Action writes them there. The DApp reads them from there. Edgar serves them from there. Everything is in GitHub — no hidden state on a server somewhere.
+
+**The only thing to solve is the Google Sheet access.** The Action needs a service account to read Scored Chatlogs. But we already have service accounts for this — the `tdg_scoring` or `agroverse_qr_code_manager` SA could be used. The credential just goes into GitHub Secrets.
+
+So the architecture becomes:
+
+1. **GitHub Action** (Python, scheduled cron) → reads Scored Chatlogs via Google Sheets API → generates JSON cache files for un-cached "Pending Review" rows → pushes to `treasury-cache/review-queue/` → marks "Cache Generated" column
+2. **DApp review page** → reads from `treasury-cache/review-queue/` via Edgar → surfaces oldest 10 with infinite scroll
+3. **Governor/Sentinel approves** → browser signs `[CONTRIBUTION REVIEW EVENT]` to Edgar → Edgar deletes the cache file from the repo
+4. **GAS write-back script** (triggered by Edgar webhook) → updates Scored Chatlogs row to "Reviewed" with final TDG
+
+Clean, transparent, auditable. Want me to start drafting the Action and the cache schema?
 
