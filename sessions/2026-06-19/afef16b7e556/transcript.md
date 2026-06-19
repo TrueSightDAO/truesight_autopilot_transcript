@@ -2671,3 +2671,183 @@ The context repo becomes the **living library** of operational knowledge. And So
 
 The implications are genuinely large. You're not building a tool. You're building a **medium** — a way for knowledge to be stored, governed, forked, and acted upon by autonomous agents.
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **a3831d84a3c34952a73a0805d57df9ae.pdf**]
+- Type: PDF (3 pages, 3108 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Unit Economics Template — New SKU Evaluation
+TrueSight DAO
+Page 1
+Unit Economics Template for New SKU Evaluation
+Prepared for: Jessey / Conservana Spices — Indonesia Cacao
+Reference framework: Agroverse Ceremonial Cacao (Brazil origin)
+Date: July 2025
+Why This Document
+This is a blank template showing the cost layers you'll need to fill in to evaluate Indonesia-origin ceremonial
+cacao for distribution through the TrueSight DAO network. Each slot is labeled with what's needed.
+1. Product Unit
+Define your base unit (e.g. 200g / 8 oz ceremonial cacao pouch):
+Item
+Your Value
+Unit type
+e.g. "Ceremonial Cacao Kraft Pouch"
+Unit weight
+___ grams / ___ oz
+Target retail format
+_____________
+2. Raw Material & Packaging (per unit)
+Line Item
+Cost (USD)
+Cacao nibs / mass per unit (farm gate)
+$___ . ___
+Processing / fermentation / drying per unit
+$___ . ___
+Packaging (pouch, label, seal) per unit
+$___ . ___
+Subtotal — raw + pack per unit
+$___ . ___
+3. Freight: Origin → USA (per unit)
+Based on estimated shipment weight and volume:
+Line Item
+Cost (USD)
+Notes
+Air freight (airport to airport)
+$___ . ___ / kg
+Rate depends on weight tier
+Inland transport (farm → airport)
+$___ . ___
+Spread across shipment
+
+--- Page 2 ---
+Unit Economics Template — New SKU Evaluation
+TrueSight DAO
+Page 2
+Line Item
+Cost (USD)
+Notes
+Export documentation
+$___ . ___
+Flat fee ÷ units
+Origin airport charges
+$___ . ___
+Per kg or flat
+US customs clearance + handling
+$___ . ___
+Flat fee ÷ units
+FDA processing (if required)
+$___ . ___
+Flat fee ÷ units
+Duty / tariffs
+$___ . ___
+% of cargo value
+Total freight per unit
+$___ . ___
+Estimated shipment weight: ___ kg total
+Estimated units per shipment: ___ units
+Estimated cargo value: $___ . ___
+4. Full Cost Stack (per unit)
+Layer
+Cost (USD)
+% of Total
+Raw material + packaging
+$___ . ___
+___ %
+Freight origin → USA
+$___ . ___
+___ %
+Landed cost (USA warehouse)
+$___ . ___
+—
+DAO network fee (20% of profit
+margin)
+$___ . ___
+___ %
+Marketing & logistics (estimate)
+$___ . ___
+___ %
+Target wholesale price
+$___ . ___
+—
+Estimated retail price
+$___ . ___
+—
+5. Tree Financing per Bag
+Our model: 1 bag sold = 1 tree planted.
+Item
+Cost (USD)
+Tree seedling + planting per bag
+$___ . ___
+Baked into wholesale price
+$___ . ___ per bag
+6. Financing Source
+
+--- Page 3 ---
+Unit Economics Template — New SKU Evaluation
+TrueSight DAO
+Page 3
+• [ ] Farmer / producer funded — they front the cargo cost, paid back on consignment sale
+• [ ] Investor funded — third party capital, specify expected return
+• [ ] Other — describe: _____________
+If investor-funded:
+• Investment amount: $___ . ___
+• Expected return / terms: _____________
+• Repayment timeline: _____________
+7. First Shipment
+Item
+Value
+First shipment volume
+___ units
+Estimated total weight
+___ kg
+Target ship date
+_____________
+Origin city / port
+_____________
+Destination (USA port)
+_____________
+Next Steps
+1. Fill in the template above with your best estimates
+2. Share with Gary for review
+3. Once numbers work → dedicated transparent ledger on truesight.me
+4. First consignment shipment to USA network
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest.
+```
+
+
+### 🤖 Autopilot
+
+This is a clean, well-structured template. Let me break down what I see and how it connects to our conversation.
+
+**What this is:** A unit economics template for evaluating Jessey's Indonesia cacao as a new SKU through the TrueSight DAO network, benchmarked against the existing Brazil-origin Agroverse Ceremonial Cacao.
+
+**The cost layers it captures:**
+
+1. **Raw material + packaging** — farm gate price for cacao nibs/mass, processing/fermentation/drying, packaging
+2. **Freight origin → USA** — air freight, inland transport, export docs, origin airport charges, US customs, FDA processing, duties/tariffs
+3. **Full cost stack** — landed cost, DAO network fee (20% of profit margin), marketing & logistics, target wholesale/retail
+4. **Tree financing** — 1 bag sold = 1 tree planted, cost baked into wholesale price
+5. **Financing source** — farmer-funded vs investor-funded
+
+**What's notable:**
+
+- The **20% DAO network fee on profit margin** — this is the DAO's revenue model. It's not a flat fee; it aligns incentives. The DAO makes money when the supplier makes money.
+- The **1 bag = 1 tree** model — baked into the wholesale price, not an optional add-on. This is the mission (10,000 hectares of Amazon rainforest) operationalized.
+- The **financing source question** — farmer-funded vs investor-funded is a critical distinction. Most small suppliers can't front the cargo cost. The template surfaces this explicitly.
+
+**How this connects to the FDA/context layer conversation:**
+
+This template is exactly the kind of **context layer** we were just discussing. It's a structured knowledge artifact that any new supplier can use. Once Jessey fills this in, the numbers go into a transparent ledger on truesight.me, and the entire DAO can see the unit economics of Indonesia-origin cacao vs Brazil-origin.
+
+Over time, as more suppliers fill this template, the DAO builds a **pricing library** — what does ceremonial cacao cost from Brazil vs Indonesia vs Peru vs Ghana? What are the freight differentials? What are the quality-adjusted price comparisons? That library becomes a public good that any Sophia instance can reference.
+
+**One question the template raises:** The 20% DAO fee is on *profit margin*, not revenue. That's generous to the supplier but requires clear definition of what counts as "profit" — is it after all costs including the tree planting? After Gary's cut? The template could benefit from a worked example with real numbers to show how the fee flows.
+
+Want me to add a worked example section to the template?
+
