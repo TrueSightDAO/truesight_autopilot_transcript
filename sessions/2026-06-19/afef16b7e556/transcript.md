@@ -3715,6 +3715,11 @@ Now let me merge both PRs and promote.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 All done! Here's the URL:
 
 **https://truesight.me/blog/posts/the-fda-agent-went-out-of-business.html**
@@ -3811,6 +3816,11 @@ Want me to update the post with this honest framing?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=780] Yes, please. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4026,4 +4036,16 @@ The post is live on beta. The prod sync still has the CNAME conflict whenever yo
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-fda-agent-went-out-of-business.html | grep -n "
 • `merge pr` → ✅ PR #254 on truesight_me_beta merged successfully (sha: e3c7927e40b8f3b49fa833e9116ddcd4fa87b338). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] and also don't really need to mention running without Gary. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Already done — the previous edit replaced that entire section. The new version doesn't mention "running without Gary" or any founder-specific framing. It's now a general design question about how verification scales across the network, regardless of who the verifier is.
+
+The post is clean on that front. Want me to check if there are any other references to "Gary" in the post that should be generalized?
 
