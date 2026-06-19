@@ -882,6 +882,17 @@ Let me find the very end of the sheet for today's (2026-06-18) entries.
 ### 🤖 Autopilot
 
 Let me find the very end of the sheet for today's entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -976,4 +987,92 @@ The GAS script I triggered earlier did run successfully, but it processes from t
 **Here's what I think happened:** The DApp submits directly to the Inventory Movement sheet, but the authorization check (verifying your digital signature against the Contributors Digital Signatures sheet) is failing for some reason. The one that worked (`2024OSCAR_20260121_26` at 23:21) might have gone through a different path — perhaps via the Telegram Chat Logs queue.
 
 Would you like me to investigate why the authorization is failing for these DApp submissions? Or would you prefer to just re-submit them through the Telegram Chat Logs path instead?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6939] "[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_1 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: KjRS4Mn9KsZjqxhfSHl/s0EKYP9qyOkyiU4lYfs8eepudUAxmCrimRPOK7y+npr1yaaIW55ZGE6VvvoanPLhqQnbXtMgFkViPPU7ktY3G+j0DSDZ4KXUwh+gUSIUgtX44DEB08LPlz0oxIQTHDgfdcNJviaMujGbAwmzDoPFe2+nvh1T8uhcf2qf8oIomYMpIXgkJqvv3h+FnXtdw/3sGYvLN9afRWrkikC5/Lt0QhvSXKASAXzVsmmw/tD/V8wOBsi3s4cqHRFsQCPDm/M7Xae+RGvk3j6CjuvAn91IkEWmFVSOeZjDxyYciQJeMgMgAKR7QbumroewnLTmz0Nz9w== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_2 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB 
+ 
+Request Transaction ID: hdjSKmnRuMlz/hM51C8Z9JSCwEWyhu7YrnT9IUUyfpPU2saDSxH5gj9DxxXkPsQP58orfaDGOZi4AbPHKZVLrcK0CKtmtgTsFSOeEnck60KQtQz5nKpTtBbOO2MdMUbx9WzruQhwUbZ5Ldm5J39TShoGKUYAc2dVkCBqbRU97y+60xznFuMckRMtNtYQ+NDBdPZJ5ujIbtFNkTnktaJ3zXyB9nb2mqrt/X8wcIscpsuOCmxUjBy3bkletw1+oGyxnVQHTtYHK0Y8FOFAh5jDDJ28QDvmPYaLKOVzXiIUAXppGa9sgs7cFiA5jGTvMsBN8dDKLLYOmuGBCn2tM1Bx8Q== 
+ 
+This submission was generated using https://dapp.truesight.me/report_inventory_movement.html 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html"
+"[INVENTORY MOVEMENT] 
+- Manager Name: Kirsten Ritschel 
+- Recipient Name: SOHA - David Campbell 
+- Inventory Item: Ceremonial Cacao Kraft Pouch - Alibaba:269035810001023771 + 8 Ounce Package Kraft Pouch CP340992735BR | Kirsten 20260121 
+- QR Code: 2024OSCAR_20260330_3 
+- Quantity: 1 
+- Latitude: 37.735619 
+- Longitude: -122.502983 
+- Attached Filename: None 
+- Destination Inventory File Location: No file attached 
+- Submission Source: https://dapp.truesight.me/report_inventory_movement.html 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54jNZdN4xkaPDI9TB/RwuicbbUMvttOWSTVRfvZxiHWeIoqTHRz2WJdoGsuW9rz9QPbpz6T9zQZu3RNzsSF216U3aCd89R2g7qhOMh9VC+7+sNJnI6H4qPPKFbndxQD8262Q+zqYQR6r0k89mud1sYbla/DCtKAcGZsALihVyl8tF2v1rUzfPU9FHpi5ow2kOEpVxnhe6xEY1HDU/zuFRt707WzkG1zit4AWEBXyBd3YLyinPNAb2aBA6dSPnPAQ4aB46Dtis3p5DgkLeO7E4gh/E0BqViDkkB1tLy1dgy9Kjv+5zxo1yTxkBKACjqqo69Q0VrUfkXgegWmXBAu04wIDAQAB
+
+
+### 🤖 Autopilot
+
+I see — you're showing me the DApp submissions for `2024OSCAR_20260330_1`, `_2`, and `_3`. These are also **Kirsten Ritschel → SOHA - David Campbell** movements submitted via the DApp with your digital signature.
+
+Let me check the Inventory Movement sheet to see if these specific ones are there and what their status is.
+
+
+### 🤖 Autopilot
+
+I see — the rows 500-540 are the **autopilot-batch-transfer** submissions (with my Sophia key), not the DApp ones. Let me look at the DApp submissions specifically — they should be around rows 540-580.
+
+
+### 🤖 Autopilot
+
+I see — the DApp submissions at rows 540-578 are all showing **"unauthorized"** too. But the one at row 580 (`2024OSCAR_20260121_26`) shows **"PROCESSED"**. Let me check what's different about that one.
+
+
+### 🤖 Autopilot
+
+Gary, I see the pattern now. The one that's **PROCESSED** (row 580, `2024OSCAR_20260121_26`) was submitted at **23:21** — 20 minutes after the batch at 23:01. It has a value in column V (`3613,3614`) which is the Telegram Chat Logs row reference.
+
+The ones you're showing me now — `2024OSCAR_20260330_1, _2, _3` — these were submitted via the DApp at 23:01 along with the rest of the batch. They're all showing **"unauthorized"** in the sheet.
+
+I think I understand what happened now. The DApp submits directly to the Inventory Movement sheet, but the **authorization check** (which verifies your digital signature against the Contributors Digital Signatures sheet) is failing. The one that worked at 23:21 might have gone through a different path — perhaps it was submitted to the Telegram Chat Logs queue first, then processed by the GAS script.
+
+Would you like me to:
+1. **Investigate why the authorization is failing** for these DApp submissions?
+2. Or just **re-submit these directly** via the autopilot using your Gary Teh key so they get authorized properly?
 
