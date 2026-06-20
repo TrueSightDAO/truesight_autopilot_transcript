@@ -52,3 +52,19 @@ The key design question is: **what's the trigger?** Polling (GitHub Action cron)
 
 Want me to sketch out a concrete proposal — pick a trigger model and a target repo, and I'll draft the workflow + script?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7417] Yo, house progress [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Hey Gary! You mentioned "house progress" — could you give me a bit more context? Are you talking about:
+
+1. **The growth job architecture** we were just discussing — want me to draft that proposal?
+2. **House construction / property progress** — something related to the cacao supply chain or a physical project?
+3. **The DAO "house"** — overall ecosystem progress, the Beer Hall digest, advisory snapshot?
+
+Just point me in the right direction and I'll pull up what we've got.
+
