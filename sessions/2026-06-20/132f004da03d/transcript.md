@@ -681,21 +681,30 @@ Merging both PRs now.
 ### 🤖 Autopilot
 
 PR #256 merged. PR #257 has a merge conflict — probably because both PRs modified the same file. Let me fix it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — PR #256's changes (source links, authority, sheets) are already in main. Now I need to add the sample payloads on top of that. Let me read the full file to find where to insert them.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is very large. Let me read the full content to find the exact contract cards and add sample payloads to each one.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is very large with nested artifacts. Let me take a different approach — I'll read the file directly from the repo and use targeted edits to add sample payloads.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -885,4 +894,14 @@ Take a look and let me know what you think!
 **✅ Done this turn — actions taken:**
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_me_beta/pull/260
 • `merge pr` → ✅ PR #260 on truesight_me_beta merged successfully (sha: 706da0d0daed74a23f595feec16d86343bfa76b2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] Just merged a PR. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — you merged a PR yourself. Which one? I want to make sure I'm tracking the state correctly. Was it one of the ones I opened, or something else?
 
