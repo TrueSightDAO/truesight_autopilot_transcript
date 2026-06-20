@@ -1670,6 +1670,11 @@ Now I see it. The approval gate is disabled by default (`require_submission_appr
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see — the code calls `edgar.submit_contribution(event_name, attributes, description)`. The `EdgarDirectClient` is in `edgar_logger.py`. Let me check how it formats the submission.
 
 
@@ -1864,4 +1869,44 @@ Your voice message said something about **"fixing it from SOHA and checking it w
 2. **Or do you want me to fix something first** before we start submitting?
 
 Just give me the go signal and I'll start executing the checklist, one QR code at a time.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] So, David from Soha is the one who sowed the backs. And I am the one who collected the cash. That has to be reflected in each individual transaction. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it. So the SALES EVENT for each bag should reflect:
+
+- **Sold by:** SOHA - David Campbell (he's the seller/retailer who sold the bags)
+- **Cash proceeds collected by:** Gary Teh (you collected the $680)
+- **Owner email:** david@soha.center
+- **Sales price:** $17.00 per bag
+
+Let me check the event docs to make sure I use the right field labels.
+
+
+### 🤖 Autopilot
+
+Perfect. Here's the confirmed format for each submission:
+
+```
+[SALES EVENT]
+- Item: Ceremonial Cacao
+- Sales price: 17.00
+- Sold by: SOHA - David Campbell
+- Cash proceeds collected by: Gary Teh
+- Owner email: david@soha.center
+- QR Code: <one code per submission>
+```
+
+**Key points:**
+- **Sold by** = SOHA - David Campbell (he's the one who sold the bags to end customers)
+- **Cash proceeds collected by** = Gary Teh (you received the $680)
+- **Owner email** = david@soha.center
+- **Sales price** = $17.00 per bag
+
+The checklist from my previous message is ready. Shall I start executing — one QR code per submission, checking each off as I go?
 
