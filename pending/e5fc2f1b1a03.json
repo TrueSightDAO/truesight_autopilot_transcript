@@ -159,5 +159,12 @@
     "summary": "Add sample payloads to every contract card on the Smart Contracts page (contracts/index.html). \n\nFor each contract card and each variant, add a collapsible \"Sample Payload\" section that shows a comple",
     "action": "merge_pr",
     "created_at": "2026-06-20T01:20:24Z"
+  },
+  {
+    "title": "Merge PR #258 on truesight_me_beta",
+    "qr_code": "",
+    "summary": "Resolve merge conflict on contracts/index.html and add sample payloads to every contract card.\n\nThe current main branch has PR #256 merged (source links, authority badges, sheet references). PR #257 (",
+    "action": "merge_pr",
+    "created_at": "2026-06-20T01:24:30Z"
   }
 ]
