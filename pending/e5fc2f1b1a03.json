@@ -152,5 +152,12 @@
     "summary": "Enhance the Smart Contracts page at contracts/index.html with the following additions for EVERY contract card:\n\n1. **Source code links** \u2014 add a \"Source Code\" section to each contract card with links ",
     "action": "merge_pr",
     "created_at": "2026-06-20T01:18:13Z"
+  },
+  {
+    "title": "Merge PR #257 on truesight_me_beta",
+    "qr_code": "",
+    "summary": "Add sample payloads to every contract card on the Smart Contracts page (contracts/index.html). \n\nFor each contract card and each variant, add a collapsible \"Sample Payload\" section that shows a comple",
+    "action": "merge_pr",
+    "created_at": "2026-06-20T01:20:24Z"
   }
 ]
