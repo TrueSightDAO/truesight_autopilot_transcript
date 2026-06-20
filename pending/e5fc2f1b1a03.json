@@ -166,5 +166,12 @@
     "summary": "Resolve merge conflict on contracts/index.html and add sample payloads to every contract card.\n\nThe current main branch has PR #256 merged (source links, authority badges, sheet references). PR #257 (",
     "action": "merge_pr",
     "created_at": "2026-06-20T01:24:30Z"
+  },
+  {
+    "title": "Merge PR #260 on truesight_me_beta",
+    "qr_code": "",
+    "summary": "Update contracts/index.html with two changes:\n\n**1. Replace JSON sample payloads with plain-text format for verify-compatible events**\n\nFind the sample payload for the Voting Rights Withdrawal contrac",
+    "action": "merge_pr",
+    "created_at": "2026-06-20T01:46:32Z"
   }
 ]
