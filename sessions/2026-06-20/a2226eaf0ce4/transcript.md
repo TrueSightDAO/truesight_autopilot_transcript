@@ -1654,6 +1654,16 @@ I see — the code has a gate that checks `REQUIRE_SUBMISSION_APPROVAL`. Let me 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see it. The approval gate is disabled by default (`require_submission_approval = false`), so it should go straight to execution. Let me check what happens in the execution path — specifically the `EdgarDirectClient.submit_contribution` call.
 
 
@@ -1818,4 +1828,22 @@ Event: SALES EVENT
 ---
 
 Does this look right to you? If so, say "go" and I'll start executing them one by one, checking each off as I go.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] dan maksudnya, itu memperbaikannya untuk memperbaikannya dari Sohaha dan kekannya beriksa tersebut dengan saya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Maaf, saya kurang paham dengan voice message tadi — mungkin ada noise atau potongan yang terputus. Bisa diulangi atau diketik ulang? Saya tangkap ada "SOHA" dan "perbaiki" tapi konteksnya kurang jelas.
+
+Apakah maksudnya:
+
+1. **Perbaiki sesuatu di SOHA** — ada masalah dengan record David Campbell?
+2. **Perbaiki cara submit sales** — format SALES EVENT perlu diperbaiki dulu sebelum jalan?
+3. **Atau yang lain?**
+
+Bisa clarify sebentar?
 
