@@ -481,6 +481,7 @@ Rate limited. Let me use the local context files and SSH to find the execution p
 ### 🤖 Autopilot
 
 Now I have the complete picture. Let me also check the server-side handlers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -576,4 +577,30 @@ It also means the page doubles as:
 - **Audit trail** — every example is a known-good reference payload
 
 Want me to merge both PRs to beta so you can see the full page live?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] And then we should also consider how to link to this smart contract page, right? From the Dow website, because unless you know the URL right now, you don't even know how to get there. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great point. Right now `/contracts/` is a hidden page — no navigation link, no footer, no mention anywhere. Let me think about where it should live in the site structure.
+
+**Best placement options:**
+
+1. **Main navigation** — add "Contracts" as a nav item alongside "Blog", "The Perch", "Edgar", etc. Highest visibility but competes for header space.
+
+2. **Footer** — add it under a "Developers" or "Protocol" section. Less prominent but always accessible from any page.
+
+3. **The Perch** — link from The Perch page since that's the governance/transparency hub. Makes sense contextually.
+
+4. **Edgar page** — the contracts page is essentially the spec for what Edgar executes. A "View all smart contracts" link on the Edgar page is a natural fit.
+
+5. **All of the above** — nav link for discoverability, footer for permanence, contextual links from Edgar and The Perch.
+
+**My recommendation:** Add it to the main navigation and the footer. The contracts page is a core protocol surface — it's not secondary content. It deserves top-level nav placement alongside Blog and The Perch.
+
+Want me to open a PR to add it to the nav and footer?
 
