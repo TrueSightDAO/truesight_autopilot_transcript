@@ -1665,6 +1665,7 @@ I see — the code has a gate that checks `REQUIRE_SUBMISSION_APPROVAL`. Let me 
 ### 🤖 Autopilot
 
 Now I see it. The approval gate is disabled by default (`require_submission_approval = false`), so it should go straight to execution. Let me check what happens in the execution path — specifically the `EdgarDirectClient.submit_contribution` call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1846,4 +1847,21 @@ Apakah maksudnya:
 3. **Atau yang lain?**
 
 Bisa clarify sebentar?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] Okay, can you explain it to me in English? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sorry, I think there was a misunderstanding — I was the one who replied in Malay/Indonesian because your voice message came through in that language. Let me clarify:
+
+Your voice message said something about **"fixing it from SOHA and checking it with me"** — but the audio was a bit unclear. Could you retype what you meant? Specifically:
+
+1. **Is the plan I laid out correct?** — 40 separate SALES EVENT submissions, one per QR code, $17 each, to David Campbell / SOHA
+2. **Or do you want me to fix something first** before we start submitting?
+
+Just give me the go signal and I'll start executing the checklist, one QR code at a time.
 
