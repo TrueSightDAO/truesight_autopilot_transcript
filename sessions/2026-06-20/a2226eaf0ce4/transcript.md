@@ -1649,6 +1649,7 @@ The handler is inline in `main.py`. Let me check what the actual submission logi
 ### 🤖 Autopilot
 
 I see — the code has a gate that checks `REQUIRE_SUBMISSION_APPROVAL`. Let me check if the approval gate was actually removed or if it's still requiring approval.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1726,4 +1727,95 @@ The method is `submit_contribution` with event type **SALES EVENT**. The paramet
 But actually — since this is a bulk wholesale sale of 40 bags for a single $680 payment, I think we should record it as **one SALES EVENT** with all 40 QR codes listed, not 40 separate sales. The question is whether the GAS handler can parse multiple QR codes in one event.
 
 Want me to try submitting a single test sale for just one bag first to see if the format works?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] [Handoff context — this Telegram topic (thread 6394) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+No, you should not do that. What you should do is come up with an implementation plan and checklist Where each checklist is one QR code submission do that first [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it. Let me first check the handoff registry, then build the plan.
+
+
+### 🤖 Autopilot
+
+No handoff registered for this thread (6394). So this is a fresh task — not a resume.
+
+Here's my implementation plan for the 40-bag sale to David Campbell / SOHA:
+
+---
+
+## Plan: Record 40-bag sale to SOHA - David Campbell
+
+**Total payment:** $680 received by Gary Teh for 40 bags = **$17/bag**
+
+### Method
+`submit_contribution` with event type **SALES EVENT**, called once per QR code.
+
+### Parameters per submission
+```
+Event: SALES EVENT
+- Item: Ceremonial Cacao
+- Sales price: 17.00
+- Cash proceeds collected by: Gary Teh
+- Owner email: david@soha.center
+- Sold by: Gary Teh
+- QR Code: <one code per submission>
+```
+
+### Checklist — 40 items
+
+**Batch 1 — 2024OSCAR_20260330 series (22 bags)**
+- [ ] 1. 2024OSCAR_20260330_1
+- [ ] 2. 2024OSCAR_20260330_2
+- [ ] 3. 2024OSCAR_20260330_3
+- [ ] 4. 2024OSCAR_20260330_4
+- [ ] 5. 2024OSCAR_20260330_5
+- [ ] 6. 2024OSCAR_20260330_6
+- [ ] 7. 2024OSCAR_20260330_7
+- [ ] 8. 2024OSCAR_20260330_8
+- [ ] 9. 2024OSCAR_20260330_9
+- [ ] 10. 2024OSCAR_20260330_10
+- [ ] 11. 2024OSCAR_20260330_11
+- [ ] 12. 2024OSCAR_20260330_12
+- [ ] 13. 2024OSCAR_20260330_13
+- [ ] 14. 2024OSCAR_20260330_14
+- [ ] 15. 2024OSCAR_20260330_15
+- [ ] 16. 2024OSCAR_20260330_17
+- [ ] 17. 2024OSCAR_20260330_19
+- [ ] 18. 2024OSCAR_20260330_20
+- [ ] 19. 2024OSCAR_20260330_21
+- [ ] 20. 2024OSCAR_20260330_22
+- [ ] 21. 2024OSCAR_20260330_30
+- [ ] 22. 2024OSCAR_20260330_34
+- [ ] 23. 2024OSCAR_20260330_35
+- [ ] 24. 2024OSCAR_20260330_36
+
+**Batch 2 — 2024OSCAR_20260121 series (10 bags)**
+- [ ] 25. 2024OSCAR_20260121_22
+- [ ] 26. 2024OSCAR_20260121_24
+- [ ] 27. 2024OSCAR_20260121_25
+- [ ] 28. 2024OSCAR_20260121_26
+- [ ] 29. 2024OSCAR_20260121_27
+- [ ] 30. 2024OSCAR_20260121_28
+- [ ] 31. 2024OSCAR_20260121_29
+- [ ] 32. 2024OSCAR_20260121_30
+- [ ] 33. 2024OSCAR_20260121_31
+
+**Batch 3 — 2024SA_20251227 series (7 bags)**
+- [ ] 34. 2024SA_20251227_35
+- [ ] 35. 2024SA_20251227_36
+- [ ] 36. 2024SA_20251227_37
+- [ ] 37. 2024SA_20251227_38
+- [ ] 38. 2024SA_20251227_39
+- [ ] 39. 2024SA_20251227_40
+- [ ] 40. 2024SA_20251227_42
+
+---
+
+Does this look right to you? If so, say "go" and I'll start executing them one by one, checking each off as I go.
 
