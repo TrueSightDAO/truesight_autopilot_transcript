@@ -68,3 +68,30 @@ Hey Gary! You mentioned "house progress" — could you give me a bit more contex
 
 Just point me in the right direction and I'll pull up what we've got.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7417] I meant how is progress?
+
+
+### 🤖 Autopilot
+
+Ah, got it — you're asking how things are going generally! Let me pull up the latest state of the ecosystem.
+
+
+### 🤖 Autopilot
+
+Here's the state of play, Gary:
+
+**Growth goals** — we're at **$3,440 of $40K** QR sales target (9%), with 195 days left. USA Partners at 14 of 100 target. Both are behind pace.
+
+**Pipeline** — 670 stores tracked, 14 partnered. The warm-up engine is humming: 295 warmup sends logged, 67 prospects in the warm-up queue, 32 in manager follow-up. So the top-of-funnel is moving.
+
+**Recent activity** — Kirsten's been busy with inventory movements (29 this week). You logged contributions for FSVP compliance work, cacao quantity calculations, and the subscription card on agroverse.shop. Also onboarded Deep Seek as a contributor.
+
+**Open follow-ups** — the chocolate subscription Phase 2 is parked waiting on Linda's shipments. The public-key cache fix has a roadmap ready. Self-host LLM analysis is pending until API spend hits $200/month.
+
+**What's hot right now:** the growth job architecture we were just discussing — that's the biggest lever. The advisory snapshot runs every 6 hours but it's read-only aggregation. If we build the event-driven pipeline you described (sheet rows → GitHub files), that unlocks a lot.
+
+Want me to focus on any particular area?
+
