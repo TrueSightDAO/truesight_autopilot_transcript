@@ -486,6 +486,11 @@ Now I have the complete picture. Let me also check the server-side handlers.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the complete dispatch routing. Let me also check the GAS scripts in tokenomics for the actual execution handlers.
 
 
@@ -603,4 +608,32 @@ Great point. Right now `/contracts/` is a hidden page — no navigation link, no
 **My recommendation:** Add it to the main navigation and the footer. The contracts page is a core protocol surface — it's not secondary content. It deserves top-level nav placement alongside Blog and The Perch.
 
 Want me to open a PR to add it to the nav and footer?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] How's progress? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's where we stand:
+
+**PR #255** — ✅ **Merged** (base contracts page with architecture diagram)
+- Live at https://beta.truesight.me/contracts/
+
+**PR #256** — ⏳ **Open** (source code links, authority levels, sheet references)
+- https://github.com/TrueSightDAO/truesight_me_beta/pull/256
+- Needs review and merge
+
+**PR #257** — ⏳ **Open** (sample payloads for every contract)
+- https://github.com/TrueSightDAO/truesight_me_beta/pull/257
+- Needs review and merge
+
+**Navigation linking** — 🆕 Not started yet. You just asked about adding it to the nav/footer so people can find it.
+
+Want me to:
+1. Merge PRs #256 and #257 to beta so you can review the full page?
+2. Start on the navigation linking PR?
+3. Both?
 
