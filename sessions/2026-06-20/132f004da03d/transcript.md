@@ -710,6 +710,7 @@ The file is very large with nested artifacts. Let me take a different approach �
 ### 🤖 Autopilot
 
 The file is huge. Let me use the open_fix_pr tool to handle the merge conflict and add sample payloads in one shot.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -904,4 +905,26 @@ Take a look and let me know what you think!
 ### 🤖 Autopilot
 
 Got it — you merged a PR yourself. Which one? I want to make sure I'm tracking the state correctly. Was it one of the ones I opened, or something else?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] Can you promote the changes to production? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Promoting the contracts page from beta to production now.
+
+
+### 🤖 Autopilot
+
+There's a merge conflict when syncing beta to prod. This usually happens because the production site has its own CNAME configuration that diverges from beta. A human needs to reconcile this.
+
+Here's what I'd suggest:
+
+1. **Check the conflict** — I can look at what files are conflicting if you want
+2. **Manual merge** — Someone with repo access needs to open a PR from `truesight_me_beta/main` into `truesight_me_prod/main` and resolve the conflict (likely just the CNAME file or domain config)
+
+Want me to investigate what's conflicting so we can give clear instructions to whoever resolves it?
 
