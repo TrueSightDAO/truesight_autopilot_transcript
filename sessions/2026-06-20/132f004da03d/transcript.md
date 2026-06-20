@@ -497,17 +497,35 @@ Now I have the complete dispatch routing. Let me also check the GAS scripts in t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have a complete map. Let me also check the GitHub URLs for the key repos to build proper links.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything I need. Let me build the enhanced page with source code links, authority levels, and sheet references.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page is large. Let me use open_fix_pr to handle this more efficiently.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -520,11 +538,18 @@ The page is large. Let me use open_fix_pr to handle this more efficiently.
 Absolutely — sample payloads make it real. Someone can copy the JSON, sign it with their key, and submit it to Edgar to see it work end-to-end. That's the difference between documentation and a developer sandbox.
 
 Let me update the PR to add sample payloads for each contract variant.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #256 is still open. Let me read the current state of the file from the base branch and add sample payloads to it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -704,4 +729,48 @@ Take a look and let me know what you'd like adjusted before we promote to produc
 **✅ Done this turn — actions taken:**
 • `merge pr` ×3 → ✅ PR #256 on truesight_me_beta merged successfully (sha: 8fbb2a1d0462f5ee3f0377c56dd387ca7d846e44). Pull Request successfully merged; https://docs.github.com/rest/pulls/pulls#merge-a-pull-request; ✅ PR #258 on truesight_me_beta merged successfully (sha: b2535945d787db0b2cf03eb3d8a779d2515ec243). Pull Request successfully merged
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_me_beta/pull/258
+
+
+### 🧑 Governor
+
+The reference to the source code spilling out to the right side of the box 
+
+Also make the links clickable
+
+[Attachment auto-processed: **95a6e5caad384057bb3cba447478554b.jpg**]
+- Type: Image (OCR confidence: 65.1%, quality: good)
+
+Extracted text:
+```
+634.4 oil LTE BD: @'Telegram: beta.truesight.me Signattires tab (Main Ledger) ‘'W Source’ Code Dispatch Modiike (dao_protocol/server/dispatch| py) Medulé: Handled by Edgar Be directly (no dedicated Python: module), GAS Handler: register member digital. signatures em Edgar Controller: dao_controller cb Email Verification Event Ver address by sig: ‘ownership of anemall. a
+```
+
+
+### 🤖 Autopilot
+
+I can see the issue — the source code links are overflowing the card. Let me fix the CSS and make the links clickable.
+
+
+### 🤖 Autopilot
+
+The file is huge. Let me use targeted CSS edits to fix the overflow and make links clickable.
+
+
+### 🤖 Autopilot
+
+PR #259 is open. Let me merge it to beta.
+
+
+### 🤖 Autopilot
+
+Fixed and merged. The source code links now:
+
+1. **Wrap properly** — `word-break: break-all` and `overflow-wrap: break-word` keep long GitHub URLs inside the card
+2. **Fully clickable** — no more text spilling off to the right where you can't click it
+
+Should be live at **https://beta.truesight.me/contracts/** now. Also, want me to tackle the navigation linking next so people can actually find this page?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #259 on truesight_me_beta merged successfully (sha: 1a7e7629d59f4df1117c00403884ba33a0501d6e). Pull Request successfully merged
 
