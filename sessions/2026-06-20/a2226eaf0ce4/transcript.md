@@ -1676,11 +1676,13 @@ Now I see it. The approval gate is disabled by default (`require_submission_appr
 ### 🤖 Autopilot
 
 I see — the code calls `edgar.submit_contribution(event_name, attributes, description)`. The `EdgarDirectClient` is in `edgar_logger.py`. Let me check how it formats the submission.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — it calls `self._client.submit(event_name, attributes)`. Let me check the `_client` (EdgarDirectClient) to see what `submit` does.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1909,4 +1911,51 @@ Perfect. Here's the confirmed format for each submission:
 - **Sales price** = $17.00 per bag
 
 The checklist from my previous message is ready. Shall I start executing — one QR code per submission, checking each off as I go?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6394] [Handoff context — this Telegram topic (thread 6394) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Okay then, now I'll go ahead with the execution. Go for it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then start executing.
+
+
+### 🤖 Autopilot
+
+No handoff for this thread. Starting fresh execution. Here we go — **QR code #1:**
+
+
+### 🤖 Autopilot
+
+Let me check what went wrong.
+
+
+### 🤖 Autopilot
+
+I see — the `submit_contribution` function is defined in `edgar_logger.py` as a method of a class, not as a standalone function. Let me check how it's called in `main.py`.
+
+
+### 🤖 Autopilot
+
+Now I see the issue. The code calls `edgar.submit_contribution(event_name, attributes, description=...)` and returns "Failed to submit contribution." when it fails. Let me check the `EdgarDirectClient.submit_contribution` method to see what's happening.
+
+
+### 🤖 Autopilot
+
+The error is happening silently — it logs to logger but doesn't surface the actual error. Let me check the Edgar server logs to see what's rejecting it.
+
+
+### 🤖 Autopilot
+
+I worked through the maximum number of tool rounds but couldn't land a final answer — the request is likely too large to finish in one turn. Let's break it into smaller steps and I'll take them one at a time.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Failed to submit contribution.
+• `ssh run` ×28 → journalctl -u sophia-autopilot --since "5 min ago" --no-pager 2>/dev/null | tail -40; systemctl list-units --type=service --state=running 2>/dev/null | grep -i sophia; ls /opt/truesight_autopilot/app/logs/ 2>/dev/null && tail -30 /opt/truesight_autopilot/app/logs/*.log 2>/dev/null | tail -40; …(+25 more)
 
