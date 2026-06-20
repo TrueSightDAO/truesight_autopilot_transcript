@@ -555,6 +555,7 @@ PR #256 is still open. Let me read the current state of the file from the base b
 ### 🤖 Autopilot
 
 Good, I have the full page. Now let me update the PR to add sample payloads to every contract card. The page is large so I'll use open_fix_pr with a targeted edit.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -773,4 +774,57 @@ Should be live at **https://beta.truesight.me/contracts/** now. Also, want me to
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #259 on truesight_me_beta merged successfully (sha: 1a7e7629d59f4df1117c00403884ba33a0501d6e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7391] The sample payloads, I think we should really allow someone to just copy it and then can insert into the text box on this page and come out as valid 
+
+https://dapp.truesight.me/verify_request.html
+
+Right now I don’t think they do. You are formatting them as JSON or something 🤔🤷
+
+
+### 🤖 Autopilot
+
+You're right — the sample payloads need to match exactly what the verify_request.html form expects. Let me check what format that page accepts.
+
+
+### 🤖 Autopilot
+
+Now I see — the verify_request.html page expects a **plain-text format** like:
+
+```
+[VOTING RIGHTS WITHDRAWAL REQUEST]
+amount to withdraw: 70
+asking price: 90
+--------
+
+My Digital Signature: MIIBIjAN...
+```
+
+It's not JSON at all — it's a specific text format with headers and key-value pairs. The sample payloads I added as JSON won't work there. Let me check what formats the verify page actually parses.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The verify_request.html page expects a specific **plain-text format** with:
+
+1. A header like `[VOTING RIGHTS WITHDRAWAL REQUEST]`
+2. Key-value pairs (e.g. `amount to withdraw: 70`)
+3. A `--------` separator
+4. `My Digital Signature:` followed by the RSA signature
+5. `Request Transaction ID:` followed by the transaction ID
+
+But this verify page is specifically for **Voting Rights Withdrawal** and **Tree Planting** events — it's not a general-purpose "verify any smart contract" tool. The sample payloads I added as JSON are for the **contracts catalog page** (documentation), not for the verify page.
+
+So the question is: do you want me to:
+
+1. **Change the sample payloads** on the contracts page from JSON to the plain-text format that verify_request.html accepts? (But that only works for the 2 event types that verify page handles — Voting Rights Withdrawal and Tree Planting.)
+
+2. **Build a new "Try It" section** on the contracts page that lets you paste a payload and verify it directly?
+
+3. **Update the verify_request.html page** to also accept JSON format so it works with all 30 contract types?
+
+What's your vision — should the contracts page link to the verify page with pre-filled examples, or should the verify page itself be upgraded to handle all contract types?
 
