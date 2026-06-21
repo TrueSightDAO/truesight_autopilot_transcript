@@ -159,5 +159,12 @@
     "summary": "Update SOPHIA_AUTO_ADVANCE_PLAN.md to reflect current status: the feature is fully implemented, merged (PRs 244, 248, 246, 268), and deployed. The plan doc still says \"DRAFT \u2014 pending execution\" which",
     "action": "merge_pr",
     "created_at": "2026-06-21T01:38:40Z"
+  },
+  {
+    "title": "Merge PR #607 on agentic_ai_context",
+    "qr_code": "",
+    "summary": "The SOPHIA_AUTO_ADVANCE_PLAN.md still says \"Status as of 2026-06-17: DRAFT\" but the feature has been implemented, merged, and deployed. Update the status to \"IMPLEMENTED AND DEPLOYED\" and add a note t",
+    "action": "merge_pr",
+    "created_at": "2026-06-21T05:27:09Z"
   }
 ]
