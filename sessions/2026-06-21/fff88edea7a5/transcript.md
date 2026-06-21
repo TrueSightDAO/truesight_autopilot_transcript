@@ -28,11 +28,13 @@ Let me check what feature you're referring to. Could you clarify which feature y
 ### 🤖 Autopilot
 
 Let me search for "auto advance" in the context and codebase.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — there's a plan document. Let me read it.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -59,6 +61,7 @@ Want me to start executing PR1? That would be:
 ### 🤖 Autopilot
 
 Let me check the current state of the codebase to see if anything has been implemented since the plan was drafted.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -137,4 +140,95 @@ That said, I should note: the feature only activates on **handoff threads** (thr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → grep -rn 'auto_advance\|next_action\|AUTO_ADVANCE' /opt/truesight_autopilot/app/ --include='*.py' 2>/dev/null | head -30; grep -i 'AUTO_ADVANCE' /opt/truesight_autopilot/.env 2>/dev/null; echo "---"; systemctl show truesight_autopilot --property=Environment 2>/d; systemctl cat truesight_autopilot 2>/dev/null | head -20; echo "==="; ps aux | grep 'truesight_autopilot' | grep -v grep | head -3; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] Then the question is why the Sophia still stopped in between turns??
+
+
+### 🤖 Autopilot
+
+Good question. Let me check the actual auto-advance loop logic to see what conditions cause it to stop.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual auto-advance loop to see the stopping conditions.
+
+
+### 🤖 Autopilot
+
+Now I see the key issue. Let me check what `advance_out` returns from the brain — specifically, what conditions cause `advance` to be falsy or `decision` to not be `"auto"`.
+
+
+### 🤖 Autopilot
+
+Now I see the critical line. Let me check what `context_repos_dir` is set to — this is where the plan file is read from.
+
+
+### 🤖 Autopilot
+
+The plan file exists. Now let me check the actual plan content to see what the resume tracker looks like — specifically whether the `Advance` column has `auto` markers.
+
+
+### 🤖 Autopilot
+
+Now I see the critical issue. Let me check the resume tracker in the plan — specifically whether the `Advance` column is actually populated with `auto` markers.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The plan's resume tracker shows **PR1–PR3 are all done, merged, and deployed**. The current `RESUME HERE` points to **PR4 — UAT** (user acceptance testing).
+
+The auto-advance feature itself is **fully implemented and deployed**. The question is why Sophia stopped between turns.
+
+Let me check: the auto-advance loop only activates on **handoff threads** — threads where the injected context says "active handoff for `SOPHIA_AUTO_ADVANCE_PLAN.md`". Let me check whether this thread (7507) is a handoff thread.
+
+
+### 🤖 Autopilot
+
+Now let me check the adapter — how does it inject the handoff context into a thread?
+
+
+### 🤖 Autopilot
+
+Now let me check the handoff registry to see if this thread (7507) is actually registered as a handoff.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. Thread **7507** ("Auto advance") is **NOT registered** in the HANDOFF_MANIFEST.md. This is just a normal conversation thread, not a handoff thread with a plan file.
+
+Let me verify by checking the `_handoff_plan_for_thread` function to see what happens when a thread isn't registered.
+
+
+### 🤖 Autopilot
+
+Now let me check the handoffs registry to confirm thread 7507 isn't there.
+
+
+### 🤖 Autopilot
+
+There it is. Thread **7507** is **not registered** in `SOPHIA_HANDOFFS.md` and **not in** `HANDOFF_MANIFEST.md`. This is just a normal conversation thread.
+
+Here's the answer to your question:
+
+---
+
+**The auto-advance loop only activates on handoff threads** — topics registered in `SOPHIA_HANDOFFS.md` with an active plan file. Thread 7507 ("Auto advance") is a normal chat thread, not a handoff, so:
+
+1. `_handoff_plan_for_thread(7507)` returns `None` → no plan file is injected
+2. `_compute_advance_signal()` in the brain gets no plan → returns `None`
+3. The adapter sees `advance = None` → falls through to the single-turn path
+
+**Result:** Sophia behaves exactly like auto-advance is off on this thread, because there's no plan to advance through.
+
+If you want to test auto-advance, you'd need to either:
+- **Register this thread** as a handoff in `SOPHIA_HANDOFFS.md` pointing to a test plan, or
+- **Use an existing handoff thread** (e.g. thread 6416 for the DApp Event Alignment plan) and give it a go-signal
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → grep -n 'def _run_turn_with_auto_advance\|auto_advance\|next_action\|opened_pr\|advance.decision\|advance.gate\|advance.done\|auto_count\|AU; sed -n '974,1050p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1050,1070p' /opt/truesight_autopilot/app/telegram_adapter.py; …(+11 more)
 
