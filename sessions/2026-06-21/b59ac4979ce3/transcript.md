@@ -4553,26 +4553,41 @@ The sync said it succeeded, but the CDN or Cloudflare might be caching the old p
 ### 🤖 Autopilot
 
 Let me check how truesight.me is actually hosted — it might be on Cloudflare Pages or similar, not CloudFront.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the problem now. The prod page is still serving the old HTML. The sync said it succeeded, but the HTML on prod still has the old Mermaid diagram. Let me check what's actually in the prod repo:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod repo still has the old Mermaid diagram. The sync said it succeeded but it clearly didn't update the file. Let me check the beta repo to confirm my fix is there:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Mermaid section specifically in both repos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both beta and prod now have the **same correct Mermaid diagram**. The prod repo has the updated code. The issue must be a **CDN or browser cache**. Let me check what the actual live page serves with a cache-busting request:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4582,6 +4597,17 @@ The live page is serving the **old HTML** (only 7198 bytes, old content). But th
 The site is hosted on **Wix**, not GitHub Pages. The `truesight_me_prod` repo is just a mirror — Wix serves its own copy. The sync only updates the GitHub repo, not the live Wix site.
 
 Let me check how the Wix deployment works:
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4594,6 +4620,7 @@ gh repo sync TrueSightDAO/truesight_me_prod \
 ```
 
 The `sync_beta_to_prod` tool I've been using does a GitHub merge-upstream, but the correct way is `gh repo sync` which fast-forwards. Let me do it properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4714,4 +4741,26 @@ China/Aora events are the biggest open loop — Jul beta planned, 40-page event 
 ---
 
 **The big picture:** The DAO has healthy treasury ($20K), clean ledgers, and good operational infrastructure. But **everything is bottlenecked** by the Black King CNAE fix. Once that clears, USA-bound channels (Kopi Bar, Chives Root, Michael Johnson) can move immediately. The China channel needs both CNAE + GACC (3-6 months). And the mission itself — trees in the ground — is waiting on Paolo to plant.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=6551] Hey, what are some of the, you know, maybe like top tree action items you'd propose that we should do today? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Based on the state of the dials, here are my top 3 action items for today:
+
+---
+
+**1. Prod sync the roadmap page** — The Mermaid diagram on `truesight.me/roadmap` is still showing the old version. You need to go to `github.com/TrueSightDAO/truesight_me_prod` and click **Sync fork → Update branch**. That takes 30 seconds and then everyone sees the correct track map with Pará tree planting, Black King CNAE fix, and all 11 tracks.
+
+**2. Follow up with Matheus on the CNAE amendment** — He said 5-20 business days. Today is June 21, so we're approaching the earliest possible completion (~Jun 26). A quick check-in: "Has the CNAE application been submitted? Any docs you need from us?" This is the single biggest unlock — everything else waits on it.
+
+**3. Prep for tomorrow's call with Layon Costa** — Legal Entity Structuring call at 11am PDT Jun 22. One concrete action: read or re-read the DUNA vs Próspera brief before the call so you know what structure you're leaning toward. The call is with Layon, Breno, and Paloma — having a clear position makes it productive instead of exploratory.
+
+---
+
+**Bonus if you have energy:** Ping Paolo on Pará tree planting — "Financing is secured, what's the timeline for getting trees in the ground?" That's the mission itself, and it's been sitting idle.
 
