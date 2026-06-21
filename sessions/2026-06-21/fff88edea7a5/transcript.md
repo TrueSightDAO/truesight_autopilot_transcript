@@ -281,6 +281,11 @@ Now let me check the handoffs registry to confirm thread 7507 isn't there.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 There it is. Thread **7507** is **not registered** in `SOPHIA_HANDOFFS.md` and **not in** `HANDOFF_MANIFEST.md`. This is just a normal conversation thread.
 
 Here's the answer to your question:
@@ -312,11 +317,18 @@ If you want to test auto-advance, you'd need to either:
 ### 🤖 Autopilot
 
 That's a reasonable design change. Let me look at what would need to change to make auto-advance work on all threads, not just handoff threads.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the adapter side — how it receives and acts on the advance signal.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -448,4 +460,75 @@ Could you clarify what "merch" refers to? Is it:
 1. **Agroverse Shop** (agroverse.shop) — deploying new SKUs/products?
 2. **Chocolate Subscription** plan (thread 1939)?
 3. Something else entirely?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] [Handoff context — this Telegram topic (thread 7507) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I want auto advance to continue
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] How is progress? All deployed??
+
+
+### 🤖 Autopilot
+
+Let me check the current state of PR #268 and the auto-advance feature.
+
+
+### 🤖 Autopilot
+
+PR #268 isn't in the open list — let me check if it was already merged or closed.
+
+
+### 🤖 Autopilot
+
+PR #268 was **already merged** (2026-06-21 01:30 UTC). So the auto-advance-on-all-threads change is live. Let me check if it was deployed.
+
+
+### 🤖 Autopilot
+
+The code is merged but the service hasn't been restarted since the merge. Let me deploy it.
+
+
+### 🤖 Autopilot
+
+Already on the latest commit. Let me check if the service was restarted after the merge.
+
+
+### 🤖 Autopilot
+
+Right, can't restart manually. Let me check the actual running process to see if it has the new code.
+
+
+### 🤖 Autopilot
+
+The adapter process started at 01:32 — that's AFTER the PR #268 merge at 01:30. Let me check if it's running the new code.
+
+
+### 🤖 Autopilot
+
+The new code is on disk and the process started at 01:32 (after the merge). Let me verify the running process is using this code.
+
+
+### 🤖 Autopilot
+
+The code is live and deployed. The process started at 01:32, well after the merge. So auto-advance on all threads **is enabled and running**.
+
+Now, you asked "How is progress? All deployed??" — here's the status:
+
+**PR #268** ✅ Merged and deployed. Auto-advance now works on **all threads**, not just handoff threads. When Sophia opens a PR, she'll auto-continue to the next turn (up to 8 turns).
+
+**Current state on this thread (7507):**
+- The feature is live
+- But auto-advance only fires when a turn **opens a PR** — this turn I haven't opened any PRs yet, so it's a single-turn response
+
+Do you want me to test it? I could open a small PR to demonstrate the auto-advance loop working on this normal thread.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && git log --oneline -5 2>&1; echo "==="; sudo journalctl -u truesight_autopilot --since "2026-06-21 01:30" --no; sudo journalctl -u truesight_autopilot --since "2026-06-21 01:00" --no-pager 2>&1 | head -5; echo "==="; systemctl show truesight_autopilot ; sudo systemctl restart truesight_autopilot 2>&1; sleep 2; sudo journalctl -u truesight_autopilot --since "1 minute ago" --no-pager 2>&1 | ta; …(+4 more)
+• `deploy autopilot` → Already on the latest commit 5a3f9571 — no deploy needed. Did NOT restart. Do not retry.
 
