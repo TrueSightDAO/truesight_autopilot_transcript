@@ -147,13 +147,6 @@
     "created_at": "2026-06-18T21:02:42Z"
   },
   {
-    "title": "Merge PR #256 on truesight_me_beta",
-    "qr_code": "",
-    "summary": "Enhance the Smart Contracts page at contracts/index.html with the following additions for EVERY contract card:\n\n1. **Source code links** \u2014 add a \"Source Code\" section to each contract card with links ",
-    "action": "merge_pr",
-    "created_at": "2026-06-20T01:18:13Z"
-  },
-  {
     "title": "Merge PR #257 on truesight_me_beta",
     "qr_code": "",
     "summary": "Add sample payloads to every contract card on the Smart Contracts page (contracts/index.html). \n\nFor each contract card and each variant, add a collapsible \"Sample Payload\" section that shows a comple",
@@ -161,17 +154,10 @@
     "created_at": "2026-06-20T01:20:24Z"
   },
   {
-    "title": "Merge PR #258 on truesight_me_beta",
+    "title": "Merge PR #268 on truesight_autopilot",
     "qr_code": "",
-    "summary": "Resolve merge conflict on contracts/index.html and add sample payloads to every contract card.\n\nThe current main branch has PR #256 merged (source links, authority badges, sheet references). PR #257 (",
+    "summary": "**Problem:** Auto-advance only works on handoff threads (those with a plan file registered in SOPHIA_HANDOFFS.md). On normal conversation threads, `_compute_advance_signal` returns `None` because `_ex",
     "action": "merge_pr",
-    "created_at": "2026-06-20T01:24:30Z"
-  },
-  {
-    "title": "Merge PR #260 on truesight_me_beta",
-    "qr_code": "",
-    "summary": "Update contracts/index.html with two changes:\n\n**1. Replace JSON sample payloads with plain-text format for verify-compatible events**\n\nFind the sample payload for the Voting Rights Withdrawal contrac",
-    "action": "merge_pr",
-    "created_at": "2026-06-20T01:46:32Z"
+    "created_at": "2026-06-21T01:14:17Z"
   }
 ]
