@@ -224,11 +224,18 @@ Now I see the critical line. Let me check what `context_repos_dir` is set to —
 ### 🤖 Autopilot
 
 The plan file exists. Now let me check the actual plan content to see what the resume tracker looks like — specifically whether the `Advance` column has `auto` markers.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the critical issue. Let me check the resume tracker in the plan — specifically whether the `Advance` column is actually populated with `auto` markers.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -238,16 +245,24 @@ Now I see the full picture. The plan's resume tracker shows **PR1–PR3 are all 
 The auto-advance feature itself is **fully implemented and deployed**. The question is why Sophia stopped between turns.
 
 Let me check: the auto-advance loop only activates on **handoff threads** — threads where the injected context says "active handoff for `SOPHIA_AUTO_ADVANCE_PLAN.md`". Let me check whether this thread (7507) is a handoff thread.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the adapter — how does it inject the handoff context into a thread?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the handoff registry to see if this thread (7507) is actually registered as a handoff.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -255,6 +270,7 @@ Now let me check the handoff registry to see if this thread (7507) is actually r
 Now I see it clearly. Thread **7507** ("Auto advance") is **NOT registered** in the HANDOFF_MANIFEST.md. This is just a normal conversation thread, not a handoff thread with a plan file.
 
 Let me verify by checking the `_handoff_plan_for_thread` function to see what happens when a thread isn't registered.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -390,4 +406,18 @@ Want me to merge it?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff format --check app scripts tests 2>&1; echo "==="; python3 -m pytest -q 2>&1 | tail -5; …(+3 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/268
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] Tidak ke next next. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're saying "don't go to the next" — you want me to **not** merge the PR yet, and you don't want auto-advance to continue. Understood.
+
+So just to clarify your intent: you're saying **no** to auto-advance on all threads? You want the current behavior preserved — only handoff threads get auto-advance, and normal threads stay single-turn?
+
+Or are you saying "don't merge PR #268 yet, I want to review it first"?
 
