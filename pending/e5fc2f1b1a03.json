@@ -154,10 +154,10 @@
     "created_at": "2026-06-20T01:20:24Z"
   },
   {
-    "title": "Merge PR #268 on truesight_autopilot",
+    "title": "Merge PR #605 on agentic_ai_context",
     "qr_code": "",
-    "summary": "**Problem:** Auto-advance only works on handoff threads (those with a plan file registered in SOPHIA_HANDOFFS.md). On normal conversation threads, `_compute_advance_signal` returns `None` because `_ex",
+    "summary": "Update SOPHIA_AUTO_ADVANCE_PLAN.md to reflect current status: the feature is fully implemented, merged (PRs 244, 248, 246, 268), and deployed. The plan doc still says \"DRAFT \u2014 pending execution\" which",
     "action": "merge_pr",
-    "created_at": "2026-06-21T01:14:17Z"
+    "created_at": "2026-06-21T01:38:40Z"
   }
 ]
