@@ -73,51 +73,76 @@ from .auto_advance import next_action
 ```
 
 Let me check if that module exists and what state it's in.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check if the adapter side (the loop that obeys the advance signal) is wired up, and whether the env flag exists.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check whether the adapter actually uses the auto-advance signal in the dispatch loop.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GitHub search index seems stale. Let me check the live deployed code on the autopilot box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The code is fully implemented. Let me check whether the env flag is actually set on the running instance.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check if the service is running with that env loaded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service loads `.env` via `EnvironmentFile`, and `.env` has `AUTO_ADVANCE=true`. Let me confirm the service actually picked it up.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual service startup logs to see if it loaded the flag.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual service startup to see if the flag was loaded at boot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service was restarted at Jun 20 23:05. Let me check if the `.env` had `AUTO_ADVANCE=true` at that point, and verify the running process actually has it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -150,11 +175,28 @@ That said, I should note: the feature only activates on **handoff threads** (thr
 ### 🤖 Autopilot
 
 Good question. Let me check the actual auto-advance loop logic to see what conditions cause it to stop.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual auto-advance loop to see the stopping conditions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -231,4 +273,44 @@ If you want to test auto-advance, you'd need to either:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → grep -n 'def _run_turn_with_auto_advance\|auto_advance\|next_action\|opened_pr\|advance.decision\|advance.gate\|advance.done\|auto_count\|AU; sed -n '974,1050p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '1050,1070p' /opt/truesight_autopilot/app/telegram_adapter.py; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] I think it should be activated in all threats. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a reasonable design change. Let me look at what would need to change to make auto-advance work on all threads, not just handoff threads.
+
+
+### 🤖 Autopilot
+
+Now let me check the adapter side — how it receives and acts on the advance signal.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The issue is clear:
+
+**The auto-advance loop works, but it only fires when the brain emits an `advance` signal.** The brain only emits that signal when it finds a plan file in the conversation history — which only happens on handoff threads where the plan filename is injected via `_handoff_prefix()`.
+
+On a normal thread like this one, `_extract_plan_file()` returns `None`, so `_compute_advance_signal()` returns `None`, and the adapter runs exactly one turn.
+
+To make auto-advance work on **all threads**, the design needs to change from "advance through a plan file" to "auto-advance when the turn opened a PR." Let me propose the change:
+
+---
+
+**The fix:** Instead of requiring a plan file, the brain should emit an auto-advance signal whenever:
+1. The turn successfully opened a PR (`open_fix_pr` was called), AND
+2. There's no explicit gate reason to stop
+
+This is actually simpler than the current design. The adapter already has the loop — it just needs the brain to say "yes, keep going" on any thread where a PR was opened.
+
+Want me to open a PR implementing this? The change would be in `_compute_advance_signal()` in `main.py` — if no plan file is found but a PR was opened, default to `auto` instead of `None`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → sed -n '2460,2500p' /opt/truesight_autopilot/app/main.py; sed -n '920,980p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '980,1060p' /opt/truesight_autopilot/app/telegram_adapter.py
 
