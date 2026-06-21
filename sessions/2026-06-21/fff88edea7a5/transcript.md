@@ -364,26 +364,36 @@ Want me to open a PR implementing this? The change would be in `_compute_advance
 ### 🤖 Autopilot
 
 Let me first run the local test suite to make sure the current code is clean before I make changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's a pre-existing error (not from my change). Let me check formatting and tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 602 tests pass. The formatting issues are pre-existing (not my changes). Now let me read the exact code I need to change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the `next_action` function to understand what it returns.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. The change is straightforward. The key is in `_compute_advance_signal` in `main.py` — when there's no plan file but a PR was opened, I should emit an `auto` signal so the adapter keeps going. Let me also check the adapter's auto-advance loop to see what message it sends when continuing without a plan name.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -395,6 +405,7 @@ Now let me implement the change. The logic is:
 1. If there's a plan file → use the existing plan-based logic (unchanged)
 2. If there's NO plan file but a PR was opened → emit `auto` (keep going, no plan context needed)
 3. If there's NO plan file and NO PR was opened → return `None` (no auto-advance, single turn as before)
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -531,4 +542,48 @@ Do you want me to test it? I could open a small PR to demonstrate the auto-advan
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot && git log --oneline -5 2>&1; echo "==="; sudo journalctl -u truesight_autopilot --since "2026-06-21 01:30" --no; sudo journalctl -u truesight_autopilot --since "2026-06-21 01:00" --no-pager 2>&1 | head -5; echo "==="; systemctl show truesight_autopilot ; sudo systemctl restart truesight_autopilot 2>&1; sleep 2; sudo journalctl -u truesight_autopilot --since "1 minute ago" --no-pager 2>&1 | ta; …(+4 more)
 • `deploy autopilot` → Already on the latest commit 5a3f9571 — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] Yeah, try it. Give it a shot and let's see how it goes [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me open a small PR to trigger the auto-advance loop. I'll make a minor improvement — let me check what's a quick, useful fix.
+
+
+### 🤖 Autopilot
+
+Good, there's a small pending item about the 3 deselected unit tests. But let me pick something even simpler and more visible — let me check if there's a quick doc fix or small improvement I can make to demonstrate the auto-advance loop.
+
+Let me just open a small, useful PR — I'll add a note to the auto-advance plan doc saying it's been implemented and deployed.
+
+
+### 🤖 Autopilot
+
+The plan doc still says DRAFT. Let me update it to reflect the current state — that's a small, useful PR that will trigger the auto-advance loop.
+
+
+### 🤖 Autopilot
+
+PR opened! Now let's see if auto-advance kicks in...
+
+The PR is at: https://github.com/TrueSightDAO/agentic_ai_context/pull/605
+
+Now the auto-advance loop should detect that I opened a PR and auto-continue to the next turn. Let me wait for the next turn to fire...
+
+Actually, I'm still in the same turn right now — the auto-advance loop fires **after** this turn completes, when the adapter checks the advance signal. So I need to finish this response, and then the adapter will:
+
+1. See that `open_fix_pr` was called (PR #605)
+2. Check for a plan file → none on this thread
+3. Fall through to the new code: `opened_pr = True` → emit `{decision: "auto", next_unit: "the next PR"}`
+4. Re-dispatch me for another turn
+
+So if auto-advance works, you should see me come back with another turn automatically. Let's see if it fires! 🚀
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/agentic_ai_context/pull/605
 
