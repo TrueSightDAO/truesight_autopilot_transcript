@@ -202,11 +202,23 @@ Let me look at the actual auto-advance loop to see the stopping conditions.
 ### 🤖 Autopilot
 
 Now I see the key issue. Let me check what `advance_out` returns from the brain — specifically, what conditions cause `advance` to be falsy or `decision` to not be `"auto"`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the critical line. Let me check what `context_repos_dir` is set to — this is where the plan file is read from.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -313,4 +325,69 @@ Want me to open a PR implementing this? The change would be in `_compute_advance
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → sed -n '2460,2500p' /opt/truesight_autopilot/app/main.py; sed -n '920,980p' /opt/truesight_autopilot/app/telegram_adapter.py; sed -n '980,1060p' /opt/truesight_autopilot/app/telegram_adapter.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] Go! [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first run the local test suite to make sure the current code is clean before I make changes.
+
+
+### 🤖 Autopilot
+
+That's a pre-existing error (not from my change). Let me check formatting and tests.
+
+
+### 🤖 Autopilot
+
+All 602 tests pass. The formatting issues are pre-existing (not my changes). Now let me read the exact code I need to change.
+
+
+### 🤖 Autopilot
+
+Now let me also check the `next_action` function to understand what it returns.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The change is straightforward. The key is in `_compute_advance_signal` in `main.py` — when there's no plan file but a PR was opened, I should emit an `auto` signal so the adapter keeps going. Let me also check the adapter's auto-advance loop to see what message it sends when continuing without a plan name.
+
+
+### 🤖 Autopilot
+
+Good. The adapter's auto-advance loop already handles the case generically — it just needs an `advance` signal with `decision: "auto"`. The `plan` field is only used in the "continue" message for naming.
+
+Now let me implement the change. The logic is:
+
+1. If there's a plan file → use the existing plan-based logic (unchanged)
+2. If there's NO plan file but a PR was opened → emit `auto` (keep going, no plan context needed)
+3. If there's NO plan file and NO PR was opened → return `None` (no auto-advance, single turn as before)
+
+
+### 🤖 Autopilot
+
+PR is open! Here's the summary:
+
+**PR #268** — "Auto-advance on all threads, not just handoff threads"
+
+**What changed:**
+- `_compute_advance_signal()` in `main.py`: when no plan file is found but a PR was opened, it now emits `{decision: "auto", next_unit: "the next PR"}` instead of returning `None`
+- The adapter's continue message handles the case where no plan name is available
+- Plan-file handoff threads are **unchanged** — they still get full gate markers and unit names
+
+**Behavior after merge:**
+- Any thread where Sophia opens a PR → auto-advance kicks in (up to the 8-turn cap)
+- Threads where no PR is opened → single turn as before (no change)
+- Handoff threads → same as before (richer gate markers still work)
+
+Want me to merge it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1; cd /opt/truesight_autopilot && python3 -m ruff format --check app scripts tests 2>&1; echo "==="; python3 -m pytest -q 2>&1 | tail -5; …(+3 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/268
 
