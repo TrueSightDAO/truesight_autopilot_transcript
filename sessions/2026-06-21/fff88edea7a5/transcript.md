@@ -456,11 +456,18 @@ Go ahead to the next stage merch and deploy [System note: the user sent this as 
 ### 🤖 Autopilot
 
 Let me check the handoff registry to see if this thread is registered with a plan.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This thread (7507) is not registered in the manifest. But you said "go ahead to the next stage merch and deploy" — let me search for a merch/deploy plan.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -586,4 +593,130 @@ So if auto-advance works, you should see me come back with another turn automati
 ———
 **✅ Done this turn — actions taken:**
 • `open fix pr` → https://github.com/TrueSightDAO/agentic_ai_context/pull/605
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7507] What is the conclusion??
+
+
+### 🤖 Autopilot
+
+The auto-advance **did not fire**. I opened PR #605, completed the turn, and then stopped — you had to prompt me again manually.
+
+So the feature is **not working as expected** on this thread. Let me diagnose why.
+
+
+### 🤖 Autopilot
+
+Env flag is set. Let me check the adapter's auto-advance loop more carefully — specifically the condition that checks whether to re-dispatch.
+
+
+### 🤖 Autopilot
+
+I see the issue now. Let me look at the critical condition:
+
+```python
+advance = advance_box.get("advance")
+if not settings.auto_advance or not advance:
+    return  # auto-advance off or no signal -> single turn, done
+```
+
+The `advance` signal comes from `advance_box` which is populated by `call_chat_with_progress`. Let me trace back to see how `advance_out` is populated from the brain's response.
+
+
+### 🤖 Autopilot
+
+OK so the adapter reads `event.get("advance")` from the `done` event. Now let me check the brain side — does `main.py` actually emit the `advance` field in the `done` event?
+
+
+### 🤖 Autopilot
+
+The brain does compute and emit the advance signal. Let me check what happens at line 2943 — is that the right code path for this thread?
+
+
+### 🤖 Autopilot
+
+The code path looks correct. Let me check the actual logs from my previous turn to see what happened — did the brain emit an advance signal?
+
+
+### 🤖 Autopilot
+
+The adapter restarted at 01:32 with the new code. Let me check the main brain service logs too.
+
+
+### 🤖 Autopilot
+
+I see the brain service is running and processing my current turn. Let me check if there's a specific log about the advance signal from my previous turn (the one where I opened PR #605).
+
+
+### 🤖 Autopilot
+
+That's from the deploy. Let me check the logs from my actual turn (the one where I opened PR #605).
+
+
+### 🤖 Autopilot
+
+I can see the brain processed the turn and opened PR #605. But I don't see any `advance` signal in the logs. Let me check if the brain actually computed and emitted it.
+
+
+### 🤖 Autopilot
+
+I don't see any `advance` signal being logged. Let me check the actual code path more carefully — the `_compute_advance_signal` function is called, but maybe the `tool_trace` doesn't contain `open_fix_pr` the way the code expects.
+
+
+### 🤖 Autopilot
+
+The code looks correct. The issue might be in how `tool_trace` is populated. Let me check what `tool_trace` actually looks like — the `open_fix_pr` tool might be recorded under a different name in the trace.
+
+
+### 🤖 Autopilot
+
+Let me check how tool calls are recorded in the trace — specifically what `name` field is used for `open_fix_pr`.
+
+
+### 🤖 Autopilot
+
+So `func_name` is used. Let me check what `func_name` is for `open_fix_pr` — it might be the actual Python function name, not the tool name the LLM sees.
+
+
+### 🤖 Autopilot
+
+The tool name is `open_fix_pr` — that matches. Let me check the orchestration spec to see how the tool is registered.
+
+
+### 🤖 Autopilot
+
+The tool name is `open_fix_pr` and it's dispatched inline. Let me check how the tool call is dispatched and whether `func_name` is set to `"open_fix_pr"` in the trace.
+
+
+### 🤖 Autopilot
+
+Now I see the issue! The `open_fix_pr` handler returns a string like:
+
+```
+PR opened: https://github.com/.../pull/605
+
+```json
+{"proposal": {"action": "merge_pr", ...}}
+```
+```
+
+But the key question is: does the tool trace record `func_name` as `"open_fix_pr"`? Let me check how the tool dispatch records the trace.
+
+
+### 🤖 Autopilot
+
+OK so `func_name` is `"open_fix_pr"` and it IS recorded in `state["tool_trace"]`. The code at line 2480 checks `(t or {}).get("name") == "open_fix_pr"` which should match.
+
+Let me check if there's a different code path — maybe the `/chat` endpoint (used by the Telegram adapter) has a different flow than the SSE streaming endpoint.
+
+
+### 🤖 Autopilot
+
+There are TWO call sites! Line 2943 (SSE streaming endpoint) and line 4297 (the `/chat` endpoint). The Telegram adapter uses the `/chat` endpoint. Let me check line 4297's context.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×30 → grep -n 'auto_advance\|AUTO_ADVANCE' /opt/truesight_autopilot/app/config.py 2>/dev/null; grep 'AUTO_ADVANCE' /opt/truesight_autopilot/.env 2>/dev/null; sed -n '920,1060p' /opt/truesight_autopilot/app/telegram_adapter.py; …(+27 more)
 
