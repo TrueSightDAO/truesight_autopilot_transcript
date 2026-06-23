@@ -300,11 +300,13 @@ Gary said "go ahead" — I'll proceed with **Step 4: Deploy**. Let me fix the co
 ### 🤖 Autopilot
 
 The entry points aren't being registered. Let me check the pyproject.toml for the console_scripts config.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The entry points are in pyproject.toml. The issue is that the package installs as "UNKNOWN" — the name isn't being picked up. Let me check if there's a setup.cfg or setup.py overriding it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -426,6 +428,30 @@ Let me submit the contribution for this work. I'll record it as Sophia Truesight
 | **TDG Issued** | 0 |
 
 Want me to also record a contribution for yourself (Gary) for reviewing/merging PR #132 and overseeing the execution?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7644] yeah. record one for me
+
+
+### 🤖 Autopilot
+
+**✅ Done.** Gary's contribution recorded:
+
+| Field | Value |
+|-------|-------|
+| **Contributor** | Gary Teh |
+| **Type** | Time (Minutes) |
+| **Amount** | 15 min |
+| **Description** | Reviewed and merged PR #132 (Proposal CLI); oversaw execution of PROPOSAL_CLI_IMPLEMENTATION_PLAN |
+| **TDG Issued** | 0 |
+
+Anything else on this thread?
 
 ———
 **✅ Done this turn — actions taken:**
