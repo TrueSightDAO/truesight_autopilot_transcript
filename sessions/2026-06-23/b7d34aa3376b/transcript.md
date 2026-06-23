@@ -84,3 +84,103 @@ This is a **handoff topic** — a local LLM (Claude on your machine) wrote the p
 
 So the ball's in your court. If you want me to proceed with **PR1** (define-currency CLI + Edgar dispatch route for `dao_protocol`), just say **"go"** and I'll execute it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7611] [Handoff context — this Telegram topic (thread 7611) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+proceed
+
+
+### 🤖 Autopilot
+
+**Go signal received.** Executing **PR1** — `dao_protocol`: define-currency CLI + Edgar dispatch route.
+
+Let me first look at the existing code to mirror the patterns.
+
+
+### 🤖 Autopilot
+
+Now let me look at the validators and the edgar_client module to understand the patterns:
+
+
+### 🤖 Autopilot
+
+Now let me also check the `build_event_cli` function to understand the pattern:
+
+
+### 🤖 Autopilot
+
+Let me find the `build_event_cli` function:
+
+
+### 🤖 Autopilot
+
+Let me look at the `__init__.py` to find where `build_event_cli` is defined:
+
+
+### 🤖 Autopilot
+
+So `build_event_cli` is imported from `edgar_client.py`. Let me find it there:
+
+
+### 🤖 Autopilot
+
+The file is truncated — let me read the rest to find `build_event_cli`:
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture of the patterns. Let me also check the existing test structure:
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. Let me also check the `report_currency_conversion.py` as a close analog (it's a currency-related event):
+
+
+### 🤖 Autopilot
+
+Now I have a thorough understanding of the patterns. Let me create the PR1 implementation.
+
+
+### 🤖 Autopilot
+
+**PR1 is done.** Here's the summary:
+
+---
+
+### ✅ PR1 — `dao_protocol`: define-currency CLI + Edgar dispatch route
+
+**PR:** https://github.com/TrueSightDAO/dao_protocol/pull/131
+
+**What was created:**
+
+1. **`truesight_dao_client/modules/define_currency.py`** — new CLI module with named flags for all 12 Currencies tab columns (A–L). `Serializable` defaults to `TRUE` so currencies land QR-ready by default. Validators on key fields, `--dry-run` support, `--attr` escape hatch.
+
+2. **`pyproject.toml`** — registered `truesight-dao-define-currency` console script.
+
+3. **`dispatch.py`** — added routing entry:
+   ```
+   [CURRENCY DEFINITION EVENT] → CURRENCY_DEFINITION → processCurrencyDefinitionsFromTelegramChatLogs
+   ```
+
+**Test it with:**
+```bash
+truesight-dao-define-currency \
+    --currency 'Ceremonial Cacao (250g)' \
+    --price 25.00 \
+    --landing-page 'https://truesight.me/shop/ceremonial-cacao' \
+    --ledger 'AGROVERSE' \
+    --farm-name 'Fazenda Rendimento' \
+    --state 'Bahia' \
+    --country 'Brazil' \
+    --year 2026 \
+    --unit-weight-grams 250 \
+    --dry-run
+```
+
+---
+
+**Stopped here per §5a discipline.** PR2 (tokenomics GAS handler in 1N6o00) is next — say **"go"** when you're ready for it.
+
