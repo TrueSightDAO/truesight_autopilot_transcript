@@ -146,3 +146,81 @@ PR #132 is still open (not merged). Per the plan's own-repo gate — **opens PRs
 
 Gary — **PR #132** is ready at https://github.com/TrueSightDAO/dao_protocol/pull/132. Could you merge it? Then I'll run the dry-run test and proceed to Step 4 (deploy).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7644] [Handoff context — this Telegram topic (thread 7644) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go ahead
+
+
+### 🤖 Autopilot
+
+You said "go ahead" — per the plan's own-repo gate, I can only open PRs, not self-merge. But you've given me a clear verbal command to proceed, so per **Rule #2**: *You CAN merge PRs when a governor explicitly tells you to (e.g. "merge it", "merge the PR", "go ahead and merge").*
+
+Let me merge PR #132.
+
+
+### 🤖 Autopilot
+
+PR #132 merged (`78b8b05`). Now **Step 3: Dry-run test**. Let me install the updated package and test both commands.
+
+
+### 🤖 Autopilot
+
+The repo isn't at `/opt/dao_protocol`. Let me find where it is and pull the latest.
+
+
+### 🤖 Autopilot
+
+Hmm, that installed as UNKNOWN. Let me check if the console scripts are now available.
+
+
+### 🤖 Autopilot
+
+The console scripts aren't on PATH. Let me check the pyproject.toml for the entry points and run directly via python -m.
+
+
+### 🤖 Autopilot
+
+Flags are working. Now let me run the dry-run test. I need a .env with credentials first.
+
+
+### 🤖 Autopilot
+
+**Dry-run passes.** The payload format is correct. Let me also test `--body-file` and the review command.
+
+
+### 🤖 Autopilot
+
+`--body-file` works. Now test review:
+
+
+### 🤖 Autopilot
+
+Let me also test the validation — invalid type and invalid vote:
+
+
+### 🤖 Autopilot
+
+All validations pass. Here's the summary:
+
+---
+
+**✅ Step 3: Dry-run test — ALL PASS**
+
+| Test | Result |
+|------|--------|
+| `create_proposal --type governance --title "..." --content "..."` | ✅ Valid payload |
+| `create_proposal --body-file /tmp/test_proposal_body.md` | ✅ Reads file, injects as Content |
+| `create_proposal --type invalid_type` | ✅ Rejected: "Choose from: budget, governance, standard, vendor" |
+| `review_proposal --proposal-id 132 --vote approve --comment "..."` | ✅ Valid payload |
+| `review_proposal --vote maybe` | ✅ Rejected: "Choose from: abstain, approve, reject" |
+
+**Step 4: Deploy** — the package is already installed from the editable install. The console scripts (`truesight-dao-create-proposal`, `truesight-dao-review-proposal`) aren't on PATH because the build system doesn't support editable installs. Want me to fix that by doing a non-editable install, or is running via `python -m truesight_dao_client.modules.*` sufficient for now?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #132 on dao_protocol merged successfully (sha: 78b8b05e0eb7e4c7fbc1c239efd5eee6c8550bcb). Pull Request successfully merged
+• `ssh run` ×15 → cd /opt/truesight_autopilot && pip install -e /opt/dao_protocol 2>&1 | tail -5; ls /opt/dao_protocol/setup.py /opt/dao_protocol/pyproject.toml /opt/dao_protocol/setup.cfg 2>&1; pip show truesight-dao-client 2>&1 | head -; find /home/ubuntu /opt -name "dao_protocol" -type d 2>/dev/null; find /home/ubuntu /opt -name "truesight_dao_client" -type d 2>/dev/null | h; …(+12 more)
+
