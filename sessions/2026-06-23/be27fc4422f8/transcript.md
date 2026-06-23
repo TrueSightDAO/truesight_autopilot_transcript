@@ -180,37 +180,79 @@ PR #132 merged (`78b8b05`). Now **Step 3: Dry-run test**. Let me install the upd
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The repo isn't at `/opt/dao_protocol`. Let me find where it is and pull the latest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm, that installed as UNKNOWN. Let me check if the console scripts are now available.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The console scripts aren't on PATH. Let me check the pyproject.toml for the entry points and run directly via python -m.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Flags are working. Now let me run the dry-run test. I need a .env with credentials first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Dry-run passes.** The payload format is correct. Let me also test `--body-file` and the review command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `--body-file` works. Now test review:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also test the validation — invalid type and invalid vote:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -307,4 +349,31 @@ Let me also add the PATH permanently for the autopilot user's shell:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /opt/truesight_autopilot/dao_protocol && pip install . 2>&1 | tail -5; which truesight-dao-create-proposal 2>/dev/null; truesight-dao-create-proposal --help 2>&1 | head -5; ls /opt/truesight_autopilot/dao_protocol/setup.cfg /opt/truesight_autopilot/dao_protocol/setup.py 2>&1; pip show truesight-dao-client 2>&1 |; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7644] report contribution
+
+
+### 🤖 Autopilot
+
+Let me look up the correct event format for a contribution report.
+
+
+### 🤖 Autopilot
+
+Gary — I need a few details to submit the contribution:
+
+1. **Type** — `Time (Minutes)` or `USD`?
+2. **Amount** — how many minutes or dollars?
+3. **Description** — what was the work?
+4. **Contributor(s)** — who? (you / Sophia / both?)
+5. **TDG Issued** — any TDG to award?
+
+Or if you want to use the CLI, you can run:
+
+```
+truesight-dao-report-contribution --type "Time (Minutes)" --amount 60 --description "..." --contributor "Gary Teh" --tdg-issued 0 --dry-run
+```
 
