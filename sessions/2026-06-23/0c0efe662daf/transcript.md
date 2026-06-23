@@ -5461,6 +5461,16 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done. Paloma's contribution is submitted:
 
 - **30 minutes** logged for **Paloma**
@@ -5519,26 +5529,61 @@ Profit booked in Prospera (1% tax)
 This is clean. The profit sits in Prospera at 1% tax, not in TrueTech Inc (US 21% corporate tax). The Brazilian entity sells at a low margin (minimizing Brazilian tax), and TrueTech Inc sells at wholesale (minimizing US tax).
 
 Let me update the Brazil Export Entity Brief with these specifics.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me update the brief with Breno's specifics on Prospera.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also update the PDF.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the markdown is updated. Now let me generate the PDF and merge.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF wasn't saved to `/tmp/tg_attachments/` by the `generate_pdf` tool. Let me find it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5689,4 +5734,89 @@ Rather than two separate proposals (which splits attention and may cause both to
 ---
 
 Want me to save this as a proposal draft in `agentic_ai_context/proposal_drafts/` so you can copy-paste it into the DApp form?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] do you think you can extend dao_client so that you can use it to allow yourself submission of proposals. Also can you make sure to also extend edgar to allow proposals submitted by sentinels to go through?
+
+
+### 🤖 Autopilot
+
+Let me look at the current dao_client and Edgar codebase to understand the architecture before planning the extension.
+
+
+### 🤖 Autopilot
+
+Now let me check how the Edgar API handles proposals and the sentiment_importer side.
+
+
+### 🤖 Autopilot
+
+Now let me check the Edgar routes to see if there's already a proposal endpoint.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture of the architecture. Let me check the existing proposal flow in the DApp to understand how proposals are currently created.
+
+
+### 🤖 Autopilot
+
+Let me find the JavaScript that handles the form submission in the create_proposal page.
+
+
+### 🤖 Autopilot
+
+Now I understand the full flow. The DApp submits proposals by posting a signed text payload to Edgar's `submit_contribution` endpoint. Edgar then processes it and creates a GitHub PR via the GAS proposal manager.
+
+Let me check how Edgar processes the proposal payload.
+
+
+### 🤖 Autopilot
+
+Now I have a complete understanding of the architecture. Let me give you my assessment.
+
+---
+
+## Architecture Analysis
+
+### Current flow for proposals:
+
+```
+DApp (create_proposal.html)
+    → User signs payload with private key
+    → POST to Edgar's submit_contribution endpoint
+    → Edgar logs to Telegram Chat Logs sheet
+    → Edgar triggers GAS webhook (process_dapp_payloads)
+    → GAS reads the sheet, creates a PR in agentic_ai_context
+```
+
+### What needs to change:
+
+**1. Extend `dao_client`** — Add a `truesight-dao-create-proposal` CLI command that:
+   - Takes title, content, proposal type
+   - Signs with Sophia's DAO identity key
+   - Posts to Edgar's `submit_contribution` endpoint (same as the DApp does)
+   - Returns the submission result
+
+**2. Extend Edgar** — The `submit_contribution` endpoint already handles `[PROPOSAL CREATION]` payloads (I can see the DApp sends them with that prefix). But we need to:
+   - Add a new event type like `PROPOSAL CREATION EVENT` that Edgar recognizes
+   - Ensure the GAS webhook (`process_dapp_payloads`) creates the PR from Sophia's submissions, not just from the DApp
+   - Add a "submitted by sentinel" flag so the proposal shows Sophia as the submitter
+
+**3. Extend the GAS proposal manager** — The `processDAppPayloads` function needs to handle proposals submitted by Sophia (sentinel) the same way it handles DApp submissions.
+
+### My recommendation:
+
+This is a meaningful engineering effort across three codebases (dao_client, sentiment_importer/Edgar, tokenomics/GAS). Let me scope it properly:
+
+| Component | Change | Effort |
+|-----------|--------|--------|
+| **dao_client** | New CLI command `truesight-dao-create-proposal` | Small (~50 lines) |
+| **Edgar** | Add `PROPOSAL CREATION EVENT` type, allow sentinel submissions | Medium (~100 lines) |
+| **GAS** | Update `processDAppPayloads` to handle sentinel proposals | Small (~30 lines) |
+| **DApp** | No change needed — Sophia just uses the same endpoint | None |
+
+Want me to proceed with building this? I'd start with the `dao_client` extension and the Edgar changes, then update the GAS script.
 
