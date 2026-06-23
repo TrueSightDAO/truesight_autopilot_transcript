@@ -5635,11 +5635,23 @@ Thoughts?
 ### 🤖 Autopilot
 
 Great question. Let me check what the proposal creation tool looks like and how proposals are structured in the DApp.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how proposals are stored and what the backend expects.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5647,21 +5659,45 @@ Let me check how proposals are stored and what the backend expects.
 Now I understand the proposal system. Proposals are created as PRs in the `agentic_ai_context` repo with a specific markdown format. The DApp's `create_proposal.html` submits to the GAS backend which creates the PR.
 
 Let me check the proposal format used in existing proposals.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the format. Let me also check how the DApp's create_proposal form submits data.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the form submits to understand the exact format needed.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the JavaScript that handles the form submission.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5674,6 +5710,12 @@ Now I have a clear picture. The proposal system works like this:
 4. After 7 days, the PR is merged or closed based on vote outcome
 
 Let me check if there's a `submit_contribution` equivalent for proposals, or if I should just prepare the proposal draft for you to submit via the DApp.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5744,6 +5786,17 @@ Want me to save this as a proposal draft in `agentic_ai_context/proposal_drafts/
 ### 🤖 Autopilot
 
 Let me look at the current dao_client and Edgar codebase to understand the architecture before planning the extension.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5819,4 +5872,127 @@ This is a meaningful engineering effort across three codebases (dao_client, sent
 | **DApp** | No change needed — Sophia just uses the same endpoint | None |
 
 Want me to proceed with building this? I'd start with the `dao_client` extension and the Edgar changes, then update the GAS script.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] [Handoff context — this Telegram topic (thread 3966) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+not sentiment_importer, it is done to dao_protocol python server. 
+
+Generate a detailed implementation plan, execution roadmap and checklist once done spin off as another thread
+
+
+### 🤖 Autopilot
+
+Let me check the dao_protocol codebase first to understand the architecture.
+
+
+### 🤖 Autopilot
+
+Now let me check the dispatch module to understand how events are processed.
+
+
+### 🤖 Autopilot
+
+Now let me check the existing modules to see the pattern for creating new CLI commands.
+
+
+### 🤖 Autopilot
+
+There's already a `create_proposal.py` and `review_proposal.py` stub. Let me check them.
+
+
+### 🤖 Autopilot
+
+Now let me check the `build_event_cli` function to understand the pattern.
+
+
+### 🤖 Autopilot
+
+Now I have a complete picture. Let me also check the `pyproject.toml` for the console scripts entry points.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the implementation plan.
+
+---
+
+## Implementation Plan: Proposal Creation via dao_protocol
+
+### Current State
+
+There's already a `create_proposal.py` stub in `dao_client/modules/` and a `truesight-dao-create-proposal` console script registered in `pyproject.toml`. But the stub has **empty `canonical_labels=[]`** — it doesn't know what fields a proposal needs. The DApp's `create_proposal.html` submits a `[PROPOSAL CREATION]` event with `Type`, `Title`, `Content` fields.
+
+The dao_protocol server already handles `[PROPOSAL CREATION]` events — the dispatch routes it to `process_dapp_payloads` GAS webhook. So the **server side is already done**.
+
+### What needs to change
+
+**1. `create_proposal.py`** — Add canonical labels so the CLI accepts structured fields:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `Type` | Yes | `standard`, `vendor`, `governance`, `budget` |
+| `Title` | Yes | Short proposal title |
+| `Content` | Yes | Full proposal body (can be long) |
+| `Performance Metrics` | No | For vendor proposals |
+
+**2. `review_proposal.py`** — Add canonical labels for voting:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `Proposal ID` | Yes | PR number or proposal identifier |
+| `Vote` | Yes | `approve`, `reject`, `abstain` |
+| `Comment` | No | Optional rationale |
+
+**3. No server changes needed** — The dao_protocol server already routes `[PROPOSAL CREATION]` and `[PROPOSAL VOTE]` to the GAS webhook. The dispatch table in `dispatch.py` already handles both.
+
+### Execution Roadmap
+
+| Step | File | Change | Effort |
+|------|------|--------|--------|
+| 1 | `modules/create_proposal.py` | Add `canonical_labels=['Type', 'Title', 'Content']`, add `--type`, `--title`, `--content` flags, add `--body-file` for long content | ~30 lines |
+| 2 | `modules/review_proposal.py` | Add `canonical_labels=['Proposal ID', 'Vote', 'Comment']`, add `--proposal-id`, `--vote`, `--comment` flags | ~20 lines |
+| 3 | `pyproject.toml` | Already has both console scripts — no change needed | 0 |
+| 4 | Test | Run `truesight-dao-create-proposal --dry-run` to verify payload format | 5 min |
+| 5 | Deploy | `pip install -e .` to update the installed package | 1 min |
+
+### Checklist
+
+- [ ] Add `canonical_labels` to `create_proposal.py`
+- [ ] Add `--type` flag (choices: standard, vendor, governance, budget)
+- [ ] Add `--title` flag (required)
+- [ ] Add `--content` flag (required, or `--body-file` for long content)
+- [ ] Add `--performance-metrics` flag (optional, for vendor proposals)
+- [ ] Add `canonical_labels` to `review_proposal.py`
+- [ ] Add `--proposal-id` flag (required)
+- [ ] Add `--vote` flag (choices: approve, reject, abstain)
+- [ ] Add `--comment` flag (optional)
+- [ ] Dry-run test
+- [ ] Deploy
+
+### How Sophia will use it
+
+Once implemented, I can create proposals directly:
+
+```bash
+truesight-dao-create-proposal \
+    --type governance \
+    --title "Establish Legal Holding Entity for Brazil Export Operations" \
+    --body-file /tmp/proposal_body.md
+```
+
+And vote on them:
+
+```bash
+truesight-dao-review-proposal \
+    --proposal-id 617 \
+    --vote approve \
+    --comment "Both paths well-researched, defer to counsel"
+```
+
+---
+
+Want me to proceed with the implementation? I'll open a PR on `dao_protocol` with the changes, then spin off a new Telegram thread for tracking.
 
