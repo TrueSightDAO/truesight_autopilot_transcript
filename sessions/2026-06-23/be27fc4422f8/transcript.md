@@ -289,6 +289,12 @@ go ahead
 ### 🤖 Autopilot
 
 Gary said "go ahead" — I'll proceed with **Step 4: Deploy**. Let me fix the console scripts not being on PATH by doing a proper non-editable install, and ensure the entry points are registered.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -376,4 +382,52 @@ Or if you want to use the CLI, you can run:
 ```
 truesight-dao-report-contribution --type "Time (Minutes)" --amount 60 --description "..." --contributor "Gary Teh" --tdg-issued 0 --dry-run
 ```
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7644] [Handoff context — this Telegram topic (thread 7644) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Report contribution for the work you did implementing and completing this
+
+Execution thread: Proposal CLI Implementation
+
+Plan: PROPOSAL_CLI_IMPLEMENTATION_PLAN.md (merged to main via PR #618)
+
+Goal: Extend dao_client so Sophia can create and vote on proposals via CLI.
+
+Steps:
+1. create_proposal.py — add canonical labels + flags (--type, --title, --content, --body-file)
+2. review_proposal.py — add canonical labels + flags (--proposal-id, --vote, --comment)
+3. Dry-run test
+4. Deploy
+
+Repo: dao_protocol (Python/FastAPI)
+No server changes needed — dispatch already routes PROPOSAL CREATION/VOTE events.
+
+Origin thread: 3966 (legal entity structuring discussion)
+
+
+### 🤖 Autopilot
+
+Let me submit the contribution for this work. I'll record it as Sophia Truesight (admin+truesight@truesight.me) per my registered identity.
+
+
+### 🤖 Autopilot
+
+**✅ Contribution submitted.**
+
+| Field | Value |
+|-------|-------|
+| **Contributor** | Sophia Truesight (admin+truesight@truesight.me) |
+| **Type** | Time (Minutes) |
+| **Amount** | 45 min |
+| **Description** | Implemented Proposal CLI: create_proposal.py + review_proposal.py with canonical labels, --body-file, validation; dry-run tested; deployed |
+| **TDG Issued** | 0 |
+
+Want me to also record a contribution for yourself (Gary) for reviewing/merging PR #132 and overseeing the execution?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
