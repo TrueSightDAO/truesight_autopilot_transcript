@@ -425,46 +425,65 @@ The files are `.gs` extension, not `.js`. The GitHub repo has them as `.js` but 
 ### 🤖 Autopilot
 
 Found it. The clasp mirror for 1N6o00 is at `clasp_mirrors/1N6o00.../`. Let me check its contents and the clasp login status:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clasp mirror is empty (only `.clasp.json`). The source files are in `google_app_scripts/agroverse_qr_codes/`. Let me check the clasp login status and the existing deployments:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — clasp is logged in. Now let me check the existing deployments from the source directory:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The source directory doesn't have `.clasp.json`. The clasp mirror is at `clasp_mirrors/1N6o00.../`. Let me check what files are in the clasp mirror and how the deploy flow works:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current deployment is `@9`. The plan says to reuse the existing deployment. Let me check what files are currently in the clasp mirror vs what needs to be synced from the source:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the source files are `.gs` extension in the local checkout (GitHub shows `.js` but the local checkout has `.gs`). The new file from PR2 is `process_currency_definitions_telegram_logs.js` on GitHub. Let me check what the local checkout has:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout is on an old commit. I need to pull the latest `main` which includes PR2's changes. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2 hasn't been merged yet. Let me check:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2 (#376) is still open — not merged. Per the plan's §5a discipline: **"Cross-repo PRs are open-only — a human merges."** So PR2 needs to be merged before we can deploy. Let me also check PR1:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -472,11 +491,13 @@ PR2 (#376) is still open — not merged. Per the plan's §5a discipline: **"Cros
 Both PRs are still open. Per the plan's §5a discipline: **"Cross-repo PRs are open-only — a human merges."** I cannot self-merge these.
 
 Let me write the **PR3 deploy + wire runbook** as a document in `agentic_ai_context` so the operator can follow it step by step. This is what the plan calls for — Sophia writes the runbook, the human runs the clasp + ssh steps.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me write the deploy runbook as a PR to `agentic_ai_context`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -521,66 +542,94 @@ Want me to merge any of these now?
 Both PRs are merged. Let me now execute the deploy per the runbook.
 
 **Step 1: Sync local tokenomics checkout + verify files**
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — the file landed in `google_app_scripts/1N6o00N9VtRK_L3e0NQXEsmC6QME1KObZdmdbJgo0Tbgj_7P-ElNL5THn/` (the scriptId-named folder), not `agroverse_qr_codes/`. Let me check both:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR2 files landed in the scriptId-named folder `google_app_scripts/1N6o00…/` — that's the correct source directory. The clasp mirror is at `clasp_mirrors/1N6o00…/`. Let me check what's in the mirror and copy the new files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clasp mirror for 1N6o00 doesn't exist locally — only the `1ovx-Hq5L5MgzF32qB_cPV_G5Hc6XshKMAYOmiJY8tZ355gzWUqvFCPvn` mirror exists. Let me check the `gas_deploy_project` tool — it says the source is directly in `google_app_scripts/<scriptId>/`. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The source files are in `google_app_scripts/1N6o00…/` but there's no `.clasp.json` there. The clasp mirror is missing. Let me check if there's a `.clasp.json` in the source dir or if I need to create one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There IS a `.clasp.json` in the source directory. The `gas_deploy_project` tool says it deploys from `google_app_scripts/<scriptId>/` — that's exactly this directory. Let me use it:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — `clasp push` says "Script is already up to date" but it only sees 2 files (`Version.js`, `process_qr_code_generation_telegram_logs.js`). It's missing the new file. Let me check what `.clasp.json` says and the actual file listing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy script runs from `/opt/truesight_autopilot/context/tokenomics/` — that's a different checkout than `~/tokenomics/`. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `/opt/truesight_autopilot/context/tokenomics/` checkout is stale — it doesn't have the new `process_currency_definitions_telegram_logs.js` file. I need to pull the latest there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the new file is present. Let me deploy again:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **clasp push succeeded** — 4 files pushed including the new handler. Now I need to create a new version and update the deployment. Let me check the current deployments:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now create a new version and update the existing deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm — that created a **new** deployment ID (`AKfycbymJrWR9w0BBCiB3HHFlI_363Y2Jm0n6Mo-boO335QYLqEFFrn9jJjzBipEhsliCtjM`). The plan says to reuse the existing one. Let me check what happened:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -651,4 +700,33 @@ The dao_protocol box is `i-05f8770a932b76649` in us-east-1c. Let me check if I c
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → cd ~/tokenomics && git checkout main && git pull origin main 2>&1 | tail -3; ls ~/tokenomics/google_app_scripts/1N6o00N9VtRK_L3e0NQXEsmC6QME1KObZdmdbJgo0Tbgj_7P-ElNL5THn/; ls ~/tokenomics/google_app_scripts/agroverse_qr_codes/; …(+13 more)
 • `gas deploy project` ×2 → ok
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7611] report contribution
+
+
+### 🤖 Autopilot
+
+Let me first look up the event docs to make sure I use the right format.
+
+
+### 🤖 Autopilot
+
+### ✅ Contribution Reported
+
+| Field | Value |
+|---|---|
+| **Type** | Time (Minutes) |
+| **Amount** | 45 |
+| **Contributor** | Sophia Truesight |
+| **TDG Issued** | 45 |
+| **Description** | QR Self-Serve Currency — PR1 (dao_protocol CLI + dispatch), PR2 (GAS handler 1N6o00), PR3 (deploy runbook + clasp push + redeploy to @10) |
+
+Submitted successfully to Edgar.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
