@@ -5873,6 +5873,7 @@ Let me find the JavaScript that handles the form submission in the create_propos
 Now I understand the full flow. The DApp submits proposals by posting a signed text payload to Edgar's `submit_contribution` endpoint. Edgar then processes it and creates a GitHub PR via the GAS proposal manager.
 
 Let me check how Edgar processes the proposal payload.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5935,6 +5936,17 @@ Generate a detailed implementation plan, execution roadmap and checklist once do
 ### 🤖 Autopilot
 
 Let me check the dao_protocol codebase first to understand the architecture.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6080,4 +6092,43 @@ The new thread has the full execution plan with checklist. When you're ready to 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #618 on agentic_ai_context merged successfully (sha: 16fb94a4b2ab013fc9f3f5e743c9c00a5dcf3967). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] Check if you have the new tool available to submit the proposal
+
+
+### 🤖 Autopilot
+
+Let me check what tools I have available for submitting proposals.
+
+
+### 🤖 Autopilot
+
+The CLI module is already updated with the new flags. Let me check if the installed package has been updated.
+
+
+### 🤖 Autopilot
+
+The installed package hasn't been updated yet — it still shows the old generic `--attr` interface. The source code has the new flags (`--type`, `--title`, `--content`, `--body-file`) but the package needs to be reinstalled. Let me check if the source code on disk is the updated version.
+
+
+### 🤖 Autopilot
+
+The tool is now available with all the new flags. Let me also check if `review_proposal` is updated.
+
+
+### 🤖 Autopilot
+
+Both tools are now available:
+
+**`truesight-dao-create-proposal`** — with `--type`, `--title`, `--content`, `--performance-metrics`
+**`truesight-dao-review-proposal`** — with `--proposal-id`, `--vote`, `--comment`
+
+I can now submit the proposal directly. Want me to do a dry-run first to show you the payload format before submitting for real?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → which truesight-dao-create-proposal && truesight-dao-create-proposal --help 2>&1 | head -30; source /opt/truesight_autopilot/.venv/bin/activate && which truesight-dao-create-proposal && truesight-dao-create-proposal --help 2>&1; source /opt/truesight_autopilot/.venv/bin/activate && pip show truesight-dao-client 2>&1 | head -5; …(+3 more)
 
