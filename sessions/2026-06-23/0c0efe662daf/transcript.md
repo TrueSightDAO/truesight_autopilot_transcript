@@ -5951,22 +5951,46 @@ Let me check the dao_protocol codebase first to understand the architecture.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the dispatch module to understand how events are processed.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the existing modules to see the pattern for creating new CLI commands.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a `create_proposal.py` and `review_proposal.py` stub. Let me check them.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the `build_event_cli` function to understand the pattern.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6131,4 +6155,31 @@ I can now submit the proposal directly. Want me to do a dry-run first to show yo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → which truesight-dao-create-proposal && truesight-dao-create-proposal --help 2>&1 | head -30; source /opt/truesight_autopilot/.venv/bin/activate && which truesight-dao-create-proposal && truesight-dao-create-proposal --help 2>&1; source /opt/truesight_autopilot/.venv/bin/activate && pip show truesight-dao-client 2>&1 | head -5; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=3966] go for the dry run
+
+
+### 🤖 Autopilot
+
+Let me prepare the proposal body first, then do a dry-run.
+
+
+### 🤖 Autopilot
+
+The dry-run looks good. The payload is correctly formatted with:
+
+- **Type:** governance
+- **Title:** "Establish Legal Holding Entity for Brazil Export Operations"
+- **Content:** Full proposal body with both paths, decision framework, budget request, and vote options
+- **Digital Signature:** Sophia's key signs it
+- **Transaction ID:** Generated
+
+The proposal is ready to submit. Want me to run it for real (without `--dry-run`)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat > /tmp/proposal_body.md << 'ENDOFFILE' ## Summary The DAO needs a legal holding entity to own the Brazilian export CNPJ (replacing Mathe; source /opt/truesight_autopilot/.venv/bin/activate && truesight-dao-create-proposal \ --type governance \ --title "Establish Legal Holding E
 
