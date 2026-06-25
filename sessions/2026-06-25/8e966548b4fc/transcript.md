@@ -122,3 +122,45 @@ Unfortunately, a direct public email for *this specific* Shirley Lin isn't freel
 
 Want me to draft a LinkedIn outreach message or file a follow-up in OPEN_FOLLOWUPS.md to track this lead?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7699] Do you have the coresondppng dao client for this Dapp
+
+https://dapp.truesight.me/governor_contributor_admin.html
+
+
+### 🤖 Autopilot
+
+Let me look into what DAO client corresponds to that DApp page.
+
+
+### 🤖 Autopilot
+
+Let me also check the `dao_client` repo for the corresponding CLI tool.
+
+
+### 🤖 Autopilot
+
+That repo seems to have been renamed or moved. Let me check what's actually there.
+
+
+### 🤖 Autopilot
+
+Great — found it. Here's the picture:
+
+**The DApp page** `governor_contributor_admin.html` (at `dapp.truesight.me/governor_contributor_admin.html`) is the **browser-based** way to add a contributor — it uses a browser digital signature.
+
+**The corresponding DAO client** is the **`truesight-dao-add-contributor` CLI**, which lives in the **`dao_protocol`** repo (not `dao_client` — that repo seems to have been renamed/moved). Specifically:
+
+- **Repo:** `TrueSightDAO/dao_protocol`
+- **CLI command:** `truesight-dao-add-contributor`
+- **Module:** `truesight_dao_client/modules/add_contributor.py`
+- **Fields:** `--contributor-name`, `--contributor-email`
+
+There's already a PR open for it — **dao_protocol PR #123**. It uses the same `build_event_cli` pattern as the partner add tool.
+
+**Status:** PR #123 is open but not yet merged. Once merged and deployed to the autopilot box, I'll be able to run it directly when you say "add [name] as a contributor" — no browser needed.
+
+Want me to check on PR #123's current state and see if it's ready to merge?
+
