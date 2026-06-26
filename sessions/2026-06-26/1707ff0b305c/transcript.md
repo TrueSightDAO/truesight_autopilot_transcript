@@ -1487,6 +1487,7 @@ Good, I have the bot token. Let me call the Telegram API directly to check what 
 The long-poller already consumed all updates — there's nothing pending. Let me check the adapter's log more carefully to see what the raw update looked like when it was polled. Let me add some debug logging to see the raw update.
 
 Actually, let me check if the adapter logs the raw update at DEBUG level.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1834,4 +1835,45 @@ This is the big strategic picture:
 **Key strategic insight:** This isn't just a cacao event. The Aora IP framework is designed as a **multi-brand, multi-theme franchise engine** — each brand gets its own exclusive Aora spirit (cacao → Aora Kuku, tea → Tea Aora, honey → Honey Aora, etc.). The event format is the same TEDx-style engine; the theme and Aora character swap out.
 
 This is a very sophisticated IP licensing / brand partnership model. Want me to search context for any existing records on the Aora IP or this partnership framework?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **c205625a67f94bdaa551336fffb46c45.jpg**]
+- Type: Image (OCR confidence: 62.1%, quality: good)
+
+Extracted text:
+```
+5G 00). “ace Rinorest — ate explorer AoraKulisthe the rainforest, and also the clue character who ED) 6 Of 17 ve eeer-chitcren create thei own ora =r them olne, the ring hem to ary’ cao camvores. rajomng nore Suk ral they enpore Rendon with physi teaching aids and immerse themselves through visual scenes, experiencing the complete journey from rainforest to chocolate. Finally, they meet Gary himself and hear his ove tor. Key Roles [| Role __| Person | _Positio Founda ofigrovese San [erty oratand onicchiserrauaette Exetel Sue vegrent those oe Set camphre rata es Shae: and ins souohic emer e {pigue aot acon ne honed ye er Lea ences (Gays Aare sprpuion th at ra vate ip Geared cen ee ree ae guceshoa he ner cua re biystslostoroteckeitsttons wesdee coe ope | ee eyed sound eee and nutcase Guardian of he {Cacao Rainforest ClueRotle 2 lig Operator of TEDxSSL. Sets the tone forthe event, controls brand] Chief Curator jt uality and replicability, [ Provides professional advice on educational fog, interaction Educational [Teacher |methods, and child suitability during the event design phase, ‘Advisor Evan {Lends educational quality credibility tothe event. Does not take an execution role onsite, Project Responsible for technical liaison, material preparation, plan Coordinator lintegration, and onsite execution. (Gary's “Exploration Assistant.” Leads children through all Faciitator [TBD {gameplay and operational segments, Serves as the "Aora ertfication Officer” during the entry segment. I { bere i 2. Narrative Structure and Event Flow Drawing on the linear narrative rhythm of Mystic Manor, we orchestrate the event into a sevan-act story: Physical] Visual Scene [Benchmarking Avra x Agroverse i ‘ ' Myaie Mano | nc Duration! Core Experience _| Teaching Aids | (Recommended (Gaamples) | 1CPIan) [Thermal printer, fora Kuky [Normal view ofthe ktamp, git set cacao rainforest. amples. ‘Complete identity yanslormation at the Aor 15-20min Contfication tation; [preview the ‘Cacoo aplorer Gik Set” [Gavyparsonly sions oa | . ‘gives a brief welcome, and|Physical atone: The [bpens a curtain Rainforest leurain/door, [The Rainforest NFound effects rise. finforest sound (Gate slowly opens {Children follow into the effects lxplration area. Rotate through 4 physical ‘Changes wih sensory stations. The [Agroforestry stations (Cacao ‘sual scene changes with Module: Smeli_ [Trees and Flowers ct Two: Sensory leach station, revealing the boxes, touch |~ Shade Trees fonders: Rainforest aroforestey ecosystem bags, fungal and Fungal ispers network INetworks The i Iricrographs. Microbial World —| Prologue: Gathering lof Explorers Call of the Mysterious Rainforest ‘Queue Area Atmosphere Building Boarding the Tracklass [Rainforest Gate “The Vehicle [Guardian's invitation Fantastical ‘Scene
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is page 6 — the **Key Roles** table and the start of the **Narrative Structure / 7-Act Flow**. Here's the content:
+
+**Key Roles:**
+
+| Role | Person | Position |
+|---|---|---|
+| **Guardian of the Cacao Rainforest** | **Gary** | Founder of Agroverse / Guardian — owns the true story and the rainforest; appears at the climax to share his personal story |
+| **Clue Role 2** | **Liz** | Operator of TEDxSSL — sets the tone, controls brand quality and replicability |
+| **Chief Curator** | *(not named)* | Ensures brand quality and replicability |
+| **Educational Advisor** | **Teacher Evan** | Provides professional advice on educational methods and child suitability; lends educational credibility. Does NOT take an execution role onsite |
+| **Project Coordinator** | *(TBD)* | Technical liaison, material preparation, plan integration, onsite execution. Gary's "Exploration Assistant" |
+| **Facilitator** | **TBD** | Leads children through all gameplay/operational segments. "Aora Certification Officer" during entry |
+
+**7-Act Narrative Structure (benchmarked against Mystic Manor):**
+
+| Act | Duration | Core Experience | Physical Aids | Visual Scene |
+|---|---|---|---|---|
+| **Prologue: Gathering of Explorers** | 15-20 min | Queue area atmosphere building; Aora Certification Station (thermal printer, stamp); preview Gift Set; Gary gives brief welcome | Thermal printer, Aora Kuku stamp, Gift Set samples | Normal view of cacao rainforest |
+| **Call of the Mysterious Rainforest** | — | "Rainforest Gate" opens; children follow into exploration area | Physical stone/curtain/door | Rainforest sound effects rise; gate slowly opens |
+| **Act Two: Sensory Rainforest** (Agroforestry Module) | — | Rotate through 4 physical sensory stations (Smell: cacao trees/flowers boxes; Touch: shade trees, fungal network bags; Sight: micrographs; Hearing: sounds) | Smell boxes, touch bags, fungal network micrographs | Visual scene changes with each station — cacao trees, shade trees, fungal networks, microbial world |
+
+The document continues with more acts. Want me to read the next page for the remaining acts?
 
