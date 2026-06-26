@@ -1458,6 +1458,7 @@ Now I see the full flow. The `attach=False` in the log is just a suffix the adap
 ### 🤖 Autopilot
 
 The adapter doesn't log the raw Telegram update payload. Let me check directly by calling the Telegram API to see what's in the chat right now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1590,4 +1591,48 @@ The fix worked — no more script error! Here's the summary:
 - Children create their own Aora companions online → bring them to Gary's cacao rainforest → follow Aora Kuku's trail → explore hands-on → meet Gary and hear his true story
 
 This ties directly to the earlier screenshots — **Teacher Evan** and **Liz** are the co-inviters, and the "Great Bean Adventure" board game is Act Four of this event. Want me to search context for any existing records on this event plan or the Gift Set?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **b522a58e2c0446ca9d307bc53cf10cb6.jpg**]
+- Type: Image (OCR confidence: 83.0%, quality: good)
+
+Extracted text:
+```
+0 8 of 17 t-Online Full Chain wos ssses a — 00k before the event) ‘© Children create their exclusive Aora companion via the AORA website and write a short story for it. The system generates a first draft of a ‘2-panel digital picture book. Children, with their litle Aora and its story, look forward to the Upcoming cacao rainforest adventure Gary records a 60-second short video, "The Story of Aora Kuku and Me," introducing the cacao rainforest and Aora Kuku. © "Cacao Explorer Gift Set” preview is released. 2, Onsite Core Experience (approx. 90 minutes) © Ticketing as a Ritual: The Aora Certification Station prints the ontine ‘Aora onto a physical badge, stamped with the Aora Kuku seal to complete the identity transformation. Knowledge Turned into Games: Agroforestry knowledge is integrated into sensory stations; Supply Chain knowledge is integrated into a map game. Story Validated: Everything children experience during the event echoes the story of Gary and Aora Kuku. The facilitator can naturally chat with the children: “Has your Aora companion had adventures like this too?” Product as Experience: The Cacao Explorer Chocolate Medal is an adventure reward. The Gift Set is showcased using a pre-sale/preview model. 3. Online Continuation (1-2 weeks after the event) ‘© ANew Chapter in the Story: Children can create a new “Cacao Rainforest Adventure" chapter for their little Aora, or continue to refine the story based on the first drat. Gift Set Conversion: When users who pre-ordered receive their Gift Set, scanning the exclusive character card will bring up the latest version of the Aora picture book ‘Community Operations: Unboxing videos, family challenges, and Aora community interactions build momentum for the next event, 4. The Organic Integration of Physical Teaching Aids and Visual Scenes ‘The Sensory Adventure - Agroforestry Module — Synchronization of Sensory Stations and Visual Scenes Physical Teaching Aide Wiswal Seana (1G) Makod of magration Symbioucpanorama
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+This is page 2 of the same document — the **Online Full Chain** flow. Here's the content:
+
+**The Complete Closed Loop — 3 Phases:**
+
+**① Online Before the Event (pre-event)**
+- Children create their **exclusive Aora companion** on the AORA website and write a short story
+- System generates a **first draft 2-panel digital picture book**
+- **Gary records a 60-second video**, "The Story of Aora Kuku and Me" — introducing the cacao rainforest and Aora Kuku
+- "Cacao Explorer Gift Set" preview is released
+
+**② Onsite Core Experience (~90 minutes)**
+- **Ticketing as Ritual:** Aora Certification Station prints the online Aora onto a **physical badge**, stamped with Aora Kuku seal
+- **Knowledge → Games:** Agroforestry → sensory stations; Supply Chain → map game (the "Great Bean Adventure")
+- **Story Validated:** Everything echoes Gary & Aora Kuku's story. Facilitator asks: *"Has your Aora companion had adventures like this too?"*
+- **Product as Experience:** Cacao Explorer Chocolate Medal = adventure reward; Gift Set shown via pre-sale/preview
+
+**③ Online Continuation (1-2 weeks after event)**
+- Children create a **new "Cacao Rainforest Adventure" chapter** for their Aora, or refine the first draft
+- **Gift Set Conversion:** When pre-order users receive their Gift Set, scanning the QR code on the character card brings up the **latest version** of the picture book
+- **Community Operations:** Unboxing videos, family challenges, Aora community interactions → build momentum for next event
+
+**④ Physical Teaching Aids + Visual Scenes Integration**
+- The Sensory Adventure (Agroforestry Module) synchronizes sensory stations with visual scenes (e.g. magic of migration, symbiotic panorama)
+
+This is a beautifully designed **pre-sale → experience → post-event engagement** flywheel. Want me to keep going with more pages if you have them?
 
