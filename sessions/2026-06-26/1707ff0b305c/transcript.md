@@ -1522,6 +1522,7 @@ OK, so the log level is INFO. The adapter doesn't log the raw update payload at 
 ### 🤖 Autopilot
 
 All updates have been consumed (offset already advanced past them). The long-poller already processed and acknowledged them all. Let me check the adapter's own log file if it writes one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2112,4 +2113,46 @@ This appears to be the **projection/interactive technology vendor** being consid
 2. **Search context** for any existing records on Aora, Liz, Teacher Evan, Dr Ye, or Zach Roth?
 3. **File a follow-up** in OPEN_FOLLOWUPS.md about the program runner decision (Jerri vs Zach)?
 4. Something else?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **52174267a3824d7a8e3720b784a68b30.jpg**]
+- Type: Image (OCR confidence: 74.8%, quality: good)
+
+Extracted text:
+```
+9:17 « 56 @® &@) 15 of 17 How the product works (0)
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This page just shows a header — **"How the product works"** — with a diagram/illustration that the OCR couldn't extract meaningful text from (likely a product demo image or schematic of the interactive projection system).
+
+This is page 15 of the document, continuing the Appendix with the VisitsLab interactive projection system technical details.
+
+---
+
+**Gary — you've now shared the full document (pages 1-17).** Here's a recap of everything you've sent this session:
+
+**5 screenshots** — Aora × Agroverse Chocolat conversation about:
+- Liz bringing product samples → tasting for Dr Ye & Evan
+- Dr Ye & Evan = key market signal
+- Staffing: you (Gary) out, **Jerri** (works for Liz) or **Zach Roth** (US→China relocate) as program runner
+- Budget question for Evan
+
+**1 LinkedIn link** — Zach Roth (Potrero Capital, US-based, willing to relocate to China)
+
+**1 PDF** — "The Great Bean Adventure" supply chain board game design
+
+**7 document pages** — Aora × Agroverse Cacao Rainforest Adventure event plan (TEDx-style, Mystic Manor-benchmarked, 7-act structure, configurable engine)
+
+**1 appendix page** — VisitsLab interactive projection system reference
+
+Want me to do anything with all this — file a summary, search for existing records, or something else?
 
