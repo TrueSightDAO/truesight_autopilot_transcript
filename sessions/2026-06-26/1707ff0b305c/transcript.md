@@ -1479,6 +1479,7 @@ The adapter doesn't log the raw Telegram update payload. Let me check directly b
 ### 🤖 Autopilot
 
 Good, I have the bot token. Let me call the Telegram API directly to check what messages are in the group chat and see if your PDF was actually received.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1792,4 +1793,45 @@ That's the full document across 5 pages. Here's the **complete picture** of the 
 | **Long-term** | Configurable engine — can be replicated for tea, honey, cotton, etc. |
 
 Want me to file this as a structured note in the DAO context, or search for any existing records on these people/plans?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **b8a8683c73c545fbbdbe3b603447e162.jpg**]
+- Type: Image (OCR confidence: 81.2%, quality: good)
+
+Extracted text:
+```
+serene Closed Loop: The Online-Onsite-Ontine Full Chain 5c @®: “4 Files This is the engine that allows us to transcend a single event and build user stickiness: ‘sn create their own exclusive Aora companion online am) Af 17 Riteosemsenertes set ato 12 pane ren arrive with their litle Aora and its story, looking gadventure, + Onsite linmersion: The Aora badge is their identification. Sending their Aora into the rainforest isthe story's climax. Making chocolate by hand is the aterialization of emotion. The facilitator can naturally chat with the children about their Aora companion's stories during interactions. ‘Online Continuation: After the event, children can createa new "Cacao Rainforest Adventure" chapter for ther litle Aora, or continue to refine the story based on the first draft. Scanning the exclusive character card in the Gift Set allows them to view the latest version and participate in community challenges, building momentum for the next event. Brand IP Framework: Co-creating the Aora Companion World ‘Aoraiis an open companion world, Aora-are mysterious “energy beings" from the universe: Upon landing on Earth, they transform into nature spirit, taking the form of Earth animals, They possess totems, light-ball antennae, talents, skils, personalities, and habits corcesponding to their elements (Wood, Water, Earth, Fire, “Metal, Cosmos). Every Aora nature spirit is a unique being, a “litle alien companion/magical creature" for children. Each co-branded event is like-a standalone “feature film" where a new Aora ‘companion becomes the clue character for that adventure. This collaboration between Agroverse and Aora gives birth to Aora Kuku-the first Aora nature spirit discovered in the cacao rainforest. In the future, there will be an Aora companion ‘belonging to tea from the tea gardens, and an Aora companion belonging to honey from the bee gardens: Every partnering brand can have its own exclusive Aora nature spirit, which will become the emotianal connection symbol between that brand and children. Part Two: Concrete Analysis - Aora x Agroverse Cacao Se ee ee
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is the **Brand IP Framework** section — the most important strategic piece yet. Here's the content:
+
+**The Closed Loop Engine (Online → Onsite → Online):**
+- **Online Create:** Children create their exclusive Aora companion → system generates a 12-panel digital picture book
+- **Onsite Immersion:** Aora badge = their identification; sending their Aora into the rainforest = story's climax; making chocolate = materialization of emotion
+- **Online Continuation:** New "Cacao Rainforest Adventure" chapter, refine the story, scan Gift Set QR code for latest version, community challenges
+
+**Brand IP Framework: Co-creating the Aora Companion World**
+
+This is the big strategic picture:
+
+> **Aora is an open companion world.** Aora are mysterious "energy beings" from the universe. Upon landing on Earth, they transform into nature spirits, taking the form of Earth animals. They possess totems, light-ball antennae, talents, skills, personalities, and habits corresponding to their elements (Wood, Water, Earth, Fire, Metal, Cosmos).
+
+> **Each co-branded event is like a standalone "feature film"** where a new Aora companion becomes the clue character for that adventure.
+
+> **This collaboration between Agroverse and Aora gives birth to Aora Kuku** — the first Aora nature spirit discovered in the cacao rainforest.
+
+> **In the future:** There will be an Aora companion belonging to **tea** from the tea gardens, and an Aora companion belonging to **honey** from the bee gardens. **Every partnering brand can have its own exclusive Aora nature spirit** — which will become the emotional connection symbol between that brand and children.
+
+**Key strategic insight:** This isn't just a cacao event. The Aora IP framework is designed as a **multi-brand, multi-theme franchise engine** — each brand gets its own exclusive Aora spirit (cacao → Aora Kuku, tea → Tea Aora, honey → Honey Aora, etc.). The event format is the same TEDx-style engine; the theme and Aora character swap out.
+
+This is a very sophisticated IP licensing / brand partnership model. Want me to search context for any existing records on the Aora IP or this partnership framework?
 
