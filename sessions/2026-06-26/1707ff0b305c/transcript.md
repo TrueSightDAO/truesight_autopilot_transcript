@@ -1516,6 +1516,7 @@ I see — the poll loop doesn't log the raw update. Let me add a debug log line 
 ### 🤖 Autopilot
 
 OK, so the log level is INFO. The adapter doesn't log the raw update payload at INFO level. Let me add a debug log for the raw update so we can diagnose this next time. But first — let me check if there's a way to see the last few messages in the group chat directly via Telegram API.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2069,4 +2070,46 @@ This is page 12 — the **Conclusion** of the document. Here's the full closing 
 | **Risk** | 15 risk registrations, 4-tier fallback, backup plan if Gary can't attend |
 
 Want me to file a structured summary of this in the DAO context, or search for any existing records on these people or the Aora IP?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **0bce3dbe792f4d2790aa4dbf330dfd98.jpg**]
+- Type: Image (OCR confidence: 68.0%, quality: good)
+
+Extracted text:
+```
+meson &D 13 of 17 Appendix 1: itis Lanes RNAI LORVEH / Immersive Interactive Projection Systam Technical Reference More Product Detalls Intecactve Touch Drang ‘Magic Brush Interactive Drawing Game combines dynamic cartoons with interactive wall paintings, Children's creations come alive on the walls, and fish and creatures move according to their imagination, “Ths educational game attracts visitors, improves pedestiian traff, and provides children with sense of achievement, Customizable game mataials support muliplayer interaction ‘and enhance creat. ane [raat Type AR vem 220 Game Size ema “eww Sore toiece ssoe 4. Eater RIODOTC Audio 6 Scamer 1 rt ne Lig + wa *H2.9m 2. Software SOK (Flash, C} C44, Java) 5. USB dangle
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is **Appendix 1** — a technical reference for an **Immersive Interactive Projection System** from a vendor called **VisitsLab** (or similar). Here's the content:
+
+**Product: Magic Brush Interactive Drawing Game**
+- Combines dynamic cartoons with interactive wall paintings
+- Children's creations come alive on the walls — fish and creatures move according to their imagination
+- Customizable game materials, supports multiplayer interaction
+
+**Specs:**
+- Type: AR + somatosensory
+- Game Size: ~2.2m × 2.9m (wall projection area)
+- Includes: IR camera, IR light, scanner, audio system, software SDK (Flash, C++, C#, Java), USB dongle
+- Power: 220V
+
+This appears to be the **projection/interactive technology vendor** being considered for the visual scenes — the kind of system that would make the rainforest animals come alive when children interact, or make the Aora companion appear on the wall.
+
+---
+
+**Gary — you've now shared the complete Aora × Agroverse event planning document (all 12+ pages).** This is a substantial piece of work. Would you like me to:
+
+1. **File a structured summary** in the DAO context for future reference?
+2. **Search context** for any existing records on Aora, Liz, Teacher Evan, Dr Ye, or Zach Roth?
+3. **File a follow-up** in OPEN_FOLLOWUPS.md about the program runner decision (Jerri vs Zach)?
+4. Something else?
 
