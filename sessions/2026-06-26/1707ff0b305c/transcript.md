@@ -2156,3 +2156,65 @@ This is page 15 of the document, continuing the Appendix with the VisitsLab inte
 
 Want me to do anything with all this — file a summary, search for existing records, or something else?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **cd026e6b0787418483bc2988a33f5fa3.jpg**]
+- Type: Image (OCR confidence: 67.8%, quality: good)
+
+Extracted text:
+```
+&@) 16 of 17 Appendix 2+ fii EMMI DA RABAT MADEN ORIERRATSAY / Mystic Manor Five-sence Immersive, Interactive Stryteling Experience Design Reference bhttnsd/tw..kowloonvibes.com/hong-kong/artcle/travel/disney/hkdl-mystic-manor-gui dof
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is **Appendix 2** — a reference link to a Mystic Manor design analysis article. The OCR caught a URL:
+
+**kowloonvibes.com** article — "Mystic Manor Five-sense Immersive Interactive Storytelling Experience Design Reference"
+
+Let me fetch that article to see what reference material they're drawing from.
+
+
+### 🤖 Autopilot
+
+The URL didn't resolve — likely a typo in the OCR or the page has moved. Let me search for it.
+
+
+### 🤖 Autopilot
+
+Found it — the correct URL is **en.kowloonvibes.com** (not the bare domain). Let me fetch it.
+
+
+### 🤖 Autopilot
+
+Got it — this is the reference article the event designers used as their Mystic Manor benchmark. The key design elements they drew from:
+
+**Mystic Manor's Design Pattern (as referenced in Appendix 2):**
+- **Queue area atmosphere building** → model of Mystic Point, learn about explorer Lord Henry
+- **Pre-show** → Lord Henry + monkey Albert introduce the story, warn about the music box
+- **Trackless ride through themed rooms** → each room = different artifact collection, different sensory experience
+- **Character guide** → Albert (mischievous monkey) causes the chaos, guides the emotional journey
+- **Climax** → Chinese Salon, tornado, Albert closes the music box → everything returns to normal
+- **Emotional resolution** → safe exit, souvenir shop
+
+**How this maps to Aora × Agroverse:**
+- Lord Henry → **Gary** (Guardian of the Cacao Rainforest)
+- Albert (monkey) → **Aora Kuku** (mischievous clue character)
+- Themed rooms → **7 acts** (Rainforest Gate → Sensory Stations → Supply Chain Game → Magic Workshop → Starlit Campfire)
+- Music box chaos → **the cacao bean journey** (fermentation, transport, fork road choices)
+- Emotional climax → **Gary's true story** at the Starlit Campfire
+
+---
+
+**Gary — you've now shared the complete document set.** Would you like me to:
+1. **File a structured summary** in the DAO context for future reference?
+2. **Search context** for any existing records on Aora, Liz, Teacher Evan, Dr Ye, or Zach Roth?
+3. **File a follow-up** in OPEN_FOLLOWUPS.md about the program runner decision?
+4. Something else?
+
