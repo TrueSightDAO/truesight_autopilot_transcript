@@ -631,6 +631,7 @@ This is **"The Great Bean Adventure"** — the final version of the **Supply Cha
 ### 🤖 Autopilot
 
 Still hitting the same bug. Let me check if PR #269 is ready to merge so we can fix this.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1286,4 +1287,49 @@ Want me to file a follow-up note about this in OPEN_FOLLOWUPS.md, or search cont
 ### 🤖 Autopilot
 
 I don't see a new attachment in your message — the last file you sent was the "Great Bean Adventure" PDF (which I processed successfully). Could you try sending it again? Sometimes Telegram attachments can fail to upload on the sending side.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] I just sent it over again. And you complain you can’t download the attachment from telegram
+
+
+### 🤖 Autopilot
+
+Let me check what's in the attachment directory right now.
+
+
+### 🤖 Autopilot
+
+Let me check the most recent files by timestamp.
+
+
+### 🤖 Autopilot
+
+I can see the files — the last files that arrived are the ones I already processed (the PDFs and JPGs from this session, all timestamped 15:56-15:57). I don't see a new file from your latest resend.
+
+Let me check the Telegram adapter logs to see what happened when you resent it.
+
+
+### 🤖 Autopilot
+
+I see the issue now. Looking at the logs:
+
+```
+attach=False
+```
+
+Both your messages came through with `attach=False` — meaning the Telegram adapter didn't detect any attachment in the message you sent. The adapter checks for `document`, `photo`, or `file` fields in the Telegram update, and neither of your resend messages had one attached.
+
+This is likely a **Telegram client issue** on your end — when you hit "reply" or "resend," the attachment may not be re-included. Could you try sending the file fresh (not as a reply/forward) by:
+
+1. Opening the chat with the bot
+2. Using the **paperclip / attach icon** to select the file
+3. Sending it as a **new message** (not replying to an old one)
+
+What type of file is it? That might help me diagnose further.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -lt /tmp/tg_attachments/ | head -20; sudo journalctl -u truesight-autopilot --since "5 min ago" --no-pager 2>/dev/null | tail -80
 
