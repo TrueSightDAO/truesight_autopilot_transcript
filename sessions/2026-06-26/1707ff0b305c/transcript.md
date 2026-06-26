@@ -1468,6 +1468,11 @@ The adapter doesn't log the raw Telegram update payload. Let me check directly b
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good, I have the bot token. Let me call the Telegram API directly to check what messages are in the group chat and see if your PDF was actually received.
 
 
@@ -1683,4 +1688,47 @@ Why Mystic Manor? It's acclaimed as one of the most outstanding immersive experi
 - **Emotional accumulation** — building toward the moment children meet Gary and hear his true story
 
 This is a really sophisticated design philosophy — they're not just building a one-off event, they're building a **franchise engine** with TEDx-level quality standards and Disney-level experience design. Want me to continue with more pages?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **98b87f3d9ed348cdb2190539cd840465.jpg**]
+- Type: Image (OCR confidence: 62.9%, quality: good)
+
+Extracted text:
+```
+Peeeslem Sg &D 9 of 17 4. The Organic Integration of Physical Teaching Aids and Visual Scenes “The Sensory Adventure - Agroforestry Module — Synchronization of Sensory Stations and Visual Scenas Suation| Physical Teaching Aide |_Vewal Seana (10) Marked of rtagration Symbiotic panorama Smet | Cacsobean samples, the Cacae When children smell the cacao beans, the Ginton| sake col eecte rags, Ptnfrest(Factator hisal focuses onthe cacao te —they are louides gaze tothe smelling the lowers and fut ofthis tee.” cacao tee. [Symbiotic panorama lofthe Cacao Rainforest Facilitator lgvides gaze to the Fungal network) Inhenchikren ouch he testes, he vial ovrsthe shade ve canopy and fongl twork = hey retouching he sin and Moss, bark, cacao pod husk, ‘Symbiotic panorama (ofthe Cacao Sight | Enlarged micrograph ofa Peron (racitator Staion | fungal networ, ebyoren as ricrobial detais), | ‘Symbiotic panorama Hesdphones, ofthe Cacao nen children view the micrograph, the sual enters the microscopic world ~ they Fe “seeing the underground internet of the fainforest.” hen children listen to the sounds, the -orresponding animals become active in the| sual ~ they are “listening to the residents jel the rainforest talking.” pre-recorded rainforest Rainforest (Facilitator [ animal sounds, [ides gaze toacive lrimal f ‘The Great Bean Adventure Supply Chain Module — Synchronization of Game Stations and Visual Scenes ‘Station | Pinsical Teaching Aids | Visual Scene (1G) Method ofintegration | amples of cacao beans | Wien children small the fermenting | Fermentation mentation (ferent termentton See 2: Fermentation and bavns me ane shows bee fages Dans fermenting in wooden bores, hen chien perform the using [rotion the scene shows the beans readout © ry nthe un hen the piece moves on the a, Transpo Moving» geme pce on Scene’: Transportand he scene shows sacks being Station he map. poate. fransported rom te wiloge tothe (for Fairtrade ffaskeards answering cane 3:Transpon and [henthe el faces a chaze the © Staton. _[ouestions choice Forkinthe road). Eeong shows a fork inthe | Chocolate [cacao Explorer Chocolate Scene 4: Chocolate Factory Vhe® the child receives the medal | Factory Station [Medal. pnd Completion, 9 mutating the action of Scene 2: Fermentation and Drying Station "ying Staton humming drying beans. Drying lov. 5, Technical Solution: A Four-Tier Fallback Strategy
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: a6c9b9d6-2b1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is page 4 — the **Physical Teaching Aids + Visual Scenes Integration** table. Here's the content:
+
+**Sensory Adventure — Agroforestry Module Synchronization:**
+
+| Station | Physical Aid | Visual Scene | Integration Method |
+|---|---|---|---|
+| **Smell** | Cacao bean samples, cacao tree leaves/flowers/fruit | Symbiotic panorama of cacao rainforest | Children smell beans → visual focuses on the cacao tree — they're smelling the leaves and fruit of this tree |
+| **Touch** | Moss, bark, cacao pod husk, fungal network models | Symbiotic panorama (fungal network, shade canopy) | Children touch textures → visual shows the shade canopy and fungal network — they're touching the skin and underground internet of the rainforest |
+| **Sight** | Enlarged micrograph of fungal network / microbial details | Symbiotic panorama | Children view micrograph → visual enters the microscopic world — they're "seeing the underground internet of the rainforest" |
+| **Hearing** | Headphones, pre-recorded rainforest animal sounds | Symbiotic panorama (active animals) | Children listen → corresponding animals become active in the visual — they're "listening to the residents of the rainforest talking" |
+
+**The Great Bean Adventure — Supply Chain Module Synchronization:**
+
+| Station | Physical Aid | Visual Scene | Integration |
+|---|---|---|---|
+| **Fermentation** | Cacao bean samples (different stages) | Scene 2: Fermentation & Drying | Children smell fermenting beans → scene shows beans fermenting in wooden boxes |
+| **Drying** | (motion) | Scene 2: Fermentation & Drying | Children perform turning motion → scene shows beans drying in the sun |
+| **Transport** | Game piece on map | Scene 3: Transport & Port | Piece moves on map → scene shows sacks being transported village→port |
+| **Fork Road** | Flashcards answering questions | Scene 3: Transport & Port (fork) | Child faces a choice → scene shows a fork in the road |
+| **Chocolate Factory** | Cacao Explorer Chocolate Medal | Scene 4: Chocolate Factory & Completion | Child receives medal → visual shows completion |
+
+**5. Technical Solution: A Four-Tier Fallback Strategy** (mentioned but content continues on next page)
+
+Want me to read the next page for the fallback strategy?
 
