@@ -2186,11 +2186,13 @@ Let me fetch that article to see what reference material they're drawing from.
 ### 🤖 Autopilot
 
 The URL didn't resolve — likely a typo in the OCR or the page has moved. Let me search for it.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the correct URL is **en.kowloonvibes.com** (not the bare domain). Let me fetch it.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2442,21 +2444,25 @@ Which maps directly to the Aora × Agroverse 7-act structure ending with the Gif
 ### 🤖 Autopilot
 
 I'll generate both the markdown brief and a branded PDF of the complete Aora × Agroverse event summary. Let me compile everything first.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me compile the full brief and generate both files.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Now let me create the markdown version and upload both to GitHub.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the markdown version.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2536,6 +2542,42 @@ The brief covers all 7 sections you asked for:
 Also uploaded the **event brief** from earlier:
 - **Event Brief PDF:** https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/aora_agroverse_event_brief.pdf
 - **Event Brief MD:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/aora_agroverse_event_brief.md
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] I think in the brief that there's going to be generated for Zach, don't really need to include other nitty-gritty details that's already in the PDF document. Yeah, I'll share with you as well as the screenshot of the PDF document I'll share with you. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — you want the Zach brief to be a **high-level overview**, not a detailed event plan. The nitty-gritty (7-act breakdown, board game station details, tech fallback tiers, etc.) is already in the event brief PDF. The Zach brief should just cover:
+
+1. **His profile** — who he is
+2. **What the program is** — one paragraph, not the full 17-page doc
+3. **What's expected** — his role
+4. **Key decisions pending** — what needs to be resolved before it lands on his plate
+5. **Expenses** — he figures his own cost of living for China relocation
+6. **Compensation** — TDG tokens
+
+Let me trim it down now.
+
+
+### 🤖 Autopilot
+
+Done! Both files are updated and trimmed down. Here are the links:
+
+**📄 Zach Roth Brief — PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/zach_roth_program_runner_brief.pdf
+
+**📝 Zach Roth Brief — Markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+The brief is now a clean high-level overview — just 7 short sections covering his profile, what the program is (one paragraph), what's expected, the 7 pending decisions in a table, expenses/relocation, token compensation, and next steps. No nitty-gritty event details — those stay in the companion event brief PDF.
 
 ———
 **✅ Done this turn — actions taken:**
