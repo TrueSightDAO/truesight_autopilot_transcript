@@ -2396,3 +2396,39 @@ Gary — you've now shared **~20 images** this session covering the complete Aor
 3. **File a follow-up** about the program runner decision
 4. **Answer questions** about the event design or connections between the pieces
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **55a7d2526be94c948cc872db60290b12.jpg**]
+- Type: Image (OCR confidence: 83.6%, quality: good)
+
+Extracted text:
+```
+vA Saad 13. Return to the starting point Tips for playing Mystic Manor Restaurants and shops near Mystic Manor Explorer’ Club Restaurant The Archive Shop
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is the final section of the Kowloon Vibes Mystic Manor guide — covering:
+
+- **13. Return to the starting point** — the ride exit / unload
+- **Tips for playing Mystic Manor** — practical advice
+- **Restaurants and shops near Mystic Manor:**
+  - **Explorer's Club Restaurant** — the dining option at Mystic Point
+  - **The Archive Shop** — the souvenir/gift shop
+
+This completes the reference article they used as their benchmark. The full Mystic Manor experience flow they studied:
+
+Queue atmosphere → Pre-show (Lord Henry + Albert) → Ride through themed rooms → Climax → Return → Restaurant + Gift Shop
+
+Which maps directly to the Aora × Agroverse 7-act structure ending with the Gift Set pre-sale and post-event online continuation.
+
+---
+
+**Gary — is there anything you'd like me to do with all this material?** I've processed and persisted everything you've shared. Happy to take action on any of it.
+
