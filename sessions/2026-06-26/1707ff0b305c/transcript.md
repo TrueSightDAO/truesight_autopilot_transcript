@@ -2508,6 +2508,22 @@ Let me first search context for any existing records on Zach and the tokenomics.
 ### 🤖 Autopilot
 
 Let me also look up the current tokenomics for contributor compensation.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2617,6 +2633,45 @@ Changes made:
 - "Coordination with Gary" → removed
 - Date confirmation changed from "Liz, Evan, Gary" → "Liz, Evan, program runner"
 - Compiled by line changed from "Sophia Truesight" → "TrueSight DAO"
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] Regarding compensation for time spent for ZAC is 100 tdg per hour spent on Delivering the program and coordinating the program Also There's really no need for my sign-off of the event is really up to ZAC's availability. Yeah [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — two updates:
+
+1. **Compensation:** 100 TDG per hour for program delivery and coordination
+2. **Date confirmation:** No sign-off needed from you — it's up to Zach's availability
+
+Let me update both files.
+
+
+### 🤖 Autopilot
+
+Both files updated. Here are the links:
+
+**📄 Zach Roth Brief — PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/zach_roth_program_runner_brief.pdf
+
+**📝 Zach Roth Brief — Markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+Changes made:
+- **Compensation:** 100 TDG per hour for program delivery and coordination
+- **Date:** Changed from "pending three-party confirmation" to "subject to Zach's availability" — no sign-off needed from you
+- **Next steps:** Removed "confirm July date" since it's up to Zach now
 
 ———
 **✅ Done this turn — actions taken:**
