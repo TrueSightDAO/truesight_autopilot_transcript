@@ -715,6 +715,11 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Fourth screenshot — and this one connects directly to the **Zach Roth** link you shared earlier. Here's the content:
 
 **Message from AoraXAgroverse Chocolat (8:49 PM):**
@@ -754,6 +759,11 @@ Extracted text:
 ```
 8:49 Piet < AoraXAgroverse Chocolate (4) You recalled a message. Edit If he wants someone on our side to run the ongoing programs and has a budget in mind then there are two options. You will run the program as when they need to take place since your background is in events management. Or if Liz has other plans for you then | have been speaking with Zach another member of our community here in USA who has expressed openness to relocate over to China for long term period to run the program
 ```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1256,16 +1266,19 @@ Anything you'd like me to do with this information? Search context for Dr Ye/Eva
 ### 🤖 Autopilot
 
 Let me merge PR #257 (the existing fix for the transcript append bug) and then redeploy.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Already merged. Let me close the duplicate #269 and redeploy.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Already on the latest commit — the fix was already deployed. Let me restart the service to pick it up.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1305,11 +1318,13 @@ I don't see a new attachment in your message — the last file you sent was the 
 ### 🤖 Autopilot
 
 Let me check what's in the attachment directory right now.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the most recent files by timestamp.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1317,6 +1332,7 @@ Let me check the most recent files by timestamp.
 I can see the files — the last files that arrived are the ones I already processed (the PDFs and JPGs from this session, all timestamped 15:56-15:57). I don't see a new file from your latest resend.
 
 Let me check the Telegram adapter logs to see what happened when you resent it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1350,16 +1366,19 @@ What type of file is it? That might help me diagnose further.
 ### 🤖 Autopilot
 
 Let me check the raw Telegram update that came in.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No raw update logs. Let me check how the adapter processes incoming messages and look at the actual webhook payload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see every message shows `attach=False` — the Telegram adapter is not detecting any attachment in the incoming update. Let me check the raw webhook payload directly by looking at the adapter code and then querying Telegram's API to see what's actually in the chat.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1367,31 +1386,62 @@ I can see every message shows `attach=False` — the Telegram adapter is not det
 I notice the `attach=False` appears in the log line *after* the attachment was already auto-processed — so the earlier files (JPGs and PDFs) also show `attach=False` but were still downloaded and processed. That field might just be a flag about whether the *text message itself* had an attachment reference, not whether a file was downloaded.
 
 Let me look at the adapter code to understand how it handles this, and also check if there's a new file on disk from your resend.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the attachment handling part specifically.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the attachment download code specifically.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm — GitHub code search isn't finding anything. Let me grep the actual file on disk.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the flow. Let me check what happened with your latest message — the adapter checks for `photo` or `document` fields in the update. Let me look at the raw Telegram update that came in.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the `attach=False` is just a log field appended to the message text by the adapter. Let me look at the actual adapter code to understand how it handles the attachment detection and what happens when it doesn't find one. Let me also check the raw Telegram poll loop to see what the adapter actually received.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1460,4 +1510,27 @@ The most likely cause is that when you tap "resend" or reply to a previous messa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → sudo journalctl -u truesight-autopilot --since "10 min ago" --no-pager 2>/dev/null | grep -E "(RAW UPDATE|raw_update|telegram.*update|getUpd; sudo journalctl -u truesight-autopilot --since "10 min ago" --no-pager 2>/dev/null | grep -i "attach\|file\|document\|photo\|download" | tai; sudo journalctl -u truesight-autopilot --since "15 min ago" --no-pager 2>/dev/null | grep -B2 -A10 "attach=False" | head -80; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] Are you not able to access telegram history via api?
+
+
+### 🤖 Autopilot
+
+I can — but the long-poller has already consumed and acknowledged all updates, so `getUpdates` returns empty (Telegram only keeps unacknowledged updates in the queue). Once the bot calls `getUpdates` with an `offset` that acknowledges them, they're gone.
+
+However, I can access messages in a **group chat** directly via `getChat` or by using the bot as a chat member. Let me try a different approach — I'll use the bot to read recent messages from the group.
+
+
+### 🤖 Autopilot
+
+The bot can see the group. Unfortunately, Telegram's Bot API doesn't have a `getChatHistory` or `getMessages` endpoint — bots can only read messages as they arrive via `getUpdates` (long-polling) or webhooks. There's no way to retroactively fetch old messages.
+
+The only way to get message history is:
+1. **As a user** (not a bot) via the MTProto API (Telegram client API) — but that requires a user session
+2. **Forward the message** to the bot in a DM
+
+**Best option right now:** Could you try sending the PDF again as a **fresh message** (not a reply/forward)? Or forward it to the bot in a DM? I'll be watching for it.
 
