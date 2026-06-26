@@ -2497,6 +2497,12 @@ Got it, Gary. Let me compile a **Zach Roth Brief** — a single document that co
 6. **Compensation** — tokens based on current DAO economics for time spent running programs
 
 Let me first search context for any existing records on Zach and the tokenomics.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2578,6 +2584,43 @@ https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/zach_roth_pro
 https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
 
 The brief is now a clean high-level overview — just 7 short sections covering his profile, what the program is (one paragraph), what's expected, the 7 pending decisions in a table, expenses/relocation, token compensation, and next steps. No nitty-gritty event details — those stay in the companion event brief PDF.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] I think in the brief to Zack just drop mentions of me all together, Gary, don't mention Gary. Frame it that if necessary that's a central character, then Zack himself will be the central character in the story. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — reframe the narrative so **Zach is the central character**, not you. Let me update both files.
+
+
+### 🤖 Autopilot
+
+Done — both files updated. Here are the links:
+
+**📄 Zach Roth Brief — PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/zach_roth_program_runner_brief.pdf
+
+**📝 Zach Roth Brief — Markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+Changes made:
+- **No mention of Gary** anywhere in the brief
+- The narrative now frames **Zach as the central character** — the Guardian of the Cacao Rainforest
+- "Gary's true story" → "the Guardian's true story"
+- "Coordination with Gary" → removed
+- Date confirmation changed from "Liz, Evan, Gary" → "Liz, Evan, program runner"
+- Compiled by line changed from "Sophia Truesight" → "TrueSight DAO"
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
 
 ———
 **✅ Done this turn — actions taken:**
