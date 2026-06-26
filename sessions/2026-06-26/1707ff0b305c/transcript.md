@@ -1493,6 +1493,7 @@ Actually, let me check if the adapter logs the raw update at DEBUG level.
 ### 🤖 Autopilot
 
 The adapter doesn't log the raw update payload. Let me look at the poll loop to understand the flow better, and check if the adapter is actually logging the raw update at a lower level.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1876,4 +1877,45 @@ This is page 6 — the **Key Roles** table and the start of the **Narrative Stru
 | **Act Two: Sensory Rainforest** (Agroforestry Module) | — | Rotate through 4 physical sensory stations (Smell: cacao trees/flowers boxes; Touch: shade trees, fungal network bags; Sight: micrographs; Hearing: sounds) | Smell boxes, touch bags, fungal network micrographs | Visual scene changes with each station — cacao trees, shade trees, fungal networks, microbial world |
 
 The document continues with more acts. Want me to read the next page for the remaining acts?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **c97e4fa466f44dff9667a1ba13600913.jpg**]
+- Type: Image (OCR confidence: 65.5%, quality: good)
+
+Extracted text:
+```
+_ @7of17 5G (00). Beret. wy Mystic Manor Flew ieee Core Experience Visual Scone (Recommended 1CPlan} Physical Teaching Aids (Examples) T Prologue: Gathering lof Explorers Call of ithe Mysterious Rainforest ‘Queue Area Atmosphere Building 15-20min (Complete identity hransformation at the Aora |Centfication Station; [preview the "Cacao [Explorer Gift Set” Thormal printer, | ora Kuku ktamp, gift set amples, ‘Normal view of the |eacao rainforest. {act One: The Rainforest Gate- The (Guardian's Invitation Boarding the Tracklase Vehicle To Sensory Wend Roos per (Gary personally steps out, [gives briofweleome, and jopens a curtain Rainforest bound effects rise. {Children follow into the [exploration area, [Rotate through 4 physical | [sensory stations. The visual scene changes with leach station, revealing the [Agrotorestry ecosystem layer by layer. The Haclitator describes the jecological scenes with rords. Physical lcurtainidoor, [The Rainforest kainforest sound (Gate slowly opens. effects Changes with [stations (Cacao [Trees and Flowers '~ Shade Trees land Fungal Networks ~~ The Microbial World ~| Rainforest ‘Symphony! lAgroforestry IModute: Smell lboxes, touch lbags, fungal lnetwork Inicrographs, let. JAct Three: Expedition feam Kineluded FFormation-Aora lin Act, Rainforest Companion;Two) (Check-in Station Fantastical ‘Seane lAct Four: The Great lBean Adventure A, FFantastical Journey Icom Rainforest to Hand Fantastical ea smn |Act Five: The Magic forkshop -A Sweat land Wonderful [Transformation Fantastical ast hSmin (Children sond their Aare int the rainforest (scan to lenterscene/paste on Ibackdrop wall officially [becoming expedition eam mombers. |childron play the ole of a {2cao bean on a physical ‘Supply Chain map, [Complate tasks at stations, Jake Fair Trade choices, land receive a Cacao [Explocer Chocolate Medal ‘Children use physical [chocolate molds and, [ingredients to make kchacolate by hand. Gary Lauietly joins in. printer/toblet| HANTB/TC} physical lbackdrop wall + [hora stickers 10). Isymbiotie Ipanorama of the {Cacao Rainforest. ‘Changes with {fermentation and (Drying ~ [Teanspor and [Choice [Chocolate Factory and Completion) | supply Chain IModule: Large imap, dice, task ards, fermented bean amples, ete thocolate |molds, Fair [Trade cacao liquid [The Warm Cacao Morkshop, amber hones. ac Start (Campfire - The (Guardian's Rainforest Isto Final Scene ‘amin ‘Gary shares his tre story {vith Aora Kuku, ‘Stari campfire ‘scone, Epilogue: Rainforest ishes » Continuing he Adventure with >" Sweetness Leaving the Manor Box up the chocolates, laward cenificates, Gary fakes photos and says \goodbye. The facilitator [reminds children they can [continue creating Aora [picture books onlin. 3. Activating the Online-Onsite-Online Full Chain 1 Online Pre-Heat (1-2 weeks before the event) ‘0 Children create their exclusive Aora'companion via the AORA website cand write a short story for it: The system generates: Explorer enificates, packaging boxes. {The farewelt rainforest scene,
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is page 7 — the **full 7-Act Narrative Structure** and the start of the **Online Pre-Heat** section. Here's the complete flow:
+
+**The 7 Acts — Complete:**
+
+| Act | Duration | Core Experience | Physical Aids | Visual Scene |
+|---|---|---|---|---|
+| **Prologue: Gathering of Explorers** | 15-20 min | Queue area atmosphere; Aora Certification Station (identity transformation); Gift Set preview; Gary gives brief welcome | Thermal printer, Aora Kuku stamp, Gift Set samples | Normal view of cacao rainforest |
+| **Act One: The Rainforest Gate** | — | Gary personally steps out, gives brief welcome, opens a curtain — rainforest sound effects rise. Children follow into exploration area | Physical curtain/door | Rainforest Gate slowly opens; rainforest sound effects |
+| **Act Two: Sensory Rainforest** (Agroforestry Module) | — | Rotate through 4 sensory stations. Visual scene changes with each station, revealing the agroforestry ecosystem layer by layer | Smell boxes, touch bags, fungal network micrographs | Cacao Trees & Flowers → Shade Trees & Fungal Networks → Microbial World → Rainforest Symphony |
+| **Act Three: Expedition Team Formation** (Aora Check-in Station) | — | Children send their Aora into the rainforest (scan to enter scene / paste on backdrop wall) — officially becoming expedition team members | Printer/tablet, physical backdrop wall + Aora stickers (10) | Symbiotic panorama of the Cacao Rainforest |
+| **Act Four: The Great Bean Adventure** (Supply Chain Module) | ~28 min | Children play the role of a cacao bean on a physical supply chain map. Complete tasks at stations, make Fair Trade choices, receive Cacao Explorer Chocolate Medal | Large map, dice, task cards, fermented bean samples, etc. | Changes with each station: Fermentation & Drying → Transport & Choice → Chocolate Factory & Completion |
+| **Act Five: The Magic Workshop** | — | Children use physical chocolate molds and ingredients to make chocolate by hand. **Gary quietly joins in** | Chocolate molds, Fair Trade cacao liquid | The Warm Cacao Workshop, amber tones |
+| **Act Start: Campfire — The Guardian's Rainforest Story** (Final Scene) | — | **Gary shares his true story with Aora Kuku** | Star campfire scene | Campfire scene |
+| **Epilogue: Continuing the Adventure** | — | Box up the chocolates, award certificates, Gary takes photos and says goodbye. Facilitator reminds children they can continue creating Aora picture books online | Explorer certificates, packaging boxes | The farewell rainforest scene |
+
+**Act Three detail:** Children send their Aora into the rainforest (scan to enter scene / paste on backdrop wall) — this is the **climax of the story** mentioned earlier.
+
+**Act Five detail:** Gary **quietly joins in** the chocolate-making — a nice touch where you're present but not center stage until the campfire story.
+
+**Epilogue:** Three "harvests" happen simultaneously — chocolate sets, story ends, certificates awarded.
+
+This is a beautifully architected experience. Want me to continue with the remaining pages if you have more?
 
