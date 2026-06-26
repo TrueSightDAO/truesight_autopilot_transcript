@@ -2312,3 +2312,34 @@ The OCR couldn't get much from this one — only 28% confidence. The text it pic
 
 Could you describe what this image shows, or try sending it again?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **d8eea28366b04721893fc2591d631f9d.jpg**]
+- Type: Image (OCR confidence: 45.0%, quality: fair)
+
+Extracted text:
+```
+© Keusleer! Vibes
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is another page from the same Mystic Manor guide article on **Kowloon Vibes** — the OCR caught the site name this time. The low confidence (45%) means it's likely a screenshot of the article with images/diagrams rather than dense text.
+
+This is consistent with the Appendix 2 reference in the event document — they were referencing the Kowloon Vibes guide to Mystic Manor as their design benchmark.
+
+---
+
+**Gary — you've now shared 17 pages of the event plan + supporting references.** Would you like me to:
+
+1. **File a structured summary** in the DAO context for future reference?
+2. **Search context** for any existing records on Aora, Liz, Teacher Evan, Dr Ye, or Zach Roth?
+3. **File a follow-up** in OPEN_FOLLOWUPS.md about the program runner decision (Jerri vs Zach)?
+4. Something else?
+
