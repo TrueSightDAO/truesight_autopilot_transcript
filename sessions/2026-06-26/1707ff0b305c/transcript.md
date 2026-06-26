@@ -2180,6 +2180,7 @@ This is **Appendix 2** — a reference link to a Mystic Manor design analysis ar
 **kowloonvibes.com** article — "Mystic Manor Five-sense Immersive Interactive Storytelling Experience Design Reference"
 
 Let me fetch that article to see what reference material they're drawing from.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2471,4 +2472,72 @@ The brief covers all 10 sections — strategic framework, narrative, the online-
 ———
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/aora_agroverse_event_brief.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] So, I think what we need to do is to consolidate all this into a brief for Zach Roth. I think in the brief, it should indicate his profile and what is this program about and what is kind of expected and what are the key decisions that needs to be made still before it lands up on his plate. And then on his side, he has to frame me in such a way that he knows that he has to think for himself how much expenses is going to incur to be able to live comfortably if he relocates back to China. So, that we can beg that as part of the ongoing operating expenses if Ivan wants to utilize someone on our side to deal with it. Yeah, if it's open to that, I mean, it's like for his time like a spent running the programs he will get issued tokens based on the current economics. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it, Gary. Let me compile a **Zach Roth Brief** — a single document that covers:
+
+1. **Zach's profile** (from LinkedIn)
+2. **What the program is about** (the Aora × Agroverse event engine)
+3. **What's expected of him** (program runner role)
+4. **Key decisions still pending** before it lands on his plate
+5. **Expenses** — he needs to figure his own cost of living for relocating to China, so that can be baked into ongoing operating expenses if Evan wants someone on our side
+6. **Compensation** — tokens based on current DAO economics for time spent running programs
+
+Let me first search context for any existing records on Zach and the tokenomics.
+
+
+### 🤖 Autopilot
+
+Let me also look up the current tokenomics for contributor compensation.
+
+
+### 🤖 Autopilot
+
+Good — I have the context I need. Now let me also look up Zach Roth's LinkedIn more thoroughly to build his profile section.
+
+
+### 🤖 Autopilot
+
+Now I have enough. Let me compile the Zach Roth Brief — PDF and markdown.
+
+
+### 🤖 Autopilot
+
+Now let me upload both files.
+
+
+### 🤖 Autopilot
+
+Done! Here are the download links:
+
+**📄 Zach Roth Brief — PDF:**
+https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/zach_roth_program_runner_brief.pdf
+
+**📝 Zach Roth Brief — Markdown:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
+
+The brief covers all 7 sections you asked for:
+
+1. **Zach's profile** — PlayStation.com rebuild, PMP/CSM/CCNP certs, bilingual, Japan/Asia engagement
+2. **What the program is** — the full Aora × Agroverse event engine (7 acts, board game, Gift Set, closed loop)
+3. **What's expected** — running sessions, facilitation, materials, quality control
+4. **Key decisions pending** — 7 items in a table (Evan's budget, Jerri vs Zach, date confirmation, tech plan, etc.)
+5. **Expenses** — Zach figures his own cost of living for China relocation, baked into operating expenses if Evan has a budget
+6. **Compensation** — TDG tokens via DAO contribution events, rate TBD with budget finalization
+7. **Next steps** — clear action items
+
+Also uploaded the **event brief** from earlier:
+- **Event Brief PDF:** https://github.com/TrueSightDAO/agentic_ai_context/raw/main/briefs/aora_agroverse_event_brief.pdf
+- **Event Brief MD:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/aora_agroverse_event_brief.md
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/main/briefs/zach_roth_program_runner_brief.md
 
