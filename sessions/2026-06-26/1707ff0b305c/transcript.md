@@ -637,16 +637,24 @@ Still hitting the same bug. Let me check if PR #269 is ready to merge so we can 
 ### 🤖 Autopilot
 
 I see there's already a **PR #257** with the same title as PR #269 — both fixing the same `append_to_transcript` bug. PR #257 was opened first (June 18). PR #269 I just opened is a duplicate. Let me check PR #257 to see if it has the fix.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what PR #257 actually changes vs #269.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #257 adds the missing `--chat-id` and `--thread-id` arguments to the parser — that's the fix. PR #269 I just opened is a duplicate. Let me close it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1332,4 +1340,124 @@ What type of file is it? That might help me diagnose further.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -lt /tmp/tg_attachments/ | head -20; sudo journalctl -u truesight-autopilot --since "5 min ago" --no-pager 2>/dev/null | tail -80
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7749] It is a pdf. Could you check by pulling the telegram api directly to see what the actual payload is?
+
+
+### 🤖 Autopilot
+
+Let me check the raw Telegram update that came in.
+
+
+### 🤖 Autopilot
+
+No raw update logs. Let me check how the adapter processes incoming messages and look at the actual webhook payload.
+
+
+### 🤖 Autopilot
+
+I can see every message shows `attach=False` — the Telegram adapter is not detecting any attachment in the incoming update. Let me check the raw webhook payload directly by looking at the adapter code and then querying Telegram's API to see what's actually in the chat.
+
+
+### 🤖 Autopilot
+
+I notice the `attach=False` appears in the log line *after* the attachment was already auto-processed — so the earlier files (JPGs and PDFs) also show `attach=False` but were still downloaded and processed. That field might just be a flag about whether the *text message itself* had an attachment reference, not whether a file was downloaded.
+
+Let me look at the adapter code to understand how it handles this, and also check if there's a new file on disk from your resend.
+
+
+### 🤖 Autopilot
+
+Let me look at the attachment handling part specifically.
+
+
+### 🤖 Autopilot
+
+Let me search for the attachment download code specifically.
+
+
+### 🤖 Autopilot
+
+Hmm — GitHub code search isn't finding anything. Let me grep the actual file on disk.
+
+
+### 🤖 Autopilot
+
+Now I can see the flow. Let me check what happened with your latest message — the adapter checks for `photo` or `document` fields in the update. Let me look at the raw Telegram update that came in.
+
+
+### 🤖 Autopilot
+
+I see — the `attach=False` is just a log field appended to the message text by the adapter. Let me look at the actual adapter code to understand how it handles the attachment detection and what happens when it doesn't find one. Let me also check the raw Telegram poll loop to see what the adapter actually received.
+
+
+### 🤖 Autopilot
+
+Now I see the full flow. The `attach=False` in the log is just a suffix the adapter appends to the message text for the brain. Let me check what the adapter actually received from Telegram by looking at the raw poll data.
+
+
+### 🤖 Autopilot
+
+The adapter doesn't log the raw Telegram update payload. Let me check directly by calling the Telegram API to see what's in the chat right now.
+
+
+### 🤖 Autopilot
+
+Good, I have the bot token. Let me call the Telegram API directly to check what messages are in the group chat and see if your PDF was actually received.
+
+
+### 🤖 Autopilot
+
+The long-poller already consumed all updates — there's nothing pending. Let me check the adapter's log more carefully to see what the raw update looked like when it was polled. Let me add some debug logging to see the raw update.
+
+Actually, let me check if the adapter logs the raw update at DEBUG level.
+
+
+### 🤖 Autopilot
+
+The adapter doesn't log the raw update payload. Let me look at the poll loop to understand the flow better, and check if the adapter is actually logging the raw update at a lower level.
+
+
+### 🤖 Autopilot
+
+Now let me look at the main poll loop to see how it processes updates and whether it logs the raw update.
+
+
+### 🤖 Autopilot
+
+I see — the poll loop doesn't log the raw update. Let me add a debug log line to log the raw update, so next time you send a file we can see exactly what Telegram sends. But first, let me check if there's a way to see what happened with your resend by looking at the adapter's log level.
+
+
+### 🤖 Autopilot
+
+OK, so the log level is INFO. The adapter doesn't log the raw update payload at INFO level. Let me add a debug log for the raw update so we can diagnose this next time. But first — let me check if there's a way to see the last few messages in the group chat directly via Telegram API.
+
+
+### 🤖 Autopilot
+
+All updates have been consumed (offset already advanced past them). The long-poller already processed and acknowledged them all. Let me check the adapter's own log file if it writes one.
+
+
+### 🤖 Autopilot
+
+Gary — here's what I've found:
+
+**The adapter doesn't log the raw Telegram update payload.** It polls `getUpdates`, processes each message, and only logs the extracted text + `attach=False` suffix. The raw JSON (which would show whether `document` or `photo` fields were present) is never logged.
+
+Since the long-poller already consumed all updates (offset advanced past them), I can't retroactively see what Telegram sent for your resend.
+
+**What I can do:**
+
+1. **Add a debug log** to log the raw update payload so next time you send a file we can see exactly what Telegram sends. Want me to open a PR for that?
+
+2. **Alternatively** — could you try sending the PDF again now? I've just queried the Telegram API directly and confirmed the poller is running and healthy. If you send it fresh (not as a reply), I'll be watching for it.
+
+The most likely cause is that when you tap "resend" or reply to a previous message, Telegram doesn't re-attach the file — it only sends the text. Sending it as a **brand new message** with the paperclip icon should work.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → sudo journalctl -u truesight-autopilot --since "10 min ago" --no-pager 2>/dev/null | grep -E "(RAW UPDATE|raw_update|telegram.*update|getUpd; sudo journalctl -u truesight-autopilot --since "10 min ago" --no-pager 2>/dev/null | grep -i "attach\|file\|document\|photo\|download" | tai; sudo journalctl -u truesight-autopilot --since "15 min ago" --no-pager 2>/dev/null | grep -B2 -A10 "attach=False" | head -80; …(+15 more)
 
