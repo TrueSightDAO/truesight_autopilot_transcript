@@ -1499,6 +1499,7 @@ The adapter doesn't log the raw update payload. Let me look at the poll loop to 
 ### 🤖 Autopilot
 
 Now let me look at the main poll loop to see how it processes updates and whether it logs the raw update.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1918,4 +1919,46 @@ This is page 7 — the **full 7-Act Narrative Structure** and the start of the *
 **Epilogue:** Three "harvests" happen simultaneously — chocolate sets, story ends, certificates awarded.
 
 This is a beautifully architected experience. Want me to continue with the remaining pages if you have more?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **e029739f78564bbe8be08b3081064d2c.jpg**]
+- Type: Image (OCR confidence: 75.8%, quality: good)
+
+Extracted text:
+```
+Hop g drawing on Mystic Manor's experience design methodology, notits specific, ___ scenes or technology: 110 5G Files [Benchmarking jension| Mystic Manor's Design Method ‘Gur Adaptation and Application Istaring from the queue area, isitors experience atmosphere lbullding ~ host welcome — following clues through muttiple themed scanes ~ emotional Imax — leaving with a souvent. [The entire journey is woven together by a single storyline. fe orchestrate the 60-minute event into a saven-act story, from "Prologue: Gathering of Explorers" to “Epilogue: Rainforest Wishes.” A hid not “attending an event” but experiencing an adventure" Linear Narrative Structure} 7 sho [avrsthe "Guerin of the Gacso Ranfores™ ne Haney the master fe [benchmarked ogoinst Lod Henny) and Aora \Core Character Guidancelentre story: Alberti a mischievous|x¥KU isthe clue role (benchmarked against nize sto: Abert a mischievovs ipo), chidrn flow Aora Kuk walto Pager allthotarastet ovens. pxParetheranforestandfnaly meet Gary thine scenes, vitors nt ony [We use physi teaching ads to achnve ive pee fanaica sighs but aso mel fve-sensesanploraan’chdaron en cacao FiveSensesimmersve [ents fel temperature changes, beans and so touch mots and bar, ten 0 Experience. [endear suround sound, Multple He sounds of rainforest animals, observe the Benses are engaged iroxcopi word of unga networks, and ate finutoneouy. hocolate they ake themselves. [hecxnloraionoffonastical | [chitrenaccumuate expences tough lxcenes builds up emotion, and the [sensory adventure and the supply chain game. final appearance and story-sharing [The emotional climax is the “Starit Campfire” loy Lord Henry serves asthe session, whare Gary shares his true story with lemotional climax and resolution. [Aara Kuku, completing an emotional loop. Emotional Accumulation, ‘and Climax fsichmarig Dimension] Mystic Manor's Design Metiod (Our Adaptation and Appliation hildren take away self-made chocolate, a acao Explorer Chocolate Medal, an explorar erilicate, and a custom Aora badge. They can Iso continue creating Aora story picture books fer the event. /isitors leave with unique Exclusive Souvenir and |memories and souvenirs, The Continuation experiance does nat end at the lexi. What are we NOT benchmarking? We are not benchmarking Mystic Manar’s specific facilites (such as the trackless ride vehicle, projection equipment, or mechanical devices), nor its themed scenes (uch as the collection room, music box, or fantastical exhibits). These are unique resources and IF owned by Disney, and directly copying them is neither possible ‘nor meaningful. What we are learning is its underlying design logic: how to string an ‘entire experience together with a single storyline, how to guide emotions with characters, and how to create a sense of immersion through the five senses. 3. Content Foundation: Detachable Knowledge Modules This is the core that ensures the depth of our content: The event is not an empty ‘game but an adventure based on real knowledge: The two major teaching modules designed by Gary, "Agroforestry" and “Supply Chain," form the knowledge skeleton ‘of the activity. They can be broken down and integrated into the experience flow, and can also be replaced with knowledge modules on other themes. 4, Experience Closed Loop: The Online-Onsite-Ontine Full Chain This is the engine thet allows us to transcend a single event and build user atid + Online Pre-Heat: Children create their own exclusive Aora companion online and write a short story for it. The system generates a first draft of @ 12-panel digital picture book. Children arrive with their little Aora and its story, looking forward to the upcoming adventure, «Onsite immersion: The Aora badge is their identification. Sending their Aora into the rainforests the story's climax. Making chocolate by hand is the materialization of emotion. The facilitator can naturally chat with the children
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) appended to transcript — artifact id: 8c3b3b1a-2d1c-4b0f-8a5f-4b4e1e8b0f1a]
+
+This is page 8 — the **Mystic Manor Benchmarking Analysis** and the **Detachable Knowledge Modules** concept. Here's the content:
+
+**Mystic Manor Benchmarking — What's Being Adapted:**
+
+| Dimension | Mystic Manor's Method | Aora × Agroverse Adaptation |
+|---|---|---|
+| **Linear Narrative Structure** | Queue → atmosphere building → host welcome → following clues through multiple themed scenes → emotional climax → leave with souvenir. Entire journey woven by a single storyline | 7-act story from "Prologue: Gathering of Explorers" to "Epilogue: Rainforest Wishes." A kid is not "attending an event" but "experiencing an adventure" |
+| **Core Character Guidance** | Lord Henry (the master) + Albert (mischievous monkey) | **Gary** = Guardian of the Cacao Rainforest (benchmarked against Lord Henry); **Aora Kuku** = clue role (benchmarked against Albert). Children follow Aora Kuku's trail through the rainforest and finally meet Gary |
+| **Five-Senses Immersive Experience** | Visitors not only see fantastical sights but also feel temperature changes, hear surround sound | Children smell cacao beans, touch moss and bark, hear rainforest animals, observe the microscopic world of fungal networks, and **eat chocolate they make themselves** |
+| **Emotional Accumulation & Climax** | Exploration of fantastical scenes builds emotion; Lord Henry's final appearance = climax | Children accumulate experiences through sensory adventure + supply chain game. Emotional climax = **"Star Campfire" session** where Gary shares his true story with Aora Kuku |
+| **Exclusive Souvenir & Continuation** | Visitors leave with unique memories and souvenirs | Children take away: self-made chocolate, Cacao Explorer Chocolate Medal, explorer certificate, custom Aora badge. Can continue creating Aora story picture books online |
+
+**What is NOT being benchmarked:** Mystic Manor's specific facilities (trackless ride vehicle, projection equipment, mechanical devices) or themed scenes (collection room, music box). These are Disney's unique IP. The adaptation is about **design logic** — how to string an entire experience with a single storyline, guide emotions with characters, and create immersion through the five senses.
+
+**3. Content Foundation: Detachable Knowledge Modules**
+
+> The event is not an empty game but an adventure based on real knowledge. The two major teaching modules designed by Gary — **"Agroforestry"** and **"Supply Chain"** — form the knowledge skeleton. They can be broken down and integrated into the experience flow, and **can also be replaced with knowledge modules on other themes.**
+
+This is the **replicability engine** in action — swap out the knowledge modules (cacao → tea → honey → cotton), swap the Aora spirit, and the same 7-act structure runs with a different theme.
+
+**4. Experience Closed Loop** — already covered in earlier pages (Online → Onsite → Online).
+
+Want me to continue with more pages?
 
