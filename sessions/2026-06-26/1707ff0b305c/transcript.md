@@ -1463,6 +1463,11 @@ The adapter doesn't log the raw Telegram update payload. Let me check directly b
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good, I have the bot token. Let me call the Telegram API directly to check what messages are in the group chat and see if your PDF was actually received.
 
 
@@ -1635,4 +1640,47 @@ This is page 2 of the same document — the **Online Full Chain** flow. Here's t
 - The Sensory Adventure (Agroforestry Module) synchronizes sensory stations with visual scenes (e.g. magic of migration, symbiotic panorama)
 
 This is a beautifully designed **pre-sale → experience → post-event engagement** flywheel. Want me to keep going with more pages if you have them?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **be4507e1c0c7467789371b537b9afa89.jpg**]
+- Type: Image (OCR confidence: 85.7%, quality: good)
+
+Extracted text:
+```
+or) Sig AORA x AGROVERSE Cacao Rainforest Adventure — Event Creative Planning and Execution Proposal Overview — Part One: Core Framework — A Replicable Event Engine We are not planning an isolated event. We are building a configurable engine for immersive children’s educational activities. The skeleton of this engine is fixed, while the content is variable and replaceable, ensuring that whether the theme is cacao, te2, honey, or cotton in the future, we ean consistently deliver activities of uniform. quality and unique experience. 1. Quality Standards: The "Ideas" and "Model" of TED and TEDx This defines the quality standards of our content and the replication logic of our event skeleton: + Benchmarking TED's Content Quality: What we pursue is net simple entertainment, but, like TED, delivering “ideas worth spreading,” The knowledge modules within the event (Agroforestry, Supply Chain) are transformed into experiences that children can understand and participate in, allowing learning to happen naturally Benchmarking TEDx's Replication Model: TEDx events are independently ‘organized by global teams following TED standards. Our goal is precisely to ‘ereate a TEDx model for the children’s event sector — "Unified Standards, Variable Themes." This "Cacao Rainforest Adventure" isthe frst TEDx-level ‘event authorized by the brand, ready to be rapidly replicated in other cities and with other themes in the future. 2. Experience Design: Immersive Storytelling Method Benchmarked Against Mystic Manor at Hong Kong Disneyland We chose to benchmark against Mystic Manor at Hong Kong Disneyland because it {s acclaimed as one of the most outstanding immersive experiance projects in all Disney parks globally. Its core design logic highly aligns with the children's activity experience we aim to create. Why benchmark against Mystic Manor? ‘The key to Mystic Manor's success lies notin its use of expensive equipment, but in its creation of a storyline that fully immerses visitors from the very moment they step, into the domain. Visitors are not "watching" a story; they are "experiencing" it. This, “linear narrative, character guidance, and emotional accumulation" experience design methodology is precisely what we hope to create for children What spacifically are we benchmarking? We are drawing on Mystic Manor's experience design methodology, notits specific scenes or technology: [Benchmarking | ‘Mystic Manor's Design Method ‘QurAdeptation and Application.
+```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+This is page 3 — the **Core Framework** section. Key content:
+
+**Part One: Core Framework — A Replicable Event Engine**
+
+> "We are not planning an isolated event. We are building a **configurable engine** for immersive children's educational activities."
+
+**1. Quality Standards — TED & TEDx Model**
+
+| Benchmark | Application |
+|---|---|
+| **TED's content quality** | "Ideas worth spreading" — knowledge modules (Agroforestry, Supply Chain) transformed into experiences children can participate in |
+| **TEDx's replication model** | Independently organized by global teams following TED standards → **"Unified Standards, Variable Themes"** |
+| **This event** | The **first TEDx-level event** authorized by the brand — ready to be rapidly replicated in other cities and with other themes (tea, honey, cotton, etc.) |
+
+**2. Experience Design — Benchmarking Mystic Manor (Hong Kong Disneyland)**
+
+Why Mystic Manor? It's acclaimed as one of the most outstanding immersive experience projects in all Disney parks globally. The key isn't expensive equipment — it's a **storyline that fully immerses visitors from the moment they step in**. Visitors don't "watch" a story — they **"experience" it**.
+
+**Three design pillars borrowed from Mystic Manor:**
+- **Linear narrative** — a clear story arc from start to finish
+- **Character guidance** — Aora Kuku, Gary as Guardian
+- **Emotional accumulation** — building toward the moment children meet Gary and hear his true story
+
+This is a really sophisticated design philosophy — they're not just building a one-off event, they're building a **franchise engine** with TEDx-level quality standards and Disney-level experience design. Want me to continue with more pages?
 
