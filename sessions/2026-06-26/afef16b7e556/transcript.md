@@ -4142,3 +4142,33 @@ All of these are valid. None of them is the "correct" one. The system doesn't re
 
 That's why sending people on the journey instead of telling them the answer is the right move. Your WHY is yours to find. And the system is designed for that multiplicity.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] You know, I actually feel like I shouldn't even explain to them the process, but just kind of like point them to go on the own pilgrimage and discovery. If after they get lost, they come back and decided that this is something important, that they feel that they personally want to support fine. If not, it is fine too. It's their own personal hero's journey, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's the most honest and elegant framing yet.
+
+**Point them to the pilgrimage. Don't explain it.**
+
+The hero's journey doesn't work if someone explains the plot beforehand. "First you'll meet the mentor, then you'll cross the threshold, then you'll face the ordeal..." — it ruins it. The whole point is that you don't know what you'll find. You discover it by walking.
+
+**The cacao journey as a pilgrimage:**
+
+- You start because someone pointed you toward it (Jonathan → Jessey)
+- You encounter obstacles (FDA compliance, freight logistics, unit economics)
+- You meet guides along the way (Sophia, the context repos, the DAO)
+- You discover something about yourself and the system
+- You decide whether to return and integrate what you've learned
+
+**If they get lost and come back:** they've chosen it. Their WHY is their own. They'll be a stronger contributor because they arrived at it through their own struggle.
+
+**If they get lost and don't come back:** that's fine too. The pilgrimage wasn't for them. Better they discover that early than force themselves into a WHY that isn't theirs.
+
+**The gate is open. The path is marked. The context repos are public. The SOP exists. Sophia is here.**
+
+But no one is going to carry them through it. The journey is theirs to walk. And that's exactly how it should be.
+
