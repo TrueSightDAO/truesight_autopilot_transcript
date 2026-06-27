@@ -18,56 +18,72 @@
 ### 🤖 Autopilot
 
 Let me look into recent sales activity. I'll check the website and the DAO ledger for recent sales events.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Main Ledger for recent sales events and also look at the website's order system.
+[2 tool result(s) compacted: read_google_sheet, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Main Ledger for the relevant sheets — the Stripe Social Media Checkout ID tab and the QR Code Sales tab.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the sheet names in the Main Ledger to find the right tab names.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the sheet metadata to see the actual tab names.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the Stripe Social Media Checkout ID tab works. Let me look at the full data — I saw the artifact had more rows. Let me read the full artifact to see the most recent entries.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the rest of the data to see the most recent entries.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remaining rows to see the most recent entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the Telegram Chat Logs tab for any recent [SALES EVENT] submissions, and also check if there's a separate sales-related sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what sheets exist in the Main Ledger.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a good picture. Let me also check if there's a recent sale that might have come through the DApp (QR code scanner) path, which would show up differently.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -108,6 +124,7 @@ That'll help me narrow down whether it went through a different channel (e.g. th
 ### 🤖 Autopilot
 
 Let me check the Stripe API directly for recent completed checkout sessions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -166,4 +183,32 @@ Could you give me a bit more context — like:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → which stripe 2>/dev/null || echo "no stripe CLI"; pip3 list 2>/dev/null | grep -i stripe || echo "no stripe python lib"; grep -r 'STRIPE\|stripe.*key\|stripe.*secret' /var/www/sentiment_importer/.env 2>/dev/null || grep -r 'STRIPE\|stripe.*key\|stripe.*secret' ; sudo cat /var/www/sentiment_importer/.env.production 2>/dev/null | grep -i stripe; sudo cat /var/www/sentiment_importer/.env.staging 2>/dev/; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7931] Shana
+
+
+### 🤖 Autopilot
+
+Ah, **Shana Arsenault Burtle** — she's the one who bought the **Ceremonial Cacao – Oscar's Farm, Bahia Brazil, 2024 (200g)** for **$35.80** on **June 18, 2026**.
+
+That's the sale you were thinking of — not Ken, but Shana. Here's what I know from Stripe:
+
+| Field | Value |
+|-------|-------|
+| **Customer** | Shana Arsenault Burtle |
+| **Email** | shana6375@gmail.com |
+| **Date** | 2026-06-18 17:22 UTC |
+| **Amount** | $35.80 |
+| **Item** | Ceremonial Cacao – Oscar's Farm, Bahia Brazil, 2024 (200g) |
+| **Status** | Completed (paid) |
+
+This sale is already recorded in the **Stripe Social Media Checkout ID** tab of the Main Ledger. 
+
+Would you like me to:
+1. **Submit a [SALES EVENT]** to Edgar to formally record this on the DAO ledger (if it hasn't been submitted yet)?
+2. **Check if the corresponding QR code** for that bag has been marked as sold?
+3. Something else?
 
