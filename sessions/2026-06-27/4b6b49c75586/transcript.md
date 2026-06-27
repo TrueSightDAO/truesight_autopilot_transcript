@@ -386,11 +386,13 @@ The QR code exists in Stripe's metadata but hasn't been minted/registered in the
 ### 🤖 Autopilot
 
 Let me search for Santa Ana farm QR codes in the ledger.
+[2 tool result(s) compacted: search_context, list_matching_qr_codes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check for any other Santa Ana QR code prefixes — the farm code might differ.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -508,6 +510,34 @@ Let me submit the sale:
 | **Stripe Session** | `cs_live_a1hc4YmZG9lZkVcYIfIZhuK37gQjFlN2D0EsieqKg6qj9LVkoLViXv9l3t` |
 
 The transaction is now recorded in the DAO ledger. The QR code `2024SA_20251227_33` should now be marked as SOLD.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7715] actually it was sold by Kirsten
+
+
+### 🤖 Autopilot
+
+Got it — let me correct the submission. I need to update the "Sold by" field.
+
+
+### 🤖 Autopilot
+
+Corrected. The **SALES EVENT** for `2024SA_20251227_33` now shows:
+
+| Field | Value |
+|-------|-------|
+| **QR Code** | `2024SA_20251227_33` |
+| **Customer** | Quyen Nim (knim14@gmail.com) |
+| **Amount** | $25.00 |
+| **Sold by** | **Kirsten** ✅ |
+| **Proceeds to** | Gary Teh |
+| **Stripe Session** | `cs_live_a1hc4YmZG9lZkVcYIfIZhuK37gQjFlN2D0EsieqKg6qj9LVkoLViXv9l3t` |
 
 ———
 **✅ Done this turn — actions taken:**
