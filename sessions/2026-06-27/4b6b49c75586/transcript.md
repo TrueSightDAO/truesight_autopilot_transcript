@@ -398,11 +398,13 @@ Let me also check for any other Santa Ana QR code prefixes — the farm code mig
 ### 🤖 Autopilot
 
 Let me check the QR code naming convention to understand the farm code for Santa Ana.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 So the QR code prefix `2024SA` uses the farm code **SA** which likely stands for **Santa Ana**. Let me check the full Agroverse QR codes sheet for all Santa Ana QR codes and their managers.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -536,6 +538,39 @@ Corrected. The **SALES EVENT** for `2024SA_20251227_33` now shows:
 | **Customer** | Quyen Nim (knim14@gmail.com) |
 | **Amount** | $25.00 |
 | **Sold by** | **Kirsten** ✅ |
+| **Proceeds to** | Gary Teh |
+| **Stripe Session** | `cs_live_a1hc4YmZG9lZkVcYIfIZhuK37gQjFlN2D0EsieqKg6qj9LVkoLViXv9l3t` |
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7715] Check the correct name for Kirsten
+
+
+### 🤖 Autopilot
+
+Let me check the contributors registry for Kirsten's correct name.
+
+
+### 🤖 Autopilot
+
+The correct name is **Kirsten Ritschel** (as seen in the ADVISORY_SNAPSHOT and existing sales events). Let me resubmit with the proper name.
+
+
+### 🤖 Autopilot
+
+Corrected to **Kirsten Ritschel** ✅
+
+| Field | Value |
+|-------|-------|
+| **QR Code** | `2024SA_20251227_33` |
+| **Customer** | Quyen Nim (knim14@gmail.com) |
+| **Amount** | $25.00 |
+| **Sold by** | **Kirsten Ritschel** ✅ |
 | **Proceeds to** | Gary Teh |
 | **Stripe Session** | `cs_live_a1hc4YmZG9lZkVcYIfIZhuK37gQjFlN2D0EsieqKg6qj9LVkoLViXv9l3t` |
 
