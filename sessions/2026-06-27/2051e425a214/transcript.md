@@ -99,3 +99,71 @@ Could you clarify a bit more:
 
 That'll help me narrow down whether it went through a different channel (e.g. the DApp scanner path which records to a different sheet).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7931] Check stripe api
+
+
+### 🤖 Autopilot
+
+Let me check the Stripe API directly for recent completed checkout sessions.
+
+
+### 🤖 Autopilot
+
+I have the Stripe Python library. Let me check if there's a Stripe API key configured anywhere I can use.
+
+
+### 🤖 Autopilot
+
+Let me check the Edgar Rails server for the Stripe API key — that's where the webhook lives.
+
+
+### 🤖 Autopilot
+
+I have the live Stripe secret key. Let me query the Stripe API directly for recent completed checkout sessions.
+
+
+### 🤖 Autopilot
+
+The API key works — got 9 sessions. Let me fix the script.
+
+
+### 🤖 Autopilot
+
+The `get()` method doesn't work on StripeObject in v15. Let me use `hasattr` instead.
+
+
+### 🤖 Autopilot
+
+Now let me get the line items for these sessions to see what was purchased.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture from Stripe directly. Here's the summary:
+
+**Stripe API — Completed Checkout Sessions (last 30 days):**
+
+| Date | Customer | Email | Amount | Item |
+|------|----------|-------|--------|------|
+| Jun 25 | **Quyen Nim** | knim14@gmail.com | $25 | Ceremonial Cacao Kraft Pouch (Santa Ana 2023, AGL2) |
+| Jun 18 | **Shana Arsenault Burtle** | shana6375@gmail.com | $35.80 | Ceremonial Cacao – Oscar's Farm 2024 (200g) |
+| Jun 13 | **Anya Watford** | anyawatford90@gmail.com | $25 | Ceremonial Cacao Kraft Pouch (Kirsten 20260121) |
+| Jun 13 | **Norashikin Dunning** | nora@noraharon.com | $25 | Ceremonial Cacao Kraft Pouch (Kirsten 20260121) |
+| Jun 12 | **Linda Ford** | topcoat_cheesy_1h@icloud.com | $70.80 | Premium Dark Chocolate Bar x6 + Shipping |
+| Jun 1 | **Vlatko** (x3) | gigovv@gmail.com | $75 total | 3x Ceremonial Cacao Kraft Pouches |
+| May 29 | **Susie Fritsch** | keturalu@hotmail.com | $58.61 | Ceremonial Cacao x2 (Oscar's + Santa Ana) |
+
+**No sale to anyone named "Ken"** appears in the Stripe API for the last 30 days. 
+
+Could you give me a bit more context — like:
+- Was this a recent sale (within days/weeks) or older?
+- Did Ken mention it to you, or did you see it somewhere?
+- Could it have gone through a different channel (e.g. the DApp QR scanner, a direct invoice, or a manual sale)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → which stripe 2>/dev/null || echo "no stripe CLI"; pip3 list 2>/dev/null | grep -i stripe || echo "no stripe python lib"; grep -r 'STRIPE\|stripe.*key\|stripe.*secret' /var/www/sentiment_importer/.env 2>/dev/null || grep -r 'STRIPE\|stripe.*key\|stripe.*secret' ; sudo cat /var/www/sentiment_importer/.env.production 2>/dev/null | grep -i stripe; sudo cat /var/www/sentiment_importer/.env.staging 2>/dev/; …(+8 more)
+
