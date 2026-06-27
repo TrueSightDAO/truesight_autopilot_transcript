@@ -22,16 +22,34 @@
 ### 🤖 Autopilot
 
 Let me search the context for how scored chatlogs are processed via Edgar and the dao_client.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the key planning document and the current advisory snapshot to give you a full picture.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check the current status of the review queue page and Edgar integration.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -126,4 +144,134 @@ Go to **https://edgar.truesight.me/dao/review_contribution** — log in with you
 
 **If you want the DApp path finished:**  
 I can pick up the **PR-INTEGRATION** work — wire `review_queue.html` to Edgar's actual endpoints (`/dao/verify_signature`, `/dao/submit_contribution`, `/dao/check_digital_signature`) and deploy it. Want me to proceed with that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7948] Pull the latest code base, I believe the implementation is already completed
+
+
+### 🤖 Autopilot
+
+Let me check the latest state of the codebase — both the DApp page and the Edgar controller.
+
+
+### 🤖 Autopilot
+
+Good — the Edgar-side controller is fully implemented. Let me check the JavaScript in `review_queue.html` to see what API endpoints it actually calls.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me check if the Edgar endpoint `/dao/submit_contribution_review` exists on the server.
+
+
+### 🤖 Autopilot
+
+Now let me check the DAO routes specifically.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check what the DApp page's JavaScript actually calls vs what Edgar has.
+
+The DApp `review_queue.html` calls:
+- `EDGAR_BASE + '/dao/submit_contribution_review'` — **this endpoint does NOT exist** on Edgar
+- It also fetches from `EDGAR_BASE + '/dao/verify_identity'` and `EDGAR_BASE + '/dao/contributors'` — also **don't exist**
+
+Let me check the full JS to see what endpoints it uses.
+
+
+### 🤖 Autopilot
+
+Let me get the JavaScript section that defines the endpoints.
+
+
+### 🤖 Autopilot
+
+Now let me check the `loadQueue` function to see what endpoint it fetches from.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Let me check if the Edgar `/dao/review_queue` endpoint exists.
+
+
+### 🤖 Autopilot
+
+Let me check the HANDOFF_MANIFEST and the plan to see what was actually completed.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me check the latest code on the server to see if the Edgar endpoint was added.
+
+
+### 🤖 Autopilot
+
+So the Edgar side has **none** of the endpoints the DApp page calls. Let me also check if the DApp page is deployed anywhere.
+
+
+### 🤖 Autopilot
+
+Interesting — the page IS deployed on `dapp.truesight.me` (the production DApp domain). Let me check what happens when it actually loads data.
+
+
+### 🤖 Autopilot
+
+The `/dao/review_queue` endpoint **IS live on Edgar** and returning data! Let me check the full response to see how many items.
+
+
+### 🤖 Autopilot
+
+The endpoint is live and returning data. Now let me check the DApp page on `dapp.truesight.me` to see if it works end-to-end.
+
+
+### 🤖 Autopilot
+
+The page is deployed on `dapp.truesight.me` and the `/dao/review_queue` endpoint is live on Edgar returning data. Let me check the deployed page's JS to see if it matches the latest code in `dapp_beta`.
+
+
+### 🤖 Autopilot
+
+The deployed page is truncated in the HTTP response. Let me check the key difference — the deployed page is only 7422 bytes while the `dapp_beta` version is much larger (18K+). The deployed page is an **older, smaller version**. Let me check what's actually deployed.
+
+
+### 🤖 Autopilot
+
+The deployed page is truncated at 7422 bytes — that's the HTML-only shell without the JavaScript. The Nginx server is truncating it. Let me check the actual file on the server.
+
+
+### 🤖 Autopilot
+
+It's served from GitHub Pages (via `dapp.truesight.me` CNAME). The content-length is 7422 bytes. Let me check the full file.
+
+
+### 🤖 Autopilot
+
+Now let me check what the deployed page's JS actually does — specifically the `submitAction` function.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The deployed page calls `/dao/submit_contribution_review` which doesn't exist on Edgar. Let me check what Edgar DOES have for the submit endpoint.
+
+
+### 🤖 Autopilot
+
+Interesting! The endpoint `/dao/submit_contribution_review` DOES exist on Edgar — it's just the existing `submit_contribution` handler catching it. Let me check the routes more carefully.
+
+
+### 🤖 Autopilot
+
+So there's no explicit route for `/dao/submit_contribution_review` or `/dao/review_queue`. Let me check if these are being handled by a catch-all or if they're in a different file.
+
+
+### 🤖 Autopilot
+
+So the `/dao/review_queue` and `/dao/submit_contribution_review` endpoints are NOT in the sentiment_importer codebase at all. But they respond — let me check if they're handled by a Rack middleware or a different app.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /home/ubuntu/sentiment_importer && git log --oneline -5 -- config/routes.rb app/controllers/dao_controller.rb; cd /home/ubuntu/sentiment_importer && grep -n 'review_queue\|submit_contribution_review\|verify_identity' config/routes.rb app/controllers/d; cd /home/ubuntu/sentiment_importer && grep -rn 'review_queue\|submit_contribution_review\|verify_identity' config/routes.rb app/controllers/; …(+9 more)
 
