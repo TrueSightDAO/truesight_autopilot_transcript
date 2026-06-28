@@ -890,3 +890,84 @@ PR #135 is still open — GATE-2 is blocking. I need you to merge it before I ca
 
 Could you review and merge **PR #135** (https://github.com/TrueSightDAO/dao_protocol/pull/135)? Once merged, I'll proceed immediately to **PR3** (DApp page in `dapp_beta`).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7987] merged
+
+
+### 🤖 Autopilot
+
+Already merged. Moving to **PR3: DApp page** in `dapp_beta`.
+
+Let me read the DApp page conventions and an existing DApp page for the pattern.
+
+
+### 🤖 Autopilot
+
+Good. `DAPP_PAGE_CONVENTIONS.md` doesn't exist in `dapp_beta` — let me check if it's in `agentic_ai_context` instead.
+
+
+### 🤖 Autopilot
+
+I have the full conventions. Let me also check the plan's §4b for the exact DApp page spec, and look at `report_dao_expenses.html` as the reference page.
+
+
+### 🤖 Autopilot
+
+I have the full reference page. Now let me also check the plan's §4b for the exact DApp page spec.
+
+
+### 🤖 Autopilot
+
+Now I have the full spec. Let me build PR3 — the DApp page + menu.js update.
+
+
+### 🤖 Autopilot
+
+Now let me also check the submission pattern from `report_dao_expenses.html` — specifically the JS signing/submit section.
+
+
+### 🤖 Autopilot
+
+I have the full pattern. Now let me build PR3 — the DApp page + menu.js update.
+
+
+### 🤖 Autopilot
+
+## ✅ PR3 Complete — `dapp_beta#58`
+
+**PR URL:** https://github.com/TrueSightDAO/dapp_beta/pull/58
+
+### What's in PR3 (2 files)
+
+| File | Action |
+|------|--------|
+| `post_repackaging_cleanup.html` | **New** — Full DApp page with 13 form fields, signing, POST to Edgar, `<pre>` result blocks |
+| `menu.js` | **Edit** — Added nav entry after Repackaging Planner in `Inventory & ledger` section |
+
+### Form fields (matching CLI canonical labels 1:1)
+
+| Field | Type | Required | Default |
+|-------|------|----------|---------|
+| Composition URL | `url` | **Yes** | — |
+| Holder Name | `text` | **Yes** | — |
+| Farm Name | `text` | No | — |
+| State | `text` | No | — |
+| Country | `text` | No | — |
+| Year | `text` (4-digit) | No | — |
+| Landing Page | `url` | No | — |
+| Ledger URL | `url` | No | — |
+| SKU Mapping | `textarea` (JSON) | No | — |
+| Deplete Inputs | `checkbox` | No | checked |
+| Add Output Locations | `checkbox` | No | checked |
+| Set Currencies Metadata | `checkbox` | No | checked |
+| Rebuild Inventory | `checkbox` | No | unchecked |
+
+### Gate
+**GATE-3:** Please review and merge PR #58 when ready. Then I'll proceed to **PR4** (contracts card on `truesight_me`).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #135 on dao_protocol merged successfully (sha: f3eba7c5fa497dc6c52815bd35eb238bd17764f4). PR #135 was already merged.
+
