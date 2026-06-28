@@ -608,11 +608,13 @@ The header still says "v2" but the content includes all the v3 additions (24-fil
 ### 🤖 Autopilot
 
 Now let me also check the existing events_catalog.json and the DApp page reference pattern.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full picture. Let me also check the existing PR I opened earlier (the v1 one in dao_protocol) to close it properly.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -801,4 +803,59 @@ PR #134 is still open — I need your review/merge before proceeding to PR2. Let
 PR #134 is still open and unmerged. Per the plan's gates, I need your review/merge before proceeding to PR2. 
 
 **GATE-1 is blocking.** Could you review and merge **PR #134** (https://github.com/TrueSightDAO/dao_protocol/pull/134)? Once merged, I'll proceed immediately to **PR2** (dispatch route in `dispatch.py`).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7987] merge it
+
+
+### 🤖 Autopilot
+
+## ✅ PR #134 Merged — GATE-1 passed
+
+Now proceeding to **PR2: Dispatch route** per the plan (§8, PR2).
+
+Let me read the current `dispatch.py` to understand the routing pattern.
+
+
+### 🤖 Autopilot
+
+Now I have the pattern. PR2 adds a dispatch route for `[POST-REPACKAGING CLEANUP EVENT]`. Let me also check the plan's §6 for the exact dispatch spec.
+
+
+### 🤖 Autopilot
+
+Let me get the §6 dispatch spec from the plan.
+
+
+### 🤖 Autopilot
+
+I have the full spec. Now let me create PR2 — the dispatch route addition.
+
+
+### 🤖 Autopilot
+
+## ✅ PR2 Complete — `dao_protocol#135`
+
+**PR URL:** https://github.com/TrueSightDAO/dao_protocol/pull/135
+
+### What's in PR2
+
+| File | Action |
+|------|--------|
+| `truesight_dao_client/server/dispatch.py` | **Edit** — added `[POST-REPACKAGING CLEANUP EVENT]` ROUTING entry before `[ASSET RECEIPT EVENT]` |
+
+### Dispatch route
+```
+"[POST-REPACKAGING CLEANUP EVENT]" → POST_REPACKAGING_CLEANUP → processPostRepackagingCleanup
+enqueue_inventory = True (rebuilds store-inventory.json after sheet writes)
+```
+
+### Gate
+**GATE-2:** Please review and merge PR #135 when ready. Then I'll proceed to **PR3** (DApp page in `dapp_beta`).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #134 on dao_protocol merged successfully (sha: 8d43255bf3cdbb88dbaeee687ab14ec77f6f4d39). Pull Request successfully merged
 
