@@ -471,7 +471,13 @@ Now let me also check the `build_event_cli` function signature to understand how
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the full picture. Let me also check the `_ATTACHED_FILENAME_LABEL` constant and the rest of the function.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -573,6 +579,7 @@ Confirm you've read v3, restate the new surface requirements, and re-park for 'g
 ### 🤖 Autopilot
 
 Let me re-read the updated v3 plan.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -697,4 +704,76 @@ You mentioned Deep Seek reviewed your work and you made adjustments. Could you c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main && git reset --hard origin/main
+
+
+### 🧑 Governor
+
+Status check: what's the current state of PR1 for POST_REPACKAGING_CLEANUP_PLAN.md? Have you opened a PR yet? If so, what's the URL? If blocked, what's the blocker?
+
+
+### 🤖 Autopilot
+
+**PR1 status: NOT opened yet.** Here's the timeline:
+
+1. **First attempt (v1 — wrong architecture):** I opened `dao_protocol#133` with a gspread-based module. You rejected it — wrong repo name (should be `dao_client`, though it redirects to `dao_protocol`) and wrong architecture (direct gspread instead of Edgar event pipeline). I closed it.
+
+2. **Second attempt (v2 — correct architecture):** I built the thin `build_event_cli` wrapper and tried `git_push_changes` to `dao_protocol` with branch `feat/post-repackaging-cleanup-v2`. The tool returned an `invalid_arguments` error — the content was too large for the `writes` parameter. The branch was never pushed, no PR was created.
+
+3. **Current state:** You then told me the plan was updated to v3 (with the 24-file surface checklist, 9 PRs, etc.) and asked me to re-read it. I confirmed I'd read v3 and re-parked for "go for it". You then mentioned Deep Seek reviewed it and made adjustments — I asked for clarification on what changed but haven't received a response yet.
+
+**Blocker:** I'm waiting for your signal on two things:
+1. **Are the Deep Seek adjustments already in the plan at commit `0766a4c`**, or is there a newer version I haven't seen?
+2. **"Go for it"** — once you confirm the plan is final, I'll execute PR1 (CLI module + events catalog + pyproject.toml). The `git_push_changes` error was a content-size issue I can work around by using smaller hunks or `edits` instead of `writes`.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7987] [Handoff context — this Telegram topic (thread 7987) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+GO received. Executing **PR1** from `POST_REPACKAGING_CLEANUP_PLAN.md` v3 — 3 files in `dao_client` (which is `dao_protocol` on GitHub):
+
+1. `truesight_dao_client/modules/post_repackaging_cleanup.py` — thin `build_event_cli` wrapper
+2. `truesight_dao_client/server/data/events_catalog.json` — add event entry
+3. `pyproject.toml` — add console script
+
+Let me first read the current state of the files I need to modify.
+
+
+### 🤖 Autopilot
+
+Good — I have the current state of both files. Now let me also check the existing `repackaging_planner.py` module to match the exact pattern.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me create PR1 with all 3 files using `git_push_changes` with `edits` for the two existing files (to avoid the content-size issue) and a `write` for the new module.
+
+
+### 🤖 Autopilot
+
+## ✅ PR1 Complete — `dao_protocol#134`
+
+**PR URL:** https://github.com/TrueSightDAO/dao_protocol/pull/134
+
+### What's in PR1 (3 files)
+
+| File | Action |
+|------|--------|
+| `truesight_dao_client/modules/post_repackaging_cleanup.py` | **New** — thin `build_event_cli` wrapper, 14 canonical labels, 2 required fields, 4 validators, 5 defaults |
+| `truesight_dao_client/server/data/events_catalog.json` | **Edit** — added `POST-REPACKAGING CLEANUP EVENT` entry under `Inventory & Supply Chain` |
+| `pyproject.toml` | **Edit** — added `truesight-dao-post-repackaging-cleanup` console script |
+
+### Architecture
+```
+CLI (build_event_cli) → sign + POST → Edgar → Telegram Chat Logs → dispatch → GAS → Sheets
+```
+No gspread. All sheet writes happen server-side.
+
+### Gate
+**GATE-1:** Please review and merge PR #134 when ready. Then I'll proceed to **PR2** (dispatch route in `dispatch.py`).
 
