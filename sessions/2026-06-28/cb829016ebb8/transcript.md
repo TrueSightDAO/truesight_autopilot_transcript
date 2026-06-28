@@ -1570,6 +1570,7 @@ The `lookup_event_docs` function is implemented inside the autopilot's tool runt
 Neither file exists in the repo. The `lookup_event_docs` tool is part of the autopilot's internal runtime (not a user-editable file), and `events_catalog_snapshot.json` doesn't exist yet. 
 
 Let me check what files are actually in the `truesight_autopilot` repo to understand the structure.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1720,4 +1721,18 @@ Now I have the full UAT spec. Let me build PR9 — the test file.
 | ✅ PR5 | `agroverse-inventory` | GAS handler | **Deployed** |
 | ✅ PR8 | `truesight_autopilot#274` | lookup_event_docs + events_catalog_snapshot | **Merged** |
 | ⏳ **PR9** | `dao_protocol#136` | Tests | **Awaiting merge** |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=7987] Seeing 404 here https://github.com/TrueSightDAO/dao_protocol/issues/136
+
+
+### 🤖 Autopilot
+
+That's because I opened it as a **Pull Request** (PR), not an Issue. The correct URL is:
+
+**https://github.com/TrueSightDAO/dao_protocol/pull/136**
+
+Could you review and merge it?
 
