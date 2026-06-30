@@ -101,21 +101,30 @@ Now I have the full picture. Let me also check if there was a more recent sale n
 ### 🤖 Autopilot
 
 Let me also check if there are any other Etsy transaction or payment emails that might indicate a second sale.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check the admin mailbox for any Etsy sale notifications.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what was previously recorded for this first sale.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check if there's a second sale notification that I might have missed — the $29.53 deposit is less than the $33.13 order total, which makes sense since Etsy deducts fees. Let me look more broadly.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -324,4 +333,62 @@ The QR code status has been updated from **MINTED → SOLD**. 🎉
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8088] Let's chat alittle before you process it. I think we should Indicate sale price to be $29.53
+
+Also we are using UPS and tracking number is 1ZXG9979YN25983449
+
+Tracking URL
+
+https://www.ups.com/track?AgreeToTermsAndConditions=yes&loc=en_US&tracknum=1ZXG9979YN25983449&requester=ST/trackdetails
+
+How would you submit that based on your understanding of the dao_client?
+
+
+### 🤖 Autopilot
+
+Good call — $29.53 is the actual cash collected (the Etsy payout after fees), so that makes sense as the sales price recorded in the DAO.
+
+Let me check the dao_client to understand how it handles submissions, especially with tracking details.
+
+
+### 🤖 Autopilot
+
+The dao_client repo seems to have been moved/renamed. Let me check what the actual submission tool accepts — I already have the canonical fields from `lookup_event_docs`. Let me also look at how the DApp handles this.
+
+
+### 🤖 Autopilot
+
+Great — now I have the full picture. The canonical SALES EVENT payload (matching the DApp) is:
+
+```
+- Item: {qr_code}
+- Sales price: ${amount}
+- Sold by: {manager_name}
+- Cash proceeds collected by: {cash_name}
+- Owner email: {email}
+- Stripe Session ID: {id or (none)}
+- Shipping Provider: {provider or (none)}
+- Tracking number: {tracking or (none)}
+- Attached Filename: {filename or None}
+- Submission Source: {url}
+```
+
+So with your corrections, the submission should be:
+
+| Field | Value |
+|---|---|
+| **Item** | `2024OSCAR_CC_20260620_2` |
+| **Sales price** | `29.53` |
+| **Sold by** | `Kirsten Ritschel` |
+| **Cash proceeds collected by** | `Gary Teh` |
+| **Owner email** | `ravenmoonemporium@gmail.com` |
+| **Shipping Provider** | `UPS` |
+| **Tracking number** | `1ZXG9979YN25983449` |
+| **Submission Source** | `https://www.etsy.com/your/orders/4088615882` (or just `Etsy`) |
+
+My previous submission already went through with the old values ($25.00, no tracking). Since the first submission succeeded, I can't edit it — but I can submit a **corrected/amended** SALES EVENT with the updated price and tracking info. Would you like me to do that?
 
