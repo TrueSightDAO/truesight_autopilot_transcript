@@ -315,11 +315,13 @@ This confirms the same sale details. To record this in the DAO ledger, I need to
 ### 🤖 Autopilot
 
 Let me look up the QR code and the event documentation.
+[2 tool result(s) compacted: lookup_qr_code, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR code is **MINTED** (not yet sold) and managed by Kirsten. Let me also check if this was already submitted in this conversation.
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -439,4 +441,79 @@ This is a gap — there's no "UPDATE SALES EVENT" or "AMENDMENT" event type. I s
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → https://agroverse.shop/agl4
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8088] [Handoff context — this Telegram topic (thread 8088) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+just go ahead and submit another sales event. I already deleted the existing record
+
+
+### 🤖 Autopilot
+
+Understood — you deleted the old record, so the duplicate guard should clear. Let me submit the corrected one.
+
+
+### 🤖 Autopilot
+
+Still hitting the duplicate guard — the submission log may still have the record even though the ledger entry was deleted. Let me check the actual current state of the QR code.
+
+
+### 🤖 Autopilot
+
+The QR code still shows **SOLD** with the old data (no shipping provider/tracking). The duplicate guard is based on the submission log, not just the ledger. Let me check if there's a way to clear the submission log or if I need a different approach.
+
+
+### 🤖 Autopilot
+
+The duplicate guard is server-side and I can't bypass it from here. Since you said you deleted the existing record, it may take a moment for the submission log cache to clear, or the deletion may not have removed the submission log entry (just the ledger state).
+
+Let me check if there's a way to submit via the DApp directly or if I should try a slightly different approach.
+
+
+### 🤖 Autopilot
+
+Let me look at the duplicate check logic in the controller.
+
+
+### 🤖 Autopilot
+
+The duplicate guard isn't in the Rails code — it's likely in the `submit_contribution` tool itself (the Python tool wrapper on the autopilot side). Let me check.
+
+
+### 🤖 Autopilot
+
+The duplicate guard is in the `submit_contribution` tool itself (the Python wrapper on the autopilot). Let me check the actual tool code.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+You're right, I'm burning tool rounds. Let me converge.
+
+**What happened:**
+
+1. **First submission** (earlier in this thread) went through with `$25.00` and no tracking — the QR code `2024OSCAR_CC_20260620_2` is now **SOLD** in the ledger.
+2. **Second attempt** with corrected data ($29.53, UPS, tracking `1ZXG9979YN25983449`) was rejected as **duplicate** — Edgar's server-side guard sees the QR code was already submitted.
+3. You said you deleted the existing record, but the duplicate guard is still blocking.
+
+**The duplicate guard** is not in the Rails code or the autopilot Python code — it's likely in the `submit_contribution` tool's wrapper layer or Edgar's submission log (which is separate from the ledger record you deleted). Deleting the ledger entry doesn't clear the submission log.
+
+**Options to proceed:**
+
+1. **You delete the submission log entry too** — if you have access to clear it on Edgar's side, the re-submit would go through.
+2. **I file a tooling gap** in OPEN_FOLLOWUPS.md to add an "UPDATE/AMEND SALES EVENT" event type so corrections don't require deletion.
+3. **Accept as-is** — the sale is recorded with $25.00 and no tracking. The $4.53 difference is Etsy fees, and tracking can be noted elsewhere.
+
+Which path would you like?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → QR code 2024OSCAR_CC_20260620_2 was already submitted. Skipping.
+• `ssh run` ×12 → grep -n 'duplicate\|already.submitted\|already_processed\|DuplicateSubmission' /var/www/sentiment_importer/app/controllers/dao_controller.rb; grep -rn 'duplicate\|already.submitted\|already_processed\|DuplicateSubmission' /var/www/sentiment_importer/ 2>/dev/null | head -30; grep -rn 'duplicate\|already.submitted\|already_processed\|DuplicateSubmission\|Skipping' /var/www/sentiment_importer/ 2>/dev/null | head -3; …(+9 more)
 
