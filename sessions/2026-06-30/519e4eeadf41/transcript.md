@@ -130,6 +130,7 @@ Let me also check if there's a second sale notification that I might have missed
 ### 🤖 Autopilot
 
 Let me check if there's a "you got a new order" notification that I may have missed — Etsy sends these from a specific address.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -137,21 +138,35 @@ Let me check if there's a "you got a new order" notification that I may have mis
 OK, so the only sale notification I can find in the mailbox is the **first sale** from June 15 (Order #4088615882, buyer: Raven Runyan / ravenmoonemporium). The $29.53 deposit on June 29 is the payout for that same sale (after Etsy fees).
 
 Let me check if this sale was already recorded in the DAO ledger.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the main ledger — let me check if there's a separate sales/transactions sheet or if this was recorded via Edgar.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the TDG contributions ledger, not a sales ledger. Let me check what other sheets exist.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Edgar API to see if this sale was already recorded.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,6 +291,7 @@ https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thre
 Good — this is the same first sale (Order #4088615882) I already identified. Same buyer, same item, same amounts. The PDF just confirms the order notification email.
 
 Let me persist this to the transcript and then proceed.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -391,4 +407,36 @@ So with your corrections, the submission should be:
 | **Submission Source** | `https://www.etsy.com/your/orders/4088615882` (or just `Etsy`) |
 
 My previous submission already went through with the old values ($25.00, no tracking). Since the first submission succeeded, I can't edit it — but I can submit a **corrected/amended** SALES EVENT with the updated price and tracking info. Would you like me to do that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8088] Do that.
+
+
+### 🤖 Autopilot
+
+The QR code is already marked **SOLD** from the first submission, so Edgar rejected the duplicate — which is correct behavior (one QR code, one sale).
+
+However, the first submission had the wrong price ($25.00) and no tracking info. The ledger shows the QR status is **SOLD** but the `shipping_provider` and `tracking_number` fields are empty, and the `Sales price` was $25.00 instead of $29.53.
+
+Let me check if there's an amendment/update mechanism.
+
+
+### 🤖 Autopilot
+
+There's no amendment/update event type in the catalog. The first submission went through with $25.00 and no tracking. Since Edgar rejected the duplicate, the ledger has:
+
+- **Sales price**: $25.00 (should be $29.53)
+- **Shipping Provider**: empty (should be UPS)
+- **Tracking number**: empty (should be 1ZXG9979YN25983449)
+
+This is a gap — there's no "UPDATE SALES EVENT" or "AMENDMENT" event type. I should file this as a tooling gap in OPEN_FOLLOWUPS.md. But first — would you like me to:
+
+1. **File a follow-up** to add an amendment/update event type to Edgar, so corrections can be made?
+2. Or is the $25.00 + no tracking acceptable as-is, since the sale is recorded?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → https://agroverse.shop/agl4
 
