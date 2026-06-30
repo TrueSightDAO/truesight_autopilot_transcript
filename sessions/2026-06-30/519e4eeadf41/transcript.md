@@ -563,12 +563,59 @@ Let me look at the duplicate check logic in the controller.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The duplicate guard isn't in the Rails code — it's likely in the `submit_contribution` tool itself (the Python tool wrapper on the autopilot side). Let me check.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The duplicate guard is in the `submit_contribution` tool itself (the Python wrapper on the autopilot). Let me check the actual tool code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -610,6 +657,7 @@ Which path would you like?
 ### 🤖 Autopilot
 
 Let me try again — you've cleared the submission log, so the duplicate guard should be gone now.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -633,36 +681,43 @@ The issue: the ledger record you deleted may have been the *submission log entry
 ### 🤖 Autopilot
 
 Let me verify the reset and try again.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is large — let me search for the specific QR code row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is too large to read in one go. Let me search for the specific QR code row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is huge and the row I need is likely further down. Let me search for the specific QR code.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the specific QR code in the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I'm not finding `2024OSCAR_CC_20260620_2` in the rows I've scanned. Let me search more specifically.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can't find `2024OSCAR_CC_20260620_2` in the rows I've checked. Let me try a direct search approach.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -670,21 +725,55 @@ I can't find `2024OSCAR_CC_20260620_2` in the rows I've checked. Let me try a di
 I can see the full list — `2024OSCAR_CC_20260620_2` is **not in this sheet**. The QR code you provided doesn't exist in the "Agroverse QR codes" sheet. This means the QR code was registered elsewhere or hasn't been added to this sheet yet.
 
 Let me check the lookup tool's cached data to see what it knows about this QR code.
+[1 tool result(s) compacted: lookup_qr_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR code is now showing **MINTED** (reset from SOLD). The duplicate guard checks the live QR status — since it's now MINTED, the submission should go through. Let me try again.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still blocked — this time it's a **submission log** duplicate, not a QR status check. The submission log on Edgar's side still has the record even though you deleted the ledger entry. Let me check the Edgar controller to see if there's a way to clear it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The duplicate guard isn't in the Rails code — it's in the `submit_contribution` tool wrapper on the autopilot side. Let me check there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -752,4 +841,71 @@ I worked through the maximum number of tool rounds but couldn't land a final ans
 **✅ Done this turn — actions taken:**
 • `submit contribution` → QR code 2024OSCAR_CC_20260620_2 was already submitted. Skipping.
 • `ssh run` ×18 → grep -n 'duplicate\|already_submitted\|submission_log\|SubmissionLog' /var/www/sentiment_importer/app/controllers/dao_controller.rb 2>/dev/n; grep -rn 'duplicate\|already_submitted\|submission_log\|SubmissionLog' /var/www/sentiment_importer/app/ 2>/dev/null | head -20; grep -rn 'duplicate\|already_submitted\|submission_log\|SubmissionLog\|already processed' /var/www/sentiment_importer/ 2>/dev/null | head -2; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8088] dont skip • submit contribution → QR code 2024OSCAR_CC_20260620_2 was already submitted
+
+
+### 🤖 Autopilot
+
+You're right, I shouldn't have skipped. Let me find and clear the dedup database so the submission can go through.
+
+
+### 🤖 Autopilot
+
+The `/home/ubuntu/dao_protocol/` directory doesn't exist — the dedup DB path is the default but the directory was never created. The dao_protocol server runs from `/opt/truesight_autopilot/dao_protocol/`. Let me check if the dedup DB exists somewhere else or if the server is even running.
+
+
+### 🤖 Autopilot
+
+The dao_protocol server is not running on this box. So the `submit_contribution` tool must be calling Edgar's Rails endpoint directly. Let me check what the tool actually calls.
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool calls `EdgarClient` which POSTs to `https://edgar.truesight.me/dao/submit_contribution` — that's the Rails server on `seni_ror`. The duplicate guard is in Rails' `duplicate_dao_submission_signature?` method which uses Redis cache. Let me check the Rails side.
+
+
+### 🤖 Autopilot
+
+Edgar moved to `/var/www/edgar`!
+
+
+### 🤖 Autopilot
+
+Found it! Line 231-232. Let me see the `duplicate_dao_submission_signature?` method.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. The duplicate guard uses **Rails.cache** (Redis) with a key `dao_submit_tx_sig:<SHA256>` that expires in **10 years**. The first submission's signature hash is in Redis.
+
+I can clear it from Redis directly.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+I've traced the duplicate guard to its source. Let me converge.
+
+**What's blocking:** The first submission's signature hash is stored in **Redis** on `seni_redis` with key `dao_submit_tx_sig:<SHA256>` and a 10-year expiry. The Rails `duplicate_dao_submission_signature?` method checks `Rails.cache.write(unless_exist: true)` — if the key exists, it returns `true` (duplicate).
+
+**To clear it**, I need to delete that Redis key. I tried `redis-cli KEYS` from `seni_ror` but got no output (possibly a connectivity issue or the key pattern differs). The next step is to connect to `seni_redis` directly or use the Rails console on `seni_ror`.
+
+**RESUME HERE:**
+1. On `seni_ror`, run `redis-cli -h <seni_redis_internal_ip> KEYS "dao_submit_tx_sig:*"` to find the key(s)
+2. Then `redis-cli -h <ip> DEL <key>` to clear it
+3. Then retry `submit_contribution` with the corrected SALES EVENT ($29.53, UPS, tracking `1ZXG9979YN25983449`)
+
+Alternatively, if you can access Redis directly or the Rails console (`rails c` on seni_ror), you can clear it that way. Want me to proceed with finding the Redis host IP and clearing the key?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → find / -name 'dedup.sqlite3' 2>/dev/null | head -10; sudo find / -name '*.sqlite3' 2>/dev/null | head -20; ls -la /home/ubuntu/dao_protocol/ 2>/dev/null | head -20; …(+20 more)
 
