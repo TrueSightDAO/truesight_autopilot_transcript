@@ -89,11 +89,13 @@ Let me also check for any Etsy order notification emails that might have been fi
 ### 🤖 Autopilot
 
 Interesting — the "first sale" email from June 15. Let me read that to understand what was sold.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check if there was a more recent sale notification (the $29.53 deposit suggests a sale happened after the first one).
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,4 +278,50 @@ This confirms the same sale details. To record this in the DAO ledger, I need to
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-06-30/43b5c9175984/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8088] Sold by Kirsten. This is the QR code that she provided 
+
+2024OSCAR_CC_20260620_2
+
+
+### 🤖 Autopilot
+
+Let me look up the QR code and the event documentation.
+
+
+### 🤖 Autopilot
+
+The QR code is **MINTED** (not yet sold) and managed by Kirsten. Let me also check if this was already submitted in this conversation.
+
+
+### 🤖 Autopilot
+
+No prior submission. Let me submit the SALES EVENT now.
+
+**Submitting:** SALES EVENT for QR code `2024OSCAR_CC_20260620_2` — sold via Etsy by Kirsten to Raven Runyan.
+
+
+### 🤖 Autopilot
+
+**SALES EVENT recorded.** Here's the summary:
+
+| Field | Value |
+|---|---|
+| **QR Code** | `2024OSCAR_CC_20260620_2` |
+| **Item** | Ceremonial Cacao Kraft Pouch (200g) |
+| **Sales price** | $25.00 |
+| **Sold by** | Kirsten Ritschel |
+| **Cash collected by** | Gary Teh |
+| **Buyer** | Raven Runyan (ravenmoonemporium@gmail.com) |
+| **Channel** | Etsy (Order #4088615882) |
+| **Payout** | $29.53 deposited June 29 (after Etsy fees) |
+
+The QR code status has been updated from **MINTED → SOLD**. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
