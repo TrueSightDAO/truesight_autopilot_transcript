@@ -559,22 +559,71 @@ Now let me check what's actually been implemented in the dao_client repo (the fr
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me check the GAS handler and the DApp page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the GAS side in tokenomics.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also check the dapp_beta for the repackaging_settlement.html page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the SOP for the actual workflow.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -636,16 +685,54 @@ Or if you want to **complete the pipeline**, the missing work is:
 ### 🤖 Autopilot
 
 Let me check the `dao_protocol` repo — that's the FastAPI server that sits between the CLI and Edgar.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is. The `dao_protocol` repo has the full pipeline. Let me check the key pieces — the GAS handler and the webhook config.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch is there. Now the key question is whether the **GAS webhook** (`processPostRepackagingCleanup`) actually exists in the deployed tokenomics GAS project. Let me check the GAS scripts in dao_protocol.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -707,4 +794,67 @@ Or if you want to **complete the pipeline**, the missing work is:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /tmp && rm -rf dp_check && git clone --depth 1 https://github.com/TrueSightDAO/dao_protocol.git dp_check 2>&1 | tail -3; grep -rn "REPACKAGING SETTLEMENT\|repackaging_settlement\|post_repackaging\|processPostRepackagingCleanup" /tmp/dp_check/ 2>/dev/null | head; find /tmp/dp_check -name "*repackaging*" -o -name "*settlement*" 2>/dev/null; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8130] I think you should probably do a pull of the lastest tokenomics repo
+
+Also I have updated line 3870 of the offchain transactions bumped it from 15 to 19 to reflect the accurate count
+
+
+### 🤖 Autopilot
+
+Let me pull the latest tokenomics and check line 3870.
+
+
+### 🤖 Autopilot
+
+Still not there in the repo. Let me check the offchain transactions sheet directly — you mentioned line 3870.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture clearly. Let me read the key row — line 3870 (the repackaging settlement output row).
+
+
+### 🤖 Autopilot
+
+Now I see it — you already updated line 3870 from **15 → 19**. The repackaging settlement event `b08d324b` already went through. Let me check the full settlement to understand the math.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The **Repackaging Settlement** already happened! Here's the complete ledger:
+
+---
+
+**Repackaging Settlement `b08d324b` (2026-06-28)** — already processed ✅
+
+| Line | Item | Qty |
+|------|------|:---:|
+| 3865 | Input: 8oz Kraft Pouches (nibs packaging) | -7 |
+| 3866 | Input: Ceremonial Cacao Kraft Pouches | -3 |
+| 3867 | Input: Sticker Mule labels | -15 |
+| 3868 | Input: RLAVBL corrugated boxes | -15 |
+| 3869 | Output: Ceremonial Cacao pouches (filled) | +3 |
+| **3870** | **Output: 81% Chocolate Bars** | **+19** ← you bumped from 15→19 |
+| 3871 | Inventory Expense: 4 bars for team tasting | -4 |
+
+**The math:**
+- **19 bars** produced (line 3870)
+- **4 bars** consumed in tasting (line 3871)
+- **15 bars** remaining for sale
+- **7 bars** already sold (QR codes `_1` through `_7` — 6 to Linda Ford, 1 to Shana)
+- **8 bars** still available for sale ✅
+
+So the **8 bars available** on the shop is correct! The settlement already accounts for 19 total bars, minus 4 tasted, minus 7 sold = **8 remaining**. The `store-inventory.json` showing 4 just needs to be updated to 8 to match the ledger.
+
+**The GAS handler** (`processPostRepackagingCleanup`) — since the settlement was submitted directly to the sheet (not through the GAS webhook), it was done manually/bypass. The GAS handler in the repo is still missing, but the data is already correct in the ledger thanks to your manual edit on line 3870.
+
+**Next step:** Update `store-inventory.json` and `partners-inventory.json` from 4→8 to match the ledger. Want me to do that?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf tokenomics_latest && git clone --depth 1 https://github.com/TrueSightDAO/tokenomics.git tokenomics_latest 2>&1 | tail -5; grep -rn "processPostRepackagingCleanup\|POST_REPACKAGING_CLEANUP\|repackaging_settlement\|post_repackaging_cleanup" /tmp/tokenomics_latest/; find /tmp/tokenomics_latest -name "*.gs" 2>/dev/null | head -30
 
