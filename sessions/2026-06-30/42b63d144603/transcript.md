@@ -70,3 +70,80 @@ The advisory snapshot also shows Kirsten logged a **480-minute contribution** on
 
 Looks like the entire batch moved quickly! Anything specific you want to dig into — pricing, shipping, or whether more need to be produced?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8130] Seems an additional 4 bars were produced and there are actually 8 bars that are available for sale on Agroverse.shop instead of just 4 bars that are indicated for sale 
+
+How do you think we should handle this bump of 4 bars via dao client?
+
+
+### 🤖 Autopilot
+
+Let me check the current state on the shop and the inventory to understand the discrepancy.
+
+
+### 🤖 Autopilot
+
+Let me check the actual shop inventory and the store-inventory.json to see what's listed for sale.
+
+
+### 🤖 Autopilot
+
+There it is. Let me also check the shop's actual SKU listing and the QR codes for the additional bars.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check what QR codes exist beyond the 7 I already looked up — there may be a second batch.
+
+
+### 🤖 Autopilot
+
+Let me also check if there's a second batch with a different date.
+
+
+### 🤖 Autopilot
+
+Let me also check if there are any other 81% bar QR codes with different batch dates.
+
+
+### 🤖 Autopilot
+
+Now let me check the Santa Ana 2023 bar too, since that's also in inventory.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's the situation:
+
+---
+
+**Current state of the 81% Dark Chocolate Bar (Oscar Bahia 2024):**
+
+| Source | Count |
+|--------|-------|
+| **QR codes registered** (batch `2024OSCAR_CB_20260620_1` through `_7`) | **7 bars** |
+| **QR status** | All 7 marked **SOLD** |
+| **store-inventory.json** (`organic-81-dark-chocolate-bar-50g-oscar-bahia-2024`) | **4 available** |
+| **partners-inventory.json** (Kiki's Cocoa — the only partner stocking it) | **4 in venue, 4 online** |
+
+So the picture is:
+- **7 QR codes exist** — all sold (6 to one buyer, 1 to another)
+- **But the shop shows 4 available** — these are likely the **additional 4 bars** Kirsten produced that don't have QR codes yet
+- The Santa Ana 2023 bar variant shows **0 available** in store-inventory.json
+
+**The gap:** You said there are actually **8 bars** available for sale on the shop (not 4). So it sounds like Kirsten produced **11 total bars** (7 QR-coded + 4 uncoded = 11, or maybe 7 QR-coded + 8 uncoded = 15?). Let me re-read your message — you said "an additional 4 bars were produced" and "8 bars available for sale instead of 4."
+
+So the math is: **4 shown in inventory → actually 8 physical bars exist.** That means **4 uncoded bars** need QR codes and ledger entries.
+
+**Here's what I'd recommend via dao_client:**
+
+1. **Register 4 new QR codes** for the additional bars — they'd follow the same batch naming convention, e.g. `2024OSCAR_CB_20260620_8` through `_11` (or a new batch date if produced later).
+
+2. **Submit a QR CODE REGISTRATION** for each, then an **INVENTORY MOVEMENT** to put them into Kirsten's inventory (AGL4 / San Francisco).
+
+3. **Update store-inventory.json** to reflect the correct count (8 instead of 4).
+
+Want me to look up the event docs and start the process? First step would be checking what event type to use for registering the new QR codes and moving them into inventory.
+
