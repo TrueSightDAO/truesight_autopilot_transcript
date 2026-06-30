@@ -58,6 +58,7 @@ https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thre
 ### 🤖 Autopilot
 
 Let me look up the event documentation for recording this sale.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -65,16 +66,24 @@ Let me look up the event documentation for recording this sale.
 This is a funds deposit notification from Etsy — $29.53 deposited to the account ending in 3099. This tells me an Etsy sale cleared, but the PDF doesn't include the order details (what item was sold, which QR code, who bought it).
 
 Let me check the Etsy shop for the actual order details.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the funds deposit notification ($29.53) but I don't see a "You made a sale!" or order notification from Etsy in the last 7 days. Let me search more specifically for order/sale notifications.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check for any Etsy order notification emails that might have been filtered to a different label, and check the admin account too.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -164,4 +173,107 @@ To submit a **SALES EVENT**, I need:
 - **Owner email** — ravenmoonemporium@gmail.com?
 
 Do you have the QR code for the bag that was shipped?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **8c86e6eb6cb84bb1a2cb5aad711c1717.pdf**]
+- Type: PDF (3 pages, 2769 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Gary Teh <garyjob@agroverse.shop>
+Gary, congrats on your first sale! Verify your info to get paid.
+1 message
+Etsy <emails@mail.etsy.com>
+Sun, Jun 14, 2026 at 10:16 PM
+Reply-To: noreply@mail.etsy.com
+To: garyjob@agroverse.shop
+Get paid for this sale by verifying your seller info
+It looks like we couldn’t verify the seller info you shared in
+onboarding, so your shop is in temporary Vacation Mode.
+Don’t worry, you can get paid and start receiving more new
+orders simply by verifying your identity in the next 60 days—
+this helps us keep our community safe. If you can’t verify your
+info, your buyer will be refunded.
+Verify your info
+Learn more
+Ship it!
+6/29/26, 8:31 PM
+GetData Inc Mail - Gary, congrats on your first sale! Verify your info to get paid.
+https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thread-f:1868027447272555432&simpl=msg-f:1868027447272555432
+1/3
+
+--- Page 2 ---
+You can purchase and print your USPS shipping labels directly on Etsy.
+Learn more in your Shop Manager
+Mark the order as shipped
+Let your buyer know that the order is on the way by marking it as shipped and
+adding a tracking number. If you use Etsy’s discounted postage, we will do this
+automatically for you!
+Mark order as shipped
+Order details Order number: 4088615882
+Amazon Rainforest Ceremonial Cacao from Brazil | Ritual-Ready 200g, Plant
+a Tree Per Bag
+Transaction ID: 5114512457
+Quantity: 1
+$25.00
+Item total:
+$25.00
+Shipping:
+$8.13
+6/29/26, 8:31 PM
+GetData Inc Mail - Gary, congrats on your first sale! Verify your info to get paid.
+https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thread-f:1868027447272555432&simpl=msg-f:1868027447272555432
+2/3
+
+--- Page 3 ---
+Covered by Etsy Insider
+Sales tax:
+$0.00
+Order total:
+$33.13
+Buyer details
+ravenmoonemporium
+Send them a Convo | Send them an email
+Payment method
+Shipping address
+Raven Runyan
+1346 Rabbit Run Road
+YORK, SC 29745
+United States
+If you were not involved in this transaction, please contact us via our Contact
+Page.
+If you live in North America or South America, this email is sent by Etsy, Inc., 117 Adams Street,
+Brooklyn, NY 11201, USA; if you live elsewhere, this email is sent by Etsy Ireland UC, a subsidiary
+of Etsy, Inc., One Le Pole Square, Ship Street Great, Dublin 8, D08 E6PD, Ireland having company
+registration number 495696 and VAT registration number IE9777587C. You are receiving this email
+because you registered on Etsy.com with this email address.
+Copyright © 2026 Etsy, Inc, an affiliate of Etsy Ireland UC. All rights reserved.
+6/29/26, 8:31 PM
+GetData Inc Mail - Gary, congrats on your first sale! Verify your info to get paid.
+https://mail.google.com/mail/u/0/?ik=19607ceb91&view=pt&search=all&permthid=thread-f:1868027447272555432&simpl=msg-f:1868027447272555432
+3/3
+```
+
+
+### 🤖 Autopilot
+
+Good — this is the same first sale (Order #4088615882) I already identified. Same buyer, same item, same amounts. The PDF just confirms the order notification email.
+
+Let me persist this to the transcript and then proceed.
+
+
+### 🤖 Autopilot
+
+This confirms the same sale details. To record this in the DAO ledger, I need to know:
+
+**Which QR code was on the bag shipped to Raven?** Do you have the QR code ID (e.g. `2024OSCAR_...` format) for the bag of Ceremonial Cacao that was sent out for this order?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-06-30/43b5c9175984/transcript.md
 
