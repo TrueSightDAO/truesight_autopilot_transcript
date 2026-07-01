@@ -213,3 +213,34 @@ A **GitHub Personal Access Token (classic)** with `actions:write` scope on `True
 
 That's it — the workflow will pick it up on the next `dao_members.json` push. Want me to verify the secret is set after you've done it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8185] I completed all the way till step 5
+
+
+### 🤖 Autopilot
+
+Let me verify the secret exists by checking if the workflow can see it — I'll do a quick check on the treasury-cache repo's actions secrets.
+
+
+### 🤖 Autopilot
+
+No `gh` auth on this box. Let me check via the GitHub API instead.
+
+
+### 🤖 Autopilot
+
+Can't verify via API without auth. But since you completed the steps (Settings → Secrets → Actions → New secret → named `LINEAGE_DISPATCH_PAT` → pasted the token → Add secret), it's set.
+
+**To confirm it works end-to-end:** the next time `dao_members.json` is pushed to `treasury-cache`, the `poke-lineage-cache.yml` workflow should fire and dispatch a `build-cv-cache` run on `lineage-credentials`. You can watch for it at:
+
+- https://github.com/TrueSightDAO/treasury-cache/actions (the poke workflow)
+- https://github.com/TrueSightDAO/lineage-credentials/actions (the dispatched build)
+
+Want me to trigger a test push to `dao_members.json` to verify? Or shall we move on to **PR3** (lineage-engine: emit sentinels + `is_sentinel` into `index.json`)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → gh secret list --repo TrueSightDAO/treasury-cache 2>&1
+
