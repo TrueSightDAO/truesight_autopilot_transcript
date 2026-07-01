@@ -93,26 +93,36 @@ Let me look at the `interesting_stock_symbols` method and the `sell_off_drivers`
 ### 🤖 Autopilot
 
 Now let me check the `sell_off_drivers` method specifically and the `interesting_stock_symbols` method.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the `sell_off_drivers` method and the `interesting_stock_symbols` method.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the `sell_off_drivers` method specifically in the file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the critical issue. Let me also check the `interesting_stock_symbols` method in the etf_helper.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the `interesting_stock_symbols` method in the `market_sell_off_batch_notifier.rb` and `large_dip_index_refresher.rb` workers, and also check the `daily_trades_helper.rb` for the `interesting_stock_symbols` method.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -207,4 +217,47 @@ The `sell_off_over_period` method queries `daily_trades` for the sell-off index 
 The cleanest approach: in the `large_dips` controller action, when a user-supplied date falls on a weekend or has no trades, **auto-redirect to the nearest trading day** (same as the default behavior when no `the_date` param is given).
 
 Want me to open a PR for this? The change would be in `app/controllers/daily_trades_controller.rb` — after parsing `params["the_date"]`, check if it has trades and if not, redirect to the most recent trading date.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8247] I think not just that, it should not appear as a data point on the sell off chart isn’t it?
+
+
+### 🤖 Autopilot
+
+Good point — you're right. Let me re-examine the chart data.
+
+The `sell_off_over_period` method queries `daily_trades` for the sell-off index symbol with a date range. Since `daily_trades` only has entries for trading days, Saturdays and Sundays naturally don't appear as data points in the chart.
+
+But the **date navigation** is the issue. Let me check the date navigation partial to see how it generates the previous/next day links.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture clearly. Let me check `most_recent_date_for_market` to understand what it returns.
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Here's the analysis:
+
+## Two separate issues
+
+**1. The chart** — `sell_off_over_period` queries `daily_trades` for the sell-off index symbol. Since `daily_trades` only has entries for trading days, **Saturdays and Sundays already don't appear as data points on the chart**. The chart is fine — it only plots dates that have trade data.
+
+**2. The date navigation pills** — `get_date_range_for_market` generates 6 consecutive calendar days going backwards from `most_recent_date_for_market`. It's just doing `max_date - index.days` — pure calendar math, no trading-day awareness. So if you navigate to a Saturday, the pills show Sat/Fri/Thu/Wed/Tue/Mon — and clicking Saturday gives you an empty page.
+
+**3. The dips list** — `interesting_stock_symbols('2026-06-06')` queries `WHERE date_published = '2026-06-06'` → zero rows → empty list.
+
+## What should change
+
+You're right — the chart data is fine (no weekend points), but the **date navigation** and **controller** should skip non-trading days. Two things:
+
+1. **Controller**: When a user-supplied date has no trades, redirect to the most recent trading date (or show a message)
+2. **Date navigation pills**: Should only show trading days, not consecutive calendar days
+
+Want me to open a PR for this? The fix would be in:
+- `app/controllers/daily_trades_controller.rb` — validate the date has trades, redirect if not
+- `app/helpers/application_helper.rb` — `get_date_range_for_market` should generate trading days, not calendar days
 
