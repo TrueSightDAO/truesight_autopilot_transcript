@@ -128,11 +128,33 @@ Now let me look at the `interesting_stock_symbols` method in the `market_sell_of
 ### 🤖 Autopilot
 
 Now I see the full picture. The `interesting_stock_symbols` method is defined in the `EtfHelper` module (included in `DailyTradesHelper`). Let me find it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a very clear picture. Let me check the key question — **June 6, 2026 was a Saturday**. Let me verify and also check what the most recent trading date would be.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -181,11 +203,13 @@ Or try a weekday like **`https://perch.truesight.me/large_dips?the_date=2026-6-5
 ### 🤖 Autopilot
 
 Let me look at the controller and view to see how the date is handled.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the view to see how the chart renders and whether it already handles non-trading days.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -260,4 +284,47 @@ You're right — the chart data is fine (no weekend points), but the **date navi
 Want me to open a PR for this? The fix would be in:
 - `app/controllers/daily_trades_controller.rb` — validate the date has trades, redirect if not
 - `app/helpers/application_helper.rb` — `get_date_range_for_market` should generate trading days, not calendar days
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8247] Can you check the database to ensure that 6th June actually doesn’t have an entry on the sell off chart
+
+
+### 🤖 Autopilot
+
+Rails runner is failing because of `secret_key_base` — the app is running via Puma which has the env already loaded. Let me query the database directly via psql.
+
+
+### 🤖 Autopilot
+
+Now let me also check what the sell-off index symbol is (not SPY — it's a different symbol used for the correction level chart).
+
+
+### 🤖 Autopilot
+
+Confirmed. Here's the data:
+
+**June 6, 2026 (Saturday) — no entry for `LARGE_DIP_INDEX`.** The database skips from June 5 (Friday) straight to June 8 (Monday).
+
+| Date | Day | Close (Correction Level) |
+|------|-----|--------------------------|
+| Jun 1 | Mon | 0.070 |
+| Jun 2 | Tue | 0.105 |
+| Jun 3 | Wed | 0.146 |
+| Jun 4 | Thu | 0.128 |
+| Jun 5 | Fri | **0.245** ← big spike |
+| **Jun 6** | **Sat** | **— no data** |
+| **Jun 7** | **Sun** | **— no data** |
+| Jun 8 | Mon | 0.211 |
+| Jun 9 | Tue | 0.198 |
+| Jun 10 | Wed | 0.187 |
+
+So the chart is fine — it only plots dates that have `LARGE_DIP_INDEX` entries, so Saturday/Sunday never appear as data points. The issue is purely the **date navigation pills** showing calendar days and the **controller** accepting a non-trading day as a valid date.
+
+Want me to open a PR to fix the date navigation to skip non-trading days?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /home/ubuntu/sentiment_importer && RAILS_ENV=production bin/rails runner " sell_off_symbol = SentimentImporter::Application.config.market; PGPASSWORD="${SENI_SQL_PASSWORD}" psql -h seni_sql_2026.cf6y2e2q4g8v.us-east-1.rds.amazonaws.com -U seni_sql_auto -d seni_sql_production -c ; # First find the actual hostname from the Rails config cd /home/ubuntu/sentiment_importer && grep -r "seni_sql\|database\|host" config/datab; …(+5 more)
 
