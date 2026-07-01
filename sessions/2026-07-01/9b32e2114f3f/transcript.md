@@ -36,6 +36,7 @@ Reply "go for it" and I will execute from RESUME HERE (PR1).
 ### 🤖 Autopilot
 
 Let me read the plan file first.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -45,11 +46,13 @@ Plan read and understood. I'm at **RESUME HERE → PR1**.
 **PR1** — lineage-credentials: bump `build-cv-cache.yml` cron from `0 */6 * * *` → `0 */2 * * *`.
 
 Let me read the current workflow file to make the edit.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got it. The cron line is on line 17. Let me make the edit.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -243,4 +246,85 @@ Want me to trigger a test push to `dao_members.json` to verify? Or shall we move
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → gh secret list --repo TrueSightDAO/treasury-cache 2>&1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8185] Trigger it
+
+
+### 🤖 Autopilot
+
+Let me trigger a test by pushing a no-op change to `dao_members.json` on treasury-cache. I'll read the current file first, then re-upload it (same content, new commit) to fire the push event.
+
+
+### 🤖 Autopilot
+
+Good, I have the full content. Now I'll re-upload it with a tiny bump to `generated_at` to trigger the push event.
+
+
+### 🤖 Autopilot
+
+I'll just bump the `generated_at` timestamp by 1 second to create a detectable change and trigger the push event.
+
+
+### 🤖 Autopilot
+
+Push triggered. Now let me watch for the workflow to fire.
+
+
+### 🤖 Autopilot
+
+Can't set up a background watcher here since this isn't a Telegram topic context. Let me check manually in a moment.
+
+
+### 🤖 Autopilot
+
+HTML page is too large to parse. Let me check the GitHub API for the workflow run status.
+
+
+### 🤖 Autopilot
+
+**It's working!** The `poke-lineage-cache` workflow fired:
+
+- **Run #1** — `in_progress` (started at `2026-07-01T04:47:51Z`)
+- **Trigger:** push to `dao_members.json` (commit `c774693`)
+- **Run URL:** https://github.com/TrueSightDAO/treasury-cache/actions/runs/28494233524
+
+Now let me check if it successfully dispatched to lineage-credentials.
+
+
+### 🤖 Autopilot
+
+Now let me check if the dispatch landed on lineage-credentials.
+
+
+### 🤖 Autopilot
+
+## ✅ End-to-end test: PASS
+
+The full chain works:
+
+| Step | Status | Detail |
+|------|--------|--------|
+| **1. Push to `dao_members.json`** | ✅ | Commit `c774693` |
+| **2. `poke-lineage-cache` workflow fires** | ✅ | Run #1 — `success` |
+| **3. Dispatch step runs** | ✅ | `gh workflow run build-cv-cache.yml --repo TrueSightDAO/lineage-credentials` |
+| **4. `build-cv-cache` fires on lineage-credentials** | ✅ | Run #486 — `in_progress` (event: `workflow_dispatch`) |
+
+**Run links:**
+- Poke workflow: https://github.com/TrueSightDAO/treasury-cache/actions/runs/28494233524
+- Dispatched build: https://github.com/TrueSightDAO/lineage-credentials/actions/runs/28494236804
+
+The `LINEAGE_DISPATCH_PAT` secret is working correctly. PR2 gate is cleared.
+
+---
+
+### RESUME HERE → **PR3** — lineage-engine: `build_cv_cache.py` — fetch `dao_members.json`, emit synthetic sentinel entries + `is_sentinel` flag into `index.json`
+
+`lineage-engine` is a code repo — this will get a proper PR via `git_push_changes`. Say **"go for it"** when ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/treasury-cache/blob/main/dao_members.json
 
