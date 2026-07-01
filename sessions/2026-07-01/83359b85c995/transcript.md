@@ -519,6 +519,12 @@ Now let me find the `interesting_stock_symbols` method.
 ### 🤖 Autopilot
 
 Now let me find the `interesting_stock_symbols` method — it's in the `EtfHelper` module.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -529,11 +535,18 @@ Now let me create the PR. The fix needs two changes:
 
 1. **Controller** (`daily_trades_controller.rb`): In `large_dips`, after parsing the date, check if it has trades. If not, redirect to the most recent trading date.
 2. **Date navigation helper** (`application_helper.rb`): `get_date_range_for_market` should generate only trading days.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR is open. Now let me also fix the date navigation helper to show only trading days.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -541,21 +554,45 @@ PR is open. Now let me also fix the date navigation helper to show only trading 
 Now I need to modify `get_date_range_for_market` to only show trading days. The current implementation does simple calendar math. I need to change it to query for actual trading dates. Let me also check what `most_recent_date_for_market` returns — it's `DailyTrade.most_recent_us_market_trading_date` which already returns the most recent date with trades.
 
 The fix for `get_date_range_for_market`: instead of generating consecutive calendar days, query the database for the 6 most recent trading dates.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already exists from the first push. Let me use a different branch name for the second change.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two PRs open. Now let me deploy. First, let me merge both PRs since you said "fix it and the deploy".
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both merged. Now let me deploy to the server.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -651,4 +688,22 @@ Both changes are live. Now let me submit the contribution.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → export PATH="/home/ubuntu/.rbenv/shims:/home/ubuntu/.rbenv/bin:$PATH" && cd /home/ubuntu/sentiment_importer && RAILS_ENV=production bundle e; sudo systemctl status puma 2>/dev/null || sudo systemctl status rails 2>/dev/null; echo "---"; ls /etc/systemd/system/puma* 2>/dev/null; ls ; kill -TERM 223988 && sleep 3 && ps aux | grep "rails s" | grep -v grep; …(+9 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8247] All done?
+
+
+### 🤖 Autopilot
+
+Yes, all done. Here's the summary:
+
+**Two PRs merged and deployed:**
+
+1. **PR #1095** — Controller now validates the date has trades. If you hit a Saturday (or any non-trading day), it redirects to the most recent trading day with a notice like *"Saturday, June 06, 2026 is not a trading day. Showing the most recent trading day instead."*
+
+2. **PR #1096** — Date navigation pills now query the database for actual trading days instead of generating consecutive calendar days. No more Saturday/Sunday pills in the nav.
+
+**Live on `perch.truesight.me`** — server restarted, new code running. Try `perch.truesight.me/large_dips?the_date=2026-6-6` and it should bounce you to the nearest trading day with data.
 
