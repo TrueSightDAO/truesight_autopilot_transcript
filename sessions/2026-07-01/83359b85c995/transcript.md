@@ -20,6 +20,7 @@ Doesn’t seem like it’s showing any sold off stock tickets
 ### 🤖 Autopilot
 
 Let me look into what's happening on the Perch page for that date.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -27,31 +28,42 @@ Let me look into what's happening on the Perch page for that date.
 The page is returning almost nothing — just the logo and the tagline "Building a Better World based on Compassion". No table, no data, no "sold off stock tickets" section.
 
 Let me check what Perch is and how it's supposed to work.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Perch Rails app to understand the `large_dips` route and what data it expects.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default branch isn't `main` — let me check what branches exist.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The URLs have commit SHAs in them, so the files exist. Let me read them with the SHA from the search results.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the key piece. The controller has a `before_action :require_allowed_access` which redirects to `ask_for_access_daily_trades_path` if the user is not `upgraded?`. Let me check what the page actually returned — it showed just the logo and tagline, which is the default layout content. Let me check the `ask_for_access` view and also look at the server logs to see what's happening.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the full picture. Let me check the server logs to see if there's an error or if the user is just not logged in / not upgraded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -64,11 +76,18 @@ Now I see it clearly. Looking at the nginx logs:
 The 200 response with only 15KB and just the logo/tagline means the page **rendered but with no data**. The `require_allowed_access` before_action redirects non-upgraded users to `ask_for_access`, but your iPhone requests are returning 200, not 302 — so you ARE logged in and upgraded.
 
 The issue is that the `large_dips` helper method generates data via S3 cache, and it's returning an empty result set. Let me check the `interesting_stock_symbols` query and the `sell_off_drivers` to understand why there's no data for June 6, 2026.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the `interesting_stock_symbols` method and the `sell_off_drivers` to understand what data drives the page.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -142,4 +161,50 @@ Or try a weekday like **`https://perch.truesight.me/large_dips?the_date=2026-6-5
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → sudo journalctl -u puma --since "10 min ago" --no-pager -n 50 2>/dev/null || sudo journalctl -u rails --since "10 min ago" --no-pager -n 50 ; cd /home/ubuntu/sentiment_importer && RAILS_ENV=production bin/rails runner "puts DailyTrade.most_recent_us_market_trading_date.to_s" 2>/dev; cd /home/ubuntu/sentiment_importer && RAILS_ENV=production bin/rails runner "puts DailyTrade.most_recent_us_market_trading_date.to_s" 2>&1 |; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8247] Don you think we should clear that day for the chart since it is a satursday??
+
+
+### 🤖 Autopilot
+
+Let me look at the controller and view to see how the date is handled.
+
+
+### 🤖 Autopilot
+
+Now let me check the view to see how the chart renders and whether it already handles non-trading days.
+
+
+### 🤖 Autopilot
+
+Now let me look at the helper methods that power the chart — `chartjs_sell_off_dates` and `chartjs_sell_off_values` — to see if they already skip non-trading days.
+
+
+### 🤖 Autopilot
+
+Now let me check the `MacroIndicator.sell_off_over_period` method — that's what powers the chart data.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my analysis:
+
+## Yes, we should handle this
+
+The `sell_off_over_period` method queries `daily_trades` for the sell-off index symbol (the market correction level). It only returns dates that **have trades** — so Saturdays and Sundays naturally have no data points. The chart just skips them.
+
+**The problem is on the *large dips list* side**, not the chart. When you hit `large_dips?the_date=2026-6-6`:
+
+1. The controller accepts the date as-is — no validation that it's a trading day
+2. `interesting_stock_symbols('2026-06-06')` queries `daily_trades WHERE date_published = '2026-06-06'` → zero rows → empty cache → empty page
+3. The chart (`sell_off_over_period`) queries with a date range, so it still shows data for the surrounding trading days — but the dips list is empty
+
+### The fix
+
+The cleanest approach: in the `large_dips` controller action, when a user-supplied date falls on a weekend or has no trades, **auto-redirect to the nearest trading day** (same as the default behavior when no `the_date` param is given).
+
+Want me to open a PR for this? The change would be in `app/controllers/daily_trades_controller.rb` — after parsing `params["the_date"]`, check if it has trades and if not, redirect to the most recent trading date.
 
