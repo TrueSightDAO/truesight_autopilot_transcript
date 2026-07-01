@@ -579,6 +579,12 @@ Good, I have the original file. Let me restore it by uploading the pre-change ve
 ### 🤖 Autopilot
 
 Now let me get the tail of the original file to see the members loop and write_json section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -742,4 +748,32 @@ The allowed list for `git_push_changes` is:
 **B — I write the changes to a branch via `upload_file_to_github`** (which does work on `lineage-engine` — I used it earlier), then you manually create a PR from that branch on GitHub.
 
 Want me to go with option B? I'll push the changes to a `pr3/sentinel-merge` branch and you can open the PR from there.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8185] I am getting DeepSeek to provide you with access.
+
+~/Applications/truesight_autopilot/app/config.py
+    "treasury-cache",
+    ".github",
+    "ecosystem_change_logs",
+    "tribomirimbahia",
+    "lineage-engine",
+]
+
+
+### 🤖 Autopilot
+
+Perfect — `lineage-engine` is being added to the allowed list. Once DeepSeek applies that change, I'll be able to open PR3 properly via `git_push_changes`.
+
+In the meantime, I already have the full PR3 code ready — it's the same content I tried to push above. The changes are:
+
+1. **Import:** `import urllib.request` + `DAO_MEMBERS_URL` constant
+2. **`_fetch_dao_members()`** helper function
+3. **`is_sentinel: False`** on every existing member entry
+4. **Sentinel merge block** after the `members[]` loop, before `write_json(index.json)`
+5. **Failure handling:** non-fatal warning, clears stale flags on fetch failure
+
+Let me know when the config change lands and I'll open the PR.
 
