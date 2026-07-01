@@ -58,6 +58,7 @@ Got it. The cron line is on line 17. Let me make the edit.
 ### 🤖 Autopilot
 
 `lineage-credentials` is an API-only DATA repo (class 2) — not in the `git_push_changes` allowed list. Per the plan, it's a data repo that holds `_cache/index.json` and the workflow file. Let me use `upload_file_to_github` instead to write the edited workflow file directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -69,6 +70,7 @@ Actually, `upload_file_to_github` writes to a branch directly. Let me use it to 
 Wait — `upload_file_to_github` only writes to a single branch. For a data repo, the workflow file IS the code. Let me write it to a feature branch and then... actually, `upload_file_to_github` doesn't support creating PRs. 
 
 Let me check if `lineage-credentials` is accessible via `open_fix_pr`:
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -83,6 +85,7 @@ Understood. PR1 is blocked by tool access — `lineage-credentials` is a data re
 Actually, `upload_file_to_github` writes to a branch but doesn't create PRs. Let me write it to a branch and then I can note the PR needs to be opened manually or via another mechanism.
 
 Let me write the updated workflow to a `pr1/cron-bump-2h` branch:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -90,6 +93,7 @@ Let me write the updated workflow to a `pr1/cron-bump-2h` branch:
 Branch doesn't exist yet. Let me create it first via the API — I'll push to main directly since this is a data repo and the change is trivial (cron string + comment). Actually, per the rules: data repos are "NEVER clone or branch-edit" — single-file writes via `upload_file_to_github` to main. The cron bump is a trivial, safe change. Let me write it to main.
 
 Wait — the plan says PR1 is "auto-effective on merge" which implies a PR flow. But the tooling doesn't support PRs on data repos. Let me write to main directly since this is a data repo and the change is a single-line cron bump with zero risk:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -129,16 +133,19 @@ Say **"go for it"** when ready for PR2.
 ## PR2 — treasury-cache: new `poke-lineage-cache.yml`
 
 Let me read the current treasury-cache workflow directory to understand what's there, then create the new workflow file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, the workflows directory exists. Now let me create the new `poke-lineage-cache.yml` workflow on a branch and open a PR. `treasury-cache` is in the allowed list for `git_push_changes`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — `treasury-cache` is also an API-only data repo. Same approach as PR1: write directly to `main` via `upload_file_to_github`.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -159,6 +166,7 @@ Right — `treasury-cache` is also an API-only data repo. Same approach as PR1: 
 ---
 
 Now let me report the contribution for PR1+PR2 before stopping.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -327,4 +335,106 @@ The `LINEAGE_DISPATCH_PAT` secret is working correctly. PR2 gate is cleared.
 ———
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/treasury-cache/blob/main/dao_members.json
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8185] [Handoff context — this Telegram topic (thread 8185) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+Let me read the plan file to pick up from RESUME HERE → PR3.
+
+
+### 🤖 Autopilot
+
+Good. RESUME HERE → **PR3** — lineage-engine: `build_cv_cache.py`. Let me read the current script to understand the structure before making changes.
+
+
+### 🤖 Autopilot
+
+Let me read the key sections I need — the imports, the `members[]` append loop, and the `write_json` call at the end.
+
+
+### 🤖 Autopilot
+
+Let me find the key section — the `members[]` append loop and the `write_json` call at the end.
+
+
+### 🤖 Autopilot
+
+The search API may not have indexed this repo. Let me read the tail of the file to find the index write.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. I need to:
+
+1. Add `import urllib.request` to the imports
+2. After the `members[]` loop (before `write_json`), fetch `dao_members.json`, build sentinel names set, mark existing members as `is_sentinel`, and append synthetic entries for sentinels without CVs.
+
+Let me also check the `_coerce_voting_pct` function.
+
+
+### 🤖 Autopilot
+
+Good. Now I have everything I need. Let me construct the edit. The key changes:
+
+1. Add `import urllib.request` to imports
+2. After the `members.append({...})` loop and before `write_json(... index.json ...)`, add the sentinel fetch + append logic
+
+Let me create the PR.
+
+
+### 🤖 Autopilot
+
+`lineage-engine` isn't in the allowed list for `git_push_changes`. Let me check if it's accessible via `open_fix_pr`.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## PR3 — Blocked by tool access
+
+`lineage-engine` is not in the allowed list for either `git_push_changes` or `open_fix_pr`. This is a code repo (class 1) that needs to be added to the tool's allowed repos before I can open a PR.
+
+**What I have ready to apply** — the exact changes for `scripts/build_cv_cache.py`:
+
+| Change | Detail |
+|--------|--------|
+| **Import** | Add `import urllib.request` |
+| **Existing members** | Add `'is_sentinel': False` to the `members.append({})` dict (after `is_governor`) |
+| **New block** | After the `members[]` loop, before `write_json(index.json)`: fetch `dao_members.json` from treasury-cache, mark matching members as `is_sentinel=True`, append synthetic entries for sentinels without CVs (slug=None, non-clickable) |
+| **Failure handling** | Non-fatal warning; clears stale `is_sentinel` flags if fetch fails |
+
+**The code is ready to paste** — I can share it inline if you want to apply it manually, or you can add `lineage-engine` to the allowed repos list so I can open the PR properly.
+
+---
+
+### RESUME HERE → **PR3** — lineage-engine: `scripts/build_cv_cache.py`
+
+**Gate:** `lineage-engine` needs to be added to the tool's allowed repos list for `git_push_changes` / `open_fix_pr`. Once that's done, say **"go for it"** and I'll open the PR with the changes above.
+
+### Then → **PR4** — truesight_me_beta: `members.html` single-source + happy-dom test
+
+**Gate:** PR3 merged + `index.json` rebuilt (so `is_sentinel` exists in the data). Then human promotes beta→prod.
+
+---
+
+**✅ Done this turn — actions taken:**
+• `read context file` → MEMBERS_PAGE_SINGLE_SOURCE_PLAN.md (confirmed RESUME HERE = PR3)
+• `read repo file` → lineage-engine/scripts/build_cv_cache.py (full analysis of current code)
+• `git push changes` → ❌ repo not in allowed list
+• `open fix pr` → ❌ repo not in allowed list
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → Error: repo 'lineage-engine' not in allowed list.
 
