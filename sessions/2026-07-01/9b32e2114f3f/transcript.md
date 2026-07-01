@@ -179,3 +179,37 @@ Now let me report the contribution for PR1+PR2 before stopping.
 • `upload file to github` → https://github.com/TrueSightDAO/treasury-cache/blob/main/.github/workflows/poke-lineage-cache.yml
 • `create dao submission` → Contribution submitted
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8185] where do I get LINEAGE_DISPATCH_PAT from and which URL to go to to insert it?
+
+
+### 🤖 Autopilot
+
+Great question. Here's what you need:
+
+## What the PAT needs
+
+A **GitHub Personal Access Token (classic)** with `actions:write` scope on `TrueSightDAO/lineage-credentials`.
+
+**Option A — Use an existing PAT** you may already have:
+- Check your GitHub [Personal Access Tokens page](https://github.com/settings/tokens) — if you have a classic token with `repo` or `workflow` scope, it already covers `actions:write` on org repos.
+- If you're unsure, just create a new one (Option B).
+
+**Option B — Create a new one:**
+1. Go to https://github.com/settings/tokens/new
+2. Give it a name like `LINEAGE_DISPATCH_PAT`
+3. Select scope: **`repo`** (full control of private repos) — this covers `actions:write` on all org repos. Or be more granular with a fine-grained token scoped to `TrueSightDAO/lineage-credentials` with **Actions: Write** permission.
+4. Click **Generate token** → copy the token value (it starts with `ghp_...`)
+
+## Where to insert it
+
+1. Go to https://github.com/TrueSightDAO/treasury-cache/settings/secrets/actions
+2. Click **"New repository secret"**
+3. **Name:** `LINEAGE_DISPATCH_PAT`
+4. **Secret:** paste the PAT value
+5. Click **"Add secret"**
+
+That's it — the workflow will pick it up on the next `dao_members.json` push. Want me to verify the secret is set after you've done it?
+
