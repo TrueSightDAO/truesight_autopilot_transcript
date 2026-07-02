@@ -129,3 +129,60 @@ I think the **supercycle thesis is real through 2027** — the supply/demand mat
 
 If you want exposure, **SK Hynix** arguably has the best risk/reward — they're the technological leader in HBM and less hyped in US markets. But all three are real businesses with real demand, not meme stocks.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] what are your thoughts about APLD?
+
+
+### 🤖 Autopilot
+
+## APLD (Applied Digital) — My Thoughts
+
+### What They Are
+
+APLD designs, builds, and operates **AI data centers** — purpose-built facilities for hyperscalers (think CoreWeave, the big US cloud providers). They started in blockchain hosting (crypto mining) and pivoted hard into AI/HPC infrastructure around 2023. That pivot is now paying off.
+
+### The Bull Case
+
+| Metric | Detail |
+|---|---|
+| **Contracted capacity** | Surpassed **1 GW** across four AI Factory campuses |
+| **Contracted revenue backlog** | **$23 billion+** (long-term leases, 15-year terms) |
+| **Hyperscaler tenants** | CoreWeave (400 MW) + at least one high investment-grade US hyperscaler |
+| **Revenue growth** | Q3 FY2026: **$126.6M** (+139% YoY) |
+| **NOI target** | Targeting **$1B+ NOI within 5 years** |
+| **Award** | Named "Best Data Center in the Americas 2025" by Datacloud |
+| **Differentiator** | Proprietary **waterless cooling**, rapid deployment, sites in underserved communities with cheap power |
+
+They're essentially a **real estate / infrastructure play on the AI buildout** — they build the physical shells, hook up the power, and lease them to hyperscalers on long-term contracts. The demand is undeniable: hyperscaler capex went from ~$400B to **~$700B annually** in just a few months.
+
+### The Bear Case / Risks
+
+1. **Still unprofitable** — They're generating revenue but burning cash on construction. GAAP net income is negative. This is a "show me" story until they consistently print operating cash flow.
+
+2. **Execution risk on 4 GW pipeline** — Building gigawatt-scale campuses is hard. Power grid interconnection timelines slip constantly. Their Delta Forge 1 (300 MW) doesn't come online until mid-2027.
+
+3. **Customer concentration** — CoreWeave is a massive chunk of their contracted capacity. If CoreWeave stumbles (they're private, highly leveraged), APLD takes a direct hit.
+
+4. **Power availability is the real bottleneck** — Everyone wants to build AI data centers. The constraint isn't demand — it's whether utilities can deliver enough power. APLD's edge is they picked sites early with existing grid access, but this advantage narrows as everyone scrambles.
+
+5. **Dilution risk** — Capital-intensive business. They'll likely need to issue more shares or debt to fund the buildout. Watch the share count.
+
+6. **Blockchain legacy** — They still have ~286 MW of crypto mining hosting. If Bitcoin has a downturn, that segment drags.
+
+### My Take
+
+**APLD is a high-conviction infrastructure play with execution risk.** 
+
+The thesis is simple: hyperscalers need physical data centers faster than they can build them themselves. APLD found a niche building in lower-cost, power-rich regions (North Dakota, etc.) with standardized designs and waterless cooling. The $23B backlog and 1 GW contracted are real — these aren't options, they're signed leases.
+
+**Where I'd be cautious:**
+- The stock has likely already run hard (like everything AI-infrastructure). Check the multiple.
+- They're pre-cash-flow-positive, so any macro shock or rate spike hits them harder than MU.
+- Customer concentration is a real sword of Damocles.
+
+**Compared to MU:** MU is selling a product everyone needs *today* with 86% gross margins. APLD is selling a building that takes 2 years to finish. MU has less execution risk; APLD has more upside leverage to the AI buildout if they deliver.
+
+If you believe the AI infrastructure buildout is a multi-year trend (I do), APLD is a legitimate way to play it — but size it as a higher-risk position, not a core holding.
+
