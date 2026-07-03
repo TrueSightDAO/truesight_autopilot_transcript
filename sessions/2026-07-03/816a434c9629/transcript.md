@@ -227,46 +227,80 @@ Let me search for the sheet names in the HTML.
 ### 🤖 Autopilot
 
 Let me try a few likely sheet name variants.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me use the Sheets API metadata endpoint to list all sheet names.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's odd — even Sheet1 fails. Let me check the actual spreadsheet metadata.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default sheet is "Ledger history". Let me find the Social Media Checkout sheet name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, so the sheet name "Ledger history" works. Let me search the context for the exact name of the Social Media Checkout sheet.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is called **"Stripe Social Media Checkout ID"**. Let me try that.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it! Let me get the full data to see Kirsten's recent shipments.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the data to see the June 2026 entries.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me just read the raw data directly from the sheet to get the June 2026 entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -320,6 +354,7 @@ Want me to look up any specific QR codes to check their current status (In Inven
 ### 🤖 Autopilot
 
 Let me check the tracking numbers that were populated in the sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -333,6 +368,7 @@ From the data I already have, the June 2026 shipments with tracking numbers are:
 3. **Micaelly Pinheiro** (Jul 2) — USPS GroundAdvantage — no tracking # populated yet
 
 Let me check the Susie Fritsch tracking and also look for any other tracking numbers I might have missed.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -397,4 +433,54 @@ I tried checking it via UPS, AfterShip, ParcelsApp, and 17track, but:
 3. The rest were likely hand-delivered locally in SF
 
 Want me to look up the QR codes on the ones that have them (Linda Ford's `2024OSCAR_CC_20260620_3` and Quyen Nim's `2024SA_20251227_33`) to see if they've been scanned as sold?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8299] Generate the list of URLs which I can click on to view their status on the shipping websites
+
+
+### 🤖 Autopilot
+
+Let me re-read the sheet to get the exact tracking numbers and shipping details for each entry.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me read the rest of the data to get the June entries with their tracking numbers.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me compile the tracking URLs.
+
+Here are the clickable tracking URLs for all shipments from the sheet that have tracking numbers:
+
+---
+
+### Susie Fritsch — May 29 order, shipped Jun 2
+**Tracking:** `1Z0C39140329736883` (UPS)
+https://www.ups.com/track?track=yes&trackNums=1Z0C39140329736883
+
+### Linda Ford — Jun 12 order
+**Tracking:** No tracking number populated (only a QR code `2024OSCAR_CC_20260620_3` was noted — no carrier tracking)
+
+### Shana Arsenault Burtle — Jun 18
+**Tracking:** No tracking number populated in the sheet
+
+### Micaelly Pinheiro — Jul 2
+**Tracking:** No tracking number populated in the sheet
+
+---
+
+**Also from earlier months (still relevant if you want to check):**
+
+| Customer | Date | Tracking | URL |
+|----------|:----:|----------|-----|
+| William Estoque | Dec 24 | `9400136106195375811028` (USPS) | https://tools.usps.com/go/TrackConfirmAction?tLabels=9400136106195375811028 |
+| Susie Fritsch (Dec) | Dec 25 | `9505512588475360955521` (USPS) | https://tools.usps.com/go/TrackConfirmAction?tLabels=9505512588475360955521 |
+| Linda Ford (Apr) | Apr 7 | `9400136106196366586802` (USPS) | https://tools.usps.com/go/TrackConfirmAction?tLabels=9400136106196366586802 |
+| Linda Ford (Apr) | Apr 15 | `1ZXG9979YW95898126` (UPS) | https://www.ups.com/track?track=yes&trackNums=1ZXG9979YW95898126 |
+
+**Bottom line for June:** Only **Susie Fritsch's** order (May 29, shipped Jun 2) has a tracking number populated. The other June shipments from Kirsten's inventory (Vlatko, Zhiwen, Norashikin, Anya, Shana, Quyen) either had no shipping address (local pickup) or the tracking number wasn't entered into the sheet.
 
