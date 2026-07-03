@@ -82,41 +82,69 @@ Let me look at the inventory tracking sheet and also check the QR code ledger fo
 ### 🤖 Autopilot
 
 Let me check what sheets exist in this workbook.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the ecosystem change logs and the advisory snapshot more carefully for recent Kirsten inventory movements.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look further into the advisory snapshot for more Kirsten-related inventory movements and also check the ecosystem change logs.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the ecosystem change logs for recent Kirsten inventory movements, and also look at the QR code ledger.
+[2 tool result(s) compacted: read_repo_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the QR codes repo and the inventory data to find Kirsten's recent shipments.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the QR codes repo to find Kirsten's QR codes and their statuses.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the QR codes repo for Kirsten-related QR codes and also look at the Edgar API for recent inventory movements.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Edgar API directly for recent inventory movements involving Kirsten.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -170,21 +198,30 @@ I don't have a **full manifest of every shipment Kirsten made this past month** 
 ### 🤖 Autopilot
 
 Let me check the Main Ledger for the Social Media Checkout tab.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact sheet name.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the exact sheet name in the HTML.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the sheet names in the HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -273,4 +310,91 @@ Want me to look up any specific QR codes to check their current status (In Inven
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → grep -oP '"Social[^"]*Checkout[^"]*"|"social[^"]*checkout[^"]*"' /tmp/tg_attachments/* 2>/dev/null; echo "---"; grep -oP 'gid=[0-9]+' /tmp/t
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8299] Can you check the corresponding shipping tracking website using the tracking number to see if they arrive? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the tracking numbers that were populated in the sheet.
+
+
+### 🤖 Autopilot
+
+I can see the tracking numbers in the sheet. Let me check the ones that have tracking numbers for the June shipments.
+
+From the data I already have, the June 2026 shipments with tracking numbers are:
+
+1. **Susie Fritsch** (May 29 order, shipped Jun 2) — USPS: `1Z0C39140329736883`
+2. **Shana Burtle** (Jun 18) — USPS GroundAdvantage — no tracking # populated yet
+3. **Micaelly Pinheiro** (Jul 2) — USPS GroundAdvantage — no tracking # populated yet
+
+Let me check the Susie Fritsch tracking and also look for any other tracking numbers I might have missed.
+
+
+### 🤖 Autopilot
+
+The tracking number `1Z0C39140329736883` starts with `1Z` which is actually a **UPS** tracking number format, not USPS. Let me check it properly.
+
+
+### 🤖 Autopilot
+
+The 17track site is mostly JS-rendered. Let me try the UPS API directly.
+
+
+### 🤖 Autopilot
+
+Let me try the AfterShip API directly.
+
+
+### 🤖 Autopilot
+
+The tracking sites are all JS-rendered and hard to scrape. Let me try a simpler approach — check the UPS tracking via their simpler API endpoint.
+
+
+### 🤖 Autopilot
+
+UPS is timing out. Let me try a different tracking aggregator.
+
+
+### 🤖 Autopilot
+
+Blocked by Cloudflare. Let me try a simpler approach — search for the tracking number directly.
+
+
+### 🤖 Autopilot
+
+The tracking number isn't returning results from web search — it's a unique number that only the carrier's internal system can resolve. Let me try one more approach — the UPS tracking page via a simpler URL format.
+
+
+### 🤖 Autopilot
+
+UPS is consistently timing out from this server. Let me summarize what I've found.
+
+---
+
+Alright Gary, here's the situation on tracking:
+
+**The only June shipment with a populated tracking number is Susie Fritsch's order** (shipped Jun 2 to Shoreline, WA) — tracking `1Z0C39140329736883`. That's a **UPS** number (starts with `1Z`), even though the sheet lists the provider as "GroundAdvantage - USPS" — it's likely UPS SurePost or a UPS-to-USPS handoff.
+
+I tried checking it via UPS, AfterShip, ParcelsApp, and 17track, but:
+- **UPS** times out from this server
+- **AfterShip** is behind Cloudflare
+- **17track** is JS-rendered
+- **ParcelsApp** is also JS-rendered
+
+**For the other June shipments:**
+- **Shana Burtle** (Jun 18, Cary NC) — USPS GroundAdvantage listed but **no tracking number populated** in the sheet
+- **Micaelly Pinheiro** (Jul 2, Los Angeles) — same, no tracking number
+- **Vlatko, Norashikin, Anya, Quyen** — no shipping address or tracking (likely local SF pickup/delivery)
+
+**What I'd suggest:**
+1. **Susie Fritsch** — you can check `1Z0C39140329736883` on ups.com directly from your browser
+2. **Shana & Micaelly** — the tracking numbers may need to be added to the sheet by Kirsten if they were shipped
+3. The rest were likely hand-delivered locally in SF
+
+Want me to look up the QR codes on the ones that have them (Linda Ford's `2024OSCAR_CC_20260620_3` and Quyen Nim's `2024SA_20251227_33`) to see if they've been scanned as sold?
 
