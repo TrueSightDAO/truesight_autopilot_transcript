@@ -155,3 +155,37 @@ Now it clicks — **you're the person being recruited**, Gary.
 
 Want me to save these to the transcript for reference? Or is there a next step you'd like me to help with?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **94451023a9f84c788d350d35e269d428.jpg**]
+- Type: Image (OCR confidence: 84.5%, quality: good)
+
+Extracted text:
+```
+5:14 oll > GD <@ P= Stacey Polacco ar iT) fy come CoN Hao] Buddhist Boondocker as often as you can.. be positive..( it's not 100% that they'll be filming us so don't give them any reason to back out) thanks max.mcgillivray@a24 prod. com Unread messages Please let me know when you talk with him thanks Remember it’s not necessary to mention you may not be back in time for the film
+```
+
+
+### 🤖 Autopilot
+
+This is a **duplicate/continuation** of the first screenshot — same instructions from Stacey, but with a slightly clearer read on a few details:
+
+- **Email**: `max.mcgillivray@a24prod.com` (confirmed)
+- **Key instruction**: "Remember it's not necessary to mention you may not be back in time for the film" — this is the same caveat about your availability
+- **The pitch angle**: Make it sound like you camp with Buddhist Boondockers as often as you can
+- **The risk note**: "It's not 100% that they'll be filming us so don't give them any reason to back out"
+
+**So the full picture is clear:**
+
+You, Gary, have been recruited by **Stacey Polacco** to join a **Buddhist Boondockers project** that involves **Max McGillivray (A24)** and is being positioned for **HBO**. She's asking you to email Max directly to set up a Zoom — sell the angle that you're an active member of the community, and **don't mention** that you might not be back in time for the October shoot.
+
+**My take:** This is a real opportunity. If you're interested, I can:
+1. Draft an email for you to send to Max
+2. Save all these screenshots to the session transcript for reference
+3. Help you think through how the DAO mission could naturally come up if the conversation goes that way
+
+What would you like to do?
+
