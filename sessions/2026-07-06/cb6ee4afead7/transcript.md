@@ -70,3 +70,44 @@ This screenshot appears to be a **text message conversation** where someone (sou
 
 Want me to save this to the transcript for future reference, or is there something specific you'd like me to do with this information?
 
+
+### 🧑 Governor
+
+Thoughts on this?
+
+[Attachment auto-processed: **9447f53cd54f47e8b9979d41872e0330.jpg**]
+- Type: Image (OCR confidence: 82.9%, quality: good)
+
+Extracted text:
+```
+ak a3) Cy Pr 5 Stacey Polacco ao comet Cel Mae) Yes but would you like to be in the HBO shoot? I'm gonna try to move out to October when people seem to be more available (instead of the end of _ August) (p NIU CCS Wonderful . I'll add you to the list . You would be great for this.. IT'S HBO.. imagine the message you F could send out!!! fi JUL 2 AT 12:35PM
+```
+
+
+### 🤖 Autopilot
+
+This is a follow-up to the same thread from the first screenshot. Let me piece together the full picture:
+
+**The conversation so far:**
+
+1. **First message** (from Stacey/Mel): Prep someone to email Max McGillivray at A24 about "Buddhist Boondockers" — a camping/outdoor group with a Buddhist angle. Possibly a documentary or reality concept.
+
+2. **This message** (same thread): Now there's an **HBO shoot** being discussed. The sender says:
+   - "Would you like to be in the HBO shoot?"
+   - Moving it to **October** (instead of end of August) for better availability
+   - "You would be great for this.. IT'S HBO.. imagine the message you could send out!!!"
+
+**Key observations:**
+
+- **Two major studios are involved**: **A24** (first screenshot — Max McGillivray) and **HBO** (this screenshot). This could be:
+  - Two separate projects involving the same people
+  - Or more likely: A24 is producing something that **HBO is picking up/distributing** (A24 has a deal with HBO for series)
+
+- **"Buddhist Boondockers"** — This sounds like a **reality/documentary series concept**: a group of Buddhist-leaning people who go camping/boondocking together. The "message you could send out" line suggests it has a spiritual/environmental/community angle.
+
+- **The tone**: The sender is clearly recruiting/casting — "I'll add you to the list," "you would be great for this." They're excited about the platform (HBO) and the reach it provides.
+
+**Still no DAO connection** — this appears to be a personal opportunity that was shared with you, Gary. Someone is being recruited for what looks like an HBO/A24 documentary or reality series about a Buddhist camping community.
+
+Is this something you're involved in or considering? Or were you just sharing for my thoughts?
+
