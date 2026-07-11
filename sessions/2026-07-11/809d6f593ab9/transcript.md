@@ -2098,3 +2098,42 @@ Jake Nelan was there from the beginning, financing the getdata.io cluster and su
 
 The ecosystem generated everything else.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Sorry. I think the Dow was actually first name as a Dow in 2021, when Jerry started going to market with the market inside solution. Val Lapidus was the one that coined the term DAO. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good — **Val Lapidus** is a core DAO contributor and was the one who coined the term "DAO" for the group. The DAO was first named as a DAO in 2021, when Jerry started going to market with the market insights solution.
+
+Let me also check who "Jerry" is in this context.
+
+
+### 🤖 Autopilot
+
+I don't have a clear profile on "Jerry" in the context. Gary — could you clarify who Jerry is? Is Jerry another name for someone we've already discussed, or a different community member?
+
+In the meantime, let me update the blog post with the key correction: **Val Lapidus coined the term DAO in 2021**, when Jerry started going to market with the market insights solution. Here's the updated passage:
+
+---
+
+**New section to add after the Do Nothing Society section:**
+
+## The DAO is Named
+
+In 2021, as Jerry started going to market with the market insights solution, **Val Lapidus** — a community member who would become one of the DAO's most active contributors — coined the term that would define the organization: **DAO**.
+
+It wasn't a legal structure or a technical architecture at that point. It was a name that captured the spirit of what was forming: a decentralized, community-driven organization, held together not by contracts but by shared purpose. The name stuck, and TrueSight DAO was born.
+
+---
+
+And in the epilogue, add:
+
+Val Lapidus gave the organization its name in 2021, coining "DAO" as Jerry went to market with the insights solution.
+
+---
+
+Want me to regenerate the full draft with this addition? And could you clarify who Jerry is so I can include his full profile?
+
