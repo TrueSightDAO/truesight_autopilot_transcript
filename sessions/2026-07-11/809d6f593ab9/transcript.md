@@ -2150,6 +2150,11 @@ Let me also check who "Jerry" is in this context.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I don't have a clear profile on "Jerry" in the context. Gary — could you clarify who Jerry is? Is Jerry another name for someone we've already discussed, or a different community member?
 
 In the meantime, let me update the blog post with the key correction: **Val Lapidus coined the term DAO in 2021**, when Jerry started going to market with the market insights solution. Here's the updated passage:
@@ -3441,4 +3446,28 @@ And for stuck initiatives — they're almost always stuck because they're in the
 The DAO is now working toward 10,000 hectares of Amazon rainforest restored through regenerative cacao agroforestry. It started with a guy named Gary who noticed a gap between sentiment and stock price on December 31, 2017, after a silent meditation retreat with Jack Dorsey and a honey purchase that worked without phone reception. Then he couldn't do anything for three years, sitting outside a McDonald's in Boon Lay with Garis Pang, wondering if doing nothing was actually the answer.
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] The market was punishing Square for enabling cryptocurrency trading. But cryptocurrency was just a very small section of the company business. Bulk of the users were like those farmers in the middle of nowhere
+
+
+### 🤖 Autopilot
+
+That reframes the whole insight. Let me update that passage.
+
+---
+
+**Corrected passage:**
+
+Then he noticed something else. Square had allowed trading of Bitcoin and Ethereum on its platform, and the market was punishing Square for it — the stock was down, sentiment was negative. But cryptocurrency was just a tiny fraction of Square's business. The bulk of its users were people like that farmer in the middle of nowhere, accepting card payments with no phone reception. The market was missing the real story.
+
+There was a gap — a chasm — between what people were saying and what was actually true.
+
+That gap became an obsession. He started researching fake news — misinformation, disinformation, the distortion between perception and reality.
+
+---
+
+Want me to regenerate the full draft with this correction?
 
