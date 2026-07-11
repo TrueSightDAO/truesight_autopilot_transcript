@@ -1802,6 +1802,11 @@ The Herbalife press release doesn't mention Jake Nelan directly — it's a stand
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — **Jake Nelan** is VP of Technology at Herbalife, with a background in complex industries including power grid systems. He was the one who originally surfaced the value of the insights layer, offered AWS financing for the getdata.io cluster since 2018, and after getdata.io came out first on Product Launch, Gary figured by 2021 to focus on the insights layer — especially after observing how critical market insights were for stock market trading during the height of COVID in 2020.
 
 Let me now regenerate the full draft with all corrections woven in.
@@ -2805,4 +2810,34 @@ And for stuck initiatives — they're almost always stuck because they're in the
 The DAO is now working toward 10,000 hectares of Amazon rainforest restored through regenerative cacao agroforestry. It started with a guy named Gary who couldn't do anything, sitting outside a McDonald's in Boon Lay with Garis Pang, wondering if doing nothing was actually the answer.
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Jake came into the picture after the product hunt launch when he saw it
+
+
+### 🤖 Autopilot
+
+Got it — correcting the timeline. Jake came in *after* the Product Hunt launch, not before. Let me update that passage.
+
+---
+
+**Corrected passage:**
+
+From 2018 through 2021, Gary was deep in the data aggregation layer — building **getdata.io**, researching fake news, driving across America, collecting signals. He was building the foundation for something he couldn't yet name.
+
+When getdata.io launched and came out first on Product Hunt, **Jake Nelan** — VP of Technology at Herbalife — saw it and reached out. He was the one who originally surfaced the value of the insights layer. He offered AWS financing for the getdata.io cluster. The deal was clear: Gary would continue building the getdata.io data aggregation layer, and Jake and his team would build the insights layer on top. But Jake got busy with other priorities. The insights layer never materialized from his end.
+
+By 2021, after observing how critical market insights were for stock market trading during the height of COVID in 2020, Gary figured it was time to build it himself — what would become **perch.truesight.me**.
+
+---
+
+And update the People section:
+
+**Jake Nelan** — VP of Technology at Herbalife. Discovered getdata.io after it came out first on Product Hunt. Surfaced the value of the insights layer and offered AWS financing. The original plan was for his team to build the insights layer, but other priorities intervened.
+
+---
+
+Want me to regenerate the full draft with this correction?
 
