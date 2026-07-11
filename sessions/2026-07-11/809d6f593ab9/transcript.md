@@ -927,6 +927,11 @@ I can't find Hans Harting's company profile through public web search. Let me ch
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gary — I've gathered the profiles I could find publicly. Here's what I have:
 
 **Rob Hutter** — Founder & Managing Partner of **Learn Capital**, a venture firm focused on learning/edtech. Previously a Partner at Revolution Ventures (affiliated with Founders Fund). Co-founded Swarm Networks (acquired by Intel), Edusoft (acquired by Houghton-Mifflin). Early investor in Coursera, Udemy, Nerdy, General Assembly. Harvard grad. He nudged Gary from the data aggregation layer to the insights layer during their encounter at Harbin Hot Springs in June 2020.
@@ -1707,4 +1712,40 @@ The DAO is now working toward 10,000 hectares of Amazon rainforest restored thro
 Garis Pang was there at the beginning, listening to Gary work through the impossibility of doing everything himself. Rob Hutter told him to move from data to insights. Crystal Hutter showed him what mission-driven scale looked like. Tiffine Wang surfaced the love side of the truth/love dichotomy. Vibhu Mittal coined the Do Nothing Society over lunch. Neil Maxx turned it into a channel. Hans-Martin Heierling brought regenerative supply chain thinking from a 140-year-old ski boot workshop in Davos. Vlatko Gigov crystallized it all with four words: *heal the world with love.*
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] The data aggregation layer was getdata.io
+
+And the fake new insights layer is what is now perch.truesight.me
+
+
+### 🤖 Autopilot
+
+Ah, that connects the technical story. Let me weave those in.
+
+**Getdata.io** — the data aggregation layer. That's what Gary was building from 2018 through 2021. Collecting signals, scraping, aggregating. The foundation.
+
+**Perch.truesight.me** — the insights layer. That's what Rob Hutter nudged him toward at Harbin Hot Springs. Moving from collecting to synthesizing. From data to meaning.
+
+Let me update the relevant passages:
+
+---
+
+**In the opening:**
+
+From 2018 through 2021, Gary was deep in the data aggregation layer — building **getdata.io**, researching fake news, driving across America, collecting signals. He was building the foundation for something he couldn't yet name.
+
+**In the Harbin Hot Springs section:**
+
+Rob nudged Gary hard: *You've been in the data aggregation layer — getdata.io — long enough. It's time to move to the insights layer.* That push led to what is now **perch.truesight.me** — moving from collecting to synthesizing, from data to meaning.
+
+**In the epilogue:**
+
+Rob Hutter told him to move from data to insights — from getdata.io to perch.truesight.me.
+
+---
+
+Want me to regenerate the full draft with these additions?
 
