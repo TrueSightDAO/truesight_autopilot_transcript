@@ -4735,6 +4735,11 @@ Want me to merge the PR now so you can see it on the beta site?
 [Telegram context: chat_id=-1003919341801, thread_id=8366] Merge PR
 
 
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
@@ -4786,21 +4791,25 @@ Want me to check if it's rendering correctly?
 ### 🤖 Autopilot
 
 The Jekyll site needs to be rebuilt after the merge. Let me check if there's a build/deploy process.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — this is a static site, not a Jekyll site. The blog posts are in `blog/posts/` as individual HTML files, not in `_posts/`. Let me check the blog structure.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — this is a static HTML site, not Jekyll. Blog posts live in `blog/posts/` as `.html` files. My PR created a Jekyll-style markdown file in `_posts/` which won't work here. Let me fix this by creating the proper HTML file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the template. I need to delete the incorrect `_posts/` file and create the proper HTML file in `blog/posts/`. Let me also remove the `_posts` directory since this isn't a Jekyll site.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4961,4 +4970,62 @@ Now I can see the full structure. The People section is currently before the Epi
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #271 on truesight_me_beta merged successfully (sha: a752209384aae6df15cea0d5f79cb57a8628da24). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Seeing this error 
+
+to">Epilogue
+The DAO is now working toward 10,000 hectares of Amazon rainforest restored through regenerative cacao agroforestry. It started with a guy named Gary who noticed a gap between what the market was saying and what was actually true — after a silent meditation retreat and a honey purchase that worked without phone reception. Then he couldn't do anything for three years, sitting outside a McDonald's in
+
+
+### 🤖 Autopilot
+
+There's a duplicate Epilogue section — the old one wasn't fully replaced. Let me read the file and fix it.
+
+
+### 🤖 Autopilot
+
+I see — the old Epilogue section is still in the file and the new one was added alongside it. Let me read the full file to see the exact duplicate.
+
+
+### 🤖 Autopilot
+
+I see the problem — there's a duplicate Epilogue section. The old one with `to">Epilogue` (broken HTML) is still in the file. Let me read the very end to see the full duplicate.
+
+
+### 🤖 Autopilot
+
+I see — the old Epilogue section with broken HTML (`to">Epilogue`) is still there. The search/replace didn't catch it because the old one had different HTML. Let me fix this by removing the duplicate.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**✅ PR #272 merged** — Duplicate Epilogue removed.
+
+**What was wrong:**
+The previous PR's search/replace didn't match the old Epilogue section because it had broken HTML (`to">Epilogue` instead of `<h2 dir="auto">Epilogue`). This left a duplicate Epilogue + People section at the bottom of the file, causing the rendering error you saw.
+
+**What I did:**
+- **PR #272** — Removed the duplicate Epilogue + People section (the one with broken HTML)
+- The correct Epilogue + People section (after the People section) remains intact
+
+**The URL should now render correctly:**
+👉 **https://truesight.me/blog/posts/the-desert-and-the-diamond.html**
+
+**RESUME HERE →** Check the URL to confirm it renders correctly, then decide on production promotion or further edits.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #272 on truesight_me_beta merged successfully (sha: ab652ff6c97767ef395d75f9890cc1300cdff600). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #272 on truesight_me_beta merged successfully (sha: ab652ff6c97767ef395d75f9890cc1300cdff600). Pull Request successfully merged
 
