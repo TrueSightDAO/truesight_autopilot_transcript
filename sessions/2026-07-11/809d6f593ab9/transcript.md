@@ -950,9 +950,20 @@ In the meantime, I have enough to regenerate the blog post with Rob and Crystal'
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found it! **Heierling** — the Swiss ski boot manufacturer. Hans-Martin Heierling is the Owner & CEO. So the name is **Hans-Martin Heierling** (or Hans Heierling), and the company is **Heierling** in Davos, Switzerland. "Harlin's Keys" was likely a phonetic reference to Heierling.
 
 Let me get more detail on the company.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1900,4 +1911,53 @@ The DAO is now working toward 10,000 hectares of Amazon rainforest restored thro
 Jake Nelan was there from the beginning, financing the getdata.io cluster and surfacing the value of the insights layer. Garis Pang was there at the McDonald's, listening to Gary work through the impossibility of doing everything himself. Rob Hutter told him to move from data to insights — from getdata.io to perch.truesight.me. Crystal Hutter showed him what mission-driven scale looked like. Tiffine Wang surfaced the love side of the truth/love dichotomy. Vibhu Mittal coined the Do Nothing Society over lunch. Neil Maxx turned it into a channel. Hans-Martin Heierling brought regenerative supply chain thinking from a 140-year-old ski boot workshop in Davos. Vlatko Gigov crystallized it all with four words: *heal the world with love.*
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Gary met Tiffine in Harbin hot springs 
+
+He spent time with Rob and Crystal in San clemente when he was driving north along Highway 1 California coming out from the desert back to San Francisco 
+
+He had lunch with Vibhu in San Francisco before heading north with Tiffine
+
+
+### 🤖 Autopilot
+
+Got it — correcting the geography and timing of those 2021 encounters:
+
+- **Desert** (Slab City / Salton Sea) → drove north along **Highway 1, California**
+- **San Clemente** — met **Rob Hutter and Crystal Hutter** there
+- **San Francisco** — had lunch with **Vibhu Mittal**
+- **Harbin Hot Springs** — met **Tiffine Wang** (not with Rob and Crystal)
+
+Let me update the relevant section:
+
+---
+
+**The corrected passage:**
+
+Then came the second car accident in 2021. Gary found himself stuck in the California high desert — Slab City, Salton Sea — for two months, waiting for his car registration to transfer from Texas. His body was broken. The desert gave him space to let the "do nothing" notion marinate.
+
+When he finally got his plates sorted, he drove north along Highway 1. In **San Clemente**, he met **Rob Hutter** and **Crystal Hutter**.
+
+Rob — Founder and Managing Partner of Learn Capital, a venture firm built around learning as the engine of civilization. He had backed Coursera, Udemy, General Assembly. He had been a Partner at Revolution Ventures, an affiliate of Founders Fund. Rob nudged Gary hard: *You've been in the data aggregation layer — getdata.io — long enough. It's time to move to the insights layer.*
+
+Crystal — former Oracle engineer, former investment manager at Omidyar Network, former COO and then CEO of Edmodo, the K-12 social learning platform that had connected millions of users worldwide. She brought the practical wisdom of scaling a mission-driven platform from grassroots to global.
+
+Continuing north to **San Francisco**, Gary had lunch with **Vibhu Mittal** — the CEO of Edmodo. Over that meal, the "Do Nothing Society" was coined. It wasn't a joke. It was a thesis: *what if the most productive thing you could do was nothing — and let the ecosystem figure itself out?*
+
+Then, heading further north, Gary arrived at **Harbin Hot Springs**, where he met **Tiffine Wang** of Onsen Global — a Taiwanese-American venture capitalist bridging Silicon Valley, Asia, and Europe. The conversation with her surfaced a contradiction that would echo for years: she was aligned towards love, Gary towards truth. *Love is blind, truth is harsh.*
+
+**Neil Maxx**, a community member, took the Do Nothing Society seed and started the channel. The name stuck.
+
+---
+
+And in the epilogue, update to:
+
+Rob Hutter told him to move from data to insights in San Clemente. Crystal Hutter showed him what mission-driven scale looked like. Vibhu Mittal coined the Do Nothing Society over lunch in San Francisco. Tiffine Wang surfaced the love side of the truth/love dichotomy at Harbin Hot Springs. Neil Maxx turned it into a channel.
+
+---
+
+Want me to regenerate the full draft with these corrections?
 
