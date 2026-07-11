@@ -2187,6 +2187,11 @@ Want me to regenerate the full draft with this addition? And could you clarify w
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it. **Val Lapidus** — based in San Mateo, California. Veteran IT leader with 15+ years of experience, currently at Totango (customer success platform). University of Wisconsin-Milwaukee. Active DAO contributor and the one who coined the term "DAO" for the group in 2021.
 
 Now, Gary — I still need one clarification before I regenerate the full draft: **Who is Jerry?** You mentioned "Jerry started going to market with the market insights solution" in 2021. Is Jerry a community member I should research, or is that a reference I'm missing?
@@ -3642,4 +3647,48 @@ And for stuck initiatives — they're almost always stuck because they're in the
 The DAO is now working toward 10,000 hectares of Amazon rainforest restored through regenerative cacao agroforestry. It started with a guy named Gary who noticed a gap between what the market was saying and what was actually true — after a silent meditation retreat with Jack Dorsey and a honey purchase that worked without phone reception. Then he couldn't do anything for three years, sitting outside a McDonald's in Boon Lay with Garis Pang, wondering if doing nothing was actually the answer.
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] It was garis that was coming up with random ideas not Gary. Gary just didn’t want to bother and was not interested. After semi running out of patience with Garis Gary just coined the do nothing society term for the first time just as a jest jokingly to tell Garis his ideas are half baked
+
+
+### 🤖 Autopilot
+
+Ah, that reframes the Do Nothing Society origin completely. Let me correct that passage.
+
+---
+
+**Corrected passage:**
+
+In early 2020, before the second accident, Gary was in Singapore. He found himself sitting outside a McDonald's in Boon Lay with **Garis Pang**. Garis was his usual self — always coming up with random ideas, proposing solutions and problems. Gary just didn't want to bother. He wasn't interested. The virus had already taken its toll. He couldn't execute the way he used to. The old playbook of *my time, my resources, my energy, my problem, my solution* was no longer an option.
+
+After semi-running out of patience with Garis' half-baked ideas, Gary jokingly coined a term: **"Do Nothing Society."** It was a jest. A throwaway line.
+
+But the seed was planted.
+
+---
+
+**And the Do Nothing Society section:**
+
+Then came the second car accident in 2021. Gary found himself stuck in the California high desert — Slab City, Salton Sea — for two months, waiting for his car registration to transfer from Texas. His body was broken. The desert gave him space to let the "do nothing" notion marinate — not as a joke anymore, but as something deeper.
+
+When he finally got his plates sorted, he drove north along Highway 1. In **San Clemente**, he met **Rob Hutter** and **Crystal Hutter**. Rob nudged Gary hard: *You've been in the data aggregation layer — getdata.io — long enough. It's time to move to the insights layer.*
+
+Continuing north to **San Francisco**, Gary had lunch with **Vibhu Mittal** — the CEO of Edmodo. Over that meal, the "Do Nothing Society" came up again. But this time it wasn't a jest. It was becoming a thesis: *what if the most productive thing you could do was nothing — and let the ecosystem figure itself out?*
+
+Then, heading further north, Gary arrived at **Harbin Hot Springs**, where he met **Tiffine Wang** of Onsen Global. The conversation with her surfaced a contradiction that would echo for years: she was aligned towards love, Gary towards truth. *Love is blind, truth is harsh.*
+
+**Neil Maxx**, a community member, took the Do Nothing Society seed and started the channel. The name stuck.
+
+---
+
+And update the People section for Garis:
+
+**Garis Pang** — Business Developer in Singapore. Was there outside McDonald's in Boon Lay in early 2020, coming up with half-baked ideas that inadvertently sparked the "Do Nothing Society" — first as a jest, then as a thesis.
+
+---
+
+Want me to regenerate the full draft with these corrections?
 
