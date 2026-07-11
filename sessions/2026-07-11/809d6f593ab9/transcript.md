@@ -2841,3 +2841,29 @@ And update the People section:
 
 Want me to regenerate the full draft with this correction?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Gary started researching into the fake news in 2017 Dec 31 after he finished vipassana 10 day silent mediation research. And noticed the gap between user satisfaction and stock price of SQUARE  on his way back to San Francisco Bay Area due to negative sentiments about its involvement with cryptocurrency by allowing trading of Ethereum and Bitcoin on its platform
+
+
+### 🤖 Autopilot
+
+That's a great detail — it pins the origin to a specific moment. Let me update the opening.
+
+---
+
+**Corrected opening:**
+
+There's a story I've watched unfold over the past eight years, and it keeps teaching me something new every time I revisit it.
+
+It starts on December 31, 2017. Gary had just finished a 10-day Vipassana silent meditation retreat. On his way back to the San Francisco Bay Area, he noticed something strange: Square had allowed trading of Bitcoin and Ethereum on its platform, and the news cycle was flooded with negative sentiment about cryptocurrency. But when he checked the stock price, it told a completely different story. There was a gap — a chasm — between what people were saying and what the market was actually doing.
+
+That gap became an obsession. He started researching fake news — misinformation, disinformation, the distortion between perception and reality. He would spend the next three years building **getdata.io**, a data aggregation engine designed to bridge that gap.
+
+Then three health events between 2018 and 2021 — two car accidents (both T-bone, both with whiplash) and a mysterious virus in late 2019 — left him unable to use his body, his brain, or his energy the way he used to. The first concussion in 2018 took a year and a half to recover from. The virus in December 2019 left him physically weak with brain fog for two more years. The second car accident in 2021 in Texas damaged his neck and spine.
+
+---
+
+Want me to regenerate the full draft with this corrected opening?
+
