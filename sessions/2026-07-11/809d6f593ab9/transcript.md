@@ -850,3 +850,61 @@ That's a long germination period. The vision diamond took from 2020 to 2024 to f
 
 Want me to regenerate the full draft with that correction, or shall we keep iterating on specific sections first?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Also, in between Gary being in the desert and the time spent talking with Tiffin when we were in the hot springs. Harbin Hot Springs. During I think June period there was this encounter with Rob Hatter and Crystal Hatter. Rob Hatter runs learning capital and Crystal Hatter was the ex CEO of Edmodo. Go to your research. Rob Hatter really nudged very strongly from the data aggregation layer to the inside layer. Probably spent some time researching Rob Hatter's profile from learning capital. Also spent some time researching the hand smarting profile from Harlin's keys. Used like web search. Once you get those two profiles, pull them in and regenerate the full blog post based on the new inputs. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me research all three profiles.
+
+
+### 🤖 Autopilot
+
+The initial searches didn't find the right people. Let me try more specific searches.
+
+
+### 🤖 Autopilot
+
+The web searches aren't finding the right profiles directly. Let me try different search terms.
+
+
+### 🤖 Autopilot
+
+Found Crystal Hutter (spelled Hutter, not Hatter) — she was COO then CEO of Edmodo. Let me get more detail on all three.
+
+
+### 🤖 Autopilot
+
+Good — I found Rob Hutter (spelled Hutter, not Hatter) of Learn Capital, and Crystal Hutter (also Hutter) of Edmodo. Let me get more on Hans Harting and his company.
+
+
+### 🤖 Autopilot
+
+I'm not finding the right Hans Harting / "Harlin's Keys" connection through web search. Let me check if there's anything in the DAO context about him.
+
+
+### 🤖 Autopilot
+
+I can't find Hans Harting's company details in the DAO context or code. Let me try one more search.
+
+
+### 🤖 Autopilot
+
+I can't find Hans Harting's company profile through public web search. Let me check if the name might be spelled differently in the DAO's context.
+
+
+### 🤖 Autopilot
+
+Gary — I've gathered the profiles I could find publicly. Here's what I have:
+
+**Rob Hutter** — Founder & Managing Partner of **Learn Capital**, a venture firm focused on learning/edtech. Previously a Partner at Revolution Ventures (affiliated with Founders Fund). Co-founded Swarm Networks (acquired by Intel), Edusoft (acquired by Houghton-Mifflin). Early investor in Coursera, Udemy, Nerdy, General Assembly. Harvard grad. He nudged Gary from the data aggregation layer to the insights layer during their encounter at Harbin Hot Springs in June 2020.
+
+**Crystal Hutter** — Former COO then CEO of **Edmodo**, the K-12 social learning platform. Previously an Oracle engineer and investment manager at Omidyar Network (Pierre Omidyar's firm). She and Rob were at Harbin Hot Springs with Gary.
+
+**Hans Harting** — I couldn't find a public profile for Hans Harting or "Harlin's Keys" through web search or the DAO context. The name might be spelled differently, or his company may not have a strong public web presence. Could you clarify the spelling or company name so I can look deeper?
+
+In the meantime, I have enough to regenerate the blog post with Rob and Crystal's roles woven in. Shall I proceed with the draft based on what we have, and we can fill in Hans' details when you clarify?
+
