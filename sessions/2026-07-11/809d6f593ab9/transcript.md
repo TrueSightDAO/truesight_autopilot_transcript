@@ -2132,6 +2132,11 @@ The ecosystem generated everything else.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — **Val Lapidus** is a core DAO contributor and was the one who coined the term "DAO" for the group. The DAO was first named as a DAO in 2021, when Jerry started going to market with the market insights solution.
 
 Let me also check who "Jerry" is in this context.
@@ -3056,4 +3061,38 @@ That gap became an obsession. He started researching fake news — misinformatio
 ---
 
 Want me to regenerate the full draft with this updated opening?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Getdata.io was a side project he has been building since 2013 ever since he joined an accelerator in Singapore
+
+
+### 🤖 Autopilot
+
+Got it — getdata.io wasn't started in 2018 for fake news. It was a side project since **2013**, after joining an accelerator in Singapore. The fake news research in 2017/2018 was a *new application* of the existing platform. Let me correct the timeline.
+
+---
+
+**Corrected opening:**
+
+There's a story I've watched unfold over the past eight years, and it keeps teaching me something new every time I revisit it.
+
+It starts on December 31, 2017. Gary had just finished a 10-day Vipassana silent meditation retreat — the same retreat attended by **Jack Dorsey**, the founder of Square. On his way back to the San Francisco Bay Area, Gary stopped at a farm to buy honey. The area had no phone reception, but his card worked anyway. The experience was seamless. It stuck with him.
+
+Then he noticed something else. Square had allowed trading of Bitcoin and Ethereum on its platform, and the news cycle was flooded with negative sentiment about cryptocurrency. But when he checked the stock price, it told a completely different story. There was a gap — a chasm — between what people were saying and what the market was actually doing.
+
+That gap became an obsession. He started researching fake news — misinformation, disinformation, the distortion between perception and reality.
+
+But the engine he would use to tackle it wasn't new. **Getdata.io** had been a side project since 2013, ever since Gary joined an accelerator in Singapore. It was a data aggregation platform he had been quietly building for years. Now he had a purpose for it: bridging the gap between perception and reality.
+
+---
+
+And update the People section to add Jack Dorsey:
+
+**Jack Dorsey** — Founder of Square (now Block) and Twitter. Attended the same Vipassana retreat as Gary in December 2017. His company's stock price gap with public sentiment sparked Gary's fake news research.
+
+---
+
+Want me to regenerate the full draft?
 
