@@ -1258,6 +1258,11 @@ https://sg.linkedin.com/in/garispang
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it! **Garis Pang** — that's "Gary's Pen." The name is Garis Pang (LION - XIII K), a Business Developer in Singapore. That's who Gary was sitting with outside McDonald's in Boon Lay.
 
 And **Vibhu Mittal** — Crunchbase didn't load, but from the earlier search we know he was CEO of Edmodo, co-founder of Root-1, and the one who coined "Do Nothing Society" over lunch with Gary in 2021.
@@ -1573,6 +1578,11 @@ The ecosystem generated everything else.
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=8366] https://ch.linkedin.com/in/gigovv
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2136,4 +2146,16 @@ Val Lapidus gave the organization its name in 2021, coining "DAO" as Jerry went 
 ---
 
 Want me to regenerate the full draft with this addition? And could you clarify who Jerry is so I can include his full profile?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] https://www.linkedin.com/in/valtheninja
+
+
+### 🤖 Autopilot
+
+Got it. **Val Lapidus** — based in San Mateo, California. Veteran IT leader with 15+ years of experience, currently at Totango (customer success platform). University of Wisconsin-Milwaukee. Active DAO contributor and the one who coined the term "DAO" for the group in 2021.
+
+Now, Gary — I still need one clarification before I regenerate the full draft: **Who is Jerry?** You mentioned "Jerry started going to market with the market insights solution" in 2021. Is Jerry a community member I should research, or is that a reference I'm missing?
 
