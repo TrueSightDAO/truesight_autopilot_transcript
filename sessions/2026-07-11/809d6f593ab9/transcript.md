@@ -2458,3 +2458,31 @@ Jake Nelan was there from the beginning, financing the getdata.io cluster and su
 
 The ecosystem generated everything else.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] [Handoff context — this Telegram topic (thread 8366) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also Jake when he made the deal with Gary was for Gary to continue building the GetData.io layer and Jake and his team would build the insights layer but Jake got busy with other priorities
+
+
+### 🤖 Autopilot
+
+That's an important detail — it reframes the relationship. Let me update that passage:
+
+---
+
+**Corrected passage:**
+
+**Jake Nelan** — VP of Technology at Herbalife — was there from the beginning. He was the one who originally surfaced the value of the insights layer. He offered AWS financing for the getdata.io cluster starting in 2018, and when getdata.io launched and came out first on Product Hunt, Jake's conviction only deepened. The deal was clear: Gary would continue building the getdata.io data aggregation layer, and Jake and his team would build the insights layer on top.
+
+But Jake got busy with other priorities. The insights layer never materialized from his end.
+
+By 2021, after observing how critical market insights were for stock market trading during the height of COVID in 2020, Gary figured it was time to build it himself — what would become **perch.truesight.me**.
+
+---
+
+That actually makes the story more honest and more human. It wasn't a clean handoff — it was a plan that didn't pan out, and Gary had to step in. That's the reality of building things with people who have competing priorities.
+
+Want me to regenerate the full draft with this correction?
+
