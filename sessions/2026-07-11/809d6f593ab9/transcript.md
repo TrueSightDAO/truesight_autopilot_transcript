@@ -4040,3 +4040,29 @@ The DAO is now working toward 10,000 hectares of Amazon rainforest restored thro
 
 The ecosystem generated everything else.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Also Vibhu was really just chilling and doing nothing at that point having stepped down as CEO after the sale of Edmodo to net dragon
+
+
+### 🤖 Autopilot
+
+That adds important context to Vibhu's role — he was literally living the Do Nothing Society at that point. Let me update that passage.
+
+---
+
+**Corrected passage:**
+
+Continuing north to **San Francisco**, Gary had lunch with **Vibhu Mittal** — the former CEO of Edmodo, who had stepped down after the sale of Edmodo to NetDragon. At that point, Vibhu was really just chilling and doing nothing. Over that meal, the "Do Nothing Society" came up again. But this time it wasn't a jest. Vibhu was living proof that doing nothing — stepping back, letting go — could be a legitimate phase. It was becoming a thesis: *what if the most productive thing you could do was nothing — and let the ecosystem figure itself out?*
+
+---
+
+And update the People section:
+
+**Vibhu Mittal** — Former CEO of Edmodo, stepped down after the sale to NetDragon. Was living the "do nothing" life when he had lunch with Gary in San Francisco in 2021, helping turn a jest into a thesis.
+
+---
+
+Want me to regenerate the full draft with this correction?
+
