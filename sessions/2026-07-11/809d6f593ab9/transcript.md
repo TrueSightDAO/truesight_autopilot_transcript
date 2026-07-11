@@ -889,6 +889,7 @@ Found Crystal Hutter (spelled Hutter, not Hatter) — she was COO then CEO of Ed
 ### 🤖 Autopilot
 
 Good — I found Rob Hutter (spelled Hutter, not Hatter) of Learn Capital, and Crystal Hutter (also Hutter) of Edmodo. Let me get more on Hans Harting and his company.
+[2 tool result(s) compacted: web_search, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1211,4 +1212,46 @@ The DAO is now working toward 10,000 hectares of Amazon rainforest restored thro
 Rob Hutter told him to move from data to insights. Crystal Hutter showed him what mission-driven scale looked like. Tiffine Wang surfaced the love side of the truth/love dichotomy. Vibhu Mittal coined the Do Nothing Society over lunch. Neil Maxx turned it into a channel. Hans-Martin Heierling brought regenerative supply chain thinking from a 140-year-old ski boot workshop in Davos. Vladko crystallized it all with four words: *heal the world with love.*
 
 The ecosystem generated everything else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] https://www.crunchbase.com/person/vibhu-mittal
+
+https://sg.linkedin.com/in/garispang
+
+
+### 🤖 Autopilot
+
+Got it! **Garis Pang** — that's "Gary's Pen." The name is Garis Pang (LION - XIII K), a Business Developer in Singapore. That's who Gary was sitting with outside McDonald's in Boon Lay.
+
+And **Vibhu Mittal** — Crunchbase didn't load, but from the earlier search we know he was CEO of Edmodo, co-founder of Root-1, and the one who coined "Do Nothing Society" over lunch with Gary in 2021.
+
+Let me update the relevant section in the blog post with the correct name:
+
+---
+
+**The corrected passage:**
+
+By early 2020, Gary was in Singapore, still recovering, still trying to rebuild his energy. He found himself sitting outside a McDonald's in Boon Lay with **Garis Pang** — his usual self, always proposing solutions and problems. But something was different this time. He couldn't execute anymore. The old playbook of *my time, my resources, my energy, my problem, my solution* was no longer an option.
+
+That's when a seed was planted. Not a strategy — just a notion: *what if I did nothing?*
+
+---
+
+And later:
+
+Later that same year, Gary had lunch with **Vibhu Mittal** — the CEO of Edmodo. Over that meal, the "Do Nothing Society" was coined. It wasn't a joke. It was a thesis: *what if the most productive thing you could do was nothing — and let the ecosystem figure itself out?*
+
+**Neil Maxx**, a community member, took that seed and started the Do Nothing Society channel. The name stuck.
+
+---
+
+And in the epilogue:
+
+Garis Pang was there at the beginning, sitting outside McDonald's in Boon Lay, listening to Gary work through the impossibility of doing everything himself. Vibhu Mittal coined the Do Nothing Society over lunch. Neil Maxx turned it into a channel.
+
+---
+
+Want me to regenerate the full draft with these corrections, or shall we keep iterating on specific sections?
 
