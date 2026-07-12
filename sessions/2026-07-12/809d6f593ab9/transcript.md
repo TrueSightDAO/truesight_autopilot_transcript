@@ -4331,6 +4331,7 @@ Let me check for a concrete proof point first.
 ### 🤖 Autopilot
 
 Let me check for concrete proof points — retailer reorders or QR scan data.
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4458,4 +4459,27 @@ The blog post is live on the beta site at:
 👉 **https://truesight.me/blog/posts/the-desert-and-the-diamond.html**
 
 Ready for production promotion whenever you are — just say the word and I'll `sync_beta_to_prod truesight_me_prod`.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Check if the code was deployed to beta.truesight.me
+
+
+### 🤖 Autopilot
+
+**✅ Confirmed — it's live on beta.truesight.me and returning HTTP 200.**
+
+The page renders with all the latest changes:
+- New lede opening with the random walk paragraph
+- Epistemic stance markers ("Gary recalls", "the ledger shows")
+- Honest mistake in Diamond 1
+- 27 U.S. stockists proof point
+- Falsifiability paragraph
+- Stripped-down People bios (names only, no job titles)
+- Consent note at the bottom
+
+The URL is working: **https://beta.truesight.me/blog/posts/the-desert-and-the-diamond.html**
+
+Want me to promote it to production (`sync_beta_to_prod truesight_me_prod`)?
 
