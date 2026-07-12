@@ -4429,6 +4429,11 @@ Now I have the full file. Let me replace just the People section with name-only 
 [1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
@@ -4640,4 +4645,41 @@ I'll update my context so I understand the Altamira trips going forward. A few t
 3. **Keep the home front running** — any DAO operations you want me to handle while you're in the field
 
 When are you heading out?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] What are your thoughts about including this expectation in the blog post too??
+
+
+### 🤖 Autopilot
+
+I think it's a risky but powerful move. Let me think through it.
+
+**Why it works:**
+- It's the Do Nothing Society *in action* — not just a story about 2021, but proof it's still the operating model today
+- It sets brutally honest expectations for anyone who romanticizes the Amazon trip
+- It demonstrates the DAO's truth-orientation — no marketing gloss, just "I'm a nobody there, I'll be sitting at a cafe"
+- It's the kind of thing no organization would ever publish, which is exactly why it builds trust
+
+**Why it's risky:**
+- Partners reading it might wonder "why should I back this if even the founder says he's a nobody there?"
+- It could undermine the 10,000 hectares vision if someone reads it as "even Gary doesn't believe this will work" rather than "Gary is being honest about the ground reality"
+- It's a tonal shift — the post is a reflective origin story, and this is raw field dispatch
+
+**My recommendation:** Don't put it in this blog post. It belongs in a *separate* post — a field journal or a "what I'm actually doing in the Amazon" update. That way:
+- The origin story stays clean and universal
+- The field dispatch has its own space to be raw and honest
+- Readers who want the romantic version get the blog post
+- Readers who want the real version get the field journal
+
+But if you want it in this post, I'd put it at the very end — after the epilogue — as a postscript. Something like:
+
+---
+
+*Postscript — July 2026: I'm writing this from Altamira. If you're reading this and thinking of joining a future trip, here's what it's actually like: I'm a nobody here. I sit at the same cafe every day, keep expenses low, and wait for farmers to decide if they want to talk to me. There are no tourist attractions. It's a small village. The goal is to see ten trees and get input on what farmers actually need. It's not glamorous. But it's real.*
+
+---
+
+That way it's an honest coda rather than a contradiction of the main piece. Want me to add it?
 
