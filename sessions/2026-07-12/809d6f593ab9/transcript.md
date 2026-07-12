@@ -4352,11 +4352,13 @@ Good — I have enough context now. Let me make the editorial changes as the aut
 6. **Trim People bios** slightly
 
 Let me write the new version.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me write the full revised HTML with all the editorial changes applied.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4532,4 +4534,63 @@ It's already live exactly as you wrote it. The People section on the page reads:
 ...followed by the consent note.
 
 It's all there. Ready to promote to production whenever you are.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Perhaps drop this section?
+
+The People Behind the Story
+Jack Dorsey — Attended the same Vipassana retreat as Gary. His company's stock price gap with public sentiment sparked everything.
+Jerry Luk — Convinced Gary to join Edmodo, which is why getdata.io became a side project.
+Jake Nelan — Discovered getdata.io after Product Hunt. Surfaced the value of the insights layer and offered AWS financing.
+Garis Pang — Was there outside McDonald's in Boon Lay, inadvertently sparking the "Do Nothing Society."
+Val Lapidus — Coined the term "DAO" for the organization in 2021.
+Rob Hutter — Pushed Gary from data aggregation to insights in San Clemente.
+Crystal Hutter — Met Gary alongside Rob in San Clemente.
+Vibhu Mittal — Was living the "do nothing" life when he had lunch with Gary in San Francisco, helping turn a jest into a thesis.
+Neil Maxx — Took the Do Nothing Society seed and started the channel.
+Tiffine Wang — Surfaced the truth/love dichotomy at Harbin Hot Springs.
+Hans-Martin Heierling — Brought regenerative supply chain thinking that found its home in cacao.
+Vlatko Gigov — Surfaced "Heal the world with love" at Davos 2024, crystallizing the DAO's vision.
+
+Each person named in this story has reviewed their portrayal. If you're named here and something doesn't feel right, reach out — this is a living document.
+
+
+### 🤖 Autopilot
+
+You want to drop the entire People section? Let me do that.
+
+
+### 🤖 Autopilot
+
+I have the full file. Let me remove the People section and consent note.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**✅ PR #276 merged** — "The People Behind the Story" section removed entirely.
+
+**What changed:**
+- Removed the entire People bios section (12 names with one-liners)
+- Removed the consent note
+- The post now ends cleanly on: *"The ecosystem generated everything else."*
+
+**The URL:**
+👉 **https://beta.truesight.me/blog/posts/the-desert-and-the-diamond.html**
+
+**RESUME HERE →** Check the URL to confirm it renders correctly, then decide on production promotion or further edits.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #276 on truesight_me_beta merged successfully (sha: 110c5c11de7c61e05221373aa059e63df568d185). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #276 on truesight_me_beta merged successfully (sha: 110c5c11de7c61e05221373aa059e63df568d185). Pull Request successfully merged
 
