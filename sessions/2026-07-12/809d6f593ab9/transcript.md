@@ -4337,6 +4337,7 @@ Let me check for concrete proof points — retailer reorders or QR scan data.
 ### 🤖 Autopilot
 
 Let me check for actual sales data — retailer reorders or QR scan counts.
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4482,4 +4483,53 @@ The page renders with all the latest changes:
 The URL is working: **https://beta.truesight.me/blog/posts/the-desert-and-the-diamond.html**
 
 Want me to promote it to production (`sync_beta_to_prod truesight_me_prod`)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8366] Perhaps do this section?
+
+The People Behind the Story
+Jack Dorsey — Attended the same Vipassana retreat as Gary. His company's stock price gap with public sentiment sparked everything.
+Jerry Luk — Convinced Gary to join Edmodo, which is why getdata.io became a side project.
+Jake Nelan — Discovered getdata.io after Product Hunt. Surfaced the value of the insights layer and offered AWS financing.
+Garis Pang — Was there outside McDonald's in Boon Lay, inadvertently sparking the "Do Nothing Society."
+Val Lapidus — Coined the term "DAO" for the organization in 2021.
+Rob Hutter — Pushed Gary from data aggregation to insights in San Clemente.
+Crystal Hutter — Met Gary alongside Rob in San Clemente.
+Vibhu Mittal — Was living the "do nothing" life when he had lunch with Gary in San Francisco, helping turn a jest into a thesis.
+Neil Maxx — Took the Do Nothing Society seed and started the channel.
+Tiffine Wang — Surfaced the truth/love dichotomy at Harbin Hot Springs.
+Hans-Martin Heierling — Brought regenerative supply chain thinking that found its home in cacao.
+Vlatko Gigov — Surfaced "Heal the world with love" at Davos 2024, crystallizing the DAO's vision.
+
+Each person named in this story has reviewed their portrayal. If you're named here and something doesn't feel right, reach out — this is a living document.
+
+
+### 🤖 Autopilot
+
+That's exactly what's already deployed. Let me verify the live page shows it correctly.
+
+
+### 🤖 Autopilot
+
+It's already live exactly as you wrote it. The People section on the page reads:
+
+**The People Behind the Story**
+- **Jack Dorsey** — Attended the same Vipassana retreat as Gary. His company's stock price gap with public sentiment sparked everything.
+- **Jerry Luk** — Convinced Gary to join Edmodo, which is why getdata.io became a side project.
+- **Jake Nelan** — Discovered getdata.io after Product Hunt. Surfaced the value of the insights layer and offered AWS financing.
+- **Garis Pang** — Was there outside McDonald's in Boon Lay, inadvertently sparking the "Do Nothing Society."
+- **Val Lapidus** — Coined the term "DAO" for the organization in 2021.
+- **Rob Hutter** — Pushed Gary from data aggregation to insights in San Clemente.
+- **Crystal Hutter** — Met Gary alongside Rob in San Clemente.
+- **Vibhu Mittal** — Was living the "do nothing" life when he had lunch with Gary in San Francisco, helping turn a jest into a thesis.
+- **Neil Maxx** — Took the Do Nothing Society seed and started the channel.
+- **Tiffine Wang** — Surfaced the truth/love dichotomy at Harbin Hot Springs.
+- **Hans-Martin Heierling** — Brought regenerative supply chain thinking that found its home in cacao.
+- **Vlatko Gigov** — Surfaced "Heal the world with love" at Davos 2024, crystallizing the DAO's vision.
+
+...followed by the consent note.
+
+It's all there. Ready to promote to production whenever you are.
 
