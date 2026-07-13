@@ -792,3 +792,140 @@ Also, who is Brenoo? Is he the Próspera registration agent or Brazilian counsel
 **✅ Done this turn — actions taken:**
 • `ssh run` → date -u '+%Y-%m-%d'
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8723] The counsel was the one that says remove the term draft. He has already reviewed
+
+
+### 🤖 Autopilot
+
+Got it — Brenoo is the counsel who has already reviewed it, and he just wants the "DRAFT" label removed so it's ready for signature. Let me produce the final version.
+
+I'll:
+1. Create a finalized copy of the markdown with bracketed fields filled where possible
+2. Create a modified build script with "FINAL v1.0" in the footer
+3. Generate the clean PDF
+
+For the registered agent — I don't have that in context. Let me check if there's any mention anywhere.
+
+
+### 🤖 Autopilot
+
+No registered agent info in context. I'll leave those bracketed fields as-is for you/Brenoo to fill in by hand, but remove the "DRAFT" label and counsel-review caveat. Let me build the final PDF.
+
+
+### 🤖 Autopilot
+
+I'll create a new build script for the final version and a finalized markdown source. Let me first get the full markdown source to make the edits.
+
+
+### 🤖 Autopilot
+
+Let me get the tail of the document to see the signature block and appendix.
+
+
+### 🤖 Autopilot
+
+Let me get the final portion of the document directly.
+
+
+### 🤖 Autopilot
+
+Let me get the tail of the document directly.
+
+
+### 🤖 Autopilot
+
+The file is too large to read in one shot. Let me use grep to find the exact lines I need.
+
+
+### 🤖 Autopilot
+
+The context files aren't on disk locally — they're fetched from GitHub. Let me use the GitHub API to get the tail of the file directly.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me also check the registered agent field in the document body.
+
+
+### 🤖 Autopilot
+
+Now I have everything I need. I'll create a **finalized version** of the build script and markdown, then generate the clean PDF. The approach:
+
+1. Create a new build script `build_prospera_operating_agreement_final_pdf.py` that:
+   - Uses "FINAL v1.0" instead of "DRAFT v0.1" in the footer
+   - Strips the "Draft prepared from... Review by counsel required" line from the output
+   - Leaves bracketed fields as-is for you/Brenoo to fill
+
+2. Generate the PDF
+
+Let me build this.
+
+
+### 🤖 Autopilot
+
+The build script is in the agentic_ai_context repo, not tokenomics. Let me check where the context repo is cloned.
+
+
+### 🤖 Autopilot
+
+The context repo isn't cloned locally. I'll work directly with the GitHub API. Let me create the final PDF by writing a build script that fetches the source, modifies it, and generates the PDF.
+
+
+### 🤖 Autopilot
+
+The `markdown` and `weasyprint` packages aren't installed on the autopilot box. Let me install them.
+
+
+### 🤖 Autopilot
+
+Good, packages installed. Now let me create the build script and generate the final PDF.
+
+
+### 🤖 Autopilot
+
+The PDF was generated. Let me verify it looks right by checking the page count and that the draft text was removed.
+
+
+### 🤖 Autopilot
+
+Let me verify the last page to confirm the draft text was removed.
+
+
+### 🤖 Autopilot
+
+The PDF is clean. Here's what I can confirm:
+
+**✅ FINAL PDF generated successfully**
+
+| Detail | Value |
+|---|---|
+| **File** | `/tmp/TrueSight_DAO_LLC_Operating_Agreement_FINAL_v1.0.pdf` |
+| **Pages** | 14 |
+| **Size** | 93 KB |
+| **Footer** | "FINAL v1.0" (no longer "DRAFT v0.1") |
+| **Draft caveat** | Removed (the "*Draft prepared from... Review by counsel required*" line is gone) |
+| **Content** | Identical to the reviewed version |
+
+**What's still bracketed (needs you/Brenoo to fill):**
+- `[REGISTERED AGENT NAME]` — §2.3
+- `[PRÓSPERA REGISTERED OFFICE ADDRESS]` — §2.3
+- `[SEATING DATE]` — Signature block, Schedule A, Schedule B
+- `[proposals PR # adopting this Agreement]` — Signature block
+- `Date: ________` — Signature block
+
+**How to send it to Brenoo:**
+
+I can either:
+1. **Upload it to GitHub** so you can download/share the link
+2. **Email it** to Brenoo from your admin account
+3. **Upload it to the DAO's store_interaction_attachments** for record-keeping
+
+What would you like me to do with it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → grep -n '\[REGISTERED AGENT\]\|\[PRÓSPERA\|\[SEATING DATE\]\|\[proposals PR\|Date: ________\|Draft prepared from\|Review by\|counsel require; find /home/ubuntu -name "PROSPERA_ENTITY_OPERATING_AGREEMENT.md" 2>/dev/null; find /home/ubuntu -name "agentic_ai_context" -type d 2>/dev/nu; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/PROSPERA_ENTITY_OPERATING_AGREEMENT.md" | tail -120; …(+8 more)
+
