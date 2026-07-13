@@ -862,16 +862,29 @@ Let me get the tail of the document directly.
 ### 🤖 Autopilot
 
 The file is too large to read in one shot. Let me use grep to find the exact lines I need.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context files aren't on disk locally — they're fetched from GitHub. Let me use the GitHub API to get the tail of the file directly.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check the registered agent field in the document body.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -989,4 +1002,20 @@ The bracketed fields still need filling before signing:
 - **Date** of execution
 
 Want me to also update the markdown source to remove the "DRAFT" label there too, so the source stays in sync?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8723] And then share the link with me
+
+
+### 🤖 Autopilot
+
+Here's the direct link:
+
+**🔗 https://github.com/TrueSightDAO/agentic_ai_context/blob/main/legal/TrueSight_DAO_LLC_Operating_Agreement_FINAL_v1.0.pdf**
+
+You can forward this to Brenoo. If you want a **direct download link** (not the GitHub preview page), use:
+
+**https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/legal/TrueSight_DAO_LLC_Operating_Agreement_FINAL_v1.0.pdf**
 
