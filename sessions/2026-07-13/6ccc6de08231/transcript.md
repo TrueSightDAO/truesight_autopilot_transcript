@@ -708,11 +708,13 @@ This is a screenshot of a WhatsApp conversation. Let me analyze what it shows:
 **Action needed:** I should produce a **finalized version** of the Operating Agreement — removing the "DRAFT" watermark/footer, the counsel-review caveat, and filling in the bracketed fields (registered agent, registered office, seating date, date of execution). Then generate a clean PDF for signature.
 
 Let me check what's already in the context repo about this document.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a build script. Let me read both the markdown source and the script to understand how the PDF was generated.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -726,11 +728,13 @@ To produce a **final, signable version** without the draft markings, I need to:
 3. Generate the clean PDF
 
 Let me also check what bracketed fields need filling and what the current seating date would be.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what the current date is and what the latest seating date would be, and also look at the markdown source more carefully for the bracketed fields.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -738,21 +742,25 @@ Now let me check what the current date is and what the latest seating date would
 Today is **2026-07-13**. The last Seating Date would have been the **Summer Solstice (≈ June 21, 2026)**. The next is the **Autumn Equinox (≈ September 22, 2026)**.
 
 Now let me read the full markdown source to identify all bracketed fields that need filling.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the rest of the document to find all bracketed fields.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the tail of the document to see the bracketed fields in the signature block and schedules.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is large. Let me search for the bracketed fields and the signature block specifically.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -808,31 +816,47 @@ I'll:
 3. Generate the clean PDF
 
 For the registered agent — I don't have that in context. Let me check if there's any mention anywhere.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No registered agent info in context. I'll leave those bracketed fields as-is for you/Brenoo to fill in by hand, but remove the "DRAFT" label and counsel-review caveat. Let me build the final PDF.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I'll create a new build script for the final version and a finalized markdown source. Let me first get the full markdown source to make the edits.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the tail of the document to see the signature block and appendix.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the final portion of the document directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the tail of the document directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -928,4 +952,41 @@ What would you like me to do with it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → grep -n '\[REGISTERED AGENT\]\|\[PRÓSPERA\|\[SEATING DATE\]\|\[proposals PR\|Date: ________\|Draft prepared from\|Review by\|counsel require; find /home/ubuntu -name "PROSPERA_ENTITY_OPERATING_AGREEMENT.md" 2>/dev/null; find /home/ubuntu -name "agentic_ai_context" -type d 2>/dev/nu; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/PROSPERA_ENTITY_OPERATING_AGREEMENT.md" | tail -120; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8723] Upload updated PDF to GitHub. I think there was a previous version there right??
+
+
+### 🤖 Autopilot
+
+Let me check what's already on GitHub.
+
+
+### 🤖 Autopilot
+
+No PDF file on GitHub yet — just the markdown source and the build script. Let me also check if there's a PDF in the `to_print` folder or elsewhere in tokenomics.
+
+
+### 🤖 Autopilot
+
+No previous PDF on GitHub. Let me upload the final version now.
+
+
+### 🤖 Autopilot
+
+Uploaded. Here's the link you can send to Brenoo:
+
+**🔗 https://github.com/TrueSightDAO/agentic_ai_context/blob/main/legal/TrueSight_DAO_LLC_Operating_Agreement_FINAL_v1.0.pdf**
+
+To confirm your question — there was **no previous PDF** on GitHub. Only the markdown source (`.md`) and the build script existed. This is the first PDF upload.
+
+The bracketed fields still need filling before signing:
+- **Registered agent name & office** — Brenoo will know these
+- **Seating date** — Summer Solstice 2026 (≈ June 21)
+- **PR #** for the adoption
+- **Date** of execution
+
+Want me to also update the markdown source to remove the "DRAFT" label there too, so the source stays in sync?
 
