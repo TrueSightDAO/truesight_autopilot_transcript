@@ -89,31 +89,42 @@ Let me look up the AGL6 QR codes specifically to get their statuses, and also ch
 ### 🤖 Autopilot
 
 Let me get the remaining AGL6 QR codes and also look for the cost side — the São Jorge cacao purchase.
+[10 tool result(s) compacted: lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code, lookup_qr_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look for the cost side — the São Jorge cacao purchase and the AGL6 cost basis.
+[3 tool result(s) compacted: search_context, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look for the cost basis. The AGL6 QR codes use the currency `Ceremonial Cacao Kraft Pouch - 20250219006 + Cacao Mass Bar CP327946643BR - AGL6`. Let me find the cost of the São Jorge cacao mass and the pouches.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the AGL6 currency line. Let me get the full data for the AGL6-specific currency and the offchain asset location for AGL6.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the AGL6-specific entries in the offchain asset location.
+[2 tool result(s) compacted: search_context, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look for the AGL6-specific entries in the offchain sheet. I need to search for "AGL6" in the full data.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -181,31 +192,62 @@ Want me to dig deeper into any specific aspect — like comparing it to AGL4's p
 ### 🤖 Autopilot
 
 Let me look at the AGL6 ledger page and the capital injection records.
+[3 tool result(s) compacted: web_extract, search_code, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Capital Injection sheet and the AGL6 sales records.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the Capital Injection tab name and also search for AGL6-specific rows in the QR Code Sales.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the correct tab name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Capital Injection sheet only has AGL8 and BEC entries — no AGL6 capital injection recorded. Now let me look at the AGL6 ledger itself to see the full picture.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the main TDG ledger, not the AGL6 ledger. Let me find the AGL6-specific ledger sheet.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -344,4 +386,65 @@ From the **QR Code Sales** sheet, AGL6 sales (ceremonial pouches + nibs):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s -o /tmp/agl6_contract.pdf "https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/20241125_AGL_6_Export_trade_financing_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8824] Cash proceeds is basically sales right and minutes capital injection which is basically cost of goods isn’t it??
+
+
+### 🤖 Autopilot
+
+You're right to question this — let me re-examine the ledger more carefully.
+
+Let me look at the AGL6 ledger again with fresh eyes.
+
+
+### 🤖 Autopilot
+
+You're absolutely right to call this out. Let me re-read it properly.
+
+**The AGL6 Balance Sheet structure:**
+
+| **Equity** (Capital In) | **Asset** (What we have) | **Resource Location** (Where it is) | **Liabilities** (Pre-sales) |
+|---|---|---|---|
+
+### Equity Side = Capital Injection (not COGS)
+
+| Financier | Amount |
+|-----------|--------|
+| Gary Teh | **$766.56** |
+| TrueSight DAO | **$15.10** |
+| **Total** | **$781.66** |
+
+This is **capital put in** — it's what funded the purchase of the cacao from São Jorge farm. It's not "cost of goods sold" in the traditional sense, but yes — it's the **money that went out the door to acquire the inventory**.
+
+### Asset Side = What We Have Now
+
+| Asset | Amount |
+|-------|--------|
+| 8oz Nibs Pouches | 9 units (physical inventory) |
+| Ceremonial Pouches | 9 units (physical inventory) |
+| **USD** | **$1,337.59** ← **This is cash proceeds from sales** |
+
+### So the flow is:
+
+1. **$781.66** went in → bought cacao from São Jorge
+2. That cacao was turned into nibs pouches + ceremonial pouches
+3. Some sold → generated **cash proceeds**
+4. That cash now sits as **$1,337.59 USD** on the asset side
+
+**You're right — the cash proceeds ($1,337.59) IS the sales revenue that's been collected.** And the capital injection ($781.66) is effectively the **cost basis** — the money spent to acquire and process the cacao.
+
+### Simplified P&L
+
+| | |
+|--|--|
+| **Cost (Capital In)** | **$781.66** |
+| **Revenue (Cash collected)** | **$1,337.59** |
+| **Gross Profit** | **$555.93** |
+| **Remaining Inventory** | 9 nibs + 9 ceremonial pouches (worth ~$450 at $25/ea) |
+| **ROI** | **71%** on cash collected, **~129%** if remaining inventory sells |
+
+So yes — AGL6 **is profitable**. The $1,337.59 in cash already exceeds the $781.66 capital injection by **$555.93**, and there's still 18 units of inventory left to sell. Not bad for a first-run batch from São Jorge.
 
