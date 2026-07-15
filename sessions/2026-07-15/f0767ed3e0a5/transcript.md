@@ -463,6 +463,11 @@ The CSS already has styles starting at `/* Ecosystem change log (Beer Hall) feed
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The CSS **already has** the ecosystem-updates styles in the beta repo! The styles are there — `.ecosystem-updates-section`, `.ecosystem-updates-list`, `.ecosystem-updates-link`, `.ecosystem-detail-meta`, `.ecosystem-detail-block`, `.ecosystem-detail-body`, `.ecosystem-updates-pagination`, etc.
 
 So the CSS is in the beta repo but NOT in the prod repo. The issue is that the prod repo is missing these styles. Let me verify.
@@ -586,4 +591,65 @@ Actually — the simplest fix: jsDelivr supports cache purging via `https://purg
 But the most robust approach: **drop jsDelivr as primary, use raw.githubusercontent.com directly**. The GFW concern is real but the fallback already handles it — and the current setup means *everyone* gets stale data by default, with only the fallback users getting fresh data.
 
 Want me to open a PR on the beta repo to swap the primary/fetch order — make `raw.githubusercontent.com` primary and jsDelivr the fallback? That way the page always shows fresh data, and jsDelivr is only used when raw.githubusercontent fails (e.g. China users).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8877] [Handoff context — this Telegram topic (thread 8877) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, go ahead and open a PR to swap the primary fetch order. I think that's you. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then open the PR.
+
+
+### 🤖 Autopilot
+
+No active handoff for this Beer Hall updates thread. Let me check SOPHIA_HANDOFFS.md too.
+
+
+### 🤖 Autopilot
+
+No handoff — this is a fresh task. Let me open the PR on the beta repo to swap the fetch order.
+
+
+### 🤖 Autopilot
+
+Now let me run the local tests before pushing.
+
+
+### 🤖 Autopilot
+
+The pre-existing test failures are in the `tokenomics` repo (not `truesight_autopilot`), so those are pre-existing and acceptable. Let me check the compile/ruff results specifically.
+
+
+### 🤖 Autopilot
+
+The errors are all in `tokenomics/` — pre-existing. The `truesight_autopilot` tests should be fine. Let me run just the autopilot tests to confirm.
+
+
+### 🤖 Autopilot
+
+The autopilot code isn't cloned locally. The change I'm making is to `truesight_me_beta` — a static JS file, no Python tests needed. Let me just open the PR directly.
+
+
+### 🤖 Autopilot
+
+PR is open! Here's the summary:
+
+**PR #282** — `fix/swap-fetch-order-raw-primary`
+
+**What changed:** Swapped the fetch order in `ecosystem-change-log-feed.js`:
+- **Primary:** `raw.githubusercontent.com` — serves the latest commit immediately, no CDN cache
+- **Fallback:** `jsDelivr CDN` — cached (~12h TTL), used when raw.githubusercontent is blocked (e.g. China)
+
+**Why:** The old order (jsDelivr primary) meant everyone got stale data by default, with only the fallback users getting fresh data. Now the page always shows the latest digest immediately, and jsDelivr is only used when raw.githubusercontent fails.
+
+**Next step:** Once you've reviewed it on the beta site, say "promote it" and I'll sync it to production.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1; echo "---"; python3 -m ruff check app scripts tests ; cd /home/ubuntu/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 && echo "COMPILE_OK" && python3 -m ruff check app scr; ls /home/ubuntu/
 
