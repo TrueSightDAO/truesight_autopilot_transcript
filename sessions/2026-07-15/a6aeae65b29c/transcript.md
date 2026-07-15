@@ -180,3 +180,32 @@ This is **Screenshot 2** — already OCR'd above. It's the message where you upd
 
 This is already captured in my full analysis above. Anything specific you want to drill into on this one?
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **5e112a460d8442b79303c56678e32f6a.jpg**]
+- Type: Image (OCR confidence: 84.0%, quality: good)
+
+Extracted text:
+```
+7494 ey) oil SCE GD Poe «| q& on Se as condi¢des estiverem favoraveis quando as barras chegarem a Sdo Francisco, produziremos as barras diretamente em Santos. Caso contrario, produziremos em Santos o material que aparece na foto e pediremos a Kirsten que o transforme em barras em Sao Francisco; além disso, precisaremos encontrar alguém na China para fazer essa transformac¢ao em barras. Oo wag
+```
+
+
+### 🤖 Autopilot
+
+This is **Screenshot 7** — already OCR'd and analyzed. It's the **production decision tree** you laid out to Orlantildes:
+
+**Two paths depending on bar condition upon arrival in SF:**
+
+| Condition | Action |
+|---|---|
+| ✅ **Favorable** (bars arrive intact) | Produce bars **directly at Santos** |
+| ❌ **Damaged** in transit | Santos produces the base material → **Kirsten converts to bars in SF** → **find a China-side partner** for final conversion |
+
+This is the critical fork that the Nota Fiscal delay is blocking — you can't send the chocolate molds from China until you know which path you're on.
+
+All captured in the full analysis above. Want me to turn this into a formal decision doc or a checklist for Fatima?
+
