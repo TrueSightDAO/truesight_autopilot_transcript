@@ -74,6 +74,7 @@ Let me read the plan file and the SOPHIA_HANDOFFS.md to get the full picture.
 ### 🤖 Autopilot
 
 The plan file isn't in the context mirror yet. Let me pull the latest and check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -210,4 +211,29 @@ As for time tracking — Claude said he spent **2m 48s** baking that CLAUDE.md u
 The PR is opened — it's a one-line append to `CONTEXT_UPDATES.md` flagging the staleness. It needs a human to merge it.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8764] merge it.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. ✅
+
+**What I did this turn:**
+- Opened PR [#669](https://github.com/TrueSightDAO/agentic_ai_context/pull/669) — appended a note to `CONTEXT_UPDATES.md` flagging that `OPERATING_INSTRUCTIONS.md §11` (handoff protocol) still references `HANDOFF_MANIFEST.md` and `SOPHIA_HANDOFFS.md` as the primary mechanism, but the actual working flow is the ping_sophia / Telegram-topic / `plans/` flow.
+- Merged it on your command.
+
+**RESUME HERE →** If you want the actual `OPERATING_INSTRUCTIONS.md` §11 text updated (not just flagged), say the word and I'll open a second PR for that. Otherwise, the large_spikes card fix plan is still sitting in `plans/` waiting for a go-signal whenever you're ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #669 on agentic_ai_context merged successfully (sha: bae6f0d6cf4b87a0f0c1c3b0253b41c4a68b78c5). Pull Request successfully merged
 
