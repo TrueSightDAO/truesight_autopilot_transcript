@@ -352,27 +352,42 @@ Let me search for `updateTotalDAOAssetOnWix` in this file — that's the functio
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see it clearly. The `updateTotalDAOAssetOnWix()` function writes `USD_TREASURY_BALANCE` to the Performance Statistics sheet. Let me find it in the deployed file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for `updateTotalDAOAssetOnWix` in the file.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OK, I have the full file. Let me search for `updateTotalDAOAssetOnWix` in it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for the function directly in the file content.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for `updateTotalDAOAssetOnWix` directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -468,4 +483,89 @@ Both pages now agree. Here's the summary:
 The `action=triggerSync` endpoint (which calls `syncAllPerformanceStatistics()` fully) consistently times out via HTTP because it iterates over all AGL ledgers and exceeds the GAS web app's 30s limit. That function is designed to run as a **time-based trigger** (daily cron) inside the GAS editor, not via HTTP. The individual stat updates that matter (treasury balance, AUM, sales) all refreshed successfully through the lighter endpoints.
 
 If you want the full `syncAllPerformanceStatistics()` to run, you'd need to open the [GAS editor](https://script.google.com/home/projects/1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn/edit) and run it manually from there — or I can add a lightweight `?type=sync_treasury` parameter to `doGet` that only refreshes the treasury stat (skipping the AGL ledger crawl) so it stays under the 30s limit. Want me to open a PR for that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8856] refresh again. I noticed there was an error in the formulat on https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=2083442561#gid=2083442561
+
+"off chain asset balance"
+
+I just fixed it
+
+
+### 🤖 Autopilot
+
+Let me re-trigger the refresh now that you've fixed the formula.
+
+
+### 🤖 Autopilot
+
+Now let me also refresh the Performance Statistics sheet (landing page data source) so both pages match.
+
+
+### 🤖 Autopilot
+
+Now let me verify the landing page stat also updated.
+
+
+### 🤖 Autopilot
+
+I see the issue — the **Performance Statistics sheet** (`USD_TREASURY_BALANCE`) still shows **$11,925.70** (old value), while the live treasury breakdown now shows **$17,270.40**. The `?type=recalculate_aum` endpoint only refreshes the **AUM** stat, not the `USD_TREASURY_BALANCE` stat. The `syncAllPerformanceStatistics()` function is the one that updates `USD_TREASURY_BALANCE` in the sheet, but it times out via HTTP.
+
+Let me check if the `?type=treasury_breakdown&refresh=1` endpoint also writes to the Performance Statistics sheet, or just to its own cache.
+
+Looking at the code I read earlier — `?type=treasury_breakdown` only refreshes the **PropertiesService cache** (for the treasury page), it does **not** write to the Performance Statistics sheet. The sheet is only written by `syncAllPerformanceStatistics()` or `updatePerformanceStatistic()`.
+
+The `action=triggerSync` endpoint calls `syncAllPerformanceStatistics()` but times out. Let me try a different approach — I can call `updatePerformanceStatistic` directly for just the treasury balance stat, which is a single write and should be fast. But that function isn't exposed via `doGet`.
+
+Let me check if there's a lighter endpoint I missed.
+
+
+### 🤖 Autopilot
+
+I see — the `?type=treasury_breakdown` computes live but doesn't write to the Performance Statistics sheet. The `USD_TREASURY_BALANCE` in the sheet is only updated by `syncAllPerformanceStatistics()` which times out.
+
+The fix you made to the "off chain asset balance" sheet formula is now reflected in the live treasury breakdown (**$17,270.40**), but the **Performance Statistics sheet** still has the old cached value (**$11,925.70**). The `action=triggerSync` endpoint keeps timing out because it iterates all AGL ledgers.
+
+Let me try one more time — sometimes GAS web apps succeed on retry:
+
+
+### 🤖 Autopilot
+
+Still timing out. The `syncAllPerformanceStatistics()` function calls `getInvestmentHoldingsInAGL()` which iterates all AGL ledgers — that's the bottleneck. 
+
+The quickest fix: I'll add a lightweight `?type=sync_treasury` parameter to `doGet` that only updates `USD_TREASURY_BALANCE` in the Performance Statistics sheet (skipping the AGL crawl since the value is already computed). Let me open a PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Diagnosis:** The landing page (`index.html`) and `/treasury/` page showed different USD Treasury Balance figures because they read from **two different data sources**:
+- **Landing page** → reads `USD_TREASURY_BALANCE` from the **Performance Statistics sheet** (cached by GAS cron)
+- **Treasury page** → computes **live** via `?type=treasury_breakdown`
+
+The sheet value was stale because `syncAllPerformanceStatistics()` (the function that writes to it) times out via HTTP (exceeds GAS 30s limit).
+
+**What I did:**
+1. ✅ Refreshed the live treasury breakdown cache → `?type=treasury_breakdown&refresh=1`
+2. ✅ Refreshed the AUM stat in Performance Statistics → `?type=recalculate_aum`
+3. ✅ You fixed the formula in the "off chain asset balance" sheet
+4. ✅ Re-refreshed both endpoints after your fix — live breakdown now shows **$17,270.40**
+5. ⚠️ The Performance Statistics sheet still shows the old value ($11,925.70) because `action=triggerSync` keeps timing out
+6. ✅ **Opened PR #381** on `tokenomics` — adds a lightweight `?type=sync_treasury` endpoint to `doGet` that only updates `USD_TREASURY_BALANCE` in the sheet (skipping the AGL crawl), staying under the 30s limit
+
+**PR:** https://github.com/TrueSightDAO/tokenomics/pull/381
+
+**RESUME HERE** → Review and merge PR #381, then deploy the GAS project (`gas_deploy_project` with `push=true`), then hit `?type=sync_treasury` to push the correct $17,270.40 into the Performance Statistics sheet so the landing page matches the treasury page.
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → https://github.com/TrueSightDAO/tokenomics/pull/381
 
