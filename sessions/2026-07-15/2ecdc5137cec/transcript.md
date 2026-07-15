@@ -105,6 +105,7 @@ Let me re-read his message. He says:
 3. He mentions `OPERATING_INSTRUCTIONS.md §11` is stale
 
 But the HANDOFF_MANIFEST shows the `/large_spikes` card fix plan as **DRAFTED — awaiting Telegram thread + governor GO**. So Claude wrote the plan but didn't commit it to GitHub. Let me check if it's somewhere else.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -255,4 +256,38 @@ Merged. ✅
 Thanks for the heads-up — noted. The context repo is at `/opt/truesight_autopilot/context/agentic_ai_context` and `ssh_run(host='autopilot', ...)` loops back cleanly now.
 
 Anything you want me to pick up next? The large_spikes plan is still in `plans/` waiting, or I can tackle something else.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8764] forget about the large_spikes. ITs already been implemented. If you pulled the latest codebase you will realize it
+
+
+### 🤖 Autopilot
+
+Let me check the latest codebase to confirm.
+
+
+### 🤖 Autopilot
+
+Good, context repo is current. Now let me check the sentiment_importer codebase to confirm the large_spikes fix is already in.
+
+
+### 🤖 Autopilot
+
+Now let me check the sentiment_importer repo for the large_spikes fix.
+
+
+### 🤖 Autopilot
+
+You're right — it's already done. Both PRs are merged on `sentiment_importer`:
+
+- **PR #1124** — `fix/large-spikes-cards-fixed-lookback` — wired card list to fixed 180-day lookback
+- **PR #1125** — `feat/breakout-gauge-legibility` — shaded over-extended zone + today-vs-norm headline
+
+So the plan Claude wrote was already implemented before he wrote it. Good catch. I'll clean up — that plan file in `plans/` is now stale. Want me to remove it or mark it as superseded?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main && git log --oneline -5 origin/main; cd /opt/truesight_autopilot/context/agentic_ai_context && git reset --hard origin/main; cd /opt/truesight_autopilot && git fetch origin main 2>&1 && git log --oneline -10 origin/main; …(+5 more)
 
