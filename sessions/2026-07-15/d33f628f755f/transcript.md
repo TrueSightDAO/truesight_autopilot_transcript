@@ -200,46 +200,80 @@ If the landing page stat is **higher**, it may be pulling a cached `USD_TREASURY
 ### 🤖 Autopilot
 
 Let me read the GAS file to find the `doGet` function and understand what the landing page fetches vs the treasury page.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need to find the `updateUSD_TREASURY_BALANCE` function to see what value gets written to the Performance Statistics sheet (which the landing page reads).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me find the `updateUSD_TREASURY_BALANCE` function specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me also check what the landing page actually fetches — it likely fetches the default `doGet` (no `?type=`) which returns the Performance Statistics sheet values.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check what the landing page's JS actually fetches. Let me look at the landing page's inline script for the treasury stat.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the landing page for the treasury stat fetch code.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the landing page has a lot of inline JS but I need to find the treasury stat fetch specifically. Let me search for it.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the complete picture. Let me also check the treasury page's JS to confirm it uses `?type=treasury_breakdown`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full diagnosis. Let me check the treasury page's JS to confirm it fetches `?type=treasury_breakdown`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -279,26 +313,41 @@ Looking at the `doGet` code, there's no `?type=refresh_treasury` parameter — b
 However, the `?type=treasury_breakdown` endpoint **does** accept `&refresh=1` to force a live recompute and cache overwrite. That refreshes the **cache** (PropertiesService) that the treasury page reads, but it doesn't write to the **Performance Statistics sheet** that the landing page reads.
 
 Let me check if `?type=recalculate_aum` also triggers the treasury stat update.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look for the `updateUSD_TREASURY_BALANCE` function specifically.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the older script (script ID `1rLl94j...`). The deployed one is `1ZQjgSZ...`. Let me check the deployed one for the `updateUSD_TREASURY_BALANCE` function.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search this file for the `updateUSD_TREASURY_BALANCE` function.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for `updateTotalDAOAssetOnWix` in this file — that's the function that writes the treasury balance to the Performance Statistics sheet.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -382,4 +431,41 @@ The `/treasury/` page uses `?type=treasury_breakdown` which computes the value *
 - AGL equity: **$1,176.42** (AGL14: $456.49, AGL8: $268.06, AGL7: $242.86, AGL10: $193.91, AGL6: $15.10, AGL2: ~$0)
 
 The `syncAllPerformanceStatistics()` endpoint timed out when I tried to call it directly (GAS 30s limit), but the `?type=recalculate_aum` endpoint succeeded and the cron's side-effect cache refresh brought the sheet in sync. If you want a full `syncAllPerformanceStatistics()` run, you'd need to trigger it from the GAS editor directly (it's a time-triggered function that runs daily).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8856] do so via doGet
+
+
+### 🤖 Autopilot
+
+The `doGet` already has `action=triggerSync` which calls `syncAllPerformanceStatistics()`, but it timed out when I tried it (GAS web apps have a 30s execution limit and this function reads all ledgers). Let me try again with a longer timeout — it may have been a transient issue.
+
+
+### 🤖 Autopilot
+
+Consistently timing out. The GAS web app has a hard 30s execution cap, and `syncAllPerformanceStatistics()` exceeds it. Let me check what `syncAllPerformanceStatistics` does — it likely calls multiple sub-functions. I can trigger them individually via `doGet` if they're exposed.
+
+
+### 🤖 Autopilot
+
+Now I see the issue clearly. `syncAllPerformanceStatistics()` calls `getInvestmentHoldingsInAGL()` which iterates over **all AGL ledgers** (reading each Balance sheet) — that's the slow part. The `?type=recalculate_aum` endpoint already refreshed the AUM and the `?type=treasury_breakdown&refresh=1` refreshed the treasury cache. The Performance Statistics sheet now shows **$11,925.70** for `USD_TREASURY_BALANCE` — which matches the live treasury breakdown.
+
+Let me verify the landing page now shows the correct value by checking the default `doGet` response again:
+
+
+### 🤖 Autopilot
+
+Both pages now agree. Here's the summary:
+
+---
+
+**Done.** The `?type=recalculate_aum` endpoint triggered `calculateAUM + updatePerformanceStatistic`, which refreshed the Performance Statistics sheet. The `?type=treasury_breakdown&refresh=1` endpoint force-refreshed the treasury breakdown cache.
+
+**Both pages now show the same value: $11,925.70 USD**
+
+The `action=triggerSync` endpoint (which calls `syncAllPerformanceStatistics()` fully) consistently times out via HTTP because it iterates over all AGL ledgers and exceeds the GAS web app's 30s limit. That function is designed to run as a **time-based trigger** (daily cron) inside the GAS editor, not via HTTP. The individual stat updates that matter (treasury balance, AUM, sales) all refreshed successfully through the lighter endpoints.
+
+If you want the full `syncAllPerformanceStatistics()` to run, you'd need to open the [GAS editor](https://script.google.com/home/projects/1ZQjgSZvAXL2PB3e3YW289xY7Ork4S5wV4uKTXJyw83xQT4R0lh_hwNWn/edit) and run it manually from there — or I can add a lightweight `?type=sync_treasury` parameter to `doGet` that only refreshes the treasury stat (skipping the AGL ledger crawl) so it stays under the 30s limit. Want me to open a PR for that?
 
