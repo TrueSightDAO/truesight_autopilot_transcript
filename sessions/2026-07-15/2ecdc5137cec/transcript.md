@@ -80,11 +80,18 @@ The plan file isn't in the context mirror yet. Let me pull the latest and check.
 ### 🤖 Autopilot
 
 SSH loopback issue. Let me do it directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The host key is still cached. Let me try a different approach — read the plan directly from GitHub.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -236,4 +243,16 @@ Merged. ✅
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #669 on agentic_ai_context merged successfully (sha: bae6f0d6cf4b87a0f0c1c3b0253b41c4a68b78c5). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8764] loopback ssh_run is unblocked; use /opt/truesight_autopilot/context/agentic_ai_context for the context repo.
+
+
+### 🤖 Autopilot
+
+Thanks for the heads-up — noted. The context repo is at `/opt/truesight_autopilot/context/agentic_ai_context` and `ssh_run(host='autopilot', ...)` loops back cleanly now.
+
+Anything you want me to pick up next? The large_spikes plan is still in `plans/` waiting, or I can tackle something else.
 
