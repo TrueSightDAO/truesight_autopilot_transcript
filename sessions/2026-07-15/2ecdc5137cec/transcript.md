@@ -137,3 +137,62 @@ Also — Claude flagged that `OPERATING_INSTRUCTIONS.md §11` (handoff protocol)
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main && git reset --hard origin/main 2>&1; ssh-keygen -f "/home/ubuntu/.ssh/known_hosts" -R "127.0.0.1" 2>&1 && cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch ori
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8764] uh probably send the main bother perhaps check the latest code base i think plot really fixed that what's outstanding is the uh the one regarding uh let's see not the large spikes but the other one regarding the context updates yeah i think you fix the context updates dot at least. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — you want me to focus on the **CONTEXT_UPDATES.md** fix, not the large_spikes plan. Let me check what Claude flagged and what the current state is.
+
+
+### 🤖 Autopilot
+
+Let me find the specific section Claude flagged as stale — §11 about handoff protocol.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. There are **two §11 sections** in OPERATING_INSTRUCTIONS.md — the first is "dao-client version audit rule" and the second is "Handoff protocol for all LLMs." The handoff protocol section (the second §11, and also §9) still references `HANDOFF_MANIFEST.md` and `SOPHIA_HANDOFFS.md` as the live mechanism, but Claude's CLAUDE.md update established the actual working flow is the **ping_sophia / Telegram-topic flow** with the plan committed to `plans/`.
+
+Let me also check what Claude's CLAUDE.md actually says to make sure I understand the correct mechanism.
+
+
+### 🤖 Autopilot
+
+That's on Claude's local box, not in a repo. Let me check what the actual current handoff flow should be by looking at the plan that was committed.
+
+OK, here's what I understand needs to happen:
+
+**The fix:** `OPERATING_INSTRUCTIONS.md` has a stale §11 (handoff protocol) that still points at `HANDOFF_MANIFEST.md` and `SOPHIA_HANDOFFS.md` as the authoritative mechanism. The actual working flow is:
+1. Local LLM writes a plan → commits to `agentic_ai_context/plans/` on `main`
+2. Pings Sophia via `truesight-dao-ping-sophia` → she opens a Telegram topic
+3. She reads the plan, executes one PR per turn, stops at gates
+
+But per the rules, I can't edit `OPERATING_INSTRUCTIONS.md` directly — it's a canonical file. The sanctioned way is to append a note to `CONTEXT_UPDATES.md` flagging the staleness.
+
+Let me do that now.
+
+
+### 🤖 Autopilot
+
+Good. Now let me append the note about the stale handoff protocol section, and also check if there's anything else Claude wanted flagged.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I did:
+
+**PR opened:** [#669 — CONTEXT_UPDATES: flag stale handoff protocol in OPERATING_INSTRUCTIONS §11](https://github.com/TrueSightDAO/agentic_ai_context/pull/669)
+
+The note flags that `OPERATING_INSTRUCTIONS.md §11` still references `HANDOFF_MANIFEST.md` and `SOPHIA_HANDOFFS.md` as the primary handoff mechanism, but the actual working flow is:
+1. Local LLM writes a plan → commits to `agentic_ai_context/plans/` on `main`
+2. Pings Sophia via `truesight-dao-ping-sophia`
+3. Sophia opens a Telegram topic, reads the plan, executes one PR per turn, stops at gates
+
+The manifest/handoffs files are still useful as a registry but aren't the primary mechanism anymore. I didn't edit `OPERATING_INSTRUCTIONS.md` directly since it's a canonical file — the CONTEXT_UPDATES note is the sanctioned way to flag it. If you want me to actually update §11 itself, just say the word and I'll open a second PR for that.
+
+As for time tracking — Claude said he spent **2m 48s** baking that CLAUDE.md update. I spent maybe 5 minutes reading, analyzing, and opening this PR. Want me to log a contribution for both?
+
