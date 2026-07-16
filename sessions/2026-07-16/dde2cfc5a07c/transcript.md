@@ -387,21 +387,25 @@ Let me find the Currencies section by searching for it in the full SCHEMA.md con
 ### 🤖 Autopilot
 
 Let me search for where the Currencies section is in the SCHEMA.md — it should be in the main ledger section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the Currencies sheet is listed in the table of contents but the actual section is missing from the SCHEMA.md body. Let me find where it should be inserted — right before the Contributor Staking section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact location before "Contributor Staking" where the Currencies section should go.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the Currencies section is missing — right before "Contributor Staking" there's just a reference to it in the "Used by" section of the States sheet. The actual Currencies section needs to be added. Let me also check what's right before that gap.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -411,26 +415,31 @@ Now I see — the Currencies section is actually missing from SCHEMA.md. The tex
 Let me now make both changes: add the HTS column to the sheet and update SCHEMA.md.
 
 First, let me add column T "HTS Code" to the Currencies sheet. I'll use the Google Sheets API to insert a new column header.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Column T is empty. Let me write the "HTS Code" header into T1 and then update SCHEMA.md.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — T1 is empty. Now I need to write "HTS Code" into T1. Let me use the Google Sheets API to update that cell.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — I need to confirm the write. I'll add the "HTS Code" header to column T1 of the Currencies sheet, and then update SCHEMA.md.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — Google Sheets API isn't available through boto3. Let me use the Google Sheets API directly via HTTP fetch.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,6 +447,7 @@ Right — Google Sheets API isn't available through boto3. Let me use the Google
 I don't have direct OAuth access to write to the sheet. Let me use the GAS web app approach instead. Let me check if there's a GAS script that can write to the Currencies sheet.
 
 Actually, the simplest approach is to update SCHEMA.md via a PR documenting the new column, and then you can manually add the "HTS Code" header to column T1 in the Currencies sheet. Let me do the SCHEMA.md update.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -542,4 +552,55 @@ It now includes:
 - A note directing partners to the **USITC Tariff Database** (hts.usitc.gov) to look up the correct codes
 
 **One thing still needed:** You'll need to manually type **"HTS Code"** into cell **Currencies!T1** in the main ledger spreadsheet — I couldn't write directly to the sheet from here. Want me to merge the SCHEMA.md PR as well?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] don't have you have a HTS code and HTS code for ceremonial cacao or cacao mess or cacao paste or whatever it is the existing look for [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're asking about the HTS codes for the other products on the Currencies sheet — ceremonial cacao, cacao mass, cacao paste, etc. Let me look at all the rows to see what products we have and what HS codes are already filled in.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me also check if there's a "Ceremonial Cacao" or "Cacao Mass" row with an HS code.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture. Let me search for the specific product types you mentioned — ceremonial cacao, cacao mass, cacao paste.
+
+
+### 🤖 Autopilot
+
+Now I can see the full picture clearly. Here's what exists on the Currencies sheet for HS codes:
+
+**Products with HS codes already filled in (Column S):**
+
+| Product | HS Code |
+|---------|---------|
+| Cacao Nibs (8 oz pouch) | **1801** |
+| 81% Dark Chocolate Bar — Oscar | **1806.32** |
+| 81% Dark Chocolate Bar — Santa Anna | **1806.32** |
+| Cacao Almonds Vivi → Ceremonial Cacao Pouch | **1803.1** |
+| Cacao Mass (KG) | **1803.1** |
+| Cacao Mass Bar (40g, 500g, loose grams) — all variants | **1803.1** |
+| Cacao Husk (KG) | *(none)* |
+
+So the HS codes we already have are:
+- **1801** — Cacao beans/nibs
+- **1803.1** — Cacao paste / cacao mass (this is the one you're asking about!)
+- **1806.32** — Chocolate bars (filled, not empty)
+
+**Ceremonial Cacao** is made from cacao mass, so it would also fall under **1803.1** — same as the cacao mass bars.
+
+The corresponding **HTS codes (US)** would be:
+- **1801.00.0000** — Cacao beans, whole or broken, raw or roasted
+- **1803.10.0000** — Cacao paste (cacao mass / ceremonial cacao), not defatted
+- **1806.32.0000** — Chocolate bars, blocks, slabs weighing ≤ 2 kg
+
+So actually, most of the HS codes are already filled in! The HTS column just needs the 10-digit US versions. Want me to update the PDF with this complete mapping?
 
