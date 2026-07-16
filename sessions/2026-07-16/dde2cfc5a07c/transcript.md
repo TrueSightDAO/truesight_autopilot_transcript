@@ -833,11 +833,23 @@ Let me search for the "Contributors contact information" sheet in the SCHEMA.md 
 ### 🤖 Autopilot
 
 Let me check the actual sheet names in the main ledger to find the Contributors contact information sheet.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the all_sheets_structure.json to find the exact sheet name.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -939,4 +951,14 @@ Now I'm properly on the ledger for future contributions too. Want me to also log
 **✅ Done this turn — actions taken:**
 • `register identity`
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] Well, if you haven't ready, do log the contribution under the name. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Already done! I registered my identity as **Sophia Truesight** and submitted the contribution for **40 minutes** of work on the HTS code documentation — both went through successfully.
 
