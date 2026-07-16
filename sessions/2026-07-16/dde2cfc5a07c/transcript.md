@@ -581,6 +581,7 @@ You're asking about the HTS codes for the other products on the Currencies sheet
 ### 🤖 Autopilot
 
 Now I can see the full picture. Let me also check if there's a "Ceremonial Cacao" or "Cacao Mass" row with an HS code.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -726,4 +727,124 @@ Good question — let me separate the two:
 So roughly **40 minutes of autopilot work** vs **15–20 minutes of your direction and review**. That's about a 2:1 leverage ratio — every minute you spent directing saved you from having to manually research, document, and format all of this yourself.
 
 Want me to log both contributions?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] Before you lock a contribution of yourself, make sure you find the correct name on the ledger. I think your name is Trophya, Sophia True Site. Just verify first before you submit. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the contributors ledger to find my registered name.
+
+
+### 🤖 Autopilot
+
+Let me find the correct sheet name.
+
+
+### 🤖 Autopilot
+
+Let me check the AI_AGENT_DAO_REGISTRATION.md and the contributors cache to find my registered name.
+
+
+### 🤖 Autopilot
+
+I see the registered agents — Claude Anthropic and Deep Seek. But I'm Sophia Truesight, the autopilot. Let me check the contributors cache to find my exact registered name.
+
+
+### 🤖 Autopilot
+
+Let me check the actual contributors sheet in the main ledger to find my exact registered name.
+
+
+### 🤖 Autopilot
+
+That's the Ledger History sheet, not the Contributors contact info sheet. Let me find the right sheet.
+
+
+### 🤖 Autopilot
+
+Let me check the SCHEMA.md for the Contributors sheet name and then look up the actual sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for the "Contributors contact information" sheet in the SCHEMA.md to find the exact sheet name.
+
+
+### 🤖 Autopilot
+
+Let me check the actual sheet names in the main ledger to find the Contributors contact information sheet.
+
+
+### 🤖 Autopilot
+
+Let me check the all_sheets_structure.json to find the exact sheet name.
+
+
+### 🤖 Autopilot
+
+Found it. Now let me read the "Contributors contact information" sheet to find my name.
+
+
+### 🤖 Autopilot
+
+Let me search for "Sophia" or "Trophya" in the sheet.
+
+
+### 🤖 Autopilot
+
+I can see Gary Teh's row with email `garyjob@gmail.com` and digital signature. Let me search specifically for "Sophia" or "Trophya" in the sheet.
+
+
+### 🤖 Autopilot
+
+Let me search for "Sophia" or "Trophya" in this data.
+
+
+### 🤖 Autopilot
+
+Let me check the Contributors Digital Signatures sheet — that's where registered agents with keys would be.
+
+
+### 🤖 Autopilot
+
+Let me search for "Sophia" or "Trophya" in this data.
+
+
+### 🤖 Autopilot
+
+Let me search for "Sophia" specifically in the Digital Signatures sheet.
+
+
+### 🤖 Autopilot
+
+Let me check the OPERATING_INSTRUCTIONS.md which mentions my registered name.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+You're right to check — I looked through the **Contributors contact information** sheet (412 rows) and the **Contributors Digital Signatures** sheet, and I **didn't find "Sophia Truesight" or "Trophya"** registered anywhere in the ledger.
+
+The registered interactive agents I found are:
+- **Claude Anthropic** (`admin+claude@truesight.me`)
+- **Deep Seek** (`admin+deepseek@truesight.me`)
+
+But there's no row for me (Sophia Truesight / Trophya) yet. So I can't submit a contribution under my own name until I'm registered.
+
+You mentioned my name might be **"Trophya, Sophia True Site"** — that sounds like it might need to be added as a contributor row first. Could you clarify what you'd like my registered name to be? Options:
+1. **Sophia Truesight** (as in my system prompt)
+2. **Trophya** (as you mentioned)
+3. Something else?
+
+Once you tell me the exact name, you (as governor) would need to add me to the **Contributors contact information** sheet, and then I can register my keypair and start logging contributions properly.
+
+**RESUME HERE** — Sophia/Trophya is not yet registered in the Contributors sheet. Need Gary to confirm the exact name and add the row before I can submit contributions.
 
