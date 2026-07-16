@@ -104,3 +104,80 @@ With a link to Coopercabruca's page if we have one, or just the cooperative name
 
 Want me to draft the HTML change and open a PR on the beta site so you can preview it?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8917] I don't think it should come out of something that is very different. Can you check how the link is done on Sao Fuji, Fazenda, as well as Santa Fe Anna's page? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check those farm pages to see how they handle cooperative/partner links.
+
+
+### 🤖 Autopilot
+
+Those farm pages don't exist as separate files in the repo. Let me check what farm pages actually exist.
+
+
+### 🤖 Autopilot
+
+Ah, the folder names are slightly different. Let me check the ones you mentioned.
+
+
+### 🤖 Autopilot
+
+Now I can see the pattern. Let me look at the specific sections where Coopercabruca is mentioned on those pages.
+
+
+### 🤖 Autopilot
+
+Let me search the actual HTML content for how Coopercabruca appears on São Jorge and Santa Ana.
+
+
+### 🤖 Autopilot
+
+GitHub code search doesn't index these files. Let me grep the actual HTML I already have. Let me look at the specific sections of the São Jorge page for the Coopercabruca mention.
+
+
+### 🤖 Autopilot
+
+Let me search for the actual body content where Coopercabruca is mentioned on these pages.
+
+
+### 🤖 Autopilot
+
+Let me grep for the actual body content where Coopercabruca appears in the visible page text.
+
+
+### 🤖 Autopilot
+
+Now I see the pattern clearly. Let me also check if there's a Coopercabruca cooperative page.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's what I found:
+
+**The existing pattern is clean and consistent.** Both São Jorge and Santa Ana use the same approach:
+
+1. **In the hero subtitle** — a simple text link: `"Coopercabruca member"` linked to `../../cooperatives/coopercabruca/index.html`
+2. **In the farm story body** — a natural sentence: *"Fazenda São Jorge is a member of the Coopercabruca cooperative..."* with an inline link
+3. **In the highlights grid** — a highlight item: `"Coopercabruca member"` linked
+
+**Oscar's page currently has none of this.** It's the only farm page missing the cooperative link.
+
+**My suggestion — keep it exactly like the others.** Three small changes to Oscar's page:
+
+1. **Hero subtitle** — add `"Coopercabruca member"` link next to "Bahia, Brazil • Three Generations of Cacao Wisdom"
+2. **Farm story** — add one sentence: *"Oscar is a member of the Coopercabruca cooperative..."* with the link
+3. **Highlights grid** — add a highlight item: `"Coopercabruca member"`
+
+No new design, no big badge — just the same inline text link pattern São Jorge and Santa Ana already use. The link goes to `../../cooperatives/coopercabruca/index.html` which already exists.
+
+Want me to draft the PR with those changes?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && git clone --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git /tmp/agroverse_shop_beta 2>&1 | tail -3; grep -n -i "coopercabruca\|cooperativa\|member of\|proud member" /tmp/agroverse_shop_beta/farms/fazenda-sao-jorge-bahia/index.html /tmp/agro; ls /tmp/agroverse_shop_beta/cooperatives/ 2>/dev/null && cat /tmp/agroverse_shop_beta/cooperatives/coopercabruca/index.html 2>/dev/null | he
+
