@@ -186,6 +186,11 @@ Let me search for the Currencies section specifically.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find the Currencies sheet section.
 
 
@@ -296,4 +301,128 @@ So the fix would be:
 - **Add Column T: "HTS Code"** — the US-specific tariff code
 
 Want me to add that column to the Currencies sheet and update SCHEMA.md to document it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] [Handoff context — this Telegram topic (thread 8971) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yep, please go ahead and add it and then I know there are some rows that already have the hs code in there and we add the hts code [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first check the handoff manifest and then look at the existing data to see which rows already have HS codes filled in.
+
+
+### 🤖 Autopilot
+
+Good — this isn't a handoff execution, it's a direct request. Let me look at the existing data to see which rows have HS codes filled in.
+
+From the data I can see, the rows with HS codes in column S are:
+
+- Row 18: `81% Dark Chocolate Bar 50grams - Oscar...` → **HS Code: 1806.32**
+- Row 19: `81% Dark Chocolate Bar 50grams - Santa Anna...` → **HS Code: 1806.32**
+- Row 10: `8 Ounce Package Kraft Pouch - Cacao Nibs (KG)...` → **HS Code: 1801**
+
+So the HS codes that exist are **1801** (cacao nibs) and **1806.32** (chocolate bars). The HTS US codes would be the 10-digit versions of these — e.g. **1806.32.0000** for chocolate bars and **1801.00.0000** for cacao beans/nibs.
+
+Now let me add the HTS column to the sheet and update SCHEMA.md.
+
+
+### 🤖 Autopilot
+
+Now I need to find where in SCHEMA.md the Currencies section should be, and add the HTS column. Let me find the right spot.
+
+
+### 🤖 Autopilot
+
+Let me find the exact location of the Currencies section in SCHEMA.md.
+
+
+### 🤖 Autopilot
+
+Let me find the Currencies section by searching for it in the full SCHEMA.md content.
+
+
+### 🤖 Autopilot
+
+Let me search for where the Currencies section is in the SCHEMA.md — it should be in the main ledger section.
+
+
+### 🤖 Autopilot
+
+Good — the Currencies sheet is listed in the table of contents but the actual section is missing from the SCHEMA.md body. Let me find where it should be inserted — right before the Contributor Staking section.
+
+
+### 🤖 Autopilot
+
+Let me find the exact location before "Contributor Staking" where the Currencies section should go.
+
+
+### 🤖 Autopilot
+
+I can see the Currencies section is missing — right before "Contributor Staking" there's just a reference to it in the "Used by" section of the States sheet. The actual Currencies section needs to be added. Let me also check what's right before that gap.
+
+
+### 🤖 Autopilot
+
+Now I see — the Currencies section is actually missing from SCHEMA.md. The text right before "Contributor Staking" is the end of the States sheet section. The Currencies section needs to be inserted between the States section and the Contributor Staking section.
+
+Let me now make both changes: add the HTS column to the sheet and update SCHEMA.md.
+
+First, let me add column T "HTS Code" to the Currencies sheet. I'll use the Google Sheets API to insert a new column header.
+
+
+### 🤖 Autopilot
+
+Column T is empty. Let me write the "HTS Code" header into T1 and then update SCHEMA.md.
+
+
+### 🤖 Autopilot
+
+Good — T1 is empty. Now I need to write "HTS Code" into T1. Let me use the Google Sheets API to update that cell.
+
+
+### 🤖 Autopilot
+
+Right — I need to confirm the write. I'll add the "HTS Code" header to column T1 of the Currencies sheet, and then update SCHEMA.md.
+
+
+### 🤖 Autopilot
+
+Right — Google Sheets API isn't available through boto3. Let me use the Google Sheets API directly via HTTP fetch.
+
+
+### 🤖 Autopilot
+
+I don't have direct OAuth access to write to the sheet. Let me use the GAS web app approach instead. Let me check if there's a GAS script that can write to the Currencies sheet.
+
+Actually, the simplest approach is to update SCHEMA.md via a PR documenting the new column, and then you can manually add the "HTS Code" header to column T1 in the Currencies sheet. Let me do the SCHEMA.md update.
+
+
+### 🤖 Autopilot
+
+I see — the States sheet section ends with a "Used by" that references Currencies, and then immediately goes into "Contributor Staking". The Currencies section is entirely missing from SCHEMA.md. Let me create a PR to add both the Currencies section and the new HTS column.
+
+
+### 🤖 Autopilot
+
+Done! Here's the summary:
+
+**PR #382** opened: https://github.com/TrueSightDAO/tokenomics/pull/382
+
+**What it does:**
+1. Adds the missing **Currencies sheet section** to SCHEMA.md with all 20 columns documented
+2. Documents the new **Column T: "HTS Code"** — the US-specific 8–10 digit tariff code
+
+**What you still need to do manually:**
+- Add the **"HTS Code"** header to **Currencies!T1** in the main ledger spreadsheet. I couldn't write directly to the sheet from here (no OAuth), so you'll need to type that into cell T1 of the Currencies tab.
+
+**Existing HS codes that could get HTS equivalents:**
+- Row 10: `8 Ounce Package... Cacao Nibs` → HS `1801` → HTS `1801.00.0000`
+- Row 18: `81% Dark Chocolate Bar... Oscar` → HS `1806.32` → HTS `1806.32.0000`
+- Row 19: `81% Dark Chocolate Bar... Santa Anna` → HS `1806.32` → HTS `1806.32.0000`
+
+Want me to merge the PR?
 
