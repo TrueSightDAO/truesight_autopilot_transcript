@@ -408,12 +408,44 @@ That's the Google Apps Script OAuth client (`1072944905499`). Let me check if my
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I see — my Gmail tools look for a token file at `/opt/truesight_autopilot/config/gmail/{account}_token.json`. Let me check what's actually there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the full picture. Let me check the actual `admin_token.json` file (the one my tools use) and compare it to the clasp token I already sent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -426,6 +458,7 @@ Great catch, Gary. The clasp token I sent earlier is **not** the right one for G
 | `admin_token.json` *(the real one)* | `667737028020` | `gmail.modify` | **Can read/send Gmail** ✅ |
 
 Let me send the correct one to Claude's box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -447,6 +480,7 @@ The clasp token I sent earlier was only for Apps Script deployment — useless f
 ### 🤖 Autopilot
 
 Let me check if there's already a `gary_token.json` on my box and copy it to Claude's box too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -565,4 +599,25 @@ Next time someone says "Claude box" or "nelanco-claude" I'll know exactly where 
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8921] And all future LLMs and you should know that when a reference clock in the cloud or just a clock, it means kneeling cold. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — "Claude in the cloud" or just "Claude" = **nelanco-claude** at `100.57.50.48` / `claude.truesight.me`. I'll add that alias to the context so all future LLMs know.
+
+
+### 🤖 Autopilot
+
+Done. **PR #675** adds the alias. So from now on:
+
+- **"Claude"** or **"Claude in the cloud"** = `nelanco-claude` at `100.57.50.48`
+- **"Claude Code"** = the interactive coding agent running on that box
+- **Not** the Claude API, not Claude.ai — just that one EC2 instance
+
+Locked in context for all future LLMs.
 
