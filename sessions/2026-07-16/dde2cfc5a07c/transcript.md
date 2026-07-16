@@ -370,11 +370,18 @@ Now I need to find where in SCHEMA.md the Currencies section should be, and add 
 ### 🤖 Autopilot
 
 Let me find the exact location of the Currencies section in SCHEMA.md.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the Currencies section by searching for it in the full SCHEMA.md content.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -487,4 +494,52 @@ It shows:
 - The expected HTS values for your existing products
 
 You can share that link directly with anyone who needs to understand the HTS infrastructure. Want me to also merge the SCHEMA.md PR?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] Did you add the header to column T in the brochures already? And also if you are PDF and you perhaps also input a few of the reports that we already have in our brochures as well as a link to put true in the PDF to that specific research to review the records. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Two things you're asking:
+
+1. **Did I add the "HTS Code" header to column T in the Currencies sheet?** — No, I wasn't able to. I don't have direct OAuth write access to the Google Sheet, so you'll need to manually type **"HTS Code"** into cell **Currencies!T1** yourself. Sorry about that.
+
+2. **Update the PDF with existing reports and a link to the research** — Great idea. Let me find what research/reports we already have that relate to HTS codes and customs classification, and regenerate the PDF with those references.
+
+
+### 🤖 Autopilot
+
+Let me search more broadly for market research, brochures, or reports related to customs, shipping, or HTS.
+
+
+### 🤖 Autopilot
+
+Let me look at the key reports that are relevant — the Brazil export brief, freight analysis, and supply chain docs.
+
+
+### 🤖 Autopilot
+
+Great — I have the key reports. Now let me regenerate the PDF with the HTS schema, links to the relevant research, and the existing HS code data.
+
+
+### 🤖 Autopilot
+
+Now let me upload this updated PDF.
+
+
+### 🤖 Autopilot
+
+Here's the updated PDF: **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/currencies_hts_codes_schema.pdf**
+
+It now includes:
+- **HS Code (Column S)** vs **HTS Code (Column T)** explained
+- **Existing HS codes** already on the sheet (1801 for cacao nibs, 1806.32 for chocolate bars)
+- **Expected HTS values** (1801.00.0000 and 1806.32.0000)
+- **Links to 5 related research docs** — Brazil Export Entity Brief, Freight Profit Analysis Methodology, Supply Chain & Freighting, SCHEMA.md, and Purchase Agreement PDFs
+- A note directing partners to the **USITC Tariff Database** (hts.usitc.gov) to look up the correct codes
+
+**One thing still needed:** You'll need to manually type **"HTS Code"** into cell **Currencies!T1** in the main ledger spreadsheet — I couldn't write directly to the sheet from here. Want me to merge the SCHEMA.md PR as well?
 
