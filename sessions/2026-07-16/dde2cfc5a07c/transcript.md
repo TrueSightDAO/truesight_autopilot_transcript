@@ -453,6 +453,7 @@ Actually, the simplest approach is to update SCHEMA.md via a PR documenting the 
 ### 🤖 Autopilot
 
 I see — the States sheet section ends with a "Used by" that references Currencies, and then immediately goes into "Contributor Staking". The Currencies section is entirely missing from SCHEMA.md. Let me create a PR to add both the Currencies section and the new HTS column.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -484,11 +485,13 @@ Want me to merge the PR?
 ### 🤖 Autopilot
 
 Good idea — I'll generate a PDF of the Currencies sheet schema (the section I just added to SCHEMA.md) so you can share it with partners who need the HTS code info.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload this PDF to GitHub so you can share the link.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -603,4 +606,38 @@ The corresponding **HTS codes (US)** would be:
 - **1806.32.0000** — Chocolate bars, blocks, slabs weighing ≤ 2 kg
 
 So actually, most of the HS codes are already filled in! The HTS column just needs the 10-digit US versions. Want me to update the PDF with this complete mapping?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] [Handoff context — this Telegram topic (thread 8971) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, please go ahead and update the PDF for the complete wrapping. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Found it — the file is `autopilot_pdf_l6knjg_r.pdf` (7,486 bytes). Let me upload it.
+
+
+### 🤖 Autopilot
+
+Done! Here's the updated PDF:
+
+**📄 https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/currencies_hts_codes_schema.pdf**
+
+It now includes the **complete mapping** with all existing data:
+
+| Product | HS Code | HTS Code (US) |
+|---------|---------|---------------|
+| Cacao Nibs / Cacao Beans | 1801 | 1801.00.0000 |
+| **Cacao Mass / Cacao Paste** | **1803.1** | **1803.10.0000** |
+| **Ceremonial Cacao** (200g pouch) | **1803.1** | **1803.10.0000** |
+| 81% Dark Chocolate Bar | 1806.32 | 1806.32.0000 |
+| Cacao Husk / Tea | *(to fill)* | 1802.00.0000 (suggested) |
+| Cacao Molasses | *(to fill)* | 1806.90.9099 (suggested) |
+
+So yes — **ceremonial cacao and cacao mass/paste** both fall under **HS 1803.1 / HTS 1803.10.0000**, and that code is already filled in column S for all the cacao mass rows on the sheet. Just needs the HTS added to column T.
+
+Also includes links to the Brazil Export Brief, Freight Analysis, Supply Chain docs, and the USITC tariff database so partners can verify.
 
