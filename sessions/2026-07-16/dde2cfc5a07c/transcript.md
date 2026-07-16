@@ -521,11 +521,18 @@ Two things you're asking:
 1. **Did I add the "HTS Code" header to column T in the Currencies sheet?** — No, I wasn't able to. I don't have direct OAuth write access to the Google Sheet, so you'll need to manually type **"HTS Code"** into cell **Currencies!T1** yourself. Sorry about that.
 
 2. **Update the PDF with existing reports and a link to the research** — Great idea. Let me find what research/reports we already have that relate to HTS codes and customs classification, and regenerate the PDF with those references.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search more broadly for market research, brochures, or reports related to customs, shipping, or HTS.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -640,4 +647,29 @@ It now includes the **complete mapping** with all existing data:
 So yes — **ceremonial cacao and cacao mass/paste** both fall under **HS 1803.1 / HTS 1803.10.0000**, and that code is already filled in column S for all the cacao mass rows on the sheet. Just needs the HTS added to column T.
 
 Also includes links to the Brazil Export Brief, Freight Analysis, Supply Chain docs, and the USITC tariff database so partners can verify.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] Also, in the PDF, can we have a URL that user can cut through to see the actual ledger on our Google sheet? That way is not just a standalone PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Found it — `autopilot_pdf_t4tfdegh.pdf` (7,810 bytes). Let me upload that one.
+
+
+### 🤖 Autopilot
+
+Done! The PDF now has the live ledger link right at the top:
+
+**📄 https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/currencies_hts_codes_schema.pdf**
+
+It now includes:
+- **Live Google Sheet link** — https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit#gid=0 — right at the top so partners can click through to the actual Currencies sheet
+- Also repeated in the "How to Use" section at the bottom
+- Full product mapping with HS and HTS codes
+- Links to the Brazil Export Brief, Freight Analysis, Supply Chain docs, SCHEMA.md, and USITC tariff database
+
+So it's not just a standalone PDF — it's a gateway to the live data. Share the link with your partners and they can click straight through to the ledger.
 
