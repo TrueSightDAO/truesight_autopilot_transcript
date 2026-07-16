@@ -403,6 +403,7 @@ Good question. Let me check what scopes the `.clasprc-admin.json` token actually
 ### 🤖 Autopilot
 
 That's the Google Apps Script OAuth client (`1072944905499`). Let me check if my actual Gmail tools use a different token with proper Gmail scopes.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -505,4 +506,63 @@ Total for you: **~5 minutes** of talking.
 The irony is the actual work (copying 2 files) took about 10 seconds. The other 19 minutes was me figuring out *which* files and *where* Claude's box even was. If I'd known from the start it was `nelanco-claude` with the `GETDATA_IO_PAIR_20201122` key, this would've been a 2-minute job.
 
 Want me to log this as a contribution?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8921] Yes, do you love this as two separate contributions my time and your time? Oh, so could you maybe update the agentic AI context so that in the future when a reference In the cloud, you know, it's dealing cold [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Absolutely — two contributions and a context update so I don't fumble this again. Let me first check the event docs for the right format, then submit.
+
+
+### 🤖 Autopilot
+
+Now let me submit both contributions and update the context doc.
+
+
+### 🤖 Autopilot
+
+Now let me update the context so I know where Claude's box is next time.
+
+
+### 🤖 Autopilot
+
+This is the local workspace context — not the right place. The AWS infra doc is in `agentic_ai_context`. Let me check what's there and update it.
+
+
+### 🤖 Autopilot
+
+I can see the Claude box is already documented in the CURRENT STATE BANNER. But there's no plan file. Let me check if the referenced plan exists.
+
+
+### 🤖 Autopilot
+
+The plan file is referenced but doesn't exist yet. Let me update the AWS infra doc to add the Gmail token info, and create the plan file so future me knows exactly what's on Claude's box.
+
+
+### 🤖 Autopilot
+
+Now let me also create the plan file that was referenced but missing.
+
+
+### 🤖 Autopilot
+
+All done! Here's the summary:
+
+**✅ Contributions submitted:**
+- **Sophia** — 20 min, 20 TDG (setup + discovery)
+- **Gary** — 5 min, 5 TDG (direction + corrections)
+
+**✅ Context updated:**
+- **PR #673** — Updated `AWS_DIGITAL_INFRASTRUCTURE.md` with Gmail token locations on Claude's box
+- **PR #674** — Created `plans/NELANCO_CLAUDE_CODE_BOX_PLAN.md` with full instance details, token locations, SSH config, and setup checklist
+
+Next time someone says "Claude box" or "nelanco-claude" I'll know exactly where it is, what tokens are there, and how to reach it — no more fumbling.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
