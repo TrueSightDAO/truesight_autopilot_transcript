@@ -538,16 +538,19 @@ Let me search more broadly for market research, brochures, or reports related to
 ### 🤖 Autopilot
 
 Let me look at the key reports that are relevant — the Brazil export brief, freight analysis, and supply chain docs.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Great — I have the key reports. Now let me regenerate the PDF with the HTS schema, links to the relevant research, and the existing HS code data.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload this updated PDF.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,4 +675,29 @@ It now includes:
 - Links to the Brazil Export Brief, Freight Analysis, Supply Chain docs, SCHEMA.md, and USITC tariff database
 
 So it's not just a standalone PDF — it's a gateway to the live data. Share the link with your partners and they can click straight through to the ledger.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8971] Can you figure out how much time you spent a nice spend separately to work on this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question — let me estimate the time I spent on this whole thread. Since I'm an autopilot, I don't have a built-in timer, but I can reconstruct from the conversation:
+
+**Time breakdown for this session (thread 8971):**
+
+| Task | Est. Time |
+|------|-----------|
+| Checking the Currencies sheet for existing HS/HTS columns | ~5 min |
+| Reading SCHEMA.md and searching for HTS references | ~5 min |
+| Looking up all existing HS codes on the sheet (cacao mass, ceremonial cacao, etc.) | ~5 min |
+| Creating the SCHEMA.md PR (#382) with the Currencies section + HTS column | ~10 min |
+| Generating the PDF (first version) | ~5 min |
+| Updating PDF with complete product mapping + research links | ~5 min |
+| Adding the live ledger URL to the PDF (final version) | ~5 min |
+| **Total** | **~40 minutes** |
+
+Want me to submit a contribution event for this time? I can log it as a **CONTRIBUTION EVENT** for 40 minutes of autopilot work on "HTS code infrastructure documentation."
 
