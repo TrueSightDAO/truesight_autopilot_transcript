@@ -65,3 +65,42 @@ Here's what I know from context:
 
 **Bottom line:** This is a net positive. It formalizes what we were already doing informally (using Coopercabruca as fallback for Oscar-adjacent shipments) and strengthens the cooperative model we're built on. 🎯
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8917] What do you think we should modify on Oscar's page on Agroverse Shop to indicate this perhaps like link to Copacabraka for your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question. Let me check what Oscar's farm page currently looks like.
+
+
+### 🤖 Autopilot
+
+Let me also check the source code to see how the page is structured.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Here's my recommendation:
+
+---
+
+**Yeah, I think we should add a Coopercabruca badge/link on Oscar's page.** Here's what I'd suggest:
+
+**1. A "Proud Member of" badge** — right after the farm story, before the shipments section. Something like:
+
+> *"Oscar is a proud member of **Coopercabruca** — the Cooperativa dos Cacauicultores do Sul da Bahia — a cooperative of family cacao farmers in southern Bahia."*
+
+With a link to Coopercabruca's page if we have one, or just the cooperative name as a trust signal.
+
+**2. Why it matters on the page:** The page currently tells the story of Oscar's grandfather and 80-year-old trees — it's beautiful, but it doesn't answer "who does he sell through?" or "how is this verified?" Adding the cooperative membership:
+- **Builds trust** — shows he's part of a formal, audited cooperative
+- **Explains the supply chain** — customers see the link between farm → cooperative → export → them
+- **Strengthens the cooperative narrative** — this is exactly the model we're selling
+
+**3. Where exactly:** I'd put it as a small section between "Farm Highlights" and "Shipments from This Farm" — a natural pause before the commercial content.
+
+Want me to draft the HTML change and open a PR on the beta site so you can preview it?
+
