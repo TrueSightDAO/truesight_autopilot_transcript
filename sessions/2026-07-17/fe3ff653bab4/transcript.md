@@ -90,3 +90,26 @@ Applied Digital (APLD) press release — Forward-Looking Statements caution sect
 ```
 3:29 oat] LTE QD: ,ErTe News 2 Q current and potential customers, (iv) statements of future economic performance, and (v) statements of assumptions underlying other statements and statements about the Company or its business. You are cautioned not to rely on these forward- looking statements. These statements are based on current expectations of SiULtU[cc mm -aY{- 101K 1 alo ROGUE AMM OUAC=1Ec UAL AN] subject to uncertainty. If underlying assumptions prove inaccurate or known or unknown risks or uncertainties materialize, actual results could vary materially from the Company's expectations and projections. These risks, uncertainties, and other factors include: our ability to complete construction of our data _ centers; changes to Al and HPC infrastructure needs and their impact on future plans; risks associated with the leasing business, including those associated with counterparties; costs related to the HPC operations and strategy; our ability to timely deliver any services required in connection with completion of 1 i PNeteren Te Mone Be ICs Vlas
 ```
+
+
+---
+
+## Attachment: a9b43e22ec2148fb91b498adbe37d7f5.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | a9b43e22ec2148fb91b498adbe37d7f5.jpg |
+| **Received** | 2026-07-17T19:33:26Z |
+
+### Extracted Text
+
+```
+Applied Digital (APLD) press release — continuation of Forward-Looking Statements risk factors. Additional risks disclosed: ability to raise additional capital for construction; obtaining financing on acceptable terms; dependence on principal/ key customers; ability to build hosting facilities with appropriate margins; power supply disruptions and equipment failures; regulatory compliance; cash flow and access to capital; availability of project financing; decline in demand; maintenance of third-party relationships; conditions in debt and equity capital markets.
+```
+
+### OCR Result
+
+```
+3:29 oat] LTE QD: Cre News 2 Q to timely deliver any services required in connection PTA completion of installation under our lease agreements; our ability to raise additional capital to fund ongoing and future data center construction and operations; our ability to obtain financing of the lease agreements on acceptable financing terms, or at all; our dependence on principal customers, including our ability to execute and perform our obligations under our leases with key customers, including without limitation, the lease agreements; our ability to timely and successfully build hosting facilities with the appropriate contractual margins and efficiencies; power or other supply disruptions and equipment failures; the inability to comply with regulations, developments and changes in regulations; cash flow and access to capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A il tw tt @ -# PNetoren Te Watchlist Be ICs Vlora
+```
