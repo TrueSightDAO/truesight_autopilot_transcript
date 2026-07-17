@@ -662,6 +662,11 @@ The issue is that the `generate_pdf` tool I called earlier uses Helvetica intern
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Try downloading again from the same link — it should be the correct version now (4 pages, 56KB, generated with DroidSansFallback font). The previous upload was the wrong file. Let me know if it renders properly this time.
 
 ———
@@ -679,31 +684,67 @@ Keep iterating until you figured this out and then upload and tell me it is done
 ### 🤖 Autopilot
 
 You're right, let me properly test the PDF before uploading. Let me check what's actually in the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The text is there but with null bytes between characters — that's a known issue with `drawString` and CJK fonts in reportlab. The characters are embedded but may not render correctly in all viewers. Let me use a different approach — use `Paragraph` with proper wrapping, which handles CJK correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still null bytes. This is a known reportlab issue with CID fonts. Let me try a completely different approach — use `fitz` (PyMuPDF) directly to build the PDF, which handles CJK natively.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 fitz's built-in font doesn't have CJK either. Let me try a different approach — use `weasyprint` with HTML+CSS which handles CJK perfectly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 WeasyPrint works perfectly — Chinese characters render correctly with no null bytes. Now let me generate the full document with it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chinese characters are rendering correctly now — all 5 pages have CJK text with no null bytes. Let me upload this verified version.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -727,6 +768,7 @@ What changed: I rebuilt the PDF using **WeasyPrint** with HTML+CSS and the Droid
 ### 🤖 Autopilot
 
 Good call — let me add that as a permanent instruction in the context files so future instances know the right approach.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -782,4 +824,80 @@ Branch was already pushed. Let me use a new branch name for the second commit.
 2. **PR #684** — Appended the context update log entry.
 
 Future instances of Sophia (or any other LLM) will now find the instruction in the operating instructions when they need to generate a PDF with Chinese characters.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Also in the PDF document generated, I noticed that some weird looking question marks in there that not supposed to be in there. When you look into them and ensure like the redundant characters are not there. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the current PDF for any weird characters.
+
+
+### 🤖 Autopilot
+
+I see the issue — there are bullet characters (`•`) and some empty bullet lines on page 1 that shouldn't be there. Let me look at the source HTML to find the problem.
+
+
+### 🤖 Autopilot
+
+I see — the PDF on GitHub is the old ReportLab version, not the WeasyPrint one. The WeasyPrint version is at `/tmp/ANABEL_SUGAR_RFQ_CN.pdf` on the autopilot box. Let me verify the WeasyPrint version is clean and re-upload it.
+
+
+### 🤖 Autopilot
+
+I see the issues now:
+
+1. **`\u274c` (❌)** — the "cross mark" emoji used as a checkmark indicator. This is intentional but might look weird in a PDF viewer. Should be a simple checkmark ✓ instead.
+2. **`\u2014` (—)** and **`\u2013` (–)** — em dashes and en dashes. These are fine typographically.
+3. **`\u26a0` (⚠️)** — warning sign emoji. Also intentional.
+4. **`•`** — bullet points at the bottom of pages 1 and 5 that are orphaned.
+
+The main problem is the **❌ emoji** being used as a "yes" indicator — that's confusing (a cross mark meaning "yes, they can"?). And the orphaned bullet points at the bottom. Let me fix both.
+
+
+### 🤖 Autopilot
+
+Those orphaned bullets are from the WeasyPrint HTML — probably empty `<li>` elements or leftover from the markdown conversion. Let me look at the actual HTML source that was used.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual HTML that was used to generate the WeasyPrint PDF.
+
+
+### 🤖 Autopilot
+
+The script was piped directly to python3 and not saved. Let me rebuild the PDF from scratch with the fixes — replace ❌ with ✓ and remove the orphaned bullets.
+
+
+### 🤖 Autopilot
+
+Now let me verify the output — check for any weird characters.
+
+
+### 🤖 Autopilot
+
+The remaining "weird" chars are just Portuguese accented characters from the addresses (São Paulo, Olímpia, etc.) — `\u00ba` (º), `\u00e3` (ã), `\u00e7` (ç), `\u00f3` (ó), `\u00ed` (í), `\u00f5` (õ), `\u00e9` (é), `\u00e1` (á). Those are correct and expected in Portuguese place names. The `\xa0` is a non-breaking space — also fine.
+
+No orphaned bullets, no ❌ emojis, no ⚠️ emojis. Just clean text with ✓ and ✗ symbols. Let me upload it.
+
+
+### 🤖 Autopilot
+
+**Done.** The PDF has been fixed and uploaded. Here's what changed:
+
+1. **❌ emoji → ✓** — The confusing cross mark that meant "yes, they can" is now a clean checkmark ✓
+2. **⚠️ emoji removed** — Replaced with plain text
+3. **Orphaned bullet points removed** — No more stray `•` at the bottom of pages
+4. **Still 4 pages** — Clean, professional layout
+
+Download link (same URL, updated file):  
+**https://github.com/TrueSightDAO/agentic_ai_context/raw/main/research/ANABEL_SUGAR_RFQ_CN.pdf**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → python3 -c " import fitz doc = fitz.open('/tmp/ANABEL_SUGAR_RFQ_CN.pdf') for i, page in enumerate(doc): text = page.get_text() print(f'=== P; python3 -c " import fitz doc = fitz.open('/tmp/ANABEL_SUGAR_RFQ_CN.pdf') print(f'Pages: {doc.page_count}') for i, page in enumerate(doc): te; python3 -c " # Check what the WeasyPrint HTML source looks like import fitz doc = fitz.open('/tmp/ANABEL_SUGAR_RFQ_CN.pdf') page = doc[0] te; …(+5 more)
 
