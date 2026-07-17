@@ -56,21 +56,30 @@ Also attaching a letter of intent sent out
 ### 🤖 Autopilot
 
 Let me look at the attached letter of intent and gather the relevant context.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the letter of intent attachment.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the PDF that was attached — it should be the letter of intent.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me persist this to the transcript.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -303,4 +312,56 @@ Gary — here's what I've compiled on the **8 major ICUMSA 45 sugar mills** in B
 **Regarding Anabel's 50,000 tons/month request:** The mills above that can handle that volume directly are **Raízen**, **Copersucar** (as a cooperative), **Tereos**, and **São Martinho**. The minimum LC threshold of 12,500–25,000 tons/month is well covered.
 
 Want me to compile this into a markdown file and save it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Here I compile as a markdown and then what do you think are the additional information that we need from Annabelle before we can reach out to discuss with this sugar mails? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me compile the markdown file first, then answer your question about what we need from Anabel.
+
+
+### 🤖 Autopilot
+
+Done — the markdown file is saved at **`research/BRAZIL_SUGAR_MILLS_ICUMSA45.md`** in agentic_ai_context. PR #677 is open for review.
+
+---
+
+Now, on your question — **what additional information do we need from Anabel before reaching out to the mills?**
+
+Here's what's missing to have a credible conversation with a mill:
+
+### 1. Sugar Grade / ICUMSA Spec
+- You assumed ICUMSA 45 (same as the Natalia LOI), but **China typically imports ICUMSA 600–1200** for refining, or **ICUMSA 150** for direct consumption. ICUMSA 45 is premium and costs more. Confirm which grade she actually needs.
+
+### 2. Destination Port in China
+- CIF pricing varies hugely by port — Shanghai vs Shenzhen vs Tianjin vs Qingdao. Without this, mills can't quote freight.
+
+### 3. Contract Duration
+- 50,000 tons/month for how long? 6 months? 12 months? 24 months? Mills quote differently for a 1-year vs multi-year commitment.
+
+### 4. Payment Terms
+- LC at sight? Deferred LC? SBLC? Mills have minimum LC requirements (typically 12,500–25,000 tons per LC).
+
+### 5. Packaging
+- 50kg bags? 1-ton jumbo bags? Bulk vessel? This affects pricing significantly.
+
+### 6. Buyer Credentials
+- Mills will want to know who they're dealing with. Does Anabel have a company with a track record, or is this a first-time buyer? If she's a broker, mills may want the end-buyer's name.
+
+### 7. Inspection / Certification Requirements
+- China has its own import standards (CIQ inspection). Does she need SGS inspection at loading port? Any specific China-required certifications?
+
+### 8. Timeline
+- When does she need first delivery? Mills plan 30–60 days ahead for production scheduling.
+
+### 9. Is She the End-Buyer or a Broker?
+- This is the most important question. If she's a broker, mills will want to know the end-buyer. If she's the end-buyer, we need her company's import license details.
+
+---
+
+**My recommendation:** Before calling any mill, get answers to at least items **1 (grade), 2 (port), 3 (duration), and 9 (buyer type)** from Anabel. Without those, the mills will ask the same questions and we'll look unprepared.
 
