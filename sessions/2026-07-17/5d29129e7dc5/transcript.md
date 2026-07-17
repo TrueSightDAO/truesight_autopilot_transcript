@@ -120,6 +120,16 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it — this is the **earnings call announcement** for Applied Digital (APLD).
 
 ### Key Details
@@ -398,6 +408,51 @@ You've now shared **7 screenshots** covering the entire press release end-to-end
 4. **Dial-in available** if you want to listen live
 
 Are you planning to dial in, or just watching the print?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **85af752244444adfa98c77826a04cb7c.jpg**]
+- Type: Image (OCR confidence: 90.0%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD Erte News 2 Q capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A further list and description of these risks, uncertainties and other factors can be found in the company’s most recently filed Annual Report on Form 10-K and Quarterly Report on Form 10-Q, including in the sections captioned “Forward-Looking Statements” and “Risk Factors,” and in the company’s subsequent filings with the Securities and Exchange Commission. Copies of these filings are available online at , on the Company’s website ( ) under “Investors,” or on request from the Company. Information in this release is as of the dates and time periods indicated herein, and the Company does not undertake to update any of the information contained in these materials, except as required by law. i rr PNeteren Te Watchlist Be ICs Vola
+```
+
+
+### 🤖 Autopilot
+
+This is the **tail end of the Forward-Looking Statements** — the standard disclaimer referring readers to their SEC filings (10-K, 10-Q) for the full risk factor list.
+
+### Complete Press Release — All 8 Screenshots Mapped
+
+You've now sent the entire document. Here's the full structure:
+
+| # | Section | Screenshot |
+|---|---|---|
+| 1 | News header + "Companies Mentioned" table | ✅ |
+| 2 | Earnings call announcement (July 27, 5PM ET) | ✅ |
+| 3 | Company description (Best Data Center 2025) | ✅ |
+| 4 | Forward-Looking Statements intro (PSLRA language) | ✅ |
+| 5 | Risk factors — part 1 (construction, AI demand, leasing) | ✅ |
+| 6 | Risk factors — part 2 (capital, financing, customer concentration) | ✅ |
+| 7 | Dial-in details (conference ID: 735983255) | ✅ |
+| 8 | Tail disclaimer (refer to 10-K/10-Q, no update obligation) | ✅ |
+
+**You've got the complete press release.** The document is a standard earnings call announcement — nothing unusual or hidden. The meat will come on **July 27** when they actually report the numbers.
+
+Are you looking at this from an investment angle, or is there something specific in the document you're trying to verify?
 
 ———
 **✅ Done this turn — actions taken:**
