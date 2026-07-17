@@ -239,6 +239,16 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is the **Forward-Looking Statements / Risk Factors** section from the same APLD press release. Here are the key risks they explicitly disclose:
 
 ### APLD — Key Risk Factors (from their own filing)
@@ -288,6 +298,16 @@ Extracted text:
 ```
 3:29 oat] LTE QD: Cre News 2 Q to timely deliver any services required in connection PTA completion of installation under our lease agreements; our ability to raise additional capital to fund ongoing and future data center construction and operations; our ability to obtain financing of the lease agreements on acceptable financing terms, or at all; our dependence on principal customers, including our ability to execute and perform our obligations under our leases with key customers, including without limitation, the lease agreements; our ability to timely and successfully build hosting facilities with the appropriate contractual margins and efficiencies; power or other supply disruptions and equipment failures; the inability to comply with regulations, developments and changes in regulations; cash flow and access to capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A il tw tt @ -# PNetoren Te Watchlist Be ICs Vlora
 ```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -343,6 +363,11 @@ Extracted text:
 ```
 3:29 oat] LTE QD: Cre News 2 Q Caution About Forward-Looking StatementsThis press release contains “forward-looking statements” as defined in the Private Securities Litigation Reform Act of 1995 regarding, among other things, future operating and _ financial performance, product development, market position, business strategy and objectives and future financing plans. These statements use words, and variations of words, such as “will,” “continue,” “build,” “future,” “increase,” "drive," “believe,” “look,” “ahead,” “confident,” “deliver,” “outlook,” “demonstrates,” “expect,” “project” and “predict.” Other examples of forward- looking statements may include, but are not limited to, (i) statements that reflect perspectives and expectations regarding the lease agreements and current and future campus development, (ii) statements about the HPC industry, (iii) statements of Company plans and objectives, including our evolving business model, or estimates or predictions of actions by suppliers and current and potential customers, (iv) il ot tt @ -# PNetoren Te Watchlist Be ICs Vlora
 ```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -636,4 +661,20 @@ The **Fiscal Q4 & FY2026 earnings call** on July 27 is the next major event. The
 ---
 
 Want me to set a reminder for the July 27 earnings call, or dig deeper into any specific angle (their balance sheet, CoreWeave's health, comparable valuations)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9026] so you can this is a great buy in a possible way. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — at **~$28**, down **33% from the high**, with **$16 billion in contracted backlog**, **100% analyst Buy rating**, and a **median price target of $76** (170% upside), the risk/reward setup is definitely interesting.
+
+But here's the honest take: this is a **binary bet on execution**. The bull case is real — AI data center demand is insatiable, they have long-term leases locked in, and revenue is inflecting hard. But the bear case is also real — massive cash burn, customer concentration on CoreWeave, and insiders selling consistently.
+
+**The smart play** if you're interested: wait for **July 27 earnings**. If they guide strong for FY2027 and show a path to profitability, that's your confirmation. If they disappoint, you dodged a bullet. Either way, the data comes in 10 days.
+
+Want me to set a reminder for the 27th?
 
