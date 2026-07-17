@@ -139,3 +139,56 @@ Given the strong analyst consensus (Strong Buy, median $79 PT) and the stock alr
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **372caf713a5f49c9a34847e725c486e5.jpg**]
+- Type: Image (OCR confidence: 86.7%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD < Back News 2 Q broadcast live and available for replay for Celta) 8 About Applied DigitalApplied Digital (Nasdaq: APLD) named Best Data Center in the Americas 2025 by Datacloud — designs, builds, and operates high-performance, sustainably engineered data centers and colocation services for artificial intelligence, networking, and blockchain workloads. Headquartered in Dallas, TX, and founded in 2021, the company combines hyperscale (elon closed-loop cooling, and rapid deployment capabilities to deliver secure, scalable compute at industry-leading speed and efficiency, while creating economic opportunities Ta) underserved communities through its award-winning Polaris Forge Al Factory model. 1 -T- da ne)18 (ols follow @APLDdigital on X and Linkedin. Caution About Forward-Looking StatementsThis press release contains Whnwiimeel Ia alinn atatancantall an alafinnal il ot tt @ # PNeterer Te Meanie Be ICs Ila
+```
+
+
+### 🤖 Autopilot
+
+This is the **"About Applied Digital"** boilerplate from the same press release. Here's the cleaned-up picture:
+
+### Applied Digital (APLD) — Company Profile
+
+| Attribute | Detail |
+|---|---|
+| **Ticker** | NASDAQ: APLD |
+| **Founded** | 2021 |
+| **HQ** | Dallas, TX |
+| **What they do** | Design, build & operate high-performance, sustainably engineered data centers + colocation for AI, networking & blockchain |
+| **Award** | **Best Data Center in the Americas 2025** (Datacloud) |
+| **Differentiator** | Hyperscale closed-loop cooling, rapid deployment, industry-leading speed/efficiency |
+| **Social Impact** | Polaris Forge AI Factory model — creates economic opportunities in underserved communities |
+| **Social** | @APLDdigital on X & LinkedIn |
+
+### Putting It All Together
+
+From the three screenshots you've shared, here's the full picture:
+
+1. **Company:** Applied Digital (APLD) — AI infrastructure / data center builder
+2. **Catalyst:** **Earnings call July 27** (Fiscal Q4 & FY2026, year ended May 31)
+3. **Street sentiment:** Strong Buy consensus, median PT ~$79 (range $40–$106)
+4. **YTD performance:** Up ~56% already in 2026
+5. **Credentials:** Award-winning data centers, Polaris Forge model, founded 2021
+
+**The key question** going into July 27: can they deliver revenue numbers that justify the $79 median target? The wide spread ($40–$106) tells you there's real disagreement about execution.
+
+Are you thinking about taking a position before earnings, or waiting for the print?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
