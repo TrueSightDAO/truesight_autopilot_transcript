@@ -176,6 +176,16 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is the **"About Applied Digital"** boilerplate from the same press release. Here's the cleaned-up picture:
 
 ### Applied Digital (APLD) — Company Profile
@@ -461,4 +471,169 @@ Are you looking at this from an investment angle, or is there something specific
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9026] What are your thoughts regarding this company do a thorough research via online
+
+
+### 🤖 Autopilot
+
+Let me do a deep dive on Applied Digital (APLD) — recent news, financials, competitive positioning, and what the market's saying.
+
+
+### 🤖 Autopilot
+
+Let me get a few more data points to round out the picture.
+
+
+### 🤖 Autopilot
+
+Here's my thorough research on **Applied Digital (APLD)**.
+
+---
+
+## Applied Digital Corporation (APLD) — Deep Research
+
+### 1. What They Do
+
+APLD designs, builds, and operates **high-performance data centers** for AI, HPC (high-performance computing), and blockchain workloads. They're an **infrastructure-layer play** — they own the physical real estate, power, and cooling, and lease it to hyperscale tenants under long-term contracts.
+
+They won **Best Data Center in the Americas 2025** (Datacloud award).
+
+---
+
+### 2. Financial Snapshot (as of mid-July 2026)
+
+| Metric | Value |
+|---|---|
+| **Stock Price** | ~$28.85 (down ~33% from Jan high of $42) |
+| **Market Cap** | ~$7.6B |
+| **52-Week Range** | $9.60 – $50.73 |
+| **Revenue (TTM)** | ~$355M |
+| **P/S Ratio** | ~21.5x |
+| **Beta** | 5.68 (extremely volatile) |
+| **Cash & Restricted Cash** | $2.1B (as of Feb 2026) |
+| **Total Debt** | $2.7B |
+| **Free Cash Flow (Q3)** | -$720M (heavy construction spend) |
+
+---
+
+### 3. Recent Earnings Performance
+
+**Q3 FY2026 (reported April 8, 2026):**
+- **Revenue:** $126.6M — **beat estimates by 61%** (vs $78.5M expected)
+- **Adjusted EBITDA:** $44.1M — **beat by 173%**
+- **Adjusted EPS:** $0.09 — **beat by 143%** (vs -$0.21 expected)
+- **GAAP Net Loss:** -$100.9M (-$0.36/share) — wider than expected due to heavy depreciation and stock-based comp
+- **Revenue growth:** +139% YoY
+
+**The pattern:** APLD has been **crushing revenue estimates** but remains GAAP-unprofitable due to massive capital investment. The market has rewarded the top-line beats but punished the cash burn.
+
+---
+
+### 4. Key Growth Drivers
+
+**Polaris Forge 1 (Ellendale, ND) — 400 MW campus:**
+- First 100 MW operational since late 2025 — fully leased to **CoreWeave**
+- 15-year lease, ~$11B total projected revenue
+- Remaining 300 MW coming online mid-2026 through 2027
+
+**Polaris Forge 2 (Harwood, ND) — 200 MW:**
+- 15-year lease with a **U.S. investment-grade hyperscaler** (undisclosed)
+- ~$5B total projected revenue
+
+**Delta Forge 1 (Southern U.S.):**
+- New large-scale campus — broke ground recently
+
+**Total contracted backlog:** ~$16B across 600 MW of capacity
+
+---
+
+### 5. The Bull Case 🐂
+
+| Argument | Detail |
+|---|---|
+| **Massive demand tailwind** | AI data center demand is insatiable — power-constrained sites are the bottleneck |
+| **Long-term contracted revenue** | $16B locked in via 15-year leases — provides visibility |
+| **Revenue inflecting** | From $36M → $126M in one year — hockey-stick growth |
+| **Strong analyst consensus** | 100% Buy/Strong Buy from 11–18 analysts |
+| **Price targets imply upside** | Median ~$76, high $99–$106 (vs $28 today = 170%+ upside) |
+| **First-mover advantage** | Among first to recognize the high-power AI data center shortage |
+
+---
+
+### 6. The Bear Case 🐻
+
+| Risk | Detail |
+|---|---|
+| **Customer concentration** | **CoreWeave = ~69% of contracted backlog.** If CoreWeave stumbles, APLD falls hard |
+| **Massive cash burn** | -$720M FCF in Q3 alone — they're spending faster than they're earning |
+| **Dilution risk** | Heavy reliance on equity/debt financing — $2.7B debt, more likely needed |
+| **GAAP unprofitability** | Net loss of -$100M+ per quarter — GAAP EPS consistently misses |
+| **Insider selling** | CEO Wes Cummins sold $6M worth in Jan 2026; directors and CFO have been consistent sellers at $32–$38 |
+| **Stock down 33% YTD** | Despite strong revenue beats, the stock has been sliding — market is pricing in execution risk |
+| **Valuation** | 21.5x sales for a company burning cash is expensive by traditional metrics |
+
+---
+
+### 7. Insider & Institutional Activity
+
+**Insider selling — notable pattern:**
+| Insider | Role | Recent Sales |
+|---|---|---|
+| Wes Cummins | CEO | Sold 165,000 shares @ $36.42 (Jan 2026) — $6M |
+| Richard Nottenburg | Director | Multiple sells at $32–$35 (Apr 2026) |
+| Douglas Miller | Director | Sold 10,000 @ $34.98 (Apr 2026) |
+| Chuck Hastings | Director | Sold 45,987 @ $38.57 (Jan 2026) |
+| CFO | — | Sold 100,000+ shares at $34–$36 (Oct 2025) |
+
+**Pattern:** Consistent insider selling, no insider buying. That's a yellow flag.
+
+**Institutional ownership:** T. Rowe Price added significantly (+104.8% to 4.2M shares). Invesco, Fidelity, and others hold positions. Mixed signals — some institutions adding, but insiders selling.
+
+---
+
+### 8. Competitive Positioning
+
+| Company | Stack Layer | Revenue Scale | Key Risk |
+|---|---|---|---|
+| **APLD** | Infrastructure (power, cooling, racks) | $126M/qtr | Customer concentration, cash burn |
+| **CoreWeave (CRWV)** | Compute layer (GPU cloud) | Much larger | GPU obsolescence, NVIDIA dependency |
+| **Equinix** | REIT (retail colo) | Vast | Lower growth, different model |
+| **Digital Realty** | REIT (wholesale) | Vast | Lower growth |
+
+APLD's niche: **high-power density AI data centers** — they're not a REIT, not a GPU cloud. They sit in the middle, which is both a differentiator and a risk.
+
+---
+
+### 9. The July 27 Catalyst
+
+The **Fiscal Q4 & FY2026 earnings call** on July 27 is the next major event. The market will be watching:
+
+1. **FY2026 full-year revenue** — did they hit the ~$347M consensus?
+2. **FY2027 guidance** — can they sustain 50%+ growth?
+3. **CoreWeave relationship update** — any contract expansions or concerns?
+4. **Cash position & financing** — how are they funding the buildout?
+5. **Delta Forge 1 progress** — new campus timeline
+
+---
+
+### 10. My Synthesis (not financial advice)
+
+**APLD is a high-conviction, high-risk bet on AI infrastructure.**
+
+- **The bull case works if:** They execute on construction, CoreWeave stays healthy, and they sign more hyperscale tenants. At $28, the analyst median PT of ~$76 implies 170% upside.
+- **The bear case works if:** Construction delays hit, CoreWeave has problems, or the market decides 21x sales is too rich for a cash-burning company. The stock already dropped 33% from its January high — the market is already pricing in some of this skepticism.
+
+**The biggest red flag:** Insiders are selling consistently and there's zero insider buying. The CEO sold $6M worth at $36 — lower than today's $28. That tells you something about what the people closest to the business think about fair value.
+
+**The biggest green flag:** Revenue is inflecting hard ($36M → $126M in one year), they have $16B in contracted backlog, and analyst coverage is unanimously bullish.
+
+**July 27 is the moment of truth.** If FY2027 guidance is strong and they show a path to GAAP profitability, the stock could re-rate quickly. If guidance disappoints or CoreWeave concerns surface, the downside could be significant.
+
+---
+
+Want me to set a reminder for the July 27 earnings call, or dig deeper into any specific angle (their balance sheet, CoreWeave's health, comparable valuations)?
 
