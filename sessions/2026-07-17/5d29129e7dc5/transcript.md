@@ -192,3 +192,56 @@ Are you thinking about taking a position before earnings, or waiting for the pri
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **0da6febb00dd453ca2d3ae2f4d276d6c.jpg**]
+- Type: Image (OCR confidence: 87.2%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD: ,ErTe News 2 Q current and potential customers, (iv) statements of future economic performance, and (v) statements of assumptions underlying other statements and statements about the Company or its business. You are cautioned not to rely on these forward- looking statements. These statements are based on current expectations of SiULtU[cc mm -aY{- 101K 1 alo ROGUE AMM OUAC=1Ec UAL AN] subject to uncertainty. If underlying assumptions prove inaccurate or known or unknown risks or uncertainties materialize, actual results could vary materially from the Company's expectations and projections. These risks, uncertainties, and other factors include: our ability to complete construction of our data _ centers; changes to Al and HPC infrastructure needs and their impact on future plans; risks associated with the leasing business, including those associated with counterparties; costs related to the HPC operations and strategy; our ability to timely deliver any services required in connection with completion of 1 i PNeteren Te Mone Be ICs Vlas
+```
+
+
+### 🤖 Autopilot
+
+This is the **Forward-Looking Statements / Risk Factors** section from the same APLD press release. Here are the key risks they explicitly disclose:
+
+### APLD — Key Risk Factors (from their own filing)
+
+| Risk | What it means |
+|---|---|
+| **Ability to complete data center construction** | They're still building — any delays or cost overruns hit revenue |
+| **Changes to AI & HPC infrastructure needs** | The market could shift (different cooling tech, chip architectures, etc.) |
+| **Leasing business & counterparty risk** | They lease capacity — if a big customer defaults or pulls out, that's a problem |
+| **HPC operations costs & strategy** | Building is capital-intensive; if costs run ahead of revenue, margins suffer |
+| **Timely delivery of services** | Hyperscale customers have SLAs — missing deadlines could mean penalties or lost contracts |
+
+### Full Picture — What You've Shared
+
+You've essentially sent the **entire earnings call press release** in 4 screenshots:
+
+1. **Screenshot 1** — News header, "Companies Mentioned" table (APLD)
+2. **Screenshot 2** — Earnings call announcement: **July 27, 2026 @ 5PM ET**
+3. **Screenshot 3** — Company description (Best Data Center 2025, Polaris Forge model)
+4. **Screenshot 4** — Risk factors (this one)
+
+### My Take (not financial advice)
+
+The risk factors are boilerplate but **honest** — APLD is still in a build-out phase. The bull case ($106 PT) assumes they execute on construction, lock in hyperscale customers, and keep costs under control. The bear case ($40 PT) assumes delays, cost overruns, or demand softening.
+
+**July 27** is the moment of truth — we'll see actual FY2026 numbers and FY2027 guidance. That'll tell us which side of the $40–$106 range is more realistic.
+
+Are you looking at this as a trade (before/after earnings) or a longer-term hold?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
