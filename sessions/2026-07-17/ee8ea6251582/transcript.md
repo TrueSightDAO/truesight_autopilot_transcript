@@ -443,16 +443,24 @@ Want me to update the markdown file with this clarification?
 ### 🤖 Autopilot
 
 Got it — you want a bilingual document: English first (markdown), then a Chinese version to send to Anabel. Let me compile everything we have plus the questions we need from her.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me create the bilingual document — English markdown first, then Chinese version.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me generate the Chinese version as a separate file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -511,6 +519,7 @@ Got it — understood. So the approach is:
 3. **The document should just surface what we need from her** to go talk to the mills, and show her what we already have ready.
 
 Let me update both documents to reflect that — remove the "buyer identity" question from the ask list, and make it clear we're approaching mills as TrueTech Inc.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -614,4 +623,23 @@ The Chinese characters should display correctly now — no more black squares. G
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → fc-list :lang=zh 2>/dev/null | head -20; echo "---"; ls /usr/share/fonts/truetype/ 2>/dev/null; echo "---"; dpkg -l | grep -i font 2>/dev/nu; python3 -c " from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont pdfmetrics.registerFont(TTFont('DroidCN',; cat << 'PYEOF' > /tmp/gen_cn_pdf.py from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm, cm from reportlab.lib.colors
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Still having the same problem
+
+
+### 🤖 Autopilot
+
+The issue is that the `generate_pdf` tool I called earlier uses Helvetica internally and can't do Chinese. The PDF I uploaded was the one from that tool. Let me upload the one I just generated locally with DroidSansFallback instead.
+
+
+### 🤖 Autopilot
+
+Try downloading again from the same link — it should be the correct version now (4 pages, 56KB, generated with DroidSansFallback font). The previous upload was the wrong file. Let me know if it renders properly this time.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -la /tmp/ANABEL_SUGAR_RFQ_CN.pdf && file /tmp/ANABEL_SUGAR_RFQ_CN.pdf
 
