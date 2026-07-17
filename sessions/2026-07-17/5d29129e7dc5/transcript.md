@@ -47,7 +47,13 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The screenshot is from a news article about **Applied Digital Corporation** (APLD). Let me look up the latest on this company.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -341,6 +347,57 @@ You've got the **complete document**. The key takeaway remains:
 > **July 27 earnings call** is the catalyst. The risk factors are standard for a capital-intensive growth company still in build-out phase. The wide analyst range ($40–$106) reflects the binary nature of execution risk.
 
 Anything else you want me to look into on APLD — recent price action, institutional ownership, or competitive positioning vs. other AI infra plays?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **daa8ccb6135c4f198d5df6dd0fa0c5a9.jpg**]
+- Type: Image (OCR confidence: 82.6%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD: < Back News 2 Q Te ea a ee eee eee ee eee ec full year ended May 31, 2026. A press x=) (ors (21 (= 1(11¢ MAX CSO LST OL) issued after the market closes on the Crane Rel Ne Applied Digital management will provide prepared remarks, followed by a question-and-answer period. Date: Monday, July 27, 2026Time: 5:00 Time)North America Dial-In: Peck oe 5787International Dial-In: +1 (585) 542- 9983Conference ID: 735983255 Please call the conference telephone number approximately 10 minutes before the start time. An operator will register your name and organization. If you have difficulty connecting with the conference call, please get in touch with Applied Digital's investor relations team at The conference call will also be broadcast live and available for replay for one year il t% tt @ PNeteren Te Meni Be ICUs Vlas
+```
+
+
+### 🤖 Autopilot
+
+This is the **dial-in details** section of the same press release. Here's the clean version:
+
+### APLD Earnings Call — Dial-In Details
+
+| Detail | Info |
+|---|---|
+| **Date** | Monday, July 27, 2026 |
+| **Time** | 5:00 PM Eastern (after market close) |
+| **Format** | Prepared remarks → Q&A |
+| **North America** | (Peck oe 5787) — OCR garbled, likely a US toll-free number |
+| **International** | +1 (585) 542-9983 |
+| **Conference ID** | **735983255** |
+| **Call in** | ~10 minutes early |
+| **Replay** | Available for 1 year |
+| **Press release issued** | After market close, July 15, 2026 |
+
+### Full Document — Complete
+
+You've now shared **7 screenshots** covering the entire press release end-to-end. The core facts:
+
+1. **APLD earnings** → **July 27 after close**
+2. **Strong Buy** consensus, median PT ~$79
+3. **Risk factors** highlight capital intensity and customer concentration
+4. **Dial-in available** if you want to listen live
+
+Are you planning to dial in, or just watching the print?
 
 ———
 **✅ Done this turn — actions taken:**
