@@ -93,3 +93,49 @@ What's your interest in APLD — are you already holding, considering a position
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **7305d2c9ad4d4b0dba9544cb4b19d9e6.jpg**]
+- Type: Image (OCR confidence: 88.4%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD Cre News 2 Q Applied Digital Sets Fiscal Fourth Quarter and Full Year 2026 Conference Call for Monday, July 27, 2026, at 5:00 p.m. Eastern Time GlobeNewswire 04:05PM ET, 07/15/2026 Applied Digital Sets Fiscal Fourth Quarter and Full Year 2026 Conference Call for Monday, July 27, 2026, at 5:00 p.m. Eastern TimeGlobeNewswire DALLAS, July 15, 2026 (GLOBE NEWSWIRE) — -- (Nasdaq: APLD) ("Applied Digital" or the "Company"), a designer, builder and operator of high- performance, sustainably engineered data centers and colocation services for Artificial Intelligence (“AI”), networking, and blockchain workloads, will host a conference call on Monday, July 27, 2026, at 5:00 p.m. Eastern Time to discuss its operations and_ financial results for the fiscal fourth quarter and full year ended May 31, 2026. A press il t tt @ PNeteren Te Watchlist Be ICs Ila
+```
+
+
+### 🤖 Autopilot
+
+Got it — this is the **earnings call announcement** for Applied Digital (APLD).
+
+### Key Details
+
+| Item | Detail |
+|---|---|
+| **Event** | Fiscal Q4 & Full Year 2026 Earnings Call |
+| **Date** | **Monday, July 27, 2026** |
+| **Time** | 5:00 PM Eastern |
+| **Fiscal Year End** | May 31, 2026 |
+| **Announced** | July 15, 2026 (via GlobeNewswire) |
+| **HQ** | Dallas, TX |
+
+### Why This Matters
+
+This is the **big catalyst** coming up in 10 days. The market will be watching for:
+- **Revenue growth** from their AI data center buildout
+- **Hyperscale customer updates** — who's signing contracts
+- **Forward guidance** for FY2027
+- **Capital expenditure plans** — how they're funding expansion
+- **Profitability timeline** — are they getting closer to positive FCF?
+
+Given the strong analyst consensus (Strong Buy, median $79 PT) and the stock already up ~56% this year, this earnings call will either validate the hype or expose execution gaps.
+
+**Are you looking at APLD as a potential position?** If so, the July 27 call is the key event to watch — the stock could move significantly depending on what they report and guide.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
