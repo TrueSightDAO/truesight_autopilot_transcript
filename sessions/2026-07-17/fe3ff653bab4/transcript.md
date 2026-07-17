@@ -159,3 +159,26 @@ Applied Digital (APLD) earnings call dial-in details from press release. Press r
 ```
 3:29 oat] LTE QD: < Back News 2 Q Te ea a ee eee eee ee eee ec full year ended May 31, 2026. A press x=) (ors (21 (= 1(11¢ MAX CSO LST OL) issued after the market closes on the Crane Rel Ne Applied Digital management will provide prepared remarks, followed by a question-and-answer period. Date: Monday, July 27, 2026Time: 5:00 Time)North America Dial-In: Peck oe 5787International Dial-In: +1 (585) 542- 9983Conference ID: 735983255 Please call the conference telephone number approximately 10 minutes before the start time. An operator will register your name and organization. If you have difficulty connecting with the conference call, please get in touch with Applied Digital's investor relations team at The conference call will also be broadcast live and available for replay for one year il t% tt @ PNeteren Te Meni Be ICUs Vlas
 ```
+
+
+---
+
+## Attachment: 85af752244444adfa98c77826a04cb7c.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | 85af752244444adfa98c77826a04cb7c.jpg |
+| **Received** | 2026-07-17T19:34:28Z |
+
+### Extracted Text
+
+```
+Applied Digital (APLD) press release — tail end of Forward-Looking Statements. References SEC filings (10-K, 10-Q) for full risk factors. Available on company website under "Investors" or on request. Company does not undertake to update information except as required by law.
+```
+
+### OCR Result
+
+```
+3:29 oat] LTE QD Erte News 2 Q capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A further list and description of these risks, uncertainties and other factors can be found in the company's most recently filed Annual Report on Form 10-K and Quarterly Report on Form 10-Q, including in the sections captioned "Forward-Looking Statements" and "Risk Factors," and in the company's subsequent filings with the Securities and Exchange Commission. Copies of these filings are available online at , on the Company's website ( ) under "Investors," or on request from the Company. Information in this release is as of the dates and time periods indicated herein, and the Company does not undertake to update any of the information contained in these materials, except as required by law. i rr PNeteren Te Watchlist Be ICs Vola
+```
