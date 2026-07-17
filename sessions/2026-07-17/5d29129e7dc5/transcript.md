@@ -372,6 +372,11 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is the **beginning of the Forward-Looking Statements** section — the intro that precedes the risk factors you already shared. It's the standard PSLRA 1995 safe harbor language.
 
 ### What You've Now Shared — Complete Press Release Map
@@ -677,4 +682,30 @@ But here's the honest take: this is a **binary bet on execution**. The bull case
 **The smart play** if you're interested: wait for **July 27 earnings**. If they guide strong for FY2027 and show a path to profitability, that's your confirmation. If they disappoint, you dodged a bullet. Either way, the data comes in 10 days.
 
 Want me to set a reminder for the 27th?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9026] Yeah, please do set a reminder. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I don't have a native reminder/calendar tool available, but here's what I can do:
+
+**Mark your calendar now:**
+- **Monday, July 27, 2026 — 5:00 PM Eastern**
+- APLD Fiscal Q4 & Full Year 2026 Earnings Call
+- Dial-in: 1-833-461-5787 (US) / +1-585-542-9983 (Intl)
+- Conference ID: **735983255**
+- Replay available for 1 year
+
+**What to watch for on the call:**
+1. FY2026 full-year revenue number
+2. FY2027 guidance
+3. CoreWeave relationship update
+4. Cash position and financing plans
+5. Delta Forge 1 timeline
+
+I'd suggest setting a phone reminder right now while it's on your mind. If you want, I can also do a quick web search on the morning of the 27th to check if there's any pre-earnings news or price movement before the call — just ping me.
 
