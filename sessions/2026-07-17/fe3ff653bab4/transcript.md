@@ -113,3 +113,26 @@ Applied Digital (APLD) press release — continuation of Forward-Looking Stateme
 ```
 3:29 oat] LTE QD: Cre News 2 Q to timely deliver any services required in connection PTA completion of installation under our lease agreements; our ability to raise additional capital to fund ongoing and future data center construction and operations; our ability to obtain financing of the lease agreements on acceptable financing terms, or at all; our dependence on principal customers, including our ability to execute and perform our obligations under our leases with key customers, including without limitation, the lease agreements; our ability to timely and successfully build hosting facilities with the appropriate contractual margins and efficiencies; power or other supply disruptions and equipment failures; the inability to comply with regulations, developments and changes in regulations; cash flow and access to capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A il tw tt @ -# PNetoren Te Watchlist Be ICs Vlora
 ```
+
+
+---
+
+## Attachment: c96a186becea43149b4a1aa6e9cb4d92.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | c96a186becea43149b4a1aa6e9cb4d92.jpg |
+| **Received** | 2026-07-17T19:33:48Z |
+
+### Extracted Text
+
+```
+Applied Digital (APLD) press release — beginning of Forward-Looking Statements section. References Private Securities Litigation Reform Act of 1995. Covers future operating and financial performance, product development, market position, business strategy, financing plans. Key forward-looking words: will, continue, build, future, increase, drive, believe, look, ahead, confident, deliver, outlook, demonstrates, expect, project, predict. Specific forward-looking statements include: (i) lease agreements and campus development, (ii) HPC industry, (iii) company plans and evolving business model, (iv) actions by suppliers and customers.
+```
+
+### OCR Result
+
+```
+3:29 oat] LTE QD: Cre News 2 Q Caution About Forward-Looking StatementsThis press release contains "forward-looking statements" as defined in the Private Securities Litigation Reform Act of 1995 regarding, among other things, future operating and _ financial performance, product development, market position, business strategy and objectives and future financing plans. These statements use words, and variations of words, such as "will," "continue," "build," "future," "increase," "drive," "believe," "look," "ahead," "confident," "deliver," "outlook," "demonstrates," "expect," "project" and "predict." Other examples of forward- looking statements may include, but are not limited to, (i) statements that reflect perspectives and expectations regarding the lease agreements and current and future campus development, (ii) statements about the HPC industry, (iii) statements of Company plans and objectives, including our evolving business model, or estimates or predictions of actions by suppliers and current and potential customers, (iv) il ot tt @ -# PNetoren Te Watchlist Be ICs Vlora
+```
