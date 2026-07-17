@@ -560,16 +560,19 @@ Want me to send the Chinese version to Anabel?
 ### 🤖 Autopilot
 
 Got it — you want a PDF of the Chinese version, and you want TrueTech Inc.'s DUNS number included. Let me update the document and generate the PDF.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me generate the PDF from the Chinese content.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Now let me upload it to GitHub so you can download it.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -596,26 +599,41 @@ The markdown file is also updated at `research/ANABEL_SUGAR_RFQ_MILLS_AND_QUESTI
 ### 🤖 Autopilot
 
 You're right — the PDF generator uses Helvetica which doesn't support Chinese characters. Let me regenerate it with a Chinese-capable font.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 We have `DroidSansFallbackFull.ttf` which supports Chinese. Let me regenerate the PDF using that font.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the PDF generator works and see if I can pass a Chinese font.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF generator is a tool I call — it uses Helvetica by default which doesn't have CJK glyphs. Let me generate the PDF using a Python script directly with the DroidSansFallback font.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload the fixed PDF.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -639,6 +657,7 @@ The Chinese characters should display correctly now — no more black squares. G
 ### 🤖 Autopilot
 
 The issue is that the `generate_pdf` tool I called earlier uses Helvetica internally and can't do Chinese. The PDF I uploaded was the one from that tool. Let me upload the one I just generated locally with DroidSansFallback instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -698,4 +717,69 @@ What changed: I rebuilt the PDF using **WeasyPrint** with HTML+CSS and the Droid
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → python3 -c " # Quick test: generate a small PDF with Chinese chars and check it from reportlab.lib.pagesizes import A4 from reportlab.pdfbas; # Extract text from the test PDF to verify Chinese chars are embedded python3 -c " import subprocess result = subprocess.run(['pdftotext', '; python3 -c " from reportlab.lib.pagesizes import A4 from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont fr; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Nicely done. Hey, can you update the Agentic AI context to make sure that in future when you all future instances of Sophia or other LOMs try to generate PDF documents for Chinese to use the same Wizi print and HTML plus CSS as well as the droid sense fall back from the approach. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me add that as a permanent instruction in the context files so future instances know the right approach.
+
+
+### 🤖 Autopilot
+
+Let me add a note about the PDF generation approach to the operating instructions and also to the context updates log.
+
+
+### 🤖 Autopilot
+
+Now let me add the PDF generation note to the operating instructions and the context updates log.
+
+
+### 🤖 Autopilot
+
+Let me check the exact text around section 4.3.
+
+
+### 🤖 Autopilot
+
+Let me find the exact text around section 4.3.
+
+
+### 🤖 Autopilot
+
+Now I have the exact text. Let me use the right search strings.
+
+
+### 🤖 Autopilot
+
+Now let me also append to the context updates log.
+
+
+### 🤖 Autopilot
+
+The file is very long. Let me just append to it directly.
+
+
+### 🤖 Autopilot
+
+Let me just append to the end of the file.
+
+
+### 🤖 Autopilot
+
+Branch was already pushed. Let me use a new branch name for the second commit.
+
+
+### 🤖 Autopilot
+
+**Done.** Two PRs opened:
+
+1. **PR #683** — Added §4.4 to `OPERATING_INSTRUCTIONS.md` with the full WeasyPrint + DroidSansFallback approach, including the code template and a list of what NOT to use (ReportLab, fitz, generate_pdf tool).
+2. **PR #684** — Appended the context update log entry.
+
+Future instances of Sophia (or any other LLM) will now find the instruction in the operating instructions when they need to generate a PDF with Chinese characters.
 
