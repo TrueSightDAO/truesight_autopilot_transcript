@@ -524,7 +524,13 @@ Let me update both documents to reflect that — remove the "buyer identity" que
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now update the Chinese version too.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -642,4 +648,54 @@ Try downloading again from the same link — it should be the correct version no
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/ANABEL_SUGAR_RFQ_CN.pdf && file /tmp/ANABEL_SUGAR_RFQ_CN.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Same problem. Once you generated the pdf make sure the characters show up properly before upload 
+
+Keep iterating until you figured this out and then upload and tell me it is done
+
+
+### 🤖 Autopilot
+
+You're right, let me properly test the PDF before uploading. Let me check what's actually in the file.
+
+
+### 🤖 Autopilot
+
+The text is there but with null bytes between characters — that's a known issue with `drawString` and CJK fonts in reportlab. The characters are embedded but may not render correctly in all viewers. Let me use a different approach — use `Paragraph` with proper wrapping, which handles CJK correctly.
+
+
+### 🤖 Autopilot
+
+Still null bytes. This is a known reportlab issue with CID fonts. Let me try a completely different approach — use `fitz` (PyMuPDF) directly to build the PDF, which handles CJK natively.
+
+
+### 🤖 Autopilot
+
+fitz's built-in font doesn't have CJK either. Let me try a different approach — use `weasyprint` with HTML+CSS which handles CJK perfectly.
+
+
+### 🤖 Autopilot
+
+WeasyPrint works perfectly — Chinese characters render correctly with no null bytes. Now let me generate the full document with it.
+
+
+### 🤖 Autopilot
+
+Chinese characters are rendering correctly now — all 5 pages have CJK text with no null bytes. Let me upload this verified version.
+
+
+### 🤖 Autopilot
+
+**Done.** The PDF is verified and uploaded. Here's the download link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/raw/main/research/ANABEL_SUGAR_RFQ_CN.pdf**
+
+What changed: I rebuilt the PDF using **WeasyPrint** with HTML+CSS and the DroidSansFallback font, then verified the output — all Chinese characters render correctly across all 5 pages (confirmed via text extraction showing proper CJK glyphs, no null bytes).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → python3 -c " # Quick test: generate a small PDF with Chinese chars and check it from reportlab.lib.pagesizes import A4 from reportlab.pdfbas; # Extract text from the test PDF to verify Chinese chars are embedded python3 -c " import subprocess result = subprocess.run(['pdftotext', '; python3 -c " from reportlab.lib.pagesizes import A4 from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont fr; …(+8 more)
 
