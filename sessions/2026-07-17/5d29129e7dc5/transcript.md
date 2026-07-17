@@ -245,3 +245,58 @@ Are you looking at this as a trade (before/after earnings) or a longer-term hold
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **a9b43e22ec2148fb91b498adbe37d7f5.jpg**]
+- Type: Image (OCR confidence: 91.8%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD: Cre News 2 Q to timely deliver any services required in connection PTA completion of installation under our lease agreements; our ability to raise additional capital to fund ongoing and future data center construction and operations; our ability to obtain financing of the lease agreements on acceptable financing terms, or at all; our dependence on principal customers, including our ability to execute and perform our obligations under our leases with key customers, including without limitation, the lease agreements; our ability to timely and successfully build hosting facilities with the appropriate contractual margins and efficiencies; power or other supply disruptions and equipment failures; the inability to comply with regulations, developments and changes in regulations; cash flow and access to capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A il tw tt @ -# PNetoren Te Watchlist Be ICs Vlora
+```
+
+
+### 🤖 Autopilot
+
+This is the **continuation of the risk factors** from the same APLD press release. Here's the complete picture now:
+
+### Complete Risk Factor Summary (from both screenshots)
+
+| Risk Category | Specific Risk |
+|---|---|
+| **Construction** | Completing data center builds on time and on budget |
+| **Capital** | Raising additional capital for ongoing construction |
+| **Financing** | Getting lease financing on acceptable terms (or at all) |
+| **Customer concentration** | Dependence on a few key customers / lease counterparties |
+| **Margins** | Building hosting facilities with appropriate contractual margins |
+| **Operations** | Power supply disruptions, equipment failures |
+| **Regulatory** | Compliance with evolving regulations |
+| **Market** | Decline in demand for AI/HPC/blockchain services |
+| **Partners** | Maintaining third-party relationships |
+| **Macro** | Conditions in debt and equity capital markets |
+
+### The Big Takeaway
+
+The risk factors paint a clear picture: **APLD is capital-intensive and customer-concentrated**. They need to:
+1. **Keep raising money** to build out data centers
+2. **Lock in and retain** a small number of hyperscale customers
+3. **Hit construction timelines** to start generating revenue from those leases
+
+If you're looking at this as an investment, the **July 27 earnings call** is the key event — you'll want to hear:
+- How much contracted capacity they have vs. what's operational
+- Their cash position and any financing updates
+- FY2027 guidance on revenue and capex
+
+Anything else you want me to dig into on APLD?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
