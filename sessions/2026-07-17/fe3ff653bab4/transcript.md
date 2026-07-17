@@ -136,3 +136,26 @@ Applied Digital (APLD) press release — beginning of Forward-Looking Statements
 ```
 3:29 oat] LTE QD: Cre News 2 Q Caution About Forward-Looking StatementsThis press release contains "forward-looking statements" as defined in the Private Securities Litigation Reform Act of 1995 regarding, among other things, future operating and _ financial performance, product development, market position, business strategy and objectives and future financing plans. These statements use words, and variations of words, such as "will," "continue," "build," "future," "increase," "drive," "believe," "look," "ahead," "confident," "deliver," "outlook," "demonstrates," "expect," "project" and "predict." Other examples of forward- looking statements may include, but are not limited to, (i) statements that reflect perspectives and expectations regarding the lease agreements and current and future campus development, (ii) statements about the HPC industry, (iii) statements of Company plans and objectives, including our evolving business model, or estimates or predictions of actions by suppliers and current and potential customers, (iv) il ot tt @ -# PNetoren Te Watchlist Be ICs Vlora
 ```
+
+
+---
+
+## Attachment: daa8ccb6135c4f198d5df6dd0fa0c5a9.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | daa8ccb6135c4f198d5df6dd0fa0c5a9.jpg |
+| **Received** | 2026-07-17T19:34:08Z |
+
+### Extracted Text
+
+```
+Applied Digital (APLD) earnings call dial-in details from press release. Press release issued after market close on July 15, 2026. Management will provide prepared remarks followed by Q&A. Call details: Date Monday July 27, 2026, 5:00 PM Eastern Time. North America dial-in: (Peck oe 5787 — OCR unclear), International: +1 (585) 542-9983. Conference ID: 735983255. Call in 10 min early. Replay available for one year.
+```
+
+### OCR Result
+
+```
+3:29 oat] LTE QD: < Back News 2 Q Te ea a ee eee eee ee eee ec full year ended May 31, 2026. A press x=) (ors (21 (= 1(11¢ MAX CSO LST OL) issued after the market closes on the Crane Rel Ne Applied Digital management will provide prepared remarks, followed by a question-and-answer period. Date: Monday, July 27, 2026Time: 5:00 Time)North America Dial-In: Peck oe 5787International Dial-In: +1 (585) 542- 9983Conference ID: 735983255 Please call the conference telephone number approximately 10 minutes before the start time. An operator will register your name and organization. If you have difficulty connecting with the conference call, please get in touch with Applied Digital's investor relations team at The conference call will also be broadcast live and available for replay for one year il t% tt @ PNeteren Te Meni Be ICUs Vlas
+```
