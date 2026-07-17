@@ -42,6 +42,11 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The screenshot is from a news article about **Applied Digital Corporation** (APLD). Let me look up the latest on this company.
 
 
@@ -291,6 +296,51 @@ If you're looking at this as an investment, the **July 27 earnings call** is the
 - FY2027 guidance on revenue and capex
 
 Anything else you want me to dig into on APLD?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-17/fe3ff653bab4/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **c96a186becea43149b4a1aa6e9cb4d92.jpg**]
+- Type: Image (OCR confidence: 85.8%, quality: good)
+
+Extracted text:
+```
+3:29 oat] LTE QD: Cre News 2 Q Caution About Forward-Looking StatementsThis press release contains “forward-looking statements” as defined in the Private Securities Litigation Reform Act of 1995 regarding, among other things, future operating and _ financial performance, product development, market position, business strategy and objectives and future financing plans. These statements use words, and variations of words, such as “will,” “continue,” “build,” “future,” “increase,” "drive," “believe,” “look,” “ahead,” “confident,” “deliver,” “outlook,” “demonstrates,” “expect,” “project” and “predict.” Other examples of forward- looking statements may include, but are not limited to, (i) statements that reflect perspectives and expectations regarding the lease agreements and current and future campus development, (ii) statements about the HPC industry, (iii) statements of Company plans and objectives, including our evolving business model, or estimates or predictions of actions by suppliers and current and potential customers, (iv) il ot tt @ -# PNetoren Te Watchlist Be ICs Vlora
+```
+
+
+### 🤖 Autopilot
+
+This is the **beginning of the Forward-Looking Statements** section — the intro that precedes the risk factors you already shared. It's the standard PSLRA 1995 safe harbor language.
+
+### What You've Now Shared — Complete Press Release Map
+
+You've sent **6 screenshots** that together make up the full earnings call press release:
+
+| # | Section | Status |
+|---|---|---|
+| 1 | News header + "Companies Mentioned" table | ✅ |
+| 2 | Earnings call announcement (July 27, 5PM ET) | ✅ |
+| 3 | Company description (Best Data Center 2025, Polaris Forge) | ✅ |
+| 4 | Forward-Looking Statements intro (this one) | ✅ |
+| 5 | Risk factors (part 1) | ✅ |
+| 6 | Risk factors (part 2) | ✅ |
+
+You've got the **complete document**. The key takeaway remains:
+
+> **July 27 earnings call** is the catalyst. The risk factors are standard for a capital-intensive growth company still in build-out phase. The wide analyst range ($40–$106) reflects the binary nature of execution risk.
+
+Anything else you want me to look into on APLD — recent price action, institutional ownership, or competitive positioning vs. other AI infra plays?
 
 ———
 **✅ Done this turn — actions taken:**
