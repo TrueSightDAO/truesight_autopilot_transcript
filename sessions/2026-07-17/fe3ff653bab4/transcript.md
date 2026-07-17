@@ -67,3 +67,26 @@ Applied Digital (APLD) company description from press release: Named Best Data C
 ```
 3:29 oat] LTE QD < Back News 2 Q broadcast live and available for replay for Celta) 8 About Applied DigitalApplied Digital (Nasdaq: APLD) named Best Data Center in the Americas 2025 by Datacloud — designs, builds, and operates high-performance, sustainably engineered data centers and colocation services for artificial intelligence, networking, and blockchain workloads. Headquartered in Dallas, TX, and founded in 2021, the company combines hyperscale (elon closed-loop cooling, and rapid deployment capabilities to deliver secure, scalable compute at industry-leading speed and efficiency, while creating economic opportunities Ta) underserved communities through its award-winning Polaris Forge Al Factory model. 1 -T- da ne)18 (ols follow @APLDdigital on X and Linkedin. Caution About Forward-Looking StatementsThis press release contains Whnwiimeel Ia alinn atatancantall an alafinnal il ot tt @ # PNeterer Te Meanie Be ICs Ila
 ```
+
+
+---
+
+## Attachment: 0da6febb00dd453ca2d3ae2f4d276d6c.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | 0da6febb00dd453ca2d3ae2f4d276d6c.jpg |
+| **Received** | 2026-07-17T19:33:03Z |
+
+### Extracted Text
+
+```
+Applied Digital (APLD) press release — Forward-Looking Statements caution section. Key risk factors disclosed: ability to complete construction of data centers; changes to AI and HPC infrastructure needs; risks associated with leasing business and counterparties; costs related to HPC operations and strategy; ability to timely deliver services.
+```
+
+### OCR Result
+
+```
+3:29 oat] LTE QD: ,ErTe News 2 Q current and potential customers, (iv) statements of future economic performance, and (v) statements of assumptions underlying other statements and statements about the Company or its business. You are cautioned not to rely on these forward- looking statements. These statements are based on current expectations of SiULtU[cc mm -aY{- 101K 1 alo ROGUE AMM OUAC=1Ec UAL AN] subject to uncertainty. If underlying assumptions prove inaccurate or known or unknown risks or uncertainties materialize, actual results could vary materially from the Company's expectations and projections. These risks, uncertainties, and other factors include: our ability to complete construction of our data _ centers; changes to Al and HPC infrastructure needs and their impact on future plans; risks associated with the leasing business, including those associated with counterparties; costs related to the HPC operations and strategy; our ability to timely deliver any services required in connection with completion of 1 i PNeteren Te Mone Be ICs Vlas
+```
