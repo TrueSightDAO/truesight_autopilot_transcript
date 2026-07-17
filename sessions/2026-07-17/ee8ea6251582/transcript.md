@@ -337,6 +337,7 @@ Want me to compile this into a markdown file and save it?
 ### 🤖 Autopilot
 
 Let me compile the markdown file first, then answer your question about what we need from Anabel.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -398,6 +399,12 @@ Per your own historical notes from Milena:
 They're different granulations of the same refined white sugar, just milled to different particle sizes. The ICUMSA color rating (45) is about whiteness/purity — both #5 and #45 can be ICUMSA 45 grade. The "#5" and "#45" refer to **granulation size**, not ICUMSA rating.
 
 Let me search for Sugar #5 manufacturers specifically.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -564,4 +571,47 @@ The PDF includes:
 - Notes on GVO, Biosev, and Pará
 
 The markdown file is also updated at `research/ANABEL_SUGAR_RFQ_MILLS_AND_QUESTIONS_CN.md` (PR #682) if you want to edit further.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Doesn't seem like the Chinese characters are showing up correctly in the game. They're all black squares. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — the PDF generator uses Helvetica which doesn't support Chinese characters. Let me regenerate it with a Chinese-capable font.
+
+
+### 🤖 Autopilot
+
+We have `DroidSansFallbackFull.ttf` which supports Chinese. Let me regenerate the PDF using that font.
+
+
+### 🤖 Autopilot
+
+Let me check how the PDF generator works and see if I can pass a Chinese font.
+
+
+### 🤖 Autopilot
+
+The PDF generator is a tool I call — it uses Helvetica by default which doesn't have CJK glyphs. Let me generate the PDF using a Python script directly with the DroidSansFallback font.
+
+
+### 🤖 Autopilot
+
+Now let me upload the fixed PDF.
+
+
+### 🤖 Autopilot
+
+Fixed! The PDF now uses **DroidSansFallback** font which supports Chinese characters properly. Here's the updated download link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/raw/main/research/ANABEL_SUGAR_RFQ_CN.pdf**
+
+The Chinese characters should display correctly now — no more black squares. Give it a try and let me know if it looks right.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → fc-list :lang=zh 2>/dev/null | head -20; echo "---"; ls /usr/share/fonts/truetype/ 2>/dev/null; echo "---"; dpkg -l | grep -i font 2>/dev/nu; python3 -c " from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont pdfmetrics.registerFont(TTFont('DroidCN',; cat << 'PYEOF' > /tmp/gen_cn_pdf.py from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm, cm from reportlab.lib.colors
 
