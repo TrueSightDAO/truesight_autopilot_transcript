@@ -130,11 +130,13 @@ Let me find the hosted zone.
 ### 🤖 Autopilot
 
 No hosted zones in Nelanco. Let me check Explorya — `getdata.io` DNS might live there.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `getdata.io` hosted zone is in **Explorya** account. Let me check the existing records and add the ACM validation CNAME.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -146,41 +148,69 @@ I can see the existing ACM validation CNAMEs (for `cloudfront-cdn.getdata.io`). 
 - **Value:** `_db5aed0bc044849b5a2ca95da807354f.jkddzztszm.acm-validations.aws.`
 
 Let me add this record.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DNS validation record added. Let me verify it propagated and check the cert status.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DNS record is live and resolving. Now let me check if ACM has picked it up yet.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still PENDING_VALIDATION — ACM can take a few minutes to pick up the DNS record. I'll set a watcher to tell us when it flips to ISSUED.
+[1 tool result(s) compacted: watch_aws_resource — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No problem — I'll poll manually in a moment. Let me also create the plan file so it's documented for future reference.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the cert status again.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still pending — ACM can take a few minutes to propagate. Let me wait a moment and check again.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still pending. ACM DNS validation can take up to a few hours in some cases, but usually resolves within minutes. Let me wait a bit longer.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -219,6 +249,7 @@ go ahead
 ### 🤖 Autopilot
 
 Let me check the handoff registry first, then proceed to Unit 2.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -312,4 +343,98 @@ Want me to proceed to **Unit 3** (cleanup — remove the old Comodo DNS validati
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo | openssl s_client -connect getdata.io:443 -servername getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>&1 | head; sleep 15 && echo | openssl s_client -connect getdata.io:443 -servername getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates; echo | openssl s_client -connect www.getdata.io:443 -servername www.getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>&; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9177] [Handoff context — this Telegram topic (thread 9177) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it all.
+
+
+### 🤖 Autopilot
+
+Proceeding to **Unit 3: Cleanup** — remove the old Comodo DNS validation CNAME records from the `getdata.io` hosted zone in Explorya.
+
+Let me check what old validation records exist.
+
+
+### 🤖 Autopilot
+
+Found it — `getdata.io` hosted zone is `Z1WSQ5L32FCMCC`. Let me list the records and find the old Comodo validation CNAMEs.
+
+
+### 🤖 Autopilot
+
+Found the old Comodo validation CNAMEs. These are the expired cert's validation records that can be cleaned up:
+
+1. **`5ae60df7af05d72938731edf21c03a8d.getdata.io`** → `*.comodoca.com` (old Comodo)
+2. **`_9e7da9668b015f3183da1358e51c06f9.getdata.io`** → `*.comodoca.com` (old Comodo)
+3. **`_bd012ac3889dac7feea4c25e00ed644a.getdata.io`** → `*.comodoca.com` (old Comodo)
+
+The new ACM validation record (`_9ef609a13ec8920f051efb34e52d6ba2`) stays — it's the active cert's validation.
+
+Let me remove the three old Comodo records.
+
+
+### 🤖 Autopilot
+
+All three old Comodo validation CNAMEs deleted. Let me also remove the expired cert from the ALB listener (it's no longer the default, but it's still attached as a secondary SNI cert).
+
+
+### 🤖 Autopilot
+
+Expired cert fully removed from the listener. Let me do a final verification.
+
+
+### 🤖 Autopilot
+
+## ✅ All 3 Units Complete — SSL Recovery Done
+
+| Unit | Action | Status |
+|------|--------|--------|
+| **Unit 1** | Request ACM cert + DNS validation | ✅ **ISSUED** — `getdata.io` + `*.getdata.io` |
+| **Unit 2** | Attach cert to `krake-ror-1` ALB HTTPS listener | ✅ **LIVE** — Amazon RSA 2048 M01, valid to 2027-01-31 |
+| **Unit 3** | Cleanup expired Comodo records | ✅ **DONE** — 3 old CNAMEs deleted from Route53, expired cert removed from ALB |
+
+**TLS verified:** `getdata.io:443` now serves the auto-renewing Amazon ACM cert. No more expired Comodo cert.
+
+I'll also register this execution in the handoff manifest so it's tracked.
+
+
+### 🤖 Autopilot
+
+Let me register this execution in the manifest.
+
+
+### 🤖 Autopilot
+
+## ✅ SSL Recovery — Fully Complete
+
+Here's the full recap for your records:
+
+### What was done
+| # | Action | Detail |
+|---|--------|--------|
+| **1** | ACM cert requested | `getdata.io` + `*.getdata.io` in Nelanco (us-east-1) |
+| **2** | DNS validation | Added CNAME to `getdata.io` hosted zone in **Explorya** Route53 |
+| **3** | Cert attached to ALB | Replaced expired Comodo cert on `krake-ror-1` HTTPS listener (port 443) |
+| **4** | Old records cleaned | 3 Comodo validation CNAMEs deleted from Route53 |
+| **5** | Expired cert removed | Old cert detached from ALB listener |
+
+### Result
+- **Issuer:** Amazon RSA 2048 M01
+- **Valid:** 2026-07-18 → 2027-01-31
+- **Auto-renewing:** ✅ (ACM handles it, no more manual Comodo renewals)
+- **TLS verified:** `getdata.io:443` serving new cert
+
+### Registered
+- PR [#692](https://github.com/TrueSightDAO/agentic_ai_context/pull/692) — handoff manifest updated with completion record
+- Plan file created at `plans/GETDATA_IO_SSL_RECOVERY_PLAN.md`
+
+Anything else you need while I'm in this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo | openssl s_client -connect getdata.io:443 -servername getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>&1
 
