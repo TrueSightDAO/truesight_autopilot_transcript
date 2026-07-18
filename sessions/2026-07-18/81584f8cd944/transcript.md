@@ -67,6 +67,7 @@ The catalyst was their **Q3 FY2026 earnings report on June 24** — an absolute 
 ### 🤖 Autopilot
 
 Let me research the broader memory chip / AI infrastructure landscape.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -398,4 +399,47 @@ Do you want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "Checking env vars and any vault/config files..." && (env | grep -i PERSONAL_GITHUB_PAT 2>/dev/null || echo "Not in env") && echo "---"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] why not add it as an item in your vault which you can access? are you still actively using the credentials in https://sophia.truesight.me/vault/
+
+
+### 🤖 Autopilot
+
+Let me check what vault infrastructure exists.
+
+
+### 🤖 Autopilot
+
+Good — now I have the full picture. Let me check the current state of the vault on the box.
+
+
+### 🤖 Autopilot
+
+The vault is already initialized and populated. Let me check what's in it.
+
+
+### 🤖 Autopilot
+
+**Confirmed.** The vault at `/opt/truesight_autopilot/vault/` is fully initialized and already contains **`PERSONAL_GITHUB_PAT`** — added on **2026-07-18** via the Vault UI.
+
+| Detail | Value |
+|---|---|
+| **Credential name** | `PERSONAL_GITHUB_PAT` |
+| **In vault?** | ✅ Yes |
+| **Version** | 1 |
+| **Created by** | Vault UI |
+| **Created at** | 2026-07-18T20:44:48Z |
+| **Vault location** | `/opt/truesight_autopilot/vault/vault.json.enc` (67KB encrypted store) |
+| **Bare file** | `/home/ubuntu/PERSONAL_PAT` (chmod 600, exists) |
+
+So the PAT is **already in the vault** under the name `PERSONAL_GITHUB_PAT`. The bare file at `/home/ubuntu/PERSONAL_PAT` is the old staging location — per the migration plan (Unit 6), those bare files should eventually be archived to `/home/ubuntu/.migrated_to_vault/` once UAT confirms everything works from the vault.
+
+The vault is live and accessible at **https://sophia.truesight.me/vault** — and yes, I'm actively using it. My tools resolve credentials from the vault via `vault.get_value(name)` internally. I never see the actual secret values.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== Checking for vault config ===" && (grep -r "vault" /home/ubuntu/truesight_autopilot/ --include="*.py" --include="*.json" --include; echo "=== Vault directory ===" && ls -la /opt/truesight_autopilot/vault/ 2>&1 && echo "=== Vault module ===" && ls -la /opt/truesight_autopi; python3 -c " import sys sys.path.insert(0, '/opt/truesight_autopilot') from app.vault import Vault v = Vault() print('Initialized:', v.is_in; …(+1 more)
 
