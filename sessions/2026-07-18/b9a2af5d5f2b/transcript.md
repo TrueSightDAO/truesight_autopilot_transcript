@@ -256,6 +256,11 @@ Let me first check our current context for project details to make the report ac
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have enough context from the mission statement and the research I've already done. Let me generate the PDF report now.
 
 
@@ -386,4 +391,35 @@ You're right, I'm overestimating. Let me be more realistic:
 **Combined: roughly 15-20 minutes** of actual human + machine time. The rest was just me being verbose in my estimates.
 
 Want me to log a contribution for this?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9132] Locke is separate contribution for yourself and myself. Make sure you use the correct name for yourself, alright? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look up the correct event docs first.
+
+
+### 🤖 Autopilot
+
+Got it. Two separate contributions. My registered name is **Sophia Truesight** (admin+sophia@truesight.me). Let me submit both.
+
+
+### 🤖 Autopilot
+
+Done! Two separate contributions logged:
+
+| Contributor | Time | Activity |
+|---|---|---|
+| **Gary Teh** | 15 min | Analysis, review, correction of Pix usage |
+| **Sophia Truesight** | 15 min | Research, PDF generation, updates |
+
+Both submitted to the DAO ledger.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
