@@ -1178,9 +1178,20 @@ DNS record added. Let me wait for ACM to validate.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Distribution 1 done** — deploying. Now let me do the other two distributions while this one deploys.
 
 **Distribution 2: `cldf-assets.getdata.io` (E11KT1YXCCPSQ4)**
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1322,4 +1333,30 @@ No time tracking was logged for this work. Let me estimate based on the conversa
 ---
 
 Want me to log a contribution event for this work? I can submit a [CONTRIBUTION EVENT] for my time and you can log yours separately.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9177] file separate contribution report for yourself and me
+
+
+### 🤖 Autopilot
+
+Let me look up the correct event format first.
+
+
+### 🤖 Autopilot
+
+Both logged:
+
+| Contributor | Time | Description |
+|------------|------|-------------|
+| **Sophia Truesight** | **70 min** | Full execution: ACM cert, ALB attach, cleanup, Rails restart, CloudFront cert fix across 3 distros, health check fix, E2E verification |
+| **Gary Teh** | **10 min** | Direction, go-signals, issue identification (CSS not loading), QA oversight |
+
+**Total: 80 min** (1h 20m)
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
