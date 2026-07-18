@@ -20,6 +20,7 @@ https://www.nbcnews.com/world/brazil/us-launches-tariffs-25-tax-brazil-imports-r
 ### 🤖 Autopilot
 
 Let me read that article.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -153,4 +154,60 @@ Cocoa beans fit #3 — the US doesn't grow cacao at commercial scale. There's no
 ### Bottom line
 
 **Cacao is safe from this specific tariff.** The deforestation angle the US cited actually works in our favor — our traceable, regenerative supply chain is exactly the kind of provenance that could qualify for preferential treatment under future trade actions.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9132] Also research on PIX
+
+
+### 🤖 Autopilot
+
+Let me get the full Atlantic Council analysis — that's the best deep dive on the Pix angle.
+
+
+### 🤖 Autopilot
+
+Here's the full picture on Pix:
+
+---
+
+## Pix & the Brazil Section 301 Tariff — Why the US Targeted It
+
+### What Pix is
+
+Pix is Brazil's **central bank-run instant payment system** — launched by the Banco Central do Brasil in 2020. It lets individuals, businesses, and government entities send money in seconds, 24/7, for free (individuals) or near-free (businesses). By 2025, it processed **$6.7 trillion** in transactions and is on track to capture half of Brazil's e-commerce by 2028.
+
+### Why the US targeted it
+
+The USTR determination mentions Pix **more than 20 times**. The core complaint is that Brazil's central bank plays a **dual role** — both regulator of the payments market AND owner-operator of Pix — creating an inherent conflict of interest.
+
+Specifically, USTR identified **four unfair features**:
+
+| Pix Feature | Brazil's rationale | US complaint |
+|---|---|---|
+| **Mandatory participation** by large financial institutions | Drives adoption & liquidity | Forces banks into a state-run system, locking out private competitors |
+| **Prominent placement** in banking apps | User convenience | Government mandates preferential UI placement over private options |
+| **Free for individuals, capped fees for businesses** | Financial inclusion | Below-market pricing that private competitors can't match |
+| **Private firms bear fraud/compliance costs** on public infrastructure | Shared responsibility for system integrity | Costs imposed on private firms without corresponding control |
+
+### The bigger picture
+
+This is **the first Section 301 case ever** to treat a country's domestic payment system as a US trade enforcement issue. The Atlantic Council notes this sets a **precedent** — Europe's digital euro development is now squarely in the crosshairs.
+
+### What this means for TrueSight DAO
+
+**Directly: minimal impact.** We don't operate a payment system. We use Stripe, crypto, and bank transfers — not Pix.
+
+**Indirectly: two strategic angles:**
+
+1. **Brazil retaliation risk** — Brazil has already invoked its Economic Reciprocity Law, opening the door to suspending US intellectual property rights and trade concessions. If Brazil retaliates against US digital services, it could affect Stripe/payment processing costs for our Brazil-side operations.
+
+2. **The deforestation link** — interestingly, Pix being targeted alongside deforestation in the same action creates a narrative bridge. The US is saying: "Brazil's state-run digital infrastructure AND its environmental enforcement are both trade issues." For us, this reinforces the value of **decentralized, transparent systems** — our blockchain traceability for cacao is the opposite of the opaque state-run model the US is pushing back against.
+
+3. **Crypto angle** — if the US is now willing to use trade law to challenge state-run payment systems, that's actually a tailwind for decentralized payment alternatives. Our DApp and any future token-based payment rails become more strategically valuable in a world where state payment systems are trade-war targets.
+
+### Bottom line
+
+Pix was a **major driver** of the tariff action (one of the six cited issue areas), but it doesn't directly affect our operations. The indirect effects — Brazilian retaliation, the precedent for targeting digital infrastructure, and the reinforcement of decentralized alternatives — are worth watching.
 
