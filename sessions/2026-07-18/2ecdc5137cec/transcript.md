@@ -447,21 +447,50 @@ Confirmed — the expired imported cert is the only one. Let me check what's usi
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me check what's at that ELB name and the IP 54.175.238.11.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: ssh_run, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the DNS resolves to 6 different IPs, not the ELB alias. The ELB `krake-ror-1` is gone but the Route53 alias still points to it. Let me check what's actually at those IPs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 So HTTP works (301 → HTTPS) but HTTPS hangs — the expired cert is being served and the connection stalls. The `Server: awselb/2.0` header confirms it IS an ELB, but the ELB name `krake-ror-1` is gone. Let me check if it was renamed or if there's a new ELB.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zero load balancers in Explorya. Let me check Nelanco.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -570,4 +599,31 @@ PR [#688](https://github.com/TrueSightDAO/agentic_ai_context/pull/688) opened. H
 5. **Why Claude failed** — explicit note that the ALB is in Nelanco, not Explorya, and to always check both accounts.
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8764] merge it
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. ✅
+
+**What I did this turn:**
+- Opened PR [#688](https://github.com/TrueSightDAO/agentic_ai_context/pull/688) — added **§8 — getdata.io SSL/TLS Certificate Topology** to `infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md`
+- Documents the cross-account topology (Route53 in Explorya, ALB in Nelanco), all 5 endpoints with their expired imported cert, the root cause, and the fix procedure
+- Explicitly flags why Claude got confused (only checked Explorya for the ALB)
+- Merged on your command
+
+**RESUME HERE →** The SSL situation is now documented. If you want me to actually **fix** the expired certs (request new Amazon-issued ones and swap them onto the ALB + CloudFront), say the word and I'll start executing the fix procedure from §8.3.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #688 on agentic_ai_context merged successfully (sha: 835131d9bfcedcc9d421872db233b2c356ec63d5). Pull Request successfully merged
 
