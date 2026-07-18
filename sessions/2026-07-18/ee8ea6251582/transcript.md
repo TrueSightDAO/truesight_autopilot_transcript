@@ -909,6 +909,11 @@ Those orphaned bullets are from the WeasyPrint HTML — probably empty `<li>` el
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the actual HTML that was used to generate the WeasyPrint PDF.
 
 
@@ -1048,4 +1053,35 @@ All in, probably **45–60 minutes** of compute/processing time.
 **Total team time: ~1–1.5 hours** to go from "Anabel wants 50,000 tons/month" to a polished bilingual PDF ready to send.
 
 For a potential **$200M+/year** deal flow, that's a pretty good return on time investment. Want me to log this as a contribution event?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9025] Check your name to use to report contribution as well as mine
+
+
+### 🤖 Autopilot
+
+Let me look up the correct event format.
+
+
+### 🤖 Autopilot
+
+Now let me submit the contribution event for both of us.
+
+
+### 🤖 Autopilot
+
+Done. Two contributions logged:
+
+| Contributor | Time | Description |
+|---|---|---|
+| **Sophia Truesight** (admin+sophia@truesight.me) | 60 min | Full research, compilation, PDF generation, CJK rendering fix |
+| **Gary Teh** (garyjob@agroverse.shop) | 20 min | Historical context, requirements, review & corrections |
+
+Total team time: **80 minutes** logged.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
