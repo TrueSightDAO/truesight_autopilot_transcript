@@ -904,6 +904,7 @@ The vault is running locally on port 8002. Let me access it directly.
 ### 🤖 Autopilot
 
 There's a `/vault/api/credentials` endpoint. Let me try that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1006,4 +1007,58 @@ Great question. Let me compare what I found online vs what's already in your rep
 ### Suggested update
 
 I can push an updated `apld-applied-digital.md` to your repo that merges both our findings — keeping your structure, adding the missing pieces. Want me to do that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9026] dig deep and then add the analysis in there
+
+
+### 🤖 Autopilot
+
+Let me do one more deep pass on APLD before writing it up.
+
+
+### 🤖 Autopilot
+
+Excellent — I now have a comprehensive picture. Let me write the updated analysis and push it to your repo.
+
+
+### 🤖 Autopilot
+
+Now let me also update the BACKLOG to log this session, then commit and push.
+
+
+### 🤖 Autopilot
+
+Done. Here's what I pushed to your repo:
+
+---
+
+### ✅ Updated `analyses/2026-07-18/apld-applied-digital.md`
+
+The analysis now covers **13 sections**:
+
+| Section | What's New |
+|---|---|
+| **Financial Snapshot** | $2.1B cash, $2.62B debt, -$720M FCF, $94.7M quarterly SBC |
+| **Contracted Backlog** | $16B confirmed / $23B pipeline — CoreWeave 400 MW + IG hyperscaler 600 MW |
+| **Recent Catalysts** | Timeline from May 20 to Jul 17 — Building 2 delivered, $1.59B notes, stock down 49% |
+| **Analyst Coverage** | Strong Buy consensus, median $76, range $48–$106 |
+| **Bull Case** | 7 arguments including demand tailwind, execution track record, Goldman backing |
+| **Bear Case** | 11 risks including **insider selling**, cash burn, debt load, dilution |
+| **Insider Trading** | ⚠️ **Full table** — CEO sold $6M at $36, directors sold at $35–$38, **zero insider buying** |
+| **Competitive Positioning** | vs CoreWeave, Equinix, Digital Realty, Vantage |
+| **Jul 27 Catalyst** | What to watch, 4 scenarios with estimated stock reactions |
+| **Technical Picture** | Support $24/$20.55, resistance $33/$42/$50.73, beta 5.68 |
+| **Synthesis** | Bull/bear paths, bottom line, active monitoring required |
+| **Key Dates** | Timeline through 2027 |
+
+Also updated `BACKLOG.md` with follow-up items to track (APLD Jul 27, CoreWeave health, AI infra comps).
+
+**Commit:** `c2ea137` — pushed to `main` on `garyjob/perch-market-analysis`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/perch-market-analysis && git pull origin main 2>&1; cat > /tmp/perch-market-analysis/analyses/2026-07-18/apld-applied-digital.md << 'ANALYSIS_EOF' # APLD (Applied Digital) — AI Infrastructure ; cat > /tmp/perch-market-analysis/BACKLOG.md << 'BACKLOG_EOF' # Perch Market Analysis Backlog Personal backlog for periodic market analysis u; …(+1 more)
 
