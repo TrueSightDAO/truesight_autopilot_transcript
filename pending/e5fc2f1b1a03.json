@@ -61,5 +61,12 @@
     "summary": "The `action=triggerSync` endpoint in the GAS web app (`doGet`) calls `syncAllPerformanceStatistics()` which times out via HTTP (exceeds GAS 30s limit) because it iterates all AGL ledgers. \n\nThe `USD_T",
     "action": "merge_pr",
     "created_at": "2026-07-15T19:13:49Z"
+  },
+  {
+    "title": "Merge PR #170 on go_to_market",
+    "qr_code": "",
+    "summary": "PR1 from WARMUP_CONVERSION_IMPROVEMENT_PLAN.md: Stop wasting sends on confirmed dead ends.\n\nChanges to `scripts/suggest_warmup_prospect_drafts.py`:\n\n1. Add constant `AUTO_REPLY_LOGGED_GMAIL_LABEL = \"A",
+    "action": "merge_pr",
+    "created_at": "2026-07-18T21:27:40Z"
   }
 ]
