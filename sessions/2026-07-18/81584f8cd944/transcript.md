@@ -448,11 +448,28 @@ Let me check what vault infrastructure exists.
 ### 🤖 Autopilot
 
 Good — now I have the full picture. Let me check the current state of the vault on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault is already initialized and populated. Let me check what's in it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -486,6 +503,17 @@ The vault is live and accessible at **https://sophia.truesight.me/vault** — an
 ### 🤖 Autopilot
 
 Let me check what that repo looks like and understand the current market analysis workflow.
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -585,4 +613,16 @@ Want me to also set up a simple GitHub Action that auto-generates an index page 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → python3 -c " import sys sys.path.insert(0, '/opt/truesight_autopilot') from app.vault import Vault v = Vault() pat = v.get_value('PERSONAL_G; cd /tmp && GIT_PAT=$(python3 -c " import sys; sys.path.insert(0, '/opt/truesight_autopilot') from app.vault import Vault; print(Vault().get_; cd /tmp && rm -rf perch-market-analysis && GIT_PAT=$(python3 -c " import sys; sys.path.insert(0, '/opt/truesight_autopilot') from app.vault ; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] perfect!
+
+
+### 🤖 Autopilot
+
+Glad it worked. The repo is now live with today's analyses and the pipeline is set — any future market analysis we do in chat gets auto-committed as a dated markdown file.
+
+Want to look at anything else while we're here?
 
