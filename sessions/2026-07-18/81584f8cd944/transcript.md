@@ -24,6 +24,7 @@ Let me search the web for the latest on MU (Micron Technology) stock price movem
 ### 🤖 Autopilot
 
 Let me get a clearer picture of the recent catalyst.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -376,4 +377,25 @@ Anything else you want me to check on the box?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /home/ubuntu/PERSONAL_PAT 2>&1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] can you verify that it has already been added into your vault at PERSONAL_GITHUB_PAT
+
+
+### 🤖 Autopilot
+
+It's **not loaded anywhere yet** — not in environment variables, not in `.bashrc`/`.profile`/`.env`, and not referenced in the autopilot codebase.
+
+The file `/home/ubuntu/PERSONAL_PAT` exists with correct permissions (600), but the value hasn't been wired into the system as `PERSONAL_GITHUB_PAT`. 
+
+Do you want me to:
+1. **Source it into the current session** (add to `.bashrc` so it loads on login)
+2. **Add it to the autopilot's `.env`** so the Python process picks it up
+3. Or just confirm the file content is correct first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "Checking env vars and any vault/config files..." && (env | grep -i PERSONAL_GITHUB_PAT 2>/dev/null || echo "Not in env") && echo "---"
 
