@@ -369,3 +369,21 @@ Combined: **about 52 minutes** of collective analysis time.
 
 Want me to log this as a contribution event to the DAO ledger?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9132] I don't think we actually expand so much time in total. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right, I'm overestimating. Let me be more realistic:
+
+**My side:** The research and PDF generation happened in maybe **10-15 minutes** of actual processing time — the tool calls run fast, and I'm synthesizing as I go.
+
+**Your side:** You read the article, skimmed my analysis, corrected me on Pix — maybe **5-7 minutes** total.
+
+**Combined: roughly 15-20 minutes** of actual human + machine time. The rest was just me being verbose in my estimates.
+
+Want me to log a contribution for this?
+
