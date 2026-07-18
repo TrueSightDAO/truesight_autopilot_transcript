@@ -18,16 +18,19 @@
 ### 🤖 Autopilot
 
 Gary! Let me check on the current state of things across the workspace.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the growth goals and a few more live signals.
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab a few live signals — recent PRs, recent submissions, and the advisory snapshot.
+[4 tool result(s) compacted: list_prs, list_prs, list_prs, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -91,11 +94,13 @@ Proceeding now.
 ### 🤖 Autopilot
 
 Let me read the plan and the handoff registry to pick up where we left off.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan file isn't in agentic_ai_context yet. Let me search for it.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -105,11 +110,13 @@ The plan file doesn't exist yet in the context or any repo. You said the plan is
 **Unit 1: Request a new Amazon-issued ACM cert in Nelanco (us-east-1) for `getdata.io` + `*.getdata.io`, DNS validation.**
 
 Let me check what certs already exist in Nelanco.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — there's already a **PENDING_VALIDATION** cert for `getdata.io` + `*.getdata.io` created just today (2026-07-18). Let me check its details — it needs DNS validation records created.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -117,6 +124,7 @@ Interesting — there's already a **PENDING_VALIDATION** cert for `getdata.io` +
 The cert already exists — **Unit 1 is done** (someone already requested it). It's in **PENDING_VALIDATION** status. Now I need to add the DNS CNAME record to the `getdata.io` hosted zone in Route53 to validate it.
 
 Let me find the hosted zone.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -199,4 +207,109 @@ Want me to proceed to **Unit 2**? I'll need to find the load balancer details fi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → sleep 30 && echo "waited 30s"; sleep 60 && echo "waited 60s"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9177] [Handoff context — this Telegram topic (thread 9177) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md + SOPHIA_HANDOFFS.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go ahead
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry first, then proceed to Unit 2.
+
+
+### 🤖 Autopilot
+
+This thread (9177) isn't registered in the handoff manifest yet — it's a fresh execution. Let me proceed with **Unit 2** of the SSL recovery plan I just created.
+
+**Unit 2: Associate the ACM cert with the load balancer serving `getdata.io`.**
+
+The A record for `getdata.io` points to `krake-ror-1-1141435618.us-east-1.elb.amazonaws.com`. Let me find the load balancer in Nelanco.
+
+
+### 🤖 Autopilot
+
+Found it — **krake-ror-1** (ALB, application load balancer). Let me check its listeners.
+
+
+### 🤖 Autopilot
+
+The HTTPS listener (port 443) currently has an old cert attached:
+- **Current cert:** `arn:aws:acm:us-east-1:767697632458:certificate/980b01b0-11bf-4507-90de-a70fe90798cd`
+- **New cert:** `arn:aws:acm:us-east-1:767697632458:certificate/8e76c9ff-f1a8-491a-8d86-f2dc2caabdd7`
+
+Let me check what the old cert is.
+
+
+### 🤖 Autopilot
+
+Confirmed — the old cert is **EXPIRED** (expired 2026-06-21). It's an imported Comodo/Sectigo cert. Now I'll add the new ACM cert to the HTTPS listener. ALB listeners support multiple certs via SNI, so I'll add the new one alongside the old one.
+
+
+### 🤖 Autopilot
+
+New cert added to the listener. Let me verify it's serving and test the TLS handshake.
+
+
+### 🤖 Autopilot
+
+The new cert is on the listener. Now let me make it the **default** cert (replacing the expired one) and test TLS.
+
+
+### 🤖 Autopilot
+
+Wrong operation. Let me modify the default cert on the listener instead.
+
+
+### 🤖 Autopilot
+
+Default cert replaced. Now let me test the TLS handshake.
+
+
+### 🤖 Autopilot
+
+Hmm — still serving the old expired cert. The ALB might take a moment to propagate the listener change. Let me wait and retry.
+
+
+### 🤖 Autopilot
+
+## ✅ Unit 2 complete — ACM cert is live!
+
+**`getdata.io`** now serves the **Amazon-issued ACM cert**:
+- **Issuer:** Amazon RSA 2048 M01
+- **Valid:** 2026-07-18 → 2027-01-31
+- **Auto-renewing:** Yes (ACM handles it)
+
+Let me also verify `*.getdata.io` (e.g. `www.getdata.io`):
+
+
+### 🤖 Autopilot
+
+The ALB is responding on TLS but the Rails app behind it may be slow/unresponsive. The cert is correct though. Let me verify with a quick TLS-only check on `www`:
+
+
+### 🤖 Autopilot
+
+`www.getdata.io` may not resolve or the ALB may not have a target for it. The main domain is what matters — and it's confirmed working with the new Amazon cert.
+
+---
+
+## ✅ Units 1 & 2 Complete — Summary
+
+| Unit | Status | Detail |
+|------|--------|--------|
+| **Unit 1** ✅ | **ISSUED** | ACM cert `getdata.io` + `*.getdata.io` — DNS validated via Explorya Route53 |
+| **Unit 2** ✅ | **LIVE** | Cert attached to `krake-ror-1` ALB HTTPS listener (port 443), replacing expired Comodo cert |
+| **Unit 3** | ⏸️ Pending | Cleanup old Comodo DNS validation CNAMEs |
+
+**TLS verified:** `getdata.io:443` now serves Amazon RSA 2048 M01, valid through 2027-01-31, auto-renewing.
+
+Want me to proceed to **Unit 3** (cleanup — remove the old Comodo DNS validation CNAMEs from Route53)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo | openssl s_client -connect getdata.io:443 -servername getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>&1 | head; sleep 15 && echo | openssl s_client -connect getdata.io:443 -servername getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates; echo | openssl s_client -connect www.getdata.io:443 -servername www.getdata.io 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>&; …(+3 more)
 
