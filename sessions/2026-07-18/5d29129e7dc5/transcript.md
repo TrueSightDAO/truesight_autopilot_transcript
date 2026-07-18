@@ -422,6 +422,16 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is the **dial-in details** section of the same press release. Here's the clean version:
 
 ### APLD Earnings Call — Dial-In Details
@@ -469,6 +479,11 @@ Extracted text:
 ```
 3:29 oat] LTE QD Erte News 2 Q capital; availability of project and other financing to continue to grow our business; decline in demand for our products and services; maintenance of third party relationships; and conditions in the debt and equity capital markets. A further list and description of these risks, uncertainties and other factors can be found in the company’s most recently filed Annual Report on Form 10-K and Quarterly Report on Form 10-Q, including in the sections captioned “Forward-Looking Statements” and “Risk Factors,” and in the company’s subsequent filings with the Securities and Exchange Commission. Copies of these filings are available online at , on the Company’s website ( ) under “Investors,” or on request from the Company. Information in this release is as of the dates and time periods indicated herein, and the Company does not undertake to update any of the information contained in these materials, except as required by law. i rr PNeteren Te Watchlist Be ICs Vola
 ```
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -739,4 +754,38 @@ The repo `garyjob/perch-market-analysis` doesn't seem to exist publicly — I go
 2. **If you want me to analyze it**, I can read the contents once I have access — whether that's making the repo public or providing the PAT.
 
 What's in the repo — is it a stock analysis tool, a trading bot, or market research? If you give me access, I can review the code and give you my thoughts.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9026] it is a private. but you have the ssh access isnt it?
+
+
+### 🤖 Autopilot
+
+You're right — I have SSH access to the autopilot box, but that doesn't give me access to your **personal GitHub private repo** (`garyjob/perch-market-analysis`). SSH keys on this box are configured for the **TrueSightDAO GitHub org**, not your personal GitHub account.
+
+To access your private repo, I'd need either:
+
+1. **Your PERSONAL_GITHUB_PAT** from the vault — you could share it here (or tell me how to pull it from the vault)
+2. **Or you could add this box's SSH public key** as a deploy key on that repo
+
+Let me check if there's already a GitHub PAT configured on this box that might work:
+
+
+### 🤖 Autopilot
+
+No GitHub PAT is set in the environment, and there's no personal SSH key on this box that would authenticate to your GitHub account.
+
+**Two easiest options:**
+
+1. **Share the PAT with me** — you can paste it here (it's a one-time use in this conversation, I won't store it). I'll use it to clone/read the repo and give you my analysis.
+
+2. **Or paste the repo contents** — if it's not too large, you could just share the key files or a summary of what it does.
+
+What's the repo about? Is it a stock screener, backtesting tool, or something else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → env | grep -i GITHUB_PAT; ls -la ~/.ssh/ 2>/dev/null; cat ~/.ssh/id_ed25519.pub 2>/dev/null || cat ~/.ssh/id_rsa.pub 2>/dev/null || echo "No
 
