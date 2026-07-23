@@ -111,3 +111,34 @@ Xinhui chenpi pricing is entirely driven by **age** and **provenance** (core产�
 
 **Bottom line:** Both are age/quality-tiered luxury agricultural products. Wild Wisconsin ginseng at the top end ($2,200–$5,500/kg) and 20-year Xinhui chenpi ($8,200–$27,400/kg) occupy similar "ultra-premium collectible" territory. The chenpi market has a steeper age curve — 3yr is cheap ($41–$164/kg) while 20yr+ rivals top-tier ginseng. Both face counterfeit risks and are seeing blockchain traceability adoption to protect provenance premiums.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9402] Can you generate PDF format so that we can easily see? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me generate a clean PDF with the pricing data in a table format.
+
+
+### 🤖 Autopilot
+
+Now let me upload it to GitHub so you can access it.
+
+
+### 🤖 Autopilot
+
+Done! The PDF is ready. Here's the link:
+
+**https://github.com/TrueSightDAO/agentic_ai_context/blob/main/reports/wisconsin_ginseng_xinhui_chenpi_pricing.pdf**
+
+It's a 2-page saffron-branded PDF with:
+
+- **Page 1** — Wisconsin ginseng ladder: cultivated ($58/kg bulk → $161 retail) vs wild ($1,543–$5,512/kg)
+- **Page 1** — Market context on Canadian competition and trade war pressure
+- **Page 2** — Xinhui chenpi ladder: 3-year ($41–$164/kg) → 20-year+ ($8,219–$27,397/kg)
+- **Page 2** — Core产区 premiums, counterfeit warnings, and a side-by-side comparison table
+
+You can download or view it directly from that link.
+
