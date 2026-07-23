@@ -818,11 +818,13 @@ Let me search the full data for "hearth" or "seoul" or "support@hearth".
 ### 🤖 Autopilot
 
 Let me search the raw data for "hearth" case-insensitively.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the data but can't grep it in this view. Let me check the Email column specifically for "hearth" or "seoul" or "support@".
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -950,4 +952,25 @@ Gary
 ---
 
 Want me to create it as a Gmail draft for you to review before sending?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9288] [Handoff context — this Telegram topic (thread 9288) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+Creating the draft now.
+
+
+### 🤖 Autopilot
+
+Draft created in Gary's Gmail inbox — **draft ID: r-676429829333288597** in the thread with Christine. You can review and send from your Gmail when ready.
+
+---
+
+Now, back to the execution roadmap — **PR2** (segment the first-touch pitch by prospect type) is the next unit. Want me to proceed with that?
 
