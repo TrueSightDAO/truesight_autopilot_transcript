@@ -693,17 +693,35 @@ Let me check the Hit List to see the current status.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 That's the Ledger History sheet, not the Hit List. Let me find the Hit List sheet name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Hit List is a different sheet. Let me find it.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the Hit List spreadsheet ID now: `1eiqZr3LW-qEI6Hmy0Vrur_8flbRwxwA7jXVrbUnHbvc`. Let me find the Hearth and Seoul row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -812,6 +830,83 @@ So the warm-up script sent 5 emails to her over 5 weeks without the auto-reply p
 
 1. **Reply to Christine** confirming removal and apologizing for the repeated sends
 2. **Add her email to a suppression list** so the automation doesn't keep drafting to `support@hearthandseoul.com`
+
+Want me to draft the opt-out confirmation reply?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9288] If her email is not in the hit list how are we generating an email to send to her then??
+
+
+### 🤖 Autopilot
+
+Great question. Let me trace how the warm-up pipeline discovers prospects.
+
+
+### 🤖 Autopilot
+
+Let me look at the warm-up prospect draft script to see how it discovers targets.
+
+
+### 🤖 Autopilot
+
+Now I see it clearly. The script only loads targets from the **Hit List** where Status = `"AI: Warm up prospect"`. So Hearth and Seoul must have been in the Hit List at some point with that status, or the email was added via a different path.
+
+Let me check the Email Agent Follow Up log for Hearth and Seoul to see how it got there.
+
+
+### 🤖 Autopilot
+
+**8 emails sent** over 3 months (Apr 24 → Jul 22). The first one (Apr 24) has label `Label_15` — let me check what that is.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. The first email (Apr 24) has `Label_15` = **"AI/Sent Warm-up"** — this was sent by the warm-up automation. But Hearth and Seoul isn't in the Hit List today.
+
+Let me check if she **was** in the Hit List and got removed, or if the email was sent via a different mechanism. Let me look at the first email thread.
+
+
+### 🤖 Autopilot
+
+This was sent via the warm-up automation (has `AI/Sent Warm-up` label). But she's not in the Hit List now. Let me check if the Hit List has more rows beyond 200, or if she was removed.
+
+
+### 🤖 Autopilot
+
+**Found her!** Row 199 — **"Hearth and Seoul Herbal Shop"** is in the Hit List. I missed it earlier because I only scanned the first 200 rows and she's at the very end of that range. Let me get her full row data.
+
+
+### 🤖 Autopilot
+
+That's row 199 but it's "UnEarthed" — let me find the actual Hearth and Seoul row. The column A data showed it at position 199 in the array (0-indexed), but the sheet rows are 1-indexed. Let me search more precisely.
+
+
+### 🤖 Autopilot
+
+There she is — **Row 229** (A229). Let me get her full row.
+
+
+### 🤖 Autopilot
+
+**She IS in the Hit List.** Row 229, Status: **"Rejected"**, classified as `hard_no` by the reply classifier.
+
+Here's the full timeline from the Notes:
+
+1. **Mar 21** — Added via DApp
+2. **Apr 9** — Grok photo scan → `AI: Shortlisted` (0.95 confidence)
+3. **Apr 10** → `AI: Enrich with contact`
+4. **Apr 11** → `AI: Email found` → `AI: Warm up prospect`
+5. **Apr 24 → Jul 22** — 8 warm-up emails sent (the auto-reply parking should have kicked in)
+6. **Jul 22** — Christine replied: *"Please take me off your mailing list."*
+7. **Jul 22** — Classified as `hard_no` → Status set to **"Rejected"**
+
+So the auto-reply parking from **PR1** (which I just merged) should have caught this — but it was only merged today, so it wasn't running when these 8 sends went out over the past 3 months. The parking fix is now live on `main`.
+
+**What to do now:**
+1. **Reply to Christine** confirming removal and apologizing
+2. The row is already marked **Rejected** so the automation won't draft to her again
 
 Want me to draft the opt-out confirmation reply?
 
