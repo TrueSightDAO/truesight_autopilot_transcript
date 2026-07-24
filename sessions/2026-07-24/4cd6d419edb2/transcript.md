@@ -32,6 +32,11 @@ Let me process this feedback from Dr. Ye (叶医生) and organize it for the DAO
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — this is new feedback not yet in the DAO context. Let me log it properly.
 
 Gary, here's the structured summary of Dr. Ye's (叶医生) latest product feedback:
@@ -91,11 +96,18 @@ at mse 71) 4 Sem aces Mold Neti 2026/7/13. Or cei tsi ree
 ### 🤖 Autopilot
 
 The OCR quality is poor (22.6%) — the image likely contains handwritten Chinese text or a photo of notes that Tesseract couldn't read well. Let me try Grok vision to get a better read on it.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image is this one: `/tmp/tg_attachments/9dca00de878a4b7aaa74dc3015e6b38f.jpg` (85 KB). The OCR gave gibberish — likely handwritten Chinese. Let me try OCR with Chinese language support.
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -150,6 +162,7 @@ Liz表哥也说到中国可卡的饮料还没有人做，有市场。和Dr Ye说
 ### 🤖 Autopilot
 
 Let me try to get something from this image.
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -301,4 +314,66 @@ Done! Here's what I compiled and pushed:
 ---
 
 Want me to also log a contribution for the research time? And would you like me to share this with Dr. Ye for her review?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you generate a PDF on the case to help with the team to consolidate for Dr Ye as well as Liz’s cousin as well as another group in Chao Shan that Liz will be introducing to
+
+
+### 🤖 Autopilot
+
+Let me first check what we have on the Chaoshan (潮汕) group.
+
+
+### 🤖 Autopilot
+
+No prior context on the Chaoshan group. Let me generate the PDF now — I'll make it a comprehensive deck covering the full case: market opportunity, medical benefits, TCM integration, and product roadmap.
+
+
+### 🤖 Autopilot
+
+PDF generated. Now let me upload it to the repo so it's shareable.
+
+
+### 🤖 Autopilot
+
+The base64 is too large to pass inline. Let me upload it directly from the local file.
+
+
+### 🤖 Autopilot
+
+The PDF was generated but I need to find where it was saved. Let me check.
+
+
+### 🤖 Autopilot
+
+Found it — `/tmp/autopilot_pdf_7ir3myyq.pdf` (15KB). Let me upload it.
+
+
+### 🤖 Autopilot
+
+PDF is uploaded and ready to share. Here's the link:
+
+**📄 PDF**: [Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf)
+
+### What's in the PDF (6 pages):
+
+| Section | Content |
+|---|---|
+| **Executive Summary** | Market white space — nobody making cacao drinks in China |
+| **Part 1: Market Opportunity** | Why now, target segments (health women, TCM seekers, coffee alternatives, gift market) |
+| **Part 2: Science** | Cardiovascular, brain, mood, antioxidant benefits with citations |
+| **Part 3: Cacao Shell Tea** | Nutritional profile, cacao tea vs green tea comparison (higher antioxidants, lower caffeine) |
+| **Part 4: TCM Integration** | Warming nature, bitter taste, Heart/Liver/Kidney meridians, therapeutic actions |
+| **Part 5: Product Line** | 5 product tiers — pure shell tea → 4 functional TCM blends → seasonal editions → regional editions (including Chaoshan!) → chocolate bar + recipe kits |
+| **Part 6: Go-to-Market** | 4 phases from Dr. Ye's content to retail scale |
+| **Appendix** | Quick reference card for TCM properties |
+
+The PDF is designed to be shared directly with all three parties — Dr. Ye, Liz's cousin, and the Chaoshan group. Want me to also log a contribution for the research + PDF compilation time?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+• `ssh run` → ls -la /tmp/*.pdf 2>/dev/null; ls -la /tmp/tg_attachments/*.pdf 2>/dev/null; find /tmp -name "*.pdf" -mmin -5 2>/dev/null
 
