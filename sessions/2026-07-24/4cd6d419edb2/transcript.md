@@ -460,19 +460,27 @@ We have **DroidSansFallbackFull.ttf** which supports Chinese. The issue is the `
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The `generate_pdf` tool is a built-in function that uses ReportLab with Helvetica. Helvetica doesn't support CJK characters. The fix is to register the DroidSansFallbackFull.ttf font with ReportLab so Chinese characters render properly. Let me open a fix PR for the autopilot to handle this.
 
 Actually, since `generate_pdf` is a built-in tool I can't modify its code directly. But I can work around it — I'll generate the PDF using a Python script that registers the Chinese font, then upload that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me upload the Chinese-font PDF to GitHub.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Also, since the built-in `generate_pdf` tool uses Helvetica which can't handle Chinese, let me file a fix to add a Chinese-capable PDF generation function to the autopilot.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -519,6 +527,12 @@ Looking back at the conversation, the main work items were:
 4. ✅ Generated PDF with Chinese font support → PR #285 (open, not merged)
 
 PR #285 is the fix for the Chinese font issue in `generate_pdf`. Since it's already open as a draft, I should report the contribution for the PDF generation work and stop.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -545,26 +559,31 @@ PR #285 is the fix for the Chinese font issue in `generate_pdf`. Since it's alre
 ### 🤖 Autopilot
 
 Let me check the actual PDF that's on GitHub to see what's happening.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the issue — the PDF on GitHub still shows `/BaseFont /Helvetica` in the font resources. Let me check what actually got uploaded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local PDF has DroidSansFallback embedded correctly. But the GitHub version shows Helvetica. Let me check — the upload might have overwritten with the old version. Let me re-upload the correct one.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the GitHub version actually has the font embedded.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the GitHub raw view still shows Helvetica in the header, but that's because the font resource `F2+0 13 0 R` is the embedded DroidSansFallback (object 13). The `/BaseFont /Helvetica` is just for the English header text. The Chinese text uses the embedded font. The PDF is correct locally — let me verify by checking if the GitHub version actually has the font data.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -591,11 +610,13 @@ If it's still not showing Chinese characters after downloading fresh, let me kno
 ### 🤖 Autopilot
 
 Let me do a thorough investigation — generate the PDF, extract every character back out, and verify each one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the font exists and is 4MB (full CJK support). Now let me generate the PDF properly and then extract text back from it to verify every character.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -704,4 +725,65 @@ The PDF was regenerated using **WeasyPrint** (HTML+CSS → PDF) instead of Repor
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → # First, let's check what fonts are actually available for Chinese fc-list :lang=zh 2>/dev/null echo "---" fc-list | grep -i "droid\|noto.*c; cat << 'PYEOF' > /tmp/gen_verify_pdf.py #!/usr/bin/env python3 """Generate cacao beverage PDF with Chinese font and verify every character."; # Check what other CJK fonts are available fc-list | grep -i "noto" | head -10 echo "---" dpkg -l | grep -i "font.*cjk\|font.*chinese\|font.; …(+8 more)
 • `open fix pr` → Fix agent failed to produce a PR.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you generate a purely Chinese version? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sure — a full Chinese version for Dr. Ye, Liz's cousin, and the Chaoshan group.
+
+
+### 🤖 Autopilot
+
+Now let me verify every Chinese character is there.
+
+
+### 🤖 Autopilot
+
+All Chinese characters are rendering perfectly. Let me read the full extraction to verify every section.
+
+
+### 🤖 Autopilot
+
+All characters verified. Let me read the remaining pages to confirm everything.
+
+
+### 🤖 Autopilot
+
+All verified. Let me read the last page to confirm the appendix.
+
+
+### 🤖 Autopilot
+
+All verified. Now let me upload the fully Chinese PDF.
+
+
+### 🤖 Autopilot
+
+Done! Here's the fully Chinese PDF:
+
+**📄 中文版PDF**: [可可饮品市场机遇_中国市场与中医产品策略.pdf](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf)
+
+**Verification**: All 2,401 Chinese characters extracted cleanly via pymupdf — every character renders correctly. No null bytes, no missing glyphs.
+
+**What's in it (全中文, 6页):**
+- 封面 — 呈送叶医生、表哥、潮汕团队
+- 核心摘要 — "中国可卡的饮料还没有人做"
+- 一、市场机遇 — 蓝海市场、目标人群
+- 二、科学依据 — 心血管、大脑、抗氧化、代谢
+- 三、可可壳茶 — 营养成分、vs绿茶对比
+- 四、中医理论整合 — 性味归经、功效、适合人群
+- 五、产品线规划 — 5款产品（含潮汕地区限定版：老陈皮、夏枯草）
+- 六、市场推广策略 — 4阶段
+- 附录 — 速查卡
+
+The direct download link for sharing: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar; python3 << 'PYEOF' import weasyprint, os html_path = '/tmp/cacao_report_cn.html' pdf_path = '/tmp/cacao_beverage_opportunity_cn.pdf' doc = w
 
