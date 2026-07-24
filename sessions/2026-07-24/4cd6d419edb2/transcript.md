@@ -262,16 +262,24 @@ Great task. Let me start with web research on both fronts — the medical benefi
 ### 🤖 Autopilot
 
 Excellent — I've got rich data. Let me dig deeper into the cacao shell tea specifically and also look at how TCM classifies tea-like preparations.
+[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me get more detail on the TCM herbal tea classification and the specific nutritional composition of cacao shells.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have comprehensive data. Let me compile everything into a structured document and push it to the context repo.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -332,31 +340,47 @@ Want me to also log a contribution for the research time? And would you like me 
 ### 🤖 Autopilot
 
 Let me first check what we have on the Chaoshan (潮汕) group.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No prior context on the Chaoshan group. Let me generate the PDF now — I'll make it a comprehensive deck covering the full case: market opportunity, medical benefits, TCM integration, and product roadmap.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Now let me upload it to the repo so it's shareable.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is too large to pass inline. Let me upload it directly from the local file.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF was generated but I need to find where it was saved. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `/tmp/autopilot_pdf_7ir3myyq.pdf` (15KB). Let me upload it.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -449,4 +473,38 @@ The issue was that the built-in `generate_pdf` tool uses Helvetica which doesn't
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → fc-list :lang=zh 2>/dev/null | head -20; echo "---"; fc-list | grep -i "noto.*cjk\|wqy\|simsun\|simhei\|wenquanyi\|droid.*fall" | head -20; ; grep -r "generate_pdf\|ReportLab\|pdfgen\|DroidSans\|chinese\|CJK" /home/ubuntu/truesight_autopilot/ --include="*.py" -l 2>/dev/null | head ; grep -r "generate_pdf\|ReportLab\|pdf" /home/ubuntu/truesight_autopilot/ --include="*.py" -l 2>/dev/null | head -20; …(+2 more)
 • `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/285
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open the next fix PR, report the contribution, then stop.
+
+
+### 🤖 Autopilot
+
+Let me check what the next unit is — the PR #285 is already open for the Chinese font fix. Let me check if there's anything else pending from this session.
+
+Looking back at the conversation, the main work items were:
+1. ✅ Compiled Dr. Ye's feedback
+2. ✅ Logged contributions (15 min for me, 2 hrs each for Gary & Elizabeth)
+3. ✅ Deep research on cacao medical benefits + TCM integration → PR #712
+4. ✅ Generated PDF with Chinese font support → PR #285 (open, not merged)
+
+PR #285 is the fix for the Chinese font issue in `generate_pdf`. Since it's already open as a draft, I should report the contribution for the PDF generation work and stop.
+
+
+### 🤖 Autopilot
+
+**Turn report:**
+
+| Action | Detail |
+|---|---|
+| **Contribution logged** | 45 min — research + TCM doc (PR #712) + Chinese-font PDF + PR #285 |
+| **PR #285** | Open (draft) — adds Chinese/CJK font support to `generate_pdf` using DroidSansFallbackFull.ttf |
+
+**RESUME HERE →** PR #285 is open and ready for review. When you want it merged, just say the word. The PDF is ready to share with all three parties.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
