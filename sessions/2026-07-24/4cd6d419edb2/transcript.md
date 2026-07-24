@@ -670,11 +670,18 @@ WeasyPrint is available! That uses HTML+CSS with proper font rendering. Let me u
 ### 🤖 Autopilot
 
 WeasyPrint works. Now let me generate the full PDF using HTML+CSS with proper Chinese font support.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 162 KB — much larger than before because the font is properly embedded. Now let me verify every single Chinese character is in there by extracting text back.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -694,11 +701,13 @@ All Chinese characters are rendering correctly now. Let me verify the specific c
 - ✅ 因地制宜 (regional editions concept)
 
 Every single Chinese character is present and extractable. Now let me upload this properly rendered PDF.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me also fix the autopilot's `generate_pdf` tool to use WeasyPrint instead of ReportLab for future Chinese PDFs.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -889,4 +898,96 @@ Now I have a clear picture. Here's the competitive landscape:
 4. **价格优势** — 香港品牌HKD 58-168，我们可以做到更亲民
 
 Want me to add this competitive analysis to the Chinese PDF and update it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Once done include the comparisons as a table in both the Chinese and English PDF documents as well as the dot-md file. Make sure the PDF characters show up properly, check, make sure. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me update all three files — the English PDF, Chinese PDF, and the .md research doc — with the competitive comparison table.
+
+
+### 🤖 Autopilot
+
+The research doc from PR #712 wasn't merged yet. Let me check what's on the main branch of agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+OK — the research doc wasn't merged. Let me create the updated .md file and both PDFs in one go. First, let me generate the English PDF with the comparison table, then the Chinese PDF, then push the .md file.
+
+
+### 🤖 Autopilot
+
+Now let me verify the English PDF text extraction to check Chinese characters in the comparison tables.
+
+
+### 🤖 Autopilot
+
+English PDF verified — all Chinese characters in the comparison tables render correctly (同仁堂, 忆江南, 草木方, 茶里, 养心安神, 温中健脾, etc.). Now let me verify the Chinese PDF too.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — all Chinese characters render correctly. Now I need to add the competitive comparison section to the Chinese PDF (it's currently missing the market comparison tables). Let me update the Chinese HTML to include the competitive analysis section, then regenerate.
+
+
+### 🤖 Autopilot
+
+The Chinese PDF has all the content but is missing the competitive comparison section. Let me update the Chinese HTML to include the market comparison tables, then regenerate both PDFs and push everything.
+
+
+### 🤖 Autopilot
+
+Now let me verify the Chinese PDF has the new competitive comparison section.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified with all Chinese characters rendering correctly. Now let me upload all three files — English PDF, Chinese PDF, and the .md research doc.
+
+
+### 🤖 Autopilot
+
+Now let me create and push the .md research doc with the competitive analysis.
+
+
+### 🤖 Autopilot
+
+All done! Here's the summary:
+
+---
+
+## ✅ All Three Files Updated
+
+### 📄 English PDF — Updated
+**File**: [Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf)
+- 7 pages, 45 KB
+- New **Section 2: Competitive Landscape** with 3 comparison tables:
+  - Direct competitors (Dedicated Chocolate, Rayca's, Hara, Cacao Tea Co., Conspiracy)
+  - Indirect competitors (同仁堂, 忆江南, 草木方, 茶里, 立顿)
+  - Differentiation matrix (6 dimensions)
+- All Chinese characters verified ✓
+
+### 📄 Chinese PDF — Updated
+**File**: [可可饮品市场机遇_中国市场与中医产品策略.pdf](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf)
+- 7 pages, 358 KB
+- New **第二部分：市场竞争分析** with same 3 comparison tables in Chinese
+- All 3,218 Chinese characters verified via pymupdf extraction ✓
+
+### 📝 .md Research Doc — PR #713
+**File**: [CACAO_MARKET_COMPETITIVE_ANALYSIS.md](https://github.com/TrueSightDAO/agentic_ai_context/pull/713)
+- Full competitive landscape with market size data, competitor tables, differentiation matrix, and strategic implications
+- Ready to merge when you give the word
+
+### Direct download links for sharing:
+- **English**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **Chinese**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cat << 'HTMLEOF' > /tmp/cacao_report_en.html <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin; python3 << 'PYEOF' import weasyprint, os # English PDF doc_en = weasyprint.HTML(filename='/tmp/cacao_report_en.html').render() doc_en.write_; cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar
 
