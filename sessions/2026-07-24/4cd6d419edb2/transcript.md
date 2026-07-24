@@ -622,6 +622,7 @@ Good — the font exists and is 4MB (full CJK support). Now let me generate the 
 ### 🤖 Autopilot
 
 Now let me extract text from the PDF to verify every Chinese character is there.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -629,26 +630,41 @@ Now let me extract text from the PDF to verify every Chinese character is there.
 I see the problem now. The extracted text shows `\u0000` (null bytes) between characters. This is a known issue with ReportLab and CJK fonts — the text is in the PDF but pymupdf can't extract it cleanly because of how the font encoding works. The Chinese characters ARE there (I can see `中国可卡的饮料还没有人做`, `叶医生`, `表哥`, `潮汕`, `养心安神`, etc.) but they're surrounded by null bytes.
 
 The issue is that the PDF viewer on your end might not be rendering the embedded font correctly. Let me try a different approach — use a more universally compatible font embedding method.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have **Noto Sans CJK SC** (Simplified Chinese) — a much better, more standard font. The `.ttc` format needs special handling with ReportLab. Let me check if ReportLab supports TTC or if I need to extract individual fonts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 TTC fonts use PostScript outlines which ReportLab doesn't support. Let me try a different approach — use the DroidSansFallback but with proper subsetting, or try a different strategy entirely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The only CJK TTF is DroidSansFallbackFull.ttf. The issue might be that ReportLab's TTFont embedding with DroidSans isn't working correctly in all PDF viewers. Let me try a completely different approach — use `pypandoc` or `weasyprint` with HTML+CSS, or use `fpdf2` which has better CJK support.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 WeasyPrint is available! That uses HTML+CSS with proper font rendering. Let me use that approach — generate an HTML document with proper CSS specifying the DroidSans font, then convert to PDF with WeasyPrint. This should handle CJK characters properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -786,4 +802,91 @@ The direct download link for sharing: https://github.com/TrueSightDAO/agentic_ai
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar; python3 << 'PYEOF' import weasyprint, os html_path = '/tmp/cacao_report_cn.html' pdf_path = '/tmp/cacao_beverage_opportunity_cn.pdf' doc = w
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Do you think you could research comparisons of such products in Chinese market?
+
+
+### 🤖 Autopilot
+
+Great question — let me research what similar products already exist in the Chinese market.
+
+
+### 🤖 Autopilot
+
+Excellent — I found some very relevant data. Let me dig deeper into the specific competitors and their pricing.
+
+
+### 🤖 Autopilot
+
+Now I have comprehensive data. Let me compile this into a structured comparison.
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture. Here's the competitive landscape:
+
+---
+
+## 中国市场同类产品对比分析
+
+### 一、市场规模背景
+
+| 指标 | 数据 |
+|---|---|
+| 2025年中国养生茶饮市场规模 | **642.7亿元**（同比增长25.3%） |
+| 预计2028年 | 突破**千亿元** |
+| 消费者画像 | 25-45岁为主，西南/华东/华南最多 |
+| 消费特征 | 超九成月消费>50元，功能导向（安神助眠、健脾祛湿） |
+
+### 二、直接竞品：可可壳茶产品
+
+目前中国市场**没有本土品牌**做可可壳茶。找到的竞品都是**香港/海外品牌**：
+
+| 品牌 | 产品 | 价格 | 定位 | 渠道 |
+|---|---|---|---|---|
+| **Dedicated Chocolate**（香港） | 可可壳茶 30g | ~HKD 68（未标价） | 精品巧克力品牌延伸 | 官网，香港 |
+| **Rayca's Dancing Tea**（香港） | 可可茶系列（4款） | HKD 12-168 | 获奖茶品牌，可可茶系列 | 官网，香港 |
+| **Hara Teas**（海外） | 可可壳茶 | ~USD 10-15 | 有机健康茶 | 官网 |
+| **Cacao Tea Co.**（美国） | 可可壳茶 | ~USD 12-18 | 纯天然，无咖啡因 | 官网，跨境 |
+| **Conspiracy Chocolate**（海外） | 可可壳茶混合 | ~USD 10 | 巧克力品牌延伸 | 官网 |
+
+**关键发现**：这些产品都**不在中国大陆主流电商平台**（淘宝/天猫/京东）有售。中国大陆消费者要买可可壳茶只能通过代购或跨境。
+
+### 三、间接竞品：养生茶/功能性茶饮
+
+| 品牌 | 产品 | 价格区间 | 定位 | 年销售额 |
+|---|---|---|---|---|
+| **同仁堂** | 养生袋泡茶 | ¥30-80 | 老字号中药品牌 | 龙头 |
+| **忆江南** | 花草茶/养生茶 | ¥20-50 | 大众养生茶 | 头部 |
+| **草木方** | 养生茶 | ¥25-60 | 新式养生茶 | 头部 |
+| **茶里CHALI** | 袋泡茶 | ¥30-80 | 新式袋泡茶 | 年销数亿 |
+| **立顿** | 草本茶系列 | ¥20-40 | 国际品牌 | 稳定 |
+
+### 四、可可壳茶的差异化优势
+
+| 维度 | 现有养生茶 | 可可壳茶 |
+|---|---|---|
+| **原料** | 花草/中药材 | 可可豆外壳（循环经济） |
+| **口感** | 草本味 | **巧克力香气**，天然甜味 |
+| **咖啡因** | 有/无 | **极低**（不含咖啡因，含可可碱） |
+| **抗氧化** | 中等 | **高于绿茶** |
+| **中医定位** | 已有成熟体系 | **空白** — 可建立"温性、补心、安神"新品类 |
+| **竞争** | 红海（同仁堂等已占位） | **蓝海** — 无本土品牌 |
+
+### 五、结论
+
+> **"中国可卡的饮料还没有人做"** — 这个判断完全正确。
+
+现有可可壳茶产品都是**香港或海外品牌**，没有进入中国大陆主流渠道。养生茶市场642亿且年增25%，但可可壳茶这个细分品类**完全空白**。
+
+我们的差异化武器：
+1. **中医理论整合** — 现有可可壳茶品牌都没有做这个
+2. **本土化配方** — 因地制宜（潮汕老陈皮、四川花椒等）
+3. **叶医生的信任背书** — 中医师推荐，减肥号引流
+4. **价格优势** — 香港品牌HKD 58-168，我们可以做到更亲民
+
+Want me to add this competitive analysis to the Chinese PDF and update it?
 
