@@ -135,3 +135,49 @@ This opens up a window: she's in Hangzhou with **free evenings** for the next 10
 
 Want me to file this alongside the earlier product feedback into the context repo?
 
+
+### 🧑 Governor
+
+Liz表哥也说到中国可卡的饮料还没有人做，有市场。和Dr Ye说的一直
+
+[Attachment auto-processed: **0fbb5bf66f404f058bbb56aea2bc3fbb.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me try to get something from this image.
+
+
+### 🤖 Autopilot
+
+No text detected at all. Could be a photo of a person, a product, or a scene rather than text. What's in this image?
+
+---
+
+But the key takeaway from your message is clear:
+
+**Liz's cousin (表哥) + Dr. Ye — converging market insight:**
+
+> **"中国可卡的饮料还没有人做"** — Nobody in China is making cacao-based drinks yet. There's a market gap.
+
+This aligns perfectly with Dr. Ye's two directions:
+1. **Functional cacao beverages** (功能性饮品)
+2. **Cacao shell tea bags** (可可茶包 — convenience format)
+
+Both independently identified the same white space: **cacao drinks in China are an open market**.
+
+---
+
+**Combined product strategy emerging:**
+
+| Layer | Product | Format |
+|---|---|---|
+| **Entry** | Cacao tea bags (shell-based) | Convenience, multi-flavor, regional editions |
+| **Core** | Functional cacao beverages | Health/wellness positioning |
+| **Premium** | Chocolate bars + recipes | UGC-driven content, cooking/sharing |
+
+Want me to compile all of this (Dr. Ye's full feedback + Liz表哥's corroboration) into a structured reference doc and push it to the context repo?
+
