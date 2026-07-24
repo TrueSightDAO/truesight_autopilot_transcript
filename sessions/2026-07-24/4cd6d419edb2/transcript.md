@@ -204,6 +204,12 @@ Want me to compile all of this (Dr. Ye's full feedback + Liz表哥's corroborati
 ### 🤖 Autopilot
 
 Let me look up the right event format first.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -228,6 +234,7 @@ Also both Elizabeth Wong and Me spent 2 hours having dinner with her cousin to g
 ### 🤖 Autopilot
 
 Let me log contributions for both of you.
+[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,6 +256,7 @@ And compile this and figure how to incorporate that into traditional TCM
 ### 🤖 Autopilot
 
 Great task. Let me start with web research on both fronts — the medical benefits of cacao/cacao tea, and how they intersect with TCM.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -376,4 +384,69 @@ The PDF is designed to be shared directly with all three parties — Dr. Ye, Liz
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
 • `ssh run` → ls -la /tmp/*.pdf 2>/dev/null; ls -la /tmp/tg_attachments/*.pdf 2>/dev/null; find /tmp -name "*.pdf" -mmin -5 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Chinese characters are not showing up properly. Make sure to check agentic_ai_context on how to solve this problem
+
+
+### 🤖 Autopilot
+
+Let me check how we handle Chinese characters in PDFs.
+
+
+### 🤖 Autopilot
+
+The `generate_pdf` tool is a built-in function, not in the repo code. Let me check if there's a font issue — the PDF uses Helvetica which doesn't support Chinese characters. Let me look at how the tool works and what fonts are available.
+
+
+### 🤖 Autopilot
+
+We have **DroidSansFallbackFull.ttf** which supports Chinese. The issue is the `generate_pdf` tool uses Helvetica by default. Let me look at how the PDF generation works and fix it to use the Chinese-capable font.
+
+
+### 🤖 Autopilot
+
+The `generate_pdf` tool is a built-in function that uses ReportLab with Helvetica. Helvetica doesn't support CJK characters. The fix is to register the DroidSansFallbackFull.ttf font with ReportLab so Chinese characters render properly. Let me open a fix PR for the autopilot to handle this.
+
+Actually, since `generate_pdf` is a built-in tool I can't modify its code directly. But I can work around it — I'll generate the PDF using a Python script that registers the Chinese font, then upload that.
+
+
+### 🤖 Autopilot
+
+Now let me upload the Chinese-font PDF to GitHub.
+
+
+### 🤖 Autopilot
+
+Also, since the built-in `generate_pdf` tool uses Helvetica which can't handle Chinese, let me file a fix to add a Chinese-capable PDF generation function to the autopilot.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PDF is fixed with Chinese font support. Here's the updated link:
+
+**📄 Updated PDF**: [Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf](https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf)
+
+The issue was that the built-in `generate_pdf` tool uses Helvetica which doesn't support CJK characters. I:
+1. Wrote a custom Python script using ReportLab with **DroidSansFallbackFull.ttf** (Chinese-capable font already on the server)
+2. Regenerated the PDF — all Chinese characters (TCM terms, product names, Chaoshan references) now render properly
+3. Uploaded the fixed version to the same path
+4. Opened **PR #285** on `truesight_autopilot` to add Chinese font support to the built-in PDF tool for future use
+
+**RESUME HERE →** The PDF is ready to share with Dr. Ye, Liz's cousin, and the Chaoshan group. You may want to:
+- Send it via email or WeChat to the three parties
+- Discuss next steps on prototyping the tea blends
+- Plan Dr. Ye's content strategy for her Douyin accounts
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → fc-list :lang=zh 2>/dev/null | head -20; echo "---"; fc-list | grep -i "noto.*cjk\|wqy\|simsun\|simhei\|wenquanyi\|droid.*fall" | head -20; ; grep -r "generate_pdf\|ReportLab\|pdfgen\|DroidSans\|chinese\|CJK" /home/ubuntu/truesight_autopilot/ --include="*.py" -l 2>/dev/null | head ; grep -r "generate_pdf\|ReportLab\|pdf" /home/ubuntu/truesight_autopilot/ --include="*.py" -l 2>/dev/null | head -20; …(+2 more)
+• `open fix pr` → https://github.com/TrueSightDAO/truesight_autopilot/pull/285
 
