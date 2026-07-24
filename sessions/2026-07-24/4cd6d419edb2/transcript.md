@@ -418,6 +418,12 @@ The PDF is designed to be shared directly with all three parties — Dr. Ye, Liz
 ### 🤖 Autopilot
 
 Let me check how we handle Chinese characters in PDFs.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -507,4 +513,50 @@ PR #285 is the fix for the Chinese font issue in `generate_pdf`. Since it's alre
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Doesn't seem like the characters are showing up probably, can you like go and figure out how to fix it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the actual PDF that's on GitHub to see what's happening.
+
+
+### 🤖 Autopilot
+
+I see the issue — the PDF on GitHub still shows `/BaseFont /Helvetica` in the font resources. Let me check what actually got uploaded.
+
+
+### 🤖 Autopilot
+
+The local PDF has DroidSansFallback embedded correctly. But the GitHub version shows Helvetica. Let me check — the upload might have overwritten with the old version. Let me re-upload the correct one.
+
+
+### 🤖 Autopilot
+
+Now let me verify the GitHub version actually has the font embedded.
+
+
+### 🤖 Autopilot
+
+I see — the GitHub raw view still shows Helvetica in the header, but that's because the font resource `F2+0 13 0 R` is the embedded DroidSansFallback (object 13). The `/BaseFont /Helvetica` is just for the English header text. The Chinese text uses the embedded font. The PDF is correct locally — let me verify by checking if the GitHub version actually has the font data.
+
+
+### 🤖 Autopilot
+
+The GitHub version **does** have DroidSansFallback embedded — 20.6 KB, with both Helvetica (for English headers) and `AAAAAA+DroidSansFallback` (for Chinese text). The font is properly embedded.
+
+The issue might be that your PDF viewer is caching the old version. Could you try:
+
+1. **Download a fresh copy** from: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+2. Or open it directly in a browser — GitHub's preview sometimes doesn't render embedded fonts correctly, but downloading and opening in a proper PDF reader (Adobe, Preview, Chrome's built-in viewer) should work
+
+If it's still not showing Chinese characters after downloading fresh, let me know and I'll investigate further — could be a font encoding issue in the PDF itself that needs a different approach.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → python3 -c " from reportlab.lib.pagesizes import A4 from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont # ; python3 -c " import requests r = requests.get('https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/Cacao_Beverage_Op
 
