@@ -428,12 +428,34 @@ Let me check how we handle Chinese characters in PDFs.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The `generate_pdf` tool is a built-in function, not in the repo code. Let me check if there's a font issue — the PDF uses Helvetica which doesn't support Chinese characters. Let me look at how the tool works and what fonts are available.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 We have **DroidSansFallbackFull.ttf** which supports Chinese. The issue is the `generate_pdf` tool uses Helvetica by default. Let me look at how the PDF generation works and fix it to use the Chinese-capable font.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -559,4 +581,127 @@ If it's still not showing Chinese characters after downloading fresh, let me kno
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 -c " from reportlab.lib.pagesizes import A4 from reportlab.pdfbase import pdfmetrics from reportlab.pdfbase.ttfonts import TTFont # ; python3 -c " import requests r = requests.get('https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/Cacao_Beverage_Op
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Hey, can you generate the PDF and then verify, keep verifying every single character that's supposed to be in there actually it's correct because currently what I'm seeing is that the PDF document is empty or just having missing this character so generate it again Thank you [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me do a thorough investigation — generate the PDF, extract every character back out, and verify each one.
+
+
+### 🤖 Autopilot
+
+Good — the font exists and is 4MB (full CJK support). Now let me generate the PDF properly and then extract text back from it to verify every character.
+
+
+### 🤖 Autopilot
+
+Now let me extract text from the PDF to verify every Chinese character is there.
+
+
+### 🤖 Autopilot
+
+I see the problem now. The extracted text shows `\u0000` (null bytes) between characters. This is a known issue with ReportLab and CJK fonts — the text is in the PDF but pymupdf can't extract it cleanly because of how the font encoding works. The Chinese characters ARE there (I can see `中国可卡的饮料还没有人做`, `叶医生`, `表哥`, `潮汕`, `养心安神`, etc.) but they're surrounded by null bytes.
+
+The issue is that the PDF viewer on your end might not be rendering the embedded font correctly. Let me try a different approach — use a more universally compatible font embedding method.
+
+
+### 🤖 Autopilot
+
+Now I have **Noto Sans CJK SC** (Simplified Chinese) — a much better, more standard font. The `.ttc` format needs special handling with ReportLab. Let me check if ReportLab supports TTC or if I need to extract individual fonts.
+
+
+### 🤖 Autopilot
+
+TTC fonts use PostScript outlines which ReportLab doesn't support. Let me try a different approach — use the DroidSansFallback but with proper subsetting, or try a different strategy entirely.
+
+
+### 🤖 Autopilot
+
+The only CJK TTF is DroidSansFallbackFull.ttf. The issue might be that ReportLab's TTFont embedding with DroidSans isn't working correctly in all PDF viewers. Let me try a completely different approach — use `pypandoc` or `weasyprint` with HTML+CSS, or use `fpdf2` which has better CJK support.
+
+
+### 🤖 Autopilot
+
+WeasyPrint is available! That uses HTML+CSS with proper font rendering. Let me use that approach — generate an HTML document with proper CSS specifying the DroidSans font, then convert to PDF with WeasyPrint. This should handle CJK characters properly.
+
+
+### 🤖 Autopilot
+
+WeasyPrint works. Now let me generate the full PDF using HTML+CSS with proper Chinese font support.
+
+
+### 🤖 Autopilot
+
+162 KB — much larger than before because the font is properly embedded. Now let me verify every single Chinese character is in there by extracting text back.
+
+
+### 🤖 Autopilot
+
+All Chinese characters are rendering correctly now. Let me verify the specific characters mentioned in the document:
+
+**Verified Chinese characters found in extracted text:**
+- ✅ 叶医生 (Dr. Ye)
+- ✅ 表哥 (Cousin)
+- ✅ 潮汕 (Chaoshan)
+- ✅ 中国可卡的饮料还没有人做 (market quote)
+- ✅ 性 / 温 (Nature / Warming)
+- ✅ 味 / 苦 / 辛 (Taste / Bitter / Pungent)
+- ✅ 归经 / 心 / 肝 / 肾 (Meridians / Heart / Liver / Kidney)
+- ✅ 补心 / 温肾阳 / 活血 / 安神 / 祛寒 (TCM actions)
+- ✅ 养心安神 / 温中健脾 / 疏肝解郁 / 温肾壮阳 (blend names)
+- ✅ 因地制宜 (regional editions concept)
+
+Every single Chinese character is present and extractable. Now let me upload this properly rendered PDF.
+
+
+### 🤖 Autopilot
+
+Now let me also fix the autopilot's `generate_pdf` tool to use WeasyPrint instead of ReportLab for future Chinese PDFs.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+The fix agent failed to produce a PR — I'll note that as a follow-up. Here's the full report:
+
+---
+
+**Turn report:**
+
+The PDF was regenerated using **WeasyPrint** (HTML+CSS → PDF) instead of ReportLab. This approach properly embeds the DroidSansFallback font and renders all Chinese characters correctly.
+
+**Verification results** — every Chinese character extracted and confirmed:
+- ✅ 叶医生, 表哥, 潮汕 (names)
+- ✅ 中国可卡的饮料还没有人做 (market quote)
+- ✅ 性/温, 味/苦/辛, 归经/心/肝/肾 (TCM properties)
+- ✅ 补心, 温肾阳, 活血, 安神, 祛寒 (TCM actions)
+- ✅ 养心安神, 温中健脾, 疏肝解郁, 温肾壮阳 (blend names)
+- ✅ 因地制宜 (regional concept)
+- All 6 pages, 6,792 characters extracted cleanly — no null bytes
+
+**PDF**: [Download fresh copy](https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf) (162 KB — font embedded)
+
+**RESUME HERE →** The fix agent for the autopilot's `generate_pdf` tool failed to produce a PR automatically. This needs to be filed manually — the built-in tool still uses ReportLab which doesn't handle CJK well. You may want to:
+1. Download and check the PDF to confirm it looks right
+2. Share it with Dr. Ye, Liz's cousin, and the Chaoshan group
+3. Let me know if you want me to manually create a PR to fix the autopilot's PDF tool
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → Installed fonts-noto-cjk, generated HTML, converted to PDF via WeasyPrint, verified all Chinese characters via pymupdf text extraction
+• `upload file to github` → Updated PDF (162 KB, DroidSansFallback embedded)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → # First, let's check what fonts are actually available for Chinese fc-list :lang=zh 2>/dev/null echo "---" fc-list | grep -i "droid\|noto.*c; cat << 'PYEOF' > /tmp/gen_verify_pdf.py #!/usr/bin/env python3 """Generate cacao beverage PDF with Chinese font and verify every character."; # Check what other CJK fonts are available fc-list | grep -i "noto" | head -10 echo "---" dpkg -l | grep -i "font.*cjk\|font.*chinese\|font.; …(+8 more)
+• `open fix pr` → Fix agent failed to produce a PR.
 
