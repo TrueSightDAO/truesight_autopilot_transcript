@@ -1,47 +1,5 @@
 [
   {
-    "title": "Merge PR #235 on truesight_me_beta",
-    "qr_code": "",
-    "summary": "Re-order the sections on the landing page (index.html) to follow a \"Human first \u2192 Platform \u2192 System health & stats \u2192 The how\" narrative arc.\n\nCurrent section order in the <div class=\"page\">:\n1. Hero (",
-    "action": "merge_pr",
-    "created_at": "2026-06-14T19:50:35Z"
-  },
-  {
-    "title": "Merge PR #215 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Desktop layout issues on the vault listing page (https://sophia.truesight.me/vault/):\n\n1. **Credentials table too cramped** \u2014 6 columns (Name, Purpose, Version, Created by, Created, Actions) in a 960p",
-    "action": "merge_pr",
-    "created_at": "2026-06-15T22:52:31Z"
-  },
-  {
-    "title": "Merge PR #247 on truesight_autopilot",
-    "qr_code": "",
-    "summary": "Bug: submit_contribution tool rejects SALES EVENT with \"Missing required fields: Item\" even when \"Item\" is passed in attributes.\n\nRoot cause: The alias mapping in app/main.py has `\"item\" \u2192 \"Inventory ",
-    "action": "merge_pr",
-    "created_at": "2026-06-17T23:10:43Z"
-  },
-  {
-    "title": "Merge PR #257 on truesight_me_beta",
-    "qr_code": "",
-    "summary": "Add sample payloads to every contract card on the Smart Contracts page (contracts/index.html). \n\nFor each contract card and each variant, add a collapsible \"Sample Payload\" section that shows a comple",
-    "action": "merge_pr",
-    "created_at": "2026-06-20T01:20:24Z"
-  },
-  {
-    "title": "Merge PR #605 on agentic_ai_context",
-    "qr_code": "",
-    "summary": "Update SOPHIA_AUTO_ADVANCE_PLAN.md to reflect current status: the feature is fully implemented, merged (PRs 244, 248, 246, 268), and deployed. The plan doc still says \"DRAFT \u2014 pending execution\" which",
-    "action": "merge_pr",
-    "created_at": "2026-06-21T01:38:40Z"
-  },
-  {
-    "title": "Merge PR #607 on agentic_ai_context",
-    "qr_code": "",
-    "summary": "The SOPHIA_AUTO_ADVANCE_PLAN.md still says \"Status as of 2026-06-17: DRAFT\" but the feature has been implemented, merged, and deployed. Update the status to \"IMPLEMENTED AND DEPLOYED\" and add a note t",
-    "action": "merge_pr",
-    "created_at": "2026-06-21T05:27:09Z"
-  },
-  {
     "title": "Merge PR #269 on truesight_autopilot",
     "qr_code": "",
     "summary": "append_to_transcript.py line 248 AttributeError: 'Namespace' object has no attribute 'chat_id'. The script is called from the Telegram adapter which passes session_id but the script expects a --chat_i",
@@ -63,10 +21,10 @@
     "created_at": "2026-07-15T19:13:49Z"
   },
   {
-    "title": "Merge PR #170 on go_to_market",
+    "title": "Merge PR #285 on truesight_autopilot",
     "qr_code": "",
-    "summary": "PR1 from WARMUP_CONVERSION_IMPROVEMENT_PLAN.md: Stop wasting sends on confirmed dead ends.\n\nChanges to `scripts/suggest_warmup_prospect_drafts.py`:\n\n1. Add constant `AUTO_REPLY_LOGGED_GMAIL_LABEL = \"A",
+    "summary": "The built-in generate_pdf tool uses Helvetica font which does not support Chinese/CJK characters. When generating PDFs with Chinese text (e.g. TCM terms, product names in Chinese), the characters don'",
     "action": "merge_pr",
-    "created_at": "2026-07-18T21:27:40Z"
+    "created_at": "2026-07-24T06:01:12Z"
   }
 ]
