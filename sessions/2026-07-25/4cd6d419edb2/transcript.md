@@ -1454,32 +1454,63 @@ The duplicate is at lines 186-201. Let me remove it.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — duplicate removed. Let me renumber 4.7→4.6 and 4.8→4.7.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 English PDF is clean — no duplicate, proper numbering. Now update the Chinese PDF too.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Chinese HTML doesn't have the Minimum Viable Scale section yet. Let me update it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now also add the 191-box row to the scenarios table in the Chinese PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate the Chinese PDF and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1596,5 +1627,82 @@ The report content is unchanged — it's an internal DAO working document. Dr. Y
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → # Update English PDF cover sed -i 's|Presented to:<br>Dr. Ye · Liz'\''s Cousin · Chaoshan Team<br>|Internal Working Document — TrueSight DAO; sed -n '35,45p' /tmp/cacao_report_en.html echo "===" sed -n '35,45p' /tmp/cacao_report_cn.html; # Fix English cover - replace "Presented to:" and "Dr. Ye · Liz's Cousin · Chaoshan Team" sed -i 's|<div class="cover-label">Presented to:</; …(+1 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] We should list these 3 as initial Go to market for network expansion. So that sales and marketing budget and events marketing expansion is to drive the expansion of these
+
+I heard from Liz (Elizabeth wong) that each event cost around USd$20,000 budget. So bake that in. 2 events per year.
+
+
+### 🤖 Autopilot
+
+Got it. Let me recalculate everything with the new event budget and reframe the three as GTM channels.
+
+**Recalculation:**
+- Events: **$20,000 × 2 = $40,000/yr** (was $18,000)
+- New monthly OpEx: **$9,833** (was $8,000)
+- New min viable scale: **219 boxes/mo** (was 191)
+- New Year 1 total: **~$128,000** (was $106,000)
+
+
+### 🤖 Autopilot
+
+Now write the Chinese HTML with the same updates.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — 4,211 Chinese chars in CN, 9,603 chars in EN, all clean. Let me upload everything.
+
+
+### 🤖 Autopilot
+
+All three files updated. Here's the full recalculation summary:
+
+---
+
+## ✅ Updated — Events Budget Baked In ($40K/yr = 2 × $20K)
+
+### Changed Line Items
+
+| Item | Before | After |
+|---|---|---|
+| Events | $1,500/mo ($18K/yr) | **$3,333/mo ($40K/yr)** |
+| **Monthly OpEx** | **$8,000** | **$9,833** |
+| Year 1 Total OpEx | $106,000 | **$128,000** |
+| **Min Viable Scale** | **191 boxes/mo** (7.6 kg) | **219 boxes/mo** (8.8 kg) |
+| Break-even (annual) | 2,520 boxes | **2,844 boxes** |
+| Funding Required | ~$87,541 | **~$117,444** |
+| Network Budget (sales+events) | — | **$64K/yr dedicated to 3 channels** |
+| Liz's events item status | ⚠️ NEED | **✅ DONE** |
+
+### Three Channels → GTM Budget Allocation
+
+| Channel | Budget Driver | Annual |
+|---|---|---|
+| **Dr. Ye** (TCM content + Douyin weight-loss account) | Content production + KOL events | $52K |
+| **Liz's Cousin** (market insider network) | Liz's sales & marketing + events | $64K |
+| **Chaoshan Group** (regional distribution) | Liz's sales & marketing + events | $64K |
+| **Events** (2/yr × $20K — drives ALL channels) | Dedicated events budget | $40K |
+
+### Download Links (updated):
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+- **P&L .md**: PR #714 branch
+
+All Chinese chars verified ✓ (4,211 CN / 9,603 EN)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → regenerated both HTML files with $40K/yr events (2×$20K), recalculated OpEx to $9,833/mo, min viable scale to 219 boxes/mo, reframed as GTM network expansion channels with budget allocation table
+• `upload file to github` ×3 → EN PDF (main), CN PDF (main), .md P&L model (branch add/cacao-pnl-model)
+• `extract pdf text` ×2 → verified all Chinese characters in both PDFs
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cat << 'HTMLEOF' > /tmp/cacao_report_en.html <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin; cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar; python3 << 'PYEOF' import weasyprint, os # English doc_en = weasyprint.HTML(filename='/tmp/cacao_report_en.html').render() doc_en.write_pdf(
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
