@@ -1687,6 +1687,7 @@ Now write the Chinese HTML with the same updates.
 ### 🤖 Autopilot
 
 Both PDFs verified — 4,211 Chinese chars in CN, 9,603 chars in EN, all clean. Let me upload everything.
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1746,41 +1747,49 @@ All Chinese chars verified ✓ (4,211 CN / 9,603 EN)
 ### 🤖 Autopilot
 
 Got it — Elizabeth Wong, not 表姐Liz. Let me fix all three files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do this more carefully — read the files and fix the exact text.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see every occurrence. Let me use a Python script for precise fixes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All clean — "Liz" in the grep output is just matching the "liz" inside "Elizabeth" (case-insensitive). Chinese has zero 表姐 left. Let me regenerate and upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do one final check on the English PDF to make sure there are no standalone "Liz" references (the grep found "liz" inside "Elizabeth" which is fine, but let me be certain).
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for any standalone "Liz" that isn't inside "Elizabeth".
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All clean — zero standalone "Liz" and zero "表姐" in either PDF. Let me upload.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Also update the .md file.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1849,6 +1858,11 @@ Now update all three files.
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=9433] Also la Do sitio farm is 4 hectare and only produces 4000 cacao beans. Figure out how much yearly volume of cacao tea can be produced from this
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1925,4 +1939,99 @@ All three files updated with the farm supply constraints. Here's the key math:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → # Add supply section to English HTML sed -i 's|<h2>4.3 Carbon Credit Reserve</h2>|<h2>4.3 Supply Constraints — La Dio Sitio Farm</h2> <p>La ; python3 << 'PYEOF' # Add supply section to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() supply_en = """<h2>4; grep -n "碳汇\|4.3" /tmp/cacao_report_cn.html | head -10; …(+7 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] indicate we need a TCM specalist to figure out what goes in to each small box in the package.
+
+
+### 🤖 Autopilot
+
+Let me add this as an open item to all three files.
+
+
+### 🤖 Autopilot
+
+It says `PENDING` not `NEED` in the English version. Let me fix.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact rows. Let me add the TCM specialist need after the Chaoshan line in both languages.
+
+
+### 🤖 Autopilot
+
+Now regenerate both PDFs and verify.
+
+
+### 🤖 Autopilot
+
+Let me check the final page of the Chinese PDF for the TCM specialist row.
+[1 tool result(s) compacted: recall_context — detail in artifacts]
+
+Let me check the end of the Chinese PDF directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+Let me search for the TCM specialist row specifically in the Chinese PDF.
+[1 tool result(s) compacted: recall_context — details in artifacts]
+
+Let me check pages 7-8 of the CN PDF directly.
+[1 tool result(s) compacted: read_tool_result — part of `extract_pdf_text` artifact for CN PDF — scanning the last page content...]
+
+Actually, I can see from the extracted text output that the CN PDF has 4,792 characters across 8 pages. Let me search for "配方" in the text.
+[1 tool result(s) compacted: read_tool_result — page 7 and 8 of CN PDF]
+
+From the artifact I can see page 8 has the open items table. Let me check for the TCM specialist row specifically.
+[1 tool result(s) compacted: read_tool_result — page 8 of CN PDF]
+
+The artifact output says `[+10918 more chars]` — the tool result was saved to artifact `call_01_JpyALdMBtq2yp43DDokk9097`. Let me search in there for the TCM row.
+
+
+### 🤖 Autopilot
+
+Let me check the last page of the CN PDF directly for the TCM specialist row.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — the TCM specialist row is on page 8 of the CN PDF and page 9 of the EN PDF. Let me upload everything and update the .md file.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
+
+Now update the .md file with the same TCM specialist open item.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+All three files updated. Here's the summary:
+
+---
+
+## ✅ TCM Specialist Needed — Added to All Files
+
+**Open item added:**
+
+| Item | Owner | Status |
+|---|---|---|
+| **配方研发: TCM specialist to formulate blends for 10-can box** (Heart-Nourishing, Digestive-Warming, Liver-Soothing, Kidney-Warming + cacao shell base) | **TCM Specialist** *(Dr. Ye to recommend)* | ⚠️ NEED |
+
+This means the **10-can box doesn't have 10 identical cans** — it's a curated set with different functional blends per can. A TCM specialist needs to:
+1. Formulate each of the 4-5 functional blends
+2. Determine the base cacao shell ratio per can (4g each)
+3. Approve the herb combinations for safety and efficacy
+4. Sign off on the TCM claims for marketing
+
+### Download links (updated):
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → Verified CN PDF page 8 has 配方研发 row (养心安神、温中健脾、疏肝解郁、温肾壮阳 + 可可壳), EN PDF page 9 has TCM specialist row
+• `upload file to github` ×3 → Updated EN PDF (main), CN PDF (main), .md P&L model (add/cacao-pnl-model branch)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → # Add TCM specialist need to English HTML grep -n "Open Items\|NEED\|open items" /tmp/cacao_report_en.html | head -5; python3 << 'PYEOF' # Add TCM specialist to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # Find the open item; python3 << 'PYEOF' for lang, path in [('EN', '/tmp/cacao_report_en.html'), ('CN', '/tmp/cacao_report_cn.html')]: with open(path, 'r') as f: ; …(+6 more)
 
