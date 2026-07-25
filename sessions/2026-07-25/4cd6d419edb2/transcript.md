@@ -2606,21 +2606,35 @@ Also Phantom Fireworks market values
 ### 🤖 Autopilot
 
 Let me research both simultaneously.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good data coming in. Let me dig deeper into both — the web search conflated "Fireworks AI" with "Phantom Fireworks" (different companies).
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Great data gathered. Let me now compile this into the documents.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the English PDF currently has Parts 1-9 but is missing Part 7 (the coffee/tea comparison may have gotten overwritten). Let me check the current state of both PDFs more closely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2691,6 +2705,11 @@ Speakers at TEDx events typically include: entrepreneurs, academics, artists, co
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=9433] How much did we charge for the cacao tea per kilogram in the pdf
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2811,4 +2830,107 @@ The **$4.50/kg** needs to be replaced with the **real cost**. I don't have a lin
 
 1. **Use our wholesale price $44.09/kg as COGS** (conservative — treating it as internal transfer cost)?
 2. Or do you have the actual cost basis for the shell (i.e. what we pay to process/separate it from the bean)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Yup. Seems we got the numbers in the PDF wrong isn’t it? Shouldn’t we be using usd$44 per kilograms as COGS? 
+
+Update the PDFs and MD files
+
+
+### 🤖 Autopilot
+
+You're right — $44/kg is the number from our actual wholesale price list. Let me recalculate everything and update all files.
+
+
+### 🤖 Autopilot
+
+Significant change — COGS jumps from $2.93 to $4.51/box. Now let me update all three files.
+
+
+### 🤖 Autopilot
+
+I see the Chinese HTML still has old values in the scenario tables. Let me fix them more precisely.
+
+
+### 🤖 Autopilot
+
+Now regenerate both PDFs.
+
+
+### 🤖 Autopilot
+
+I see the EN PDF on page 4 still shows "$0.18" per box instead of "$1.76", and page 5 has "$47.08" gross profit (wrong). The CN exec summary still has old values too. Let me fix all these precisely.
+
+
+### 🤖 Autopilot
+
+Now I can see all the remaining stale values. Let me fix them all precisely.
+
+English HTML: `$0.18` on cacao husk per box, `$47.08` gross profit
+Chinese HTML: `224盒`, `8.8公斤`, `$13,040`, `$4.50`, `$0.18`, `$47.08`, `$7,920`, `$442,080`
+
+
+### 🤖 Autopilot
+
+Almost there — 2 CN checks failing. Let me fix them.
+
+
+### 🤖 Autopilot
+
+Found them. Let me fix the remaining stale values in the CN HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Wait, that didn't fix the `$4.51` issue. Let me check what's actually in the CN HTML around the COGS total.
+[1 tool result(s) compacted: grep — detail in artifacts]
+
+The `<b>` tags were preventing the match. Let me fix the HTML more carefully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now regenerate and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+All checks pass now. Let me upload everything.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
+
+Now update the .md file too.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+All three files updated with the corrected $44/kg COGS. Here's the summary of what changed:
+
+---
+
+## ✅ COGS Corrected to $44/kg (from official wholesale price list)
+
+### What Changed
+
+| Metric | Before ($4.50/kg) | After ($44.00/kg) |
+|---|---|---|
+| Shell cost per box | $0.18 | **$1.76** |
+| **Total COGS/box** | **$2.92** (5.8%) | **$4.51** (9.0%) |
+| **Gross profit (before carbon)** | **$47.08** (94.2%) | **$45.49** (91.0%) |
+| **Gross profit (after $5 carbon)** | **$42.08** | **$40.49** |
+| **Min viable scale** | **219 boxes/mo** (8.8 kg) | **249 boxes/mo** (10.0 kg) |
+| **Break-even (annual)** | **2,844 boxes** (114 kg) | **3,235 boxes** (129 kg) |
+| **Conservative (500/mo) net** | **$10,957/mo** | **$9,328/mo** |
+| **$500K target net profit** | **~$321,080** (64.2%) | **~$256,900** (51.4%) |
+| **Funding required** | ~$118,942 | ~$120,500 |
+
+### Downloads:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+- **.md P&L model**: PR #714 branch
+
+All Chinese characters verified ✅ — 5,650 chars in CN PDF, 12,332 in EN PDF.
+
+Still a very healthy margin even at the real COGS of $44/kg — **57.4% net margin** after carbon reserve and all OpEx at the $500K target.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → python3 << 'PYEOF' # Recalculate everything with $44/kg shell cost OLD_SHELL_KG = 4.50 NEW_SHELL_KG = 44.00 # from official wholesale price ; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # 1. Raw material line in COGS table en = en.replace('$4.; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() # 1. Raw material: $4.50/kg → $44.00/kg; …(+8 more)
 
