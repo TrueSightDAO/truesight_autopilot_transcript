@@ -1588,26 +1588,36 @@ The English cover label still says "Presented to:" — let me fix that and updat
 ### 🤖 Autopilot
 
 I see — the cover labels weren't caught. Let me fix them directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — Chinese PDF verified. Let me also verify the English one, then upload both.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified — covers now show "Network Expansion Channels" instead of "Presented to". Let me upload.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Done. Both PDFs updated — covers now show **"Network Expansion Channels:"** instead of "Presented to". Let me also update the .md file.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1655,11 +1665,18 @@ Got it. Let me recalculate everything with the new event budget and reframe the 
 - New monthly OpEx: **$9,833** (was $8,000)
 - New min viable scale: **219 boxes/mo** (was 191)
 - New Year 1 total: **~$128,000** (was $106,000)
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now write the Chinese HTML with the same updates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1777,4 +1794,49 @@ Verified: zero standalone "Liz" and zero "表姐" in all three files ✅
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → # Fix English HTML sed -i 's/Liz (sales|Liz'\''s cousin|Liz's cousin|Liz suggested/Elizabeth Wong/g' /tmp/cacao_report_en.html sed -i 's|Liz; grep -n -i "liz\|表姐" /tmp/cacao_report_en.html | head -30; grep -n -i "liz\|表姐" /tmp/cacao_report_cn.html | head -30; …(+3 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can we ensure minimum sales volume is $500,000 per year.
+
+
+### 🤖 Autopilot
+
+Let me work out the math and update all three files.
+
+**$500,000/yr at $50/box = 10,000 boxes/yr = 833 boxes/month**
+
+That's well above the 219 min viable — so this becomes the **baseline target** rather than survival threshold.
+[1 tool result(s) compacted: ssh_run — detail in arsenic]
+
+Now update all three files.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in arsenic]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in arsenic]All three files updated with the $500K/year minimum sales volume baked in as the baseline target.
+
+---
+
+### ✅ $500K Minimum Annual Sales — Key Numbers
+
+| Metric | Value |
+|---|---|
+| **Annual sales target** | **$500,000** (gross) |
+| Boxes per year | **10,000** |
+| Boxes per month | **833** |
+| Cacao tea per year | **~400 kg** (~16 kg/mo) |
+| Trees planted per year | **10,000** |
+| Carbon credits per year | **40,000 tons CO₂** |
+| Annual net profit (after carbon + OpEx) | **~$344,500** |
+| Reforestation fund per year | **$50,000** |
+
+### Updated Files:
+
+- **EN PDF** — New "Minimum Sales Target" section: $500K/yr, 10K boxes, 833/mo, profit projection, carbon impact
+- **CN PDF** — Same in Chinese with verified characters ✓
+- **.md P&L model** — Updated with $500K target as baseline
+
+### Download:
+- EN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- CN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
 
