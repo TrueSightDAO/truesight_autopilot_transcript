@@ -2354,17 +2354,40 @@ Now do the same for the Chinese PDF.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both HTMLs updated. Now regenerate PDFs and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the projections section is in both PDFs.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Chinese PDF for the projections section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2661,4 +2684,39 @@ Speakers at TEDx events typically include: entrepreneurs, academics, artists, co
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → # First check if we need to add a section. Let me look at the existing structure. grep -n '<h1>Part 7\|<h1>七' /tmp/cacao_report_en.html /tmp; grep -n '<h1>Part\|<h1>Part 7\|<h1>Part 8\|<h1>Part 9\|<h1>Part' /tmp/cacao_report_en.html | head -20; grep -n 'Coffee\|Tea\|茶\|咖啡' /tmp/cacao_report_en.html | head -10
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] How much did we charge for the cacao tea per kilogram in the pdf
+
+
+### 🤖 Autopilot
+
+The PDF shows **$50 per box (40g)**, which works out to **$1,250 per kilogram** — but that's not explicitly stated as a per-kg price anywhere. Let me check the Chinese PDF too and then add a clear per-kg price line to both.
+
+
+### 🤖 Autopilot
+
+In the PDF, the pricing is **$50 per box (40g)** — there's no explicit per-kilogram price stated. But the math is:
+
+**$50 ÷ 0.04 kg = $1,250 per kilogram** of cacao tea at retail.
+
+So the value chain per kilogram looks like:
+
+| Layer | Per kg | Per box (40g) |
+|---|---|---|
+| **Retail price** | **$1,250** | **$50.00** |
+| − Carbon reserve ($5/box) | −$125 | −$5.00 |
+| **Net revenue** | **$1,125** | **$45.00** |
+| − COGS (shell + freight + packaging) | −$72 | −$2.88* |
+| **Gross margin** | **~$1,053** | **~$42.12** |
+
+*COGS per box: ~$0.23 cacao shell + $0.48 freight + $2.17 packaging = $2.88
+
+Shall I add a clear **$1,250/kg** line to the COGS section in both PDFs so it's explicit?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → python3 << 'PYEOF' import fitz doc = fitz.open('/tmp/cacao_report_en.pdf') full_text = "" for i in range(doc.page_count): full_text += doc[i; python3 << 'PYEOF' import fitz # Check CN PDF doc = fitz.open('/tmp/cacao_report_cn.pdf') full_text = "" for i in range(doc.page_count): ful
 
