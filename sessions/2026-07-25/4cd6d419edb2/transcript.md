@@ -1126,6 +1126,32 @@ Let me get the DHL rate from Brazil to China specifically.
 ### 🤖 Autopilot
 
 Let me check the main ledger and QR code data for AGL8 cacao tea pricing.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_google_sheet, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1144,21 +1170,30 @@ Now I have enough data to build the P&L model. Let me compile everything into th
 - Operating: $100,000 min, Jerrie $1k/mo, Ling $1k/mo
 
 Let me generate both PDFs now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now generate both PDFs and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the Chinese PDF characters.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 2,639 Chinese characters verified in pymupdf extraction. Now upload both PDFs.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1291,4 +1326,169 @@ All three files updated with the carbon credit reserve. Here's the summary:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cat << 'HTMLEOF' >> /tmp/cacao_report_en.html <h1>Part 9: Carbon Credit — Forest Impact</h1> <p>For every SKU sold, <b>$5 is reserved</b> to; cat << 'HTMLEOF' > /tmp/cacao_report_en.html <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin; cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar; …(+1 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Indicate minimum amount in terms of unit required to be able to support the current ops with net profit generated
+
+
+### 🤖 Autopilot
+
+Got it — let me add a clear "Minimum Viable Scale" section to all three files highlighting the exact unit threshold to sustain operations.
+
+
+### 🤖 Autopilot
+
+Now let me update all three files with a clear Minimum Viable Scale section.
+
+
+### 🤖 Autopilot
+
+Now update both PDFs. Let me add the Minimum Viable Scale section to the English HTML.
+
+
+### 🤖 Autopilot
+
+I see I accidentally duplicated the OpEx table. Let me fix the English HTML and update the Chinese one, then regenerate both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+I accidentally left a duplicate OpEx section. Let me fix that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now regenerate both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Check for duplicates and verify Chinese characters.
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
+
+Let me check for the duplicate OpEx table issue in a specific page.
+[1 tool result(s) consolidated from 1 earlier tool result: read_tool_result — detail in artifacts]
+
+There's still a duplicate OpEx section. Let me fix the English HTML properly.
+[1 tool result(s) consolidated from 1 earlier tool result: ssh_run — detail in artifacts]
+
+Now regenerate just the English PDF.
+[1 tool result(s) consolidated: ssh_run — detail in artifacts]
+
+Let me verify the English PDF doesn't have the duplicate anymore.
+[1 tool result(s) consolidated: extract_pdf_text — detail in artifacts]
+
+Let me read the full text to check for the duplicate.
+[1 tool result(s) consolidated: read_tool_result — detail in artifacts]
+
+Still has the duplicate - "4.5 Operating Expenses" appears twice. Let me look at page 5 more carefully.
+[1 tool result(s) consolidated: read_tool_result — detail in artifacts]
+
+I see - the duplicate is on page 5 (and maybe also page 5-6). Let me fix the HTML source directly.
+[1 tool result(s) consolidated: read_local_file — detail in assets]
+
+I see the problem - the duplicate OpEx tables are both in the HTML. Let me remove the duplicate section (the one right before 4.7).
+[1 tool result(s) consolidated: ssh_run — detail in assets]
+
+Now regenerate the English PDF.
+[1 tool result(s) consolidated: ssh_run — detail in assets]
+
+Now verify there's no duplicate.
+[1 tool result(s) consolidated: extract_pdf_text — detail in assets]
+
+Let me read page 5 to confirm no duplicate.
+[1 tool result(s) consolidated: read_tool_result — detail in assets]
+
+Still has the duplicate... Let me look at the HTML file to find where the duplication is.
+[1 tool result(s) consolidated: read_local_file — application/octet-stream]I see - the second duplicate table is the one at `<h2>4.6 Operating Expenses (Monthly)</h2>` that's identical to `<h2>4.5 Operating Expenses (Monthly)</h2>`. Let me look at the exact content to fix this.
+[1 tool result(s) consolidated: read_local_file — application/octet-stream]
+
+I see! Line 157 has `<h2>4.6 Operating Expenses (Monthly)</h2>` which is a duplicate of 4.5. Let me remove it and the following table, correctly renumbering the rest.
+[1 tool result(s) consolidated: ssh_run — details in artifacts]
+
+Now regenerate and verify.
+[1 tool result(s) consolidated: extract_pdf_text — details in artifacts]Let me check pages 5-6 for the duplicate.
+[1 tool result(s) consolidated: read_tool_result — details in artifacts]
+
+Still has the duplicate! The problem is that there's still a second OpEx table. Let me check the exact HTML file contents around that section.
+[1 tool result(s) consolidated: read_local_file — application/octet-stream]I can see the issue clearly now. Lines 149-175 contain the second Operating Expenses table at section 4.6 (same data as 4.5). Let me surgically remove it with a precise sed that targets those exact line numbers.
+
+
+### 🤖 Autopilot
+
+The duplicate is at lines 186-201. Let me remove it.
+
+
+### 🤖 Autopilot
+
+Good — duplicate removed. Let me renumber 4.7→4.6 and 4.8→4.7.
+
+
+### 🤖 Autopilot
+
+Now regenerate and verify.
+
+
+### 🤖 Autopilot
+
+English PDF is clean — no duplicate, proper numbering. Now update the Chinese PDF too.
+
+
+### 🤖 Autopilot
+
+The Chinese HTML doesn't have the Minimum Viable Scale section yet. Let me update it.
+
+
+### 🤖 Autopilot
+
+Now also add the 191-box row to the scenarios table in the Chinese PDF.
+
+
+### 🤖 Autopilot
+
+Now regenerate the Chinese PDF and verify.
+
+
+### 🤖 Autopilot
+
+Let me check the rest of the Chinese PDF to confirm everything is complete.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — all sections complete. Let me upload all three files.
+
+
+### 🤖 Autopilot
+
+All three files updated. Here's the key answer to your question:
+
+---
+
+## ✅ Minimum Viable Scale — 191 Boxes per Month
+
+**To sustain operations with net profit covering $8,000 monthly OpEx:**
+
+| Timeframe | Minimum Units | Cacao Tea Needed |
+|---|---|---|
+| **Per month** | **191 boxes** | **~7.6 kg** |
+| Per quarter | 573 boxes | ~23 kg |
+| Per year (break-even) | 2,520 boxes | ~101 kg |
+
+**191 boxes/month is the floor.** At that volume, $37 net profit — essentially break-even on OpEx. Every box beyond that is pure profit.
+
+**At Conservative scale (500 boxes/mo):** $13,040/month net profit — team paid, carbon funded, surplus for growth.
+
+### Download links:
+- **English PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **Chinese PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+- **P&L .md**: PR #714 branch → [CACAO_CHINA_PNL_MODEL.md](https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md)
+
+All Chinese characters verified ✓ — both PDFs render properly with DroidSansFallback font embedded.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` ×2
+• `upload file to github` ×3 → English PDF, Chinese PDF, .md P&L model
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` ×2 → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+• `ssh run` ×11 → cat << 'HTMLEOF' > /tmp/cacao_report_en.html <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin; # Remove the duplicate 4.6 Operating Expenses section (lines 149-175) # The section starts with <h2>4.6 Operating Expenses (Monthly)</h2> an; sed -n '186,201p' /tmp/cacao_report_en.html echo "===LINES 186-201===" # Show a few lines before and after to confirm context sed -n '184,20; …(+8 more)
 
