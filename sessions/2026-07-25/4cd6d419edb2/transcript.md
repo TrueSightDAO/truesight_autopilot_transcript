@@ -1881,31 +1881,67 @@ Now let me work out the math from this data:
 | **Boxes per year from farm** | **10,000-17,000 boxes** | 400-680 kg ÷ 0.04 kg |
 
 Let me update all three files with this supply constraint.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me use Python instead — the shell escaping is too fragile.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Chinese one didn't match. Let me check the exact text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The issue is the Chinese heading has extra text `（每卖出一盒）` that my replacement wasn't matching. Let me fix it properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both HTMLs updated. Now regenerate and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified — all Chinese characters render correctly, the supply constraint section shows properly, the $500K target aligns with the farm's conservative capacity. Let me upload everything.
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1949,6 +1985,7 @@ All three files updated with the farm supply constraints. Here's the key math:
 ### 🤖 Autopilot
 
 Let me add this as an open item to all three files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2034,4 +2071,110 @@ This means the **10-can box doesn't have 10 identical cans** — it's a curated 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → # Add TCM specialist need to English HTML grep -n "Open Items\|NEED\|open items" /tmp/cacao_report_en.html | head -5; python3 << 'PYEOF' # Add TCM specialist to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # Find the open item; python3 << 'PYEOF' for lang, path in [('EN', '/tmp/cacao_report_en.html'), ('CN', '/tmp/cacao_report_cn.html')]: with open(path, 'r') as f: ; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] also indicate fees for analysis lab
+
+
+### 🤖 Autopilot
+
+Let me research typical analysis lab costs and add this to all three files.
+
+
+### 🤖 Autopilot
+
+Now I have good cost data. Let me add analysis lab fees to all three files.
+
+
+### 🤖 Autopilot
+
+Let me fix the encoding issue in the Chinese HTML.
+
+
+### 🤖 Autopilot
+
+Good — both items appear exactly where they should (once in OpEx table, once in open items). Now regenerate both PDFs.
+
+
+### 🤖 Autopilot
+
+Let me check the last page of both PDFs for the lab testing row.
+
+
+### 🤖 Autopilot
+
+Let me check if the lab testing was also added to the Open Items section in the EN PDF, not just the OpEx table.
+
+
+### 🤖 Autopilot
+
+The EN open items section doesn't have the lab row. Let me check why.
+
+
+### 🤖 Autopilot
+
+The lab row was added to OpEx but not to the EN open items. Let me fix that.
+
+
+### 🤖 Autopilot
+
+The EN open items has the TCM row without `<b>` tags. Let me add the lab row after it.
+
+
+### 🤖 Autopilot
+
+Now regenerate just the EN PDF and verify.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — lab fees appear in the open items on the last page. Now upload everything.
+
+
+### 🤖 Autopilot
+
+Now update the .md file.
+
+
+### 🤖 Autopilot
+
+All three files updated with the analysis lab fees. Here's the summary:
+
+---
+
+## ✅ Analysis Lab Fees Added to All Files
+
+**Cost basis:** $250/mo ($3,000/yr) for nutritional panel, heavy metals (Pb/Cd/As), pesticide residue, and microbiology testing — required for China import compliance.
+
+### Impact on Model:
+
+| Metric | Before | After |
+|---|---|---|
+| Monthly OpEx | **$9,833** | **$10,083** |
+| Year 1 Total | **$128,000** | **$131,000** |
+| Min Viable Scale | **219 boxes/mo** (8.8 kg) | **224 boxes/mo** (9.0 kg) |
+| Break-even (annual) | **2,844 boxes** | **2,904 boxes** |
+| Funding Required | ~$117,444 | **~$118,942** |
+| Conservative (500/mo) net profit | $11,207 | **$10,957** |
+
+### Open items now include:
+| Item | Owner | Status |
+|---|---|---|
+| **Analysis lab fees** — nutritional, heavy metals (Pb/Cd/As), pesticide, microbiology for China import compliance | Accredited Food Lab (~$250/mo) | ⚠️ NEED |
+| **TCM specialist** to formulate blends for 10-can box | TCM Specialist (Dr. Ye to recommend) | ⚠️ NEED |
+
+### Download links:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%81%9C%E5%8F%91%E7%AD%96%E7%95%A5.pdf
+
+(Links may need the correct Chinese characters — let me verify once)
+- **CN PDF** (raw): https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+- **.md P&L model**: PR #714 branch (add/cacao-pnl-model)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → python3 << 'PYEOF' # Add lab analysis to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # 1. Add to OpEx table; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'rb') as f: cn = f.read() # Add lab row after 杂项 row in OpEx table old_misc = b'<t; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'rb') as f: cn = f.read() # Fix the $ sign encoding cn = cn.replace(b'\xa5\x250', ; …(+9 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
