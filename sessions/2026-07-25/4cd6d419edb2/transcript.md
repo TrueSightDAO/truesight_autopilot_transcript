@@ -2159,46 +2159,75 @@ Let me fix the encoding issue in the Chinese HTML.
 ### 🤖 Autopilot
 
 Good — both items appear exactly where they should (once in OpEx table, once in open items). Now regenerate both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the last page of both PDFs for the lab testing row.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check if the lab testing was also added to the Open Items section in the EN PDF, not just the OpEx table.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The EN open items section doesn't have the lab row. Let me check why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The lab row was added to OpEx but not to the EN open items. Let me fix that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The EN open items has the TCM row without `<b>` tags. Let me add the lab row after it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate just the EN PDF and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified — lab fees appear in the open items on the last page. Now upload everything.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update the .md file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2250,31 +2279,67 @@ All three files updated with the analysis lab fees. Here's the summary:
 ### 🤖 Autopilot
 
 Let me check what's currently in there and add a clear "Projection Required to Hit $500K" summary line to all three files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll update all three files with a clear, prominent "Required Projections to Hit $500K" line.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update both PDFs with the same section — first the English, then the Chinese.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The English PDF only goes to Part 7 (Open Items). Let me add the projections as a new Part 8 before the Open Items.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the structure clearly. Let me insert the new section between Part 6 and Part 7.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now do the same for the Chinese PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2362,4 +2427,55 @@ Summary line + 20-row table with formulas
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 • `ssh run` ×15 → python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() target_section = """ <h1>Part 9: Required Projections — $; grep -n 'Part 9\|Part 8\|Part 7\|Minimum Sales\|Supply Constraint' /tmp/cacao_report_en.html | head -20; grep -n '<h1>Part\|<h2>Part' /tmp/cacao_report_en.html; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Freight let's assume 12 per kilogram
+
+
+### 🤖 Autopilot
+
+Got it — $12/kg freight across the board. Let me update all three files with the new number and recalculate.
+
+**Recalculation:**
+- Old freight: $4-5/kg ($0.18/box) → **New: $12/kg ($0.48/box)**
+- Old COGS: $2.92 → **New: $3.22** (+$0.30)
+- Old gross profit after carbon: $42.08 → **New: $41.78**
+- Min viable: 219 boxes → **New: 235 boxes**
+- Break-even: 2,844 → **New: 2,896 boxes**
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now upload both PDFs.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
+
+Now update the .md file with the same changes.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+All three files updated with **$12/kg freight**. Here's the impact on the model:
+
+---
+
+## Freight Assumption Updated → $12/kg
+
+| Metric | Before ($5/kg) | After ($12/kg) |
+|---|---|---|
+| Freight per box (40g) | $0.18 | **$0.48** |
+| **Total COGS** | **$2.92** | **$3.22** |
+| Gross profit (after carbon) | $42.08 | **$41.78** |
+| **Min viable scale** | **219 boxes/mo** (8.8 kg) | **235 boxes/mo** (9.4 kg) |
+| **Break-even (annual)** | **2,844 boxes** (114 kg) | **2,896 boxes** (116 kg) |
+| **$500K target net profit** | **~$321,080** | **~$316,780** |
+| **$500K profit margin** | **~64.2%** | **~63.4%** |
+
+All Chinese characters verified ✓ in both PDFs.
+
+### Downloads:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+Still a very healthy model — 63.4% net margin even after the higher freight.
 
