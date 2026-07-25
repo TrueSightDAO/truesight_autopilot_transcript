@@ -1681,6 +1681,11 @@ Now write the Chinese HTML with the same updates.
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both PDFs verified — 4,211 Chinese chars in CN, 9,603 chars in EN, all clean. Let me upload everything.
 
 
@@ -1839,4 +1844,85 @@ Now update all three files.
 ### Download:
 - EN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
 - CN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Also la Do sitio farm is 4 hectare and only produces 4000 cacao beans. Figure out how much yearly volume of cacao tea can be produced from this
+
+
+### 🤖 Autopilot
+
+Now let me work out the math from this data:
+
+**La Dio Sitio: 4 hectares, 4,000 kg beans/year** (most likely meaning 4,000 kg, as 4,000 individual beans would be negligible)
+
+| Calculation Step | Value | Source |
+|---|---|---|
+| Farm size | **4 hectares** | Per Gary |
+| Annual bean production | **4,000 kg** (1,000 kg/ha) | Above Brazilian avg of 300-450 kg/ha |
+| Cacao bean → shell yield | **10-17%** of bean weight | Peer-reviewed research (PMC7230451) |
+| **Cacao tea (shell) per year** | **400-680 kg** | 4,000 × 10-17% |
+| Each box needs | **40g** (4g × 10 cans) | Product spec |
+| **Boxes per year from farm** | **10,000-17,000 boxes** | 400-680 kg ÷ 0.04 kg |
+
+Let me update all three files with this supply constraint.
+
+
+### 🤖 Autopilot
+
+Let me use Python instead — the shell escaping is too fragile.
+
+
+### 🤖 Autopilot
+
+The Chinese one didn't match. Let me check the exact text.
+
+
+### 🤖 Autopilot
+
+The issue is the Chinese heading has extra text `（每卖出一盒）` that my replacement wasn't matching. Let me fix it properly.
+
+
+### 🤖 Autopilot
+
+Both HTMLs updated. Now regenerate and verify.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — all Chinese characters render correctly, the supply constraint section shows properly, the $500K target aligns with the farm's conservative capacity. Let me upload everything.
+
+
+### 🤖 Autopilot
+
+All three files updated with the farm supply constraints. Here's the key math:
+
+---
+
+## La Dio Sitio Farm — Supply Capacity
+
+**4 hectares · 4,000 kg beans/yr · 10-17% shell weight**
+
+| Scenario | Tea/yr | Boxes/yr (40g) | Revenue | % of $500K Target |
+|---|---|---|---|---|
+| **Conservative (10%)** | **400 kg** | **10,000** | **$500,000** | **100%** |
+| Moderate (14%) | 560 kg | 14,000 | $700,000 | 71% |
+| Optimistic (17%) | 680 kg | 17,000 | $850,000 | 59% |
+
+**Key finding:** The $500K minimum annual sales target is **exactly at the farm's conservative capacity** — 10,000 boxes from 400 kg cacao tea. To scale beyond that, we'll need additional shell supply from other farms or chocolate production partnerships.
+
+### Updated Files:
+- **EN PDF** (9 pages) — New section 4.3: Supply Constraints with 3-scenario table
+- **CN PDF** (8 pages) — Same in Chinese, all chars verified ✓ (4,714 chars)
+- **.md P&L model** — New section 3: Supply Constraints, $500K target row in scenarios
+
+### Downloads:
+- EN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- CN: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → # Add supply section to English HTML sed -i 's|<h2>4.3 Carbon Credit Reserve</h2>|<h2>4.3 Supply Constraints — La Dio Sitio Farm</h2> <p>La ; python3 << 'PYEOF' # Add supply section to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() supply_en = """<h2>4; grep -n "碳汇\|4.3" /tmp/cacao_report_cn.html | head -10; …(+7 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
