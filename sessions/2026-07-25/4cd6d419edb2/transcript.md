@@ -1990,17 +1990,50 @@ Let me add this as an open item to all three files.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 It says `PENDING` not `NEED` in the English version. Let me fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the exact rows. Let me add the TCM specialist need after the Chaoshan line in both languages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate both PDFs and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2024,11 +2057,23 @@ From the artifact I can see page 8 has the open items table. Let me check for th
 [1 tool result(s) compacted: read_tool_result — page 8 of CN PDF]
 
 The artifact output says `[+10918 more chars]` — the tool result was saved to artifact `call_01_JpyALdMBtq2yp43DDokk9097`. Let me search in there for the TCM row.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the last page of the CN PDF directly for the TCM specialist row.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2080,17 +2125,35 @@ This means the **10-can box doesn't have 10 identical cans** — it's a curated 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me research typical analysis lab costs and add this to all three files.
+[1 tool result(s) compacted: web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have good cost data. Let me add analysis lab fees to all three files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me fix the encoding issue in the Chinese HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2177,4 +2240,126 @@ All three files updated with the analysis lab fees. Here's the summary:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → python3 << 'PYEOF' # Add lab analysis to English HTML with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # 1. Add to OpEx table; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'rb') as f: cn = f.read() # Add lab row after 杂项 row in OpEx table old_misc = b'<t; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'rb') as f: cn = f.read() # Fix the $ sign encoding cn = cn.replace(b'\xa5\x250', ; …(+9 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] I think we need to have a line where we have required projections for $500,000 sales revenue per year
+
+
+### 🤖 Autopilot
+
+Let me check what's currently in there and add a clear "Projection Required to Hit $500K" summary line to all three files.
+
+
+### 🤖 Autopilot
+
+Now I'll update all three files with a clear, prominent "Required Projections to Hit $500K" line.
+
+
+### 🤖 Autopilot
+
+Now update both PDFs with the same section — first the English, then the Chinese.
+
+
+### 🤖 Autopilot
+
+The English PDF only goes to Part 7 (Open Items). Let me add the projections as a new Part 8 before the Open Items.
+
+
+### 🤖 Autopilot
+
+Now I can see the structure clearly. Let me insert the new section between Part 6 and Part 7.
+
+
+### 🤖 Autopilot
+
+Now do the same for the Chinese PDF.
+
+
+### 🤖 Autopilot
+
+Both HTMLs updated. Now regenerate PDFs and verify.
+
+
+### 🤖 Autopilot
+
+Let me verify the projections section is in both PDFs.
+
+
+### 🤖 Autopilot
+
+Let me check the Chinese PDF for the projections section.
+
+
+### 🤖 Autopilot
+
+The artifact output is too nested. Let me check the CN PDF directly for the projections section.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — the projections section is on page 9 (EN) and page 8 (CN) with all 18 rows including the final break-even metric. Now let me upload both.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+All three files updated with the **Required Projections for $500K** section. Here's the final summary:
+
+---
+
+## All Three Files — Current State
+
+### 📄 English PDF (10 pages) ✅
+**Part 8: Required Projections — $500,000 Annual Sales Target**
+Summary line + 18-row projection breakdown table + Scenario table with $500K target row (833/mo = $24,970/mo net profit)
+
+### 📄 Chinese PDF (9 pages) ✅
+**八、必要预测——实现$500,000年销售额所需的数据**
+Same content in Chinese — 5,645 chars verified via pymupdf, all render correctly
+
+### 📝 .md P&L Model (PR #714, add/cacao-pnl-model branch) ✅
+**Section 9: Required Projections to Hit $500,000 Annual Sales Revenue**
+Summary line + 20-row table with formulas
+
+---
+
+### Key Numbers in the $500K Target Section:
+
+| Metric | Value |
+|---|---|
+| Boxes/year | 10,000 |
+| Boxes/month | 833 (~28/day) |
+| Cacao tea/year | ~400 kg |
+| Farm capacity used | 100% (conservative yield) |
+| Net profit (before tax) | **~$321,080** |
+| Net profit margin | **~64.2%** |
+| Trees planted/yr | 10,000 |
+| Carbon credits | 40,000 tons CO₂ |
+| Break-even vs target | 29% (2,904 boxes out of 10,000) |
+| Cash to reforestation | $50,000 |
+
+### Open Items Still in Files:
+- Ling: packaging pricing + details
+- Elizabeth Wong: KOL budget, Chaoshan terms
+- Legal: China import regulations
+- Dr. Ye: Douyin side account timing
+- **TCM specialist** ⚠️ (配方研发)
+- **Accredited lab** ⚠️ (analysis fees ~$250/mo)
+
+### Download Links:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+**RESUME HERE →** The next step would be sharing these documents with the three network channels (Dr. Ye, Elizabeth Wong's cousin, Chaoshan group). Also pending: merging PR #714 (P&L .md) and PR #713 (competitive analysis .md) once you approve.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+• `ssh run` ×15 → python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() target_section = """ <h1>Part 9: Required Projections — $; grep -n 'Part 9\|Part 8\|Part 7\|Minimum Sales\|Supply Constraint' /tmp/cacao_report_en.html | head -20; grep -n '<h1>Part\|<h2>Part' /tmp/cacao_report_en.html; …(+12 more)
 
