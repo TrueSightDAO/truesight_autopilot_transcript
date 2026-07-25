@@ -2393,11 +2393,13 @@ Let me check the Chinese PDF for the projections section.
 ### 🤖 Autopilot
 
 The artifact output is too nested. Let me check the CN PDF directly for the projections section.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified — the projections section is on page 9 (EN) and page 8 (CN) with all 18 rows including the final break-even metric. Now let me upload both.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2719,4 +2721,22 @@ Shall I add a clear **$1,250/kg** line to the COGS section in both PDFs so it's 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → python3 << 'PYEOF' import fitz doc = fitz.open('/tmp/cacao_report_en.pdf') full_text = "" for i in range(doc.page_count): full_text += doc[i; python3 << 'PYEOF' import fitz # Check CN PDF doc = fitz.open('/tmp/cacao_report_cn.pdf') full_text = "" for i in range(doc.page_count): ful
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] I meant the cost of goods per kilogram of cacao shell before freighting cost
+
+
+### 🤖 Autopilot
+
+Found it. The PDF shows:
+
+> **Cacao husk (byproduct from nib/choc production): $4.50 per kg**
+
+That's the cost of goods — cacao shell from AGL8 / La Dio Sitio farm — **before** any freight is added. At 40g per box, that works out to $0.18 per box in raw material cost.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 << 'PYEOF' import fitz doc = fitz.open('/tmp/cacao_report_en.pdf') full_text = "" for i in range(doc.page_count): full_text += doc[i
 
