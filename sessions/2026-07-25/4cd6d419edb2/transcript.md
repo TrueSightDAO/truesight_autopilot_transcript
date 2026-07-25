@@ -2740,3 +2740,75 @@ That's the cost of goods — cacao shell from AGL8 / La Dio Sitio farm — **bef
 **✅ Done this turn — actions taken:**
 • `ssh run` → python3 << 'PYEOF' import fitz doc = fitz.open('/tmp/cacao_report_en.pdf') full_text = "" for i in range(doc.page_count): full_text += doc[i
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Are you sure the cost of goods per kilogram for the cacao tea is that price? 
+
+Check our ledgers to figure out how much per kilogram we have been selling our cacao nibs and ceremonial cacao at whole sale historically
+
+
+### 🤖 Autopilot
+
+You're right to question that. Let me check our actual ledger data for real wholesale pricing.
+
+
+### 🤖 Autopilot
+
+Let me find the actual sheet name and read our price lists.
+
+
+### 🤖 Autopilot
+
+Important finding! Let me check the actual wholesale price list and the shop data.
+
+
+### 🤖 Autopilot
+
+Good — I found our actual wholesale price list. **$20.00 per pound** for cacao tea = **$44.09 per kilogram** as a wholesale selling price. But you're asking about the **cost of goods** — what we actually *pay* for the cacao shell raw material. Let me check the processing costs.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+Let me check the Agroverse SKUs sheet and processing data.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+From the processing cost data, I can now see the full picture. Let me look at what costs are documented.
+
+From the `processing_cost_data (Responses).csv` file and the other data:
+
+The **$4.50/kg** I used was my estimate based on converting R$ values at R$5.5/USD. But the actual **wholesale price we sell cacao tea at is $20/lb = $44.09/kg** (from the official Agroverse price list).
+
+Let me clarify the distinction:
+
+1. **Raw material cost (COGS)** for cacao shell as a byproduct is essentially the processing cost to separate it from the nibs — from the processing data: almonds at R$100/kg, processing R$7.50-8.70/kg to get nibs. The shell is the byproduct of this process. I don't see a specific shell cost line item.
+
+2. **Wholesale selling price** for cacao tea is **$20/lb = $44.09/kg** — this is what we charge retailers.
+
+The $4.50/kg in the PDF was my estimate for what the raw shell might cost, but it's not from our actual ledger data. Let me tell Gary what I found.Gary, you're right to call this out. Here's what our actual records show:
+
+## From Official Agroverse Wholesale Price List
+
+| Product | Wholesale Price |
+|---|---|
+| **Cacao tea** | **$20.00 per pound** |
+| → Per kilogram | **$44.09/kg** |
+| Ceremonial cacao paste | $20.00/lb |
+| Cacao nibs | $20.00/lb |
+| Cacao beans | $20.00/lb |
+
+**The $4.50/kg** I used in the PDF was my estimate — I calculated it from the Brazil processing cost data (R$100/kg for almonds, processing overhead) assuming shell is a cheap byproduct. But **that number is NOT from our ledger** — it was my own back-of-envelope math.
+
+## What We Actually Need
+
+Two distinct numbers:
+
+| Layer | Current PDF | What's from Ledger? |
+|---|---|---|
+| **Raw cacao shell cost (COGS)** | $4.50/kg | ❌ My estimate, not from records |
+| **Wholesale price (what we sell it for)** | $20.00/lb = **$44.09/kg** | ✅ From official price list |
+| **Retail price (what consumer pays)** | $50/box (40g) = **$1,250/kg** | ✅ From Elizabeth Wong |
+
+The **$4.50/kg** needs to be replaced with the **real cost**. I don't have a line item in the ledger for "cacao shell raw material cost" — would you like me to:
+
+1. **Use our wholesale price $44.09/kg as COGS** (conservative — treating it as internal transfer cost)?
+2. Or do you have the actual cost basis for the shell (i.e. what we pay to process/separate it from the bean)?
+
