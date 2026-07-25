@@ -1516,11 +1516,13 @@ Now regenerate the Chinese PDF and verify.
 ### 🤖 Autopilot
 
 Let me check the rest of the Chinese PDF to confirm everything is complete.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified — all sections complete. Let me upload all three files.
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1569,11 +1571,18 @@ All Chinese characters verified ✓ — both PDFs render properly with DroidSans
 ### 🤖 Autopilot
 
 Got it — they're network expansion channels, not direct report recipients. Let me update all three files to remove them from the cover/title and reframe accordingly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The English cover label still says "Presented to:" — let me fix that and update more precisely.
+[1 tool result(s) compacted: grep — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1704,5 +1713,68 @@ All Chinese chars verified ✓ (4,211 CN / 9,603 EN)
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cat << 'HTMLEOF' > /tmp/cacao_report_en.html <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin; cat << 'HTMLEOF' > /tmp/cacao_report_cn.html <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; mar; python3 << 'PYEOF' import weasyprint, os # English doc_en = weasyprint.HTML(filename='/tmp/cacao_report_en.html').render() doc_en.write_pdf(
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Not 表姐Liz but Elizabeth Wong
+
+
+### 🤖 Autopilot
+
+Got it — Elizabeth Wong, not 表姐Liz. Let me fix all three files.
+
+
+### 🤖 Autopilot
+
+Let me do this more carefully — read the files and fix the exact text.
+
+
+### 🤖 Autopilot
+
+Now I can see every occurrence. Let me use a Python script for precise fixes.
+
+
+### 🤖 Autopilot
+
+All clean — "Liz" in the grep output is just matching the "liz" inside "Elizabeth" (case-insensitive). Chinese has zero 表姐 left. Let me regenerate and upload.
+
+
+### 🤖 Autopilot
+
+Let me do one final check on the English PDF to make sure there are no standalone "Liz" references (the grep found "liz" inside "Elizabeth" which is fine, but let me be certain).
+
+
+### 🤖 Autopilot
+
+Let me check for any standalone "Liz" that isn't inside "Elizabeth".
+
+
+### 🤖 Autopilot
+
+All clean — zero standalone "Liz" and zero "表姐" in either PDF. Let me upload.
+
+
+### 🤖 Autopilot
+
+Also update the .md file.
+
+
+### 🤖 Autopilot
+
+All three files fixed — **表姐Liz → Elizabeth Wong** everywhere.
+
+| File | What changed |
+|---|---|
+| **English PDF** | Cover, exec summary, P&L table, open items: all "Liz" → "Elizabeth Wong" and "Liz's cousin" → "Elizabeth Wong's cousin" |
+| **Chinese PDF** | Cover, OpEx table, P&L, open items: all "表姐Liz" → "Elizabeth Wong" |
+| **.md P&L model** | Header, retail price source, OpEx table, open items: all updated |
+
+Verified: zero standalone "Liz" and zero "表姐" in all three files ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → # Fix English HTML sed -i 's/Liz (sales|Liz'\''s cousin|Liz's cousin|Liz suggested/Elizabeth Wong/g' /tmp/cacao_report_en.html sed -i 's|Liz; grep -n -i "liz\|表姐" /tmp/cacao_report_en.html | head -30; grep -n -i "liz\|表姐" /tmp/cacao_report_cn.html | head -30; …(+3 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
