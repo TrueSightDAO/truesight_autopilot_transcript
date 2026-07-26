@@ -3344,6 +3344,7 @@ Want me to add this to the **Segment B (beauty/attractive)** clinical evidence i
 ### 🤖 Autopilot
 
 Great questions. Let me research the specific active compound and extraction methods.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3466,4 +3467,52 @@ Two options to make it accessible:
 2. **Share the direct branch link** in the meantime: https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
 Want me to go ahead and merge PR #714 so it's on main and easy for them to find?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Remove Elizabeth Wong name from mention as KOL. Just indicate we are missing a KOL in the documents
+
+
+### 🤖 Autopilot
+
+Let me update all three files to remove Elizabeth Wong's name from KOL mentions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now fix all occurrences in both HTML files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Let me check the English HTML for any remaining Elizabeth mentions.
+[1 tool result(s) compacted: grep — detail in artifacts]
+
+Good — all remaining "Elizabeth Wong" mentions are appropriate (network expansion channel, retail price suggestion, events budget source). Let me now also check the .md file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+Now regenerate and verify both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+No remaining KOL references to Elizabeth in either PDF. Let me upload.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
+
+All three files updated. Elizabeth Wong's name is now only used where appropriate — as a network channel contact and retail price source. The KOL section now shows:
+
+| Item | Owner | Status |
+|---|---|---|
+| **KOL recruitment & partnership budget** | ⚠️ **NEED — KOL specialist** | ⚠️ NEED |
+| **Events & KOL activations (2×$20K/yr)** | $40K budget allocated (KOL specialist TBD) | ⚠️ NEED |
+
+### Downloads:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # Replace Elizabeth Wong KOL mentions with generic original = "Elizabeth Wong — Sales &a; grep -n -i "elizabeth\|表姐\|KOL" /tmp/cacao_report_en.html 2>/dev/null | grep -iv "elizabeth wong\|network\|events\|price\|budget" | head -10; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() # Fix CN - replace Elizabeth Wong KOL mentions original = "El; …(+1 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
