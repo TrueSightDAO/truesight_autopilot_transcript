@@ -3186,11 +3186,18 @@ Thoughts of extending the documents PDF and MD file with these target demographi
 ### 🤖 Autopilot
 
 That's a strong fourth segment — single career women wanting to feel attractive. It's related but distinct from the "affection" segment (internal self-worth vs external desirability). Let me now integrate all four segments into the PDFs and .md.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong clinical data — cacao has proven skin benefits (12-week trial: improved hydration, reduced wrinkles, collagen synthesis). Let me now add all four segments to all three files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3364,4 +3371,68 @@ The specific compound responsible for the stem cell doubling effect is **(−)-e
 This is actually a powerful **dual-product strategy**: the tea for daily consumption (food-as-medicine) and the concentrated extract for therapeutic dosing (supplement). And since the shell is currently a waste byproduct, the economics are very favorable.
 
 Want me to add epicatechin as the active ingredient to the PDFs' science section, plus the dual-product extraction strategy?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Yes, please add this very strong hook to the PDF itself. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Now regenerate both PDFs and verify.
+
+
+### 🤖 Autopilot
+
+All key markers present. The cross-language checks are fine (EN has "stem cells" not 干细胞, CN has 干细胞 not "stem cells"). Let me verify the "双重产品" term specifically.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified. Let me upload now.
+
+
+### 🤖 Autopilot
+
+Now update the .md research file too.
+
+
+### 🤖 Autopilot
+
+The .md file still has old data. Let me update the key sections.
+
+
+### 🤖 Autopilot
+
+All three files updated with the epicatechin stem cell hook. Here's what was added:
+
+---
+
+## ✅ Active Ingredient (Epicatechin) Added to All Files
+
+### EN PDF — New Section **2.5** (13 pages)
+- Epicatechin as the specific compound driving stem cell doubling
+- Three clinical studies cited (UCSF JACC 2010, Complutense PubMed 2020, Urbino PMC 2024)
+- Commercial benchmark comparison (CocoaVia, CCV-3)
+- **Dual-product strategy**: cacao shell tea (minimal processing) + epicatechin concentrate (extraction, 10-50% flavanols)
+
+### CN PDF — New Section **2.5** (11 pages)
+- Same content in Chinese — all 7,706 chars verified ✅
+- 表儿茶素 as the active ingredient, 干细胞翻倍 as the hook
+- Pressurized liquid extraction from cacao husk confirmed as commercially viable
+
+### .md P&L Model — New Section **4** (PR #714 branch)
+- Full epicatechin section with mechanism, clinical evidence, commercial benchmarks, and dual-product opportunity
+
+### Downloads:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+That stem cell doubling hook is a powerful differentiator — no TCM herb, no tea, and no coffee can claim what epicatechin can.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → python3 << 'PYEOF' # Find where to insert in the English HTML - after the clinical evidence section about stem cells with open('/tmp/cacao_r; python3 << 'PYEOF' import weasyprint, os for lang, html_path, pdf_path in [ ('EN', '/tmp/cacao_report_en.html', '/tmp/cacao_report_en.pdf'),; python3 << 'PYEOF' import fitz for lang, pdf_path in [('EN', '/tmp/cacao_report_en.pdf'), ('CN', '/tmp/cacao_report_cn.pdf')]: doc = fitz.op; …(+1 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
