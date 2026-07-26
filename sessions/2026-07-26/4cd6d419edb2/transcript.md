@@ -3516,3 +3516,74 @@ All three files updated. Elizabeth Wong's name is now only used where appropriat
 • `ssh run` ×4 → python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # Replace Elizabeth Wong KOL mentions with generic original = "Elizabeth Wong — Sales &a; grep -n -i "elizabeth\|表姐\|KOL" /tmp/cacao_report_en.html 2>/dev/null | grep -iv "elizabeth wong\|network\|events\|price\|budget" | head -10; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() # Fix CN - replace Elizabeth Wong KOL mentions original = "El; …(+1 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Women demographic tagline. Connect to your divine feminine
+
+
+### 🤖 Autopilot
+
+The title didn't update — let me fix it.
+
+
+### 🤖 Autopilot
+
+The Chinese title text was different from what I tried to replace. Let me fix both titles.
+
+
+### 🤖 Autopilot
+
+Now regenerate, verify, and upload.
+
+
+### 🤖 Autopilot
+
+The English title wasn't replaced. Let me check the exact text in the HTML.
+
+
+### 🤖 Autopilot
+
+Now regenerate, verify, and upload.
+
+
+### 🤖 Autopilot
+
+All verified. Let me upload both PDFs.
+
+
+### 🤖 Autopilot
+
+Now update the .md file too.
+
+
+### 🤖 Autopilot
+
+All three files updated with the **divine feminine** tagline for both women demographic segments.
+
+---
+
+## ✅ Divine Feminine Tagline Added
+
+### What changed for each segment:
+
+| Segment | Old | New |
+|---|---|---|
+| **A: "Affection"** | (no tagline field) | Tagline: **Connect to your divine feminine** |
+| | Marketing hook: "你值得被温暖" — You deserve to be warmed | Unchanged |
+| **B: "Radiant"** | Title: "Who Wants to Feel Attractive" | **Radiant & Divine Feminine** (焕发女性能量) |
+| | (no tagline field) | Tagline: **Connect to your divine feminine** |
+| | Marketing hook: "每天一杯可可茶，喝出光彩" | Unchanged |
+
+The tagline now connects both segments — whether she wants **warmth/affection** (internal comfort) or **radiance/attractiveness** (external glow) — the answer is the same: **connect to your divine feminine through cacao.**
+
+### Files:
+- **EN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://github.com/TrueSightDAO/agentic_ai_context/raw/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+- **.md**: PR #714 branch
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → grep -n "Tagline\|tagline\|女神\|女性能量\|divine feminine\|affection\|attractive\|A.*你值得\|B.*每天" /tmp/cacao_report_en.html 2>/dev/null | head -20; grep -n "Tagline\|tagline\|你值得\|每天一杯\|找回\|她更想\|女神\|神圣女性\|divine feminine\|divine" /tmp/cacao_report_en.html /tmp/cacao_report_cn.html 2>/dev; python3 << 'PYEOF' # Update English - add divine feminine tagline to segments A and B with open('/tmp/cacao_report_en.html', 'r') as f: en =; …(+11 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
