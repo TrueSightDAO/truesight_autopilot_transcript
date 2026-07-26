@@ -3781,32 +3781,73 @@ Let me check what's currently there.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The CN PDF didn't update — the replacement string didn't match. Let me check the exact text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Chinese HTML doesn't have the four detailed segments (A-D) yet — the target demographics section in the CN version was never expanded to match the EN version's detail level. Let me check what exactly is there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Chinese HTML still has the old simplified demographics — it never got the four-segment expansion. Let me add it now with the updated tagline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — CN now has the full four-segment expansion with "昨天的我们，青春正好". Let me regenerate and verify both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs verified perfectly. Let me upload.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update the .md file too.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3852,6 +3893,32 @@ This is a substantial deliverable. Let me plan it out and build everything step 
 3. Generate PPTX files (English + Chinese) with images embedded
 
 Let me start.
+[4 tool result(s) compacted: ssh_run, web_search, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: ssh_run, web_search, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: ssh_run, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3931,4 +3998,64 @@ Every slide has a corresponding .md mockdown showing title, bullets, image refer
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → pip3 list 2>/dev/null | grep -i pptx; pip3 install python-pptx 2>&1 | tail -3; # Download Unsplash images mkdir -p /tmp/pptx_images # Try the known Unsplash photo IDs for id in "-uKb2w361ms" "IKJ4ukg2e0w" "K8fsPtqLQGE";; …(+9 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can we make sure the PowerPoint is in Mandarin? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the current CN PPTX and regenerate it with full Mandarin content matching the depth of the English version.
+
+
+### 🤖 Autopilot
+
+The heredoc is having encoding issues. Let me write the script to a file first.
+
+
+### 🤖 Autopilot
+
+The issue is Chinese curly quotes conflicting with Python string delimiters. Let me write the script to a file first.
+
+
+### 🤖 Autopilot
+
+The CN PPTX was generated successfully. Now let me upload it to replace the old version.
+
+
+### 🤖 Autopilot
+
+CN PPTX replaced. Here's what's in the full Mandarin version:
+
+---
+
+## ✅ Full Mandarin PowerPoint — 13 Slides, All Content in Chinese
+
+| Slide | Title |
+|---|---|
+| 1 | **封面** — 可可茶：中国市场的$500K蓝海机遇 |
+| 2 | **执行摘要** — "中国可卡的饮料还没有人做" |
+| 3 | **竞争空白** — 只有香港/境外品牌，大陆为零 |
+| 4 | **核心活性成分** — 表儿茶素（Epicatechin），干细胞翻倍 |
+| 5 | **中医融合** — 性温、味苦、归心肝肾经，4种配方 |
+| 6 | **人群A** — 单身职业女性"连接你的神圣女性能量" |
+| 7 | **人群B** — 单身职业女性"焕发你的神圣女性能量" |
+| 8 | **人群C** — 已婚夫妻"昨天的我们，青春正好" |
+| 9 | **人群D** — Z世代送礼"一份安心" |
+| 10 | **中药材对比** — 可可 vs 冬虫夏草/野山参/灵芝/燕窝/鹿茸/三七 |
+| 11 | **经营损益表** — $500K目标，56.2%净利润率 |
+| 12 | **碳汇** — 每卖一盒，种一棵树 |
+| 13 | **下一步行动** — 中医师、实验室、KOL、包装、合规 |
+
+**Download**: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/Cacao_Tea_China_Opportunity_CN.pptx
+
+The EN version also remains at: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/Cacao_Tea_China_Opportunity_EN.pptx
+
+Both mockdowns are at: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/SLIDE_MOCKDOWNS.md
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → python3 << 'PYEOF' from pptx import Presentation from pptx.util import Inches, Pt from pptx.dml.color import RGBColor from pptx.enum.text im; python3 -c " import sys print(sys.getdefaultencoding()) print(sys.getfilesystemencoding()) "; python3 << 'XEOF' # Write the script to a file to avoid heredoc encoding issues script = r''' from pptx import Presentation from pptx.util i; …(+1 more)
 
