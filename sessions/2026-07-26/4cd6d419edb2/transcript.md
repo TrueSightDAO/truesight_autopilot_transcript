@@ -3203,11 +3203,18 @@ Strong clinical data — cacao has proven skin benefits (12-week trial: improved
 ### 🤖 Autopilot
 
 Good — the EN PDF is missing Part 7 (coffee/tea comparison was lost) and neither PDF has target demographics. Let me add the target demographics section and fix the numbering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me do the same for the Chinese HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3272,16 +3279,24 @@ All Chinese characters verified ✓
 ### 🤖 Autopilot
 
 Let me research this specifically.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me dig deeper into the specific clinical study from Dr. William Li and the muscle regeneration paper.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the specific study details.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3435,4 +3450,20 @@ That stem cell doubling hook is a powerful differentiator — no TCM herb, no te
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → python3 << 'PYEOF' # Find where to insert in the English HTML - after the clinical evidence section about stem cells with open('/tmp/cacao_r; python3 << 'PYEOF' import weasyprint, os for lang, html_path, pdf_path in [ ('EN', '/tmp/cacao_report_en.html', '/tmp/cacao_report_en.pdf'),; python3 << 'PYEOF' import fitz for lang, pdf_path in [('EN', '/tmp/cacao_report_en.pdf'), ('CN', '/tmp/cacao_report_cn.pdf')]: doc = fitz.op; …(+1 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Mereka juga untuk mencari.mdf. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Noted — the .md file (CACAO_CHINA_PNL_MODEL.md) needs to be findable/accessible for the network channels. It's currently on the **add/cacao-pnl-model** branch (PR #714, not yet merged to main).
+
+Two options to make it accessible:
+1. **Merge PR #714** → the .md file goes to main, visible at: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/CACAO_CHINA_PNL_MODEL.md
+2. **Share the direct branch link** in the meantime: https://github.com/TrueSightDAO/agentic_ai_context/blob/add/cacao-pnl-model/CACAO_CHINA_PNL_MODEL.md
+
+Want me to go ahead and merge PR #714 so it's on main and easy for them to find?
 
