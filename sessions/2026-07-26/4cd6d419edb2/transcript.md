@@ -2866,11 +2866,23 @@ Update the PDFs and MD files
 ### 🤖 Autopilot
 
 You're right — $44/kg is the number from our actual wholesale price list. Let me recalculate everything and update all files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Significant change — COGS jumps from $2.93 to $4.51/box. Now let me update all three files.
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3029,4 +3041,109 @@ Excellent data. Here's the full comparison:
 **Cacao gives a consumer-experience benefit that luxury TCM cannot:** an **immediate, pleasant mood shift** that feels like a treat, not medicine — while still delivering genuine health benefits (antioxidant, cardiovascular, anti-inflammatory).
 
 This positions cacao tea perfectly as a **bridge product** — the TCM credibility of a medicinal herb with the **consumer appeal** of a functional food. No luxury TCM ingredient can claim: "tastes good, works immediately, costs $50/box, and comes from a regenerative farm."
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] There are three product target markets we want to investigate. 
+
+Single Careeer women who wants affection 
+
+married couples married over 10 years 
+
+Gen Z couples, men buying gifts for their girlfriends. 
+
+The demographic psychographics 
+
+Intersection with these TCM
+
+
+### 🤖 Autopilot
+
+Let me research all three target segments in the Chinese market context.
+
+
+### 🤖 Autopilot
+
+Excellent data. Here's the full analysis:
+
+---
+
+## Three Target Markets — Demographic, Psychographic & TCM Intersection
+
+### Segment 1: Single Career Women (单身职业女性) — "Who Wants Affection"
+
+| Dimension | Profile |
+|---|---|
+| **Age** | 28-40, urban (Beijing, Shanghai, Shenzhen, Guangzhou) |
+| **Income** | ¥200K-500K/yr ($28K-70K), high disposable income |
+| **Living** | Alone or with roommate, owns/rents own apartment |
+| **Psychographic** | High stress, long work hours, "leftover women" (剩女) social pressure, emotional loneliness, aspirational self-care |
+| **Spending** | ¥5,000-15,000/mo on wellness, beauty, experiences |
+| **Wellness behavior** | 养生 (health maintenance) is daily priority, TCM beauty drinks (燕窝, 花胶), seeking warmth + comfort after work |
+| **Gift behavior** | Self-gifting (self-love trend), friends exchange wellness gifts |
+
+**Cacao tea angle:**
+- 暖心暖胃 (warms heart & stomach) — emotional comfort for the solo evening
+- **TCM connection**: 养心安神 (nourish Heart, calm Shen) — directly addresses the "need affection" hole
+- Product: **Heart-Nourishing blend** (养心安神配方) as the hero SKU for this segment
+- Marketing: "你值得被温暖" — You deserve to be warmed. Even if you're alone.
+
+### Segment 2: Married Couples >10 Years (结婚十年以上的夫妻)
+
+| Dimension | Profile |
+|---|---|
+| **Age** | 35-55, with children (school-age) |
+| **Location** | Tier 1-2 cities, suburban |
+| **Psychographic** | Post-honeymoon phase, routines, conjugal fatigue, declining intimacy; both partners tired from work + parenting; desire to rekindle but no time/energy |
+| **Key pain** | "老夫老妻" mentality — romance faded, physical intimacy declining |
+| **Wellness** | Both partners concerned about health — 肾虚 (kidney deficiency), adrenal fatigue, low libido |
+| **Spending** | ¥3,000-10,000/mo on family wellness |
+
+**Cacao tea angle:**
+- **Couple's ritual** — evening tea together as a grounding moment
+- **TCM connection**: 温肾壮阳 (warm Kidney, invigorate Yang) + 安心神 → rebuilds both vitality AND emotional connection
+- Product: **Couple's box** (双人礼盒) — 2 × 10-can, one Heart-Nourishing + one Kidney-Warming
+- Marketing: "找回当初心动的感觉" — Rediscover that flutter in your heart
+
+### Segment 3: Gen Z Couples — Men Buying Gifts for Girlfriends
+
+| Dimension | Profile |
+|---|---|
+| **Age** | 20-28 |
+| **Income** | ¥80K-200K/yr ($11K-28K) but **high gift spending** (saving up for impactful gifts) |
+| **Psychographic** | Value-driven mega-spenders; 41% of wellness spend comes from under-35s; gift-giving is status signaling within relationship; want to appear thoughtful + premium |
+| **Key need** | A gift that is: **premium-looking** (小罐茶 aesthetic), **health-forward** (shows I care about her), **unique** (not another skincare set or flowers) |
+| **Gift budget** | ¥200-800 ($28-112) per occasion |
+| **TCM awareness** | Growing — Gen Z is the "health-conscious generation"; 养生 is not just for old people anymore |
+| **Channel** | Douyin, Xiaohongshu (小红书), gift-box content unboxing |
+
+**Cacao tea angle:**
+- **Visual UX** matters most — 10-can 小罐茶 box in premium packaging → perfect for unboxing content
+- **Meaning** — "This isn't just tea, it's TCM wellness from the Amazon" (story matters)
+- **TCM connection**: Her gift says "I care about your health" — Liver-Soothing (疏肝解郁) for her stress, or Heart-Nourishing (养心安神) for sleep
+- Product: **Gift Edition** (送礼版) — single-flavor 10-can box, premium packaging, QR code with story
+- Marketing: "她更想要的，是一份安心" — What she really wants is peace of mind
+
+---
+
+### TCM Intersection Map Across All Three Segments
+
+| TCM Formula | Single Career Woman | Married >10 Yrs | Gen Z Gift |
+|---|---|---|---|
+| **养心安神** (Heart-Nourishing) | ⭐ **Hero** — loneliness, stress, sleep | ⭐ — rebuild emotional connection | ⭐ — shows I care about her |
+| **温肾壮阳** (Kidney-Warming) | — | ⭐ **Hero** — libido, vitality, 肾虚 | ❌ Too direct/embarrassing |
+| **疏肝解郁** (Liver-Soothing) | ⭐ — PMS, work stress, irritability | ⭐ — shared stress | ⭐ — modern girl stress |
+| **温中健脾** (Digestive-Warming) | ⭐ — eating alone, cold digestion | ⭐ — family meals, bloating | ❌ Not romantic |
+| **Pure cacao shell** (base) | Entry point — curious beginners | Shared neutral enjoyment | Entry gift — safe choice |
+
+### Strategic Positioning
+
+| Segment | Price Sensitivity | TCM Depth | Packaging Priority | Channel |
+|---|---|---|---|---|
+| Single career woman | Low (self-treat) | Medium | Elegant solo box | Douyin + 小红书 |
+| Married >10 yrs | Medium | High | Couple gift set | TCM influencers |
+| Gen Z gift buyer | Medium-High | Low-Medium | Luxury unboxing | Xiaohongshu + Douyin |
+
+**Key insight:** The **Single Career Woman** is the highest-margin, most loyal, most TCM-receptive segment. She buys for herself (repeat purchase, not one-time gift), has the highest disposable income, and her emotional need (affection/warmth) maps perfectly to cacao's neurochemical story.
 
