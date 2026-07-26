@@ -42,3 +42,36 @@
 
 **Verdict:** It's a solid option if your audience is primarily in China and you want fast local access without domain filing. If you need automatic deploys and free HTTPS on custom domains, GitHub Pages or other alternatives (Netlify, Cloudflare Pages) are better.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9634] Is GitHub accessible behind the Chinese firewall
+
+
+### 🤖 Autopilot
+
+**Not reliably.** GitHub has an inconsistent relationship with the Great Firewall of China (GFW):
+
+## Current status (2025–2026)
+
+| Service | Accessibility in China |
+|---|---|
+| **github.com (core)** | Generally accessible, but with **intermittent slowdowns and outages** |
+| **Git clone/push (SSH/HTTPS)** | Mostly works, but can be slow or drop intermittently |
+| **GitHub Pages** | Often **very slow or times out** — some ISPs throttle it |
+| **raw.githubusercontent.com** | Frequently **blocked** by many Chinese ISPs |
+| **Large binary downloads / releases** | Often throttled or fail |
+| **Port 443** | Saw an **unconditional block event** on Aug 20, 2025 (1.5 hr outage) |
+| **April 2025** | A config change by GitHub itself blocked Chinese connections for ~15 hours (mitigated) |
+
+## The practical picture
+
+- **No full blanket block**, but also **no reliable guarantee** — the GFW applies selective throttling and occasional RST injection.
+- Many developers in China use **workarounds**: VPNs, or mirrors like `gitclone.com`, or Gitee which mirrors popular GitHub repos.
+- For a **project relying on GitHub** (like TrueSight DAO's repos, CI/CD, or GitHub Pages hosting), users inside China would likely need:
+  - A VPN/proxy for reliable access
+  - Or a **mirror on Gitee** as a fallback
+  - For static site hosting specifically, **Gitee Pages** would be more reliable for Chinese users than GitHub Pages
+
+**Bottom line:** GitHub can be reached from China but it's unreliable day-to-day — expect random slowdowns, partial blocks, and the occasional total outage. If you have users or collaborators in China, plan for it (mirrors, Gitee, or a CDN with mainland China PoPs).
+
