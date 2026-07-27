@@ -4280,6 +4280,12 @@ source /tmp/aws_env.sh && /home/ubuntu/.local/bin/aws s3 cp /tmp/pptx_slides/Cac
 ### 🤖 Autopilot
 
 Let me get fresh credentials and upload both files.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4385,4 +4391,38 @@ Three emails total sent to Elizabeth now:
 | 1 | 🇬🇧 English PPTX | Presentation deck for pitching |
 | 2 | 🇨🇳 中文版 PPTX | Mandarin presentation deck |
 | 3 | 📄 **English PDF** | **Full reference doc** — all data, P&L, competitor tables, clinical studies — so her agentic system can pull any details she needs to customize her own version of the deck |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] What is the file path of the three files locally 
+
+Still having problems
+
+Thinking of doing SCP to my local
+
+
+### 🤖 Autopilot
+
+Here are the full local paths on the autopilot box:
+
+| File | Local Path | Size |
+|---|---|---|
+| 🇬🇧 English PPTX | `/tmp/pptx_slides/Cacao_Tea_China_Opportunity_EN.pptx` | 23 MB |
+| 🇨🇳 中文 PPTX | `/tmp/pptx_slides/Cacao_Tea_China_Opportunity_CN.pptx` | 23 MB |
+| 📄 English PDF | `/tmp/cacao_report_en.pdf` | 101 KB |
+
+The autopilot box IP is **3.214.167.219** (us-east-1). SCP command would be:
+
+```bash
+scp ubuntu@3.214.167.219:/tmp/pptx_slides/Cacao_Tea_China_Opportunity_EN.pptx .
+scp ubuntu@3.214.167.219:/tmp/pptx_slides/Cacao_Tea_China_Opportunity_CN.pptx .
+scp ubuntu@3.214.167.219:/tmp/cacao_report_en.pdf .
+```
+
+You'll need your SSH key for the `ubuntu` user. Let me know if you also want the Chinese PDF — it's at `/tmp/cacao_report_cn.pdf` on the same box.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lh /tmp/pptx_slides/Cacao_Tea_China_Opportunity_EN.pptx /tmp/pptx_slides/Cacao_Tea_China_Opportunity_CN.pptx /tmp/cacao_report_en.pdf 2>
 
