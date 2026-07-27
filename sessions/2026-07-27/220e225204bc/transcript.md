@@ -166,3 +166,15 @@ And you actually have something Futo doesn't — regenerative hectares per purch
 
 Want me to rough out a membership tier structure as a PR in the DAO?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9699] I meant Elizabeth Wong
+
+
+### 🤖 Autopilot
+
+Ah, got it — Elizabeth Wong shared the Futo link. Noted.
+
+My analysis still stands though — it's a useful reference regardless of who dropped it. Want me to proceed with drafting that membership tier proposal?
+
