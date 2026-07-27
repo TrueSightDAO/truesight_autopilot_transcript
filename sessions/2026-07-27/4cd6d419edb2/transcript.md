@@ -4368,6 +4368,7 @@ The custom domain `assets.truesight.me` has an SSL hostname mismatch — so the 
 ### 🤖 Autopilot
 
 Sure — let me send them directly as Telegram attachments.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4578,4 +4579,42 @@ Both confirmed — **EN is now 771 KB** (was 23MB) and **CN is 770 KB**. The Git
 Try the raw links above directly in your browser — they're ~770KB each now, ~97% smaller than before. Also still on S3 if GitHub raw is slow in China:
 - https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_EN.pptx
 - https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_CN.pptx
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Hey, for the smaller files, can we send a copy of them to Elizabeth's email address, which I provided you? So basically, two PDF files and two PowerPoint files. And make sure that the files are actually readable and working before you send, so really make sure. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify all 4 files exist and are readable before sending.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+All 4 files verified — readable, correct sizes, open fine. Let me send them all to Elizabeth.
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
+
+Now the EN PPTX.
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
+
+Now the CN PDF.
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
+
+Now the CN PPTX.
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
+
+All 4 files sent to Elizabeth's email. Here's what she received:
+
+---
+
+## ✅ 4 Emails Sent to ewong@gogreatop.com
+
+| # | File | Size | Subject |
+|---|---|---|---|
+| 1 | 🇨🇳 **CN PDF** | 403 KB | 📄 可可茶中国市场机遇 — 中文版参考文档 |
+| 2 | 🇬🇧 **EN PDF** | 101 KB | 📄 Cacao Tea China Opportunity — English Reference PDF |
+| 3 | 🇨🇳 **CN PPTX** | 770 KB | 🇨🇳 可可茶中国市场机遇 — 中文版幻灯片（压缩版） |
+| 4 | 🇬🇧 **EN PPTX** | 771 KB | 🇬🇧 Cacao Tea China Opportunity — English Deck (Compressed) |
+
+All from `admin@truesight.me` — each file verified locally for readability (opens with `python-pptx` and `pymupdf`), correct sizes, and proper content extraction before sending.
 
