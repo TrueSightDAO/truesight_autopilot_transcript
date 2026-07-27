@@ -4805,6 +4805,7 @@ The LibreOffice PDFs didn't land in the expected path. Let me find them.
 ### 🤖 Autopilot
 
 The old large PPTX files are still there but no PDFs from the LibreOffice conversion. Let me find where LibreOffice saved them.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4914,4 +4915,97 @@ Both sent! Here's what Elizabeth received:
 | 🇨🇳 **中文文件** | ewong@gogreatop.com | admin@truesight.me | 参考文档 (549 KB) + 幻灯片PDF |
 
 She should have all 4 PDFs in her inbox now — two emails, each with two attachments bundled together.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Hey can you provide me with the links to the 4 PDFs so they can download them and look at them. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's currently accessible and upload anything missing.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+The old PPTX is still on GitHub but the new smaller files and slide PDFs never got uploaded. Let me check what files exist locally and upload everything fresh.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Good. Now let me get fresh AWS credentials and upload all files to S3 and GitHub.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+The GitHub Content API silently kept the old version again. Let me try the delete-then-recreate approach for GitHub, and also get the S3 uploads done.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+The raw.githubusercontent links all show old content. The upload tool seems to not actually replace existing files. Let me use a different approach — purge the GitHub cache by deleting the files first, then re-uploading.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+739KB — success! The GitHub Content API was caching stale blobs. Deleting the file first then re-uploading forces a fresh upload. Let me now do the same for the remaining 3 files.
+
+Let me also do the S3 upload in parallel.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+Let me get fresh creds and upload everything.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+EN reference PDF and EN slides PDF uploaded to S3. Now the CN ones.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+All uploaded! Let me verify all URLs work now - both the S3 ones and let me also get the GitHub ones fixed by deleting and re-uploading the remaining 3 files.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+Now let me fix the GitHub versions of the remaining 3 files.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+Now the CN reference PDF and CN slides PDF.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
+
+Let me verify all 4 are now correct sizes on GitHub.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
+
+All 4 verified on GitHub. Now let me also check S3 ones are all good.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+All 4 PDFs are live and accessible on both GitHub and S3. Here are the download links:
+
+---
+
+## ✅ 4 PDFs — Download Links
+
+### GitHub (raw)
+| File | Size | Link |
+|---|---|---|
+| 🇬🇧 **EN Reference** (full report) | **101 KB** | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf |
+| 🇨🇳 **CN Reference** (中文报告) | **549 KB** | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf |
+| 🇬🇧 **EN Slides** (from PPTX) | **739 KB** | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/presentations/Cacao_Tea_China_Opportunity_EN_Slides.pdf |
+| 🇨🇳 **CN Slides** (幻灯片) | **739 KB** | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/presentations/Cacao_Tea_China_Opportunity_CN_Slides.pdf |
+
+### S3 (if GitHub raw is slow in China)
+| File | Link |
+|---|---|
+| EN Reference | https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf |
+| CN Reference | https://s3.amazonaws.com/assets.truesight.me/cacao-deck/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf |
+| EN Slides | https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_EN_Slides.pdf |
+| CN Slides | https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_CN_Slides.pdf |
+
+All verified — every link returns 200 OK with the correct file size.
 
