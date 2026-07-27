@@ -28,6 +28,11 @@ Let me dig deeper into what "Hey, barista" actually is — sounds like a specifi
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: web_extract, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gary, great question! Let me walk through what I found. So the company you're referring to is **Ander Cacao** — the Belgian brand, run by two brothers Tom and Frederik. Their whole tagline is "Other bean. Same routine." And they've created the world's first barista-grade drinking chocolate and filter cacao designed specifically for specialty coffee shops.
 
 Let me give you the compare and contrast.
@@ -216,4 +221,30 @@ Want me to draft a quick membership concept based on this K&L/Futo hybrid approa
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-27/4dcfbc057e2a/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9699] Kirsten also mentioned about how only prodically conduct the gathering for baristas. I think it's more like a community thing. Can you research more deeply how they do it and come back with something? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Alright Gary, I did a pretty deep dive on this. Here's what I found:
+
+**Kirsten's right that Ander doesn't host regular periodic barista gatherings** — at least not the kind you'd think of as a standing monthly meetup. Their community-building approach is actually three distinct strategies working together:
+
+**1. Trade show dominance.** Ander's biggest community moments are at **World of Coffee** — they launched there in Athens 2023, brewed filter cacao on V60s live on the expo floor, won the Specialty Non-Coffee Beverage Stand Alone award, and in 2026 won SCA Best New Product. That's their big "gathering" — but it's twice a year max, not periodic.
+
+**2. Collaborations with coffee roasters, not events.** The real community play is they partner with established specialty coffee roasters who already have a barista community. I found a collaboration with **ANÄNA Coffee Roasters** where ANÄNA hosted the tasting and Ander provided the product. They piggyback on existing barista communities rather than building their own from scratch.
+
+**3. Brew guides as the primary community touchpoint.** This is the most underrated part. They have an entire section on their site called "how we brew" — pour over, Clever Dripper, Hario Switch, Aeropress, French press, moka pot, cold brew. Each one is written in barista language. This *is* their community channel — it's content that gets shared among baristas organically.
+
+**What this means for Agroverse:**
+
+The Ander model isn't "host barista meetups" — it's "embed yourself into the existing barista ecosystem." They don't need to organize a gathering because they've made themselves part of the gatherings that already happen.
+
+For Agroverse, the opportunity is similar but different. You have something Ander doesn't: **actual farmers, a real forest story, and per-bag traceability**. A "meet the farmer" cupping event — either in-person with a video call to Oscar or Jesus, or a standalone virtual event — would be a stronger community draw than anything Ander does, because it connects the barista directly to origin.
+
+Would you like me to sketch out a "barista community" concept for Agroverse — something like quarterly cacao cupping boxes with farm video access, paired with a WhatsApp or Telegram group for baristas who serve your cacao?
 
