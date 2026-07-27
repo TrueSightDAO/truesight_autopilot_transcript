@@ -4380,6 +4380,11 @@ ewong@gogreatop.com
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: gmail_send — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both PPTX files sent to Elizabeth Wong's email:
 
 | Email | Sent To | Attachment | Status |
@@ -4617,4 +4622,18 @@ All 4 files sent to Elizabeth's email. Here's what she received:
 | 4 | 🇬🇧 **EN PPTX** | 771 KB | 🇬🇧 Cacao Tea China Opportunity — English Deck (Compressed) |
 
 All from `admin@truesight.me` — each file verified locally for readability (opens with `python-pptx` and `pymupdf`), correct sizes, and proper content extraction before sending.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] which email address what is sent from. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+All 4 emails were sent from:
+
+**admin@truesight.me**
+
+That's the sender address Elizabeth will see in her inbox for all four emails (CN PDF, EN PDF, CN PPTX, EN PPTX).
 
