@@ -4303,6 +4303,12 @@ Both uploaded. Let me verify they're accessible, then document the convention.
 ### 🤖 Autopilot
 
 Let me try the direct S3 URL instead.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4486,4 +4492,42 @@ The compression came from squashing the large Unsplash photos from 3500-6000px d
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lh /tmp/pptx_images/ 2>/dev/null; file /tmp/pptx_images/*.jpg 2>/dev/null | head -20
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you have this uploaded to the original repository on GitHub and then share the links? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Now let me also upload the English PDF.
+
+
+### 🤖 Autopilot
+
+All three files uploaded to GitHub main. Here are the links:
+
+### GitHub Links (main branch)
+
+| File | GitHub URL |
+|---|---|
+| 🇬🇧 **EN PPTX** (794 KB) | https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/Cacao_Tea_China_Opportunity_EN.pptx |
+| 🇨🇳 **CN PPTX** (793 KB) | https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/Cacao_Tea_China_Opportunity_CN.pptx |
+| 📄 **EN PDF** (101 KB) | https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf |
+
+### Raw download links (bypass GitHub UI, better for China)
+
+| File | Direct Download |
+|---|---|
+| EN PPTX | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/presentations/Cacao_Tea_China_Opportunity_EN.pptx |
+| CN PPTX | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/presentations/Cacao_Tea_China_Opportunity_CN.pptx |
+| EN PDF | https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/pdfs/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf |
+
+### Also still live on S3 (if raw.githubusercontent.com is blocked)
+- https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_EN.pptx
+- https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Tea_China_Opportunity_CN.pptx
+- https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+
+And the **mockdowns** for slide-by-slide reference: https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/presentations/SLIDE_MOCKDOWNS.md
 
