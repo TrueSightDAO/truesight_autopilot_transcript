@@ -17,6 +17,11 @@
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: web_search, web_extract, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me dig deeper into what "Hey, barista" actually is — sounds like a specific brand or cafe experience.
 
 
@@ -140,4 +145,24 @@ Key customer experience elements:
 5. **Tier the experience.** At $25, you get the bag and a QR code. At $50 (membership), you get the bag + farm video call + signed card + first access to next harvest. At $100 ("Patron" tier), you get all that plus a live zoom with the farmer and a planting certificate for trees in your name.
 
 Want me to start drafting a membership program spec or a Futo-style rewrite of the Oscar's cacao product page?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9699] By the way, the link that was shared by, yeah, one of our dumb members regarding the wine subscription. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it, yeah — the Futo Estate link. Whoever shared it actually stumbled onto something useful, even if they didn't know why. Futo's allocation model is one of the gold standards for how to make people *chase* your product instead of you chasing them.
+
+The core difference is Futo built their entire business around **demand generation through scarcity**, while Agroverse is still in **supply-push mode** — here's the product, here's the price, please buy.
+
+The key takeaway from Futo's model that applies directly to cacao: they don't sell wine. They sell **access** to wine. Members don't ask "how much?" — they ask "how do I get on the list?"
+
+If Agroverse flipped even a portion of its inventory to a membership allocation model — maybe 100 members at first, quarterly ceremonial cacao shipments from different farms, first access to limited harvests, farm video calls included — you'd have that same dynamic. People wouldn't be comparing your $25 to some other brand's $20; they'd be competing for a spot.
+
+And you actually have something Futo doesn't — regenerative hectares per purchase. Imagine if every member could see "your subscription planted X trees this quarter." That's a retention mechanism Futo can't touch.
+
+Want me to rough out a membership tier structure as a PR in the DAO?
 
