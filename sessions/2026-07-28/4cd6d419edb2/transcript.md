@@ -5728,17 +5728,30 @@ The HTML source files never got the cultivation/farm content — they need to be
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I can see the full structure. Neither HTML has the cultivation/farm section yet. Let me add it before the Open Items in both, then regenerate all 4 PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me add the same to the Chinese HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CN has `七、待确认事项` as the last section. Let me insert `八、种植优化` before it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5869,4 +5882,66 @@ Here's your research summary on cacao variety certification:
 **Key takeaway:** Oscar's 80-year-old Criollo trees are worth **$350 to certify via HCP** — that seal could command a premium price in China's luxury TCM market. Paulo's farm can be verified for as little as **$50 via Embrapa/CEPLAC**. Both are very affordable relative to the $500K target.
 
 Would you like me to add this to the PDFs as a certification roadmap?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Yeah, I think rather than highlighting the Paolo's Laodositio farm for the Chinese market, we should focus on Oscar's farm because the farm is Criola and the trees are 80 years old but also Santa Ana Fazenda as you suggested as well as Paolo's like farm should be offered as alternative based on what you suggested. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Makes sense — Oscar's Criollo genetics are the stronger story for the premium China market. Let me update all documents to make Oscar the primary recommendation.
+
+
+### 🤖 Autopilot
+
+I have both files. Now let me update the farm ranking section in both to make **Oscar's Farm the #1 primary** for the China market, with Santa Ana as the volume option and Paulo as the alternative.
+
+
+### 🤖 Autopilot
+
+Good — the table already has Oscar as #1. I need to update the intro text, the "key insight" box, and the post-harvest protocol to frame Oscar as **primary for China**, Santa Ana for volume, and Paulo as alternative. Let me update both HTMLs.
+
+
+### 🤖 Autopilot
+
+Now regenerate both PDFs and upload to S3.
+
+
+### 🤖 Autopilot
+
+The CN checks are false because those English words aren't in the Chinese text (it uses "首选推荐" and "备选方案" instead — which are correct culturally). Let me upload to S3 now.
+
+
+### 🤖 Autopilot
+
+Both uploaded with the correct filenames. Let me verify and share the links.
+
+
+### 🤖 Autopilot
+
+Both verified (200 OK). Here are the updated download links:
+
+## 📥 Updated PDFs — Oscar's Farm is Now Primary
+
+**🇬🇧 English Reference PDF** (113 KB, 15 pages)
+https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+
+**🇨🇳 Chinese Reference PDF** (561 KB, 15 pages)
+https://s3.amazonaws.com/assets.truesight.me/cacao-deck/%E5%8F%AF%E5%8F%AF%E9%A5%AE%E5%93%81%E5%B8%82%E5%9C%BA%E6%9C%BA%E9%81%87_%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E4%B8%8E%E4%B8%AD%E5%8C%BB%E4%BA%A7%E5%93%81%E7%AD%96%E7%95%A5.pdf
+
+### What changed in the Farm Ranking section:
+
+| Farm | Now Framed As |
+|---|---|
+| **🥇 Oscar's Farm** | **Primary for China premium market** — 80-year Criollo, 2-3x epicatechin, strongest TCM-luxury story |
+| **🥈 Santa Ana** | **Volume partner for scale** — 22 ha, ~22 tons/yr, largest shell capacity |
+| **🥉 Paulo — La Dio Sitio** | **Alternative** — deep relationship, award-winning Amazon cacao, process-control ready backup |
+
+The section now opens with a clear recommendation box explaining this three-tier strategy before the farm ranking table.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → grep -n "Farm Ranking\|Farm ranking\|farm ranking\|9.2\|🥇\|🥈\|🥉\|8.2\|primary\|Primary" /tmp/cacao_report_en.html | head -10; grep -n "种植优化\|农场排名\|农场评估\|🥇\|🥈\|🥉" /tmp/cacao_report_cn.html | head -10; sed -n '449,472p' /tmp/cacao_report_en.html; …(+5 more)
 
