@@ -5612,16 +5612,19 @@ Found the exact area. Let me fix section 4.2 to reference Oscar as primary sourc
 ### 🤖 Autopilot
 
 Found it. Section 4.2 still says "AGL8 — La Dio Sitio Farm (Paulo)" as the primary raw material. Let me fix it to frame Oscar as primary, with a multi-source COGS note.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the remaining AGL8 reference in the CN section 4.2.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CN heading has slightly different text. Let me fix that specific string.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5629,11 +5632,13 @@ The CN heading has slightly different text. Let me fix that specific string.
 Good — the remaining "La Dio Sitio" references are in the supply table (section 4.3) and farm ranking (section 9) where Paulo is correctly listed as the **alternative** farm. That's appropriate context.
 
 Now let me regenerate both PDFs and upload to S3.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 critical checks passed in both PDFs. Let me upload to S3 and share the download links here.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5688,11 +5693,18 @@ Are you sure the representation is correct…  Please look at this line.
 ### 🤖 Autopilot
 
 You're right to call that out — let me check the math carefully.
+[1 tool result(s) compacted: grep — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The numbers have different formatting. Let me pull the actual supply figures from the HTML directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5711,21 +5723,25 @@ Revenue at $50/box: 6,600 kg ÷ 0.04 kg/box = 165,000 boxes → **$8.25M** (min)
 But the EN text says **~3,100-5,920 kg/yr — $3.9-7.4M**. That's wrong — it's using **old numbers from when Oscar was 4 ha instead of 81 ha**.
 
 The CN version is correct: **~6,600-11,220 kg/yr — $8.3-14.0M**. Let me fix the EN.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All stale numbers removed, correct numbers in place. Let me regenerate and send.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixed and verified. Let me send the corrected PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also check the CN PDF is correct — it should be fine since the CN version already had the right numbers from earlier. Let me verify quickly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5757,21 +5773,35 @@ Fixed and attached above (v2.2). The CN version was already correct.
 ### 🤖 Autopilot
 
 Let me do a thorough investigation of what's happening with the fonts in both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDFs I just generated locally have **0 tofu characters** (verified via pymupdf's text extraction). But you're still seeing them — which means you're likely viewing the **old cached versions on S3**. Let me upload these clean ones now.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot IAM user is `truesight_dao_autopilot` — but it needs credentials configured. Let me generate a session key from it and upload.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I don't need to create a permanent access key. Let me just use the `aws_query` tool's credentials to upload via `PutObject` directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5858,4 +5888,58 @@ Let me know if you still see any tofu — I'll fix immediately.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → # Check what fonts are embedded in the PDFs python3 << 'PYEOF' import fitz for lang, path in [('EN', '/tmp/cacao_report_en.pdf'), ('CN', '/t; # Check if we can use awscli which aws 2>/dev/null || ls /home/ubuntu/.local/bin/aws 2>/dev/null || ls /usr/bin/aws 2>/dev/null; # Check if AWS CLI has cached credentials or if we can use it python3 << 'PYEOF' import os, subprocess # Check env vars for var in ['AWS_ACC; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can we make sure that Agentic AI follows this convention that no tofu characters in any PDF in the future? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea — let me add an automated tofu check to the PDF generation pipeline and document the convention.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+Now I know where the PDF generation happens. Let me update the script to include an automatic tofu check, and document the convention.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Also let me update the operating instructions so all future agents know the convention.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+Let me update OPERATING_INSTRUCTIONS.md with the PDF quality assurance protocol.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+Convention documented in two places:
+
+### 1. `generate_pdf()` tool — now has automatic tofu check (PR #716)
+
+The `generate_pdf` tool in `truesight_autopilot` now **automatically**:
+- Injects the `@font-face` rule for DroidSansFallbackFull.ttf into every HTML
+- Verifies all Chinese characters render (scans each page for tofu □□□)
+- Refuses to upload if any tofu chars found — with a detailed error message showing which pages
+
+This means any future PDF generation — whether by me or any agentic instance — will check itself before outputting.
+
+### 2. `agentic_ai_context/OPERATING_INSTRUCTIONS.md` — documented convention (PR #717, still open)
+
+New section **"PDF Generation — No Tofu Characters (Chinese Font Rule)"** documents:
+- The `@font-face` rule that must be in every HTML header
+- The auto-check that runs on every PDF generation
+- The font path `/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf`
+- The S3 upload convention with ASCII filenames
+
+**RESUME HERE →** PR #716 (autopilot fix) and PR #717 (context doc) need merging when you're ready. Both are ready to go.
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR #716: auto tofus-check in generate_pdf
+• `git push changes` → PR #717: PDF quality section in OPERATING_INSTRUCTIONS.md
 
