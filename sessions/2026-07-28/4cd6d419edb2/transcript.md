@@ -5335,21 +5335,45 @@ Let me look at the actual list of all farms.
 
 Let me check what's actually in the farms directory.
 [1 tool result(s) consolidated: search_code — details in artifact]Let me actually look at the farm IDs listed in the live shop data files.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The shop is at `agroverse_shop_beta`! The old `agroverse_shop` repo doesn't exist anymore. Let me check the actual farm data there.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — a `farms` directory. Let me read what's inside.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the actual farm profiles.
+[7 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5597,4 +5621,121 @@ These are direct S3 links — no GitHub, no cache, no China firewall issues. All
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → ls -lh /tmp/cacao_report_en.pdf /tmp/cacao_report_cn.pdf /tmp/pptx_slides/Cacao_Tea_China_Opportunity_EN_Slides.pdf /tmp/pptx_slides/Cacao_T; find /tmp -name "*Slides*" -o -name "*slides*" 2>/dev/null | grep -i pdf | head -10; which libreoffice 2>/dev/null; ls -lh /tmp/pptx_slides/Cacao_Tea_China_Opportunity_EN.pptx /tmp/pptx_slides/Cacao_Tea_China_Opportunity_CN.p; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] By the way, Santana Fazenda generates produces around 22 tons of cacao per year because they are around 22 hectares. If it is not listed on the profile, we should indicate that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good data point. Let me check their current profile and add this info to the documents.
+
+
+### 🤖 Autopilot
+
+Let me check the live shop page for Santa Ana.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+Let me try the product page that mentions Santa Ana.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+[1 tool result(s) consolidated: web_extract — detail in artifact]
+
+Got it. I can see from the site that Santa Ana is listed under Coopercabruca. The live page mentions Fazenda Santa Ana as part of the cooperative. There's no separate farm profile page for it — it's referenced through products.
+
+Now let me update all 4 PDFs with the Santa Ana correction (22 ha, 22 tons/yr), the full farm ranking table, and the cultivation optimization section. Let me update the HTML source files, regenerate, and upload.
+
+Actually wait — the 4 PDFs were just updated and uploaded to S3. Let me now update the HTML sources, regenerate, and re-upload.
+
+Let me check what the current EN and CN HTMLs have for the farm section.Good — Santa Ana doesn't have a separate profile, it's listed through Coopercabruca products. Now let me update both HTML sources with the correction (22 ha, 22 tons) and the complete farm ranking, then regenerate all 4 PDFs.
+
+
+### 🤖 Autopilot
+
+The HTML source files never got the cultivation/farm content — they need to be updated properly. Let me add everything now.
+
+
+### 🤖 Autopilot
+
+Now I can see the full structure. Neither HTML has the cultivation/farm section yet. Let me add it before the Open Items in both, then regenerate all 4 PDFs.
+
+
+### 🤖 Autopilot
+
+Now let me add the same to the Chinese HTML.
+
+
+### 🤖 Autopilot
+
+CN has `七、待确认事项` as the last section. Let me insert `八、种植优化` before it.
+
+
+### 🤖 Autopilot
+
+Now regenerate both reference PDFs, then the slide PDFs, then upload all 4.
+
+
+### 🤖 Autopilot
+
+The EN PDF didn't get the section. The replacement string must not have matched. Let me check and fix.
+
+
+### 🤖 Autopilot
+
+The EN heading is `Part 9: Open Items`, not `Part 11`. Let me fix the insertion.
+
+
+### 🤖 Autopilot
+
+The EN heading is `Part 9: Open Items`. My replacement string was wrong. Let me fix it.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Both reference PDFs are now updated with the complete cultivation/farm section. Here's the status:
+
+**✅ Done this turn:**
+- **EN Reference PDF** (15 pages, 111 KB) — Cultivation Optimization, Farm Ranking (all 7 farms), Santa Ana corrected to 22 ha / ~22 tons/yr, Criollo genetics, post-harvest protocol
+- **CN Reference PDF** (15 pages, 566 KB) — Same content in Chinese, all verified
+- Both contain all markers: Criollo, Oscar, Santa Ana (22 ha), Paulo, all 7 farms ranked
+
+**✅ Also verified:** All existing content intact (demographics, P&L, competitive landscape, epicatechin science, TCM integration, carbon credits)
+
+**🚫 Still needed in next turn:**
+1. Convert both reference PDFs → slide PDFs (LibreOffice from existing PPTX files)
+2. Upload all 4 PDFs to S3 with public-read ACL
+3. Provide download links here
+
+**RESUME HERE →** 
+```bash
+# Regenerate slide PDFs
+cd /tmp/pptx_slides && /usr/bin/libreoffice --headless --convert-to pdf Cacao_Tea_China_Opportunity_EN.pptx && /usr/bin/libreoffice --headless --convert-to pdf Cacao_Tea_China_Opportunity_CN.pptx
+
+# Upload all 4 to S3
+export AWS_ACCESS_KEY_ID=... && export AWS_SECRET_ACCESS_KEY=... && export AWS_SESSION_TOKEN=...
+aws s3 cp ... s3://assets.truesight.me/cacao-deck/ --acl public-read
+```
+
+Then paste the S3 download links here.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → grep -n "Santa Ana\|Santa\|22 hectare\|22 ton\|farm ranking\|Farm Ranking\|cultivation\|Cultivation" /tmp/cacao_report_en.html | head -20; grep -n "Part 2.5\|2.5 The\|Part 6\|<h1>Part 7\|Coffee.\(Tea\|Tea.*Culture\)\|Target Demographics\|4.3 Supply\|4.4 Carbon\|Part 5" /tmp/caca; python3 << 'PYEOF' # Add Cultivation Optimization section to EN HTML before Open Items with open('/tmp/cacao_report_en.html', 'r') as f: en ; …(+11 more)
 
