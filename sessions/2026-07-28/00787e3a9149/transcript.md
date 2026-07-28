@@ -77,3 +77,53 @@ The modules are designed as **docs-first MD content** that'll be published on **
 
 Want me to read you the full Agroforestry or Supply Chain module content from the plan, or dive into anything specific?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] Can you fetch and return the two PDF files for the model one and module two?
+
+
+### 🤖 Autopilot
+
+Let me check if those exist as separate PDF files in our repos.
+
+
+### 🤖 Autopilot
+
+There's a dedicated **`TrueSightDAO/aora`** repo. Let me check what's in there.
+
+
+### 🤖 Autopilot
+
+Let me look inside the `aora` repo — the module content might be there as markdown that I can generate PDFs from.
+
+
+### 🤖 Autopilot
+
+Found them! There are **two PDFs** already generated in the `TrueSightDAO/aora` repo. Let me download and send them to you.
+
+
+### 🤖 Autopilot
+
+The PDFs exist already! Let me download them from the repo and send them to you here.
+
+
+### 🤖 Autopilot
+
+Got both PDFs downloaded. Sending them to you now!
+
+
+### 🤖 Autopilot
+
+Sent! You should have both files now in the thread:
+
+1. **Module 1 — Agroforestry** (~157 KB) — covers the journey from forest to dried bean. Sensory stations, big ideas for 6-year-olds, setting-aware exercises for farm/kitchen/warehouse/factory settings.
+
+2. **Module 2 — Supply Chain** (~250 KB) — covers bag-to-bar-to-consumer. Includes the Fork Road board game design, freight transparency, and the full traceability flow.
+
+Both are in the `TrueSightDAO/aora` repo under `pdfs/`, with the canonical Markdown sources at `modules/agroforestry/index.md` and `modules/supply_chain/index.md`. They're also available in the repo if you want to browse or regenerate them later.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -sL -o /tmp/aora-module-agroforestry.en.pdf "https://raw.githubusercontent.com/TrueSightDAO/aora/main/pdfs/aora-module-agroforestry.en.
+
