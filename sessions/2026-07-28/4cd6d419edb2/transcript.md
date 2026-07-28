@@ -5462,16 +5462,19 @@ I found several number inconsistencies. Let me extract systematically and cross-
 ### 🤖 Autopilot
 
 I found a critical inconsistency. Let me trace the exact numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a critical inconsistency — the Chinese P&L shows `$321,080 = $442,080 - $131,000` but $442,080 is a stale phantom number that doesn't match the actual math. And some min-viable scenarios still show 219 boxes instead of 249. Let me do a full audit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it! The P&L for the $500K target still uses **stale COGS numbers** from before the $44/kg correction. Let me fix every number in both HTMLs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5479,31 +5482,37 @@ Found it! The P&L for the $500K target still uses **stale COGS numbers** from be
 Found the core problems. The $500K P&L table has **three layers of stale numbers**: COGS uses $0.792/box from the old model (should be **$4.51**), annual OpEx says $121K but monthly × 12 = $121K not the $131K listed elsewhere, and the arithmetic `$437,900 - $121,000 = $321,080` doesn't even compute correctly ($316,900).
 
 Let me fix both HTMLs with the correct numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — both HTMLs now have corrected numbers. Let me also verify the monthly scenarios table is consistent and fix any remaining stale numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 4 stale number locations. Let me fix them all now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two didn't match. Let me check what's actually in the HTML and fix those remaining stale numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There are two different tables with stale min viable numbers. Let me fix them now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me re-check for any remaining stale numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5655,4 +5664,81 @@ Let me know if you spot any other inconsistencies — I'll fix them in the same 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → grep -n "Raw Material\|AGL8\|La Dio Sitio\|Paulo\|Oscar\|4.2 Cost\|4.2 成本" /tmp/cacao_report_en.html | head -20; python3 << 'PYEOF' # Fix section 4.2 to reference Oscar's Farm as primary, with multi-source note for lang, path in [('EN', '/tmp/cacao_repo; grep -n "La Dio\|Paulo\|AGL8" /tmp/cacao_report_cn.html | head -20; …(+2 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Key insight: For the $500K target (~400 kg shell/yr), any of the three farms can meet demand
+individually. Oscar (Criollo) gives the strongest China market story. Santa Ana provides the most room to
+scale. Paulo offers the deepest operational relationship. Together, the total available supply is
+~3,100-5,920 kg/yr — enough for $3.9-7.4M in annual revenue at $50/box.
+
+
+Are you sure the representation is correct…  Please look at this line.
+
+
+### 🤖 Autopilot
+
+You're right to call that out — let me check the math carefully.
+
+
+### 🤖 Autopilot
+
+The numbers have different formatting. Let me pull the actual supply figures from the HTML directly.
+
+
+### 🤖 Autopilot
+
+Found the problem. Let me verify the math:
+
+| Farm | Shell/yr (min) | Shell/yr (max) |
+|---|---|---|
+| Oscar (81 ha) | 4,000 kg | 6,800 kg |
+| Santa Ana (22 ha) | 2,200 kg | 3,740 kg |
+| Paulo (4 ha) | 400 kg | 680 kg |
+| **Total** | **6,600 kg** | **11,220 kg** |
+
+Revenue at $50/box: 6,600 kg ÷ 0.04 kg/box = 165,000 boxes → **$8.25M** (min)
+
+But the EN text says **~3,100-5,920 kg/yr — $3.9-7.4M**. That's wrong — it's using **old numbers from when Oscar was 4 ha instead of 81 ha**.
+
+The CN version is correct: **~6,600-11,220 kg/yr — $8.3-14.0M**. Let me fix the EN.
+
+
+### 🤖 Autopilot
+
+All stale numbers removed, correct numbers in place. Let me regenerate and send.
+
+
+### 🤖 Autopilot
+
+Fixed and verified. Let me send the corrected PDF.
+
+
+### 🤖 Autopilot
+
+Let me also check the CN PDF is correct — it should be fine since the CN version already had the right numbers from earlier. Let me verify quickly.
+
+
+### 🤖 Autopilot
+
+Both PDFs are now correct. The CN was already right, and the EN is now fixed.
+
+**What was wrong:** The EN total supply said **~3,100-5,920 kg ($3.9-7.4M)** — leftover from when Oscar was estimated at 4 ha. The actual numbers with Oscar at **81 ha / ~40 tonnes/yr** are:
+
+| Farm | Shell (min) | Shell (max) |
+|---|---|---|
+| Oscar | 4,000 kg | 6,800 kg |
+| Santa Ana | 2,200 kg | 3,740 kg |
+| Paulo | 400 kg | 680 kg |
+| **Total** | **6,600 kg** | **11,220 kg** |
+| Revenue | **$8.3M** | **$14.0M** |
+
+Fixed and attached above (v2.2). The CN version was already correct.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → grep -n "total available\|3,100\|5,920\|3.9-7.4\|$8.3\|~6,600" /tmp/cacao_report_en.html /tmp/cacao_report_cn.html 2>/dev/null | head -20; grep -n "400 kg\|680 kg\|2,200\|3,740\|4,000\|6,800\|5,920\|6,600\|11,220" /tmp/cacao_report_en.html /tmp/cacao_report_cn.html 2>/dev/null; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() # Fix the total supply numbers in secti; …(+2 more)
 
