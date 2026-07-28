@@ -282,3 +282,84 @@ A few possibilities:
 
 What's your angle here, Gary?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9847] Figure out why is my name associated with this and what is the nature of this document
+
+
+### 🤖 Autopilot
+
+Good questions. Let me investigate.
+
+
+### 🤖 Autopilot
+
+No hits in any DAO context files. Let me search code repos and the web.
+
+
+### 🤖 Autopilot
+
+Interesting — let me dig deeper on the personal connection by checking your mail and any other signals.
+
+
+### 🤖 Autopilot
+
+Let me check one more avenue — whether you have any direct connection with Elizabeth Wong or GO Inc.
+
+
+### 🤖 Autopilot
+
+Now let me read the AORA plan to see the full connection.
+
+
+### 🤖 Autopilot
+
+## Findings
+
+### Who is Elizabeth Wong?
+
+**She's your Liz** — the same Elizabeth Wong who leads the GO/Nucleus network and is your active partner on the **Aora Experience** project. Confirmed in `plans/AORA_EXPERIENCE_PLAN.md`:
+
+> *"Elizabeth Wong (Liz) is the founder of the GO/Nucleus network."* She bought 37 cacao bars in April 2026, and you're collaborating with her on the China launch of Aora (experiential-learning credentialing for children, powered by TrueSight DAO's Lineage layer).
+
+### Why your name is on this proposal
+
+You are listed as a **named principal of GO Inc.** — Elizabeth Wong's company — alongside:
+- **Elizabeth Wong** — Founder & CEO, GO Inc. (19 years US-China trade)
+- **Drilon Jaha** — Data & AI leader (XponentL Data → $159M acquisition)
+- **Zach Roth** — 15+ years at Meta/Instagram, LinkedIn, Disney, PlayStation
+- **Gary Teh** — you
+
+Your listed credential: *"growth engineer who scaled Edmodo from 10M to 100M users; founder of GetData.IO and TrueSight DAO's community-owned brands"*
+
+This means you're likely a **partner/principal in GO Inc.** alongside these other names, not just a vendor on this project.
+
+### What the document actually is
+
+This is a **confidential B2B proposal FROM GO Inc. TO GoDirect, Inc.** (GEARit's parent company — a 25-year old consumer electronics accessories brand doing $100M+). It's proposing a **community co-design platform** called GEARlab:
+
+| Layer | What it does |
+|---|---|
+| **Demand Signal Engine** | AI reads GEARit's 18 years of reviews → ranked unmet needs |
+| **Community Co-Design** | Customers submit ideas, stay named authors, get engineering support |
+| **Verified-Demand Launches** | Pre-order gate decides before any tooling or bulk PO |
+| **Attribution & Rewards** | Auditable ledger + revenue split + annual awards |
+
+**Key numbers:** $60K at risk through week 20, $170K year one if it works. Two hard kill criteria: 300 registered members + 75 qualified designs, and at least one pre-order gate clearing before tooling. If both numbers miss, the program stops — no extensions, no rewrites.
+
+The proposers argue that no major cable/accessory brand runs a co-design program — Anker and UGREEN do customer feedback mining, not origination — so the lane is open.
+
+### Does it exist in DAO context?
+
+**No.** This PDF is **not** in any DAO repo, not in your Gmail, not in any prior transcript. You likely received it externally (from Liz directly, or a shared drive). Nothing in the DAO context references GO Inc., GEARlab, or GEARit.
+
+### In short
+
+Your name is here because you're **a partner/principal in GO Inc.** — the firm pitching this program. The proposal is Liz's push to land a co-design operating system in a $100M+ accessories brand (GEARit), using the same community-origination model that maps closely to how TrueSight DAO works with cacao consignments. The Aora collaboration and the GEARlab proposal appear to be **two parallel tracks** under the same GO Inc. umbrella.
+
+Would you like me to:
+1. **Append this PDF to the session transcript** for future reference?
+2. **Map the cross-pollination** — i.e., how GEARlab's attribution/ledger layer could feed into the DAO's credentialing / consignment patterns?
+3. **Draft a response** or note to Liz about it?
+
