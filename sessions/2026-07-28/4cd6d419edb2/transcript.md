@@ -6051,41 +6051,49 @@ Good thinking. Section 4.3 is still framed entirely around La Dio Sitio as *the*
 ### 🤖 Autopilot
 
 I see — the 4.3 section still treats La Dio Sitio as *the* supply, but with our new three-tier strategy it should frame all three farms together. Let me update it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now update the Chinese version.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now regenerate both and verify consistency.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "Oscar is primary" check is False because section 4.3 now presents all three farms neutrally (as supply options), while section 9.2 (Farm Ranking) is where the explicit "Primary recommendation" text lives. That's good structure — 4.3 is the data table, 9.2 is the recommendation. Let me verify 9.2 still has the primary language.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The EN PDF has "Primary recommendation for China premium market: Oscar's Farm" in section 9.2. Let me check the CN equivalent to confirm it has the same.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CN 9.2 section still has the old "Santa Ana供应潜力最大" language rather than the new "三甲农场均可单独满足" framing I updated earlier. Let me verify and fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CN highlight box still has old "Santa Ana最大" language instead of the "三甲均可单独满足" update. Let me fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good, all content is coherent now. Let me regenerate and send the updated PDFs as attachments.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6234,4 +6242,129 @@ Let me also push the fix to the autopilot codebase so future PDF generation does
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → head -35 /tmp/cacao_report_en.html; # Check what font names are registered fc-list | grep -i droid | head -10 echo "---" fc-list :lang=zh 2>/dev/null | head -10 echo "---" # Ch; # Check if we have NotoSansCJK-Regular.ttc which might work better ls -la /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc 2>/dev/null; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Make sure to examine all the numbers again to ensure the story told by the numbers is consistent
+
+
+### 🤖 Autopilot
+
+Good call — let me extract every number from both PDFs and cross-check the entire story.
+
+
+### 🤖 Autopilot
+
+I found several number inconsistencies. Let me extract systematically and cross-verify.
+
+
+### 🤖 Autopilot
+
+I found a critical inconsistency. Let me trace the exact numbers.
+
+
+### 🤖 Autopilot
+
+Found a critical inconsistency — the Chinese P&L shows `$321,080 = $442,080 - $131,000` but $442,080 is a stale phantom number that doesn't match the actual math. And some min-viable scenarios still show 219 boxes instead of 249. Let me do a full audit.
+
+
+### 🤖 Autopilot
+
+Found it! The P&L for the $500K target still uses **stale COGS numbers** from before the $44/kg correction. Let me fix every number in both HTMLs.
+
+
+### 🤖 Autopilot
+
+Found the core problems. The $500K P&L table has **three layers of stale numbers**: COGS uses $0.792/box from the old model (should be **$4.51**), annual OpEx says $121K but monthly × 12 = $121K not the $131K listed elsewhere, and the arithmetic `$437,900 - $121,000 = $321,080` doesn't even compute correctly ($316,900).
+
+Let me fix both HTMLs with the correct numbers.
+
+
+### 🤖 Autopilot
+
+Good — both HTMLs now have corrected numbers. Let me also verify the monthly scenarios table is consistent and fix any remaining stale numbers.
+
+
+### 🤖 Autopilot
+
+Still 4 stale number locations. Let me fix them all now.
+
+
+### 🤖 Autopilot
+
+Two didn't match. Let me check what's actually in the HTML and fix those remaining stale numbers.
+
+
+### 🤖 Autopilot
+
+There are two different tables with stale min viable numbers. Let me fix them now.
+
+
+### 🤖 Autopilot
+
+Let me re-check for any remaining stale numbers.
+
+
+### 🤖 Autopilot
+
+Still have 3 in EN and 2 in CN. Let me fix these final number spots.
+
+
+### 🤖 Autopilot
+
+Both HTMLs are clean — all stale numbers fixed. Let me now regenerate the PDFs, verify, and send them.
+
+
+### 🤖 Autopilot
+
+Let me quickly check what happened with the break-even number.
+
+
+### 🤖 Autopilot
+
+The break-even is actually there as `3013` (no comma in the PDF text extraction). The numbers are all correct. Let me send the updated PDFs as attachments.
+
+
+### 🤖 Autopilot
+
+Both audited PDFs are attached above. Here's what the audit found and fixed:
+
+## 🔍 Full Number Audit — What Was Wrong & Fixed
+
+### Root Cause
+When COGS changed from **$4.50/kg → $44/kg** (from our official wholesale price list), several downstream numbers weren't updated in the P&L tables — they still reflected the old economics.
+
+### What Changed in All Tables
+
+| Metric | Before (wrong) | After (correct) |
+|---|---|---|
+| **COGS per box** | $2.92 → $12,100/yr | **$4.84** → **$48,400/yr** |
+| **After-carbon revenue** | $450,000 | ✅ $450,000 (unchanged) |
+| **After COGS** | $437,900 | **$401,600** |
+| **Annual OpEx** | $121,000 (but listed as $131K in CN) | **$121,000** (consistent: $10,083 × 12) |
+| **Net profit ($500K target)** | $321,080 (64.2%) | **$280,600 (56.1%)** |
+| **Min viable scale** | 219 boxes (EN) / 224/249 (CN) | **251 boxes** (consistent both) |
+| **Break-even boxes** | 2,904 (EN) / 3,288 (CN) | **3,013** (consistent both) |
+| **Conservative (500/mo) profit** | $11,207 | **$9,997** |
+| **COGS → gross margin** | 5.8% → 94.2% gross | **10.8%** → **89.2% gross** |
+
+### Stale Numbers Removed
+- `$2.92`, `$47.08`, `$42.08`, `$12,100`, `$437,900`, `$442,080`, `$321,080`, `64.2%`, `$0.792`, `$1.21`, `$131,000`
+- `219` boxes, `224` boxes, `249` boxes
+- `$1,460`, `$639`, `$11,207`, `29%` → all replaced
+
+### Verified in Both PDFs ✅
+- COGS $4.84/box ✅
+- Net profit $280,600 ✅
+- Margin 56.1% ✅
+- Break-even 3,013 boxes ✅
+- Min viable 251 boxes ✅
+- All other numbers (revenue, carbon, trees, OpEx breakdown, farm capacities) cross-checked and consistent ✅
+
+The story is still strong: **56.1% net margin at $500K target** — just more honest than the previous phantom 64.2%.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → python3 << 'PYEOF' import re def extract_stats(html_content): """Extract all numeric claims and their context""" stats = [] lines = html_con; python3 << 'PYEOF' # Find the exact $442,080 number and trace its origin for lang, path in [('EN', '/tmp/cacao_report_en.html'), ('CN', '/tm; python3 << 'PYEOF' # Full numeric audit: extract ALL dollar figures from both HTMLs and verify math import re for lang, path in [('EN', '/tm; …(+10 more)
 
