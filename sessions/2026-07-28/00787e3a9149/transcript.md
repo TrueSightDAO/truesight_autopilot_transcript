@@ -17,17 +17,25 @@
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Nothing came up in agentic_ai_context. Let me also search the full org codebase to cover all repos.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me dig a bit deeper — a couple of those hits reference "Aura" in context files that might be relevant.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try a few more angles.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -126,4 +134,18 @@ Both are in the `TrueSightDAO/aora` repo under `pdfs/`, with the canonical Markd
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -sL -o /tmp/aora-module-agroforestry.en.pdf "https://raw.githubusercontent.com/TrueSightDAO/aora/main/pdfs/aora-module-agroforestry.en.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] Hey, can you have a report contribution of me, five minutes spent following up with Jerry regarding the upcoming meeting with Evans and Model UN in Beijing. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+All done, Gary. I've logged a **5-minute contribution event** for you — "Follow-up with Jerri re: upcoming meeting with Evans and Model UN in Beijing." It's submitted to the DAO ledger.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
