@@ -6039,11 +6039,13 @@ Metric Conservative
 You're right — that section still treats La Dio Sitio (Paulo) as the primary supply source, but we just agreed **Oscar's Farm (Criollo, 80yr)** is the primary for China. Let me fix this.
 
 Let me check the exact wording in both HTMLs and update.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good thinking. Section 4.3 is still framed entirely around La Dio Sitio as *the* supply, but we've now shifted Oscar → primary, Santa Ana → volume, Paulo → alternative. It's internally inconsistent with the rest of the document. Let me fix it.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6163,4 +6165,73 @@ Oscar is now the **unquestioned #1** — he has the best genetics (80-year Criol
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r') as f: en = f.read() # Fix Oscar's farm in 4.3 supply table en = en.replace( '; python3 << 'PYEOF' import weasyprint, os, fitz for lang, html_path, pdf_path in [ ('EN', '/tmp/cacao_report_en.html', '/tmp/cacao_report_en.
+
+
+### 🧑 Governor
+
+Seeing strange squares in the PDF output
+
+[Attachment auto-processed: **93ea1cbb1f5e4bdca7b948648aa50ec2.jpg**]
+- Type: Image (OCR confidence: 56.9%, quality: good)
+
+Extracted text:
+```
+vmacaneay “15.20% preserved ‘Conolable— process change ony fpr 9.2 Farm Ranking — Highest Flavanol Potential “Thove are 7 farms listed on agroverse.shop. Below seach fan's polenta for high-fevanet shell production. Primary recommendation for China promlum market: Oscar's Farm. His 80-year-old Criatlo trees have 2-9 the epicatachin conta of any ober farm on the platform — the strongest story foe the China TCALuxwy postoning, Volume partner: Santa Ana (22 ha. ~22 tons!) — largest shalt supply capacty fr sealing boyond 600K, ‘Alternative: Paulo — La Dio Sitlo— deepest DAO relationship. award-winning Amazon cacto, process: contol ready. Good backup it Oscar or Santa Ana are unavalable. fed Coo ‘aia ‘s0-yearctd itll toes — ‘sears Farm (Cooporcaneuca} highest apiestehin genet 280 hg test) Pavlo—to Awaxsiioning deop ong “OREO NOY oot PA8AMAM rena pees ones (ORABEONL beans) 2anecares,-22‘onsly aia ‘Chocolate Morbeck ea {Ceopetcadnea} choclate. Cabruca goto, -22003,720%9 ‘yesho (argest spe) ‘Women-cnned, organs (os%snoosh, uique 880 680K enramalzod beans ‘Gabrea agooresty. sing ipa, Bani “se. ‘AGLE supply part ~ose019" cate anch- eabruea aca, Baha anstomaton Younger 22040 pyr ‘caea0 moisses product (c4aron supely emai ‘Key insight: For he $500K target needing ~400 tg of sho por year, all three farms ean Individually meet demand, but Oscar (81h, ~41) can scale far beyond $500K alone, Oscar {Croto} for premium China postoing, Santa Ana for volume, and Paulo as the procass-contat torativo, Scale boyond S500K would requit Santa Ana or mulfarm partnerships. % Post-Har Q aa) g
+```
+
+
+### 🤖 Autopilot
+
+I can see the problem from the screenshot — those squares are **tofu characters** (missing glyphs) where Chinese text should be. The DroidSansFallback font isn't being properly applied by WeasyPrint. Let me investigate and fix.
+
+
+### 🤖 Autopilot
+
+I see the issue — the font is set as `'Droid Sans Fallback'` but WeasyPrint might not be finding it by that name. Let me check and fix.
+
+
+### 🤖 Autopilot
+
+The font is available but WeasyPrint relies on system font name lookup which can be unreliable. Let me use an explicit `@font-face` rule to guarantee it works.
+
+
+### 🤖 Autopilot
+
+The `@font-face` rule works perfectly. The issue was that WeasyPrint wasn't resolving `'Droid Sans Fallback'` as a system font name. Let me add the `@font-face` rule to both HTML files and regenerate.
+
+
+### 🤖 Autopilot
+
+Now regenerate and verify.
+
+
+### 🤖 Autopilot
+
+**Zero tofu characters** — both PDFs are clean now. The fix was adding an explicit `@font-face` rule pointing directly to the font file path instead of relying on the system font name lookup.
+
+
+### 🤖 Autopilot
+
+Both fixed PDFs are attached above. Here's what the problem was and how I fixed it:
+
+**Root cause:** WeasyPrint wasn't resolving the system font name `'Droid Sans Fallback'` — it fell back to the default sans-serif which has no Chinese glyphs, hence the tofu squares (□□□).
+
+**Fix:** Added an explicit `@font-face` rule pointing directly to the font file path:
+
+```css
+@font-face {
+    font-family: 'DroidCN';
+    src: url('file:///usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf');
+}
+```
+
+Then used `'DroidCN'` everywhere in the CSS. This side-steps the system font name resolution entirely.
+
+**Verification:** Both PDFs scanned — **0 tofu characters** in either document. EN has 212 Chinese chars, CN has 5,246. All rendering correctly.
+
+Let me also push the fix to the autopilot codebase so future PDF generation doesn't hit this again.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → head -35 /tmp/cacao_report_en.html; # Check what font names are registered fc-list | grep -i droid | head -10 echo "---" fc-list :lang=zh 2>/dev/null | head -10 echo "---" # Ch; # Check if we have NotoSansCJK-Regular.ttc which might work better ls -la /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc 2>/dev/null; …(+2 more)
 
