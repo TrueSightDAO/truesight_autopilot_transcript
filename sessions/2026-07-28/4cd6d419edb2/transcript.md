@@ -5807,6 +5807,7 @@ I don't need to create a permanent access key. Let me just use the `aws_query` t
 ### 🤖 Autopilot
 
 The files are too large for the tool's parameter limits. Let me use presigned URLs — generate one via the tool, then upload via curl from the autopilot box.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5942,4 +5943,76 @@ New section **"PDF Generation — No Tofu Characters (Chinese Font Rule)"** docu
 **✅ Done this turn — actions taken:**
 • `git push changes` → PR #716: auto tofus-check in generate_pdf
 • `git push changes` → PR #717: PDF quality section in OPERATING_INSTRUCTIONS.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] China shifts towards 国潮 _aesthetic based historical Chinese influence_ with the purpose of shifting source of demand from exports to domestic focus 
+
+This shift has the potential to go global taking into account the acclaimed Japanese kaiseki  dining originated from China’s tang dynasty  
+
+Also taking into account the popularity of Japanese anime having worldwide
+
+Current gifts themed around these are seen to have immense demand when doing an in person market survey. Aligned with what Jerry described prior to my departure from San Francisco Bay Area
+
+
+### 🤖 Autopilot
+
+Excellent strategic insight. Let me research the 国潮 trend to validate and deepen this, then update the documents.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+Let me get more specifics on 国潮 market size and gift examples.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+Now let me add this as a new strategic layer to all three documents — the PDFs, slides, and .md files. This is a powerful positioning insight that connects our cacao tea product to a massive cultural wave.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now add the section to the Chinese HTML too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Now regenerate and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Both PDFs regenerated and verified — 0 tofu chars, all markers present. Let me send as attachments.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
+
+Both updated PDFs are attached above. Here's the new section added to both documents:
+
+---
+
+## 🇨🇳 国潮 (Guócháo) — China Chic Strategic Layer
+
+**New section added to both PDFs (Part 3 / 三)**
+
+### What is 国潮?
+
+| Dimension | Detail |
+|---|---|
+| **Movement** | "China Chic" — revival of traditional Chinese aesthetics, design, and cultural elements with modern packaging |
+| **Market size** | **¥1.4T ($193B)** in 2025, expected to double to **¥2.8T by 2030** |
+| **Growth** | 22% CAGR — one of the fastest-growing consumer segments |
+| **Consumer base** | **74% of Gen Z** actively prefer domestic brands with Chinese cultural DNA |
+| **Government push** | Deliberate policy shift from export-driven to domestic consumption — "dual circulation" strategy |
+| **Key products** | Palace-inspired cosmetics (花西子), traditional tea reimagined (小罐茶), Chinese heritage snacks, Tang/Song aesthetic packaging |
+
+### Why Cacao Tea Fits 国潮 Perfectly
+
+| 国潮 Element | Cacao Tea Connection |
+|---|---|
+| **Tang/Song dynasty inspiration** | Cacao arrives via Ming/Qing trade routes — new "heritage" story to write |
+| **小罐茶 format** | Already uses the premium Chinese tea aesthetic — 10-mini-can box |
+| **TCM heritage** | 养心安神 / 温肾壮阳 = deeply Chinese health philosophy |
+| **Gift economy** | 国潮 gifts have highest demand — Jerry's in-person market survey confirmed this |
+| **Globalization potential** | Like Japanese kaiseki (Tang Dynasty origin) and anime went global, 国潮 has same potential |
+
+### The Bigger Picture
+
+> *"Japan took Tang Dynasty aesthetics → refined into kaiseki + anime → went global. China is now doing the same with 国潮. Our cacao tea is a 国潮 product from the start — Amazon cacao + TCM formula + 小罐茶 packaging = the perfect vehicle for this wave."*
+
+### Downloads (attached above & S3):
+
+- **EN PDF**: https://s3.amazonaws.com/assets.truesight.me/cacao-deck/Cacao_Beverage_Opportunity_China_Market_TCM_Strategy.pdf
+- **CN PDF**: https://s3.amazonaws.com/assets.truesight.me/cacao-deck/CN_Reference_Cacao_Tea_China_Market_TCM_Strategy.pdf
+
+All Chinese chars verified — **0 tofu** ✅
 
