@@ -5914,11 +5914,13 @@ Would you like me to add this to the PDFs as a certification roadmap?
 ### 🤖 Autopilot
 
 Makes sense — Oscar's Criollo genetics are the stronger story for the premium China market. Let me update all documents to make Oscar the primary recommendation.
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have both files. Now let me update the farm ranking section in both to make **Oscar's Farm the #1 primary** for the China market, with Santa Ana as the volume option and Paulo as the alternative.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5985,4 +5987,92 @@ Oscar's Farm is now front and center as the primary recommendation for the China
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lh /tmp/cacao_report_en.pdf /tmp/cacao_report_cn.pdf 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Spend sometime thinking about this… does it still make sense?
+
+4.3 Supply Constraints — La Dio Sitio Farm
+La Dio Sitio is a 4-hectare farm producing ~4,000 kg of cacao beans per year (1,000 kg/ha). The cacao
+shell (husk) — used for tea — makes up 10-17% of bean weight per peer-reviewed research
+(PMC7230451).
+Metric Conservative
+
+
+### 🤖 Autopilot
+
+You're right — that section still treats La Dio Sitio (Paulo) as the primary supply source, but we just agreed **Oscar's Farm (Criollo, 80yr)** is the primary for China. Let me fix this.
+
+Let me check the exact wording in both HTMLs and update.
+
+
+### 🤖 Autopilot
+
+Good thinking. Section 4.3 is still framed entirely around La Dio Sitio as *the* supply, but we've now shifted Oscar → primary, Santa Ana → volume, Paulo → alternative. It's internally inconsistent with the rest of the document. Let me fix it.
+
+
+### 🤖 Autopilot
+
+I see — the 4.3 section still treats La Dio Sitio as *the* supply, but with our new three-tier strategy it should frame all three farms together. Let me update it.
+
+
+### 🤖 Autopilot
+
+Now update the Chinese version.
+
+
+### 🤖 Autopilot
+
+Now regenerate both and verify consistency.
+
+
+### 🤖 Autopilot
+
+The "Oscar is primary" check is False because section 4.3 now presents all three farms neutrally (as supply options), while section 9.2 (Farm Ranking) is where the explicit "Primary recommendation" text lives. That's good structure — 4.3 is the data table, 9.2 is the recommendation. Let me verify 9.2 still has the primary language.
+
+
+### 🤖 Autopilot
+
+The EN PDF has "Primary recommendation for China premium market: Oscar's Farm" in section 9.2. Let me check the CN equivalent to confirm it has the same.
+
+
+### 🤖 Autopilot
+
+The CN 9.2 section still has the old "Santa Ana供应潜力最大" language rather than the new "三甲农场均可单独满足" framing I updated earlier. Let me verify and fix.
+
+
+### 🤖 Autopilot
+
+The CN highlight box still has old "Santa Ana最大" language instead of the "三甲均可单独满足" update. Let me fix it.
+
+
+### 🤖 Autopilot
+
+Good, all content is coherent now. Let me regenerate and send the updated PDFs as attachments.
+
+
+### 🤖 Autopilot
+
+Both PDFs are attached above in this chat. Here's what changed:
+
+### Fix Applied — Section 4.3 Supply Constraints
+
+**Before:** The section was titled "Supply Constraints — La Dio Sitio Farm" and only showed Paulo's farm data, treating it as *the* default supply source. This contradicted the Farm Ranking section 9.2 which recommended Oscar as #1.
+
+**After:** The section is now titled **"Supply Constraints — Farm Sources"** and shows a **three-farm table**:
+
+| Farm | Role | Shell/yr | Revenue Capacity |
+|---|---|---|---|
+| **Oscar's Farm** 🥇 | Premium China (Criollo) | ~500-1,500 kg | Up to $3.7M |
+| **Santa Ana** 🥈 | Volume partner | ~2,200-3,740 kg | Up to $9.3M |
+| **Paulo — La Dio Sitio** 🥉 | Alternative (deep relationship) | ~400-680 kg | Up to $1.7M |
+
+Combined capacity: **~3,100-5,920 kg/yr** → enough for **$3.9-7.4M annual revenue** at $50/box.
+
+This is now consistent throughout the document — Oscar is the primary recommendation for China premium, Santa Ana is the volume scale partner, Paulo is the trusted alternative.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → grep -n "Supply Constraints\|La Dio Sitio\|4.3 Supply\|Oscar\|Santa Ana" /tmp/cacao_report_en.html | head -20; grep -n "供应约束\|La Dio Sitio\|4.3\|Oscar\|Santa Ana" /tmp/cacao_report_cn.html | head -20; sed -n '232,260p' /tmp/cacao_report_en.html; …(+9 more)
 
