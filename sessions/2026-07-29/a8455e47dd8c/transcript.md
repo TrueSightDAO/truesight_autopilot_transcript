@@ -1851,21 +1851,30 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Let me check the current product list to see where this fits.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — the file on `main` still has the old version (gross weight columns, vacuum bag). The PR #533 branch has the fixes but hasn't been merged yet. Let me add the 50g premium dark chocolate bar to both Category A and B, and include it in the same PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already has commits from the previous push. Let me use a new branch name.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me regenerate the PDF with the chocolate bar included.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1886,6 +1895,11 @@ Want me to merge it?
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=10] Don’t need to include estimated total and est declared value
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2038,4 +2052,44 @@ Forward Ling's guide to Matheus, and add this question to it: *"Does Black King 
 Matheus may already have one from his organic certifications (IBD NOP) or from previous domestic licensing. Alternatively, his accountant can tell him in 5 minutes.
 
 Want me to add this as a note to the GACC guide and include it in the email to Matheus?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] CEPOTX is already in the fda_fsvp
+
+
+### 🤖 Autopilot
+
+Let me pull up CEPOTX's profile.
+
+
+### 🤖 Autopilot
+
+Good — CEPOTX is already in the system. Here's what I can see:
+
+**CEPOTX snapshot:**
+- **Location:** Altamira, **Pará** (not Bahia — different region, different SEFAZ)
+- **Legal form:** Cooperative (not individual)
+- **CNPJ:** 22.568.369/0001-38
+- **DUNS:** 903842053
+- **FDA FFR:** 14674182470
+- **Organic:** ✅ IBD NOP
+- **Products:** Organic cacao almonds only
+- **Contact:** marcelcontabilidade@gmail.com / +55 93 3515-1453
+
+**Thoughts on the three factories for GACC:**
+
+| Factory | Region | GACC readiness | Bottleneck |
+|---------|--------|:---:|-----------|
+| **Coopercabruca** | Itabuna, BA | ✅ Most ready — IE + NF-e + FDA + export history | Just needs to submit CIFER |
+| **Black King** | Ilhéus, BA | ⚠️ Needs CNAE + IE first | Can't start CIFER until SEFAZ resolved |
+| **CEPOTX** | Altamira, PA | ❓ Unknown IE/NF-e status | Different state (Pará), separate SEFAZ system |
+
+CEPOTX being in **Pará** is a complication — they deal with **SEFAZ-PA**, not SEFAZ-BA. We'd need to check whether they already have:
+1. A commerce CNAE on their CNPJ
+2. Inscrição Estadual (IE) for Pará
+3. NF-e emission capability
+
+Were you thinking of forwarding Ling's CIFER guide to all three factories, or just Coopercabruca and Black King for now?
 
