@@ -2399,3 +2399,53 @@ Your assumption is the **fourth "entity" slot** — a company WE control. And si
 
 **The real question now is:** Do you want to pursue this **alongside** the Coopercabruca/Black King applications, or as a **Phase 2** after the first shipment moves? Either way, starting the CNPJ registration process sooner means we're months ahead.
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/38f1bbe8e2d84626b739a075d84419d6.docx — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Good — I've extracted the full content. This is Ling's detailed **CIFER system step-by-step guide** (the actual system navigation). Let me persist it to the transcript.
+
+
+### 🤖 Autopilot
+
+Extracted and saved to the transcript. Here's what Ling's guide covers:
+
+**It's an 8-step CIFER system walkthrough** — the actual user interface guide for Brazilian factories to self-register on https://cifer.singlewindow.cn.
+
+**Key takeaways from Ling's guide:**
+
+1. **Two product categories for cacao:**
+   - "Confectionery, Chocolate" → for chocolate bars, cocoa powder (NCM 1806)
+   - "Roasted coffee beans, cocoa beans, and other products" → for raw beans & nibs (NCM 1801/1803)
+   - Each category = separate application
+
+2. **MAPA number is mandatory in CIFER** — Entered at first login and **cannot be changed**
+
+3. **Documents needed per company:**
+   - CNPJ certificate
+   - Factory photos, product photos, labels, process flow, floor plan (shared across all 3)
+   - Ingredient list in English, descending order (company-specific)
+   - All files ≤4MB, formats jpg/jpeg/gif/png/bmp/pdf
+
+4. **Critical warnings:**
+   - No withdrawal after submission
+   - MAPA number locked once entered
+   - Save the **18-digit receipt number** and return to Ling
+
+**How this maps to our existing GACC guide:**
+
+Our guide is missing the **CIFER system navigation detail** — Ling's doc has the actual screenshots-level walkthrough. It also confirms the MAPA number is required at **first login** (not just in the application form), which is stricter than I understood.
+
+**Next step:** Do you want me to forward this Ling guide to the factories, or merge it into our GACC document as an Appendix?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 -c "import docx; doc = docx.Document('/tmp/tg_attachments/38f1bbe8e2d84626b739a075d84419d6.docx'); print(' --- '.join([p.text for p 
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-29/76dc2d53f9d7/transcript.md
+
