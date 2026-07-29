@@ -1988,3 +1988,54 @@ Good intel from Ling — and it confirms everything we've been working toward. H
 
 Want me to forward Ling's guide to the factories and update our document?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] How do you get MAPA?
+
+
+### 🤖 Autopilot
+
+Good question. Let me research what MAPA registration is and how Black King gets one.
+
+
+### 🤖 Autopilot
+
+This is a crucial question. Let me check what we know and research further.
+
+
+### 🤖 Autopilot
+
+This is the gap I need to be honest about. Let me explain what I know and what I don't.
+
+**What the "MAPA production registration number" is:**
+
+Ling is referring to a registration that MAPA (Brazil's Ministry of Agriculture) issues to food production facilities. It's essentially MAPA saying "this facility is registered with us for food production." It's required for the CIFER application field that asks for your "competent authority registration number."
+
+**The problem:**
+
+Black King has never needed one before. For US exports (FDA FSVP), all you need is the CNPJ + FDA FFR number. The MAPA production registration is a **separate Brazilian government registration** specifically for facilities that produce food for export to countries that require it — like China.
+
+**How you actually get it:**
+
+There are two possible paths depending on Black King's product type:
+
+| Product | Likely system | Who issues it |
+|---------|--------------|--------------|
+| **Raw cocoa beans** (NCM 1801) | CNPJ + MAPA registration via SIPEAGRO | MAPA |
+| **Processed cacao** (NCM 1803, 1806) | May just need CNPJ or a specific MAPA registry | MAPA |
+
+**Here's what I *don't* know precisely:** Whether for cacao specifically, the "MAPA production registration number" is just the CNPJ recognized by MAPA, or whether a separate application to MAPA is needed. This is because:
+
+1. Black King has never exported to China before — no precedent in our records
+2. The Decree 280 rules are only a month old (effective June 1, 2026)
+3. I can't browse the SIPEAGRO/PGA-SIGSIF system myself (it's a Brazilian government portal)
+
+**My recommendation:**
+
+Forward Ling's guide to Matheus, and add this question to it: *"Does Black King already have a MAPA registration number for your facility, or do you need to apply for one? If applying, the process is at gov.br/agricultura — register your establishment with MAPA's system (SIPEAGRO)."*
+
+Matheus may already have one from his organic certifications (IBD NOP) or from previous domestic licensing. Alternatively, his accountant can tell him in 5 minutes.
+
+Want me to add this as a note to the GACC guide and include it in the email to Matheus?
+
