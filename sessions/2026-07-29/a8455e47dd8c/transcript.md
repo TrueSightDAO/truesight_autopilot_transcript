@@ -2025,7 +2025,18 @@ Good question. Let me research what MAPA registration is and how Black King gets
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_repo_file, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is a crucial question. Let me check what we know and research further.
+[2 tool result(s) compacted: search_code, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2072,6 +2083,7 @@ Want me to add this as a note to the GACC guide and include it in the email to M
 ### 🤖 Autopilot
 
 Let me pull up CEPOTX's profile.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2447,5 +2459,38 @@ Our guide is missing the **CIFER system navigation detail** — Ling's doc has t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → python3 -c "import docx; doc = docx.Document('/tmp/tg_attachments/38f1bbe8e2d84626b739a075d84419d6.docx'); print(' --- '.join([p.text for p 
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-29/76dc2d53f9d7/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/bf68febe541e4cbf918afe0edcb5d257.docx — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+**This is Ling's second document — the full CIFER guide in Chinese** with screenshot annotations. It covers the same 8-step process as the first English guide, but in more detail with Chinese labels for each field and button on the CIFER interface.
+
+**What's the same:**
+- Same 8-step flow (login → MAPA number → category selection → commitments → basic info → uploads → preview → submit)
+- Same requirement for MAPA number (locked on entry)
+- Same document list (CNPJ, photos, labels, flow chart, ingredient list, floor plan)
+
+**What's new/different:**
+- **Chinese annotations** on every field — useful if Matheus or Coopercabruca's team is more comfortable with Chinese than English
+- **Two appendix notes:**
+  1. **Application detail** — phone number format, production type selection, attachment requirements
+  2. **Account management** — how to log back in later and check if the application is approved/rejected/pending
+- Mentions a **"Ready_to_Copy_Text.docx"** — a pre-filled template they prepared so factory teams just copy-paste their info
+
+**My thought:** These two guides from Ling (English + Chinese) are actually more comprehensive than the GACC guide I created. They're the real CIFER system walkthroughs. I should flag that we might want to add an Appendix to our guide referencing these as the canonical walkthroughs, since they have the actual screenshots.
+
+Want me to save this second DOCX to the repo alongside the first one, and update our guide to reference both?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 -c " import zipfile, xml.etree.ElementTree as ET z = zipfile.ZipFile('/tmp/tg_attachments/bf68febe541e4cbf918afe0edcb5d257.docx') tr
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-07-29/76dc2d53f9d7/transcript.md
 
