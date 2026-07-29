@@ -2301,3 +2301,72 @@ TrueTech Inc (US importer)
 
 Want me to create a **"Brazil CNPJ + MAPA Strategic Plan"** document breaking this down properly, filed alongside the GACC guide?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] From me 
+
+如果都是同样的工厂呢？
+
+他们三家是不同农场，但是工厂是大多数都是一样的一间工厂
+
+From Ling 
+
+Gary，三家属于三个独立农场主体，只是共用一个生产工厂。
+按照中国海关规定，只要工商主体不一样，就必须分别提交三份独立的GACC注册，没办法合并成一份申请。
+三家可以共用工厂照片、生产线视频、工艺流程图这些素材，不用重复拍摄，只需要各自替换自家公司资质、产品标签和配料表就行。
+
+
+### 🤖 Autopilot
+
+Ahhh, that makes perfect sense now and it's actually **good news** in some ways.
+
+**The picture Ling clarified:**
+
+```
+                    ┌─────────────────┐
+                    │  Shared Factory │
+                    │  (1 physical    │
+                    │   location)     │
+                    └────────┬────────┘
+                             │
+            ┌────────────────┼────────────────┐
+            ▼                ▼                ▼
+    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+    │ Coopercabruca│ │  Black King  │ │   CEPOTX     │
+    │ (Cooperative)│ │ (Matheus EI) │ │ (Cooperative)│
+    │ Bahia        │ │ Bahia        │ │ Pará         │
+    └──────────────┘ └──────────────┘ └──────────────┘
+    3 separate GACC apps    3 separate CIFER submissions
+    ──────────────────      ─────────────────────────────
+    Same factory photos, same process flow, same facility layout
+    Different company docs, different labels, different ingredient lists
+```
+
+**My thoughts:**
+
+**1. MAPA registration becomes simple** — One factory = one MAPA registration number. All three companies share it. Much easier than getting three separate MAPA numbers.
+
+**2. CIFER workload is manageable** — Ling is right: they can reuse:
+- ✅ Factory photos (one shoot, share all)
+- ✅ Production line video
+- ✅ Process flow diagram
+- ✅ Facility layout
+- ❌ Must swap: company CNPJ, legal name, labels, ingredient lists
+
+**3. Who should lead this?** — Coopercabruca is the easiest first submission since they already have IE + NF-e + export history. They can be the "test case" — once their CIFER application is approved, Black King and CEPOTX just swap their company details and resubmit.
+
+**4. Updated timeline estimate:**
+
+| Step | Duration |
+|------|:--------:|
+| Get MAPA registration (for the shared factory) | 1-2 months |
+| Coopercabruca CIFER application | 3-6 months |
+| Black King CIFER (after Coopercabruca approved) | ~1 month (copy + swap) |
+| CEPOTX CIFER | ~1 month (copy + swap) |
+| **First shipment possible** | **~3-6 months** |
+
+**5. The earlier point about a DAO-owned CNPJ still stands long-term** — it would give us a fourth entity that WE control, using the same shared factory. But that's a strategic play for later, not for this first shipment.
+
+Want me to update the GACC guide to reflect this "one factory, three entities" structure that Ling confirmed?
+
