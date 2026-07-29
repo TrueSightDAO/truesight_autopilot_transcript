@@ -1922,6 +1922,11 @@ Now let me update the PDF too.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **PR #535** — `fix/gacc-remove-estimates` — ready for review.
 
 **All changes in one PR:**
@@ -1943,6 +1948,7 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 You're right — PRs #533 and #534 are outdated because #535 has all the same fixes plus the chocolate bar and the removal of estimates. Let me close those and merge #535 instead.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2192,4 +2198,54 @@ Under Decree No. 280 (June 2026), unroasted cacao beans were **removed from the 
 **My recommendation:**
 
 Update the guide to include a section on **"How to check if you have / need MAPA registration"** with step-by-step for Matheus to check via SIPEAGRO. Want me to add that?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Hey, actually, Black King is not the manufacturer. Manufacturer is some of those. Black King is just exporting everything. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That changes everything. Let me reframe.
+
+**The real picture:**
+
+- **Black King** = trader/exporter (Matheus buys from farms, consolidates, ships)
+- **Source farms** (Oscar, Fazenda Clara, Fazenda Analuana, etc.) = actual producers/growers
+- **Coopercabruca** = also a producer/processor (cooperative with their own facility)
+
+**So for GACC purposes, who registers as "manufacturer"?**
+
+| Entity | Role | Needs GACC registration? |
+|--------|------|:-----------------------:|
+| **Black King** | Exporter/trader | ❌ No — they don't manufacture |
+| **Oscar's farm** | Grows + ferments beans | ❓ Maybe — raw ag product |
+| **Fazenda Clara** | Grows + processes nibs | ❓ Maybe — depends on processing |
+| **Coopercabruca** | Processes + exports | ✅ Already most ready |
+
+**This is a common problem for fragmented supply chains** — Chinese regulations assume a factory with one owner, but Brazilian cacao is smallholder farmers doing initial processing.
+
+**The typical solution in practice:**
+
+**Option A — Coopercabruca registers (easiest)**
+- They already have the facility, IE, NF-e, and export history
+- They can register as the manufacturer for their own production
+- Black King sends them the cacao, Coopercabruca does final processing/packaging and issues the export NF-e
+- This is the **indirect export** model already in the PDF guide
+
+**Option B — Black King's facility also counts as "manufacturer"**
+- If Black King has a facility where final packaging/QC happens, they can register as the manufacturer
+- Even though they don't grow the beans, if they process (sort, package, label), they count
+
+**Option C — Each farmer registers individually (most painful)**
+- Each farm gets its own GACC number
+- Requires separate CIFER applications for Oscar, Clara, Analuana, etc.
+- Realistic? No — 3-6 months per application × multiple farms
+
+**My take:**
+
+Since Black King is a trader, **Coopercabruca is probably your best vehicle** for the China lane, or Black King needs to confirm they do enough final processing (packaging, labeling, QC) at their own facility to qualify as the "manufacturer."
+
+Should I update the GACC guide to reflect this — that the registration applies to the **actual processing facility**, not the trading company, and suggest the Coopercabruca route?
 
