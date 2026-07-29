@@ -39,3 +39,41 @@ Key reminders from Ling:
 - Each company submits their own CNPJ, labels, ingredient list
 - Separate application for chocolate vs raw cocoa beans
 ```
+
+
+---
+
+## Attachment: Ling_CIFER_Guide_Chinese.docx
+
+| Field | Value |
+|-------|-------|
+| **Type** | PDF |
+| **Filename** | Ling_CIFER_Guide_Chinese.docx |
+| **Received** | 2026-07-29T09:40:34Z |
+
+### Extracted Text
+
+```
+Ling's second CIFER document (Chinese version) - received from Gary
+
+Title: GACC Overseas Production Enterprise Registration (CIFER System) Full Process Operation Guide
+
+To: Gary (Agroverse)
+Purpose: Guide the three Brazilian factories (Black King / Coopercabruca / CEPOTX) to complete self-registration on the CIFER system.
+
+Core prerequisite materials: Brazilian factory CNPJ tax number with Chinese translation, factory photos, product photos, product label samples, process flow diagram, English ingredient list (descending order by content).
+
+Same 8-step flow as the first document but with more detailed Chinese-language annotations and screenshots references:
+- Step 1: Login to https://cifer.singlewindow.cn, switch to EN interface
+- Step 2: Complete account info - enter MAPA registration number (cannot be modified)
+- Step 3: Select product category - "Confectionery, Chocolate" or "Roasted coffee beans, cocoa beans and other products"
+- Step 4: Check 8 Enterprise Commitment boxes, save
+- Step 5: Basic info - copy-paste from prepared Ready_to_Copy_Text.docx, phone digits only, select Production type, upload CNPJ
+- Step 6: Upload production documents - process flow, photos, labels, ingredients list, floor plan (4MB max each)
+- Step 7: Preview and submit - irreversible!
+- Step 8: Save 18-digit receipt number, send to Ling
+
+Contains two CIFER registration important process notes at the end, covering:
+1. Important Note 1: CIFER application step - detailed info on phone format, production type selection, attachment upload requirements
+2. Important Note 2: Account management step - how to view submitted applications status in CIFER backend
+```
