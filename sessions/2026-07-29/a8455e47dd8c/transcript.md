@@ -2020,6 +2020,7 @@ Want me to forward Ling's guide to the factories and update our document?
 ### 🤖 Autopilot
 
 Good question. Let me research what MAPA registration is and how Black King gets one.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2369,4 +2370,32 @@ Ahhh, that makes perfect sense now and it's actually **good news** in some ways.
 **5. The earlier point about a DAO-owned CNPJ still stands long-term** — it would give us a fourth entity that WE control, using the same shared factory. But that's a strategic play for later, not for this first shipment.
 
 Want me to update the GACC guide to reflect this "one factory, three entities" structure that Ling confirmed?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Is my assumption correct??
+
+
+### 🤖 Autopilot
+
+Yes, your assumption is **completely correct**. Here's why:
+
+**Your idea:** Register a DAO-owned Brazilian CNPJ → that entity gets MAPA registration for the shared factory → that entity applies for GACC → that entity exports direct to China
+
+**Why it works:**
+
+Ling just confirmed: the rule is that **each CNPJ needs its own GACC application**. That applies to Coopercabruca, Black King, CEPOTX — and it would also apply to our own CNPJ if we created one.
+
+Your assumption is the **fourth "entity" slot** — a company WE control. And since the MAPA registration is tied to the **factory** (not the company), all four entities could potentially share the same MAPA number.
+
+**The key insight you had that Ling confirmed:**
+
+| Assumption | Correct? | Why |
+|------------|:--------:|-----|
+| "Just register our own CNPJ" | ✅ | Same rule as the other three — separate CNPJ = separate GACC app |
+| "Do the whole full stack" | ✅ | We control the entire export chain |
+| "Santos gets their MAPA" | ✅ | Santos (or a hired RT) manages the SIPEAGRO process for the factory |
+
+**The real question now is:** Do you want to pursue this **alongside** the Coopercabruca/Black King applications, or as a **Phase 2** after the first shipment moves? Either way, starting the CNPJ registration process sooner means we're months ahead.
 
