@@ -1917,6 +1917,7 @@ The file on `main` still has the old version. Let me write the full corrected fi
 ### 🤖 Autopilot
 
 Now let me update the PDF too.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2129,4 +2130,66 @@ Forward Ling's guide (the bilingual CIFER PDF) to all three factories with the k
 5. Save and return the 18-digit receipt number
 
 Want me to draft an email to send to all three, or just send Ling's guide as-is with the reminders added?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] How do you register for MAPA. Do deep research and who actually gets it. Is it the exporter or just the manufacturing company
+
+
+### 🤖 Autopilot
+
+Good — I now have a much clearer picture from the deep research. Let me lay it out.
+
+---
+
+**What MAPA registration actually is:**
+
+MAPA (Ministério da Agricultura e Pecuária) is Brazil's Ministry of Agriculture. Their **establishment registration** is a federal authorization for food production facilities. It says *"this factory is registered with the government as a legitimate food producer."*
+
+**Who gets it — the manufacturer, NOT the exporter.**
+
+This is the critical distinction:
+
+| Role | Example | Needs MAPA Registration? |
+|------|---------|:-----------------------:|
+| **Manufacturer** | Black King (processes cacao) | ✅ Yes — the facility itself |
+| **Exporter/Trader** | TrueTech Inc | ❌ No — you're the buyer |
+| **Farmer** | Oscar (grows cacao) | ❌ No — raw agricultural product |
+| **Cooperative** | Coopercabruca (processes + exports) | ✅ Yes — they're also the manufacturer |
+
+So the CIFER field "MAPA production registration number" is asking for **Black King's establishment registration as a food processing facility**, not TrueTech's or anyone else's.
+
+**How to get one:**
+
+There are **two different systems** depending on the product type:
+
+| System | For | Applies to Black King? |
+|--------|-----|:---------------------:|
+| **SIPEAGRO** | **Plant-based foods** (cacao nibs, mass, husk, tea, ceremonial cacao, chocolate) | ✅ **YES** — this is the one |
+| **SIF** (Serviço de Inspeção Federal) | Meat, dairy, eggs, honey — animal origin only | ❌ No — cacao is plant-based |
+
+**Steps for Black King to get MAPA registration via SIPEAGRO:**
+
+1. **Access gov.br/agricultura** with e-CNPJ
+2. Enter **SIPEAGRO** (Sistema Integrado de Produtos e Estabelecimentos Agropecuários)
+3. Submit a **technical dossier** including:
+   - Facility layout and photos
+   - Production process flow
+   - Product specifications
+   - Labels
+   - Ingredient lists
+   - Responsible Technician (RT) — Matheus or a hired food tech
+4. MAPA reviews and issues a **registration number**
+5. This number is what goes into the **CIFER field** for GACC
+
+**The one nuance I want to flag:**
+
+Under Decree No. 280 (June 2026), unroasted cacao beans were **removed from the "Official Recommendation" list** — meaning they don't need MAPA to recommend them to China. They can self-register on CIFER. BUT the CIFER system still asks for a **"competent authority registration number"** — which Ling is interpreting as the MAPA production registration number.
+
+**The honest answer:** I'm not 100% certain whether cacao nibs/mass (processed, not raw beans) are required to have MAPA registration under Brazilian law, or whether they're exempt as low-risk plant products. This is something Matheus's accountant would know in 5 minutes.
+
+**My recommendation:**
+
+Update the guide to include a section on **"How to check if you have / need MAPA registration"** with step-by-step for Matheus to check via SIPEAGRO. Want me to add that?
 
