@@ -1905,11 +1905,13 @@ Want me to merge it?
 ### 🤖 Autopilot
 
 Got it. Let me remove the "Est. Total" and "Est. Declared Value" lines from both Category A and B.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file on `main` still has the old version. Let me write the full corrected file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2092,4 +2094,39 @@ CEPOTX being in **Pará** is a complication — they deal with **SEFAZ-PA**, not
 3. NF-e emission capability
 
 Were you thinking of forwarding Ling's CIFER guide to all three factories, or just Coopercabruca and Black King for now?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] CEPOTX is already exporting out of Brazil
+
+
+### 🤖 Autopilot
+
+Good point — that changes things. If CEPOTX is already exporting, they likely already have:
+
+- ✅ **Inscrição Estadual (IE)** — needed for any export
+- ✅ **NF-e emission capability** — they've done it before
+- ✅ **Export documentation** — they know the process
+- ❓ **MAPA registration number** — may or may not have this already
+
+So the GACC readiness ranking updates:
+
+| Factory | Readiness | CIFER can start |
+|---------|:---------:|:--------------:|
+| **Coopercabruca** | 🟢 Highest | Now — they just need Ling's guide forwarded |
+| **CEPOTX** | 🟢 High | Now — already exporting, likely needs less hand-holding |
+| **Black King** | 🟡 Medium | Soon — still needs CNAE + IE resolved first |
+
+**My recommendation:**
+
+Forward Ling's guide (the bilingual CIFER PDF) to all three factories with the key reminders Ling specified:
+
+1. Prepare CNPJ + Chinese translation, facility/product photos, labels, production flow chart, ingredient list in descending order
+2. Screenshots are test data — use real company info
+3. MAPA number cannot be modified after submission — double-check before submitting
+4. Chocolate vs. raw beans = separate applications
+5. Save and return the 18-digit receipt number
+
+Want me to draft an email to send to all three, or just send Ling's guide as-is with the reminders added?
 
