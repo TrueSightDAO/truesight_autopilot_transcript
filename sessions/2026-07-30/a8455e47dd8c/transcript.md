@@ -2426,6 +2426,11 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — I've extracted the full content. This is Ling's detailed **CIFER system step-by-step guide** (the actual system navigation). Let me persist it to the transcript.
 
 
@@ -2641,4 +2646,24 @@ Changes:
    - Recommends forwarding both to factories
 
 Want me to merge it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Merge it
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifice]
+
+Merged! Here are the live URLs:
+
+**Updated GACC guide:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md
+
+**Ling's English guide:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-07-29_ling_cifer_guide_english.docx
+
+**Ling's Chinese guide:** https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-07-29_ling_cifer_guide_chinese.docx
+
+Both guides are now referenceable when you forward to the factories.
 
