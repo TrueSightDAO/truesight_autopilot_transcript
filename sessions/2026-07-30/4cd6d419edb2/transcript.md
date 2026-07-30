@@ -5824,6 +5824,7 @@ I need to generate presigned URLs to upload the fresh (tofu-free) PDFs to S3, re
 ### 🤖 Autopilot
 
 Got one. Let me get the second one too.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6117,4 +6118,26 @@ From the research I just did:
 **Our addressable wedge:** If we capture 0.01% of 8-10M weddings/year at $50/box = **$4-5M** in annual revenue. Just in the wedding return-gift category alone.
 
 Want me to add this as a **fifth market segment** (wedding / 婚礼市场) to the PDFs?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] What is the size of the wedding market in China for chocolate
+
+
+### 🤖 Autopilot
+
+Already researched! Here it is again clearly:
+
+**China wedding chocolate market: ¥10-15B ($1.4-2.1B) per year.**
+
+- Traditional 喜糖 (happy candy boxes given to guests): ¥8-12B
+- Premium chocolate (Ferrero Rocher dominates ~50% share): ¥2-3B
+- Modern boutique / themed chocolate favors: ¥1-2B and growing fast
+
+**Our opening:** Gen Z couples are actively rejecting Ferrero Rocher — they want healthier, aesthetic, culturally meaningful alternatives. Cacao tea + TCM + 国潮 packaging fits perfectly.
+
+**Our slice:** Even 0.01% of 8-10M weddings/year at $50/box = **$4-5M revenue**.
+
+Want me to add this as a fifth target demographic (wedding market) to the PDFs?
 
