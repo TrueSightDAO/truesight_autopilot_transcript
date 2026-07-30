@@ -5830,6 +5830,7 @@ Got one. Let me get the second one too.
 ### 🤖 Autopilot
 
 The CN URL is double-encoded. Let me fix that key and upload both files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6140,4 +6141,26 @@ Already researched! Here it is again clearly:
 **Our slice:** Even 0.01% of 8-10M weddings/year at $50/box = **$4-5M revenue**.
 
 Want me to add this as a fifth target demographic (wedding market) to the PDFs?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] What is the size of the wedding market in China for chocolate
+
+
+### 🤖 Autopilot
+
+Apologies for repeating — let me give you a crisp, single answer:
+
+**¥10-15 billion RMB ($1.4-2.1 billion USD)** per year.
+
+| Segment | Annual Value |
+|---|---|
+| Traditional 喜糖 (candy gift boxes) | ¥8-12B |
+| Premium/imported (Ferrero dominates) | ¥2-3B |
+| Modern boutique / themed favors | ¥1-2B (growing fast) |
+
+**8-10 million weddings per year** in China.
+
+Ferrero Rocher has held this market for 20+ years, but Gen Z couples are now actively looking for healthier, more aesthetic alternatives with cultural meaning. The door is open.
 
