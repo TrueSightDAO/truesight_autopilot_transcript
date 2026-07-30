@@ -5818,6 +5818,11 @@ I need to generate presigned URLs to upload the fresh (tofu-free) PDFs to S3, re
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got one. Let me get the second one too.
 
 
@@ -6086,4 +6091,30 @@ Here's the research on China's wedding chocolate market:
 > *"Gen Z couples are actively **rejecting Ferrero Rocher** as a wedding gift. They want something that reflects their identity — healthier, more aesthetic, with cultural meaning. Cacao tea + TCM + 国潮 packaging = the perfect Ferrero replacement for the modern Chinese wedding."*
 
 Want me to add this to the PDFs as a **fifth target segment** (wedding market), or incorporate it into the existing Gen Z gift-giving segment?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] What is the size of the wedding market in China for chocolate
+
+
+### 🤖 Autopilot
+
+From the research I just did:
+
+## China Wedding Chocolate Market
+
+| Metric | Size |
+|---|---|
+| **Total wedding market** | ¥1.2-1.5T ($166-207B) |
+| **Total wedding chocolate spend** | **¥10-15B ($1.4-2.1B)** |
+| Traditional 喜糖 (happy candy boxes) | ¥8-12B |
+| Premium/imported chocolate (Ferrero dominates) | ¥2-3B |
+| Modern boutique chocolate favors | ¥1-2B (growing fast) |
+
+**Key insight:** Ferrero Rocher has held **50%+ share** of this market for 20+ years — but Gen Z couples are actively **rejecting** it now. They want something healthier, more aesthetic, with cultural meaning. That's our opening.
+
+**Our addressable wedge:** If we capture 0.01% of 8-10M weddings/year at $50/box = **$4-5M** in annual revenue. Just in the wedding return-gift category alone.
+
+Want me to add this as a **fifth market segment** (wedding / 婚礼市场) to the PDFs?
 
