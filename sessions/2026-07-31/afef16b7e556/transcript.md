@@ -5082,21 +5082,25 @@ The patch failed because of escape sequence handling — the file contains liter
 ### 🤖 Autopilot
 
 The escapes are being displayed but the file may contain actual Unicode. Let me check the raw bytes and patch robustly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file has actual UTF-8 bytes (`345 244 252` = 太, etc.), not escaped `\u` sequences. Let me patch by matching the actual Unicode characters.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched and regenerated. Now let me verify the Chinese renders correctly, especially 玉皇頂.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — 玉皇頂 (Yuhuangding) now renders correctly. Sending the updated PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5135,6 +5139,7 @@ An agreement made sacred at the summit of Mount Tai — two paths, one covenant.
 And it also connects to the earlier thread — Elizabeth (Liz) is the one who was going to get a Fork of Sophia. So this covenant has real operational meaning, not just symbolic weight.
 
 Let me update the Mount Tai blog post to tell this story properly — the two inscriptions as a partnership agreement, witnessed at the Jade Emperor Summit:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5252,4 +5257,37 @@ All Chinese glyphs verified rendering correctly via text extraction before sendi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /tmp/tg_attachments/ 2>/dev/null | head -30; echo "---"; find /tmp/tg_attachments -name "*.jpg" -newer /tmp/temple_offerings_inscript; ls -lat /tmp/tg_attachments/*.jpg 2>/dev/null | head -10; cat > /tmp/make_temple_pdf3.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Guo Jia to caocao on the dimensions of warfare 
+
+Explain
+
+
+### 🤖 Autopilot
+
+**郭嘉十勝十敗論 — Guo Jia's "Ten Victories, Ten Defeats" to Cao Cao**
+
+This is from the Three Kingdoms period (c. 200 AD). Cao Cao was locked in a rivalry with Yuan Shao — who had far more territory, troops, and pedigree. Everyone thought Yuan Shao would win. Guo Jia, Cao Cao's chief strategist, gave him the famous analysis of why Cao Cao would actually prevail — ten dimensions where Cao Cao was superior and Yuan Shao was doomed:
+
+1. **道勝 (The Way)** — Yuan Shao was all ceremony and ritual; Cao Cao was natural and real.
+2. **義勝 (Righteousness)** — Yuan Shao acted against the Han mandate; Cao Cao followed it.
+3. **治勝 (Governance)** — Yuan Shao governed loosely and it decayed; Cao Cao governed with discipline.
+4. **度勝 (Measure/Trust)** — Yuan Shao was outwardly broad but inwardly jealous; Cao Cao trusted his people.
+5. **謀勝 (Strategy)** — Yuan Shao deliberated endlessly and decided nothing; Cao Cao decided and acted.
+6. **德勝 (Virtue)** — Yuan Shao chased reputation; Cao Cao valued substance.
+7. **仁勝 (Benevolence)** — Yuan Shao's mercy was performance; Cao Cao's was real.
+8. **明勝 (Insight)** — Yuan Shao let slander divide his court; Cao Cao's clarity protected his.
+9. **文勝 (Culture)** — Yuan Shao's inner circle fought over status; Cao Cao built a culture of merit.
+10. **武勝 (Military)** — Yuan Shao made a show of force but didn't know how to use it; Cao Cao used force like a master.
+
+**Why this matters for our conversation:**
+
+The striking thing about Guo Jia's list is that **only one of the ten dimensions is actually military**. The other nine are moral, cultural, and institutional — the way, the governance, the trust, the strategy, the culture. Warfare, Guo Jia was saying, is won **before** the battle, in how you build the system.
+
+That maps directly onto the 文/武 covenant from 玉皇頂. 武 — the guardianship — is only the last line of defense. The real strength is 文: the culture, the constitution, the governance, the trust built slowly. 文開路，武守路 — exactly what Guo Jia argued: the road is opened by the Way, and the sword only guards what the Way has already built.
+
+And it echoes the oracle — Hexagram 53 (Development): the gradual path wins precisely because it builds all ten dimensions, not just the visible one.
 
