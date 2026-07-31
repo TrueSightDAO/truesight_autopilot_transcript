@@ -4043,6 +4043,12 @@ Let me get the exact text of the "Tension at the Heart of the Design" section to
 ### 🤖 Autopilot
 
 Now let me replace that section to remove the founder-centric framing.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4695,4 +4701,70 @@ The PDF is sent! 📄 It includes both offerings with English and Chinese versio
 **文開路，武守路** — One opens the future, the other guards it. 🙏
 
 May the offerings carry well at the temple.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you make sure to check that the Chinese characters show up correctly before you send it over to me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me verify the Chinese actually rendered. The PDF generator uses Helvetica which doesn't natively include CJK glyphs, so I need to check.
+
+
+### 🤖 Autopilot
+
+Confirmed — the Chinese characters did **not** render. They show up as "IIIIIII" placeholders because Helvetica (the PDF generator's font) has no CJK glyphs. I need to regenerate with a Chinese-capable font. Let me use reportlab's built-in CJK font instead.
+
+
+### 🤖 Autopilot
+
+Reportlab with STSong-Light (a proper CJK CID font) is available. Let me regenerate the PDF with that font for the Chinese sections.
+
+
+### 🤖 Autopilot
+
+Now let me verify the Chinese renders correctly by extracting the text back out.
+
+
+### 🤖 Autopilot
+
+Almost there — the body Chinese now renders correctly (願文化如樹…). But the **title and headers** still show "IIII" because they use Helvetica, which has no CJK glyphs. Let me fix those to use the CJK font too.
+
+
+### 🤖 Autopilot
+
+Now verify the full text extraction — title, headers, and body should all show Chinese correctly.
+
+
+### 🤖 Autopilot
+
+All Chinese characters are now rendering correctly:
+
+- ✅ Title: **供品祝辭** (Temple Offerings)
+- ✅ Subtitle: **太上老君廟** (Taishang Laojun Temple)
+- ✅ Headers: **文 / 武**
+- ✅ Offering 1 body: 願文化如樹，生於山上，根深葉茂，遠近皆見。願知識為公，眾人之智，世代相傳。願漸進之路，各人行各自之道，匯成森林。願十萬公頃雨林復生，文明之種，落土成蔭。
+- ✅ Offering 2 body: 願劍鋒護道，不傷無辜。願邊疆穩固，外邪不侵。遇女壯則拒，守發展之節奏。以武護文，以守護成。
+- ✅ Closing: 文開路，武守路
+
+Now sending the corrected PDF to you.
+
+
+### 🤖 Autopilot
+
+Fixed and sent! ✅ The corrected PDF now shows all Chinese characters properly:
+
+**Temple Offerings — 供品祝辭**
+- **太上老君廟** (Taishang Laojun Temple)
+- **Offering 1 — 文 · Culture / Future** — full 4-line blessing in Chinese
+- **Offering 2 — 武 · Military / Frontier / Guarding** — full 4-line blessing in Chinese
+- Closing: **文開路，武守路**
+
+Verified by extracting the text back out of the PDF — all CJK glyphs are intact. Good catch asking me to check!
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → python3 -c "import reportlab; print(reportlab.Version)" 2>&1; python3 -c "from reportlab.pdfbase.cidfonts import UnicodeCIDFont; from report; cat > /tmp/make_temple_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm f; cat > /tmp/make_temple_pdf2.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm
 
