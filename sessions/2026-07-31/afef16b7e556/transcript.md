@@ -4895,11 +4895,13 @@ Let me read the final portion of the post to see the closing.
 ### 🤖 Autopilot
 
 The photos are uploaded and I have the post structure. Let me check how the existing blog post references images so I match the convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the image convention from the other post. Now let me add a photo gallery section to the FDA post — placing the three photos (signing, pack, sealing) with captions tied to the origin location from the PDFs.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4921,6 +4923,7 @@ Want me to merge and promote to production?
 ### 🤖 Autopilot
 
 Ah, got it — "pack" = the agreement (the contract papers), not the cacao pouch. Let me fix the captions and wording in the post to say "agreement."
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4951,11 +4954,13 @@ So this belongs in a **new blog post** about the pilgrimage — the hero's journ
 - The connection to the DAO's philosophy (the pilgrimage, the WHY, 漸卦 the gradual path)
 
 Let me fix this — I'll pull the photo gallery out of the FDA post and instead create a proper pilgrimage post. Let me revert the FDA post change and build the new post.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The revert edit failed because PR #286's changes are on the `blog/fda-post-origin-photos-v2` branch, not on main yet. The main branch still has the original post without the gallery. Let me verify what's actually on main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4963,11 +4968,13 @@ The revert edit failed because PR #286's changes are on the `blog/fda-post-origi
 Confirmed — main is clean (0 photo references). The gallery only exists on PR branches #285 and #286, which were never merged. So I don't need to revert anything on main. PR #285 and #286 just need to be closed/ignored — they were never merged.
 
 Now let me create the proper **Mount Tai pilgrimage post** with the photos. Let me check the blog index first to see where to add it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the blog index structure. Now let me create the Mount Tai pilgrimage post and add it to the index. Let me build the post file with the photos and the dual-language offerings.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5101,4 +5108,89 @@ I'll also update the blog post to say 玉皇頂 (Yuhuangding) — it already ref
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && sed -i "s|Taishang Laojun Temple \\\\u00b7 \\\\u592a\\\\u4e0a\\\\u8001\\\\u541b\\\\u5edf|Yuhuangding \\\\u00b7 Jade Emperor Summi; cd /tmp && python3 - <<'PYEOF' with open('make_temple_pdf2.py', 'r') as f: content = f.read() old = "story.append(Paragraph('Taishang Laojun; cd /tmp && python3 - <<'PYEOF' with open('make_temple_pdf2.py', 'r') as f: content = f.read() old = r"story.append(Paragraph('Taishang Laoju; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] And these are photos we took when we made the offering. The offering was basically an agreement between Elizabeth Wong and myself to collaborate her focus on 文and me on 武
+
+
+### 🤖 Autopilot
+
+Ah — now the whole picture is clear. The offering at 玉皇頂 was a **covenant between Elizabeth Wong and you**:
+
+- **Elizabeth Wong** → 文 (Culture / knowledge / future)
+- **Gary** → 武 (Frontier / guarding / protection)
+
+An agreement made sacred at the summit of Mount Tai — two paths, one covenant. That's why the two offerings were written as a pair: 文開路，武守路. She opens the path of culture; you guard it. That's a profound thing to seal at the highest point of the most sacred mountain in China.
+
+And it also connects to the earlier thread — Elizabeth (Liz) is the one who was going to get a Fork of Sophia. So this covenant has real operational meaning, not just symbolic weight.
+
+Let me update the Mount Tai blog post to tell this story properly — the two inscriptions as a partnership agreement, witnessed at the Jade Emperor Summit:
+
+
+### 🤖 Autopilot
+
+The file isn't on main yet — the post is still on the PR branch. Let me check the open PRs to see its exact state.
+
+
+### 🤖 Autopilot
+
+I see PR #287 (Mount Tai post) and #288 (index) are still open, and #285/#286 (the mistaken FDA post galleries) should be closed. Let me find the branch name for #287 so I can update it with the covenant story.
+
+
+### 🤖 Autopilot
+
+Let me read the current post content from the PR branch so I can update it with the covenant story (Elizabeth Wong = 文, Gary = 武).
+
+
+### 🤖 Autopilot
+
+The post is on the branch. Let me read the remainder, then update it with the covenant story.
+
+
+### 🤖 Autopilot
+
+Let me read the final portion of the post.
+
+
+### 🤖 Autopilot
+
+I have the full post. Now let me update it with the covenant story — the offering was an agreement between Elizabeth Wong (文) and Gary (武) to collaborate. I'll update the intro, the "Two Offerings" section, and the captions.
+
+
+### 🤖 Autopilot
+
+The file only exists on the PR branch, so edits against main have nothing to match. Let me write the full file with the covenant updates incorporated instead.
+
+
+### 🤖 Autopilot
+
+The branch exists remotely with different content. I'll create a fresh branch with the complete updated file instead — that will be a new PR superseding #287.
+
+
+### 🤖 Autopilot
+
+PR #289 is open with the full covenant version of the post. The story now reads:
+
+**The Pilgrimage at Mount Tai** — the offering at 玉皇顶 was a **covenant**:
+- **Elizabeth Wong** carries **文** — culture, knowledge, the future
+- **Gary Teh** carries **武** — the frontier, the guardianship
+- **文開路，武守路** — she opens the road, he guards it
+
+The post now includes:
+1. The three photos (writing, inscription, sealing)
+2. Both offerings in English + Chinese
+3. The covenant explicitly named in the intro, the Two Offerings section, the caption ("Elizabeth Wong's inscription — 文"), and the closing note
+4. The hero's journey / segregation of human and agent framing
+
+The old PRs can be closed:
+- **#287, #288** — superseded by #289 (post + index will need re-adding after merge)
+- **#285, #286** — the mistaken FDA-post galleries, never merged
+
+Want me to merge #289, add it to the index, and clean up the stale PRs?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/pulls/287" | python3 -c "import json,sys; d=json.load(sys.stdin); print
 
