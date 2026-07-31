@@ -5431,21 +5431,25 @@ Go for it. Make sure to have full details context
 ### 🤖 Autopilot
 
 Let me check the handoff registry first (protocol), then gather full details on both profiles before building the briefing.
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff manifest is checked — this dinner briefing isn't a formal handoff plan, so I'll proceed directly. I have full context on 柳云虎 from the Sina/COP30 article. Let me build the branded briefing PDF with both profiles.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the Chinese renders correctly in the briefing.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All Chinese renders correctly. Sending the briefing.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5644,4 +5648,29 @@ Sent! 📄 **Dinner Briefing v3** — the three doors revised against our full c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' with open('/tmp/make_dinner_briefing.py','r') as f: src = f.read() # Find the old three-doors block and repl; cd /tmp && python3 /tmp/make_dinner_briefing.py && ls -la /tmp/dao_dinner_briefing.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can we report myself and Elizabeth Wong spending 30 minutes discussing strategy for the upcoming dinner discussions
+
+
+### 🤖 Autopilot
+
+Let me look up the event format first, then submit.
+
+
+### 🤖 Autopilot
+
+✅ Logged. **CONTRIBUTION EVENT** submitted:
+
+- **Contributors:** Gary Teh, Elizabeth Wong
+- **Amount:** 30 minutes
+- **Description:** Strategy session preparing for the dinner with Liu Yunhu (UN SDG) and Shawn Cao (MUN/Youth Bridge) — 文/武 covenant alignment, the three collaboration doors, and pilgrimage principles at the table
+
+Recorded against your pre-dinner prep. Good luck tonight! 🥂
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
