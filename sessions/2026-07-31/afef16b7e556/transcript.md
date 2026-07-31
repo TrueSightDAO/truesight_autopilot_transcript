@@ -5247,11 +5247,13 @@ Let me build a combined PDF: page 1-2 = the inscriptions (English + Chinese), pa
 ### 🤖 Autopilot
 
 PDF generated. Let me verify the Chinese renders and the photos are embedded.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — 4 pages: page 1 has both offerings in English + Chinese (all rendering correctly), pages 2-4 have the three photos with captions. Sending it.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5493,4 +5495,53 @@ The synthesis is complete: the pilgrimage *was* the act of occupying the corners
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/make_consolidated_pdf_v2.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units im
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can we make sure the formatting of the PDF is aligned with like the usual formatting that we have? The phones kind of look awkward as well in this current PDF. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The photos look awkward and the styling should match the Saffron Monk brand (saffron header band, Helvetica body, cacao headings). Let me rebuild with proper brand styling — saffron band on every page, Helvetica for English, STSong only for the Chinese glyphs, and photos framed smaller with correct aspect ratios.
+
+
+### 🤖 Autopilot
+
+Let me verify the rendering, especially the Chinese in the mixed-font layout.
+
+
+### 🤖 Autopilot
+
+The Chinese renders in the body but the **headings and header band** show "IIII" — because those paragraphs were appended without the `brand()` font wrapper (Helvetica has no CJK glyphs). Let me fix by wrapping every paragraph and drawing the header band's Chinese with the CJK font.
+
+
+### 🤖 Autopilot
+
+Now verify the headers and headings render Chinese correctly.
+
+
+### 🤖 Autopilot
+
+All Chinese now renders correctly — header band (郭嘉十勝十敗), headings (供品祝辭, 玉皇頂, 文, 武, 姤, 道勝義勝治勝度勝謀勝德勝仁勝明勝文勝武勝), and body text. Sending the brand-styled PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **Brand-styled version** — aligned with the Saffron Monk formatting:
+
+- **Saffron header band** on every page with the title + 郭嘉十勝十敗 subtitle
+- **Cacao-brown headings**, Helvetica body for English, STSong for Chinese (mixed-font rendering, no more "IIII" placeholders)
+- **Photos framed at ~92mm** with proper aspect ratios and clean italic captions — no more awkward stretching
+- **Footer** with the mission line + page numbers
+- 8 pages: Cover → Part 1 (Offering + photos) → Part 2 (Roundabout Way) → Part 3 (Ten Corners)
+
+All Chinese verified rendering correctly via extraction — header band, headings, itinerary, offerings, and the ten corners (道勝義勝治勝度勝謀勝德勝仁勝明勝文勝武勝).
+
+Let me know if you want any tweaks — spacing, photo size, or section order.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat > /tmp/make_brand_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- import re from reportlab.lib.pagesizes import A4 from reportlab.lib.units im; cd /tmp && python3 - << 'PYEOF' with open('make_brand_pdf.py','r') as f: src = f.read() # 1) Header band: draw mixed-script text (Helvetica
 
