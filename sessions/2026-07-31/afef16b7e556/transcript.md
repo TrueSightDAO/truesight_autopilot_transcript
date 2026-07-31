@@ -4037,6 +4037,7 @@ You mean the "tension at the heart of the design" section that talks about "runn
 ### 🤖 Autopilot
 
 Let me get the exact text of the "Tension at the Heart of the Design" section to replace it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4667,4 +4668,31 @@ Here are the two inscriptions for the offerings — in English, then in Chinese:
 ---
 
 **文開路，武守路。** One opens the future, the other guards it. 🙏
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] F further the right to the right can generate the PDF that includes both the English and the Chinese for both. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The PDF is generated. Sending it to you now.
+
+
+### 🤖 Autopilot
+
+The PDF is sent! 📄 It includes both offerings with English and Chinese versions:
+
+**供品祝辭 — Temple Offerings**
+
+**文 · Culture / Future**
+- English + Chinese, referencing Hexagram 53 (Development) — the tree growing slowly on the mountain, each person walking their own pilgrimage, ten thousand hectares of rainforest
+
+**武 · Military / Frontier / Guarding**
+- English + Chinese, referencing Hexagram 44 (Coming to Meet) — refusing the "strong maiden" (the offer too good to be true), guarding the pace of development
+
+**文開路，武守路** — One opens the future, the other guards it. 🙏
+
+May the offerings carry well at the temple.
 
