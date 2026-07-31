@@ -5585,3 +5585,63 @@ So the revised three: **Capital & Stage (Liu), Curriculum & Credentials (Cao), a
 
 Before I rebuild the PDF — what's your primary intent for this dinner? Capital access, China entry, talent pipeline, or pure listening? The best doors depend on which one matters most.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Revise with most appropriate 3 doors
+
+
+### 🤖 Autopilot
+
+Revising the doors to the sharpest three given our full context. Let me patch the briefing PDF.
+
+
+### 🤖 Autopilot
+
+The patch applied but I don't see the "PDF written" confirmation. Let me verify the PDF regenerated correctly.
+
+
+### 🤖 Autopilot
+
+PDF regenerated. Let me verify page 5 renders the revised doors correctly.
+
+
+### 🤖 Autopilot
+
+Page 5 starts with the revised Door 1 — "Capital & Stage". Let me verify the full page 5 tail renders correctly.
+
+
+### 🤖 Autopilot
+
+All three revised doors render correctly, including the Chinese closing. Sending the updated briefing.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **Dinner Briefing v3** — the three doors revised against our full context:
+
+**Door 1 — Capital & Stage (for Liu)** — sharper and transactional:
+- Impact-fund introductions (Channel 3)
+- COP30/COP31 presence — we ARE a functioning SDG 15 proof
+- Corporate gifting lane — the revenue angle his corporate network unlocks
+- *Tests:* real doors (names, invites, buyers) or generalities?
+
+**Door 2 — Curriculum & Credentials (for Cao)** — elevated from "teaching" to compounding:
+- Cohort earns **real contributions + lineage credentials** — they write real rules, get merged, hold proof
+- The credential is the retention loop, not the curriculum
+- *Tests:* ready to produce contributors, not students?
+
+**Door 3 — The Open Question (both)** — the pilgrimage at the table:
+- *"We don't know what your network can do for this yet — tell us what you see."*
+- Their answer reveals which lane is real — and who's a pilgrim vs a tourist
+
+**The China Lane stays in your pocket** until they earn it. Every door maps to a corner we hold — ledger, context layer, fork mechanism. 文開路，武守路.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → patched three-doors block + regenerated PDF (5 pages, verified Chinese rendering)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' with open('/tmp/make_dinner_briefing.py','r') as f: src = f.read() # Find the old three-doors block and repl; cd /tmp && python3 /tmp/make_dinner_briefing.py && ls -la /tmp/dao_dinner_briefing.pdf
+
