@@ -5236,16 +5236,19 @@ I have the Reversi paper. The key strategic framework from Kevin Lu's paper:
 4. **Edge pieces compound** — once you control a corner and the adjacent edge, those discs are locked in too. Corner + edge = compounding control.
 
 Now let me consolidate everything into one PDF: the temple offering (文/武 covenant) + The Roundabout Way (Liz pilgrimage) + this Reversi corner-position framework as the strategic layer. Let me build it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the Chinese renders and the photos are embedded.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The consolidated PDF is verified — 7 pages, all Chinese rendering correctly, photos embedded. Sending it.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5422,4 +5425,69 @@ Anything else to adjust?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - << 'PYEOF' with open('make_brand_pdf.py','r') as f: src = f.read() old = """ ('北京 白云观 · Beijing Baiyun Temple', 'White
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can we add the game theory image I shared with you into the PDF?
+
+
+### 🤖 Autopilot
+
+Let me add the Reversi game theory image to Part 3 (The Corner Positions), where it belongs — the board game metaphor anchors the corner strategy.
+
+
+### 🤖 Autopilot
+
+The assertion failed — the search string with `\u2019` escape didn't match. Let me check the actual content around Part 3.
+
+
+### 🤖 Autopilot
+
+The file uses `\u2014` (escaped) not the literal `—` character. Let me match against the actual file content.
+
+
+### 🤖 Autopilot
+
+Let me verify the image is embedded and the Chinese still renders.
+
+
+### 🤖 Autopilot
+
+Let me confirm the Reversi image caption is on the Part 3 page.
+
+
+### 🤖 Autopilot
+
+Let me check the Part 3 pages specifically for the Reversi caption.
+
+
+### 🤖 Autopilot
+
+Page 7 (Part 3) is where the Reversi image should be. Let me check that page.
+
+
+### 🤖 Autopilot
+
+Confirmed — the Reversi image caption is on page 7 right after the Part 3 intro, before the ten corners. The image is embedded (the caption appears; images don't appear in text extraction but the flow is correct). Sending the updated PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 The Reversi game theory image is now embedded in **Part 3 — The Corner Positions**, right after the Guo Jia intro and before the ten corners, with the caption:
+
+> *"The game theory of Reversi — Kevin Lu, Duke Math. The corners are the unflippable prize; the winning move is to take the fewest pieces, not the most."*
+
+The visual now bridges the two frameworks — Guo Jia's ten dimensions and the Reversi corner strategy are one argument: hold the corners, refuse the X-squares, take few pieces, let the board come to you.
+
+The full 8-page document now has all the pieces:
+- Part 1: The offering at 玉皇頂 (with 3 photos)
+- Part 2: The roundabout way (11-stop itinerary including 故宫 + 天坛)
+- Part 3: The corner positions (Guo Jia + Reversi image)
+
+Anything else to adjust?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ls -la /tmp/tg_attachments/b850db2a7f8d4655b44d1647ef492e46.jpg 2>/dev/null; echo "---"; cd /tmp && python3 - << 'PYEOF' with open('make_bra; cd /tmp && grep -n "Part 3 — The Corner Positions" make_brand_pdf.py | head; echo "---"; sed -n "$(grep -n 'Part 3 — The Corner Positions' m; cd /tmp && python3 - << 'PYEOF' with open('make_brand_pdf.py','r') as f: src = f.read() anchor = "P('Guo Jia, Cao Cao\\u2019s strategist (c.
 
