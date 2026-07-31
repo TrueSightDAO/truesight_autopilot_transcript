@@ -5296,6 +5296,7 @@ Page 7 (Part 3) is where the Reversi image should be. Let me check that page.
 ### 🤖 Autopilot
 
 Confirmed — the Reversi image caption is on page 7 right after the Part 3 intro, before the ten corners. The image is embedded (the caption appears; images don't appear in text extraction but the flow is correct). Sending the updated PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5330,21 +5331,25 @@ https://baike.baidu.com/item/%E6%9F%B3%E4%BA%91%E8%99%8E/59181707
 ### 🤖 Autopilot
 
 Let me look up this profile before giving you thoughts on tomorrow's dinner.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Baidu Baike blocked the direct extract. Let me search for the name instead.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Baidu Baike page exists but returned only the table of contents (人物经历 / 媒体报道) without body content. The other results were unrelated (柳云龙 the actor, 马云). Let me try to get the actual content another way.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have a good picture now. Let me get a bit more detail from the Sina article about his recent stance.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5554,4 +5559,29 @@ Full set: Cover → Liu profile → Cao profile → The Pairing + strategy → T
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && cat >> /dev/null << 'PYEOF' # Append three-doors page to the existing briefing script by editing it PYEOF python3 - << 'PYEOF' wi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Are you sure these are the best 3 doors based on our context so far?
+
+
+### 🤖 Autopilot
+
+Honest answer: they're good, but not the *best* given everything we actually hold. Let me re-examine against our full context — the white-label channel, the COP30 angle, the Liz covenant, the corner positions — and sharpen them.
+
+**Door 1 was too soft.** "A case study for his ESG network" is passive. The sharper version ties to concrete asks, in order of value:
+- **Impact-capital introductions** (Capital Channel 3 in the legal proposal — his explicit thesis is ESG capital going mainstream)
+- **COP30/COP31 presence** — he cited the Amazon protests at COP30 himself. The DAO IS a functioning SDG 15 proof with a transparent ledger. That's an event-stage story, not just a case study
+- **Corporate gifting as the revenue angle** — his network includes corporations; the white-label gifting lane (agroverse_shop Phase 2) is the concrete, transactional door that makes the ESG story *pay*
+
+**Door 2 (Curriculum) is the most differentiated and stays** — but it should connect to the credentialing/lineage layer, not just "teaching." Youth Bridge cohort → they earn real contributions → lineage credentials → they become contributors, not students. That's the compounding loop.
+
+**Door 3 (China Lane) is real but premature for a first dinner** — it's the covenant with Elizabeth. Using it at this table spends the covenant's currency before it's built. Better: keep it as the *horizon* — mention the mission direction once, let the guests bring it back if it resonates. If they raise China themselves, that's the signal.
+
+**And I'd add a Door 4, the quiet one:** *"We don't know what your network can do for this yet — tell us what you see."* That's not a door, it's the door-test — it reveals which door *they* want to walk through. The pilgrimage principle: let them choose, don't push.
+
+So the revised three: **Capital & Stage (Liu), Curriculum & Credentials (Cao), and the open question.** The China Lane stays in your pocket until they earn it.
+
+Before I rebuild the PDF — what's your primary intent for this dinner? Capital access, China entry, talent pipeline, or pure listening? The best doors depend on which one matters most.
 
