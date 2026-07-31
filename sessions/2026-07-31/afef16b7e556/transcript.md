@@ -4723,26 +4723,31 @@ Good call — let me verify the Chinese actually rendered. The PDF generator use
 ### 🤖 Autopilot
 
 Confirmed — the Chinese characters did **not** render. They show up as "IIIIIII" placeholders because Helvetica (the PDF generator's font) has no CJK glyphs. I need to regenerate with a Chinese-capable font. Let me use reportlab's built-in CJK font instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reportlab with STSong-Light (a proper CJK CID font) is available. Let me regenerate the PDF with that font for the Chinese sections.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me verify the Chinese renders correctly by extracting the text back out.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Almost there — the body Chinese now renders correctly (願文化如樹…). But the **title and headers** still show "IIII" because they use Helvetica, which has no CJK glyphs. Let me fix those to use the CJK font too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now verify the full text extraction — title, headers, and body should all show Chinese correctly.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4757,6 +4762,7 @@ All Chinese characters are now rendering correctly:
 - ✅ Closing: 文開路，武守路
 
 Now sending the corrected PDF to you.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4784,6 +4790,16 @@ This was where we signed the pack
 - Type: Image (OCR confidence: 0.0%, quality: poor)
 
 *(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4880,4 +4896,25 @@ Want me to merge and promote to production?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html | grep
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] By pack I meant agreement
+
+
+### 🤖 Autopilot
+
+Ah, got it — "pack" = the agreement (the contract papers), not the cacao pouch. Let me fix the captions and wording in the post to say "agreement."
+
+
+### 🤖 Autopilot
+
+Fixed — PR #286 now uses "agreement" instead of "pack." The three photos are captioned:
+
+1. **Where the agreement was signed** — at origin, with the farmers
+2. **The agreement** — the signed contract with the farmers
+3. **Sealing the agreement** — the deal is done
+
+The old PR #285 can be closed since #286 supersedes it. Want me to merge #286 and promote to production?
 
