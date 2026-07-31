@@ -5292,16 +5292,19 @@ The framework is beautiful: the pilgrimage *was* the act of refusing the X-squar
 Beautiful synthesis — the Guo Jia 十勝十敗 (Ten Victories, Ten Defeats) as the DAO's corner positions. It's the perfect frame: Guo Jia's whole argument was that victory is won *before* battle, in the institutional dimensions — and only one of the ten is actually military. Those are the unflippable corners.
 
 And it ties the pilgrimage together — each stop was a corner being occupied. Let me regenerate the consolidated PDF with Part 3 rebuilt on the Guo Jia framework.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the Chinese and structure render correctly.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — 8 pages, all Chinese rendering correctly (郭嘉十勝十敗, 道勝義勝治勝度勝謀勝德勝仁勝明勝文勝武勝, all itinerary stops, both offerings). Sending it.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5338,21 +5341,25 @@ The synthesis is complete: the pilgrimage *was* the act of occupying the corners
 ### 🤖 Autopilot
 
 The photos look awkward and the styling should match the Saffron Monk brand (saffron header band, Helvetica body, cacao headings). Let me rebuild with proper brand styling — saffron band on every page, Helvetica for English, STSong only for the Chinese glyphs, and photos framed smaller with correct aspect ratios.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the rendering, especially the Chinese in the mixed-font layout.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Chinese renders in the body but the **headings and header band** show "IIII" — because those paragraphs were appended without the `brand()` font wrapper (Helvetica has no CJK glyphs). Let me fix by wrapping every paragraph and drawing the header band's Chinese with the CJK font.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now verify the headers and headings render Chinese correctly.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5490,4 +5497,58 @@ Anything else to adjust?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /tmp/tg_attachments/b850db2a7f8d4655b44d1647ef492e46.jpg 2>/dev/null; echo "---"; cd /tmp && python3 - << 'PYEOF' with open('make_bra; cd /tmp && grep -n "Part 3 — The Corner Positions" make_brand_pdf.py | head; echo "---"; sed -n "$(grep -n 'Part 3 — The Corner Positions' m; cd /tmp && python3 - << 'PYEOF' with open('make_brand_pdf.py','r') as f: src = f.read() anchor = "P('Guo Jia, Cao Cao\\u2019s strategist (c.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Tomorrow meeting with this profile for dinner 
+
+Thoughts 
+
+https://baike.baidu.com/item/%E6%9F%B3%E4%BA%91%E8%99%8E/59181707
+
+
+### 🤖 Autopilot
+
+Let me look up this profile before giving you thoughts on tomorrow's dinner.
+
+
+### 🤖 Autopilot
+
+Baidu Baike blocked the direct extract. Let me search for the name instead.
+
+
+### 🤖 Autopilot
+
+The Baidu Baike page exists but returned only the table of contents (人物经历 / 媒体报道) without body content. The other results were unrelated (柳云龙 the actor, 马云). Let me try to get the actual content another way.
+
+
+### 🤖 Autopilot
+
+I have a good picture now. Let me get a bit more detail from the Sina article about his recent stance.
+
+
+### 🤖 Autopilot
+
+Here's what I found on 柳云虎 (Liu Yunhu) — useful context for tomorrow's dinner:
+
+**Profile:**
+- Chief Representative, 联合国可持续发展管理学院 (UN Academy of Sustainable Development Management) and Director of the Working Committee for the UN SDG Global Cooperation Project
+- Active in CSR forums, sustainability summits, zero-carbon conferences
+- Recent keynote themes: climate crisis, biodiversity loss, ESG capital flows, green economy, circular economy, fair trade, technology sharing, education as the key to closing the digital divide
+
+**The strong alignment with TrueSight:**
+1. He explicitly cited **COP30 in Brazil** — Amazon indigenous communities demanding voice in forest governance. That is *exactly* your arena: 10,000 hectares of Amazon rainforest restoration, 1 bag = 1 tree.
+2. His thesis: ESG investment is becoming mainstream and capital is tilting toward sustainable fields — that's your Channel 3 (impact funds) in the legal structuring proposal.
+3. Fair trade, farmer-first economics — your consignment model where farmers get paid before sale.
+4. "Technology sharing will become an inevitability" — your forkable context repos are literally that.
+
+**One honest flag:** The "UN Academy of Sustainable Development Management" is a non-official UN body — it's an independent organization using a UN-adjacent name (common pattern in this space). That doesn't diminish the dinner's value — but calibrate expectations on what institutional weight they actually carry, and verify what "global cooperation project" can concretely do for you.
+
+**Dinner angles worth testing:**
+- Ask what *specific* SDG 15 (life on land) / rainforest projects they can connect you to
+- Test whether their network can reach impact funds or Amazon stakeholders you can't
+- The pilgrimage lesson applies: slow, listen, unearth their WHY before revealing your WHAT
+
+The reading from 玉皇頂 — 文開路，武守路 — applies here too. Listen more than you speak. Let them show their hand first. Want me to draft a one-page briefing PDF for the dinner?
 
