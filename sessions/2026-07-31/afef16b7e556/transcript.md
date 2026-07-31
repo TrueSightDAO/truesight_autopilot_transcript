@@ -4683,7 +4683,13 @@ Here are the two inscriptions for the offerings — in English, then in Chinese:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The PDF is generated. Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4805,4 +4811,21 @@ That's the pack! The Agroverse ceremonial cacao — the physical product that th
 No QR code detected on this one (it may be on the back or the inner pouch), but the pack itself is the proof of the whole journey. Every tree planted, every ledger entry, every FSVP document — it all ends up in that pouch.
 
 Thanks for sharing it. It's a good reminder of what all the context repos and compliance roadmaps are ultimately for.
+
+
+### 🧑 Governor
+
+Sealing of the pack
+
+[Attachment auto-processed: **891bb83f6aee412dac6467b4ad252d31.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+The sealing of the pack — the final step before it enters the chain. That's where the cacao is locked in, ready to travel: from the farm, through FSVP compliance, freight, customs, to the shelf — with the QR code as its passport through every step.
+
+These photos tell the whole story in three frames: the signing, the pack, the seal. That's the physical beginning of every digital trace.
 
