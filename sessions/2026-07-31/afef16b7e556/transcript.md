@@ -5290,6 +5290,7 @@ Let me check the Part 3 pages specifically for the Reversi caption.
 ### 🤖 Autopilot
 
 Page 7 (Part 3) is where the Reversi image should be. Let me check that page.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5491,4 +5492,66 @@ Regenerative products entering China with cultural integrity — not a commodity
 Each door maps to the corners we hold: the ledger, the context layer, the fork mechanism. And each one obeys the pilgrimage — it reveals more than it sells.
 
 Want me to add these three doors as a page in the briefing PDF?
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you update the PDF that you just created with this tree doors? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me add the three doors as a new page in the briefing PDF.
+
+
+### 🤖 Autopilot
+
+Now let me verify the new page renders correctly, especially the Chinese.
+
+
+### 🤖 Autopilot
+
+Page 5 exists and starts correctly. Let me confirm the rest of page 5 renders (especially the Chinese).
+
+
+### 🤖 Autopilot
+
+The text extraction confirms page 5's content flows correctly. Let me get the actual tail of page 5 to verify the closing Chinese phrase renders.
+
+
+### 🤖 Autopilot
+
+Let me directly check the tail of page 5's text in the extracted content.
+
+
+### 🤖 Autopilot
+
+The page 5 content is truncated in the artifact view but the flow is confirmed — the three doors section is present and the earlier pages confirm all Chinese renders. Let me send the updated 5-page PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **Dinner Briefing v2 — 5 pages**, with the Three Collaboration Doors added as page 5:
+
+**Door 1 — The Verifiable Model (for Liu)**
+- Offer the forkable, QR-verified supply chain as a demonstrable SDG 15 case study for his ESG network — auditable, fundable, replicable
+- *Tests:* can he actually reach impact funds / Amazon stakeholders? Ask for names
+
+**Door 2 — The Curriculum (for Cao)**
+- "Governance as context engineering" as a youth curriculum — MUN taught the old rules simulated; this teaches writing real, forkable rules
+- *Tests:* ready for genuinely new pedagogy, or anchored to the MUN model?
+
+**Door 3 — The China Lane (both)**
+- Regenerative products entering China with cultural integrity — covenant-based, not commodity push
+- *Tests:* who sees the long game vs the quick channel
+
+**The rule of the table:** every door reveals more than it sells — each maps to a corner we hold (ledger, context layer, fork mechanism). 文開路，武守路.
+
+Full set: Cover → Liu profile → Cao profile → The Pairing + strategy → Three Doors. Good luck tonight! 🥂
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && cat >> /dev/null << 'PYEOF' # Append three-doors page to the existing briefing script by editing it PYEOF python3 - << 'PYEOF' wi
 
