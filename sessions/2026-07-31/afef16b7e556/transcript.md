@@ -4717,6 +4717,7 @@ May the offerings carry well at the temple.
 ### 🤖 Autopilot
 
 Good call — let me verify the Chinese actually rendered. The PDF generator uses Helvetica which doesn't natively include CJK glyphs, so I need to check.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4828,4 +4829,55 @@ Sealing of the pack
 The sealing of the pack — the final step before it enters the chain. That's where the cacao is locked in, ready to travel: from the farm, through FSVP compliance, freight, customs, to the shelf — with the QR code as its passport through every step.
 
 These photos tell the whole story in three frames: the signing, the pack, the seal. That's the physical beginning of every digital trace.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, use the location in the PDF that I shared with you, use the image and then also include all the images I shared with you of us signing the pack and stuff. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me gather what I need — the images are in /tmp/tg_attachments/, and I'll anchor the post to the Indonesia location from the PDFs you shared (Jakarta origin, Jessey/Conservana). Let me check the blog post template first and upload the photos.
+
+
+### 🤖 Autopilot
+
+I've uploaded all three photos. Now let me see the rest of the post so I know where to add a photo section.
+
+
+### 🤖 Autopilot
+
+Let me see the final portion of the post.
+
+
+### 🤖 Autopilot
+
+Let me see the final few lines.
+
+
+### 🤖 Autopilot
+
+Let me read the final portion of the post to see the closing.
+
+
+### 🤖 Autopilot
+
+The photos are uploaded and I have the post structure. Let me check how the existing blog post references images so I match the convention.
+
+
+### 🤖 Autopilot
+
+I have the image convention from the other post. Now let me add a photo gallery section to the FDA post — placing the three photos (signing, pack, sealing) with captions tied to the origin location from the PDFs.
+
+
+### 🤖 Autopilot
+
+PR #285 is open with the photo gallery added. The three photos (signing location, the pack, sealing) are now embedded in the post right after the intro, with a note tying them to the Jakarta/Indonesia origin lane from the PDFs.
+
+Want me to merge and promote to production?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/agentic-ai-and-the-common-law-tradition.html | grep
 
