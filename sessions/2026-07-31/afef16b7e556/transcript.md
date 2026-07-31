@@ -4980,6 +4980,7 @@ I have the blog index structure. Now let me create the Mount Tai pilgrimage post
 ### 🤖 Autopilot
 
 Post created — PR #287. Now let me add it to the blog index.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5012,16 +5013,19 @@ Want me to merge #287 + #288 and promote to production?
 ### 🤖 Autopilot
 
 Let me check if the verified PDF is still on disk.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The verified PDF is still on disk. Let me confirm the Chinese renders correctly before sending.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF is verified — all Chinese characters render correctly (供品祝辭, 太上老君廟, 文, 武, and all four lines of each offering). Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5054,21 +5058,25 @@ All Chinese glyphs confirmed rendering correctly via text extraction before send
 ### 🤖 Autopilot
 
 Ah, got it — the offering was made at **玉皇頂 (Yuhuangding)**, the Jade Emperor Summit on Mount Tai. The PDF currently says "Taishang Laojun Temple 太上老君廟" — let me correct it to 玉皇頂.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the script. Let me update the subtitle to 玉皇頂 (Yuhuangding, Jade Emperor Summit) instead of 太上老君廟, regenerate, and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sed didn't match. Let me edit it directly with Python.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The patch failed because of escape sequence handling — the file contains literal `\u00b7` text, but my search string had it interpreted as the actual character. Let me use raw strings.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5193,4 +5201,55 @@ Want me to merge #289, add it to the index, and clean up the stale PRs?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/pulls/287" | python3 -c "import json,sys; d=json.load(sys.stdin); print
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Make sure to include the photos I just shared today in the pdf file
+
+
+### 🤖 Autopilot
+
+The photos are in /tmp/tg_attachments/. Let me locate them and build a combined PDF — the offering inscriptions plus the three photos.
+
+
+### 🤖 Autopilot
+
+Let me find the exact jpg files from today's uploads (the three photos: signing, pack/agreement, sealing).
+
+
+### 🤖 Autopilot
+
+Found them — the three photos from today (Jul 31 04:37):
+- `f0ffaa6d30cb45379c4dcff6df2bf307.jpg` — where we signed (the agreement/offering)
+- `d182f18480c7462ba50ad9087fddbe2d.jpg` — the offering itself
+- `891bb83f6aee412dac6467b4ad252d31.jpg` — sealing the offering
+
+Let me build a combined PDF: page 1-2 = the inscriptions (English + Chinese), page 3 = photos. I'll extend the reportlab script to include the images.
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me verify the Chinese renders and the photos are embedded.
+
+
+### 🤖 Autopilot
+
+Verified — 4 pages: page 1 has both offerings in English + Chinese (all rendering correctly), pages 2-4 have the three photos with captions. Sending it.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **4-page PDF**:
+
+- **Page 1** — Both offerings (文 / 武) in English + Chinese, at 玉皇頂 (Yuhuangding), Jade Emperor Summit
+- **Page 2** — Photo 1: The signing of the offering at the summit
+- **Page 3** — Photo 2: The offering, written by hand
+- **Page 4** — Photo 3: Sealing the offering
+
+All Chinese glyphs verified rendering correctly via text extraction before sending. The photos from today's ceremony are now part of the permanent record. 🙏
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ls -la /tmp/tg_attachments/ 2>/dev/null | head -30; echo "---"; find /tmp/tg_attachments -name "*.jpg" -newer /tmp/temple_offerings_inscript; ls -lat /tmp/tg_attachments/*.jpg 2>/dev/null | head -10; cat > /tmp/make_temple_pdf3.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm
 
