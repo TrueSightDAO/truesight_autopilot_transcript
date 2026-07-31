@@ -4823,6 +4823,11 @@ Photo of our pack
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: scan_qr_from_file, ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 That's the pack! The Agroverse ceremonial cacao — the physical product that the entire chain exists to move: from the farmer's hands, through the DAO's ledger, to someone who scans the QR code and knows exactly where it came from.
 
 No QR code detected on this one (it may be on the back or the inner pouch), but the pack itself is the proof of the whole journey. Every tree planted, every ledger entry, every FSVP document — it all ends up in that pouch.
@@ -4917,4 +4922,67 @@ Fixed — PR #286 now uses "agreement" instead of "pack." The three photos are c
 3. **Sealing the agreement** — the deal is done
 
 The old PR #285 can be closed since #286 supersedes it. Want me to merge #286 and promote to production?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] By agreement I meant our written offering to the temple at 玉皇顶on summit of 
+Mount taishan
+
+
+### 🤖 Autopilot
+
+Ah, now I fully understand — my apologies for the misread. The "pack" is the **written offering** — the 供品祝辭 (two inscriptions, 文 and 武) I drafted earlier — signed and sealed at **玉皇顶 (Yuhuangding, the Jade Emperor Summit)**, the highest point of **Mount Tai (泰山)**. The photos document the offering ceremony itself.
+
+So this belongs in a **new blog post** about the pilgrimage — the hero's journey theme we discussed — anchored at Mount Tai's summit, with:
+- The location (玉皇顶, Taishang Laojun temple)
+- The two offerings in English + Chinese (文: culture/future, 武: military/guardian)
+- The three photos: signing the offering, the offering itself, sealing it
+- The connection to the DAO's philosophy (the pilgrimage, the WHY, 漸卦 the gradual path)
+
+Let me fix this — I'll pull the photo gallery out of the FDA post and instead create a proper pilgrimage post. Let me revert the FDA post change and build the new post.
+
+
+### 🤖 Autopilot
+
+The revert edit failed because PR #286's changes are on the `blog/fda-post-origin-photos-v2` branch, not on main yet. The main branch still has the original post without the gallery. Let me verify what's actually on main.
+
+
+### 🤖 Autopilot
+
+Confirmed — main is clean (0 photo references). The gallery only exists on PR branches #285 and #286, which were never merged. So I don't need to revert anything on main. PR #285 and #286 just need to be closed/ignored — they were never merged.
+
+Now let me create the proper **Mount Tai pilgrimage post** with the photos. Let me check the blog index first to see where to add it.
+
+
+### 🤖 Autopilot
+
+I have the blog index structure. Now let me create the Mount Tai pilgrimage post and add it to the index. Let me build the post file with the photos and the dual-language offerings.
+
+
+### 🤖 Autopilot
+
+Post created — PR #287. Now let me add it to the blog index.
+
+
+### 🤖 Autopilot
+
+I now understand the full picture — my apologies for the earlier misreads. The "pack" was the **written offering** (供品祝辭) at **玉皇顶 on Mount Tai**, not a cacao agreement. Here's what I've done:
+
+**PR #287** — The new post: *"The Pilgrimage at Mount Tai"* — documenting the offering ceremony with all three photos:
+1. Writing the offering at the summit
+2. The offering itself — the two inscriptions (文/武) in English + Chinese
+3. Sealing the offering
+
+It ties in the oracle (53 Development → 44 Coming to Meet), the hero's journey as a human thing, and the segregation between human and agent.
+
+**PR #288** — Added it to the blog index.
+
+**PRs #285/#286** — The gallery mistakenly added to the FDA post: those were never merged (main is clean), so they can simply be closed.
+
+Want me to merge #287 + #288 and promote to production?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-fda-agent-went-out-of-business.html | grep -c "
 
