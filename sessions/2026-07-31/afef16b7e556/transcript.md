@@ -4871,21 +4871,25 @@ Let me gather what I need — the images are in /tmp/tg_attachments/, and I'll a
 ### 🤖 Autopilot
 
 I've uploaded all three photos. Now let me see the rest of the post so I know where to add a photo section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the final portion of the post.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the final few lines.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final portion of the post to see the closing.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5033,4 +5037,68 @@ All Chinese glyphs confirmed rendering correctly via text extraction before send
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/*temple*.pdf /tmp/*offering*.pdf 2>/dev/null; ls -la /tmp/make_temple_pdf*.py 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] I meant the temple offering was made a 玉皇顶
+
+
+### 🤖 Autopilot
+
+Ah, got it — the offering was made at **玉皇頂 (Yuhuangding)**, the Jade Emperor Summit on Mount Tai. The PDF currently says "Taishang Laojun Temple 太上老君廟" — let me correct it to 玉皇頂.
+
+
+### 🤖 Autopilot
+
+I can see the script. Let me update the subtitle to 玉皇頂 (Yuhuangding, Jade Emperor Summit) instead of 太上老君廟, regenerate, and verify.
+
+
+### 🤖 Autopilot
+
+The sed didn't match. Let me edit it directly with Python.
+
+
+### 🤖 Autopilot
+
+The patch failed because of escape sequence handling — the file contains literal `\u00b7` text, but my search string had it interpreted as the actual character. Let me use raw strings.
+
+
+### 🤖 Autopilot
+
+The escapes are being displayed but the file may contain actual Unicode. Let me check the raw bytes and patch robustly.
+
+
+### 🤖 Autopilot
+
+The file has actual UTF-8 bytes (`345 244 252` = 太, etc.), not escaped `\u` sequences. Let me patch by matching the actual Unicode characters.
+
+
+### 🤖 Autopilot
+
+Patched and regenerated. Now let me verify the Chinese renders correctly, especially 玉皇頂.
+
+
+### 🤖 Autopilot
+
+Verified — 玉皇頂 (Yuhuangding) now renders correctly. Sending the updated PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 Updated PDF with the correct location:
+
+**Temple Offerings — 供品祝辭**
+**Yuhuangding · Jade Emperor Summit · 玉皇頂** (Mount Tai)
+
+Both offerings in English + Chinese, verified rendering correctly:
+- **Offering 1 — 文 · Culture / Future**
+- **Offering 2 — 武 · Military / Frontier / Guarding**
+- Closing: **文開路，武守路**
+
+I'll also update the blog post to say 玉皇頂 (Yuhuangding) — it already references it correctly in the body, but let me double-check the subtitle in the post when we merge the PRs. 🙏
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && sed -i "s|Taishang Laojun Temple \\\\u00b7 \\\\u592a\\\\u4e0a\\\\u8001\\\\u541b\\\\u5edf|Yuhuangding \\\\u00b7 Jade Emperor Summi; cd /tmp && python3 - <<'PYEOF' with open('make_temple_pdf2.py', 'r') as f: content = f.read() old = "story.append(Paragraph('Taishang Laojun; cd /tmp && python3 - <<'PYEOF' with open('make_temple_pdf2.py', 'r') as f: content = f.read() old = r"story.append(Paragraph('Taishang Laoju; …(+2 more)
 
