@@ -2737,6 +2737,12 @@ Will keep you posted.
 ### 🤖 Autopilot
 
 Good call — this is exactly the kind of recurring blocker that belongs in the SOP. Matheus's message actually reveals the **real root cause** (expired e-CNPJ + "Inapto" CNPJ status from unpaid invoices) which is different from our earlier assumption (missing CNAE). Let me read the current checklist and update it.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2843,4 +2849,38 @@ Here's the current state — three PRs on this topic:
 This way the SOP captures the full lesson: it was never one thing — the CNAE gap AND cert expiry AND unpaid invoices all compounded.
 
 Want me to merge #723 + #722? (You'll need to close #721 manually, or I can leave it noted as superseded.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Merge it and generate a pdf from that
+
+
+### 🤖 Autopilot
+
+On it — merging #723 and #722, then generating the PDF from the updated checklist.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged both PRs:
+
+- **PR #723** — `docs: all 3 concurrent NF-e blockers (CNAE + cert + Inapto) + pre-flight check` ✅ merged (sha: b03b412)
+- **PR #722** — `docs: add CNPJ Inapto checks to Appendix A prerequisites (part 2)` ✅ merged (sha: 227b0b0)
+
+**What changed in the SOP** (`brazil/BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md`):
+- Phase 0 NF-e blocker now documents **all three concurrent root causes**: missing commerce CNAE, expired e-CNPJ cert, CNPJ "Inapto" status
+- Added a **pre-flight check** for all future Brazil shipments: verify cert validity + CNPJ not "Inapto" *before* booking cargo
+- Appendix A.1.1 prerequisites table now includes cert validity + CNPJ status rows
+
+**RESUME HERE →** Generate the PDF version of the updated checklist and save it to `agentic_ai_context/exports/` (or wherever the existing preflight PDF lives — there's a `scripts/build_brazil_sf_freight_preflight_pdf.py` in the repo that likely does this; run/update it to reflect the new blocker content), then report the URL.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #723 on agentic_ai_context merged successfully (sha: b03b412a2c64b8d60d662c511bc3bbd77e5f1833). Pull Request successfully merged; ✅ PR #722 on agentic_ai_context merged successfully (sha: 227b0b075538bae455ffa24e66d04b06a7189a66). Pull Request successfully merged
 
