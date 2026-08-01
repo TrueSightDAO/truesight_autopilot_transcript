@@ -2436,7 +2436,23 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good — I've extracted the full content. This is Ling's detailed **CIFER system step-by-step guide** (the actual system navigation). Let me persist it to the transcript.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2482,6 +2498,31 @@ Our guide is missing the **CIFER system navigation detail** — Ling's doc has t
 Please inspect the attached file.
 
 [Attachment saved at /tmp/tg_attachments/bf68febe541e4cbf918afe0edcb5d257.docx — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2752,4 +2793,54 @@ Both PRs are open:
 3. **It's a pre-flight check now** — future shipments should verify certificate validity + CNPJ status *before* booking anything, not discover it mid-shipment.
 
 Want me to merge both PRs?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] His company was also originally missing the CNAE too
+
+
+### 🤖 Autopilot
+
+Good point — both are true, they're **concurrent blockers**, not either/or. Black King had (1) missing commerce CNAE as originally documented, AND (2) expired e-CNPJ, AND (3) "Inapto" status. My PR edit mentioned the CNAE but buried it. Let me fix the wording so all three are listed as concurrent root causes.
+
+
+### 🤖 Autopilot
+
+The search failed because PR #721's changes are on its own branch, not main yet. Let me make the refinement against main's original text — this will be one clean PR that supersedes #721 with the correct three-concurrent-blockers framing.
+
+
+### 🤖 Autopilot
+
+PR #723 opened — this is the corrected one with all **three concurrent blockers** framed properly. It supersedes #721 (which had the wrong "replacement" framing).
+
+Now let me close #721 since it's superseded, and add the Appendix A prerequisite rows to this same PR. Actually — let me first check the state of #722 (the appendix edit). The cleanest path: close #721, keep #722 for the appendix, and merge #723 + #722 together.
+
+Let me close #721 to avoid confusion:
+
+
+### 🤖 Autopilot
+
+Here's the current state — three PRs on this topic:
+
+| PR | What it does | Status |
+|----|-------------|--------|
+| **#723** | ✅ **Corrected**: all 3 concurrent blockers (CNAE + cert expiry + Inapto) + pre-flight check | ⭐ Use this one |
+| #722 | Appendix A prerequisites table — adds cert validity + CNPJ status rows | Complementary |
+| #721 | Earlier version with "replacement" framing (superseded by #723) | Stale — should close |
+
+**My recommendation:** Merge **#723 + #722**, close #721 (it's superseded — #723 has the same Phase 0 section with the corrected three-blocker framing you asked for).
+
+**Summary of what goes into the SOP:**
+
+> **Black King cannot issue NF-e — THREE concurrent root causes:**
+> 1. **Missing commerce CNAE** — only service CNAEs (82.30-0-01) → no IE → no NF-e credentialing (original assumption, still valid)
+> 2. **e-CNPJ certificate EXPIRED early June 2026** — blocks all gov portals
+> 3. **CNPJ flagged "Inapto"** — unpaid invoices; clearance expected Fri→Mon after settling
+>
+> **New pre-flight check for ALL future Brazil shipments:** verify (a) cert validity, (b) CNPJ not "Inapto" *before* booking cargo.
+
+This way the SOP captures the full lesson: it was never one thing — the CNAE gap AND cert expiry AND unpaid invoices all compounded.
+
+Want me to merge #723 + #722? (You'll need to close #721 manually, or I can leave it noted as superseded.)
 
