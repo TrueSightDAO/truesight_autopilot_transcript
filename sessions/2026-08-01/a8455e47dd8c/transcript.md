@@ -2765,11 +2765,18 @@ The file path isn't right. Let me search the repo for the actual path.
 ### 🤖 Autopilot
 
 The file is at `brazil/BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md`. Let me read it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the file, especially the Appendix sections.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2780,16 +2787,19 @@ I've now read the full SOP. Matheus's message reveals the **real blocker** — w
 2. **CNPJ flagged "Inapto"** (ineligible) by Receita Federal due to unpaid invoices from the last year
 
 This is exactly the kind of recurring blocker that belongs in the SOP. Let me update it — adding these as known blockers + prerequisites so future shipments check for them first.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to provide the actual edits. Let me make the targeted edits to the file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #721 opened. Let me also add the pre-flight check to the Appendix A prerequisites table and the notes section.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2816,6 +2826,7 @@ Want me to merge both PRs?
 ### 🤖 Autopilot
 
 Good point — both are true, they're **concurrent blockers**, not either/or. Black King had (1) missing commerce CNAE as originally documented, AND (2) expired e-CNPJ, AND (3) "Inapto" status. My PR edit mentioned the CNAE but buried it. Let me fix the wording so all three are listed as concurrent root causes.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2954,4 +2965,51 @@ Done! PDF sent to this thread and saved to the repo.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && pip list 2>/dev/null | grep -iE "markdown|weasyprint" ; python3 -c "import markdown, weasyprint; print('deps ok')" 2>&1 | tail -1; cd /tmp && curl -sL -o brazil_preflight.md "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/brazil/BRAZIL_TO_SF_FREIG; cd /tmp && cat > build_pdf.py << 'PYEOF' import markdown from weasyprint import HTML CSS = """ @page { size: A4; margin: 1.6cm 1.4cm; @botto
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Do a deep web check is my assumption below correct?
+
+By the way, I am working with Vini to get my own Br.Gov identity issued too.
+
+Would you be open to adding me to the Black King account so that in the future I can also log in to Black King’s account as an administrator using my own Br.gov to help handle administrative processes like these when we need to export cacao out of brazil?
+
+
+### 🤖 Autopilot
+
+Let me do deep research on this — gov.br account access for foreigners, and whether a third party can be added as an administrator to a Brazilian company's account.
+
+
+### 🤖 Autopilot
+
+Key facts are emerging. Let me dig deeper on two specifics: whether a foreigner's gov.br can reach the "Ouro" (gold) trust level required for e-CAC, and how the procuração (power of attorney) grant works for CNPJ representation.
+
+
+### 🤖 Autopilot
+
+Yes — your assumption is **essentially correct**, with a few important refinements. Here's the deep-dive verdict:
+
+**✅ The core idea works:**
+- A foreigner **can** get a gov.br account — any foreigner with a Brazilian **CPF** can create one (you're already on that path with Vini — the CPF is the prerequisite)
+- With your own gov.br, you can be granted access to act on Black King's behalf
+
+**⚠️ But it's NOT "add me as an administrator" — the actual mechanism is a Procuração Eletrônica (electronic power of attorney):**
+
+1. **Matheus must grant it** — only Black King's legal representative (Matheus) can initiate the procuração in e-CAC. It's not something you can request on your own; he has to sign it (he can do this via the Receita Federal site, even without a digital certificate)
+2. **Max validity 5 years**, and it's scoped to specific services (can be "Todos"/all, or selective)
+3. **You then log into e-CAC with YOUR OWN gov.br** and use "Alterar perfil de acesso" to switch to acting as Black King — this is exactly how accountants work
+
+**🔑 The level hurdle (important):**
+- Your gov.br account must be **Prata or Ouro** level to access e-CAC services
+- **Ouro** requires an ICP-Brasil digital certificate OR facial biometrics via Brazilian databases (CNH/TSE) — as a foreigner, facial recognition may not match Brazilian records, so the **e-CPF digital certificate** route is the reliable path to Ouro
+- A foreigner's gov.br can reach these levels — it's done all the time, but it takes the cert route
+
+**⚠️ What it does and doesn't cover:**
+- ✅ Covers **federal** services: e-CAC, CNPJ data changes (the CNAE fix!), Receita Federal processes, SISCOMEX-adjacent federal items
+- ⚠️ **SEFAZ-BA (state level)** — IE, NF-e credentialing, and NF-e emission are a **separate state system**. The e-CAC procuração doesn't automatically cover SEFAZ-BA. Bahia has its own access control, and NF-e issuance typically still requires the company's **e-CNPJ certificate**
+
+**Bottom line:** Getting your own CPF + gov.br + procuração from Matheus would let you handle the **federal side** (CNPJ/CNAE fixes, e-CAC processes) yourself — which is a big chunk of what blocked us. The **SEFAZ-BA/NF-e side** would still need the e-CNPJ cert or a separate state-level authorization.
+
+**Practical next step:** Get the CPF → create gov.br → get an ICP-Brasil **e-CPF** certificate (that gets you Ouro) → ask Matheus to grant you a Procuração Eletrônica in e-CAC with "Todos" powers. Want me to draft the email to Matheus requesting the procuração, and add this whole "gov.br access" play to the freighting SOP?
 
