@@ -4252,11 +4252,13 @@ Excellent — **found it!** There's `20241002_cic_report_oscar.pdf` — the CIC 
 ### 🤖 Autopilot
 
 Excellent — Oscar's CIC report shows **excellent** bean quality. Let me get the full picture from all reports, including the coopercabruca v0/v1 reports.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have all 5 CIC reports located. Let me do a final comparison summary of all the bean-profile data.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4365,16 +4367,19 @@ Thanks for the session — the China strategy is in strong shape. Talk soon! �
 ### 🤖 Autopilot
 
 Let me fetch all the matching CIC report PDFs and send them over.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 valid. Let me send them as attachments.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the remaining three.
+[3 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4516,4 +4521,95 @@ Note: The links are to the GitHub blob pages (viewable) — the raw PDFs are als
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → grep -n "4.2 Cost\|4.3 Supply\|Part 4\|4.1 Product\|Raw Material\|h2\|<h3" /tmp/cacao_report_en.html | head -40; sed -n '196,236p' /tmp/cacao_report_en.html; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() anchor = '''<h3>Packaging (Shenzhen \u2; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Hey, regarding the report from the CIC, can we look into it to figure out details that would help and enhance the desirability of the Kakao T from Oskar's form and use these details to extend the report that we generated regarding the channels in China, the PDF report. I remember there are two versions to English and the Chinese, yeah, do both. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me dig into the CIC Oscar report details and check the channels section structure in both HTMLs.
+
+
+### 🤖 Autopilot
+
+I have the full CIC report details. Now let me find the channels section in the document to extend it. Let me look at the remaining structure.
+
+
+### 🤖 Autopilot
+
+Let me find the detailed channels section in both documents.
+
+
+### 🤖 Autopilot
+
+Let me see the full document structure to find where the channels content lives.
+
+
+### 🤖 Autopilot
+
+The document has no dedicated channels section — channel mentions are scattered in the Executive Summary and budget tables. I'll create a proper **Part 9: China Distribution Channels** section that uses the CIC lab evidence as the sales engine, and renumber the old Part 9/10. Let me build the EN section first.
+
+
+### 🤖 Autopilot
+
+EN done. Now the CN version — same section in Chinese.
+
+
+### 🤖 Autopilot
+
+The CN doc has some numbering quirks already. Let me insert the channels section in Chinese before the cultivation section.
+
+
+### 🤖 Autopilot
+
+Both inserted. Now regenerate both PDFs and verify (0 tofu + markers present).
+
+
+### 🤖 Autopilot
+
+PDFs regenerated fine (130KB EN, 604KB CN) — just my verification script had a syntax error. Let me re-run the check properly.
+
+
+### 🤖 Autopilot
+
+Both PDFs verified — 0 tofu, all markers present. EN 18 pages, CN 16 pages. Sending them now.
+
+
+### 🤖 Autopilot
+
+Both updated PDFs are attached above. Here's what was added:
+
+## ✅ New Part 9: "China Distribution Channels — Lab-Verified Provenance as the Sales Engine"
+
+Built from the CIC report (#1704.2024.B) on Oscar's farm — the lab evidence becomes the selling mechanism for every channel:
+
+### 9.0 — What the CIC Report Proves (Desirability Multipliers)
+
+| CIC Finding | Desirability Multiplier | Channel Leverage |
+|---|---|---|
+| **74 beans/100g** (1.36g avg) | Large = fine-cacao class, instantly "premium" | Justifies $50/box in every channel |
+| **69.3% well-fermented** | Proper processing = flavor + TCM "processed herb" narrative | Dr. Ye's TCM framing |
+| **0% mold/insects/germinated/slate** | Flawless cut-test = clean = giftable | Wedding/return-gift market |
+| **Moisture 6.80%** (limit 7.5%) | Stable shelf life, safe sea-freight | Supports COGS via sea route |
+| **190,000 kg single lot** | One-lot QR traceability | Our bean→box chain-of-custody story |
+| **ISO 2451:2014 + CNPJ** | International standard + formal producer | Import compliance ease |
+
+### 9.1–9.6 — Each Channel Uses the Evidence Differently
+1. **Dr. Ye's TCM Network** — "verified medicinal-grade raw material," not commodity chocolate
+2. **Elizabeth's Cousin** — the lab report is the "receipt" proving the price in the gifting market
+3. **Chaoshan Group** — provable scarcity (finite 190t lot, certified) unlocks the monopoly-partnership talk
+4. **UN ESG Events** — "certified quality + certified reforestation" = complete ESG pitch
+5. **Bahia Learning Module** — the report becomes curriculum material (bean count, fermentation, ISO)
+6. **Wedding Market** — certified zero-defect + 嫁妆树 (dowry tree) carbon story
+
+**Verified:** 0 tofu in both (EN 18p / CN 16p), all markers present.
+
+Want me to also upload these to S3/GitHub with fresh links, or update the slide decks to match?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && python3 -c " import fitz d = fitz.open('/tmp/20241002_cic_report_oscar.pdf') print('pages:', d.page_count) for i in range(d.page_; grep -n "h1>\|h2>\|Channel\|channel\|渠道\|go-to-market\|GTM\|Go to Market" /tmp/cacao_report_en.html | head -40; grep -n "<h1>\|<h2>" /tmp/cacao_report_en.html | sed -n '40,80p'; …(+8 more)
 
