@@ -10,96 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=9433] Do you think you could research comparisons of such products in Chinese market?
-
-
-### 🤖 Autopilot
-
-Great question — let me research what similar products already exist in the Chinese market.
-[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Excellent — I found some very relevant data. Let me dig deeper into the specific competitors and their pricing.
-[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have comprehensive data. Let me compile this into a structured comparison.
-[1 tool result(s) compacted: web_extract — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have a clear picture. Here's the competitive landscape:
-
----
-
-## 中国市场同类产品对比分析
-
-### 一、市场规模背景
-
-| 指标 | 数据 |
-|---|---|
-| 2025年中国养生茶饮市场规模 | **642.7亿元**（同比增长25.3%） |
-| 预计2028年 | 突破**千亿元** |
-| 消费者画像 | 25-45岁为主，西南/华东/华南最多 |
-| 消费特征 | 超九成月消费>50元，功能导向（安神助眠、健脾祛湿） |
-
-### 二、直接竞品：可可壳茶产品
-
-目前中国市场**没有本土品牌**做可可壳茶。找到的竞品都是**香港/海外品牌**：
-
-| 品牌 | 产品 | 价格 | 定位 | 渠道 |
-|---|---|---|---|---|
-| **Dedicated Chocolate**（香港） | 可可壳茶 30g | ~HKD 68（未标价） | 精品巧克力品牌延伸 | 官网，香港 |
-| **Rayca's Dancing Tea**（香港） | 可可茶系列（4款） | HKD 12-168 | 获奖茶品牌，可可茶系列 | 官网，香港 |
-| **Hara Teas**（海外） | 可可壳茶 | ~USD 10-15 | 有机健康茶 | 官网 |
-| **Cacao Tea Co.**（美国） | 可可壳茶 | ~USD 12-18 | 纯天然，无咖啡因 | 官网，跨境 |
-| **Conspiracy Chocolate**（海外） | 可可壳茶混合 | ~USD 10 | 巧克力品牌延伸 | 官网 |
-
-**关键发现**：这些产品都**不在中国大陆主流电商平台**（淘宝/天猫/京东）有售。中国大陆消费者要买可可壳茶只能通过代购或跨境。
-
-### 三、间接竞品：养生茶/功能性茶饮
-
-| 品牌 | 产品 | 价格区间 | 定位 | 年销售额 |
-|---|---|---|---|---|
-| **同仁堂** | 养生袋泡茶 | ¥30-80 | 老字号中药品牌 | 龙头 |
-| **忆江南** | 花草茶/养生茶 | ¥20-50 | 大众养生茶 | 头部 |
-| **草木方** | 养生茶 | ¥25-60 | 新式养生茶 | 头部 |
-| **茶里CHALI** | 袋泡茶 | ¥30-80 | 新式袋泡茶 | 年销数亿 |
-| **立顿** | 草本茶系列 | ¥20-40 | 国际品牌 | 稳定 |
-
-### 四、可可壳茶的差异化优势
-
-| 维度 | 现有养生茶 | 可可壳茶 |
-|---|---|---|
-| **原料** | 花草/中药材 | 可可豆外壳（循环经济） |
-| **口感** | 草本味 | **巧克力香气**，天然甜味 |
-| **咖啡因** | 有/无 | **极低**（不含咖啡因，含可可碱） |
-| **抗氧化** | 中等 | **高于绿茶** |
-| **中医定位** | 已有成熟体系 | **空白** — 可建立"温性、补心、安神"新品类 |
-| **竞争** | 红海（同仁堂等已占位） | **蓝海** — 无本土品牌 |
-
-### 五、结论
-
-> **"中国可卡的饮料还没有人做"** — 这个判断完全正确。
-
-现有可可壳茶产品都是**香港或海外品牌**，没有进入中国大陆主流渠道。养生茶市场642亿且年增25%，但可可壳茶这个细分品类**完全空白**。
-
-我们的差异化武器：
-1. **中医理论整合** — 现有可可壳茶品牌都没有做这个
-2. **本土化配方** — 因地制宜（潮汕老陈皮、四川花椒等）
-3. **叶医生的信任背书** — 中医师推荐，减肥号引流
-4. **价格优势** — 香港品牌HKD 58-168，我们可以做到更亲民
-
-Want me to add this competitive analysis to the Chinese PDF and update it?
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=9433] Once done include the comparisons as a table in both the Chinese and English PDF documents as well as the dot-md file. Make sure the PDF characters show up properly, check, make sure. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
@@ -6364,11 +6274,13 @@ Use this image to clock contributions of 2 hours for myself and Elizabeth Wong
 ### 🤖 Autopilot
 
 Let me verify the contribution event format first.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two CONTRIBUTION EVENTS — 2 hours each for Gary Teh and Elizabeth Wong. Submitting both now.
+[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6395,6 +6307,7 @@ Both recorded as CONTRIBUTION EVENTS with the strategy session context (China ma
 ### 🤖 Autopilot
 
 Let me check if "Dusty" or "Advanced Planet" is something already in our context before I respond.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6433,11 +6346,13 @@ TBD channels
 ### 🤖 Autopilot
 
 This is excellent strategic context — thank you for filling in the detail. Let me capture it cleanly so nothing gets lost.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is gold — let me capture all of it in the cross-session backlog so no channel detail gets lost, then file the follow-up entry.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6478,21 +6393,25 @@ The ChaoShan dynamic is fascinating — if they treat cacao like ginseng, our **
 ### 🤖 Autopilot
 
 Let me search for the AGL4 ledger records and the CIC Kakao Innovation Center report.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the AGL4 lab report references. Let me dig into the actual AGL4 ledger records and search for the CIC Kakao Innovation Center specifically.
+[4 tool result(s) compacted: read_context_file, search_code, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look deeper — checking the notarizations repo and the AGL4 ledger itself for any CIC report.
+[4 tool result(s) compacted: search_code, search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a hit — **CIC = Cacao Innovation Center** appears in the Coopercabruca GACC guide. Let me read that and check the AGL4 ledger records.
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -6563,4 +6482,139 @@ I searched the context and repos — **no match for "Moscow" or "Moscou"** in an
 - Or the voice transcription garbled a farm/region name
 
 **Can you confirm what "Moscow" refers to** — the Ilhéus neighborhood, a farm name, or something else? And is this CIC report something you have a copy of (email/Drive), or strictly a ledger item you expect to exist? If it exists in Drive/email, I can hunt it down via Gmail/Drive search.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you go through all the attachments / links in AGL4 ledger Google sheet analyze and return to me list of potential matching ones regarding bean profile
+
+
+### 🤖 Autopilot
+
+Let me find the AGL4 ledger in the Google Sheet. Let me first check what tabs exist in the Main Ledger spreadsheet.
+
+
+### 🤖 Autopilot
+
+The Main Ledger spreadsheet only has "Ledger history" (contributions). The AGL4 ledger with attachments must be elsewhere — likely the **agroverse-inventory** repo or a different spreadsheet. Let me check the inventory repo and search for AGL4 attachment links.
+
+
+### 🤖 Autopilot
+
+Let me read the agroverse-inventory files that reference AGL4 and the LAB_REPORT_TRANSLATION.md.
+
+
+### 🤖 Autopilot
+
+Let me look for the actual AGL4 ledger sheet with attachments — checking the notarizations repo file list and searching for the ledger location.
+
+
+### 🤖 Autopilot
+
+The PDF is binary at the raw level. Let me find the actual AGL4 ledger spreadsheet location and check its attachments.
+
+
+### 🤖 Autopilot
+
+Let me read the Shipment Ledger Listing tab in the Main Ledger to find the AGL4 ledger's spreadsheet URL.
+
+
+### 🤖 Autopilot
+
+The default sheet is "Ledger history" (contributions), not the Shipment Ledger Listing tab. The Shipment Ledger Listing is at gid `483234653`. Let me read that specific tab via its gid.
+
+
+### 🤖 Autopilot
+
+The tool keeps returning the default tab. Let me try addressing the Shipment Ledger Listing tab by name.
+
+
+### 🤖 Autopilot
+
+Found it. AGL4's ledger spreadsheet is at `1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`. Let me read that ledger's tabs, especially looking for attachments/links related to bean profile.
+
+
+### 🤖 Autopilot
+
+The AGL4 ledger Balance tab has limited rows. Let me check the other tabs (Transactions, Unit Costing) for attachments/links about bean profile.
+
+
+### 🤖 Autopilot
+
+Found it! There's a **CIC report** referenced in the AGL4 ledger: `20240925_cic_report_fernando.pdf` in `fda_fsvp/suppliers/black_king/`. This is the Cacao Innovation Center report. Let me pull it and check the rest of the transactions for any other lab/bean-profile attachments.
+
+
+### 🤖 Autopilot
+
+I found the key attachment — a **CIC report** in the AGL4 ledger. Let me download it and extract the text to confirm it's the bean-profile report.
+
+
+### 🤖 Autopilot
+
+This is a **bean profile report** — CIC Relatório de Ensaio #1463.2024.B. Let me extract the full content including the flavor profile and defect analysis.
+
+
+### 🤖 Autopilot
+
+Let me get the remaining pages (2-3) with the flavor/chemical profile.
+
+
+### 🤖 Autopilot
+
+Found it — and it's a genuine **bean profile report**. Here's the full analysis of the AGL4 ledger attachments:
+
+---
+
+## 🎯 CIC Report — Found (Bean Profile)
+
+**`20240925_cic_report_fernando.pdf`** — located at:
+`fda_fsvp/suppliers/black_king/20240925_cic_report_fernando.pdf`
+
+**CIC Relatório de Ensaio #1463.2024.B** (3 pages, Portuguese) — this is the *physical/bean-quality* report, distinct from the heavy-metals reports (LAP-339/340).
+
+| Field | Value |
+|---|---|
+| Sample | **Amêndoas de Cacau In Natura — "Cacau Blend"** |
+| Origin | Itacaré/BA (CEP 45530-000) |
+| Sampled by | Diego Santana (Black King) |
+| Sampled | 17/09/2024 · Received 17/09 · Concluded 19/09 |
+| Client | Fernando Soller Gimenez |
+
+### Key Bean-Profile Results
+
+| Parameter | Result | ISO 2451:2014 limit | Status |
+|---|---|---|---|
+| **Bean count /100g** | **78** | Standard <101 | ✅ Large beans |
+| **Avg bean weight** | **1.28 g** | — | ✅ Good size |
+| **Moisture** | **9.40%** | ≤7.5% | ⚠️ **Exceeds limit** |
+| Slate (ardósia) | 0.0% | ≤3.0% | ✅ |
+| Internal mold | 0.4% | ≤3.0% | ✅ |
+| Insect-damaged | 0.0% | ≤3.0% | ✅ |
+| Germinated | 0.0% | ≤3.0% | ✅ |
+| **Well-fermented** | **42.3%** | 65-100% | ⚠️ Below |
+| **Fermentation index** | **88.6%** | — | ✅ |
+| Defect index | 1.9% | ≤3.0% | ✅ |
+| **pH** | **5.66** | — | Typical |
+| Relative density (water) | 75% | — | — |
+
+**⚠️ Lab's verdict:** *"Sample with one quality criterion (moisture) outside the ISO 2451:2014 limit"* — the beans tested high-moisture (9.4%) and under-fermented (42.3% well-fermented). This was the **Clara's farm / Black King blend** (Itacaré), tied to the AGL4 100kg purchase — **not** Oscar's farm beans.
+
+---
+
+## 📋 Full List of AGL4 Ledger Attachments — Bean-Profile Candidates
+
+| # | Attachment | Type | Bean-Profile Relevance |
+|---|---|---|---|
+| 1 | **`20240925_cic_report_fernando.pdf`** | **CIC bean test (physical)** | ✅ **THE match** — cut test, fermentation, bean count, moisture, pH |
+| 2 | `20240910_lab_test_1.jpeg` / `_2.jpeg` | Lab test receipt ($17.94) | 🔸 Proof of lab submission (no results) |
+| 3 | `20240913_gary_emelin_payment_for_100kg_clara_cacao_almonds.pdf` | Purchase doc | 🔸 Identifies tested batch source |
+| 4 | `20241028_cic_invoice_to_black_king_for_clara_100kg.pdf` | CIC invoice | 🔸 Confirms CIC lab engagement |
+| 5 | `20250714215834_gary_teh_oscar_lab_report.pdf` (notarizations) | **LAP-339 heavy metals** | ❌ Food-safety, not bean profile |
+| 6 | `20250714215751_gary_teh_para_lab_report.pdf` (notarizations) | LAP-340 heavy metals (Paulo) | ❌ Food-safety, not bean profile |
+
+**Bottom line:** The CIC report (`20240925_cic_report_fernando.pdf`) is the bean-profile document you were looking for. Note it covers the **Clara/Black King blend from Itacaré** — if you're looking for a CIC bean test specifically on **Oscar's Criollo beans**, that one isn't in the ledger (Oscar only has the heavy-metals LAP-339 report). Want me to also check the AGL6/AGL8 ledgers for additional CIC bean-profile reports?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -sL -o cic_report_fernando.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/black_king/20240925_c; cd /tmp && python3 -c " import fitz doc = fitz.open('cic_report_fernando.pdf') full = '' for i in range(doc.page_count): full += f'=== PAGE
 
