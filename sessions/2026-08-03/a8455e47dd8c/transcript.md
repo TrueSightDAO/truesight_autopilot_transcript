@@ -3067,3 +3067,47 @@ Here's my read on what Vini is telling you — and it's **correct and consistent
 
 Want me to file this "trader vs producer" split into the Brazil–China GACC guide so the registration plan is unambiguous?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] But CEPOTX and Coopercabruca only produces cacao beans do they still have MAPA?
+
+
+### 🤖 Autopilot
+
+Excellent question — this is the crux. Let me research whether raw cacao bean producers (primary production) actually hold MAPA establishment registration, or whether that's only for processing facilities.
+
+
+### 🤖 Autopilot
+
+Great question — and the research gives a clear answer. Here's the nuance:
+
+**Yes, cacao beans ARE a MAPA-registrable product — but it's not about "growing" them, it's about being the "beneficiador" (beneficiation facility).**
+
+**What MAPA's list actually says:**
+
+- **Amêndoa de cacau** (cocoa almonds/beans), NCM 1801.00.00, **is on MAPA's registrable products list**
+- The registration category is **"BENEFICIADOR DE AMÊNDOA DE CACAU"** — the facility that receives, ferments/dries, sorts, grades, and prepares the beans. That's exactly what Coopercabruca and CEPOTX do
+- Registration level: **"Básico (geral)"** (basic) — it's the lightest tier
+
+**The catch — it's "registro facultativo" (voluntary):**
+
+Under MAPA's rules (IN 9/2019), this registration is **voluntary for domestic operation**. So Coopercabruca and CEPOTX may **not have it today** — because they export to the US (FDA route), which doesn't require a MAPA establishment number the way China does.
+
+**But for China it becomes effectively mandatory:**
+
+- GACC/CIFER asks for the "production approval certificate issued by the competent authority" — that's the MAPA number
+- So before they can complete the CIFER registration, each of them needs to **apply for the MAPA registration as "beneficiador de amêndoa de cacau"** — a self-service SIPEAGRO application, same system we documented for Black King
+
+**Bottom line for Vini's plan:**
+
+| Factory | Produces beans? | Needs MAPA "beneficiador" registration? |
+|---------|:---:|:---:|
+| Coopercabruca | ✅ | ✅ — must apply (may not have it yet) |
+| CEPOTX | ✅ | ✅ — must apply (may not have it yet) |
+| New trading company | ❌ (trader) | ❌ — MAPA sits with the beneficiaries |
+
+So Vini's instinct is right that MAPA belongs to the production enterprise — and the good news is that both factories **qualify** for it. The action item is: **have Coopercabruca and CEPOTX each apply for their MAPA "beneficiador de amêndoa de cacau" registration via SIPEAGRO now**, so it's ready when they submit CIFER.
+
+Want me to add this "MAPA beneficiador" requirement to the GACC guide with the SIPEAGRO application steps?
+
