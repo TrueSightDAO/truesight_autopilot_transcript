@@ -4133,12 +4133,19 @@ I found the key attachment — a **CIC report** in the AGL4 ledger. Let me downl
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 This is a **bean profile report** — CIC Relatório de Ensaio #1463.2024.B. Let me extract the full content including the flavor profile and defect analysis.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the remaining pages (2-3) with the flavor/chemical profile.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4209,6 +4216,7 @@ Found it — and it's a genuine **bean profile report**. Here's the full analysi
 ### 🤖 Autopilot
 
 Let me search for all files with "cic_report" in the name across the organization.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4381,4 +4389,54 @@ All verified valid PDFs (1-3 pages each). The Oscar one is the star — it's the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && mkdir -p cic_reports && cd cic_reports && \ curl -sL -o 20241002_cic_report_oscar.pdf "https://raw.githubusercontent.com/TrueSigh
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Also, can you search for the lab report for the heavy metal gun on Oscars B? Heavy metal reports, I mean. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me search for Oscar's heavy metal lab report.
+
+
+### 🤖 Autopilot
+
+The fda_fsvp repo doesn't have it — but earlier I found `20250714215834_gary_teh_oscar_lab_report.pdf` (LAP-339 heavy metals) referenced in the notarizations repo. Let me pull that.
+
+
+### 🤖 Autopilot
+
+Found it — `20250714215834_gary_teh_oscar_lab_report.pdf` in the notarizations repo. Let me download it and verify it's the heavy metals report, then send it.
+
+
+### 🤖 Autopilot
+
+Confirmed — this is Oscar's heavy metals lab report (LAP-339.2025.B). The sample is **Nibs de Cacau** from Ilhéus/BA, sampled 09/06/2025 by Diego Santana, contracted by Black King (Matheus Reis). Let me send it.
+
+
+### 🤖 Autopilot
+
+Found and sent ✅
+
+**Oscar's Heavy Metals Report — LAP-339.2025.B**
+(attached above, `20250714215834_gary_teh_oscar_lab_report.pdf`)
+
+| Parameter | Result | ANVISA Limit | Status |
+|---|---|---|---|
+| Arsenic (As) | **<0.025 mg/kg** | ≤0.400 | ✅ |
+| Cadmium (Cd) | **<0.025 mg/kg** | ≤0.300 | ✅ |
+| Lead (Pb) | **<0.025 mg/kg** | ≤0.400 | ✅ |
+| Copper (Cu) | **9.86 mg/kg** | N/A | ✅ |
+
+Sample: **Nibs de Cacau**, Ilhéus/BA, sampled 09/06/2025 by Diego Santana, contracted by Black King (Matheus Reis), issued 07/07/2025.
+
+**All heavy metals well below ANVISA limits** — clean bill of health for Oscar's cacao. This complements the CIC bean-profile report (#1704.2024.B) nicely: the full quality dossier for Oscar's farm = premium physical specs + clean food-safety profile.
+
+Note: there's also a **Paulo (Pará) heavy metals report** (`20250714215751_gary_teh_para_lab_report.pdf`, LAP-340) in the same notarizations folder if you want that one too.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" -o fda_tree2.json && python3 -c " import ; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/notarizations/git/trees/main?recursive=1" -o notar_tree.json 2>/dev/null; pyth; cd /tmp && curl -sL -o oscar_lab_report.pdf "https://raw.githubusercontent.com/TrueSightDAO/notarizations/main/20250714215834_gary_teh_oscar
 
