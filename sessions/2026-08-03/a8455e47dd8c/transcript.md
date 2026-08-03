@@ -3225,6 +3225,12 @@ Found it — the file is at `brazil/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`.
 ### 🤖 Autopilot
 
 Let me see the rest of the file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4096,4 +4102,21 @@ Sent! ✅ Email went out from your address to **Adriana Maciel** (`tradutorajura
 - **Introduced** via Paloma (Haus Florianópolis)
 
 I'll let you know when she replies.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] We are reaching out to her to get her help to notarize and translate this to Portuguese so that we can have a Brazilian CMPJ setup that represents this Opurus entity. So we need to get a quotation from her on the cost. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — that's exactly what the email I just sent covers. It asks Adriana for:
+
+1. **Sworn translation (EN→PT)** of the signed Operating Agreement — fee + turnaround
+2. **Notarization / apostille / legalization** help for the document to be used in Brazil — or a recommendation on the right notary
+
+So the purpose is clear in the email: notarize + translate so we can use it to set up the Brazilian CNPJ representing the Próspera entity (TrueSight DAO LLC).
+
+Once she replies with rates, I'll relay the quote to you here so you can decide. Want me to also save a copy of the signed Operating Agreement PDF to the repo while we're at it, so it's filed alongside the other Brazil export docs?
 
