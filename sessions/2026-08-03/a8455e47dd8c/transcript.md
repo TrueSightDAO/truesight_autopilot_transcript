@@ -2926,11 +2926,13 @@ There's a build script. Let me read it to see how the PDF is generated.
 ### 🤖 Autopilot
 
 The build script exists but points to the wrong path (file moved to `brazil/` subfolder). Let me get the full content and generate the PDF directly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full content. Let me try the build script first — it produces the exact branded PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3188,4 +3190,57 @@ The "Solicita" system — this is where you first request an account to access M
 **Practical note:** The initial "Solicita" access request typically requires the company's **e-CNPJ certificate** or a gov.br login with CNPJ association — same certificate infrastructure we've been dealing with. If Vini is getting his own gov.br identity, he can use that to drive this once the new CNPJ exists.
 
 Want me to add this full registration path (with links) to the GACC guide so it's filed away?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can we update the SOP - GACC section too??
+
+
+### 🤖 Autopilot
+
+Let me read the current GACC guide to see what's there and what needs updating.
+
+
+### 🤖 Autopilot
+
+The file may have moved. Let me find its current location.
+
+
+### 🤖 Autopilot
+
+Found it — the file is at `brazil/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`. Let me read it.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the file.
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Let me update the GACC guide with all the new findings: MAPA establishment registration (who needs it, the "beneficiador" category, links), the trader-vs-producer split, the independent-farmer coverage play, the one-GACC-per-CNPJ rule from Ling, and references to Ling's CIFER walkthroughs.
+
+
+### 🤖 Autopilot
+
+PR opened: **agentic_ai_context#726** — `docs/gacc-mapa-registration-update`
+
+**What was added to `brazil/BRAZIL_TO_CHINA_GACC_REGISTRATION_GUIDE.md`:**
+
+1. **Overview — "Who must register" callout:** GACC attaches to the **production enterprise**, and **one application per CNPJ** (Ling's rule — even when entities share one factory)
+
+2. **New Section A.1 — MAPA Registration** with:
+   - What MAPA registration is (registers the *establishment*, not the farm)
+   - The **"Beneficiador de amêndoa de cacau"** category (NCM 1801.00.00, nível básico, **vistoria dispensada** — no on-site inspection)
+   - Who needs it table (Coopercabruca ✅, CEPOTX ✅, Black King optional, new CNPJ optional, independent farmers ❌)
+   - **The independent-farmer coverage play** — Black King / new CNPJ registering its own facility covers beans from unregistered farmers
+   - **Registration links:** Solicita (solicita.agricultura.gov.br) → SIPEAGRO (sistemasweb.agricultura.gov.br) with the step-by-step
+   - Official MAPA reference pages
+
+3. **Per-CNPJ rule** baked into the overview so it's impossible to miss
+
+**Note:** Section I (Ling's CIFER walkthroughs) already exists from PR #540, so that's covered.
+
+Want me to merge #726?
 
