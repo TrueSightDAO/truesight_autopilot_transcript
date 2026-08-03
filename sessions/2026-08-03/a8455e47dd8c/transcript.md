@@ -3270,6 +3270,7 @@ Want me to merge #726?
 ### 🤖 Autopilot
 
 Good question — let me verify this properly rather than assume.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3305,6 +3306,16 @@ Want me to add this clarification ("MAPA: not required for US, required for Chin
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=10] Can you report that I spent 30 minutes researching the MAPA requirements for China imports
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3977,6 +3988,7 @@ TrueSight DAO LLC (Próspera ZEDE) · Operating
 ### 🤖 Autopilot
 
 This is the TrueSight DAO LLC (Próspera ZEDE) Operating Agreement — the legal entity formed under Proposal #18 to book the Brazil export trade. Let me persist it to the transcript and give you my read.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4062,6 +4074,7 @@ Extracted text:
 The screenshot shows Paloma introduced you to **Adriana Maciel** — a sworn translator (*tradutora juramentada*) who does English→Portuguese ("Apenas traduções de INGLES"). Email appears to be `tradutorajuramentadasc@gmail.com`.
 
 Let me draft the email to her requesting the sworn Portuguese translation + notarization guidance. Creating a draft (not sending yet) so you can review:
+[1 tool result(s) compacted: gmail_create_draft — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4198,4 +4211,31 @@ I'll relay Adriana's quote to you here when she replies.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /tmp/tg_attachments/ 2>/dev/null | tail -20; echo "---"; file /tmp/tg_attachments/e934554f90014d4696804d9f792a8140.pdf 2>/dev/null; ls -la /tmp/tg_attachments/ | tail -20; echo "==="; file /tmp/tg_attachments/e934554f90014d4696804d9f792a8140.pdf; echo "==="; ls -la /tmp/t; cd /tmp && python3 -c " import fitz doc = fitz.open('/tmp/tg_attachments/e934554f90014d4696804d9f792a8140.pdf') print('pages:', doc.page_cou
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] What dull contribution of both myself and Aloha? I think we took 20 minutes for this. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the event format and log the contribution for both you and Paloma.
+
+
+### 🤖 Autopilot
+
+Done! ✅ Contribution logged:
+
+- **Event:** CONTRIBUTION EVENT
+- **Type:** Time (Minutes)
+- **Amount:** 20
+- **Contributor(s):** Gary Teh, Paloma Lecheta
+- **Description:** Working session on notarization + sworn translation (EN→PT) of the TrueSight DAO LLC (Próspera ZEDE) Operating Agreement for the Brazilian CNPJ setup — engaged Adriana Maciel, sent signed OA with Paloma CC'd, requested quote
+
+Submitted to Edgar.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
