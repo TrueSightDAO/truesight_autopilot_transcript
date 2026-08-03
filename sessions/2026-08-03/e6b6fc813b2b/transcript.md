@@ -31,3 +31,31 @@ Checked both. Here's the summary:
 
 So the ball is in your court — he's waiting on whether you can still make the call, or want to reschedule. Want me to draft a reply for you?
 
+
+### 🧑 Governor
+
+This one
+
+[Attachment auto-processed: **b44069e66702428aa798abf27c67ad9b.jpg**]
+- Type: Image (OCR confidence: 81.8%, quality: good)
+
+Extracted text:
+```
+yaze} oa LTE CD: x4 5 ee Introduction — Buddhist Boondockers (viaStacey) pS cer | =* Summarize this email | f Add event to Calendar | @ Tees) Hi Max, Stacey Polacco sugge... B74 eae Hi Gary, (™ Max McGillivray © 4 Apologies I'm responding a week after your initial email. It went to spam and I'm just seeing it. I'd love to chat when you have the time. Are you free later this week at all? SoM olNd amo Ce =p) a £> a a
+```
+
+
+### 🤖 Autopilot
+
+Got it — that's the exact thread: **"Introduction — Buddhist Boondockers (via Stacey)"** between you and Max McGillivray at A24.
+
+So to be clear, the full picture of this thread:
+- **July 14** — you emailed Max via Stacey's intro, mentioning the cacao practice and the Amazon work.
+- **July 21** — Max replied (it had been stuck in spam), said he'd love to chat.
+- **July 23** — he proposed Monday 6pm PST / 9am Beijing; you confirmed "works for me, Zoom?"
+- **July 27** — Max sent the Zoom link and said he'd wait on it for a few minutes, or you can reschedule.
+
+The latest email (July 27) is the one with his Zoom link — I found it in your inbox, it's still unread on your side. He's asking if you can still connect.
+
+Want me to draft a reply for you — either confirming a new time, or taking him up on the call? Just tell me which and I'll write it.
+
