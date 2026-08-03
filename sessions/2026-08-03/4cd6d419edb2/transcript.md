@@ -4080,41 +4080,49 @@ Let me read the agroverse-inventory files that reference AGL4 and the LAB_REPORT
 ### 🤖 Autopilot
 
 Let me look for the actual AGL4 ledger sheet with attachments — checking the notarizations repo file list and searching for the ledger location.
+[2 tool result(s) compacted: search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF is binary at the raw level. Let me find the actual AGL4 ledger spreadsheet location and check its attachments.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the Shipment Ledger Listing tab in the Main Ledger to find the AGL4 ledger's spreadsheet URL.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default sheet is "Ledger history" (contributions), not the Shipment Ledger Listing tab. The Shipment Ledger Listing is at gid `483234653`. Let me read that specific tab via its gid.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool keeps returning the default tab. Let me try addressing the Shipment Ledger Listing tab by name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. AGL4's ledger spreadsheet is at `1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`. Let me read that ledger's tabs, especially looking for attachments/links related to bean profile.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AGL4 ledger Balance tab has limited rows. Let me check the other tabs (Transactions, Unit Costing) for attachments/links about bean profile.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it! There's a **CIC report** referenced in the AGL4 ledger: `20240925_cic_report_fernando.pdf` in `fda_fsvp/suppliers/black_king/`. This is the Cacao Innovation Center report. Let me pull it and check the rest of the transactions for any other lab/bean-profile attachments.
+[2 tool result(s) compacted: read_repo_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4309,4 +4317,28 @@ Want me to upload this Oscar report alongside the reference PDFs, or add its key
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" -o fda_tree.json && python3 -c " import j; cd /tmp && for f in "black_king/20240925_cic_report_fernando" "black_king/20241002_cic_report_oscar" "black_king/20241017_cic_conversion" "c; cd /tmp && python3 -c " import fitz doc = fitz.open('/tmp/20241002_cic_report_oscar.pdf') full = '' for i in range(doc.page_count): full += ; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] I'm going to do this chat for now. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it, Gary — wrapping up. Here's where we left off so we can pick up cleanly next time:
+
+**📌 Key state:**
+- **CIC reports**: Found all 5 in `fda_fsvp`. The key one — **Oscar's bean profile report** (#1704.2024.B) — validates the China strategy: 74 bean count, 1.36g beans, 69.3% well-fermented, 0% defects, moisture in spec. Lab evidence that the Criollo story is real.
+- **PDFs (EN + CN)**: Fully consistent — Oscar primary, Santa Ana volume, Paulo alternative; $4.84 COGS, 56.1% margin, break-even 3,013, 国潮 section, divine-feminine + wedding tree taglines, zero tofu.
+- **Convention docs**: PR #716 (auto tofu-check) and PR #717 (OPERATING_INSTRUCTIONS) — awaiting merge.
+- **Backlog**: OPEN_FOLLOWUPS PR #725 has the 4 China channels (Bahia Model UN module, Dr. Ye's TCM network, UN ESG events, ChaoShan group).
+
+**⏭️ Natural next steps** (when you're back):
+1. Merge PRs #714/#715/#716/#717/#725 when ready
+2. Decide: add Oscar's CIC stats to the PDF farm section?
+3. Draft the Oscar offtake/exclusivity proposal (occupy & multiply)
+4. Dr. Ye Douyin launch plan once visibility strategy is set
+
+Thanks for the session — the China strategy is in strong shape. Talk soon! 🌿
 
