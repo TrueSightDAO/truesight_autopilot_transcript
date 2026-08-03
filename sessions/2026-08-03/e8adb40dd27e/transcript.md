@@ -59,6 +59,7 @@ make sure white paper is in both English and Chinese
 ### 🤖 Autopilot
 
 I have a good picture of our traceability stack now (lineage-assets, TrueChain, QR provenance, credentialing, notarizations). Let me dig into the remaining details and ground the white paper in the actual current EU/US regulatory landscape.
+[4 tool result(s) compacted: read_tool_result, read_repo_file, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -258,4 +259,44 @@ How did it go? Specifically curious about:
 3. **Any concrete next step agreed** — pilot factory access, an intro to a manufacturer, UN SDG committee alignment, or a follow-up meeting?
 
 Tell me what came out of it and I'll update the docs to reflect reality (e.g. mark the alignment done, log him as a partner contact, adjust the pilot plan). If you want, I can also draft the follow-up email in Chinese to send him tomorrow.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] What are your thoughts on having a white paper
+
+
+### 🤖 Autopilot
+
+Short answer: **yes — a white paper is the right vehicle for this audience, with two caveats.** Here's my honest read.
+
+## Why it's the right vehicle
+
+1. **Cultural resonance.** In China, 白皮书 (white paper) is an *authoritative genre* — government agencies publish them as formal position statements. For Liu Yunhu (UN SDG committee) and Chinese institutional partners, a proper white paper carries legitimacy a blog post or slide deck never will.
+2. **The audience is institutional, not technical.** UN SDG committee, BRICS/BRI ministries, manufacturers' associations, ESG rating agencies — they want a *position document with evidence*, not a product spec. A white paper signals "this is a real initiative, not a startup pitch."
+3. **It matches our stage.** We genuinely have production proof (Brazil/cacao, 1,457+ units, TrueChain, verification surfaces). A white paper is the correct form to *document a working system* — vs. a one-pager (too thin for this) or a technical spec (too thin for them).
+
+## The two caveats
+
+1. **A white paper won't close anything alone.** It's the *front door*. What converts is a **live demo** — scan a real QR, watch a due-diligence packet render — plus a **named pilot** ("first factory onboarded, order cleared customs"). Without those, it's just a beautiful PDF. The white paper should *point to* the live artifacts (QR links, truesight.me/qr/?id=…, the product-verification listing).
+2. **Don't let it be a static relic.** The moment we get a real pilot (textile/electronics/agro exporter), the white paper must be updated with that case — dated editions, v1.1, v2.0. Otherwise it ages into irrelevance and gets contradicted by reality.
+
+## What we already have vs. what "white paper" should mean
+
+| We have | What a formal white paper needs |
+|---|---|
+| Two bilingual markdown docs (#727 white paper, #729 strategy brief) | **Professional PDF** (EN + zh-CN), brand-styled, CJK typeset |
+| Technical/regulatory case | **Live QR appendix** — scan a real unit, see provenance |
+| SDG mapping tables | **Named proof points** — Brazil deployment stats, registries, tx hashes |
+| Proposal framing | **Authority framing** — "operational since 2025/26, serving X units" |
+| — | A **print + digital** version to hand over (which matters in China — physical documents carry weight in meetings) |
+
+## My recommendation
+
+- **Make #727 the formal white paper** — upgrade to a designed bilingual PDF (Saffron Monk brand), with a live-QR appendix and the Brazil stats front and center. This is the document to hand Liu Yunhu and to circulate at BRICS/BRI forums.
+- **Keep #729 as the internal strategy brief** — it's our playbook, not for public distribution.
+- **Add a one-page Chinese executive summary (一页纸)** for quick distribution — most senior people will read one page, not 20.
+- **Sequencing:** white paper → live demo → pilot. The white paper is the door; the pilot is the proof.
+
+Want me to generate the branded PDF now (EN + zh-CN) from #727, or draft the Chinese one-page summary first? And have you decided on a pilot factory candidate to name in it?
 
