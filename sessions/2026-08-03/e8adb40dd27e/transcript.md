@@ -23,6 +23,26 @@ make sure white paper is in both English and Chinese
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: search_context, search_context, search_context, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: read_tool_result, search_code, search_code, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: read_context_file, read_context_file, read_context_file, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_tool_result, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have a good picture of our traceability stack now (lineage-assets, TrueChain, QR provenance, credentialing, notarizations). Let me dig into the remaining details and ground the white paper in the actual current EU/US regulatory landscape.
 
 
@@ -89,4 +109,65 @@ Covers: the compliance gap → what we already have → factory mapping (unit �
 3. When a pilot factory is chosen, we extend the lineage schema for its asset type (additive change)
 
 Want me to log this as a contribution event (with the PR as evidence), or adjust the white paper's tone/emphasis first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] This is who we spoke with 
+
+Having dinner in Beijing with him from United Nations in China tomorrow evening 
+
+https://baike.baidu.com/item/%E6%9F%B3%E4%BA%91%E8%99%8E/59181707
+
+
+### 🤖 Autopilot
+
+The Baidu page itself returned almost nothing (mostly footer), but the news sources give a clear picture. Let me verify his current role with one more search.
+
+
+### 🤖 Autopilot
+
+The Baidu page came back mostly empty (just footer), but the news trail is clear. Let me pull the fuller biography from the university lecture pages.
+
+
+### 🤖 Autopilot
+
+Here's the briefing on **柳云虎 (Liu Yunhu)** for your dinner tomorrow.
+
+## Who he is
+
+**Primary title (most sources):** 联合国可持续发展目标全球合作项目工作委员会 主任 — *Director/Chair of the Working Committee of the UN SDG Global Cooperation Project*, based in Beijing.
+
+Also listed on **sdgs.un.org** (UN official SDG partnership registry) as a member of the **Management & Governance Committee of the Beijing Association of Education for Sustainable Development (北京教育可持续发展协会)**.
+
+⚠️ One accuracy note for you: he is **not** on the official UN-in-China team roster (china.un.org). He sits in the UN SDG *partnership/cooperation* ecosystem in China — a UN-affiliated committee chair, not a UN agency staff member. Worth knowing so you calibrate expectations, not that it changes the dinner.
+
+## What he works on
+
+- **SDG education & international talent** — lectures on "可持续发展能力建设与国际化人才发展规划" (sustainable-development capacity building & international-talent planning), e.g. at Nanjing Audit University (2024)
+- **Green innovation & dual-carbon** — interviewed by Yicai (Aug 2025) as a "零碳同行者" on green innovation, 智慧创新与绿色能源 (smart innovation + green energy), the dual-carbon goals
+- **"Going-out" enterprises** — March 2023 visit to Changzhou Textile Garment Institute (常州纺织服装职业技术学院) with Belt-and-Road **textile & garment** enterprises — exactly the sector CBP's June 2026 guidance puts under high scrutiny
+- **Cultural/IP & education cooperation** — travels with partners (凯西德数字化研究院, 美天文化) on cultural-IP and school partnerships
+
+## Why this is a strong fit
+
+| His focus | Our stack |
+|---|---|
+| SDG global cooperation, ESG, green innovation | White paper maps our components → SDG 2/8/9/12/13/15/16/17 |
+| **Textile/garment "going-out" enterprises** | Our top pilot sector candidate (UFLPA batch-level traceability, third-party audits) |
+| International talent / SDG education | Aora bilingual (EN+zh-CN) learning modules; Jerri/Ling China channel |
+| Green/dual-carbon | Per-unit ESG data → ESRS datapoints, Scope 3, carbon fields |
+
+## Suggested dinner angles
+
+1. **Lead with the problem he already cares about**: Chinese "going-out" manufacturers getting downgraded in EU/US ESG ratings and detained at US borders despite sound operations — he's seen this in textiles.
+2. **Our white paper (PR #727, EN + zh-CN)** — position it as "a verifiable-evidence layer that turns China's compliance gap into an export advantage," aligned with SDG 12/8/15/17.
+3. **Pilot ask**: 1 textile or electronics factory with an EU/US buyer, using the existing cacao-proven stack (QR → lineage manifest → TrueChain anchor → notarized documents → scan-verifiable due-diligence packet). His textile contacts could be the first pilot.
+4. **SDG education hook**: the Aora program + credentialing could complement his talent-development work — a natural second thread.
+
+Want me to:
+- **A)** draft a short one-page Chinese-language dinner talking-points sheet (for you to glance at before/at dinner), or
+- **B)** create a Chinese-language version of the white paper PDF (CJK pipeline) to hand over physically tomorrow?
+
+Both are quick. I'd suggest at least **A** before tomorrow evening.
 
