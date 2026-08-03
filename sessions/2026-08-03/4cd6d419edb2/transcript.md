@@ -4597,6 +4597,7 @@ PDFs regenerated fine (130KB EN, 604KB CN) — just my verification script had a
 ### 🤖 Autopilot
 
 Both PDFs verified — 0 tofu, all markers present. EN 18 pages, CN 16 pages. Sending them now.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4643,21 +4644,25 @@ Want me to also upload these to S3/GitHub with fresh links, or update the slide 
 ### 🤖 Autopilot
 
 Good distinction — Dr. Ye sells the packaged DTC product, while Chaoshan takes raw material and handles their own storage/distribution. Let me update both reports.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EN done. Now the CN version.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both updated. Now regenerate and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — 0 tofu, all markers present. Sending both updated reports.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4788,4 +4793,22 @@ Done — both reports attached above with all **Coopercabruca** mentions removed
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → grep -n "Coopercabruca\|Coopercabruca\|cooperative pool" /tmp/cacao_report_en.html /tmp/cacao_report_cn.html 2>/dev/null | head -30; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() replacements = [ # 9.0 row ("<b>Certifi; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() replacements = [ # 9.0 row ("\uff08\u57; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you report that I spent 1 hour sorting through this
+
+
+### 🤖 Autopilot
+
+Done ✅ — logged **1 hour (60 min)** for Gary Teh as a CONTRIBUTION EVENT, covering the CIC lab report sorting and document revisions.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
