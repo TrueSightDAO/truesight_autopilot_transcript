@@ -6413,3 +6413,59 @@ Once I know who/what they are, I can fold them into the go-to-market plan — th
 
 Should I also log this as a pending item in OPEN_FOLLOWUPS.md (new-media content support to accelerate Douyin growth) so it doesn't get lost?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] More information 
+
+Detailed discussions of the two channels during last nights cosplay dinner session
+
+- project based learning module for Chinese students based out of Bahia with Evan and his Model UN network could plug into. Basically a variant of what me and @⁨Matheus Reis - Bahia Coop⁩ discussed about last year 
+
+- ⁠cacao tea distribution channel and logistic infrastructure via Dr Ye’s traditional Chinese TCM network. Each patient totally spends around USD$200 with her. She has amassed 10,000 followers on TikTok in 6 months
+
+TBD channels
+- events at the United Nations office in Shanghai and Beijing for TEDX talk like sessions financed by the local government where cacao is spread. They really want to push ESG
+
+- the ChaoShan group which basically comes in to monopolize an entire stock if they find that a supply is good. Like how they monopolize the entire world’s ginseng supply
+
+
+### 🤖 Autopilot
+
+This is excellent strategic context — thank you for filling in the detail. Let me capture it cleanly so nothing gets lost.
+
+
+### 🤖 Autopilot
+
+This is gold — let me capture all of it in the cross-session backlog so no channel detail gets lost, then file the follow-up entry.
+
+
+### 🤖 Autopilot
+
+Captured everything into the cross-session backlog — **PR #725** filed. Here's the clean summary of the four channels:
+
+## 🇨🇳 China GTM — Channel Map (filed in OPEN_FOLLOWUPS.md)
+
+### ✅ Confirmed Channels
+
+| # | Channel | Detail | What It Gives Us |
+|---|---|---|---|
+| 1 | **Bahia Learning Module** | Project-based learning for Chinese students in Bahia via Evan's Model UN network — variant of your 2025 discussion with Matheus Reis (Bahia Coop) | Education + brand awareness + supply-chain talent pipeline |
+| 2 | **Dr. Ye's TCM Network** | Each patient spends ~**$200** with her; **10,000 Douyin followers in 6 months** (~1,667/mo velocity) | Distribution + logistics infra for cacao tea through her TCM network |
+
+### ⏳ TBD Channels
+
+| # | Channel | Detail | Blocker |
+|---|---|---|---|
+| 3 | **UN Office Events** (Shanghai + Beijing) | TEDx-style sessions financed by local government, strong ESG push, cacao sampling | Need contact at UN offices + ESG program eligibility |
+| 4 | **ChaoShan (潮汕) Group** | Regional network that **monopolizes whole supply stocks** when they find good supply — they control much of the world's ginseng | Need entry approach — who introduces us, what they'd want |
+
+### Next Actions (in the backlog)
+- [ ] Draft offtake/exclusivity proposal for Oscar's Farm (occupy & multiply)
+- [ ] Confirm Dr. Ye's Douyin account + follower data
+- [ ] Identify UN ESG program contact
+- [ ] Map ChaoShan entry approach
+- [ ] Update PDFs/decks with confirmed channels
+
+The ChaoShan dynamic is fascinating — if they treat cacao like ginseng, our **scarcity story (40t/yr, 100-yr Criollo)** becomes exactly the kind of supply they'd want to control. That's a powerful partnership or a powerful negotiation position.
+
