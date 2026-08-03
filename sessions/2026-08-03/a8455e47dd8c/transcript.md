@@ -3289,3 +3289,25 @@ This also means: nothing about the US shipments changes. Black King can keep shi
 
 Want me to add this clarification ("MAPA: not required for US, required for China") to the SOP/GACC guide so nobody conflates the two lanes again?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can you report that I spent 30 minutes researching the MAPA requirements for China imports
+
+
+### 🤖 Autopilot
+
+Done! ✅ 30-minute contribution logged for you:
+
+- **Event:** CONTRIBUTION EVENT
+- **Type:** Time (Minutes)
+- **Amount:** 30
+- **Description:** Research on MAPA registration requirements for China (GACC) imports — MAPA "beneficiador" establishment registration, US vs China lane requirements, independent-farmer coverage strategy
+- **Contributor:** Gary Teh
+
+Submitted to Edgar successfully.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
