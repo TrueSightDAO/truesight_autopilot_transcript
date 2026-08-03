@@ -4555,36 +4555,43 @@ I have the full CIC report details. Now let me find the channels section in the 
 ### 🤖 Autopilot
 
 Let me find the detailed channels section in both documents.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full document structure to find where the channels content lives.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The document has no dedicated channels section — channel mentions are scattered in the Executive Summary and budget tables. I'll create a proper **Part 9: China Distribution Channels** section that uses the CIC lab evidence as the sales engine, and renumber the old Part 9/10. Let me build the EN section first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EN done. Now the CN version — same section in Chinese.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CN doc has some numbering quirks already. Let me insert the channels section in Chinese before the cultivation section.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both inserted. Now regenerate both PDFs and verify (0 tofu + markers present).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDFs regenerated fine (130KB EN, 604KB CN) — just my verification script had a syntax error. Let me re-run the check properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4734,4 +4741,51 @@ Verified: 0 tofu in both (EN 19p / CN 17p).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && python3 -c " import fitz d = fitz.open('/tmp/20241002_cic_report_oscar.pdf') full = ''.join(d[i].get_text() for i in range(d.page; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() # 1) Fix 9.0 table row about 190,000 kg; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() # 1) Fix CN 9.0 row about 190,000 kg ol; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Don’t need to mention Coopercabruca in this document
+
+
+### 🤖 Autopilot
+
+Understood — removing all Coopercabruca mentions from both documents.
+
+
+### 🤖 Autopilot
+
+Removing all Coopercabruca mentions — replacing with generic "cooperative" wording.
+
+
+### 🤖 Autopilot
+
+EN done. Now CN.
+
+
+### 🤖 Autopilot
+
+All Coopercabruca mentions removed from both. Now regenerate, verify, and send.
+
+
+### 🤖 Autopilot
+
+Clean — 0 Coopercabruca, 0 tofu. Sending both.
+
+
+### 🤖 Autopilot
+
+Done — both reports attached above with all **Coopercabruca** mentions removed.
+
+**What changed:**
+- 9.0 row: "sampled at Pontal, Ilhéus/BA — Coopercabruca pool" → "sampled at Pontal, Ilhéus/BA"
+- 9.3 Chaoshan: "(190 t cooperative pool…)" → "(certified pool…)"
+- Cultivation section: "Coopercabruca members (Santa Ana, São Jorge, Oscar)" → "cooperative members in Bahia"
+- Farm ranking table: "Bahia (Coopercabruca)" → "Bahia"
+
+**Verified:** 0 Coopercabruca mentions, 0 tofu in both (EN 19p / CN 17p). The 190,000 kg lot / ~40 t/yr correction stays intact.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → grep -n "Coopercabruca\|Coopercabruca\|cooperative pool" /tmp/cacao_report_en.html /tmp/cacao_report_cn.html 2>/dev/null | head -30; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() replacements = [ # 9.0 row ("<b>Certifi; python3 << 'PYEOF' with open('/tmp/cacao_report_cn.html', 'r', encoding='utf-8') as f: cn = f.read() replacements = [ # 9.0 row ("\uff08\u57; …(+1 more)
 
