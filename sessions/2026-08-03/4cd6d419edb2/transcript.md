@@ -4222,26 +4222,31 @@ Let me search for all files with "cic_report" in the name across the organizatio
 ### 🤖 Autopilot
 
 The code search only indexes text files (not PDFs). Let me list the supplier directories directly to find all cic_report files.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The directory listings are large. Let me use the git tree API to recursively list all files and filter for CIC-related names — much more efficient.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The response is truncated. Let me filter the tree locally via the autopilot box — much more efficient.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — **found it!** There's `20241002_cic_report_oscar.pdf` — the CIC report for **Oscar's beans** (which is what you were looking for — Oscar's farm is in the Ilhéus/Moscou region of Bahia). Let me extract all the CIC reports' contents.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it!** This is the Oscar CIC report — sampled in **Ilhéus/BA** (Rua Coronel Pessoa, Pontal — the Moscou district area). Let me get the complete results of this and the other CIC reports.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4439,4 +4444,76 @@ Note: there's also a **Paulo (Pará) heavy metals report** (`20250714215751_gary
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" -o fda_tree2.json && python3 -c " import ; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/notarizations/git/trees/main?recursive=1" -o notar_tree.json 2>/dev/null; pyth; cd /tmp && curl -sL -o oscar_lab_report.pdf "https://raw.githubusercontent.com/TrueSightDAO/notarizations/main/20250714215834_gary_teh_oscar
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Also regarding the PDF documents on the operations P&L, can you update a section regarding the details from this and then linking to that document on our GitHub repository? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea — adding the lab validation (CIC bean profile + heavy metals) into the P&L section with GitHub links. Let me first check the current HTML structure around the P&L section.
+
+
+### 🤖 Autopilot
+
+I can see the structure. I'll insert a new "Lab Validation" subsection right after the Raw Material section in 4.2, documenting the CIC bean-profile report and the heavy metals report with GitHub links. Let me look at the exact raw material section text first.
+
+
+### 🤖 Autopilot
+
+I'll add a **Lab Validation — Quality Dossier** subsection right after the Raw Material table, with the CIC + heavy metals findings and GitHub links. Let me insert it into the EN HTML.
+
+
+### 🤖 Autopilot
+
+EN done. Now the CN version — let me find the matching anchor in the Chinese HTML.
+
+
+### 🤖 Autopilot
+
+Let me see the CN section around line 254-264 to find the exact anchor (the raw material heading).
+
+
+### 🤖 Autopilot
+
+Now let me insert the CN version of the Lab Validation section before the packaging heading.
+
+
+### 🤖 Autopilot
+
+Both inserted. Now regenerate both PDFs with the @font-face fix, verify no tofu, and send.
+
+
+### 🤖 Autopilot
+
+Both PDFs regenerated — 0 tofu, lab sections present in both (EN has "Lab Validation", CN has 实验室验证). Let me send them as attachments.
+
+
+### 🤖 Autopilot
+
+Both updated PDFs are attached above. Here's what was added:
+
+## ✅ New Section: "Lab Validation — Quality Dossier" (in P&L Part 4.2)
+
+Added to both EN and CN PDFs, right after the Raw Material table:
+
+| Report | Key Results | GitHub Link |
+|---|---|---|
+| **CIC Bean Profile** (#1704.2024.B) | 74 beans/100g (large), 1.36g avg, **69.3% well-fermented**, 0% mold/insects, moisture 6.80% in spec | [fda_fsvp/.../20241002_cic_report_oscar.pdf](https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/black_king/20241002_cic_report_oscar.pdf) |
+| **Heavy Metals** (LAP-339.2025.B) | As <0.025, Cd <0.025, Pb <0.025, Cu 9.86 — **all pass ANVISA** | [notarizations/20250714215834_gary_teh_oscar_lab_report.pdf](https://github.com/TrueSightDAO/notarizations/blob/main/20250714215834_gary_teh_oscar_lab_report.pdf) |
+
+**Why it's in the P&L section:** 
+- CIC cut-test → supports the premium **$50/box price point** (large premium beans, good fermentation)
+- Heavy-metals pass → satisfies **China import compliance (GB 2762)** — no remediation cost line needed
+- Both reports are notarized + versioned in DAO repos → the lab evidence trail backing the supply story
+
+**Verified:** 0 tofu chars in both (EN 212 CN chars, CN 5,447 CN chars), 16p EN / 15p CN.
+
+Note: The links are to the GitHub blob pages (viewable) — the raw PDFs are also fetchable from those same repos. Want me to also upload these updated PDFs to S3 with the fresh links?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → grep -n "4.2 Cost\|4.3 Supply\|Part 4\|4.1 Product\|Raw Material\|h2\|<h3" /tmp/cacao_report_en.html | head -40; sed -n '196,236p' /tmp/cacao_report_en.html; python3 << 'PYEOF' with open('/tmp/cacao_report_en.html', 'r', encoding='utf-8') as f: en = f.read() anchor = '''<h3>Packaging (Shenzhen \u2; …(+4 more)
 
