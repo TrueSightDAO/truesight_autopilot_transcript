@@ -2920,6 +2920,7 @@ Let me check if there's an existing PDF build script for this SOP, then generate
 ### 🤖 Autopilot
 
 There's a build script. Let me read it to see how the PDF is generated.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3151,4 +3152,40 @@ The registration category is **"BENEFICIADOR DE AMÊNDOA DE CACAU"** — the fac
 **Bottom line:** This is a strong play — it gives full coverage for independent farmers, is low-cost (no inspection, basic tier), and makes the exporter self-sufficient instead of dependent on cooperatives. I'd recommend the **new DAO-owned CNPJ** do this (as Vini plans), with Black King as the interim option.
 
 Want me to add a "MAPA Beneficiador — the independent-farmer coverage play" section to the GACC guide with the SIPEAGRO application steps?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] What is the link to register for MAPA?
+
+
+### 🤖 Autopilot
+
+Let me find the exact registration link for you.
+
+
+### 🤖 Autopilot
+
+Here's the registration path — it's a two-step process, so I'll give you all the links:
+
+**Step 1 — Request system access (get login credentials):**
+The "Solicita" system — this is where you first request an account to access MAPA systems:
+- https://solicita.agricultura.gov.br
+
+**Step 2 — The actual SIPEAGRO system (where you register the establishment):**
+- https://sistemasweb.agricultura.gov.br/pages/SIPEAGRO.html (overview page)
+- Direct access for registered users: https://sistemasweb.agricultura.gov.br/sipeagro/ (login)
+
+**Official guidance pages:**
+- MAPA systems directory: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/sistemas/orgaos/mapa/animal/sipeagro-sistema-integrado-de-produtos-e-estabelecimentos-agropecuarios
+- Registrable products list (the cacao bean "beneficiador" category): https://www.gov.br/agricultura/pt-br/assuntos/inspecao/produtos-vegetal/registro-importacao-e-exportacao-1/registro/registro-de-estabelecimentos/registro-estabelecimento-produtos-vegetais-no-cgc-mapa-1/listagem-de-produtos-passiveis-de-registro-no-cgc-mapa
+
+**The flow:**
+1. Go to **Solicita** → create the account request → MAPA emails you login credentials for SIPEAGRO
+2. Log into **SIPEAGRO** → Establishment registration → new request → pick "Beneficiador de amêndoa de cacau" (NCM 1801.00.00, basic level, no on-site inspection)
+3. Submit docs (CNPJ card, facility layout, hygiene/BPA declaration) → MAPA reviews → you get your establishment registration number
+
+**Practical note:** The initial "Solicita" access request typically requires the company's **e-CNPJ certificate** or a gov.br login with CNPJ association — same certificate infrastructure we've been dealing with. If Vini is getting his own gov.br identity, he can use that to drive this once the new CNPJ exists.
+
+Want me to add this full registration path (with links) to the GACC guide so it's filed away?
 
