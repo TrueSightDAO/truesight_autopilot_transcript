@@ -2914,6 +2914,7 @@ Merged both PRs:
 ### 🤖 Autopilot
 
 Let me check if there's an existing PDF build script for this SOP, then generate the PDF.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3110,4 +3111,44 @@ Under MAPA's rules (IN 9/2019), this registration is **voluntary for domestic op
 So Vini's instinct is right that MAPA belongs to the production enterprise — and the good news is that both factories **qualify** for it. The action item is: **have Coopercabruca and CEPOTX each apply for their MAPA "beneficiador de amêndoa de cacau" registration via SIPEAGRO now**, so it's ready when they submit CIFER.
 
 Want me to add this "MAPA beneficiador" requirement to the GACC guide with the SIPEAGRO application steps?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] But independent cacao farmers won’t have MAPA so can’t we have black king or the new CNPJ apply for MAPA too? That way we can have coverage for independent farmers?
+
+
+### 🤖 Autopilot
+
+Yes — that's exactly the right strategic move, and it works. Here's why:
+
+**The key insight: MAPA registers the *establishment* (facility), not the farm.**
+
+The registration category is **"BENEFICIADOR DE AMÊNDOA DE CACAU"** — the facility that receives, ferments/dries, sorts, grades, and packs the beans. Independent farmers (Oscar, Clara, Analuana) don't need their own MAPA registration *if their beans pass through a registered beneficiation facility*. That's precisely how cooperatives like Coopercabruca already operate — they're the registered facility for dozens of smallholder members.
+
+**So yes — Black King (or the new CNPJ) can apply for its own MAPA "beneficiador" registration** and that gives you coverage for independent farmers' cacao, because the beans become "covered" the moment they enter Black King's registered facility.
+
+**Why this is attractive:**
+
+| Option | Coverage | Effort |
+|--------|:--------:|--------|
+| Each farmer registers | Fragmented, 3–6 mo each, impractical | ❌ High |
+| Coopercabruca/CEPOTX only | Only their own production | ⚠️ Medium |
+| **Black King / new CNPJ gets own MAPA "beneficiador"** | **All independent farmers' beans** | ✅ Low |
+
+**Key details that make this feasible:**
+
+1. **"Básico (geral)" level + Vistoria DISPENSADA** — from MAPA's official list, cacao bean beneficiation is the basic tier with **no mandatory on-site inspection**. It's a paperwork application through SIPEAGRO — no physical audit blocking you.
+
+2. **Facility requirement** — you need an actual establishment (Black King's Ilhéus warehouse qualifies) meeting basic hygiene/storage standards (dry, ventilated, clean). No heavy industrial plant needed for basic-level bean beneficiation.
+
+3. **One registration per physical facility** — Black King registers its Ilhéus facility; the new CNPJ would register its own. Each address = one MAPA number = one CIFER application.
+
+4. **It upgrades Black King from "trader" to "production enterprise"** in China's eyes — which actually solves the earlier tension: instead of being a pure trader shipping under Coopercabruca's registration, Black King becomes a legitimate registered beneficiary with its own GACC number.
+
+**One honest caveat:** to claim "beneficiador," the facility should genuinely do at least part of the beneficiation — receiving wet/fresh beans, fermenting, drying, sorting, grading, or final packing. If Black King only buys already-dried, graded beans and re-ships, it's thinner — but even sorting + grading + repacking under BPF (good practices) can qualify at basic level. Worth confirming with a Brazilian agronomist/accountant what minimum activities MAPA expects.
+
+**Bottom line:** This is a strong play — it gives full coverage for independent farmers, is low-cost (no inspection, basic tier), and makes the exporter self-sufficient instead of dependent on cooperatives. I'd recommend the **new DAO-owned CNPJ** do this (as Vini plans), with Black King as the interim option.
+
+Want me to add a "MAPA Beneficiador — the independent-farmer coverage play" section to the GACC guide with the SIPEAGRO application steps?
 
