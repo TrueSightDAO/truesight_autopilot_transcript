@@ -59,3 +59,19 @@ The latest email (July 27) is the one with his Zoom link — I found it in your 
 
 Want me to draft a reply for you — either confirming a new time, or taking him up on the call? Just tell me which and I'll write it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10083] Yeah, I should be back in Sunshun area in China up to 5th of 5th of August Yeah, so just how to propose for him to arrange for a session by Zoom After the 14th I'll be in Brazil [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Draft ready — here's what I wrote to Max (saved as a draft, not sent yet):
+
+- You're in China until **Aug 5th**, then traveling, and in **Brazil from Aug 14th**.
+- Proposed scheduling the Zoom for **after the 14th**.
+- Noted your flexibility on timing — a morning Pacific slot usually lines up with your afternoon in Brazil.
+
+Draft is saved in your inbox. Want me to send it, or tweak anything first?
+
