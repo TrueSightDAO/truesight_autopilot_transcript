@@ -4128,6 +4128,7 @@ Found it! There's a **CIC report** referenced in the AGL4 ledger: `20240925_cic_
 ### 🤖 Autopilot
 
 I found the key attachment — a **CIC report** in the AGL4 ledger. Let me download it and extract the text to confirm it's the bean-profile report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4341,4 +4342,43 @@ Got it, Gary — wrapping up. Here's where we left off so we can pick up cleanly
 4. Dr. Ye Douyin launch plan once visibility strategy is set
 
 Thanks for the session — the China strategy is in strong shape. Talk soon! 🌿
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9433] Can you fetch the report pdf files you found that are matching and send them over as attachment
+
+
+### 🤖 Autopilot
+
+Let me fetch all the matching CIC report PDFs and send them over.
+
+
+### 🤖 Autopilot
+
+All 5 valid. Let me send them as attachments.
+
+
+### 🤖 Autopilot
+
+Now the remaining three.
+
+
+### 🤖 Autopilot
+
+All 5 CIC report PDFs sent as attachments above:
+
+| # | File | What It Is |
+|---|---|---|
+| 1 | **20241002_cic_report_oscar.pdf** | 🥇 Oscar's bean profile — **premium grade** (74 count, 69.3% well-fermented, 0% defects) |
+| 2 | **20240925_cic_report_fernando.pdf** | Fernando/Black King blend — moisture ⚠️ above limit |
+| 3 | **20240628_cic_report_v0.pdf** | Coopercabruca sensory/flavor analysis (V0) |
+| 4 | **20240628_cic_report_v1.pdf** | Coopercabruca sensory/flavor analysis (V1) |
+| 5 | **20241017_cic_conversion.pdf** | Black King conversion documentation |
+
+All verified valid PDFs (1-3 pages each). The Oscar one is the star — it's the lab evidence backing the China premium positioning.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && mkdir -p cic_reports && cd cic_reports && \ curl -sL -o 20241002_cic_report_oscar.pdf "https://raw.githubusercontent.com/TrueSigh
 
