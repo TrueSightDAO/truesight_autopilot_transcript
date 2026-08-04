@@ -4912,6 +4912,7 @@ The www subdomain 404s. Let me get the whitepaper from the repo directly — sea
 ### 🤖 Autopilot
 
 The whitepaper page isn't resolving. Let me find it in the repo via code search on GitHub.
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5258,4 +5259,200 @@ The Liberation font path doesn't exist. Let me find what TTF fonts are actually 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && cat > make_chapter_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units impo
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **b7bc96201d70460eba0735886d8db784.pdf**]
+- Type: PDF (8 pages, 10325 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 1
+The Pilgrimage & The Corner Positions
+From the temple offering at 玉皇頂 to the unflippable corners of the board
+Three documents, one argument. Part 1 — the temple offering: the covenant between Elizabeth Wong (文)
+and Gary Teh (武), sealed at the Jade Emperor Summit. Part 2 — the roundabout way: why the $40,000
+deal was declined and the nine-stop pilgrimage taken instead, to unearth WHY before WHAT. Part 3 —
+the corner positions: 郭嘉十勝十敗, Guo Jia’s Ten Victories, the ten dimensions the DAO must hold so the
+position compounds.
+
+--- Page 2 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 2
+Part 1 — The Temple Offering · 供品祝辭
+玉皇頂 · Yuhuangding · Jade Emperor Summit, Mount Tai
+The offering was a covenant. Two people, two paths, one agreement made sacred at the summit:
+Elizabeth Wong carries 文 — culture, knowledge, the future. Gary Teh carries 武 — the frontier, the
+guardianship, the protection of that future. 文開路，武守路. She opens the road; he guards it.
+Offering 1 — 文 · Culture / Future
+English: May culture grow like a tree on a mountain — slow, deep-rooted, visible to all. May knowledge
+belong to the commons, passed from generation to generation. May the gradual path of Development
+(Hexagram 53) let each person walk their own pilgrimage, and together become a forest. May ten
+thousand hectares of rainforest return, and the seeds of civilization take root in shade.
+中文：願文化如樹，生於山上，根深葉茂，遠近皆見。願知識為公，眾人之智，世代相傳。願漸進之路，
+各人行各自之道，匯成森林。願十萬公頃雨林復生，文明之種，落土成蔭。
+Offering 2 — 武 · Military / Frontier / Guarding
+English: May the blade guard the path and never harm the innocent. May the frontier stand firm against the
+strong maiden — the offer too good to be true that would steal our autonomy. May we keep our own pace
+of development, refusing what tempts and threatens. With strength we protect; with patience we grow.
+中文：願劍鋒護道，不傷無辜。願邊疆穩固，外邪不侵。遇女壯則拒，守發展之節奏。以武護文，以守護
+成。
+文開路，武守路 — One opens the future, the other guards it.
+
+--- Page 3 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 3
+The Offering, Photographed
+Photo 1 — The signing of the offering at the summit
+Photo 2 — The offering, written by hand
+
+--- Page 4 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 4
+Photo 3 — Sealing the offering
+
+--- Page 5 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 5
+Part 2 — The Roundabout Way
+Why the $40,000 deal was not taken — and what the pilgrimage unearthed instead
+The Offer That Was Declined
+Liz surfaced a deal: USD $40,000 to expand TrueSight DAO cacao into China. On paper it was a gift —
+capital, a partner, a market. The conventional move would have been to sign it, bank the money, and
+worry about alignment later.
+We did not take it. The oracle had already warned us. Hexagram 44 — 姤, Coming to Meet — the powerful
+maiden: "One should not marry such a maiden." The offer too good to be true that promises quick gains
+but threatens your autonomy and your developmental pace. So instead of accepting $40,000, we accepted
+the slower thing: the journey. The unearthing of WHY before WHAT.
+The Roundabout Way
+The direct route — money first, meaning later — collapses the moment trust is tested. The roundabout
+route — meaning first, money later — compounds. It looks like a detour. It is actually the shortest path,
+because it builds the foundation that the fast path skips. A deal is a snapshot of intent at one moment. A
+covenant is a path you walk together.
+What the Journey Was For
+The purpose was to unearth, in order:
+1. WHY — her why. Why does Liz want to bring cacao into China? Her own hero’s journey. Why this, why
+now, why her?
+2. VISION — the shape of the future she sees. Not the spreadsheets — the world she imagines where this
+cacao exists in China.
+3. WHAT — what she actually wants to build. Which markets, which channels, which customers, which
+cities.
+4. HOW — how she wants to go about it. Her operating style, her pace, her method, her instincts.
+None of this can be discovered in a term sheet. It can only be discovered on the road, side by side, over
+days — because people reveal their WHY in how they climb, not in what they pitch.
+The Pilgrimage Itinerary
+余姚 · Yuyao — Paying homage to her ancestors. The journey begins at the root.
+武当山 · Wudang Mountain — The mountain of the Way (道). The soft overcomes the hard.
+少林 达摩洞 · Shaolin, Bodhidharma Cave — Where Chan Buddhism was born — nine years facing the wall.
+秦始皇陵 · Emperor Qin’s Tomb — Unification through force — what raw power builds and costs.
+炎帝陵 · Yan Emperor’s Tomb — The Flame Emperor — founder of agriculture. The soil.
+黄帝陵 · Yellow Emperor’s Tomb — The ancestor of all Han Chinese — founder of civilization.
+泰山 玉皇顶 · Mount Tai — The Jade Emperor Summit — where the covenant was sealed. 文開路，武守路.
+北京 故宫 · Beijing, the Imperial Palace — The Forbidden City — the seat of power for five hundred years.
+Where the mandate was held, and where it was lost.
+北京 天坛 · Beijing, the Temple of Heaven — Where the emperor prayed to Heaven for the harvest — the
+covenant between the ruler and the land, renewed every year.
+
+--- Page 6 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 6
+北京 白云观 · Beijing Baiyun Temple — White Clouds Temple — institutional Taoism, the tradition made
+durable.
+腾格里沙漠 · Tengger Desert — The desert of the sky — what remains when the world offers you nothing.
+Why This Route, Not the Deal
+The $40,000 would have bought a channel. The pilgrimage bought a covenant. A channel is replaceable; a
+covenant is not. The money can now follow the meaning, instead of the meaning being bent around the
+money. If the WHY had not held, the pilgrimage would have revealed that too — cheaply. The Taoist
+reversal: the path that looks slow is the one that arrives.
+
+--- Page 7 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 7
+Part 3 — The Corner Positions
+郭嘉十勝十敗 · Guo Jia’s Ten Victories, Ten Defeats · applied to the DAO
+Guo Jia, Cao Cao’s strategist (c. 200 AD), faced a board that looked lost: Yuan Shao had far more
+territory, troops, and pedigree. Guo Jia answered with ten dimensions — and only one of them was
+military. Victory, he argued, is won before the battle, in how you build the system. These are the corner
+positions. In the language of the game: a corner can never be flipped. Hold the ten corners, and the board
+compounds toward you.
+The game theory of Reversi — Kevin Lu, Duke Math. The corners are the unflippable prize; the winning move is to take the
+fewest pieces, not the most.
+1. 道勝 — The Way — Yuan Shao was all ceremony; Cao Cao was real. The DAO’s corner: the constitution
+lives in context files and is actually followed. The Way is the work — not performed, verified. Held by every
+action, so it cannot be flipped.
+2. 義勝 — Righteousness — Yuan Shao acted against the mandate; Cao Cao followed it. The DAO’s corner:
+ten thousand hectares of Amazon rainforest restoration. The mission is the mandate — 1 bag sold = 1 tree
+planted, baked into the unit economics. Righteousness as architecture, not slogan.
+3. 治勝 — Governance — Yuan Shao governed loosely and decayed; Cao Cao governed with discipline. The
+DAO’s corner: the governance loop — vote, constitution, context, behavior. Governor rotation by solstice,
+contribution-based access, rights that decay with inactivity.
+4. 度勝 — Measure / Trust — Yuan Shao was broad but jealous; Cao Cao trusted his people. The DAO’s
+corner: the transparent ledger. Trust by default, verifiable by anyone. No surveillance needed when everything is
+visible.
+5. 謀勝 — Strategy — Yuan Shao deliberated endlessly and decided nothing; Cao Cao decided and acted. The
+DAO’s corner: the fork mechanism. The ability to decide, spawn, adapt — the Self-Replication SOP. Speed of
+decision is itself a corner.
+
+--- Page 8 ---
+The Pilgrimage & The Corner Positions
+TrueSight DAO  ·  Guo Jia Ten Victories  ·  郭嘉十勝十敗
+TrueSight DAO — Restoring 10,000 hectares of Amazon rainforest
+Page 8
+6. 德勝 — Virtue — Yuan Shao chased reputation; Cao Cao valued substance. The DAO’s corner: the
+contribution ledger over titles. The system knows what you have done, not who you claim to be.
+7. 仁勝 — Benevolence — Yuan Shao’s mercy was performance; Cao Cao’s was real. The DAO’s corner:
+consignment economics that let farmers be paid before the sale — the cargo cost carried, repaid on
+consignment. Benevolence as the default structure.
+8. 明勝 — Insight — Yuan Shao let slander divide his court; Cao Cao’s clarity protected it. The DAO’s corner:
+the audit trail. Every contribution RSA-signed, every change a git commit, every bag a QR code. Clarity through
+verifiability.
+9. 文勝 — Culture — Yuan Shao’s inner circle fought over status; Cao Cao built a culture of merit. The DAO’s
+corner: Elizabeth’s corner — knowledge as a public good, the context repos as the commons. 文開路 — culture
+opens the road.
+10. 武勝 — Military — Yuan Shao made a show of force and could not use it; Cao Cao used force like a master.
+The DAO’s corner: Gary’s corner — guarding the frontier, refusing the X-squares (the $40,000 deal that would
+give away autonomy), protecting the pace of development. 武守路 — strength guards the road.
+The Law of the Board
+Of Guo Jia’s ten, nine are won before any battle is fought. The same is true of the DAO: the corners are
+held by architecture, not by hope. The X-squares — the offers too good to be true — must be refused,
+because they give the opponent access to the corner. The greedy move — taking the most pieces,
+growing fastest, monetizing hardest — is the losing move. Take few pieces, hold the corners, let the board
+come to you. That is Hexagram 53: the tree grows slowly on the mountain, but it grows where everyone
+can see it.
+文開路，武守路 — and the ten corners never flip.
+```
+
+
+### 🤖 Autopilot
+
+This is the reference format — the established brand style for these pilgrimage documents. My chapter PDF script failed on a font path, so let me rebuild it to match this exact format: saffron header band, mixed Chinese/English rendering, footer with the mission line, auto page breaks.
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me verify the Chinese renders correctly before sending.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && cat > make_chapter_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- import re from reportlab.lib.pagesizes import A4 from reportlab.lib.
 
