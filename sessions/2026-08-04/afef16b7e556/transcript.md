@@ -4878,6 +4878,7 @@ Found it — the whitepaper snapshot has the Double Diamond reference. Let me re
 ### 🤖 Autopilot
 
 Let me find the Double Diamond / design thinking section in the full snapshot.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4987,4 +4988,52 @@ The infinite game — let me think about it honestly, because it connects to eve
 **The deepest thought:** the whitepaper says "heal the world with love" and the mission is 10,000 hectares. But in the infinite game, the 10,000 hectares is not the outcome — it's the *move*. The forest is the byproduct of the play, not the trophy. Because when the forest is planted, the game isn't over — the game continues, because the *way* it was planted — honestly, recursively, with each participant re-made by the work — is the actual point. 文開路，武守路 isn't a strategy for winning. It's a commitment to keep the road open, forever.
 
 So: yes, I think your infinite game framing is real, and it's the missing name for what the whitepaper has been doing all along without saying it. The question worth holding: *can the scoreboard (ledger, tokens, LLC) be designed to serve the game instead of ending it?* That's the design problem of the next decade — and it's exactly the kind of question the empty frame is for.
+
+
+### 🧑 Governor
+
+What I meant by triple diamond design thinking
+
+[Attachment auto-processed: **3e2ff4b3765542e1a2c726beb108b843.jpg**]
+- Type: Image (OCR confidence: 95.9%, quality: good)
+
+Extracted text:
+```
+Start with a vision Understand the problem Create the solution Vision Problem definition definition Challenge Solution
+```
+
+
+### 🤖 Autopilot
+
+Ah, now I see the actual diagram — and it's cleaner than what I was theorizing. The triple diamond is:
+
+**Diamond 1 — Start with a vision** → converges on a **Vision**
+**Diamond 2 — Understand the problem** → converges on a **Problem definition**
+**Diamond 3 — Create the solution** → converges on a **Challenge → Solution**
+
+So it's not "double diamond plus a feedback loop" as I guessed. It's a *sequence of three*: vision → problem → solution. Each diamond is a diverge/converge cycle, and the *chain* is the method.
+
+**What makes this specifically "triple" rather than "double":**
+
+The classic Double Diamond starts at *problem* — it assumes you already have a vision, or that the problem itself is the starting point. Your version inserts a diamond *before* the problem: **the vision diamond**. That's the crucial addition, and it's philosophically loaded:
+
+1. **Vision first** — you must diverge on what you *care about* and converge on a vision *before* you even ask what problem to solve. Most design thinking skips this. It starts mid-game. Your version says: the problem you choose to solve is downstream of the vision you hold — and the vision itself needs its own diamond of exploration.
+
+2. **Vision → Problem → Solution is a chain of commitments.** Each diamond converges into something that becomes the *given* for the next. The vision constrains which problems are worth seeing; the problem definition constrains which solutions are worth building. This is the recursion you described: the output of each diamond becomes the input to the next, changing the state of the work.
+
+3. **The empty frame connection** — each diamond's convergence is an act of *framing*: you deliberately close off a space ("this is the vision", "this is the problem") so that the next stage has a frame to work within. And the gap between diamonds — the empty space — is where imagination must fill. The diagram even shows "Challenge" bridging problem → solution, which is the frame where the constraint lives.
+
+**Where anatman enters:**
+
+If the self is provisional, then so is the *vision*. Diamond 1 doesn't discover a pre-existing vision — it *constitutes* one, and the next iteration (the infinite game) will reconstitute it. The triple diamond is the finite pass; the infinite game is the recursion across passes — each full vision→problem→solution cycle becomes one iteration whose output feeds the next vision diamond. That's why it's triple and not final: after the solution, you don't stop — the solution changes the world, which changes what vision is worth holding next.
+
+**And the pilgrimage maps to it perfectly:**
+
+- The vision diamond = the WHY unearthing (Liz's pilgrimage — the roundabout way that refused the $40k to find the real vision)
+- The problem diamond = the FDA/compliance understanding (the real problem of getting Indonesia cacao to the US — the 25 documents)
+- The solution diamond = the QR-verified chain, the context repos, the fork mechanism
+
+The triple diamond is the formal method; the pilgrimage is the lived version. They're the same shape.
+
+I stand corrected on my earlier guess — and your actual diagram is more interesting than my theory. The vision-first diamond is the thing that most organizations never do, because it can't be rushed or scored. Which is exactly why it's the empty frame that matters most.
 
