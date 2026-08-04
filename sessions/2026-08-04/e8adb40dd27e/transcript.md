@@ -141,12 +141,19 @@ https://baike.baidu.com/item/%E6%9F%B3%E4%BA%91%E8%99%8E/59181707
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The Baidu page itself returned almost nothing (mostly footer), but the news sources give a clear picture. Let me verify his current role with one more search.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Baidu page came back mostly empty (just footer), but the news trail is clear. Let me pull the fuller biography from the university lecture pages.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -426,4 +433,31 @@ Want me to also:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== CJK fonts ==="; fc-list :lang=zh 2>/dev/null | head -20; echo "=== tools ==="; which pandoc weasyprint libreoffice soffice xelatex; cat > /tmp/wp_zh.html <<'HTMLEOF' <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin: 2cm 1.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Report contribution by me of 25 minutes for assembling this white paper and sharing it with Evans. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Logging Gary's 25-minute contribution for the white paper assembly + sharing with Evans.
+
+
+### 🤖 Autopilot
+
+✅ **Logged.** Contribution submitted:
+
+- **Contributor:** Gary Teh
+- **Type:** Time (Minutes) — **25 min**
+- **What:** Assembled the bilingual white paper (EN + zh-CN) and shared with Evans
+- **Evidence:** PR #727 (white paper) + #729 (BRICS/BRI strategy brief)
+- **Status:** Contribution submitted ✓ (TDG award per DAO rules)
+
+The white paper and strategy brief remain in review — say the word if you want the zh-CN one-page exec summary or any v1.1 updates to the repo markdown next.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
