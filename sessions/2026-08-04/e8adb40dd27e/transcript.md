@@ -216,6 +216,7 @@ Understood — that reframes the play clearly. Let me lock in the thesis and get
 **The thesis:** China's problem isn't manufacturing capability, it's *verifiable traceability* → capped ESG ratings (below the AAA level US/EU manufacturers hold) → blocked market access. China is positioned to **export its digitalization** as a service, and our lineage stack — **already live in Brazil, a BRICS member and one of China's largest trading partners** — is the evidence layer that makes that service real. Deploy it to manufacturers in other BRICS + Belt & Road countries → they get verifiable ESG → AAA ratings → EU/US access.
 
 Let me add a bilingual strategy brief (companion to white paper PR #727) that carries exactly this narrative.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -460,4 +461,64 @@ The white paper and strategy brief remain in review — say the word if you want
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Hey, can we not mention true sight Dow in the PDF? Because we are interfacing with China. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let's white-label it for the China context. Regenerating both PDFs with all "TrueSight DAO" / truesight.me branding removed (neutral platform language instead).
+
+
+### 🤖 Autopilot
+
+EN PDF regenerated without branding. Now the zh-CN version (rebuilding the HTML with all TrueSight references removed):
+
+
+### 🤖 Autopilot
+
+The sed had an escaping error and 7 TrueSight references remain. Using Python for clean replacement instead:
+
+
+### 🤖 Autopilot
+
+Both PDFs regenerated — 0 TrueSight references left in the zh-CN text. But I need to check the **PDF metadata** (the EN generator stamps "TrueSight DAO Autopilot" as Author) and verify no leftover references in the EN text:
+
+
+### 🤖 Autopilot
+
+The EN PDF still shows 6 "TrueSight DAO" hits in page text — let me diagnose where they are (the de-branded content should have removed them) and fix both the text and the metadata author stamp:
+
+
+### 🤖 Autopilot
+
+Found it — the standard PDF generator hardcodes a **"TrueSight DAO" brand stamp in the header band on every page**. That's not acceptable for white-labeling, so I'll render the EN version the same clean way as the zh-CN (HTML + WeasyPrint, zero branding, proper metadata):
+
+
+### 🤖 Autopilot
+
+Both PDFs are now **completely white-labeled** — 0 branding hits in text, empty author metadata. Sending the cleaned versions:
+
+
+### 🤖 Autopilot
+
+✅ **Done — both white-labeled PDFs sent** (EN + zh-CN).
+
+**What changed:**
+- **Removed all "TrueSight DAO" / truesight.me branding** from text and PDF metadata (author field now empty)
+- Replaced with neutral terms: "the platform," "the lineage stack," "public verification page"
+- Both files re-rendered clean, same saffron styling, same structure
+
+**Verified:** 0 branding hits in either PDF's text; empty author metadata. Nothing traces back to the DAO.
+
+**Note for your awareness:** the underlying markdown on GitHub (PR #727 / #729) still carries the DAO branding — those are internal. If you want, I can also create **white-labeled repo copies** (e.g. under a neutral org/path) so there's a clean version to link externally. Otherwise these PDFs are ready to circulate.
+
+Want me to also generate the **one-page Chinese exec summary (一页纸)** in the same white-labeled style, or update the internal markdown to note that the external versions are de-branded?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → sed -i \ -e 's/TrueSight DAO/本平台/g' \ -e 's/TrueSight 谱系技术栈/供应链溯源平台/g' \ -e 's/TrueSight 谱系/谱系/g' \ -e 's/truesight\.me\/qr\/?id=&lt;qr_id&g; python3 - <<'PYEOF' import re p = '/tmp/wp_zh.html' s = open(p, encoding='utf-8').read() repl = [ ('TrueSight DAO', '本平台'), ('TrueSight 谱系技术; echo "=== EN text scan ==="; python3 - <<'PYEOF' import fitz for f in ['/tmp/TrueSight_SupplyChain_Traceability_Whitepaper_EN_draft.pdf','/t; …(+2 more)
 
