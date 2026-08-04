@@ -65,6 +65,7 @@ I have a good picture of our traceability stack now (lineage-assets, TrueChain, 
 ### 🤖 Autopilot
 
 Good — I now have the regulatory landscape (EU CSRD/CSDDD/EUDR + US UFLPA) and our full traceability stack. Let me check a few more things: where a whitepaper should live, and the existing China-partner thread (Aora/Jerri) so this integrates rather than duplicates.
+[4 tool result(s) compacted: search_code, read_repo_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -340,4 +341,32 @@ That precision changes the framing for the better — **MSCI ESG Ratings** (Morg
 **My recommendation:** upgrade #727 into the formal MSCI-focused white paper (EN + zh-CN), with a new section "Closing the MSCI Ratings Gap" that maps each MSCI Key Issue → our component → the evidence it produces. #729 stays the internal strategy brief.
 
 Want me to update **#727** (and #729) to name MSCI precisely and add that section? And still happy to generate the branded bilingual PDF + one-page Chinese exec summary once you've settled the direction.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Hey, can you generate a drop of the white paper and then share it here in PDF format with me so that I can have a look? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the draft — **White Paper v1.1 (EN), PDF sent to this chat** 📄
+
+**What's in it:**
+1. **Executive summary** — the compliance + MSCI ratings gap, and our live stack
+2. **The problem** — EU/US regimes (CSRD/CSDDD/EUDR/UFLPA) + the MSCI numbers (2% vs 34% disclosure; ~1.9% leaders)
+3. **The stack** — QR → lineage manifests → TrueChain → credentialing → notarization → verification, live in Brazil (1,457+ units)
+4. **Closing the MSCI gap** — maps MSCI Key Issues to our components
+5. **Factory mapping** — 7-step pipeline
+6. **SDG alignment** — SDG 2/8/9/12/13/15/16/17
+7. **BRICS + Belt & Road play** — export the digitization
+8. **Pilot plan + governance guardrails** — anti-greenwashing design
+9. **Mission tie-back** — 10,000 ha Amazon
+
+**Notes:**
+- This is the English version, brand-styled (Saffron Monk header). The zh-CN version needs a CJK-capable pipeline (aora convention) — I can generate it next.
+- Marked **Draft v1.1** so it's clearly a review copy.
+- The underlying markdown (PR #727) + strategy brief (#729) are still on GitHub if you want to point Liu/partners to the repo versions.
+
+Want me to (a) generate the **zh-CN PDF** next, (b) adjust any section (tone, length, add a named pilot), or (c) also send the **one-page Chinese exec summary**?
 
