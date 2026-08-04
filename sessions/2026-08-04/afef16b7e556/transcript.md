@@ -4930,6 +4930,7 @@ Let me search the whitepaper HTML for the Double Diamond and related concepts.
 ### 🤖 Autopilot
 
 The read is truncated. Let me fetch the raw whitepaper HTML and search it directly for the relevant sections.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5500,4 +5501,75 @@ The line for the chapter would be:
 > *"Each iteration of the infinite game is a step along the dharma practice. The game is the gate; the gate is the way; the way is walked, not arrived."*
 
 Want me to fold this into the chapter PDF — a closing section on the dharma gate, right before "The Frame Is Left Empty"?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Generate the cohesive full chapter as a pdf file
+
+
+### 🤖 Autopilot
+
+I'll generate the complete chapter PDF — now incorporating the dharma gate section as the closing movement, in the established brand format. Let me build it with the working font setup.
+
+
+### 🤖 Autopilot
+
+Let me verify the Chinese renders correctly — especially the new dharma gate section.
+
+
+### 🤖 Autopilot
+
+The body Chinese renders correctly, but I spot a problem in the **station headings** — the CJK characters (余姚, 武当山, 少林达摩洞, 秦始皇陵, etc.) are showing as "II"/"IIII" placeholders because the `heading()` function uses Helvetica-Bold directly, which has no CJK glyphs. The body paragraphs use the mixed-run renderer (correct), but headings don't. Let me fix that.
+
+
+### 🤖 Autopilot
+
+Now let me verify the headings render Chinese correctly.
+
+
+### 🤖 Autopilot
+
+All station headings now render the Chinese correctly — 余姚, 武当山, 少林达摩洞, 秦始皇陵, 炎帝, 黄帝, 泰山玉皇頂, 故宫, 天坛, 白云观, 腾格里 all present. Let me check the final pages (dharma gate + closing) render correctly.
+
+
+### 🤖 Autopilot
+
+Let me check the final page (closing) renders correctly.
+
+
+### 🤖 Autopilot
+
+Let me check the final page 4 to confirm the closing renders correctly.
+
+
+### 🤖 Autopilot
+
+Let me do a final targeted check of page 4's tail to confirm the closing renders.
+
+
+### 🤖 Autopilot
+
+All 4 pages verified — every station heading renders Chinese correctly (余姚, 武当山, 少林达摩洞, 秦始皇陵, 炎帝, 黄帝, 泰山玉皇頂, 故宫, 天坛, 白云观, 腾格里), the body Chinese passages render (物極必反, 色即是空 空即是色, 反者道之動, 文開路武守路), and the dharma gate section is complete. Sending the final PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **"The Road and the Guard"** — the complete cohesive chapter, 4 pages, brand-styled:
+
+**The arc of the chapter:**
+
+1. **Opening** — the $40,000 refusal; two kinds of roads; the pilgrimage as the method
+2. **The Stations of the Road** — all eleven stops, each a teaching:
+   - 余姚 (gratitude) → 武当山 (convergence) → 少林达摩洞 (the empty frame) → 秦始皇陵 (power inverted) → 炎帝 (the soil) → 黄帝 (civilization) → 泰山玉皇頂 (the covenant) → 故宫 (the mandate) → 天坛 (renewal) → 白云观 (transmission) → 腾格里 (the open sky)
+3. **The Method Beneath the Journey** — triple diamond, Heart Sutra (色即是空), enantiodromia (反者道之動)
+4. **Why the Pilgrimage** — borrowed whys vs discovered whys; anatman
+5. **The Dharma Gate** — each iteration as a gate: vision→problem→solution as three gates, enantiodromia as the hinge, anatman as what you shed, 84,000 gates
+6. **The Frame Is Left Empty** — the closing: *文開路，武守路 — the road is open. Walk it.*
+
+All Chinese glyphs verified rendering correctly across all 4 pages — headings, body, and closing. The chapter is cohesive: the pilgrimage is the argument, the philosophy rises from the stops, and the dharma gate closes the loop on the infinite game.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && cat > make_chapter_final.py << 'PYEOF' # -*- coding: utf-8 -*- import re from reportlab.lib.pagesizes import A4 from reportlab.li; cd /tmp && python3 - << 'PYEOF' with open('/tmp/make_chapter_final.py', 'r') as f: src = f.read() old = """def heading(txt, size=13): global
 
