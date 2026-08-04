@@ -82,11 +82,13 @@ I now have the full picture. Let me synthesize:
 - **Regulatory reality** (verified via web): EU CSRD/CSDDD/EUDR demand granular ESG + due-diligence evidence; US UFLPA + CBP June 2026 guidance demand batch-level traceability, supply-chain mapping, third-party audits — exactly the "rating issue" Chinese exporters fail.
 
 Now let me draft the bilingual white paper and open a PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The call got malformed — let me retry with proper parameters.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -369,4 +371,59 @@ Here's the draft — **White Paper v1.1 (EN), PDF sent to this chat** 📄
 - The underlying markdown (PR #727) + strategy brief (#729) are still on GitHub if you want to point Liu/partners to the repo versions.
 
 Want me to (a) generate the **zh-CN PDF** next, (b) adjust any section (tone, length, add a named pilot), or (c) also send the **one-page Chinese exec summary**?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Will you share the Chinese version with me as well? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me set up the CJK-capable pipeline (the standard PDF generator uses Helvetica, which can't render Chinese). Checking what's available on the box and whether the aora convention already has a CJK pipeline.
+
+
+### 🤖 Autopilot
+
+The box has **Noto Sans CJK SC** fonts + **weasyprint** — I can render a proper Chinese PDF (the standard generator uses Helvetica which can't do CJK). Building the zh-CN version now with the same saffron styling:
+
+
+### 🤖 Autopilot
+
+My mistake — the parameters went to the wrong place. Retrying the shell command properly:
+
+
+### 🤖 Autopilot
+
+zh-CN PDF generated (with embedded Noto Sans CJK). Sending it now:
+
+
+### 🤖 Autopilot
+
+Done — **Chinese version sent** 📄 (same chat, right above)
+
+**中文版白皮书 v1.1** — same structure as the English draft:
+- 一、摘要 (Executive Summary)
+- 二、问题：合规与评级缺口 (MSCI ESG ratings gap + EU/US regimes)
+- 三、我们已有的：TrueSight 谱系技术栈（已在巴西运营）
+- 四、弥合 MSCI 评级缺口
+- 五、技术栈如何映射到中国出口工厂
+- 六、ESG 与 SDG 对齐 (SDG 2/8/9/12/13/15/16/17)
+- 七、金砖 + 一带一路战略
+- 八、试点计划 / 九、治理护栏 / 十、使命联结
+
+Rendered with **Noto Sans CJK SC** so the Chinese typesets cleanly (proper 排版, not tofu boxes). Brand-styled to match the English version.
+
+**Both files now on disk:**
+- `/tmp/TrueSight_SupplyChain_Traceability_Whitepaper_EN_draft.pdf`
+- `/tmp/TrueSight_SupplyChain_Traceability_Whitepaper_ZH_draft.pdf`
+
+Want me to also:
+- **a)** update PR #727 markdown to v1.1 (with the MSCI section) so the repo matches what you're sharing, or
+- **b)** generate the **one-page Chinese exec summary** (一页纸) for quick circulation, or
+- **c)** leave as-is until you've reviewed?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== CJK fonts ==="; fc-list :lang=zh 2>/dev/null | head -20; echo "=== tools ==="; which pandoc weasyprint libreoffice soffice xelatex; cat > /tmp/wp_zh.html <<'HTMLEOF' <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="utf-8"> <style> @page { size: A4; margin: 2cm 1.
 
