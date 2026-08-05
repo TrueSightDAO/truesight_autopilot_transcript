@@ -673,11 +673,13 @@ On it — a focused task brief for Peter & Baluka: investigate the **mappings** 
 ### 🤖 Autopilot
 
 PDF is done (3 pages, clean). The MD push failed on a parameter issue — retrying with the required fields:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 MD is up as **PR #732**. Now sending the white-labeled PDF to the chat:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -864,4 +866,53 @@ Want me to prepare anything else before the review — e.g. a **fill-in report t
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
 • `ssh run` → python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() # Insert section 0 (Trade Accelerator context) before sectio
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] In that document also include the details for the document prepared for Liu which makes what Baluca and Peter to work on relevant for her efforts
+
+
+### 🤖 Autopilot
+
+Adding the Liu-document context to the brief so Baluka & Peter see exactly how their mapping work feeds Elizabeth Wong's accelerator (the delivery layer for the case Liu received). Updating MD + PDF:
+
+
+### 🤖 Autopilot
+
+MD and PDF both updated (now 4 pages). Sending the revised PDF:
+
+
+### 🤖 Autopilot
+
+✅ **Done — v0.3 sent (MD + PDF, now 4 pages).**
+
+## What's new — §0.1 "Why this is relevant: the strategic document prepared for Liu (UN SDG)"
+
+Gives Baluka & Peter the **strategic line of sight**:
+
+1. **The document:** white paper *"Supply-Chain Traceability for Chinese Exports"* (EN + zh-CN) prepared for **Liu Yunhu, Chair of the UN SDG Global Cooperation Project Working Committee**
+2. **Its thesis (recap for them):**
+   - Chinese manufacturers capped below top ESG ratings (MSCI AAA/AA) + EU/US barriers (CSRD/CSDDD/EUDR; UFLPA/CBP) — **not performance, but verifiable-evidence gap** (2% vs 34% disclosure; ~1.9% leaders)
+   - Fix = **verifiable per-unit traceability** (QR → manifest → chain → notarized → scan-verifiable)
+   - **Proven live in Brazil**; play = exporting the digitalization across BRICS + Belt & Road, UN SDG-aligned
+3. **The link to their work (the key line):** Elizabeth Wong's **Trade Accelerator is the operational vehicle** that delivers this thesis — and **every accelerator program sits on the infrastructure they are mapping**. Their mappings determine **which accelerator programs (and which promises in the Liu document) can actually be delivered in mainland China.** Their investigation is the *delivery layer* for the case Liu received.
+
+**Verified in PDF:** 0 Gitee/Tencent/WeChat, Trade Accelerator ×4, Liu ×5, MSCI ×2 — clean white-label, no pre-filled platform suggestions.
+
+**Files:**
+- MD → PR #732 branch: `china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md` (v0.3)
+- PDF → sent above
+
+Ready for the in-office review day after tomorrow. Want me to prepare the **fill-in report template** (`CHINA_ECOSYSTEM_MAPPINGS_REPORT.md`) so the team just completes rows, or leave it for them?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
+• `ssh run` → python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() sec = '''<h2>0.1 Why this is relevant: the strategic document prepared for Liu (UN SDG)</h2> ...
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
+• `ssh run` → python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() sec = '''<h2>0.1 Why this is relevant: the strategic documen
 
