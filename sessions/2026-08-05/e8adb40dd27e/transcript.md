@@ -581,11 +581,13 @@ I have the org-level picture. Let me pull the key codebase READMEs and CI/CD wor
 ### 🤖 Autopilot
 
 Let me quickly confirm the TrueChain default branch and check a couple of CI workflow files so the brief names real artifacts.
+[3 tool result(s) compacted: search_code, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me quickly check the TrueChain repo default branch and the autopilot workflows to name things accurately.
+[2 tool result(s) compacted: read_repo_file, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -751,4 +753,64 @@ The key point: **our "表格 → 镜像 → 链" architecture survives intact** 
 ---
 
 Want me to fold this into the mappings brief as a **recommended verdict for row #4** (and note it in the MD/PDF for Peter & Baluka so they verify 腾讯文档智能表 vs 飞书 against their existing accounts)? I can push a small update to PR #732.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Don’t attempt to propose anything for the Chinese team in terms of tech infrastructure 
+
+They need to do the investigations
+
+
+### 🤖 Autopilot
+
+Understood — no proposals from our side; the China team does their own investigation. I'll strip the pre-filled Gitee/Tencent/WeChat cells and verdict markers out of the mappings brief so it's a pure investigation template, update PR #732, and regenerate the PDF.
+
+
+### 🤖 Autopilot
+
+MD updated on the branch. The PDF still has a few platform-name mentions in §1 — let me find and clean them:
+
+
+### 🤖 Autopilot
+
+Two leftover references in §1 and the review agenda. Cleaning both to keep the brief purely investigative:
+
+
+### 🤖 Autopilot
+
+The §1 line didn't match because the HTML had different markup than my search string. Let me look at the actual text:
+
+
+### 🤖 Autopilot
+
+Clean — 0 platform-name mentions in the PDF now. The MD was already updated via the upload. Sending the corrected PDF:
+
+
+### 🤖 Autopilot
+
+✅ **Done — updated and re-sent.**
+
+## What changed
+
+Both the MD (on PR #732 branch) and the PDF now carry **zero platform suggestions**:
+
+- **§3 Master mapping table** — now a **blank fill-in template**: `Your ecosystem (fill) | Evidence | Recommendation` per capability. No Gitee/Tencent/WeChat columns, no [OK]/[PARTIAL] markers, no verdicts.
+- **§1 & §6** — removed the Gitee/Tencent Cloud/WeChat and CloudBase/scaffold references; review agenda now just "walk your 14 rows → review recommendations → sign off direction → assign next actions."
+- **§5** — renamed "How to test (quick guide)" → **"How to investigate (team's discretion)"** — they use their own method, existing accounts, and their own candidate platforms.
+- **Header note** now states explicitly: *"候选平台与基础设施方案由你们自行调查决定，本简报不预设任何建议"* (platform choices are the team's investigation output; the brief deliberately pre-fills nothing).
+
+## Verified
+
+- PDF: **0** mentions of Gitee / Tencent / WeChat / CloudBase anywhere (text scan)
+- MD on branch: updated to match
+
+The brief is now purely: *here are the 14 capabilities we need, here's how we currently do them, go investigate your ecosystem and bring back status → evidence → recommendation for the review.*
+
+Anything else you want adjusted before the in-office review?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
+• `ssh run` ×6 → python3 - <<'PYEOF' import re p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() # Replace section 3 (master mapping table) with a ; python3 - <<'PYEOF' import fitz f='/tmp/China_Ecosystem_Mappings_TaskBrief_draft.pdf' doc=fitz.open(f) for i,p in enumerate(doc): for line i; python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() s=s.replace('what you already have (your current ecosystem),; …(+2 more)
 
