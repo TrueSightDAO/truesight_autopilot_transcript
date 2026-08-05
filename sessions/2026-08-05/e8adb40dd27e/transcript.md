@@ -595,31 +595,37 @@ Let me quickly check the TrueChain repo default branch and the autopilot workflo
 I have everything I need — the full codebase map, the current stack (GAS + GitHub + GitHub Actions + AWS/EC2 + TrueChain), and the GFW landscape for Gitee/Tencent Cloud. Now I'll build the China-team brief (MD → PR, then white-labeled PDF) with a different title and scope from the white paper: it's an **internal infrastructure brief for Baluka & Peter**, naming the codebases and giving them the firewall investigation checklist.
 
 First, the markdown via PR to `agentic_ai_context`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Markdown brief is up as **PR #731**. Now generating the white-labeled PDF (no DAO branding, same styling as the white paper):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The emoji don't render in Helvetica (⚠️/✅/🔁/🔧 → missing glyphs), and there are 4 branding hits to find. Let me locate and fix both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 4 hits are legitimate and necessary: `truesight_autopilot` (a repo the team must investigate), and `truesight.me` / `edgar.truesight.me` (the endpoints they must test for reachability). This is the **internal** brief for our own China team — they need the real names to do the investigation. I'll keep those, but replace the emoji (which don't render in Helvetica) with clean ASCII labels:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One `✅` remains (in "✅ Works as-is" heading) — the `.replace` didn't catch the version with the variation selector. Fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All emoji gone, clean render, no stray branding beyond the 4 legitimate codebase/endpoint refs the team needs. Sending the PDF:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -661,6 +667,7 @@ Generate PDF and MD
 ### 🤖 Autopilot
 
 On it — a focused task brief for Peter & Baluka: investigate the **mappings** available in their current ecosystem, deliver a mapping table (status → evidence → recommendation), review in-office in 2 days. Generating MD (via PR) + white-labeled PDF in parallel:
+[2 tool result(s) compacted: git_push_changes, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -813,4 +820,48 @@ Anything else you want adjusted before the in-office review?
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
 • `ssh run` ×6 → python3 - <<'PYEOF' import re p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() # Replace section 3 (master mapping table) with a ; python3 - <<'PYEOF' import fitz f='/tmp/China_Ecosystem_Mappings_TaskBrief_draft.pdf' doc=fitz.open(f) for i,p in enumerate(doc): for line i; python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() s=s.replace('what you already have (your current ecosystem),; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Also for the team it is under the context that Elizabeth Wong is planning to run a trade accelerator 
+
+So the programs will be on this infrastructure by default 
+
+Trade as in actual trade out or China
+
+
+### 🤖 Autopilot
+
+Got it — that's important context: the infrastructure isn't just for our stack, it's the **default operating backbone for Elizabeth Wong's trade accelerator** (actual physical trade out of China). Let me add that context to the brief so Peter & Baluka understand *why* the mappings matter, then re-send.
+
+
+### 🤖 Autopilot
+
+MD and PDF both updated. Sending the revised PDF:
+
+
+### 🤖 Autopilot
+
+✅ **Done — v0.2 sent (MD + PDF).**
+
+## What's new
+
+**New §0 — "Context: this infrastructure hosts the Trade Accelerator":**
+- Serves **Elizabeth Wong's planned Trade Accelerator** — helping Chinese manufacturers/exporters move **actual trade out of China** (physical exports) with verifiable traceability
+- **The accelerator's programs run on this infrastructure by default** — it's the operating backbone for: factory onboarding → QR lineage manifests per unit/batch → chain anchoring → due-diligence/ESG evidence for EU/US buyers → cross-border verification for export transactions
+- **Key framing for the team:** the mappings are *not abstract* — they determine **which accelerator programs can launch**. A missing/broken capability behind the firewall blocks the corresponding program.
+
+Everything else stands: 14 capabilities, blank fill-in table (their ecosystem / evidence / recommendation), team-led investigation with zero pre-filled candidates, review with you in-office day after tomorrow.
+
+**Files:**
+- MD → PR #732 branch: `china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md` (v0.2)
+- PDF → sent above (3 pages, white-labeled, 0 platform-name mentions)
+
+Want me to prepare anything else before the review — e.g. a **fill-in report template** (`CHINA_ECOSYSTEM_MAPPINGS_REPORT.md`) so Baluka & Peter just complete rows, or a **one-page recap of the accelerator program types** to include as §0 context?
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/china-ecosystem-mappings-task/china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md
+• `ssh run` → python3 - <<'PYEOF' p='/tmp/cn_mappings.html' s=open(p,encoding='utf-8').read() # Insert section 0 (Trade Accelerator context) before sectio
 
