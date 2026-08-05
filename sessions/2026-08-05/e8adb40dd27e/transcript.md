@@ -575,6 +575,7 @@ Good — this is a different document: an internal technical brief for the China
 ### 🤖 Autopilot
 
 I have the org-level picture. Let me pull the key codebase READMEs and CI/CD workflow details so the brief points at real, named artifacts.
+[6 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -698,4 +699,56 @@ MD is up as **PR #732**. Now sending the white-labeled PDF to the chat:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/cn_mappings.html <<'HTMLEOF' <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <title>China Ecosystem Mappings Inves
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] Also what is an appropriate replacement for Google sheet for China ecosystem
+
+
+### 🤖 Autopilot
+
+Good question — it's capability #4 in the mapping table, and it's the right one to nail down because our whole "source of truth → mirror to chain" pattern depends on it. Let me quickly ground the China spreadsheet/API options before recommending.
+
+
+### 🤖 Autopilot
+
+Grounded answer — here's the recommendation for **capability #4 (database/ledger)** in the China mapping.
+
+## Short answer: **腾讯文档智能表 (Tencent Docs Smartsheet)** as the primary replacement — with **飞书多维表格 (Feishu Bitable)** as the strong alternative.
+
+## Why 腾讯文档智能表 (primary)
+
+| Factor | Tencent Docs 智能表 |
+|---|---|
+| API | Open API (docs.qq.com/open) — same **OAuth2 pattern** as Google Sheets, CRUD on 在线表格 + 智能表 |
+| Free tier | 20,000 API calls/app (as of Jul 2025) — fine for pilot |
+| Ecosystem fit | Stays inside **Tencent** (CloudBase/COS/CODING already in our China architecture) |
+| Compliance | Data in China → PIPL-friendly, no Google access issue |
+| Mirror pattern | 智能表 → 云函数/SCF → TrueChain anchor = **exact same flow** as Sheets → GAS → chain today |
+
+## Why 飞书多维表格 (strong alternative)
+
+- **2,500+ server APIs**, Bitable does **>50,000 rows/table**, real CRUD on records/fields — the *stronger developer API* of the two
+- Adopted by DeepSeek, XPeng, 名创优品 — proven in manufacturing/tech
+- **Catch:** it pulls ByteDance's ecosystem in (second vendor), only pick if the China team already runs on 飞书
+
+## The layered answer (what I'd recommend)
+
+Don't replace "Sheets" with one thing — match the layers:
+
+| Layer | Today | China replacement |
+|---|---|---|
+| **Human-editable ledger / source of truth** | Google Sheets | **腾讯文档 智能表** (or 飞书多维表格 if team is on Feishu) |
+| **Automation runtime** (GAS logic) | Apps Script | Tencent CloudBase / SCF / 微信云开发 (capability #3) |
+| **Scaled data store** (when rows grow) | Sheets (bad at this anyway) | Tencent Cloud DB (TDSQL/MySQL) or 云开发数据库 |
+| **Anchoring** | TrueChain mirror | TrueChain node on CVM — unchanged ✅ |
+
+The key point: **our "表格 → 镜像 → 链" architecture survives intact** — only the table host and the function runtime change. That's the whole value of keeping the schema/platform-agnostic.
+
+**What to avoid:** don't dual-write Google Sheets from inside China (blocked + PIPL exposure); keep Google Sheets only for the offshore/Brazil ledger.
+
+---
+
+Want me to fold this into the mappings brief as a **recommended verdict for row #4** (and note it in the MD/PDF for Peter & Baluka so they verify 腾讯文档智能表 vs 飞书 against their existing accounts)? I can push a small update to PR #732.
 
