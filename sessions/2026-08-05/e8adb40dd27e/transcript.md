@@ -412,11 +412,13 @@ The box has **Noto Sans CJK SC** fonts + **weasyprint** — I can render a prope
 ### 🤖 Autopilot
 
 My mistake — the parameters went to the wrong place. Retrying the shell command properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 zh-CN PDF generated (with embedded Noto Sans CJK). Sending it now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -456,7 +458,13 @@ Want me to also:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Logging Gary's 25-minute contribution for the white paper assembly + sharing with Evans.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -484,36 +492,43 @@ The white paper and strategy brief remain in review — say the word if you want
 ### 🤖 Autopilot
 
 Good call — let's white-label it for the China context. Regenerating both PDFs with all "TrueSight DAO" / truesight.me branding removed (neutral platform language instead).
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EN PDF regenerated without branding. Now the zh-CN version (rebuilding the HTML with all TrueSight references removed):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sed had an escaping error and 7 TrueSight references remain. Using Python for clean replacement instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs regenerated — 0 TrueSight references left in the zh-CN text. But I need to check the **PDF metadata** (the EN generator stamps "TrueSight DAO Autopilot" as Author) and verify no leftover references in the EN text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The EN PDF still shows 6 "TrueSight DAO" hits in page text — let me diagnose where they are (the de-branded content should have removed them) and fix both the text and the metadata author stamp:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the standard PDF generator hardcodes a **"TrueSight DAO" brand stamp in the header band on every page**. That's not acceptable for white-labeling, so I'll render the EN version the same clean way as the zh-CN (HTML + WeasyPrint, zero branding, proper metadata):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs are now **completely white-labeled** — 0 branding hits in text, empty author metadata. Sending the cleaned versions:
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -554,6 +569,7 @@ Make sure to generate MD aND PDF
 ### 🤖 Autopilot
 
 Good — this is a different document: an internal technical brief for the China team (Baluka & Peter under Liz), focused on infrastructure mapping (GAS / GitHub / GitHub Actions → what survives behind the Chinese firewall) and pointing at the actual codebases. Let me ground it in our real stack first.
+[5 tool result(s) compacted: search_code, search_code, list_org_repos, search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -630,4 +646,56 @@ Want me to also produce a **zh-CN version** of this brief for the team, or add a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cat > /tmp/cn_brief.html <<'HTMLEOF' <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <title>China Team Technical Brief — Trac; python3 - <<'PYEOF' import fitz f='/tmp/China_Team_Infrastructure_Brief_draft.pdf' doc=fitz.open(f) for i,p in enumerate(doc): for line in p; python3 - <<'PYEOF' p='/tmp/cn_brief.html' s=open(p,encoding='utf-8').read() s=s.replace('❌ No','[NO]') s=s.replace('✅ Yes','[YES]') s=s.rep; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10240] For Peter and Baluka their task is to investigate what are the mappings available in their current ecosystem and then the day after tomorrow when I am in the office we go through a round of review 
+
+Generate PDF and MD
+
+
+### 🤖 Autopilot
+
+On it — a focused task brief for Peter & Baluka: investigate the **mappings** available in their current ecosystem, deliver a mapping table (status → evidence → recommendation), review in-office in 2 days. Generating MD (via PR) + white-labeled PDF in parallel:
+
+
+### 🤖 Autopilot
+
+PDF is done (3 pages, clean). The MD push failed on a parameter issue — retrying with the required fields:
+
+
+### 🤖 Autopilot
+
+MD is up as **PR #732**. Now sending the white-labeled PDF to the chat:
+
+
+### 🤖 Autopilot
+
+✅ **Done — both delivered.**
+
+## What Peter & Baluka have to do
+
+**Investigate the mappings in their current ecosystem** — for each of **14 capabilities** (code hosting → CI/CD → serverless runtime → database → storage → QR generation → QR verification → blockchain anchoring → identity → notarization → event API → domain/ICP → comms → monitoring), find which can be served by **what they already run**, and which need **Gitee / Tencent Cloud / WeChat** counterparts.
+
+## Deliverables
+
+| Artifact | Where |
+|---|---|
+| **MD** — task brief | PR **#732** → `china/CHINA_ECOSYSTEM_MAPPINGS_TASK.md` (agentic_ai_context) |
+| **PDF** — white-labeled, 3 pages | Sent above (no DAO branding) |
+
+## Key structure
+
+- **§2 The 14 capabilities** — each mapped to our current implementation (GAS, GitHub, GitHub Actions, AWS)
+- **§3 Master mapping table** — their ecosystem column (to fill), Gitee/Tencent/WeChat pre-filled from public knowledge with **[OK]/[PARTIAL]** markers — **must verify with real accounts**
+- **§4 Deliverable format** — status → evidence → recommendation per row; report filed as `china/CHINA_ECOSYSTEM_MAPPINGS_REPORT.md`
+- **§5 Quick test guide** — GitHub reachability, Gitee org + Gitee Go, Tencent CODING/CloudBase/COS/SCF, WeChat mini-program + 云开发
+- **§6 Review agenda (day after tomorrow)** — walk 14 rows → verdicts (采用/镜像/重建) → sign off architecture → assign next actions
+
+**One thing to confirm:** the review is with you in-office day after tomorrow — want me to also prepare a **fill-in-the-blank report template** (`CHINA_ECOSYSTEM_MAPPINGS_REPORT.md` scaffold) so Baluka & Peter just fill rows and we're not waiting on formatting? And should the mappings report come back in **both EN and zh-CN**?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat > /tmp/cn_mappings.html <<'HTMLEOF' <!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <title>China Ecosystem Mappings Inves
 
