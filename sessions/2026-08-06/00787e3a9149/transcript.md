@@ -586,6 +586,11 @@ Aora · Agroverse / TrueSight DAO · page 6 of 6
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it — that's the **Aora Module 1 — Agroforestry PDF** (the same one I sent you earlier from the `aora` repo). It's the canonical format reference: big ideas → who it's for → SDG alignment → settings matrix → atomic exercises with live + fallback versions → session templates → evidence & credentialing → open questions.
 
 Assuming you're pointing at this as the **template/format** for the new program pillars you're dictating (PBL, student exchange, post-graduation outcomes, farm stay), here's how I'd map them onto this structure:
@@ -983,6 +988,11 @@ Aora · Agroverse / TrueSight DAO · page 7 of 7
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it — that's **Aora Module 2 — Supply Chain: Bean to Bar to You** (v0.2). Now I have both canonical modules in hand:
 
 **Module 1 — Agroforestry** (AF-1…AF-8): forest → dried bean
@@ -1102,4 +1112,134 @@ Added! Here's where things stand:
 Want me to:
 1. **Draft the one-pager** for Cao/Evan now (Aora + WeAcademy proposal), or
 2. Wait until after the Beijing meeting and draft it with what actually comes out of it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] Make sure to add that Evan will be visiting Brazil Bahia to checkout Oscar’s farm 1st October to 7th October 2026 
+
+Update the PDF
+
+
+### 🤖 Autopilot
+
+On it — I'll add the farm visit dates to the follow-up and find which PDF needs updating. Let me look for "Oscar" references and the current PDFs first.
+
+
+### 🤖 Autopilot
+
+Let me check what PDFs exist in the `aora` repo — the module PDFs I sent earlier, plus any plan PDF that would carry Evan's farm-visit dates.
+
+
+### 🤖 Autopilot
+
+Let me inspect the `aora` repo structure to find which PDFs exist and where Evan's farm-visit dates belong.
+
+
+### 🤖 Autopilot
+
+Let me find which PDF carries the Aora plan/event content — checking for a plan or brief PDF org-wide, plus the event brief.
+
+
+### 🤖 Autopilot
+
+Let me check the events calendar and search for any existing Aora plan PDF that would carry Evan's farm-visit dates.
+
+
+### 🤖 Autopilot
+
+Let me check those two interesting directories — `oscar-branch` and `mun_kit` (Model UN) might hold the PDF in question.
+
+
+### 🤖 Autopilot
+
+Let me check the attachment folder and search for any existing program PDF that would carry these dates.
+
+
+### 🤖 Autopilot
+
+Let me check what that other PDF in the attachments folder is, and look for any existing Aora program PDF.
+
+
+### 🤖 Autopilot
+
+Let me look harder for any existing Aora program/plan PDF before updating — checking branches and past transcripts.
+
+
+### 🤖 Autopilot
+
+Let me check whether there's an existing Aora plan/event PDF anywhere in agentic_ai_context before I create/update one.
+
+
+### 🤖 Autopilot
+
+The tree is huge. Let me grep it for PDF files specifically.
+
+
+### 🤖 Autopilot
+
+Found it — there's a **`plans/AORA_EXPERIENCE_PLAN.pdf`** (18,752 bytes) in agentic_ai_context, which is the PDF of the master Aora plan. That's the one to update with Evan's farm visit dates. Let me download and inspect it.
+
+
+### 🤖 Autopilot
+
+Let me see the remaining pages of this plan PDF before updating.
+
+
+### 🤖 Autopilot
+
+The plan PDF is generated from `plans/AORA_EXPERIENCE_PLAN.md` (markdown). I'll update the markdown source and regenerate the PDF. First, let me get the exact current source text to anchor the edit.
+
+
+### 🤖 Autopilot
+
+Found the right file: `plans/AORA_EXPERIENCE_PLAN.md` (403 lines) → generates `plans/AORA_EXPERIENCE_PLAN.pdf`. Let me find how the PDF was generated so I regenerate it consistently.
+
+
+### 🤖 Autopilot
+
+Let me find the PDF generation tooling convention for these plan PDFs.
+
+
+### 🤖 Autopilot
+
+There's a convention: `scripts/build_*.pdf.py` generate the PDFs via markdown + weasyprint. Let me find the Aora plan PDF builder.
+
+
+### 🤖 Autopilot
+
+No dedicated build script for this PDF in the repo. Let me look at the PDF style convention and the source markdown sections I need to edit, plus check the footer of the existing PDF for the generator.
+
+
+### 🤖 Autopilot
+
+The plan PDF is generated from `plans/AORA_EXPERIENCE_PLAN.md`. Let me see the full rest of the markdown (to place the edit well) and check the PDF-generation tooling used.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Here's where things stand, Gary — I've done the full reconnaissance but **haven't made the edit yet** (I hit my per-turn tool limit), so here's a clean handoff:
+
+**What I found**
+- There's **no dedicated "Aora program" PDF beyond the two module PDFs**. The document that should carry Evan's Brazil trip is the **master plan**: `plans/AORA_EXPERIENCE_PLAN.md` → its generated PDF `plans/AORA_EXPERIENCE_PLAN.pdf` (8 pages, 18.7 KB).
+- The PDF is **generated from the markdown** via the weasyprint convention (`scripts/build_*.pdf.py` pattern, Saffron Monk CSS — the `build_warmup_autosend_plan_pdf.py` script is the best template). Note: there is **no checked-in `build_aora` script**, and the PDF footer points to the file at repo root while it actually lives under `plans/` — so it was a one-off generation.
+- Evan is already in the plan as "venue consultant" (Workstream 4) and "Teacher Evan" (event brief). Oscar's farm = **Oscar's Fazenda, Bahia** (AGL4 — ceremonial cacao).
+- The WeAcademy follow-up is logged in OPEN_FOLLOWUPS.md (PR #735 pending).
+
+**What's left to do (next turn — ~5 tool calls)**
+1. **Edit `plans/AORA_EXPERIENCE_PLAN.md`**: add a line under Workstream 4 / Timeline (and the "Decisions Locked" list) — *"Evan visits Oscar's farm, Bahia, Brazil — Oct 1–7, 2026 (site check for Aora farm-stay leg)"* — and bump "Last updated" to 2026-08-06.
+2. **Regenerate the PDF**: `pip install markdown weasyprint` (if needed) → run a one-off weasyprint build mirroring `build_warmup_autosend_plan_pdf.py` CSS → output `plans/AORA_EXPERIENCE_PLAN.pdf`.
+3. **Open one PR** (`git_push_changes` on agentic_ai_context) with both the `.md` and `.pdf` changes.
+4. Optionally add the farm-visit date to the OPEN_FOLLOWUPS WeAcademy entry so Evan's Brazil window is on record there too.
+
+**RESUME HERE →** next turn: edit `plans/AORA_EXPERIENCE_PLAN.md` (add Evan Brazil visit Oct 1–7 2026), regenerate the PDF via weasyprint, open PR. I have `/tmp/aora_plan.md` (current source) and `/tmp/aora_plan.pdf` (current PDF) already downloaded on the autopilot box.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/trees/main?recursive=1" | python3 -c " import json,sys d=json.load; cd /tmp && curl -sL -o aora_plan.pdf "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/AORA_EXPERIENCE_PLAN.pdf"; curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/AORA_EXPERIENCE_PLAN.md" -o /tmp/aora_plan.md && wc -; …(+1 more)
 
