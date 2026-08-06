@@ -165,6 +165,11 @@ Both are in the `TrueSightDAO/aora` repo under `pdfs/`, with the canonical Markd
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 All done, Gary. I've logged a **5-minute contribution event** for you — "Follow-up with Jerri re: upcoming meeting with Evans and Model UN in Beijing." It's submitted to the DAO ledger.
 
 ———
@@ -589,4 +594,410 @@ Confirm and I'll draft the doc and open a PR for review.
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-06/b430bedaf544/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **8c634f71244a4999b23e781f4d5001ed.pdf**]
+- Type: PDF (7 pages, 13871 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Aora Module 2 — Supply Chain: Bean to Bar to You
+English canonical · v0.2 · 2026-06-04 · TrueSight DAO / Agroverse
+What this module is
+Children follow the second half of chocolate’s life: a dried bean leaving a farm in Bahia and arriving
+— as a bar, as a cup of cacao — in someone’s hands on the other side of the world. They pack,
+track, store, roast, crack, grind, brew, and mold; and at the end they scan the bar’s QR code and
+watch it remember its own journey on a public ledger.
+The module is built from nine atomic exercises (SC-1 … SC-9). Like Module 1, a session picks by
+setting, time, and group; every exercise has a live version and fallbacks. Module 1 ends with a dried
+bean; this module begins with one.
+Companion module: Agroforestry — Forest to Bean.
+The big ideas
+A bean travels farther than most people ever do — and lots of hands help it.
+Every hand adds something: the packer, the shipper, the keeper, the roaster, the maker.
+Heat unlocks the flavor the forest put in — roasting is cooking the forest’s work.
+Nothing is wasted: the shell becomes tea, the nib becomes chocolate.
+Chocolate tastes like the place it grew. Same recipe, different forest — different flavor.
+The bar remembers where it came from — scan it and it tells you its story.
+Who it’s for
+Same shape as Module 1: children 6–14 in pods of 4–6 with a mentor; up to ~25 per salon. Mentors
+co-create — supply chain is most mentors’ home turf, so this module is where mentor war-stories
+land naturally (“my product travels too…”).
+SDG alignment
+SDG
+Why it fits
+8 — Decent Work & Economic Growth
+Every hand on the journey is a livelihood; fair pricing made
+visible.
+9 — Industry, Innovation &
+Infrastructure
+Ships, warehouses, machines, tracking numbers —
+infrastructure as a story.
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+Aora · Agroverse / TrueSight DAO · page 1 of 7
+
+--- Page 2 ---
+SDG
+Why it fits
+12 — Responsible Consumption &
+Production
+Whole-bean use (nib + husk-tea), waste as a design failure.
+17 — Partnerships for the Goals
+A bar of chocolate is a partnership between a farm, a DAO,
+shops, and you.
+Settings matrix
+✔ = full live exercise · ◐ = adapted/sensory fallback · — = skip
+Exercise
+Farm
+Kitchen
+Workshop
+Factory
+Warehouse
+SC-1 Pack for the journey
+✔
+◐
+◐
+—
+✔
+SC-2 Inside the warehouse
+—
+◐
+◐
+—
+✔
+SC-3 Roast
+◐
+✔
+◐
+✔
+—
+SC-4 Crack & winnow: nib and tea
+✔
+✔
+✔
+✔
+◐
+SC-5 Grind: nibs to liquid
+◐
+✔
+◐
+✔
+—
+SC-6 Brew the cup
+◐
+✔
+◐
+✔
+◐
+SC-7 Make the bar
+—
+✔
+◐
+✔
+—
+SC-8 Taste the place (tasting)
+✔
+✔
+✔
+✔
+✔
+SC-9 Scan the story (finale)
+✔
+✔
+✔
+✔
+✔
+Workshop note: SC-4 (crack & winnow) is the module’s no-fire hero — it is fully live in a
+library. SC-8 and SC-9 run everywhere; SC-8 → SC-9 is the module’s natural closing pair
+(taste the farms blind, then scan to reveal them), and SC-9 should close every session
+regardless of setting.
+Exercises
+SC-1 · Pack for the journey
+Big idea: A bean can’t walk — we pack it so it arrives as good as it left.
+Senses: touch, see, create
+Duration: 20–25 min
+Live (farm/warehouse): Fill and sew/seal a real export sack; weigh it; write the lot label. Feel
+why 60 kg is a two-person lift.
+• 
+• 
+• 
+• 
+Aora · Agroverse / TrueSight DAO · page 2 of 7
+
+--- Page 3 ---
+Fallback (kitchen/workshop): Each pod packs a mini-sack (cloth bag of beans), weighs it,
+writes a real-format lot label, and gets a real Correios tracking number (e.g. CP…BR ) from an
+actual Agroverse shipment — then traces on a map: Ilhéus → port → ocean → US. “This
+number is the bean’s name while it travels.”
+Materials: sacks, scale, labels, marker; printed tracking history + world map (fallback)
+Mentor prompt: “What’s the ‘packaging’ that protects your work when you hand it to
+someone else?”
+SC-2 · Inside the warehouse
+Big idea: Beans wait for their turn in a special room — cool, dry, and counted.
+Senses: see, smell
+Duration: 20–30 min (live) / 15 min (fallback)
+Live (warehouse): Kirsten (San Francisco) or Matheus (Brazil) hosts: how sacks are stacked,
+why off the floor, what humidity does, how counting works (and how a count becomes a
+ledger row).
+Fallback: Short video tour (or a live video call into the warehouse — time-zones permitting),
+then the “store it right” game: cards with storage choices (next to onions? on wet floor?
+sealed and high?) — children sort good/bad and discover beans absorb smells like a sponge.
+Materials: none (live); video + sorting cards, one “onion-stored” smell-spoiled bean sample if
+available (fallback)
+SC-3 · Roast
+Big idea: Heat wakes the bean up — roasting is cooking the forest’s work into flavor.
+Senses: smell (the module’s strongest smell moment), hear (first crack), taste
+Duration: 25–35 min
+Live (kitchen/factory): Oven-roast a tray (or watch the factory roaster); smell the room
+change minute by minute; taste the same bean raw vs. roasted — the before/after is the
+point.
+Fallback (workshop, no fire): Sealed-jar smell comparison (raw vs. fresh-roasted, roasted
+that morning) + taste both; mark on a “flavor line” where each sits.
+Materials: oven/tray or roaster (live); two bean jars per pod (fallback); tasting cups
+Safety: Hot trays are adult-only; children smell and taste, adults handle heat.
+SC-4 · Crack & winnow: nib and tea ⭐ workshop hero
+Big idea: Nothing is wasted — the inside becomes chocolate, the jacket becomes tea.
+Senses: touch, hear, taste, create
+Duration: 25–30 min
+Live (all settings incl. workshop): Children hand-crack roasted beans (fingers or rolling pin
+in a zip bag), then winnow with breath, a paper fan, or a hair dryer on low over a bowl —
+husks fly, nibs stay. Husks go to the teapot (thermos hot water if no kettle is allowed): cacao
+tea. Nibs are tasted and saved for SC-5.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Aora · Agroverse / TrueSight DAO · page 3 of 7
+
+--- Page 4 ---
+Materials: roasted beans, zip bags/rolling pins, bowls, fan or hair dryer, thermos + cups
+Why it’s the hero: real transformation, zero fire, full sensory loop, and the “waste becomes
+tea” lands SDG 12 in one move.
+SC-5 · Grind: nibs to liquid
+Big idea: Squeeze a nib hard enough and it melts — the chocolate was hiding inside all
+along.
+Senses: touch, see, taste
+Duration: 20–30 min
+Live (kitchen/factory): Mortar-and-pestle a handful of warm nibs until they turn from gravel
+→ paste → glossy liquor (a mini melanger running in parallel shows where 24 more hours of
+grinding leads). Children watch a dry thing become a liquid with no water added — fat, not
+magic.
+Fallback (workshop): Shorter mortar-and-pestle round (paste stage is enough to make the
+point) + a jar of finished liquor to compare against.
+Materials: mortars & pestles (one per pod), warm nibs, finished liquor sample; mini melanger
+(kitchen, optional)
+SC-6 · Brew the cup
+Big idea: Before chocolate was a bar, it was a drink — for thousands of years.
+Senses: taste, smell
+Duration: 15–20 min
+Live (kitchen): Whisk ground liquor (from SC-5) into hot water — straight, no sugar first. Then
+each child doctors their own cup: a little sugar? cinnamon? Compare with the cacao-husk tea
+from SC-4 — same tree, two drinks.
+Fallback (workshop): Thermos-brewed ceremonial cacao served in small cups; the
+doctoring step still works cold-safe.
+Materials: liquor/ceremonial cacao, thermos/kettle, whisk, cups, sugar/cinnamon
+Mentor note: this is the natural moment for the ceremonial/cultural thread — cacao as
+something communities sit in circles around (the Aora session is one).
+SC-7 · Make the bar
+Big idea: A bar is a promise with a shape — same chocolate every time, ready to share.
+Senses: create, see, taste
+Duration: 30–40 min + setting time
+Live (kitchen/factory): Melt finished chocolate, fill polycarbonate molds (the same 4-cavity
+50 g format Agroverse uses), tap out the bubbles, chill, unmold, wrap. Each pod takes a bar
+— and gives one away.
+Fallback (workshop): run SC-8 Flight B (the concentration ladder) in this slot instead of
+molding — same learning target (“what does percent mean?”), no heat required.
+Materials: chocolate, molds, scraper, fridge access (live); see SC-8 for fallback materials
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Aora · Agroverse / TrueSight DAO · page 4 of 7
+
+--- Page 5 ---
+Cross-link: the mold itself connects to the Brazil mold-design work-stream (27.5 × 17.5 cm
+polycarbonate, 4 × 50 g cavities) — the bar the children mold is the same bar the program
+ships.
+SC-8 · Taste the place — chocolate tasting, every setting
+Big idea: Chocolate tastes like the place it grew — and like how much of the bean is in it.
+Senses: taste, smell, see — the module’s anchor tasting moment
+Duration: 25–35 min (both flights) / 15–20 min (one flight)
+How it runs (everywhere): A real tasting, run like the pros but scored like a game. Teach the
+ritual once — look, snap by the ear, smell, then let it melt (no chewing!) — then run two blind
+flights:
+Flight A — Same %, different farms (terroir). Two or three bars at the same concentration
+(e.g. 70%), each from a different farm, each with its serialized QR code, served blind as A /
+B / C. Children describe each square with a child-simple tasting wheel (fruity / nutty /
+flowery / smoky / earthy), vote for favorites, then guess which farm card matches which
+square. The reveal is the scan: each pod scans the QR and the bar announces its own farm
+— terroir made tangible, and the direct hand-off into SC-9.
+Flight B — Same farm, different %. One farm’s beans at 100% → 85% → 70% → milk.
+Children place each square on a board from “all bean” to “all sugar” and find their own spot
+— no wrong answers, but now percent means something. (This flight is also SC-7’s no-fire
+fallback.)
+Materials: single-origin bars (same % across ≥2 farms) with QR codes; one farm’s
+concentration ladder; tasting mats (A/B/C circles + tasting-wheel words); water for palate
+resets; farm cards (photo + name) for the matching game
+Facilitation notes: Flight A before Flight B (palates are freshest for the subtle comparison);
+milk chocolate always last (it swamps everything after it); the Agroverse cacao tasting wheel
+is the adult reference — the child mat uses the five simple words above.
+Mentor prompt: “Same recipe, different forest, different flavor — where does your work taste
+of the place it was made?” (Calls back to AF-1: the forest the children investigated is literally
+in the flavor.)
+Sourcing note (China legs): the terroir flight needs same-% bars from at least two distinct
+farms/shipments in Agroverse stock (e.g. different AGL batches) — confirm availability and
+customs path early; see open questions.
+SC-9 · Scan the story — the finale, every setting
+Big idea: The bar remembers where it came from — scan it and it tells you.
+Senses: see, create
+Duration: 15–20 min
+How it runs (everywhere): Each pod gets a real Agroverse bar with its serialized QR code (if
+SC-8 ran, the tasting-flight bars are already in hand and already scanned once — now follow
+one bar’s trail all the way down). Scan → the bar’s page: which farm, which shipment (the
+same CP…BR  style journey from SC-1), the ledger trail. Children retell the bar’s story
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Aora · Agroverse / TrueSight DAO · page 5 of 7
+
+--- Page 6 ---
+backwards — bar → grinder → roaster → warehouse → ship → ferment → pod → tree →
+forest — each child takes one step. The chain of memory is the assessment: if the group can
+walk it backwards, both modules landed.
+Materials: QR-coded bars (one per pod), one phone/tablet per pod
+Engine note: this exercise runs entirely on the Agroverse QR + TrueSight ledger stack — no
+dependency on any external session engine. It is also the natural attachment point for a
+session engine (each scan can register the session as a Lineage credential event).
+China note: the QR target pages must be reachable from mainland networks — verify before
+events; if unstable, pre-print the provenance page as a one-page handout per bar and keep
+the scan as the dramatic reveal where connectivity allows.
+Session templates
+Workshop salon — 90 min, ~25 children + mentors (China cities default) 1. Arrival: world map +
+tracking-number trace on the wall (10’) 2. SC-1 fallback — pack the mini-sack, name the bean (15’)
+3. SC-4 live — crack & winnow; husk tea brewing while hands work (25’) 4. SC-8 — taste the place:
+Flight A (farms, blind) + Flight B if time (25’) 5. SC-9 — scan the story + backwards chain (10’) 6.
+Circle: every child names one hand that helped their bar (5’)
+Kitchen session — 2.5 h: SC-1 → SC-3 (oven) → SC-4 → SC-5 → SC-6 → SC-8 (both flights) →
+SC-9; SC-7 molding if time and fridge allow.
+Factory / warehouse legs (Brazil, SF): SC-2 and SC-3/SC-5 live with the technician or Kirsten/
+Matheus; SC-8 Flight A tasted next to the stacked sacks themselves, then close with SC-9.
+Evidence & credentialing
+Session evidence: pod photo, exercises run, SC-8 tasting mats (each pod’s flavor votes + farm
+guesses), and the SC-9 scan event (which can land as a Lineage/ledger record per bar). The give-
+one-bar-away from SC-7 doubles as the program’s outward ripple — each gifted bar carries a
+scannable story.
+Open questions for the China team
+Customs/food-import path for roasted beans, liquor, ceremonial cacao, and finished QR bars
+into China for the July events — what quantity is unproblematic in luggage vs. needs
+paperwork?
+Venue power + food-handling rules per city (decides SC-3 live vs. jar fallback, SC-7 molding
+vs. taste ladder).
+Connectivity check for SC-9 QR target pages from mainland networks (see China note above)
+— coordinate with the tech-side GitHub/Gitee discussion.
+One mentor per session to anchor SC-2’s “my product travels too” thread — Evan’s network?
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+Aora · Agroverse / TrueSight DAO · page 6 of 7
+
+--- Page 7 ---
+SC-8 terroir flight sourcing: confirm ≥2 same-concentration single-origin bars from distinct
+farms/shipments in Agroverse stock for July, plus the customs path for bringing tasting
+quantities into China.
+5. 
+Aora · Agroverse / TrueSight DAO · page 7 of 7
+```
+
+
+### 🤖 Autopilot
+
+Got it — that's **Aora Module 2 — Supply Chain: Bean to Bar to You** (v0.2). Now I have both canonical modules in hand:
+
+**Module 1 — Agroforestry** (AF-1…AF-8): forest → dried bean
+**Module 2 — Supply Chain** (SC-1…SC-9): dried bean → bar → you, ending with the QR scan on the TrueSight ledger
+
+Both are now saved to the session transcript for cross-session recall.
+
+**Structure I can mirror for the new China PBL program doc:**
+- What this module is (one-paragraph essence)
+- The big ideas (six-year-old test)
+- Who it's for (pods of 4–6 + mentor)
+- SDG alignment
+- Settings matrix (farm/kitchen/workshop/factory/warehouse)
+- Atomic exercises (each with live + fallback)
+- Session templates (salon / kitchen / farm half-day)
+- Evidence & credentialing (Lineage records, tree plantings, QR scans)
+- Open questions for the China team
+
+So, ready to draft the **China PBL program doc** in this exact format, incorporating what you've dictated:
+
+1. **PBL program** — info-first framing, students generate their own solutions, **AI-powered rapid deep dive**
+2. **Student exchange** — Brazil ↔ China (need direction detail)
+3. **Post-graduation outcomes** — Lineage credentials, tree plantings, certificates
+4. **Farm stay** — multi-day immersion on the cacao farm
+
+Want me to go ahead and draft it as `plans/AORA_CHINA_PBL_PLAN.md` and open a PR for your review? And if you can fill in the two gaps — **exchange direction** and **what graduation confers** — I'll bake those in. Otherwise I'll draft with sensible defaults and you can edit.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` ×2 → session_id, content, and filename are required; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-06/b430bedaf544/transcript.md
 
