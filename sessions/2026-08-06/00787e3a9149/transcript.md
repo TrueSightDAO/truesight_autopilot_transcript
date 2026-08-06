@@ -199,16 +199,19 @@ Farm stay
 ### 🤖 Autopilot
 
 These terms didn't hit in context directly. Let me check the `aora` repo and the experience plan — this sounds like Aora program content.
+[4 tool result(s) compacted: search_code, search_code, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Aora event brief and the modules themselves — these terms may live in the module content.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search for these terms more specifically — PBL (Project-Based Learning), graduation credentials, and farm stay experiences.
+[4 tool result(s) compacted: search_code, search_code, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1064,4 +1067,39 @@ I bundled it with the full program context so whoever picks it up has everything
 **Deliverable I set for it:** a short one-pager proposal for Cao/Evan on the Aora + WeAcademy roll-out.
 
 If you can tell me a bit more about WeAcademy — what it is, who runs it, what it offers — I can draft that one-pager right now, or expand the plan doc while you're at the Beijing meeting.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] And then Evan can come in as a consultant
+
+
+### 🤖 Autopilot
+
+The em-dash characters likely differ. Let me read the actual text on the branch to get the exact string.
+
+
+### 🤖 Autopilot
+
+The em-dash/quote characters are the likely culprit. Let me use a shorter, safer anchor that avoids special characters.
+
+
+### 🤖 Autopilot
+
+The tool applies edits against the base branch — my new entry only exists on the PR branch, so I can't amend it in place. I'll open a consolidated PR with the full entry (including Evan-as-consultant) so there's one clean version to merge.
+
+
+### 🤖 Autopilot
+
+Added! Here's where things stand:
+
+**Evan's role is now on record:**
+- **WeAcademy roll-out** → Evan + Mr. Cao (after the Beijing meeting with Model UN)
+- **Evan comes in as a consultant** (educational advisor) on the roll-out
+
+**One consolidated PR** — [#735](https://github.com/TrueSightDAO/agentic_ai_context/pull/735) — has the full follow-up entry: the 4-pillar program context, the WeAcademy roll-out, and Evan-as-consultant. I left the earlier PR #734 open but flagged it in #735's body as superseded (close #734, merge #735 instead) — so there's exactly **one** clean entry when you review, no duplicates.
+
+Want me to:
+1. **Draft the one-pager** for Cao/Evan now (Aora + WeAcademy proposal), or
+2. Wait until after the Beijing meeting and draft it with what actually comes out of it?
 
