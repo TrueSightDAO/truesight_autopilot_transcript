@@ -329,11 +329,13 @@ Good addition — that's a **second application** for the robotics partner: proc
 ### 🤖 Autopilot
 
 Solid grounding — the tech stack for this is real (NIR spectroscopy + machine/hyperspectral vision for real-time bean classification, electronic-nose ANN at 94.4% roast-degree accuracy), but the equipment is expensive and the *process* today leans on skilled tasters — that's the "not scalable" part you're pointing at. Adding this as a **second application** for the robotics partner:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New §3 in — the roast-particle-detection application with the grounded tech table. Sending v5 + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -531,4 +533,36 @@ Also updated: Frasky table (farm-management data now tags P4), farmer pitch (suc
 This is now a four-problem, four-workstream document that directly ties the barter to the mission. Still clean externally (no DAO, no internal names).
 
 Want the scoping-call question list next, or the OPEN_FOLLOWUPS.md PR #733 sync?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Don’t use spray treatment we want agroforestry. Use cut and collect witch bloom infected parts
+
+
+### 🤖 Autopilot
+
+Understood — no chemical spray. Agroforestry = **cut & collect** the infected brooms (mechanical removal, off the plantation), which is also what the runbook says (brooms must be removed, not treated). Reframing Frasky as a *mechanical* reference, explicitly not spray:
+
+
+### 🤖 Autopilot
+
+v10 generated with the cut & collect framing. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v10 PDF sent** (message 10475) and archived.
+
+**No spray — cut & collect throughout:**
+- **§1 P1**: brooms must be **"cut off and collected — physically removed from the plantation"**; explicit **"No chemical spray: this is an agroforestry system, so witches' broom is managed by mechanical removal, not treatment"**
+- **§2 Frasky** — added a "One deliberate difference — no spray" callout: Frasky sprays, **Agroverse does not** — we borrow the *mechanical* capability (monitor → manipulate → act), not the chemical one
+- **Frasky table**: spray row now reads **"Not adopted — agroforestry, no chemical inputs"**; manipulation row = **"Cut & collect infected brooms (mechanical removal, no chemicals)"**
+- **§4 workstreams**: P1 = "Broom detection + **cut & collect** robot (mechanical removal, no chemicals — agroforestry-aligned)"
+- **§5 pilot**: farmer pitch includes **"no chemicals (agroforestry-compatible)"**
+- **§7 mission**: "Every broom **cut and collected**..."
+
+This is a clean agroforestry position — mechanical removal only, which also matches the DAO's existing runbook guidance on witches' broom (cut and remove, don't treat).
+
+Anything else? The doc is at v10 — want the scoping-call question list next, or sync OPEN_FOLLOWUPS.md PR #733?
 
