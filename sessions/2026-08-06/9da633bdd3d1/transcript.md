@@ -154,11 +154,13 @@ One flag: this is a **barter/purchase** flow that will need to hit the ledgers c
 ### 🤖 Autopilot
 
 Yes — let me generate a clean, shareable PDF of the follow-up action item.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending it to you now, and stashing a copy in the context repo so it has a permanent home.
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -194,6 +196,7 @@ https://youtu.be/hg8qYrjyYCU?is=t1jaIfd-V2o3uRka
 ### 🤖 Autopilot
 
 Good — that's the working prototype reference. Let me pull accurate details on the Frasky robot so we cite it correctly.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -348,4 +351,49 @@ Done — **v5 PDF sent** (message 10455) and archived.
 Still anonymized — no Matheus/Sophia/CNPJ. Full doc is now: **problem → Frasky prototype → roast-control second application → barter proposal → pilot plan → next steps → mission.**
 
 Want me to update the OPEN_FOLLOWUPS.md PR #733 to add the roast-detector track too, so the internal backlog matches?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] That roasting process is a reinforcement learning process
+
+
+### 🤖 Autopilot
+
+Right — that's the sharper framing. Roasting is a textbook **sequential decision problem with delayed reward**: the agent acts on the roast curve, and only *after* the batch do you learn whether the flavor profile landed. That's exactly reinforcement learning — and it means the "robot partner" isn't just sensors, it's an **RL controller** that learns the roast policy. Let me ground it, then fold it into the doc.
+
+
+### 🤖 Autopilot
+
+Confirmed with real precedent (IMA Group's "AI Learning to Roast", model-based roast optimization) — the RL framing is solid and current. Updating §3 to make **reinforcement learning** the core framing, with the particle/sensor detection as the *observation layer* of the RL loop:
+
+
+### 🤖 Autopilot
+
+v6 with the RL framing is generated. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v6 PDF sent** (message 10460) and archived.
+
+**§3 is now "Roast control as a reinforcement learning problem"** — your framing, sharpened:
+
+- **The reframe**: roasting is a sequential decision process with **delayed reward** — you act on the roast curve, and only learn *after* the batch whether the flavor profile landed. That's exactly RL, not a static recipe.
+- **RL mapping table**:
+
+| RL element | In the cacao roaster |
+|---|---|
+| State (observation) | Bean moisture, temp/rate-of-rise, roast color, particle size, volatiles |
+| Action | Heat, airflow, drum speed, batch timing |
+| Reward | Flavor-profile match + consistency + energy efficiency |
+| Policy | Learned roast curve reproducing a target profile, batch after batch |
+
+- **Each batch = a training episode**; the reward comes at the end — the controller adapts to bean lot/moisture/machine state to hit the flavor target
+- **Particle detection is now framed as the observation layer** of the RL loop (the agent is only as good as what it can sense)
+- **Grounded with precedent**: IMA Group's "AI Learning to Roast" + model-based roast optimization — exists but as expensive industrial software; our pitch is a low-cost RL roast controller tuned to the Agroverse network's beans
+
+Also updated: §5 pilot step 1 ("evaluate the roast-RL track: state sensors, reward signal, data capture per batch") and §6 next steps (RL questions). Still anonymous, still one partner covering field robots + processing-side RL roast control.
+
+The doc's now technically sharper for a robotics/AI expert audience — Gianluca will get it immediately. Ready to update the OPEN_FOLLOWUPS.md PR #733 to match, or want a scoping-call question list next?
 
