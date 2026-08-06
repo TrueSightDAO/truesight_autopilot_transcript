@@ -418,11 +418,13 @@ The doc's now technically sharper for a robotics/AI expert audience — Gianluca
 ### 🤖 Autopilot
 
 Got it — scrubbing all DAO references from the document (title line, roles table, ledger refs, footer, mission tie-back):
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 v7 generated — DAO references scrubbed. Sending + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -617,4 +619,43 @@ Regenerated hectares stay standing → 10,000-hectare goal holds
 This is now the strongest version yet — the automation isn't just labor replacement, it's **longevity of ownership**, which is the direct protector of the 10,000-hectare goal. This is a compelling story for both Gianluca (a meaningful robotics mission) and impact-minded partners.
 
 Ready for the scoping-call question list, or the OPEN_FOLLOWUPS.md PR #733 sync?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Make sure once to add once I am done chatting with the farmers about their receptiveness on using robotics to invite Gianluca to come visit the farms to check the terrain
+
+
+### 🤖 Autopilot
+
+Got it — I'll add that sequencing to the document: **after you finish chatting with farmers about their receptiveness to robotics → invite Gianluca to visit the farms to check the terrain** (the farmer-receptiveness check gates the Gianluca site visit). Updating the doc (v12):
+
+
+### 🤖 Autopilot
+
+v12 generated with the sequencing. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v12 PDF sent** (message 10483) and archived.
+
+**Sequencing added — farmers first, then the terrain check:**
+
+**§5 Pilot plan is now gated in order:**
+1. **Gary chats with farmers about receptiveness to using robotics** (gate 1) — the first gate, before any robotics commitment
+2. **Once farmers are receptive → invite Gianluca to visit the farms to check the terrain** (gate 2) — site visit so robot design is grounded in real conditions: tree spacing, canopy height, slope, wet-season mud, row access. Farmers meet the real partner; Gianluca sees the real deployment problem
+3. Scoping call (Frasky video + MVP + roast-RL track)
+4. Formal farmer pitch (PT-BR)
+5. 2–3 test farms
+6. Barter accounting
+7. Measure, then scale
+
+**§6 Next steps** now lead with:
+- **Gary — chat with farmers about receptiveness to robotics** (gate 1). *Result determines everything downstream.*
+- **When receptive → invite Gianluca to visit the farms to check the terrain** (gate 2, site visit)
+
+The doc now has a clear, honest sequencing: **talk to the people who'd use it → only then bring the expert to see the land.** That's the right order — it protects Gianluca's time and gives the farmers agency.
+
+Anything else, or shall I now draft the **farmer-receptiveness chat script** (PT-BR) — the questions to actually ask farmers in gate 1?
 
