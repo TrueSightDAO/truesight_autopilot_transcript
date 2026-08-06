@@ -1036,3 +1036,32 @@ Love this direction — the two modules are a **perfect foundation** for all fou
 
 Want me to draft this as the extension plan doc (mirroring the module format) and open a PR?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] Follow up to chat with Evan and Cao on perhaps rolling out this program via Cao’s WeAcademy
+
+
+### 🤖 Autopilot
+
+"WeAcademy" isn't in our context anywhere — I searched both agentic_ai_context and the full org, zero hits. But it's clearly linked to **Mr. Cao** (Liz's partner in the GO/Nucleus network, per the Aora experience plan) — so this reads as: after the Beijing meeting with Evan + Model UN, follow up with **Evan and Cao** about rolling out the Aora program via **Cao's WeAcademy** platform.
+
+I'll file this in OPEN_FOLLOWUPS.md so it's tracked cross-session.
+
+
+### 🤖 Autopilot
+
+Done — filed it. Here's the summary:
+
+**Follow-up logged** (PR [#734](https://github.com/TrueSightDAO/agentic_ai_context/pull/734)):
+> After the Beijing meeting with Evan + Model UN → follow up with **Evan and Mr. Cao** about rolling out the Aora program via **Cao's WeAcademy**.
+
+I bundled it with the full program context so whoever picks it up has everything:
+- The 4-pillar extension (PBL, student exchange, post-graduation outcomes, farm stay)
+- The AI deep-dive angle
+- A note that **"WeAcademy" has zero hits in our repos** — so we still need to confirm what it is (presumably Mr. Cao's education platform) and how Aora maps onto it (venue? curriculum channel? distribution?)
+
+**Deliverable I set for it:** a short one-pager proposal for Cao/Evan on the Aora + WeAcademy roll-out.
+
+If you can tell me a bit more about WeAcademy — what it is, who runs it, what it offers — I can draft that one-pager right now, or expand the plan doc while you're at the Beijing meeting.
+
