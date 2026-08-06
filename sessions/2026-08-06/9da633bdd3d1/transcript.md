@@ -678,31 +678,37 @@ Anything else, or shall I now draft the **farmer-receptiveness chat script** (PT
 ### 🤖 Autopilot
 
 Let me check the exact event format before submitting the contribution report.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Before submitting, let me verify the canonical contributor names in the ledger (Liz + Gary) so the event lands on the right records.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context confirms the canonical contributor names: **Liz = Elizabeth Wong**, **Gary = Gary Teh**. And there's a specific operating rule about how to file Gary's contribution events — let me read that section before submitting.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the specific section on how to file Gary's contributions (there's a rule about which tool to use):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact rule about filing Gary's contribution events (it specifies the tool to use):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rule is clear (OPERATING_INSTRUCTIONS §6): **when Gary asks to report a contribution, use the `dao_client` CLI, not `submit_contribution`** — and dry-run first. Let me locate the checkout on this box and prepare the command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -827,4 +833,51 @@ Want me to also:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → find /tmp /opt/truesight_autopilot -name "*barter*" -o -name "*agroverse*robotics*" 2>/dev/null | head -10; echo "---latest pdfs:"; ls -lt /
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Securing our cacao supply while insulating us from the volatile cacao prices
+
+
+### 🤖 Autopilot
+
+Sharper goal framing — supply **security** + price **insulation** for us, with the maintenance-cost peg as the mechanism. Updating the doc (v14):
+
+
+### 🤖 Autopilot
+
+v14 generated. Let me locate the file and send + archive:
+
+
+### 🤖 Autopilot
+
+v14 = `/tmp/autopilot_pdf_kjcxinq0.pdf` (16,263 bytes). Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v14 PDF sent** (message 10505) and archived at the same URL.
+
+**🎯 New goal framing (headline + §0):**
+> **"Secure our cacao supply while insulating us from the volatile cacao prices."**
+
+**How it's now structured:**
+- **§0 · The goal and the mechanism** — two-part: the *goal* (guaranteed, stable supply at predictable cost) + the *mechanism* (maintenance-cost peg instead of commodity price)
+- **Supply security angle**: farmers' cacao is locked into the barter → we're never caught bidding against a spiking/collapsing market
+- **Price insulation angle**: the maintenance-cost peg decouples our purchase price from the commodity ticker — **in both directions** (we're not overpaying in a spike, and our farmer partners aren't underpaid in a crash)
+- **§4 barter mechanics**: step 5 now reads *"Result: Agroverse secures a guaranteed cacao supply at a stable, predictable cost — insulated from commodity-price swings in both directions"*
+- **§8 mission**: added *"A secured cacao supply at a stable cost insulates the mission from commodity swings — so the program survives both price spikes and crashes"*
+
+The doc now leads with **our** strategic interest (supply security + price insulation) and shows the barter as the vehicle — which makes it a stronger internal rationale doc AND still presentable externally (the farmer-facing benefit is intact: no cash outlay, stable value, no chemicals).
+
+Still v-clean: no DAO, no internal names beyond the partner parenthetical.
+
+Want me to:
+- **Sync the OPEN_FOLLOWUPS.md PR #733** with the v14 goal?
+- Or update the **CONTRIBUTION EVENT dry-run** description to include the supply-security goal?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
