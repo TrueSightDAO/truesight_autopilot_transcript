@@ -188,6 +188,16 @@ Farm stay
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 These terms didn't hit in context directly. Let me check the `aora` repo and the experience plan — this sounds like Aora program content.
 
 
@@ -1000,4 +1010,29 @@ Want me to go ahead and draft it as `plans/AORA_CHINA_PBL_PLAN.md` and open a PR
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` ×2 → session_id, content, and filename are required; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-06/b430bedaf544/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9745] So thoughts on extended these two programs with the above points
+
+
+### 🤖 Autopilot
+
+Love this direction — the two modules are a **perfect foundation** for all four pillars. Here's my honest take:
+
+**The key insight:** Modules 1+2 are *single-session experiences* (90-min salon → half-day farm). Your four pillars turn them into a **multi-session program arc** — that's a different layer: session → program → credential. And the good news: the modules were already built for this. Their "Evidence & credentialing" sections explicitly say records **accumulate across sessions** — each session is a node, the program is the graph. So you're not bolting on; you're following the seam that's already there.
+
+**How the pillars sequence naturally:**
+1. **PBL program** — this is the biggest upgrade. The modules are currently *guided discovery* (facilitator picks, children experience). PBL flips it: students get the modules as the **sensory foundation**, then *generate their own questions and solutions*. The **AI rapid deep dive is the real differentiator** — a 12–14-year-old with an AI copilot can research "how do we make chocolate that doesn't destroy the forest?" in a way no 6-year-old program ever could. That's genuinely new — the original modules had zero AI component.
+2. **Model UN deliberation** — and here's the kicker: Model UN is a *deliberation format*. PBL + Model UN = students research → propose solutions → **debate them in a "Cacao Assembly"** at the Beijing meeting. That could be the capstone of the PBL arc — not graduation.
+3. **Farm stay** — this solves a real gap. The China reality is fallback-heavy (specimen kits, smell jars). A farm stay in Bahia/Pará gives the **full live experience** — all the ✔ exercises — and it's the natural Brazil leg of the exchange.
+4. **Graduation** — this is the DAO's moat. Stack the existing artifacts (registered tree planting, QR scan records, pod photos) + the PBL capstone into a **verifiable Lineage credential** — an "Aora Cacao Guardian" portfolio. Nobody else on earth can issue a credential backed by real on-chain provenance *and* real trees planted in the Amazon.
+
+**Three gaps to close before drafting:**
+- **Age band** — PBL + AI deep dive skews older (10–14). Modules say 6–14; be explicit which segment the program targets.
+- **Funding** — Brazil↔China exchange isn't covered by the $10/bar economics. Needs a sponsor or school/partner model.
+- **AI compliance** — AI deep dive for minors in mainland China means data privacy + age guardrails. Worth flagging early, not late.
+
+Want me to draft this as the extension plan doc (mirroring the module format) and open a PR?
 
