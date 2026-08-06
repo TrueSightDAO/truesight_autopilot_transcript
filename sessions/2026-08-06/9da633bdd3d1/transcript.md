@@ -96,7 +96,13 @@ Gianluca = the robotics design expert. Got it — you want to pursue a barter mo
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the partner outreach protocol and farmer relationship details before I act.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -259,4 +265,37 @@ Done — **v3 PDF sent** (message 10445) and archived at the same URL.
 The document now reads as: *"here's the problem → here's the working prototype that proves it's possible → here's the barter plan → here's how we pilot it"* — exactly the arc for sharing with Gianluca or the farmers.
 
 Anything else to fold in — e.g. a rough **cost/timeline estimate** for the Frasky-style MVP, or should I update the OPEN_FOLLOWUPS.md PR #733 with the video reference too?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Don’t need to mention in too much details who is involved 
+
+Matheusand Sophia don’t need to mention
+
+
+### 🤖 Autopilot
+
+Understood — I'll strip the names out of the PDF: keep roles generic (Gianluca as the partner stays, since he's the audience/party), drop Matheus, Sophia, and the CNPJ detail.
+
+
+### 🤖 Autopilot
+
+Names stripped. Sending v4 + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v4 PDF sent** (message 10449) and archived.
+
+**What changed:**
+- ❌ **Matheus** — gone (now "Agroverse — Bahia operations (Ilhéus)")
+- ❌ **Sophia** — gone (next steps now say "Approve outreach copy / draft question list")
+- ❌ **CNPJ detail** (Black King CNPJ) — gone
+- ✅ **Gianluca** — kept once, as a parenthetical "(Gianluca)" in the roles table, since he's the partner being pitched — say the word if you want him fully out too
+- ✅ **Frasky section** — intact (that's the technical anchor you wanted included)
+
+The doc now reads cleanly for external sharing: no internal names beyond the partner himself.
+
+One thing to note: the **OPEN_FOLLOWUPS.md PR #733** still contains the detailed version with names (that's the internal backlog — appropriate there). Want me to keep that as-is, or also scrub it?
 
