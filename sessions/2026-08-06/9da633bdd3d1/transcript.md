@@ -370,16 +370,19 @@ Want me to update the OPEN_FOLLOWUPS.md PR #733 to add the roast-detector track 
 ### 🤖 Autopilot
 
 Right — that's the sharper framing. Roasting is a textbook **sequential decision problem with delayed reward**: the agent acts on the roast curve, and only *after* the batch do you learn whether the flavor profile landed. That's exactly reinforcement learning — and it means the "robot partner" isn't just sensors, it's an **RL controller** that learns the roast policy. Let me ground it, then fold it into the doc.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed with real precedent (IMA Group's "AI Learning to Roast", model-based roast optimization) — the RL framing is solid and current. Updating §3 to make **reinforcement learning** the core framing, with the particle/sensor detection as the *observation layer* of the RL loop:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 v6 with the RL framing is generated. Sending + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -565,4 +568,53 @@ Done — **v10 PDF sent** (message 10475) and archived.
 This is a clean agroforestry position — mechanical removal only, which also matches the DAO's existing runbook guidance on witches' broom (cut and remove, don't treat).
 
 Anything else? The doc is at v10 — want the scoping-call question list next, or sync OPEN_FOLLOWUPS.md PR #733?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Can we link that automation to extending longevity of farmer ownership 
+
+Since likelihood of injury and labor too hard of old farmer
+
+
+### 🤖 Autopilot
+
+Excellent connection — that's the causal heart of the whole proposal: **automation → less physical strain → fewer injuries → farmer stays active & owns longer → farm stays in agroforestry hands → succession risk drops → hectares protected.** Let me make that chain explicit in the doc (v11):
+
+
+### 🤖 Autopilot
+
+v11 generated with the causal chain. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v11 PDF sent** (message 10479) and archived.
+
+**The causal chain is now explicit in §4** — automation → ownership longevity:
+
+```
+Automation takes over the heavy, high-injury work
+        ↓
+Less physical strain on the aging farmer — fewer injuries, less exhaustion
+        ↓
+The farmer can keep running the farm safely and productively, years longer
+        ↓
+Fewer forced sales from injury or "too old to work" — ownership longevity extended
+        ↓
+Farms stay in agroforestry hands → succession risk drops
+        ↓
+Regenerated hectares stay standing → 10,000-hectare goal holds
+```
+
+**Also strengthened:**
+- **§1 P2** now states the strain/injury risk is *"the direct on-ramp to Problem 4"* — the causal link is threaded from the start
+- **§4 P4 workstream**: "Automation extends ownership longevity (below)"
+- **"Why P4 matters most"** now calls out: *"The root cause of the forced sale is often injury or labor that is simply too hard for an older body. Automation directly attacks that root cause… It is not just 'less work'; it is more years of safe, productive ownership."*
+- **§5 pilot measures** added: **farmer-reported strain/injury reduction** + **years of continued ownership (delayed succession)**
+- **§7 mission**: "Automation that keeps the farmer safely owning and farming longer is automation that keeps agroforestry land out of the clearing market."
+
+This is now the strongest version yet — the automation isn't just labor replacement, it's **longevity of ownership**, which is the direct protector of the 10,000-hectare goal. This is a compelling story for both Gianluca (a meaningful robotics mission) and impact-minded partners.
+
+Ready for the scoping-call question list, or the OPEN_FOLLOWUPS.md PR #733 sync?
 
