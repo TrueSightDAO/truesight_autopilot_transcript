@@ -262,6 +262,7 @@ On it — I'll make sure the Frasky working-prototype reference is baked into th
 ### 🤖 Autopilot
 
 v3 PDF generated with the Frasky reference woven throughout. Sending + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -289,6 +290,7 @@ Matheusand Sophia don’t need to mention
 ### 🤖 Autopilot
 
 Understood — I'll strip the names out of the PDF: keep roles generic (Gianluca as the partner stays, since he's the audience/party), drop Matheus, Sophia, and the CNPJ detail.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -432,4 +434,57 @@ Done — **v7 PDF sent** (message 10462) and archived.
 The doc now reads as a clean Agroverse one-pager — externally shareable with Gianluca or farmers with no DAO/entity/name exposure.
 
 Note: the internal OPEN_FOLLOWUPS.md PR #733 still has the full internal version (DAO + names) — that's the private backlog, so it's fine as-is. Want me to proceed with the scoping-call question list next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] So one problem is witch broom 
+
+One problem is aging population of farmer owner and ability to easily find help to do farm management and harvest 
+
+One problem is cacao roasting consistency
+
+
+### 🤖 Autopilot
+
+Three clean problems — that's a much sharper frame than my single "problem on the farm" section. Let me restructure the document around all three explicitly:
+
+1. **Witches' broom** — the disease (canopy, 30–50% yield loss)
+2. **Aging farmer population + labor shortage** — the demographic problem (owners aging, can't find help for farm management & harvest)
+3. **Roasting consistency** — the processing problem (RL)
+
+Regenerating v8:
+
+
+### 🤖 Autopilot
+
+v8 generated — restructured around your three problems. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v8 PDF sent** (message 10467) and archived.
+
+**Restructured around your three problems:**
+
+**§1 · The three problems** (clean, one each):
+1. **Witches' broom** — canopy disease, 30–50% yield loss, manual detection/pruning
+2. **Aging farmer population + labor shortage** — no younger generation stepping in; farm management & harvest depend on increasingly scarce manual labor; know-how concentrated in aging owners
+3. **Roast consistency** — sequential decision w/ delayed reward, skilled-craft, not scalable
+
+**§2 · Frasky table** — now tagged by which problem each capability addresses (P1 broom, P2 labor, P3 n/a; new row: farm-management data → P2 aging owners)
+
+**§4 · The proposal** — the three problems → three workstreams:
+
+| Problem | Robotic/AI response | Feasibility |
+|---|---|---|
+| P1 · Witches' broom | Broom detection + pruning robot | ✅ tractable now |
+| P2 · Aging farmers / labor | Harvest assist + farm-management data | ✅ tractable (harvest ⚠️ R&D) |
+| P3 · Roast consistency | RL roast controller + particle detection | ✅ parallel, lower-field-risk |
+
+Also updated: farmer pitch now includes "aging-owner relief", pilot measure list, mission tie-back ("every aging farmer given a tool instead of a shovel").
+
+This is a much stronger pitch — three concrete, human problems, each with a robotic/AI answer. Still clean for external sharing (no DAO, no internal names).
+
+Next: scoping-call question list for Gianluca, or update OPEN_FOLLOWUPS.md PR #733 to match?
 
