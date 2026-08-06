@@ -80,7 +80,18 @@ Chat with farmers about offering robotics to prune witch bloom and harvest cacao
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gianluca = the robotics design expert. Got it — you want to pursue a barter model: **robotics services (witches' broom pruning + cacao harvesting) in exchange for cacao as payment.** Let me ground this in the DAO's farmer/supply context before I file it.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -218,4 +229,34 @@ Done — **v2 PDF sent** (message 10442) and archived (same URL, updated).
 This is exactly the "**example of working prototype**" framing — Frasky proves the category (permanent tree/vine canopy robotized with vision + arm), which de-risks the pitch to both Gianluca and the farmers.
 
 Want me to also update the **OPEN_FOLLOWUPS.md PR #733** to add the Frasky reference line? (The PDF has it; the backlog entry just says "à la Frasky" once.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Include this in the document PDF
+
+
+### 🤖 Autopilot
+
+On it — I'll make sure the Frasky working-prototype reference is baked into the PDF (v2 added a §2 section; I'll also surface it in the context line and in the Gianluca scoping-call step so it's unmissable).
+
+
+### 🤖 Autopilot
+
+v3 PDF generated with the Frasky reference woven throughout. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v3 PDF sent** (message 10445) and archived at the same URL.
+
+**Frasky reference is now fully included in the document:**
+1. **Context line** (top) — names Frasky + video link upfront
+2. **§2 dedicated section** — "Working prototype reference — Frasky (IIT)" with confirmed facts (IIT + Bergamo, Dr. Catalano, autonomous monitor/manipulate/spray) + the capability-transfer table (✅✅✅⚠️)
+3. **Pilot step 1** — "share the Frasky video (youtu.be/hg8qYrjyYCU) as the reference prototype" in the Gianluca scoping call
+4. **§5 next steps** — scoping-call question list explicitly includes Frasky feasibility questions
+
+The document now reads as: *"here's the problem → here's the working prototype that proves it's possible → here's the barter plan → here's how we pilot it"* — exactly the arc for sharing with Gianluca or the farmers.
+
+Anything else to fold in — e.g. a rough **cost/timeline estimate** for the Frasky-style MVP, or should I update the OPEN_FOLLOWUPS.md PR #733 with the video reference too?
 
