@@ -463,11 +463,13 @@ Three clean problems — that's a much sharper frame than my single "problem on 
 3. **Roasting consistency** — the processing problem (RL)
 
 Regenerating v8:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 v8 generated — restructured around your three problems. Sending + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -658,4 +660,93 @@ Done — **v12 PDF sent** (message 10483) and archived.
 The doc now has a clear, honest sequencing: **talk to the people who'd use it → only then bring the expert to see the land.** That's the right order — it protects Gianluca's time and gives the farmers agency.
 
 Anything else, or shall I now draft the **farmer-receptiveness chat script** (PT-BR) — the questions to actually ask farmers in gate 1?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Can we report that both Liz and Me spent 2 hours chatting with Gianluca exploring this use case
+
+
+### 🤖 Autopilot
+
+Let me check the exact event format before submitting the contribution report.
+
+
+### 🤖 Autopilot
+
+Before submitting, let me verify the canonical contributor names in the ledger (Liz + Gary) so the event lands on the right records.
+
+
+### 🤖 Autopilot
+
+The context confirms the canonical contributor names: **Liz = Elizabeth Wong**, **Gary = Gary Teh**. And there's a specific operating rule about how to file Gary's contribution events — let me read that section before submitting.
+
+
+### 🤖 Autopilot
+
+Let me read the specific section on how to file Gary's contributions (there's a rule about which tool to use):
+
+
+### 🤖 Autopilot
+
+Let me read the exact rule about filing Gary's contribution events (it specifies the tool to use):
+
+
+### 🤖 Autopilot
+
+The rule is clear (OPERATING_INSTRUCTIONS §6): **when Gary asks to report a contribution, use the `dao_client` CLI, not `submit_contribution`** — and dry-run first. Let me locate the checkout on this box and prepare the command.
+
+
+### 🤖 Autopilot
+
+Not found at the usual locations. Let me search more broadly:
+
+
+### 🤖 Autopilot
+
+The dao_client CLI lives in the autopilot venv. Let me find the exact contribution-report command and check its help:
+
+
+### 🤖 Autopilot
+
+The CLI is here. The convention from the ledger (ADVISORY_SNAPSHOT) shows similar entries: "Gary & Elizabeth Wong — 2h …" with Amount 120, both names. Let me check where the credentials/env live, then run the **dry-run** first as required:
+
+
+### 🤖 Autopilot
+
+Let me check the exact format and TDG values of the recent Gary+Elizabeth contribution precedents in the ledger before submitting:
+
+
+### 🤖 Autopilot
+
+Precedents confirmed (e.g. `Edgar_20260801025639_309`: Gary & Elizabeth Wong, 2h, Amount 120). Per OPERATING_INSTRUCTIONS §6, I'll use the **dao_client CLI** with **--dry-run first**. 2h = 120 min → TDG = 200. Running the dry-run:
+
+
+### 🤖 Autopilot
+
+The ssh_run call needs both fields — retrying with the host set:
+
+
+### 🤖 Autopilot
+
+Dry-run looks correct. Here's what's ready to submit:
+
+**📋 CONTRIBUTION EVENT (dry-run preview)**
+| Field | Value |
+|---|---|
+| **Type** | Time (Minutes) |
+| **Amount** | 120 (2h × 60) |
+| **Contributor(s)** | Gary Teh, Elizabeth Wong |
+| **TDG Issued** | 200.00 (auto-computed: 100 TDG/hr × 2h — not client-supplied) |
+| **Description** | Gary Teh & Elizabeth Wong — 2h exploration call with Gianluca (robotics design expert) on robotics-for-cacao barter: witches' broom cut & collect robot, harvest assist, RL roast control, farmer ownership longevity |
+
+This matches the precedent format in the ledger (e.g. `Edgar_20260801025639_309` — "Gary & Elizabeth Wong — 2h collaboration interface strategy", Amount 120).
+
+**Filing per the rules:** OPERATING_INSTRUCTIONS §6 says when you report a contribution I use the **dao_client CLI** (done above) and **always dry-run first so you can review** — which is what this is.
+
+👉 **Say the word and I'll submit it for real** (remove `--dry-run` and it hits Edgar as a signed event). Anything to tweak first — e.g. description wording, or do you want me to also attach the v12 PDF as evidence?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → ls -d ~/Applications/dao_client ~/dao_client ~/dao_protocol /opt/dao_client /srv/dao_client 2>/dev/null; which truesight-dao-report-contribu; find / -maxdepth 5 -name "truesight-dao*" 2>/dev/null | head; echo "---"; ls ~ 2>/dev/null; echo "---"; find /home -maxdepth 3 -type d 2>/de; ls /opt/truesight_autopilot/.venv/bin/ | grep -i -E "contribution|report" ; echo "---"; /opt/truesight_autopilot/.venv/bin/truesight-dao-rep; …(+3 more)
 
