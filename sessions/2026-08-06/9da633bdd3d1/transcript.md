@@ -70,6 +70,16 @@ Chat with farmers about offering robotics to prune witch bloom and harvest cacao
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_context_file, read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gianluca = the robotics design expert. Got it — you want to pursue a barter model: **robotics services (witches' broom pruning + cacao harvesting) in exchange for cacao as payment.** Let me ground this in the DAO's farmer/supply context before I file it.
 
 
@@ -149,4 +159,63 @@ Done — PDF is with you and archived.
 Want me to:
 - **Attach this PDF to the OPEN_FOLLOWUPS PR #733** so the entry + doc live together?
 - Or draft the **Gianluca scoping-call question list** next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Example of working prototype 
+
+https://youtu.be/hg8qYrjyYCU?is=t1jaIfd-V2o3uRka
+
+
+### 🤖 Autopilot
+
+Good — that's the working prototype reference. Let me pull accurate details on the Frasky robot so we cite it correctly.
+
+
+### 🤖 Autopilot
+
+Confirmed — that's **Frasky**, the working prototype to cite. Accurate details from the Reuters piece:
+
+**Frasky (Italian Institute of Technology)**
+- Built by **IIT + Bergamo-region agricultural stakeholders** (Dr. Manuel Catalano, roboticist)
+- Autonomous functions: **monitor grape clusters** (camera + digital twin of every cluster's location), **manipulate plants** (robotic arm), **apply targeted spray treatments**
+- Purpose: precision agriculture + labor-shortage relief + sustainability
+- Relevance: it's proof that **permanent tree-crop canopy work can be robotized** — exactly the category cacao (witches' broom pruning + pod work) falls into
+
+**Capability transfer to cacao:**
+| Frasky (grape) | Cacao adaptation | Feasibility |
+|---|---|---|
+| Cluster monitoring via camera | Broom/pod detection via vision | ✅ tractable |
+| Manipulate plants (robotic arm) | Broom pruning w/ cutter arm | ✅ tractable |
+| Targeted spray | Targeted biocontrol on brooms | ✅ tractable |
+| — | Selective pod *harvest* (varied heights, trunks+branches) | ⚠️ harder R&D |
+
+Let me bake this into the PDF and re-send:
+
+
+### 🤖 Autopilot
+
+PDF regenerated with the Frasky prototype reference. Sending it and updating the archived copy:
+
+
+### 🤖 Autopilot
+
+Done — **v2 PDF sent** (message 10442) and archived (same URL, updated).
+
+**What changed in v2:**
+- **§2 "Working prototype reference — Frasky (IIT)"** with the exact Reuters video link you shared
+- Confirmed facts: built by **Italian Institute of Technology + Bergamo stakeholders**, roboticist **Dr. Manuel Catalano**, autonomous **cluster monitoring / plant manipulation / targeted spray**, field-tested Nov 2025
+- **Capability-transfer table** — the money slide for Gianluca:
+
+| Frasky (grape) | Cacao adaptation | Feasibility |
+|---|---|---|
+| Cluster monitoring | Broom/pod detection | ✅ tractable |
+| Plant manipulation | Broom pruning w/ cutter arm | ✅ tractable |
+| Targeted spray | Biocontrol on brooms | ✅ tractable |
+| — | Selective pod harvest | ⚠️ harder R&D |
+
+This is exactly the "**example of working prototype**" framing — Frasky proves the category (permanent tree/vine canopy robotized with vision + arm), which de-risks the pitch to both Gianluca and the farmers.
+
+Want me to also update the **OPEN_FOLLOWUPS.md PR #733** to add the Frasky reference line? (The PDF has it; the backlog entry just says "à la Frasky" once.)
 
