@@ -296,6 +296,7 @@ Understood — I'll strip the names out of the PDF: keep roles generic (Gianluca
 ### 🤖 Autopilot
 
 Names stripped. Sending v4 + archiving:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -322,6 +323,7 @@ One thing to note: the **OPEN_FOLLOWUPS.md PR #733** still contains the detailed
 ### 🤖 Autopilot
 
 Good addition — that's a **second application** for the robotics partner: processing-side. Let me quickly ground the roast-particle-detection tech so the doc cites real methods, then fold it in.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -487,4 +489,46 @@ Also updated: farmer pitch now includes "aging-owner relief", pilot measure list
 This is a much stronger pitch — three concrete, human problems, each with a robotic/AI answer. Still clean for external sharing (no DAO, no internal names).
 
 Next: scoping-call question list for Gianluca, or update OPEN_FOLLOWUPS.md PR #733 to match?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] [Handoff context — this Telegram topic (thread 10396) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Additional problem 
+
+When farmer is hurt or too old and farm is sold, not sure that the new owner will continue agroforestry. Impacts our ability to achieve 10,000 hectares regenerated
+
+
+### 🤖 Autopilot
+
+Important addition — that's the **succession/continuity risk** that threatens the 10,000-hectare goal directly. Adding it as Problem 4, and giving it a concrete robotic/AI answer (not just a "problem" — the barter agreement itself can be structured to protect agroforestry continuity).
+
+
+### 🤖 Autopilot
+
+v9 generated with Problem 4 (succession risk). Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v9 PDF sent** (message 10471) and archived.
+
+**Added Problem 4 — Farm succession risk (the existential one):**
+- When a farmer is hurt or **too old**, the farm gets sold — **no guarantee the new owner continues agroforestry** (may clear, replant, or run it down)
+- Every farm lost = regenerated hectares **permanently reversed** → directly threatens the **10,000-hectare regeneration goal**
+- Framed as: *"the agroforestry system lives or dies with the individual owner — that is fragile"*
+
+**§4 now has the P4 workstream** (structural, low-tech-risk):
+1. Farm runs with **far less physical labor** → owner stays productive longer
+2. Farm-management data makes the operation **ownable/transferable** (know-how isn't trapped in the owner's head)
+3. The **cacao-barter agreement carries an agroforestry-continuity clause** → value stays tied to the standing trees
+
+**§4 "Why P4 matters most":** P1–P3 improve the farm; **P4 keeps the farm from being lost**. The system's goal: make an agroforestry cacao farm *more valuable as agroforestry than as cleared land* — the strongest protection for regenerated hectares.
+
+Also updated: Frasky table (farm-management data now tags P4), farmer pitch (succession protection), pilot measure ("farms retained in agroforestry across succession events"), mission tie-back ("continuing agroforestry becomes the profitable choice — that is how we reach and hold 10,000 hectares").
+
+This is now a four-problem, four-workstream document that directly ties the barter to the mission. Still clean externally (no DAO, no internal names).
+
+Want the scoping-call question list next, or the OPEN_FOLLOWUPS.md PR #733 sync?
 
