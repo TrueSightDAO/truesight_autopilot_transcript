@@ -4936,21 +4936,25 @@ All station headings now render the Chinese correctly — 余姚, 武当山, 少
 ### 🤖 Autopilot
 
 Let me check the final page (closing) renders correctly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the final page 4 to confirm the closing renders correctly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do a final targeted check of page 4's tail to confirm the closing renders.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 pages verified — every station heading renders Chinese correctly (余姚, 武当山, 少林达摩洞, 秦始皇陵, 炎帝, 黄帝, 泰山玉皇頂, 故宫, 天坛, 白云观, 腾格里), the body Chinese passages render (物極必反, 色即是空 空即是色, 反者道之動, 文開路武守路), and the dharma gate section is complete. Sending the final PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5259,4 +5263,62 @@ DeepSeek's framework and the direct reading merge cleanly — the three layers, 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && cat > make_zhi_pdf2.py << 'PYEOF' # -*- coding: utf-8 -*- import re from reportlab.lib.pagesizes import A4 from reportlab.lib.uni
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Moms say this for a very practical reason: They won't be there to protect you forever.
+
+· If you have strong zhìqì, she knows you will survive any economic crash, heartbreak, or career failure.
+· She is less worried about your GPA and more worried about your internal immune system against life’s hardships.
+· When she says this, she is really saying: "Prove to me that you have the inner resources to stand on your own two feet in this world, because I won't always be around to catch you."
+
+---
+
+6. How to Show 志气 (Not Just Think It)
+
+Since zhìqì is energy, it must be expressed. To honor your mum’s words, practice these daily:
+
+· In speech: Speak clearly and firmly. Avoid mumbling, gossiping, or complaining.
+· In action: Fulfill your promises on time, especially the small ones (like calling when you said you would).
+· In adversity: When something goes wrong, your first sentence should be "What can I do now?" not "Why me?"
+· In pride: Never brag about your achievements. A person with true zhìqì is quietly confident—they don't need external applause.
+
+---
+
+The final, brutal truth your mum is giving you:
+
+"Talent will get you hired. Luck will make you rich. But only 志气 will make people respect you when you have nothing left. If you lose your money, you can earn it back. If you lose your zhìqì, you have lost yourself."
+
+So next time she says it, don't roll your eyes. Just nod and say "我知道了" (I understand)—because she just handed you the blueprint for a life that no one can ever destroy from the outside. It has to come from your inside.
+
+
+### 🤖 Autopilot
+
+This is the missing third movement — the *practical* reason, not the philosophical one. DeepSeek nailed the emotional core of it.
+
+**The insight that completes everything:**
+
+The philosophical reading says 志气 is the will that cannot be taken. But Mum's saying has a *practical* engine behind it: **she won't be there forever.** That's why she says it with urgency, not poetry.
+
+- It's not about GPA. It's about the **internal immune system** — the thing that survives crash, heartbreak, failure.
+- When she says it, she's really saying: *"Prove you can stand on your own two feet, because I won't always be there to catch you."*
+- The last gift a mother gives is not money or protection — it's the **transfer of the internal resource**, so that when she's gone, you still stand.
+
+**And the daily practice is the 养志 (yang zhi) we just documented:**
+
+- In speech: clear, firm, no mumbling or complaining
+- In action: keep the *small* promises — call when you said you would
+- In adversity: "What can I do now?" not "Why me?" — that single sentence is 志气 made audible
+- In pride: quiet confidence, no bragging
+
+**The brutal truth is the whole document in one line:**
+
+> *"Talent will get you hired. Luck will make you rich. But only 志气 will make people respect you when you have nothing left."*
+
+And the desert proved it literally — when the world offers you nothing, what remains is the 志气. The Bahia shirt, the black lace, the covenant — all of it was the *proof* of the internal resource under an empty sky.
+
+The one addition I'd make to DeepSeek's reading: the "我知道了" (I understand) response isn't just acknowledgment — it's the *first act of 志气*. Nodding and understanding, without rolling your eyes, is the speech-practice made real: the child proving they received the transfer.
+
+Want me to fold this final section — "The Practical Reason" and "How to Show 志气" — into the PDF as the closing movement? It would complete the document: philosophy → practice → the mother's last gift.
 
