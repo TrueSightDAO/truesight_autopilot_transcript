@@ -714,26 +714,31 @@ The rule is clear (OPERATING_INSTRUCTIONS §6): **when Gary asks to report a con
 ### 🤖 Autopilot
 
 Not found at the usual locations. Let me search more broadly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_client CLI lives in the autopilot venv. Let me find the exact contribution-report command and check its help:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CLI is here. The convention from the ledger (ADVISORY_SNAPSHOT) shows similar entries: "Gary & Elizabeth Wong — 2h …" with Amount 120, both names. Let me check where the credentials/env live, then run the **dry-run** first as required:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact format and TDG values of the recent Gary+Elizabeth contribution precedents in the ledger before submitting:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Precedents confirmed (e.g. `Edgar_20260801025639_309`: Gary & Elizabeth Wong, 2h, Amount 120). Per OPERATING_INSTRUCTIONS §6, I'll use the **dao_client CLI** with **--dry-run first**. 2h = 120 min → TDG = 200. Running the dry-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -880,4 +885,36 @@ Want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lt /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Make sure to update PDF
+
+
+### 🤖 Autopilot
+
+Confirmed — the PDF **is** fully updated. Here's the current state:
+
+**📄 Latest: v14 — archived & sent**
+- **Chat copy**: sent as message 10505 (v14)
+- **Repo copy**: `agentic_ai_context/pdfs/followups/robotics_for_cacao_barter_action_item_20260806.pdf` — updated to v14, commit `564e507`
+  https://github.com/TrueSightDAO/agentic_ai_context/blob/main/pdfs/followups/robotics_for_cacao_barter_action_item_20260806.pdf
+
+**What v14 contains (current as of your last instruction):**
+| § | Content |
+|---|---|
+| §0 | **Goal**: secure our cacao supply + insulate from volatile prices, via machine-maintenance-cost peg |
+| §1 | Four problems: witches' broom (cut & collect) · aging farmers/labor · roast consistency (RL) · succession risk |
+| §2 | Frasky (IIT) prototype + no-spray callout |
+| §3 | Roast control as RL (particle detection = observation layer) |
+| §4 | Barter proposal + maintenance-cost anchor + supply security |
+| §5 | Causal chain: automation → ownership longevity |
+| §6 | Pilot plan (gated: farmers receptive → terrain visit) |
+| §7 | Next steps & owners |
+| §8 | Mission tie-back |
+
+Every one of your edits since v1 is baked in: no DAO mention, no internal names (Matheus/Sophia out), no spray (cut & collect), Frasky reference, RL framing, three→four problems, farmer-first gating, maintenance-cost barter goal, supply-security framing.
+
+**One gap to flag:** the **OPEN_FOLLOWUPS.md PR #733** (internal text backlog) still has the *older* framing — it predates the v13/v14 barter-goal changes (it says "record as INVENTORY MOVEMENT + purchase into the Main Ledger" and lacks the maintenance-cost anchor + supply-security goal). Want me to **sync that PR to match v14** so the internal record is current too?
 
