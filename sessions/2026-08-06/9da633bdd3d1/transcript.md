@@ -218,11 +218,13 @@ Confirmed — that's **Frasky**, the working prototype to cite. Accurate details
 | — | Selective pod *harvest* (varied heights, trunks+branches) | ⚠️ harder R&D |
 
 Let me bake this into the PDF and re-send:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF regenerated with the Frasky prototype reference. Sending it and updating the archived copy:
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -254,6 +256,7 @@ Want me to also update the **OPEN_FOLLOWUPS.md PR #733** to add the Frasky refer
 ### 🤖 Autopilot
 
 On it — I'll make sure the Frasky working-prototype reference is baked into the PDF (v2 added a §2 section; I'll also surface it in the context line and in the Gianluca scoping-call step so it's unmissable).
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,4 +399,37 @@ Done — **v6 PDF sent** (message 10460) and archived.
 Also updated: §5 pilot step 1 ("evaluate the roast-RL track: state sensors, reward signal, data capture per batch") and §6 next steps (RL questions). Still anonymous, still one partner covering field robots + processing-side RL roast control.
 
 The doc's now technically sharper for a robotics/AI expert audience — Gianluca will get it immediately. Ready to update the OPEN_FOLLOWUPS.md PR #733 to match, or want a scoping-call question list next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Don’t need to mention DAO
+
+
+### 🤖 Autopilot
+
+Got it — scrubbing all DAO references from the document (title line, roles table, ledger refs, footer, mission tie-back):
+
+
+### 🤖 Autopilot
+
+v7 generated — DAO references scrubbed. Sending + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v7 PDF sent** (message 10462) and archived.
+
+**DAO references scrubbed:**
+- ❌ Title: "TrueSight DAO / Agroverse" → **"Agroverse"**
+- ❌ Roles table: "TrueSight DAO / Agroverse (US import live)" → **"Agroverse (US import live)"**
+- ❌ Ledger ref: "record as INVENTORY MOVEMENT + purchase into the Main Ledger (see SUPPLY_CHAIN_AND_FREIGHTING.md)" → **"record it into the supply ledger at fair market value"**
+- ❌ Footer: "Filed in agentic_ai_context/OPEN_FOLLOWUPS.md (PR #733)" → **"Draft v7 · pending approval before any outreach"**
+- ❌ Mission: "the DAO's 10,000-hectare regeneration goal" → **"the 10,000-hectare rainforest regeneration goal"**
+
+**Still intact:** Frasky prototype §2, RL roast control §3, barter proposal §4, pilot plan §5, next steps §6, mission tie-back §7. Names still anonymous (Gianluca parenthetical remains — flag if you want him out too).
+
+The doc now reads as a clean Agroverse one-pager — externally shareable with Gianluca or farmers with no DAO/entity/name exposure.
+
+Note: the internal OPEN_FOLLOWUPS.md PR #733 still has the full internal version (DAO + names) — that's the private backlog, so it's fine as-is. Want me to proceed with the scoping-call question list next?
 
