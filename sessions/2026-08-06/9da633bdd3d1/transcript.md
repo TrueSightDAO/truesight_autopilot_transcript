@@ -107,7 +107,13 @@ Let me check the partner outreach protocol and farmer relationship details befor
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good context gathered. This is a new partnership vector — **robotics-for-cacao barter** (Gianluca designs the robots → farmers pay in cacao → Agroverse handles market/logistics). It's not on any existing pipeline (retail Hit List ≠ farmers), so the right move is to file it in the single cross-session backlog (`OPEN_FOLLOWUPS.md`) so it doesn't rot in chat. Filing it now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -298,4 +304,48 @@ Done — **v4 PDF sent** (message 10449) and archived.
 The doc now reads cleanly for external sharing: no internal names beyond the partner himself.
 
 One thing to note: the **OPEN_FOLLOWUPS.md PR #733** still contains the detailed version with names (that's the internal backlog — appropriate there). Want me to keep that as-is, or also scrub it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10396] Also the detection of particles to help control the cacao roasting process which is right now not very scalable
+
+
+### 🤖 Autopilot
+
+Good addition — that's a **second application** for the robotics partner: processing-side. Let me quickly ground the roast-particle-detection tech so the doc cites real methods, then fold it in.
+
+
+### 🤖 Autopilot
+
+Solid grounding — the tech stack for this is real (NIR spectroscopy + machine/hyperspectral vision for real-time bean classification, electronic-nose ANN at 94.4% roast-degree accuracy), but the equipment is expensive and the *process* today leans on skilled tasters — that's the "not scalable" part you're pointing at. Adding this as a **second application** for the robotics partner:
+
+
+### 🤖 Autopilot
+
+New §3 in — the roast-particle-detection application with the grounded tech table. Sending v5 + archiving:
+
+
+### 🤖 Autopilot
+
+Done — **v5 PDF sent** (message 10455) and archived.
+
+**New in v5 — §3 "Second application — scalable roast control via particle detection":**
+- **The gap**: roasting is skilled-craft — tuned by experienced tasters batch-by-batch → doesn't scale, hard to reproduce
+- **The opportunity**: machine vision + spectroscopy close the loop on the roast, with a grounded tech table:
+
+| Detection approach | Measures | Status |
+|---|---|---|
+| Machine vision | Bean color, browning, particle size | ✅ proven in food lines |
+| Hyperspectral / SWIR imaging | Moisture, roast degree, defects (slaty/moldy) | ✅ proven, conveyor-scalable |
+| Portable NIR spectroscopy | Chemical roast markers, in-line | ✅ proven, low-cost |
+| Electronic nose + ANN | Volatile profile → roast degree (94.4% reported) | ✅ proven |
+
+- **Why now / why us**: these methods exist as expensive lab gear; a robotics + ML partner can build a **low-cost in-line particle/roast detector** tuned to the Agroverse network's beans → turns flavor control from craft into a **scalable, measurable process**
+- Framed as the **second application for the same robotics partner**: field robots (pruning/harvest) + processing sensor systems (roast control)
+- Also threaded through: pilot step 1 (evaluate roast-detector track), step 5 (measure batch-to-batch consistency), §7 mission tie-back
+
+Still anonymized — no Matheus/Sophia/CNPJ. Full doc is now: **problem → Frasky prototype → roast-control second application → barter proposal → pilot plan → next steps → mission.**
+
+Want me to update the OPEN_FOLLOWUPS.md PR #733 to add the roast-detector track too, so the internal backlog matches?
 
