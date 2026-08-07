@@ -230,11 +230,13 @@ The vendor list is exactly what we need. Let me pull contact details for the mos
 ### 🤖 Autopilot
 
 The xpopress profiles don't expose emails, but I have the organizer contacts. Let me get direct contact info for the battery/power vendors and the RTR alliance — these are the actual outreach targets.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Solid contacts found. Let me grab the actual 2026 exhibitor list to pinpoint any sound/audio vendors before drafting outreach.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -377,4 +379,49 @@ Sent ✅ — **v6** now has the market hypothesis front and center.
 So the doc now reads as: *market bet stated → each experiment is a test of a piece of that bet → budget follows evidence.*
 
 Anything else to sharpen — e.g. a one-page exec summary, or drafting the outreach emails?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] I meant the important information in _v4 is missing
+
+
+### 🤖 Autopilot
+
+You're right — when I rebuilt it as the hypothesis portfolio (v5/v6), I stripped out the **operational detail from v4**: the booth outreach targets with actual contacts, the full landing-page spec, the QR commission model table, KPIs, and risks. Rebuilding v7 with the portfolio structure AND all the v4 operational meat restored.
+
+
+### 🤖 Autopilot
+
+Sending the v7 PDF — the full model restored with the portfolio structure.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v7** is the complete document: hypothesis portfolio **+** all the v4 operational detail restored.
+
+**Full structure now (19 sections):**
+1. Idea in one paragraph (portfolio-of-experiments framing)
+2. **The situation** — 3–5% margin, Amazon-owned moat
+3. **The thesis** — offline at retail margins
+4. Operating model at a glance
+5. **Market hypothesis M1–M5** + one-line market bet
+6. Hypothesis map (H1–H9 tagged to market assumptions)
+7. Stage 1 Validate (with costs + thresholds)
+8. Stage 2 Pilot (Quartzsite-aligned)
+9. Stage 3 Scale
+10. Financing summary + how to choose what to fund
+11. **Touch point 1 detail** — Quartzsite (H1/H2/H3)
+12. **Touch point 2 detail** — desert gatherings + musician QR program (H4/H7)
+13. **Touch point 3** — the box bridge (H6)
+14. **Landing page spec** — "where the musicians play next" (H5/H8)
+15. **QR commission model table** — carrier / what they earn / why they say yes
+16. **Booth outreach program** — 4 real targets with contacts + asks + 90-day sequence
+17. KPI table
+18. Risks & mitigations
+19. What "good" looks like + decisions for Gear It
+
+So it reads as: *market bet → hypothesis map → financed experiments → and under each experiment, exactly what the operational play is, who to call, what it costs, and what "worked" means.*
+
+Anything else to adjust — or should I draft the outreach emails to the 4 targets next?
 
