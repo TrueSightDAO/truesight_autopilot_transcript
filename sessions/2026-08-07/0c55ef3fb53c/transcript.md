@@ -57,11 +57,13 @@ Influencers (search these profiles on facebook)
 ### 🤖 Autopilot
 
 Let me pull the marketing playbook and check what the DAO already knows about this engagement.
+[3 tool result(s) compacted: search_code, search_code, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The marketing playbook lives in `growth/CMO_SETH_GODIN.md`. Let me read it, plus check for any existing Gear It notes in the go-to-market repo.
+[3 tool result(s) compacted: read_repo_file, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -115,12 +117,24 @@ Don’t mention the DAO in this. Just compile as a PDF and execution plan we cou
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 On it — compiling a clean, client-facing PDF (no DAO references) with the full strategy + execution plan, then attaching it here.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending it to you now as an attachment so you can share it directly.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -151,11 +165,13 @@ Want any tweaks — different tone, more/fewer sections, a one-pager version, or
 ### 🤖 Autopilot
 
 Good — that reframes it. The real objective: **move Gear It from Amazon-only to offline selling at those touch points**, not just community building. Let me rework the PDF around offline sales: booth retail at Quartzsite, vendor/reseller partnerships at gatherings, and the QR in the box as the bridge that turns Amazon buyers into offline-footfall/direct buyers.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the reworked PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -254,4 +270,40 @@ Sent ✅ — **v3 PDF** with everything folded in.
 3. **§5 table** — "Why they say yes" for each carrier type
 
 Next step on the outreach itself: I can **draft the actual outreach emails** to these 4 targets (per the human-in-the-loop protocol — you approve before anything sends). Want me to draft them?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] The landing page should list where the musicians are playing next
+
+
+### 🤖 Autopilot
+
+Good refinement — the landing page becomes a **gig calendar**: sponsored musicians' QRs drive people to "where they're playing next," which turns every musician into a footfall generator for the gatherings (and the booths there). Folding that into the plan as a v4.
+
+
+### 🤖 Autopilot
+
+Sending the v4 PDF.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v4 PDF** with the landing page re-specced as the "Where the musicians play next" hub.
+
+**What's new in §5 (Landing page):**
+- **Hero** — "The off-grid gatherings are powered by Gear It. Come find us."
+- **Musicians playing next** (core section) — each sponsored musician gets a card: photo, name, style, **next performance location + date**, + "Follow" button (email/SMS reminders when they play near you)
+- **Gathering & booth map** — where Gear It will be (Quartzsite, RTR, desert gatherings, stockist booths), filterable
+- **Shop** — direct order, every sale attributed to the QR that brought the visitor
+- **Why Gear It** — short brand story
+
+**Why the calendar makes the model stronger:**
+- Every musician's QR becomes a **living ad** — fans scan to find the next gig → they show up at the gathering → they buy at the booth or online
+- Musicians promote the page themselves (it drives their own attendance **and** their commission)
+- Gear It ends up owning **the calendar** — the trusted place to find where off-grid music happens — a growing asset no marketplace can tax
+
+Also added a risk entry: **gig-data freshness** — only show confirmed dates, auto-expire past ones, or trust dies.
+
+Still zero DAO references. Want me to draft the outreach emails to the 4 booth/organizer targets next?
 
