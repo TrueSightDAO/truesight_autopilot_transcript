@@ -274,21 +274,25 @@ Want me to add this as a **new section (§7 "Bean Quality × Environment Interfa
 ### 🤖 Autopilot
 
 On it — update the report with the bean-quality × environment section, regenerate the PDF, share it, and get the Erica/Tuya follow-up queued. First let me find Erica's contact in our records.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing Erica/Tuya contact in the DAO docs — let me check the mailboxes for any prior correspondence, and look at the follow-ups format.
+[5 tool result(s) compacted: gmail_search, gmail_search, gmail_search, gmail_search, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No contact record for an "Erica at Tuya" in mailboxes or DAO context (the Erica hits are unrelated — a yoga instructor). Let me check the session transcript for the office visit, and in parallel push the report update with the new bean-quality section.
+[2 tool result(s) compacted: search_transcript, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the file's exact current content on that branch.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -399,4 +403,56 @@ Anything else — e.g. also a **Portuguese version** for the Brazilian farm team
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== CJK fonts ==="; fc-list :lang=zh 2>/dev/null | head -20; echo "=== reportlab ==="; python3 -c "import reportlab; print(reportlab.V; cat > /tmp/gen_zh_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from repo; ls -la /tmp/gen_zh_pdf.py 2>/dev/null && python3 /tmp/gen_zh_pdf.py && ls -la /tmp/tuya_iot_agroverse_report_ZH.pdf || echo "SCRIPT MISSING ; …(+1 more)
 • `upload file to github` → https://github.com/TrueSightDAO/go_to_market/blob/research/tuya-iot-agroverse-report/tuya_iot_research/TUYA_IOT_AGROVERSE_REPORT_ZH.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10510] Can you make sure that the Chinese characters all show up properly on the PDF, regenerate it and show it in the channel again? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Chinese glyphs rendering properly — good catch to double-check. The previous PDF used the Droid fallback font, whose text layer extracts with null bytes (a sign the embedded cmap is imperfect — some viewers may show boxes). Let me regenerate with the proper **Noto Sans CJK SC** font, verify the text layer is clean, then re-share.
+
+
+### 🤖 Autopilot
+
+Noto CJK is a CFF (PostScript) font — reportlab can't embed those outlines directly. The Droid font *renders* fine but its text layer comes out with null bytes (breaks copy/paste — and some viewers may mis-handle it). Cleanest fix: install a TrueType-glyf CJK font (WenQuanYi Zen Hei), extract the SC subfont to a plain .ttf, regenerate, and verify the text layer is clean.
+
+
+### 🤖 Autopilot
+
+Much better — the text layer now extracts as proper Chinese. Still 56 null bytes, though — likely a few characters missing from the WQY font. Let me find exactly which characters are nulling.
+
+
+### 🤖 Autopilot
+
+The 56 nulls are all the **"•" bullet characters (U+2022)** — WQY doesn't map them cleanly in the text layer. The Chinese glyphs themselves are now perfect. Fix: replace the bullet glyph with a middle-dot (·) that's confirmed to extract, and check the "→" arrow too.
+
+
+### 🤖 Autopilot
+
+Text layer is now **completely clean — 0 null bytes**, all Chinese glyphs extract properly, bullets and arrows render. The PDF is verified. Sharing it to the channel now.
+
+
+### 🤖 Autopilot
+
+Done — regenerated and re-shared ✅
+
+**What I fixed:**
+- Previous PDF used the Droid fallback font, which left a text layer with null bytes (some viewers could show boxes or break copy/paste).
+- **New version:** built on **WenQuanYi Zen Hei** (a proper TrueType CJK font) — all Chinese characters now render and extract cleanly.
+
+**Verified before sending:**
+- 5 pages, **0 null bytes** in the text layer
+- All Chinese glyphs extract correctly (涂鸦智能, 土壤温湿度, 可可豆品质×环境联动, etc.)
+- Fixed the bullet chars (• → ·) and arrows (→ → ->) so nothing drops out
+
+**Sent to channel:** message 10536 — the regenerated Chinese PDF, ready to forward to Erica / Gianluca (Tuya HQ).
+
+Both English (msg 10526) and Chinese (msg 10536) versions are now solid. Want me to also add a **Portuguese version** for the Brazilian farm teams (Oscar, Paulo), or draft the intro emails to Erica and Gianluca?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → set -e echo "=== extract Noto Sans CJK SC subfont ===" python3 - <<'PY' from fontTools.ttLib import TTFont p='/usr/share/fonts/opentype/noto; set -e echo "=== install WQY Zen Hei (TrueType-glyf CJK) ===" sudo apt-get install -y fonts-wqy-zenhei >/dev/null 2>&1 || sudo apt-get updat; python3 - <<'PY' import fitz d=fitz.open('/tmp/tuya_iot_agroverse_report_ZH.pdf') t=''.join(p.get_text() for p in d) # find spans around nul; …(+1 more)
 
