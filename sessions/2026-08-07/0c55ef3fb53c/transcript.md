@@ -51,6 +51,11 @@ Influencers (search these profiles on facebook)
 
 ### 🤖 Autopilot
 
+[6 tool result(s) compacted: search_context, search_context, search_context, read_repo_file, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me pull the marketing playbook and check what the DAO already knows about this engagement.
 
 
@@ -171,4 +176,82 @@ Sent ✅ — **Gear It — From Amazon to Offline** (v2, 3 pages, no DAO referen
 The community building is still in there — but as the *fuel* for offline sales (musician sponsorships = field marketing where the audience lives), not the end goal.
 
 Want any adjustments — e.g. a one-page executive version for Warren, or a sharper financial section (margin math per unit per channel)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] Reach out tot he booths in Arizona to see if they are keen to carry Gear It 
+
+So desert community can go to these booths to buy the equipment or the equipment provided to the musicians have a QR code linking to the site 
+
+If QR code is purchased online via the QR code scan the carrier of the QR code gets a commission
+
+
+### 🤖 Autopilot
+
+On it — two workstreams: (1) find real Arizona/Quartzsite booths and reach out, (2) fold the QR-commission model into the plan. Let me first pull the outreach protocol and research the actual Quartzsite vendor landscape.
+
+
+### 🤖 Autopilot
+
+The outreach protocol file wasn't at that path — let me find it, and pull the actual 2025 Quartzsite vendor list to identify real booths to contact.
+
+
+### 🤖 Autopilot
+
+The vendor list is rich — let me pull the rest to find the power/energy/sound vendors with contact info.
+
+
+### 🤖 Autopilot
+
+The vendor list is exactly what we need. Let me pull contact details for the most relevant power/energy booths (the ones that would naturally carry Gear It), and check the RTR side.
+
+
+### 🤖 Autopilot
+
+The xpopress profiles don't expose emails, but I have the organizer contacts. Let me get direct contact info for the battery/power vendors and the RTR alliance — these are the actual outreach targets.
+
+
+### 🤖 Autopilot
+
+Solid contacts found. Let me grab the actual 2026 exhibitor list to pinpoint any sound/audio vendors before drafting outreach.
+
+
+### 🤖 Autopilot
+
+Let me locate the actual outreach protocol file and check the repo structure.
+
+
+### 🤖 Autopilot
+
+The outreach protocol is a human-in-the-loop playbook (draft-first, no auto-send) — I'll follow that. I have real contacts now. Let me fold the QR-commission model into a v3 PDF and prepare the outreach.
+
+
+### 🤖 Autopilot
+
+Sending the v3 PDF with the QR-commission model built in.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v3 PDF** with everything folded in.
+
+**What's new in v3:**
+1. **§5 — The QR commission model (the engine that recruits carriers):**
+   - Every QR is **unique to its carrier** (booth, musician, box insert)
+   - Booth/vendor earns **X% commission** on every online sale their QR generates — zero inventory risk
+   - Musicians get QRs on sponsored equipment → ongoing income from fans who buy the gear they use
+   - Recommended commission 5–10% (below what FBA would have taken)
+   - Box insert = brand-owned, no commission, converts Amazon buyers to direct
+
+2. **§6 — Booth outreach program (Arizona, winter 2027) with real contacts:**
+   - **Quartzsite RV Show organizer** — Kimmy King · (714) 377-7940 · booth space + vendor directory
+   - **Big Beard Battery** — sales@bigbeardbattery.com · (903) 386-0668 · GOLD sponsor, family-owned, off-grid audience
+   - **Battle Born Batteries** — info@battlebornbatteries.com · 855-292-2831 · formal dealer program
+   - **Homes on Wheels Alliance (RTR organizers)** — homesonwheelsalliance.org · (775) 764-8115
+   - Distinct asks per type (organizer → booth space; vendors → carry Gear It or display a commission QR; RTR → vendor/sponsor participation)
+
+3. **§5 table** — "Why they say yes" for each carrier type
+
+Next step on the outreach itself: I can **draft the actual outreach emails** to these 4 targets (per the human-in-the-loop protocol — you approve before anything sends). Want me to draft them?
 
