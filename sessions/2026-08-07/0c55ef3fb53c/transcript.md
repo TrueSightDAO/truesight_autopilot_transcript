@@ -218,11 +218,13 @@ The outreach protocol file wasn't at that path — let me find it, and pull the 
 ### 🤖 Autopilot
 
 The vendor list is rich — let me pull the rest to find the power/energy/sound vendors with contact info.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vendor list is exactly what we need. Let me pull contact details for the most relevant power/energy booths (the ones that would naturally carry Gear It), and check the RTR side.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -342,4 +344,37 @@ Sent ✅ — **v5: "Gear It — Offline Growth: Portfolio of Experiments"** — 
 - **Section 10: what Gear It decides today** — which Stage-1 experiments to fund, which discovery calls to authorize, and the go/kill thresholds
 
 Every number is marked "indicative" so Gear It fills in its own cost basis. Still zero DAO references — it reads as a neutral proposal they can take to a budget conversation. Want me to also make a short **one-page executive summary** version, or draft the **outreach emails** to the Quartzsite targets?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] By the way the PDF IS MISSING THE MARKET HYPOTHESIS
+
+
+### 🤖 Autopilot
+
+You're right — I had the operating-model hypotheses but never stated the market hypothesis itself. Let me add it: the core assumption that a large, concentrated, underserved off-grid community exists and will buy Gear It in person. Rebuilding now.
+
+
+### 🤖 Autopilot
+
+Sending the v6 PDF with the market hypothesis added.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v6** now has the market hypothesis front and center.
+
+**New §4 — The Market Hypothesis, broken into 5 testable assumptions:**
+- **M1 — Size:** a large, growing off-grid population (RVers, van-lifers, skoolies, boondockers) needs portable power and buys repeatedly
+- **M2 — Concentration:** they gather in known places at predictable times (Quartzsite Jan–Feb, RTR, desert gatherings) → reachable in person cheaply
+- **M3 — Offline willingness:** they'll buy at retail margins when they meet the brand in person — *the riskiest assumption, the one that justifies the whole pivot*
+- **M4 — No incumbent:** no major brand owns the offline channel yet → Gear It can be first
+- **M5 — Amazon base converts:** Gear It's existing buyers are part of this community → box insert = free acquisition
+
+**Then:** each of the 9 operating hypotheses (H1–H9) is now tagged with **which market assumption(s) it tests** (the map table in §5), and the financing logic in §9 names **M3 as the core risk** → cheapest probes are H3 + H5 + H6.
+
+So the doc now reads as: *market bet stated → each experiment is a test of a piece of that bet → budget follows evidence.*
+
+Anything else to sharpen — e.g. a one-page exec summary, or drafting the outreach emails?
 
