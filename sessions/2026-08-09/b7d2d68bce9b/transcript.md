@@ -100,17 +100,25 @@ Got it — the file is 685 lines / 43 KB on disk. Let me read the key sections I
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have the full picture now — the file is 685 lines. Let me view the remaining bits (sections 2.2, 4.5, 5, 6, 12) on the local copy, then generate the PDF.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remaining sections (6, 7, 12) to have the complete document.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab the last unseen chunks (8–10) to make the PDF complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -250,4 +258,64 @@ Fixed and re-sent ✅ (message id 10627)
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cat > /tmp/make_cn_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from rep; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') print("pages:", len(d)) for i, page in enumerate(d); cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') full = " ".join(p.get_text() for p in d) # sanity c
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Because on the other side, mainly they're dealing with raw materials prior and manufacturers. My sense is that the Chinese side will be having their own standalone cluster. And since they are not really using the Google Apps Script, as well as the Google Sheet, all this like band in China, perhaps just come up with the documentation. Framework, keep those parts that are not visible and usable in China side blank for now. Then we can start doing some investigation and fill in the gaps for those. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good framing — the China side gets its own standalone cluster, Google services (Apps Script/Sheets) are blocked there, so the doc should be a **framework with blank cells** for everything Google-dependent plus unknowns, and an investigation checklist to fill them later. I'll write it as a living markdown doc (committed to `agentic_ai_context/infrastructure/` via PR) and render a bilingual PDF for Luca.
+
+
+### 🤖 Autopilot
+
+Framework doc committed (PR #743) and PDF generated. Let me verify the edges are clean before sending.
+
+
+### 🤖 Autopilot
+
+Some dark pixels still detected on the right edge — I need to find *where* they are rather than guess. Let me locate the dark columns precisely.
+
+
+### 🤖 Autopilot
+
+Dark block is in the bottom-right of page 1 (x≈200–210mm, y≈239–277mm). Let me identify exactly which text spans are there via positioned extraction.
+
+
+### 🤖 Autopilot
+
+Found the root cause: the service-by-service table has **5 columns** but I gave it **4 column widths** — reportlab mis-distributed the last column, pushing "待确认 Open questions" (and the 钉钉 text) past the page edge. That's the "cut off" — my earlier 3-col check passed but the 4-col table was the bug. Fixing the widths and regenerating.
+
+
+### 🤖 Autopilot
+
+All edges now 0.000% dark on both pages, and 钉钉/企业微信/待确认 all present. Sending the corrected framework PDF.
+
+
+### 🤖 Autopilot
+
+Delivered ✅ (message id 10702)
+
+**What I built — the framework you asked for**
+
+A **bilingual (中英) framework doc** comparing two tracks, with the China-side Google-dependent layers deliberately blank:
+
+1. **分层对照框架** — 17 layers side by side: cloud hosting, reverse proxy, DAO API, workers, DB, cache/queue, **ledger (BLANK — Google 不可用)**, **automation (BLANK)**, **raw-material lots (BLANK)**, **manufacturer onboarding (BLANK)**, CI/CD, source control, static sites, DNS/ICP, secrets, monitoring, backup. China cells are `[FILL IN]` — 阿里云/腾讯云? Gitee mirror? 微信/钉钉/企业微信?
+2. **逐服务框架** — DAO 提交、原材料批次、制造商入驻、库存/QR、支付 (支付宝/微信?)、通知 (微信/钉钉?)、邮件 — each with global impl + China blank + open questions
+3. **中国侧调研清单** — 10 items: cloud provider & ICP 备案, GitHub reachability/mirror, ledger replacement, current raw-material process, data connectivity & compliance, domains, monitoring, secrets, backup, team ownership
+4. **刻意留空的原因** — why Apps Script/Sheets/Gmail/GitHub Pages/Stripe are blank for China
+5. **下一步** — align with Luca → fill checklist → backfill `[FILL IN]` cells via PR
+
+**Deliverables**
+- **PDF** sent to this chat (2 pages, all edges verified 0% cut — I caught and fixed a real clipping bug in the 5-col table during QA)
+- **Markdown** committed to `agentic_ai_context/infrastructure/DEPLOYMENT_ARCHITECTURE_FRAMEWORK.md` — PR **#743** open for review (living doc, we backfill cells as investigation progresses)
+
+**RESUME HERE** — framework v1 live (PR #743 + PDF in thread); next step: share with Luca to confirm the standalone-cluster assumption, then start the investigation checklist — I can draft the message to Luca or a structured interview sheet for the first China-side call whenever you're ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cat > /tmp/make_framework_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 f; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('Deployment_Architecture_Framework_CN.pdf') print("pages:", len(d)) ok = True for i; cd /tmp && python3 - <<'PYEOF' import fitz, io import numpy as np from PIL import Image d = fitz.open('Deployment_Architecture_Framework_CN.; …(+2 more)
 
