@@ -841,3 +841,15 @@ Honest estimate, broken into the two of us:
 
 If you'd like, I can also log my SRE time as a contribution entry (the tasting-session hours are already in) — just say the word.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] Mereka mempunyai kata-kata untuk menggunakan kembali di depan saya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Hmm, saya kurang yakin maksudnya — mungkin ada yang salah transkripsi dari voice message-nya. Bunyinya seperti: "Mereka mempunyai kata-kata untuk menggunakan kembali di depan saya" ("they have words to reuse in front of me").
+
+Apakah ini soal anak-anak (Gaia dan Aria) yang mengulang kata-kata tertentu di depan Anda? Atau soal dokumen/template kata-kata yang mau dipakai ulang? Tolong ulangi atau ketik ulang ya, supaya saya tidak salah menangkap.
+
