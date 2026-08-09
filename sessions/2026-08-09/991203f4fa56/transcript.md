@@ -29,17 +29,35 @@ Hey, currently I'm thinking that in China we have a problem right because telegr
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: web_search, web_search, aws_query, aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check for any existing DAO context on a China team, and dig deeper into white-labeling options for the top candidates.
+[4 tool result(s) compacted: search_context, search_context, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_tool_result, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the DAO context now (China operation: Dongguan, GACC, Aora events, Jerri/Ling). Let me verify a few Zulip-specific details before writing the plan.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've got solid research. Let me grab the mission doc for a proper tie-in, then write the plan.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -119,4 +137,28 @@ That said, the requirement itself — some team members read-only, others read +
 **6. Telegram comparison:** Telegram can only do this crudely — mute a user, or make a channel admins-only-post. Zulip's model is strictly better: real roles, per-stream posting policy, guest scoping, and an audit log of admin actions.
 
 Want me to fold this into the plan doc as a proper permissions section — I can update the PR — and also, can you point me to that earlier spec if it exists?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10635] Are you calling me that Zoolib actually works in China if I've been blocked? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question — let me be precise, because I don't want you thinking it's magic.
+
+The difference isn't Zulip vs Telegram. It's *self-hosted vs blocked-by-name*.
+
+Telegram is blocked because the GFW has Telegram's servers, IP ranges, and protocol signature on its blocklist — it detects MTProto traffic and kills it, no matter which phone or app you use. There's a specific "thing" to block.
+
+Zulip is just software. There's no "Zulip server" out there to block — we run it ourselves, on our own server in Hong Kong, behind our own domain. To the firewall, traffic to it looks like ordinary, boring HTTPS to a normal business website — the same as visiting any company's site. The GFW has no list entry for our little server, and no reason to flag an internal team chat.
+
+That's genuinely how a lot of companies operate in China — self-hosted GitLab, Jira, Slack alternatives, all on ordinary HTTPS, all working fine.
+
+But — honesty here — I can't guarantee 100% from a desk in the US that it'll be smooth from every ISP in Dongguan. Cross-border HTTPS can occasionally get throttled, and nothing is ever truly guaranteed with the GFW. That's exactly why the plan bakes in a smoke test early: in Phase 2, before we build the app, we have Jerri and Ling test the server from their phones in Dongguan for a few days. If it's solid, we build on it. If it's flaky, we fall back to Feishu/Lark, which is the zero-risk Chinese option.
+
+One more thing that helps: the Android app we'd fork talks only to our own server — no Google or Firebase calls in the path — so there are no blocked dependencies hiding inside the app either.
+
+So short answer: no, I'm not claiming Zulip has some China pass. I'm claiming *our own server on our own domain* is a fundamentally different situation from Telegram — and we'll verify it from the ground in Dongguan before committing.
 
