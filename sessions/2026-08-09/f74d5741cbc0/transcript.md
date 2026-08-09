@@ -264,6 +264,7 @@ Contrasted with the older folks, the older folks welcome this unexpected after t
 ### 🤖 Autopilot
 
 Let me first check whether the cert got renewed since last turn and whether anything was already submitted (duplicate guard).
+[2 tool result(s) compacted: ssh_run, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,4 +380,87 @@ Two things got done:
 2. **I fixed the outage that was blocking them** — the security certificate for edgar.truesight.me had expired, which is why earlier attempts failed. I renewed it, and it's now valid until November. I also fixed the broken auto-renewal configuration, so the certificate should renew itself going forward and this shouldn't happen again.
 
 So the tasting session work is logged, and the system's back online. If you'd like, I can do a quick check of the ledger snapshot to show you the exact rows — but everything came back confirmed on Edgar's side.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] Anyway to setup an automated process to just regularly check and renew it in the future?
+
+
+### 🤖 Autopilot
+
+Good question — and good news: **the automation already exists.** Let me verify it's healthy and prove it works end-to-end now.
+
+
+### 🤖 Autopilot
+
+The dry-run is slow (it re-verifies every cert). Let me check the timer and logs separately without the slow dry-run:
+
+
+### 🤖 Autopilot
+
+Timer is enabled and scheduled — next run in ~1h50m. Now let me prove the automated renewal will actually **succeed** (the whole point of the fix). Earlier dry-run timed out; let me check for a lingering process and re-run cleanly:
+
+
+### 🤖 Autopilot
+
+The dry-run from my first command is still running (it's validating all certs, which takes a while). It will tell us definitively whether the automated path works. Let me wait for it to finish:
+
+
+### 🤖 Autopilot
+
+The dry-run from earlier is still validating (it checks every cert on the box). Let me check its result:
+
+
+### 🤖 Autopilot
+
+The dry-run (the definitive proof the timer path works) is still validating all certs. One more wait to capture the result:
+
+
+### 🤖 Autopilot
+
+The latest dry-run (07:35) finished — let me read its specific result from the log:
+
+
+### 🤖 Autopilot
+
+Found why it's slow: certbot's dry-run is in a **410-second random sleep** (anti-thundering-herd delay) before the actual check. Let me kill the sleeper and re-run with the delay disabled for a fast, definitive proof:
+
+
+### 🤖 Autopilot
+
+The pkill may have killed its own shell. Let me re-run the dry-run cleanly:
+
+
+### 🤖 Autopilot
+
+**Confirmed working end-to-end.** The dry-run — which simulates exactly what the automated timer will do — reports:
+
+> **"Congratulations, all simulated renewals succeeded: /etc/letsencrypt/live/edgar.truesight.me/fullchain.pem (success)"**
+
+So here's the complete answer:
+
+## ✅ Yes — the automation is already in place and now actually works
+
+| Piece | Status |
+|---|---|
+| **systemd timer** (`certbot.timer`) | ✅ Enabled, runs **twice daily** (next run in ~1h50m) |
+| **Renewal config** (was the problem) | ✅ Rewritten to `authenticator = nginx` + fresh ACME account |
+| **Proof it works** | ✅ Dry-run simulated renewal → **all succeeded** |
+| **Current cert** | ✅ Valid until **Nov 7, 2026** |
+
+**What had broken:** the renewal config pointed at a dead ACME account (`dns-route53` plugin era) — so every automatic attempt failed silently since the server migration. That's why the cert expired on Aug 8 without anyone noticing.
+
+**What I fixed:** re-issued the cert with the `nginx` authenticator, which rewrote the renewal config. The timer now has a working, verified path.
+
+**What happens going forward:** the timer runs twice daily (~9:28 UTC and ~21:28 UTC); certbot only actually renews when the cert is within 30 days of expiry, so it'll auto-renew around early October and every ~90 days after that. You shouldn't need to touch it — but I'd suggest:
+
+1. **Add a monitoring check** (e.g. a daily ping to the expiry date, or a `watch_url`/CloudWatch alarm) so if it ever fails again, someone gets notified rather than discovering it via a failed submission. Want me to set one up?
+2. Update the `OPEN_FOLLOWUPS.md` L374 entry from "open" to "resolved" — I can open that PR if you'd like.
+
+**Bottom line:** submissions work, cert renews itself, and this class of outage shouldn't recur. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → echo "===timer status==="; systemctl is-enabled certbot.timer; systemctl status certbot.timer --no-pager | head -6; echo "===next scheduled ; echo "===timer==="; systemctl is-enabled certbot.timer; systemctl list-timers certbot.timer --no-pager 2>/dev/null | head -4; echo "===last ; pgrep -af "certbot" | grep -v pgrep || echo "no certbot running"; …(+7 more)
 
