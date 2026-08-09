@@ -868,3 +868,47 @@ To be honest, your last voice message came through in Indonesian/Malay: *"Mereka
 
 Could you rephrase that in English? Were you talking about Gaia and Aria repeating certain words, or something else?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] Iman submit the contribution reports for yourself and me separately. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — submitting two separate contribution reports: one for me (Sophia, for the TLS/SRE work) and one for you (Gary). Let me first confirm the exact registered names and the CLI flags:
+
+
+### 🤖 Autopilot
+
+CLI confirmed. Let me dry-run both contributions first (per convention) — mine (Sophia, ~3.5h TLS/SRE work) and yours (Gary, ~15 min):
+
+
+### 🤖 Autopilot
+
+Both dry-runs are clean and signed correctly:
+- **Sophia Truesight** — 210 min (3.5h), TDG 350 auto-computed
+- **Gary Teh** — 15 min, TDG 25 auto-computed
+
+Submitting both for real now:
+
+
+### 🤖 Autopilot
+
+✅ **Both contribution reports submitted separately — confirmed by Edgar (HTTP 200, signature verified):**
+
+| Contributor | Type | Amount | TDG (auto) | Status |
+|---|---|---|---|---|
+| **Sophia Truesight** (me) | Time (Minutes) | 210 min (3.5h) | 350 | ✅ HTTP 200, sig verified |
+| **Gary Teh** (you) | Time (Minutes) | 15 min | 25 | ✅ HTTP 200, sig verified |
+
+**Details logged:**
+- **Sophia:** TLS incident response + ecosystem hardening — diagnosed the expired edgar cert (dead v01 ACME account + missing dns-route53 plugin), re-issued via nginx, restored auto-renewal, built the daily fleet-wide TLS monitor (21 endpoints), verified the beta.edgar host, wrote the runbook.
+- **Gary:** Oversight + direction — directed the diagnosis, approved the re-issue + monitoring automation, requested the fleet-wide automation and documentation.
+
+Both are separate rows in the ledger now. Anything else you'd like me to log?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && .venv/bin/truesight-dao-report-contribution --help 2>&1 | head -40; cd /opt/truesight_autopilot && .venv/bin/truesight-dao-report-contribution --dry-run --type "Time (Minutes)" --amount 210 --description "TLS; cd /opt/truesight_autopilot && .venv/bin/truesight-dao-report-contribution --dry-run --type "Time (Minutes)" --amount 15 --description "Over; …(+2 more)
+
