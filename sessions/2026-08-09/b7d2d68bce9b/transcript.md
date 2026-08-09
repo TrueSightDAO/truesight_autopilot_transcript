@@ -17,32 +17,63 @@
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found the file — `infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md`. Let me read it to confirm it's the right one.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the right file. Let me read the rest of it so the PDF captures everything.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact is nested — let me read the full file directly from the repo to get clean content for the PDF.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is large. Let me pull the full raw markdown directly so the PDF captures everything.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the full raw file (15.5 KB). Let me read the rest of it to capture every section for the PDF.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the remaining portion of the file (sections 4.4 onward).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -114,4 +145,48 @@ Done — here's the summary:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && curl -sL -o AWS_DIGITAL_INFRASTRUCTURE.md https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/infrastructure/A; cd /tmp && sed -n '158,168p;297,312p;565,685p' AWS_DIGITAL_INFRASTRUCTURE.md; cd /tmp && sed -n '135,158p' AWS_DIGITAL_INFRASTRUCTURE.md; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Maybe also come with a Mandarin version, yeah, basically deployment across the AWS and Google Apps Script, as well as GitHub Actions, as well as the GitHub repositories. Maybe we'll go shoot it, it'll make sense. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it — I'll produce a Mandarin version focused on deployment across AWS + Google Apps Script + GitHub Actions + GitHub repos. The brand PDF generator only has Helvetica (no CJK glyphs), so I'll build this one with reportlab + a Chinese font directly on the box.
+
+
+### 🤖 Autopilot
+
+PDF generated — 3 pages, 82 KB. Let me verify the Chinese text actually rendered (not tofu boxes), then send it.
+
+
+### 🤖 Autopilot
+
+The Chinese text rendered perfectly (proper glyphs, not tofu). Sending it to the chat now.
+
+
+### 🤖 Autopilot
+
+Done — Mandarin version delivered ✅
+
+**What I made**
+- **`TrueSight DAO 部署架构总览（中文版）》— 3-page PDF**, sent into this chat (message id 10623).
+- Covers the full deployment chain across all four layers, in Chinese:
+  1. **整体部署流程** — 一句话版：代码 → GitHub → GitHub Actions → SSH/EC2 → systemd/Upstart 重启
+  2. **AWS** — 两个账户（Explorya/Nelanco）、每个核心服务（Nginx、Perch Rails、Edgar FastAPI、Sidekiq、Postgres/Redis、Sophia、Krake）+ EIP 蓝绿发布与回滚
+  3. **Google Apps Script** — 记账引擎、Sidekiq → GAS webhook 触发链、共享密钥安全模型、`/proxy/gas/` 代理、clasp 部署
+  4. **GitHub Actions** — 每周 AMI 备份、安全仪表盘、密钥管理
+  5. **GitHub 仓库** — 三类仓库规则（代码 / 仅 API 数据 / 生产仓库），beta-first + sync_beta_to_prod 前端发布
+  6. **访问与安全** — Sophia 堡垒机、密钥、核心主机保护、跨账户注意
+  7. **常见误区** — Perch ≠ getdata.io、旧实例停机、提交入口唯一、SSL 证书过期跨账户修复
+
+**Built it custom** — the standard PDF generator only has Helvetica (no Chinese glyphs), so I rendered this one on the box with reportlab + a proper CJK font. Verified the text extracts as real Chinese (not empty boxes).
+
+**RESUME HERE** — two PDFs now delivered to thread 10612 (English 18-pg infra overview + Mandarin 3-pg deployment summary); next step when ready: draft the actual message/exchange with Luca comparing our deployment stack vs. the Chinese-side deployment — happy to prep a bilingual brief or talking-points doc for that call.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat > /tmp/make_cn_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from rep; cd /tmp && python3 -c " import sys try: from pypdf import PdfReader except ImportError: from PyPDF2 import PdfReader r = PdfReader('TrueSigh
 
