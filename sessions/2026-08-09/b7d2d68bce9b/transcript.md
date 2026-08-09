@@ -124,21 +124,25 @@ Let me grab the last unseen chunks (8–10) to make the PDF complete.
 ### 🤖 Autopilot
 
 I now have the complete document. The markdown file is at `agentic_ai_context/infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md` (685 lines, ~43 KB). Now let me generate the PDF. The file uses standard markdown with tables — I'll feed the full content to the PDF generator (it renders pipe tables as real tables). The mermaid diagrams can't render, so I'll add a short note and keep the content complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full document now. Let me generate the PDF — I'll convert the mermaid diagrams into readable text descriptions and keep all tables intact.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated (47.7 KB, 18 pages). Let me verify the file and send it to you.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF is valid — 18 pages. Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -175,11 +179,13 @@ Done — here's the summary:
 ### 🤖 Autopilot
 
 On it — I'll produce a Mandarin version focused on deployment across AWS + Google Apps Script + GitHub Actions + GitHub repos. The brand PDF generator only has Helvetica (no CJK glyphs), so I'll build this one with reportlab + a Chinese font directly on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated — 3 pages, 82 KB. Let me verify the Chinese text actually rendered (not tofu boxes), then send it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -318,4 +324,72 @@ A **bilingual (中英) framework doc** comparing two tracks, with the China-side
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cat > /tmp/make_framework_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 f; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('Deployment_Architecture_Framework_CN.pdf') print("pages:", len(d)) ok = True for i; cd /tmp && python3 - <<'PYEOF' import fitz, io import numpy as np from PIL import Image d = fitz.open('Deployment_Architecture_Framework_CN.; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] I think once the infrastructure is upright they are actually be able to hook into the infrastructure by API calls to generate records of inventory transfers movements or raw material conversion to final outputs as well as make records of the manufacture materials data because the application is currently generating those records [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good — this is the key integration insight. Let me check what the DAO protocol already supports for exactly this (inventory movement events, raw-material → finished-goods conversion) so the framework captures the real API surface, not a wish.
+
+
+### 🤖 Autopilot
+
+This is the key integration insight — and the good news is the DAO protocol **already supports all three of those record types** via API, and crucially the submission endpoint (`dao_protocol` on AWS) is **not** Google-dependent, so the China cluster can hook straight in even though Sheets/Apps Script are blocked there. Let me capture this in the framework (markdown + PDF).
+
+
+### 🤖 Autopilot
+
+PDF updated (3 pages, all edges 0%) — but the markdown push failed on a path validation. Let me retry the markdown update using edit hunks instead of a full rewrite (more robust).
+
+
+### 🤖 Autopilot
+
+PR #743 may not be merged yet, so main doesn't have the file — let me check the branch state and base the new changes on the v1 branch instead.
+
+
+### 🤖 Autopilot
+
+PR #743 (v1) isn't merged yet, so main lacks the file — I'll base the v2 changes on the v1 branch.
+
+
+### 🤖 Autopilot
+
+Markdown updated (PR #744, based on v1 branch #743). Now let me send the updated 3-page PDF with the API integration layer.
+
+
+### 🤖 Autopilot
+
+Delivered ✅ (message id 10707) — and this is a genuinely important architectural point you've surfaced.
+
+**The key insight: China doesn't need to replicate the Google ledger at all.**
+
+Once the China cluster is upright, it hooks into the DAO event system **directly via API calls** — and the good news is the protocol **already supports all the record types you described**:
+
+| Event | What it records | For the China side |
+|---|---|---|
+| **INVENTORY MOVEMENT** | Transfers/movements between holders | 原材料/半成品流转 (Manager → Recipient, QR, Qty) |
+| **REPACKAGING BATCH EVENT** | Raw material → finished product conversion | 原材料 → 成品，输入消耗 + 输出生成，按重量分摊成本 |
+| **REPACKAGING SETTLEMENT** | Batch settlement / cost booking | 结算入账 |
+| **POST-REPACKAGING CLEANUP** | Deplete input inventory after conversion | 转化后冲减 |
+| **QR CODE REGISTRATION** | Register per-unit/per-batch QR | 批次标识 |
+| **CONTRIBUTOR / PARTNER ADD** | Onboard manufacturers & suppliers | 制造商入驻 |
+
+**Why it works for China specifically:**
+- The submission endpoint (`dao_protocol` → `POST /dao/submit_contribution`) is **AWS-hosted, not Google-dependent** — so even with Apps Script/Sheets blocked in China, the write-bridge is open.
+- The application is **already generating these records** (QR batches, inventory, conversions) → the API is a **write-bridge**: China's app POSTs structured events, the DAO ledger absorbs them with zero manual Sheets entry.
+- Two shapes possible: China keeps its own local ledger (DB/ERP) and **mirrors key events** to the global DAO, or uses the DAO API as the primary ledger. The **data-egress compliance boundary** (what data may leave China) is flagged as a TBD investigation item.
+
+**Deliverables this turn**
+- **PDF v2** (3 pages, all edges verified 0% cut) sent to chat — new §6 API 集成层
+- **Markdown** updated → PR **#744** (stacked on v1 PR #743, since #743 isn't merged yet)
+
+**RESUME HERE** — framework v2 live (PR #744 → #743 → main, PDF in thread 10707); next step: share with Luca to confirm the standalone-cluster + API-write-bridge model, then run the investigation checklist — I can draft the Luca brief/interview sheet on request.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_pdf.py', encoding='utf-8').read() section = '''story.append(P("六、API 集成层 · API Int
 
