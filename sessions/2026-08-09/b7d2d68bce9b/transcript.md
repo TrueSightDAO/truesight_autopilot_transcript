@@ -191,6 +191,7 @@ PDF generated — 3 pages, 82 KB. Let me verify the Chinese text actually render
 ### 🤖 Autopilot
 
 The Chinese text rendered perfectly (proper glyphs, not tofu). Sending it to the chat now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -225,21 +226,25 @@ Done — Mandarin version delivered ✅
 ### 🤖 Autopilot
 
 Good catch — the tables were set to exactly the full usable width (188mm edge-to-edge), and long unbreakable strings (tokens, repo names) can overflow the cells and get clipped at the page edge. I'll regenerate with safety margins, narrower tables, and CJK character-level wrapping so nothing bleeds.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated. Now let me verify there's no edge clipping — I'll render the pages to images and check the right-margin strip is clean.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edges are clean — 0% dark pixels on all margins of all 3 pages. Let me do one more sanity check that the full content is present and readable.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass — every section present, no garbled characters, and zero clipping. Sending the fixed version now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -274,6 +279,7 @@ Fixed and re-sent ✅ (message id 10627)
 ### 🤖 Autopilot
 
 Good framing — the China side gets its own standalone cluster, Google services (Apps Script/Sheets) are blocked there, so the doc should be a **framework with blank cells** for everything Google-dependent plus unknowns, and an investigation checklist to fill them later. I'll write it as a living markdown doc (committed to `agentic_ai_context/infrastructure/` via PR) and render a bilingual PDF for Luca.
+[2 tool result(s) compacted: git_push_changes, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -392,4 +398,47 @@ Once the China cluster is upright, it hooks into the DAO event system **directly
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_pdf.py', encoding='utf-8').read() section = '''story.append(P("六、API 集成层 · API Int
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Generate me English version
+
+
+### 🤖 Autopilot
+
+On it — English-only version of the framework PDF. Let me check the generator script's styling helpers first so the English version matches.
+
+
+### 🤖 Autopilot
+
+I have the generator's structure. Now I'll write an English-only version with the same styling and all 8 sections (including the API integration layer).
+
+
+### 🤖 Autopilot
+
+English version built — 3 pages, all edges verified 0% dark, all 7 sections present. Sending it now.
+
+
+### 🤖 Autopilot
+
+Delivered ✅ (message id 10711)
+
+**English-only version of the framework PDF** — 3 pages, same saffron brand styling, all edges pixel-verified at 0% cut. Contents:
+
+1. **Purpose** — Track A (Global: AWS + GAS + GitHub Actions + GitHub Pages) vs Track B (China standalone cluster for raw materials & manufacturers, Google layers blank by design)
+2. **Architecture layer framework** — 17-layer table (cloud, proxy, DAO API, workers, DB, cache, ledger, automation, raw-material lots, manufacturer onboarding, CI/CD, source control, static sites, DNS/ICP, secrets, monitoring, backup)
+3. **Service-by-service framework** — 7 services with China open questions
+4. **China-side investigation checklist** — 10 items
+5. **API integration layer** — the write-bridge: INVENTORY MOVEMENT, REPACKAGING BATCH/SETTLEMENT, POST-REPACKAGING CLEANUP, QR REGISTRATION, CONTRIBUTOR/PARTNER ADD — all POSTable to dao_protocol (AWS, not Google-dependent)
+6. **Blank-by-design sections** — why Apps Script / Sheets / Gmail / GitHub Pages / Stripe are blank
+7. **Next steps** — align with Luca → fill checklist → backfill cells via PR
+
+Both versions now in thread 10612: **EN (10711)** and **CN (10707, v2 with API layer)**. The matching markdown is on PR **#744** (stacked on #743).
+
+**RESUME HERE** — EN + CN framework PDFs delivered; next step when you're ready: draft the Luca brief/interview sheet to confirm the standalone-cluster + API-write-bridge model and kick off the China-side investigation.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && sed -n '1,60p' make_framework_pdf.py; cd /tmp && cat > make_framework_en.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import
 
