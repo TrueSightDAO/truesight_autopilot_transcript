@@ -419,11 +419,13 @@ Once the China cluster is upright, it hooks into the DAO event system **directly
 ### 🤖 Autopilot
 
 On it — English-only version of the framework PDF. Let me check the generator script's styling helpers first so the English version matches.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the generator's structure. Now I'll write an English-only version with the same styling and all 8 sections (including the API integration layer).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -581,4 +583,44 @@ A dark vertical **SEPARATE** divider now runs between the two clusters to make t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() NEW_FUNC = r'''def diagram1(): D = Drawi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Makes sure enough vertical space between words in box
+
+
+### 🤖 Autopilot
+
+Good point — the boxes currently pack lines at 2.6mm spacing, which reads cramped. I'll widen the line spacing inside every box (2.6 → 3.4mm) and bump the box heights so the text has breathing room without clipping.
+
+
+### 🤖 Autopilot
+
+Let me do a quick overlap check inside the diagram boxes — verify the line positions are well-spaced and nothing collides with box edges.
+
+
+### 🤖 Autopilot
+
+Line spacing inside boxes is now 3.5mm (was 2.6mm) — verified in the extraction: box lines at y 81.7 / 85.2 / 88.7, cleanly separated, no overlaps, no clipping. Sending.
+
+
+### 🤖 Autopilot
+
+Done ✅ (message id 10723)
+
+**Spacing fixed — more vertical breathing room in every box:**
+
+- **Line spacing inside boxes: 2.6mm → 3.5mm** (verified: lines now sit at y 81.7 / 85.2 / 88.7mm — clean 3.5mm gaps, no overlap)
+- **Taller boxes** — the three column boxes in each track grew from 11mm → 13mm, event boxes 11mm → 12mm, so the wider spacing has room to breathe
+- **Containers raised** (46mm → 50mm) so the taller boxes fit with margin, separator line extended to match
+- All edges pixel-verified **0% cut**, all labels present, no REPL chars
+
+Same 3-page layout otherwise — Diagram A (two separate clusters), Diagram B (API write-bridge flow), then the full framework tables.
+
+**RESUME HERE** — breathing-room version delivered (10723); earlier: 10719 (separate clusters), 10715 (first diagrams), 10711 (EN no-diagrams), 10707 (CN v2). Next: sync to CN version with diagrams, or update the markdown framework doc (PR #744) to the "fully separate cluster" framing — just say which.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() # 1) widen line gap inside boxes old = "; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('Deployment_Architecture_Framework_EN_diagrams.pdf') page = d[0] # words in the dia
 
