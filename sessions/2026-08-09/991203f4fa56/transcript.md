@@ -69,6 +69,7 @@ I have everything I need — DAO China context (Dongguan, Jerri/Ling, Aora event
 ### 🤖 Autopilot
 
 The call formatting failed — retrying with the parameters passed directly.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -194,4 +195,33 @@ So the short answer: **yes, deploy on Ubuntu on Tencent Cloud — but pick the H
 One honest caveat about Hong Kong: cross-border traffic is generally fine, but we'd still do the Phase 2 smoke test from Dongguan with Jerri/Ling before building the app, exactly as the plan says.
 
 Want me to update the plan doc to add Tencent Cloud (Hong Kong region) as the recommended hosting alternative — with a mainland-vs-HK decision table? I can push that update to the PR.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10635] Hey, question. Does AWS have a China data center that we can explain up easy through instances? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, AWS does have China data centers — but there's a catch, and it's a big one for us.
+
+**The facts:**
+- AWS operates **two mainland China regions**: **Beijing** (run by Sinnet) and **Ningxia** (run by NWCD). They're real AWS regions, with EC2 instances and the same APIs.
+- **BUT** — they're completely **separate from your global AWS account**. Your existing `explorya`/`nelanco` credentials can't touch them. You'd need a brand-new **AWS China account**, with separate credentials, contracts with Sinnet/NWCD, and local Chinese billing.
+
+**The blockers for us:**
+- **Registration requires a mainland China legal entity** — a business license from the PRC. A foreign company or individual can't just sign up. Your Dongguan operation could qualify if there's a proper entity there, but that's a real hurdle.
+- **ICP filing required** — before serving any public web content from those regions, you must have the ICP filing. Same wall as Tencent mainland.
+- **No personal accounts** — commercial only.
+
+**So the honest bottom line:** AWS China is technically "easy to spin up instances," but getting *in* is not easy at all without a mainland entity + ICP filing. It's the same wall as Tencent mainland, just with more red tape.
+
+**Where this leaves us — the ranking:**
+1. **Tencent Cloud Hong Kong (recommended)** — familiar Chinese console, no ICP, fast, Ubuntu 24.04, cheap. Still our top pick.
+2. **AWS Hong Kong (ap-east-1)** — your existing AWS account works, no ICP, but the console is less familiar to the China team and latency/payment is slightly less local.
+3. **AWS China (Beijing/Ningxia)** — technically exists but effectively locked behind entity + ICP; not practical for us.
+4. Tencent/Aliyun mainland — needs ICP + entity, blocked without it.
+
+So no, I wouldn't chase the AWS China data center. The Tencent HK route gives you the same benefits with a lot less friction. Want me to lock Tencent HK as the primary recommendation in the plan doc?
 
