@@ -270,46 +270,55 @@ Let me first check whether the cert got renewed since last turn and whether anyt
 ### 🤖 Autopilot
 
 Cert still expired, and nothing was submitted (they'd have failed on TLS). Since you've given the go — first I need to restore the cert (it's still showing Aug 8 expiry), then fire both submissions. Checking certbot state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Certbot is free now (no lock). Renewing the edgar cert with the nginx authenticator:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Renewal command hit the 150s cap — it may still be running in the background. Let me check whether it finished:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The renewal is **still running** (PID 718346) — it's mid-ACME challenge. Let me wait for it to complete:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Renewal still failed — same expired cert. Let me check the certbot log to see why:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `--authenticator nginx` flag didn't take effect — it still tried `dns-route53` (the renewal conf is sticky). The proper fix is to use `certonly --nginx` to re-issue the cert with the nginx authenticator, which rewrites the renewal config. Let me check the exact error first, then re-issue:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the real error surfaces: the renewal config references an **ACME account under the old v01 API** (`acme-v01.api.letsencrypt.org/.../30dbe34d...`) that doesn't exist on this box → `AccountNotFound`. That's why even the nginx-authenticator attempt failed. The clean fix: re-issue the cert fresh with `certonly --nginx` (creates a new v02 account, solves HTTP-01 via nginx, rewrites the renewal config to use nginx):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Cert renewed!** 🎉 New cert valid until **2026-11-07** (89 days). The `certonly --nginx` rewrote the renewal config to use the nginx authenticator (with a fresh v02 account), so future auto-renewals should work. Now let me verify TLS is live and fire the two contributions with the updated tasting details:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cert file is renewed on seni_ror, but nginx there is still serving the old in-memory cert — and I mistakenly ran the renewal-conf grep on the autopilot box (it lives on seni_ror). Let me reload nginx on seni_ror and re-verify from both sides:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -319,11 +328,13 @@ TLS is now fully restored:
 - ✅ nginx reloaded, serving the **new cert** (valid through Nov 7, 2026)
 
 Now firing both submissions with the full tasting details (including Gaia & Aria's feedback on the bitter aftertaste):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's contribution submitted ✅ (HTTP 200, signature verified, 400 TDG auto-computed). Now Liz's:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -463,4 +474,166 @@ So here's the complete answer:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "===timer status==="; systemctl is-enabled certbot.timer; systemctl status certbot.timer --no-pager | head -6; echo "===next scheduled ; echo "===timer==="; systemctl is-enabled certbot.timer; systemctl list-timers certbot.timer --no-pager 2>/dev/null | head -4; echo "===last ; pgrep -af "certbot" | grep -v pgrep || echo "no certbot running"; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] Hey, can you make sure that we have the automation in place to check for all the various domains in our ecosystem that's renewing the SSL via this approach and then make sure that the not just automation but the documentation is also in place. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good task — let me first get a complete inventory of every domain and cert across the fleet (certbot certs + nginx configs on all hosts, plus Route53 DNS in both AWS accounts), so the automation and docs cover *everything*, not just edgar.
+
+
+### 🤖 Autopilot
+
+Good — I now have the first pass of the inventory:
+
+- **seni_ror** (NELANCO): 2 certbot certs — `edgar.truesight.me` (89d ✅) and **`perch.truesight.me` (only 33d left ⚠️** — next to renew)
+- **krake_nginx**: SSH key not authorized from this box — need another route to inspect it
+- **Route53 (explorya)**: 4 zones — `truesight.me`, `agroverse.shop`, `getdata.io`, `jigasia.com.sg`. **Nelanco has no zones.**
+
+Let me enumerate all DNS records + ACM certs + existing docs so nothing is missed:
+
+
+### 🤖 Autopilot
+
+I have the DNS + ACM inventory. Now let me probe the actual TLS endpoints across the ecosystem to get ground-truth expiry for every domain (one batch, then I'll build the automation + docs):
+
+
+### 🤖 Autopilot
+
+Solid ground-truth inventory now. Two more quick checks — the sophia.truesight.me cert lives on **this** box (autopilot), so let me confirm whether certbot/timers exist here, and confirm perch's renewal config on seni_ror uses the nginx authenticator (so the timer handles it):
+
+
+### 🤖 Autopilot
+
+Interesting findings — there's some cert **replication** across hosts (perch appears on both seni_ror and autopilot). Let me nail down which host actually serves each cert via TLS, then I'll have the definitive map. Quick verification of the apex/getdata/agroverse origins:
+
+
+### 🤖 Autopilot
+
+I now have a full ground-truth picture of the ecosystem's TLS. Let me record the comprehensive map, then build the automation + docs. First, let me check existing docs to avoid duplication, and check whether there's an existing scripts/ops location in truesight_autopilot:
+
+
+### 🤖 Autopilot
+
+Let me check the existing NELANCO_ARCHITECTURE.md (it references certbot) and the autopilot scripts dir to see where automation belongs:
+
+
+### 🤖 Autopilot
+
+I have the full ground-truth inventory now. Here's what the ecosystem looks like:
+
+- **Certbot-managed (LE, our boxes):** `edgar`, `perch` (seni_ror), `sophia` (this box), `beta.edgar` — all renew via `certbot.timer` (enabled, twice daily)
+- **AWS ACM (auto-renew):** `getdata.io` (+wildcard) — Amazon manages, fine
+- **GitHub Pages (auto):** `truesight.me` apex, `dapp`, `oracle`, `agroverse.shop`, `capoeira`, etc.
+- **External/manual:** `chatbot.truesight.me` (Sectigo), `affiliate.agroverse.shop` (**ZeroSSL — expires Sep 20, 33 days — first to go WARN**), `api.truesight.me` (serving a stale edgar Sectigo cert — misconfig to flag)
+- **Known dead:** `mtproxy`, `claude`, `orchard`, `www/app.getdata.io`
+
+Now I'll build the automation: a fleet-wide cert health monitor (daily systemd timer + Telegram alert on critical) deployed on this box, plus the runbook doc. Installing + validating first:
+
+
+### 🤖 Autopilot
+
+The monitor works — all 16 live endpoints **OK**, 5 dead endpoints correctly flagged informational, FAIL=0, and the daily timer is armed (next run 06:00 UTC). The "Broken pipe" lines are harmless SIGPIPE noise from the openssl→x509 pipeline.
+
+Now the documentation + version control. Let me locate the exact certbot follow-up entry in OPEN_FOLLOWUPS.md so I can mark it resolved:
+
+
+### 🤖 Autopilot
+
+Let me find the exact certbot follow-up entry (line ~374) in the Pending section:
+
+
+### 🤖 Autopilot
+
+Let me find the exact certbot entry in OPEN_FOLLOWUPS.md to mark it resolved:
+
+
+### 🤖 Autopilot
+
+Found it — line 374. Let me read that exact entry to update it:
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me build the two deliverables via PRs:
+
+1. **Runbook doc** → `agentic_ai_context/TLS_CERTIFICATE_RENEWAL_RUNBOOK.md` (comprehensive, covers the whole ecosystem)
+2. **Update OPEN_FOLLOWUPS.md** → mark the certbot entry resolved + add the new tooling-follow-up (monitor script into repo)
+
+
+### 🤖 Autopilot
+
+Runbook PR created. Now let me update OPEN_FOLLOWUPS.md — mark the certbot entry resolved and add the monitor-script-in-repo follow-up:
+
+
+### 🤖 Autopilot
+
+⚠️ I spotted a problem with my own last action: PR #740 **overwrote** `OPEN_FOLLOWUPS.md` with a truncated version (I used a whole-file write that only contained the top portion of the backlog — the real file is ~116K chars with many more pending entries). **Main is untouched** (only the PR branch was affected), but I need to fix that PR before it can be merged. Let me pull the exact original text of the certbot entry from the full-file artifact and redo this surgically with edits on a fresh branch:
+
+
+### 🤖 Autopilot
+
+PR #740 has a truncated file — I need to fix that properly. The established pattern in this file is to mark entries `[RESOLVED date]` in place (like the QR token entry), so a single surgical edit suffices. Let me get the exact text of the certbot entry first:
+
+
+### 🤖 Autopilot
+
+I have the exact certbot entry text. Now let me fix PR #740 with a **surgical edit** instead of the whole-file overwrite (which truncated the file). I'll add a RESOLVED marker to the certbot entry and add the new follow-up, keeping everything else intact. I'll redo this on a fresh branch with the same file — using an edit hunk rather than a whole-file write:
+
+
+### 🤖 Autopilot
+
+Surgical edits applied — PR #741 created. Let me verify the file on that branch is **complete** (not truncated like #740 was), and also close the bad #740 so it can't be merged accidentally:
+
+
+### 🤖 Autopilot
+
+PR #741's branch is **complete** — the full backlog is intact (+117K more chars past the shown portion, including the certbot entry marked resolved). Now let me close the bad #740 so it can't be merged:
+
+
+### 🤖 Autopilot
+
+PR #740 (the truncated one) can't be closed from here — there's no close tool in my kit, and I shouldn't merge anything without your word. **Do not merge #740** — it has a truncated `OPEN_FOLLOWUPS.md`. #741 supersedes it.
+
+---
+
+## ✅ Done — automation + docs for the whole ecosystem's TLS
+
+### 1. Fleet-wide monitor — LIVE now
+- **`tls-cert-check.timer`** (systemd, autopilot box) runs **daily at 06:00 UTC**
+- Checks **21 endpoints** across all 4 categories: certbot (edgar, perch, sophia, beta.edgar), AWS ACM (getdata.io), GitHub Pages (dapp/oracle/agroverse.shop/capoeira/butterfly/tribomirimbahia…), external (chatbot, affiliate)
+- **Telegram alert** on any cert <15 days or expired → this catches the exact failure that hit edgar, within 24h, instead of discovering it via a failed submission
+- First run verified: **all 16 live endpoints OK, FAIL=0**, 5 dead endpoints flagged informational
+- Renewal timers already enabled: `certbot.timer` twice-daily on seni_ror + autopilot; ACM/GitHub auto-renew
+
+### 2. Documentation — PR #739 (runbook)
+**`TLS_CERTIFICATE_RENEWAL_RUNBOOK.md`** — the authoritative reference:
+- Full domain inventory with ground-truth expiries (probed live)
+- Per-host renewal automation status
+- **2026-08-08 incident postmortem** (root cause: dead v01 ACME account + missing dns-route53 plugin)
+- Step-by-step emergency renewal procedure (nginx authenticator)
+- Runbook test-drive section
+
+### 3. Backlog — PR #741
+- Certbot follow-up (OPEN_FOLLOWUPS L374) marked **[RESOLVED]** with resolution notes
+- New follow-up filed: promote `tls_cert_check.sh` into the truesight_autopilot repo (version control + tests) — it currently lives on the box only
+
+### ⚠️ Two callouts I flagged in the runbook
+- **`api.truesight.me` is serving a stale `edgar` Sectigo cert** (wrong CN, valid to Jan 2027) — works but misconfigured; needs a proper api cert
+- **`affiliate.agroverse.shop`** (ZeroSSL) is the nearest manual renewal — expires **Sep 20**, the monitor will alert ~Sep 5
+
+### Action needed from you
+1. **Review & merge PR #739 + #741** (or tell me to)
+2. **Close #740** (truncated — superseded by #741)
+3. Optional: fix the `api.truesight.me` cert misconfig — happy to take that on next
+
+Want me to tackle the `api.truesight.me` stale-cert issue now, or leave it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "===SENI_ROR certs==="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains|Expiry Date" ; echo "===SENI_ROR ngin; echo "===KRAKE_NGINX certs==="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains|Expiry Date"; echo "===KRAKE_NGINX; for d in api.truesight.me chatbot.truesight.me getdata.io app.getdata.io www.getdata.io beta.edgar.truesight.me sophia.truesight.me mtproxy.; …(+4 more)
 
