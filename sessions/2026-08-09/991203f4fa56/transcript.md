@@ -19,6 +19,16 @@ Hey, currently I'm thinking that in China we have a problem right because telegr
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_context_file, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check for any existing DAO context on a China team, and dig deeper into white-labeling options for the top candidates.
 
 
@@ -64,4 +74,49 @@ Quick summary of what's in it:
 There's an "Open Questions" section for you — biggest ones: self-host vs Feishu, single shared workspace vs separate China realm, and whether OS-level push is a launch must-have.
 
 Want me to walk through any section in more detail, or shall we start Phase 0 decisions?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10635] Also, regarding this Android interface where we expose it for our internal teams, we need to be able to assign that. Some team members only have read view, others have editing and read view. So I think I came up with the specifications before, but for the telegram experience. So dig into that and give some thoughts to it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me dig for your earlier Telegram permissions specs before I give thoughts.
+
+
+### 🤖 Autopilot
+
+Let me search a few more angles for that Telegram spec you mentioned.
+
+
+### 🤖 Autopilot
+
+That plan is about the autopilot Telegram interface — not the team-permission spec. Let me search more precisely for your earlier Telegram permissions spec.
+
+
+### 🤖 Autopilot
+
+I dug into it — and I have to be straight with you: **I couldn't find a written permissions spec anywhere.** I searched the whole context repo (every file, terms like "read only", "permissions", "viewer", "restricted", "spectator"), past session transcripts for the last 90 days, and the org's code — nothing matches a Telegram team-permissions spec. The only permission docs that exist are the DAO's DApp governor-permission flow, which is unrelated. So either it lives somewhere I can't see, or it was a verbal spec. If you re-share it or point me to it, I'll match it exactly.
+
+That said, the requirement itself — some team members read-only, others read + edit — is very doable, so here are my thoughts on how it maps onto the Zulip platform from the plan:
+
+**1. The permission model maps cleanly onto Zulip roles:**
+- **Owner** — you + Sophia (full control)
+- **Admin** — team leads (manage members, streams, settings)
+- **Editor** — can post + edit/delete their own messages (Zulip's "member" role)
+- **Viewer** — read-only
+
+**2. Read-only is enforced at the stream (team) level, not the topic level.** This is the key design point: Zulip lets you set who can *post* in a stream — options like "admins only" or "only a specific group can post." So a read-only team member = someone subscribed to the team's stream, with the stream's posting policy locked to editors/admins only. They see everything, can react maybe, but can't post.
+
+**3. Topic-level restrictions don't exist natively** — permissions in Zulip live on the stream, not per-topic. So if you need *some topics read-only and others editable inside the same team*, the clean pattern is to split sensitive topics into their own stream with tighter posting policy. I'd recommend we design streams as "permission boundaries": e.g. `China Ops — view` vs `China Ops — edit`.
+
+**4. Zulip also has a "guest" role** — users limited to only the streams they're invited into, which is perfect for external people (e.g. partners, contractors) who should see only specific teams and nothing else.
+
+**5. One nuance on "editing":** in a chat app, editing usually means editing/deleting your own messages within a window, plus admins editing anything. If you actually meant document-style editing — like someone can edit a shared spec or plan — that's a different capability (Zulip has docs for that too, but weaker than Google Docs). Worth telling me which you mean.
+
+**6. Telegram comparison:** Telegram can only do this crudely — mute a user, or make a channel admins-only-post. Zulip's model is strictly better: real roles, per-stream posting policy, guest scoping, and an audit log of admin actions.
+
+Want me to fold this into the plan doc as a proper permissions section — I can update the PR — and also, can you point me to that earlier spec if it exists?
 
