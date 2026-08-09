@@ -63,6 +63,7 @@ I've got solid research. Let me grab the mission doc for a proper tie-in, then w
 ### 🤖 Autopilot
 
 I have everything I need — DAO China context (Dongguan, Jerri/Ling, Aora events, GACC), the research, and the mission north star. Writing the full plan now.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -161,4 +162,36 @@ But — honesty here — I can't guarantee 100% from a desk in the US that it'll
 One more thing that helps: the Android app we'd fork talks only to our own server — no Google or Firebase calls in the path — so there are no blocked dependencies hiding inside the app either.
 
 So short answer: no, I'm not claiming Zulip has some China pass. I'm claiming *our own server on our own domain* is a fundamentally different situation from Telegram — and we'll verify it from the ground in Dongguan before committing.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10635] The Chinese team is currently using the WeChat, I think you can deploy Ubuntu server on the Tencent cloud. Is it deployable on Ubuntu or what OS? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me quickly verify the current facts on Zulip's OS support and Tencent Cloud's requirements before answering.
+
+
+### 🤖 Autopilot
+
+Yes — and this is actually a great fit. Quick facts, then the one big caveat:
+
+**OS — yes, Ubuntu works fine.** Zulip officially supports Ubuntu 22.04, 24.04, and 26.04, plus Debian 12/13. Tencent Cloud offers Ubuntu Server images (their standard lineup: Ubuntu 20.04/22.04/24.04). So deploy Ubuntu 24.04 LTS on a Tencent Cloud CVM and Zulip runs straight on it. Needs at least 2 GB RAM (4 GB if you want 100+ users), 25 GB disk.
+
+**Now the important caveat — where the Tencent server lives.** This is the whole game:
+
+- **If the Tencent server is in mainland China** (Guangzhou, Shenzhen, etc.): the domain pointing to it **must have an ICP filing**, or Tencent **blocks it** — this is automatic and enforced. And ICP filing requires a **mainland-registered entity** — a foreign company / Gary personally can't easily get one. That's a real obstacle, and it's exactly why my plan said Hong Kong.
+- **If the Tencent server is outside mainland** (Tencent Cloud has **Hong Kong** and other regions — Singapore, etc.): **no ICP needed at all** — the domain resolves directly, nothing blocked. Tencent Cloud International even has a Hong Kong region.
+
+So the short answer: **yes, deploy on Ubuntu on Tencent Cloud — but pick the Hong Kong region, not mainland.** That gives you:
+- Tencent's familiar console/billing (your team probably likes it),
+- No ICP filing, no entity requirement,
+- Fast mainland latency (20–40 ms),
+- Zulip on Ubuntu 24.04, done.
+
+One honest caveat about Hong Kong: cross-border traffic is generally fine, but we'd still do the Phase 2 smoke test from Dongguan with Jerri/Ling before building the app, exactly as the plan says.
+
+Want me to update the plan doc to add Tencent Cloud (Hong Kong region) as the recommended hosting alternative — with a mainland-vs-HK decision table? I can push that update to the PR.
 
