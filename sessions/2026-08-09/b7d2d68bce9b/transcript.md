@@ -309,6 +309,7 @@ Found the root cause: the service-by-service table has **5 columns** but I gave 
 ### 🤖 Autopilot
 
 All edges now 0.000% dark on both pages, and 钉钉/企业微信/待确认 all present. Sending the corrected framework PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -344,31 +345,37 @@ A **bilingual (中英) framework doc** comparing two tracks, with the China-side
 ### 🤖 Autopilot
 
 Good — this is the key integration insight. Let me check what the DAO protocol already supports for exactly this (inventory movement events, raw-material → finished-goods conversion) so the framework captures the real API surface, not a wish.
+[3 tool result(s) compacted: read_context_file, lookup_event_docs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the key integration insight — and the good news is the DAO protocol **already supports all three of those record types** via API, and crucially the submission endpoint (`dao_protocol` on AWS) is **not** Google-dependent, so the China cluster can hook straight in even though Sheets/Apps Script are blocked there. Let me capture this in the framework (markdown + PDF).
+[2 tool result(s) compacted: git_push_changes, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF updated (3 pages, all edges 0%) — but the markdown push failed on a path validation. Let me retry the markdown update using edit hunks instead of a full rewrite (more robust).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #743 may not be merged yet, so main doesn't have the file — let me check the branch state and base the new changes on the v1 branch instead.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #743 (v1) isn't merged yet, so main lacks the file — I'll base the v2 changes on the v1 branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Markdown updated (PR #744, based on v1 branch #743). Now let me send the updated 3-page PDF with the API integration layer.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -522,4 +529,56 @@ Plus the full framework (layer table, service-by-service, investigation checklis
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → python3 -c "import matplotlib; print('matplotlib', matplotlib.__version__)" 2>&1; which dot && dot -V 2>&1 | head -1; ls /usr/share/fonts/tr; cd /tmp && cat > make_framework_en_diagrams.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesiz; cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() old = '''D1 = diagram1() d1r = renderPDF; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] I am thinking the China side should be its own standalone deployment cluster with its own tech stack specific for China tech ecosystem 
+
+separate from the main TrueSight DAO cluster with its tech stack that is accessible from USA 
+
+Update the diagram
+
+
+### 🤖 Autopilot
+
+Good call — the diagram should show two fully **separate** clusters, each with its own native stack, joined only by the optional API write-bridge. Let me rewrite Diagram A accordingly.
+
+
+### 🤖 Autopilot
+
+Diagram updated — all edges 0%, all new labels present. Sending.
+
+
+### 🤖 Autopilot
+
+Updated & delivered ✅ (message id 10719)
+
+**Diagram A now shows two fully SEPARATE clusters:**
+
+**TRACK A — TrueSight DAO Cluster** *(USA-accessible stack)*
+- AWS EC2 (nginx · Perch · Edgar · Postgres/Redis)
+- Google Apps Script (Sheets ledger · webhooks · Gmail)
+- GitHub (Actions · Pages · repos)
+- DAO Event System (dao_protocol, AWS · USA)
+
+**TRACK B — China Standalone Cluster** *(own China-native tech stack)*
+- Cloud [FILL IN] — Alibaba · Tencent · Huawei · ICP filing
+- App + local DB/ERP [FILL IN] — ledger replacement, raw lots, manufacturers
+- WeChat · DingTalk · WeCom · Alipay · WeChat Pay [FILL IN]
+- Local events + ledger — **independent** deploy/ops/stack, Google services NOT used
+
+**The only connection:** an optional **API WRITE-BRIDGE** — China POSTs mirrored events → dao_protocol (AWS · USA): INVENTORY MOVEMENT · REPACKAGING BATCH/SETTLEMENT · POST-REPACKAGING CLEANUP · QR REG · PARTNER ADD, with data-egress compliance marked TBD.
+
+A dark vertical **SEPARATE** divider now runs between the two clusters to make the independence visually explicit. Table headers in Section C updated to match ("Track A — TrueSight DAO cluster (USA)" / "Track B — China standalone (own stack)"). All edges pixel-verified 0%.
+
+**RESUME HERE** — updated diagram delivered (10719); if you want, I can also (a) sync this change into the CN version, or (b) update the markdown framework doc (PR #744) to reflect the "fully separate cluster" framing.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → rewrote diagram1() as two fully separate clusters (Track A USA stack / Track B China-native standalone) with SEPARATE divider + optional API write-bridge band; updated section A paragraph + table headers; verified 0% edge clipping, all labels present
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() NEW_FUNC = r'''def diagram1(): D = Drawi
 
