@@ -285,21 +285,25 @@ Good framing — the China side gets its own standalone cluster, Google services
 ### 🤖 Autopilot
 
 Framework doc committed (PR #743) and PDF generated. Let me verify the edges are clean before sending.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Some dark pixels still detected on the right edge — I need to find *where* they are rather than guess. Let me locate the dark columns precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dark block is in the bottom-right of page 1 (x≈200–210mm, y≈239–277mm). Let me identify exactly which text spans are there via positioned extraction.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the root cause: the service-by-service table has **5 columns** but I gave it **4 column widths** — reportlab mis-distributed the last column, pushing "待确认 Open questions" (and the 钉钉 text) past the page edge. That's the "cut off" — my earlier 3-col check passed but the 4-col table was the bug. Fixing the widths and regenerating.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -441,4 +445,81 @@ Both versions now in thread 10612: **EN (10711)** and **CN (10707, v2 with API l
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && sed -n '1,60p' make_framework_pdf.py; cd /tmp && cat > make_framework_en.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] In the PDF Can you generate Diagram for easier understanding
+
+
+### 🤖 Autopilot
+
+Good idea — a diagram will make the two-track + write-bridge model click instantly. Let me check what drawing tools are available on the box, then build architecture diagrams and embed them in the PDF.
+
+
+### 🤖 Autopilot
+
+No matplotlib/graphviz, but reportlab (already working) can draw diagrams natively with shapes + arrows. Let me build two diagrams — (1) two-track architecture overview, (2) API write-bridge flow — and embed them into the English framework PDF.
+
+
+### 🤖 Autopilot
+
+The diagram `Drawing` objects ARE flowables in reportlab — I can append them directly to the story instead of converting to an image. Quick fix.
+
+
+### 🤖 Autopilot
+
+Page 1 right edge shows 0.155% dark — something in diagram 1 extends slightly past the margin. Let me locate exactly where.
+
+
+### 🤖 Autopilot
+
+The dark pixels are at y≈117–118.5mm, all along the right edge — that's within Diagram 1's horizontal area. The right-most box in Track B (WeChat/DingTalk box at x=154mm, width=20mm → ends at 174mm) plus the container ending at 178mm... but the drawing is 178mm wide and placed at left margin 14mm → ends at 192mm, within the 196mm printable area. Let me look closer — likely the diagram's vector content (a String or arrow) renders slightly outside its Drawing bounds, or the container's stroke lands right at the edge.
+
+
+### 🤖 Autopilot
+
+The culprit found is the full-width saffron header band (which is intentional, edge-to-edge design) — but the dark pixels are at y≈117mm, which is inside Diagram 1, not the header. Let me inspect precisely what vector/text lands beyond the right margin in that region.
+
+
+### 🤖 Autopilot
+
+Let me OCR the exact strip and check which page/section the overflowing text belongs to.
+
+
+### 🤖 Autopilot
+
+Found it — Diagram 1's "SHARED DAO EVENT SYSTEM" box has a single-line String that doesn't wrap: the events list runs off to x=210mm. I'll split that line into two wrapped strings.
+
+
+### 🤖 Autopilot
+
+All edges now 0.000% — the page-2 "lots?" at 196.5mm is 13.5mm from the paper edge (a 0.5mm table-cell overflow, invisible, nothing clipped). Diagram 1 and 2 both render. Sending the diagram version.
+
+
+### 🤖 Autopilot
+
+Delivered ✅ (message id 10715)
+
+**Framework PDF now includes two architecture diagrams** (English, 3 pages):
+
+**Diagram A — Two-track architecture overview**
+- **Track A (Global)**: AWS EC2 (nginx · Perch · Edgar · Postgres/Redis) + Google Apps Script (Sheets ledger, webhooks) + GitHub (Actions · Pages · repos)
+- **Track B (China)**: standalone cluster — cloud [FILL IN], local ledger [FILL IN], WeChat/DingTalk/Alipay [FILL IN] (Google services unavailable → blank by design)
+- Both feed the **SHARED DAO EVENT SYSTEM** (dao_protocol, AWS-hosted, not Google-dependent) via signed events → absorbed into the DAO ledger, with a data-egress compliance note
+
+**Diagram B — API write-bridge flow**
+- China-side app (already generating inventory/raw-material/manufacturer records) → **POST** → dao_protocol `POST /dao/submit_contribution` (FastAPI :8010, AWS) → event row: INVENTORY MOVEMENT · REPACKAGING BATCH · SETTLEMENT · CLEANUP · QR REG · PARTNER ADD
+
+Plus the full framework (layer table, service-by-service, investigation checklist, API layer, blank-by-design, next steps). All edges pixel-verified at 0%.
+
+**RESUME HERE** — diagrams version delivered (10715); earlier versions in thread: EN no-diagrams (10711), CN v2 (10707). If you want the **CN version with diagrams** too, or a **one-page executive diagram-only sheet** for Luca's call, just say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cat > make_framework_en_diagrams.py (reportlab native diagram drawing: two-track overview + write-bridge flow); patched Drawing-to-Image bug (appended Drawing directly); located + fixed overflow (long event line in shared-event box, split into wrapped lines); verified 0% edge clipping all pages
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → python3 -c "import matplotlib; print('matplotlib', matplotlib.__version__)" 2>&1; which dot && dot -V 2>&1 | head -1; ls /usr/share/fonts/tr; cd /tmp && cat > make_framework_en_diagrams.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesiz; cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() old = '''D1 = diagram1() d1r = renderPDF; …(+5 more)
 
