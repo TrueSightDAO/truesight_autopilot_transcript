@@ -78,12 +78,24 @@ Let me get the remaining portion of the file (sections 4.4 onward).
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The artifacts are nesting recursively. Let me pull the file directly to disk on the box — cleaner than paging through nested artifacts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got it — the file is 685 lines / 43 KB on disk. Let me read the key sections I haven't seen yet, especially the Deployment Guide (section 11), which is the heart of what Gary wants to hand Luca.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -189,4 +201,53 @@ Done — Mandarin version delivered ✅
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cat > /tmp/make_cn_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from rep; cd /tmp && python3 -c " import sys try: from pypdf import PdfReader except ImportError: from PyPDF2 import PdfReader r = PdfReader('TrueSigh
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Hey the Chinese version of the document the edges are cut off can you make sure to read and make sure this format is properly before you generate it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch — the tables were set to exactly the full usable width (188mm edge-to-edge), and long unbreakable strings (tokens, repo names) can overflow the cells and get clipped at the page edge. I'll regenerate with safety margins, narrower tables, and CJK character-level wrapping so nothing bleeds.
+
+
+### 🤖 Autopilot
+
+Regenerated. Now let me verify there's no edge clipping — I'll render the pages to images and check the right-margin strip is clean.
+
+
+### 🤖 Autopilot
+
+Edges are clean — 0% dark pixels on all margins of all 3 pages. Let me do one more sanity check that the full content is present and readable.
+
+
+### 🤖 Autopilot
+
+All checks pass — every section present, no garbled characters, and zero clipping. Sending the fixed version now.
+
+
+### 🤖 Autopilot
+
+Fixed and re-sent ✅ (message id 10627)
+
+**What was wrong**
+- The original tables were sized to the full usable width (edge-to-edge), and long unbreakable tokens (repo names, env var names, IPs) could overflow their cells and get clipped at the page edge.
+
+**What I changed**
+1. **Wider page margins** — 14mm left/right (was 11mm), so content never touches the edge
+2. **Narrower tables** — tables now capped ~179mm with a built-in buffer, aligned left
+3. **CJK character-level wrapping** (`wordWrap='CJK'`) — long strings break cleanly at any character instead of overflowing
+4. **Verified before sending** — rendered all 3 pages at 150 DPI and pixel-checked the left/right 36px strips: **0% dark pixels** on every page margin, plus a text-extraction check confirming all 7 sections and key identifiers present with zero garbled characters
+
+**RESUME HERE** — corrected Mandarin PDF delivered to thread 10612; next step whenever you're ready: prep the Luca brief/talking points comparing our deployment (AWS + GAS + GitHub Actions + GitHub Pages, beta-first, EIP blue-green) vs. the Chinese-side deployment.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cat > /tmp/make_cn_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') print("pages:", len(d)) for i, page in enumerate(d): pix = page.get_pixmap(dpi=150); cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') full = "\n".join(p.get_text() for p in d)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cat > /tmp/make_cn_pdf.py <<'PYEOF' #!/usr/bin/env python3 # -*- coding: utf-8 -*- import os from reportlab.lib.pagesizes import A4 from rep; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') print("pages:", len(d)) for i, page in enumerate(d); cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('TrueSight_DAO_部署架构总览_中文版.pdf') full = " ".join(p.get_text() for p in d) # sanity c
 
