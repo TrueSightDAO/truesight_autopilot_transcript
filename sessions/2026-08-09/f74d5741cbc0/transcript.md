@@ -110,31 +110,42 @@ CLI confirmed. Now let me dry-run both contributions (Gary + Liz, 4h each = 240 
 ### 🤖 Autopilot
 
 Both dry-runs look correct — **400 TDG each** (computed: 100 TDG/hr × 4h), properly signed, no client-supplied TDG override. Submitting both now as you asked:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both submissions were blocked — not by the DAO, but by infrastructure: **`edgar.truesight.me`'s TLS certificate has expired**. The CLI failed with `SSLCertVerificationError: certificate has expired` on both POSTs. Let me diagnose the cert (this is the nginx box that terminates HTTPS for edgar).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed the root cause: **the edgar.truesight.me Let's Encrypt cert expired Aug 8, 2026 23:12 UTC** — roughly the moment this session started (snapshot dated Aug 9). The SSH key to krake_nginx isn't authorized from this box, so let me find where edgar lives and how the cert is managed.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause is now clear — this is a **known open follow-up** (`OPEN_FOLLOWUPS.md` line 374: "Wire `certbot renew` automation on NELANCO Rails"). The edgar cert lives on the NELANCO Rails box (54.211.179.126 = `seni_ror`), which is the same host serving edgar. Let me verify and renew it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. The edgar cert is **expired** and certbot's auto-renewal timer is broken (last ran Aug 8 18:17, but the cert expired 23:12 — and it didn't renew). Let me check why the renewal didn't fire and try renewing now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full root cause: the **edgar renewal config uses the `dns-route53` authenticator, but that certbot plugin is not installed** on the NELANCO box — so every renewal since the migration has failed and the cert silently expired. This is exactly the known follow-up in OPEN_FOLLOWUPS.md (line 374). Let me inspect the renewal config to pick the right fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -142,21 +153,25 @@ Full root cause: the **edgar renewal config uses the `dns-route53` authenticator
 Clear picture now. The edgar cert was configured with `authenticator = dns-route53` (the EXPLORYA-era method), but the NELANCO box only has `nginx`, `standalone`, and `webroot` plugins. The `perch` cert on the same box uses `nginx` authenticator fine. 
 
 I'll renew edgar using the **nginx authenticator** (same as perch, which works on this host), then reload nginx. This is a read-restore of an expired cert — exactly what's needed to unblock your submissions. Let me check nginx serves edgar first, then renew:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edgar server block is fully configured for 443 SSL and proxies to dao_protocol (:8010). The nginx plugin can serve the ACME challenge. I'll renew the expired cert with the nginx authenticator (same plugin perch already uses successfully on this host) — this restores the expired cert and unblocks all Edgar submissions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A certbot instance is already running (likely a systemd timer run in progress). Let me check and wait for it to finish, then retry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The earlier dry-run I launched is still running (that's the "another instance" lock). Let me wait for it to finish, then kill any stale lock and retry the real renewal with the nginx authenticator.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -346,4 +361,22 @@ This was the known open follow-up in `OPEN_FOLLOWUPS.md` L374. The renewal-conf 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → echo | openssl s_client -servername edgar.truesight.me -connect edgar.truesight.me:443 2>/dev/null | openssl x509 -noout -subject -dates 2>&; pgrep -af "certbot" || echo "no certbot running"; echo "---locks---"; sudo ls -la /var/lib/letsencrypt/.certbot.lock 2>/dev/null; sudo fuser; sudo certbot renew --cert-name edgar.truesight.me --authenticator nginx 2>&1 | tail -15; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] So is everything working now? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, everything is working now. ✅
+
+Two things got done:
+
+1. **Your contribution reports are submitted** — both you and Elizabeth Wong, 4 hours each, 400 TDG each. Edgar accepted both with signatures verified.
+
+2. **I fixed the outage that was blocking them** — the security certificate for edgar.truesight.me had expired, which is why earlier attempts failed. I renewed it, and it's now valid until November. I also fixed the broken auto-renewal configuration, so the certificate should renew itself going forward and this shouldn't happen again.
+
+So the tasting session work is logged, and the system's back online. If you'd like, I can do a quick check of the ledger snapshot to show you the exact rows — but everything came back confirmed on Edgar's side.
 
