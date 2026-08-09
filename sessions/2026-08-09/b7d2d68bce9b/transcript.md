@@ -431,6 +431,7 @@ I have the generator's structure. Now I'll write an English-only version with th
 ### 🤖 Autopilot
 
 English version built — 3 pages, all edges verified 0% dark, all 7 sections present. Sending it now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -464,11 +465,13 @@ Both versions now in thread 10612: **EN (10711)** and **CN (10707, v2 with API l
 ### 🤖 Autopilot
 
 Good idea — a diagram will make the two-track + write-bridge model click instantly. Let me check what drawing tools are available on the box, then build architecture diagrams and embed them in the PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matplotlib/graphviz, but reportlab (already working) can draw diagrams natively with shapes + arrows. Let me build two diagrams — (1) two-track architecture overview, (2) API write-bridge flow — and embed them into the English framework PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -623,4 +626,77 @@ Same 3-page layout otherwise — Diagram A (two separate clusters), Diagram B (A
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && python3 - <<'PYEOF' src = open('make_framework_en_diagrams.py', encoding='utf-8').read() # 1) widen line gap inside boxes old = "; cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('Deployment_Architecture_Framework_EN_diagrams.pdf') page = d[0] # words in the dia
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10612] Make sure the words don’t spill out of box
+
+
+### 🤖 Autopilot
+
+Let me audit the actual geometry — I'll extract every box rect and every text span on the diagram page and compute exactly which words cross their box boundaries.
+
+
+### 🤖 Autopilot
+
+The audit found real spills — the root cause is `boxw()` draws each list item as a single unwrapped line, so long items overflow their box. Words spilling: **webhooks** (4mm), **PARTNER ADD** line (~14mm), **manufacturers** (2.4mm), **WeCom** (7mm), plus minor SEPARATE / e.g. / 制造商入驻. I'll fix `boxw()` to auto word-wrap text to the box width — that fixes all of them at once.
+
+
+### 🤖 Autopilot
+
+Let me see the `boxw` function definition to rewrite it with proper word-wrapping.
+
+
+### 🤖 Autopilot
+
+Now let me see Diagram 2's code too, so my wrapper fix covers both diagrams:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed: `boxw()` draws each line as a single unwrapped String, so long lines overflow their boxes. I'll rewrite `boxw()` to word-wrap text to the box width and auto-grow box height, then adjust label positions so nothing collides when boxes grow.
+
+
+### 🤖 Autopilot
+
+The patch didn't save (escaped-char mismatch aborted before write). Let me do it cleanly — replace `boxw()` + both diagram functions wholesale with auto-wrapping versions and pre-verified line widths.
+
+
+### 🤖 Autopilot
+
+All spills fixed. Let me run the full QA — edge-clipping check plus label presence — then send.
+
+
+### 🤖 Autopilot
+
+All QA passes — zero spills, zero edge clipping, all labels present. Sending.
+
+
+### 🤖 Autopilot
+
+Fixed ✅ (message id 10727)
+
+**What was wrong**
+- `boxw()` drew each text line as a single unwrapped string — long items like "PARTNER ADD", "manufacturers", "webhooks", "WeCom" overflowed their box edges (up to 14mm past).
+
+**The fix (structural, not cosmetic)**
+- Rewrote `boxw()` to **auto word-wrap** every line to the box's inner width, and **auto-grow box height** to fit the wrapped lines — so no text can ever spill regardless of content length
+- Tightened a few lines (e.g. "Sheets · webhooks" instead of "Sheets ledger · webhooks") so they wrap cleanly at reasonable widths
+- Repositioned track titles and deploy labels to keep clearance around the now-slightly-taller boxes
+
+**Verified before sending (scripted, not eyeballed)**
+- Geometry audit on all 3 pages: **0 words spilling** out of any box (was 7)
+- Edge-clipping check: **0.000% dark** on all margins of all pages
+- All key labels present, 0 garbled chars
+
+**RESUME HERE** — spill-free diagram PDF delivered (10727); earlier versions: 10723 (spacing), 10719 (separate clusters), 10715 (first diagrams), 10711/10707 (EN/CN). Next: CN version with the same separate-cluster diagrams, or update markdown PR #744 — say which.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → replaced boxw() with word-wrap + auto-height version, rewrote diagram1()/diagram2() with pre-verified line widths; geometry-audited all 3 pages (0 spills); edge-checked all margins (0.000%)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && python3 - <<'PYEOF' import fitz d = fitz.open('Deployment_Architecture_Framework_EN_diagrams.pdf') page = d[0] # collect filled r; cd /tmp && sed -n '1,60p' make_framework_en_diagrams.py; cd /tmp && grep -n "def boxw\|def box\|def lbl\|def arrow" make_framework_en_diagrams.py; …(+5 more)
 
