@@ -340,6 +340,7 @@ Gary's contribution submitted ✅ (HTTP 200, signature verified, 400 TDG auto-co
 ### 🤖 Autopilot
 
 Both submissions landed. Let me verify the ledger rows to confirm:
+[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -401,46 +402,60 @@ So the tasting session work is logged, and the system's back online. If you'd li
 ### 🤖 Autopilot
 
 Good question — and good news: **the automation already exists.** Let me verify it's healthy and prove it works end-to-end now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run is slow (it re-verifies every cert). Let me check the timer and logs separately without the slow dry-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Timer is enabled and scheduled — next run in ~1h50m. Now let me prove the automated renewal will actually **succeed** (the whole point of the fix). Earlier dry-run timed out; let me check for a lingering process and re-run cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run from my first command is still running (it's validating all certs, which takes a while). It will tell us definitively whether the automated path works. Let me wait for it to finish:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run from earlier is still validating (it checks every cert on the box). Let me check its result:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run (the definitive proof the timer path works) is still validating all certs. One more wait to capture the result:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The latest dry-run (07:35) finished — let me read its specific result from the log:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found why it's slow: certbot's dry-run is in a **410-second random sleep** (anti-thundering-herd delay) before the actual check. Let me kill the sleeper and re-run with the delay disabled for a fast, definitive proof:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pkill may have killed its own shell. Let me re-run the dry-run cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -484,6 +499,7 @@ So here's the complete answer:
 ### 🤖 Autopilot
 
 Good task — let me first get a complete inventory of every domain and cert across the fleet (certbot certs + nginx configs on all hosts, plus Route53 DNS in both AWS accounts), so the automation and docs cover *everything*, not just edgar.
+[4 tool result(s) compacted: ssh_run, ssh_run, aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -495,31 +511,37 @@ Good — I now have the first pass of the inventory:
 - **Route53 (explorya)**: 4 zones — `truesight.me`, `agroverse.shop`, `getdata.io`, `jigasia.com.sg`. **Nelanco has no zones.**
 
 Let me enumerate all DNS records + ACM certs + existing docs so nothing is missed:
+[5 tool result(s) compacted: aws_query, aws_query, aws_query, aws_query, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the DNS + ACM inventory. Now let me probe the actual TLS endpoints across the ecosystem to get ground-truth expiry for every domain (one batch, then I'll build the automation + docs):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Solid ground-truth inventory now. Two more quick checks — the sophia.truesight.me cert lives on **this** box (autopilot), so let me confirm whether certbot/timers exist here, and confirm perch's renewal config on seni_ror uses the nginx authenticator (so the timer handles it):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting findings — there's some cert **replication** across hosts (perch appears on both seni_ror and autopilot). Let me nail down which host actually serves each cert via TLS, then I'll have the definitive map. Quick verification of the apex/getdata/agroverse origins:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have a full ground-truth picture of the ecosystem's TLS. Let me record the comprehensive map, then build the automation + docs. First, let me check existing docs to avoid duplication, and check whether there's an existing scripts/ops location in truesight_autopilot:
+[3 tool result(s) compacted: read_repo_file, search_code, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the existing NELANCO_ARCHITECTURE.md (it references certbot) and the autopilot scripts dir to see where automation belongs:
+[2 tool result(s) compacted: read_repo_file, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -636,4 +658,63 @@ Want me to tackle the `api.truesight.me` stale-cert issue now, or leave it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "===SENI_ROR certs==="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains|Expiry Date" ; echo "===SENI_ROR ngin; echo "===KRAKE_NGINX certs==="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains|Expiry Date"; echo "===KRAKE_NGINX; for d in api.truesight.me chatbot.truesight.me getdata.io app.getdata.io www.getdata.io beta.edgar.truesight.me sophia.truesight.me mtproxy.; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10584] By the way, let me know the full list of URL domain names that are subdomain names that are having their htps enabled via this route Make sure it's like available in that document that you set up [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull the definitive certbot cert inventory from both hosts (seni_ror + this box) so the "via this route" list is complete and verified — not just from memory:
+
+
+### 🤖 Autopilot
+
+I now have the ground-truth certbot inventory from both boxes. Let me check where the nginx config actually lives (the grep returned empty — maybe a different path) so I can state exactly which domains are served via the certbot route:
+
+
+### 🤖 Autopilot
+
+I have ground truth now. Key findings:
+
+- **seni_ror** serves `edgar.truesight.me` + `perch.truesight.me` (nginx `edgar.conf` + `perch.conf`, both certbot-managed)
+- **autopilot** serves `sophia.truesight.me` (nginx `sophia` block, certbot)
+- `beta.edgar.truesight.me` is TLS-live but its cert is **not** on either box — host unconfirmed
+- autopilot holds a **replica** perch cert (not serving — no 443 block for it)
+
+The runbook PR #739 lists these but has one stale detail (beta.edgar host). Let me correct it directly on the #739 branch so the document is accurate:
+
+
+### 🤖 Autopilot
+
+The runbook now has the verified host table. Here's the direct answer to your question.
+
+## The certbot→nginx route (HTTPS via our boxes, Let's Encrypt) — 4 subdomains
+
+These are the ones "via this route" (certbot-managed, HTTP-01 through nginx, renewing via the systemd timer):
+
+| # | Subdomain | Serving host (verified) | Expiry |
+|---|---|---|---|
+| 1 | **`edgar.truesight.me`** | seni_ror (`edgar.conf`) | Nov 7, 2026 ✅ |
+| 2 | **`perch.truesight.me`** | seni_ror (`perch.conf`) | **Sep 11, 2026** (33d — next to renew) |
+| 3 | **`sophia.truesight.me`** | autopilot (`sophia` block) | Oct 28, 2026 ✅ |
+| 4 | **`beta.edgar.truesight.me`** | TLS live (Nov 7) but **managing host unconfirmed** ⚠️ | Nov 7, 2026 ✅ |
+
+**Note on perch:** the autopilot box holds a *replica* perch cert (expires Sep 11 13:11 UTC) but serves nothing — the live one is on seni_ror (Sep 11 22:05 UTC). Don't confuse the copies.
+
+## Not via this route (for contrast — also in the doc)
+- **AWS ACM (auto):** `getdata.io` (+wildcard)
+- **GitHub Pages (auto):** `truesight.me`, `dapp.`, `oracle.`, `beta.truesight.me`, `butterfly-effect-club.`, `heierling.`, `tribomirimbahia.`, `agroverse.shop`, `www.`, `beta.agroverse.shop`, `capoeira.agroverse.shop`
+- **External/manual (watch):** `chatbot.truesight.me` (Sectigo, Nov 8), `affiliate.agroverse.shop` (ZeroSSL, **Sep 20** — nearest manual renewal)
+- **Misconfig:** `api.truesight.me` is serving a stale `edgar` Sectigo cert
+- **Dead:** `mtproxy.`, `claude.`, `orchard.`, `www/app.getdata.io`
+
+All of this is now in **`TLS_CERTIFICATE_RENEWAL_RUNBOOK.md`** (PR #739) — I just corrected the table with this exact ground truth (verified from both boxes' `certbot certificates` + nginx `-T`). The one open item: **`beta.edgar.truesight.me`'s managing host is unconfirmed** — worth a quick hunt so its renewal timer is verified too. Want me to track that down next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "===== AUTOPILOT (this box) certbot certificates ====="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains:|Exp; echo "===== SENI_ROR certbot certificates ====="; sudo certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains:|Expiry Date"; e; echo "=== find nginx conf ==="; ls -la /etc/nginx/ 2>/dev/null; echo "--- sites-enabled ---"; ls -la /etc/nginx/sites-enabled/ 2>/dev/null; 
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/docs/tls-cert-renewal-runbook/TLS_CERTIFICATE_RENEWAL_RUNBOOK.md
 
