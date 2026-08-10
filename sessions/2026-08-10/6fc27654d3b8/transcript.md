@@ -57,31 +57,47 @@ The image is stubborn — no text OCR'd. Let me try Chinese OCR and check if I h
 ### 🤖 Autopilot
 
 OCR is completely failing on this image (likely a dark photo). Let me check the grok_client for vision capability to actually "see" the image.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a Grok vision client on the box. Let me use it to actually see the image.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The key is in the autopilot's own .env. Let me load it and run Grok vision.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok vision read the label as **"Haoyue T5"** — a prefabricated modular cabin/tiny home (white structure with orange accents), not a car. Let me verify what product this actually is and pin down the correct classification.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok read the label as **"Haoyue T5"** — a white prefabricated modular cabin/tiny home with orange accents. Given you said "HaoYue15," this is the Haoyue brand modular prefab house. Now let me pin down the exact China HS code (8-digit) and US HTS code (10-digit) for prefabricated buildings.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the classification confirmed. Let me check the latest tariff status (Section 301 + IEEPA "reciprocal" tariffs, which changed a lot in 2025) so the duty figures are current, not stale.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -230,4 +246,72 @@ Want me to:
 - **A)** generate a branded PDF of this cost research (Saffron Monk style) to share with the supplier/broker,
 - **B)** draft a quote-request email to Xiamen Haoyue with the exact model questions, or
 - **C)** run the same research for a different model/size?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10729] [Handoff context — this Telegram topic (thread 10729) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Today Paying a visit to the manufacturers of these mobile capsules which I got to inspect while out in Inner Mongolia 
+
+My sense is the thesis for climate change is somewhat holistic and complete 
+
+Either we help reduce the impact of climate change through circular economy through regenerate supply chain like our cacao model or when they experience devastation of the climate change we sell them access to affordable infrastructure to continue living a life
+
+It might be possible then to borrow SOHA’s David’s model. If the new mobile capsule residents are too broke to pay off all upfront we put a lien on their property and then sell it off. That was how he aggregated and have around 1% of the entire Texas property finance flow through him
+
+
+### 🤖 Autopilot
+
+Gary — this is a meaty strategic thread. Before I respond on the SOHA/David lien model and whether this is an execution handoff, let me check the registry and dig up what's already in our context on SOHA, liens, and any capsule-home plan.
+
+
+### 🤖 Autopilot
+
+Let me check whether there's any existing plan or context on this housing/climate thread before I respond.
+
+
+### 🤖 Autopilot
+
+No existing plan or context on capsule housing — this is a fresh strategic thread, not a handoff. Let me do one quick check on the David/SOHA lien model you referenced so my pushback is grounded, not vibes.
+
+
+### 🤖 Autopilot
+
+This is a strategic brainstorm, not a handoff — no plan exists in the registry, and "mobile capsule" has zero matches in our context. Here's my honest take.
+
+## Where I agree with you
+- **The climate thesis is coherent and holistic.** Two-sided: (1) reduce impact via regenerative/circular supply chains (our cacao model); (2) when climate events destroy housing, provide *affordable, quickly-deployable infrastructure* — mobile capsules hit that exactly. It's "mitigation today, resilience/response tomorrow." This is genuinely aligned with the mission (10,000 ha of Amazon rainforest / regeneration), and the capsule angle gives the DAO a **second, physical asset class** beyond cacao bags.
+- **Visiting the manufacturer in Inner Mongolia is the right move** — inspecting actual product beats all the Alibaba pricing I can pull.
+
+## Where I'd push back hard — the lien model as described
+The way you phrased it — *"too broke to pay upfront → we put a lien on their property and sell it off"* — has a serious flaw I want to flag before it becomes strategy:
+
+1. **Broke people don't have property to lien.** The lien works in David Campbell's model because his customers are **owner-financing Texas property** — they have the *land* as collateral. Climate-displaced capsule residents are, by definition, people who just **lost their home and land**. You can't secure a loan against collateral the disaster already destroyed. That's the core mismatch.
+
+2. **A lien isn't a sale.** Even in Texas contract-for-deed, if you repossess, you have to follow a strict foreclosure/repossession process — and you're left holding a **used, depreciated mobile capsule** that cost you $5–12k to import and can't be repossessed across state lines easily. The "sell it off" recovery leg is much weaker than it sounds.
+
+3. **It puts you in the repo business**, with all the optics/regulatory weight of predatory lending — which would poison the *other* side of your thesis (the regenerative, mission-driven brand).
+
+## What *does* work (the model I'd actually borrow from David)
+The durable insight isn't the lien — it's **installment ownership / revenue-backed financing**, done right:
+
+| Element | How it could work for capsules |
+|---|---|
+| **Keep the asset as collateral** | Sell the *house* on an installment contract, but title stays with you until paid — the capsule IS the collateral (like David's deeds). This works even with no land. |
+| **Repossession ≠ repo** | Structure terms so default → you reclaim the **module**, refurbish, redeploy. It's an asset, not a family's land. Less brutal optics. |
+| **Land lease, not sale** | Where residents are on rented/leased land, you're selling a movable asset — much cleaner legally than real-property liens. |
+| **Rent-to-own / subscription** | $X/month with title transfer at end — converts "too broke for upfront" into a cash-flow stream with a path to ownership. |
+| **DAO-compatible** | This is exactly a **revenue-backed instrument** — you could tokenize the payment stream, and record capsule custody via QR/ledger (same TRUECHAIN pattern as cacao bags). The DAO's whole identity pipeline (QR registration → inventory movement → sale) maps 1:1 onto physical capsules. |
+
+The real model that fits: **asset-backed installment sales with the unit as collateral**, on **leased land**, with clean repossession/refurb/redeploy. That's David's insight minus the parts that don't survive contact with a disaster zone.
+
+## What I need from you to go deeper
+This isn't in any existing plan or handoff. To turn it into an actionable plan I'd want to know:
+1. **Who is the buyer?** Disaster-displaced families (retail), NGOs/FEMA-like orgs (B2G), insurers, or a mix?
+2. **What's the financing surface?** Is the DAO itself the lender (balance-sheet), or a broker/facilitator matching third-party capital?
+3. **Geography?** US (where SOHA/Texas context applies) or Latin America (where our rainforest mission is)?
+4. **Is the capsule the unit of sale, or the "house + installation + hookup" package?**
+
+I can turn this into a **CAPSULE_HOUSING_PLAN.md** in the handoff registry with a proper phase-1 (manufacturer visit checklist, cost model per unit, financing structure options, DAO ledger integration for capsule custody) — just say the word, or if you'd rather I keep it in this thread, I'll build the cost-model + financing-structure research next.
 
