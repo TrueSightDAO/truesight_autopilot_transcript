@@ -47,11 +47,13 @@ Good — found the logo locations and event info. Now let me grab the logo file 
 ### 🤖 Autopilot
 
 Site is a JS-rendered SPA, so I have the key facts from search. Logo downloaded fine (668×944 portrait JPEG). Let me check the designs repo for any newer/horizontal lockups — an event stand usually wants a wide banner logo, not the portrait trademark mark.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The designs repo only has hash-named subdirs (I'd have to drill in blind). Let me check the shop's assets folder for other logo formats (PNG with transparency would be better for stand graphics) while I also verify what logo variants exist org-wide.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -161,6 +163,29 @@ Done ✅ — logged a **CONTRIBUTION EVENT** for you:
 - **Description:** Startup Summit 2026 stand coordination with Paloma — logo handoff + tweet-size pitch (EN/PT) + exhibitor blurb
 
 Submitted to the ledger. Anything else for the Summit stand — e.g. sending the pitch PDF to Paloma, or a longer exhibitor bio?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10744] Can you report contribution for 5 minutes for volume? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Logging it — 5 minutes for volume:
+
+
+### 🤖 Autopilot
+
+Done ✅ — logged **5 minutes** for you:
+
+- **Contributor:** Gary Teh · **Type:** Time (Minutes) · **Amount:** 5 · **Description:** Volume analysis work
+
+Submitted to the ledger. Anything else?
 
 ———
 **✅ Done this turn — actions taken:**
