@@ -53,36 +53,63 @@ Let me find the freight/shipment tracking doc in the context repo and the exact 
 ### 🤖 Autopilot
 
 Let me find the Shipment Ledger Listing tab and the AGL7 shipment page on the shop site.
+[3 tool result(s) compacted: search_context, search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agroverse_shop repo moved — let me check the Shipment Ledger Listing tab directly in the main ledger (gid 483234653) and the ops-health JSON.
+[2 tool result(s) compacted: read_google_sheet, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The listing got truncated before AGL7's row. Let me read the rest.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — let me grab the full AGL7 row (the Resolved URL was cut off in the earlier read).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet ordering differs from what I assumed — let me read the rows around AGL7 directly (it appeared in the middle of the listing).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full AGL7 row confirmed from the Shipment Ledger Listing. Let me check the freight runbook, the live AGL7 shop page, and the AGL7 ledger itself to round out the picture.
+[3 tool result(s) compacted: read_context_file, http_fetch, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture from the ledger. Let me check the AGL7 freight follow-up in the backlog for any tracking detail.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -120,21 +147,25 @@ So yes — the ledger agrees with you: AGL7 is **in transit** (freighting, Brazi
 ### 🤖 Autopilot
 
 Let me dig into the AGL7 ledger and inventory records to see whether the bottles landed and were sold.
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AGL7 ledger Balance sheet still shows #N/A for assets, but the inventory sheet has a "Cacao Molasses" line — let me pull the full inventory rows and the AGL7 Transactions tab to see if the bottles landed and sold.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AGL7 Transactions tab tells a much fuller story — the bottles left Matheus via DHL and were received back into the main ledger. Let me trace line 582 in the main ledger and the molasses sales.
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Transactions tab in the main ledger uses a different sheet name. Let me find the right tab and the "Cacao Molasses" rows in the main ledger.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -213,4 +244,160 @@ Confirmed — you're right, and the ledger has the receipts to prove it. The **S
 - **Stale flag:** The `Shipment Ledger Listing` Status (and the ops snapshot mirroring it) still says FREIGHTING IN PROGRESS — it was never updated when the bottles landed.
 
 So "bulk already sold off" is accurate — the status field just wasn't updated. Want me to update the Shipment Ledger Listing Status for AGL7 to reflect reality (e.g. **SALES IN PROGRESS** or **COMPLETED**), and flag the same for the ops-health snapshot? That's a ledger write, so I'll only do it on your go.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10801] I wonder if you could update the final two to expensed since they are expired by now 
+
+And then change the status of this shipment to COMPLETED?
+
+
+### 🤖 Autopilot
+
+Gary, before I touch the ledger, let me confirm the write path for both actions — expensing the last two bottles and updating the shipment status — so I do it through the sanctioned mechanism (Edgar events → ledger) rather than hand-editing.
+
+
+### 🤖 Autopilot
+
+The DAO event catalog has a **`DAO Inventory Expense Event`** — that's the sanctioned way to expense the bottles. Let me check its exact schema, and look at how the Shipment Ledger Listing status column is structured so I can update AGL7 to COMPLETED.
+
+
+### 🤖 Autopilot
+
+The DAO Inventory Expense Event is the right event type for the two bottles. Now let me confirm the Shipment Ledger Listing status column and how status updates normally get written (script vs manual), so I route this correctly.
+
+
+### 🤖 Autopilot
+
+There's a plan doc specifically about DAO Inventory Expense reporting — let me read it to get the exact attribute format before submitting.
+
+
+### 🤖 Autopilot
+
+This is exactly the right event type. Let me confirm the exact GAS processing behavior and locate AGL7's row in the Shipment Ledger Listing before submitting anything.
+
+
+### 🤖 Autopilot
+
+The listing rows must be shorter than expected. Let me read the full listing to find AGL7's exact row.
+
+
+### 🤖 Autopilot
+
+The listing got truncated. Let me read the rest to find AGL7's exact row (its Status cell and column letters).
+
+
+### 🤖 Autopilot
+
+Let me continue reading to find the AGL7 row in the listing.
+
+
+### 🤖 Autopilot
+
+Let me continue reading the listing to find the AGL7 row.
+
+
+### 🤖 Autopilot
+
+The nested artifact read is unwieldy. Let me query the listing directly for the rows where AGL7 sits.
+
+
+### 🤖 Autopilot
+
+Found AGL7's row (row 12): Status C12 = "FREIGHTING IN PROGRESS". Now, before submitting the expense event, I need to understand exactly how the GAS expense processor handles an inventory expense (physical count vs USD) so the ledger write lands correctly. Let me check the expense processing code.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual expense processing logic in the main GAS project to see how a physical inventory expense (2 bottles) gets written to the ledger.
+
+
+### 🤖 Autopilot
+
+Let me read the main expense-processing GAS file to confirm how the ledger write happens for a physical inventory expense.
+
+
+### 🤖 Autopilot
+
+Let me read the processing logic — specifically how the expense row is written to the ledger (whether quantity is treated as USD or physical units).
+
+
+### 🤖 Autopilot
+
+Let me find the specific function that writes the expense to the ledger to see how quantity is interpreted.
+
+
+### 🤖 Autopilot
+
+Let me read the expense ledger-insert function in the main GAS file (1Q5HfGR or 1m2sQON) to see exactly how it handles the Target Ledger and quantity for a physical inventory expense.
+
+
+### 🤖 Autopilot
+
+Gary's given the explicit instruction. Let me confirm two things before acting: (1) how the expense processor handles the quantity sign for a physical inventory write-off, and (2) the sanctioned mechanism for updating the shipment status to COMPLETED.
+
+
+### 🤖 Autopilot
+
+Let me confirm the exact current inventory line for the two bottles and page through the expense-processing GAS code to check quantity sign handling, plus how the shipment status is managed.
+
+
+### 🤖 Autopilot
+
+The inventory line is confirmed: `Cacao Molasses 250ml + 74 4476 6210 San Francisco` @ **Gary Teh, 2 units @ $12.143 = $24.29**. Now let me confirm the write paths: (1) how the expense GAS writes to `offchain asset location`, and (2) what normally updates the Shipment Ledger Listing status cell.
+
+
+### 🤖 Autopilot
+
+I have what I need. Let me confirm the exact inventory line and its location (in the offchain asset location tab of the **main ledger**), then submit the two-bottle expense via the sanctioned `[DAO Inventory Expense Event]`, and update the Shipment Ledger Listing status.
+
+Before submitting, here's the plan — one line each:
+- **Expense event**: 2 × `Cacao Molasses 250ml + 74 4476 6210 San Francisco` (Gary Teh), $24.29, Target Ledger `offchain` → writes the write-off into the main ledger's offchain transactions + inventory.
+- **Status**: Shipment Ledger Listing row 12, col C: FREIGHTING IN PROGRESS → **COMPLETED**.
+
+
+### 🤖 Autopilot
+
+Submitting the expense event for the two expired bottles now.
+
+
+### 🤖 Autopilot
+
+Expense event submitted. Now let me update the Shipment Ledger Listing status for AGL7 to COMPLETED (row 12, column C).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converged status — AGL7 close-out
+
+### ✅ Done: Expense of the final 2 bottles submitted
+Submitted **[DAO Inventory Expense Event]** via Edgar (signed, no approval gate):
+- **Inventory Type:** `Cacao Molasses 250ml + 74 4476 6210 San Francisco (AGL7 — 2 bottles expired, written off)`
+- **Inventory Quantity:** `2` (unit cost $12.143 → $24.29)
+- **DAO Member Name:** Gary Teh · **Target Ledger:** `offchain` · **Submission Source:** `governor_closeout_agl7`
+
+This is the sanctioned path — it feeds `Telegram Chat Logs` → GAS `parseAndProcessTelegramLogs` → writes the write-off into the main ledger's offchain transactions + inventory (the `Cacao Molasses 250ml + 74 4476 6210 San Francisco @ Gary Teh, 2 units` line I confirmed at $24.29).
+
+### ⚠️ Still blocking: Shipment Ledger Listing Status → COMPLETED
+I could **not** yet flip the status cell (row 12, col C = `FREIGHTING IN PROGRESS`). I have no write tool for Google Sheets in this session — only `read_google_sheet` (read-only) — and my code search found **no GAS endpoint** that updates a shipment status to COMPLETED. So that cell is a manual edit (or needs a mechanism I haven't found).
+
+### ⚠️ Also to verify: GAS processing fired?
+Per the expense SOP, the ledger write lands after the GAS webhook fires. If it hasn't processed within a minute, it needs a manual trigger (the `parseAndProcessTelegramLogs` exec URL in `plans/SOPHIA_EXPENSE_REPORTING_PLAN.md` §3).
+
+### RESUME HERE
+1. Re-read `offchain transactions` + `offchain asset location` in main ledger (`1GE7PUq-…`) to confirm the −2 expense landed and the molasses line zeroed out; if not processed, trigger the GAS webhook from SOP §3.
+2. Update **Shipment Ledger Listing row 12 col C** → `COMPLETED` — either Gary edits the cell directly, or we find/create a GAS endpoint. Note: `snapshot_managed_ledgers.py` skips COMPLETED ledgers, so the treasury-cache AGL7 snapshot will stop refreshing once set (expected).
+3. Optionally flag in `OPEN_FOLLOWUPS.md` that AGL7's listing status was stale (root cause: no automated landing→COMPLETED transition) as a tooling gap.
+
+**Recommendation:** since the expense is already submitted and it's just one cell, the fastest clean path is you (or I, via a future sheet-write capability) setting AGL7 → COMPLETED manually. Want me to draft the OPEN_FOLLOWUPS tooling-gap note via PR next turn?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
