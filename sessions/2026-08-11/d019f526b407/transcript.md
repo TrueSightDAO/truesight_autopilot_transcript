@@ -29,7 +29,13 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: web_extract, search_code, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The site fetch failed directly — let me search for it and look for the Agroverse logo assets in parallel.
+[3 tool result(s) compacted: web_search, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -110,4 +116,26 @@ CMO lens (Seth Godin) on why this works for the stand listing:
 - **Purple Cow** — the QR traceability is the thing no other booth has; it doubles as the live demo
 
 Want me to send this to Paloma (I have her as a partner contact?) or will you paste it? Also — if she needs the stand bio longer than a tweet, I can draft a 3–4 sentence exhibitor blurb as backup.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10744] Generate PDF
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it here:
+
+
+### 🤖 Autopilot
+
+PDF sent ✅ — **agroverse_startup_summit_pitch.pdf** (1 page, Saffron Monk branding).
+
+**What's in it:**
+- **Tweet-size pitch** — English (~270 chars) + Português (~250 chars), built around the mission: QR-traced ceremonial cacao from Brazilian family farms → plants trees → restores 10,000 hectares of Amazon rainforest
+- **Exhibitor blurb** — 3–4 sentence backup version in both languages, in case Paloma needs more than a tweet
+- **Stand facts** — product, provenance (Bahia/Pará), impact hook, the live QR demo, event details, contact
+
+That covers everything Paloma asked for: **logo** (sent earlier) + **tweet-size pitch** (now in the PDF). Want me to email it to her, or will you forward the file?
 
