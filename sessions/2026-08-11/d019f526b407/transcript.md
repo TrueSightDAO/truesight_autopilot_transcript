@@ -41,6 +41,7 @@ The site fetch failed directly — let me search for it and look for the Agrover
 ### 🤖 Autopilot
 
 Good — found the logo locations and event info. Now let me grab the logo file itself (downloading on this box) and check the designs repo for any newer brand assets, plus try the site directly.
+[3 tool result(s) compacted: ssh_run, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -138,4 +139,30 @@ PDF sent ✅ — **agroverse_startup_summit_pitch.pdf** (1 page, Saffron Monk br
 - **Stand facts** — product, provenance (Bahia/Pará), impact hook, the live QR demo, event details, contact
 
 That covers everything Paloma asked for: **logo** (sent earlier) + **tweet-size pitch** (now in the PDF). Want me to email it to her, or will you forward the file?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10744] Hey, can you report contribution of 15 minutes for myself? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Recording a 15-minute contribution for Gary (Startup Summit stand — logo + pitch prep), submitting now.
+
+
+### 🤖 Autopilot
+
+Done ✅ — logged a **CONTRIBUTION EVENT** for you:
+
+- **Contributor:** Gary Teh
+- **Type:** Time (Minutes)
+- **Amount:** 15
+- **Description:** Startup Summit 2026 stand coordination with Paloma — logo handoff + tweet-size pitch (EN/PT) + exhibitor blurb
+
+Submitted to the ledger. Anything else for the Summit stand — e.g. sending the pitch PDF to Paloma, or a longer exhibitor bio?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
