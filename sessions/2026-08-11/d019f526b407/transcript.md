@@ -85,3 +85,29 @@ Logo sent ✅ (the official trademark-filing mark, 668×944 portrait JPEG — sa
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -sL -o agroverse_logo.jpeg "https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/20230711%20-%20Agroverse%20lo
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10744] [Handoff context — this Telegram topic (thread 10744) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Let's go ahead and drop a pitch. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the tweet-size pitch for Paloma (both languages, since the event is in Brazil):
+
+**English (~270 chars):**
+> Agroverse: single-estate ceremonial cacao from Brazilian family farms, QR-traced from tree to bar. Every bag plants trees and funds restoration of 10,000 hectares of Amazon rainforest. Come taste regenerative farming — and trace it yourself. 🍫🌱
+
+**Português (~250 chars):**
+> Agroverse: cacau cerimonial de fazendas familiares brasileiras, rastreado por QR code da árvore à barra. Cada compra planta árvores e restaura 10.000 hectares de floresta amazônica. Venha provar a agricultura regenerativa — e rastrear você mesmo. 🍫🌱
+
+CMO lens (Seth Godin) on why this works for the stand listing:
+- **Story over facts** — "tree to bar," "trace it yourself" — it's remark-able, someone would tell a friend
+- **Smallest viable audience** — speaks to conscious consumers + impact investors at the summit, not everyone
+- **Mission tie** — 10,000 hectares of Amazon rainforest, straight from PURPOSE_AND_MISSION.md
+- **Purple Cow** — the QR traceability is the thing no other booth has; it doubles as the live demo
+
+Want me to send this to Paloma (I have her as a partner contact?) or will you paste it? Also — if she needs the stand bio longer than a tweet, I can draft a 3–4 sentence exhibitor blurb as backup.
+
