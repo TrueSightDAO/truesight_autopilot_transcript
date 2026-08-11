@@ -29,12 +29,74 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me dig deeper into the current freight manifest and the FounderHaus redirect.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the live shipment ledger and any current freight manifest data.
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -123,4 +185,56 @@ So the SF export loses those ~10+10 units and becomes a **domestic Brazil shipme
 
 ## RESUME HERE
 Next turn: confirm exact SKUs for the 10 nibs bags (8oz pouch vs 1 kg) and 10 ceremonial bags, then draft the **INV-2026-0611-001 Rev 3** (9 lines, updated value/weight) + revised PL for Omega, and optionally file a FounderHaus Florianópolis inventory-location entry in the ledger. I did not submit anything — all reads so far.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10800] I remember that OMEGA requested for two documents before isn’t it? We generated and sent them PDF 
+
+Can we update the two PDFs to be new and then have them available here
+
+
+### 🤖 Autopilot
+
+Let me find where the original two PDFs (invoice + packing list) live so I can regenerate them.
+
+
+### 🤖 Autopilot
+
+The PDFs aren't stored in the context repo — but the full invoice data is in the checklist. Let me pull the complete A.2 invoice spec and check the exports folder for the original files.
+
+
+### 🤖 Autopilot
+
+I have the full invoice data (INV-2026-0611-001 Rev 2 + PL-2026-0611-001) captured in the freight checklist — that's everything needed to rebuild the two PDFs with the FounderHaus items removed. Let me get today's date and generate both updated documents.
+
+
+### 🤖 Autopilot
+
+Both PDFs are generated. Sending them into this chat now.
+
+
+### 🤖 Autopilot
+
+✅ **Both updated PDFs are now here in the chat (messages 10819 + 10820 above):**
+
+| Doc | File | What changed |
+|---|---|---|
+| **Commercial Invoice** | `INV-2026-0611-001_Rev3.pdf` | 20 bags removed (10 Oscar nibs + 10 Paulo ceremonial) → FounderHaus; new total **$6,682.65**; still 11 lines; FOB, SSA→SFO |
+| **Packing List** | `PL-2026-0611-001_Rev3.pdf` | Matches invoice Rev 3; revised **~329 kg gross / ~295 kg net** (was 342.3/307.3) |
+
+**On the removals (mirroring your WhatsApp instruction):**
+- **10 bags Oscar cacao nibs** → pulled from **line 4** (Cacao Nibs KG — Ilhéus 2024: 80 → 70 KG, −$246.18)
+- **10 bags Paulo ceremonial cacao** → pulled from **line 7** (Ceremonial Cacao Pouch 200g — AGL8: 169 → 159 UN, −$103.70)
+- Both lines stay on the invoice at reduced quantities — cleanest for customs (no zeroed lines, DU-E matches physical cargo). The revision note explains the redirect to FounderHaus (Florianópolis) as a domestic leg, not part of this export.
+
+**Two things to confirm before sending to Omega** (I kept them as revised estimates, flagged in the docs):
+1. **Bag size assumption** — I treated "10 bags" as 10 kg of bulk nibs (line 4) and 10 × 200g ceremonial pouches (line 7). If "bags" means something else (e.g. 10 × 1kg pouches), tell me and I'll adjust qty/weights.
+2. **Weights** — new gross/net are estimates (342.3 → ~329 / 307.3 → ~295). Matheus's final weighing governs the AWB; if he gives exact figures I'll regenerate.
+
+Want me to **also upload these two PDFs to the repo** (`agentic_ai_context/exports/` or `agroverse-freight-audit/manifests/`) so they're versioned alongside the June 11 originals, and/or **draft the email to Omega/Seacos** (Ana, Isis, Gerson, Iolanda, Graziela) attaching Rev 3? I haven't emailed anyone yet — just generated + shared here as you asked.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u +"%Y-%m-%d"
 
