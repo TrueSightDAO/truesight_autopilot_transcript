@@ -102,26 +102,36 @@ Let me check the live shipment ledger and any current freight manifest data.
 ### 🤖 Autopilot
 
 Let me look at the full current-freight section of the preflight checklist and check for any updated invoice/packing list.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the email thread with Omega/Matheus for the latest manifest and any recent updates on this freight.
+[2 tool result(s) compacted: gmail_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The freight thread may be in the Gary mailbox or predate 60 days. Let me search more specifically.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the preflight checklist — it may contain a manifest section with bag counts.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for more specifics on the FounderHaus redirect and Paloma/Nima, plus any recent notes about this freight changing.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -237,4 +247,25 @@ Want me to **also upload these two PDFs to the repo** (`agentic_ai_context/expor
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → date -u +"%Y-%m-%d"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10800] Report contribution of 15 minutes for this adjustment
+
+
+### 🤖 Autopilot
+
+✅ **Contribution submitted.**
+
+- **Type:** Time (Minutes)
+- **Amount:** 15
+- **Contributor:** Gary Teh
+- **Description:** Revise freight docs (INV-2026-0611-001 Rev3 + PL-2026-0611-001 Rev3) — removed 20 bags (10 Oscar nibs + 10 Paulo ceremonial) redirected to FounderHaus Florianópolis, regenerated both PDFs, shared in Telegram.
+
+Anything else on this — e.g. upload the PDFs to the repo for versioning, or draft the Omega email?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
