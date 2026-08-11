@@ -19,17 +19,35 @@ It says it is in transit
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: lookup_qr_code, list_matching_qr_codes, read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_google_sheet, search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 AGL7 isn't a QR code — it's a **shipment ID**. Let me pull the full context from the advisory snapshot and the main ledger.
+[2 tool result(s) compacted: read_context_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — AGL7 is a **shipment ID**, not a QR code. Let me pull the full table context and the freight runbook to confirm what "in transit" means.
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the freight/shipment tracking doc in the context repo and the exact table around AGL7.
+[2 tool result(s) compacted: search_context, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -92,4 +110,107 @@ I've confirmed the status from the source of truth. Here's the summary:
 - The backlog (`OPEN_FOLLOWUPS.md`) references "the Matheus / AGL7 freight in flight" as an open item — matching your read.
 
 So yes — the ledger agrees with you: AGL7 is **in transit** (freighting, Brazil → US), not yet landed in Kirsten's warehouse. The FDA prior notice is already on file, so once it lands it can clear customs without that step. Want me to check Correios tracking or the partner check-in history for a more granular position?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10801] I think it’s already landed and bulk of it already sold off can you check
+
+
+### 🤖 Autopilot
+
+Let me dig into the AGL7 ledger and inventory records to see whether the bottles landed and were sold.
+
+
+### 🤖 Autopilot
+
+The AGL7 ledger Balance sheet still shows #N/A for assets, but the inventory sheet has a "Cacao Molasses" line — let me pull the full inventory rows and the AGL7 Transactions tab to see if the bottles landed and sold.
+
+
+### 🤖 Autopilot
+
+The AGL7 Transactions tab tells a much fuller story — the bottles left Matheus via DHL and were received back into the main ledger. Let me trace line 582 in the main ledger and the molasses sales.
+
+
+### 🤖 Autopilot
+
+The Transactions tab in the main ledger uses a different sheet name. Let me find the right tab and the "Cacao Molasses" rows in the main ledger.
+
+
+### 🤖 Autopilot
+
+The main ledger tab for transactions has a different name. Let me check the sheet list via the AGL7 ledger structure and the partner check-in history for the molasses sales.
+
+
+### 🤖 Autopilot
+
+The AGL7 Transactions tab is the most concrete evidence. Let me re-read it fully to see if there are rows beyond line 582 that show sales, and check the Currencies tab for "Cacao Molasses" inventory flows.
+
+
+### 🤖 Autopilot
+
+The 20 bottles were transferred back to the **main ledger** at line 582 (2025-04-25). Now I need the main ledger's transaction tab to see what happened after landing. Let me find its tab name.
+
+
+### 🤖 Autopilot
+
+The SCHEMA.md is big — let me search it for the main ledger transaction tab name and the molasses rows.
+
+
+### 🤖 Autopilot
+
+Let me look at the main DAO offchain ledger update script to find the canonical tab name in the main ledger, and read the currencies.json for molasses inventory.
+
+
+### 🤖 Autopilot
+
+The main ledger's transaction tab is **`offchain transactions`** (gid=995916231). AGL7's transfer references "main ledger line 582" — let me read that tab around line 582, plus scan for any molasses sale rows.
+
+
+### 🤖 Autopilot
+
+Excellent — now I can see the AGL7 landing + fulfillment clearly:
+
+- **2025-04-25** — DHL → Val Lapidus: **+20 bottles** "Cacao Molasses 250ml + 74 4476 6210 San Francisco" (line 582 area)
+- **2025-04-25** — Order fulfillment: Val Lapidus **-15 bottles** (Cacao Molasses 250ml plain), from the "+ 74 4476..." inventory
+
+So 15 of the 20 bottles were shipped/fulfilled as orders right at landing. Let me find the remaining sales in the ledger (the other 5 bottles) and check for later molasses lines.
+
+
+### 🤖 Autopilot
+
+The main ledger confirms the landing. Let me scan later rows of the offchain transactions tab for the remaining molasses dispositions.
+
+
+### 🤖 Autopilot
+
+I have solid evidence now. Let me do one targeted check — the remaining 5 molasses bottles' disposition — via a code search for molasses across the ledger scripts, then summarize.
+
+
+### 🤖 Autopilot
+
+Confirmed — you're right, and the ledger has the receipts to prove it. The **Shipment Ledger Listing status ("FREIGHTING IN PROGRESS") is stale**; the underlying transactions show AGL7 landed and was largely sold off months ago.
+
+## What the ledger actually shows
+
+**AGL7 Transactions tab** (`1gJKOX...`):
+| Date | Event | Entity | Qty |
+|---|---|---|---|
+| 2025-03-15 | Paid for 20× molasses (R$300 + $53.68) | TrueSight DAO | 20 |
+| 2025-04-14 | Matheus received 20 bottles | Matheus Reis | +20 |
+| 2025-04-14 | Matheus dropped off to DHL for SF | DHL | +20 (to `Cacao Molasses 250ml + 74 4476 6210 San Francisco`) |
+| 2025-04-25 | **Transferred back to main ledger line 582** — receipt `20250529_cacao_molasses_receipt.jpeg` | DHL → main ledger | -20 |
+| 2025-04-25 | **Landed at Val Lapidus** | Val Lapidus | **+20** |
+| 2025-04-25 | **Order fulfillment** | Val Lapidus | **-15** (→ plain `Cacao Molasses 250ml`) |
+
+**Main ledger `offchain transactions`** confirms the same landing block (2025-04-25, DHL → Val Lapidus +20, then 15 fulfilled as orders).
+
+**Current inventory** (`offchain asset location` + `off chain asset balance`): only **2 bottles remain** — `Cacao Molasses 250ml + 74 4476 6210 San Francisco` @ Gary Teh (2 × $12.143 = $24.29). No plain-molasses inventory remains.
+
+## Bottom line
+- **Landed:** ✅ 2025-04-25 (DHL, ~6 weeks after FDA prior notice 2025-03-09)
+- **Sold/fulfilled:** ✅ 15 of 20 fulfilled as orders at landing; current inventory shows only **2 left** of the 20 — i.e. 18 of 20 have left the inventory
+- **Stale flag:** The `Shipment Ledger Listing` Status (and the ops snapshot mirroring it) still says FREIGHTING IN PROGRESS — it was never updated when the bottles landed.
+
+So "bulk already sold off" is accurate — the status field just wasn't updated. Want me to update the Shipment Ledger Listing Status for AGL7 to reflect reality (e.g. **SALES IN PROGRESS** or **COMPLETED**), and flag the same for the ops-health snapshot? That's a ledger write, so I'll only do it on your go.
 
