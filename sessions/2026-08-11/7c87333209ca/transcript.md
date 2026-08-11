@@ -558,36 +558,43 @@ Found it — the line has bold markers: `- **One-stop open APIs** to integrate..
 ### 🤖 Autopilot
 
 All edits applied cleanly to the EN file. Now let me push the updated EN MD to the PR branch via the Contents API, then update the PDF generator content and regenerate the English PDF (and share both).
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The EN MD is updated with the radio data-acquisition architecture. Now let me push it to the PR branch via the Contents API (the git_push rejected due to branch divergence).
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EN MD updated and pushed (commit 9f323d1). Now let me keep the Chinese MD in sync (add §5.5 in Chinese), then regenerate both PDFs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ZH file has sections 5 and 6 directly adjacent. Let me look at the exact boundary to insert §5.5 in Chinese.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll insert the Chinese §5.5 section and update the ZH exec summary + questions. Let me apply the edits and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ZH edits applied. Now let me push the ZH MD to the branch, and regenerate both PDFs (I'll update the PDF generator scripts to add the §5.5 content).
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both MDs updated and pushed. Now let me regenerate the PDFs (EN + ZH) with the new §5.5 content. I'll update both generator scripts and build.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -711,4 +718,88 @@ No existing tree-health flow — this would be net-new. The answer to your quest
 **My recommendation:** don't wait for sensors. The offline check-in extension to the farmer app is a small build (it reuses the exact IndexedDB queue pattern that already exists), and it gives you survival data **this season**. The RF layer layers on top when you're ready to deploy hardware.
 
 This is worth capturing in the report — want me to add a **§7.5 "Tree Health & Survival Monitoring"** section (the tiered model) to the MD + regenerate the PDFs? Or keep this as a separate SunMint research note? Your call — I don't want to bloat the Tuya report if you see this as a distinct SunMint workstream.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10510] Yeah, can you extend the pdf with this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it — extending the report with the Tree Health & Survival Monitoring section (both languages, both PDFs). Let me first check the current state of the MD files and generator scripts on the box.
+
+
+### 🤖 Autopilot
+
+Let me see the exact boundary after §7.4 in both MDs so I insert cleanly.
+
+
+### 🤖 Autopilot
+
+I have clean anchors. Let me check how the PDF generators render §7.4 (table + bullets) so my §7.5 insert matches their style.
+
+
+### 🤖 Autopilot
+
+Let me read the exact generator region between §7.4 and §8 in both generators so my insert matches their style precisely.
+
+
+### 🤖 Autopilot
+
+I have everything I need. Now let me insert §7.5 (Tree Health & Survival Monitoring) into all four artifacts — EN MD, ZH MD, EN generator, ZH generator — with the tiered model, then regenerate both PDFs and push the MDs.
+
+
+### 🤖 Autopilot
+
+Both MDs patched. Now let me insert §7.5 into both PDF generators (after the §7.4 table, before §8).
+
+
+### 🤖 Autopilot
+
+EN PDF is clean (0 nulls, 7 pages). ZH has 5 nulls — the §7.5 bullets use "•" again (the char that nulls in WQY). Let me fix those to "·" and regenerate ZH.
+
+
+### 🤖 Autopilot
+
+Both PDFs are clean (0 nulls). Now let me push the updated MDs to the PR branch and share both PDFs to the channel.
+
+
+### 🤖 Autopilot
+
+I made a mistake — I uploaded a placeholder string instead of the real content, overwriting the MD on the branch. Let me immediately fix that by pushing the actual local content.
+
+
+### 🤖 Autopilot
+
+Let me fix that — re-upload the real file content from disk using the local-file upload tool.
+
+
+### 🤖 Autopilot
+
+EN MD restored with the real content (commit 1f17206). Now push the ZH MD with the real content, then share both PDFs.
+
+
+### 🤖 Autopilot
+
+All done, Gary ✅ — both PDFs extended with the Tree Health & Survival Monitoring section and shared to the channel:
+
+- **EN v4** — message 10796, new **§7.5 Tree Health & Survival Monitoring (SunMint tie-in)**
+- **中文版 v4** — message 10797, same section in Chinese (**§7.5 树木健康与存活监测**)
+
+**The section captures the 3-tier model:**
+1. **Tier 1 — Simple offline interface (ship first):** extend the SunMint farmer app's existing offline queue with periodic health check-ins (photo + survival status + GPS) — no new hardware, survival data this season
+2. **Tier 2 — Radio/RF + data-mule (Gianluca's approach):** sensors cross-check farmer check-ins — "healthy + sensor agreement = strong proof; healthy + collapsed soil moisture = flag a visit" — credible MRV, not self-report
+3. **Tier 3 — Ledger link:** survival events attach to each tree's QR/lineage → TrueChain notarization; survival rate per cohort/plot becomes the auditable metric that carbon methodology (Verra VM0017/ARR) requires
+
+Both PDFs verified clean (0 null bytes, Chinese renders properly). The MDs are synced to PR #172 (commits 1f17206 EN / 4df5029 ZH).
+
+**One note:** I briefly overwrote the EN MD with a placeholder during the upload, then immediately restored the real content from disk (commit 1f17206) — the file on the branch is now correct and verified. My apologies for the scare; no lasting impact.
+
+Ready for the next step whenever you are — e.g. draft the intro email to Erica/Tuya, or a separate SunMint health-check-in spec for the farmer app.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && ls -la tuya* gen_* 2>/dev/null; echo "=== EN MD section 7 area ==="; grep -n "7\.\|7\.4\|7\.5\|^#\|^##" /tmp/tuya_en.md 2>/dev/nu; echo "=== EN 7.4 -> 8 ==="; sed -n '138,158p' /tmp/tuya_en.md; echo "=== ZH 7.4 -> 8 ==="; sed -n '141,162p' /tmp/tuya_zh.md; echo "=== EN gen: section 7 region ==="; grep -n "7\.\|8\. Fit\|Bean Quality\|品质" /tmp/gen_en_pdf.py | head -30; echo "=== ZH gen: section 7; …(+5 more)
+• `upload file to github` → https://github.com/TrueSightDAO/go_to_market/blob/research/tuya-iot-agroverse-report/tuya_iot_research/TUYA_IOT_AGROVERSE_REPORT.md
 
