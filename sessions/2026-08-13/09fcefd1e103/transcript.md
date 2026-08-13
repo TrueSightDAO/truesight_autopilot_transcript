@@ -298,37 +298,59 @@ Let me look at the Sunmint merchant/partner flows and the partner onboarding pla
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at how partners get listed on the Sunmint page and the reusable tree-pledge template (the PP1 pattern Gary referenced).
+[3 tool result(s) compacted: search_context, search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the sunmint repo structure and the prism percussion partner listing in the repo.
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `sunmint` repo (tree-planting photos) and `sunmint_beta/prod` (Farmer App). Let me check what "partner listing" means on the sunmint pages, plus the Prism Percussion partner in the inventory data.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Prism Percussion partner entry and the Sunmint repo structure.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `sunmint` repo is just photos. The "partner listing" is likely on the truesight.me Sunmint page. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `pp1` landing page exists — that's the Prism Percussion tree-pledge page. Let me read it to understand the "partner listing" pattern Gary means.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have a solid picture now. Let me confirm the pp1 landing page content body and check how a partner is listed (the page structure), then give Gary a clear answer.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -471,4 +493,32 @@ Plus an **appendix** with exact URLs and data points (pledge pages, registry car
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/tme_check && python3 - <<'EOF' import re html = open('sunmint-tree-planting-pledges/pp1/index.html').read() text = re.sub(r'<script.; cd /tmp/tme_check && python3 - <<'EOF' import re for name in ['sef1', 'pp1']: try: html = open(f'sunmint-tree-planting-pledges/{name}/index.; cd /tmp/tme_check && python3 - <<'EOF' import re html = open('sunmint.html').read() text = re.sub(r'<script.*?</script>', ' ', html, flags=r; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10830] Can you share that attachment here? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I'll render the deck content as a PDF and attach it right here.
+
+
+### 🤖 Autopilot
+
+The PDF is generated. Let me attach it here in the conversation.
+
+
+### 🤖 Autopilot
+
+Here you go — the PDF is attached in this chat now. 📄
+
+**SunMint × Sake Brand — Partner Deck Content** (11 slides + appendix):
+- Slide-by-slide structure for Jerri to convert into PPT
+- All facts grounded in the **live** PP1/SEF1/BEC implementation (pledge pages, ledgers, Impact Registry, $50/tree, cacao thank-you)
+- Placeholders `[Sake Brand]` marked for Win's brand name
+- Same content as PR #748 on agentic_ai_context
+
+If you want any slide tweaked (tone, China-market framing, less ESG jargon) or a version with Win's real brand name once confirmed, just say so.
 
