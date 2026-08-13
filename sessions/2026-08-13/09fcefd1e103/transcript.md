@@ -22,6 +22,36 @@ Had dinner with Win who is cousin of Dr Ye. Dr Ye is wife of Evan. Dr Ye and Eva
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: scan_qr_from_file, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The image has no readable text (and no QR) — just a dinner photo, so nothing to extract there. The meaningful content is the relationship note. Let me check where people-network context lives so I can file this properly.
 
 
@@ -53,4 +83,104 @@ Want me to record this relationship chain somewhere durable? Options:
 3. **New context file** — a people/relationship map for the Aora track
 
 I'd recommend option 1 (light edit, keeps it with the track that owns these people). Say the word and I'll open a PR.
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **93d53227cae544f490be8092fa1b163f.jpg**]
+- Type: Image (OCR confidence: 32.7%, quality: fair)
+
+Extracted text:
+```
+coda (3) oat LTE GED: <6 Eve You've added #242 WIN. Greetings are Salevia] cece sl PTT eR MRE PSE) YaPAey ee tee Sea: tan el bree tC) aU Ere AMEE AeANoa@ Up aid Ean Eee Any OG Dat) aa RALWHSRAS all Ea Cm le srt ae 22 eet '
+```
+
+
+### 🤖 Autopilot
+
+The scan found no QR (it's a screenshot, not a label), but OCR with Chinese language support reads it well — it's a WeChat contact card. Let me check how the transcript session ID is handled so I can persist this properly.
+
+
+### 🤖 Autopilot
+
+OCR (with Chinese) reads it well — this is a WeChat contact card. Let me check the transcript session naming so I persist it correctly.
+
+
+### 🤖 Autopilot
+
+OCR reads it well with Chinese — it's a WeChat contact card for **WIN**. Let me refine the OCR and figure out the session ID for persistence.
+
+
+### 🤖 Autopilot
+
+The OCR is clear now — this is a WeChat contact card for **WIN**. Let me find the current session id so I can persist the attachment, and check today's transcript folder.
+
+
+### 🤖 Autopilot
+
+Let me check the transcript repo structure to find today's session id.
+
+
+### 🤖 Autopilot
+
+The attachment workflow requires the session_id for persistence. Let me find today's session id.
+
+
+### 🤖 Autopilot
+
+These are test dirs. Let me find the live session store and the actual session id for this conversation.
+
+
+### 🤖 Autopilot
+
+The live session id is `09fcefd1e103` (transcript committed at 00:20:14, right before this message). Let me confirm and persist the attachment content.
+
+
+### 🤖 Autopilot
+
+Confirmed: session id is `09fcefd1e103`. Now let me persist the OCR'd contact card content to the transcript.
+
+
+### 🤖 Autopilot
+
+Inspected and persisted. Here's what the attachment is:
+
+## What it is
+A **WeChat contact card** for **WIN** — the person you had dinner with. OCR with Chinese support reads it clearly (no QR code, it's a screenshot).
+
+## Contact details (OCR)
+| Field | Value |
+|---|---|
+| Name | 钟致顥 / 钟致师 "WIN" |
+| Phone | 138 2572 2204 |
+| Title 1 | **东莞大事件科技 董事长** — Chairman, Dongguan Major-Event Technology |
+| Title 2 | **深圳元初食品(超市) 创始人** — Founder, Shenzhen Yuanchu Foods (supermarket chain) |
+| Org 3 | 东莞市人才资源促进会 — Dongguan Talent Resources Promotion Association |
+| Org 4 | **东莞实验中学校友会 副会长** — Vice President, Dongguan Experimental Middle School Alumni Association |
+| Other | 和央本 (partial read — unclear) |
+
+*OCR confidence ~81% (chi_sim); phone number and some characters may have minor noise.*
+
+## Why this matters (network)
+This confirms and enriches the relationship chain you shared:
+- **Win** — now a named, titled contact (tech chairman + supermarket founder + alumni VP in Dongguan)
+- **Dr Ye** (Win's cousin) — Evan's wife, Aora market signal
+- **Evan** — Teacher Evan, Aora educational advisor
+- **Elizabeth Wong (Liz)** — GO/Nucleus founder, Aora lead — good friends with Dr Ye & Evan
+
+Win's profile is notably relevant to Aora: a **supermarket founder** (retail channel for the $10 bars) and **Dongguan tech/community leader** (venue, schools, talent orgs) — potentially a strong distribution/venue node in the Dongguan ecosystem where the Aora pilot is aimed.
+
+## Done
+- ✅ Attachment content appended to transcript (session `09fcefd1e103`): https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-13/ae361c0f2787/transcript.md
+
+Want me to:
+1. **File a PR** adding Win to a people/relationship map (e.g. in AORA_EXPERIENCE_PLAN.md), and/or
+2. **Flag as follow-up** — e.g. "warm intro potential: Win (supermarket founder) as Aora retail/distribution node via Dr Ye / Evan / Liz"?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → date -u +%Y-%m-%d; date +%Y-%m-%d; ls -la /tmp/tg_attachments/93d53227cae544f490be8092fa1b163f.jpg 2>/dev/null; find / -maxdepth 4 -name "*.md" -path "*transcript*" 2>/dev/nul; grep -rl "Gary" ~/truesight-autopilot-logs* 2>/dev/null | head; ls /tmp/*.log 2>/dev/null | head; find /tmp -maxdepth 2 -name "*session*" 2>; …(+4 more)
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-13/ae361c0f2787/transcript.md
 
