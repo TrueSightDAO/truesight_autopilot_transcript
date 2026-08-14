@@ -187,7 +187,13 @@ Let me look at the existing Green Gulch invoice to match the exact format.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got the exact format. Before generating, let me check for any pending buyer context for these bars, and verify ReportLab availability on this box.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -221,6 +227,7 @@ Who's the customer?
 ### 🤖 Autopilot
 
 Let me check if "Chives Root" is a known partner/retailer in our records (might have an email on file).
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -332,4 +339,107 @@ Ready to send to Chives Root. If you want an email draft (or a direct send) once
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/gen_invoice.py << 'PYEOF' #!/usr/bin/env python3 from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] Check email address if chives root
+
+
+### 🤖 Autopilot
+
+Searching all records for a Chives Root email address:
+
+
+### 🤖 Autopilot
+
+No email in context docs. Let me check the mailboxes and any partner registries directly.
+
+
+### 🤖 Autopilot
+
+Found something relevant — a Pirate Ship receipt for exactly **$9.37** (the shipping cost) in the admin mailbox. Let me read it — it may contain the recipient name/address for the label.
+
+
+### 🤖 Autopilot
+
+The receipt confirms the **$9.37 shipping label was for "Chives Root: 1 Label Batch"** (created 8/12/26 via Pirate Ship, batch id 611211518) — that's the exact shipping cost on the invoice. But the receipt only shows the **shipper** (Zhiwen Teh / TrueTech Inc, 1423 Hayes St, SF) — not Chives Root's email or address. Let me dig further.
+
+
+### 🤖 Autopilot
+
+The Pirate Ship receipt names the label batch **"Chives Root: 1 Label Batch"** — that's our $9.37 shipping. But it only shows the **shipper** (Zhiwen Teh / TrueTech Inc, 1423 Hayes St, SF), not Chives Root's email. Let me check the CONTEXT_UPDATES.md mention — it may hold contact details.
+
+
+### 🤖 Autopilot
+
+The "chives" hits in other files are false positives — substring matches inside "archives"/"archived". The only genuine Chives Root references are TRACK_MAP.md. Let me check the partner onboarding protocol for where partner emails are supposed to live, and whether a partner registry exists.
+
+
+### 🤖 Autopilot
+
+Let me search the go_to_market repo (lead lists) and the partner outreach protocol for Chives Root contact info:
+
+
+### 🤖 Autopilot
+
+Let me grep the lead-list CSVs directly for "chives" (case-insensitive):
+
+
+### 🤖 Autopilot
+
+No Chives Root in the lead lists either. Let me check the partner registry (PARTNER_OUTREACH_PROTOCOL references a spreadsheet) and the retail onboarding playbook for where partner emails live:
+
+
+### 🤖 Autopilot
+
+Let me check the hit list / partner registry spreadsheet via HIT_LIST_CREDENTIALS.md and look for a Partners tab:
+
+
+### 🤖 Autopilot
+
+Let me check the Hit List spreadsheet for a Chives Root row (the partner/retailer registry), and also search the market_research repo's hit list CSV:
+
+
+### 🤖 Autopilot
+
+The spreadsheet has 383 rows — Chives Root wasn't in the first rows shown. Let me page through the artifact to find it:
+
+
+### 🤖 Autopilot
+
+Let me do targeted checks on the places-cache, transcript archives, and the sheet artifact for any Chives Root email:
+
+
+### 🤖 Autopilot
+
+No email anywhere in our records. Let me do one quick public-web check to see if Chives Root is a discoverable business (website/contact):
+
+
+### 🤖 Autopilot
+
+**No email on file for Chives Root.** I searched thoroughly:
+
+| Source searched | Result |
+|---|---|
+| `agentic_ai_context` (TRACK_MAP, CONTEXT_UPDATES, others) | No email — only consignment track (10 bags ceremonial cacao, owner Chives Root/Gary) |
+| Gmail `admin` + `gary` mailboxes | No email from/to Chives Root. **But** found the $9.37 Pirate Ship label receipt (8/12/26) — batch named **"Chives Root: 1 Label Batch"** (receipt #444150059) — matches the invoice's shipping line exactly |
+| Pirate Ship receipt itself | Shows only **shipper** (Zhiwen Teh / TrueTech Inc, 1423 Hayes St, San Francisco) — recipient email/address not in the receipt |
+| Hit List spreadsheet (383 retailers) | No Chives Root row |
+| `go_to_market` lead CSVs, `places-cache`, market_research | No match |
+| Session transcripts (90 days) | No Chives Root attachment |
+| Public web | No discoverable "Chives Root" business (likely a private customer) |
+
+**Bottom line:** Chives Root's email isn't in any DAO record or mailbox. The only trace is the Pirate Ship shipping-label batch — and the receipt doesn't contain the recipient's contact info (Pirate Ship receipts only show shipper; the label's TO address lives in the Pirate Ship account).
+
+**Options:**
+1. If you (or Kirsten/another operator) have the Pirate Ship label or the customer's email handy — send it over and I'll add an Attn line / email the invoice.
+2. I can create a Gmail **draft** (no send) to a placeholder address for you to fill in the recipient.
+3. You tell me the email and I'll email the PDF directly + note it in the partner record.
+
+Which way do you want to go?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && for f in apothecary_discovery.csv apothecary_discovery.json; do echo "=== $f ==="; curl -sL "https://raw.githubusercontent.com/Tr
 
