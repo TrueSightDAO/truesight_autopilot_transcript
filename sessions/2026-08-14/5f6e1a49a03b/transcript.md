@@ -60,16 +60,19 @@ The treasury cache shows the matching family — "Cacao Tea 1g | ... Fazenda Sã
 ### 🤖 Autopilot
 
 Found the exact match. Let me cross-verify against the treasury cache for the same currency line.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the treasury cache artifact for the exact bar currency entry.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Currencies tab gives the exact match. Let me corroborate against the treasury cache with a targeted grep (the file is large — I'll fetch and grep for the exact currency on the box).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -106,7 +109,13 @@ Confirmed. All 10 QR codes belong to the same currency line, so they share one u
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 There's a dedicated convention doc for Agroverse invoices. Let me read it.
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -182,4 +191,88 @@ Who's the customer?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -sL -o green-gulch-invoice.pdf "https://raw.githubusercontent.com/TrueSightDAO/store_interaction_attachments/main/invoices/g; python3 -c "import reportlab; print(reportlab.Version)" 2>&1; which reportlab 2>&1 | head -1
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] The person to bill is Chives Root
+
+
+### 🤖 Autopilot
+
+Let me check if "Chives Root" is a known partner/retailer in our records (might have an email on file).
+
+
+### 🤖 Autopilot
+
+Chives Root is a known consignment partner (TRACK_MAP.md — "Chives Root Consignment, 10 bags ceremonial cacao"). Let me pull that entry for contact details.
+
+
+### 🤖 Autopilot
+
+Let me pull the Chives Root consignment detail block from the artifact.
+
+
+### 🤖 Autopilot
+
+Let me read the Chives Root consignment section specifically.
+
+
+### 🤖 Autopilot
+
+Let me get the exact Chives Root detail block (the section between Black King and the summary).
+
+
+### 🤖 Autopilot
+
+Chives Root is confirmed as a consignment partner (10 bags ceremonial cacao track, owner Chives Root/Gary). No email on file in TRACK_MAP, so I'll bill to "Chives Root" without an attention line. Generating the invoice now with the Green Gulch format + shipping line.
+
+
+### 🤖 Autopilot
+
+Generating the invoice PDF with ReportLab per the convention (gold #d38900 palette, Green Gulch layout):
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me verify the content renders correctly (extract text) before archiving.
+
+
+### 🤖 Autopilot
+
+The invoice renders correctly. Now let me archive it to `store_interaction_attachments/invoices/` per the convention.
+
+
+### 🤖 Autopilot
+
+Archived. Now sending it to you directly here as the PDF (per convention — no raw GitHub links to customers):
+
+
+### 🤖 Autopilot
+
+**✅ Invoice generated & delivered** — PDF attached above.
+
+**INV-20260814-CR** — Agroverse Cacao → Chives Root
+
+| # | Description | Qty | Unit Price | Amount |
+|---|---|---:|---:|---:|
+| 1 | 81% Organic Dark Chocolate Bar (50g) — Fazenda São Jorge, Bahia Brazil, 2024 (Batch 20260710 · QR `2024_20260710_1`–`_10`) | 10 | $6.00 | $60.00 |
+| 2 | Shipping | 1 | $9.37 | $9.37 |
+| | **Total Due** | | | **$69.37** |
+
+- **Bill To:** Chives Root
+- **Payable to:** Zhiwen Teh · 1968 South Coast Highway, #4616, Laguna Beach, CA 92651, USA
+- **Format:** Gold `#d38900` branded, per AGROVERSE_INVOICE_CONVENTION.md (matches Green Gulch layout)
+- **Archived:** `store_interaction_attachments/invoices/chives-root-invoice-20260814.pdf` ([commit 1fd1adf](https://github.com/TrueSightDAO/store_interaction_attachments/commit/1fd1adf1f241afdab0f72b93273edfbc521e19bc))
+
+**Notes / possible follow-ups:**
+- The 10 QR codes stay **MINTED** (ledger) — this invoice doesn't change their status. When Chives Root pays / the bars ship or sell, we should record the **SALES EVENT** (or inventory movement) to flip those QRs. Want me to set that up once payment lands?
+- No email/attention line on file for Chives Root in TRACK_MAP — the PDF bills to the company name only. If you want an Attn line, tell me and I'll regenerate.
+- Need it sent by email? I'd need Chives Root's address, or I can draft it and you forward the attached PDF.
+
+Anything to adjust (date, payable, slug)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → date +%Y-%m-%d && date +%Y%m%d; cat > /tmp/gen_invoice.py << 'PYEOF' #!/usr/bin/env python3 from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch ; python3 -c " import fitz doc = fitz.open('/tmp/chives-root-invoice-20260814.pdf') for p in doc: print(p.get_text()) "
 
