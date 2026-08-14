@@ -120,17 +120,35 @@ There's a dedicated convention doc for Agroverse invoices. Let me read it.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The convention lives at `conventions/AGROVERSE_INVOICE_CONVENTION.md`.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The convention doc is clear. Before generating, I need two things you haven't specified: **unit price** and **bill-to (customer)**. Let me check the live shop price for this exact bar so I have a concrete default.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of products.js for a São Jorge-specific entry.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -158,11 +176,13 @@ If you give me "use $10, bill to X, payable to Agroverse" I'll generate the bran
 ### 🤖 Autopilot
 
 Wholesale price locked: **$6.00/bar × 10 = $60.00 + $9.37 shipping = $69.37 total**. Let me check the invoice archive for the exact format pattern and any standing bill-to convention before generating.
+[2 tool result(s) compacted: http_fetch, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the existing Green Gulch invoice to match the exact format.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -275,4 +295,41 @@ Anything to adjust (date, payable, slug)?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → date +%Y-%m-%d && date +%Y%m%d; cat > /tmp/gen_invoice.py << 'PYEOF' #!/usr/bin/env python3 from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch ; python3 -c " import fitz doc = fitz.open('/tmp/chives-root-invoice-20260814.pdf') for p in doc: print(p.get_text()) "
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] Payable to Garyjob via Venmo
+
+
+### 🤖 Autopilot
+
+Updating the payment instructions to **Garyjob via Venmo** and regenerating the invoice (same number/date, same archive path — overwrite):
+
+
+### 🤖 Autopilot
+
+Regenerated with Venmo payment instructions. Re-archiving the updated PDF (overwrite) and sending the updated file:
+
+
+### 🤖 Autopilot
+
+**✅ Updated invoice delivered** — revised PDF attached.
+
+**INV-20260814-CR** — what changed:
+
+| Field | Before | After |
+|---|---|---|
+| Payment Instructions | Cheque payable to Zhiwen Teh + mail address | **Venmo → Garyjob** |
+| Total | $69.37 | $69.37 (unchanged) |
+
+- **Payment line now reads:** "Please make payment via **Venmo** to: **Garyjob**"
+- Removed the cheque/mail-to block (no longer relevant)
+- **Re-archived:** `store_interaction_attachments/invoices/chives-root-invoice-20260814.pdf` ([commit d964e85](https://github.com/TrueSightDAO/store_interaction_attachments/commit/d964e85dd0cfe3e9a7c5aede28a1d4e9232a291f))
+
+Ready to send to Chives Root. If you want an email draft (or a direct send) once you have their address, just say the word. And when payment lands, I can record the SALES EVENT for these 10 QRs — just flag it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat > /tmp/gen_invoice.py << 'PYEOF' #!/usr/bin/env python3 from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch
 
