@@ -233,46 +233,55 @@ Let me check if "Chives Root" is a known partner/retailer in our records (might 
 ### 🤖 Autopilot
 
 Chives Root is a known consignment partner (TRACK_MAP.md — "Chives Root Consignment, 10 bags ceremonial cacao"). Let me pull that entry for contact details.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the Chives Root consignment detail block from the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the Chives Root consignment section specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact Chives Root detail block (the section between Black King and the summary).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chives Root is confirmed as a consignment partner (10 bags ceremonial cacao track, owner Chives Root/Gary). No email on file in TRACK_MAP, so I'll bill to "Chives Root" without an attention line. Generating the invoice now with the Green Gulch format + shipping line.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Generating the invoice PDF with ReportLab per the convention (gold #d38900 palette, Green Gulch layout):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Let me verify the content renders correctly (extract text) before archiving.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The invoice renders correctly. Now let me archive it to `store_interaction_attachments/invoices/` per the convention.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Archived. Now sending it to you directly here as the PDF (per convention — no raw GitHub links to customers):
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -312,11 +321,18 @@ Anything to adjust (date, payable, slug)?
 ### 🤖 Autopilot
 
 Updating the payment instructions to **Garyjob via Venmo** and regenerating the invoice (same number/date, same archive path — overwrite):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated with Venmo payment instructions. Re-archiving the updated PDF (overwrite) and sending the updated file:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -349,21 +365,25 @@ Ready to send to Chives Root. If you want an email draft (or a direct send) once
 ### 🤖 Autopilot
 
 Searching all records for a Chives Root email address:
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No email in context docs. Let me check the mailboxes and any partner registries directly.
+[3 tool result(s) compacted: gmail_search, gmail_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found something relevant — a Pirate Ship receipt for exactly **$9.37** (the shipping cost) in the admin mailbox. Let me read it — it may contain the recipient name/address for the label.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The receipt confirms the **$9.37 shipping label was for "Chives Root: 1 Label Batch"** (created 8/12/26 via Pirate Ship, batch id 611211518) — that's the exact shipping cost on the invoice. But the receipt only shows the **shipper** (Zhiwen Teh / TrueTech Inc, 1423 Hayes St, SF) — not Chives Root's email or address. Let me dig further.
+[3 tool result(s) compacted: gmail_search, gmail_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -442,4 +462,45 @@ Which way do you want to go?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && for f in apothecary_discovery.csv apothecary_discovery.json; do echo "=== $f ==="; curl -sL "https://raw.githubusercontent.com/Tr
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] The owner email address of 
+
+2024PF_20250505_12
+
+Also the person to bill to is Chives Roots
+
+
+### 🤖 Autopilot
+
+Looking up that QR code to find the owner email:
+
+
+### 🤖 Autopilot
+
+**Owner email for `2024PF_20250505_12`:**
+
+| Field | Value |
+|---|---|
+| QR code | `2024PF_20250505_12` |
+| Currency | Ceremonial Cacao Kraft Pouch — 20250219006 + Cacao Mass Bar CP340992761BR (San Francisco) |
+| Status | **SOLD** |
+| **Owner email** | **melinda_larios@hotmail.com** |
+| Manager | — (blank) |
+
+⚠️ **Heads-up — a mismatch to resolve:** this QR's owner email is **Melinda Larios** (`melinda_larios@hotmail.com`), but you said the bill-to is **Chives Roots**. Those don't match — either:
+
+1. **The invoice should go to Melinda Larios** (the actual owner of that QR), or
+2. **Chives Roots is the bill-to** and the QR owner field is just stale/different — but then the QR owner email ≠ invoice recipient, which breaks the audit trail.
+
+Also note: this QR (`2024PF_...`) is a **Ceremonial Cacao Kraft Pouch** — different product from the 10 São Jorge bars we just invoiced. So this looks like a **separate invoice** entirely.
+
+Which do you want?
+- **A)** New invoice → bill-to **Melinda Larios** (owner email on the QR) — I'd need unit price/shipping if any
+- **B)** New invoice → bill-to **Chives Roots** anyway (using this QR) — confirm, and I'll still need price + any shipping
+- **C)** Just needed the email lookup — done ✓
+
+Also — should I cross-check whether Melinda Larios has any other QRs / purchase history in the ledger (might matter for the invoice)?
 
