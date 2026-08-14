@@ -389,11 +389,13 @@ The receipt confirms the **$9.37 shipping label was for "Chives Root: 1 Label Ba
 ### 🤖 Autopilot
 
 The Pirate Ship receipt names the label batch **"Chives Root: 1 Label Batch"** — that's our $9.37 shipping. But it only shows the **shipper** (Zhiwen Teh / TrueTech Inc, 1423 Hayes St, SF), not Chives Root's email. Let me check the CONTEXT_UPDATES.md mention — it may hold contact details.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "chives" hits in other files are false positives — substring matches inside "archives"/"archived". The only genuine Chives Root references are TRACK_MAP.md. Let me check the partner onboarding protocol for where partner emails are supposed to live, and whether a partner registry exists.
+[2 tool result(s) compacted: read_context_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -503,4 +505,51 @@ Which do you want?
 - **C)** Just needed the email lookup — done ✓
 
 Also — should I cross-check whether Melinda Larios has any other QRs / purchase history in the ledger (might matter for the invoice)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] I see Melinda Larios then 
+
+Can you update the invoice details
+
+
+### 🤖 Autopilot
+
+Melinda Larios is the QR's owner — so the bill-to becomes Melinda Larios. Updating the invoice (Bill To + Attn email, keeping the 10 bars @ $6 + $9.37 shipping + Venmo Garyjob) and regenerating:
+
+
+### 🤖 Autopilot
+
+Invoice regenerated with Melinda Larios as bill-to. Archiving and sending:
+
+
+### 🤖 Autopilot
+
+**✅ Invoice updated & delivered** — revised PDF attached.
+
+**INV-20260814-ML** — what changed:
+
+| Field | Before (Chives Root) | After (Melinda Larios) |
+|---|---|---|
+| Bill To | Chives Root | **Melinda Larios** |
+| Attn Email | — | **melinda_larios@hotmail.com** |
+| Invoice # | INV-20260814-CR | **INV-20260814-ML** |
+| Total | $69.37 | $69.37 (unchanged) |
+
+**Invoice summary (unchanged items):**
+- 10 × 81% Organic Dark Chocolate Bar (50g) — Fazenda São Jorge, Bahia Brazil, 2024 (Batch 20260710 · QR `2024_20260710_1`–`_10`) @ **$6.00** = $60.00
+- Shipping **$9.37**
+- **Total Due: $69.37** — via Venmo → **Garyjob**
+- Date: 2026-08-14
+
+**Archived:** `store_interaction_attachments/invoices/melinda-larios-invoice-20260814.pdf` ([commit ca7ec12](https://github.com/TrueSightDAO/store_interaction_attachments/commit/ca7ec1291818421a62f19fc1bbfcda03db886408))
+
+**Notes:**
+- The QR you asked about (`2024PF_20250505_12`, Melinda Larios, Ceremonial Cacao Kraft Pouch) is a **different product** from the 10 bars on this invoice — so the email came from the same owner, but the invoice covers the São Jorge bars. If this invoice should instead reference that Kraft Pouch (or be combined), tell me and I'll adjust the line item.
+- When payment lands, I can record the **SALES EVENT** for the 10 QRs (flip to SOLD) — just flag it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat > /tmp/gen_invoice.py << 'PYEOF' #!/usr/bin/env python3 from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch
 
