@@ -413,6 +413,7 @@ Let me grep the lead-list CSVs directly for "chives" (case-insensitive):
 ### 🤖 Autopilot
 
 No Chives Root in the lead lists either. Let me check the partner registry (PARTNER_OUTREACH_PROTOCOL references a spreadsheet) and the retail onboarding playbook for where partner emails live:
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -585,4 +586,34 @@ Body includes the line-item breakdown, total **$69.37**, and **Venmo → Garyjob
 - If Melinda replies with payment confirmation, flag it here and I'll update the ledger.
 
 Anything else on this invoice?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] Can you submit contribution for ME for 20 minutes spent on this handling order
+
+
+### 🤖 Autopilot
+
+Recording 20 minutes for Gary's order-handling time. Let me verify the CONTRIBUTION EVENT format first:
+
+
+### 🤖 Autopilot
+
+**✅ Contribution submitted — 20 minutes logged for Gary Teh**
+
+| Field | Value |
+|---|---|
+| Event | CONTRIBUTION EVENT |
+| Type | Time (Minutes) |
+| Amount | **20** |
+| Contributor(s) | Gary Teh |
+| Description | Order handling: 10× 81% Dark Chocolate Bar 50g (Fazenda São Jorge, batch 20260710) — QR lookup, unit cost verification, invoice generation/regeneration (INV-20260814-ML), email to Melinda Larios |
+| Status | **Submitted successfully** (signed to Edgar) |
+
+The 20 min covers the full order-handling loop (QR resolution → costing → invoice gen → email). If you'd like, I can also submit the **SALES EVENT** for the 10 QRs once payment lands — just flag it.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
