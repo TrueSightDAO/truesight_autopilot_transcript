@@ -89,3 +89,45 @@ Confirmed. All 10 QR codes belong to the same currency line, so they share one u
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_offchain_treasury.json | python3 -c " import json,sys d=json.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10852] Can you help generate an invoice using these 10 QR codes and shipping cost for $9.37
+
+
+### 🤖 Autopilot
+
+There's a dedicated convention doc for Agroverse invoices. Let me read it.
+
+
+### 🤖 Autopilot
+
+The convention lives at `conventions/AGROVERSE_INVOICE_CONVENTION.md`.
+
+
+### 🤖 Autopilot
+
+The convention doc is clear. Before generating, I need two things you haven't specified: **unit price** and **bill-to (customer)**. Let me check the live shop price for this exact bar so I have a concrete default.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of products.js for a São Jorge-specific entry.
+
+
+### 🤖 Autopilot
+
+I have everything except the **bill-to** and **unit price** — and per the invoice convention I shouldn't guess those. Here's the state:
+
+**Known / confirmed:**
+- 10 × 81% Dark Chocolate Bar 50g (Fazenda São Jorge) — all QR codes MINTED, ledger `https://agroverse.shop/agl4`
+- Live shop price for the exact São Jorge bar (`organic-81-dark-chocolate-bar-50g-fazenda-sao-jorge-bahia-2024`): **$10.00 / bar**
+- Shipping: **$9.37** (from you)
+
+**Needed to generate (per AGROVERSE_INVOICE_CONVENTION.md):**
+1. **Unit price** — use $10.00 retail, or a different (e.g. wholesale $6.00) price?
+2. **Bill To** — customer name / company, attention line, email
+3. **Payment instructions** — "Please make cheque payable to: ___" (e.g. Agroverse / Gary Teh / TrueSight DAO)
+
+If you give me "use $10, bill to X, payable to Agroverse" I'll generate the branded PDF (gold #d38900 header, line-item table with the 10 QR codes as subtext), archive it to `store_interaction_attachments/invoices/`, and hand it to you to send. What are the defaults?
+
