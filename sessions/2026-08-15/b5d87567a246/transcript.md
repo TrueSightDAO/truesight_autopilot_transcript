@@ -65,3 +65,20 @@ Sending the snippet as a reply to Jeffrey in that thread.
 
 Want me to also CC Elizabeth Wong on anything, or is this enough for now?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10908] Yes CC
+
+
+### 🤖 Autopilot
+
+✅ Sent with CC:
+
+- **To:** Jeffrey Tan <jeffrey@prima-ms.com>
+- **CC:** Elizabeth Wong <ewong@gogreatop.com>
+- **Subject:** Re: New company in the process of setup
+- **Body:** BIONPACT Pte. Ltd. — Singapore-based company focused on providing supply chain traceability solutions to customers in China and the USA.
+
+Both Jeffrey and Elizabeth now have the company profile snippet on record. Anything else on this thread?
+
