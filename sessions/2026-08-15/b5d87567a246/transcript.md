@@ -42,3 +42,26 @@ Do you want me to:
 
 Just say which, and who it should go to (Jeffrey only, or Jeffrey + Elizabeth).
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10908] 1
+
+
+### 🤖 Autopilot
+
+Sending the snippet as a reply to Jeffrey in that thread.
+
+
+### 🤖 Autopilot
+
+✅ Sent to Jeffrey Tan (jeffrey@prima-ms.com) as a reply in the "New company in the process of setup" thread:
+
+> **BIONPACT Pte. Ltd.** is a Singapore-based company focused on providing supply chain traceability solutions, serving customers in China and the USA.
+
+- From: garyjob@agroverse.shop
+- Subject: Re: New company in the process of setup
+- Sent: just now (id `1a0041971b68d971`)
+
+Want me to also CC Elizabeth Wong on anything, or is this enough for now?
+
