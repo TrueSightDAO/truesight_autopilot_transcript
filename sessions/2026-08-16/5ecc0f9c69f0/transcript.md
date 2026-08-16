@@ -247,11 +247,13 @@ No problem at all. Let me reframe — I'll build a comprehensive report covering
 3. **All the agents** — Sophia (me), the autopilot, the multi-LLM orchestration layer
 
 Let me gather the remaining context I need.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me get the full picture on the agents and the GROWTH_MODEL for the getdata.io connection.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -391,4 +393,59 @@ The AWS-level status is **healthy**, but end-to-end connectivity is failing. Let
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → host claude.truesight.me 2>&1; echo "---"; curl -s -o /dev/null -w "HTTP %{http_code} in %{time_total}s " --max-time 10 https://claude.trues
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=9320] Can you ssh into the box and then check to see if the Claude processes are running
+
+
+### 🤖 Autopilot
+
+Let me SSH from the autopilot box into the nelanco-claude instance and check for running Claude processes.
+
+
+### 🤖 Autopilot
+
+The `NELANCO_aws_20201122.pem` key matches the instance's keypair (`GETDATA_IO_PAIR_20201122`). Let me check the SSH config for the claude host entry, then connect.
+
+
+### 🤖 Autopilot
+
+Found the SSH config. Let me connect and check the Claude processes.
+
+
+### 🤖 Autopilot
+
+**✅ Connected and verified — the Nelanco Claude box is UP and Claude processes are actively running.**
+
+**Box status:**
+- Host: `ip-172-31-8-213` (nelanco-claude, 100.57.50.48)
+- Uptime: **32 days**, load average 0.00 (idle-ish, healthy)
+- 6 users logged in
+
+**Claude processes running (6 active):**
+
+| PID | Started | CPU Time | Detail |
+|-----|---------|----------|--------|
+| 7897 | Jul 15 | — | tmux session `claude` |
+| 7912 | Jul 15 | 445h | `claude.exe` (persistent main session — the mobile remote-control instance) |
+| 73523 | Jul 18 | 277h | `claude` |
+| 73781 | Jul 18 | 289h | `claude` |
+| 74070 | Jul 18 | 366h | `claude` |
+| 77019 | Jul 18 | 240h | `claude` |
+| 193488 | Aug 11 | 41h | `claude` (most recent session) |
+
+**Also notable:**
+- A `python3` process is listening on `127.0.0.1:8001` — likely the remote-control bridge for Claude Code (local-only)
+- SSH (port 22) is the only open port, as designed
+- No systemd services besides `ssh` — all Claude instances run inside tmux, which is expected for the remote-control setup
+
+**Bottom line:** The box is fully operational — the main Claude Code session has been running continuously since **Jul 15** (~32 days), with 5 additional sessions from Jul 18 and one from Aug 11. Everything looks healthy. 👍
+
+Want me to check what each tmux session is working on, or look at anything else on that box?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ls -la ~/.ssh/ 2>&1 | head -30; echo "=== keys done ==="; grep -A 8 -i "claude\|100.57.50.48\|172.31.8.213" ~/.ssh/config 2>&1; ssh -o ConnectTimeout=15 nelanco-claude 'echo "=== CONNECTED ==="; hostname; uptime; echo; echo "=== CLAUDE PROCESSES ==="; ps aux | grep -i
 
