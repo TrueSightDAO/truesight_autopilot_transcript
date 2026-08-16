@@ -65,16 +65,29 @@ Let me look at the full structure of OPEN_FOLLOWUPS.md and the TRACK_MAP to see 
 ### 🤖 Autopilot
 
 The rest of TRACK_MAP is offloaded — let me read the remainder, and check the Aora-related docs since several items (Ling, Jerrie, Mr Liu) appear to be Aora program work.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of both key files to give a precise answer.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find where AORA_EXPERIENCE_PLAN.md actually lives, and check the Pending section structure of OPEN_FOLLOWUPS for how people-tracked items are recorded.
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -197,4 +210,66 @@ I'd propose:
 Two questions before I open the PR:
 - **Mobile capsule** — which of the two is it (product track vs follow-up)? Or do you want it as a follow-up for now and a track later?
 - **Jerrie's PPTs** — one followup block or two?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11042] Mobile capsule is follow up track 
+
+Jerrie is more a follow up too
+
+I think cacao butter should be considered inventory receipt from orlantildes to Matheus warehouse but tentatively just put it under orlantildes
+
+
+### 🤖 Autopilot
+
+All three decisions are clear. Let me read the actual `OPEN_FOLLOWUPS.md` structure (the ```` ```followup ```` block format, thread_id convention) so I file these correctly.
+
+
+### 🤖 Autopilot
+
+The format is clear. Let me confirm today's date and the exact boundary text after the last followup block so the PR edit lands cleanly.
+
+
+### 🤖 Autopilot
+
+Today is **2026-08-16**. Let me get the exact text right after the warmup block (line ~138-140) so my edit lands at the right insertion point — I'll read the exact lines from the file around there.
+
+
+### 🤖 Autopilot
+
+All format details confirmed. Today is 2026-08-16; all blocks will use `thread_id: 11042` (this thread) per your instruction. Filing all seven as followup blocks now:
+
+
+### 🤖 Autopilot
+
+Filed. **PR #749** is open: [TrueSightDAO/agentic_ai_context#749](https://github.com/TrueSightDAO/agentic_ai_context/pull/749)
+
+## What was added — 7 followup blocks in `OPEN_FOLLOWUPS.md` (all ping **thread 11042**)
+
+| id | Item | Cadence |
+|----|------|---------|
+| `matheus-nota-fiscal-exportacao` | Matheus — NF-e exportação (stuck) | weekly / escalate 14d |
+| `podream-tech-followup` | PODream tech chase | weekly / escalate 14d |
+| `gianluca-farmers-tech-followup` | Gianluca's farmers tech impl | weekly / escalate 14d |
+| `ling-mobile-capsule` | Ling — mobile capsule (follow-up, **not** Aora) | weekly / escalate 14d |
+| `jerrie-mobile-un-aora-ppt` | Jerrie — Mobile UN Aora PDF→PPT (Mr Liu → Evan → cert → Cao) | weekly / escalate 14d |
+| `jerrie-cacao-ceremonial-tea-ppt` | Jerrie — cacao ceremonial + tea PDF→PPT (Win) | weekly / escalate 14d |
+| `orlantildes-coopercabruca` | Orlantildes — MAPA + 5 kg cacao butter receipt (tentative home) | weekly / escalate 14d |
+
+Your three corrections are baked in:
+- **Mobile capsule** → follow-up, explicitly marked *NOT part of the Aora plan*
+- **Jerrie's PPTs** → follow-ups, not Aora-plan items
+- **Cacao butter** → noted as inventory receipt (Orlantildes → Matheus warehouse) but tentatively under Orlantildes until a formal INVENTORY MOVEMENT is recorded — the block's description says exactly that, so it surfaces the decision when it fires
+
+**Notes:**
+- All blocks use the machine-parseable ```` ```followup ```` format the rest of the file uses (`chat_id` + `thread_id` + `status` + `schedule`).
+- The auto-chase loop itself (`followup_loop`) is still **parked GO-ready in `plans/SOPHIA_FOLLOWUP_MONITOR_PLAN.md`, not yet built** — so these are durable, human-readable backlog entries now; the pings become automatic once that loop ships.
+- Since all 7 are people-chases you asked to track, **no CONTRIBUTION EVENT** was filed (tracking isn't a contribution), and no PR to `CONTEXT_UPDATES.md` — this PR is self-contained.
+
+Want me to merge PR #749 now, or leave it for your review? And should I also note the "followup loop not yet built" gap in OPEN_FOLLOWUPS as a tooling item so it doesn't rot?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u +%Y-%m-%d
 
