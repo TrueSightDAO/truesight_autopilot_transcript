@@ -92,12 +92,24 @@ Let me find where AORA_EXPERIENCE_PLAN.md actually lives, and check the Pending 
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: list_directory, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me verify what's already tracked for Matheus / the follow-up monitor status so my recommendation is accurate.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have a good picture now. Let me verify the followup-monitor build status so I can tell you whether the machine-chasing path is live yet or not.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -272,4 +284,38 @@ Want me to merge PR #749 now, or leave it for your review? And should I also not
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → date -u +%Y-%m-%d
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11042] Merge
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged** — PR #749 on `agentic_ai_context` (sha `f97f6f34`).
+
+## What I did this turn
+- Merged [TrueSightDAO/agentic_ai_context#749](https://github.com/TrueSightDAO/agentic_ai_context/pull/749)
+- The 7 followup blocks (Matheus NF-e, PODream, Gianluca farmers, Ling capsule, Jerrie ×2 PPTs, Orlantildes MAPA/cacao butter) are now in `OPEN_FOLLOWUPS.md` on `main`, all wired to ping **thread 11042**
+
+## What was changed
+- `OPEN_FOLLOWUPS.md` — added 7 ```` ```followup ```` blocks under `## Pending`, each with `chat_id: -1003919341801`, `thread_id: 11042`, `status: open`, weekly check / 14-day escalate.
+
+## RESUME HERE →
+The 7 follow-ups are filed and merged. Two optional next units, in priority order:
+
+1. **Tooling gap** — file "followup_loop not yet built" as a Pending tooling item in `OPEN_FOLLOWUPS.md` (so the auto-ping engine gets built per `plans/SOPHIA_FOLLOWUP_MONITOR_PLAN.md`).
+2. **Cacao butter ledger movement** — when you're ready, record the formal INVENTORY MOVEMENT (Orlantildes → Matheus warehouse, 5 kg cacao butter) so the receipt stops being "tentative."
+
+Say the word and I'll pick one up in a fresh turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #749 on agentic_ai_context merged successfully (sha: f97f6f34a10d0548e79f75d3d49233a74614e688). Pull Request successfully merged
 
