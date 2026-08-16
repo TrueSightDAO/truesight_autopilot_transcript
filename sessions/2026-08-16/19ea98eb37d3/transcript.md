@@ -35,22 +35,31 @@ Where is the best place to track these??
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the context for existing tracking structures for these people and projects before recommending a home.
+[6 tool result(s) compacted: search_context, search_context, search_context, search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found relevant pieces. Let me read the follow-up monitor plan and search for the other project terms to see what's already tracked.
+[6 tool result(s) compacted: read_context_file, search_context, search_context, search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Not in context docs yet. Per protocol let me also search the code repos org-wide before concluding, and check for any existing people/task tracking structures.
+[5 tool result(s) compacted: search_code, search_code, search_code, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the full structure of OPEN_FOLLOWUPS.md and the TRACK_MAP to see what tracking homes already exist.
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -124,4 +133,68 @@ The aora README says it plainly: **"Roadmap: Tracked in `agentic_ai_context/AORA
 3. Add the Ling/Jerrie Aora items to the Aora roadmap
 
 One question first: **what thread do you want the follow-up blocks to ping when they strike?** (This thread — 11042 — or a dedicated Aora/ops thread?) The plan requires a `thread_id` per follow-up.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11042] [Handoff context — this Telegram topic (thread 11042) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I don’t think the mobile capsule should be part of the Aora plan 
+
+I think should all ping this thread
+
+
+### 🤖 Autopilot
+
+Let me check what the mobile space capsule actually is before re-homing it — and confirm the handoff registry for this thread.
+
+
+### 🤖 Autopilot
+
+Let me find what the mobile space capsule actually is, and check whether this thread (11042) is already in the handoff manifest.
+
+
+### 🤖 Autopilot
+
+The "mobile space capsule" isn't documented anywhere in context or code — it's a new term. Let me check the handoff manifest for this thread's linkage and search broadly for any related Aora/Mobile UN/certification items.
+
+
+### 🤖 Autopilot
+
+Confirmed: **Ling, Mr Liu, Evan, Mobile UN, and the space capsule are not documented anywhere in the DAO context or code repos.** These are new people/projects you're bringing into tracking.
+
+So here's the adjusted recommendation, incorporating your two corrections:
+
+## Corrected homes
+
+| Item | Home | Notes |
+|------|------|-------|
+| Matheus / nota fiscal | `OPEN_FOLLOWUPS.md` followup block | chase item |
+| PODream tech | `OPEN_FOLLOWUPS.md` followup block | chase item |
+| Gianluca farmers tech | `OPEN_FOLLOWUPS.md` followup block | chase item |
+| Orlantildes / MAPA (Coopercabruca) | `TRACK_MAP.md` → GACC track | already partly there |
+| Cacao butter 5 kg (Coopercabruca→Kirsten) | Ledger INVENTORY MOVEMENT | physical event, not a follow-up |
+| **Ling / mobile capsule** | ❌ **NOT Aora** — per your correction | needs its own home |
+| **Jerrie / Mobile UN Aora PDF→PPT** (Mr Liu via Evan → certification → Cao) | `AORA_EXPERIENCE_PLAN.md` | this one IS Aora — it's literally the Aora modules being translated/packaged for China certification |
+| Jerrie / cacao ceremonial + tea PDF→PPT (Win) | `AORA_EXPERIENCE_PLAN.md` or a product track | Aora-adjacent product |
+
+## The key question: where does the mobile capsule go?
+
+Since it's not in Aora and isn't documented yet, I need your call on what it is:
+
+1. **Is it a physical product / hardware project?** (e.g. an actual mobile space-capsule exhibit, container, or vehicle) → then it's a **program/product track** of its own, not a follow-up — it'd get a row in `TRACK_MAP.md` or its own `*_PLAN.md`.
+2. **Is it just "Ling is working on it and I need status"?** → then it's a **follow-up block** in `OPEN_FOLLOWUPS.md` like the others, and the content can be brief since it's new.
+
+Either way, **all pings go to this thread (11042)** — noted, that's what I'll set as `thread_id` on every followup block. That also matches the handoff context: this thread is the execution-tracking topic.
+
+## So, concretely — want me to file these?
+
+I'd propose:
+1. **`OPEN_FOLLOWUPS.md`** → add followup blocks (with `thread_id: 11042`) for: Matheus/nota fiscal, PODream, Gianluca farmers, **Ling/capsule**, and Jerrie's two PPT tasks (Mobile UN + ceremonial/tea) — the last two could be one block or two.
+2. **`TRACK_MAP.md`** → update the GACC track with Orlantildes/MAPA status + cacao butter delivery.
+3. **Cacao butter** → also record the INVENTORY MOVEMENT in the ledger (need: manager Kirsten? recipient? quantity 5 kg — and the QR/serial if the butter has one).
+
+Two questions before I open the PR:
+- **Mobile capsule** — which of the two is it (product track vs follow-up)? Or do you want it as a follow-up for now and a track later?
+- **Jerrie's PPTs** — one followup block or two?
 
