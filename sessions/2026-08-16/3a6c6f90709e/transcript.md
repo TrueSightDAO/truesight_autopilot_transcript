@@ -353,32 +353,63 @@ ASSET RECEIPT EVENT is purpose-built: "Record receipt of a physical DAO asset" w
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me read the ASSET RECEIPT handling logic in the controller.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of the webhook dispatch to check how ASSET RECEIPT EVENT is processed.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how ASSET RECEIPT EVENT rows get processed into the ledger (GAS side in tokenomics).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the ASSET RECEIPT dispatch in the controller to confirm how it lands on the ledger.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub API is rate-limited. Let me check the local tokenomics checkout on the box for the GAS processing scripts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the GAS ingest. Let me read it to confirm exactly how ASSET RECEIPT EVENT lands on the ledger.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -436,31 +467,57 @@ Still to verify (was rate-limited): that the INVENTORY MOVEMENT GAS (`process_mo
 ### 🤖 Autopilot
 
 On it — option 1 (PR → clasp deploy → clean submissions), no Chinese characters in the asset name. Let me first see the full ingest script (the parse function tail) and check the clasp deployment setup.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of the ingest script (parse function + helpers) so the Quantity edit integrates cleanly, and check the manifest for the scriptId.
+[2 tool result(s) compacted: read_tool_result, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest has no scriptId — this folder may deploy via clasp_mirrors or a configured webhook URL. Let me find the deployed scriptId and check how the webhook fires.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy model is clasp_mirrors (folder = scriptId). Let me find which mirror holds the asset receipt ingest and check the deploy script's mapping.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The asset_receipt_ingest source isn't in clasp_mirrors — need to understand the folder→scriptId mapping. Let me check the deploy script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The asset_receipt_ingest manifest has no scriptId registered, so I need to find its deployed scriptId — it'll be in the sentiment_importer webhook config or a clasp mirror.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -539,4 +596,166 @@ No duplicates were submitted. Ready to execute steps 1–2 the moment the turn r
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → ls -la /opt/truesight_autopilot/tokenomics/google_app_scripts/asset_receipt_ingest/; echo ---CLASP---; cat /opt/truesight_autopilot/tokenomi; grep -rn "asset_receipt\|asset-receipt\|processAssetReceipts" /opt/truesight_autopilot/tokenomics/config 2>/dev/null | head; echo ---; grep ; cd /opt/truesight_autopilot/tokenomics && grep -rl "processAssetReceiptsFromTelegramChatLogs\|ASSET RECEIPT EVENT" clasp_mirrors/ 2>/dev/nul; …(+17 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11022] [Handoff context — this Telegram topic (thread 11022) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead
+
+
+### 🤖 Autopilot
+
+Executing the plan. First, parallel: (a) resolve the asset_receipt_ingest scriptId from the webhook config, (b) open the PR for the Code.gs Quantity change.
+
+
+### 🤖 Autopilot
+
+The repo file differs from my local copy (whitespace/formatting). Let me pull the exact repo content and also find where the webhook URLs actually live.
+
+
+### 🤖 Autopilot
+
+The GitHub repo doesn't have that file at that path — the local checkout may be a different repo/remote or the file lives elsewhere. Let me verify the local git remote and find the real GitHub path.
+
+
+### 🤖 Autopilot
+
+The ingest script is local-only (untracked in git — the repo file 404s), and the webhook dispatcher is the Rails `sentiment_importer` (seni_ror). Let me check git tracking + find the GAS webhook URL in sentiment_importer.
+
+
+### 🤖 Autopilot
+
+`asset_receipt_ingest/Code.gs` IS tracked in git — the 404 is because the repo's default branch isn't `main`. Let me confirm.
+
+
+### 🤖 Autopilot
+
+The tool's fresh clone may differ from this box's local checkout. Let me check whether the file is pushed to origin/main.
+
+
+### 🤖 Autopilot
+
+The file IS on origin/main — the `read_repo_file` 404 was likely a transient GitHub API issue. The local worktree has no diff vs origin/main, so the file content matches the repo. Let me retry the PR with the edits.
+
+
+### 🤖 Autopilot
+
+The edit still fails — the tool's clone of the repo must have a different version of the file than this box's local checkout. Let me get the exact content from GitHub directly and diff it against local.
+
+
+### 🤖 Autopilot
+
+The raw fetch returned 0 lines (rate-limited/404) but diff shows the local file exists (255 lines). The edit tool's clone may use a different ref. Let me check the tool's view of the file and the exact bytes.
+
+
+### 🤖 Autopilot
+
+The file is genuinely **404 on GitHub main** — the local checkout's `origin/main` ref is stale (the repo history was likely rewritten/force-pushed; the "Sync Code.js" commits hint at a mirror-sync that mangled history). The GAS ingest exists locally + deployed, but isn't on the live main anymore. Let me check where it lives now and what the live tree looks like.
+
+
+### 🤖 Autopilot
+
+Confirmed: the file exists only on the **stale local ref** `33b801d` — it's **gone from GitHub main** entirely. The ingest is deployed in GAS (from a prior checkout) but the source is no longer in the repo (history rewrite/mirror-sync wiped it). This is exactly the "asset_receipt_ingest not in clasp_mirrors" gap I flagged. Let me check where the Rails side expects the webhook (the real deploy wiring) and whether the GAS project is still live.
+
+
+### 🤖 Autopilot
+
+The file is **gone from live GitHub main** (404) but exists in the local git object store — the local `origin/main` ref is stale (history rewrite removed the folder on live main). That's why the edit-based PR fails: the tool clones fresh from live main where the file doesn't exist. Fix: re-add the file via `writes` (full content with the Quantity change). Let me grab the modified file and check what else is missing on live main.
+
+
+### 🤖 Autopilot
+
+The picture is now clear: **live `main` of tokenomics was restructured to clasp-mirror scriptId folders** — the old named-folder `asset_receipt_ingest/` is gone from GitHub (only exists in the stale local ref). So the PR must **re-add the folder under the new convention**, and to deploy I need the deployed GAS project's scriptId. The webhook URL maps to it. Let me find the env var → URL mapping and read the local manifests.
+
+
+### 🤖 Autopilot
+
+This confirms it: the asset_receipt_ingest GAS project has **never been registered** with a scriptId (manifest is audit-only, `projects: []`, `files_without_scriptid: [Code.gs]`), and the env has no `ASSET_RECEIPT` webhook URL. The deploy wiring (dispatch.py) references `ASSET_RECEIPT_PROCESSING` env — but the actual GAS webhook URL is missing from the box env. Let me check where the webhook URL is meant to be configured and whether the dispatch would even fire.
+
+
+### 🤖 Autopilot
+
+Dispatch gracefully skips when no webhook URL is set ("GAS cron will process") — so the receipt flow is: Edgar writes the event row to the Telegram Chat Logs sheet → the **deployed asset_receipt_ingest GAS project** picks it up (cron or manual). The deployed project's source was wiped from the repo during the clasp-mirror restructure, and its scriptId was never registered. To deploy my Quantity fix I need that scriptId. Let me hunt for it on the box (clasp configs, mirrors, ops spreadsheet properties).
+
+
+### 🤖 Autopilot
+
+The clasp_mirrors are all scriptId folders with no asset_receipt mapping — confirming this GAS project has **no deployed scriptId anywhere on the box**. This is a genuine tooling gap: the ingest script exists only as local source (in the stale-ref folder), was never pushed to a registered GAS project. 
+
+Given the tool-round budget, the pragmatic path is: **open the PR to restore the asset_receipt_ingest folder to tokenomics (with my Quantity fix) under the clasp-mirror convention** — this both persists the fix AND makes the deploy reproducible. Let me do that now.
+
+
+### 🤖 Autopilot
+
+The call dropped required params. Retrying with repo/branch/commit_message:
+
+
+### 🤖 Autopilot
+
+PR is open: **https://github.com/TrueSightDAO/tokenomics/pull/388** (restores the lost asset_receipt_ingest GAS source + adds the Quantity fix).
+
+Now the ledger work. Let me verify the exact event field formats and how INVENTORY MOVEMENT handles non-QR equipment, plus the current ledger state — all in parallel:
+
+
+### 🤖 Autopilot
+
+PR **#388** is open (restores the lost GAS source + Quantity fix). The ledger confirms the `offchain asset location` sheet shape (Currency | Location | Amount Managed | Unit Cost | Total Value) — matches what I'll produce.
+
+Now, the deploy blocker: the webhook URL (`DAO_PROTOCOL_WEBHOOK_ASSET_RECEIPT_PROCESSING`) wasn't on this box's env — it's set on the **dao_protocol** server. Let me check there — that URL gives us the GAS scriptId to deploy the fix:
+
+
+### 🤖 Autopilot
+
+SSH key denied for dao_protocol. Let me check if the service runs on the box and how env is loaded, via the local dispatch code path.
+
+
+### 🤖 Autopilot
+
+The `gas_upstreams.py` file has a fixed map of GAS webhook URLs — but **no asset-receipt entry**. Let me read the full file to confirm whether it references an ASSET_RECEIPT entry and how the env var is resolved:
+
+
+### 🤖 Autopilot
+
+The asset_receipt GAS webhook URL isn't in the allowlist either. Let me check the Rails side (sentiment_importer) which actually owns the dispatch — that's where the `DAO_PROTOCOL_WEBHOOK_ASSET_RECEIPT_PROCESSING` env and possibly a GAS URL live. Let me search the Rails code.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — I've hit the per-turn tool cap. Clean status, nothing lost.
+
+## ✅ Done
+- **PR #388 open:** https://github.com/TrueSightDAO/tokenomics/pull/388 — restores the `asset_receipt_ingest/Code.gs` GAS source (it had been **lost from live `main`** during the clasp-mirror restructure) **and** adds optional `- Quantity: <n>` parsing (defaults 1, writes qty to the offchain transactions leg instead of hardcoded `1`).
+- **Ledger shape confirmed:** `offchain asset location` = `Currency | Location | Amount Managed | Unit Cost | Total Value` (e.g. "22 Litres Insulated Box", Val Lapidus, 1, 6.26). Asset receipt writes **Currencies** (col B = per-unit USD) + **offchain transactions** (col D = qty) — that covers "unit cost on the ledger".
+- **Nothing submitted yet** — zero ledger side effects, no duplicates.
+
+## ⛔ The blocker (deploy scriptId)
+The asset-receipt GAS project has **no registered scriptId anywhere**:
+- `manifest.json`: `projects: []`, `files_without_scriptid: [Code.gs]` — never registered
+- No `clasp_mirrors/<scriptId>` folder for it
+- No `DAO_PROTOCOL_WEBHOOK_ASSET_RECEIPT_PROCESSING` URL in the autopilot box env
+- Not in `gas_upstreams.py` allowlist
+- Dispatch (`dispatch.py:61`) routes `[ASSET RECEIPT EVENT]` → `processAssetReceiptsFromTelegramChatLogs` but **gracefully skips** if the webhook URL env is unset ("GAS cron will process")
+
+So the deploy step (clasp push of the Quantity fix) can't run until we locate the deployed GAS project. **Key lead found:** `search_code` matched `ASSET_RECEIPT` in **`sentiment_importer` `config/application.rb` + `app/controllers/dao_controller.rb`** — the Rails dispatcher is where the webhook URL (→ scriptId) lives.
+
+## RESUME HERE
+1. **Read** `sentiment_importer/config/application.rb` + `app/controllers/dao_controller.rb` (GitHub, via read_repo_file) → find `ASSET_RECEIPT_PROCESSING` webhook URL → extract the **scriptId**.
+2. **Deploy fix:** write the Quantity-modified `Code.gs` into `/opt/truesight_autopilot/tokenomics/google_app_scripts/asset_receipt_ingest/`, then `clasp push` (or `gas_deploy_project`) using the resolved scriptId. *(PR #388 is for source persistence — needs your merge OK or review.)*
+3. **Verify** `process_movement_telegram_logs.gs` handles non-QR items (the remaining pre-flight check before the transfer).
+4. **Submit `ASSET RECEIPT EVENT`:** Currency = `Food Grade PC Chocolate Mold 24-cavity - Alabeiju Taobao - Elizabeth Wong 20260816` (no Chinese, per your instruction), Amount = per-unit USD (¥79.80 ÷ ~7.22 ≈ **$11.05**), Quantity = **20**, Fund Handler = **Elizabeth Wong**, Description = "20 units x CNY 79.80 = CNY 1596 (~USD 221), Taobao link + photo attached".
+5. **Submit `INVENTORY MOVEMENT`:** Manager = Elizabeth Wong → Recipient = **Gary Teh**, Quantity = **10**, Inventory Item = same asset name, Destination = **Main Ledger** (`offchain asset location`).
+6. **Verify:** 20 units at Wong (offchain transactions) / 10 at Gary + 10 remaining at Wong (offchain asset location), unit cost ~$11.05 recorded.
+
+Ready to continue from step 1 the moment the turn resumes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → grep -rn "ASSET_RECEIPT_PROCESSING" /opt/truesight_autopilot --include=".env*" 2>/dev/null | grep -oE "script\.google\.com/macros/s/[A-Za-z0; ls -la /opt/truesight_autopilot/.env* /opt/truesight_autopilot/*/.env* 2>/dev/null | head -20; echo ---; grep -rn "DAO_PROTOCOL_WEBHOOK_ASSE; cd /opt/truesight_autopilot/tokenomics && git remote -v 2>/dev/null | head -2; echo ---; git status --short 2>/dev/null | head; echo ---BRAN; …(+18 more)
 
