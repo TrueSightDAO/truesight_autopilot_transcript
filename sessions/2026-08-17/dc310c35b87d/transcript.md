@@ -246,6 +246,7 @@ I have the section 6 and 8 content. Let me see the tail of the file (end of sect
 ### 🤖 Autopilot
 
 The artifact is getting nested. Let me fetch the raw file directly on the box to see the exact tail and the precise strings to edit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -253,11 +254,13 @@ The artifact is getting nested. Let me fetch the raw file directly on the box to
 I have everything I need. The whitepaper lives in `truesight_me_beta` (identical to prod). Per the beta-first flow, I'll update the beta repo via PR, then wait for your review before promoting to prod.
 
 First, a quick HTML sanity check of my planned changes, then push:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR created. Let me verify the edited file is well-formed (tags balanced, new section present) before reporting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,4 +441,59 @@ Sunmint's credits are the *opposite* end of the market:
 Useful macro context — the credit market is real and growing — but it's the *compliance* segment, so it doesn't change our registry roadmap. It actually **validates the phased plan**: stay voluntary/premium first (Plan Vivo → Verra+CCB), keep SBCE as the optional upside.
 
 Want me to add a short "market context" note to the whitepaper's section 13 (distinguishing compliance vs voluntary credits, citing Tesla/Restore Fund as demand signals), or leave the whitepaper focused on the registry mechanics?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Also research to see if AI data center operators in USA need carbon credits
+
+
+### 🤖 Autopilot
+
+Good research question — let me dig into the current landscape for AI data centers and carbon credit demand in the US.
+
+
+### 🤖 Autopilot
+
+Research complete — this is the strongest demand signal yet for Sunmint, and there's a direct Brazilian precedent. Here's the answer:
+
+## Short answer
+
+**No US law *requires* AI data centers to buy carbon credits — but the four hyperscalers that dominate the market (Microsoft, Google/Amazon/Meta) buy them at scale anyway, driven by net-zero pledges, SBTi, reporting laws, and investor pressure.** And critically for us: they're already buying **Brazilian nature-based restoration credits** — Microsoft's Re.green deal is the direct comp for Sunmint.
+
+## The demand data (2025–2026)
+
+- **Big Tech permanent-removal credit purchases** (Ceezer/CNBC, Mar 2026): 14,200 credits (2022) → **11.9M (2023) → 24.4M (2024, +104%) → 68.4M (2025, +181%)**
+- **US data center capacity**: 25 GW → **120 GW by 2030** (5×); ~$2.8T US infrastructure investment through 2030 (Carbon Direct)
+- **Voluntary market**: $15.8B (2025) → **$120B (2030)** @ 50% CAGR (Mordor)
+- **Microsoft**: multi-billion $ CDR offtakes, $210M JPMorgan carbon loan (2025), buyer coalition with Amazon+Exxon for **20M tons of nature-based credits by 2030**
+- **Google**: $100M carbon-removal credit purchases (2024)
+- Microsoft's own emissions **+30% since 2020** due to AI data centers — the problem they're buying against
+
+## Why they buy (drivers, not mandates)
+
+| Driver | Status |
+|---|---|
+| Federal US carbon law | ❌ None (no carbon tax/cap-and-trade for data centers) |
+| Net-zero / SBTi commitments | ✅ Voluntary but **binding to investors**: 6,200+ companies with SBTs |
+| Reporting laws | ✅ California **SB 253/261**, EU **CSRD** (applies to their EU ops), SEC Scope 3 pressure |
+| Own AI emissions growth | ✅ The core driver — data centers are their fastest-growing footprint |
+
+## ⭐ The direct precedent for Sunmint: Microsoft × Re.green
+
+**Feb 2025: Microsoft bought 3.5M carbon credits from Re.green** — a Brazilian company restoring degraded land in the **Amazon and Atlantic Forest**. That is *exactly* Sunmint's model (Brazilian degraded-land restoration, nature-based credits). It proves:
+- Hyperscalers **do buy Brazilian nature-based restoration credits**, not just DAC/engineered removal
+- High-integrity attributes (Verra VCS + CCB, ICVCM-aligned, community benefits) are what command premium pricing
+- The buyer coalition (Microsoft/Amazon/Exxon, 20M tons nature-based by 2030) is a standing demand pool
+
+## What this means for Sunmint
+
+1. **This channel is bigger than Apple alone.** Apple (Restore Fund) + hyperscalers (Microsoft/Google/Amazon/Meta) = the premium demand pool for our exact credit type. They're racing to buy nature-based credits from Brazil *right now*.
+2. **It reinforces the roadmap — with urgency.** The Microsoft coalition and Re.green deal all sit on **Verra VCS + CCB + ICVCM-aligned (VM0047)** rails. The Plan Vivo pilot stays, but **the Verra+CCB stage is where the hyperscaler money is** — same conclusion as the Apple analysis.
+3. **Re.green is a case study worth studying** — they've cracked the model we're building (Brazilian restoration → hyperscaler offtakes). I'd suggest a competitive teardown of Re.green's structure (credit pricing, registry, community model) as homework.
+
+Want me to:
+1. **Add a "Target Buyers & Market Context" section** to the whitepaper PR #292 (Apple + hyperscalers + Re.green precedent + compliance-vs-voluntary distinction)?
+2. **Run a Re.green competitive teardown** (web research) and fold key numbers into the PDF roadmap?
+3. Both?
 
