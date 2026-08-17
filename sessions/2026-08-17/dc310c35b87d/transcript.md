@@ -320,21 +320,25 @@ Apple's `/environment` program is a meaningful target — and it changes the roa
 - **Critical for us:** Plan Vivo is **not** on Apple's recognized-standards list. **Verra VCS + CCB is the Apple-qualifying track** — which is our Stage 2/3. Also, the current ICVCM-approved ARR methodology is **VM0047** (first credits issued Apr 2026, Brazil Cerrado 1) — VM0017 is retired, so my whitepaper PR should cite VM0047, not VM0017/VM0042.
 
 Let me fix the whitepaper PR to (a) correct the methodology to VM0047 and (b) add the Apple-alignment note:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits are staged locally and verified. Now I'll push these refinements to the same PR branch (updates PR #292 in place):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The second `git_push_changes` failed because it re-bases from `main` (which doesn't have the first commit yet) — the search string lives only on the PR branch. No problem: I already have the fully-edited file locally (`/tmp/sunmint_wp_pr.html`). I'll push that whole file to the existing PR branch via the Contents API:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The updated file is now pushed to the PR branch (commit `72d025e`), so PR #292 now contains the corrected VM0047 references and the Apple-alignment bullet. Quick sanity check that the PR branch file is what I expect:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -560,4 +564,45 @@ The image OCR'd empty (poor quality, no readable text — likely a screenshot of
 ## Suggested next step
 
 Want me to build the **"SBTi V2.0 Buyer Alignment" section** into the whitepaper roadmap (PR #292) — a short table mapping OER tiers → Sunmint stages → registry/product → price positioning? That turns this buyer thesis into the sales-facing artifact your CSO prospects will actually read.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Consolidate properly into white paper PDF
+
+
+### 🤖 Autopilot
+
+Consolidating everything — registry roadmap, Apple, hyperscalers, SBTi V2.0 OER framework, market context — into one branded whitepaper PDF.
+
+
+### 🤖 Autopilot
+
+PDF generated (4 pages). Sending it to you now:
+
+
+### 🤖 Autopilot
+
+PDF sent ✅
+
+## **`SunMint_Carbon_Credit_Program_Whitepaper.pdf`** — 4 pages, consolidated
+
+| Section | Contents |
+|---|---|
+| **1. Purpose** | Mission + what SunMint is |
+| **2. Registry Roadmap** | Stage → Registry table (Plan Vivo → Verra VCS → SBCE) + rationale |
+| **3. Methodology & Integrity** | VM0047, 40-yr permanence, buffer pools, on-chain MRV, ex-post verification |
+| **4. Target Buyers** | Apple Restore Fund · Hyperscalers (Microsoft/Google/Amazon/Meta + Re.green precedent) · SBTi V2.0 CSOs |
+| **5. SBTi V2.0 Alignment Map** | OER tiers → Sunmint stages → product (Engaged/Advanced/Leadership) |
+| **6. Market Context** | Tesla compliance-vs-voluntary distinction, VCM size/growth |
+| **7. Regulatory Watch** | Brazil SBCE, Article 6/NDC |
+| **8. Recommended Path** | 5-step phased plan |
+| **9. Mission Tie-Back** | 10,000-hectare goal, community benefit, "healing the world with love" |
+
+Everything from this thread — the registry recommendation, Apple Restore Fund, hyperscaler demand + Re.green precedent, SBTi V2.0 OER tiers, Tesla market context — is consolidated into one branded document.
+
+Want me to:
+1. **Push this PDF to a repo** (e.g. `sunmint_beta` or `agentic_ai_context`) so it's versioned and linkable?
+2. **Sync the whitepaper website PR #292** to include the buyer-alignment content (so the live page matches the PDF)?
+3. Add a **cover page** or Spanish/Portuguese version for farmer/partner distribution?
 
