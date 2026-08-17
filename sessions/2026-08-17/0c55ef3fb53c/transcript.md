@@ -253,11 +253,13 @@ Let me locate the actual outreach protocol file and check the repo structure.
 ### 🤖 Autopilot
 
 The outreach protocol is a human-in-the-loop playbook (draft-first, no auto-send) — I'll follow that. I have real contacts now. Let me fold the QR-commission model into a v3 PDF and prepare the outreach.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v3 PDF with the QR-commission model built in.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -481,4 +483,21 @@ Sent ✅ — **Winter Off-Grid Campaign** (4 pages, client-clean).
 The one thing I flagged inside: the **unlimited firewood + bacon** line items are the experience budget that makes the campfire real — they're the hospitality, not the cost. Nice touch that the bacon moment is also the most shareable content.
 
 Want tweaks — e.g. a lighter version if the budget needs to come down, or the ambassador one-pager/contract brief separately?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] Generate in PDF
+
+
+### 🤖 Autopilot
+
+The PDF already exists — re-sending it to you now as a file attachment.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — the **Gear It — Winter Off-Grid Campaign** PDF is attached above (4 pages).
+
+If you meant a different document, tell me which one — e.g. the full **Portfolio of Experiments (v7)** — and I'll send that as PDF too.
 
