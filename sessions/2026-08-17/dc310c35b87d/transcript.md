@@ -52,11 +52,13 @@ GitHub Pages API returns 404 for both `sunmint_beta` and `sunmint_prod` — Page
 ### 🤖 Autopilot
 
 Both real URLs return **200 from this box**, and `sunmint.treesight.me` doesn't resolve (that TLD isn't registered). Let me confirm which repo actually hosts the Pages site and check repo state.
+[2 tool result(s) compacted: ssh_run, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both real domains serve 200 from this box, but the GitHub Pages API returns 404 for all repos — that's a red flag worth verifying. Let me dig into headers, deploy state, and check for the "treesight.me" typo anywhere in the org.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -199,4 +201,82 @@ Also included: cost/fee table for Plan Vivo, registry comparison table, and the 
 Want me to also:
 - upload it to a repo (e.g. `agentic_ai_context` or `sunmint_beta`) so it's versioned?
 - update the Sunmint whitepaper snapshot's carbon-credit section to match this phased strategy (currently says "Verra VM0017")?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Can you also update our Sunmint white paper on our website for this
+
+
+### 🤖 Autopilot
+
+Let me look at the live whitepaper source to see its current carbon-credit content and where it lives (beta vs prod).
+
+
+### 🤖 Autopilot
+
+The prod copy exists; the beta repo path redirected (likely renamed `truesight_me_beta`). Let me get the full prod file to find the exact carbon-credit section text.
+
+
+### 🤖 Autopilot
+
+Both beta and prod copies are identical. Let me read the rest of the file to see the exact carbon-credit section text (section 6 and 8) that needs updating.
+
+
+### 🤖 Autopilot
+
+I have the section 6 and 8 content. Let me see the tail of the file (end of section 12, closing tags) so I can place a new "Registry Roadmap" section correctly.
+
+
+### 🤖 Autopilot
+
+The artifact is getting nested. Let me fetch the raw file directly on the box to see the exact tail and the precise strings to edit.
+
+
+### 🤖 Autopilot
+
+I have everything I need. The whitepaper lives in `truesight_me_beta` (identical to prod). Per the beta-first flow, I'll update the beta repo via PR, then wait for your review before promoting to prod.
+
+First, a quick HTML sanity check of my planned changes, then push:
+
+
+### 🤖 Autopilot
+
+PR created. Let me verify the edited file is well-formed (tags balanced, new section present) before reporting:
+
+
+### 🤖 Autopilot
+
+Done — PR opened and verified well-formed (all tags balanced, new section + table present).
+
+## What changed
+
+**PR:** https://github.com/TrueSightDAO/truesight_me_beta/pull/292
+**Branch:** `sunmint-wp-carbon-registry-roadmap` (beta repo — prod untouched, per the beta-first rule)
+
+### Edits to `sunmint/whitepaper/index.html`
+
+1. **TOC** — added "13. Carbon Credit Registry Roadmap" link
+2. **Section 6 · Carbon Credit Development** — replaced the single "Verra VM0017, ARR" bullet with the staged path: *"Plan Vivo (PV Climate, microscale) for the pilot; Verra VCS (ARR, VM0017/VM0042) at scale"*
+3. **New Section 13 — Carbon Credit Registry Roadmap** with the stage→registry table:
+
+| Stage | Timeline | Scale | Registry |
+|---|---|---|---|
+| 1 — Pilot | 2026–2028 | 50–500 ha | **Plan Vivo** (PV Climate, microscale) |
+| 2 — Scale-up | 2028–2030 | 500–2,000 ha | Plan Vivo + begin **Verra VCS** |
+| 3 — Full scale | 2030+ | 2,000–10,000 ha | **Verra VCS** (primary) + Plan Vivo (community premium) |
+| 4 — Regulated (optional) | When SBCE rules defined | 10,000 ha | **SBCE** (if removals recognized) |
+
+Plus rationale bullets (why Plan Vivo first, Verra at scale, Gold Standard note, SBCE watch-item).
+
+## Next steps (beta-first flow)
+
+- **Review:** the live beta site — `https://beta.truesight.me/sunmint/whitepaper/` — will show the update once the branch is deployed. Would you like me to merge the PR to beta `main` so it goes live on the beta site?
+- **After your approval of the beta:** I'll promote to prod with `sync_beta_to_prod(truesight_me_prod)` → live on `https://truesight.me/sunmint/whitepaper/`.
+
+Note: the whitepaper page also carries the deprecated Google Doc link in its header; the live page is the canonical copy, so the update lands on the website itself. Want me to merge to beta now, or wait for your review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html -o sunmint_wp_beta.h; cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i
 
