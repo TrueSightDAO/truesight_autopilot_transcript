@@ -463,11 +463,13 @@ Arrangement should already be in place to have gear it equipment on sale at a bo
 ### 🤖 Autopilot
 
 Got it — a **Winter Campaign Proposal** built around a sponsored nomad ambassador: campfire storytelling, the gear kit, the lucky draw, and the Quartzsite booth selling it all. Building the PDF now.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the winter campaign proposal.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -501,6 +503,7 @@ Want tweaks — e.g. a lighter version if the budget needs to come down, or the 
 ### 🤖 Autopilot
 
 The PDF already exists — re-sending it to you now as a file attachment.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -518,11 +521,13 @@ If you meant a different document, tell me which one — e.g. the full **Portfol
 ### 🤖 Autopilot
 
 Clear — the QR lives **on the chair itself**: the ambassador's branded foldable chair, in every campfire scene, and scanning it drops the visitor straight into the lucky-draw signup. That makes the chair the single most valuable object in the campaign — every frame is an ad. Updating the PDF with this as the centerpiece.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the updated v2 PDF with the QR chair as the centerpiece.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -550,11 +555,13 @@ The chair is now the single most valuable object in the campaign — every frame
 ### 🤖 Autopilot
 
 Good call — the ambassador's authenticity is the whole asset; handing out swag breaks the spell. Swag stays at the booth (where it's expected commerce), the ambassador just lives the life and the QR chair is the subtle invitation. The lucky draw is the giveaway mechanism — digital, on the site, not physical handouts from the nomad. Updating the PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v3 PDF with the no-swag rule baked in.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -674,4 +681,32 @@ Sent ✅ — **v5** with the real hero SKU from gearit.com.
 - **§13 Risk** — hero SKU availability; fallback = the 40W speaker
 
 The story now has a real product spine: **chair QR surfaces the CTA → the BOOM is the want → the camp runs on GEARit.** Want me to also verify the current BOOM price/stock directly, or draft the outreach emails to the Quartzsite targets?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] The prize of the monthly lucky draw is also that target SKU
+
+
+### 🤖 Autopilot
+
+Got it — the prize every month is **the target SKU itself** (the BOOM 120W), clean and simple. That also removes the chair-as-bonus from Month 3, which is more consistent with "the chair is just the prop." Updating the PDF.
+
+
+### 🤖 Autopilot
+
+Sending the updated PDF with the target SKU as the prize every month.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v6** with the prize simplified.
+
+**What changed:**
+- **§8 Draw** — now explicitly: *"Every month, the prize is the same hero product: the BOOM 120W. One winner per month, one BOOM per winner."* No more prize escalation (Month 2 power kit, Month 3 full setup) — it's the target SKU, every month
+- **§1 + §3** — consistently framed as "the prize every month is the target SKU itself"
+- **§11 Timeline** — each draw row now just says "BOOM 120W"
+- **§10 Budget** — "1 ambassador + 3 monthly draw prizes" BOOM units
+
+The logic is now maximally clean: **chair QR = the ask, BOOM 120W = the want, every month.** Want me to draft the outreach emails to the Quartzsite booth targets, or build the chair-QR placement spec (size/contrast/durability)?
 
