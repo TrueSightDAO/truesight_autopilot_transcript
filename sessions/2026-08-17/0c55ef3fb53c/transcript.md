@@ -294,11 +294,13 @@ Next step on the outreach itself: I can **draft the actual outreach emails** to 
 ### 🤖 Autopilot
 
 Good refinement — the landing page becomes a **gig calendar**: sponsored musicians' QRs drive people to "where they're playing next," which turns every musician into a footfall generator for the gatherings (and the booths there). Folding that into the plan as a v4.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v4 PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -500,4 +502,36 @@ The PDF already exists — re-sending it to you now as a file attachment.
 Sent ✅ — the **Gear It — Winter Off-Grid Campaign** PDF is attached above (4 pages).
 
 If you meant a different document, tell me which one — e.g. the full **Portfolio of Experiments (v7)** — and I'll send that as PDF too.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] I think the QR code should be on the branded foldable chair which the nomad ambassador uses which when scanned brings the visitor to the site to sign up for the lucky draw
+
+
+### 🤖 Autopilot
+
+Clear — the QR lives **on the chair itself**: the ambassador's branded foldable chair, in every campfire scene, and scanning it drops the visitor straight into the lucky-draw signup. That makes the chair the single most valuable object in the campaign — every frame is an ad. Updating the PDF with this as the centerpiece.
+
+
+### 🤖 Autopilot
+
+Sending the updated v2 PDF with the QR chair as the centerpiece.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v2** with the QR code now **on the branded foldable chair** as the campaign centerpiece.
+
+**What changed:**
+- **§2 "Why the chair"** — the chair is in every shot, the QR is always visible/scannable, and it's the Month-1 prize: *scan the chair to win the chair you're looking at*
+- **§4 Equipment kit** — chair is now the hero object: "Gear It branded foldable camping chair — with the QR code printed on it," the primary draw entry point, unique + trackable so Gear It knows which moment (video/meetup/booth) drives each scan
+- **§5 Script** — CTA now points at the chair QR: *"See the code on this chair? Scan it. This month I'm giving away this exact chair and a starter kit…"*
+- **§7 Draw** — Month 1 = the QR chair + starter kit; Month 2 = power station; Month 3 = full campfire setup
+- **§8 Booth** — ambassador sits **in the QR chair** at the booth, matching chair on display so visitors can scan in person
+- **§9 Budget** — new line: QR chair production (branded foldable chairs, QR print, multiple units) $1–3K
+- **§11 KPIs** — **chair-QR scans** is now the primary metric, with scan → draw signup at 20%+
+- **§12 Risks** — new: QR scannability on camera (large, high-contrast, durable on fabric; test scan-from-video)
+
+The chair is now the single most valuable object in the campaign — every frame is an ad, every scan is a follower. Want a mockup spec for the chair QR placement (size, contrast, position), or the ambassador selection criteria next?
 
