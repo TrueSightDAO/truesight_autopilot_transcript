@@ -462,6 +462,7 @@ Want me to add a short "market context" note to the whitepaper's section 13 (dis
 ### 🤖 Autopilot
 
 Good research question — let me dig into the current landscape for AI data centers and carbon credit demand in the US.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -522,11 +523,13 @@ Silicon Valley startup Chief sustainability OFFICERS whom we will be selling to.
 ### 🤖 Autopilot
 
 Good — that sharpens the buyer profile: **Silicon Valley startup CSOs living under the SBTi Net-Zero Standard**. Let me (1) check the attached image and (2) pull the latest on the SBTi standard, since it dictates exactly what kinds of credits those CSOs can buy.
+[2 tool result(s) compacted: list_directory, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The attachment list is huge (many .oga voice notes and .jpg images from past sessions). The specific image is `41240186b1454eff9261382d1137db1a.jpg`. Let me look at it directly, and also read the SBTi V2 details from the best source (CEEZER analysis) — since it determines exactly what those CSOs can buy.
+[2 tool result(s) compacted: ocr_image, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -580,11 +583,13 @@ Want me to build the **"SBTi V2.0 Buyer Alignment" section** into the whitepaper
 ### 🤖 Autopilot
 
 Consolidating everything — registry roadmap, Apple, hyperscalers, SBTi V2.0 OER framework, market context — into one branded whitepaper PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated (4 pages). Sending it to you now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -621,6 +626,7 @@ Want me to:
 ### 🤖 Autopilot
 
 Understood — three changes: (1) drop the hard 10,000 ha ceiling, (2) keep scale/timeline fluid and express upside in **total trees planted**, (3) add the EU carbon credit price point. Let me verify the current EU ETS price so we represent the €100/ton reference accurately.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -628,11 +634,13 @@ Understood — three changes: (1) drop the hard 10,000 ha ceiling, (2) keep scal
 EU price verified — important nuance: current EUA spot is ~**€74–82/t** (Aug 2026), **all-time high €105.73/t** (Feb 2023), 2027 analyst forecast ~**€93/t** — so PODream's €100/t is a realistic forward/peak reference, not today's spot. Also worth flagging honestly: EU ETS is a compliance market that doesn't accept voluntary nature-based offsets — it functions as the *price benchmark* for premium removals, not a direct sales channel. I'll include that framing.
 
 Now regenerating the PDF with the three changes — fluid scale/timeline, upside in total trees, EU price reference:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 v2 generated (5 pages). Sending it:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -728,4 +736,43 @@ v3 sent ✅
 5. **Recommended Path** — added step 2: "Map the member registry against target-company CSOs and sustainability teams; build the warm-intro list"
 
 One honest note: the registry stores names/governance/TDG, not employer data — the employment claim is included per your direction as community knowledge. If you want, I can add an optional **"Employer" field** to the member registry so this becomes tracked, queryable data over time. Want that, or push v3 to a repo for versioning?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] indicate clearly that registry roadmap is fluid
+
+
+### 🤖 Autopilot
+
+Clear — I'll make the fluidity of the *registry roadmap itself* explicit (not just scale/timeline): stage→registry mappings are indicative and will flex with market conditions, ICVCM/registry rule changes, buyer requirements, and community uptake. Regenerating now:
+
+
+### 🤖 Autopilot
+
+v4 generated (6 pages). Sending it:
+
+
+### 🤖 Autopilot
+
+v4 sent ✅
+
+## What changed v3 → v4 — "the registry roadmap is fluid" is now explicit
+
+1. **Bold callout box at the top of Section 2** (before the table):
+   > **⚠ IMPORTANT — THIS ROADMAP IS FLUID BY DESIGN.** The stage-to-registry mappings are **indicative and subject to change**. They will flex with: ICVCM and registry rule updates (Plan Vivo, Verra, Gold Standard), buyer standard requirements, credit price signals, SBCE/Article 6 regulatory developments, and community uptake. Treat every registry assignment and timeline as a **current best estimate, not a commitment**. We re-evaluate at each stage gate before proceeding.
+
+2. **Table header** — registry column renamed to **"Registry (indicative — may change)"** so the fluidity is visible at a glance in the table itself.
+
+3. **Fluidity reinforced in the paragraph under the table** — "Scale, timeline **and registry selection** are deliberately fluid…"
+
+4. **Methodology section** — added a fluidity note: VM0047 is "the current leading candidate and may be superseded by newer approved methodologies."
+
+5. **SBTi alignment map** — added a footnote that stages reference the fluid roadmap and shift with the same market/rule signals.
+
+6. **Recommended Path** — step 7 added: "Re-evaluate at every stage gate: registry, methodology, timeline and pricing all flex with market and rule changes — **the roadmap is a living document**."
+
+7. **Regulatory Watch** — added ICVCM/registry rule updates as a monitored item.
+
+Now the fluidity is unmistakable — stated as a design principle up front, reflected in the table itself, and carried through methodology, alignment map, and action plan. Want me to push v4 to a repo for versioning (e.g. `sunmint_beta`), or sync the website whitepaper PR (#292) with the same "fluid" framing?
 
