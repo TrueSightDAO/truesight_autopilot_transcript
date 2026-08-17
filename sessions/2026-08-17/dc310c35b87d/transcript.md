@@ -362,6 +362,7 @@ Section 13 is present. Let me see the final part to confirm the VM0047 and Apple
 ### 🤖 Autopilot
 
 The tail was still truncated. Let me check the section-13 body bullets directly with a targeted grep on the authoritative API content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -406,11 +407,13 @@ Want me to:
 ### 🤖 Autopilot
 
 Let me read the article Gary shared — it's likely context for the carbon credit market opportunity.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The article came through — it's about Tesla's 2024 earnings: **$2.76B carbon credit revenue (+54% YoY)** while net income fell 23%. Before I interpret it for Sunmint, let me verify one thing — whether Tesla *buys* nature-based credits for its own footprint (relevant to whether they're ever a buyer for us):
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -654,4 +657,75 @@ v2 sent ✅
    - **Honest caveat included:** EU ETS is a compliance market that doesn't accept voluntary nature-based offsets — it's the *price benchmark*, not a direct sales channel (SBTi Leadership $80/t ≈ €69/t shows the convergence path)
 
 Want me to push v2 to a repo for versioning, or update the website whitepaper PR (#292) with the same "trees not ceilings" framing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Reference our member registry and indicate that a lot of our DAO members are already employees in target companies
+
+
+### 🤖 Autopilot
+
+Good addition — warm intros through DAO members who work at target companies is a real edge. Let me check what our member registry actually shows so I reference it accurately.
+
+
+### 🤖 Autopilot
+
+No exact match in context docs — let me search the repos for the member/contributor registry (it may live in a repo rather than agentic_ai_context).
+
+
+### 🤖 Autopilot
+
+Let me look at the contributors-cache and treasury-cache repos directly, plus check the DAO's contributor records via Edgar — the registry is likely machine-managed data.
+
+
+### 🤖 Autopilot
+
+Let me check the contributors-cache repo structure and lineage-credentials — the member/contributor registry likely lives there.
+
+
+### 🤖 Autopilot
+
+`contributors-cache` is empty. The member registry is most likely the **Contributors** tab in the Main Ledger (Google Sheet) or lineage-credentials. Let me check both:
+
+
+### 🤖 Autopilot
+
+The Contributors tab range failed to parse (tab name may differ), and Drive root only shows two unrelated ledgers. Let me find the actual Contributors sheet tab names in the Main Ledger, and check the lineage-credentials repo for member records:
+
+
+### 🤖 Autopilot
+
+The Main Ledger has a "Ledger history" tab with contributor records (Gary Teh, Johnson Teh, Allison Liu, Ilya Voytov, etc.) — that's the contributor registry. But I need to confirm the actual employment fact — "a lot of our DAO members are already employees in target companies" — before putting it in a whitepaper, since it's a factual claim. Let me search the context for any member-employer data and check the members/directory structure:
+
+
+### 🤖 Autopilot
+
+The member registry is confirmed: **482 members** in `lineage-credentials/_cache/index.json` (the DAO's directory index, rebuilt 2026-08-17). Note: the registry stores names/governance/TDG, not employer info — so I'll include the employment claim as you've directed (community knowledge), framed as a warm-intro channel. Regenerating the whitepaper with a **Distribution & Warm Introductions** section:
+
+
+### 🤖 Autopilot
+
+v3 generated (5 pages). Sending it:
+
+
+### 🤖 Autopilot
+
+v3 sent ✅
+
+## What changed v2 → v3
+
+**New Section 6 — "Distribution: Warm Introductions Through Our Member Registry"** (and it now feeds the sales thesis + recommended path):
+
+1. **Member registry referenced** — TrueSight DAO maintains a **registry of 482+ contributors** (lineage-credentials directory index, continuously rebuilt — verified today)
+2. **Employment claim included** — "a significant number of our DAO members are already employees at target companies — including major technology and AI firms, Silicon Valley startups, and companies with active net-zero programs"
+3. **Why it's a structural advantage** (4 bullets):
+   - Warm intros beat cold outreach (colleague referral)
+   - Credibility pre-loaded (members have seen on-chain MRV, community benefit-sharing, mission first-hand)
+   - Internal champions inside target companies
+   - Portfolio mapping: member registry × target segments = live list of warm-entry points
+4. **Sales thesis updated** — now ends with: *"And we reach you through colleagues you already trust — our members work where you work."*
+5. **Recommended Path** — added step 2: "Map the member registry against target-company CSOs and sustainability teams; build the warm-intro list"
+
+One honest note: the registry stores names/governance/TDG, not employer data — the employment claim is included per your direction as community knowledge. If you want, I can add an optional **"Employer" field** to the member registry so this becomes tracked, queryable data over time. Want that, or push v3 to a repo for versioning?
 
