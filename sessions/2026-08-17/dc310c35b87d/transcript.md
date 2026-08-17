@@ -28,21 +28,25 @@
 ### 🤖 Autopilot
 
 Let me dig into this — first, check DNS and the sunmint repos to understand what's deployed where.
+[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the domain in your message (`sunmint.treesight.me`) is actually a typo: the real domain is **truesight.me**. Let me verify prod and beta both work, and check the Pages config.
+[4 tool result(s) compacted: http_fetch, http_fetch, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both real sites return 200 from here. Let me check the domain question, GitHub Pages status, and recent commits.
+[4 tool result(s) compacted: search_context, ssh_run, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub Pages API returns 404 for both `sunmint_beta` and `sunmint_prod` — Pages isn't enabled on those repos, yet the sites serve fine. The Pages site must be hosted from a different repo. Let me check where.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -165,4 +169,34 @@ Your whitepaper already leans toward **Verra (VM0017/ARR)** — that's the right
 **Mission tie-back:** the registry we choose is the *trust infrastructure* for the 10,000-hectare goal. Plan Vivo makes community benefit non-negotiable and keeps the program credible with the exact funders and farmers who carry the mission — while keeping the door open to Verra at scale.
 
 Want me to draft the Plan Vivo PIN/PDD skeleton (Project Idea Note) or update the whitepaper snapshot's carbon-credit section to reflect this phased strategy?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Generate a PDF listing the stages and the registry for each stage. Indicar clearly
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it to you here:
+
+
+### 🤖 Autopilot
+
+PDF sent ✅
+
+**`Sunmint_Carbon_Registry_Roadmap.pdf`** — 3 pages, saffron-styled, with the stage→registry mapping clearly indicated:
+
+| Stage | Registry |
+|---|---|
+| **1 — Pilot (2026–28)** | **PLAN VIVO** (PV Climate, microscale) |
+| **2 — Scale-up (2028–30)** | **PLAN VIVO** + begin **VERRA VCS** |
+| **3 — Full scale (2030+, 10,000 ha)** | **VERRA VCS** (primary) + **PLAN VIVO** (community premium) |
+| **4 — Regulated (future, optional)** | **SBCE** (only when Brazil's rules are defined) |
+
+Also included: cost/fee table for Plan Vivo, registry comparison table, and the recommended path summary.
+
+Want me to also:
+- upload it to a repo (e.g. `agentic_ai_context` or `sunmint_beta`) so it's versioned?
+- update the Sunmint whitepaper snapshot's carbon-credit section to match this phased strategy (currently says "Verra VM0017")?
 
