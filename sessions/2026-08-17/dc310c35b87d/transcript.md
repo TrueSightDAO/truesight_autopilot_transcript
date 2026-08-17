@@ -64,6 +64,7 @@ Both real domains serve 200 from this box, but the GitHub Pages API returns 404 
 ### 🤖 Autopilot
 
 Both real domains serve **200** (GitHub Pages, `server: GitHub.com`, last-modified Aug 11 2026). Let me rule out a local-DNS artifact and confirm the `treesight.me` typo from an independent resolver.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -108,16 +109,19 @@ Both are up. If you were using the typo'd URL (e.g. in a QR code, WhatsApp link,
 ### 🤖 Autopilot
 
 Good strategy question — let me pull the DAO's mission/strategy docs and any prior carbon-credit context, plus research the current registry landscape for Amazon agroforestry (cacao).
+[4 tool result(s) compacted: search_context, search_context, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the Sunmint whitepaper's carbon-credit section and research the current registry landscape (it changes — ICVCM approvals, Brazil's new regulated market, etc.).
+[3 tool result(s) compacted: read_context_file, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check whether the DAO context already has a stance on carbon registries, so I build on prior thinking rather than duplicating it.
+[4 tool result(s) compacted: search_context, search_context, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -279,4 +283,95 @@ Note: the whitepaper page also carries the deprecated Google Doc link in its hea
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html -o sunmint_wp_beta.h; cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Target buyers https://www.apple.com/environment/
+
+
+### 🤖 Autopilot
+
+Apple's environment program is a real, credible target for Sunmint's credits — let me pull the current facts on their carbon-removal requirements (Restore Fund, standards, Brazil activity) so the advice is grounded, not vibes.
+
+
+### 🤖 Autopilot
+
+Apple's `/environment` program is a meaningful target — and it changes the roadmap's emphasis. Key facts I just pulled:
+
+- **Apple's Restore Fund** (with Climate Asset Management, Conservation International, Goldman Sachs) — co-invests in projects, doesn't just spot-buy credits. Exactly Sunmint's model: "nature-forward agricultural projects generating income from sustainable farming + projects that restore critical ecosystems."
+- **Required standards (Apple white paper):** credits must be real, additional, measurable, quantified, avoid double counting, address permanence & leakage; adopt **recognized international standards — VCS, Gold Standard, CCB** (and FSC for timber); adhere to **ICVCM Core Carbon Principles** (≥40-yr permanence monitoring) + buffer pool.
+- **They use advanced MRV:** satellite/remote sensing (Upstream Tech, Maxar), even iPhone LiDAR — our on-chain photo-GPS MRV is aligned.
+- **Critical for us:** Plan Vivo is **not** on Apple's recognized-standards list. **Verra VCS + CCB is the Apple-qualifying track** — which is our Stage 2/3. Also, the current ICVCM-approved ARR methodology is **VM0047** (first credits issued Apr 2026, Brazil Cerrado 1) — VM0017 is retired, so my whitepaper PR should cite VM0047, not VM0017/VM0042.
+
+Let me fix the whitepaper PR to (a) correct the methodology to VM0047 and (b) add the Apple-alignment note:
+
+
+### 🤖 Autopilot
+
+Edits are staged locally and verified. Now I'll push these refinements to the same PR branch (updates PR #292 in place):
+
+
+### 🤖 Autopilot
+
+The second `git_push_changes` failed because it re-bases from `main` (which doesn't have the first commit yet) — the search string lives only on the PR branch. No problem: I already have the fully-edited file locally (`/tmp/sunmint_wp_pr.html`). I'll push that whole file to the existing PR branch via the Contents API:
+
+
+### 🤖 Autopilot
+
+The updated file is now pushed to the PR branch (commit `72d025e`), so PR #292 now contains the corrected VM0047 references and the Apple-alignment bullet. Quick sanity check that the PR branch file is what I expect:
+
+
+### 🤖 Autopilot
+
+The branch fetch shows the old content — but that could be raw.githubusercontent CDN caching. Let me verify the actual commit content via the GitHub API (contents endpoint) which is authoritative:
+
+
+### 🤖 Autopilot
+
+The TOC shows section 13 is present. Let me check the section-13 body and the VM0047/Apple content in the tail of the artifact:
+
+
+### 🤖 Autopilot
+
+Section 13 is present. Let me see the final part to confirm the VM0047 and Apple bullets landed on the PR branch:
+
+
+### 🤖 Autopilot
+
+The tail was still truncated. Let me check the section-13 body bullets directly with a targeted grep on the authoritative API content:
+
+
+### 🤖 Autopilot
+
+Confirmed — the GitHub API (authoritative) shows the PR branch has the corrected content:
+
+- **VM0047 ×3** (section 6 + section 13 Verra bullet + Apple bullet) — VM0017 fully removed
+- **Apple / premium corporate buyers bullet ×1** — in section 13
+- **Section 13 + table** — present
+- **Tags balanced** (verified earlier)
+
+The earlier `raw.githubusercontent.com` fetch was showing stale cache; the Contents API confirms the real state. PR #292 is now complete and correct.
+
+## Summary
+
+**PR #292** (`truesight_me_beta` → branch `sunmint-wp-carbon-registry-roadmap`) now includes:
+
+1. **Section 6** — staged registry path: *"Plan Vivo (PV Climate, microscale) for the pilot; Verra VCS (ARR, VM0047 — ICVCM-approved) at scale"*
+2. **Section 13 (new)** — stage→registry roadmap table + rationale
+3. **Apple-alignment bullet** — Apple's Restore Fund requires **VCS / Gold Standard / CCB + ICVCM-aligned methods** (≥40-yr permanence, buffer pools); Plan Vivo pilot credits alone don't qualify — Apple engagement starts at our **Verra VCS + CCB stage** (Stage 2/3)
+4. **Methodology corrected** — VM0047 (ICVCM-approved, first credits Apr 2026, Brazil Cerrado 1), not retired VM0017
+
+## Implication for the roadmap (important)
+
+Apple being a target buyer **reinforces the staged strategy** but sharpens one point: **the Plan Vivo pilot is not wasted — it builds the community-MRV track that makes the Verra+CCB stage credible — but the Apple-conversation happens at Stage 2+, not Stage 1.** If you want to *accelerate* Apple engagement, the critical path is: pilot hectares → **Verra VCS + CCB registration** (not Plan Vivo) → 40-yr permanence + buffer pool design → then pitch the Restore Fund / Climate Asset Management channel.
+
+Want me to:
+1. **Merge PR #292** to beta `main` (deploys to beta.truesight.me), then promote to prod after your review?
+2. Add an **"Apple engagement" target-buyer section** to the roadmap (or a separate one-pager)?
+3. Adjust the roadmap PDF to add an Apple-acceleration track?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && python3 - <<'EOF' html = open('/tmp/sunmint_wp_pr.html').read() # 1) Section 6 bullet: correct methodology reference old1 = "Verr; cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i; cd /tmp && curl -sL "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=sunmint-wp-carbo
 
