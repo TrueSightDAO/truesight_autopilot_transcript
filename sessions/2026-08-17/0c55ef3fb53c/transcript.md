@@ -332,11 +332,13 @@ Still zero DAO references. Want me to draft the outreach emails to the 4 booth/o
 ### 🤖 Autopilot
 
 Love it — that turns the model into a **portfolio of hypotheses, each one a small financed experiment**, and Gear It picks what to validate stage by stage. Rebuilding the PDF as that proposal now.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v5 PDF — the hypothesis-portfolio proposal.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -366,11 +368,13 @@ Every number is marked "indicative" so Gear It fills in its own cost basis. Stil
 ### 🤖 Autopilot
 
 You're right — I had the operating-model hypotheses but never stated the market hypothesis itself. Let me add it: the core assumption that a large, concentrated, underserved off-grid community exists and will buy Gear It in person. Rebuilding now.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v6 PDF with the market hypothesis added.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -399,11 +403,13 @@ Anything else to sharpen — e.g. a one-page exec summary, or drafting the outre
 ### 🤖 Autopilot
 
 You're right — when I rebuilt it as the hypothesis portfolio (v5/v6), I stripped out the **operational detail from v4**: the booth outreach targets with actual contacts, the full landing-page spec, the QR commission model table, KPIs, and risks. Rebuilding v7 with the portfolio structure AND all the v4 operational meat restored.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the v7 PDF — the full model restored with the portfolio structure.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -534,4 +540,138 @@ Sent ✅ — **v2** with the QR code now **on the branded foldable chair** as th
 - **§12 Risks** — new: QR scannability on camera (large, high-contrast, durable on fabric; test scan-from-video)
 
 The chair is now the single most valuable object in the campaign — every frame is an ad, every scan is a follower. Want a mockup spec for the chair QR placement (size, contrast, position), or the ambassador selection criteria next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] The Nomad doesn’t give out swag since it will come across as too obviously marketing
+
+
+### 🤖 Autopilot
+
+Good call — the ambassador's authenticity is the whole asset; handing out swag breaks the spell. Swag stays at the booth (where it's expected commerce), the ambassador just lives the life and the QR chair is the subtle invitation. The lucky draw is the giveaway mechanism — digital, on the site, not physical handouts from the nomad. Updating the PDF.
+
+
+### 🤖 Autopilot
+
+Sending the v3 PDF with the no-swag rule baked in.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v3** with the no-swag principle locked in.
+
+**What changed:**
+- **§3 "The ambassador — authentic first, marketing never"** — new opening rule: the ambassador *never hands out swag, never pitches, never sells*. Plus an explicit "What they never do" list: no branded handouts, no pushing sales, no ad copy, no pressure. Hospitality (fire, bacon, coffee) yes — swag, no.
+- **§4 Kit** — swag now marked **"Booth only — sold or given by booth staff, never by the ambassador"**
+- **§5 Script** — the CTA softened to a quiet invitation: *"No pressure. If you're curious, there's a code on the chair…"* — not a pitch
+- **§7 Draw** — explicitly: the draw is the *only* giveaway the ambassador touches, digital + transparent, framed as the brand's generosity, not the nomad pushing product
+- **§8 Booth** — clarified role split: **ambassador = host, booth staff = sellers**; swag happens at the booth with purchases
+- **§9 Budget** — booth line now includes booth swag
+- **§11 KPIs** — new canary metric: **ambassador authenticity** (negative "it's an ad" sentiment ≈ zero)
+- **§12 Risks** — new entry: **ambassador overreach** — the moment the community reads "ad," the campaign is over; guardrail: ambassador = host, booth = seller, draw = the only giveaway
+
+The trust dynamic is now explicit on the page: the nomad's credibility is the campaign's entire asset, and everything is structured to protect it. Want the ambassador selection criteria + vetting checklist as a separate one-pager next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] The chair is not the prize but the SKU picked by GearIt to use as part of ambassador lifestyle 
+
+Probably the highest end equipment
+
+
+### 🤖 Autopilot
+
+Got it — the chair is the **lifestyle SKU with the QR**, not the prize. The monthly draw gives away the **highest-end equipment** the ambassador uses (the flagship gear), so the QR scan enters you to win the hero product you see in action. Fixing the PDF.
+
+
+### 🤖 Autopilot
+
+Sending the v4 PDF with the flagship-equipment prize correction.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v4** with the prize corrected.
+
+**What changed:**
+- **§2** — the chair is now explicitly **the lifestyle SKU + scan point, NOT the prize**. Its job is to carry the QR and be the brand's constant presence; the gear is the want.
+- **§4 Kit** — chair role: "the ambassador's lifestyle SKU… NOT the prize"; the flagship line is "the hero… **and the monthly lucky-draw prize**"
+- **§7 Draw** — prizes now:
+  - Month 1: **flagship portable power station** (the hero unit)
+  - Month 2: **flagship generator / second hero SKU**
+  - Month 3: **full flagship campfire setup**
+- **§5 Script** — CTA now: *"Gear It gives away the unit I'm using, every month"* — the prize = the gear in action
+- **§9 Budget** — new line: **Flagship gear for ambassador + draw prizes (from inventory, at cost) $5–15K**
+- **§11 KPIs** — new: **Flagship SKU demand lift** (page views/inquiries on the prize line vs. baseline)
+- **§13 Success** — draw now explicitly "for the flagship gear"
+
+The logic now reads clean: **chair invites → flagship gear is the want → scan enters you to win the hero product you just watched work in the desert.** Want the ambassador one-pager / vetting checklist next, or a spec for the chair QR (size/contrast/placement)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10538] Can you investigate the gear it website and find their highest end equipment on sale that is relevant to this community and use that as the SKU that the nomad uses. The chair is just a prop for surfacing the CTA
+
+
+### 🤖 Autopilot
+
+Let me find the Gear It website and their actual product line to pick the highest-end SKU.
+
+
+### 🤖 Autopilot
+
+Found it — GEARit's site is **gearit.com**. Let me dig into their Power collection to find the highest-end gear relevant to off-grid/desert living.
+
+
+### 🤖 Autopilot
+
+The Power collection page 2 shows mostly cords/speakers. Let me check page 1 and sort by price to find the highest-end items.
+
+
+### 🤖 Autopilot
+
+The Power collection is mostly cords/adapters/speakers. Let me search the site's structure for higher-end gear — power stations, inverters, solar.
+
+
+### 🤖 Autopilot
+
+GEARit doesn't sell actual power stations — their "Power" line is cords/adapters/solar cables. But they do sell speakers, and the **GEARit BOOM 120W Portable Bluetooth Speaker IPX6** jumps out as the most relevant high-end item for a desert music community. Let me get its price and specs, plus confirm the top items by price.
+
+
+### 🤖 Autopilot
+
+The **GEARit BOOM 120W Portable Bluetooth Speaker** is the clear candidate — it's their flagship party/outdoor audio product, made for exactly the desert music community context. Let me get its full specs from the product page.
+
+
+### 🤖 Autopilot
+
+Confirmed — GEARit doesn't sell power stations (their Power line is cords/adapters/solar cables), but they **do** sell a flagship audio product that's *perfect* for this community: the **GEARit BOOM 120W Portable Bluetooth Speaker IPX6** (~$89.99, $76.40 with code; their loudest, room-shaking party speaker — the "loudest portable bluetooth" claim, IPX6 water-resistant, 12H battery, RGB lights, karaoke mic on the Amazon variant). For a desert off-grid music community, that's the hero SKU. Building the v5 PDF with the concrete product named.
+
+
+### 🤖 Autopilot
+
+Sending the v5 PDF with the real hero SKU (BOOM 120W) named.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v5** with the real hero SKU from gearit.com.
+
+**Research findings:**
+- GEARit does **not** sell power stations/generators — their Power line is **cords, adapters, and solar cables** (50A NEMA 14-50 RV cords, 10AWG solar extension cables, surge protectors)
+- The highest-end product **relevant to this community** is the **GEARit BOOM 120W Portable Bluetooth Speaker IPX6** — their flagship party/outdoor speaker: 120W, dual drivers + tweeters + passive radiators, IPX6 water-resistant, 12-hr battery, RGB lights. List ~$90–112, ~$76 with GET20. It's literally the "loudest portable Bluetooth" in their range — made for campfire/desert music.
+
+**How it's now structured:**
+- **§3 The hero SKU** — the BOOM 120W named with specs + why it's the right hero for off-grid (it's the sound of the community)
+- **§1/§2** — chair is explicitly "just a prop for surfacing the CTA," NOT the prize
+- **§5 Kit** — BOOM = hero; GEARit power cables wire the rig → "the whole camp runs on GEARit" (nice: the cords are their actual product category)
+- **§8 Draw** — Month 1: BOOM; Month 2: BOOM + power kit; Month 3: full ambassador kit (BOOM + cables + the chair as a bonus)
+- **§9 Booth** — BOOM demo audio running off GEARit power
+- **§10 Budget** — BOOM units line (~$1–2K at cost: 1 ambassador + 3 prizes)
+- **§12 KPI** — BOOM 120W demand lift
+- **§13 Risk** — hero SKU availability; fallback = the 40W speaker
+
+The story now has a real product spine: **chair QR surfaces the CTA → the BOOM is the want → the camp runs on GEARit.** Want me to also verify the current BOOM price/stock directly, or draft the outreach emails to the Quartzsite targets?
 
