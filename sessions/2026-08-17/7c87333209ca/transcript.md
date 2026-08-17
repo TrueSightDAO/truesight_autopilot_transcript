@@ -736,21 +736,25 @@ This is worth capturing in the report — want me to add a **§7.5 "Tree Health 
 ### 🤖 Autopilot
 
 On it — extending the report with the Tree Health & Survival Monitoring section (both languages, both PDFs). Let me first check the current state of the MD files and generator scripts on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact boundary after §7.4 in both MDs so I insert cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have clean anchors. Let me check how the PDF generators render §7.4 (table + bullets) so my §7.5 insert matches their style.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact generator region between §7.4 and §8 in both generators so my insert matches their style precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -850,4 +854,136 @@ The doc now leads with the radio-first architecture and treats Tuya as one optio
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== EN MD title ==="; head -3 /tmp/tuya_en.md; echo "=== ZH MD title ==="; head -3 /tmp/tuya_zh.md; echo "=== EN gen title ; cd /tmp && python3 - <<'PY' # -*- coding: utf-8 -*- # --- EN MD --- p='/tmp/tuya_en.md' s=open(p,encoding='utf-8').read() old='# TUYA IoT \u
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10510] But the content is still tied specifically to Tuya
+
+
+### 🤖 Autopilot
+
+You're right — the title's neutral but the body still reads as a Tuya platform doc. To make it genuinely vendor-neutral I should restructure: lead with the **requirement** (radio data acquisition for off-grid Amazon farms), then the architecture, then Tuya as *one reference platform* rather than the subject. Let me read the full current doc to rewrite it properly.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the file to plan the restructure.
+
+
+### 🤖 Autopilot
+
+The doc body is still Tuya-centric — you're right. I'll restructure it to lead with the **Agroverse problem + radio data-acquisition architecture**, with Tuya demoted to "reference platform option." First let me pull the full tail of the MD so I preserve all content (use cases, bean-quality schema, risks, questions, sources) in the rewrite.
+
+
+### 🤖 Autopilot
+
+I have the full document. Now I'll restructure it to lead with the Agroverse problem and radio data-acquisition architecture, with Tuya demoted to one reference platform. This is a substantial rewrite — I'll build the new MD from scratch, keeping all the valuable content (use cases, bean-quality schema, tree-health, risks, questions, sources) but reordering and re-framing around the radio-first architecture.
+
+Let me get the exact tail first, then write the new doc.
+
+
+### 🤖 Autopilot
+
+Let me get the final tail (sources list end) so nothing is lost in the rewrite.
+
+
+### 🤖 Autopilot
+
+The doc is clearly still Tuya-centric — you're right. I'll do a proper restructure: lead with the **problem + radio data-acquisition architecture** (vendor-neutral), and demote Tuya to a single "platform option" section. To make future edits single-source (and stop the MD/PDF drift), I'll first inspect the existing generator's styling so I can rebuild it to render straight from the MD.
+
+
+### 🤖 Autopilot
+
+The content is still Tuya-centric — fair call. I'll restructure the whole doc to lead with the **problem + radio data-acquisition architecture** (vendor-neutral), demoting Tuya to "one reference platform option." Let me grab the generator's build tail so I can reuse the exact template, then rewrite both languages from a single structured source.
+
+
+### 🤖 Autopilot
+
+You're right — the body still reads as a Tuya platform doc. I'll restructure it properly: lead with the **problem + radio data-acquisition architecture** (vendor-neutral), sensor classes first, platform layer as options (Tuya demoted to "one reference option"), and rebuild the PDF generator to render **straight from the MD** so the two can never drift again. Doing the full rewrite (EN + ZH) plus a single-source renderer in one pass.
+
+
+### 🤖 Autopilot
+
+The command was too large. Let me write the restructured MD in smaller chunks.
+
+
+### 🤖 Autopilot
+
+EN MD fully restructured (vendor-neutral, radio-first). Now the key piece — a single-source MD→PDF renderer so the PDF can never drift from the MD again. Let me write it.
+
+
+### 🤖 Autopilot
+
+EN PDF renders cleanly from the MD (8 pages, 0 nulls) — single source works. Now the Chinese version: rewrite ZH MD with the same vendor-neutral structure, and a CJK variant of the renderer.
+
+
+### 🤖 Autopilot
+
+Minor bug — `os` not imported. Let me fix and rerun the ZH part1 write.
+
+
+### 🤖 Autopilot
+
+Let me verify the ZH file actually contains rendered Chinese (not literal escapes), then append the remaining sections.
+
+
+### 🤖 Autopilot
+
+The ZH file has proper UTF-8 Chinese bytes. But 1781 chars seems short — let me verify the file length and completeness.
+
+
+### 🤖 Autopilot
+
+ZH file is intact through §3 (proper UTF-8 Chinese). Now let me append sections 4–12 in Chinese.
+
+
+### 🤖 Autopilot
+
+Both PDFs render, but the ZH header band shows literal `\u519c` escapes — the footer_title arg came through with literal backslash-u sequences (shell doesn't interpret them). The body is real Chinese, but the saffron band title is broken. Let me verify and fix the ZH header title.
+
+
+### 🤖 Autopilot
+
+Body is real Chinese; the literal `\u` is in the header band title (shell didn't interpret the escapes). Let me re-render the ZH PDF passing proper Unicode via Python instead of shell args.
+
+
+### 🤖 Autopilot
+
+ZH PDF is now clean. The EN PDF shows a literal `\u` somewhere — let me locate it to make sure it's not a rendering bug.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — here's exactly where things stand.
+
+**What I did this turn (the big restructure you asked for):**
+
+The doc is now **genuinely vendor-neutral** — radio-first, Tuya demoted to one option:
+
+- **EN MD rebuilt** (`/tmp/tuya_en.md`, 16.5KB): new structure —
+  1. Exec Summary → 2. **The Problem — Off-Grid Farms** → 3. **Radio Data Acquisition Architecture** (Gianluca's contribution, car/drone data mules, storm resilience) → 4. Sensor Classes → 5. **Data Platform Layer — Options A/B/C** (Tuya = Option A, reference only; B = open stack; C = local integrator) → 6. Reference Platform Option — Tuya → 7. Use cases (incl. bean-quality × env + tree health) → 8–12 unchanged
+- **ZH MD rebuilt** in Chinese (`/tmp/tuya_zh.md`, 7.5KB) with the same vendor-neutral structure
+- **Single-source renderers** created: `/tmp/md2pdf.py` (EN) + `/tmp/md2pdf_zh.py` (ZH) — PDF now renders straight from the MD, so MD/PDF can never drift again
+
+**✅ ZH PDF is done and clean:** 7 pages, 0 nulls, real Chinese (摘要/无线电数据采集/树木健康/涂鸦 all verified), header band correct — rendered via python module call.
+
+**❌ EN PDF has one rendering bug:** 8 pages, 0 nulls, but bullets/header show literal `\u2022`/`\u2014` text — the EN renderer used double-escaped `"\\u2022"` strings instead of real Unicode chars. ZH didn't have this because I passed real Unicode through python. The fix is one line each in `/tmp/md2pdf.py`.
+
+**Still blocking (finishing steps):**
+1. Fix `/tmp/md2pdf.py`: replace `"\\u2022 "` → `"\u2022 "`, `"\\u2014"` → `"\u2014"`, `"\\u00b7"` → `"\u00b7"` (3 string swaps)
+2. Re-render EN PDF; verify `'\\u' not in text`
+3. Push both MDs to PR branch (`research/tuya-iot-agroverse-report`) — `upload_local_file_to_github` ×2 (they're on `/tmp`)
+4. `send_telegram_attachment` ×2 — EN + ZH PDFs to this channel
+
+**RESUME HERE** — run: `cd /tmp && sed -i 's/\\\\u2022/\u2022/g; s/\\\\u2014/\u2014/g; s/\\\\u00b7/\u00b7/g' md2pdf.py && python3 md2pdf.py /tmp/tuya_en.md /tmp/tuya_iot_agroverse_report.pdf "Agroverse Farm Monitoring & Bean Quality" "Agroverse Farm Monitoring - Deep-Dive (Radio Data Acquisition)"` → verify → upload MDs → share PDFs.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /tmp && sed -n '90,400p' tuya_en.md; cd /tmp && sed -n '1,60p' gen_en_pdf.py; cd /tmp && sed -n '270,330p' gen_en_pdf.py; …(+14 more)
 
