@@ -127,6 +127,7 @@ Let me check whether the DAO context already has a stance on carbon registries, 
 ### 🤖 Autopilot
 
 One more targeted check — Plan Vivo cacao/agroforestry precedent and Brazil's regulated market (SBCE) status for removals.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -184,7 +185,13 @@ Want me to draft the Plan Vivo PIN/PDD skeleton (Project Idea Note) or update th
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PDF generated. Sending it to you here:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -215,21 +222,25 @@ Want me to also:
 ### 🤖 Autopilot
 
 Let me look at the live whitepaper source to see its current carbon-credit content and where it lives (beta vs prod).
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod copy exists; the beta repo path redirected (likely renamed `truesight_me_beta`). Let me get the full prod file to find the exact carbon-credit section text.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both beta and prod copies are identical. Let me read the rest of the file to see the exact carbon-credit section text (section 6 and 8) that needs updating.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the section 6 and 8 content. Let me see the tail of the file (end of section 12, closing tags) so I can place a new "Registry Roadmap" section correctly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -374,4 +385,57 @@ Want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && python3 - <<'EOF' html = open('/tmp/sunmint_wp_pr.html').read() # 1) Section 6 bullet: correct methodology reference old1 = "Verr; cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i; cd /tmp && curl -sL "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=sunmint-wp-carbo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] https://globalcarbonfund.com/carbon-news/teslas-carbon-credit-revenue-soars-to-2-76-billion-amid-profit-drop/?ref=transformativeenergy.ca
+
+
+### 🤖 Autopilot
+
+Let me read the article Gary shared — it's likely context for the carbon credit market opportunity.
+
+
+### 🤖 Autopilot
+
+The article came through — it's about Tesla's 2024 earnings: **$2.76B carbon credit revenue (+54% YoY)** while net income fell 23%. Before I interpret it for Sunmint, let me verify one thing — whether Tesla *buys* nature-based credits for its own footprint (relevant to whether they're ever a buyer for us):
+
+
+### 🤖 Autopilot
+
+Article read — here's the key context and what it does (and doesn't) mean for Sunmint.
+
+## What the article says
+
+- Tesla earned **$2.76B from carbon credit sales in 2024, +54% YoY** ($1.79B in 2023) — near-pure profit while net income fell 23%.
+- Since 2017, **$10.4B+ total** from these credits.
+- Buyers: legacy automakers (Stellantis, Toyota, Ford, Mazda, Subaru) using them to meet tightening emissions rules in the US/EU/China — EU fines up to **€300M per missed EV-sales percentage point**.
+
+## The critical distinction (don't conflate these)
+
+These are **regulatory/compliance credits** (ZEV credits Tesla *sells* to other automakers). Tesla is a **seller**, not a buyer — and it doesn't buy nature-based voluntary credits for its own footprint.
+
+Sunmint's credits are the *opposite* end of the market:
+
+| | Tesla credits | Sunmint credits |
+|---|---|---|
+| Type | Compliance (ZEV) | Voluntary, nature-based **removals** |
+| Issued by | Regulators (CARB, EPA, EU) | Registries (Plan Vivo / Verra VCS) |
+| Sunmint role | — (not applicable) | **Seller** to net-zero buyers |
+| Buyers | Automakers under mandate | Apple-style corporate net-zero commitments |
+
+## What it means for us (3 takeaways)
+
+1. **Market validation, not a buyer signal.** The article confirms carbon *revenue streams* are real and growing — but that growth is concentrated in compliance markets (ZEV, EU ETS). Our demand comes from a different channel: companies retiring voluntary removal credits to meet net-zero pledges. That channel is alive (Apple Restore Fund, MSCI: voluntary market ~$1.4B in 2024, projected $4B+ by 2030) but priced and standard-driven differently.
+
+2. **It reinforces the "watch SBCE, don't wait" stance.** Tesla's windfall shows how lucrative *compliance* credit streams get once regulators set targets. Brazil's SBCE (Law 15,042/2024) is the analog — when it matures and defines removals/agriculture, the same dynamic could apply to us. But that's a **future option**, not the pilot path. Our roadmap's Stage 4 already captures it.
+
+3. **It sharpens the buyer thesis.** The durable, high-value channel for Sunmint credits is **premium corporate buyers with credible net-zero programs** (Apple being the archetype you flagged) — which is exactly why the **Verra VCS + CCB + ICVCM-aligned (VM0047)** track matters for Stage 2+. Compliance-credit inflation (Tesla-style) doesn't lift nature-based voluntary prices; *integrity standards* do.
+
+## Bottom line
+
+Useful macro context — the credit market is real and growing — but it's the *compliance* segment, so it doesn't change our registry roadmap. It actually **validates the phased plan**: stay voluntary/premium first (Plan Vivo → Verra+CCB), keep SBCE as the optional upside.
+
+Want me to add a short "market context" note to the whitepaper's section 13 (distinguishing compliance vs voluntary credits, citing Tesla/Restore Fund as demand signals), or leave the whitepaper focused on the registry mechanics?
 
