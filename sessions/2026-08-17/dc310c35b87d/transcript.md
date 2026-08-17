@@ -344,16 +344,19 @@ The updated file is now pushed to the PR branch (commit `72d025e`), so PR #292 n
 ### 🤖 Autopilot
 
 The branch fetch shows the old content — but that could be raw.githubusercontent CDN caching. Let me verify the actual commit content via the GitHub API (contents endpoint) which is authoritative:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The TOC shows section 13 is present. Let me check the section-13 body and the VM0047/Apple content in the tail of the artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Section 13 is present. Let me see the final part to confirm the VM0047 and Apple bullets landed on the PR branch:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -605,4 +608,50 @@ Want me to:
 1. **Push this PDF to a repo** (e.g. `sunmint_beta` or `agentic_ai_context`) so it's versioned and linkable?
 2. **Sync the whitepaper website PR #292** to include the buyer-alignment content (so the live page matches the PDF)?
 3. Add a **cover page** or Spanish/Portuguese version for farmer/partner distribution?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Don’t need to mentioned upper bound of 10,000 hectares also be fuild with the size and scale and time line in the pdf. Just give a gauge of the upside potential in terms of total trees we can plant. Finally I understand from PODream that European Union carbon credit can sell for 100 euros per ton
+
+
+### 🤖 Autopilot
+
+Understood — three changes: (1) drop the hard 10,000 ha ceiling, (2) keep scale/timeline fluid and express upside in **total trees planted**, (3) add the EU carbon credit price point. Let me verify the current EU ETS price so we represent the €100/ton reference accurately.
+
+
+### 🤖 Autopilot
+
+EU price verified — important nuance: current EUA spot is ~**€74–82/t** (Aug 2026), **all-time high €105.73/t** (Feb 2023), 2027 analyst forecast ~**€93/t** — so PODream's €100/t is a realistic forward/peak reference, not today's spot. Also worth flagging honestly: EU ETS is a compliance market that doesn't accept voluntary nature-based offsets — it functions as the *price benchmark* for premium removals, not a direct sales channel. I'll include that framing.
+
+Now regenerating the PDF with the three changes — fluid scale/timeline, upside in total trees, EU price reference:
+
+
+### 🤖 Autopilot
+
+v2 generated (5 pages). Sending it:
+
+
+### 🤖 Autopilot
+
+v2 sent ✅
+
+## What changed from v1 → v2
+
+1. **Removed the 10,000 ha hard ceiling** — scale/timeline now marked *"indicative, fluid"* and described qualitatively per stage:
+   - Stage 1 (2026–28): pilot hectares — first tens of thousands of trees
+   - Stage 2 (2028–30): growing — hundreds of thousands of trees
+   - Stage 3 (2030+): expanding — millions of trees and beyond
+
+2. **New Section 3 — "Upside Potential — Trees, Not Ceilings"** — gauges upside in total trees:
+   - Agroforestry ≈ **500–1,000+ trees/ha** (cacao + shade/companion)
+   - 1,000 ha ≈ **500k–1M trees** · 5,000 ha ≈ **2.5M–5M trees**
+   - Cumulative plantings: hundreds of thousands → millions → beyond, "limited only by community uptake, financing and verified results, not a preset ceiling"
+
+3. **EU €100/t price reference (verified)** — added Section 7:
+   - EUA spot **~€74–82/t** (Aug 2026) · 2025 avg ~€74 · **ATH €105.73/t** (Feb 2023) · 2027 forecast ~€93/t
+   - PODream's €100/t = realistic **forward/peak benchmark**, not today's spot
+   - **Honest caveat included:** EU ETS is a compliance market that doesn't accept voluntary nature-based offsets — it's the *price benchmark*, not a direct sales channel (SBTi Leadership $80/t ≈ €69/t shows the convergence path)
+
+Want me to push v2 to a repo for versioning, or update the website whitepaper PR (#292) with the same "trees not ceilings" framing?
 
