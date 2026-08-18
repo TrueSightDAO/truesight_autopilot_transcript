@@ -622,16 +622,19 @@ But I like where they are intended to point
 ### 🤖 Autopilot
 
 You're right to push on this — I guessed several targets instead of confirming each one points at the *actual* thing the bullet describes. Let me pull the real URLs (TrueChain explorer, Email360 pages, the supply-chain docs, the QR trace page) before rewiring.
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the real targets. The big fixes: Email360 warm-up lives at `dapp/warmup_review.html` (not dapp root), TrueChain has its own repo, and QR trace-back pages are `truesight.me/<sku>/<tree-id>`. Let me verify the exact live URLs before rewiring.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified: `warmup_review.html` is the real Email360 review page (200). `truechain.html` is 404 — need the real TrueChain viewer path. Let me find the actual page names in the code.
+[4 tool result(s) compacted: search_code, search_code, http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -767,4 +770,42 @@ Anything else to tweak — or want this uploaded to GitHub for versioning / the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() # add treasury URL const s=s.replace('U_RETAIL="https://agroverse
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Each system serves the same end should link to this instead
+
+https://truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Verifying the new target is live, then patching slide 6.
+
+
+### 🤖 Autopilot
+
+Confirmed — `truesight.me/sunmint.html` is live (200) and it's exactly the right target: the Sunmint Program page, "Restoring our Amazon one tree at a time." That's the mission page. Patching slide 6's "Each system serves the same end" link to point there.
+
+
+### 🤖 Autopilot
+
+Rebuilt — sending v8.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v8**.
+
+## Change
+- **Slide 6, "Each system serves the same end"** → now links to **`https://truesight.me/sunmint.html`** — verified live 200, and it's the Sunmint Program page ("Restoring our Amazon one tree at a time") — the perfect mission artifact for that line. (Was: `sunmint/whitepaper/`.)
+
+Everything else unchanged — 22 clickable links, 6 pages, same photos/layout.
+
+Any other links to adjust, or shall I upload the deck to GitHub for versioning?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() s=s.replace('U_SUNMINT="https://truesight.me/sunmint/whitepaper/"
 
