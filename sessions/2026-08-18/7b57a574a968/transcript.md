@@ -727,6 +727,7 @@ Want a next pass: swap any photo, adjust copy, or upload this to GitHub for vers
 ### 🤖 Autopilot
 
 Good question — the whitepaper is the *explanation*, but the *artifact* is better. Let me check what's actually public: the Main Ledger sheet, a public ledger view, or the Telegram channel.
+[2 tool result(s) compacted: http_fetch, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -734,6 +735,7 @@ Good question — the whitepaper is the *explanation*, but the *artifact* is bet
 The llms.txt confirms what's public: the **treasury cache** (`dao_offchain_treasury.json` — the actual ledger state, live, per-currency, broken down by managed ledger) and per-ledger files (`managed-ledgers/AGL*.json` mirroring the Main Ledger Shipment Ledger tab). That's the *real* "source of truth" artifact — better than the whitepaper explanation. Telegram logs are a private/internal surface; the raw treasury JSON is the public verifiable one.
 
 Let me verify the live JSON endpoints before wiring them in.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -745,11 +747,13 @@ Both are live and real. Quick finding:
 - **What IS public**: `treasury-cache/dao_offchain_treasury.json` (the full ledger state, all currencies, per-managed-ledger breakdown) and `managed-ledgers/AGL15.json` (per-ledger transaction history with embedded digital signatures + "verify submission" links). That's the *actual* ledger, published as machine-readable JSON — the perfect artifact for "Sheets is the source of truth."
 
 Patched the bullet to point at the real public ledger and rebuilt:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuilt — 22 links, 6 pages. Sending v7.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -789,6 +793,7 @@ https://truesight.me/sunmint.html
 ### 🤖 Autopilot
 
 Verifying the new target is live, then patching slide 6.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -943,4 +948,43 @@ Also — want the template registered in `OPEN_FOLLOWUPS.md` / PROJECT_INDEX as 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/slides_img && cp /tmp/nonexistent 2>/dev/null; ls -la slide_deck_template.py 2>/dev/null || echo "template not local yet"; cd /tmp/slides_img && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/templates/slide-deck-template/templates/sl
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Merge PR
+
+
+### 🤖 Autopilot
+
+Merging both PRs now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Both merged ✅ — the slide deck standard is now live in the DAO's canonical context.
+
+## What I did this turn
+
+| PR | Repo | What changed |
+|---|---|---|
+| **[#751](https://github.com/TrueSightDAO/agentic_ai_context/pull/751)** | agentic_ai_context | `SLIDE_DECK_STANDARD.md` — the mandatory format spec for all Sophia/LLM-generated decks (Saffron Monk 16:9, wrap-safe text, verified clickable links, generation checklist) |
+| **[#296](https://github.com/TrueSightDAO/truesight_autopilot/pull/296)** | truesight_autopilot | `templates/slide_deck_template.py` — the reusable renderer (generalized v8 engine, tested: compiles + renders valid PDF) |
+
+Both merged to `main` (squash): `98f5f37` (spec), `cf8b759` (template).
+
+**Effect from now on:** any LLM reading `agentic_ai_context` sees SLIDE_DECK_STANDARD.md as the mandatory format; Sophia's future deck work uses the template. Search_context will surface the spec automatically.
+
+## RESUME HERE →
+
+Next optional unit (fresh turn): **register the deck standard in `OPEN_FOLLOWUPS.md` / PROJECT_INDEX** so future sessions discover the template path explicitly — or anything else you want (handout PDF, GitHub copy of the deck v8, talk rehearsal notes). Just say which.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #751 on agentic_ai_context merged successfully (sha: 98f5f37bb44f1dc0759f46e7d88a1c13cf132e1f). Pull Request successfully merged; ✅ PR #296 on truesight_autopilot merged successfully (sha: cf8b7592b367226dbf932f90487ff452e5833c4b). Pull Request successfully merged
 
