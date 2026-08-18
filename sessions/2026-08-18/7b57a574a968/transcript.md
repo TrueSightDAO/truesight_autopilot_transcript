@@ -84,3 +84,36 @@ Keep the talk about **the system, not the features** — the coherence is the st
 
 Want me to draft the actual message to Paloma (brief + logistics in one short email), or log this as an event in the go_to_market registry so the playbook can pick it up (QR codes, checklist, follow-ups)?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Do you think I should have some slides for the 30 minutes talk?
+
+
+### 🤖 Autopilot
+
+Short answer: **yes, but light — 5–7 slides max, as visual anchors, not a bullet-point deck.** At this event, your slides are scaffolding; the demo is the show.
+
+## Why light beats heavy here
+
+- Her brief is explicitly "practical and personal… demos, examples, stories, failures welcome." Bullet decks fight that brief; stories and live screen time serve it.
+- It's a breakfast gathering with two 30-min talks + Q&A — intimate room, smallest viable audience. Seth Godin lens: **stories over facts**, and the *remarkable* thing isn't your diagram, it's watching an AI agent do real work live (scan a bag → see the tree; open the Beer Hall digest; watch Sophia take a command).
+- 30 minutes is short. Every slide you read is 60–90 seconds you don't spend on the story or the demo.
+
+## Suggested structure (keeps the throughline)
+
+1. **Hook (1 slide)** — a photo of the forest + one line: *"10,000 hectares of Amazon rainforest, one bag of cacao at a time."*
+2. **Problem (1 slide)** — a small DAO with one human bottleneck: outreach, follow-ups, bookkeeping, governance don't scale with one person.
+3. **The system (1 slide, one diagram)** — agents (Sophia/autopilot, Email360, partner check-in) → Edgar ledger → DApp → QR trace-back → trees. One picture, no more.
+4. **Live demo block (no slide, just your screen)** — scan a real cacao bag QR → tree page; open the Beer Hall digest; if you trust the venue wifi, let Sophia take a live command. **Pre-record a 3-min screen capture as the offline fallback** — wifi is the #1 way a live demo dies.
+5. **What failed (1 slide)** — Etsy ban, Amazon dormant, loops wrote off and documented so agents don't retry. This is the credibility slide; her audience will remember it.
+6. **Close (1 slide)** — transition into the cacao circle: *"technology that deepens human connection rather than replacing it"* — literally your mission, so end on it.
+
+## Logistics worth checking
+
+- **Does the venue have a projector/AV?** If it's a living-room-style breakfast, skip slides entirely and go live-first with printed QR cards.
+- **Backup:** printed QR codes on cards + the pre-recorded demo on your laptop — works offline regardless.
+- **Handout:** a one-page leave-behind (mission, QR code, how to trace a bag) does more work than 20 slides afterward.
+
+Want me to draft the 6-slide outline with exact on-slide text, and/or generate a one-page Saffron Monk handout PDF you can print for the table?
+
