@@ -512,11 +512,13 @@ Slide one has issue.
 ### 🤖 Autopilot
 
 The overspill is real — the slide-1 teaser line ("Five systems run the DAO: supply chain · signed audit trail · Email360 outreach · community · daily Beer Hall digest") is hard-coded with `drawString`, no wrapping: ~110 chars at 12pt ≈ 730px, but the panel only gives ~596px. I'll rewrite the builder so **every** text element wraps to its panel width (titles included), then rebuild.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuilt with every text element now wrapping to its panel width. Sending v4.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -548,31 +550,37 @@ Give it a look — if any panel still looks tight (e.g. slide 3 has the QR besid
 ### 🤖 Autopilot
 
 Good call — clickable links make it a live deck, not a static PDF. Let me grab the real landing URL for the QR batch (so slide 3 links to the actual tree page) and verify the live URLs (beer hall, shop) before wiring links in.
+[3 tool result(s) compacted: lookup_qr_code, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR code lookup failed and beerhall redirects to WhatsApp — I need the real URLs. Let me decode the QR image itself, and pull truesight.me's llms.txt which should list canonical URLs.
+[2 tool result(s) compacted: scan_qr_from_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `2023SA_81PB` QR isn't in the ledger (the file may be an early/concept QR) and `beerhall/` redirects to a WhatsApp group. The llms.txt gives me canonical URLs though. Let me see the remaining llms.txt lines and check what the shop QR/traceback URL pattern is.
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR `2023SA_81PB` isn't in the ledger (it's an early/concept image) and `beerhall/` redirects to the WhatsApp group — so I need verified live URLs for the links. Let me check the key deep-links in one batch before wiring them into the deck.
+[5 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All URLs verified live (dapp 200, beerhall archive 200, partners index 200 — **24 active partners**, credentials 200, member index 200 — **482 members**). The `2023SA_81PB` QR isn't in the ledger, so I'll link the QR image to agroverse.shop (the real scan→trace entry). Now wiring every bullet to its actual URL with blue + underline + clickable rects.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 22 clickable links embedded (every bullet + the QR image). Sending v5.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -699,4 +707,64 @@ Want a next pass: swap any photo, adjust copy, or upload this to GitHub for vers
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/slides_img && for repo in "TrueSightDAO/dapp" "TrueSightDAO/agroverse_shop_beta"; do echo "=== $repo ==="; curl -s "https://api.gith; cd /tmp/slides_img && echo "=== dapp root html files ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dapp/git/trees/main?recursiv; cd /tmp/slides_img && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/git/trees/main?recursive=1" | python3 -c " impo; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] • Google Sheets stays the source of truth; the chain makes it tamper-proof should probably link to the main ledger or the telegram logs??
+
+
+### 🤖 Autopilot
+
+Good question — the whitepaper is the *explanation*, but the *artifact* is better. Let me check what's actually public: the Main Ledger sheet, a public ledger view, or the Telegram channel.
+
+
+### 🤖 Autopilot
+
+The llms.txt confirms what's public: the **treasury cache** (`dao_offchain_treasury.json` — the actual ledger state, live, per-currency, broken down by managed ledger) and per-ledger files (`managed-ledgers/AGL*.json` mirroring the Main Ledger Shipment Ledger tab). That's the *real* "source of truth" artifact — better than the whitepaper explanation. Telegram logs are a private/internal surface; the raw treasury JSON is the public verifiable one.
+
+Let me verify the live JSON endpoints before wiring them in.
+
+
+### 🤖 Autopilot
+
+Both are live and real. Quick finding:
+
+- **Main Ledger sheet itself** is private (needs auth) — can't link it publicly.
+- **Telegram logs** are internal too — not a public-facing artifact, and linking them would expose the DAO's private channel.
+- **What IS public**: `treasury-cache/dao_offchain_treasury.json` (the full ledger state, all currencies, per-managed-ledger breakdown) and `managed-ledgers/AGL15.json` (per-ledger transaction history with embedded digital signatures + "verify submission" links). That's the *actual* ledger, published as machine-readable JSON — the perfect artifact for "Sheets is the source of truth."
+
+Patched the bullet to point at the real public ledger and rebuilt:
+
+
+### 🤖 Autopilot
+
+Rebuilt — 22 links, 6 pages. Sending v7.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v7**.
+
+## What I changed (and why)
+
+**"Google Sheets stays the source of truth; the chain makes it tamper-proof"**
+- **Before:** linked to the whitepaper (the *explanation*)
+- **Now:** links to **`treasury-cache/dao_offchain_treasury.json`** — the *actual public ledger artifact*: full ledger state, all currencies (USD, BRL, TDG, cacao SKUs), broken down per managed ledger (Main Ledger, AGL6/8/10/15, SEF1, BEC), refreshed every 6h by Edgar. Verified live 200.
+
+## Why not the alternatives you raised
+
+| Option | Verdict |
+|---|---|
+| **Main Ledger sheet** | Private, auth-gated — can't link publicly; also it's Google Sheets, so a viewer needs permission |
+| **Telegram logs** | Internal channel — linking them would expose the DAO's private ops feed; not a public artifact |
+| **Public treasury JSON** ✅ | The published mirror of exactly that sheet — machine-readable, live, verifiable, and already public |
+
+There's also `managed-ledgers/AGL15.json` (per-ledger transaction history including the actual digital signatures + "verify submission" links) — I kept the top-level treasury file as the link since it's the broadest "source of truth" view; happy to switch to a per-ledger file if you'd rather show transaction-level detail.
+
+Anything else to tweak — or want this uploaded to GitHub for versioning / the one-page handout to match?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() # add treasury URL const s=s.replace('U_RETAIL="https://agroverse
 
