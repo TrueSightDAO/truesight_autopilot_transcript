@@ -235,16 +235,19 @@ The trees are large. Let me extract just the image file paths efficiently with a
 ### 🤖 Autopilot
 
 The grep hit mostly blog images. Let me search the two image lists specifically for the relevant subjects.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — a goldmine of relevant photos. Let me check the CIC images and the truesight_me_beta catalog too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rich catalog. Let me quickly check the capoeira repo for Bico Duro assets to complete the picture.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -335,36 +338,43 @@ Say **"go"** and I'll download the assets and build the deck.
 ### 🤖 Autopilot
 
 Good catch — let me grab the Black King header image and confirm exactly what it is so it gets featured placement (likely the cover + the warehouse slide).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Header confirmed — 1920×1080 JPEG, live at the expected URL. Since it's the Gary+Matheus photo you use on the Black King partner page, I'll feature it on the **cover** and repeat it on the warehouse slide. Let me batch-download the full curated set now so the deck build is one step away.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only 2 of the parallel downloads landed — the backgrounded curls didn't survive. Let me redo it sequentially with a loop, which is reliable.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 18 photos downloaded and verified. Quick verification of two link targets (Oscar farm page URL + a real Bico Duro YouTube URL) before I build the deck, so no fabricated links go in.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 18 photos are downloaded and verified, Oscar's farm page and the Bico Duro YouTube URLs are confirmed real. The Black King header (Gary + Matheus) will be the cover. Building the deck now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF built (10 pages, ~1 MB). Quick verification that pages render correctly, then I'll deliver it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 pdfinfo/pdftoppm aren't installed, but reportlab wrote the PDF cleanly and reported 1,015,431 bytes with no errors. Let me render a couple of pages to PNG via PIL to visually confirm the layout, and check the cover image is properly embedded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -491,4 +501,92 @@ Give it a look — if any specific photo still looks off, tell me which slide an
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/evan_bahia && python3 - <<'EOF' from PIL import Image from PIL.ExifTags import Tags import os files = [f for f in sorted(os.listdir(; cd /tmp/evan_bahia && python3 - <<'EOF' from PIL import Image import os files = [f for f in sorted(os.listdir('.')) if f.lower().endswith(('; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main" && for p in \ "assets/images/blog/bahia; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11243] Make sure to update our agentic ai context so that in the future all Sophia and LLMs don’t commit the same mistake with our photos again
+
+
+### 🤖 Autopilot
+
+Good idea — this belongs in a durable runbook so every future Sophia/LLM run applies EXIF handling by default. Let me find the right home for it in agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+No existing EXIF/photo-orientation guidance in context — this is a genuine gap. Let me check where asset/photo handling docs live so I place this in the right runbook.
+
+
+### 🤖 Autopilot
+
+`SLIDE_DECK_STANDARD.md` is the natural home — it already covers photo curation for decks. Let me read it.
+
+
+### 🤖 Autopilot
+
+`SLIDE_DECK_STANDARD.md` is the exact right home — it's the mandatory standard for every Sophia/LLM deck, and it already has a photo-curation checklist. I'll add a **MUST** rule on EXIF orientation + portrait-aware frames, and update the checklist. In parallel, let me check whether the shared deck template in `truesight_autopilot` has the same latent bug.
+
+
+### 🤖 Autopilot
+
+PR #753 created for the docs standard. But I also spotted the **same latent bug in the shared template** itself — `truesight_autopilot/templates/slide_deck_template.py`'s `crop16x9()` opens images with `Image.open().convert("RGB")` and never calls `exif_transpose()`. That means every future deck built from the standard template would hit the same defect. Let me fix the template too, with a local verification first (hard rule: test before push).
+
+
+### 🤖 Autopilot
+
+The fix pattern is verified (orient=6 image correctly transposes 4032×3024 → 3024×4032, and the crop handles it), and `compileall` passes on the cloned repo. Let me run the full local test suite on the clone before pushing.
+
+
+### 🤖 Autopilot
+
+Ruff's 1 error and the pytest failures are in `tests/` (pre-existing, unrelated to my template change — they're about vault + events catalog, not the slide template). Let me confirm the template file itself is clean, then make the fix.
+
+
+### 🤖 Autopilot
+
+Confirmed: `crop16x9` opens with `Image.open` + `convert` and never transposes — the latent bug is real. `templates/` passes ruff lint (only a format nit). Now the fix: add `ImageOps.exif_transpose()` to `crop16x9` in the shared template.
+
+
+### 🤖 Autopilot
+
+I inverted the search/replace — the *replace* must contain the new code and the *search* the existing code. Fixing:
+
+
+### 🤖 Autopilot
+
+Both PRs are up. Let me verify the final state of the template change and confirm the docs PR content is correct.
+
+
+### 🤖 Autopilot
+
+Both changes are verified in place. Also, the docs PR (#753) correctly references this template fix. Let me summarize for Gary.
+
+✅ **Done — the lesson is now durable in our context, two layers deep.**
+
+## What I changed
+
+**1. Docs standard — `agentic_ai_context/SLIDE_DECK_STANDARD.md`**
+[PR #753](https://github.com/TrueSightDAO/agentic_ai_context/pull/753) adds two **MUST** rules every future Sophia/LLM deck must follow:
+- **EXIF orientation (MUST):** every source photo runs through `ImageOps.exif_transpose()` before any crop/resize — phone photos embed orientation tags (3 = upside-down, 6 = tilted 90°) that `Image.open()` ignores. Root cause documented (Evan Bahia deck v1, 2026-08-18).
+- **Portrait-aware frames (MUST):** portrait-source photos go in portrait frames or deliberate center-crops — never squeezed into landscape boxes.
+- Checklist item 1 updated to require `exif_transpose` + orientation confirmation; reference section points to the EXIF-safe build.
+
+**2. Shared template fix — `truesight_autopilot/templates/slide_deck_template.py`**
+[PR #297](https://github.com/TrueSightDAO/truesight_autopilot/pull/297) fixes the actual latent bug: `crop16x9()` was opening photos with `Image.open().convert("RGB")` and never transposing — so **every** deck built from the standard template would have reproduced the same rotated-photo defect. Now:
+```python
+im = Image.open(src)
+im = ImageOps.exif_transpose(im)  # honor EXIF orientation (phone photos)
+```
+Verified: compileall passes, ruff clean on `templates/`, and the transpose behavior confirmed on a real orient=6 photo (4032×3024 → 3024×4032).
+
+## Why both
+- The **docs** tell future agents *what* to do.
+- The **template** makes the correct behavior the *default* — so even an agent who skips the docs gets it right.
+
+Both are open PRs awaiting your review (per the rules I don't merge on my own). Want me to merge them, or leave them for your look?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/evan_bahia && python3 - <<'EOF' # Verify the EXACT template fix works on a known-rotated image (orient=6) from PIL import Image, Ima; cd /tmp/ts_autopilot_check && echo "=== ruff ===" && python3 -m ruff check app scripts tests templates 2>&1 | tail -3; echo "=== ruff format; cd /tmp/ts_autopilot_check && echo "=== ruff on templates only ===" && python3 -m ruff check templates/ 2>&1 | tail -2; echo "=== ruff forma
 
