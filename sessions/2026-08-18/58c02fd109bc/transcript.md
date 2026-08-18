@@ -37,32 +37,78 @@ Where appropriate link to our website on Agroverse or YouTube
 
 ### 🤖 Autopilot
 
+[6 tool result(s) compacted: read_context_file, search_context, search_context, search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[5 tool result(s) compacted: search_context, search_context, search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_code, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_code, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, read_repo_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have good context on the stops. Now let me gather details and assets for the slide deck — Santos factory spec, warehouse details, Oscar farm page, CIC, and the Bico Duro YouTube library.
+[3 tool result(s) compacted: read_context_file, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the specific image assets for each stop (farm photos, warehouse, CIC, capoeira).
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the core context. Now let me gather visual assets (farm photos, capoeira images) and verify details on CIC / Santos / Christiano so the slides are accurate.
+[3 tool result(s) compacted: http_fetch, http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the Bahia photo library and capoeira assets for images to use in the slides.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the content and imagery sources. Now let me check the autopilot box's PDF/image tooling and set up the working directory.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have reportlab + PIL + ImageMagick available. Let me gather the remaining assets: shipment photos, capoeira site details, and the Agroverse YouTube channel.
+[3 tool result(s) compacted: http_fetch, http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -142,4 +188,114 @@ Want me to proceed with building the PDF now (steps 1–4)?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import fpdf; print('fpdf ok')" 2>&1; python3 -c "impo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11243] Deep dive into our archives for the relevant photos
+
+
+### 🤖 Autopilot
+
+Good call — let me dig through the full file trees to catalog every relevant image in our archives.
+
+
+### 🤖 Autopilot
+
+The trees are large. Let me extract just the image file paths efficiently with a single shell pass over both repos' trees.
+
+
+### 🤖 Autopilot
+
+The grep hit mostly blog images. Let me search the two image lists specifically for the relevant subjects.
+
+
+### 🤖 Autopilot
+
+Excellent — a goldmine of relevant photos. Let me check the CIC images and the truesight_me_beta catalog too.
+
+
+### 🤖 Autopilot
+
+Rich catalog. Let me quickly check the capoeira repo for Bico Duro assets to complete the picture.
+
+
+### 🤖 Autopilot
+
+Deep dive complete. Here's the full photo catalog from our archives, mapped to each stop — every image is a real asset already in our repos (raw.githubusercontent hotlinkable).
+
+## 📸 Photo catalog — Evan's Bahia visit slides
+
+### 1. Black King warehouse — Ilhéus (Matheus Reis)
+| Asset | Path (agroverse_shop_beta) |
+|---|---|
+| Warehouse interior | `assets/images/partners/black-king/ilheus-warehouse.jpg` |
+| Dropping cacao @ Vivi farm | `assets/images/partners/black-king/dropping-cacao-vivi-farm.jpg` |
+| Team: Matheus, Emelin, Clara, Fernando @ farm | `assets/images/partners/black-king/matheus-emelin-clara-fernando-farm.jpg` |
+| Printing QR codes | `assets/images/partners/black-king/printing-qr-codes.jpg` |
+| Vivi gifting mel de cacau | `assets/images/partners/black-king/vivi-gifting-mel-cacau.jpg` |
+| Hero header | `assets/partners/headers/black-king-ilheus-header.jpg` |
+
+### 2. Santos Chocolate Factory — Itabuna (José Carlos "Santos")
+| Asset | Path |
+|---|---|
+| Beans seen for first time | `assets/partners/santos-chocolate-factory/santos_image_seeing_beans_for_first_time.jpg` |
+| Processing beans | `assets/partners/santos-chocolate-factory/santos_processing_beans.jpg` |
+| Santos' wife bagging bars | `assets/partners/santos-chocolate-factory/santos_wife_putting_bars_in_bag.jpg` |
+| Roasting step | `assets/images/blog/listing-640w/santos-roasting-step.jpg` |
+| Winnowing/cracking | `assets/images/blog/listing-640w/santos-winnowing-and-cracking.jpg` |
+| Melanger → mold → bars | `assets/images/blog/listing-640w/santos-melanger-into-mold-and-then-bars.jpg` |
+| Hero header | `assets/partners/headers/santos-chocolate-factory-header.jpg` |
+
+### 3. Oscar's farm (cabruca agroforestry)
+| Asset | Path |
+|---|---|
+| Oscar | `assets/images/oscar_1.jpeg` |
+| Product shot | `assets/images/products/oscars-farm.jpeg` |
+| Gary + Emelin + CIC @ Oscar farm | `assets/images/partners/cic/gary-emelin-cic-oscar-farm.jpg` |
+| Farm visit, tree many pods | `assets/images/blog/bahia-photo-library/cocoa-farm-visit-tree-many-pods.jpg` |
+| Ripe pods yellow grove | `assets/images/blog/bahia-photo-library/cocoa-ripe-pods-yellow-grove.jpg` |
+| Young cocoa tree, maroon pods | `assets/images/blog/bahia-photo-library/young-cocoa-tree-maroon-pods-shadow.jpg` |
+| Harvest/pruning yellow pod | `assets/images/blog/bahia-photo-library/cocoa-harvest-pruning-yellow-pod.jpg` |
+| Drying terreiro (raking) | `assets/images/blog/bahia-photo-library/cocoa-drying-terreiro-farmhouse-raking.jpg` + `cocoa-dried-beans-handful-terreiro-01/02/03.jpg` |
+| Fermentation trough | `assets/images/blog/bahia-photo-library/agroverse-brand-fermentation-trough.jpg` + `cocoa-fermentation-trough-foot-pulp.jpg` |
+| Dried beans handful | `assets/images/blog/bahia-photo-library/cocoa-dried-beans-handful-terreiro-01.jpg` |
+| Coopercabruca header (co-op) | `assets/cooperatives/headers/coopercabruca-header.jpeg` |
+
+### 4. Christiano + CIC (Centro de Inovação do Cacau)
+| Asset | Path |
+|---|---|
+| **Christiano + Orlantildes + Gary** | `assets/images/partners/cic/christiano-orlantildes-gary.jpg` |
+| Cacao tasting wheel | `assets/images/partners/cic/cacao-tasting-wheel.jpg` |
+| CIC logo | `assets/partners/logos/cic-cacao-innovation-center-logo.png` |
+
+### 5. Bico Duro capoeira — Itacaré (Tribo Bahia Mirim)
+| Asset | Path (capoeira repo unless noted) |
+|---|---|
+| Kids program | `capoeira: assets/images/bico-duro-kids.jpg` |
+| Sunset beach roda | `capoeira: assets/images/capoeira-sunset-beach.jpg` |
+| Bico Duro profile | `agroverse_shop_beta: assets/images/experiences/itacare/bico-duro-profile.jpg` |
+| Capoeira break acarajé | `assets/images/experiences/itacare/capoeira-break-acaraje.jpg` |
+| Itacaré waterfall | `assets/images/experiences/itacare/itacare-waterfall.jpg` |
+| Samba Itacaré | `assets/images/experiences/itacare/samba-itacare.jpg` |
+| Bahia beach capoeira sunset | `assets/images/blog/bahia-photo-library/bahia-beach-capoeira-sunset.jpg` |
+| Favicon/logo | `capoeira: assets/images/logo/tribobahia-logo.png` |
+
+### Bonus — shipment / export proof (truesight_me_beta `assets/shipments/`)
+`agl0/1/2/3/4/5/6/8/10/13/14/15.avif` + `agl14.jpg` — the actual AGL shipment photos (bagged Agroverse cacao leaving the chain) — great for a "our product on the move" slide.
+
+---
+
+**Total: ~30 relevant images across 3 repos, all verified present in the trees.** No missing assets — even better than expected: we have actual *people* photos (Christiano+Gary, Matheus team, Santos first-time beans) which will resonate far more with Evan than stock imagery.
+
+## RESUME HERE (next turn)
+1. Download selected set (aim ~14 images: 2–3 per stop) to `/tmp/evan_bahia/` via curl from `raw.githubusercontent.com/TrueSightDAO/<repo>/main/<path>`.
+2. Build ~10-slide PDF with reportlab (cover + 5 stops + shipments + close), each slide: photo + 3–4 bullets + Agroverse URL (partners pages live, verified) + YouTube links for Bico Duro moves.
+3. Upload PDF to `go_to_market/events/evan_bahia_visit/` + send as Telegram attachment here.
+
+Say **"go"** and I'll download the assets and build the deck.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/git/trees/main?recursive=1" -H "Accept: application/vnd.gi; cd /tmp && echo '=== SHOP: farms/oscar ==='; grep -iE 'oscar|farm' shop_images.txt | grep -viE 'blog-posts' | head -40; echo '=== SHOP: ware; cd /tmp && echo '=== SHOP: CIC ==='; grep -iE 'cic' shop_images.txt | head -20; echo '=== ME: shipments/agl photos ==='; grep -iE 'shipments
 
