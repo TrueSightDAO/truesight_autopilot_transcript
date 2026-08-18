@@ -341,16 +341,19 @@ Go-signal received. Let me check the handoff registry (per protocol) and build t
 ### 🤖 Autopilot
 
 PDF built (3.4 MB, 6 pages). The handoff manifest has no dedicated plan row for this deck — it's an ad-hoc deliverable for this thread, so no plan to resume; proceeding with the build. Quick sanity check on the PDF, then I'll send it to you.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 pypdf isn't installed — but reportlab built the PDF without error and the file is 3.4 MB with all 6 pages drawn, so the structure is sound. Let me verify pages a different way (PDF header + page count) and send it to you.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Valid PDF 1.4, 6 content pages + catalog. Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -488,4 +491,42 @@ Want to keep the sunmint tree-planting photos in the deck somewhere else (e.g. a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() start=s.find('c.setFillColorRGB(*SAFFRON); c.setFont("Helvetica-B
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Make sure words don’t over spill out of box. Make sure wrap
+
+Slide one has issue.
+
+
+### 🤖 Autopilot
+
+The overspill is real — the slide-1 teaser line ("Five systems run the DAO: supply chain · signed audit trail · Email360 outreach · community · daily Beer Hall digest") is hard-coded with `drawString`, no wrapping: ~110 chars at 12pt ≈ 730px, but the panel only gives ~596px. I'll rewrite the builder so **every** text element wraps to its panel width (titles included), then rebuild.
+
+
+### 🤖 Autopilot
+
+Rebuilt with every text element now wrapping to its panel width. Sending v4.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v4** (`TrueSightDAO_Talk_Deck.pdf`).
+
+## What I fixed
+- **Root cause:** slide 1's teaser line was drawn with a raw `drawString` (no wrapping) — ~110 chars at 12.5pt ≈ 730px wide vs the panel's ~596px usable → overspill past the box edge.
+- **Systemic fix:** rewrote the builder so **every** text element — titles, subtitles, bullets, captions, kickers — goes through a `draw_wrapped()` helper that measures string width and wraps to the panel's inner width. No element can exceed its box anymore.
+
+## Slide 1 now
+- Title (2 lines), subtitle, and the "five systems" teaser **wrap to exactly two lines** inside the panel
+- Bullet text elsewhere also verified: each item wraps within the box; kicker lines fit
+
+Everything else (5-system body, photos, QR) unchanged from v3.
+
+Give it a look — if any panel still looks tight (e.g. slide 3 has the QR beside the text), I can shrink font/leading or widen that panel. Also still happy to: swap photos, upload to GitHub for versioning, or make the one-page handout.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img" BG = OUT + "/bg" os.makedirs(BG,
 
