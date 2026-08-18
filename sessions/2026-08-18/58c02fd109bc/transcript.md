@@ -114,6 +114,22 @@ I have reportlab + PIL + ImageMagick available. Let me gather the remaining asse
 ### 🤖 Autopilot
 
 I have a good picture of the content. Let me pin the working note and check for factory/chocolate images and the partners (CIC) assets.
+[2 tool result(s) compacted: pin_note, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -298,4 +314,86 @@ Say **"go"** and I'll download the assets and build the deck.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/git/trees/main?recursive=1" -H "Accept: application/vnd.gi; cd /tmp && echo '=== SHOP: farms/oscar ==='; grep -iE 'oscar|farm' shop_images.txt | grep -viE 'blog-posts' | head -40; echo '=== SHOP: ware; cd /tmp && echo '=== SHOP: CIC ==='; grep -iE 'cic' shop_images.txt | head -20; echo '=== ME: shipments/agl photos ==='; grep -iE 'shipments
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11243] Make sure to indicate utilize the photo of me and Matheus which we use as the black king header image too
+
+
+### 🤖 Autopilot
+
+Good catch — let me grab the Black King header image and confirm exactly what it is so it gets featured placement (likely the cover + the warehouse slide).
+
+
+### 🤖 Autopilot
+
+Header confirmed — 1920×1080 JPEG, live at the expected URL. Since it's the Gary+Matheus photo you use on the Black King partner page, I'll feature it on the **cover** and repeat it on the warehouse slide. Let me batch-download the full curated set now so the deck build is one step away.
+
+
+### 🤖 Autopilot
+
+Only 2 of the parallel downloads landed — the backgrounded curls didn't survive. Let me redo it sequentially with a loop, which is reliable.
+
+
+### 🤖 Autopilot
+
+All 18 photos downloaded and verified. Quick verification of two link targets (Oscar farm page URL + a real Bico Duro YouTube URL) before I build the deck, so no fabricated links go in.
+
+
+### 🤖 Autopilot
+
+All 18 photos are downloaded and verified, Oscar's farm page and the Bico Duro YouTube URLs are confirmed real. The Black King header (Gary + Matheus) will be the cover. Building the deck now.
+
+
+### 🤖 Autopilot
+
+PDF built (10 pages, ~1 MB). Quick verification that pages render correctly, then I'll deliver it.
+
+
+### 🤖 Autopilot
+
+pdfinfo/pdftoppm aren't installed, but reportlab wrote the PDF cleanly and reported 1,015,431 bytes with no errors. Let me render a couple of pages to PNG via PIL to visually confirm the layout, and check the cover image is properly embedded.
+
+
+### 🤖 Autopilot
+
+PDF is valid (PDF-1.4, 11 `/Type /Page` markers incl. the catalog page, 51 image XObjects — all photos embedded). Now let me upload it to the go_to_market repo and deliver it to you.
+
+
+### 🤖 Autopilot
+
+Uploaded. Sending you the PDF directly in this thread:
+
+
+### 🤖 Autopilot
+
+✅ **Deck delivered** — attached above (message 11274) and on GitHub.
+
+## 📕 Evan's Bahia Origin Tour — Oct 1–7, 2026
+
+**10 slides** | ~1 MB | [GitHub](https://github.com/TrueSightDAO/go_to_market/blob/main/events/evan_bahia_visit/evan_bahia_itinerary_2026.pdf)
+
+| Slide | Content |
+|---|---|
+| **1 — Cover** | **Gary + Matheus Black King header photo** (the one from your partner page), tour title, stops summary |
+| **2 — Itinerary** | 5 stops with days, cabruca + Itacaré photos |
+| **3 — Black King Warehouse (Ilhéus)** | Matheus Reis, QR-tagged inventory, team photos, warehouse + QR-printing shots |
+| **4 — Santos Factory (Itabuna)** | José Carlos, bean-to-bar, roasting/winnowing/melanging photos |
+| **5 — Oscar's Farm** | Oscar photo, 80-yr Criolla cabruca, fermentation trough, Coopercabruca |
+| **6 — CIC** | **Christiano (CIC) & Gary** photo, tasting wheel, lab/quality/traceability |
+| **7 — Bico Duro (Itacaré)** | Kids program, sunset beach roda, acarajé break; YouTube Ginga + Meia lua links |
+| **8 — Shipments** | AGL14 photo — ledger-proven traceability |
+| **9 — Transport** | **4WD jeep to be booked once Evan confirms flight**; route + base (Ilhéus) |
+| **10 — Mission close** | 10,000-hectare Amazon regeneration tie-in |
+
+**Photos:** all 18 pulled from our own archives (agroverse_shop_beta / capoeira / truesight_me_beta) — including the exact Gary+Matheus header as the cover, Christiano+Gary at Oscar's farm, Santos' first-time bean shot, and the Bico Duro kids.
+
+**Links verified live:** partner pages (`agroverse.shop/partners/black-king-ilheus`, `.../santos-chocolate-factory`), farm page (`/farms/oscar-bahia`), `capoeira.agroverse.shop`, and real YouTube move URLs from `youtube_videos.json` (ginga `youtu.be/23acEufjXBI`, meia lua de compasso `youtu.be/OJi2GJSP6vA`).
+
+**Want tweaks?** I can: swap any photo, add your contact/WhatsApp, add a QR code to the cover linking to agroverse.shop, or translate to Chinese (Evan's team). Just say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → mkdir -p /tmp/evan_bahia && cd /tmp/evan_bahia && curl -sL -o black-king-header.jpg "https://raw.githubusercontent.com/TrueSightDAO/agrovers; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO" && SHOP="$BASE/agroverse_shop_beta/main" && ME="$BASE/truesight_; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO" && cat > dl.txt <<'EOF' agroverse_shop_beta/main/assets/partners; …(+3 more)
 
