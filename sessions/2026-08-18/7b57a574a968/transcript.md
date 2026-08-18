@@ -664,6 +664,7 @@ The shop is a GitHub Pages static site — products live under different paths, 
 ### 🤖 Autopilot
 
 Now I have the real page inventory. Let me verify the final URL set in one batch, then rebuild the deck with accurate targets.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -854,4 +855,36 @@ Want me to log it?
 Got it — ~1 hour total, you + me. That's the honest number for the talk anyway: an hour of your attention and agent time, and a full working deck with live links comes out the other end. Good story for the audience, actually.
 
 Want me to log it as a **[CONTRIBUTION EVENT]** — ~60 minutes, type "Time (Minutes)", titled something like *"AI-run DAO talk deck: photo archive deep-dive + 8-iteration build (v8, clickable)"*? I can include the deck as the artifact if that helps for governance transparency. Say the word and I'll submit it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Log it
+
+
+### 🤖 Autopilot
+
+Logging it — first let me verify the exact event format for a contribution event.
+
+
+### 🤖 Autopilot
+
+Format confirmed. Submitting the contribution event now — 60 minutes, Time (Minutes), titled for the deck work.
+
+
+### 🤖 Autopilot
+
+Logged ✅ — **CONTRIBUTION EVENT** submitted to Edgar.
+
+- **Type:** Time (Minutes)
+- **Amount:** 60
+- **Contributor(s):** Gary Teh + Sophia Truesight
+- **TDG Issued:** 60
+- **Description:** AI-run DAO talk deck — archive deep-dive (4 repos, ~20 photos curated), 8-iteration build to v8, all 22 links verified live, delivered as `TrueSightDAO_Talk_Deck.pdf`
+
+It's on the ledger now. Anything else — GitHub upload for versioning, one-page handout to match, or wrap here?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
