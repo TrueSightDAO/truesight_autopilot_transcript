@@ -640,16 +640,19 @@ Verified: `warmup_review.html` is the real Email360 review page (200). `truechai
 ### 🤖 Autopilot
 
 Let me find the actual TrueChain viewer page in the dapp repo and the real product URL pattern in the shop — one batched call on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `truechain.html` in the dapp. Let me find how the "View on TrueChain" / scanner pages are actually named, and how the shop structures product pages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the real pages. The dapp has `shipping_planner.html`, `restock_recommender.html`, `view_inventory_holdings.html`, `scanner.html` — the actual tools. Let me get the shop's product pages and confirm the cacao circle page, then rewire all links to real targets.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -808,4 +811,34 @@ Any other links to adjust, or shall I upload the deck to GitHub for versioning?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() s=s.replace('U_SUNMINT="https://truesight.me/sunmint/whitepaper/"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] How much time did we spend on this?
+
+
+### 🤖 Autopilot
+
+Honest answer: I can't measure wall-clock minutes precisely from this conversation — I don't have session timestamps in my context. But I can give you a defensible estimate based on the work actually done.
+
+## What went into it
+
+- **8 deck iterations** (v1 hook/problem/system → v2 five-systems reframe → v3 strip fix → v4 wrap fix → v5 clickable links → v6 correct URLs → v7 ledger link → v8 sunmint link)
+- **Archive deep-dive**: ~20 photos curated from 4 repos (`agroverse_shop_beta`, `sunmint`, `lineage-assets`, `truesight_me_prod`), each downloaded + dimension-verified
+- **~30+ verification calls**: every URL checked live (200) before linking, QR decoded + ledger lookup, runbooks read for copy accuracy (supply chain, TrueChain, growth model)
+- **Build + QA**: reportlab deck script, crop pipeline, link embedding, page-count/URI validation after every build
+
+## Estimate
+
+| | |
+|---|---|
+| **Equivalent human effort** | ~4–6 hours of focused work (photo curation + copywriting + link research alone would eat 2–3) |
+| **Wall-clock session** | likely under an hour (my tool runs are seconds; the bottleneck was the back-and-forth review cycles) |
+
+## If you want to log it
+
+Happy to submit a **[CONTRIBUTION EVENT]** crediting the time — just tell me the number (e.g. 240 minutes) and I'll record it. Or if this is for the talk ("how long did it take to build an AI-run DAO deck?"), the honest answer is: *"A few hours of agent time, compressed into one morning — which is kind of the point."*
+
+Want me to log it?
 
