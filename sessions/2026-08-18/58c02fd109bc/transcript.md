@@ -135,21 +135,30 @@ I have a good picture of the content. Let me pin the working note and check for 
 ### 🤖 Autopilot
 
 Let me check the full partners list for a Santos page and find who Christiano is.
+[2 tool result(s) compacted: read_tool_result, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Christiano is Cristiano Villela Dias, head of CIC (Centro de Inovação do Cacau) in Ilhéus. Let me grab the Santos factory partner page and confirm the YouTube channel.
+[2 tool result(s) compacted: http_fetch, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the story content from the partner pages (Black King, Santos) and check the YouTube channel name.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the actual story text from the Santos and Black King pages (body content) and find the partner header images available.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -214,11 +223,13 @@ Want me to proceed with building the PDF now (steps 1–4)?
 ### 🤖 Autopilot
 
 Good call — let me dig through the full file trees to catalog every relevant image in our archives.
+[2 tool result(s) compacted: read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The trees are large. Let me extract just the image file paths efficiently with a single shell pass over both repos' trees.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,4 +407,88 @@ Uploaded. Sending you the PDF directly in this thread:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → mkdir -p /tmp/evan_bahia && cd /tmp/evan_bahia && curl -sL -o black-king-header.jpg "https://raw.githubusercontent.com/TrueSightDAO/agrovers; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO" && SHOP="$BASE/agroverse_shop_beta/main" && ME="$BASE/truesight_; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO" && cat > dl.txt <<'EOF' agroverse_shop_beta/main/assets/partners; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11243] I realized some of the photos are oriented either upside down or right or left toppled. Can we make sure to utilize the photos in the right orientation
+
+
+### 🤖 Autopilot
+
+Good catch — the issue is almost certainly EXIF orientation metadata: phone photos store a rotation tag, and PIL's plain `Image.open().convert()` ignores it, so portrait shots can render rotated. Let me check every image's EXIF orientation tag and fix them.
+
+
+### 🤖 Autopilot
+
+Found it — classic EXIF orientation issue. Several photos carry rotation tags that PIL ignores during processing:
+
+- **Upside-down (orient=3):** `bk-team-farm.jpg`, `capoeira-break-acaraje.jpg`
+- **Toppled 90° (orient=6):** `cic-tasting-wheel.jpg`, `cocoa-farm-pods.jpg`, `fermentation-trough.jpg`, `itacare-waterfall.jpg`
+- **Portrait with no tag (cropped wrong in landscape boxes):** `santos-first-beans`, `santos-processing`, `oscar_1`, `agl14`, `bico-duro-kids`
+
+Fix: apply `ImageOps.exif_transpose()` before cropping, and give portrait photos portrait-shaped boxes instead of squishing them into landscape slots. Let me grab a couple more landscape farm shots for variety and confirm post-fix orientations.
+
+
+### 🤖 Autopilot
+
+Found the root cause — classic EXIF orientation: several photos carry rotation tags (3 = upside-down, 6 = toppled 90°) that PIL ignored, and a few portrait shots were squeezed into landscape boxes. I'll fix all of it: `exif_transpose` on every image + portrait-aware layouts. Let me grab three more correct-orientation assets first.
+
+
+### 🤖 Autopilot
+
+All assets ready. Now rebuilding the deck with EXIF-aware processing — every photo gets `ImageOps.exif_transpose()` before cropping, and portrait shots get portrait boxes instead of being stretched.
+
+
+### 🤖 Autopilot
+
+Rebuilt with EXIF-transposed images. Let me render a few pages to PNG to visually confirm the orientation is correct before delivering.
+
+
+### 🤖 Autopilot
+
+Pages rendered successfully with ghostscript. Let me visually inspect the rendered pages to confirm orientations are correct — I'll view them as a composite to check.
+
+
+### 🤖 Autopilot
+
+The renders confirm the pages build, but I spotted a second-order layout issue: several photos are *portrait* (after EXIF fix) yet were placed in landscape boxes — `oscar_1`, `bico-duro-kids`, `agl14`, `itacare-waterfall`, `santos-first-beans`, `cic-tasting-wheel` — which produces awkward center-strip crops. I'll fix both: EXIF transpose **and** portrait-aware boxes.
+
+
+### 🤖 Autopilot
+
+Rebuilt with both fixes. Rendering pages to visually confirm orientations before delivering:
+
+
+### 🤖 Autopilot
+
+All 10 pages render cleanly. Uploading the corrected deck and delivering it:
+
+
+### 🤖 Autopilot
+
+✅ **Deck v2 delivered** (message 11279) — orientation issues fixed.
+
+## 🔧 What was wrong & what I fixed
+
+**Root cause:** phone photos carry **EXIF orientation tags** (rotate/upside-down flags). The earlier build used `PIL.Image.open()` which **ignores** those tags → images rendered rotated. Plus a few *portrait* photos were being squeezed into *landscape* frames.
+
+**Fixes applied:**
+1. **`ImageOps.exif_transpose()`** on every photo before cropping — honors the camera's rotation metadata, so nothing is upside-down or tilted anymore.
+   - Fixed upside-down (tag 3): team at farm, capoeira-acarajé
+   - Fixed 90° toppled (tag 6): tasting wheel, farm pods, fermentation trough, Itacaré waterfall
+2. **Portrait-aware layouts** — portrait photos (Oscar, Bico Duro kids, AGL14 shipment, Santos first-beans/processing, tasting wheel) now sit in **portrait frames** instead of being stretched/cropped into landscape slots.
+3. Swapped a few landscape-farm shots in for slides that needed wide imagery (terreiro raking, plantation hills, Bahia coast sunset).
+
+**Verified:** all 10 pages rendered to PNG via ghostscript — clean, no errors.
+
+**Where it lives:**
+- Telegram: above (message 11279)
+- GitHub: [go_to_market/events/evan_bahia_visit/evan_bahia_itinerary_2026.pdf](https://github.com/TrueSightDAO/go_to_market/blob/main/events/evan_bahia_visit/evan_bahia_itinerary_2026.pdf) (commit `0655d78`)
+
+Give it a look — if any specific photo still looks off, tell me which slide and I'll swap it. Also happy to add a cover QR code or a Chinese translation for Evan's team.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/evan_bahia && python3 - <<'EOF' from PIL import Image from PIL.ExifTags import Tags import os files = [f for f in sorted(os.listdir(; cd /tmp/evan_bahia && python3 - <<'EOF' from PIL import Image import os files = [f for f in sorted(os.listdir('.')) if f.lower().endswith(('; cd /tmp/evan_bahia && BASE="https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main" && for p in \ "assets/images/blog/bahia; …(+4 more)
 
