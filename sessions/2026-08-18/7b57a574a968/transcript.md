@@ -205,7 +205,18 @@ PIL, reportlab, and weasyprint are all available — I can build proper full-ble
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The shop repo has a treasure trove: `assets/images/brazilian-rainforest.jpg` (10.7MB — the mission shot), cacao pods, farm photos, partners, experiences (capoeira, cargo boat on the Amazon, giant tree). Let me pull the full asset list on the box so I can curate precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -218,6 +229,12 @@ Excellent — the archives are rich. Now let me identify the exact photos I need
 - **Slide 6 (Trees)**: sunmint tree-planting photos
 
 Let me download the top candidates and verify they're valid images.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -351,4 +368,74 @@ All photos are authentic DAO assets pulled from `agroverse_shop_beta`, `sunmint`
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img" BG = OUT + "/bg" TH = OUT + "/th; cd /tmp/slides_img && python3 -c " from pypdf import PdfReader r = PdfReader('TrueSightDAO_Talk_Deck.pdf') print('pages:', len(r.pages)) pri; cd /tmp/slides_img && head -c 20 TrueSightDAO_Talk_Deck.pdf | xxd | head -2 && echo "---" && grep -a "/Type /Page" TrueSightDAO_Talk_Deck.pd
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] I think we should focus primarily on the supply chain management and coordination, outreach via email 360. And daily beer hall digest as well as community activities. Also the smart contracts and how the signing of the smart contracts provide audit trail
+
+
+### 🤖 Autopilot
+
+Good direction — that reframes the deck around the five systems that actually run the DAO: supply chain, signed audit trail, Email360 outreach, Beer Hall, and community. Let me pull the exact details from the runbooks so the bullets are accurate, then rebuild.
+
+
+### 🤖 Autopilot
+
+TRUECHAIN.md gave me the smart-contract/audit-trail material. GROWTH_MODEL.md and SUPPLY_CHAIN_AND_FREIGHTING.md are at different paths — let me locate them and get the Email360/Beer Hall/community details.
+
+
+### 🤖 Autopilot
+
+Good material. Let me read the growth model (Email360/Beer Hall loops) and find the supply-chain runbook.
+
+
+### 🤖 Autopilot
+
+I have the growth-loop material. Now let me find the supply-chain runbook (it wasn't at the root path) and read the Email360/Beer Hall specifics from the growth model artifact.
+
+
+### 🤖 Autopilot
+
+I have the loop details. Now let me read the supply-chain runbook (at `brazil/SUPPLY_CHAIN_AND_FREIGHTING.md`) for accurate supply-chain bullets.
+
+
+### 🤖 Autopilot
+
+All five systems are documented. Rebuilding the deck around them — supply chain, signed audit trail, Email360, Beer Hall + community — with fresh photo mapping:
+
+
+### 🤖 Autopilot
+
+Rebuilt — 6 content pages + catalog, 3.06 MB. Sending the updated deck.
+
+
+### 🤖 Autopilot
+
+Updated deck sent ✅ — **v2, focused on your five systems**, all copy grounded in the actual runbooks.
+
+## What changed
+
+| # | Slide | What it now says (grounded in docs) | Photo |
+|---|---|---|---|
+| 1 | **Hook** | Mission + "five systems run the DAO" | rainforest + sunmint strip |
+| 2 | **Supply chain & coordination** | Matheus (Ilhéus) → Kirsten (SF) always **freight**; US→US EasyPost; inventory per location/manager; shipping planner (air, customs, FDA, duty); restock recommender + FIFO consignment | sunset-amazon-river (cargo boat) |
+| 3 | **Signed audit trail** | Sign → Edgar → Sheets → Mirror Service → **TrueChain**; append-only contracts (shipments, QR, plantings, sales); Sheets = source of truth, chain = tamper-proof; "View on TrueChain", no wallet; real QR (`2023SA_81PB`) | young cocoa tree |
+| 4 | **Email360 outreach** | Warm-up queue, drafts AI + human review; partner referral loop; post-purchase nurture "your tree at month N" | lumin-earth summer w/ bags |
+| 5 | **Community: Beer Hall + circles** | Daily digest = town square; read→engage→contribute→reflected loop; cacao circles, capoeira rodas, partner check-ins; credentialing lineage | capoeira sunset |
+| 6 | **Close** | "From tools, to trees, to people" → cacao circle | kikis tasting |
+
+All facts verified against `brazil/SUPPLY_CHAIN_AND_FREIGHTING.md`, `TRUECHAIN.md`, `growth/GROWTH_MODEL.md` — no invented numbers.
+
+## Review notes
+
+- **Slide 2 & 4** are denser now (5 bullets) — if you want fewer words, I can trim to 3–4 punchlines per slide.
+- **Slide 3** keeps the real QR — good visual proof of the audit trail; demo lives here.
+- Still can't visually verify photos (no vision on local files) — flag any image you want swapped; ~20 candidates are staged.
+
+**Next options:** trim copy, swap photos, tweak colors/band, upload a copy to GitHub for versioning, or a one-page handout to match. Also happy to save v1 vs v2 side by side if you want to compare.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img" BG = OUT + "/bg" TH = OUT + "/th
 
