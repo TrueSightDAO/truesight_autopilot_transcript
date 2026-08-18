@@ -240,31 +240,47 @@ Let me download the top candidates and verify they're valid images.
 ### 🤖 Autopilot
 
 All shop images are valid. Now let me grab the sunmint tree-planting photos (the mission-in-action shots) plus a couple of hero assets from the main site.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All images are valid. The sunmint photos are portrait 720×1280 — I'll need to crop them into a 16:9 landscape for a slide strip. Let me also grab the QR code / bag imagery and a cacao circle photo, then check whether I can visually inspect the key shots.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Those were in `assets/partners/` not `assets/images/partners/` — 14 bytes = 404. Let me check the exact paths and download the right ones.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found them — the partners photos live under `assets/partners/` (not `assets/images/partners/`). Let me download the best circle/partner imagery.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get dimensions of the partner/circle photos so I can plan crops.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have a strong photo set. Let me grab one real Agroverse QR PNG from lineage-assets for the demo slide (authentic trace-back visual), then build the deck.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -319,6 +335,7 @@ Go ahead to generate the PDF based on the frame you suggested. And use the photo
 ### 🤖 Autopilot
 
 Go-signal received. Let me check the handoff registry (per protocol) and build the deck in parallel — the script is self-contained on the box.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,4 +455,37 @@ All facts verified against `brazil/SUPPLY_CHAIN_AND_FREIGHTING.md`, `TRUECHAIN.m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img" BG = OUT + "/bg" TH = OUT + "/th
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] The three images on the first side feels awkward
+
+
+### 🤖 Autopilot
+
+You're right — three tiny portrait thumbnails under the text panel fight the hero image. Cleanest fix: strip them off slide 1 and let the rainforest hero breathe. Let me patch and rebuild.
+
+
+### 🤖 Autopilot
+
+Strip removed cleanly — slide 1 is now just the rainforest hero + mission panel. Sending v3.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v3** (`TrueSightDAO_Talk_Deck.pdf`).
+
+## Slide 1 now
+- Full-bleed rainforest hero (4906×3259 crop) — no competing thumbnails
+- Saffron header band with event title
+- Mission panel: *"10,000 hectares of Amazon rainforest — one bag of ceremonial cacao at a time"* + "five systems run the DAO" teaser line
+
+Slides 2–6 unchanged (supply chain / audit trail / Email360 / community / close).
+
+Want to keep the sunmint tree-planting photos in the deck somewhere else (e.g. a row on the closing slide, or swap the close background)? Or anything else to tweak — copy, colors, QR placement?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && python3 - <<'EOF' p="build_deck.py" s=open(p).read() start=s.find('c.setFillColorRGB(*SAFFRON); c.setFont("Helvetica-B
 
