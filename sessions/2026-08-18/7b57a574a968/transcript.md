@@ -398,6 +398,7 @@ All photos are authentic DAO assets pulled from `agroverse_shop_beta`, `sunmint`
 ### 🤖 Autopilot
 
 Good direction — that reframes the deck around the five systems that actually run the DAO: supply chain, signed audit trail, Email360 outreach, Beer Hall, and community. Let me pull the exact details from the runbooks so the bullets are accurate, then rebuild.
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -529,4 +530,66 @@ Give it a look — if any panel still looks tight (e.g. slide 3 has the QR besid
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img" BG = OUT + "/bg" os.makedirs(BG,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11187] Make each line item point on each slide clickable to the actual URL of the actual stuff
+
+
+### 🤖 Autopilot
+
+Good call — clickable links make it a live deck, not a static PDF. Let me grab the real landing URL for the QR batch (so slide 3 links to the actual tree page) and verify the live URLs (beer hall, shop) before wiring links in.
+
+
+### 🤖 Autopilot
+
+The QR code lookup failed and beerhall redirects to WhatsApp — I need the real URLs. Let me decode the QR image itself, and pull truesight.me's llms.txt which should list canonical URLs.
+
+
+### 🤖 Autopilot
+
+The `2023SA_81PB` QR isn't in the ledger (the file may be an early/concept QR) and `beerhall/` redirects to a WhatsApp group. The llms.txt gives me canonical URLs though. Let me see the remaining llms.txt lines and check what the shop QR/traceback URL pattern is.
+
+
+### 🤖 Autopilot
+
+The QR `2023SA_81PB` isn't in the ledger (it's an early/concept image) and `beerhall/` redirects to the WhatsApp group — so I need verified live URLs for the links. Let me check the key deep-links in one batch before wiring them into the deck.
+
+
+### 🤖 Autopilot
+
+All URLs verified live (dapp 200, beerhall archive 200, partners index 200 — **24 active partners**, credentials 200, member index 200 — **482 members**). The `2023SA_81PB` QR isn't in the ledger, so I'll link the QR image to agroverse.shop (the real scan→trace entry). Now wiring every bullet to its actual URL with blue + underline + clickable rects.
+
+
+### 🤖 Autopilot
+
+22 clickable links embedded (every bullet + the QR image). Sending v5.
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **v5** with clickable links throughout.
+
+## What's linked (all URLs verified live this session)
+
+| Slide | Line item → URL |
+|---|---|
+| **2 Supply** | Brazil→US freight → agroverse.shop · inventory per location → **partners_index.json (24 active partners)** · shipping planner → whitepaper · restock recommender → shop |
+| **3 Audit trail** | Append-only contracts → dapp.truesight.me · Sheets source of truth → whitepaper · "View on TrueChain" → DApp · authorized writers → whitepaper · **QR image itself → agroverse.shop** |
+| **4 Email360** | Warm-up queue → DApp · referral loop → partners index · tree-at-month-N nurture → shop · concierge pattern → truesight.me |
+| **5 Community** | Beer Hall digest → **beerhall_archive.json (30 digests)** · retention loop → truesight.me · circles/capoeira → credentials · lineage → **member index (482 members)** |
+| **6 Close** | Mission line → truesight.me · hectares → shop · cacao circle → shop |
+
+22 clickable link zones total (each bullet text + the QR image + some captions), rendered blue + underlined, wrapping preserved so nothing spills.
+
+## Notes
+- The QR `2023SA_81PB` isn't in the live ledger (it's an archive concept image), so its link goes to agroverse.shop — the real scan→trace entry point. If you want it to point at a specific tree page, give me the SKU/tree id and I'll repoint.
+- Slide 3 keeps "private Ethereum" — TRUECHAIN.md says TrueChain is the private Ethereum mirror; correct per the runbook.
+
+**Try clicking around** — if any link should target a deeper page (e.g. a specific Beer Hall digest entry, a specific partner, the whitepaper's tokenomics section), tell me the target and I'll swap. Happy to also: trim copy, swap photos, or upload to GitHub for versioning.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && cat > build_deck.py <<'PYEOF' from PIL import Image import os OUT = "/tmp/slides_img"; BG = OUT + "/bg" os.makedirs(BG
 
