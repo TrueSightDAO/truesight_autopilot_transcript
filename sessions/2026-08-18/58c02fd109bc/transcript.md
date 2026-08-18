@@ -532,6 +532,7 @@ Give it a look — if any specific photo still looks off, tell me which slide an
 ### 🤖 Autopilot
 
 Good idea — this belongs in a durable runbook so every future Sophia/LLM run applies EXIF handling by default. Let me find the right home for it in agentic_ai_context.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -642,4 +643,54 @@ The 30 minutes spent generating the slides (including the orientation rework) is
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11243] How much does the EC2 instance you're running on cause a month? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Instance not in explorya — let me check the nelanco account and pull pricing for the t3.medium type.
+
+
+### 🤖 Autopilot
+
+Found it — the instance lives in the **nelanco** account. Let me pull the actual cost from nelanco's Cost Explorer.
+
+
+### 🤖 Autopilot
+
+Parameter shape error — need the nested `TimePeriod` object. Retrying:
+
+
+### 🤖 Autopilot
+
+RESOURCE_ID isn't enabled as a dimension for this account. Let me get cost by instance type and check the EBS volume + IP charges.
+
+
+### 🤖 Autopilot
+
+Now let me confirm how many t3.medium instances are running in nelanco, so I attribute cost correctly (the CE number covers all of them).
+
+
+### 🤖 Autopilot
+
+There are multiple t3.medium instances in nelanco — the CE number covers all of them. Let me count them to isolate Sophia's share.
+
+
+### 🤖 Autopilot
+
+Here's the answer, Gary:
+
+**This box (sophia-nelanco, t3.medium) costs roughly ~$35/month**, broken down:
+
+- **Compute (t3.medium on-demand):** $0.0416/hr ≈ **$30/month** (us-east-1, running 24/7)
+- **EBS storage (20GB gp3):** ≈ **$1.60/month**
+- **Public IPv4 address** (the 3.214.167.219 we reach it on): ≈ **$3.60/month** (AWS now charges $0.005/hr for every public IPv4, even on running instances)
+
+Cross-check: Cost Explorer shows nelanco's *total* t3.medium spend was ~$50.80 for 7/15–8/1 and ~$50.60 for 8/1–8/21 — but that covers **all** t3.medium instances in the account (at least 3 running: krake_data, this autopilot box, and one more). My instance's share lands right in the $30–35 range.
+
+One flag: this instance is tagged **`State: migration-passive`** — it may be a migration target. If it's meant to be passive, we could **stop it when idle** to save the ~$30/month compute (EBS + IP would still be ~$5). Want me to look into the migration status, or set up a stop-when-idle schedule?
 
