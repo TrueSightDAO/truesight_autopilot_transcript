@@ -4168,6 +4168,7 @@ The PDF inspection is very informative. Let me find Paloma's email address to CC
 ### 🤖 Autopilot
 
 Found Paloma's identity — **Paloma Pinheiro Lecheta** (she's done a PIX with you before, R$2,160 in June 2025). Let me search for her email address specifically.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4371,4 +4372,57 @@ Draft ready (not sent). Here's what I prepared for Matheus:
 **Draft ID:** `r1926398965781322767`
 
 Want me to send it?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] How do I get a BR.gov ID?
+
+
+### 🤖 Autopilot
+
+Let me verify the current process for getting a gov.br account as a foreigner.
+
+
+### 🤖 Autopilot
+
+Here's the full playbook for getting your gov.br ID as a foreigner (based on current 2026 rules):
+
+**Step 1 — Get a CPF (the prerequisite — everything hangs off this)**
+
+As a foreigner abroad, since **Jan 1, 2026 only a valid passport** is accepted (Mercosur ID cards no longer):
+1. Go to `servicos.receita.fazenda.gov.br` → "CPF for foreigners residing abroad" → fill in details → get an **FCPF protocol number** (valid 90 days)
+2. Book an appointment at your nearest Brazilian consulate via **e-consular** (`econsular.itamaraty.gov.br`) — bring your passport. (Miami ~3 weeks wait; SF/LA/NY similar)
+3. OR if you're physically in Brazil: Receita Federal office, bank, or Correios (post office) — passport only
+
+**⚠️ Critical new rule:** Since 2025, **foreigners living abroad must do an ANNUAL re-registration** (recadastramento) by Dec 31 each year via the **Receita Federal mobile app** (selfie + passport photo). Miss it → CPF goes **"Suspensa"** → blocks banking/gov services.
+
+**Step 2 — Create the gov.br account**
+1. Install the **gov.br app** (or go to `acesso.gov.br`)
+2. Enter CPF → follow prompts → verify via email/SMS code → set password
+3. **Anyone with a CPF** (Brazilian or foreigner) can create the account
+
+**Step 3 — Level up to Prata/Ouro (this is what actually matters)**
+
+| Level | How to get it | Needed for |
+|-------|--------------|-----------|
+| **Bronze** | Just creating the account | Basic services |
+| **Prata** | Validate via **internet banking** (Brazilian bank) OR **CIN** (National ID) QR code | e-CAC access for many services |
+| **Ouro** | **Facial recognition** (matches Brazilian databases: CNH, TSE, biometrics) OR **ICP-Brasil digital certificate (e-CPF)** | e-CAC full access, CNPJ admin, most gov services |
+
+**The foreigner catch:** Facial recognition for Ouro relies on matching Brazilian databases (CNH/TSE/biometric records) — as a foreigner you likely **won't match** those, so the reliable route to Ouro is:
+- **e-CPF digital certificate** (ICP-Brasil) — you're already getting one via Vini's help with your CPF; that gets you Ouro
+- Or a **Brazilian bank account** (Prata at least) — bank validation works for Prata
+
+**Step 4 — Link your gov.br to Black King's CNPJ (the "administrator" step)**
+- This is the **Procuração Eletrônica** (electronic PoA) I mentioned earlier — **Matheus grants** it in e-CAC to your CPF with your gov.br account
+- Then you log into e-CAC with **your own gov.br**, switch profile to Black King, and handle e-CAC/CNPJ matters
+
+**Bottom line for you, Gary:**
+1. CPF via consulate (passport) — or if Vini's already doing it in Brazil, even faster
+2. gov.br account (free, app or web)
+3. **e-CPF certificate** for Ouro level (since foreign facial recognition won't match) — this is the key unlock
+4. Matheus grants Procuração Eletrônica → you can administer Black King's federal affairs
+
+**Note on your existing CPF:** The Operating Agreement shows you already have **CPF 039.733.078-22** — so if that's active, you skip Step 1 and just need the gov.br account + e-CPF certificate + annual recadastramento if you live abroad. Want me to check if your CPF is already linked to anything in our records, or draft the email to Vini about the e-CPF certificate?
 
