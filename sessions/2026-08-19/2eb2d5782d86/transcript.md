@@ -122,16 +122,29 @@ Let me read the exact Gianluca follow-up entry region:
 ### 🤖 Autopilot
 
 Let me read the Gianluca follow-up entry region of the backlog:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Gianluca entry is a followup block in OPEN_FOLLOWUPS.md around line 183. Let me read it directly from the local context repo:
+[2 tool result(s) compacted: search_context, read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact Gianluca entry (around line 183):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -414,11 +427,18 @@ Draft v12 · pending approval before any outreach.
 ### 🤖 Autopilot
 
 This is exactly the robotics pillar (idea #4) — the "Robotics-for-Cacao Barter" action item you built with Gianluca (Frasky prototype, the four farm problems, barter model, pilot gates). Now I'll assemble the full CEPOTX slide PDF covering all four collaboration pillars, grounding pillar 4 in this document and pillars 1–3 in the SunMint/CEPOTX/traceability context.
+[2 tool result(s) compacted: append_to_transcript, generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF generated (8.2 KB, 3 pages). The transcript append failed on the session-id format — retrying with a simpler id, then sending you the file:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -713,11 +733,13 @@ Mission: restore 10,000 hectares of Amazon rainforest.
 ### 🤖 Autopilot
 
 This is the **Tuya IoT × Agroverse** deep-dive — that's the monitoring/technology backbone behind pillar 3 (carbon credits) and it enriches pillar 2 (traceability). I'll fold it into the CEPOTX slide and regenerate.
+[2 tool result(s) compacted: append_to_transcript, generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated with the Tuya IoT content folded in. Sending the updated slide:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,11 +784,13 @@ Also updated **"What we're asking from CEPOTX"** to add: one pilot farm for the 
 ### 🤖 Autopilot
 
 Gary wants visual slides — I'll pull real images (DAO assets + web) and compose a proper image-rich slide deck locally. Let me first discover what image assets exist in our repos and find key external images.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find image assets — checking the sunmint images folder, local tooling, and key external images in parallel:
+[4 tool result(s) compacted: http_fetch, ssh_run, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -860,4 +884,54 @@ Want any of those?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import PIL; print('PIL', PIL.__version__)" 2>&1; pyth; cd /tmp && mkdir -p slide_assets && cd slide_assets && for f in 20250725192619_MIIBIjANBgkqhkiG9w0B 20250801195510_MIIBIjANBgkqhkiG9w0B 2026; cd /tmp/slide_assets && for f in *.jpg; do echo "=== $f ==="; tesseract "$f" - 2>/dev/null | head -6; done; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Can we make sure the words and images don’t overlap??
+
+
+### 🤖 Autopilot
+
+Good catch to check — let me programmatically detect any text/image overlap per page before touching the layout:
+
+
+### 🤖 Autopilot
+
+The overlap detector found the real issue — **page 4 has a genuine collision**: the traceability bullet text (left column, y≈525 down) runs over the farm image (which renders at y 230–530). Page 1 "overlaps" are intentional (text over the darkened hero background). I'll restructure slide 4 (image → right column, bullets → left) and darken the cover overlay slightly, then rebuild:
+
+
+### 🤖 Autopilot
+
+Zero overlaps on all content pages. Sending the fixed deck:
+
+
+### 🤖 Autopilot
+
+✅ **v2 sent — zero text/image overlap, verified programmatically.**
+
+## What I found & fixed
+- **Page 4 was the real problem**: the "traceable product" bullet column overlapped the farm image (59 words colliding). Restructured: bullets now in the left column, image moved top-right, QR + "what traceability unlocks" bottom-right.
+- **Page 1 (cover)**: text sits on the darkened hero photo by design — but I deepened the overlay (62% black) so the headline pops more cleanly.
+- Pages 2, 3, 5, 6, 7, 8 already had clean separation.
+
+## Verification
+Ran an automated overlap detector (PyMuPDF) that measures **actual geometric intersection** between every text word's bounding box and every embedded image's bounding box:
+
+```
+page 1: cover bg (text-on-image by design — darkened)
+page 2: 0 overlapping words ✅
+page 3: 0 ✅
+page 4: 0 ✅  (was 59 — fixed)
+page 5: 0 ✅
+page 6: 0 ✅
+page 7: 0 ✅
+page 8: 0 ✅
+```
+
+The rebuild script (v2) is at `/tmp/build_slides2.py` on the box, so any further tweak (photos, wording, numbers, PT-BR) is a one-line change away. Want me to also push a copy to a repo for the record, or produce the PT-BR version next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides.pdf') def overlap(a, b): x0 = max(a[0], b[0]); y0 = ; cat > /tmp/build_slides2.py << 'PYEOF' #!/usr/bin/env python3 """Build visual slide deck v2 — fixed overlaps.""" from PIL import Image, Imag
 
