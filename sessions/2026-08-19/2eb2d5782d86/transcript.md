@@ -1059,21 +1059,25 @@ Digging deep for better imagery. Let me hunt in parallel: (1) check if the DAO r
 ### 🤖 Autopilot
 
 Good finds: there's **1 more real sunmint field photo** (AgAC…, 188 KB) I haven't used, plus free-license Unsplash imagery for cacao harvest, chocolate bars, and soil sensors. Let me download the new DAO photo and pull high-res Unsplash/Wikimedia images directly on the box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Unsplash blocked direct download (HTML). Switching to Wikimedia Commons (direct file URLs, no key needed) + checking what the new sunmint photo shows:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Wikimedia API call returned nothing (likely rate-limited or the search syntax needs adjustment), and OCR of the new photo gave nothing (it's a photo, not a text image). Let me check what the new sunmint photo actually shows and retry Commons with a simpler approach:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wikimedia Commons works. The ASCII brightness map failed (small dim image) but the new sunmint photo is real (960×1280). Let me download a set of curated Commons images (cacao fruit, cacao farmer harvest, chocolate, rainforest aerial, soil sensor) at 1600px width — all free license, no key:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1218,4 +1222,159 @@ Which is it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments 2>/dev/null && ls -la f3615a8fa301437d9d831fabe3480fc1.jpg && python3 << 'EOF' from PIL import Image, ImageStat impor; cd /tmp/tg_attachments && python3 << 'EOF' from PIL import Image, ImageOps, ImageEnhance p = 'f3615a8fa301437d9d831fabe3480fc1.jpg' im = Ima; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') pg = doc[7] # page 8 txt = pg.get_text() pr
+
+
+### 🧑 Governor
+
+Seeing some overlapping in the visuals
+
+[Attachment auto-processed: **71b46cef98f644988a4eaeac38a01e79.jpg**]
+- Type: Image (OCR confidence: 36.4%, quality: fair)
+
+Extracted text:
+```
+eal saneor network (Tuya plato) sae mode obi ccna mae vate = no cah oy
+```
+
+
+### 🤖 Autopilot
+
+Gary's seeing a real rendering overlap. Let me inspect this new photo — find which slide it is and what's colliding.
+
+
+### 🤖 Autopilot
+
+OCR shows content from **multiple slides** in one photo (slide 4 "What traceability unlocks", slide 5 "Real sensor network (Tuya IoT)", slide 7 "Barter model… no cash outlay", plus "Planting"). That looks like a scroll-through/thumbnail view — but let me not theorize; let me run a **thorough overlap audit** on the actual PDF (text-vs-text, text-vs-image, image-vs-image) and render the pages to see what's colliding:
+
+
+### 🤖 Autopilot
+
+Found real issues — the audit shows text-on-text collisions (not image overlaps):
+
+- **Page 1**: "Agroverse × Four Ways to Collaborate" — title text boxes overlap each other
+- **Page 6**: "Frasky… Built with… our robotics partner" — 15 text collisions (paragraphs overlapping)
+- **Page 7**: "reinforce" vs "Planting" — the loop diagram labels collide
+
+The images are fine; it's the **text layout** that's broken on these 3 pages (probably because I swapped in bigger photos, squeezing the text areas). Let me render pages 1, 6, 7 as PNGs so I can see exactly what's colliding, and inspect the build script's layout code for those pages:
+
+
+### 🤖 Autopilot
+
+Let me inspect the rendered pages via OCR to see the actual collisions, and examine the build script layout for pages 6–7:
+
+
+### 🤖 Autopilot
+
+Now I can see the real problems clearly:
+
+- **Page 6**: OCR garbled "st Tae / Baikal np inate aR Rb RAD eRe SS eRaKericBllABUfUAYtU-be/haBaYriyYCU" — the **Frasky image caption/URL text is colliding** with something, and the table looks cramped.
+- **Page 7**: OCR shows "Planting" and other labels on top of each other — the **diagram labels overlap** ("Planting" floating over the loop diagram).
+- The build script section didn't print — my grep range was wrong.
+
+Let me find the actual layout code for pages 6 and 7 in the build script and see the coordinates:
+
+
+### 🤖 Autopilot
+
+Let me see the exact layout code for pages 6 and 7 (the two broken ones):
+
+
+### 🤖 Autopilot
+
+Found the exact bugs:
+
+**Page 6 (Robots):** The Frasky image is at `y=240` (bottom 240+360=600), caption at `y=220` — but the caption text sits **directly under the image and overlaps the YouTube URL line** at `y=220` too. Both draw at y≈220 → collision. Also the table (y0=540, 5 rows × 26px = down to ~410) plus the barter line at y0-16 and bullets at y0-44 — they're all crammed into the same area.
+
+**Page 7 (Loop):** The bottom text "Every hectare kept in agroforesty..." is at `y=120`, but the **"USA market" box at (120,260)** and the arrows going down to `y=315`/`y=370`... Actually the real problem: OCR showed "Planting" overlapping — the boxes at (520,560) and (120,260) with height 110, plus arrow endpoints — some box titles/labels are colliding with each other or the arrows.
+
+Let me look at the actual geometry: boxes are 240×110. "USA market" at (120,260) → y range 260–370. Arrow from (240,370)→(240,480) passes right through it. The bottom text at y=120 is fine. But OCR showed "Planting" over "reinforce" — that's the header title colliding with the "Planting" box (520,560): box top is at y=560+110=670... header is at H-92 = 720-92 = 628. So the **"Planting" box top (670) is INSIDE the header band (ends 610... no, 720-610=110 from top)**. Wait, header band is top 110px = y 610–720. "Planting" box is at y 560–670 → **its top 60px (610–670) intrudes into the header band**. That's the overlap Gary sees.
+
+Also the OCR "One closed loop — how the four" + "Planting" on the same line = the header title and the Planting box title ARE colliding.
+
+Let me fix all three pages properly:
+
+
+### 🤖 Autopilot
+
+The first assertion failed — the page 6 caption string doesn't match exactly (escaping). Let me check the actual literal strings in the file:
+
+
+### 🤖 Autopilot
+
+The build script has the literal `·` character (not `\u00b7` escape). Let me patch using the exact literal strings:
+
+
+### 🤖 Autopilot
+
+The URL line patched. Now let me apply all fixes (page 6 image/caption spacing, page 7 loop layout) and rebuild:
+
+
+### 🤖 Autopilot
+
+P6 image line found (still at old position 240/560/360 — my earlier patch of that didn't apply since it was in the failed run), P7 block regex didn't match. The PDF got rebuilt (632 KB) but without the P7 fix. Let me fix the remaining pieces directly with precise line edits:
+
+
+### 🤖 Autopilot
+
+All fixes applied except the P7 tagline (string mismatch — probably different exact text). Let me check the actual tagline string and re-verify the whole deck for overlaps:
+
+
+### 🤖 Autopilot
+
+Excellent progress — **pages 6 and 7 are now clean (0 problems)**, and the tagline was already patched (the earlier "not found" was because the file already had it). 
+
+Remaining: **page 1** — the cover title "Agroverse ×" and subtitle "Four Ways to Collaborate" boxes overlap (the `×` glyph extends right into the subtitle, and my detector counts the two title lines as colliding). This is the cover title treatment. Let me verify visually whether it's a real visual collision or just the detector flagging the stacked lines, by rendering page 1:
+
+
+### 🤖 Autopilot
+
+The page 1 "collisions" are **false positives**: "Agroverse ×" is at y 144–229 (line 1, 62pt bold) and "Four Ways to Collaborate" at y 226–267 (line 2, 30pt) — they're stacked lines with slight bbox overlap at the boundary (226 vs 229 = 3px), but **visually they don't overlap at all** (different lines, 30pt vs 62pt fonts, no actual glyph collision — the `×` at x388–424 doesn't touch "Collaborate" which ends at x406, and they're on different lines).
+
+The deck is now **clean**: pages 2–8 have **zero** overlap problems, and page 1's "overlap" is just the bounding-box detector catching adjacent title lines. Let me render page 1 to visually confirm it looks right:
+
+
+### 🤖 Autopilot
+
+Page 1 renders perfectly — the title lines are cleanly stacked ("Agroverse × CEPOTX" then "Four Ways to Collaborate"), no visual collision. The detector's page-1 flags are just bounding-box overlap between adjacent lines (3px), not a real visual issue.
+
+The deck is now **fully clean**. Sending the fixed version:
+
+
+### 🤖 Autopilot
+
+✅ **v4 (overlap-fixed) sent** — the visual overlap you spotted is fixed.
+
+## What was actually colliding (from your screenshot + my audit)
+
+Your screenshot OCR showed slide 4/5/7 content — the real overlaps were on **slides 6 & 7**:
+
+| Slide | Before | After |
+|---|---|---|
+| **6 · Robots** | Frasky image + caption + URL line crammed at y 220–240 (collision) | Image shrunk & moved (y 250, 540×330), URL line dropped to y 210 — clean separation |
+| **7 · Loop diagram** | "Planting" box top (y 560–670) **intruded into the header band** (ends y 610) — that's why "Planting" overlapped the title | All 6 boxes dropped 50–60px (Planting now y 500–610, clear of header); arrows re-routed to match |
+
+## Verification (programmatic, per page)
+
+```
+page 1: only bbox-adjacent title lines (renders cleanly — verified via render+OCR) ✅
+page 2: 0 ✅   page 3: 0 ✅   page 4: 0 ✅   page 5: 0 ✅
+page 6: 0 (was 15 text collisions) ✅
+page 7: 0 (was 1 diagram/header collision) ✅
+page 8: 0 ✅
+```
+
+- **TOTAL: 0 real overlaps** on all 8 pages
+- Page 1's "flags" are just the 62pt title line and 30pt subtitle line whose bounding boxes kiss by 3px — the rendered image confirms they read as clean stacked lines, no visual collision
+
+The updated file is at `/tmp/agroverse_cepotx_visual_slides_v2.pdf` (632 KB). If you still see anything off in the PDF viewer, screenshot it and I'll target that exact spot — but the geometry is now verified clean.
+
+**Still open:** PT-BR version · archive to repo · swap any image. Just say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → python3 patch + rebuild + overlap audit ×3 + render + OCR; `send_telegram_attachment` → message 11493
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp/tg_attachments && ls -la 71b46cef98f644988a4eaeac38a01e79.jpg && python3 << 'EOF' from PIL import Image, ImageOps, ImageEnhance p = ; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') def inter(a,b): x0=max(a[0],b[0]); y0=max(a; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') for i in [0,5,6]: pg = doc[i] pix = pg.get_; …(+12 more)
 
