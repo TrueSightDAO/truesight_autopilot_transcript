@@ -4262,6 +4262,7 @@ Submitted to Edgar.
 ### 🤖 Autopilot
 
 Let me pull the current SOP from the repo.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4532,4 +4533,63 @@ I got the **official Receita Federal data** via the Brasil API — this answers 
 Want me to:
 1. Add the CNPJ's confirmed details (213-5, Inapta/omission, no QSA) to the SOP?
 2. Draft the pros/cons comparison (Procuração vs. Ltda transformation) as a decision doc?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] draft pros and cons
+
+
+### 🤖 Autopilot
+
+Let me draft this as a proper decision document and file it to the repo.
+
+
+### 🤖 Autopilot
+
+Here's the pros/cons — filed as a decision doc:
+
+**📄 PR #765** — `brazil/BLACK_KING_ADMIN_ACCESS_OPTIONS.md`
+
+---
+
+**Option A — Procuração Eletrônica (e-CAC PoA)**
+
+**Pros:**
+- ✅ Fast (hours–days), free, fully digital
+- ✅ No corporate restructuring
+- ✅ Scoped + revocable
+- ✅ Covers federal side: e-CAC, CNAE fix, declarations, certidões
+- ✅ No tax impact on Simples
+
+**Cons:**
+- ❌ No ownership — revocable, fragile
+- ❌ Doesn't cover SEFAZ-BA/NF-e emission (state system)
+- ❌ NF-e still needs the e-CNPJ certificate
+- ❌ Max 5 years; dies with Matheus
+- ❌ Doesn't fix Inapta/debts
+
+---
+
+**Option B — Transform to Ltda (213-5 → 206-2)**
+
+**Pros:**
+- ✅ Durable, formal authority — survives Matheus
+- ✅ Real ownership (Gary as quotaholder/administrator)
+- ✅ **Kills the single point of failure** — the core risk
+- ✅ Can BE the "new Brazilian CNPJ" (no need for a fresh one)
+- ✅ Better liability + banking mandates + future investors
+
+**Cons:**
+- ❌ Slower (weeks), costs R$1.5–5k+
+- ❌ Name must become "Black King Ltda"
+- ❌ SEFAZ/IE/NF-e must be re-issued
+- ❌ **Inapta blocks it** — must regularize first
+- ❌ Heavier compliance; harder to unwind
+
+---
+
+**Option C — Hybrid (my recommendation):** PoA now to unblock (CNAE, declarations), regularize Inapta in parallel, then transform to Ltda while the China lane (3–6 months) runs.
+
+Want me to merge #765?
 
