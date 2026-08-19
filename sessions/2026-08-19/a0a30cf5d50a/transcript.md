@@ -738,6 +738,12 @@ Go ahead and compile the slides
 ### 🤖 Autopilot
 
 Let me find the deck standard and any BitAngels deck plan in context.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -840,4 +846,57 @@ Want any other tweaks, or is this good to go?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && sed -i '/Offset markets are opaque and trustless/d' build_bitangels_deck.py && grep -n "Offset" build_bitangels_deck.p
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Remove this from growth loops 
+
+ Beer Hall digest
+• DApp bell · credentialing lineage
+
+
+### 🤖 Autopilot
+
+Removing those from the growth loops slide and rebuilding.
+
+
+### 🤖 Autopilot
+
+The DApp bell line was removed but "Beer Hall digest" is still in — the replace didn't match exactly. Let me look at the actual line and fix it directly.
+
+
+### 🤖 Autopilot
+
+Good — the grep shows "Beer Hall digest" only remains on **slide 6 (AI-run DAO)** — "Daily Beer Hall digest keeps the community aligned" — which is a different slide and wasn't part of the request. The growth-loops slide line was already correctly cleaned. Let me verify the growth loops slide content directly:
+
+
+### 🤖 Autopilot
+
+Confirmed — the growth-loops slide (slide 8) no longer has "Beer Hall digest" or "DApp bell · credentialing lineage". The only remaining "Beer Hall digest" is on **slide 6 (AI-run DAO)**, which is a different context ("Daily Beer Hall digest keeps the community aligned") and wasn't part of your request.
+
+Let me check the growth loops slide text to be sure it renders correctly:
+
+
+### 🤖 Autopilot
+
+Growth loops slide now clean — just:
+- Email360 outreach · partner check-in
+- The Instagram loop: post and tag @agroverse.shop
+
+Rebuilt PDF (10 pages). Sending v1.2:
+
+
+### 🤖 Autopilot
+
+Done — **v1.2 sent**. Changes:
+
+- **Growth loops slide (8)** now shows only:
+  - Email360 outreach · partner check-in
+  - The Instagram loop: post and tag @agroverse.shop
+- Note: "Daily Beer Hall digest keeps the community aligned" still appears on **slide 6 (AI-run DAO)** — that's a different slide and wasn't in your removal list. Want me to remove it there too, or keep it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/slides_img && python3 - << 'EOF' p = 'build_bitangels_deck.py' s = open(p).read() s = s.replace('Email360 outreach \\u00b7 partner c; cd /tmp/slides_img && grep -n "Beer Hall" build_bitangels_deck.py; cd /tmp/slides_img && sed -n '250,275p' build_bitangels_deck.py; …(+1 more)
 
