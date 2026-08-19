@@ -4507,11 +4507,13 @@ Fixed. Now regenerate and verify.
 ### 🤖 Autopilot
 
 Another apostrophe issue ("heart's"). Let me fix all unescaped apostrophes in the new section at once.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF regenerated. Let me verify the Confucian section renders correctly with all Chinese.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4845,4 +4847,54 @@ Want me to look at anything specific inside the codebase?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== Home dir ==="; ls -la /home/ubuntu/ 2>/dev/null | head -30; echo; echo "=== Find truesight_autopilot dirs ==="; find / -maxdepth 4
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] what about the rest of the repositories you have access to?
+
+
+### 🤖 Autopilot
+
+Let me check both the GitHub org repos and what's on disk locally.
+
+
+### 🤖 Autopilot
+
+Here's the full picture of what I have access to:
+
+## Local codebase (on this box)
+
+**`/opt/truesight_autopilot`** — my own code, the full deployment:
+- `app/` (main code), `scripts/`, `tests/`, `config/`, `context/`, `followups/`, `oracle/`, `tokenomics/`, `dao_protocol/`, `templates/`, `sessions/` (Telegram session state), `vault/`, `artifacts/`, `worktrees/`, `data/`, `docs/`
+
+**`/home/ubuntu/tokenomics`** — a separate tokenomics checkout.
+
+## GitHub repos I can touch (TrueSightDAO org, ~80 repos)
+
+**My code repos (branch → PR flow):**
+- `truesight_autopilot` — me
+- `agentic_ai_context` — the context/knowledge layer
+- `dao_client`, `dao_protocol`, `tokenomics`
+- `dapp_beta`, `truesight_me_beta`, `agroverse_shop_beta` (beta-first code)
+- `dapp_prod`, `truesight_me_prod`, `agroverse_shop_prod` (production — never push directly, promote via sync)
+- `sentiment_importer`, `go_to_market`, `market_research`, `oracle`, `lineage-engine`, `capoeira`, `program-template`, `butterfly-effect-club`, `tribomirimbahia`, `sunmint_farmer`, `tdg_recipes`, `aora`, `fda_fsvp`, `fda_haccp`, etc.
+
+**API-only data repos (single-file writes via Contents API, never branch-edit):**
+- `treasury-cache`, `places-cache`, `contributors-cache`, `truesight_autopilot_transcript`, `oracle_logs`, `lineage-credentials`, `lineage-assets`, `ecosystem_change_logs`, `.github`, `qr_codes`, `sunmint`, `store_interaction_attachments`, `agroverse-inventory`, `agent_handoffs` (the agent post-office)
+
+**Private/locked repos:**
+- `bionpact_agentic_ai_context`, `bionpact_attachments`, `bionpact_autopilot_transcription` — Bionpact's locked-down private storage (I can hand off *to* Bionpact via `agent_handoffs`, but these are not writable by me)
+- `mainsite`, `sentiment`, `sentiment_importer`, `mtproto_proxy` — private infra
+
+**Adjacent orgs:** `Cypher-Defense`, `KrakeIO` (getdata.io stack — krake_ror, krake_sk, etc. via SSH fleet), `Nelanco` (production AWS accounts for the SSH hosts).
+
+## SSH fleet (production hosts I can operate)
+`autopilot` (self), `dao_protocol`, `krake_nginx`, `seni_ror`, `seni_sk`, `seni_sql`, `seni_redis`, `krake_ror`, `krake_sk`, `krake_sk_webhook`, `krake_sk_crawler`, `krake_sk_scaler`, `krake_data`, `getdata_redis`, `getdata_cache` — plus AWS access to `explorya` and `nelanco` accounts.
+
+Anything specific you want me to look into?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== /opt/truesight_autopilot full listing ==="; ls -la /opt/truesight_autopilot/ 2>/dev/null; echo; echo "=== Other checkouts under /h
 
