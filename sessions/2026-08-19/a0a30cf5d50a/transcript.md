@@ -371,6 +371,11 @@ Let me find the exact endpoint the shop page calls for the trees counter.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find the live endpoint URL the shop uses.
 
 
@@ -498,4 +503,35 @@ So the close is: **"We don't need your money. We need your network. Buy a bag, s
 The full deck now has everything — hook, problem, solution, proof, stack, AI-DAO, traction, market, and a three-part relationship ask. I'm ready to build it in the Saffron Monk format: 10 slides, 16:9, real photos from the farm archives, live links verified.
 
 Say go and I'll start assembling.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Don’t mention people dying in rainforest
+
+
+### 🤖 Autopilot
+
+Got it — dropping the "people dying in the rainforest" line entirely. The problem slide now reads purely on the environmental/economic front:
+
+**Problem slide (revised):**
+- Climate change is real and compounding: polar ice melt → **+70m sea-level rise**; **intensifying wildfires, drought, crop failures**
+- Everyday people feel helpless — no simple, personal, verifiable way to act
+- Existing offset markets are opaque and trustless
+
+No human-death framing, no victim imagery — just the climate crisis, the helplessness, and the trust gap. That actually keeps the pitch cleaner and less heavy for an investor room; the emotional hook comes from the *solution* (you can literally buy a bag and watch a tree grow), not from tragedy.
+
+Everything else stays as locked:
+1. Hook — restore 10,000 ha, one cacao at a time
+2. Problem — climate crisis + helplessness + trust gap (no deaths)
+3. Solution — cacao → tree per bag → carbon credit per tree
+4. Live proof — scan, see the tree
+5. Verifiability stack — QR · ledger · TrueChain · Sunmint
+6. AI-run DAO
+7. Traction — 533 bags, 533 trees, 483 contributors
+8. Growth loops
+9. Two-sided market — Brazil supply; US/EU/China demand
+10. Ask — buy a bag, share the word, invest your relationship (distributors + landowners)
+
+Ready to build. Go?
 
