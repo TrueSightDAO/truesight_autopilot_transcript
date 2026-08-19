@@ -23,6 +23,16 @@ Thoughts on the flow??
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: web_extract, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: read_context_file, read_context_file, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me gather the project facts I need to ground the deck, plus check the slide renderer and any prior deck.
 
 
@@ -76,4 +86,51 @@ Pitched to a crypto-angel room in Brazil — lead with the **live, operating** p
 4. **Which entity leads?** TrueSight DAO as the venture, with Agroverse as the operating brand?
 
 Want me to proceed building the deck to this flow (I'll curate photos from the DAO archives + verify all links live), or adjust the flow first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] I think the actual problem is that sea level is going to rise 70 meters if all the Polar's ice cap melts. We really need to figure out a way to capture and carbon sequester right now like their regular everyday person. Doesn't really seem to have any way to help with climate change. So if you helpless and this is like really one very simple accessible way to do so. That is the problem. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That reframing is powerful, Gary. Let me check what tree-planting numbers we actually have so the slide can show real proof, not vibes.
+
+
+### 🤖 Autopilot
+
+Now I have the pieces. Here's how I'd reshape the deck to your reframe:
+
+## The new narrative — "the problem nobody can act on"
+
+**Lead with helplessness, not provenance.** Your point is the killer opener:
+
+- **~70m sea-level rise** if all polar ice melts (that's the existential number — it redraws every coastline on Earth)
+- Every regular person knows climate change is real, but **has no accessible lever** — no way to personally, verifiably sequester carbon
+- Carbon offset markets are opaque, trustless, and feel like a *tax*, not a *choice*
+
+**So: "Every bag of cacao you buy plants a tree — and you can watch it grow."**
+
+That's the reframe. The DAO + QR + TrueChain stack stops being a *features* pitch and becomes **the mechanism that makes personal carbon capture real and verifiable**: you buy a bag → a tree is planted in the Amazon → you scan the QR and see **your** tree, geo-tagged, time-stamped, hash-chained, on the Sunmint farmer app.
+
+## Revised 10-slide flow
+
+| # | Slide | Core message |
+|---|-------|--------------|
+| 1 | **Hook** | "The ice caps melt → +70m sea level. Everyone's helpless. You're not." |
+| 2 | **Problem** | Climate anxiety without agency; offsets are opaque/trustless |
+| 3 | **The mechanism** | Buy cacao → plant a tree → **watch it grow** (QR → farm → geo-tagged photo) |
+| 4 | **Live proof** | Scan the bag: Sunmint tree-planting photos, real, timestamped (we have them in the repo) |
+| 5 | **The verifiability stack** | QR per bag · ledger · TrueChain PoA hash · Sunmint app · lineage credentials |
+| 6 | **AI-run DAO** | Sophia runs ops end-to-end, human governor in the loop — the operating system that makes this cheap enough to scale |
+| 7 | **Traction** | 483 contributors · 10 governors · ~$11.6k treasury + physical cacao inventory · 23 partners · 101 digests · live shop |
+| 8 | **Growth loops** | Every bag is an on-ramp: Email360, partner check-in, beer hall, credentialing lineage |
+| 9 | **Market & LATAM fit** | RWA + ReFi + regenerative agriculture; Florianópolis → Bahia is home turf |
+| 10 | **The ask** | Round + use of funds → scale to 10,000 hectares |
+
+## One thing I need from you
+The **ask/round** — BitAngels requires an *open investment round*, so slide 10 needs the number, structure, and use of funds. What are we raising?
+
+Also — want me to **start building** to this flow (curate real Sunmint tree photos, verify all links live, Saffron Monk format)? Or adjust the narrative first?
 
