@@ -44,6 +44,7 @@ Thoughts on the flow??
 ### 🤖 Autopilot
 
 Let me gather the project facts I need to ground the deck, plus check the slide renderer and any prior deck.
+[3 tool result(s) compacted: search_context, read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -164,4 +165,31 @@ That reframes the mission beautifully: restoring 10,000 hectares isn't an abstra
 So slide 2 becomes: **two victims** — a helpless planet, and the people already dying from the broken water cycle. And the mechanism — buy cacao, plant trees, watch them grow — serves both at once.
 
 Want me to fold this in and start building the deck now?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] I think the hook should be restoring 10,000 hectares of Amazon rainforest, one kakau at the time. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Locked in. That's the hook:
+
+**"Restoring 10,000 hectares of Amazon rainforest — one cacao at a time."**
+
+It's perfect because it does three jobs at once:
+1. States the mission in one line — big, concrete, measurable (hectares, not vibes)
+2. Says the *mechanism* — every cacao bag is a tree — right in the hook
+3. It's warm, memorable, and human — the opposite of "carbon credits" jargon
+
+Then the first slide underneath carries the tension: "70 meters of sea-level rise… people dying of thirst in the rainforest… but here's the one thing every person can do."
+
+The rest of the flow stays as we shaped it — problem → mechanism → live proof → verifiability stack → AI-run DAO → traction → growth loops → LATAM fit → ask.
+
+Two small things before I build:
+1. The hook spells "cacao" — want it with a cacao emoji or the tree leaf 🍫🌱 on the title slide?
+2. Still need the **ask** for the final slide — the round size and use of funds.
+
+If you're happy with the flow, say the word and I'll start assembling the deck now — curating real photos from our Sunmint tree-planting archive, verifying every link live, and building it in the Saffron Monk format.
 
