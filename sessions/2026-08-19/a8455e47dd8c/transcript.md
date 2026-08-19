@@ -4229,6 +4229,12 @@ I'll relay Adriana's quote to you here when she replies.
 ### 🤖 Autopilot
 
 Let me check the event format and log the contribution for both you and Paloma.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4477,4 +4483,53 @@ That's a CNPJ status query result — and the key field is **"REGISTRATION STATU
 3. Then the CNPJ returns to "Ativa" and the NF-e path opens (after renewing e-CNPJ + IE + credentialing)
 
 Want me to add "INAPTA (2+ years missed declarations)" to the SOP's blocker list — clarifying that it's specifically the *declaration-omission* status, not just unpaid taxes?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] is there a way to check the type of CNPJ of this company? And if it can also have an additional director?
+
+
+### 🤖 Autopilot
+
+Let me check the CNPJ's legal nature via public APIs and research whether an Empresário Individual can add a director.
+
+
+### 🤖 Autopilot
+
+I got the **official Receita Federal data** via the Brasil API — this answers both questions definitively:
+
+**1. The type of CNPJ (natureza jurídica):**
+
+- **Natureza Jurídica: "Empresário (Individual)"** — code **213-5**
+- **Porte: MICRO EMPRESA**
+- **Opted into Simples Nacional:** ✅ (since 2023-03-22, still active)
+- **Capital social:** R$ 10,000.00
+- **Main CNAE:** 82.30-0-01 (feiras/exposições) + 8 secondary CNAEs — **none of them cacao/commerce** (confirms the missing-CNAE issue)
+- **QSA (shareholders): EMPTY** — because as Empresário Individual there are no partners; Matheus IS the company
+- **Situação cadastral: INAPTA** (code 4) — **Motivo: "OMISSÃO DE DECLARAÇÕES"** (missed declarations), dated 2026-06-08
+
+**2. Can it have an additional director?**
+
+**Not as-is.** An **Empresário Individual (213-5) cannot have a partner or a second director** — by law it's a single-person business where the owner is the sole administrator. There is **no QSA** to add anyone to.
+
+**BUT — the conversion path exists and it's clean:**
+
+| Option | What it is | Effect |
+|--------|-----------|--------|
+| **Transform to Sociedade Limitada Unipessoal** (natureza 206-2) | Single-person Ltd. — add no partners, but enables **hiring a non-owner administrator** | ✅ You could be named administrator (director) of Black King |
+| **Transform to Sociedade Limitada (Ltda) with partners** (natureza 206-2) | Regular Ltd. with 2+ quotaholders | ✅ You could become a **quotaholder + administrator** |
+
+**Key facts about the conversion (from research):**
+- Done via **DBE event 225** at the Junta Comercial + Receita Federal — can include adding partners **in the same act**
+- The company name must gain "**Ltda**" suffix
+- Requires a new **contrato social** (articles) with an administration clause naming the administrator(s)
+- Can be done **with or without** adding partners (post-2019 Economic Freedom Law allows unipessoal)
+- It's a **transformation, not a new company** — CNPJ stays the same, registrations/NF-e history carry over (though SEFAZ/IE will need updating)
+
+**Practical note for the plan:** This is a bigger structural move than just a procuração (PoA). If the goal is just "Gary can act administratively," the **Procuração Eletrônica** is lighter (no corporate change). If the goal is "Gary as a formal director/owner with authority," the **transformation to Ltda + adding Gary as administrator** is the route — and it dovetails with the "new CNPJ / full-stack" strategy we discussed (you could even fold the new Brazilian entity in here).
+
+Want me to:
+1. Add the CNPJ's confirmed details (213-5, Inapta/omission, no QSA) to the SOP?
+2. Draft the pros/cons comparison (Procuração vs. Ltda transformation) as a decision doc?
 
