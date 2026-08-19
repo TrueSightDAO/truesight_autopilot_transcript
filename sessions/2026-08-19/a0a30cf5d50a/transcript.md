@@ -360,11 +360,13 @@ Wrong deployment ID — let me find the actual /exec URL from the shop code.
 ### 🤖 Autopilot
 
 I have enough to count the ledger directly. Let me tally the SOLD + ASSIGNED_TO_TREE rows programmatically from the data I already pulled.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact endpoint the shop page calls for the trees counter.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -469,4 +471,31 @@ One nuance I'll flag: premium chocolate and voluntary carbon are two *different*
 I now have everything: hook, problem, solution, live proof, stack, AI-DAO, traction (533 bags/533 trees, 483 contributors), market, and the movement ask.
 
 **Ready to build the full deck in Saffron Monk format now.** Shall I go?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Also the ask can be invest your relationship by introducing partners 
+
+- distributors who can help sell the cacao 
+- people who own land who can plant trees
+
+
+### 🤖 Autopilot
+
+That completes the ask beautifully — and it's perfectly tuned for an angel room, because angels don't just write checks, they open doors. So the final slide closes with three asks, in escalating commitment:
+
+1. **Buy a bag** — the smallest yes; every bag plants a tree (agroverse.shop, tag @agroverse.shop)
+2. **Share the word** — become the movement's megaphone on Instagram
+3. **Invest your relationship** — the real ask for this room:
+   - **Distributors** who can sell cacao into retail/wholesale channels (USA, Europe, China demand side)
+   - **Landowners** who can plant trees — farms and land in Brazil (and beyond) to scale the supply side
+
+That third ask is genius for BitAngels specifically: they're the world's first crypto-angel network — their whole value is relationships and networks, not just capital. We're literally asking them to plug us into their distribution and land networks, which is worth more to us right now than money. And it makes them co-owners of the mission, not just spectators.
+
+So the close is: **"We don't need your money. We need your network. Buy a bag, share the word, and introduce us to the people who can move 10,000 hectares."**
+
+The full deck now has everything — hook, problem, solution, proof, stack, AI-DAO, traction, market, and a three-part relationship ask. I'm ready to build it in the Saffron Monk format: 10 slides, 16:9, real photos from the farm archives, live links verified.
+
+Say go and I'll start assembling.
 
