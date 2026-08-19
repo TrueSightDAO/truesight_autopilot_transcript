@@ -4310,6 +4310,7 @@ CNPJ: 50042585000180
 ### 🤖 Autopilot
 
 Let me dig into this. First, let me try to access the system link Matheus sent, and research how to check Brazilian federal tax debts for a CNPJ.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4592,4 +4593,33 @@ Here's the pros/cons — filed as a decision doc:
 **Option C — Hybrid (my recommendation):** PoA now to unblock (CNAE, declarations), regularize Inapta in parallel, then transform to Ltda while the China lane (3–6 months) runs.
 
 Want me to merge #765?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] as a PDF and we have a chat with Vini (the lawyer) later
+
+
+### 🤖 Autopilot
+
+Let me generate a PDF version of the decision doc for your chat with Vini.
+
+
+### 🤖 Autopilot
+
+PDF generated. Now let me send it to you in this thread so you have it for the Vini chat.
+
+
+### 🤖 Autopilot
+
+PDF sent to this thread 📄
+
+**`Black_King_Admin_Access_Options.pdf`** — 3 pages covering:
+- **CNPJ confirmed facts** (Empresário Individual 213-5, Inapta/omissão, empty QSA)
+- **Option A — Procuração Eletrônica** pros/cons
+- **Option B — Ltda transformation** pros/cons
+- **Option C — Hybrid** recommended path
+- **Decision matrix** (9 criteria scored ★)
+
+Also on GitHub at **PR #765** if you want the MD version. Good luck with Vini — happy to fold in his legal read once you've chatted.
 
