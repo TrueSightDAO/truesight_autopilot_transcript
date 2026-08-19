@@ -377,6 +377,7 @@ Let me find the exact endpoint the shop page calls for the trees counter.
 ### 🤖 Autopilot
 
 Let me find the live endpoint URL the shop uses.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -534,4 +535,111 @@ Everything else stays as locked:
 10. Ask — buy a bag, share the word, invest your relationship (distributors + landowners)
 
 Ready to build. Go?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Okay, as an example, the full list of visual images that's relevant for building the slides first. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me inventory the actual image assets in our repos so the list is real, not guessed.
+
+
+### 🤖 Autopilot
+
+Let me get the rest of both asset listings — the full inventory so the image list is complete.
+
+
+### 🤖 Autopilot
+
+Let me check the farms, hero, products, and shipments folders for the specific visual assets that matter for the deck.
+
+
+### 🤖 Autopilot
+
+Let me check the shipments folder (farm photos) and the tree-planting images in truesight_me.
+
+
+### 🤖 Autopilot
+
+Let me find the actual tree-planting photos (Sunmint) — those are the money shots for the deck.
+
+
+### 🤖 Autopilot
+
+Let me check the products folder and hunt for the tree-planting photos (the money shots).
+
+
+### 🤖 Autopilot
+
+Let me hunt for the actual tree-planting photos — the money shots for the deck.
+
+
+### 🤖 Autopilot
+
+One more hunt for the actual tree-planting photos — the money shots.
+
+
+### 🤖 Autopilot
+
+Let me check the lineage-assets repo (photos are often stored there) and the sunmint repo.
+
+
+### 🤖 Autopilot
+
+Found it — the **sunmint** repo is literally "all the photos submitted for our DAO's tree planting efforts." Let me inventory it.
+
+
+### 🤖 Autopilot
+
+I now have a complete, verified inventory of the visual assets. Here's the full list for the deck, mapped to slides:
+
+## 🖼️ Full image asset list for the BitAngels deck
+
+**Repo: `truesight_me_beta` (assets/)**
+| Asset | Use |
+|---|---|
+| `agroverse_logo.jpeg` | Title/footer logo |
+| `agroverse-module.jpg` | Solution slide (brand module) |
+| `sunmint-module.jpg` | Tree-planting / Sunmint slide |
+| `edgar-module.jpg` | Verifiability stack (DAO engine) |
+| `first_commercial_nibs_importing.png` | Traction (real product) |
+| `tdg_token_launch.png` | Token/DAO slide |
+| `coopercabruca_partnership.webp` | Partnerships (supply side) |
+| `ceptox.png` | Cooperative logo (supply) |
+| `assets/shipments/agl0–agl15.avif` | Farm/landing photos (Brazil supply side) |
+| `assets/posts/desert-and-diamond-header.jpg` | Optional (problem/scale) |
+
+**Repo: `agroverse_shop_beta` (assets/images/)**
+| Asset | Use |
+|---|---|
+| `brazilian-rainforest.jpg` | **Hero/problem backdrop** (10.7MB — will compress) |
+| `cacao-journeys-hero.jpg` | Solution/journey |
+| `hero/e671cd_*.jpg` (2) | Hero shots |
+| `farms/paulo_profile_photo.jpeg`, `paulo.jpg` | Farmer face — humanizes supply |
+| `farms/fazenda-santa-ana-itacare.jpg` | Farm photo |
+| `products/oscars-farm.jpeg` | Cacao product |
+| `products/la-do-sitio-farm.jpg` | Cacao product |
+| `products/fazenda-santa-ana-product.jpg` | Product |
+| `products/cacao-nibs.jpeg` | Product |
+| `products/81-dark-chocolate-bar-50g-*.jpg` (3) | Product |
+| `oscar_1.jpeg` | Farmer face |
+| `pacific-coast-highway.jpg` | Journey |
+
+**Repo: `sunmint` (images/) — the tree-planting money shots 🌱**
+- `20250725192619_*.jpg` — tree planting (Jul 2025)
+- `20250801195510_*.jpg` — tree planting (Aug 2025)
+- `20260811173307_*.jpg` — **tree planting Aug 2026** (recent!)
+- `20260819104721_*.jpg`, `20260819104739_*.jpg` — **planted THIS WEEK** (Aug 19, 2026 — the Florianópolis seedlings)
+- `AgACAgEAAxkB...jpg` (several) — Telegram-submitted planting photos
+
+**Repo: `lineage-assets`** — QR codes (`qrs/`) + per-asset provenance manifests — great for the "scan the bag" slide (a real QR visual).
+
+---
+
+That's the complete verified visual inventory. I can now build the deck with **real photos at every step**: rainforest → farmers → cacao → QR → tree seedlings planted this week.
+
+**Ready to build.** Want me to proceed with the Saffron Monk deck now, using the flow we locked (hook → problem → solution → live proof → stack → AI-DAO → traction → market → ask)?
 
