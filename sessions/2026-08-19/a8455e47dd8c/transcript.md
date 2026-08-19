@@ -4174,6 +4174,7 @@ Found Paloma's identity — **Paloma Pinheiro Lecheta** (she's done a PIX with y
 ### 🤖 Autopilot
 
 Let me check the other mailbox too.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4190,6 +4191,7 @@ Found everything I need:
 **Paloma's email:** `paloma@founderhaus.club` (Paloma Lecheta — note: an earlier invite to `paloma@founderhaus.cluh` bounced due to typo; `.club` is correct)
 
 Now let me save the signed PDF to the repo AND send the email to Adriana with the PDF attached + CC Paloma.
+[2 tool result(s) compacted: upload_local_file_to_github, gmail_send — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4425,4 +4427,54 @@ As a foreigner abroad, since **Jan 1, 2026 only a valid passport** is accepted (
 4. Matheus grants Procuração Eletrônica → you can administer Black King's federal affairs
 
 **Note on your existing CPF:** The Operating Agreement shows you already have **CPF 039.733.078-22** — so if that's active, you skip Step 1 and just need the gov.br account + e-CPF certificate + annual recadastramento if you live abroad. Want me to check if your CPF is already linked to anything in our records, or draft the email to Vini about the e-CPF certificate?
+
+
+### 🧑 Governor
+
+I got access to the site and it shows this. What does it mean?
+
+[Attachment auto-processed: **a6db28068fba4c5494c87de2da3063c1.jpg**]
+- Type: Image (OCR confidence: 67.5%, quality: good)
+
+Extracted text:
+```
+BRAZIL Keepit simple! ComunicaBR Participate Access to informat Legislation Channels Search results One result was found. Sort By | Name ¥ SERVICES MATHEUS REIS PEREIRA. ‘cNPs 50.042.585/0001-80 REGISTRATION STATUS UNE uF BA
+```
+
+
+### 🤖 Autopilot
+
+Let me verify what this status code means — "UNE" isn't a standard Receita Federal status, so I want to check before interpreting.
+
+
+### 🤖 Autopilot
+
+That's a CNPJ status query result — and the key field is **"REGISTRATION STATUS"** followed by a garbled value. Let me decode it:
+
+**What's on screen:**
+- **MATHEUS REIS PEREIRA** — legal name (razão social) of Black King
+- **CNPJ 50.042.585/0001-80** — the company
+- **REGISTRATION STATUS: "UNE"** — this is the situação cadastral
+- **UF: BA** — registered in Bahia (correct)
+
+**About "UNE":** That's **not a standard Receita Federal status** — the five official ones are:
+
+| Status | Meaning |
+|--------|---------|
+| **Ativa** | ✅ Regular, operating |
+| **Suspensa** | ⚠️ Temporary irregularity (e.g. address mismatch, activity not validated) |
+| **Inapta** | 🔴 Missed mandatory declarations for 2+ consecutive years — **blocks operations** |
+| **Baixada** | Closed/terminated |
+| **Nula** | Voided (fraud/grave irregularity) |
+
+"UNE" is almost certainly **OCR garble of "INAPTA"** — the I, A, P, T letters got mangled. That matches exactly what Matheus reported earlier (SEBRAE saw "Inapto" status), and it's the status that blocks him from issuing NF-e.
+
+**So the meaning:** Black King's CNPJ is in **"Inapta"** cadastral status — meaning the company **failed to file mandatory declarations for two or more consecutive years** (per IN RFB 2.119/2022, art. 40). This is a *registration* status, separate from tax debts — but both feed the same "can't issue NF-e" wall.
+
+**To confirm + fix:**
+1. Double-check the exact spelling by pulling the official **Comprovante de Inscrição** at `solucoes.receita.fazenda.gov.br` (Consulta CNPJ) — it will say "INAPTA" in full
+2. **Fix = file the missed declarations** (DCTF, ECF, ECD, DAS) via e-CAC — this is usually the fastest unlock (often faster than paying debts)
+3. Then the CNPJ returns to "Ativa" and the NF-e path opens (after renewing e-CNPJ + IE + credentialing)
+
+Want me to add "INAPTA (2+ years missed declarations)" to the SOP's blocker list — clarifying that it's specifically the *declaration-omission* status, not just unpaid taxes?
 
