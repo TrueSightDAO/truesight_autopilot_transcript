@@ -565,26 +565,31 @@ Let me inventory the actual image assets in our repos so the list is real, not g
 ### 🤖 Autopilot
 
 Let me get the rest of both asset listings — the full inventory so the image list is complete.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the farms, hero, products, and shipments folders for the specific visual assets that matter for the deck.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the shipments folder (farm photos) and the tree-planting images in truesight_me.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual tree-planting photos (Sunmint) — those are the money shots for the deck.
+[2 tool result(s) compacted: search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the products folder and hunt for the tree-planting photos (the money shots).
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -686,4 +691,91 @@ It's saved to the session archive. Want me to copy it into the deck's asset fold
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/tg_attachments/fffcfa9b411d4deb99e2e3149f5a440d.jpg && python3 -c "from PIL import Image; im=Image.open('/tmp/tg_attachments/fff
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-19/c10c0159ebb5/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] [Handoff context — this Telegram topic (thread 11373) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead and compile the slides
+
+
+### 🤖 Autopilot
+
+Let me find the deck standard and any BitAngels deck plan in context.
+
+
+### 🤖 Autopilot
+
+The standard is clear — reportlab/PIL Saffron Monk, not generate_pdf. Let me grab the reusable template and check the box for the prior build script.
+
+
+### 🤖 Autopilot
+
+All the pieces are in place — the Saffron Monk renderer, curated photos already on the box (including the sunmint tree-planting shots), and the CSO photo. Let me verify the live links I'll embed, then build.
+
+
+### 🤖 Autopilot
+
+All key links verified live (agroverse.shop, truesight.me, Instagram, Luma). Now let me stage the last two visual assets — the CSO photo and this week's tree-planting photos — and check the DApp link.
+
+
+### 🤖 Autopilot
+
+All assets staged and links verified. Now I'll build the deck — writing the Saffron Monk build script with the locked 10-slide flow and running it.
+
+
+### 🤖 Autopilot
+
+Just a filename mismatch — the downloaded files were saved with shorter names. Let me fix and rerun.
+
+
+### 🤖 Autopilot
+
+The QR `resize` needs a tuple — let me fix that.
+
+
+### 🤖 Autopilot
+
+Deck built — 10 pages, 4.1MB. Let me validate it per the standard (page count, links, overspill) and send it to you.
+
+
+### 🤖 Autopilot
+
+Validated — PDF 1.4, 10 pages, 32 live links. Sending the deck to you now.
+
+
+### 🤖 Autopilot
+
+Deck sent! 📊 **TrueSightDAO_bitangels_magic_island.pdf** — 10 slides, 4.1MB, Saffron Monk format per the deck standard.
+
+## What's inside (your locked flow)
+
+| # | Slide | Visual |
+|---|-------|--------|
+| 1 | **Hook** — Restore 10,000 ha, one cacao at a time | Rainforest full-bleed |
+| 2 | **Problem** — +70m sea level, wildfires/drought/crop failures, helplessness, trustless offsets | Your CSO Climate Week photo |
+| 3 | **Solution** — buy cacao → plant a tree → verified carbon credit | Young cocoa tree |
+| 4 | **Live proof** — scan the bag, see your tree (with QR image → agroverse.shop) | Sunmint Aug 2026 planting |
+| 5 | **Provenance stack** — QR · Sheets · TrueChain · Sunmint · lineage | Lineage hero |
+| 6 | **AI-run DAO** — Sophia runs ops, human in the loop | Amazon river sunset |
+| 7 | **Traction** — 533 bags → 533 trees · 483 contributors · 10 governors · live shop | Farm photo (Gary/Emelin/Oscar) |
+| 8 | **Growth loops** — every bag is an on-ramp | Lumin Earth cacao cup |
+| 9 | **Two-sided market** — Brazil supply · US/EU/China demand | Cocoa ripe pods |
+| 10 | **Ask** — buy a bag · share the word · invest your relationship (distributors + landowners) | Seedlings planted this week 🌱 |
+
+## Verified
+- ✅ 10 pages, PDF 1.4, **32 clickable links** — all live (agroverse.shop, truesight.me, dapp, Instagram, TrueChain, sunmint, Luma, inventory)
+- ✅ Every text wrapped (no overspill), Saffron palette, cream panels, dim overlays
+
+## Notes / things you may want to tweak
+1. **Numbers** — 533 bags/trees & $11.6k treasury pulled from live sources earlier today; if you have fresher figures, tell me and I'll swap.
+2. **Slide 2 caption** mentions the CSO photo — good contrast opener.
+3. The QR on slide 4 links to agroverse.shop; if you'd rather it link to a specific trace page, say the word.
+
+Want me to adjust anything — wording, images, or the band text (it currently says "BITANGELS MAGIC ISLAND DEMO DAY · FLORIANÓPOLIS")?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → ls -la /tmp/slides_img/ 2>/dev/null; ls -la /tmp/*.pdf 2>/dev/null | head -20; which reportlab python3; python3 -c "import reportlab, PIL; p; cd /tmp/slides_img && cp /tmp/tg_attachments/fffcfa9b411d4deb99e2e3149f5a440d.jpg ./cso-climate-week.jpg && curl -sL -o sunmint_202608191047; cat > /tmp/slides_img/build_bitangels_deck.py << 'PYEOF' #!/usr/bin/env python3 """BitAngels Magic Island Demo Day deck - Saffron Monk 16:9 ; …(+3 more)
 
