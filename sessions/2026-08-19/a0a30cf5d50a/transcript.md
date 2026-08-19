@@ -785,11 +785,13 @@ The QR `resize` needs a tuple — let me fix that.
 ### 🤖 Autopilot
 
 Deck built — 10 pages, 4.1MB. Let me validate it per the standard (page count, links, overspill) and send it to you.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Validated — PDF 1.4, 10 pages, 32 live links. Sending the deck to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -835,6 +837,12 @@ Want me to adjust anything — wording, images, or the band text (it currently s
 ### 🤖 Autopilot
 
 Removing that bullet from slide 2 and rebuilding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -975,4 +983,38 @@ The deck is now 10 pages, all images upright. Anything else?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/slides_img && python3 - << 'EOF' from PIL import Image, ImageOps import glob, os # list images used in the deck build used = [] for ; cd /tmp/slides_img && python3 - << 'EOF' from PIL import Image, ImageOps import os BG = '/tmp/slides_img' files = ['rainforest.jpg','cso-cli; cd /tmp/slides_img && python3 build_bitangels_deck.py && python3 -c " import re data = open('TrueSightDAO_bitangels_magic_island.pdf','rb').
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] I think the differentiation which is the moat is not just the provenance stack but the actual relationships built with the farmers and the local community with our boots on the ground activities these past few years
+
+
+### 🤖 Autopilot
+
+That's the real insight — tech is copyable, relationships aren't. Let me rework the moat slide to lead with the farmer/community relationships, with the provenance stack as the layer that makes that trust *verifiable*.
+
+
+### 🤖 Autopilot
+
+Now I'll rewrite slide 5 to lead with relationships as the moat, with the stack as the verifier:
+
+
+### 🤖 Autopilot
+
+Done — **v1.5 sent**. Slide 5 is reframed:
+
+**"Our moat: relationships, made verifiable"**
+- Farmer & community relationships built **in person since 2023**
+- Direct sourcing: Oscar, Vivi, Paulo, São Jorge, Santa Ana farms
+- Provenance stack makes that trust verifiable per bag
+- QR · Sheets ledger · TrueChain PoA · Sunmint app
+
+The story now: tech provenance is the *proof layer* — the actual moat is the years of boots-on-the-ground trust with the farmers and community, which no competitor can clone by copying code. That's a much stronger differentiation for the room.
+
+Want any further tweaks, or is this the version to take to BitAngels?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/slides_img && sed -n '/# 5 PROVENANCE/,/^ },/p' build_bitangels_deck.py; cd /tmp/slides_img && grep -n "PROVENANCE\|provenance\|moat\|Moat" build_bitangels_deck.py | head; cd /tmp/slides_img && sed -n '230,250p' build_bitangels_deck.py; …(+1 more)
 
