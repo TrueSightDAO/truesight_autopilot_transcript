@@ -105,11 +105,18 @@ Can you help assemble a slide in pdf format. Dig into conversations I had with G
 ### 🤖 Autopilot
 
 Let me read the exact Gianluca follow-up entry in OPEN_FOLLOWUPS.md:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact Gianluca follow-up entry region:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -745,4 +752,112 @@ Also updated **"What we're asking from CEPOTX"** to add: one pilot farm for the 
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-19/49844ba129a1/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Dig deep with images and compile visual slides in pdf format
+
+
+### 🤖 Autopilot
+
+Gary wants visual slides — I'll pull real images (DAO assets + web) and compose a proper image-rich slide deck locally. Let me first discover what image assets exist in our repos and find key external images.
+
+
+### 🤖 Autopilot
+
+Let me find image assets — checking the sunmint images folder, local tooling, and key external images in parallel:
+
+
+### 🤖 Autopilot
+
+Real assets found — sunmint has DAO field photos, and I have reportlab + PIL + ImageMagick on the box for a proper visual build. Let me download the DAO images, check tooling, and find the Frasky photo URL:
+
+
+### 🤖 Autopilot
+
+5 real DAO field photos downloaded (sunmint program). Now let me check what they show (OCR), and hunt the Frasky robot image on the official IIT page:
+
+
+### 🤖 Autopilot
+
+Let me grab the Frasky image from the official IIT page:
+
+
+### 🤖 Autopilot
+
+Found the official Frasky photo URL. Now let me grab it, find a real QR PNG from lineage-assets, and check for branding assets:
+
+
+### 🤖 Autopilot
+
+I have a solid visual asset set: 5 real SunMint field photos, the official Frasky robot photo (IIT), real QR PNGs from lineage-assets, plus reportlab/PIL/ImageMagick on the box. Now I'll build a proper 16:9 visual deck. First, grab a real QR PNG:
+
+
+### 🤖 Autopilot
+
+All assets staged. Now I'll build the full visual slide deck (16:9, brand-styled) with a Python reportlab script:
+
+
+### 🤖 Autopilot
+
+Built successfully (552 KB, 8 slides). Let me verify the PDF renders correctly before sending:
+
+
+### 🤖 Autopilot
+
+pdfinfo/pdftoppm aren't installed. Let me verify the PDF with Python instead:
+
+
+### 🤖 Autopilot
+
+fitz (PyMuPDF) is available — let me render page previews and verify visually:
+
+
+### 🤖 Autopilot
+
+All 8 pages render with correct content. Let me do a final integrity check that images are embedded, then send:
+
+
+### 🤖 Autopilot
+
+All 7 images embedded correctly. Sending the visual deck:
+
+
+### 🤖 Autopilot
+
+✅ **Visual slide deck sent** — 8 slides, 16:9, real imagery.
+
+## What's in the deck
+
+| # | Slide | Visual |
+|---|-------|--------|
+| 1 | **Cover** — Agroverse × CEPOTX, four ways to collaborate | SunMint field photo, mission banner |
+| 2 | **Who we are** — DAO/Agroverse intro, mission, why CEPOTX | Field photo |
+| 3 | **Pillar 1 · Finance** — upfront tree-planting financing | Field photo |
+| 4 | **Pillar 2 · Pre-order + traceability** — factory bars → USA, QR + TrueChain, sensor-verified provenance | Field photo + **real DAO QR code** |
+| 5 | **Pillar 3 · Carbon + Tuya IoT** — sensors, LoRa, MRV → credits, bean-quality × environment | Field photo |
+| 6 | **Pillar 4 · Robots** — Frasky reference, 4-problem table, barter model, pilot | **Official IIT Frasky photo** |
+| 7 | **The closed loop** — financing → planting → monitoring → product → market → reinvestment | Diagram (6 boxes + arrows) |
+| 8 | **The ask + mission tie-back** — receptiveness, site visit, pilot farms, PT-BR | Two-panel layout |
+
+## Image sources (all real, none AI-generated)
+- **5 SunMint program field photos** — pulled from `TrueSightDAO/sunmint/images` (our actual farms)
+- **Frasky robot** — official IIT photo (`opentalk.iit.it`, press-release image)
+- **QR code** — real Agroverse bag QR from `lineage-assets/pngs` (`2023SA_81PB_20260412_1.png`)
+
+## Verified
+- 8 pages, 7 embedded images, text confirmed on every page via PyMuPDF render ✅
+- Brand-styled (saffron headers, cream/green/brown palette), 552 KB
+
+## Next options
+1. **PT-BR version** of this visual deck for the farmers/directors
+2. **Edits** — swap photos, adjust wording, add real numbers (ha targets, financing terms)
+3. Upload a copy to the repo (e.g. `agentic_ai_context/` or a `reports/` folder) for the record
+
+Want any of those?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import PIL; print('PIL', PIL.__version__)" 2>&1; pyth; cd /tmp && mkdir -p slide_assets && cd slide_assets && for f in 20250725192619_MIIBIjANBgkqhkiG9w0B 20250801195510_MIIBIjANBgkqhkiG9w0B 2026; cd /tmp/slide_assets && for f in *.jpg; do echo "=== $f ==="; tesseract "$f" - 2>/dev/null | head -6; done; …(+7 more)
 
