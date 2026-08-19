@@ -4144,6 +4144,7 @@ Once she replies with rates, I'll relay the quote to you here so you can decide.
 ### 🤖 Autopilot
 
 Let me first inspect the PDF file in detail, and search for Paloma's email address.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4280,4 +4281,57 @@ Black King **cannot issue the NF-e** — three concurrent causes:
 **Fallback:** Coopercabruca (Itabuna) already has IE + NF-e capability — Appendix B covers the indirect-export route.
 
 Want me to pull up any specific phase in full detail, or the cost-summary/timeline tables at the end?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Matheus is mentioning that he is not able to issue any nota fiscal exportação because of previous owing taxes to the Brazil government dig deep to figure out how to find the actual amount owing via government systems and then revert with insights 
+
+This is the system he sent us 
+
+Serviços da Receita Federal https://share.google/zE9F6iHDjdgL1ZDEH
+
+CNPJ: 50042585000180
+
+
+### 🤖 Autopilot
+
+Let me dig into this. First, let me try to access the system link Matheus sent, and research how to check Brazilian federal tax debts for a CNPJ.
+
+
+### 🤖 Autopilot
+
+The share link can't be extracted directly (it's a Google share shortlink). Let me chase it via HTTP redirect and research the exact government systems to find the debt amounts.
+
+
+### 🤖 Autopilot
+
+Here's my deep-dive on how to find the **actual amount Black King owes** via government systems:
+
+**First — what Matheus's link actually is:**
+The share link (`share.google/zE9F6iHDjdgL1ZDEH`) resolves to the **Portal de Serviços Digitais da Receita Federal** (`servicos.receitafederal.gov.br/lista-grupo?categoria=22`) — the federal services directory. So he's pointing you at the Receita Federal self-service portal (likely the **Situação Fiscal / Pendências** category).
+
+**The systems that show the ACTUAL amounts (this is the key insight — there are 3 layers):**
+
+| # | System | What it shows | Who can see it |
+|---|--------|--------------|----------------|
+| 1 | **e-CAC → "Consulta Pendências – Situação Fiscal"** | The **master report**: every federal debt with **exact values**, tax type, status (under RFB control vs. Dívida Ativa), declarations missed (DCTF/ECF/ECD), parcelamentos | CNPJ holder via **gov.br login** or e-CNPJ cert |
+| 2 | **REGULARIZE (PGFN)** → "Consultar Dívida Ativa" | Debts already inscribed in **Dívida Ativa da União** — exact amounts + interest/fines, and the tools to **negotiate** (parcelamento up to 60x, transação with up to 65–70% discount) | Must **register the CNPJ on REGULARIZE** first (senha, cert, or via e-CAC) |
+| 3 | **Certidão Conjunta (CND)** — RFB/PGFN | Negative / Positive / "Positive with effects of Negative" status — tells you if the company can issue NF-e/operate | Public (CNPJ + verification code) |
+
+**Critical detail for Matheus:** His **e-CNPJ certificate is expired** (early June — already in our SOP), so he **cannot** log into e-CAC with it right now. He must use either:
+- **conta gov.br** (if his account is Prata/Ouro level and linked to the CNPJ), or
+- **renew the e-CNPJ** first (needed anyway for SEFAZ-BA + NF-e emission)
+
+**The "Inapto" status is a separate, cadastral problem** from the debts: it's the CNPJ's *situação cadastral* (often triggered by missed declarations like DCTF/ECF, or unpaid DAS for Simples Nacional). You check it publicly at `solucoes.receita.fazenda.gov.br` (Consulta CNPJ) — but it shows **status only, no amounts**. The **amounts** live in e-CAC's Situação Fiscal report and REGULARIZE.
+
+**Recommended path to get the exact number (give this to Matheus):**
+1. Log into **e-CAC** (gov.br or renewed cert) → **Consulta Pendências – Situação Fiscal** → generate the report → that's the full list with values
+2. Register the CNPJ on **REGULARIZE** (regularize.pgfn.gov.br) → "Consultar Dívida Ativa" → exact inscribed amounts
+3. Pull the **Certidão Conjunta** to see the overall "regular/irregular" status
+4. Pay or negotiate (parcelamento/transação) → once cleared, CNPJ exits "Inapto" and NF-e unlocks
+
+**One thing I can't do:** log into e-CAC/REGULARIZE on his behalf — those need his credentials/certificate. But I can draft a precise step-by-step (in PT) to send to Matheus so he pulls the exact amounts himself.
+
+Want me to draft that PT step-by-step email to Matheus, and also add a "Check CNPJ tax debts" step to the SOP's Phase 0 pre-flight?
 
