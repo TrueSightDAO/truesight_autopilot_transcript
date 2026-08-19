@@ -928,11 +928,13 @@ Done — **v1.2 sent**. Changes:
 ### 🤖 Autopilot
 
 Removing that line from the provenance stack slide and rebuilding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Removed — links now 30 (was 32, minus the 2 URIs from that removed line). Sending v1.3:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -961,11 +963,13 @@ Anything else to adjust, or is this ready?
 ### 🤖 Autopilot
 
 Let me check which images are used and whether any carry EXIF rotation that reportlab isn't honoring.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — three images carry EXIF orientation 6 (90° rotated) and reportlab ignores EXIF: `young-cocoa-tree.jpg` (solution slide), `gary-emelin-oscar-farm.jpg` (traction), `lumin-earth-cacao-cup.jpg` (growth loops). Fix: pre-transpose all deck images so they're physically upright, then rebuild.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1056,4 +1060,43 @@ Anything else, or is this the final version?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/slides_img && sed -n '/# 8 GROWTH/,/^ },/p' build_bitangels_deck.py; grep -n "8 GROWTH" build_bitangels_deck.py; cd /tmp/slides_img && python3 - << 'EOF' p = 'build_bitangels_deck.py' s = open(p).read() old = ''' "bullets": [ "Email360 outreach \\u00b7
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] I think it is actually three sided market place since DAO community is the third side 
+
+This is the side that helps build and discover and expand the other two sides
+
+
+### 🤖 Autopilot
+
+Good point — the DAO community is the growth engine that builds and expands the other two sides. Let me check slide 9's current content and rework it to three-sided.
+
+
+### 🤖 Autopilot
+
+Now reworking slide 9 to a three-sided marketplace, with the DAO community as the engine side:
+
+
+### 🤖 Autopilot
+
+Done — **v1.7 sent**. Slide 9 is now **"A three-sided marketplace"**:
+
+- **Supply** — Bahia + Pará cacao farms and tree planting
+- **Demand** — USA · Europe · China
+- **DAO community** — 483 contributors building, discovering, expanding the other two sides
+- Plus the market sizes (premium chocolate $28.6B, voluntary carbon $16B→$120B) and the Florianópolis home-turf line
+
+This is a sharper model — the DAO isn't just an operator, it's the *growth side* that discovers new farms (supply) and new buyers (demand). That's also what makes the ask click: angels' relationships feed the DAO side, which compounds both markets.
+
+Anything else, or is this the one?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/slides_img && sed -n '/# 9 MARKET/,/^ },/p' build_bitangels_deck.py; grep -n "9 MARKET\|two-sided\|Two-sided" build_bitangels_deck.py; cd /tmp/slides_img && python3 - << 'EOF' p = 'build_bitangels_deck.py' s = open(p).read() old = ''' "title_lines": [ ("A two-sided marketplace", "Helvetica-Bold", 24), ], "subtitle": "Brazil supplies \\u00b7 the world demands", "bullets": [ "Supply: Bahia + Par\\u00e1 cacao farms and tree planting", "Demand: USA \\u00b7 Europe \\u00b7 China", "Premium chocolate ~$28.6B (2025), ~9% CAGR", "Voluntary carbon ~$16B (2025) \\u2192 ~$120B by 2030", ("Pitching from Florian\\u00f3polis \\u2014 home turf", LUMA), ],''' new = ''' "title_lines": [ ("A three-sided marketplace", "Helvetica-Bold", 24), ], "subtitle": "Supply \\u00b7 Demand \\u00b7 the DAO that builds both", "bullets": [ "Supply: Bahia + Par\\u00e1 cacao farms and tree planting", "Demand: USA \\u00b7 Europe \\u00b7 China", "DAO community: 483 contributors building, discovering, expanding", "Premium chocolate ~$28.6B (2025), ~9% CAGR", "Voluntary carbon ~$16B (2025) \\u2192 ~$120B by 2030", ("Pitching from Florian\\u00f3polis \\u2014 home turf", LUMA), ],''' assert old in s, "pattern not found" s = s.replace(old, new) open(p, 'w').write(s) print("slide 9 updated") EOF python3 build_bitangels_deck.py && python3 -c " data = open('TrueSightDAO_bitangels_magic_island.pdf','rb').read() print('Pages:', data.count(b'/Type /Page') - data.count(b'/Type /Pages')) "</｜｜DSML｜｜parameter>
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/slides_img && sed -n '/# 9 MARKET/,/^ },/p' build_bitangels_deck.py; grep -n "9 MARKET\|two-sided\|Two-sided" build_bitangels_deck.p; cd /tmp/slides_img && sed -n '290,315p' build_bitangels_deck.py; cd /tmp/slides_img && python3 - << 'EOF' p = 'build_bitangels_deck.py' s = open(p).read() old = ''' "title_lines": [ ("A two-sided marketpla
 
