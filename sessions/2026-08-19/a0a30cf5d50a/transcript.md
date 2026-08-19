@@ -767,16 +767,19 @@ All key links verified live (agroverse.shop, truesight.me, Instagram, Luma). Now
 ### 🤖 Autopilot
 
 All assets staged and links verified. Now I'll build the deck — writing the Saffron Monk build script with the locked 10-slide flow and running it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Just a filename mismatch — the downloaded files were saved with shorter names. Let me fix and rerun.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR `resize` needs a tuple — let me fix that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -935,4 +938,41 @@ Anything else to adjust, or is this ready?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/slides_img && grep -n "Lineage credentials" build_bitangels_deck.py && sed -i '/Lineage credentials \\u2014 humans + acts/d' build_b
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Can we make sure the images are oriented properly some of them are not Straight but sideways
+
+
+### 🤖 Autopilot
+
+Let me check which images are used and whether any carry EXIF rotation that reportlab isn't honoring.
+
+
+### 🤖 Autopilot
+
+Found it — three images carry EXIF orientation 6 (90° rotated) and reportlab ignores EXIF: `young-cocoa-tree.jpg` (solution slide), `gary-emelin-oscar-farm.jpg` (traction), `lumin-earth-cacao-cup.jpg` (growth loops). Fix: pre-transpose all deck images so they're physically upright, then rebuild.
+
+
+### 🤖 Autopilot
+
+All three rotated images are now physically upright (EXIF baked in). Rebuilding and sending:
+
+
+### 🤖 Autopilot
+
+Done — **v1.4 sent**. Fixed image orientation:
+
+- **3 images** had EXIF orientation 6 (90° sideways) that reportlab ignores — now baked upright:
+  - Slide 3 Solution: young cocoa tree
+  - Slide 7 Traction: farm photo (Gary/Emelin/Oscar)
+  - Slide 8 Growth loops: Lumin Earth cacao cup
+- The other 7 images were already oriented correctly.
+
+The deck is now 10 pages, all images upright. Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/slides_img && python3 - << 'EOF' from PIL import Image, ImageOps import glob, os # list images used in the deck build used = [] for ; cd /tmp/slides_img && python3 - << 'EOF' from PIL import Image, ImageOps import os BG = '/tmp/slides_img' files = ['rainforest.jpg','cso-cli; cd /tmp/slides_img && python3 build_bitangels_deck.py && python3 -c " import re data = open('TrueSightDAO_bitangels_magic_island.pdf','rb').
 
