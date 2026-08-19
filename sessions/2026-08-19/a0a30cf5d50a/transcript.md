@@ -33,6 +33,16 @@ Thoughts on the flow??
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me gather the project facts I need to ground the deck, plus check the slide renderer and any prior deck.
 
 
@@ -133,4 +143,25 @@ That's the reframe. The DAO + QR + TrueChain stack stops being a *features* pitc
 The **ask/round** — BitAngels requires an *open investment round*, so slide 10 needs the number, structure, and use of funds. What are we raising?
 
 Also — want me to **start building** to this flow (curate real Sunmint tree photos, verify all links live, Saffron Monk format)? Or adjust the narrative first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Meanwhile, the other part of the problem is that people living in Lennon either die of wild forest fire or from thirst because there's no more water. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's the second half of the problem, and it's what makes the story human — thank you for adding it.
+
+So the problem has two faces:
+
+- **Globally:** the everyday person feels helpless — no accessible lever to actually pull carbon out of the air.
+- **Locally:** the people who live in the rainforest are dying either in wildfires or from thirst — because when you cut the forest, you break the water cycle. The Amazon generates a huge share of its own rainfall, and it sends "flying rivers" of moisture down to southern Brazil — which is where this event is. Deforestation doesn't just burn the trees, it dries out the whole region and eventually the people who depend on it.
+
+That reframes the mission beautifully: restoring 10,000 hectares isn't an abstract carbon number — it's a forest that makes its own rain, protects the people living under it, and gives everyone else on Earth a simple, verifiable way to help.
+
+So slide 2 becomes: **two victims** — a helpless planet, and the people already dying from the broken water cycle. And the mechanism — buy cacao, plant trees, watch them grow — serves both at once.
+
+Want me to fold this in and start building the deck now?
 
