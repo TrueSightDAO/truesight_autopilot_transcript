@@ -4150,16 +4150,19 @@ Let me first inspect the PDF file in detail, and search for Paloma's email addre
 ### 🤖 Autopilot
 
 Let me redo the file inspection and find Paloma's email.
+[2 tool result(s) compacted: ssh_run, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me inspect the PDF pages in detail and find Paloma's email address.
+[2 tool result(s) compacted: ssh_run, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF inspection is very informative. Let me find Paloma's email address to CC her.
+[2 tool result(s) compacted: gmail_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4334,4 +4337,38 @@ The share link (`share.google/zE9F6iHDjdgL1ZDEH`) resolves to the **Portal de Se
 **One thing I can't do:** log into e-CAC/REGULARIZE on his behalf — those need his credentials/certificate. But I can draft a precise step-by-step (in PT) to send to Matheus so he pulls the exact amounts himself.
 
 Want me to draft that PT step-by-step email to Matheus, and also add a "Check CNPJ tax debts" step to the SOP's Phase 0 pre-flight?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Draft up precise steps
+
+
+### 🤖 Autopilot
+
+Drafting a precise step-by-step email to Matheus now (in Portuguese, since he's the one who'll execute it).
+
+
+### 🤖 Autopilot
+
+Draft ready (not sent). Here's what I prepared for Matheus:
+
+**📧 Draft to Matheus** (in Portuguese, `theus.reis.ssa@gmail.com`)
+**Subject:** "Passo a passo: descobrir o valor exato dos débitos do CNPJ 50.042.585/0001-80"
+
+**The 4-step sequence:**
+
+1. **e-CAC → Consulta Pendências – Situação Fiscal** — the master report with EXACT values for every debt, missed declarations (DCTF/ECF/ECD/DAS), and whether each debt is at RFB or Dívida Ativa. *Note: since his e-CNPJ is expired, he logs in via gov.br (Prata/Ouro) or must renew the cert.* → save PDF, send to us
+
+2. **REGULARIZE (PGFN)** — exact amounts for debts already inscribed in Dívida Ativa (principal + interest + fines + charges), plus negotiation tools: pay at once, parcel up to 60x, or **transação tributária with 65–70% discount** for Simples Nacional — worth trying first
+
+3. **Certidão Conjunta (CND)** — public status check (currently "Positiva"/irregular; needs to become Negativa)
+
+4. **Regularize in the right order** — (a) file missed declarations first (often the "Inapto" trigger is declaration omission, not just the debt), (b) pay/negotiate, (c) CNPJ exits Inapto in 24–72h, (d) renew e-CNPJ → IE → NF-e credentialing → issue export NF-e
+
+**Also asks Matheus to send back:** (1) e-CAC report PDF, (2) REGULARIZE debt list, (3) CND status screenshot — so we can advise pay vs. installment vs. transação.
+
+**Draft ID:** `r1926398965781322767`
+
+Want me to send it?
 
