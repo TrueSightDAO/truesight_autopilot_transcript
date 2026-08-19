@@ -595,21 +595,30 @@ Let me check the products folder and hunt for the tree-planting photos (the mone
 ### 🤖 Autopilot
 
 Let me hunt for the actual tree-planting photos — the money shots for the deck.
+[2 tool result(s) compacted: search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more hunt for the actual tree-planting photos — the money shots.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the lineage-assets repo (photos are often stored there) and the sunmint repo.
+[2 tool result(s) compacted: http_fetch, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the **sunmint** repo is literally "all the photos submitted for our DAO's tree planting efforts." Let me inventory it.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -676,7 +685,28 @@ Image of chief sustainability officers of Silicon Valley tech startups during cl
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me locate the exact file just attached.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -698,6 +728,11 @@ It's saved to the session archive. Want me to copy it into the deck's asset fold
 [Telegram context: chat_id=-1003919341801, thread_id=11373] [Handoff context — this Telegram topic (thread 11373) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
 Go ahead and compile the slides
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -778,4 +813,31 @@ Want me to adjust anything — wording, images, or the band text (it currently s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → ls -la /tmp/slides_img/ 2>/dev/null; ls -la /tmp/*.pdf 2>/dev/null | head -20; which reportlab python3; python3 -c "import reportlab, PIL; p; cd /tmp/slides_img && cp /tmp/tg_attachments/fffcfa9b411d4deb99e2e3149f5a440d.jpg ./cso-climate-week.jpg && curl -sL -o sunmint_202608191047; cat > /tmp/slides_img/build_bitangels_deck.py << 'PYEOF' #!/usr/bin/env python3 """BitAngels Magic Island Demo Day deck - Saffron Monk 16:9 ; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Remove mention about offset market being opaque.
+
+
+### 🤖 Autopilot
+
+Removing that bullet from slide 2 and rebuilding.
+
+
+### 🤖 Autopilot
+
+Done — **v1.1 sent**. The Problem slide now reads:
+
+- Polar ice melt → up to +70m sea-level rise
+- Wildfires intensify · drought deepens · crops fail
+- Everyday people feel helpless — no simple, personal lever
+
+(Removed "Offset markets are opaque and trustless" as requested. Still 10 pages, 32 live links.)
+
+Want any other tweaks, or is this good to go?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && sed -i '/Offset markets are opaque and trustless/d' build_bitangels_deck.py && grep -n "Offset" build_bitangels_deck.p
 
