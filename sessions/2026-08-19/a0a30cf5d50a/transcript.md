@@ -749,16 +749,19 @@ Let me find the deck standard and any BitAngels deck plan in context.
 ### 🤖 Autopilot
 
 The standard is clear — reportlab/PIL Saffron Monk, not generate_pdf. Let me grab the reusable template and check the box for the prior build script.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All the pieces are in place — the Saffron Monk renderer, curated photos already on the box (including the sunmint tree-planting shots), and the CSO photo. Let me verify the live links I'll embed, then build.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All key links verified live (agroverse.shop, truesight.me, Instagram, Luma). Now let me stage the last two visual assets — the CSO photo and this week's tree-planting photos — and check the DApp link.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -899,4 +902,37 @@ Done — **v1.2 sent**. Changes:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/slides_img && python3 - << 'EOF' p = 'build_bitangels_deck.py' s = open(p).read() s = s.replace('Email360 outreach \\u00b7 partner c; cd /tmp/slides_img && grep -n "Beer Hall" build_bitangels_deck.py; cd /tmp/slides_img && sed -n '250,275p' build_bitangels_deck.py; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11373] Remove  Lineage credentials — humans + acts
+
+
+### 🤖 Autopilot
+
+Removing that line from the provenance stack slide and rebuilding.
+
+
+### 🤖 Autopilot
+
+Removed — links now 30 (was 32, minus the 2 URIs from that removed line). Sending v1.3:
+
+
+### 🤖 Autopilot
+
+Done — **v1.3 sent**. The provenance stack slide now reads:
+
+- QR code per bag — farm, shipment, lab, tree
+- Google Sheets ledger as source of truth
+- TrueChain — private PoA chain, immutable mirror
+- Sunmint farmer app — geo-tagged planting reports
+
+(Removed "Lineage credentials — humans + acts". 10 pages, 30 links.)
+
+Anything else to adjust, or is this ready?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/slides_img && grep -n "Lineage credentials" build_bitangels_deck.py && sed -i '/Lineage credentials \\u2014 humans + acts/d' build_b
 
