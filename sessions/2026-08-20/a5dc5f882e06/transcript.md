@@ -1090,11 +1090,13 @@ The PDP **is live on beta** — but not on the retail-packs category page yet. L
 ### 🤖 Autopilot
 
 Let me see the product grid section of the category page to find the exact insertion point:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the exact product-card structure. The tea card should be added to this retail-packs grid — matching the existing cards' style but **without price / add-to-cart** (offline QR-scan sales only). Let me find the end of the grid to anchor the insertion:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1261,4 +1263,56 @@ One thing to confirm before promo: the category page + PDP currently link to `ag
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== BETA retail-packs: tea card present? ==="; curl -s "https://beta.agroverse.shop/category/retail-packs/index.html" | grep -c "oscar
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] what is the PDP on beta now?
+
+
+### 🤖 Autopilot
+
+Let me fetch the live beta PDP and show you what it contains:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the page body to describe the actual content sections:
+
+
+### 🤖 Autopilot
+
+Here's the live beta PDP for the cacao tea, section by section:
+
+## `beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` — what's on it
+
+**Hero / header**
+- **Title:** *Cacao Tea 50g — Oscar's Farm, Bahia Brazil, 2024*
+- **Main image:** kraft pouch of cacao tea (`oscars-farm.jpeg`) + gallery (loose cacao tea leaves from truesight_me `agl4.avif`, farm photo)
+
+**Description block**
+- Single-estate **loose cacao tea (50g) made from cacao shells**, harvest 2024, links to the farm page
+- **Traceability & impact callout:** each packet carries a **unique QR code**; each packet sold **plants a tree**
+- **Availability:** *"available in person at select venues — scan the QR code on your 50g packet"* — no online sale, per your caveat
+- **Wholesale banner:** "Looking to stock Agroverse? → wholesale terms" (SOP requirement)
+
+**Product Details table**
+| Field | Value |
+|---|---|
+| Weight | 50g |
+| Type | Loose cacao tea (cacao shells) |
+| Origin | Oscar's Farm, Bahia, Brazil (link) |
+| Harvest Year | 2024 |
+| Shipment | AGL4 (link) |
+| QR batch | `2024OSCAR_CT_20260820_1 – 100` |
+| Availability | In person at select venues (offline QR-scan purchase) |
+
+**How to Brew section** — embeds **Emelin's video** (YouTube `R4_xqBjKzNs`): *"How to prepare cacao tea from cacao shells"* — the video we verified earlier ✅
+
+**Traceability section** — explains the 100 QR-coded packets minted 2026-08-20, scan → farm/shipment story → plant a tree
+
+**Key caveat honored:** ❌ **No price, no Add-to-Cart, no Stripe button anywhere** — JSON-LD schema also has **no `offers`** block. Sales happen only via scanning the QR on the physical 50g packet.
+
+---
+Want me to promote this to **www.agroverse.shop** now (`sync_beta_to_prod`)? It's the last step — say the word.
 
