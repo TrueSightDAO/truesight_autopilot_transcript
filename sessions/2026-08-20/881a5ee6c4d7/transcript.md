@@ -371,11 +371,13 @@ Mercado Livre blocks the browser pages (403 + JS-rendered). Let me try their pub
 ### 🤖 Autopilot
 
 Both direct fetches are blocked (403 anti-bot, 401 auth). Let me try alternative price sources — Google Shopping-style aggregators and the Mercado Livre blog — to cross-check current prices.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fair — let me actually get verified current prices instead of trusting search snippets. Trying Mercado Livre's public search API and a Brazilian price-comparison site:
+[2 tool result(s) compacted: http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -561,4 +563,44 @@ Confirmed — and this is the right filter, because **cheap Bluetooth-only Chine
 **Ordering note:** on the item page, pick the **USB** variant if offered (some M421 listings are BT-only). At ~$70 → Brazil landed ≈ **$110–115 USD (~R$ 570–600)** with Remessa Conforme prepaid tax — still ~1/4 of the Amazon.com.br Rollo (R$ 2.080).
 
 Want me to save this as a sourcing note (model + URLs + Mac/Remessa Conforme requirements) in `market_research/` or `agentic_ai_context` so the Brazil team has it on record?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] Confirmed this one
+
+https://pt.aliexpress.com/i/1005009465379031.html?gatewayAdapt=glo2bra4itemAdapt
+
+I shared with the FounderHaus folks 
+
+Report dao contribuinte for time spent researching time
+
+
+### 🤖 Autopilot
+
+Understood — Phomemo M421 confirmed and shared with FounderHaus. Now let me log the contribution properly. First, checking the event docs to use the correct event type and fields.
+
+
+### 🤖 Autopilot
+
+Confirmed — logging the research contribution now. Per the event catalog: **CONTRIBUTION EVENT** with Type = Time (Minutes), Contributor = Gary Teh. I'll estimate **60 minutes** of research time (Mercado Livre comparison → price verification → AliExpress sourcing → MacBook compatibility check) — tell me if you want it higher/lower and I can adjust.
+
+Submitting directly (no approval gate):
+
+
+### 🤖 Autopilot
+
+✅ **Contribution logged.**
+
+**CONTRIBUTION EVENT** submitted successfully:
+- **Type:** Time (Minutes)
+- **Amount:** 60
+- **Contributor:** Gary Teh
+- **Description:** Label printer sourcing research for Brazil ops — ML BR vs US comparison, verified Amazon.com.br landed cost (R$ 2.079,95 incl. import tax), AliExpress alternatives with Remessa Conforme tax math, macOS compatibility verification, final rec = **Phomemo M421 4×6** (~$70 + import ≈ R$ 570–600 landed), shared with FounderHaus.
+
+If 60 minutes doesn't match what you actually spent, tell me the real number and I'll log a correction. Also happy to save the sourcing recommendation as a note in `market_research/` or `agentic_ai_context` so the Brazil team has the model + URLs + Remessa Conforme requirements on record — say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
