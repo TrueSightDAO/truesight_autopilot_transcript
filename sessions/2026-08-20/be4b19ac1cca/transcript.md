@@ -2127,11 +2127,13 @@ All tests pass (3 farm + 1 shipment regression), JSON valid, clean diff. Committ
 ### 🤖 Autopilot
 
 PR #206 opened. It's clean (mine, tested). Per the AUTO-ADVANCE directive (open AND merge the next fix PR), merging it — but first confirming mergeability:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #206 merged (commit `9a73c14`). Logging the contribution per the plan's §0.6:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2178,41 +2180,49 @@ Farm/Shipment Media JSON plan **PR2** (no PR was open — I built it):
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — next unit: Farm/Shipment PR3. Let me pull the exact PR3 scope from the plan and check for any already-open PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No open PR for PR3 — building it. Let me inspect both target pages' media sections:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR3 scope is clear now: sao-jorge has **4 media items** (2 portrait YouTube + 2 images) + vivi has **2 videos** = 6 total. Let me read the full structure with captions/titles for both pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the loader (`js/media-gallery.js`) to understand exactly what it supports — portrait aspect, multiple gallery containers, image items:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The loader supports one `#media-gallery` per page with youtube + image items — but sao-jorge has **two** containers + **portrait** videos (9:16, `padding-bottom:177.77%`), which the loader renders as 16:9 by default. To preserve the current look faithfully I'll add a tiny backward-compatible `aspect: "portrait"` option to the loader, then migrate. Let me check script-tag anchors first, then build:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 sao-jorge has no `add-to-cart.js`. Let me see its tail scripts to find the right anchor, and check how many farm-videos-containers it has:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand everything. sao-jorge has **two gallery containers** (2 portrait videos + 2 photos) + a wix hero video (leave alone); vivi has **one container** with 2 videos. The loader currently supports only one `#media-gallery` + 16:9. I'll extend the loader backward-compatibly (`data-media-gallery` multi-container + `section` filtering + `aspect: portrait` + image `fallback`), then migrate both pages. Building now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Migrations applied cleanly (the remaining `sao-jorge-matheus` refs are legit og:image meta + the shipments item-card, not the gallery). Now extending the farm spec to cover sao-jorge (2 containers, portrait, images) + vivi, then running all tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2377,5 +2387,164 @@ Farm/Shipment Media JSON plan **PR4** (no PR was open — I built it):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs touching agl0/agl1/agl2 ===" gh pr list --repo TrueSi; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== PR 209 metadata ===" gh pr view 209 --repo TrueSightDAO/agrove; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "=== shipment spec (current) ===" cat tests/media; …(+6 more)
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — next unit: Farm/Shipment PR5 (agl5, agl7, agl8). Checking for open PRs and inspecting the target pages:
+
+
+### 🤖 Autopilot
+
+Key findings: agl5/agl7 hero-only (agl7 uses `.gif`), **agl8 has a genuinely distinct farmer-photo** (`paulo_profile_photo.jpeg`) + a **native `<video>` hero** (not YouTube). This is the trap the plan warned about — my current loader applies ONE hero value to BOTH slots. Let me check the loader's hero handling and the agl5/7/8 video containers:
+
+
+### 🤖 Autopilot
+
+Full PR5 picture confirmed:
+- **agl5**: hero-only, both slots agl5.avif (plus a decorative bg img in the hero-video-container)
+- **agl7**: hero-only, both slots **agl7.gif** (note the .gif extension)
+- **agl8**: **the trap** — shipment-image = agl8.avif but farmer-photo = `paulo_profile_photo.jpeg` (genuinely distinct), plus a **native `<video>` hero** (wix mp4) that stays inline
+
+The current loader fills every hero slot with the *same* hero.src — that would collapse agl8's farmer photo. I'll extend the loader backward-compatibly with a `farmer` slot type, then migrate. Building now:
+
+
+### 🤖 Autopilot
+
+All migrated cleanly. Now extending the shipment spec with the 3 new pages (agl8 asserts the **distinct farmer photo**), then running all tests:
+
+
+### 🤖 Autopilot
+
+agl7 and agl8 failed. Let me see the error context:
+
+
+### 🤖 Autopilot
+
+Both failures are **spec bugs**, not code bugs — my spec hardcoded assumptions that don't hold for these pages:
+1. **agl7**: the page asset is `agl7.gif`, but the spec asserts `.avif` — needs an `ext` field
+2. **agl8**: farmer slot is `data-media-slot="farmer"`, so hero count is 1 (not 2) — the distinct-farmer test should expect hero=1 + farmer=1
+
+Fixing the spec:
+
+
+### 🤖 Autopilot
+
+agl8 still fails. Let me see the specific error:
+
+
+### 🤖 Autopilot
+
+Found it — my loader extension only changed the *fill logic* inside the hero loop, but the selector `[data-media-slot="hero"]` **never selects** the farmer slot. Need to include `[data-media-slot="farmer"]` in the query:
+
+
+### 🤖 Autopilot
+
+Progress — agl8 passes now, but **agl4 broke** (regression from my loader change). agl4's farmer-photo was `data-media-slot="hero"` and now it gets... let me check what broke. The spec expects 2 hero slots for agl4 (no farmer), but now the selector includes farmer — no, the spec's `heroSlots` locator is `[data-media-slot="hero"]` specifically, so agl4 should still have 2. Let me see the error:
+
+
+### 🤖 Autopilot
+
+The agl4 failure is **flaky browser noise**, not my regression — `"Permissions policy violation: compute-pressure is not allowed in this document"` is a Chromium permissions-policy console message (new API, version-specific, intermittent — the earlier run of the same test passed). It's not a page error. I'll filter this known benign browser noise in the spec:
+
+
+### 🤖 Autopilot
+
+The console-filter pattern didn't match (the farm spec has a slightly different structure, or the shipment spec uses different indentation). Let me check the actual line:
+
+
+### 🤖 Autopilot
+
+The indentation is different (8 spaces, inside the loop's block — my search string had 4). Let me fix with the exact text:
+
+
+### 🤖 Autopilot
+
+**All 7 shipment + 5 farm specs pass.** Committing and opening PR:
+
+
+### 🤖 Autopilot
+
+PR #213 opened. Confirming mergeability and merging:
+
+
+### 🤖 Autopilot
+
+PR #213 is CONFLICTING — my branch predates a main change. Let me resolve by merging main into the branch:
+
+
+### 🤖 Autopilot
+
+Conflicts across the board + `AA` (both-added) on media.json files — **this smells like a parallel agent (Claude) already migrated these pages on main**. Let me diff main's versions against mine before resolving anything:
+
+
+### 🤖 Autopilot
+
+**A parallel agent (Claude, via garyjob) already did PR5 as #212 and merged it** — identical scope to my #213 (agl5/agl7/agl8 + distinct farmer slot for agl8, even the same commit title!). My #213 is a **duplicate**. The right move: **close my #213 as superseded** — nothing to resolve, nothing to merge. Main already has the work.
+
+
+### 🤖 Autopilot
+
+My #213 is closed as superseded. But before reporting, I must verify #212 is genuinely **complete** — that main's version includes the loader farmer-slot support and the distinct-farmer assertion (not just the page migrations). If #212 missed a piece my version had, I should still contribute the gap:
+
+
+### 🤖 Autopilot
+
+The parallel agent's #212 is genuinely complete (even adds a dedicated farmer block + 2 farmer slots on agl8 — more than mine). Let me read the rest of the spec diff (compute-pressure filter presence) and inspect main's agl8 around those two farmer slots — #212 shows **two** farmer-photo slots at 1102 and 1104, but the original page had only **one** farmer-photo. That could be an accidental duplicate I should fix:
+
+
+### 🤖 Autopilot
+
+The parallel agent's #212 is genuinely complete and correct — the "two farmer slots" I saw were just my conflicted working tree (UU state showed both sides); main has **one** clean farmer slot. My #213 was a true duplicate; closing it was right. No fix needed on main.
+
+Let me confirm the actual next unit (PR6) state so the handoff pointer is accurate:
+
+
+### 🤖 Autopilot
+
+PR6 (agl10/agl13/agl14) is untouched and no PR is open — that's the next unit. Let me clean up my conflicted working tree before reporting:
+
+
+### 🤖 Autopilot
+
+Working tree clean (branch `pr5-agl5-agl7-agl8` remains but was closed with the PR — harmless). Logging the contribution for the PR5 investigation/supersede work, then reporting:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit — PR5 handled (supersede path)
+
+**Outcome: PR5 is delivered on main via parallel PR [#212](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/212) (merged `a645559`); my duplicate [#213](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/213) closed as superseded.** Contribution logged.
+
+### What happened
+1. **Built PR5 myself** (no open PR at start): migrated agl5 (hero-only .avif), agl7 (hero-only **.gif** — preserved), agl8 (**distinct farmer photo** via a new backward-compatible `farmer` slot type in `js/media-gallery.js`), extended the spec to 7 pages with the agl8 distinct-farmer assertion + filtered benign Chromium `compute-pressure` noise. **All 12 local tests passed** (7 shipment + 5 farm regression).
+2. **Opened #213** → hit `CONFLICTING`. Investigating the conflict revealed a **parallel agent had already merged the identical PR5 as #212** (same scope, same distinct-farmer design, even a similar title) — main already had agl5/agl7/agl8 + loader + spec.
+3. **Closed #213 as superseded** after a rigorous completeness check: #212's loader has a dedicated farmer block, agl8 has the correct single farmer slot, spec covers all 7 pages + farmer assertions. Nothing missing on main — a true duplicate, correctly closed.
+
+### State of the plan
+| Unit | Status |
+|---|---|
+| PR0–PR4 | ✅ merged |
+| **PR5 (agl5/agl7/agl8)** | ✅ **delivered via #212** (mine #213 superseded) |
+| PR6 (agl10, agl13, agl14) | ⏳ next — **confirmed untouched, no open PR** |
+| PR7 (agl3, agl9) | pending |
+| PR8 (conventions doc) | pending |
+| PR9 (UAT) | gate: always-stop |
+
+### Note on parallel execution
+Two agents are now executing this plan concurrently (me + a Claude/garyjob instance) — I'm seeing its merged PRs land on main between my check and my merge (PR5 exactly). For PR6 I'll **re-check main for a just-landed PR6 before building**, to avoid another duplicate cycle.
+
+## RESUME HERE → next unit (fresh turn)
+**PR6** — migrate shipment pages **`agl10`, `agl13`, `agl14`**. Before building: check for an open/just-merged PR6 (parallel agent). If none, inspect the three pages (note agl14 — the *original* agl14.avif bug reference from PR1), migrate, extend spec to 10 pages, local test, PR → merge → contribute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs ===" gh pr list --repo TrueSightDAO/agroverse_shop_be; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "=== loader hero handling ===" grep -n "hero\|slo; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -qb pr5-agl5-agl7-agl8 2>/dev/null || git; …(+14 more)
 • `submit contribution` → Contribution submitted successfully.
 
