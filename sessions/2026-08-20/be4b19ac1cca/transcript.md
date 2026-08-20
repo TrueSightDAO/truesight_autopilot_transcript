@@ -3669,11 +3669,13 @@ Deps installed. Re-running the smoke render:
 ### 🤖 Autopilot
 
 The "QR" placeholder is actually PDF bytes (reportlab canvas ignores the .png extension) — that's why PIL can't read it. Let me generate a real QR PNG with the `qrcode` library instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Smoke render confirms both signatures now appear** — "Bilal Musharraf" and "Olivia Anselmo" render in the script font over their signature lines, while the template's printed "BILAL MUSHARRAF / OLIVIA ANSELMO" titles remain. Let me visually verify positioning by rasterizing, then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3803,4 +3805,77 @@ Here's the certificate lineage profile URL:
 **Verified live** (just now from the CV JSON on main): `display_name: "Dummy E2E Test 4 (v1.3)"`, `pk_hash: pk-1Q3PrgUZPM3k`, program `ivy-yoga` → lineage_root **"Indus Valley Yoga"**, QR target = the global credentials URL, generated 14:30:35Z.
 
 So: the **certificate lineage profile** (where the VERIFY QR takes a scanner) is `truesight.me/credentials/#dummy-e2e-test-4-v1-3`, and the IVY-program-branded view is `truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k`. Both live; either URL you share works.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] I wonder if you documented your end to end test case so that in future other LLMs can follow this to validate that the flow still works if and when they made any modifications
+
+
+### 🤖 Autopilot
+
+Great idea — that's exactly the kind of cross-session knowledge that should be a runbook. Let me check what validation docs already exist and gather the exact E2E scripts I used so the runbook is concrete and reproducible:
+
+
+### 🤖 Autopilot
+
+No existing E2E runbook — this will be the first. Let me grab the insert + attest scripts too so the runbook includes complete, copy-paste-able steps:
+
+
+### 🤖 Autopilot
+
+I have all four E2E scripts. Now let me write the validation runbook into agentic_ai_context so future LLMs can reproduce the flow. First a quick check of the docs structure:
+
+
+### 🤖 Autopilot
+
+The playbook exists but has no E2E validation runbook — this will be the first. Let me write it with the complete, proven procedure (including all the gotchas I hit):
+
+
+### 🤖 Autopilot
+
+PR opened. Merging it (Gary's documented ask + established pattern):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Documented — E2E validation runbook merged
+
+**PR [agentic_ai_context#780](https://github.com/TrueSightDAO/agentic_ai_context/pull/780) — opened AND merged** (sha `77314ed`, squash).
+
+### What changed
+Added **`credentials/CREDENTIALING_E2E_VALIDATION.md`** — a complete, reproducible end-to-end validation runbook for the cohort-credentialing flow, written from the four IVY E2E runs of 2026-08-20 (including the v1.3 template + dual-signature render). It includes:
+
+1. **When to run** — after any change to the GAS handler, build script, cert renderer, manifests, sheets, admin panel, or workflow; after onboarding a new program; monthly smoke
+2. **Step-by-step procedure** — insert roster row → sign-in (with the scripts' exact mechanics) → attest → **Process pending events (the mandatory step everyone misses)** → wait for build → verify 7 GitHub artifacts → verify certificate content (asserts "200 hours" + both signatures) → verify live profile page
+3. **The gotcha cheatsheet** — all 8 real issues hit during the actual runs:
+   - Process-pending-events button is MANDATORY (events sit in intake until clicked)
+   - Slug derives from `names[0]` (`(v1.3)` → `-v1-3`)
+   - raw/jsDelivr CDN staleness — GitHub API is truth
+   - Boot only completes with the `?em&vk` URL
+   - Gmail verification-link indexing lag
+   - Benign tree-probe 404s (2 console errors — expected feature check, not failures)
+   - Stale in-flight build can rebase over new commits → re-dispatch
+   - compute-pressure/403 console noise filtering
+4. **Expected end-state table** — so any future LLM knows exactly what "pass" looks like
+5. **Cross-references** to the onboarding playbook, IVY plan, and the exact source files
+
+### Why it matters
+Future LLMs/agents modifying the credentialing stack can now run this end-to-end and validate nothing broke — no tribal knowledge required. It's in the canonical context repo, discoverable via `search_context("E2E validation")`.
+
+## RESUME HERE → next unit (fresh turn)
+Nothing pending on this thread — the IVY credentialing arc is complete and now has a validation runbook so future changes stay verifiable. Open options if you want to continue:
+- **PR3 scope** (recertification + true dual-signature attestation) — still gated on your two decisions (fee/branding model; does Olivia re-sign every renewal?)
+- Clean up the dummy roster rows (Tests 1–4) if you're done reviewing them
+- Or pick up another parked plan from the manifest (SunMint UAT / Farm-Shipment PR7+)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ssh -o ConnectTimeout=15 nelanco-claude 'ls -la /tmp/ivy_e2e*.py /tmp/*e2e*.py 2>/dev/null; echo "=== signin ==="; cat /tmp/ivy_e2e_signin.p; ssh -o ConnectTimeout=15 nelanco-claude 'echo "=== insert ==="; cat /tmp/ivy_e2e_insert.py; echo "=== attest ==="; cat /tmp/ivy_e2e_attest.p
+• `merge pr` → ✅ PR #780 on agentic_ai_context merged successfully (sha: 77314ed0f8c135805eba525d31dba25da185d85e). Pull Request successfully merged
 
