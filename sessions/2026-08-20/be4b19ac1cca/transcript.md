@@ -2950,36 +2950,43 @@ The CV renders but the pk-hash is missing from `aliases.json` — that breaks th
 ### 🤖 Autopilot
 
 There's a real inconsistency to nail down: the CV files exist but the alias mapping is missing, and the newest regen commit (`541e7c35d`) didn't touch the dummy3 CVs. Let me verify precisely which commit created the dummy3 files and what aliases.json actually contains on main (via the API, not the raw CDN which may be stale):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 jq syntax error — `chr` isn't a jq function. Let me use a different approach for the newline split:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The aliases registry DOES contain the new credential** — `pk-r3h5iUF7-TG8 → dummy-e2e-test-3-voice` at the actual commit `541e7c35d` (105 keys). The earlier empty lookup was a **stale raw.githubusercontent CDN cache**, not a real gap. So the E2E is genuinely complete. Let me do the final live verification — the profile page rendering with that hash:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The E2E loop works end-to-end — but I spotted a real branding defect while verifying: the IVY credential page's browser tab title reads **"Credential — Butterfly Effect"**. That's the same shared template used by Butterfly Effect. Let me find where that title is set and whether it's per-program:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The credential page shell is served from truesight_me and hardcodes "Butterfly Effect" in the static `<title>`. The JS (`TrueSightProgramShell.init`) may override it from the manifest — but the page title is only correct if it does. Let me check `program-shell.js` and run a real browser check on the live IVY credential page to see what actually renders:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo moved — it's `truesight_me_prod` that serves the live site. Let me check there:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rather than page through the shell's 22KB of JS, let me just verify the truth directly — drive the live IVY credential page in a real browser and read the rendered title + credential body:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3124,4 +3131,54 @@ I've assembled the evidence from all three sources. Here's the honest breakdown 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== CLAUDE SESSION FILES: per-project summary ===" for d in ~/.cla; bash -c ' echo "=== MY OWN TRANSCRIPT LOGS (truesight_autopilot_transcript) ===" cd /tmp && rm -rf ts_transcript && git clone -q --depth 1 h; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== CLAUDE sessions: first/last timestamp + turn count (today + Au; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Report based on the bottom line section time spent for the contributions made. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Reporting the time spent as contributions. Let me first check the event docs and how contributions have been attributed historically (to log this consistently):
+
+
+### 🤖 Autopilot
+
+Let me check the contribution ledger conventions — how time gets logged (per-contributor, TDG rates) so my report matches the established format:
+
+
+### 🤖 Autopilot
+
+Let me read the SOP for how autopilot submits contributions, so the report matches the established format:
+
+
+### 🤖 Autopilot
+
+Understood — logging the bottom-line times as contribution events. Two events (Claude + Sophia), no TDG moved (that stays your call per the rules):
+
+
+### 🤖 Autopilot
+
+**Reported — both contribution events submitted successfully.**
+
+## Bottom-line time spent (as logged)
+
+| Contributor | Time | What it covered |
+|---|---|---|
+| **Claude** | **3.5h (210 min)** | Foundation + diagnosis: IVY plan (#755), scaffold + fixes (ivy-yoga-club #1, butterfly hardcode fix, SA/SCHEMA fix), web program page + CNAME (#293), E2E diagnosis + root-cause of the manifest/checkout bugs, fix PR #17 + SOP #768 |
+| **Sophia** | **3h (180 min)** | Completion + hardening: merged #17 + verified build, playbook fix (#770), registry entry (#19), cert assets + renderer (#20), roster-sheet UI (#5), plan tracker (#774/#761), 3 full E2E runs + live-page verification |
+| **Gary** | ~1–1.5h | Direction + decisions (not logged — it's your own time) |
+
+**Total logged: 6.5h** (Claude 3.5h + Sophia 3h) — both as `[CONTRIBUTION EVENT]`, Type "Time (Minutes)", **TDG Issued: 0** (issuing TDG remains your call — say the word if you want amounts set and I'll re-submit).
+
+**Notes:**
+- Both logged with the exact bottom-line figures from the assembled logs (Claude's from session JSONLs with real per-message timestamps; mine from commit timestamps — my transcripts flush in bulk, so commit times are the anchor)
+- The ~0.5h of farm/shipment parallel work I did today is noted in the description but the 3h figure is IVY-weighted; if you want it split out, I can adjust
+- Gary's own direction time isn't a contribution event — but if you want it recorded on the ledger as governance time, tell me and I'll add a third entry
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → bash -c ' echo "=== recent CONTRIBUTION EVENTS in ledger (attribution conventions) ===" cd /tmp && rm -rf tokenomics && git clone -q --depth; bash -c ' echo "=== how prior contribution events look (samples from transcripts / context) ===" grep -rn "CONTRIBUTION EVENT\|contribution.
+• `submit contribution` ×2 → Contribution submitted successfully.
 
