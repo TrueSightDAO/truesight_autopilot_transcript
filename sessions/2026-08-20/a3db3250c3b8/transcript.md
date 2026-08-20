@@ -573,11 +573,13 @@ Gary — understood: **PR-B (tokenomics)**, and the first step is to pull the li
 ### 🤖 Autopilot
 
 Good — clasp 3.3.0 is installed, tokenomics checkout is at `/home/ubuntu/tokenomics`, and the QR-codes GAS project folder exists. Now, per your directive: **pull the live GAS deployment first**, diff against git, and build PR-B on top of whatever Claude left un-pushed. Let me do that now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clasp is logged in (no `--status` flag in 3.3.0 — that's fine). Git has some local mods in a *different* GAS mirror (`1ovx…` shop checkout), not the QR-codes one I'm targeting — good, no interference. Now the critical step: **pull the live QR-codes GAS deployment** (script id `1UrBg…`) and diff against git to see what Claude changed but never pushed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -736,4 +738,146 @@ Merged the **reject/invalid-tree path** PR — the second piece of the "keep goi
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #396 on tokenomics merged successfully (sha: be92958f0a5301dd8b036490e2758d5c71d25bda). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] keep going
+
+
+### 🤖 Autopilot
+
+"Keep going" — next unit: deploy the merged reject-handler to GAS, then open PR-A (dapp "Mark invalid" control). First, sync the local tokenomics checkout to the merged main (careful not to lose the live-pulled state) and verify the folder.
+
+
+### 🤖 Autopilot
+
+The pull aborted because the untracked `process_tree_planting_link.js` (old live-pull copy, pre-REJECT) blocks the merge — origin/main now tracks it (with the REJECT marker from #396). The local untracked copy must go; git will bring the merged version. Cleaning up and re-pulling:
+
+
+### 🤖 Autopilot
+
+The pull is blocked by WIP in a *different* mirror (`1ovx…` shop checkout — not mine to touch). Surgical fix: fetch `origin/main` and check out just the QR-codes mirror folder to the merged state, leaving the `1ovx` WIP alone.
+
+
+### 🤖 Autopilot
+
+Merged handler now on disk (REJECT marker at lines 24 & 358). Clasp config is correct (scriptId `1UrBg…`, .js/.gs extensions). Now deploy to GAS with the proper tool — dry-run first per the tool contract, and since I already verified the folder matches git, I'll dry-run then push.
+
+
+### 🤖 Autopilot
+
+Dry-run is clean — but note the deploy tool uses `/opt/truesight_autopilot/context/tokenomics` (a **different checkout** than `/home/ubuntu/tokenomics`). I must verify that checkout has the merged REJECT code before pushing, or I'd deploy the stale handler.
+
+
+### 🤖 Autopilot
+
+The deploy checkout (`/opt/.../tokenomics`) is already at the merged sha `be92958` with the REJECT marker at lines 24 & 358 — safe to push. Deploying to GAS now:
+
+
+### 🤖 Autopilot
+
+✅ **Deployed to GAS** — `clasp push` pushed 4 files (`appsscript.json`, `process_qr_code_updates.js`, `process_tree_planting_link.js`, `Version.gs`) to the live QR-codes project. The `[TREE PLANTING REJECT EVENT]` handler is now **live server-side**.
+
+Next unit: **PR-A** — the dapp "Mark invalid" control. Let me fetch the current merged `link_tree_planting.html` (post-#63) to see the dropdown structure and the exact submit/signing path I need to mirror.
+
+
+### 🤖 Autopilot
+
+PR-A is clear. Let me read the exact `submitLink()` function (lines 434–500) and the button/summary region so the reject path mirrors it precisely.
+
+
+### 🤖 Autopilot
+
+Let me grab `updateSelectionSummary()` (so the reject button's disabled state hooks into it) and the exact end of `submitLink()`.
+
+
+### 🤖 Autopilot
+
+I have everything for PR-A. Now opening the dapp PR that adds the "Mark invalid" control (third action beside Link) — a `[TREE PLANTING REJECT EVENT]` with QR + SunMint message id + reason, mirroring `submitLink()` exactly, plus a reason input + disabled-state wiring in `updateSelectionSummary()`.
+
+
+### 🤖 Autopilot
+
+PR #64 is open — but I caught a bug: my 4th edit was a no-op (search == replace), so the **`submitReject()` function was never actually inserted** — the button would call a function that doesn't exist. I'm fixing that on the same PR branch right now (completing this unit, not starting new work).
+
+
+### 🤖 Autopilot
+
+Confirmed — the button is there but `submitReject()` is not defined (only 1 occurrence = the onclick). Fixing on the same branch now by inserting the function after `submitLink()`:
+
+
+### 🤖 Autopilot
+
+The push to the existing branch was rejected (branch divergence — the tool's fresh clone is based on main, not the branch tip). I'll fix this by assembling the corrected file locally and uploading it directly to the feature branch (keeps PR #64 open, adds one commit). Let me build the fixed file on the box:
+
+
+### 🤖 Autopilot
+
+Assembled correctly (2 occurrences: the button onclick + the function definition). Now pushing the corrected file to the feature branch with the Contents API to keep PR #64 intact:
+
+
+### 🤖 Autopilot
+
+I passed a placeholder — the tool needs real base64. Let me base64-encode the fixed file and pass it properly.
+
+
+### 🤖 Autopilot
+
+The base64 is 39K chars — instead of passing it inline, I'll use `upload_local_file_to_github` which reads the file directly from disk. Pushing the corrected `link_tree_planting.html` to the PR branch:
+
+
+### 🤖 Autopilot
+
+PR #64 now has the fix commit (`982b7da`). Let me verify the PR branch is complete — `submitReject()` present, button wired, and the full page is coherent:
+
+
+### 🤖 Autopilot
+
+The upload reported success but the raw branch still shows only 1 occurrence — either cache lag or the file didn't take. Let me inspect the actual branch content:
+
+
+### 🤖 Autopilot
+
+The branch still has 576 lines — the upload **didn't actually update the branch file** (despite reporting success, `982b7da` may have gone to a different ref, or the file was reverted). The button calls `submitReject()` but the function is still missing → this PR branch is **broken as-is**. I need to fix this properly.
+
+Let me verify where commit `982b7da` actually landed, and check the PR's actual head:
+
+
+### 🤖 Autopilot
+
+PR #64's head **is** `982b7da` (the fix commit) — but the *raw file* I fetched still shows 576 lines without the function. That means the `982b7da` commit's version of `link_tree_planting.html` apparently **doesn't contain the function** — the upload tool may have written the base64 incorrectly, or the file content at that commit is stale. Let me check the actual blob at `982b7da`:
+
+
+### 🤖 Autopilot
+
+The commit `982b7da` **does** contain the fixed file: 652 lines, `submitReject` count = 2, function present (3501 chars). The earlier raw fetch was just **GitHub CDN cache lag**. The PR is correct and complete.
+
+**PR-A is done: [dapp_beta #64](https://github.com/TrueSightDAO/dapp_beta/pull/64)** — Mark Invalid control + the missing-function fix, both on the branch (head `982b7da`, verified in the blob).
+
+## What I did this turn (unit: deploy reject backend + PR-A)
+
+1. **Synced local tokenomics** to merged main (cleared the stale untracked `process_tree_planting_link.js` that blocked the merge; left the unrelated `1ovx` shop WIP untouched).
+2. **Verified the deploy checkout** (`/opt/.../context/tokenomics`) is at merged sha `be92958` with the REJECT marker.
+3. **Deployed to GAS** — `clasp push` pushed 4 files to the live QR-codes project: `appsscript.json`, `process_qr_code_updates.js`, `process_tree_planting_link.js` (with the REJECT path), `Version.gs`. **The `[TREE PLANTING REJECT EVENT]` handler is now live server-side.**
+4. **Opened dapp_beta #64** — the "Mark Invalid" control:
+   - "Mark Invalid" button beside "Link Tree Planting" (disabled until QR + submission selected)
+   - Optional reason input
+   - `submitReject()` mirrors `submitLink()` exactly, signs a `TREE PLANTING REJECT EVENT` (QR + SunMint msg id + Updated by + Reason), POSTs to Edgar
+   - `updateSelectionSummary()` drives both buttons
+5. **Caught & fixed a real bug**: my first #64 commit had a no-op edit — the button referenced `submitReject()` but the function was never inserted. Fixed with `upload_local_file_to_github` (commit `982b7da`), then **verified the blob at the PR head**: 652 lines, function present. (The intermediate "missing" read was GitHub CDN cache lag.)
+
+## RESUME HERE →
+
+1. **Review + merge dapp_beta #64** (PR-A complete, verified). Auto-deploys to beta on merge.
+2. **PR-C (lineage-assets JSON cross-links)** — QR JSON gains `linked_tree`, tree JSON gains `sponsor_qr` + `linked_at` (Gary's "QR record should link to tree JSON" ask). Not yet started.
+3. **UAT** — Gary tests on beta: pick a sold QR + NEW SunMint submission → **Link** (flips QR to ASSIGNED_TO_TREE, SunMint to LINKED, ledger pair, owner email) and **Mark Invalid** (SunMint → INVALID, no QR/ledger/email). The real link moves ledger entries → needs Gary's explicit go for the first live one.
+
+**✅ Done this turn:** GAS deploy (reject path live) + dapp_beta #64 (Mark Invalid control, bug-fixed + verified). One-PR-per-turn respected — #64 is the only new PR this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /home/ubuntu/tokenomics && echo "=== pre-pull status ===" && git status --short | head -20 && echo "=== reset stale/live-dup files in the; cd /home/ubuntu/tokenomics && rm -f google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_planting_link.; cd /home/ubuntu/tokenomics && git fetch origin 2>&1 | tail -2 && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu6; …(+10 more)
+• `gas deploy project` ×2 → ok
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
 
