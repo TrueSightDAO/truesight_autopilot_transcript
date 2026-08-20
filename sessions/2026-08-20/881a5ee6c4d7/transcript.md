@@ -1562,16 +1562,19 @@ Proven loop:
 ### 🤖 Autopilot
 
 Continuing: next unit is **PR7 — agl6 special case** (retire the meta-tag + bespoke lazy-load script, replace with media.json + shared loader). Starting with the parallel-dupe pre-check and mapping agl6's current state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR7 confirmed un-done (no agl6/media.json; no open agl6 PR — the open PRs are unrelated partner/subscription work). Now mapping agl6's special-case structure: meta tag, lazy-load script, hero imgs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Meta tag found (line 8) + the bespoke script at 1663. Let me see the full lazy-load script and the gallery/video markup it drives.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1584,16 +1587,19 @@ Full picture confirmed. agl6's special case:
 - **Hero imgs** (1002, 1114) — same agl6.avif for both
 
 Per the plan: retire meta tag + bespoke script entirely, replace with media.json + shared loader. The hero-video iframe stays (Option A pattern like agl4/agl13) but should get a `class="shipment-hero-video"` (like other pages) and a direct YouTube src instead of the meta-driven lazy fill. Let me check how agl4/agl13 structure their hero-video iframe for exact consistency.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the loader's capabilities (does it support filling a bespoke video iframe / gallery items?) before deciding how agl6's video fits the new pattern.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The loader supports hero/farmer slots + gallery items (`type: 'youtube'`). For agl6's special case: retire meta tag + bespoke lazy script, put the hot-chocolate video into media.json as a gallery item, render via the shared loader. Let me verify the `.farm-video-*` CSS classes exist globally (loader-built markup) so the video renders styled.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1733,4 +1739,53 @@ Two honesty notes:
 Want me to:
 1. **Log both sourcing items** (printer + pouches) as a contribution/note so the Brazil ops kit is on record?
 2. **Dig for the window version's exact listing URL** so you have a concrete third link?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] can you help retreive the agroverse logo?
+
+
+### 🤖 Autopilot
+
+Let me locate the Agroverse logo in the repos/assets.
+
+
+### 🤖 Autopilot
+
+The logo is documented. Let me read the asset doc to get exact paths and versions.
+
+
+### 🤖 Autopilot
+
+The logo is documented in `agroverse/AGROVERSE_PRICE_LIST_AND_ASSETS.md`. Let me retrieve the actual file so I can hand it to you directly.
+
+
+### 🤖 Autopilot
+
+Retrieved successfully — it's the real file. Sending it to you directly in this chat.
+
+
+### 🤖 Autopilot
+
+✅ **Sent — the Agroverse logo is attached to this chat.**
+
+**File details:**
+- **Name:** `20230711 - Agroverse logo for trademark filing.jpeg`
+- **Dimensions:** 668×944 px (portrait) — per the asset doc, **do not stretch**; maintain aspect ratio
+- **Size:** ~100 KB (JPEG, baseline JFIF)
+- **Recommended document size:** 0.625" wide × 0.88" tall
+
+**Canonical source locations** (from `agroverse/AGROVERSE_PRICE_LIST_AND_ASSETS.md`):
+- `.github/assets/20230711 - Agroverse logo for trademark filing.jpeg` (the one I pulled)
+- `market_research/retail_price_list/20230711 - Agroverse logo for trademark filing.jpeg`
+- `agroverse_shop/assets/raw/AGL13 _ Agroverse_files/20230711 - Agroverse logo for trademark filing.jpeg`
+
+**Usage note:** the doc says to use this for letter headers, PDFs, and formal documents (it's the trademark-filing version). If you need a different variant (e.g. the circular "saffron monk" mark, a transparent PNG, or the version used on the shop site header), tell me which one and I'll pull that instead — the shop header logo may differ from the trademark file.
+
+Let me know if you need it resized/transparent or in another format (PNG/SVG) — I can convert on the box.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -sL -o agroverse_logo.jpeg "https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/20230711%20-%20Agroverse%20lo
 
