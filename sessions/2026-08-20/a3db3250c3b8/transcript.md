@@ -1920,6 +1920,7 @@ This is the right call — and exactly what bit us this session (the "Conflictin
 ### 🤖 Autopilot
 
 My command was too large. Let me do this properly via a PR (repo-class rule anyway). First grab the exact anchors I need to edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2100,4 +2101,78 @@ Extracted text:
 
 Gary's forwarding a GAS failure email: **SunMint - Process Tree Planting Submission** (`processTelegramLogs`) is failing with `ReferenceError: setApiKeys is not defined` — 3 consecutive time-trigger failures on 8/19/26. That's the **SunMint ingestion project** (`1Jp8qNI…`), the one that feeds the SunMint tab from Telegram logs. Let me diagnose — find where `processTelegramLogs` calls `setApiKeys` and whether the definition exists in the project:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go
+
+
+### 🤖 Autopilot
+
+"Go" — proceeding with the fix for the `setApiKeys is not defined` failure. Let me diagnose where `processTelegramLogs` calls `setApiKeys` and why it's undefined in the SunMint project:
+
+
+### 🤖 Autopilot
+
+Root cause is emerging: `setApiKeys()` is **called** at the top of both `Code.js` (line 2) and `process_tree_planting_telegram_logs.js` (line 11) — but the **only definition lives in `Credentials.sample.js`** (line 30), which is a *sample* file. If the deployed project doesn't include a real `Credentials.js`, every trigger run dies with `ReferenceError`. Let me check `.claspignore` (does it exclude the sample?) and whether a real `Credentials.js` ever existed:
+
+
+### 🤖 Autopilot
+
+Root cause is nearly certain. Let me confirm the **live** state (what's actually deployed) — `clasp pull` this project and check whether the deployed files define `setApiKeys`, plus check which credential key names exist in `.env` (names only, not values):
+
+
+### 🤖 Autopilot
+
+The live project **already has `Credentials.js`** (2154 bytes, defines `setApiKeys()` at line 17) — so the current live state *may* already be fixed (the 8/19 failures predate it). But I need to verify the credentials are **real values, not `REPLACE_ME` placeholders** — otherwise the next run dies downstream. Checking structure only (no values exposed):
+
+
+### 🤖 Autopilot
+
+The picture is now clear:
+
+- **Live project already has `Credentials.js`** (defines `setApiKeys()` at line 17) — so the `ReferenceError: setApiKeys is not defined` is **already resolved in the live project** (someone created Credentials.js in the editor; the 8/19 failures predate it)
+- **BUT 2 of the 3 credential props are still `REPLACE_ME` placeholders** in that file (likely `TELEGRAM_API_TOKEN` + `GITHUB_API_TOKEN`) — the next run would write `REPLACE_ME` into Script Properties and then fail at the Telegram/GitHub API call (downstream, different error)
+
+Let me check the sheets for post-8/19 evidence (did ingestion succeed after the fix?) and see exactly which props are placeholders:
+
+
+### 🤖 Autopilot
+
+The diagnosis is conclusive:
+
+**Root cause (the 8/19 failures):** `setApiKeys` was **not defined** in the deployed project — `Code.js` line 2 and `process_tree_planting_telegram_logs.js` line 11 both call it, but the only definition was in `Credentials.sample.js` (gitignored + claspignored, never deployed). So every time-trigger run of `processTelegramLogs` died instantly with `ReferenceError: setApiKeys is not defined` — 3 failures on 8/19.
+
+**Current live state (better than the email suggests):**
+- ✅ A real `Credentials.js` now **exists in the live project** (defines `setApiKeys()` at line 17) — so the ReferenceError itself is resolved (the file was created in the editor after 8/19)
+- ⚠️ **BUT 2 of 3 props are still `REPLACE_ME` placeholders** — `TELEGRAM_API_TOKEN` and `GITHUB_API_TOKEN` (only `SHEET_ID` is real). So the NEXT run will silently write `REPLACE_ME` into Script Properties and then fail at the Telegram file-download or GitHub photo-upload step — a downstream `ReferenceError` replaced by an API auth failure.
+- ✅ Telegram Chat Logs **has been ingesting again** — last rows are 8/20 (timestamp 20:25 UTC), and my staged REJECT row (update 469027793) is visible. So ingestion works *enough* to write rows, but photo resolution/upload would fail.
+
+**Remaining fix:** put the **real** `TELEGRAM_API_TOKEN` and `GITHUB_API_TOKEN` into the live project's Script Properties (via `Credentials.js` or the editor), so ingestion fully works. The `.env` has `TELEGRAM_BOT_API_KEY` and `TELEGRAM_API_HASH`/`TELEGRAM_API_ID` — and a GitHub PAT exists (`KRAKE_IO_PAT`, `KRAKEIO_LLM_PLAYGROUND_PAT`). But per the sample's own warning: *"confirm with Gary before reusing the org-wide one"* — I won't copy tokens across without your say-so.
+
+**My recommendation:** the **code fix** (define `setApiKeys()` in a deployed file + make `.claspignore` not the only guard) is already done in live. What's left is a **secrets/config** step — two real token values into Script Properties. That's a governor-level call on which tokens to use.
+
+## RESUME HERE →
+
+1. **You tell me which tokens to use** for `TELEGRAM_API_TOKEN` + `GITHUB_API_TOKEN` (from `.env` or a dedicated bot/org PAT) — I'll set them into Script Properties (never in git)
+2. **Verify ingestion fully works** — next `processTelegramLogs` trigger run should resolve photos + upload to GitHub without auth errors
+3. **Back to the E2E** — re-invoke the tree-planting processor (the REJECT row for #7021 is still staged and waiting) and complete the Mark Invalid verification + cleanup
+4. Also: this project's `.claspignore` should be tightened so a future deploy never re-creates the gap — but that's a code change I'll PR once the E2E is green
+
+**✅ Actions this turn:** diagnosed the `setApiKeys is not defined` failure (definition only in the gitignored sample → never deployed → trigger died), confirmed live already has Credentials.js (ReferenceError resolved), found the 2 remaining `REPLACE_ME` tokens blocking full ingestion. No writes, no secrets handled — pending your token choice.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → grep'd project for setApiKeys (called in Code.js:2 + process file:11; defined only in Credentials.sample.js:30); read .claspignore (excludes Code.js, manifest.json, Credentials.sample.js); clasp pull → live HAS Credentials.js (defines setApiKeys:17) + Version.js; checked .env key names only (TELEGRAM_BOT_API_KEY etc. present, values untouched); read live Credentials.js (TELEGRAM_API_TOKEN + GITHUB_API_TOKEN = REPLACE_ME, SHEET_ID real); sheet check: Telegram Chat Logs has 8/20 rows incl. my REJECT row 469027793
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== project files ===" && ls -la && echo "=== where is setApiKeys called/defined ===" && grep -rn "setApiKeys" . && echo "=== processTelegramLogs def + calls ===" && grep -n "processTelegramLogs" *.js; cat .claspignore; git log for project (517c1b4 "Exclude Credentials.sample.js from SunMint's clasp push", 4102e66 "Fix SunMint Tree Planting deploy…"); read Credentials.sample.js + Code.js head
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== pro; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== .cl; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== cla; …(+2 more)
 
