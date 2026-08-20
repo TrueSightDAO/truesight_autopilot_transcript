@@ -446,6 +446,7 @@ Let me read the RSA/self-serve program registration flow spec and the IVY plan's
 ### 🤖 Autopilot
 
 Let me read the rest of the RSA program-registration GAS script to see whether APPROVED rows trigger any manifest provisioning, and check for any script that generates the lineage-credentials internal manifest:
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -457,6 +458,7 @@ I now have the complete picture. Confirmed gap analysis:
 - Neither place has a duplicate entry in `OPEN_FOLLOWUPS.md` (verified — no existing entry).
 
 Opening **one focused PR** to `agentic_ai_context` that fixes both: adds §5.3a (the internal manifest step, with the IVY failure as the cautionary tale) and files the RSA-flow gap in `OPEN_FOLLOWUPS.md`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -500,6 +502,7 @@ Want me to merge #770?
 ### 🤖 Autopilot
 
 Gary said merge — executing on PR #770.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -538,16 +541,19 @@ This closes out your ask — agentic_ai_context now instructs every future progr
 ### 🤖 Autopilot
 
 Verifying the IVY credential is live end-to-end. Checking the jsDelivr-served cache (proves the purge took), the public credentials page, and the files actually committed:
+[3 tool result(s) compacted: http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 jsDelivr is serving the **new** cache (200, IVY program block present, generated 09:45:06Z — purge worked). The credentials page shell loads client-side, so let me verify the two things that drive the actual render: the web-facing manifest and the rendered artifact files (PDF/MD/QR + per-program PDF) in the cache:
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 jsDelivr is serving the **new** IVY cache, the web manifest is live on prod, and the main CV PDF + QR exist. One gap: the **per-program PDF** `qa-e2e-test-instructor__ivy-yoga.pdf` returned 404. Let me check whether that's expected (per-program PDFs may be conditional on program assets existing in lineage-engine) before reporting:
+[2 tool result(s) compacted: read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,4 +678,56 @@ Which do you want — merge #19, PR3 scoping, or the tracker refresh?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ssh -o ConnectTimeout=10 nelanco-claude 'gh api repos/TrueSightDAO/ivy-yoga-club/pages --jq "{url: .html_url, status: .status, cname: .cname
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] keep going until completed
+
+
+### 🤖 Autopilot
+
+Gary said keep going until completed. The remaining executable work on this arc: (1) merge lineage-engine#19 (the registry fix I opened — completing it), (2) verify it integrates cleanly with a fresh build, and (3) leave the gated PR3 scope prepped. Starting with the merge:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged
+
+**lineage-engine#19 merged** — sha `ccf85d3`.
+
+**What changed:** `scripts/program_assets/registry.json` now maps `ivy-yoga` → `["ivy-yoga"]` alongside `tribomirim` and `butterfly-effect`. This completes the program-registration contract (the registry's own comment requires an entry whenever a partner is onboarded) — program-scoped QR/logo compositing for IVY now resolves explicitly instead of relying on the default identity fallback.
+
+## Status of the IVY arc
+
+| Unit | State |
+|---|---|
+| PR0 plan | ✅ merged |
+| PR1 scaffold + Pages + DNS | ✅ all live |
+| PR2 web manifest | ✅ live on prod |
+| Credential rendering fix (lineage-credentials #17 + #770 playbook) | ✅ verified end-to-end |
+| **Registry entry (lineage-engine #19)** | ✅ **just merged** |
+| PR3 dual-signature/recertification | ⛔ gated on your (a) fee/branding + (b) Olivia re-sign decisions |
+| Promote | n/a — already live |
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Verify integration** — confirm the merged registry change reads cleanly: quick check that `registry.json` on `main` is valid JSON with the IVY entry (no rebuild strictly needed; registry is read at next build time). One small verification pass.
+2. **Refresh the stale IVY plan tracker** — `plans/IVY_YOGA_COHORT_ONBOARDING_PLAN.md` §4 still shows PR0/1/2 unmerged and Pages/DNS pending, which no longer matches reality. Small agentic_ai_context PR to mark everything merged/live and point RESUME HERE at PR3. (Optional — say the word.)
+3. **PR3 scoping** — remains blocked on your two decisions (fee/branding model; does Olivia re-sign every renewal). Once you decide, I can scope it (manifest `authorized_attestors` → role-tagged, dual-signature overlay fields already in `cert_config.json`, recertification staleness gating).
+
+That's everything executable on this arc until your PR3 decisions land — the credentialing fix + program registration are fully shipped.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #19 on lineage-engine merged successfully (sha: ccf85d31565829bb6cbe3f1287e93346f3c11e2c)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #19 on lineage-engine merged successfully (sha: ccf85d31565829bb6cbe3f1287e93346f3c11e2c). Pull Request successfully merged
 
