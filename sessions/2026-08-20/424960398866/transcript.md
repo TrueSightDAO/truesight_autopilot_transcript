@@ -669,6 +669,7 @@ Loader and PR0 spec understood. Now let me see the exact hero section opening (9
 ### 🤖 Autopilot
 
 Now let me check the git state — critically, whether PR0 has been merged (PR1 depends on `js/media-gallery.js` existing), and the current branch state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -678,6 +679,7 @@ Now let me check the git state — critically, whether PR0 has been merged (PR1 
 Per the plan (§3, "assuming the previous PRn-1 has already merged") and the always-stop gate, I **must not proceed to PR1 until PR0 merges**. This is a human-merge step, not mine to do.
 
 Let me check whether Gary has seen/approved PR0 and whether the plan's "soft checkpoint" (Gary skims PR0's diff) is satisfied. I'll report status and wait — this is exactly the pause the plan intends:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -720,16 +722,19 @@ I merged PR 0
 ### 🤖 Autopilot
 
 PR0 merged — proceeding to **PR1 (agl4 + agl14.avif bug fix)**. First verify the merge landed on main and re-read the plan's §2 migration rules:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR0 is **merged** and `js/media-gallery.js` is on `origin/main`. Now let me pull the §2 migration rules from this turn's plan artifact (hero placeholder convention, exact steps):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the §2 rules (hero slot: `data-media-slot="hero"` + remove hardcoded src/alt). Now let me get the tail of §2 (the exact "steps 2-4" for the video container + script tag) and check the current main's agl4 page state (it's a fresh clone — the local working tree is still on PR0's branch, need main's version):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -741,6 +746,7 @@ I now have complete PR1 requirements:
 - Call out the `agl14.avif` bug fix in the PR description
 
 Let me set up a clean working tree on main and inspect the exact current agl4 page + check the video section for title/caption text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -748,6 +754,7 @@ Let me set up a clean working tree on main and inspect the exact current agl4 pa
 Important detail: agl4's video is in a **`.shipment-hero-video-container`** (hero-adjacent absolute-positioned iframe, `.shipment-hero-video` class with inline `style="position:absolute"`), **not** a `.farm-video-container` gallery section. There's also a JS reference at line 1341 (`const heroVideo = document.querySelector('.shipment-hero-video')`) I must check — if I remove that iframe, the JS will throw.
 
 Let me inspect the JS at 1330–1350 and the hero-video CSS classes, plus confirm there's no title/caption text around the video:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -755,6 +762,7 @@ Let me inspect the JS at 1330–1350 and the hero-video CSS classes, plus confir
 Key discovery: agl4's video is a **hero-background iframe** (`.shipment-hero-video`, autoplay-muted portrait video, CSS `object-fit: contain`, max-width 500px) — NOT a gallery section. And there's `setupHeroVideo()` JS at 1341 that queries `.shipment-hero-video` — if I delete the iframe, that JS silently no-ops (guarded by `if (heroVideo)`) but the video would be **lost entirely**.
 
 The plan's §2a reference JSON for agl4 puts the video in `gallery` — but that would render it as a `.farm-video-section` below the story, **not** as the hero video. I need to decide the correct migration. Let me check `setupHeroVideo()`'s call site and whether the loader can support a hero-video concept, or whether the video should stay in the hero container:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,6 +770,7 @@ The plan's §2a reference JSON for agl4 puts the video in `gallery` — but that
 This is a genuine design decision the plan didn't fully anticipate. agl4's video is a **hero-background autoplay video** with bespoke CSS (`.shipment-hero-video`, 500px portrait, absolute positioning) and a `setupHeroVideo()` autoplay JS — completely different from the farm-page gallery videos the loader was built for.
 
 I must not guess on this — it's a scope question with two defensible answers. Let me check how the OTHER video shipments (agl2, agl6, agl13, agl14) structure their videos, to see if agl4 is unique or if there's a pattern the plan's `gallery` mapping was designed around:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -773,6 +782,7 @@ The plan's §2a reference JSON put agl4's video in `gallery` — but the loader 
 This is a real gap. The cleanest option that stays within the plan's schema is: **keep the hero video where it is** (it's not a "story gallery" item — it's the page hero), and note that the JSON externalization applies to the hero *image* slots and the gallery. But the plan explicitly listed the video in agl4's JSON...
 
 I should not silently diverge from the plan. Let me present this decision point to Gary clearly — it affects PR1 and PR4/PR6 (agl2, agl13, agl14 same pattern):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -780,6 +790,7 @@ I should not silently diverge from the plan. Let me present this decision point 
 Confirmed: agl2/agl13/agl14 share the same hero-video pattern (agl14 even has `setupHeroVideo` 2× — likely a copy-paste duplication bug like agl4). This affects **PR4 and PR6 too**, not just PR1.
 
 I'm now at a genuine design fork that the plan didn't cover, and per my rules (never guess on scope; ask the governor) I should present it. But first — let me re-read the plan's exact wording on shipment video handling one more time to make sure I'm not missing an explicit instruction (the §0.2 table says agl4 "YouTube: BI55aQ6B73U" and §2a JSON has it in `gallery` — but maybe §3/§4 says something about hero videos):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -787,6 +798,7 @@ I'm now at a genuine design fork that the plan didn't cover, and per my rules (n
 Now I have the full picture. **UAT U2 is the key clue**: it says the agl4 hero photo should show "in the banner **and** in the 'farmer photo' spot — both now the same correct AGL4 image." UAT says nothing about moving the hero *video* — it only asserts hero photos + farmer photo. The §2a JSON's `gallery` entry for the video was written by the plan author who saw the inventory table ("YouTube: BI55aQ6B73U") but likely **didn't realize it was a hero-background video, not a story-gallery video**.
 
 Let me read the UAT tail and then present the decision. I'm fairly confident the right call is: **keep agl4's hero video in place (hero slot), don't move it to the gallery** — but I must verify with Gary because it diverges from the literal §2a JSON. Let me read the UAT tail first:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -838,6 +850,7 @@ go along with your recommendation
 Option A approved — building PR1 now (externalize hero image + fix agl14.avif bug, hero video stays in place).
 
 First, locate all hero image slots on the agl4 page (banner, `.shipment-image`, `.farmer-photo` with the bug):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -940,4 +953,104 @@ Let me update the tracker via `git_push_changes` — marking PR0 (opened ✓, me
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp/agroverse_shop_beta && echo "=== all img tags with src in agl4 ===" && grep -nE '<img' shipments/agl4/index.html && echo "=== hero/b; cd /tmp/agroverse_shop_beta && echo "=== git log for shipments/agl4/index.html (last 8) ===" && git log --oneline -8 -- shipments/agl4/index; cd /tmp/agroverse_shop_beta && echo "=== agl4 media.json ===" && cat shipments/agl4/media.json && echo "=== agl4 video still in place? ===" ; …(+9 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Picking up the AUTO-ADVANCE unit. First, read the SUNMINT plan's RESUME HERE marker (per handoff instruction), and in parallel check the state of the FARM plan file locally so I can repair the clobber I just created (PR #773):
+
+
+### 🤖 Autopilot
+
+The SUNMINT plan header says "All units (PR2–PR8) built and merged" — so the "next unit" must be the remaining non-PR piece (the garbled "→ RUN** (first live link…)" in the directive). Let me read the full plan artifact to find the RESUME HERE marker and that RUN unit, and in parallel verify the FARM plan pristine state (316 lines on main — needed for my #773 repair):
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the SUNMINT plan to find the RESUME HERE marker and the RUN unit:
+
+
+### 🤖 Autopilot
+
+The artifact nests recursively. Let me read the next chunk to reach the RESUME HERE / RUN unit in the SUNMINT plan:
+
+
+### 🤖 Autopilot
+
+The artifacts are nesting recursively — wasteful. Let me stop reading artifacts and go straight to the local clone: repair my FARM-plan clobber (PR #773) and find the SUNMINT plan's RESUME HERE marker, all via direct file access:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Two things to handle:
+
+1. **Repair my FARM-plan clobber (PR #773)** — damage from last turn that I must fix before anything else (pristine is 316 lines; my write was truncated at §0.6).
+2. **SUNMINT plan RESUME HERE = RUN** (line 241) — the AUTO-ADVANCE unit. But it carries **two explicit gates**: the **ledger-money-movement gate (§2, "needs an explicit go")** and the **governor must pick the real QR + Sunmint submission**. I cannot execute RUN autonomously — that's a stop-and-ask gate by design.
+
+Repairing #773 first — restore the pristine 316-line file, apply only the tracker edit, force-push:
+
+
+### 🤖 Autopilot
+
+"nothing to commit" — the file is identical to what's committed (the checkout reset the file, then Python re-edited it to the same content as the previous commit? No — the previous commit had the truncated content). Let me diagnose: check what the local branch currently has vs origin, and whether the tracker edit actually persisted:
+
+
+### 🤖 Autopilot
+
+Found it — the Python edit wrote to `/tmp/plan_pristine.md`, not the repo file (my script's `p` path was wrong). The repo file is untouched and the remote branch still holds the clobbered commit (`e4b24f2`, PR #773). Fixing now — copy the edited file into the repo, commit, force-push:
+
+
+### 🤖 Autopilot
+
+The file is now correct — complete 316 lines, tracker ticks PR0, RESUME HERE → PR2. But the push is rejected ("stale info") — `--force-with-lease` is refusing because the remote branch moved since my last fetch (someone/something updated it, or my earlier fetch is stale). Let me fetch the actual remote state and force-push cleanly:
+
+
+### 🤖 Autopilot
+
+The remote branch ref isn't tracking locally as `origin/tracker/...` (fetched to FETCH_HEAD only). Let me check the actual remote branch content via FETCH_HEAD and force-push using the explicit refspec:
+
+
+### 🤖 Autopilot
+
+Force-push succeeded. The remote branch now has the **full 316-line plan** with only the tracker edit (the clobbered 68-line version is replaced). Let me verify PR #773's diff is now clean:
+
+
+### 🤖 Autopilot
+
+✅ **PR #773 repaired: +3/−3** — exactly the tracker edit (PR0 ticks, PR1 open, RESUME HERE → PR2), no mass deletion, all 316 lines intact.
+
+Now the AUTO-ADVANCE unit. The handoff injected the **SUNMINT plan** as the active topic, and its RESUME HERE (line 241) reads:
+
+> **RESUME HERE → RUN** (first live link — governor picks one real SOLD+email QR and one real NEW Sunmint submission, confirms via `link_tree_planting.html`, verifies QR row + SunMint row + ledger Transactions row + owner inbox by hand). **Ledger-money-movement gate (§2) — needs an explicit go.** After RUN: UAT (§5, always-stop gate).
+
+**This is a stop-and-ask gate, by design — I cannot execute it autonomously:**
+
+- 🚧 **Ledger-money-movement gate (§2): "needs an explicit go"** — this unit *moves ledger money* (books the fulfillment entry). My hard rule: never move money/issue TDG without an explicit governor command.
+- 🚧 **Governor must pick the real QR + Sunmint submission** — the unit literally requires Gary to select the two live records and confirm in the DApp.
+- 🚧 After RUN comes **UAT (§5) — an always-stop gate** (human verification).
+
+So the correct action for this turn is: **repair done, and stop at the explicit-go gate.** Everything the AUTO-ADVANCE directive says ("honor any gate marker; never move money on your own") points to stopping here.
+
+## Turn summary
+
+| Item | State |
+|---|---|
+| **PR #773 repair** (FARM plan clobber from prior turn) | ✅ **Fixed** — was 68-line truncated write; now **+3/−3** clean tracker edit on the full 316-line plan. PR #773 open, awaiting merge. |
+| **PR1 #200** (agl4 migration) | ✅ Open, 4 files (+64/−3), tested (spec passes, 3.3s), beta-only |
+| **SUNMINT plan** | ⛔ **Stopped at RUN gate** — requires (a) Gary to pick one real SOLD+email QR + one real NEW Sunmint submission, (b) **explicit go for the ledger-money-movement gate (§2)**, (c) UAT afterwards (always-stop) |
+
+**RESUME HERE (SUNMINT):** awaiting Gary to (1) pick the two real records, (2) give the explicit go for the ledger-money-movement gate, (3) confirm via `link_tree_planting.html`. Then I'll execute the RUN + report verification results, followed by UAT (always-stop).
+
+**RESUME HERE (FARM):** PR1 #200 is open awaiting human merge; once merged I proceed to **PR2 (santa-ana + paulo)**. PR #773 (tracker) also awaits merge.
+
+Nothing further is executable this turn without violating the explicit-go / money-movement / always-stop gates. Reporting and standing by.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/aac_fix 2>/dev/null && git fetch origin main 2>&1 | tail -1 && git checkout main 2>&1 | tail -1 && echo "=== pristine plan line coun; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== FARM plan: resume tracker area on pristine main ===" && git show origin; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && git checkout -B tracker/farm-shipment-media-json-pr0-pr1 origin/main 2>&1 | tail ; …(+5 more)
 
