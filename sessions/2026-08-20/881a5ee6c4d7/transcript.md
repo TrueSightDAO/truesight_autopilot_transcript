@@ -1251,11 +1251,13 @@ Main already has **PR4 merged as #210** (commit `c35c11d`) — a parallel execut
 ### 🤖 Autopilot
 
 PR #211 closed as superseded (PR4 already merged as #210 by a parallel execution). No PR5 in flight among open PRs. Let me verify PR5 isn't already merged on main, then check the plan's PR5 scope.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR5 is NOT yet done — no media.json for agl5/agl7/agl8, and the plan's distinctive note applies: **agl8's farmer photo is a genuinely different image** (`paulo_profile_photo.jpeg`, not the hero avif) — must stay distinct in JSON. Let me check the remaining details: agl7's gif (hero is `.gif` — verify agl7.gif exists in the repo), agl8's exact alt texts, and any duplicate-include bugs on these pages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1267,56 +1269,67 @@ All details mapped for PR5. Key findings:
 - All have `add-to-cart.js` to anchor the loader tag
 
 Let me check if agl7.gif is referenced correctly and the exact agl8 src forms, then build PR5.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR5 details fully confirmed (agl7.gif exists at 200; agl8 farmer photo is distinct `paulo_profile_photo.jpeg`). Now build PR5: transform the three pages, create media.json, extend the shipment spec, then test, commit, push, open PR, merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 transformed. But there's a subtlety: **agl8's farmer photo must stay distinct** (plan requirement) — the loader only handles `hero` and would overwrite the farmer slot with the hero avif. I need to (1) give agl8's farmer img a `data-media-slot="farmer"`, (2) add farmer-slot support to the loader, (3) fix the media.json. Let me do that now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 agl8 now has 1 hero slot + 1 farmer slot, loader supports distinct farmer photos, media.json keeps them distinct. Now extend the shipment spec for PR5 (agl5/agl7/agl8 — including the distinct-farmer assertion for agl8), then run all tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The spec replace failed (string mismatch — the spec was already modified in the PR4 turn with different formatting). Let me check the current spec's exact array closing and fix it properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The spec structure is different than I assumed (the parallel #210 rewrite used `slug`/`videoIds`/`galleryIframes` fields). Let me read the full current spec to extend it correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The parallel #210 rewrote the spec with a cleaner `slug`-based structure — and the hero assertion `expect(src).toContain(\`${slug}.avif\`)` would **fail for agl7 (a .gif)** and agl8 (farmer slot distinct → only 1 hero slot). Let me rewrite the PAGES array + assertions properly for PR5.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **7 passed** — all shipment pages (agl4, agl0, agl1, agl2, agl5, agl7, agl8), including the agl8 distinct-farmer assertion. Now run the farm spec for regression, then commit + push + open PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **7 shipment + 5 farm passed**, committed, pushed. Opening PR #212 now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #212 created. Given the parallel-execution conflicts twice before, let me check mergeability first, then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #212 is **mergeable and clean** — no conflicts this time. Merging now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1384,16 +1397,19 @@ Follow the same proven loop:
 ### 🤖 Autopilot
 
 Continuing: next unit is PR6 — migrate `shipments/agl10`, `agl13`, `agl14`. First, check whether a parallel session already merged it (the pattern that bit me twice), and map the exact scope.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR6 is NOT done (no media.json for agl10/13/14 on main, no open PR for it). Note: PR #213 is a **duplicate** of my just-merged #212 (a parallel session pushed the same pr5 content) — I'll close it as superseded. Now mapping PR6 scope.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact hero img lines + video containers for all three pages, and check the agl14 farmer-photo situation (the original live bug).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1523,4 +1539,132 @@ Proven loop:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp/agroverse_shop_beta_pr0 && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "=== main HEAD ==="; git log --oneli; cd /tmp/agroverse_shop_beta_pr0 && for p in agl10 agl13 agl14; do echo "=== $p ==="; grep -n -E "shipment-image|farmer-photo|youtube|video|m; cd /tmp/agroverse_shop_beta_pr0 && for p in agl10 agl13 agl14; do echo "=== $p imgs ==="; grep -n -E '<img (alt|class)=' shipments/$p/index.; …(+12 more)
 • `merge pr` → ✅ PR #214 on agroverse_shop_beta merged successfully (sha: 1598d96fdb2e0ee5c0eb5bbe4049262f5c73a419). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Continuing: next unit is **PR7 — agl6 special case** (retire the meta-tag + bespoke lazy-load script, replace with media.json + shared loader). Starting with the parallel-dupe pre-check and mapping agl6's current state.
+
+
+### 🤖 Autopilot
+
+PR7 confirmed un-done (no agl6/media.json; no open agl6 PR — the open PRs are unrelated partner/subscription work). Now mapping agl6's special-case structure: meta tag, lazy-load script, hero imgs.
+
+
+### 🤖 Autopilot
+
+Meta tag found (line 8) + the bespoke script at 1663. Let me see the full lazy-load script and the gallery/video markup it drives.
+
+
+### 🤖 Autopilot
+
+Full picture confirmed. agl6's special case:
+- **Meta tag** (line 8): `agroverse:youtube:agl6-sao-jorge-hot-chocolate` = `gw2vIxPCcyQ`
+- **Bespoke lazy-load script** (1662–1668): reads meta, sets iframe src from `about:blank` → YouTube embed
+- **Iframe** (line 1108): `id=agl6-sao-jorge-hot-chocolate-shipment-iframe`, `src="about:blank"`, `loading="lazy"`, inside a `.video-container` — this is the **hero-video** (per other pages' pattern, `.shipment-hero-video` iframe stays inline Option A)
+- **Duplicate config.js/universal-nav.js includes** (1653–1656) — same bug
+- **Hero imgs** (1002, 1114) — same agl6.avif for both
+
+Per the plan: retire meta tag + bespoke script entirely, replace with media.json + shared loader. The hero-video iframe stays (Option A pattern like agl4/agl13) but should get a `class="shipment-hero-video"` (like other pages) and a direct YouTube src instead of the meta-driven lazy fill. Let me check how agl4/agl13 structure their hero-video iframe for exact consistency.
+
+
+### 🤖 Autopilot
+
+Now let me check the loader's capabilities (does it support filling a bespoke video iframe / gallery items?) before deciding how agl6's video fits the new pattern.
+
+
+### 🤖 Autopilot
+
+The loader supports hero/farmer slots + gallery items (`type: 'youtube'`). For agl6's special case: retire meta tag + bespoke lazy script, put the hot-chocolate video into media.json as a gallery item, render via the shared loader. Let me verify the `.farm-video-*` CSS classes exist globally (loader-built markup) so the video renders styled.
+
+
+### 🤖 Autopilot
+
+`.farm-video-*` styles live in the global `css/cards.css`. Now I need to verify cards.css is included on agl6 (or add it). Let me check agl6's stylesheet includes and the `farm-video-container` styles, then build PR7.
+
+
+### 🤖 Autopilot
+
+All confirmed: agl6 already includes `cards.css` (line 38), so the loader-built video gallery will be styled. Now building PR7 — retire meta tag + bespoke script, convert hero slots, add media.json with the hot-chocolate video as a gallery item, replace the bespoke iframe with the loader-driven `#media-gallery` container.
+
+
+### 🤖 Autopilot
+
+All transformations applied cleanly (21-line change: −17/+4). Now extend the shipment spec for agl6 (hero + 1 gallery youtube iframe), then run all tests.
+
+
+### 🤖 Autopilot
+
+**11 passed** — agl6 now covered (hero + 1 gallery youtube iframe). Run farm spec for regression, then commit + push.
+
+
+### 🤖 Autopilot
+
+**11 shipment + 5 farm passed**, committed + pushed. Opening PR #215.
+
+
+### 🤖 Autopilot
+
+PR #215 created; mergeability still computing ("unknown"). Let me wait briefly and re-check before merging.
+
+
+### 🤖 Autopilot
+
+PR #215 is **mergeable and clean**. Merging now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #215 merged — this turn's unit complete.**
+
+## What I did this turn
+
+**Merged `agroverse_shop_beta` PR #215** (squash, sha `beeeccf`) — *"PR7: agl6 special case - retire meta-tag + bespoke lazy-load script, use media.json + shared loader"* — the plan §5a **PR7** unit.
+
+### Path this turn
+1. **Parallel-dupe pre-check**: confirmed PR7 un-done (no `agl6/media.json` on main, no open agl6 PR).
+2. Mapped agl6's special-case structure (meta tag at line 8, bespoke IIFE at 1662, `about:blank` iframe, duplicate config includes, `cards.css` already included).
+3. Built the full migration, tested, pushed, opened **PR #215**, verified mergeable+clean, merged.
+
+### What PR #215 changed (the "proving" PR — new system fully supersedes the old pattern)
+| File | Change |
+|---|---|
+| `shipments/agl6/index.html` | **Retired** `<meta name="agroverse:youtube:agl6-sao-jorge-hot-chocolate">` tag; **retired** the bespoke inline IIFE (read meta → set iframe src from `about:blank`); replaced `about:blank` iframe block with shared `<div id="media-gallery">`; both hero imgs → `data-media-slot="hero"`; deduped duplicate `config.js`/`universal-nav.js`; added `js/media-gallery.js` loader |
+| `shipments/agl6/media.json` | **New** — hero: agl6.avif (alt "AGL6 - São Jorge Farm") + gallery: 1 YouTube item (gw2vIxPCcyQ, "Hot chocolate from AGL6 beans") |
+| `tests/media-gallery-shipment.spec.ts` | Extended to all **11** shipment pages |
+
+The hot-chocolate video now renders via the shared loader (`.farm-video-container`/`.farm-video` from `cards.css`, already included) — no more meta-tag indirection, no more `about:blank` → runtime-fill.
+
+### Testing (before push — hard rule)
+- `npx playwright test tests/media-gallery-shipment.spec.ts` → **11 passed** (zero console/page errors)
+- `npx playwright test tests/media-gallery-farm.spec.ts` → **5 passed** (no regression)
+
+### Notes
+- Beta repo only — no prod, no money, no irreversible gate.
+- Only agl6 remains on the old pattern; all 9 other shipment pages + 5 farm pages now JSON-driven.
+
+## RESUME HERE → next unit
+Next plan unit: **PR8 — doc update in `agentic_ai_context`** (separate repo, direct small PR against its `main`): add a short **"§8 — Farm/shipment story media (JSON-driven)"** section to `conventions/AGROVERSE_SHOP_PAGE_CONVENTIONS.md` documenting the `media.json` schema, the `data-media-slot="hero"` / `id="media-gallery"` placeholder convention, and a link to the plan — so future agents adding a new farm/shipment page follow the new pattern instead of hardcoding.
+
+Loop:
+1. `read_repo_file("agentic_ai_context", "conventions/AGROVERSE_SHOP_PAGE_CONVENTIONS.md")` → find §7 end
+2. `git_push_changes` on **agentic_ai_context** (NOT the shop beta repo — separate repo, direct to main) adding §8 + a `plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md` link
+3. Self-review diff → merge PR → **STOP**, report contribution
+
+After PR8, **PR9 = UAT on beta.agroverse.shop — an always-stop gate** (needs Gary's explicit GO; not auto-advanceable).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp/agroverse_shop_beta_pr0 && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "=== main HEAD ==="; git log --oneli; cd /tmp/agroverse_shop_beta_pr0 && echo "=== meta youtube tag ==="; grep -n "agroverse:youtube" shipments/agl6/index.html; echo "=== hero im; cd /tmp/agroverse_shop_beta_pr0 && echo "=== lazy-load script (1640-1700) ==="; sed -n '1640,1700p' shipments/agl6/index.html; echo "=== gal; …(+9 more)
+• `merge pr` → ✅ PR #215 on agroverse_shop_beta merged successfully (sha: beeeccf2d27ae26cddbd47b15ca37439d40b7460). Pull Request successfully merged
 
