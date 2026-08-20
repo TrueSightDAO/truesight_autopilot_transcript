@@ -3060,16 +3060,19 @@ Explicit approval received — promoting the beta shop to prod now:
 ### 🤖 Autopilot
 
 Sync succeeded. Verifying the cacao tea PDP + cards are live on **www.agroverse.shop**:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 301 on the PDP and 0 matches — likely a redirect (www → non-www, or missing trailing slash) and/or the Pages rebuild hasn't propagated. Let me follow redirects and check the canonical URL:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod repo **main has the PDP** (raw 200), but the live site 404s — classic GH Pages rebuild lag (same as beta earlier). Let me check the prod Pages deployment status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3229,4 +3232,58 @@ Everything else is verified green — the cacao tea 50g packet is live and worki
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== 1. QR label _1: what does it encode? ==="; cd /tmp && curl -s -o ct1.png "https://raw.githubusercontent.com/TrueSightDAO/lineage-a; echo "=== 3. Simulate scan: follow QR redirect chain (no payment) ==="; curl -s -o /dev/null -w "final_url=%{url_effective} code=%{http_code
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] For the 100 QR codes change price sale via stripe to USD$5
+
+
+### 🤖 Autopilot
+
+On it — changing the Stripe sale price for the QR codes from $10 to $5. First, let me confirm the exact Price column on the QR rows via the sheet, then update all 101 CT rows (100 live serials + `_101`):
+
+
+### 🤖 Autopilot
+
+Confirmed: **Price is in column T (20)**, currently `10` for all 101 CT rows. Updating all of them to `5`:
+
+
+### 🤖 Autopilot
+
+Rate-limited on per-cell reads. Rewriting to use bulk range reads (one API call per batch) instead of per-cell:
+
+
+### 🤖 Autopilot
+
+All 101 rows updated to $5. Now verifying Edgar returns the new price for a fresh scan:
+
+
+### 🤖 Autopilot
+
+## ✅ Done — all 100 QR codes now sell at **USD $5**
+
+### What changed
+| Item | Before | After |
+|---|---|---|
+| **Price (col T)** on all **101 CT rows** (1678–1778: `_1.._100` + `_101`) | `10` | **`5`** ✅ (101/101 updated, 0 mismatches) |
+
+### Verified
+| Check | Result |
+|---|---|
+| Edgar lookup `_1` / `_50` / `_101` | **Price: 5**, status MINTED ✅ |
+| Fresh scan → Stripe Checkout | HTTP 200 (session created) ✅ |
+
+### Flow now
+Scan QR → Edgar → **Stripe Checkout $5** → pay → SOLD (reconcile) / cancel → prod PDP (unchanged).
+
+### Notes
+- The **SKU record** (Agroverse SKUs row 15) still says $10.00 — that's the SKU's list price, separate from the QR sale price. **Want me to also change the SKU row to $5** for consistency, or leave the SKU at $10 (e.g. if FounderHaus venue pricing differs from QR-scan pricing)?
+- The **PDP intentionally shows no price** (offline QR-scan sales only), so nothing to change there.
+
+Say the word on the SKU row and we're fully consistent.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"PYEOF" import gspread gc = gspread.servic; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"PYEOF" import gspread from gspread import; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"PYEOF" import gspread, time from gspread ; …(+1 more)
 
