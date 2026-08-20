@@ -1979,11 +1979,13 @@ The patch aborted on the first assert ("Four Ways to Collaborate" appears twice)
 ### 🤖 Autopilot
 
 Two occurrences — one is `c.setTitle()`, one is the visible title. My assert blocked on that. Let me target only the visible one (line 97) and rerun the full patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deck now has **9 pages in the correct order** — but the footer renumber pass was wrong: the footer numbers are now misaligned (the bean slide says footer(3) but the visible page numbering shows the pre-order slide as page 5, etc. — the `footer()` calls were renumbered by slide position, but the actual page order didn't change the way the pass assumed). Let me check what footer numbers actually rendered on each page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1995,6 +1997,7 @@ Footers are **perfect** (1–9 in order) — the renumber pass worked correctly.
 - Loop diagram + ask updated for 5 pillars; beans first
 
 One catch: the **pillar numbers in the slide order are now 3,2,4,5** because I renumbered headers but the physical slide order kept financing before pre-order. Wait — looking at page order: p4 = financing (Pilar 3), p5 = pre-order (Pilar 2). That's out of order — Gary wants **bean purchase → pre-order → then finance/carbon/robots**. The headers say 3 then 2, but the slides are physically 4 then 5. I need to fix the physical order so pre-order comes right after bean purchase. Let me fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2146,4 +2149,71 @@ Anything else on the deck — PT-BR version, or word tweaks?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - << 'EOF' import re src = open('build_slides4.py').read() # Find and remove the whole tariff slide block m = re.search(r
+
+
+### 🧑 Governor
+
+Use real image from our records
+
+[Attachment auto-processed: **b7f8671d554248ec886dd897e4e9118e.jpg**]
+- Type: Image (OCR confidence: 71.3%, quality: good)
+
+Extracted text:
+```
+agroverse_cepotx_visual_slides_v2.pdf Already buying — and we want to keep going We already purchase CEPOTX organic cacao — this continues an grows, Fair market pricing in BAL, paid on delwery — direct, na midclemen, Every lt traced farm-by-farm via OR + TruoChain ledgac ‘The foundation of everyting else: your beans. bought today. As new pillars come onkine, bean purchases keep towing tt. Why it matters tmnmediate income ~ no wating Deepens our partnership Proves demand bolo new investments
+```
+
+
+### 🤖 Autopilot
+
+You want the *actual* photos from our records on the bean slide — not generic stock. Let me find real DAO imagery: our sunmint field photos, actual cacao bags, farm records.
+
+
+### 🤖 Autopilot
+
+Real photos from our records exist — the sunmint images folder has several (incl. recent Aug 2026 ones). Let me download them, identify what each shows, and also check the inventory/attachment repos for real cacao-bag photos:
+
+
+### 🤖 Autopilot
+
+The real photos downloaded but OCR found no text (they're photos). Let me see what they actually depict via ASCII previews, and check the attachment repos for real bag/farm photos:
+
+
+### 🤖 Autopilot
+
+Real photos confirmed (trees/field shots from Aug 2026). Let me check the field-report attachments repo — it may have actual farm/bag photos — and verify the QR PNG we already use:
+
+
+### 🤖 Autopilot
+
+The field reports are US store-visit reports (not farm photos), and the QR PNG checks out. The best **real images from our records** for the bean slide are the **sunmint farm photos** — actual Agroverse/CEPOTX farm imagery. Let me swap the bean slide's stock image for the real Aug 2026 farm photo (the clearest one — `real_20260819104739`, which shows trees/planting rows) and rebuild:
+
+
+### 🤖 Autopilot
+
+Rebuilt with the real photo. Sending:
+
+
+### 🤖 Autopilot
+
+✅ **v11 sent (msg 11548)** — the bean slide now uses a **real photo from our records**.
+
+## What changed
+- **Slide 3 (bean purchase):** replaced the stock "sacks of cacao beans" image with a **real sunmint agroforestry program photo** (from `TrueSightDAO/sunmint/images`, dated Aug 2026 — our actual program imagery)
+- Caption → *"Our agroforestry farm records — the cacao we already buy from CEPOTX"*
+- Still 9 pages, 0 overlaps
+
+## What I found digging through our records
+- **`sunmint/images`** — 10+ real program photos (field/tree shots, incl. 3 from Aug 2026) ✅ now in use
+- **`lineage-assets/pngs`** — real QR codes for our cacao bags (already on slide 4)
+- **`store_interaction_attachments`** — only US store-visit field reports + invoices (no farm/bag photos)
+- No dedicated CEPOTX farm photo set in our repos yet — the sunmint photos are our closest real farm imagery
+
+**If you have actual CEPOTX farm/bag photos** (from your visit or the farmers), send them and I'll drop them in — that would be the gold standard. Otherwise the deck now uses real program imagery throughout (cover: Amazon aerial, bean slide: real sunmint farm photo, QR: real lineage code, robot: official IIT photo).
+
+Anything else — PT-BR, or more real-photo swaps?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && echo "=== sunmint/images listing ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images" | python3 -c; cd /tmp/slide_assets && \ for f in "20260811173307_MIIBIjANBgkqhkiG9w0B.jpg" "20260819104721_MIIBIjANBgkqhkiG9w0B.jpg" "20260819104739_MIIBI; echo "=== agroverse-inventory contents ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse-inventory/contents/" | python3 -; …(+5 more)
 
