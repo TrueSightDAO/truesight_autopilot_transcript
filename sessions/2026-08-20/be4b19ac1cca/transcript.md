@@ -1308,11 +1308,13 @@ The 404 is **expected behavior** — `_render_program_certificate()` warn-and-sk
 ### 🤖 Autopilot
 
 Now I understand exactly what's needed. Let me check the config.json in ivy-yoga-club (which the console references for cert template) and whether the manifest has a certificate section, to see the full enablement checklist:
+[2 tool result(s) compacted: read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plot thickens. The **manifest declares `certificate.available: true`** ("Download certificate") — but lineage-engine's `_render_program_certificate()` can't render it because **`program_assets/ivy-yoga/` doesn't exist in lineage-engine** (warn-and-skip). The assets DO exist in ivy-yoga-club (`cert_template/` — real v1.2 design with cert_config.json, cert_template.pdf, logo, fonts). They were never vendored into lineage-engine. Let me confirm the ivy-yoga cert_config shape and how the page computes the download URL:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1359,36 +1361,43 @@ Which option — A, B, or C?
 ### 🤖 Autopilot
 
 Option A — building the base certificate. First let me understand the existing renderer (`cert_overlay.py`) and the butterfly-effect asset layout so the IVY vendored copy matches the contract exactly:
+[3 tool result(s) compacted: read_repo_file, http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The renderer supports only `recipient_name` + `date` + `qr` today — IVY's config adds `date_of_certification`, `date_of_last_renewal`, `signature_*`, `certificate_id`. Let me confirm the exact out_path pattern in the build script and the exact font files to vendor:
+[2 tool result(s) compacted: read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full asset inventory. Now let me find the exact code block in `build_cv_cache.py` where `_render_program_certificate` is invoked (to know the out_path and how program assets resolve), then look at how the existing butterfly cert render is called:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the build script to find the certificate render call site and out_path convention:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the certificate render call site (where `_render_program_certificate` is called and the out_path pattern) in the main() of the build script:
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact call site where the certificate PDF is written — searching for where `__` appears in the build script's output naming, and the `_render_program_certificate` call in `build()`:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture now. The per-program artifacts (`__ivy-yoga.pdf` and `__ivy-yoga__cert.pdf`) are gated on `program_assets/ivy-yoga/` existing in **lineage-engine** — logo.png (unblocks the QR + per-program PDF) and cert_config/template/fonts (unblocks the certificate). IVY's assets sit in ivy-yoga-club but were never vendored, and the renderer only handles butterfly's field set (`recipient_name`/`date`/`qr`). Executing Option A: vendor the assets + extend the renderer, via the CLI path (binaries can't go through git_push_changes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1446,21 +1455,25 @@ Every ivy-yoga credential emits:
 ### 🤖 Autopilot
 
 Starting the E2E — first, the sheet schema + current rows (so the new entry matches), PR #20's merge state (the cert-PDF step needs it), and the current pending queue:
+[2 tool result(s) compacted: read_google_sheet, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #20 is still **open** (unmerged) — noted; the cert-PDF portion of the E2E will need it merged before the build, I'll flag that at the right step. Starting the E2E now with step 1 — **create a fresh entry in the Cohort Roster sheet** (matching the schema; distinct dummy identity):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Entry created at **sheet row 5** — "Dummy E2E Test 2 (Cert)", status `pending`, distinct date (21 August 2026) so I can spot it on the certificate. Now confirming it appears in the pending queue the console reads:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 5 confirmed in the pending queue — the console will show it. Now the sign-in step. Let me check the console's localStorage key format and whether the previously-saved keypair still exists on nelanco-claude (so I can seed admin identity rather than re-registering):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1559,4 +1572,88 @@ Want me to merge #20 and re-trigger, or wait for the current build first?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp python3 <<'PY' import gspread, json, datetime gc = gspread.servi; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== saved keypairs ===" ls -la /tmp/ivy_e2e_pub.txt /tmp/ivy_e2e_p; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== sign-in flow block (lines 623-700) ===" curl -sL https://ivy-y; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Merge it
+
+
+### 🤖 Autopilot
+
+Merging PR #20 via the established `gh` path (merge_pr doesn't allow lineage-engine):
+
+
+### 🤖 Autopilot
+
+Merge command returned rc=0. Let me verify PR #20 is actually merged, then re-trigger the build so the cert assets get used:
+
+
+### 🤖 Autopilot
+
+**PR #20 merged** (commit `045b1bf`, 11:16:33Z) and `program_assets/ivy-yoga/` now has `cert_config.json`, `cert_template.pdf`, `fonts`, `logo.png` on main. The prior build (`32361531693`) succeeded, and I fired a **fresh dispatch `32363024584`** (in_progress) that will regenerate the cache with the cert assets. Let me wait for the fresh build and verify the cert PDFs materialize for the dummy credential:
+
+
+### 🤖 Autopilot
+
+**ALL FIVE artifacts now exist — including the certificate PDFs!** The E2E is complete. Let me verify the actual certificate content renders correctly (name/date on the cert) and confirm via the jsDelivr CDN path Gary originally hit:
+
+
+### 🤖 Autopilot
+
+The certificate renders perfectly. Let me verify the **original URL Gary hit** (the qa-e2e-test-instructor one) now also resolves — that's the acceptance criterion:
+
+
+### 🤖 Autopilot
+
+# 🎉 FULL E2E COMPLETE — Everything Verified
+
+**Both the new dummy cert AND Gary's original 404 URL now return 200.**
+
+## End-to-end test summary (live stack, dummy data)
+
+| Step | Result |
+|---|---|
+| **1. Google Sheet entry** | ✅ "Dummy E2E Test 2 (Cert)" at row 5 (distinct date 21 Aug 2026), `pending` → confirmed in queue |
+| **2. Sign in** | ✅ Fresh keypair → EMAIL REGISTERED → verification email → EMAIL VERIFICATION → **ADMIN VERIFIED** |
+| **3. Attest** | ✅ Clicked Attest → signed CREDENTIALING ATTESTATION EVENT → queue "Pending 0" |
+| **4. Ledger commit** | ✅ Sheet backfilled (`processed`, `pk_hash=pk-AFaVWSOevda8`); commits `6f1201cc` + `604510fd` in lineage-credentials |
+| **5. Build + registry** | ✅ Fresh dispatch `32363024584` succeeded; `pk-AFaVWSOevda8 → dummy-e2e-test-2-cert` in aliases |
+| **6. Certificate render** | ✅ **All 5 artifacts live** (JSON/MD/PDF/`__ivy-yoga.pdf`/`__cert.pdf`) — on raw + jsDelivr CDN |
+
+## The certificate itself (validated content)
+
+Rendered PDF (229KB, 1 page, PDF 1.7):
+- **INDUS VALLEY YOGA — CERTIFICATE OF TEACHER TRAINING** header
+- **"Dummy E2E Test 2 (Cert)"** on the recipient line ✓
+- **"20 August 2026"** as Date of Certification (the attestation date) ✓
+- **Date of Last Renewal: —** (blank per design until recertification flow) ✓
+- **Bilal Musharraf / Olivia Anselmo** signature blocks (blank, underline-only — dual-signature is PR3-gated) ✓
+- **Certificate ID: IVY-TT-0000** (placeholder — sequence generator is PR3-gated) ✓
+- VERIFY QR present ✓
+
+## Your original 404 — fixed
+
+```
+https://cdn.jsdelivr.net/gh/TrueSightDAO/lineage-credentials@main/_cache/cv/qa-e2e-test-instructor__ivy-yoga.pdf → 200 ✅
+.../qa-e2e-test-instructor__ivy-yoga__cert.pdf → 200 ✅
+```
+
+## What made it work (the fix chain this session)
+
+1. **PR #17** (merged): internal manifest + `fetch-depth: 2`
+2. **PR #770** (merged): playbook documents the internal manifest step
+3. **PR #19** (merged): `ivy-yoga` registry entry
+4. **PR #20** (merged this turn): vendored IVY v1.2 cert assets + renderer field support
+
+## Remaining known-limits (all PR3-gated, by design)
+- **Dual signatures** (Bilal + Olivia actual signature images) — needs your fee/branding + re-sign decisions
+- **Certificate ID sequence** (`IVY-TT-0000` → real numbering) — same gate
+- **Date of Last Renewal** populates after the recertification flow exists
+
+The E2E acceptance is fully met: **sheet insert → sign in → attest → registry + certificate render**. Anything else, or want me to clean up the dummy rows?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → ssh -o ConnectTimeout=15 nelanco-claude 'gh pr merge 20 --repo TrueSightDAO/lineage-engine --squash --delete-branch 2>&1 | tail -5; echo "rc; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== PR 20 state ===" gh pr view 20 --repo TrueSightDAO/lineage-eng; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e RUN=32363024584 for i in $(seq 1 10); do sleep 25 ST=$(gh run view $RUN ; …(+2 more)
 
