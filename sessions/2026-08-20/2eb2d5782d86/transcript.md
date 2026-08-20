@@ -2177,31 +2177,37 @@ agroverse_cepotx_visual_slides_v2.pdf Already buying — and we want to keep goi
 ### 🤖 Autopilot
 
 You want the *actual* photos from our records on the bean slide — not generic stock. Let me find real DAO imagery: our sunmint field photos, actual cacao bags, farm records.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real photos from our records exist — the sunmint images folder has several (incl. recent Aug 2026 ones). Let me download them, identify what each shows, and also check the inventory/attachment repos for real cacao-bag photos:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real photos downloaded but OCR found no text (they're photos). Let me see what they actually depict via ASCII previews, and check the attachment repos for real bag/farm photos:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real photos confirmed (trees/field shots from Aug 2026). Let me check the field-report attachments repo — it may have actual farm/bag photos — and verify the QR PNG we already use:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The field reports are US store-visit reports (not farm photos), and the QR PNG checks out. The best **real images from our records** for the bean slide are the **sunmint farm photos** — actual Agroverse/CEPOTX farm imagery. Let me swap the bean slide's stock image for the real Aug 2026 farm photo (the clearest one — `real_20260819104739`, which shows trees/planting rows) and rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuilt with the real photo. Sending:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2244,16 +2250,19 @@ ORGANICC
 ### 🤖 Autopilot
 
 Let me inspect this image (it shows "ORGANICC" — likely a bag or product shot) and swap it into the bean slide:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real CEPOTX product/bag image (960×1280, "ORGANICC" label — likely the organic cacao bag). Swapping it into the bean slide and rebuilding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuilt with your CEPOTX image. Sending:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2405,4 +2414,81 @@ Anything else — PT-BR version, or more tweaks?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && grep -n "p0_img\|drawImage" build_slides4.py | head -20 && echo "=== bean slide draw section ===" && grep -n "PILAR 1" build_slid; cd /tmp && sed -n '50,70p' build_slides4.py && echo "=== line 139 context ===" && sed -n '130,145p' build_slides4.py; cd /tmp && grep -n "img_with_caption\|prep(" build_slides4.py | head -30; …(+4 more)
+
+
+### 🧑 Governor
+
+Swap order of these two
+
+[Attachment auto-processed: **9619f6a1e2004985b762b51642b1b79c.jpg**]
+- Type: Image (OCR confidence: 81.6%, quality: good)
+
+Extracted text:
+```
+GaTW Se eto stam lere) Lc) 8 2 - Pre-order of chocolate bars — from your factory to the USA Guaranteed demand, premium provenance © Once the cooperative's factory is ready, we place a pre-order for chocolate bars. © Shipped to the USA — import live: Europe (EUDR) & China (GACC) next. © Fair market pricing: you produce, we buy. © Every bar knows its exact farm — QR + TrueChain ledger: © farm, harvest, fermentation, processing — all recorded. © Sensor-veriied provenance joins soilAveather data to each batch. ‘TrusSight DAO - Agra CTO Rea ill ice) 3 We finance tree planting on your land (Cacao on tha branch — wat your lana can proce ‘TrusSight DAG. Agroverse SunMint What traceability unlocks © Premium prices — provenance is part of the value © Proof of origin for USA. EU & Ghina buyers © Fair credit back to the exact farm Each papier sarise 8 08 code (example) Upfront financing, zero cost to you © We finance agroforestry planting: cacao + native shade trees on your land. © Cacao takes ~1.5 yrs to bear — we bridge that income gap- © The trees are YOUR asset: cacao income + carbon credits for decades. © Same model as SunMint — agroforestry restoration at farm level. © Degraded land restored, future income secured. Farmer outcome © Noup-front cost © Diversified income © Land value rises as forest returns
+```
+
+
+### 🤖 Autopilot
+
+Swapping the two slides (pre-order ↔ finance) so the order becomes beans → finance → pre-order → carbon → robots. Let me find the exact block boundaries first:
+
+
+### 🤖 Autopilot
+
+Swap the two slide blocks (pre-order ↔ finance), renumber headers (Pilar 2 ↔ Pilar 3), fix footers, and check the loop/ask slides for pillar references. Let me read those blocks first:
+
+
+### 🤖 Autopilot
+
+Now I'll swap the two blocks (pre-order ↔ finance), swap their pillar numbers (2↔3), and fix footers:
+
+
+### 🤖 Autopilot
+
+Order and numbering are correct now. Let me rebuild and verify (the loop + ask slides reference pillars — checking they still make sense):
+
+
+### 🤖 Autopilot
+
+Order swapped correctly, 0 overlaps. Let me check the loop slide's pillar order text still matches the new sequence, then send:
+
+
+### 🤖 Autopilot
+
+The loop diagram still shows the old order (Bean → Pre-orders → Financing). New order is Bean → Financing → Pre-orders → Carbon → Robots. Let me fix the loop boxes:
+
+
+### 🤖 Autopilot
+
+Now reorder the loop boxes to match the new sequence (Bean → Financing → Pre-orders → Carbon → Robots) and re-route the arrows:
+
+
+### 🤖 Autopilot
+
+Loop updated, 0 overlaps. Sending the swapped deck:
+
+
+### 🤖 Autopilot
+
+✅ **v14 sent (msg 11568)** — order swapped.
+
+## New deck order (9 pages)
+1. Cover — Five Ways to Collaborate
+2. Who we are
+3. **1 · Purchase of cacao beans** (already live)
+4. **2 · We finance tree planting** ← moved up
+5. **3 · Pre-order of chocolate bars** ← moved down
+6. 4 · Carbon credits via monitoring
+7. 5 · Robots for farm management
+8. Closed loop — updated diagram: **Bean → Financing → Pre-orders → Carbon → Robots**
+9. What we're asking from CEPOTX
+
+The loop diagram boxes were also reordered to match, and the arrow routing preserved. 0 overlaps (automated checker).
+
+Anything else — PT-BR version, wording tweaks, or is this ready for the visit?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && grep -n "SLIDE\|Pilar\|header(\|showPage\|footer(" build_slides4.py | head -50; cd /tmp && sed -n '159,208p' build_slides4.py; cd /tmp && python3 - << 'EOF' lines = open('build_slides4.py').read().split(' ') # find block boundaries (0-indexed) def find(sub, start=0):; …(+4 more)
 
