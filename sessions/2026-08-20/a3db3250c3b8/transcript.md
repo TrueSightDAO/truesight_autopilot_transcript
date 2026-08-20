@@ -2748,6 +2748,7 @@ Also once I marked as invalid, that specific Sunmint submissions pending link sh
 ### 🤖 Autopilot
 
 Gary's ask: once marked INVALID, that submission must drop out of the dropdown — immediately and persistently across refresh. The mechanism is right (`build_sunmint_pending` filters `status != "NEW"`, so once the sheet flips to INVALID the next cache regen drops it) — but two things are blocking it: **#70 (shareText fix, makes Mark Invalid actually submit) and #71 (photo fallback) are still unmerged**, and the cache refresh only runs every 30 min. Merging both, then tightening the refresh:
+[3 tool result(s) compacted: list_prs, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2794,16 +2795,19 @@ I wonder if there is a way to uniquely identify a Sunmint submissions pending li
 ### 🤖 Autopilot
 
 Good idea — right now the dropdown shows `name · date · lat/lng`, and with 10 "Gary Teh" submissions some look identical. The natural unique key already exists: `telegram_message_id` (msg 171, 6411, …) — that's what the handler uses to address the row. Let me confirm the cache fields + the dropdown render code, then add the ID to the option label.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The unique key already exists in the cache — `telegram_message_id` (171, 6411, 6422…). Let me see the exact option-render block to add it to the visible label:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dropdown label is `name — species · planted date · lat, lng` — with 10 "Gary Teh" rows, several look identical. I'll prefix each option with `#<telegram_message_id>` (the unique key the handler already uses to address the row). Opening the small PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3017,4 +3021,57 @@ Say **"go A"** (or **"go B"**) and I'll execute. Either way, the real **Link** s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== sunmint GAS project files (1Jp8qNI) ===" && ls -la /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmO; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== pro; cd /tmp && curl -s "https://sunmint.truesight.me/" -o sunmint.html && echo "=== fetch/endpoint calls in sunmint web app ===" && grep -oE "(f; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Can you not implement such that RSA populates the tab? So missing a GAS??
+
+
+### 🤖 Autopilot
+
+Great question — and yes, **a missing GAS bridge is exactly right**. The web app signs and POSTs `[TREE PLANTING EVENT]` to Edgar, but nothing ingests Edgar's submissions into the SunMint tab — only the Telegram path does. Let me confirm how events reach the link-handler GAS today (webhook vs poll) and where Edgar stores submissions, so the bridge design is grounded.
+
+
+### 🤖 Autopilot
+
+Confirmed — **yes, there's a missing GAS bridge.** Your instinct is exactly right. Here's the gap:
+
+## The pipeline today (and the hole in it)
+
+| Step | Works? |
+|---|---|
+| Web app signs + POSTs `[TREE PLANTING EVENT]` → `edgar.truesight.me/dao/submit_contribution` | ✅ (Edgar stores it, signature verified) |
+| Edgar `dispatch.py` routes `[TREE PLANTING LINK EVENT]` → GAS webhook | ✅ (PR5, for the *link* event) |
+| **Edgar routes plain `[TREE PLANTING EVENT]` (farmer submission) → anything** | ❌ **NOT in the dispatch table** — it just sits in Edgar's submission log |
+| GAS cron `processTelegramLogs()` scans **Telegram Chat Logs** tab → appends SunMint tab | ✅ but only for **Telegram-bot** submissions |
+| SunMint tab → cache → dropdown | ✅ |
+
+So: a submission made via `sunmint.truesight.me` (or any RSA-signed Edgar submission) **never reaches the SunMint tab** — only Telegram-bot posts do. That's the missing GAS.
+
+## The fix (what "RSA populates the tab" looks like)
+
+A small bridge, mirroring the exact pattern that already works for the link event:
+
+1. **`dao_protocol dispatch.py`** — add `("[TREE PLANTING EVENT]", ...)` to the dispatch table → fires a webhook to the SunMint GAS project (`1Jp8qNI…`) `doPost` on successful Edgar submission. (Env key `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING`.)
+2. **SunMint GAS `Code.js`** — add a `doPost(e)` that:
+   - parses the signed submission text (lat/long/species/photo URL/planter)
+   - **verifies the RSA signature** (same `resolveContributorNameFromPublicSignature_` pattern as the link handler) — so only valid signed events populate the tab
+   - appends the row to the **SunMint Tree Planting** tab (same 19-column shape, `Telegram Message ID` = a derived unique id, e.g. `EDGAR-<txid>`)
+3. Cache regen (30-min cron / on-demand push) → the signed submission **appears in the dropdown** — RSA-populated, end to end.
+
+No sheet-side changes; reuses the existing dedup key + status flow. Mark Invalid / Link then work on it exactly as on a Telegram row.
+
+## Worth flagging (before you decide)
+
+- This is the **production ingestion path** — it makes every RSA-signed web submission auto-appear in the SunMint tab (and thus linkable). That's the intended feature, but it means **real farmer submissions will start landing** — the "fake entry" idea becomes unnecessary (a real web-app submission would already E2E it).
+- The signature verification must be solid — a forged `doPost` shouldn't be able to inject rows. I'd implement it with the same governor/contributor resolution as the link handler.
+
+**Want me to build it?** Say "go" and I'll open the PR (dispatch.py + Code.js bridge + env key + SCHEMA note), deploy the GAS, and we E2E it with a real signed submission from `sunmint.truesight.me` (which is safe — it populates a row, no QR/ledger/email until someone Links it, and Link stays gated).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== lin; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_client/server/dispatch.py" -o dispatch.py
 
