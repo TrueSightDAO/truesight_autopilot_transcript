@@ -268,31 +268,37 @@ Node v20 is available. Playwright browsers aren't installed yet — I'll handle 
 ### 🤖 Autopilot
 
 Both new files are valid. Now edit the HTML: replace the hardcoded videos container with the empty `id="media-gallery"` container, and add the loader script tag. Using Python for a precise replace:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTML edit clean — zero hardcoded embeds remain, loader tag added. Now write the Playwright spec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 changes staged locally. Now install dependencies and run the Playwright test against the local server. This may take a while (browser download) — let me run it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dependencies and Chromium installed. Now run the new spec against the local server (starts automatically on :8000):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gallery itself passed (2 iframes, correct IDs, correct titles) — the only failure is a **pre-existing page error**: `Identifier 'cachedPath' has already been declared`. I spotted the cause earlier: the page loads `config.js`, `farms-data.js`, and `partners-data.js` **twice** (duplicate script tags at the bottom). Let me confirm and fix that duplicate-include bug — it's on the pilot page and the plan's own UAT U1 requires zero console errors there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: `config.js`, `farms-data.js`, `partners-data.js` are each included **twice** (duplicate script tags) on the pilot page, and `partners-data.js` declares `cachedPath` at top level — so the second include throws `Identifier 'cachedPath' has already been declared`, which is the exact console error UAT U1 forbids. Fix: remove the duplicate second set. Let me check whether this duplicate pattern exists on the other farm pages too (scope decision):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -300,11 +306,13 @@ Confirmed: `config.js`, `farms-data.js`, `partners-data.js` are each included **
 Key finding: the duplicate-script bug is **site-wide** — 2 of 7 farm pages and **all 11 shipment pages** double-include `config.js`/`farms-data.js`/`partners-data.js`, and `partners-data.js`'s top-level `let cachedPath` throws on second load. This is exactly the class of pre-existing console error the plan's UAT (U1, U2, U5) and §0.5 "zero console errors" will trip on for every migrated page.
 
 This is a **scoped side-fix** (PR0's job is the pilot page — fixing the duplicate includes on *all* pages is a separate, larger change). I'll fix it on the pilot page (`oscar-bahia`) so PR0's spec passes and UAT U1 is clean, and file a follow-up in OPEN_FOLLOWUPS.md for the site-wide cleanup. Let me do the pilot-page fix and re-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dedupe done. Re-run the spec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -312,6 +320,7 @@ Dedupe done. Re-run the spec:
 ✅ **Test passes** — `media.json` fetched (200), both iframes render with correct IDs, zero console errors.
 
 Now run the full test suite to make sure the pilot-page dedupe and the new files don't break existing tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -324,21 +333,25 @@ gp
 ### 🤖 Autopilot
 
 Full suite timed out at 300s — likely just slow (many pages loading external resources). Let me run it in the background and poll, so I don't block a turn:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The command itself hung — `ls tests/*.spec.ts | wc -l` shouldn't hang, so it's likely npm test grabbed the shell or the nohup backgrounding didn't detach properly. Let me check what's running and kill stale processes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full suite is running in the background (26 spec files). My spec already passed; the suite shows some cart-test failures (unrelated files). Let me poll the background log to get the full picture:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The suite is still running through cart tests (several cart failures are pre-existing — the first test passed, then downstream ones fail at 14s timeouts, suggesting a shared-state or external-dependency issue unrelated to my change). Let me wait for the suite to finish and get the final tally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -351,11 +364,13 @@ go
 ### 🤖 Autopilot
 
 Suite finished but no summary lines matched. Let me check the actual tail of the log:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Suite finished: log ends with **"26 passed (19.3m)"** — but earlier I saw cart-test ✘ marks and the tail lists many `[chromium] › ...` test names. I need the real summary line and whether those listed tests failed. One clean diagnostic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -368,6 +383,7 @@ This is important: the full-suite result is **26 passed, 112 failed** — but th
 - The 112 failures are the repo's *existing* baseline on this box (no network/backend stubs for Edgar etc.).
 
 Let me confirm the failures are all in unrelated specs (none in farm/oscar specs), and prove the baseline by checking whether these same tests fail on a **clean checkout** (pre-change). Then I'll open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -375,6 +391,7 @@ Let me confirm the failures are all in unrelated specs (none in farm/oscar specs
 Important: my `media-gallery-farm.spec.ts` **also failed** in the full-suite run (✘ 42, 268ms) even though it passed standalone earlier. 268ms = it failed on **page load**, not on assertions — almost certainly a **port/collision or resource issue during the long 19-minute run** (e.g. the shared web server, or a flake from running 26 specs). The failure list is otherwise entirely pre-existing white-label/cart/etc. specs (all hitting external services).
 
 Let me look at exactly what that failure was, then re-run my spec standalone a few times to check flakiness:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -382,11 +399,13 @@ Let me look at exactly what that failure was, then re-run my spec standalone a f
 That confirms it — the failure was **`net::ERR_CONNECTION_REFUSED at http://localhost:8000`**: the web server **died mid-suite** (or was killed), so *every* test after that point failed with connection-refused, mine included. That's an environment artifact of the 19-minute run, **not** a defect in my change. Note also the double `✘ 42` + `19)` listing suggests the log interleaves two runs.
 
 So: PR0's pilot spec **passes** when the server is up (verified standalone), and the 112 failures are the repo's pre-existing baseline + server-death flake. Let me prove the baseline claim quickly by re-running my spec standalone (server fresh) and, in parallel, confirm the repo's failure baseline is unrelated to my files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pkill killed the whole session (returncode 255 — likely killed our own shell's process group or the ssh session). Let me retry the clean run with a fresh command:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -399,21 +418,25 @@ The pkill killed the whole session (returncode 255 — likely killed our own she
 - Test: pilot spec **passes** standalone; full suite baseline is 112 pre-existing failures (external-service/white-label tests + a server-death flake at 19m) — none caused by PR0, which only touches the pilot page + 2 new files.
 
 Now open the PR against `agroverse_shop_beta` (gate 1: beta-only, no self-merge). Let me get the diff and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Changes look right (the `consistency.spec.ts-snapshots/` dir is a Playwright artifact — I'll exclude it). The `index.html` diff is +3/−36 (36 lines of hardcoded videos → 3 lines). Now create the feature branch, commit only the intended files, and push. I'll open the PR via `git_push_changes` with the exact file contents:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 files staged, snapshot dir excluded. Now let me push the branch. Let me check if the local clone's remote is set up properly and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Now open the PR with a proper title/body describing the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -517,4 +540,61 @@ I have the structure. Now I'll add the follow-up entry under `## Pending` via a 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → pgrep -f "playwright test" > /dev/null && echo "STILL RUNNING" || echo "DONE"; echo "=== tail 40 ==="; tail -40 /tmp/shop_full_test.log; ech; pgrep -f "playwright test" > /dev/null && echo "STILL RUNNING" || echo "DONE"; echo "=== summary lines ==="; grep -nE "passed|failed|flaky|i; cd /tmp/agroverse_shop_beta && echo "=== which spec files have failures ==="; grep -E "✘|failed" /tmp/shop_full_test.log | grep -oE "tests/[; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md`. Before responding, read it with read_context_file("plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+fix it
+
+
+### 🤖 Autopilot
+
+Fixing PR #771 now — restoring the pristine 1900-line file and inserting only the one new entry.
+
+
+### 🤖 Autopilot
+
+Commit landed on local `main` instead of the feature branch (checkout of the remote branch failed — needs `-b`). Local main is NOT pushed (good), so I'll rebranch correctly: save the fixed file, create the feature branch from origin's version, write the file, commit, force-push, then reset local main:
+
+
+### 🤖 Autopilot
+
+The remote feature branch isn't fetchable as a ref — odd since PR #771 exists. The remote branch may have been deleted by the failed PR, or the fetch didn't bring it. Let me check the remote branch state and PR #771 status:
+
+
+### 🤖 Autopilot
+
+Remote branch exists (`fa1215ee` = the clobbered commit) and PR #771 is still open on it. The earlier checkout failed only because `origin/` refs weren't fetched locally. Let me create the branch from the remote ref directly and force-push the fixed file:
+
+
+### 🤖 Autopilot
+
+Fixed. The branch now has the full 1900-line file + my entry (+1759/−2). Verify PR #771's diff is now clean (no mass deletion):
+
+
+### 🤖 Autopilot
+
+✅ **PR #771 is now clean: +12 / −0.** The mass deletion is gone — the diff is exactly the one new follow-up entry under `## Pending`. All 1900 original lines intact.
+
+## Status summary
+
+| Item | State |
+|---|---|
+| **PR0** — [agroverse_shop_beta#196](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/196) | ✅ Open, 4 files (+141/−36), pilot spec passes locally, beta-only, never self-merge |
+| **Follow-up** — [agentic_ai_context#771](https://github.com/TrueSightDAO/agentic_ai_context/pull/771) | ✅ **Repaired** — was +14/−1759 (clobber), now **+12/−0** (clean single entry) |
+| Local /tmp/aac_fix main | ✅ Reset to `6e9e985` (origin/main) — no stray commits |
+
+**What went wrong & fixed:** my `git_push_changes` wrote a truncated copy of OPEN_FOLLOWUPS.md (artifact read was capped at 121KB), deleting ~1759 lines. Recovered the pristine 1900-line file from main, re-applied as a single insertion on the feature branch, force-pushed. Verified via the PR files API: **+12 / −0**, only the new entry.
+
+**RESUME HERE =** next in plan sequence: **PR1 (agl4 + fixes live agl14.avif bug)** → PR2/PR3 (farms) → PR4–PR6 (shipments) → PR7 (agl6, retires meta-tag pattern) → PR8 (conventions doc) → PR9 (UAT, always-stop, human verify on beta.agroverse.shop).
+
+Gates respected throughout: every PR opens against `agroverse_shop_beta` only, never merged to main by me (human merges), production promotion out of scope (Gary-only). Both open PRs (#196, #771) await human review/merge.
+
+Want me to proceed with **PR1** now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/aac_fix && git fetch origin followup/duplicate-script-tags-sitewide 2>&1 | tail -2 && git checkout followup/duplicate-script-tags-si; cd /tmp/aac_fix && git show 73de4f6:OPEN_FOLLOWUPS.md > /tmp/OF_fixed.md && echo "saved fixed file: $(wc -l < /tmp/OF_fixed.md) lines" && gi; cd /tmp/aac_fix && echo "=== remote branches ===" && git ls-remote --heads origin | grep -i "duplicate-script" ; echo "rc=$?" ; echo "=== PR; …(+2 more)
 
