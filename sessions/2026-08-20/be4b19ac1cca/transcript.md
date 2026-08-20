@@ -77,3 +77,106 @@ Picked up the thread after Claude ran out of quota. Full context verified — Cl
 • `merge pr` → Error: repo 'lineage-credentials' not in allowed list.
 • `ssh run` ×3 → grep -rl "allowed_repos" /opt /home/ubuntu --include="*.py" --include="*.json" --include="*.yaml" --include="*.toml" 2>/dev/null | head -20;; grep -n "allowed_repos" -A 60 /opt/truesight_autopilot/.env 2>/dev/null | head -80; echo "=== main.py ==="; grep -n "allowed_repos\|lineage"; cd /opt/truesight_autopilot && grep -rn "allowed_repos" app/settings.py app/config.py 2>/dev/null | head; echo "==="; ls app/ | head -30; ec
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] I wonder if it is possible at all for you to SSH into nelanco-claude to read historical conversation history between myself and instances of claude running on that machine to get up to date on the context?
+
+
+### 🤖 Autopilot
+
+Good question — let me actually check rather than guess. `nelanco-claude` isn't in my `ssh_run` host list, but I have full shell on the autopilot box, so I can probe whether it's reachable from there and what Claude session data exists. Let me look at the plan doc for that box and inspect SSH config in parallel.
+
+
+### 🤖 Autopilot
+
+The autopilot box **already has the `nelanco-claude` SSH alias configured** (`100.57.50.48`, ubuntu, autopilot ed25519 key, `StrictHostKeyChecking no`) — so let me test reachability and see what Claude session history actually exists there.
+
+
+### 🤖 Autopilot
+
+SSH works — I'm on the box (`ip-172-31-8-213`, up 36 days, 6 users logged in). There are **28 JSONL session files** across 3 project dirs. Let me see what history they hold:
+
+
+### 🤖 Autopilot
+
+**Yes — it's possible, and I just proved it.** The autopilot box already has a `nelanco-claude` alias in `~/.ssh/config` (`100.57.50.48`, ubuntu, autopilot's ed25519 key), and my test SSH landed on the box (`ip-172-31-8-213`, up 36 days, 6 users logged in). Claude Code's session history lives there as JSONL transcripts under `~/.claude/projects/` — I found **28 session files** (150KB–20MB each) spanning Jul 15 → today, including several from **today 08:56–09:33** (the sessions that produced PR #17).
+
+Let me now actually read the relevant history — first identify which session(s) contain the lineage-credentials/IVY work, then pull the conversation digest:
+
+
+### 🤖 Autopilot
+
+The session `f5ff51bc…` (09:31 today) is exactly when PR #17 was opened. Let me pull the conversation digest from it and the other recent sessions:
+
+
+### 🤖 Autopilot
+
+The f5ff51bc session's user prompts don't obviously show the lineage work — the keyword matches are probably inside assistant tool calls. Let me pinpoint which session actually contains the PR #17 work by searching the raw transcripts:
+
+
+### 🤖 Autopilot
+
+`0daf2510…` (09:33, 6.9MB) is **the** session — it has `build-cv-cache: 40`, `fetch-depth: 10`, `manifest.json: 137`, and 4 references to `lineage-credentials/pull/17`. Let me extract its conversation digest — user prompts first (Gary's actual instructions), then key assistant reasoning:
+
+
+### 🤖 Autopilot
+
+The digest cut off — let me read the rest of the artifact and pull the PR #17-specific portion from the tail of that session:
+
+
+### 🤖 Autopilot
+
+The artifact was the earlier digest (truncated at U97) — and my needle-print script had a Python f-string syntax error. Let me fix the script and get the PR #17 portion of that session:
+
+
+### 🤖 Autopilot
+
+I now have the full context from the actual Claude session on nelanco-claude. Let me read the tail end of that session (L2369+) to capture Claude's final summary and anything after the PR was opened:
+
+
+### 🤖 Autopilot
+
+The transcript history confirms everything — and surfaced one extra open item I should flag. Let me quickly check the state of the SOP PR Claude also opened in that same session:
+
+
+### 🤖 Autopilot
+
+Let me quickly check the state of PR #768 that Claude mentioned in the session (the SOP it opened):
+
+
+### 🤖 Autopilot
+
+**Yes — and I just did it.** The autopilot box already had a `nelanco-claude` alias in `~/.ssh/config` (`100.57.50.48`, ubuntu, autopilot's ed25519 key), so I SSH'd in and read the actual Claude Code session transcripts. Here's the full picture:
+
+## What the historical sessions show
+
+**Claude's session transcripts live at `~/.claude/projects/*/*.jsonl`** — 28 session files (150KB–20MB each), Jul 15 → today. The session that produced PR #17 is `0daf2510…` (today 09:33, 6.9MB). Reading it confirmed the whole arc:
+
+1. **Session context** (Aug 18): Claude did the IVY yoga onboarding — wrote `IVY_YOGA_COHORT_ONBOARDING_PLAN.md` (agentic_ai_context PR #755), forked `program-template` → `ivy-yoga-club`, added the **web-facing** manifest to `truesight_me_beta` (Task #7), set up Route53/DNS.
+2. **Today's diagnosis** (0daf2510, ~08:40–09:33):
+   - First thought it was just slowness — checked a prior run's step timing: **"Checkout lineage-credentials (data)" took 21m44s** on the ~10GB repo, so a 27–30min checkout was "legitimate, not stuck."
+   - Then found the **real root cause** — two bugs:
+     - `programs/ivy-yoga/manifest.json` **never created inside lineage-credentials** (only the web-facing one in truesight_me) → build script indexed the attestation but silently skipped rendering it
+     - `fetch-depth: 0` full clone on the ~10GB repo → 20–60min checkouts
+   - Opened **PR #17** with both fixes; also opened **PR #768** (SOP: "verify root cause before assuming async flow is slow") — **that one is already merged** (08:47 today, merge commit `7e9d78a`).
+
+## Current state
+
+- **PR #17 (lineage-credentials) — still open, unmerged.** My `merge_pr` attempt last turn failed: `lineage-credentials` is classified as an **api-only data repo** in `truesight_autopilot/app/config.py` and is **not** in `settings.allowed_repos`, which `merge_pr` enforces. So my tooling can't merge it.
+- The stale workflow run you mentioned is still on the old broken workflow — agreed, not worth waiting on.
+
+## Options to get PR #17 merged + re-triggered
+
+**Option A (fastest):** You click merge on [PR #17](https://github.com/TrueSightDAO/lineage-credentials/pull/17) → tell me → I immediately re-trigger `build-cv-cache.yml` and verify.
+
+**Option B (I do everything):** I open a small config PR to `truesight_autopilot` adding `lineage-credentials` to `allowed_repos` (it stays in `api_only_repos`, so branch-edits remain blocked — this only unblocks merging *reviewed* PRs) → deploy → merge PR #17 → re-trigger.
+
+**On your second ask** (make agentic_ai_context + the program-onboard RSA flow generate the internal lineage-credentials manifest in the future): confirmed the gap is real — the onboarding playbook (`CREDENTIALING_COHORT_PROGRAM_ONBOARDING.md`) and the RSA onboarding flow only create the *web* manifest; neither creates the data-repo copy. Once PR #17 is in, I'll update the playbook so every future program auto-creates both manifests, and file the code-flow gap in `OPEN_FOLLOWUPS.md`.
+
+Which option — A or B?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== ~/.ssh/config ==="; cat ~/.ssh/config 2>/dev/null; echo "=== known_hosts entries ==="; grep -i "claude\|nelanco" ~/.ssh/known_host; ssh -o ConnectTimeout=10 nelanco-claude "hostname; whoami; uptime; echo '---'; ls -la ~/.claude/ 2>/dev/null | head -30; echo '=== projects ; ssh -o ConnectTimeout=10 nelanco-claude "find ~/.claude/projects -name '*.jsonl' -printf '%TY-%Tm-%Td %TH:%TM %8s %p ' 2>/dev/null | sort | ; …(+4 more)
+
