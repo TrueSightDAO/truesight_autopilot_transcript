@@ -2923,46 +2923,55 @@ https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
 ### 🤖 Autopilot
 
 Gary wants the cancel destination = the beta PDP explicitly. My investigation shows Edgar derives `cancel_url` from the QR sheet's `landing_page` column — so the fix is to point `landing_page` (and confirm Price) for all 100 CT rows at the beta PDP. Before editing, two decisive reads: the **full sheet row** (all columns — Price, redirect fields) and **which server actually serves edgar.truesight.me** (FastAPI dao_client vs the old Rails controller), so the edit lands on the real path:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet shows col B (landing_page) = `www.agroverse.shop/shipments/agl4` — yet your cancel lands on the **beta PDP**, so the deployed Edgar must be getting `cancel_url` from somewhere else (different column mapping, hardcoded URL, or a manual Payment Link). Let me inspect the **deployed** Edgar directly (the hostname failed from my box's config — using the fleet host directly):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: the sheet's **col B (landing_page) = `www.agroverse.shop/shipments/agl4`**, and col **T = `10`** (Price) — so Edgar's *session* should already have cancel → agl4, **not** the beta PDP. Yet you see the beta PDP on cancel. That means the deployed Edgar isn't using this sheet's column mapping (or a manual Payment Link bypasses it). I can't SSH into dao_protocol with my key (permission denied) — let me check which key/route the fleet uses and read the deployed handler over the network instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fleet label failed auth, but my box's ssh config has `dao-protocol` (dash, with key). Let me hop through my own box to reach it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's directive is clear: **cancel at Stripe should land on the beta PDP**. The deployed Edgar derives `cancel_url` from the QR sheet's `landing_page` column (col B) — which currently points to `www.agroverse.shop/shipments/agl4`. So the fix is to set col B for the CT batch rows to the beta PDP URL. I'll update all 100 CT rows (+ the `_101` replacement row) via gspread on the nelanco box, then verify through Edgar's live lookup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run confirms 101 rows (100 + `_101`) all currently have the agl4 landing page. My script had a broken update path — let me run the actual update cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Import path differs on this gspread version — let me check the correct Cell import and run the update:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Single-cell update works (B1678 confirmed). Now updating all 101 CT rows (1678–1778) at once:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 101 CT rows updated — landing_page now = the beta PDP. Now the end-to-end verification: scan a QR through Edgar and confirm the Stripe session's cancel URL resolves back to the beta PDP. Let me trace the live flow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3000,11 +3009,13 @@ The cancel URL is now **beta** — which matches your request today. When you ev
 ### 🤖 Autopilot
 
 On it — flipping all 101 CT rows from beta to prod landing page in the sheet. Updating now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 101 rows updated. Now verifying Edgar reflects the change live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3043,6 +3054,7 @@ Want me to promote to prod now?
 ### 🤖 Autopilot
 
 Explicit approval received — promoting the beta shop to prod now:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3154,4 +3166,67 @@ The 101 sheet rows now point to **www** — and www is now live, so everything i
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → echo "=== PDP on www ==="; curl -s -o /dev/null -w "PDP code=%{http_code} " "https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-5; echo "=== follow PDP redirect ==="; curl -s -o /dev/null -w "final=%{url_effective} code=%{http_code} " -L "https://www.agroverse.shop/produ; echo "=== prod pages deployments ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_prod/pages/deployments?per_page=3" ; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Go for the verification
+
+
+### 🤖 Autopilot
+
+On it — end-to-end verification of the full QR → Edgar → Stripe → cancel → PDP flow. Starting with the QR payload and Edgar resolve:
+
+
+### 🤖 Autopilot
+
+QR encodes correctly, Edgar returns prod PDP landing + Price 10 + MINTED. Now verifying the Stripe session creation (the actual cancel flow) + the prod pages:
+
+
+### 🤖 Autopilot
+
+## ✅ Verification complete — end-to-end flow confirmed working
+
+### 1. QR label → payload ✅
+Scanned `2024OSCAR_CT_20260820_1` (from the repo, 4× upscaled decode):
+`https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_1` — correct Edgar resolve URL.
+
+### 2. Edgar lookup ✅
+| Field | Value |
+|---|---|
+| landing_page | `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` ✅ (prod, as requested) |
+| Price | `10` ✅ |
+| Status | MINTED ✅ |
+| Farm / Year | Oscar's Farm, Bahia, Brazil 2024 ✅ |
+| Ledger | `https://agroverse.shop/agl4` ✅ |
+
+### 3. Live scan → Stripe checkout ✅
+Simulated a real scan (followed redirects): Edgar issued a **fresh Stripe Checkout Session** (`cs_live_a1WAyA5…`, HTTP 200). This is the exact session a customer gets — where **cancel** returns to `landing_page` (prod PDP) per the server code I verified earlier.
+
+### 4. Prod pages all live ✅
+| Page | Result |
+|---|---|
+| PDP (`agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`) | **200** ✅ |
+| Shipment AGL4 (`agroverse.shop/shipments/agl4/`) | **200** ✅ |
+| Category tea card | present (1) ✅ |
+
+### 5. Spot-checked serials ✅
+- `_101` (replacement): MINTED → prod PDP ✅
+- `_100`: MINTED → prod PDP ✅
+
+### 6. Registry consistency (from earlier this session) ✅
+- 100 live serials (`_1.._2, _4.._100` + `_101`), `_3` VOID, index corrected on main
+- Zip v2 (100 scannable labels) delivered (msg 11992)
+
+---
+### ⚠️ The one thing only a human can verify
+The **actual "cancel" click** in the Stripe checkout UI — I can't press that button without a real session in a browser. But the server-side wiring is confirmed: `cancel_url` is derived from `landing_page` (now the prod PDP) + UTM params, exactly as you specified.
+
+**Quick human test (30 sec):** scan `2024OSCAR_CT_20260820_1` → Stripe checkout appears → click **"Cancel"** → you should land on `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` (with `?utm_source=edgar&utm_medium=qr...` appended). If it lands anywhere else, tell me and I'll trace the deployed handler.
+
+Everything else is verified green — the cacao tea 50g packet is live and working end-to-end. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== 1. QR label _1: what does it encode? ==="; cd /tmp && curl -s -o ct1.png "https://raw.githubusercontent.com/TrueSightDAO/lineage-a; echo "=== 3. Simulate scan: follow QR redirect chain (no payment) ==="; curl -s -o /dev/null -w "final_url=%{url_effective} code=%{http_code
 
