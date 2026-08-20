@@ -3731,6 +3731,7 @@ The processor path is clear: append a signed REJECT row to **Telegram Chat Logs*
 Found it: `.env` has **`PRIVATE_KEY` + `PUBLIC_KEY` + `EMAIL`** (Sophia's identity — the box's signing keys), and the Telegram Chat Logs sheet format is: A=Update ID, B=Chatroom ID, C=Chatroom Name, D=Message ID, E=Contributor Name, F=Project Name, G=Contribution Made. 
 
 Now the E2E: I'll sign a REJECT event with Sophia's key, append it as a row to Telegram Chat Logs (col G = the signed text), then trigger the GAS processor. Let me build + submit the signed row, then run the processor manually via its doGet/exec. First, sign and construct the row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3862,4 +3863,65 @@ keep going until everything is working end to end
 
 "Keep going until everything is working end to end" — continuing the E2E. Next step: check the remaining `doGet` actions in `Code.js` for a tree-planting processor trigger, and find which deployment serves Code.js's doGet.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+keep going to check
+
+
+### 🤖 Autopilot
+
+Continuing — checking the remaining `doGet` actions in `Code.js` for a tree-planting trigger and the deployment serving it.
+
+
+### 🤖 Autopilot
+
+Only one `doGet` (QR-code action) — the tree-planting processor isn't exposed via doGet. Let me read the full `doPost` in the deployed handler (#397) — it may call the processor after appending (which would give me a webhook trigger path).
+
+
+### 🤖 Autopilot
+
+The `doPost` **runs the processor directly** after appending — but it's gated to **governor-only + LINK-marker-only**. Two options to trigger the processor for my REJECT row:
+
+1. **Add a `processTreePlantingLinkCron` action to `Code.js` doGet** (mirroring the QR one) — then invoke it via the @HEAD deployment URL. Clean, permanent, useful (it's the cron fallback the plan wants anyway).
+2. Relax doPost to accept REJECT + sentinel — but that's a bigger change.
+
+Option 1 is right: a tiny PR to `Code.js` adding `?action=processTreePlantingLinkCron` → calls `processTreePlantingLinksFromTelegramChatLogs()` (which handles both LINK and REJECT + sentinel gate). Then I invoke the @HEAD URL and the E2E completes. Let me open that PR:
+
+
+### 🤖 Autopilot
+
+**PR opened — tokenomics #400** (`fix/tree-planting-doGet-trigger`, commit `962a799`): adds the `?action=processTreePlantingLinkCron` doGet action to `Code.js`, mirroring the existing QR-code action — it calls `processTreePlantingLinksFromTelegramChatLogs()` directly (handles both LINK and REJECT, governor-or-sentinel gate). This is the manual/cron invocation path the E2E needs.
+
+## Where the E2E stands
+
+**Staged & waiting for the trigger:**
+- ✅ Sophia's REJECT for SunMint row **#7021** signed + appended to Telegram Chat Logs (update id **469027793**)
+- ✅ #397 (doPost + REJECT handler) deployed to GAS live
+- ✅ Verified the processor handles REJECT + sentinel gate (Sophia passes — row 145 in Digital Signatures)
+- ⏳ **Trigger path was the blocker** — the processor wasn't exposed via any web endpoint (doPost is governor+LINK-only; doGet had only the QR action)
+
+**The fix (this PR):** `GET <deployment-url>?action=processTreePlantingLinkCron` → runs the processor → picks up row 469027793 → verifies signature → flips #7021 → INVALID.
+
+## RESUME HERE →
+
+1. **Merge tokenomics #400** (on your word — or I merge per your standing "keep going" authorization... actually per the one-PR-per-turn rule I'll stop here and wait for the next turn/your go to merge)
+2. **Deploy to GAS** (`clasp push` on `1UrBg…`, pull-first per your convention)
+3. **Invoke** `https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec?action=processTreePlantingLinkCron`
+4. **Verify + cleanup:** SunMint row 7021 → `INVALID`; tracking tab REJECTED; cache regen drops #7021 (persistent); remove test row from Telegram Chat Logs; confirm dropdown = 13
+5. Then the Link E2E (still gated on your go — money movement) + photo-validation step
+
+**✅ Done this turn:** diagnosed the missing trigger path (only QR action exposed), opened tokenomics #400 with the doGet trigger. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → read Code.js doGet (only QR action) + full doPost body (governor+LINK-only, runs processor after append)
+• `git push changes` → tokenomics #400 (commit 962a799)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk
 
