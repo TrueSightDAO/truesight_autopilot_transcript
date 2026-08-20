@@ -2140,21 +2140,25 @@ Label `2024OSCAR_CT_20260820_3`'s QR was **undecodable** — reproduced on two i
 Auto-advance: next unit = the generator self-check fix I flagged — add post-mint **decodability verification** to the QR generator so future batches never ship an undecodable label like `_3`. (Prod promotion stays blocked — no deploy.)
 
 Let me read the generator script to find the exact hook point:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The wrapper is clean. Now let me see `batch_compiler.py`'s save/summary flow to design the verification hook:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact generation block (lines ~495–560) where images are saved, so the verification hook slots in cleanly after each save:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hook point is clear. Let me read the argparse block exactly so my patch anchors match precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2339,4 +2343,52 @@ Say the word when you want the prod promotion.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #776 on agentic_ai_context merged successfully (sha: 7edfcc782d73655e48a3f88955d349e9e456a727). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Auto-advance: checking whether any genuine next unit remains. All build units are merged (PDP/cards/images #197–205, batch label #208, self-check #7, VOID doc #776); the only remaining step (prod promotion) is governor-gated and I must never do it autonomously. Let me do a read-only verification that the beta site actually reflects the last merges (v2 hero + corrected batch text), so I can confirm UAT-readiness rather than invent a busywork PR:
+
+
+### 🤖 Autopilot
+
+All four pages now serve the v2 hero photo — beta is converged. One precise check on the corrected batch text (my earlier grep's `-m1` only matched the first hit, the hero image):
+
+
+### 🤖 Autopilot
+
+## No next PR unit exists — build is complete and beta-verified ✅
+
+I checked rather than inventing busywork: every code unit for the cacao tea 50g packet is already merged, and I verified the live beta site reflects all of them:
+
+### Beta verification (live checks just now)
+| Page | State |
+|---|---|
+| **PDP** (`beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`) | ✅ v2 hero photo serving; **QR batch text corrected**: *"2024OSCAR_CT_20260820 batch — 100 uniquely serialised packets (each with its own QR code)"* |
+| **Category card** (`/category/retail-packs/`) | ✅ v2 photo |
+| **Farm card** (`/farms/oscar-bahia/`) | ✅ v2 photo |
+| **Shipment card** (`/shipments/agl4/`) | ✅ v2 photo |
+
+### Complete delivered scope (all merged)
+- **Ledger:** Currency row #131 · SKU #15 · **100 QR rows** (#1678–1777, `_3` VOID, `_101` minted)
+- **Assets:** 100 label PNGs + 100 manifests → lineage-assets main (#5, #6)
+- **Hardening:** post-mint decodability self-check → lineage-assets #7 (would have caught `_3` at mint)
+- **Docs:** VOID serial documented → agentic_ai_context #776
+- **Shop (beta):** PDP + 3 cross-list cards + image fixes + batch-text fix → agroverse_shop_beta #197–205, #208
+- **Zip v2:** 100 scannable labels → delivered (msg 11992)
+
+### Why I stopped without a PR
+The **only** remaining step is **promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) — and that is hard-gated on your explicit approval (I never deploy to production autonomously). Opening a PR for it would be wrong; there is no other genuine unit left.
+
+---
+**RESUME HERE →** The single remaining action, on your word: **"promote to prod"** → I run `sync_beta_to_prod(agroverse_shop_prod)`, then www.agroverse.shop serves the full cacao tea 50g experience (PDP + cards + corrected batch text + v2 hero) and the 100 QR landing (`agroverse.shop/shipments/agl4`) resolves on prod. Everything else is done.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== beta PDP hero + batch text ==="; curl -s "https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/" | grep -o -m1 'caca; curl -s "https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/" | grep -o 'QR batch</span><span class="detail-value">[^<]*' |
 
