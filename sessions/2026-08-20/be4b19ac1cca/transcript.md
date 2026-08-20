@@ -3080,26 +3080,31 @@ You'll sign in with your verified email (the same flow we tested — it sends a 
 ### 🤖 Autopilot
 
 Great question — let me assemble the evidence first: Claude's session logs on nelanco-claude, my own transcript logs, and the git commit timelines across the repos involved.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me extract the actual time ranges and activity from both Claude's sessions and my own transcripts, plus the git evidence across the repos:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me pull the git commit evidence across all the repos involved — that's the ground truth for time spans:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the remaining commit evidence (lineage-engine, the Aug 20 agentic_ai_context work, my own transcript commit timestamps) to bracket the actual working windows:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the Aug 20 commit detail for lineage-credentials (the attestation/identity commits) and my transcript session commit times to bracket today's windows:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3146,21 +3151,25 @@ I've assembled the evidence from all three sources. Here's the honest breakdown 
 ### 🤖 Autopilot
 
 Reporting the time spent as contributions. Let me first check the event docs and how contributions have been attributed historically (to log this consistently):
+[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the contribution ledger conventions — how time gets logged (per-contributor, TDG rates) so my report matches the established format:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the SOP for how autopilot submits contributions, so the report matches the established format:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Understood — logging the bottom-line times as contribution events. Two events (Claude + Sophia), no TDG moved (that stays your call per the rules):
+[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3221,16 +3230,19 @@ IVY-TT-0000
 ### 🤖 Autopilot
 
 The updated certificate template — let me compare it against what's currently vendored in lineage-engine, and examine the new PDF's layout so the overlay coordinates still align:
+[2 tool result(s) compacted: list_directory, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Received the updated certificate template. Let me analyze it against the currently vendored one — page size and field positions matter because the overlay coordinates in `cert_config.json` were reverse-engineered from the old PDF:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs are the same page size (841.89 × 595.28 landscape A4), and the bottom section (signatures, VERIFY, cert ID) is at identical positions — but the **body text moved** (the "of" shifted left x=364→283, "Olivia" body mention moved up ~20pt). That suggests the recipient-name line and possibly the dates moved too. Let me do a full text + position comparison to see exactly what changed before updating anything:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3331,4 +3343,166 @@ Want me to verify the regenerated cert after the build completes (say the word a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== current vendored cert assets in lineage-engine ===" gh api "re; bash -c ' echo "=== new PDF: page size + text layout ===" python3 - <<'"'"'PY'"'"' import fitz doc = fitz.open("/tmp/tg_attachments/d9063236; bash -c ' echo "=== current vendored cert_template.pdf: page size + key field boxes ===" ssh -o ConnectTimeout=15 nelanco-claude "cd /tmp &&; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Do an end to end test with a new entry on the Google sheet 
+
+Validate end to end and then surface the output pdf here
+
+
+### 🤖 Autopilot
+
+Full E2E with a fresh sheet entry, then I'll surface the certificate PDF right here. Starting — checking the sheet's current state and the E2E scripts:
+
+
+### 🤖 Autopilot
+
+The sheet now has a new real entry at the bottom (Shahbaz Testing — pending, not part of this test). I'll insert a fresh, clearly-marked dummy row for this E2E (row 8), then drive the full flow. Inserting:
+
+
+### 🤖 Autopilot
+
+Row 8 inserted. Now the sign-in step — running the signin script (fires EMAIL REGISTERED, saves fresh keypair):
+
+
+### 🤖 Autopilot
+
+Sign-in initiated — fresh keypair generated, verification email sent. Now grabbing the verification link from the admin mailbox:
+
+
+### 🤖 Autopilot
+
+Let me broaden the search — the verification email's subject may differ:
+
+
+### 🤖 Autopilot
+
+The newest verification email listed is from the previous test (12:16 UTC). My sign-in just fired — the new email may still be indexing. Let me re-query:
+
+
+### 🤖 Autopilot
+
+The new email isn't indexed yet (Gmail lag). Let me wait a few seconds and re-check:
+
+
+### 🤖 Autopilot
+
+Fresh verification link captured: `vk=iRsUsCdpNRO1yu4Q4sOMvxYi9szNpeiO9U3FmesitJs` (09:17:57 -0500 = just now). Completing sign-in with the saved keypair:
+
+
+### 🤖 Autopilot
+
+The `#bootStatus` element doesn't exist in the current UI (the earlier scripts used different selectors). Let me check the actual page structure with a quick probe:
+
+
+### 🤖 Autopilot
+
+The page is stuck on "BOOTING…" even with the seeded keypair — meaning the boot/identity resolution didn't complete within 8s. The verify link consumption (EMAIL VERIFICATION EVENT) likely needs the actual verification flow rather than just seeding localStorage. Let me check the boot logic — what makes boot finish (maybe it submits the verification event itself via the URL param, or waits for a specific localStorage key):
+
+
+### 🤖 Autopilot
+
+Now I see the boot flow — line 303-339: on page load with `?em=<email>&vk=<key>` in the URL, it fires the EMAIL VERIFICATION EVENT then redirects to the clean path. My probe loaded the *clean* URL (no vk param), so verification never ran. Let me re-run the verify using the actual verification URL (with vk), and wait longer for boot to complete:
+
+
+### 🤖 Autopilot
+
+**Sign-in complete — ADMIN mode, STATUS VERIFIED** (truesight-autopilot / admin@truesight.me). The URL still shows the vk param but the verification event fired and identity resolved. Now the attest step — clicking Attest on the "Dummy E2E Test 4 (v1.3)" row:
+
+
+### 🤖 Autopilot
+
+Attest clicked on row 8 — but the queue still shows "Pending 2" (the 8s-delayed refresh may not have fired yet, or the submission is in flight). Let me check the sheet to see if the attestation actually processed:
+
+
+### 🤖 Autopilot
+
+Row 8 is still `pending` — the attestation event hasn't been processed yet. The event may be sitting in the Edgar intake (the console fires the signed event, but processing may need the "Process pending events" button or happens on a delay). Let me check whether the attestation event landed in the system — looking at the intake/TCL and the lineage-credentials commits:
+
+
+### 🤖 Autopilot
+
+The attestation commit hasn't landed yet (last one is Test 3 at 12:17Z). The console has a "Process pending events" button — the event may be sitting in the intake awaiting processing. Let me check the intake sheet and what the process button does:
+
+
+### 🤖 Autopilot
+
+The event is sitting pending — the console's "Process pending events" button triggers the central GAS handler (`process_attestation_events`) which commits it to lineage-credentials. Let me click it via Playwright:
+
+
+### 🤖 Autopilot
+
+Progress — the queue now shows **"Pending 1"** (only Shahbaz remains; my Test 4 row left the pending queue) and "Already attested 6 done" — so **my attestation DID process** (the row moved to attested). The status "Scanned 6, processed 0" counts remaining intake rows. Let me confirm row 8 is now backfilled on the sheet:
+
+
+### 🤖 Autopilot
+
+**Attestation processed** — row 8 backfilled: `pk-1Q3PrgUZPM3k`, status `processed`, commit `c1917a20`. Now let me wait for the build to regenerate the cache (with the v1.3 template) and check the artifacts — the build I fired earlier should have completed:
+
+
+### 🤖 Autopilot
+
+The attestation commit (`c1917a20`) is in, and the push-triggered build (run `32379554471`) is **pending** — that's the one that will generate Test 4's artifacts. The earlier dispatch (with the v1.3 template) already completed. Let me wait for the build to finish, then check:
+
+
+### 🤖 Autopilot
+
+Grep parsing bug — the `4` came from quoting. Let me use jq directly:
+
+
+### 🤖 Autopilot
+
+Build succeeded but Test 4's artifacts are 404 — my slug guess is wrong. Let me find the actual slug from the aliases/identity:
+
+
+### 🤖 Autopilot
+
+Found it — the slug is **`dummy-e2e-test-4-v1-3`** (the `(v1.3)` parens become `-v1-3`), and **all 7 artifacts exist** including the `__ivy-yoga__cert.pdf`. The E2E is complete. Now let me download the certificate PDF and verify it renders with the **v1.3 template** ("200 hours" wording), then surface it here:
+
+
+### 🤖 Autopilot
+
+**E2E fully validated — certificate PDF confirmed with the v1.3 template** ("has completed 200 hours", NOT "more than 200"). Now let me surface the PDF here in the chat:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## E2E Test 4 — FULLY VALIDATED (one file-copy step left)
+
+**The entire loop worked end-to-end with the new v1.3 certificate template:**
+
+| Step | Result |
+|---|---|
+| **1. Sheet insert** | ✅ "Dummy E2E Test 4 (v1.3)" → Cohort Roster row 8, pending |
+| **2. Sign-in** | ✅ Fresh keypair → verification email → **ADMIN, STATUS VERIFIED** (truesight-autopilot) |
+| **3. Attest** | ✅ Clicked Attest on row 8 → event fired → **"Process pending events"** committed it (Scanned 6, processed → row moved to attested, "Pending 1" only Shahbaz left) |
+| **4. Ledger** | ✅ Row 8 backfilled: `pk-1Q3PrgUZPM3k`, status `processed`, commit `c1917a20` |
+| **5. Build** | ✅ Push-triggered build `32379554471` → **completed/success** (~3 min) |
+| **6. Artifacts on GitHub** | ✅ **All 7 exist**: `dummy-e2e-test-4-v1-3.json/.md/.pdf/.qr.png/__ivy-yoga.pdf/__ivy-yoga.qr.png/__ivy-yoga__cert.pdf` (slug = `dummy-e2e-test-4-v1-3`; `pk-1Q3PrgUZPM3k → dummy-e2e-test-4-v1-3` in aliases.json, 106 keys) |
+| **7. Certificate content** | ✅ **v1.3 template confirmed**: "has completed **200 hours**" (NOT "more than 200"), recipient "Dummy E2E Test 4 (v1.3)", "20 August 2026" — 230KB valid PDF 1.7, 1 page |
+
+## ⚠️ Only thing blocking: surfacing the PDF in chat
+
+The certificate PDF was verified on **nelanco-claude** at `/tmp/ivy_cert_test4.pdf`, but `send_telegram_attachment` looks for the file on **this autopilot box** — so the upload failed with "file not found". The file exists; it's just on the other host.
+
+## RESUME HERE → next turn (one step)
+
+**Copy the cert from nelanco-claude → autopilot, then re-attach:**
+1. `scp nelanco-claude:/tmp/ivy_cert_test4.pdf /tmp/ivy_cert_test4.pdf` (or re-curl it directly on this box: `curl -sL "https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/cv/dummy-e2e-test-4-v1-3__ivy-yoga__cert.pdf" -o /tmp/ivy_cert_test4.pdf`)
+2. `send_telegram_attachment` with `/tmp/ivy_cert_test4.pdf` + caption
+
+That's the only remaining action — the E2E itself is **completely validated** (insert → sign-in → attest → process → build → certificate on GitHub with the updated v1.3 template). The profile is live at `truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k`.
+
+Also noted: the "Process pending events" button **is** required to commit (events land in the intake and wait for the manual trigger — that's by design, and it worked).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' echo "=== E2E scripts present ===" ls -la /tmp/ivy_e2e_; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e cd /tmp python3 - <<PY import gspread, datetime ; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e cd /tmp python3 ivy_e2e_signin.py 2>&1 | tail -1; …(+12 more)
 
