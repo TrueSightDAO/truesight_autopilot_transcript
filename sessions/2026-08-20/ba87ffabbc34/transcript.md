@@ -501,6 +501,7 @@ Let me check what our docs say about validation/verification bodies and the regi
 ### 🤖 Autopilot
 
 Not in our context — this is external carbon-market knowledge, so let me verify current facts via the web.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -735,4 +736,43 @@ Treat them as **partners, not interchangeable** — and make them say it themsel
 **Caveat on evidence:** this is based on your description of PODream (no public web footprint found in my earlier searches) vs NOR's public materials. If PODream also does satellite or platform work, the overlap widens — worth a 10-minute discovery call to confirm scope before we commit to either.
 
 Want me to draft a **one-page comparison + discovery-question sheet** you can take into that call?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Update PDF to show the gap
+
+
+### 🤖 Autopilot
+
+Updating the PDF now — incorporating the PODream ↔ NOR Space relationship gap, the VM0047 correction, and the Andean Cacao precedent.
+
+
+### 🤖 Autopilot
+
+PDF v2 generated. Sending it to you.
+
+
+### 🤖 Autopilot
+
+**PDF v2 sent** ✅ — `sunmint_nor_space_podream_gap_review_v2.pdf` is in the thread.
+
+## What's new in v2 (vs the first PDF)
+
+| Change | Detail |
+|---|---|
+| **Methodology correction** | VM0017 → **VM0047 (ARR)** — flagged as a PDD §6 correction; VM0017 (SALM) is the wrong fit for cacao agroforestry |
+| **Andean Cacao precedent** | New section — first large-scale cacao project validated & verified under Verra (VM0047 + CCB, Terra Global, 56k VCUs first issuance) |
+| **PODream ↔ NOR relationship gap** | New comparison table + sharpened **GAP 5**: the drone↔satellite pipeline is the core undefined link; both claim "MRV", feature-creep risk, integration lock-in risk |
+| **GAP 12 (new)** | CCB co-certification decision — Andean Cacao used it; our PDD doesn't commit to it yet |
+| **Updated next steps** | Correct PDD → one joint call (NOR + PODream + VVB) → freeze methodology → pilot → define evidence pipeline → study Andean Cacao template |
+
+## The "gap" story in one line
+
+**The gaps that decide success:** ① methodology not frozen (and currently *wrong* in the PDD), ② no defined PODream-drone → NOR-satellite data pipeline, ③ no VVB engaged, ④ on-chain integration with NOR's centralized SaaS undefined. Close those and the stack turns PDD §8 placeholders into issued VCUs — proven bankable by Andean Cacao.
+
+Want me to:
+1. **Open a PR to fix the PDD** methodology reference (VM0017 → VM0047) in the repo?
+2. Draft the **one-page discovery-question sheet** for the joint NOR + PODream call?
+3. **Research VVBs active in Brazil ARR** (shortlist 2–3 with fee ranges)?
 
