@@ -3645,21 +3645,25 @@ Clean edit, compiles. Now let me smoke-render the certificate with the signature
 ### 🤖 Autopilot
 
 Let me check the actual function signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Correct signature: `template_pdf`, `issued_at` is a datetime (not str). Re-running the smoke render:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 pypdf isn't installed on the autopilot box. Let me install it (and check reportlab/pymupdf):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deps installed. Re-running the smoke render:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3766,4 +3770,37 @@ Anything else — want the other dummy certs re-rendered with signatures too, or
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - <<'PY' import pymupdf doc = pymupdf.open("/tmp/ivy_cert_test4_sig.pdf") pix = doc[0].get_pixmap(dpi=110) pix.save("/tmp
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] What is the url of the certificate lineage profile??
+
+
+### 🤖 Autopilot
+
+Let me verify the exact profile URL from the live data — the CV JSON's `profile_url` field and the manifest's credential template:
+
+
+### 🤖 Autopilot
+
+Here's the certificate lineage profile URL:
+
+## 🎯 Certificate lineage profile
+
+**https://truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k**
+
+(the IVY program credential page — renders the full profile: name, program, lineage root "Indus Valley Yoga", verify QR, and both download buttons for the CV + signed certificate)
+
+### Also relevant:
+| URL | What it is |
+|---|---|
+| `truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k` | **The IVY credential profile** (what the "VERIFY" QR on the certificate resolves to via the program page) |
+| `truesight.me/credentials/#dummy-e2e-test-4-v1-3` | The **global DAO credential profile** — this is the actual `target_url` the QR image on the certificate scans to (confirmed in the live CV JSON: `qr_code.target_url`) |
+| `raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/cv/dummy-e2e-test-4-v1-3.json` | The machine-readable CV (source of truth for the profile data) |
+| `cdn.jsdelivr.net/gh/TrueSightDAO/lineage-credentials@main/_cache/cv/dummy-e2e-test-4-v1-3__ivy-yoga__cert.pdf` | The signed certificate PDF |
+
+**Verified live** (just now from the CV JSON on main): `display_name: "Dummy E2E Test 4 (v1.3)"`, `pk_hash: pk-1Q3PrgUZPM3k`, program `ivy-yoga` → lineage_root **"Indus Valley Yoga"**, QR target = the global credentials URL, generated 14:30:35Z.
+
+So: the **certificate lineage profile** (where the VERIFY QR takes a scanner) is `truesight.me/credentials/#dummy-e2e-test-4-v1-3`, and the IVY-program-branded view is `truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k`. Both live; either URL you share works.
 
