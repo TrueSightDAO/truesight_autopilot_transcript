@@ -2510,31 +2510,37 @@ Two clear defects confirmed on main:
 2. **`pngs/2024OSCAR_CT_20260820_3.png`** — still exists (should be removed; the VOID label shouldn't be printable).
 
 The `_3` manifest is gone (404 ✓). The fix: rebuild the index to drop `_3` + add `_101`, and delete the stale `_3` PNG. Since `qrs_index.json` is a derived machine-owned file and the change is a single-file write + one delete, let me patch it via the repo (fetch current index, rebuild from the manifests, push). First, let me grab the current full index and the `_101`/`_3` entries to rebuild correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The index has a richer schema (`generated_at`, `qr_count`, `by_status`, `by_asset_type` + a `qrs` list presumably). The right way to rebuild it is the **canonical index builder** on the nelanco box (it derives the index from the manifests — exactly what #6 skipped). Let me find and run the index rebuild script there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `build_index.py` is the canonical index builder (derives `qrs_index.json` from the manifests). Let me read it to confirm it pulls from the checked-out repo state (so after `git pull` it'll see `_101` manifest + no `_3` manifest) and check how it's invoked:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `build_index.py` derives the index purely from the `qrs/*.json` manifests on the checkout. On the nelanco box, the checkout is on `main` (post-#6 merge) → it has `_101.json`, no `_3.json` → a rebuild will produce the correct index. Plan: pull latest main on nelanco, run `build_index.py`, verify `_3` gone + `_101` present, then open a PR for the index + delete the stale `_3` PNG. Executing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index rebuilt correctly: 1776 rows, **`_3` gone, `_101` present** (the count stays 1776 since `_3`→`_101` is a 1-for-1 swap). Now committing the rebuilt index + deleting the stale `_3` PNG via a PR on a feature branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#8** opened. Merging per the standing directive:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2705,4 +2711,165 @@ GH Pages rebuilds ~1–3 min; then the PDP renders cleanly on phones (single col
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== TEA PDP: head/CSS ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-; echo "=== TEA PDP head (top) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia; echo "=== TEA PDP body top (menu markup) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page; …(+1 more)
 • `merge pr` → ✅ PR #219 on agroverse_shop_beta merged successfully (sha: a44b7ce3e89e8cfb54e737570bd702272bcecbee). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] QR code links to this page after cancelled at stripe 
+
+https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
+
+
+### 🤖 Autopilot
+
+Let me investigate the QR → Stripe flow — first, what the QR actually encodes and where any Stripe payment link is configured:
+
+
+### 🤖 Autopilot
+
+The QR's `scan_target` is `https://truesight.me/qr/?id=<serial>` — so the scan flow goes through truesight.me, and somewhere in that flow a Stripe payment link is involved with a cancel/return URL. Let me trace that flow:
+
+
+### 🤖 Autopilot
+
+The QR flow goes: scan → `truesight.me/qr/?id=<serial>` → Stripe → on cancel, back to the PDP. Let me trace what the scan actually does and where the Stripe cancel/return URL is set:
+
+
+### 🤖 Autopilot
+
+`truesight.me/qr/?id=...` is served by GitHub Pages (static) — so the QR scan landing is a static page that likely shows provenance + a "Buy" button. Let me find where the Stripe payment link is wired (the page source + the checkout SOP), since "cancel at Stripe → lands on the beta PDP" means the return/cancel URL points there:
+
+
+### 🤖 Autopilot
+
+The QR page is a static provenance page with JS that renders lineage and a Buy/checkout flow. Let me find where the Stripe payment link / return URLs are defined in that JS:
+
+
+### 🤖 Autopilot
+
+The QR provenance page itself has **no Stripe/buy** — it links to shipment/farm pages. So the Stripe step isn't on this static page. The cancel-return-to-PDP behavior must come from **Stripe Payment Links configured with a return URL** — likely the Payment Link that the nelanco-claude thread set up (the "$10, qty=1, redirect → agroverse.shop/shipments/agl4" plan). Let me check where the actual purchase link lives and what return URLs are configured — checking the shop's checkout JS + the nelanco thread's payment-link record:
+
+
+### 🤖 Autopilot
+
+The QR provenance page has no Stripe of its own — so the cancel URL must be set where the Stripe session/payment link is created. Let me check the GAS checkout script (which creates Stripe sessions) and the shop config for return/cancel URLs:
+
+
+### 🤖 Autopilot
+
+Let me see the `createCheckoutSession` function where `success_url` / `cancel_url` are actually set:
+
+
+### 🤖 Autopilot
+
+Let me see where `success_url` and `cancel_url` are set in `createCheckoutSession`:
+
+
+### 🤖 Autopilot
+
+Let me see how `successUrl` and `cancelUrl` are built (the code around line 500–540):
+
+
+### 🤖 Autopilot
+
+The QR encodes the **Edgar resolve URL** → provenance page. The Stripe cancel behavior is coming from a **Stripe Payment Link** (static QR page can't create sessions). Let me find the Payment Link config:
+
+
+### 🤖 Autopilot
+
+The QR encodes the **Edgar resolve URL** (`edgar.truesight.me/agroverse/qr-code-check?qr_code=...`), not the truesight.me page directly. Let me trace what Edgar does with a scan — that's where the Stripe step must come from:
+
+
+### 🤖 Autopilot
+
+Found it. The QR → Edgar resolve → **redirects straight to `checkout.stripe.com`** (a live Payment Link, `cs_live_...`). So the scan jumps directly into a Stripe checkout — and when the customer **cancels**, Stripe sends them to the **cancel_url configured on that Payment Link**, which is currently the **beta PDP**. That's exactly the behavior you're seeing.
+
+The fix: the Payment Link's `cancel_url` should send customers back to the **QR provenance page / shipment landing** (`agroverse.shop/shipments/agl4`), not the beta PDP. Let me check what's currently configured and where the Payment Link is managed:
+
+
+### 🤖 Autopilot
+
+Let me find the actual `/qr-code-check` handler on Edgar — that's where the Stripe cancel/success URLs are decided:
+
+
+### 🤖 Autopilot
+
+The handler is `dao_client/truesight_dao_client/server/routes/qr_code_check.py`. Let me read it to see exactly how it redirects to Stripe and what cancel/success URLs it uses:
+
+
+### 🤖 Autopilot
+
+The repo path moved. Let me read it from the nelanco box where the source lives:
+
+
+### 🤖 Autopilot
+
+The Edgar handler builds the Stripe **cancel_url from the QR row's `landing_page`** column. The user's cancel landed on the beta PDP — so the sheet's landing_page (or a manually-created Stripe Payment Link) points there. Let me check the actual QR sheet rows for the CT batch:
+
+
+### 🤖 Autopilot
+
+The sheet's `landing_page` (col B) is `https://www.agroverse.shop/shipments/agl4` — **not** the beta PDP. So the cancel-redirect isn't coming from the sheet. The nelanco-claude thread planned a **manual Stripe Payment Link** — let me check what URL that thread actually configured (the smoking gun):
+
+
+### 🤖 Autopilot
+
+The transcript grep came back empty (maybe path differs). Let me check the live Stripe Payment Link itself — the checkout URL I found (`cs_live_...`) is a real live-mode link. The cancel behavior is embedded in **that** Payment Link's config, which only Stripe can change. Let me confirm the exact link config by fetching the checkout page and looking for the cancel URL / PDP reference:
+
+
+### 🤖 Autopilot
+
+Interesting — the JSON has **`Price: null`** for this QR row! Yet the live scan redirected to Stripe checkout. That means the **Stripe Payment Link was created manually** (not via Edgar, which would need a Price) — and that manual Payment Link has the beta PDP baked in as its return/cancel URL. Let me check whether the QR rows have a Price elsewhere (the col for `Price`) and look at what the live checkout session's cancel_url actually is:
+
+
+### 🤖 Autopilot
+
+The checkout page is JS-obfuscated (no readable cancel URL in the raw HTML — it's resolved client-side). I have enough to explain the root cause. Let me do one final check — whether the QR sheet's landing_page for ALL 100 rows is the agl4 page (I verified _1/_2) and whether a **manual Stripe Payment Link** was created for this SKU (that's what would carry the beta PDP cancel URL). Checking the nelanco thread for the payment link config:
+
+
+### 🤖 Autopilot
+
+The cacao-tea thread (`ab2a3ffb`) and another (`0daf2510`) mention payment links. Let me extract the exact payment-link/cancel-URL config from those transcripts — that's where the beta PDP got baked in:
+
+
+### 🤖 Autopilot
+
+One decisive check — how Edgar's Stripe client builds the session (does it override cancel_url?) and what the actual 302 redirect target is:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converged — QR → Stripe cancel → beta PDP: what I found
+
+### The scan flow (verified end-to-end)
+1. **QR encodes** → `https://edgar.truesight.me/agroverse/qr-code-check?qr_code=<serial>`
+2. **Edgar** (`dao_client/.../routes/qr_code_check.py`): status MINTED → `_start_checkout` → creates a Stripe Checkout Session with:
+   - `cancel_url` = the QR row's **`landing_page`** + UTM params (`_redirect_with_utm`)
+   - `success_url` = `.../qr-code-check?qr_code=<serial>&session_id={CHECKOUT_SESSION_ID}` (reconcile → mark SOLD)
+3. Live 302 confirms: `edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_101` → **`checkout.stripe.com/c/pay/cs_live_...`** (fresh session each scan — not a static Payment Link).
+
+### So where does the beta PDP come from?
+The sheet's `landing_page` (col B) for the CT batch = `https://www.agroverse.shop/shipments/agl4` — **correct, not the beta PDP**. But the cancel URL is baked into the **Stripe session at creation time**, and the two live sessions I saw (`cs_live_a13neZ…`, `cs_live_a1AdxT…`) were created with *some* cancel_url. Two suspects for the beta-PDP cancel:
+
+- **(A) A manually-created Stripe Payment Link** (from the nelanco-claude thread's plan: "you create the Payment Link in the Dashboard … redirect → agroverse.shop/shipments/agl4") — if its return/cancel URL was set to the beta PDP during testing, cancelling lands there. Stripe Payment Links are dashboard-managed; the beta PDP URL is a classic leftover from our beta-first workflow.
+- **(B) A deployed-Edgar version difference** — the repo on nelanco's checkout may differ from what's actually deployed on `dao_protocol` (the live 302s are real, so the deployed build is authoritative).
+
+### A real gap I also found (likely why a manual link existed)
+The QR rows have **`Price: null`** (verified via Edgar's JSON lookup). The code does `int(float(Price or 0)) * 100` → a $0 session, which Stripe rejects — so the working flow *requires* a manual Payment Link. **The 100 CT QR rows still need `Price = 10.00`** so Edgar can create correct $10 sessions on its own.
+
+---
+**RESUME HERE →** Next turn:
+1. **Inspect the deployed Edgar** — `ssh_run(host='dao_protocol')`, check the live `/qr-code-check` handler build + logs to see the *actual* cancel_url it emits (rule out B).
+2. **Set `Price = 10.00`** on all 100 CT QR rows (the col the lookup reads as "Price") via the sheet, so Edgar sessions carry the right amount + `cancel_url = www.agroverse.shop/shipments/agl4?utm_source=edgar…` (rule out the $0-fallback/manual-link need).
+3. **Locate the manual Stripe Payment Link** (Stripe dashboard / API key on nelanco or sentiment_importer) that carries the beta-PDP return URL and **fix/delete it**.
+4. **Re-test the cancel flow** — scan → Stripe → cancel → must land on `www.agroverse.shop/shipments/agl4` (+UTM), never the beta PDP. Then report.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×20 → echo "=== _101 manifest (scan target / edgar resolve url) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/; echo "=== follow truesight.me/qr/?id=... (first 3 redirects) ==="; curl -s -o /dev/null -w "final_url=%{url_effective} http_code=%{http_code; echo "=== truesight.me/qr page body ==="; curl -s "https://truesight.me/qr/?id=2024OSCAR_CT_20260820_101" | head -80; echo; echo "=== does i; …(+15 more)
 
