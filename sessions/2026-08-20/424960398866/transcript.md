@@ -2211,26 +2211,31 @@ Gary's pivoting to the FARM SHIPMENT MEDIA plan — verify it works end-to-end o
 ### 🤖 Autopilot
 
 Big update — the FARM plan is nearly fully merged: **PR0–PR7 all merged on main** (PR0 loader → PR7 agl6 meta-tag retirement), plus spec noise filtering (#217). The beta site is live with the migration. Now let me verify it **actually works end-to-end on beta.agroverse.shop** — running the real Playwright specs against the live beta host, plus a console-error sweep across every migrated page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The specs are comprehensive — but they're configured against a **local server** (playwright.config starts its own). To verify **beta.agroverse.shop end-to-end**, I'll run a live smoke test: load each migrated page on the beta host in a headless browser, assert media.json-driven iframes/hero slots render, and capture console errors. Let me run a full Playwright sweep against the live beta site:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 /dev/shm permission issue in the sandbox — let me set PLAYWRIGHT_BROWSERS_PATH and use a writable tmp dir for Chromium's shared memory:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — the log shows the web server serving **127.0.0.1** — that's the local server, not beta! The `BASE_URL` env var didn't take effect (playwright.config's webServer config overrode it, or the config ignores BASE_URL). The test ran against localhost. I need to verify against the **actual beta host**. Let me write a standalone script that targets beta explicitly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script in /tmp can't resolve @playwright/test (it's in the repo's node_modules). Let me run it from inside the repo dir with NODE_PATH, or move it into the repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2241,6 +2246,7 @@ The script in /tmp can't resolve @playwright/test (it's in the repo's node_modul
 - `/farms/fazenda-sao-jorge-bahia/` — want ≥2, got **0**
 
 oscar-bahia (pilot), vivi, and all shipments pass. So the loader works, but **3 farm pages fail to build their gallery on the live beta site**. Let me investigate — fetch each page's HTML + media.json + check console errors specifically:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2418,4 +2424,42 @@ I've done all the autonomous prep possible. The remaining step is the governor's
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && e; H=/opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_plan
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Hey, can you share the URL to check the, you know, for that page where I can link the trees with the QR code? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary's asking for the tree-linking page URL. Let me verify which hosts actually serve it right now — checking prod + beta + the plan's documented URL:
+
+
+### 🤖 Autopilot
+
+Let me check where dapp_beta's page actually lives and whether a beta host exists:
+
+
+### 🤖 Autopilot
+
+Found it — the page is live on the **beta** host, ready for you:
+
+**https://beta.dapp.truesight.me/link_tree_planting.html** (sent separately as text)
+
+A couple of things worth knowing:
+
+- **It's on beta, not prod.** `dapp.truesight.me/link_tree_planting.html` still 404s — the page was merged to `dapp_beta` but **not yet promoted to prod** (that's the separate always-stop gate in the plan). So this beta URL is the one to use for now.
+- **What you'll see:** pick a sold QR code (left list) + a pending Sunmint submission (right list), confirm the link, sign. It's governor-gated via the permissions system — should recognize you as Gary Teh.
+- **Note on the lists:** the page reads from the public DAO caches (`lineage-assets`) which refresh on a cron — if a specific QR/submission isn't showing, it may be a cache-timing thing.
+
+**One flag from earlier investigation:** my own attempt to drive this end-to-end (CLI → Edgar) confirmed the backend handler only ingests events via the Telegram Chat Logs sheet, and the signature must resolve to a **governor name** (Sophia isn't on the Governors tab, so I'm blocked from executing the link myself — that's the server-side gate working as designed). If you do the link from that page, it should flow through cleanly. If it doesn't process within ~30 min (cron), tell me and I'll dig into the handler's tracking tab with you.
+
+Want me to also check anything else on that page while you're in there?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/aac_fix 2>/dev/null && git fetch -q origin main && echo "=== plan: DApp page URL mentions ===" && git show origin/main:plans/SUNMINT
 
