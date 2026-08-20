@@ -2001,21 +2001,25 @@ The standalone harness is invalid (it fails even on the known-good `_1` payload 
 ### 🤖 Autopilot
 
 The apostrophe in `Oscar's Farm` broke the shell heredoc quoting again. Let me write the script to a file first, then run it — avoids all quoting issues:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 1778 appended — but I used a Unicode curly apostrophe (`Oscar’s`) instead of the straight one the other 100 rows use. Fixing for consistency (matches the ledger exactly), then regenerating `_101`'s label:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 1778 is now clean (`Oscar's Farm` straight apostrophe, matching the other 100). Now regenerating the label for `_101` via the canonical wrapper (it will skip everything except the new row):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `_101` generated. Now the **critical verification** — decode it on my box at 4× (the exact check that caught `_3`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2029,31 +2033,37 @@ Row 1778 is now clean (`Oscar's Farm` straight apostrophe, matching the other 10
 5. Deliver the zip.
 
 Let me write the `_101` manifest + VOID the `_3` manifest, then build the zip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifests updated. Now building the corrected zip (labels 1–100 minus the VOID `_3`, plus `_101` = 100 scannable labels), then staging the repo changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zip v2 built — 100 entries (labels 1–100 minus VOID `_3`, plus `_101`). Now staging the repo changes (new `_101` png + compiled, new `_101` manifest, VOID `_3` manifest, and I should remove the VOID `_3` compiled/raw from the package dir so it's not printed) and committing on a feature branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Git's rename detection merged the manifest changes (`R _3.json → _101.json`) — end state is correct: `_3` png deleted, `_101` png + manifest added, `_3` manifest gone (sheet row 1680 is the VOID record). The other untracked `pngs/2024_*` files are pre-existing collateral from earlier full-sheet runs — leaving them alone. Committing + pushing + opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `_3.json` was already staged as a rename and deleted from disk, so the pathspec didn't match. Committing with just the paths that exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#6** opened on lineage-assets. The governor's standing "merge all PRs" directive covers this task's PRs — merging it, then delivering the corrected zip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2210,4 +2220,63 @@ The `_3` defect cost a manual VOID + re-mint + zip rebuild. From now on, any fut
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets/scripts/qr_generator && wc -l generate_qr_; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets/scripts/qr_generator && grep -n "Saved com; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'sed -n "490,564p" /opt/claude_workspace/lineage-assets/scripts/qr_generator/batch_; …(+4 more)
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Auto-advance: next unit — finalize PDP accuracy. The PDP's QR-batch field still says "1 – 100", but serial `_3` is VOID (replaced by `_101`). A customer-facing page shouldn't imply `_3` is live. Let me check the exact current text:
+
+
+### 🤖 Autopilot
+
+The PDP says `2024OSCAR_CT_20260820_1 – 100`, implying serials 1–100 are all live — but `_3` is VOID (replaced by `_101`). Fixing the batch label to be accurate on the customer-facing page:
+
+
+### 🤖 Autopilot
+
+PR **#208** opened. Merging per the standing directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — PDP QR-batch label corrected ✅
+
+### What changed
+| PR | Change | State |
+|---|---|---|
+| **agroverse_shop_beta #208** — *fix(pdp): correct QR batch label (serial _3 voided, replaced by _101)* | PDP "QR batch" field: `2024OSCAR_CT_20260820_1 – 100` → **`2024OSCAR_CT_20260820 batch — 100 uniquely serialised packets (each with its own QR code)`** — accurate without exposing internal serial bookkeeping (serial `_3` was VOIDed in lineage-assets #6, replaced by `_101`). | ✅ **merged** (sha `147cec6`) |
+
+### Why
+The old text implied serials 1–100 were all live. After mint QA, `_3` is VOID (undecodable, replaced by `_101`), so the customer-facing PDP no longer claims a serial range that includes a dead serial.
+
+GH Pages rebuild ~1–3 min → then the beta PDP shows the corrected wording.
+
+---
+**RESUME HERE →** Next turn:
+1. (Optional) Verify the beta PDP shows the corrected batch wording after the rebuild.
+2. **Promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) — the standing final step, only on your explicit approval. After that, www.agroverse.shop is fully live (PDP + cards + corrected batch text).
+3. (Optional) Log the `_3`→`_101` VOID/replacement in `agentic_ai_context/OPEN_FOLLOWUPS.md` so future sessions don't treat `_3` as live.
+
+Say the word on the prod promotion whenever you're ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl raw main PDP → grep QR batch refs (found line 144: `2024OSCAR_CT_20260820_1 – 100`)
+• `git push changes` → PR https://github.com/TrueSightDAO/agroverse_shop_beta/pull/208 (commit c5ff2dd)
+• `merge pr` → ✅ PR #208 merged (sha 147cec6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | grep -
+• `merge pr` → ✅ PR #208 on agroverse_shop_beta merged successfully (sha: 147cec6637eae3e9b012a9eb726cb406ecf6ec27). Pull Request successfully merged
 
