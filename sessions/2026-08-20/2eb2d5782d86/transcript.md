@@ -1455,16 +1455,19 @@ Extracted text:
 ### 🤖 Autopilot
 
 Let me inspect this image properly — it's likely related to the EDF question you just asked.
+[2 tool result(s) compacted: ssh_run, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a screen photo of **slide 5** ("Real sensor network (Tuya IoT platform)"). Let me render the actual page 5 from the deck to compare against what you're seeing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The photo shows slide 5 ("Real sensor network (Tuya IoT platform)") — but OCR only caught the heading, which is suspicious. Let me render the actual page and check for visual collisions, comparing against your screenshot:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1504,11 +1507,13 @@ toms)
 ### 🤖 Autopilot
 
 Still seeing overlap — let me inspect this new screenshot and run a much stricter audit on the actual PDF (including same-block line collisions, which my earlier check skipped).
+[2 tool result(s) compacted: ssh_run, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "8 of 8 — Mission tie-back" — that's the final slide. My earlier audits only checked text-vs-text and text-vs-image, **not text-vs-drawn-shapes** (the panels/boxes on slides 7–8). Let me do the full check including drawn rectangles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1516,16 +1521,19 @@ Still seeing overlap — let me inspect this new screenshot and run a much stric
 Found it — **page 8 (the "Mission tie-back" slide you're looking at) has the overlap**: the heading "What we're asking from CEPOTX" (at y 60–101) sits **above** the white panel that starts at y=90, so the title text visually collides with the panel's top edge. That's exactly the overlap you're seeing in the screenshot.
 
 The fix: move the panel down (or the heading up) so the title sits cleanly above the panel, not on its edge. Let me look at the exact draw code for page 8 and patch it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full page 8 code block to patch the panel position:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **page 8's content panels start 20px too high** (top edge at y=90 top-down), poking up under the header band and colliding with the title text "What we're asking from CEPOTX" (which ends at y=101). My earlier audits only checked text-vs-image and text-vs-text — I missed text-vs-**drawn-panels**. Let me check which other pages have panels and fix them all:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1533,11 +1541,13 @@ Found it — **page 8's content panels start 20px too high** (top edge at y=90 t
 **Found the root cause.** My earlier audits checked text-vs-text and text-vs-image — but **not text-vs-drawn-panels**. The content panels on slides 5, 6, and 8 start 20–30px too high and **poke up into the header band, painting cream over the bottom of the title text** (drawn after the title). That's the overlap you're seeing on the "8 of 8 — Mission tie-back" screenshot (and slides 5–6 have the same bug).
 
 Fix: drop the panel tops below the header band (top edge ≥ 112px) on all affected pages, then rebuild + full re-audit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit now flags 1 "panel into header" per page — but that's the **saffron header bar itself** (the `rect(0, H-110, W, 110)` band is a drawn shape that spans the top 110px, which IS the header). That's expected — the header bar is supposed to be there. The **real** check is whether *content panels* (cream/green boxes) intrude. Let me refine the audit to ignore the header bar itself and check the actual content panels:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1545,11 +1555,13 @@ The audit now flags 1 "panel into header" per page — but that's the **saffron 
 The audit is now clean — **0 real problems** on pages 2–8. Page 1's "PANEL y0-720" is the full-bleed cover background image (by design — text sits on the darkened hero photo, which is intentional).
 
 So the panel-intrusion bug is fixed: slides 5, 6, and 8 panels no longer poke into the header band. Let me render the three fixed pages and OCR them to visually confirm the title/panel separation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three pages now render cleanly — titles fully readable, panels clear of the header band, no text-over-panel spill. Let me do a final word-count/visual diff and send the fixed deck:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1596,51 +1608,61 @@ If you still see anything in the viewer, screenshot the exact spot and I'll targ
 ### 🤖 Autopilot
 
 Great instinct — this is exactly the kind of thing we should codify so it never bites us again. I'll build a reusable PDF-slide QA checker into `truesight_autopilot` that runs the full overlap audit (text/text, text/image, **text/panel** — the one that bit us, header/footer intrusion) on every deck we generate. Let me first look at the repo layout:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the repo structure to find where slide-building and QA tools live:
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a `SLIDE_DECK_STANDARD.md` — let me read it, and check the autopilot repo layout for where a QA script belongs:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The standard exists but has no automated overlap-verification step — that's the process gap. Let me check the autopilot repo's script layout so the checker lands in the right place:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Code search isn't finding the repo layout (GitHub indexes default branch only). Let me look at the repo structure directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `templates/slide_deck_template.py` and a `scripts/` dir. The natural home is a new `scripts/verify_pdf_slides.py` — a reusable QA checker. Let me check the slide template + tests layout, then write the checker:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Now I'll write the reusable QA checker — `scripts/verify_pdf_slides.py` — that catches all four overlap classes (the text/panel one that bit us), plus a unit test, and wire it into the standard. Let me write the script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checker works — it caught everything including the intentional cover (full-bleed background = by design). I need to teach it the difference between **background** (cover photo, full-page) and **content** (panels/images text must avoid), plus tolerate the 3px "kiss" between stacked title lines. Let me refine:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checker now passes the current deck with **0 problems** — and would have caught the exact panel-overlap bug you hit. Let me prove it catches real defects (regression test against a deliberately broken PDF), then write the unit test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checker catches real defects (exit 1 on the broken deck, exit 0 on the good one). Now let me write a proper unit test and run the local test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1753,4 +1775,51 @@ Say "merge both" and I'll merge them. Also still open from earlier: **PT-BR vers
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && rm -rf ap_check && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git ap_check 2>&1 | tail -2 && echo "-; cd /tmp/ap_check && echo "--- template head ---" && head -40 templates/slide_deck_template.py && echo "--- tests ---" && ls tests/ | head &&; cd /tmp/ap_check && cat > scripts/verify_pdf_slides.py << 'PYEOF' #!/usr/bin/env python3 """Verify a generated PDF slide deck has NO overlap; …(+11 more)
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Don’t mention Tuya
+
+
+### 🤖 Autopilot
+
+Got it — removing all Tuya mentions from the deck (generic "IoT sensor network" language instead). Let me find every occurrence in the build script:
+
+
+### 🤖 Autopilot
+
+Only 3 Tuya mentions per script — footer, slide-5 kicker, slide-5 subtitle. Patching the active script (build_slides4.py), rebuilding, and verifying:
+
+
+### 🤖 Autopilot
+
+Rebuilt clean — 0 Tuya mentions, overlap checker passes. Sending the updated deck:
+
+
+### 🤖 Autopilot
+
+✅ **Done — Tuya is out, deck re-sent (v6, msg 11515).**
+
+## What changed
+Removed all 3 Tuya mentions:
+1. **Footer** → "prepared with Gianluca (robotics) & Erica (**IoT monitoring**)"
+2. **Slide 5 kicker** → "Pilar 3 — Carbono + **IoT**"
+3. **Slide 5 subtitle** → "Real sensor network (**IoT platform**)"
+
+Everything else stays the same (sensors, LoRa, soil/NPK/weather, MRV → carbon credits, bean-quality × environment) — just no vendor name. The new automated checker confirms **0 overlap problems**.
+
+## Also note
+The Tuya deep-dive PDF you attached earlier is still in the transcript (internal record) — I only scrubbed the *deck*, not your internal docs. If you want the Tuya name scrubbed from internal records too, say so and I'll handle it.
+
+**Still open:** PT-BR version · EDF deck (need confirmation EDF = Environmental Defense Fund) · merge PRs #303 + #767.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → patched 3 Tuya strings in build_slides4.py → rebuilt → ran new checker (0 problems)
+• `send_telegram_attachment` → msg 11515 (v6, 632 KB)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && ls -la build_slides*.py 2>/dev/null && echo "=== Tuya mentions across build scripts ===" && grep -n -i "tuya" build_slides*.py 2>; cd /tmp && python3 - << 'EOF' src = open('build_slides4.py').read() src = src.replace("prepared with Gianluca (robotics) & Erica (Tuya IoT)"
 
