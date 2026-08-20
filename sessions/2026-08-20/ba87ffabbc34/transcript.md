@@ -819,31 +819,37 @@ The live whitepaper path redirected — let me locate the actual file in the rep
 ### 🤖 Autopilot
 
 The only VM0017 reference is the deprecated snapshot. Let me find the live whitepaper's actual location in `truesight_me`.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub code search may not index that repo. Let me look at the repo tree directly.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo redirects to `truesight_me_beta` (that's the canonical live base). Let me fetch the live whitepaper directly.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live whitepaper is at `truesight_me_beta/sunmint/whitepaper/index.html` (canonical on truesight.me). Let me read the full body to capture the exact strings for the methodology sections I need to update.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the rest of the whitepaper body — sections 7-12 — to capture all methodology references.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the key string. Let me read the tail of the whitepaper to capture §8–12 exactly before editing.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -851,6 +857,7 @@ I have the key string. Let me read the tail of the whitepaper to capture §8–1
 I now have the full picture. The live whitepaper (canonical on truesight.me) lives in **`truesight_me_beta`** (the `truesight_me` repo redirects to it), and the deprecated snapshot in `agentic_ai_context` also carries the stale VM0017 reference. Per the beta-first rule, I'll update the **beta** repo, then you approve promotion to prod.
 
 Making the edits now — two PRs in parallel (main whitepaper + historical snapshot note):
+[2 tool result(s) compacted: git_push_changes, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -980,4 +987,24 @@ I've got the financial picture grounded. Here's my honest read on how SunMint ac
 2. **Build the financing one-pager** (updated PDF) laying out these 4 layers with the Andean Cacao precedent as the anchor — useful for grant applications and partner calls
 
 Which would you like? (And full disclosure: anything involving moving actual money still requires your explicit go — I plan and propose, you authorize.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Hey, how much capital do you think we realistically need to get this project off the ground? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's my honest breakdown, Gary — and the key insight is that you don't need everything upfront. You need it in three stages.
+
+**Stage 1 — Getting the PDD validated: roughly $40–60k.** This is the unlock for everything else. That covers developing the Project Design Document with consultant support, the NOR Space feasibility and potential analysis to turn those "X tons per hectare" placeholders into real numbers, baseline field data collection, legal work on the land agreements with the cooperatives, and reserving the VVB validation fee. Timeline: six to twelve months.
+
+**Stage 2 — The pilot planting: roughly $150–300k.** That funds establishing maybe 20 to 50 hectares — land prep, cacao and shade tree seedlings, planting, and maintenance for the first two to three years until the cacao fruits. The good news: this is exactly what carbon project developers like Terra Global finance against future credits — the Andean Cacao model. So this money mostly doesn't need to come from our own pocket; it comes from a developer or forward-offtake buyer once the PDD is validated.
+
+**Stage 3 — Scaling toward the 10,000-hectare mission: that's millions**, and that's years out — funded by forward carbon sales and impact capital.
+
+So the real number that matters today: **about $40 to 60 thousand to get the project off the ground.** And right now our treasury sits around eleven and a half thousand dollars, so we're looking at needing roughly **thirty to fifty thousand** in new capital — which is exactly the size of a DAO capital injection round, possibly topped up by a small grant.
+
+The smart move: fund Stage 1, use the validated PDD to attract a developer for Stage 2, and never carry the full burden ourselves. Want me to draft that Stage 1 capital proposal — a specific dollar figure, what it buys, and the TDG return per the Rubric?
 
