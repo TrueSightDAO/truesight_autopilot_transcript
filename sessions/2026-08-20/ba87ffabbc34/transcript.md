@@ -863,6 +863,7 @@ Making the edits now — two PRs in parallel (main whitepaper + historical snaps
 ### 🤖 Autopilot
 
 Main PR is up (beta). The snapshot edit failed on an exact-string mismatch (BOM/whitespace). Let me retry with the precise snippet I saw when reading the file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1007,4 +1008,29 @@ Here's my honest breakdown, Gary — and the key insight is that you don't need 
 So the real number that matters today: **about $40 to 60 thousand to get the project off the ground.** And right now our treasury sits around eleven and a half thousand dollars, so we're looking at needing roughly **thirty to fifty thousand** in new capital — which is exactly the size of a DAO capital injection round, possibly topped up by a small grant.
 
 The smart move: fund Stage 1, use the validated PDD to attract a developer for Stage 2, and never carry the full burden ourselves. Want me to draft that Stage 1 capital proposal — a specific dollar figure, what it buys, and the TDG return per the Rubric?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Can you research where they could actually get bronze to get this off the ground? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+One more targeted pass on grants/early-stage ReFi funds that fund exactly this stage.
+
+
+### 🤖 Autopilot
+
+Good news, Gary — I researched this and there are real, named sources of money at every stage. Here's who's actually out there.
+
+**For the early stage — the 40 to 60 thousand for PDD development:** the most realistic paths are a DAO capital injection, topped up by small grant programs — things like the Regenerative Agriculture Foundation, regen.fund, and notably the chocolate industry's own cocoa sustainability funds from the big players like Cargill, Barry Callebaut and Olam, who routinely fund farmer agroforestry programs in Bahia. That last one is a great fit because it's literally cacao.
+
+**For the pilot planting — the 150 to 300 thousand:** this is where the big names come in. First, **Terra Global Capital** — the same firm that financed Andean Cacao. They have an open request-for-proposal right now for exactly this: upfront investment plus long-term purchase of future carbon credits. They're looking for defined land boundaries, secured tenure, community engagement, and a local implementing entity — which our structure with the cooperatives actually maps well to. Second, **carbon offtake agreements** — corporate buyers paying upfront for future credits; the 2025 average offtake price is around $160 a ton, and a signed offtake is what makes a project bankable.
+
+**And for scaling toward the 10,000 hectares:** Brazil's own institutional money — the **Amazon Fund** managed by BNDES, **Banco da Amazônia** which just committed 93 million dollars, **Banco do Brasil** with 185 million, and **Fundo Flora**, a new ten-million fund specifically for restoration practitioners in Pará.
+
+One important caveat: the Amazon Fund and Banco da Amazônia only fund projects in the **Legal Amazon**, so those apply to our mission plots in the Amazon, not the Bahia cacao farms. For Bahia, the chocolate-industry funds and Atlantic Forest restoration programs are the right vehicles.
+
+My honest recommendation: the single highest-leverage move is **submitting to Terra Global's RFP** — they're the proven template for exactly our project type, and they can fund development costs, not just planting. Want me to draft that submission, or build the full funding-source shortlist as a one-page document?
 
