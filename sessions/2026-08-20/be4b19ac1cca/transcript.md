@@ -2645,11 +2645,13 @@ Two distinct issues: **agl14** = the benign `compute-pressure` Chromium noise (t
 ### 🤖 Autopilot
 
 All assets exist (200). agl4 passed in isolation (so it's flaky load-time 403 rate-limiting — raw.githubusercontent throttles parallel requests; note **agl13 passed** in the full run but failed pattern-wise, and the full-run failures were 403/compute-pressure noise). The right fix: add the compute-pressure filter AND retry/soften the 403 assertion (network noise, not page errors). Let me update the spec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 9/10 now; only **agl14** fails. Let me see its specific error — could be a real issue (agl14's native video? its `.item-card-image`?) or residual noise:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2657,6 +2659,7 @@ All assets exist (200). agl4 passed in isolation (so it's flaky load-time 403 ra
 **A real bug found!** `TypeError: heroVideo.play is not a function` on agl14 — this is a **live pageerror** (the `<video>` element's `play()` being called when the element is an iframe or autoplay-restricted, or `heroVideo` resolved to a non-video). This is EXACTLY the class of bug PR1's `setupHeroVideo()` guard was supposed to fix — but **agl14's page still has the old unguarded `setupHeroVideo`** (the guard landed only in agl4's page via #200; agl13/agl14 have YouTube iframes with `.shipment-hero-video` class that `setupHeroVideo` calls `.play()` on).
 
 Let me check: does agl14's inline script have the guard?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2664,56 +2667,67 @@ Let me check: does agl14's inline script have the guard?
 Confirmed — **agl14 (and agl10, agl13) still have the OLD unguarded `setupHeroVideo`** (`heroVideo.play()` on line 1141 without the `typeof heroVideo.play === 'function'` guard that agl4 got in PR1's #200). agl14's hero is a **YouTube iframe** (`<iframe class="shipment-hero-video">`), so `heroVideo.play is not a function` throws — a **live pageerror on the production page right now**. This is a genuine bug in scope: my migration made the spec catch it.
 
 The fix: apply the same guard to agl10/agl13/agl14 as agl4 has. Let me patch all three:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 10 shipment + 5 farm specs pass.** agl13 didn't have the `if (heroVideo)` wrapper pattern (its script differs slightly) — but it passed anyway (its guard may already differ; the important thing is zero page errors asserted). Let me verify agl13's setupHeroVideo doesn't have the same latent bug, then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #216 opened (agl13 has no `setupHeroVideo` at all — no latent bug, it passed cleanly). Confirming mergeability and merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CONFLICTING again — parallel agent likely landed something on main. Let me check what changed and resolve:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The parallel agent already merged PR6 as #214** (`1598d96`, identical scope — agl10/agl13/agl14, even the same heroVideo.play guard fix on agl14). My #216 is a duplicate, exactly like #213/#212 before. The right move is the same: **verify #214 is complete on main, then close #216 as superseded**. Let me diff #214's result against my work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 #214 merged and main has the migrations + agl14 guard. Two things to verify before closing mine: (1) main's spec actually covers the 3 new pages, (2) why my media.json DIFFERS from main's (is #214's version complete/correct?). Let me diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **#214's media.json content is IDENTICAL to mine** (the earlier "DIFFERS" was just a trailing-newline/formatting artifact — content matches exactly). Main's spec covers all 10 pages, and #214 applied the same agl14 guard fix. My #216 is a true duplicate. Closing it as superseded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My #216 is closed as superseded (identical content verified). One gap worth flagging: **main's spec has NO console-noise filter** (the compute-pressure/403 throttle filter I added to my branch didn't land — #214 didn't include it). That's a real flakiness gap the parallel agent's spec has, which caused agl14/agl10 failures in my run. Since it's a small genuine improvement not covered by #214, I could contribute it — but per the one-PR rule and duplicate discipline, let me check whether it's worth a tiny follow-up or just report it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Filter added, all 10 pass. Committing + PR for this small genuine improvement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #217 opened — a genuinely NEW contribution (no parallel duplicate). Merging it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #217 merged clean (commit `52ecd14`). Logging the contribution:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2757,36 +2771,43 @@ The Claude/garyjob instance is executing this plan **concurrently** and landing 
 ### 🤖 Autopilot
 
 Focusing on the IVY yoga task only — running a fresh mock E2E: sheet insert → sign-in → attest → verify PDF on GitHub. Starting with the sheet state:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh IVY E2E — inserting a new mock row, then signing in, attesting, and verifying the PDF on GitHub. Inserting the row now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 6 inserted (pending). Now the sign-in — checking the pending queue sees it, then driving the console with Playwright:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pending-queue URL I guessed 404'd (wrong endpoint). The previous E2E scripts are still on disk — let me reuse them directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the working scripts. The flow: signin generates keypair + fires EMAIL REGISTERED → grab verification link from admin mailbox → verify script completes sign-in → attest script clicks Attest on the Dummy E2E row. Let me run the sign-in step (fresh keypair for this run):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Keypair generated + verification email sent. Now grabbing the fresh verification link from the admin mailbox:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No results with that subject — let me search more broadly for the verification email:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2888,4 +2909,123 @@ One small note: the aliases.json registry (104 keys) doesn't include this dummy'
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp python3 <<'PY' import gspread, datetime gc = gspread.service_acc; ssh -o ConnectTimeout=15 nelanco-claude 'ls -la /tmp/ivy_e2e*.py /tmp/*playwright*.py 2>/dev/null; ls /tmp/ivy_e2e_pub.txt /tmp/ivy_e2e_priv; ssh -o ConnectTimeout=15 nelanco-claude 'cat /tmp/ivy_e2e_signin.py; echo "=====ATTEST====="; cat /tmp/ivy_e2e_attest.py; echo "=====VERIFY=; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Keep testing and rectifying until it works end to end, and then let me know. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Continuing the E2E hardening — the one loose end from last run was the aliases registry not showing the new credential. Let me investigate whether that's a real gap, and verify the profile page actually renders:
+
+
+### 🤖 Autopilot
+
+Found a real gap: the CV artifacts exist, but **`aliases.json` doesn't map the new pk-hash** — while the two earlier dummies ARE mapped. The profile link `#pk-r3h5iUF7-TG8` likely won't resolve. Let me dig into how aliases.json is generated vs the CV files:
+
+
+### 🤖 Autopilot
+
+The CV renders but the pk-hash is missing from `aliases.json` — that breaks the `#pk-...` profile lookup. Let me read the build script's alias write path and the newest aliases commit to find the bug:
+
+
+### 🤖 Autopilot
+
+There's a real inconsistency to nail down: the CV files exist but the alias mapping is missing, and the newest regen commit (`541e7c35d`) didn't touch the dummy3 CVs. Let me verify precisely which commit created the dummy3 files and what aliases.json actually contains on main (via the API, not the raw CDN which may be stale):
+
+
+### 🤖 Autopilot
+
+jq syntax error — `chr` isn't a jq function. Let me use a different approach for the newline split:
+
+
+### 🤖 Autopilot
+
+**The aliases registry DOES contain the new credential** — `pk-r3h5iUF7-TG8 → dummy-e2e-test-3-voice` at the actual commit `541e7c35d` (105 keys). The earlier empty lookup was a **stale raw.githubusercontent CDN cache**, not a real gap. So the E2E is genuinely complete. Let me do the final live verification — the profile page rendering with that hash:
+
+
+### 🤖 Autopilot
+
+The E2E loop works end-to-end — but I spotted a real branding defect while verifying: the IVY credential page's browser tab title reads **"Credential — Butterfly Effect"**. That's the same shared template used by Butterfly Effect. Let me find where that title is set and whether it's per-program:
+
+
+### 🤖 Autopilot
+
+The credential page shell is served from truesight_me and hardcodes "Butterfly Effect" in the static `<title>`. The JS (`TrueSightProgramShell.init`) may override it from the manifest — but the page title is only correct if it does. Let me check `program-shell.js` and run a real browser check on the live IVY credential page to see what actually renders:
+
+
+### 🤖 Autopilot
+
+The repo moved — it's `truesight_me_prod` that serves the live site. Let me check there:
+
+
+### 🤖 Autopilot
+
+Rather than page through the shell's 22KB of JS, let me just verify the truth directly — drive the live IVY credential page in a real browser and read the rendered title + credential body:
+
+
+### 🤖 Autopilot
+
+The page renders perfectly — **"Credential — IVY"** title (the JS overrides the static Butterfly Effect title), full profile body with the name, program, lineage root, QR, and **both download buttons**. But there are **2 console 404s** — let me identify them (the user wants this fully clean end-to-end):
+
+
+### 🤖 Autopilot
+
+**Real bug found.** The credential page tries to load `lineage-assets/qrs/pk-r3h5iUF7-TG8.json` (the QR metadata) — **404 on both jsDelivr and raw**. That's why it falls back to generating the QR from the CV data. The QR system expects a **QR record in lineage-assets** that the pipeline isn't creating for program-attested credentials. Let me check how butterfly-effect (which works) gets its QR record, and how the build generates them:
+
+
+### 🤖 Autopilot
+
+The QR records in `lineage-assets/qrs/` are cacao-bag QRs, not credential QRs — and **all four test credentials 404** on the credential-QR lookup, including the original qa-e2e one. Let me check whether this also happens for real butterfly-effect credentials (i.e. is this a general gap or an IVY-only one), and what the shell expects from that file:
+
+
+### 🤖 Autopilot
+
+**This is a general pre-existing gap, not IVY-specific**: even real butterfly-effect credentials (gary-teh, bilal) 404 on `lineage-assets/qrs/<pk>.json`. The page falls back gracefully (renders the QR from CV data), so it's a **latent non-blocking issue** — but it means the "SCAN THIS CREDENTIAL" QR always renders via fallback and every credential page logs 2 console 404s. Let me find where the shell consumes that QR record to understand the fallback, then decide the right fix scope:
+
+
+### 🤖 Autopilot
+
+**This is expected behavior, not a bug.** The 404 is the shell's **tree-link probe** (§B.6 — "if a serialized tree QR exists for this member, surface a link"). It's a *feature check*: no tree is bound to the dummy credential, so the probe 404s and the code quietly returns (`if (!tree || tree.asset_type !== 'tree') return`). Real cacao-tree QRs live in lineage-assets, not credential QRs. So:
+
+- The two console 404s are **benign probe failures** — same for gary-teh, bilal, and every real credential
+- The credential page itself renders **completely correctly**: correct IVY title, name, program, lineage root, QR, both download buttons (which we verified return 200)
+
+So the E2E is genuinely clean end-to-end. One thing I want to confirm — the download buttons actually point at the working PDFs. Let me verify the button hrefs resolve:
+
+
+### 🤖 Autopilot
+
+Both download buttons point at the exact jsDelivr URLs we verified return **200** earlier. The full loop is closed and verified. Here's the final status:
+
+## ✅ IVY E2E — Fully Working End-to-End
+
+**"Dummy E2E Test 3 (Voice)" — complete flow verified live:**
+
+| Step | Result |
+|---|---|
+| **Sheet insert** | ✅ Row added → pending |
+| **Sign-in** | ✅ Admin, VERIFIED (verification email consumed) |
+| **Attest** | ✅ Signed event → row → processed (pk `pk-r3h5iUF7-TG8`) |
+| **Ledger commit** | ✅ identity + program-completion in lineage-credentials |
+| **Build** | ✅ Auto-ran, cache regenerated (~4 min) |
+| **GitHub artifacts** | ✅ **All 5 return 200** (JSON/MD/PDF + `__ivy-yoga.pdf` + `__cert.pdf`) |
+| **Registry** | ✅ `pk-r3h5iUF7-TG8 → dummy-e2e-test-3-voice` in aliases.json |
+| **Live page** | ✅ Renders correctly — title "Credential — IVY", name, lineage root "Indus Valley Yoga", QR, **both Download buttons** |
+
+**Download buttons verified** (clickable links → 200s):
+- Certificate: `…/dummy-e2e-test-3-voice__ivy-yoga__cert.pdf` (229KB, valid PDF)
+- Credential CV: `…/dummy-e2e-test-3-voice__ivy-yoga.pdf`
+
+**One benign note:** every credential page (including real ones like gary-teh, bilal) logs 2 console 404s — that's the **tree-link probe** (`lineage-assets/qrs/<pk>.json`), a feature check that only surfaces a "🌳 A tree was planted for this credential" section when a cacao tree is bound. No tree is bound to the dummy, so it quietly skips. **Expected, not a defect.**
+
+**Also confirmed:** the aliases.json "missing" from earlier was a stale CDN cache — the real commit has all 105 entries.
+
+**The IVY credentialing pipeline is fully operational.** Sheet → sign-in → attest → registry → certificate PDF all working. Want me to clean up the 3 dummy rows (Test 1/2/3) now, or leave them for your review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== aliases.json on main: full lookup for new pk + test pks ===" c; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== build script: alias generation ===" curl -s "https://raw.githu; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== build_cv_cache.py lines 740-775 (slug assignment) ===" sed -n ; …(+5 more)
 
