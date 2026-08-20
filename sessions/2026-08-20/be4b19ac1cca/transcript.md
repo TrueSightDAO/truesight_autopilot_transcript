@@ -398,11 +398,13 @@ proceed
 ### 🤖 Autopilot
 
 **The build run COMPLETED — success at 09:47:18Z in ~2.5 minutes** (started 09:44:39Z) — versus the old 20–60min checkout. The `fetch-depth: 2` fix works. Now let me verify the IVY credential actually got rendered this time, then proceed with the future-proofing work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log shows a cache commit step ran at 09:47:07Z. Let me verify the actual outcome — did it push cache changes, and does the regenerated cache now include the IVY CV? Let me check the commit and the cache contents:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -521,4 +523,62 @@ This closes out your ask — agentic_ai_context now instructs every future progr
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #770 on agentic_ai_context merged successfully (sha: 6e9e985e072b1f138f6aa29ce9e35637ad4da557). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] verify and then report
+
+
+### 🤖 Autopilot
+
+Verifying the IVY credential is live end-to-end. Checking the jsDelivr-served cache (proves the purge took), the public credentials page, and the files actually committed:
+
+
+### 🤖 Autopilot
+
+jsDelivr is serving the **new** cache (200, IVY program block present, generated 09:45:06Z — purge worked). The credentials page shell loads client-side, so let me verify the two things that drive the actual render: the web-facing manifest and the rendered artifact files (PDF/MD/QR + per-program PDF) in the cache:
+
+
+### 🤖 Autopilot
+
+jsDelivr is serving the **new** IVY cache, the web manifest is live on prod, and the main CV PDF + QR exist. One gap: the **per-program PDF** `qa-e2e-test-instructor__ivy-yoga.pdf` returned 404. Let me check whether that's expected (per-program PDFs may be conditional on program assets existing in lineage-engine) before reporting:
+
+
+### 🤖 Autopilot
+
+Per-program cert PDF 404 is **expected** — `program_assets/` in lineage-engine only has `butterfly-effect` + `tribomirim` (no `ivy-yoga`), so `_render_program_certificate` warn-and-skips (IVY's certificate rendering is gated on PR3, pending your fee/branding decision). Let me confirm the registry mapping + the MD artifact to close the verification:
+
+
+### 🤖 Autopilot
+
+Verification is complete. Here's the full report:
+
+## ✅ Verified end-to-end — IVY credential now renders
+
+**Core fix (PR #17) confirmed working:**
+
+| Check | Result |
+|---|---|
+| **Build run** 32355379967 | ✅ Success in **~2.5 min** (09:44:39 → 09:47:18Z) vs 20–60 min before — `fetch-depth: 2` works |
+| **jsDelivr serving new cache** (`cdn.jsdelivr.net/.../qa-e2e-test-instructor.json`) | ✅ 200, `generated_at: 2026-08-20T09:45:06Z`, **contains `programs.ivy-yoga`** (lineage_root "Indus Valley Yoga", `pk-LaDRlxRBcvN6`) — purge took effect |
+| **Web manifest live on prod** (`truesight.me/programs/ivy-yoga/manifest.json`) | ✅ 200 — full IVY config (roster sheet, admin panel URL, tokenomics endpoint, co-brand) |
+| **CV artifacts committed on `main`** | ✅ JSON + **MD** (renders "## IVY / Lineage root: Indus Valley Yoga") + **PDF** (28KB) + **QR PNG** all present |
+| **Public page** `truesight.me/programs/ivy-yoga/credentials/` | ✅ 200, loads shell + client-side render (manifest + cache both live, so the hash route `#pk-LaDRlxRBcvN6` renders) |
+
+**The bug is fixed:** the attestation is now *rendered*, not just indexed. The credential will appear at `truesight.me/programs/ivy-yoga/credentials/#pk-LaDRlxRBcvN6`.
+
+## ⚠️ Two expected gaps (not regressions — PR3-gated)
+
+1. **Per-program cert PDF** (`qa-e2e-test-instructor__ivy-yoga.pdf`) → 404. **Expected:** lineage-engine `program_assets/` has no `ivy-yoga/` dir (no `cert_config.json`/template vendored), so `_render_program_certificate` warn-and-skips. This is the **PR3 certificate work** (pending your fee/branding + dual-signature decision — Bilal + Olivia).
+
+2. **NEW finding — `lineage-engine/scripts/program_assets/registry.json` has no `ivy-yoga` entry.** It only maps `tribomirim` + `butterfly-effect`. Its own comment says *"Add a new entry whenever a partner is onboarded — same step as vendoring the logo."* The credential still rendered (data slug `ivy-yoga` == URL slug, so the default identity fallback worked), but the registry entry + vendored logo are what enable the **program-scoped QR with logo** compositing. This belongs with the PR3 asset work too.
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **File the registry.json gap** — I can add `ivy-yoga` to `registry.json` + note the missing logo in `OPEN_FOLLOWUPS.md` (small PR to lineage-engine + agentic_ai_context), **or** fold it into the PR3 certificate work. Your call.
+2. **PR3 (deferred):** certificate rendering (cert_config + program_assets/ivy-yoga + dual-signature) — still blocked on your fee/branding decision.
+3. Nothing else outstanding — the credentialing fix is fully shipped and verified (lineage-credentials #17 ✅, playbook #770 ✅).
+
+Want me to file the registry.json gap, or hold it for PR3?
 
