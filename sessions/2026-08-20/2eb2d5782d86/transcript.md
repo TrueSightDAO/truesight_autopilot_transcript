@@ -2373,26 +2373,31 @@ The aspect fix exposed layout knock-ons: the taller bean image now pokes into th
 ### 🤖 Autopilot
 
 Clean — but let me verify the prep function actually crops to the box ratio, so the bean image isn't still subtly stretched (prepped 0.768 vs drawn 0.864):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `prep()` does cover-crop to the box ratio — so `p0_img` was pre-cropped to 430×560 (0.768) at prep time. But the draw call at 380×440 (0.864) then *re-stretches* it slightly. The mismatch is the draw-box ratio vs prep-box ratio. Cleanest fix: make the draw box match the **prep ratio** (0.768):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image now extends up into the header title (top at 150 → header band ends at 610). Lowering it below the band:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean — no stretch, no overlap. Let me do a final visual sanity check by rendering the bean slide, then send:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The embedded image ratio (0.768) now exactly matches the drawn rect ratio (0.768) — **no stretch**. Sending the fixed deck:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2582,4 +2587,37 @@ Ready for the next step — PT-BR version, or is this good for the visit?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && python3 - << 'EOF' src = open('build_slides4.py').read() old = """boxes = [ (120, 430, "Bean purchase", "Live today \\u2014 fair ; cd /tmp && grep -n "boxes = \[" -A 8 build_slides4.py | head -10 && python3 - << 'EOF' src = open('build_slides4.py').read() i = src.find("b; cd /tmp && python3 - << 'EOF' src = open('build_slides4.py').read() old = '''boxes = [ (120, 430, "Bean purchase", "Live today \u2014 fair p; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Report contributions of 2.5 hours for myself and you. Use the pdf as proof of work
+
+
+### 🤖 Autopilot
+
+Reporting 2.5 hrs each for you and me, with the deck PDF as proof of work. Let me verify the contribution event format first:
+
+
+### 🤖 Autopilot
+
+Event format confirmed (Type, Amount, Contributor). Submitting both contributions — 2.5 hours each, deck PDF as evidence:
+
+
+### 🤖 Autopilot
+
+✅ **Both contributions reported.**
+
+| Contributor | Type | Amount | Proof |
+|---|---|---|---|
+| **Gary Teh** | Time (Minutes) | 150 (2.5h) | `agroverse_cepotx_visual_slides_v2.pdf` (v15, 9 pages) |
+| **Sophia Truesight** | Time (Minutes) | 150 (2.5h) | same deck as proof |
+
+Both submitted to Edgar successfully. The description on each notes the actual work: strategy/ordering/market direction for yours; build + 15 iterations + image sourcing + tariff dive + overlap-QA tooling for mine.
+
+Anything else — want me to also attach the PDF as a file to the ledger entry, or set TDG amounts?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
