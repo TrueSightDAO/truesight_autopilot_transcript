@@ -1102,11 +1102,13 @@ I can see the exact product-card structure. The tea card should be added to this
 ### 🤖 Autopilot
 
 Found the exact end of the grid. **Short answer: the PDP is live on beta, but the tea card isn't on the retail-packs category page yet** — I cross-listed it on the farm + shipment pages but not the category index. Adding it now (matching the page's card pattern, **without price / add-to-cart** per your offline-sales caveat):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Now let me merge it so the card appears on the beta site (you've already given the "merge all PRs" directive this task, but since this is a new PR — I'll merge per your standing instruction and note it clearly):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1315,4 +1317,114 @@ Here's the live beta PDP for the cacao tea, section by section:
 
 ---
 Want me to promote this to **www.agroverse.shop** now (`sync_beta_to_prod`)? It's the last step — say the word.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] This is the image of ceremonial cacao which is wrong
+
+https://beta.agroverse.shop/assets/images/products/oscars-farm.jpeg
+
+
+### 🤖 Autopilot
+
+You're right — that's the ceremonial cacao product shot (200g cacao), not cacao tea. Let me find what cacao-tea imagery actually exists in the repos, then fix the PDP.
+
+
+### 🤖 Autopilot
+
+No dedicated tea image in `products/` yet. Let me check the `packaging/` subfolder, truesight_me's shipment assets (the gallery references `agl4.avif`), and search for any cacao-tea image across repos:
+
+
+### 🤖 Autopilot
+
+No dedicated tea image found yet. The PDP gallery already references `truesight_me/main/assets/shipments/agl4.avif` — let me check whether that path actually exists, look for tea imagery in the QR label assets I generated, and search more broadly for any cacao tea photo:
+
+
+### 🤖 Autopilot
+
+The `agl4.avif` exists (200) but that's the shipment photo. Code-search API is rate-limited. Let me check what images exist in truesight_me's assets tree properly, and look at the compiled label PNGs (they may show the tea packet design):
+
+
+### 🤖 Autopilot
+
+The QR label PNGs ARE the authentic tea assets — `2024OSCAR_CT_*.png` are the actual labels for this exact tea batch. Let me check the packaging images and a sample CT label to see what's usable:
+
+
+### 🤖 Autopilot
+
+Let me inspect the two candidate images (the packaging front + the actual CT label) to see what they actually show before choosing the replacement:
+
+
+### 🤖 Autopilot
+
+This is decisive:
+- **`packaging/front.jpeg`** = the **81% dark chocolate bar** packaging (OCR: "AGROVERSE REGENERATIVE AMAZON CEREMONIAL") — also wrong product.
+- **`2024OSCAR_CT_20260820_1.png`** (450×350) = the **actual cacao tea label** — OCR reads *"Harvest 2024 · Oscar's Farm, Bahia, Brazil · Your tree is getting planted · 2024OSCAR_CT_20260820_1"*. **This is the authentic tea asset.**
+
+The honest fix: the PDP's main image should be the **real tea label** (which we minted and which is what customers actually see on the 50g packet), not the ceremonial cacao shot. Let me update the PDP hero image + gallery to use the CT label. First, upload the label into the shop's product assets, then update the PDP:
+
+
+### 🤖 Autopilot
+
+The label is the authentic tea asset. Before building the fix, let me gather (1) what image the tea cards on the category/farm/shipment pages currently use, (2) whether a real tea photo exists anywhere (nelanco box, Emelin's video thumbnail), so I fix all occurrences consistently:
+
+
+### 🤖 Autopilot
+
+Key finding: the tea cards on **all three pages** use the wrong `oscars-farm.jpeg` (ceremonial cacao). And on the nelanco box there's a **2016-era tea label** (`compiled_Oscar_Farm_2024OSCAR_TEA_20260315_1.png`) — an earlier Oscar tea batch label, plus a partner SLO tea photo. Let me compare that older tea label against our new one to see which is the better asset:
+
+
+### 🤖 Autopilot
+
+The labels are visually identical in design (only batch code differs) — and the **current batch label** (`2024OSCAR_CT_20260820_*.png`) is the authentic tea asset, minted for these exact 100 packets. That's what customers will physically hold.
+
+**Fix:** point the PDP hero + gallery and all three tea cards at the real tea label instead of the ceremonial cacao photo. Opening the PR now:
+
+
+### 🤖 Autopilot
+
+PR opened. Given your standing "merge all PRs" directive for this task, merging #202 so the fix goes live on beta:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Fixed: cacao tea now shows the real packet label, not ceremonial cacao
+
+### What was wrong
+You were right — `oscars-farm.jpeg` is the **ceremonial cacao (200g) product shot**, and it was being used in **4 places** for the cacao tea:
+- PDP hero image + gallery (2 refs) + og:image/twitter:image + JSON-LD image
+- Tea card on `category/retail-packs/`
+- Tea card on `farms/oscar-bahia/`
+- Tea card on `shipments/agl4/`
+
+### What I changed
+Replaced every cacao-tea image reference with the **actual 50g tea packet label** minted for this exact batch — `2024OSCAR_CT_20260820_1.png` (450×350, live on lineage-assets main). The label reads: *"Harvest 2024 · Oscar's Farm, Bahia, Brazil · Your tree is getting planted"* — the genuine artifact customers will hold.
+
+I verified the alternatives first:
+- `packaging/front.jpeg` → OCR shows "AGROVERSE REGENERATIVE AMAZON CEREMONIAL" = **chocolate bar** packaging, also wrong
+- Older `2024OSCAR_TEA_20260315_1.png` (Mar 2026 label) → same design, but it's the *previous* batch, not this one
+- YouTube thumbnail of Emelin's video → exists but is a frame grab, not a product shot
+
+### PR
+**#202** — *Fix cacao tea images — show the actual 50g packet label* → **merged** (sha `2d2be09`), live on `agroverse_shop_beta` main. GH Pages rebuild takes ~1–3 min.
+
+**Follow-up flag (not blocking):** the label is the authentic packet art, but a **real lifestyle/brew photo** (tea in a cup, loose shells) would make a stronger hero. No such photo exists in any repo yet — I can log it in OPEN_FOLLOWUPS.md, or you can send one and I'll add it.
+
+---
+**RESUME HERE →** After ~2 min, hard-refresh and confirm:
+1. `beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` shows the tea label (not cacao) in hero + gallery + share card
+2. `beta.agroverse.shop/category/retail-packs/` + farm + shipment cards show the label
+
+Then — on your approval — the **final step remains: promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) so www.agroverse.shop matches. Say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== agroverse_shop_beta assets/images/products ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/a; echo "=== packaging/ subfolder ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/assets/images/products/; echo "=== does truesight_me agl4.avif exist? ==="; curl -s -o /dev/null -w "%{http_code} " "https://raw.githubusercontent.com/TrueSightDAO/t; …(+6 more)
+• `merge pr` → ✅ PR #202 on agroverse_shop_beta merged successfully (sha: 2d2be09725bfe740b87a2be1811265ea2d16c874). Pull Request successfully merged
 
