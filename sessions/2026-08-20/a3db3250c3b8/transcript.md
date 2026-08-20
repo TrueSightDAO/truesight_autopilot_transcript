@@ -1961,6 +1961,7 @@ I need to stop burning tool rounds on the sheet-JSON introspection and make a de
 **The core issue:** the **live sheet** has W/X/Y = review-follow-up columns, but **SCHEMA.md + `process_qr_code_updates.js`** document/stamp **W = Sold Date** (index 22). And the tree-planting-link handler stamps **X** (index 23) for the notification. The live sheet's X = "Review Click Through Date" — so the notification stamp would **corrupt review data**.
 
 The right move (aligning code to the live sheet, not the reverse — since review columns are an existing workflow I must not clobber): **move the tree-planted notification to a free column (Y)** and **move Sold Date to Z** (both currently empty of data in rows 2–50), and fix SCHEMA to match the live headers. Let me verify W/X/Y/Z data + the review workflow's owner first, then do the surgical fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1968,6 +1969,7 @@ The right move (aligning code to the live sheet, not the reverse — since revie
 **Critical finding — a real column collision.** The live `Agroverse QR codes` sheet has **W/X/Y = retailer-review workflow columns** ("Review Email Sent Date" / "Review Click Through Date" / "Review Submit Date" — owned by the go_to_market email-agent scripts), but the code stamps **Sold Date → W** (`process_qr_code_updates.js` index 22) and **Tree Planted Notification → X** (`process_tree_planting_link.js` index 23). Both would **corrupt the review workflow** on the first real write. All of W–Z are empty in rows 2–400 so nothing is corrupted yet — caught pre-UAT.
 
 The fix (align code to the live sheet, never clobber an existing workflow): move both stamps to **free columns AA (Sold Date)** and **AB (Tree Planted Notification Sent Date)**, insert those headers, and update the code constants + SCHEMA. Executing — first the sheet headers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2121,4 +2123,76 @@ Merged the column-collision + email fix PR:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #398 on tokenomics merged successfully (sha: 0bcc261b666a7979a49cc4426b2a0087409e1885). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Per protocol, reading the plan's RESUME HERE + gate first, then executing the prerequisite deploy (the merged #398 handler must be live on GAS before any real link).
+
+
+### 🤖 Autopilot
+
+Let me read the plan's RESUME HERE + gate sections (the RUN unit definition) from the artifact, and check the plan's §5 gate wording.
+
+
+### 🤖 Autopilot
+
+Let me read the RUN + UAT sections (§4–§5) to see the exact next unit and its gate conditions.
+
+
+### 🤖 Autopilot
+
+The artifacts are nesting — let me pull the plan's §4 RUN + RESUME HERE sections directly with a targeted read instead.
+
+
+### 🤖 Autopilot
+
+The plan's §4 RESUME HERE → **RUN** (first live link) — and §2 is unambiguous about what RUN requires:
+
+> **Ledger money-movement** (PR4's fulfillment booking, run against a real managed ledger) — **Always-stop gate (§5c: TDG/money).** The RUN step that first executes PR4 against production data **needs an explicit `go`**.
+
+And §4's own resume text: *"**Ledger-money-movement gate (§2) — needs an explicit go.** After RUN: UAT (§5, always-stop gate)."*
+
+The AUTO-ADVANCE directive says "Honor any gate marker. Never deploy to production or move money on your own." So the RUN unit is **gated** — I must not execute the first live link (nor the #398 production deploy it depends on) without Gary's explicit go. What I *can* do safely is stage everything so the go is one step away. Let me sync the deploy checkout and verify the merged handler is correct:
+
+
+### 🤖 Autopilot
+
+Deploy checkout is synced to the merged `0bcc261`, and the merged handler is verified correct (notification stamp → AB=27, sold date → AA=27, email now includes `Location: lat, long`). Everything is staged for the RUN.
+
+**One important thing I need to flag** before RUN: the production `process_qr_code_updates.js` currently deployed on GAS still has the **old W-column Sold Date stamp** (22). The #398 fix (W→AA) is merged in git but **not yet clasp-pushed to production**. If the first real link also triggers a sale-stamp... actually, no — the link handler only *reads* SOLD QRs (already sold, so their W was already stamped under the old code). The notification stamp (X→AB) **is** in the live link handler though, and #398 changed it — so a real link right now would still stamp **X (Review Click Through Date)** until the deploy. **The deploy is the production-deploy gate — I cannot push it without your go.**
+
+## Where things stand (AUTO-ADVANCE honored)
+
+**The RUN unit is gated — I did not execute it.** Per §2/§4 of the plan: the first live link books ledger money-movement and needs an **explicit go from you**, and the #398 clasp deploy (production webhook) is also an **always-stop gate**. Both are staged and one step away.
+
+**What I did this turn:**
+- Read the plan's §4 RESUME HERE → **RUN** (first live link: pick one real SOLD+email QR + one real NEW Sunmint submission, confirm via `link_tree_planting.html`, verify QR row + SunMint row + ledger Transactions row + owner inbox by hand)
+- Confirmed the gate: **ledger-money-movement needs explicit `go`**; **clasp deploy of #398 also needs explicit `go`**
+- Synced the deploy checkout to merged `0bcc261` and **verified the merged handler** (AA/AB stamps + email lat/long all present)
+
+## RESUME HERE →
+
+**Your `go` unlocks two things (say "go for RUN" or similar):**
+1. **clasp deploy #398** → pushes `process_tree_planting_link.js` (AB stamp + lat/long email) + `process_qr_code_updates.js` (AA stamp) live to the QR-codes GAS project
+2. **First live link (RUN)** → I'll walk you through picking the real SOLD+email QR + NEW Sunmint submission on `https://beta.dapp.truesight.me/link_tree_planting.html`, then we verify the QR row (D→ASSIGNED_TO_TREE, N/O/P/R + AB), SunMint row (M→LINKED, R/S), ledger Transactions row, and owner inbox together.
+
+Alternatively, if you only want the deploy first, say "deploy #398" and I'll push it and stop.
+
+**✅ Actions this turn:** read plan §4/§5, honored the gate (no RUN, no deploy), synced + verified the merged handler at `0bcc261`. No PRs opened/merged (gated unit).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → fetched plan §4/§5 + resume tracker (RUN = first live link, ledger-money-movement gate); synced `/opt/truesight_autopilot/context/tokenomics` to `origin/main` (`0bcc261`) and verified merged handler: `TPL_NOTIFICATION_SENT_COL = 27` (AB), `SOLD_DATE_COL_DEST = 27` (AA), email `Location:` line present
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== current HEAD ===" && git log --oneline -1 && git fetch origin 2>&1 | tail -1 && ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/SUNMINT_TREE_QR_LINKING_PLAN.md" -o plan.md; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin 2>&1 | tail -1 && git checkout main 2>/dev/null; git reset --hard origin/
 
