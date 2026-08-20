@@ -176,6 +176,12 @@ Which one should I resume?
 ### 🤖 Autopilot
 
 Let me find specifics on which label printers Gary and Kirsten use, then research Mercado Livre.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,4 +282,33 @@ For reference: $199.99 at today's rate = **R$ 1,036** — so the Rollo on Mercad
 **Bottom line:** for a like-for-like replacement on Mercado Livre, the **Rollo X1038 at ~$125 USD** is your cheapest *direct* match — same drivers, same label stock, no workflow change. If you want local support, Elgin L42DT at ~$190 is the BR-standard choice. Avoid the Zebra unless you need industrial durability.
 
 Want me to check whether the Rollo X1038 ML listing ships to your target region (Bahia / wherever the Brazil team is) and what freight adds?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] which one would you recommend?
+
+
+### 🤖 Autopilot
+
+**Recommendation: the Rollo X1038 (~R$ 636 ≈ $125) — and buy two, one for each site.**
+
+Why:
+
+1. **Drop-in match to what you already run.** If you and Kirsten are printing on Rollo-class direct-thermal units in the USA, the X1038 is the same brand/lineage — same drivers, same label sizes (4×2" = 101×50mm stock is sold on ML BR), same workflow. Your QR batch pipeline and label templates carry over with **zero rework**. That consistency is worth more than the ~R$ 265 price difference vs the Knup.
+
+2. **Cheapest like-for-like.** At ~$125 USD it's *under* your US price — no "Custo Brasil" premium on this listing because it's sold by import sellers, not official distributors.
+
+3. **Bivolt (127/220V)** — safe for either Bahia grid standard.
+
+4. **The alternatives only win on specific criteria:**
+   - **Elgin L42DT** (~R$ 980+ / $190+): pick this *only* if a non-technical operator in Brazil needs Portuguese-language support and local warranty/service. But it's Brazilian-market-only — different drivers, so you'd maintain a second print config.
+   - **Knup KP-IM608** (~R$ 375 / $75): tempting on price, but driver quality and support are hit-or-miss; if it fails in the field, nobody's fixing it quickly.
+   - **Zebra ZD220** (~R$ 2,200 / $425): overkill — industrial durability you don't need for QR label printing.
+
+**One caveat to check before ordering:** confirm the exact US model. If it's a *wireless* Rollo (Bluetooth) rather than USB, get the **Rollo X1040 Wi-Fi** on ML BR instead so the Brazil units have the same connectivity.
+
+Want me to:
+1. Verify the QR batch pipeline's output format against the Rollo driver (check `AGROVERSE_QR_CODE_BATCH_GENERATION.md` + batch compiler) to confirm zero-rework compatibility?
+2. Save the recommendation as a sourcing note in `market_research/` or `agentic_ai_context` so it's on record for the Brazil team?
 
