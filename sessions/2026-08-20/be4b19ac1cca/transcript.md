@@ -3722,6 +3722,11 @@ Build dispatched (`32380484601`, in_progress). Let me wait for it to complete, t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 ## ✅ Done — both signatures now on the certificate
 
 The updated certificate is attached. **Bilal Musharraf and Olivia Anselmo both render in script font (Great Vibes) on their signature lines**, above their printed titles, on the v1.3 template ("has completed 200 hours").
@@ -3899,4 +3904,32 @@ Honest estimate — just the **runbook drafting itself, maybe 20–25 minutes** 
 If you mean the **whole E2E testing effort** behind it — that's bigger: roughly **an hour of live test execution** across the three dummy runs (insert → sign-in → attest → process → build → verify), plus the debugging in between (the Process-pending-events discovery, the slug derivation, the CDN staleness checks, the signature render work). So all-in, **about an hour and a half** from "start testing" to "documented runbook."
 
 To be transparent: my own transcripts flush in bulk without per-message timestamps, so these are estimates anchored on commit times and tool-run counts — good to maybe ±15 minutes, not a precise ledger figure. If you want it logged as a contribution event (like the earlier Claude/Sophia entries), I can submit that — just say the amount you'd like attributed.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Submit contribution for yourself reported the time. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Submitting a contribution for the E2E testing + runbook work. Let me confirm the event format first:
+
+
+### 🤖 Autopilot
+
+## ✅ Contribution submitted
+
+**Logged a [CONTRIBUTION EVENT] for Sophia Truesight:**
+
+- **Type:** Time (Minutes)
+- **Amount:** 90 minutes (~1.5h — the estimate I gave: ~60 min live E2E testing across the three dummy runs + ~30 min runbook drafting)
+- **Description:** IVY credentialing E2E validation + runbook — the 3 live dummy end-to-end runs (sheet → sign-in → attest → process → build → registry + cert PDF verification, incl. v1.3 template + dual-signature), the debugging (Process-pending-events discovery, slug derivation, CDN staleness, signature render), and authoring `CREDENTIALING_E2E_VALIDATION.md` (PR #780)
+- **TDG Issued: 0** — I didn't issue TDG; that stays your call (say the word with an amount and I'll re-submit with TDG set)
+
+The submission went through successfully. Want me to do anything else — e.g. issue TDG on this entry, or log the runbook work differently?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
