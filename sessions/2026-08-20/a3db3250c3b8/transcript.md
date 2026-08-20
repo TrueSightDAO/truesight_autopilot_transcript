@@ -1037,36 +1037,43 @@ PR-C scope confirmed: the link handler writes **only Sheets**; the `lineage-asse
 ### 🤖 Autopilot
 
 PR-C design needs one more fact: how the JSON cross-link should be written (GAS has no GitHub token by default; `dispatch.py` from PR5 is the Python webhook router that may be the right place). Let me check the plan's PR5/PR6 scope and the dispatch router:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR-C's best home is clear: **`dao_protocol/truesight_dao_client/server/dispatch.py`** — the webhook router (PR5, merged #142) that already handles `[TREE PLANTING LINK EVENT]` — plus the CLI module `link_tree_planting.py`. It runs in Python (has GitHub write patterns in `agroverse_qr_code_web_service/github_webhook_handler.py` to mirror) and is the right seam: after Edgar routes the event and the GAS handler confirms the link, the dispatcher can append the JSON cross-links to `lineage-assets` (QR gains `linked_tree`, tree gains `sponsor_qr` + `linked_at`). Let me confirm the dispatcher's routing structure and the existing GitHub-write pattern to mirror:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR-C's shape is now clear: a **`sync_tree_links.py`** in `lineage-assets/scripts/` (mirrors the existing `seed_from_sheet.py` + `write_manifest` pattern, runs on the autopilot box where the GitHub token lives) that reads the SunMint Tree Planting tab, and for each LINKED row writes the cross-links into both JSON records — exactly Gary's "QR JSON should link to the tree JSON". Let me grab the sheet URLs + a SunMint row sample to build it precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet URLs confirm: SOURCE = `1qbZZhf…` (Telegram Chat Logs — the sheet Gary linked), DEST = Main Ledger `1GE7PUq…`. The crux of Gary's ask: do SunMint trees have their own JSON records (the 414 `pk-*` are BEC-era pledges), or should linking **mint** one? Let me check the plan's treatment before writing PR-C:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR-C design confirmed by the plan: the 414 existing tree JSONs are BEC-era pledges (`pk-*`); SunMint submissions are a new tree cohort that the link flow doesn't yet mint JSON for. So PR-C = a `sync_tree_links.py` in `lineage-assets/scripts/` (next to `seed_from_sheet.py`) that mirrors each LINKED SunMint row into the JSON cache — minting the tree record, adding `linked_tree` to the QR record, `sponsor_qr`/`linked_at` to the tree record. Let me grab the sheet-read mechanism to mirror, and run the local test suite (hard rule before any push):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pre-existing suite state confirmed (3 catalog HTTP-fallback test failures + ruff/format issues are all in untouched files — my earlier turns didn't touch `app/scripts/tests`). Before writing PR-C I need the exact SunMint tab schema (species column etc.) from the plan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete schema. Now building PR-C: `lineage-assets/scripts/sync_tree_links.py` — mirrors `seed_from_sheet.py`, reads the `SunMint Tree Planting` tab (col D msg id, G date, I photo, J name, K/L lat-long, M status, N species), and for each `LINKED` row writes the cross-links: mint/update the **tree JSON** (`pk-<msgid>` with `species`, `planted_at`, `latitude`, `longitude`, `planter`, `sponsor_qr`) and patch the **QR JSON** with `linked_tree` + `assigned_to_tree` event. Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1222,4 +1229,107 @@ Verified on the branch — the fix is coherent. One subtle behavior to note: `se
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/link_tree_planting.html" -o ltp.html && echo "=== settings; echo "=== SunMint GAS folder on box ===" && ls -d /opt/truesight_autopilot/context/tokenomics/google_app_scripts/* 2>/dev/null | head -20 &&; D=/opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF; echo "=== files ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] I actually dont understand the purpose of this
+
+Endpoint settings (one-time setup)
+Governor Read Key (shared secret provisioned by a governor — required for both lists below)
+paste the GOVERNOR_READ_KEY value
+Sunmint Tree Planting GAS /exec URL (no known default yet — ask a governor for the current deployment URL after tokenomics PR3 is clasp-deployed)
+https://script.google.com/macros/s/.../exec
+Save & reload lists
+
+If it is for loading the values in the dropdown below
+Sold QR codes pending tree link
+
+Sunmint submissions pending link
+
+I  think the correct way should be that the DApp reads from JSOn caches on github
+
+
+### 🤖 Autopilot
+
+Gary's architectural point is right — the page shouldn't need a pasted key + URL when the DApp's own model is "machine-synced JSON caches on GitHub, read publicly." Let me recon exactly what's in the caches and how the page currently fetches both lists, so I can rewire it properly.
+
+
+### 🤖 Autopilot
+
+Gary's architectural point is exactly right, and it matches the DAO's own data model: `lineage-assets` is the public GitHub JSON cache (already serving `qrs_index.json` + 1600+ records), and the DApp's convention is *public machine-synced JSON*, not secret-key'd GAS endpoints. Let me verify what the QR-list fetch needs and whether a SunMint submissions cache exists anywhere.
+
+
+### 🤖 Autopilot
+
+Gary's point is architecturally correct and matches the DApp convention (review_queue reads `treasury-cache/review-queue/*.json` publicly — no keys). The page should do the same: read two public GitHub JSON caches instead of key-gated GAS endpoints. Let me confirm the convention + whether the pending caches exist, and pull the live SunMint rows in parallel:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. The convention is confirmed: `review_queue.html` fetches **public GitHub JSON** (`raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json`) — no keys, no GAS endpoints. And there are **13 SunMint rows, all status `NEW`**, in the live sheet (message IDs 171, 6411, 6422, 6444, 6872, 6875, …).
+
+Gary's architecture is the right one — and there's already a partial foundation (`sync_tree_links.py` I wrote, plus `seed_from_sheet.py`). The fix is clear. Let me check the remaining live rows for full detail, then design the PR:
+
+
+### 🤖 Autopilot
+
+Gary is right, and the convention confirms it: `review_queue.html` reads **public GitHub JSON** (`treasury-cache/dao_members.json` via raw.githubusercontent.com) — no keys, no GAS endpoints. The settings wall exists only because the lists were served by key-gated GAS endpoints. The correct architecture: **two public caches in `lineage-assets`** (`sunmint_pending.json` + `sold_pending_tree.json`), generated by a sync script, and the page fetches them like every other DApp page.
+
+Executing: (1) upload the cache-generator script, (2) verify edit anchors on the current main page.
+
+
+### 🤖 Autopilot
+
+All anchors unique on main. The cache generator is live. Now let me check PR #65's state (it modified the same settings block — I need to supersede it) and grab the exact current `loadQrList`/`loadSunmintList`/`renderQrList` bodies so the rewrite matches:
+
+
+### 🤖 Autopilot
+
+Gary's architecture is the right call — and it matches the DApp convention exactly (`review_queue.html` reads `treasury-cache/dao_members.json` from raw.githubusercontent.com, no keys). The settings wall exists only because the lists were served by key-gated GAS endpoints. The fix: two public caches in `lineage-assets`, page fetches them like every other page.
+
+One correction I'm making in the process: **no owner emails in the public cache** (PII on a public repo — the old GAS endpoint returned them; the cache will carry farm/country/harvest/minted instead).
+
+Executing both halves now — updated cache generator (no PII) + the dapp PR that removes the settings wall entirely:
+
+
+### 🤖 Autopilot
+
+**PR #66 opened** (dapp_beta) — the public-cache rewrite. Let me verify the branch is coherent (no leftover settings refs, both loaders wired to the caches) before reporting:
+
+
+### 🤖 Autopilot
+
+Verified — PR #66 is clean: **zero** leftover settings refs, both loaders wired to the public caches. 
+
+## What I did — replaced the settings wall with public JSON caches (Gary's architecture)
+
+**You were right.** The settings wall existed only because the lists were served by key-gated GAS endpoints. Every other DApp page reads public GitHub JSON (`review_queue.html` fetches `treasury-cache/dao_members.json` from raw.githubusercontent.com — no keys). So the page now does exactly that.
+
+**dapp_beta #66** (`feat/link-tree-planting-public-caches`, commit `f9eb461`):
+- **Deleted** the entire `Endpoint settings (one-time setup)` block — Governor Read Key input, Sunmint GAS /exec URL input, Save & reload button
+- **Replaced** the key/endpoint plumbing with two public cache URLs:
+  - `raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/sold_pending_tree.json`
+  - `.../sunmint_pending.json`
+- `loadQrList()` / `loadSunmintList()` fetch the caches directly (no key, no endpoint)
+- QR dropdown now shows **farm · country · harvest · minted** (owner email removed — PII must not go in a public repo)
+- Link + Mark Invalid signing and the governor gate unchanged
+
+**lineage-assets `scripts/sync_pending_caches.py`** (commits `2fd9d0e` + `97c6258`): generates both caches from the sheet + `qrs_index.json` (dry-run default, `--push` writes via Contents API). No PII.
+
+**Verified:** branch has 0 leftover settings refs; both fetchers wired (lines 379/393); cache script uploaded.
+
+## RESUME HERE →
+
+1. **Generate the caches once** (so the page has real data): run `sync_pending_caches.py --push` on the box (needs SA creds + GITHUB_TOKEN) → produces `sunmint_pending.json` (13 NEW rows) + `sold_pending_tree.json` (SOLD QRs not yet linked).
+2. **Merge #66** (supersedes #65 — I'll close #65). Beta auto-deploys.
+3. **Wire the refresh** so caches stay current — cron on this box or a GAS trigger after each link.
+4. **UAT** — the first real link, gated on your go (money/ledger movement).
+
+Want me to close #65, generate + push the caches, and set up the refresh cron now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== lineage-assets: top level + any sunmint dir ===" && curl -s "https://api.github.com/repos/TrueSightDAO/lineage-assets/contents/" |; echo "=== treasury-cache contents ===" && curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/contents/" | python3 -c "import ; cd /tmp && echo "=== loadQrList (above 405) ===" && sed -n '370,405p' ltp65.html && echo "=== qrs_index.json structure ===" && curl -s "http; …(+6 more)
+• `upload file to github` ×2 → https://github.com/TrueSightDAO/lineage-assets/blob/main/scripts/sync_pending_caches.py
 
