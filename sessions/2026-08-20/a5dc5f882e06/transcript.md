@@ -850,6 +850,7 @@ I have the exact anchor. Adding the tea item-card to the **AGL4 shipment page** 
 ### 🤖 Autopilot
 
 My mistake — the search and replace were identical (no actual change). Let me redo with the tea card actually inserted:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -900,6 +901,7 @@ My mistake — the search and replace were identical (no actual change). Let me 
 ### 🤖 Autopilot
 
 Quick check — the PDP lives on a PR branch in `agroverse_shop_beta` and nothing's been merged or promoted, so it should NOT be live on prod yet. Let me verify against the live site:
+[2 tool result(s) compacted: http_fetch, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -934,6 +936,7 @@ Want me to **merge #197–199 now** (beta only, so you can UAT on the beta site)
 ### 🤖 Autopilot
 
 Governor approved — merging all four PRs (lineage-assets #5 + shop #197–199). These are the PRs from this task; the other open shop PRs (#196, #138–172) are unrelated pre-existing work I won't touch.
+[4 tool result(s) compacted: merge_pr, merge_pr, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -980,16 +983,19 @@ The PDP + both cross-lists are now on `agroverse_shop_beta` main → **live on t
 ### 🤖 Autopilot
 
 Understood — you're pointing at the one remaining unmerged PR. Completing the merge of lineage-assets #5 now via the nelanco-claude box's `gh` CLI (the only path that can touch that repo):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch name mismatch — the checkout failed before the merge. Let me find PR #5's actual head branch and merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the branch is `feat/oscar-cacao-tea-50g-100-qr` and we're already on it. Merging PR #5 now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1121,4 +1127,87 @@ You gave the standing "merge all PRs" directive earlier this task; this was the 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #201 on agroverse_shop_beta merged successfully (sha: 7dde4459dbfc4a4ae6e0f134fe422372b81674ce). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] [Handoff context — this Telegram topic (thread 11578) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+resume
+
+
+### 🤖 Autopilot
+
+Resuming per the handoff. Checking the manifest registry and verifying the beta site state in parallel:
+
+
+### 🤖 Autopilot
+
+The handoff registry's cacao-tea task isn't a separate plan row — this thread **is** the execution. The beta category page still shows the **old etag** (same as before PR #201), so either GH Pages hasn't rebuilt or the CDN is caching. Let me confirm the card is actually in `main` and re-fetch beta with a cache-buster:
+
+
+### 🤖 Autopilot
+
+The beta site is still serving the **old etag** — GH Pages likely hasn't rebuilt yet, but let me confirm the card is actually in `main` by reading the tail of the repo file (the grid section):
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the repo file to confirm the tea card is actually in `main`:
+
+
+### 🤖 Autopilot
+
+Let me stop reading artifacts in circles and run one decisive check — grep `main` for the tea card and compare with what the live beta serves:
+
+
+### 🤖 Autopilot
+
+Decisive finding:
+- **`main` HAS the tea card** (commit `7dde445` = #201 is on main; grep found it)
+- **Beta live site does NOT** serve it yet (grep = 0, stale etag)
+- The **PDP is live on beta** (200 — from #197, propagated earlier)
+
+So it's purely a **GH Pages deploy lag/cache** — the code is merged, the site just hasn't rebuilt that file yet. Let me check the Pages deployment status to confirm it's lag (not a failed build):
+
+
+### 🤖 Autopilot
+
+The deploy pipeline shows the merge on `main` (commit `7dde445`) with no failed build — this is just GH Pages **build lag**: #197 (PDP) propagated earlier; #201 (category card) merged minutes ago and the site hasn't rebuilt yet. Pages deploys typically take 1–3 min.
+
+Let me set a watcher so we get notified the moment the tea card appears on the beta category page:
+
+
+### 🤖 Autopilot
+
+Watcher needs a topic — this chat is a group without an active topic wrapper for the watcher. That's fine; here's the honest state:
+
+## ✅ Resumed & verified — everything is done except the deploy lag
+
+### Confirmed status (decisive checks)
+| Item | State |
+|---|---|
+| **`main` branch** | ✅ Tea card IS in `main` — commit `7dde445` (PR #201) merged |
+| **Beta live — PDP** (`/product-page/oscar-bahia-cacao-tea-50g/`) | ✅ **Live** (HTTP 200, from #197) |
+| **Beta live — category card** (`/category/retail-packs/`) | ⏳ **Not yet served** — GH Pages hasn't rebuilt since #201 merged (~a few min ago) |
+| **Deploy pipeline** | ✅ No failed build — head_sha `7dde445` on main, tests skipped (by design for this repo) |
+
+So: **the code is 100% deployed-ready; the beta site is just catching up on its Pages rebuild.** The category page will show the tea card within minutes (PDP took the same path earlier).
+
+### Complete delivery recap (this thread)
+- ✅ Currency row + SKU row + **100 QR rows** in the Main Ledger
+- ✅ **100 label PNGs + 100 manifests** → lineage-assets **main** (PR #5 merged)
+- ✅ **Zip** of 100 labels → sent here earlier (msg 11773)
+- ✅ **PDP** (no price/buy — offline QR-scan sales) → beta live
+- ✅ Farm + shipment cross-lists → merged (#198/#199)
+- ✅ Category card → merged (#201), **beta rebuild pending (minutes)**
+
+---
+**RESUME HERE →** In a few minutes, hard-refresh `https://beta.agroverse.shop/category/retail-packs/` and confirm the "Cacao Tea (50g)" card renders (I'll re-verify on your next message if you want). Then, on your **explicit approval**: `sync_beta_to_prod(agroverse_shop_prod)` to promote PDP + all cards to **www.agroverse.shop**. Nothing else is outstanding — the sachets can be labeled and sold today.
+
+Want me to ping you when the watcher fires, or will you check the beta URL yourself?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== MAIN (raw github) tea card? ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/category/retail-; echo "=== Pages deployments (latest 5) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/pages/deployments?per_pa
 
