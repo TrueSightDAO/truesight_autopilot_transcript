@@ -300,26 +300,31 @@ Today is 2026-08-18. Let me look at today's session folder.
 ### 🤖 Autopilot
 
 Two sessions today. Let me check both to find which is this thread.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me identify which transcript matches this conversation by checking their content.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's the other thread (Evan's Bahia visit). Let me check the second session — 7b57a574a968 — which should be this thread.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the tail of the second transcript to see if this thread's content is there.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This current thread (11018) isn't one of today's two published sessions. Let me find which session contains thread 11018.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -449,4 +454,70 @@ Verra (standard-setter)
 **One nuance:** you may also see "PD" used for "**Project Developer**" (the entity that develops the project — which for SunMint would be TrueSight DAO / the Próspera entity). In the document sense though, PD = Project Description = the newer name for PDD.
 
 Want me to draft the actual **SunMint PDD outline** (the section map Verra expects, with our drone-MRV plans plugged in), or log a **contribution event** for this conversation?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Who is the third party validator 
+
+Do they register it or we do??
+
+
+### 🤖 Autopilot
+
+Let me check what our docs say about validation/verification bodies and the registration process.
+
+
+### 🤖 Autopilot
+
+Not in our context — this is external carbon-market knowledge, so let me verify current facts via the web.
+
+
+### 🤖 Autopilot
+
+Clear answer — the split of duties is important:
+
+## Who does what
+
+| Step | Who does it |
+|---|---|
+| **Writes the PDD** | **We do** (SunMint / TrueSight DAO — the "project proponent") |
+| **Validates the PDD** (checks it meets VCS rules) | **Third-party VVB** — independent auditor *we hire and pay* |
+| **Submits for registration** | **We do** — we submit the validated project to Verra via the Verra Registry |
+| **Verra approves registration** | Verra |
+| **Monitors** (e.g. drone scans, biomass sampling) | **We do** |
+| **Verifies the monitored numbers** | **VVB again** (each verification cycle) |
+| **Requests verification approval** | We do (via the Verra Registry) |
+| **Issues VCUs into our account** | **Verra** (issues into registry accounts) |
+
+So: **the VVB is the independent auditor; registration and issuance are requested by us but executed by Verra.**
+
+## Who is the VVB?
+
+A **VVB (Validation/Verification Body)** is an independent third-party auditor **approved/accredited by Verra** (typically meeting ISO 14065). We don't get to pick just anyone — they must be on Verra's approved list. Real examples:
+
+- **SustainCERT** (Netherlands)
+- **SCS Global Services** (US)
+- **Bureau Veritas** (France)
+- **TÜV SÜD** (Germany)
+- **Earthood** (India)
+- **AENOR / Carbon Check** — also common for Brazilian/Latin projects
+
+We'd **hire one** (they charge fees; costs vary by project size) for:
+1. **Validation** — reviews the PDD before registration
+2. **Verification** — reviews monitoring data at each crediting cycle before VCUs are issued
+
+## Plain-English flow for SunMint
+
+```
+We write PDD → hire VVB → VVB validates → WE submit to Verra Registry
+→ Verra registers project → we monitor (drone MRV!) → VVB verifies
+→ we request approval → Verra issues VCUs to us → we sell
+```
+
+**Two things worth knowing:**
+1. **The VVB is not "the regulator"** — Verra is. The VVB is more like an external auditor with authority delegated by Verra. This creates the integrity layer that makes credits trustworthy to buyers.
+2. **Verra has recently been tightening rules** (2023–24) — new registration rules, more scrutiny on methodologies. For SunMint that means: budget for validation costs and expect the process to take up to a year+ for validation alone.
+
+Want me to **shortlist 2–3 VVBs that work in Brazil / ARR reforestation projects** with rough fee ranges, or **draft the PDD section map** so we know exactly what the VVB will check?
 
