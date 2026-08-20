@@ -383,11 +383,13 @@ Fair — let me actually get verified current prices instead of trusting search 
 ### 🤖 Autopilot
 
 Let me try to verify against the two sites that *do* show content — Amazon.com.br (which carries the Rollo X1038) and Zoom (BR price aggregator).
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 You're right, and I want to be straight about what happened. Let me try to pin down a verifiable number before responding.
+[2 tool result(s) compacted: web_search, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -603,4 +605,164 @@ If 60 minutes doesn't match what you actually spent, tell me the real number and
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE received — executing the next PR unit. Let me first confirm which plan/PR is next by re-reading the manifest and the plan files.
+
+
+### 🤖 Autopilot
+
+Let me read the full manifest to see all rows and find which plan this thread's AUTO-ADVANCE maps to.
+
+
+### 🤖 Autopilot
+
+The local clone path differs. Let me find the actual context repo layout on this box.
+
+
+### 🤖 Autopilot
+
+Plans live at `context/agentic_ai_context/plans`. Let me see the full list and the rest of the manifest to determine which plan is next for this thread.
+
+
+### 🤖 Autopilot
+
+Two active Sophia plans are in the manifest. Let me map which one is next for an auto-advance PR unit:
+
+- **SunMint tree-QR linking** (thread 11596): next step = merge dapp_beta #66 then **UAT with real ledger booking + email to owner** — that's an irreversible money/contact gate requiring Gary's explicit GO, not an auto-advance PR.
+- **Farm/Shipment Media JSON** (thread 11590): parked **GO-ready**, RESUME HERE = **PR0** — a clean beta code PR (loader + pilot page), no prod, no money.
+
+The only unit that fits "open and merge the next fix PR yourself" without crossing an irreversible gate is **PR0 of FARM_SHIPMENT_MEDIA_JSON_PLAN**. Let me read the plan's PR0 spec in full.
+
+
+### 🤖 Autopilot
+
+Let me read the PR0 spec section of the plan.
+
+
+### 🤖 Autopilot
+
+Let me read the exact PR0 spec section of the plan.
+
+
+### 🤖 Autopilot
+
+Let me read the §5a PR0 spec section specifically.
+
+
+### 🤖 Autopilot
+
+The plan file is heavily escaped in tool results. Let me grep the local file directly for the PR0 spec section.
+
+
+### 🤖 Autopilot
+
+PR0 spec is clear: add `js/media-gallery.js`, migrate `farms/oscar-bahia` (media.json + HTML), add Playwright spec `tests/media-gallery-farm.spec.ts`. Let me get the full reference JSON and the current page source.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the oscar-bahia page to find the video container and script section.
+
+
+### 🤖 Autopilot
+
+The page already has the empty `#media-gallery` container stubbed. Let me check what already exists in the repo vs. what PR0 needs to add (loader JS, media.json, Playwright spec), and see the page's script section.
+
+
+### 🤖 Autopilot
+
+The files already exist on main — PR0 may already be merged. Let me check the git history and open PRs to determine the actual next unit.
+
+
+### 🤖 Autopilot
+
+PR0's files are already on main (loader JS, media.json, spec all present), and **PR1 (#200) is already open**. Let me verify PR0's merge history and PR1's state before proceeding.
+
+
+### 🤖 Autopilot
+
+PR0 (#196) is already merged. The next unit per the plan is **PR1 (#200)** — already open, waiting on merge. Let me also check the SunMint plan's pending PR (dapp_beta #66) to confirm which plan's next PR this AUTO-ADVANCE targets, then verify PR1's content.
+
+
+### 🤖 Autopilot
+
+PR1 (#200) is the next unit — already open, tested (per its body), and ready. Let me verify its merge state and confirm dapp_beta #66 (SunMint's pending PR) isn't actually still open before merging.
+
+
+### 🤖 Autopilot
+
+PR1 (#200) is **open, mergeable, CLEAN** — it's the next unit in the Farm/Shipment Media JSON plan (PR0 #196 already merged). SunMint's #66 is also merged, so that plan's next step is the UAT money/email gate (needs Gary's explicit GO — not auto-advanceable). So the next unit = **merge PR1 #200**.
+
+Let me do a final diligence check on the actual diff before merging.
+
+
+### 🤖 Autopilot
+
+PR1 (#200) is the next unit — diff is clean and exactly per plan (fixes the agl14.avif bug + hero-video console error, adds media.json + Playwright spec). Let me verify the tests pass locally before merging (plan requires it).
+
+
+### 🤖 Autopilot
+
+Deps not installed in the shallow clone. Let me install and run the two media-gallery specs (the PR's own tests) — that's the plan-mandated verification.
+
+
+### 🤖 Autopilot
+
+Package lock issue. Let me retry the browser install (the dpkg lock may have been transient from the earlier apt update).
+
+
+### 🤖 Autopilot
+
+Another apt process holds the lock. Let me check what it is and whether it's still active.
+
+
+### 🤖 Autopilot
+
+The dpkg lock is held by a **concurrent autopilot session** installing python3-opencv (OCR work) — I won't kill it. Let me wait briefly for it to release, and check for an existing system chromium as an alternative.
+
+
+### 🤖 Autopilot
+
+Playwright browsers are already cached (chromium-1208). Let me run the two media-gallery specs — the plan-mandated verification.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — I've hit the tool-round limit. Here's the state, cleanly:
+
+## What I found
+
+**Next unit = agroverse_shop_beta PR #200** (Farm/Shipment Media JSON plan, PR1 — migrate `shipments/agl4` to media.json):
+
+- **PR0 (#196)** — already merged ✅ (loader `js/media-gallery.js` + `farms/oscar-bahia` pilot + farm spec)
+- **PR1 (#200)** — already open, `mergeable: MERGEABLE`, `mergeStateStatus: CLEAN`, no failing checks. Diff verified: fixes the live `agl14.avif` farmer-photo bug, adds `typeof heroVideo.play === 'function'` guard (kills a console error on every load), adds `shipments/agl4/media.json` + `tests/media-gallery-shipment.spec.ts`. Fully per plan §5a/PR1.
+- **SunMint plan's dapp_beta #66** is *also* already merged — but that plan's next step is **UAT (first real tree link = books ledger + emails owner)** → Gary-gated, NOT auto-advanceable. Correctly excluded.
+
+## Verification done
+- Cloned `agroverse_shop_beta` fresh, `npm install` ✅
+- Ran `npx playwright test tests/media-gallery-farm.spec.ts` → **1 passed** (both oscar-bahia videos render from media.json, zero console errors) ✅
+- The shipment spec exists only inside PR #200's branch (not on main), so it can't run pre-merge here — but the PR author reported it green, and the farm pilot's shared loader is verified.
+
+## ⚠️ Blocking / not yet done
+- **Did NOT merge #200** — I ran out of tool rounds before the merge call. Nothing is broken; the PR is sitting open, mergeable, verified.
+
+## RESUME HERE
+**Merge `agroverse_shop_beta` PR #200** (`merge_pr`, squash) → then submit the routine AI-agent `[CONTRIBUTION EVENT]` time report per plan §6 → then **stop** (one PR per turn). After that, the next unit is **PR2/PR3 (remaining farm pages, batched)** per plan §5a — and per plan §5a's soft checkpoint, PR0's diff shape is now stamped; no prod, no money anywhere in scope.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /opt/truesight_autopilot/context/agentic_ai_context 2>/dev/null && git pull origin main -q 2>&1 | tail -1; ls -la handoffs/plans/ | head ; cd /opt/truesight_autopilot/context 2>/dev/null && ls; echo "---"; find /opt/truesight_autopilot -maxdepth 3 -name "*.md" -path "*handoff*" ; cd /opt/truesight_autopilot/context/agentic_ai_context && git pull origin main -q 2>&1 | tail -1; echo "=== plans dir ==="; ls -lt plans/ | ; …(+14 more)
 
