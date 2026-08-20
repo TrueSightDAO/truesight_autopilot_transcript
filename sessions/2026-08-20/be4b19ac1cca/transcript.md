@@ -1479,31 +1479,37 @@ Row 5 confirmed in the pending queue — the console will show it. Now the sign-
 ### 🤖 Autopilot
 
 The saved keypair is for `dummy-e2e@example.com` — my new row uses a different email (`e2e-cert-test@example.com`), so I need a **fresh keypair** for the new identity (each identity = one keypair; the saved one won't verify as the new email's attestor). Let me read the sign-in flow (keygen → EMAIL REGISTERED → verification link) to drive it precisely, and check whether `e2e-cert-test@example.com` needs registration:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 5 is in the pending queue. Now the sign-in step — let me check whether the saved keypair from this morning's E2E is reusable (which email does it belong to?) and whether the previous Playwright script is still on disk:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The saved keypair is from the previous dummy (derives a different hash than `pk-kRsZO0DkErg8` — the pk-hash scheme differs from my quick SHA-256 guess, not important). For this test I need a **fresh keypair for the new email** anyway. The previous E2E scripts are still on disk — let me read them to reuse the proven sign-in mechanics for the new identity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The saved keypair is admin@truesight.me's (from the first E2E). For a clean fresh E2E I'll do the full sign-in again with a **new keypair** for `admin@truesight.me` (editor seat → admin mode; verification email lands in the admin mailbox I can read). Running the sign-in step now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New keypair generated, EMAIL REGISTERED EVENT fired for admin@truesight.me. Now grabbing the fresh verification link from the admin mailbox to complete sign-in:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh verification link captured (`vk=vcXHTi9Ljq…`, 03:56:34 — matches the sign-in I just triggered). Completing sign-in with the new keypair seeded into a fresh browser context:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1656,4 +1662,89 @@ The E2E acceptance is fully met: **sheet insert → sign in → attest → regis
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → ssh -o ConnectTimeout=15 nelanco-claude 'gh pr merge 20 --repo TrueSightDAO/lineage-engine --squash --delete-branch 2>&1 | tail -5; echo "rc; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== PR 20 state ===" gh pr view 20 --repo TrueSightDAO/lineage-eng; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e RUN=32363024584 for i in $(seq 1 10); do sleep 25 ST=$(gh run view $RUN ; …(+2 more)
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — executing the next executable unit. Let me confirm the current plan state and what's queued next:
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE: execute the next unit. Let me read the rest of the manifest (IVY row, if any) and the IVY plan's tracker/PR3 sections to determine the next executable PR:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the IVY plan (§4 tracker / §5 PR3 scope) to determine the exact next unit:
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the IVY plan (§4 tracker + §5 PR3 scope) to determine the next executable unit:
+
+
+### 🤖 Autopilot
+
+The nested artifacts are deep — let me fetch the plan's §4 tracker and §5 PR3 sections directly from the repo to see the exact next unit:
+
+
+### 🤖 Autopilot
+
+I have the plan state. All IVY plan units are merged/live; PR3 is gated on Gary's decisions; the one genuine remaining defect in this arc is the **stale §4 tracker** (still claims PR0/1/2 unmerged and Pages/DNS pending — no longer true). That's the next executable fix PR. Let me get the exact current §4 text to edit precisely:
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE: executing the next unit — the stale §4 tracker in the IVY plan (all units are actually merged/live; the tracker still claims they're unmerged). Let me check whether the handoff manifest has an IVY row to update too, then make the doc fix via the gh path:
+
+
+### 🤖 Autopilot
+
+The push output looks odd (the "create a PR" hint suggests the push succeeded, but `gh pr create` said the branch isn't remote). Let me check the actual state:
+
+
+### 🤖 Autopilot
+
+The branch IS pushed (remote ref `5bcc901` exists) but `gh pr create` repo-detection is failing. Let me pass `--head` explicitly:
+
+
+### 🤖 Autopilot
+
+PR created. Now merging it (AUTO-ADVANCE authorizes open + merge):
+
+
+### 🤖 Autopilot
+
+Merged. Let me verify and report the contribution:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit complete
+
+**PR [agentic_ai_context#774](https://github.com/TrueSightDAO/agentic_ai_context/pull/774) — opened AND merged** (squash, `11:22:40Z`, branch deleted).
+
+### What changed
+Refreshed the stale §4 resume tracker in `plans/IVY_YOGA_COHORT_ONBOARDING_PLAN.md`. It still claimed PR0/PR1/PR2 unmerged and Pages/DNS pending — which no longer matches reality. Now it:
+- Marks **PR0/PR1/PR2 merged + live** (Pages built with cname `ivy-yoga.truesight.me`, manifest live on prod)
+- Records all the **2026-08-20 session fixes** (lineage-credentials#17, agentic_ai_context#770, lineage-engine#19/#20, ivy-yoga-club#5) + the **E2E verification** (sheet → sign-in → attest → registry + cert render)
+- Points **RESUME HERE → PR3** (gated on Gary's two open decisions: fee/branding model, and whether Olivia re-signs every renewal)
+
+No prod, no money, no default-branch self-merge violations — this was a doc-only correction in agentic_ai_context (data/docs repo).
+
+### Contribution
+This was a plan-tracker doc fix (small). I did not file a separate contribution event — the PR itself is the record. If you'd like a [CONTRIBUTION EVENT] logged for the session's work (IVY credentialing E2E + cert pipeline), say the word and I'll submit it.
+
+### RESUME HERE → next unit (fresh turn)
+The IVY arc is now **fully clean**: infrastructure ✅, fixes ✅, E2E verified ✅, tracker ✅. The only remaining unit is **PR3** (recertification + dual-signature), which is **blocked on your two decisions** — (a) fee/branding model for IVY certs, (b) does Olivia re-sign every renewal or only Bilal? Once you decide either, I can scope PR3. Alternatively there are other parked plans in the manifest (SunMint tree-QR linking UAT at thread 11596, Farm/Shipment Media JSON at thread 11590) if you want to pick one up.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/IVY_YOGA_COHORT_ONBOARDING_PLAN.md" -o ivy; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== IVY rows in HANDOFF_MANIFEST? ===" curl -sL "https://raw.githu; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/aac_fix echo "=== branch / status ===" git branch --show-current; …(+3 more)
 
