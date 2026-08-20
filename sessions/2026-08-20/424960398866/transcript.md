@@ -442,31 +442,37 @@ Branch pushed. Now open the PR with a proper title/body describing the change:
 ### 🤖 Autopilot
 
 `gh` CLI can't create the PR (token lacks GraphQL createPullRequest scope). I'll use the REST API instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Push worked but my token extraction found nothing (credentials are likely in a git credential helper, not the URL). Let me find how the push authenticated:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push authenticates via a credential helper script (`git-credential-sophia.sh`), and `gh` has a config too. The `gh` GraphQL failure says the token lacks `createPullRequest` — but let me check the credential helper and gh's actual auth state, since push worked (push uses the same helper):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two different credentials: the push used the autopilot PAT (`TRUESIGHT_DAO_AUTOPILOT` in `/opt/truesight_autopilot/.env`), but `gh` is logged in as **garyjob** — whose token lacks `createPullRequest` scope (that's why GraphQL failed). The autopilot PAT has push rights; let me check if it also has PR-create rights by using it directly with the REST API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot PAT has **admin** on the repo — it can create PRs. The earlier `gh` failure was garyjob's token. Let me create the PR with the autopilot PAT via REST:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Validation failed — likely the JSON body has an issue (maybe the em-dash or escaped quotes). Let me see the raw error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -597,4 +603,90 @@ Want me to proceed with **PR1** now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/aac_fix && git fetch origin followup/duplicate-script-tags-sitewide 2>&1 | tail -2 && git checkout followup/duplicate-script-tags-si; cd /tmp/aac_fix && git show 73de4f6:OPEN_FOLLOWUPS.md > /tmp/OF_fixed.md && echo "saved fixed file: $(wc -l < /tmp/OF_fixed.md) lines" && gi; cd /tmp/aac_fix && echo "=== remote branches ===" && git ls-remote --heads origin | grep -i "duplicate-script" ; echo "rc=$?" ; echo "=== PR; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md`. Before responding, read it with read_context_file("plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+proceed
+
+
+### 🤖 Autopilot
+
+Proceeding to **PR1** (agl4 + fixes live agl14.avif bug). Let me re-read the plan's PR1 section to get exact requirements:
+
+
+### 🤖 Autopilot
+
+Plan re-read — need the PR1-specific section (the file truncated again at §0.6). Let me get the artifact continuation:
+
+
+### 🤖 Autopilot
+
+Got PR1 scope: migrate `shipments/agl4` (hero + 1 video, fixes `agl14.avif` bug) + new `tests/media-gallery-shipment.spec.ts`. I need the exact §2 migration instructions (hero placeholder convention) and the live agl4 page. Reading both in parallel:
+
+
+### 🤖 Autopilot
+
+Artifact expired; I'll re-read the plan's §2 migration rules (hero placeholder convention) from the current turn's artifact at the right offset:
+
+
+### 🤖 Autopilot
+
+The artifact expired (previous turn). I have the essential PR1 info from the plan table (§3) + the reference JSON (§2a, quoted earlier) + the live page structure. Let me view the exact agl4 hero/video region (lines 950–1010) and the farmer-photo region (1140–1160) to plan precise edits:
+
+
+### 🤖 Autopilot
+
+Now I have agl4's full structure. Before editing, let me verify exactly what my PR0 loader (`js/media-gallery.js`) supports — hero slot handling, attribute names — and re-read the PR0 spec to model the shipment spec on it:
+
+
+### 🤖 Autopilot
+
+Loader and PR0 spec understood. Now let me see the exact hero section opening (930–965) so the video-container replacement is clean, plus the precise lines for the two hero imgs and the script tail:
+
+
+### 🤖 Autopilot
+
+Now let me check the git state — critically, whether PR0 has been merged (PR1 depends on `js/media-gallery.js` existing), and the current branch state:
+
+
+### 🤖 Autopilot
+
+**Blocking dependency:** PR0 (#196) is still **open/unmerged**, and `origin/main` does **not** have `js/media-gallery.js` yet. PR1's whole premise is that the shared loader exists on `main` — migrating agl4 against current main would produce a page that calls `media-gallery.js` which doesn't exist yet (broken page).
+
+Per the plan (§3, "assuming the previous PRn-1 has already merged") and the always-stop gate, I **must not proceed to PR1 until PR0 merges**. This is a human-merge step, not mine to do.
+
+Let me check whether Gary has seen/approved PR0 and whether the plan's "soft checkpoint" (Gary skims PR0's diff) is satisfied. I'll report status and wait — this is exactly the pause the plan intends:
+
+
+### 🤖 Autopilot
+
+PR0 has **no comments and no reviews** — Gary hasn't engaged with it yet. The plan's own soft checkpoint explicitly recommends Gary skims PR0's diff before PR1–PR8 stamp out the same shape 8 more times.
+
+I'm at a hard stop. Reporting clearly:
+
+## ⛔ Stopped at PR1 — blocked on PR0 merge (human gate)
+
+**PR0 (#196) is open, unmerged, unreviewed.** PR1 cannot proceed:
+
+- **Dependency:** PR1 migrates `shipments/agl4` to reference `js/media-gallery.js`. That file only exists on PR0's branch — `origin/main` doesn't have it. Building PR1 now would ship a page calling a loader that doesn't exist on main (broken page).
+- **Plan requires it:** §3 states each `PRn` "assuming the previous PRn-1 has already merged."
+- **I never merge to main myself** (standing always-stop gate) — PR0's merge is Gary's call.
+
+**Current state:**
+
+| PR | Repo | Status |
+|---|---|---|
+| **#196** PR0 — loader + oscar-bahia pilot | agroverse_shop_beta | ✅ open, 4 files (+141/−36), tested, **awaiting Gary's review/merge** |
+| **#771** follow-up — duplicate script-tag fix | agentic_ai_context | ✅ open, clean (+12/−0), awaiting merge |
+
+**Next step (Gary):** review + merge **PR0 (#196)** — ideally skim the diff first (the plan's soft checkpoint). Once merged, I'll immediately run **PR1** (agl4 migration + `agl14.avif` bug fix + `tests/media-gallery-shipment.spec.ts`), then PR2→PR8 in sequence, reporting each here.
+
+**Nothing is broken or blocked on my side** — all PR0 work is done, tested, and open. This pause is exactly the gate the plan intends. Say the word (or merge #196) and I'll resume at **RESUME HERE = PR1 (agl4 + agl14.avif bug fix)**.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/agroverse_shop_beta && echo "=== hero/img slots in agl4 ===" && grep -nE '<img|class="(shipment-image|farmer-photo|hero|banner)"|far; cd /tmp/agroverse_shop_beta && echo "=== 955-1010 (video + hero) ===" && sed -n '955,1010p' shipments/agl4/index.html && echo "=== 1140-1160; cd /tmp/agroverse_shop_beta && echo "=== js/media-gallery.js ===" && cat js/media-gallery.js && echo "=== tests/media-gallery-farm.spec.ts =; …(+3 more)
 
