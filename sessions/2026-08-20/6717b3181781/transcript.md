@@ -192,11 +192,13 @@ The auto-advance protocol lives in `plans/SOPHIA_AUTO_ADVANCE_PLAN.md`, and the 
 ### 🤖 Autopilot
 
 This thread was doing plastic-barge **research**, not executing a plan — so "the next unit" isn't obvious. Per the protocol, ambiguity about *where I am* fails closed (no guessing). Let me check the master operating instructions and the handoff manifest to identify the active plan for this thread.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AUTO-ADVANCE instruction requires me to find which plan is attached to **this** thread (11973). Let me search for that thread ID.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -356,4 +358,39 @@ The credible path isn't "full loop at sea day one" — it's:
 - **Then** a barge-mounted conversion unit as a later phase — a floating micro-factory that takes pre-sorted, cleaned feedstock (not raw gyre soup) and extrudes hull panels onboard. That's the realistic "on the ocean" step, and it's plausible but nobody has built it.
 
 Want me to dig into the **economics** (cost per ton harvested vs. value of a recycled-plastic barge), or the **Manta's current status/funders** (who's backing it, what stalled it)? Or draft a one-page concept brief for a land-anchored → floating pilot in a cacao region?
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+This is the fourth identical trigger. Let me do one final freshness check against the live manifest and handoff inbox before responding — in case a plan row for this thread appeared since my last check.
+
+
+### 🤖 Autopilot
+
+The state is unchanged after a fourth fresh check. Let me pin the decision so it survives context trims.
+
+
+### 🤖 Autopilot
+
+## Status: no-op, pinned for the session
+
+This is the 4th identical AUTO-ADVANCE trigger on thread 11973, and the answer is unchanged — I've re-verified against the **live** manifest (read from GitHub `main`, not the local mirror) and the handoff inbox:
+
+- **No plan row references thread 11973.** Every active/parked plan lives in its own topic (SunMint → 11596, Farm/Shipment Media JSON → 11590, QR Self-Serve → 7611, Large Spike → 8297, etc.).
+- **This thread is research-only** (ocean-plastic / recycled-plastic barge questions). No execution plan was ever attached to it.
+- **I will not invent a unit or jump into another thread's parked handoff** — that's the fail-closed condition in the auto-advance protocol, and it's deliberately stricter than "pick the most convenient PR."
+
+I've pinned a note so this decision survives context trims, and I'll keep treating AUTO-ADVANCE here as a no-op unless you name a plan.
+
+## To start real execution, name it:
+- **"Farm/Shipment Media JSON"** → I'll run **PR0** (agroverse_shop_beta — self-merge OK) in thread 11590.
+- **"QR Self-Serve Currency"** → **PR1** (dao_protocol — PR only, you merge).
+- **"SunMint UAT"** → prep in 11596, but final go is yours (books the ledger + emails owner).
+
+Otherwise, I'm parked here continuing the research thread — happy to go deeper on the ocean-plastic barge question whenever you want (economics, Manta status, or a concept brief).
 
