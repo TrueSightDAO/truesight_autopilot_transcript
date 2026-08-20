@@ -563,6 +563,7 @@ Generate a PDF for me to review to get s sense of where the gaps are
 ### 🤖 Autopilot
 
 Let me research what nor.space is before evaluating it.
+[2 tool result(s) compacted: search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -775,4 +776,122 @@ Want me to:
 1. **Open a PR to fix the PDD** methodology reference (VM0017 → VM0047) in the repo?
 2. Draft the **one-page discovery-question sheet** for the joint NOR + PODream call?
 3. **Research VVBs active in Brazil ARR** (shortlist 2–3 with fee ranges)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Can we update Sunmint with the updated Vera methodology and precedence
+
+
+### 🤖 Autopilot
+
+Let me find the SunMint PDD / whitepaper document in the repos first.
+
+
+### 🤖 Autopilot
+
+Found it — `whitepapers/SUNMINT_WHITEPAPER_SNAPSHOT.md` in `agentic_ai_context`. Let me read it to see the exact methodology references to update.
+
+
+### 🤖 Autopilot
+
+The snapshot is deprecated — the **live** whitepaper is `truesight_me/sunmint/whitepaper/index.html`. Let me check the governance guidance and the live page.
+
+
+### 🤖 Autopilot
+
+The live whitepaper path redirected — let me locate the actual file in the repo.
+
+
+### 🤖 Autopilot
+
+The only VM0017 reference is the deprecated snapshot. Let me find the live whitepaper's actual location in `truesight_me`.
+
+
+### 🤖 Autopilot
+
+GitHub code search may not index that repo. Let me look at the repo tree directly.
+
+
+### 🤖 Autopilot
+
+The repo redirects to `truesight_me_beta` (that's the canonical live base). Let me fetch the live whitepaper directly.
+
+
+### 🤖 Autopilot
+
+The live whitepaper is at `truesight_me_beta/sunmint/whitepaper/index.html` (canonical on truesight.me). Let me read the full body to capture the exact strings for the methodology sections I need to update.
+
+
+### 🤖 Autopilot
+
+Let me get the rest of the whitepaper body — sections 7-12 — to capture all methodology references.
+
+
+### 🤖 Autopilot
+
+I have the key string. Let me read the tail of the whitepaper to capture §8–12 exactly before editing.
+
+
+### 🤖 Autopilot
+
+I now have the full picture. The live whitepaper (canonical on truesight.me) lives in **`truesight_me_beta`** (the `truesight_me` repo redirects to it), and the deprecated snapshot in `agentic_ai_context` also carries the stale VM0017 reference. Per the beta-first rule, I'll update the **beta** repo, then you approve promotion to prod.
+
+Making the edits now — two PRs in parallel (main whitepaper + historical snapshot note):
+
+
+### 🤖 Autopilot
+
+Main PR is up (beta). The snapshot edit failed on an exact-string mismatch (BOM/whitespace). Let me retry with the precise snippet I saw when reading the file.
+
+
+### 🤖 Autopilot
+
+Both PRs are up. Now let me verify the local test suite passes before merging (per the hard rule for code changes — these are content-only, but let me confirm nothing else is affected), and check the beta PR diff.
+
+
+### 🤖 Autopilot
+
+Let me verify the beta PR diff properly.
+
+
+### 🤖 Autopilot
+
+Diff verified — clean and correct. Both PRs are ready. Per your go on this task, I'll merge both now (beta + context repo — **not** prod; promotion to truesight.me waits for your explicit approval).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Both PRs merged. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Updated SunMint PDD with the current Verra methodology (VM0047) + Andean Cacao precedent** — in both the live whitepaper and the historical snapshot.
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_me_beta` | [#294](https://github.com/TrueSightDAO/truesight_me_beta/pull/294) — "SunMint PDD: Verra VM0047 (ARR) methodology + Andean Cacao precedent" | ✅ **Merged** (sha `152633b`) |
+| `agentic_ai_context` | [#779](https://github.com/TrueSightDAO/agentic_ai_context/pull/779) — "SunMint PDD snapshot: mark VM0017 reference superseded by VM0047" | ✅ **Merged** (sha `fc84a07`) |
+
+**What changed (verified via diff):**
+1. **§6 Carbon Credit Development** — `Verra VM0017` → **`Verra VM0047 (ARR)`** with an explanatory note (VM0017 is SALM — soil carbon on existing ag land, not ARR). This was the critical fix.
+2. **§6 Monitoring & Evaluation** — "plots and satellite-based tracking" → added **drone-based growth scanning (field calibration per VM0047 remote-sensing requirements)** — aligning with the NOR Space + PODream MRV stack.
+3. **§8 GHG Estimation** — added methodology line (**Verra VM0047 (ARR)**) + **Andean Cacao precedent** (first large-scale cacao agroforestry project validated & verified under Verra — VM0047 + CCB, 56,000+ VCUs first issuance, Terra Global).
+4. **Historical snapshot** (`agentic_ai_context`) — added a supersession note so the deprecated file can't propagate VM0017.
+
+**Scope note:** `truesight_me_beta` is the beta base — the change is live on the beta site only. **The canonical `truesight.me/sunmint/whitepaper/` production page is NOT yet updated** (prod promotion requires your explicit approval per the beta-first rule).
+
+---
+
+**RESUME HERE →** Next unit (requires your go): **promote to production** — call `sync_beta_to_prod(prod_repo="truesight_me_prod")` after you've reviewed the beta page at `truesight.me`-beta (or its GitHub Pages preview) and approve. If you'd rather I walk you through the beta preview URL first, say so and I'll fetch it. (Earlier offer still open: research Brazil-active VVBs + draft the NOR/PODream joint-call question sheet.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && git clone --depth 1 --filter=blob:none --sparse https://github.com/TrueSightDAO/truesight_me_beta.git tm 2>/dev/null; cd tm && gi; cd /tmp && rm -rf tm && git clone --depth 1 --filter=blob:none --sparse https://github.com/TrueSightDAO/truesight_me_beta.git tm 2>/dev/null
+• `merge pr` ×2 → ✅ PR #294 on truesight_me_beta merged successfully (sha: 152633b2354116a9ca2c9f74af60c49d47ce11de). Pull Request successfully merged; ✅ PR #779 on agentic_ai_context merged successfully (sha: fc84a076cd2979a264401d91c3a43e125bd9002d). Pull Request successfully merged
 
