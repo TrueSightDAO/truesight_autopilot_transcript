@@ -1804,11 +1804,13 @@ Got it — removing all Tuya mentions from the deck (generic "IoT sensor network
 ### 🤖 Autopilot
 
 Only 3 Tuya mentions per script — footer, slide-5 kicker, slide-5 subtitle. Patching the active script (build_slides4.py), rebuilding, and verifying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuilt clean — 0 Tuya mentions, overlap checker passes. Sending the updated deck:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1846,21 +1848,25 @@ The Tuya deep-dive PDF you attached earlier is still in the transcript (internal
 ### 🤖 Autopilot
 
 Good addition — and we have real grounding for all three: **USA** (import live), **Europe** (EUDR deforestation-free compliance — our per-farm traceability is EUDR-ready), **China** (CEPOTX already has the GACC Brazil→China registration). Let me find the current market wording in the build script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the exact context around those lines so the replacements fit the layout (slide 2, 4, 7, 8):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Layout is clear. I'll add USA/Europe/China grounded in real facts (USA live, EUDR-ready for Europe, GACC-registered for China) across slides 2, 4, 7, 8:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 5 edits applied, rebuilt, 0 overlaps. Sending the updated deck:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1907,6 +1913,7 @@ Also before all of these can we make purchase of cacao beans the very first sinc
 ### 🤖 Autopilot
 
 Good restructure — new order: **(1) cacao bean purchase** (ongoing, want to continue) → **(2) pre-order chocolate** → then finance planting, carbon credits, robots. Let me read the current script structure to rework the slides:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2027,4 +2034,63 @@ Ready for the next step whenever you are — PT-BR version, or any wording tweak
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && python3 - << 'EOF' import re src = open('build_slides4.py').read() def rep(old, new, tag): global src assert src.count(old) == 1,; cd /tmp && grep -n "Four Ways" build_slides4.py; cd /tmp && python3 - << 'EOF' import re src = open('build_slides4.py').read() def rep(old, new, tag, count=1): global src assert src.count(o; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Hey, can you do a deep dive and actually find relevant images to use in the slides? We do a deep tariff dive. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good asks — two things: (1) truly relevant images, and (2) a deep tariff dive for the USA/EU/China market slides (real numbers make the deck far stronger). Let me research tariffs and hunt highly-relevant images in parallel.
+
+
+### 🤖 Autopilot
+
+Excellent research haul — the tariff picture is **material and current** (esp. the new July 2026 Section 301 Brazil tariff). Let me download the best images (including a São Paulo fermentation photo — perfect) and verify the critical cacao-exemption question for the USA market:
+
+
+### 🤖 Autopilot
+
+Strong tariff intel gathered — this is genuinely actionable. Key finding: **new 25% Section 301 Brazil tariff (July 22, 2026)** exempts coffee/beef/avocados but cacao's status needs HTS-level handling; EUDR lands **Dec 30, 2026** (our per-farm traceability is the compliance answer); China route already GACC-registered. Two good new images downloaded (beans in pod, sacks of cacao beans). Let me patch the deck with a **"Markets & tariff dive" slide** + swap the bean image, then rebuild:
+
+
+### 🤖 Autopilot
+
+**10 pages, clean order, 0 overlaps.** One issue: the tariff slide's image is `p0_img` which is now the beans-sacks image (same as slide 3) — I should use a distinct image for the tariff slide (the container ship / factory). Let me swap in the factory image for the tariff slide, then send:
+
+
+### 🤖 Autopilot
+
+Clean build. Sending the deck:
+
+
+### 🤖 Autopilot
+
+✅ **v9 sent (msg 11536)** — the deep dive is in.
+
+## 🔍 Tariff dive (real, current — Aug 2026)
+
+| Market | Reality | Our edge |
+|---|---|---|
+| **USA** | Cocoa beans **duty-free** (MFN 0%); cocoa exempted from the 2025 reciprocal tariffs (Nov 13, 2025). ⚠️ **NEW: 25% Section 301 Brazil tariff effective Jul 22, 2026** — coffee/beef/avocados exempt, cacao is per-HTS → **FTZ admission** (privileged foreign status) defers duty | Import live; FTZ strategy on tap |
+| **EU** | **EUDR applies Dec 30, 2026** — deforestation-free proof mandatory for cocoa/chocolate; ~5% of Brazil's cocoa exports go to EU today | Our farm-level QR + TrueChain traceability **is** the EUDR compliance answer — a genuine differentiator |
+| **China** | CEPOTX already **GACC-registered**; direct Brazil→China route, no US–China tariff exposure | Door already open |
+
+**Bottom line on the slide:** "Trade policy is moving — our per-farm data keeps every market open."
+
+## 🖼️ Image upgrades (real, free-license)
+- **Slide 3** (bean purchase): new **"sacks of cacao beans in shipping"** photo — literally the product we buy
+- **New Slide 5** (tariff): **Cadbury chocolate factory** photo — the product category + market angle
+- Plus the ones already in: Amazon aerial (cover), cocoa farmers at harvest, cacao pods on branch, dark chocolate bar, Frasky robot, real DAO QR, SunMint field shots
+
+## Deck now
+**10 pages**: cover → intro → bean purchase → pre-order chocolate → **markets & tariff dive** → finance → carbon → robots → loop → ask. **0 overlaps** (automated checker).
+
+**Open offers:** PT-BR version · more tariff depth (HTS codes, FTZ mechanics) · merge PRs #303/#767. Say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/slide_assets && for q in "cacao beans sack" "cocoa beans" "chocolate factory production" "container ship port export" "cocoa ferment; cd /tmp/slide_assets && \ curl -sL -o beans_pod.jpg "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Cocoa_beans_in_cocoa_pod_at_E; cd /tmp && curl -sL -o slide_assets/cadbury_factory.jpg "https://upload.wikimedia.org/wikipedia/commons/8/8f/Cadbury%27s_Chocolate_Factory_-; …(+1 more)
 
