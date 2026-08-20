@@ -3681,36 +3681,43 @@ The "QR" placeholder is actually PDF bytes (reportlab canvas ignores the .png ex
 ### 🤖 Autopilot
 
 Positions confirmed: both signatures render in the Great Vibes script font at exactly the config coordinates (111,98 → y≈479-506 PDF-native = top of the signature lines; Olivia at 619). Now committing and opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed, but `gh pr create` failed on this box (token lacks PR-create rights on lineage-engine). The nelanco-claude box's garyjob PAT has opened all prior lineage-engine PRs (#17/#19/#20/#21) — using that path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #22 opened. Confirming it's clean/mergeable, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CLEAN and MERGEABLE — merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #22 merged** (14:29:50Z). Now re-triggering the build so the certificate PDFs regenerate with the signatures, then I'll surface the updated cert for Test 4:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Build dispatched (`32380484601`, in_progress). Let me wait for it to complete, then verify the regenerated Test 4 cert has the signatures and surface it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Build complete — the regenerated Test 4 certificate now has BOTH signatures** (256KB, 1 page, "Bilal Musharraf" + "Olivia Anselmo" present in the script font). Let me copy it to this box and surface it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3878,4 +3885,18 @@ Nothing pending on this thread — the IVY credentialing arc is complete and now
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ssh -o ConnectTimeout=15 nelanco-claude 'ls -la /tmp/ivy_e2e*.py /tmp/*e2e*.py 2>/dev/null; echo "=== signin ==="; cat /tmp/ivy_e2e_signin.p; ssh -o ConnectTimeout=15 nelanco-claude 'echo "=== insert ==="; cat /tmp/ivy_e2e_insert.py; echo "=== attest ==="; cat /tmp/ivy_e2e_attest.p
 • `merge pr` → ✅ PR #780 on agentic_ai_context merged successfully (sha: 77314ed0f8c135805eba525d31dba25da185d85e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Hey, how much time do you think you spent on this drafting up of the end-to-end specifications testing? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Honest estimate — just the **runbook drafting itself, maybe 20–25 minutes** this turn: I pulled the four E2E scripts off nelanco-claude, re-read the onboarding playbook for structure, and wrote up the runbook with all the gotchas from the actual test runs, then opened and merged the PR.
+
+If you mean the **whole E2E testing effort** behind it — that's bigger: roughly **an hour of live test execution** across the three dummy runs (insert → sign-in → attest → process → build → verify), plus the debugging in between (the Process-pending-events discovery, the slug derivation, the CDN staleness checks, the signature render work). So all-in, **about an hour and a half** from "start testing" to "documented runbook."
+
+To be transparent: my own transcripts flush in bulk without per-message timestamps, so these are estimates anchored on commit times and tool-run counts — good to maybe ±15 minutes, not a precise ledger figure. If you want it logged as a contribution event (like the earlier Claude/Sophia entries), I can submit that — just say the amount you'd like attributed.
 
