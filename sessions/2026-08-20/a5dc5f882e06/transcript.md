@@ -1289,6 +1289,7 @@ Let me fetch the live beta PDP and show you what it contains:
 ### 🤖 Autopilot
 
 Let me read the rest of the page body to describe the actual content sections:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1464,4 +1465,129 @@ Related pages:
 - QR scan landing (per the QR batch): `https://www.agroverse.shop/shipments/agl4` — this is what the 100 QR codes resolve to when scanned
 
 Note: after the #202 merge (tea label fix), GH Pages needs ~1–3 min to rebuild before the hero image shows the label instead of the ceremonial cacao shot.
+
+
+### 🧑 Governor
+
+Image is wrong
+
+[Attachment auto-processed: **5925298eb8164fbe9d6809b3e656abea.jpg**]
+- Type: Image (OCR confidence: 91.7%, quality: good)
+
+Extracted text:
+```
+Harvest 2024 Oscar's Farm, Bahia, Brazil Your tree is getting planted 2024O0SCAR_CT_20260820_1
+```
+
+
+### 🤖 Autopilot
+
+Let me look at the actual attachment and compare it with what the page is serving right now:
+
+
+### 🤖 Autopilot
+
+The page is now serving the label image (fix #202 propagated), so the question is what's wrong with **this** image. The attached screenshot shows the QR label — and the OCR text reads **"2024O0SCAR_CT_20260820_1"**, which looks like a typo (extra `0`) in the label text. The real batch code should be `2024OSCAR_CT_20260820_1`. Let me verify what the QR actually encodes and what the label really prints:
+
+
+### 🤖 Autopilot
+
+Let me decode the QR from the label itself to see what it actually encodes, and compare with the ledger row — the OCR on both your screenshot and my copy reads something like `20240SCAR`/`2024O0SCAR`, which would be a **typo in the label text** if real:
+
+
+### 🤖 Autopilot
+
+Both scans of the label came back **no QR code detected** — and both the user's screenshot OCR and mine read the code as `2024O0SCAR/20240SCAR` (with an extra character). I need to determine if this is just OCR noise or a real defect in the generated label. Let me decode the QR with proper libraries and inspect the label template:
+
+
+### 🤖 Autopilot
+
+No cv2 on the nelanco box. Let me check what QR-decode tools are available (zbarimg, pyzbar) on either box, and inspect the label's QR region directly:
+
+
+### 🤖 Autopilot
+
+pyzbar works on my box. Let me decode the label's QR directly to see what it actually encodes:
+
+
+### 🤖 Autopilot
+
+The label PNG decodes empty — I need to see what's actually in the compiled label (the one in the zip). Let me inspect the compiled versions and check whether the QR is even present:
+
+
+### 🤖 Autopilot
+
+The label decodes empty — that's a serious flag. Let me inspect the zip's compiled labels (what actually gets printed) and check whether their QR codes scan:
+
+
+### 🤖 Autopilot
+
+No unzip on this box — I'll use Python to inspect the zip contents and decode the labels:
+
+
+### 🤖 Autopilot
+
+**Critical finding:** the compiled labels decode inconsistently — `_1` and `_10` → **empty (no QR!)**, `_100` → decodes fine. Let me test all 100 to see the scope of the defect:
+
+
+### 🤖 Autopilot
+
+**Critical defect found — 76 of 100 labels have an EMPTY/unscannable QR.** This is a UAT blocker. Let me diagnose the generator before fixing:
+
+
+### 🤖 Autopilot
+
+**UAT blocker found.** Let me pin down the root cause in the generator before converging — checking how `batch_compiler.py` builds the QR (error correction, logo overlay):
+
+
+### 🤖 Autopilot
+
+76/100 unscannable is a UAT blocker. One decisive diagnostic — decode a known-good house-format label (CC batch) with the same tool to prove whether the decoder works and the defect is CT-specific:
+
+
+### 🤖 Autopilot
+
+Decisive context: the same decoder **also fails on a known-good production CC label** — so the "76 broken" result is likely decoder flakiness at native 450×350 resolution, not real label defects. Let me prove it with an upscale test (the decisive check for print-worthiness):
+
+
+### 🤖 Autopilot
+
+**Root cause found.** The 4× upscale test is the decisive check:
+
+| Test | Result |
+|---|---|
+| Native 450×350 decode | 76/100 "fail" |
+| **4× upscale decode** | **99/100 decode perfectly** — only label `_3` fails |
+
+**Conclusion: the labels are fine.** The 76 "empty" results at native size are **pyzbar scanner resolution limits at 450×350** — a real phone camera scanning a printed label (which will be larger on the packet) will read the QR fine, just as the 4× decode does. Only **one label (`2024OSCAR_CT_20260820_3`)** is genuinely defective (fails even at 4×).
+
+I'm at my tool limit for this turn — let me converge with the finding and the fix plan.
+
+## UAT blocker resolved (mostly) — 99/100 labels scan; 1 genuinely broken
+
+### What I found
+You said "Image is wrong" — and the diagnostics turned up two distinct things:
+
+1. **The page image is now correct** — the beta PDP serves the real 50g tea label (`2024OSCAR_CT_20260820_1.png`), confirmed via curl: hero + gallery + cards all point at the label. The `oscars-farm.jpeg` (ceremonial cacao) is gone from all 4 pages (PR #202 merged).
+
+2. **The screenshot you sent is the label itself** — OCR of your photo reads `2024O0SCAR_CT_20260820_1` — the **extra `0` is OCR noise** (tesseract misreading `S`/`O`), NOT a defect: the real manifest id is `2024OSCAR_CT_20260820_1`, and the 4× decode confirms the QR encodes the correct Edgar URL.
+
+### The real defect I found: **label `_3` is genuinely unscannable**
+- Full zip audit (100 labels): **99 decode cleanly at 4× upscale**; **`2024OSCAR_CT_20260820_3` fails even at 4×** — its QR module pattern is defective (likely a corruption in the logo overlay paste for that one row).
+- That single packet's label will not scan → I should **re-mint `_3`** (or replace it with a spare) before you print.
+
+### Also noted
+- pyzbar at native 450×350 under-decodes (76 "fails" were scanner-resolution artifacts, disproven by the known-good CC label failing the same way + 4× passing).
+- The raw `pngs/*.png` and compiled zip labels both carry the QR; the zip is what gets printed.
+
+---
+**RESUME HERE →** Next turn (2 actions):
+1. **Re-mint `2024OSCAR_CT_20260820_3`** — regenerate just that one label via `batch_compiler.py` (delete its compiled + raw png, re-run), verify 4× decode, re-zip the 100 labels, re-send the zip here.
+2. Then — with your OK — **promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`).
+
+Want me to re-mint `_3` and ship a corrected zip now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → echo "=== what image is the beta PDP serving NOW? ==="; curl -s "https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/" | grep; cd /tmp && curl -s -o ct_label.png "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/2024OSCAR_CT_20260820_1.png" && ; echo "=== manifest for label _1 ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs/2024OSCAR_CT_20260820_; …(+11 more)
 
