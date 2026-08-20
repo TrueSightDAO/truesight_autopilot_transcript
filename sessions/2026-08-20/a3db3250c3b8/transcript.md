@@ -1499,6 +1499,7 @@ Manifest format confirmed. Let me add the SunMint row to the manifest (thread 11
 ### 🤖 Autopilot
 
 Manifest PR #772 opened. Now close #65 (superseded by #66) and verify the caches are being read correctly by testing the exact URL the page will use:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1557,41 +1558,49 @@ Converging — here's the full state of the "go for it" run.
 ### 🤖 Autopilot
 
 "Keep going" — resuming at the RESUME HERE: fix the `asset_type` filter bug, then merge #66, close #65, merge #772. Let me first inspect the script's sold-query logic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact `build_sold_pending` body and the index record structure (does each record carry `asset_type`?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the bug is clear: **SOLD = 414 cacao bags + 106 `tree` records**. The `pk-*` ERA tree pledges (which show `status: SOLD` in the BEC-era data) are polluting the "sold cacao bags pending tree link" list — they *are* trees, not bags awaiting a link. Fix: filter `asset_type == 'cacao_bag'`. Patching + re-running:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The count dropped to 414 (correct — only cacao bags now) but the push reported "unchanged" — which is suspicious since the file previously had 520 items. The 422 might be a sha-race (the cron runs every 30 min concurrently) rather than a genuine no-change. Let me verify what's actually live:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live still shows 520 — the push did **not** take. The 422 is misclassified: my patch treats any 422 as "unchanged," but this is likely a **sha race** (the 30-min cron has the *old* script and keeps pushing the 520 version, so my PUT's base sha is stale → 422 Validation Failed). Let me read the upload logic + cron log to confirm:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the real bug: **the `_upload` PUT never sends a `sha`** — so for an existing file, GitHub returns 422 "Validation Failed" (a PUT without sha on an existing file always fails). My "unchanged" catch was masking a genuine upload failure. The cron log is empty (never ran or no output yet). Fix: fetch the current file's sha first and include it in the PUT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both pushed with new shas. Now verify live counts (should be 13 / 414):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 520 via raw — but the push returned new commit shas. This is raw.githubusercontent **CDN edge-cache lag** (identical content-length 3730 = the same old blob). The authoritative check is the Contents API (commit sha + content). Let me verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1740,4 +1749,58 @@ The photo URL resolves (200, image/jpeg, ~188KB) — the preview will render.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/link_tree_planting.html" -o ltp_main.html && wc -l ltp_mai; cd /tmp && echo "=== build_sunmint_pending ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/scripts/sync_; cd /tmp && echo "=== COL dict ===" && grep -n "^COL" spc.py && echo "=== build_sunmint_pending item dict ===" && sed -n '97,120p' spc.py; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] merge all PRs
+
+
+### 🤖 Autopilot
+
+"Merge all PRs" — let me enumerate what's open across the affected repos first.
+
+
+### 🤖 Autopilot
+
+"Merge all PRs" — in context that means the two open PRs from this thread's work: **dapp_beta #67** (photo preview) and **agentic_ai_context #772** (manifest row). (#65 is already closed — not in the open list. dapp_beta #46/#41 and the agentic_ai_context docs PRs are from other sessions, not this work stream — I won't touch those without a word.) Merging both:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged both PRs from this thread's work:**
+
+- **dapp_beta #67** (sha `d4516c5`) — **tree photo preview**: selecting a SunMint submission in the "Sunmint submissions pending link" dropdown now shows the tree's photo (`photo_url` from the public cache) + caption (name · planted date · lat/lng). Auto-deploys to beta on merge.
+- **agentic_ai_context #772** (sha `6a3ecb7`) — **manifest row** for thread 11596 (SunMint tree-QR linking, Sophia-owned, status active → UAT pending).
+
+**Scope note:** "Merge all PRs" — I limited it to this thread's open PRs (#67, #772). The other open PRs in those repos are from separate work streams (dapp_beta #46/#41 UX-convention PRs from June; agentic_ai_context #731–#771 docs/follow-up PRs from other sessions) — I did **not** touch those, since they're outside this thread's work and several are other agents'/governors' in-flight items. Say the word if you want those swept too.
+
+## State of the SunMint tree-QR linking run
+
+| Item | State |
+|---|---|
+| Caches live (13 pending SunMint / 414 sold bags, public GitHub JSON) | ✅ |
+| Page reads public caches (no key wall) — dapp_beta #66 | ✅ merged |
+| Tree photo preview on selection — #67 | ✅ **merged this turn** |
+| Reject/INVALID backend + Mark Invalid control — tokenomics #396, dapp_beta #64 | ✅ live |
+| Script synced (photo_url, sha-PUT, asset_type filter) + 30-min cron | ✅ |
+| Manifest row — #772 | ✅ **merged this turn** |
+| **UAT** — first real Link (books ledger + emails owner) | ⏸️ gated on Gary's go |
+
+## RESUME HERE →
+
+1. **UAT on beta:** `https://beta.dapp.truesight.me/link_tree_planting.html` — Gary picks a sold bag (414) + a SunMint submission (13, photo shows) → **Link** or **Mark Invalid**.
+2. **First real Link** — the money-movement step (QR→ASSIGNED_TO_TREE, SunMint→LINKED, ledger pair, owner email) — **needs Gary's explicit go** per plan §5c.
+3. After the first link: run `sync_tree_links.py --execute` to mint the tree JSON + patch the QR JSON cross-link, then verify the sheet writes + owner email.
+
+**✅ Actions this turn:** merged dapp_beta #67 + agentic_ai_context #772. Nothing else started (one-PR-per-turn respected).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #67 on dapp_beta merged successfully (sha: d4516c5437f69e5b9356033a3acaa96aea46e0a5). Pull Request successfully merged; ✅ PR #772 on agentic_ai_context merged successfully (sha: 6a3ecb771748048149a6ade174d5735eaf149e03). Pull Request successfully merged
 
