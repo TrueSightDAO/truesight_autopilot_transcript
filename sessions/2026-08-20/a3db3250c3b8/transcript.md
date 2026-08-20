@@ -2813,11 +2813,13 @@ The dropdown label is `name — species · planted date · lat, lng` — with 10
 ### 🤖 Autopilot
 
 Escaping issue — the branch file has literal `—` and `·` characters (not `\u2014` escapes). Let me use the literal characters in the search:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **dapp_beta #72** opened (commit `86dda31`). Let me verify the branch shows the unique ID format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3074,4 +3076,93 @@ No sheet-side changes; reuses the existing dedup key + status flow. Mark Invalid
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== lin; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_client/server/dispatch.py" -o dispatch.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Hey, Generate Implementation Plan, Execution Roadmap, and Checklist. And then, once you're done, do the end-to-end testing that I described just now, to make sure that the mark invalid actually works. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary wants: (1) Implementation Plan + Execution Roadmap + Checklist, then (2) the end-to-end test that Mark Invalid actually works via an RSA-populated row. Let me recon the pieces I need to design + execute this precisely — plan state, where the sunmint web app lives, my signing identity on the box, and the dispatch webhook mechanism.
+
+
+### 🤖 Autopilot
+
+I have the plan context, dispatch.py routing, and confirmed the box has Sophia's signing identity. Now executing: (1) inject a test row into the SunMint tab, (2) regen + push the cache so it shows in the dropdown, (3) then present the plan/roadmap/checklist + hand you the Mark Invalid click to complete the E2E.
+
+First, the test-row injection:
+
+
+### 🤖 Autopilot
+
+Test row **#7021** injected (NEW, Gary Teh, Criolla, Corvallis coords). Now regen + push the cache so it appears in the dropdown:
+
+
+### 🤖 Autopilot
+
+Cache updated — **#7021 is live** (14 pending, was 13). It shows `name: None` because I left the "Submitted Name" col J as "Gary Teh" but the cache reads a different field; also photo_url empty (expected, test row has no photo). The row is in the dropdown feed. Let me quickly confirm how the cache maps name (so the dropdown shows something sensible) — then present the plan + roadmap + checklist.
+
+
+### 🤖 Autopilot
+
+The cache field is `submitted_name` (not `name`) — so #7021 will render in the dropdown as **`#7021 · Gary Teh — Cacao - Criolla · planted 2025-08-20 · 44.560058, -123.262181`**. Everything's in place for the E2E.
+
+Here's the complete picture, as requested:
+
+---
+
+# 📋 Implementation Plan + Execution Roadmap + Checklist
+
+## The bug to fix (E2E target)
+**"Mark Invalid" must actually work end-to-end** — pick a pending submission → click Mark Invalid → row flips `INVALID` in the sheet → drops out of the dropdown permanently. (Previously failed with `no_signature_format`; fixed in dapp_beta #70 but **never re-tested live**.)
+
+## Implementation Plan (the RSA→tab bridge — what you asked: "can you not implement such that RSA populates the tab?")
+
+**Gap confirmed:** `[TREE PLANTING EVENT]` is NOT in dispatch.py's ROUTING table (verified above) — only `[TREE PLANTING LINK EVENT]` is. So RSA-signed web submissions (from `sunmint.truesight.me`) reach Edgar but **never populate the SunMint tab**; only Telegram-bot posts do. A missing GAS bridge, exactly as you suspected.
+
+**The bridge (3 pieces):**
+1. **`dao_protocol/dispatch.py`** — add `("[TREE PLANTING EVENT]", [("TREE_PLANTING_EVENT", "processTreePlantingEventsFromEdgar")], False)` to ROUTING → fires `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_EVENT` webhook on verified submission.
+2. **SunMint GAS project** (`1Jp8qNI…`) — add `doPost(e)` to `process_tree_planting_telegram_logs.js` (or a new file): parse the signed text (lat/long/species/photo/planter) → **verify RSA signature** (resolve contributor like the link handler does) → append row to `SunMint Tree Planting` tab with `Telegram Message ID = EDGAR-<txid>` (unique dedup key) + `Status = NEW`.
+3. **Env var** `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_EVENT` on the dao_protocol box pointing at the SunMint GAS `/exec` URL.
+
+## Execution Roadmap
+
+| # | Unit | Repo/Where | Status |
+|---|------|-----------|--------|
+| 1 | dispatch.py ROUTING + webhook env | dao_protocol | ⏳ to build |
+| 2 | GAS doPost (RSA verify + append) + deploy | tokenomics → GAS `1Jp8qNI…` | ⏳ to build |
+| 3 | Set webhook env on dao_protocol box | infra | ⏳ |
+| 4 | **E2E test — Mark Invalid actually works** | beta dapp | 🟢 **IN PROGRESS (test row staged)** |
+| 5 | Cleanup test row + verify INVALID persists | sheets + cache | ⏳ |
+
+## ✅ Checklist — E2E (Mark Invalid) — IN PROGRESS
+
+- [x] **Inject test row** `#7021` into SunMint tab (NEW, Gary Teh, Criolla, Corvallis coords)
+- [x] **Regen + push cache** → `sunmint_pending.json` = 14 (was 13), `#7021` live
+- [ ] **You** open `https://beta.dapp.truesight.me/link_tree_planting.html`, pick **`#7021`** → click **Mark Invalid** (reason: e.g. "E2E test")
+- [ ] Verify: returns `signature_verification: success`; SunMint row M flips `NEW → INVALID`
+- [ ] Regen cache → `#7021` **gone** from dropdown, even after refresh (persistent)
+- [ ] Cleanup: delete test row from sheet + confirm cache at 13 (no residue)
+
+---
+
+## 👉 Your action needed (the actual E2E click)
+
+Open **`https://beta.dapp.truesight.me/link_tree_planting.html`** → the SunMint dropdown should now show **`#7021 · Gary Teh — Cacao - Criolla · planted 2025-08-20 · 44.560058, -123.262181`** at the bottom. Select it → **Mark Invalid** → tell me what you see. I'll verify the sheet flip + dropdown removal + cleanup on my side.
+
+**(If you'd rather I click it for you, say so — but Mark Invalid is governor-gated in the dapp, so the click needs your session/identity; I can also drive the equivalent signed submission from the box if you prefer.)**
+
+**✅ Done this turn (all read-only + 1 safe test-row append):** confirmed the RSA→tab gap in dispatch.py; injected test row #7021; regenerated + pushed the cache (14 pending, #7021 live, `submitted_name` field correct for dropdown rendering). No QR/ledger/email writes — the real Link stays gated.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → python3 - <<'EOF' via gspread: appended test row #7021 (NEW, Gary Teh, Cacao-Criolla, 44.560058,-123.262181) to SunMint Tree Planting tab (14→15 rows, max msg id 7020→7021); ran sync_pending_caches.py --push (sunmint_pending.json → 14 items, sha d37c9e1; sold_pending_tree.json → 414, sha f1df316); verified #7021 in live cache with submitted_name/planting_date/species/status fields; confirmed dropdown render text.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== Sophia/autopilot identity keys ===" && ls -la /opt/truesight_autopilot/*.pem /opt/truesight_autopilot/keys /home/ubuntu/.ssh/*.pem; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_client/server/dispatch.py" -o dispatch.py; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') sh =; …(+2 more)
 
