@@ -642,31 +642,37 @@ Governor has given the go. Let me check the handoff registry first, then start e
 ### 🤖 Autopilot
 
 Credentials path confirmed (nelanco-claude has `market_research/google_credentials.json` + gspread). Now executing the build. Let me grab the creds locally, check the handoff registry for a cacao-tea plan, and inspect the sheet structure I'll write to:
+[2 tool result(s) compacted: ssh_run, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Credentials are local. Handoff registry has no separate cacao-tea plan row — this thread is the execution handoff (governor GO received). Now gathering the exact sheet structures I'll write to, plus the compiler's options, in one probe:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The batch_compiler on nelanco-claude expects `lineage-assets` at a specific path and its `gdrive_key.json` isn't there. Let me inspect the compiler source to learn its real requirements, and look at the Agroverse SKUs tab structure:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the SKU tab structure. Let me read the lineage-assets QR generator docs (the canonical compiler) and check the exact format of an existing Oscar QR row (A–V columns) to mirror for the tea batch:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the QR sheet pattern. Let me read the lineage-assets batch_compiler source to learn exactly how to invoke it for just our 100 rows, and check the full column layout (U/V) of existing rows:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything is in place to execute. Let me inspect the QR generator's templates/fonts/scripts and the manifest builder on the nelanco box so the mint script uses the exact canonical paths:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -679,16 +685,19 @@ go
 ### 🤖 Autopilot
 
 Governor GO received — executing end to end. First, two reads to finalize the build: the rest of the reference PDP (to replicate its exact structure for the tea page) and the compiler's argparse/font-fallback logic (so the run works on Ubuntu with DejaVu instead of the macOS Helvetica path):
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Executing. First, the remaining compiler logic (filter/manifest/output paths) + gdrive auth + where the 1lb tea is already referenced on shop pages, so I mint only our 100 rows and cross-list correctly:
+[3 tool result(s) compacted: read_tool_result, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything's mapped. Executing now — step 1: write the sheet records (Currency + SKU + 100 QR rows) via nelanco-claude's gspread:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -709,61 +718,73 @@ go
 ### 🤖 Autopilot
 
 The sheet-write result was lost to a race — I need to verify what actually landed before proceeding (to avoid duplicates). Checking current state of the three tabs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three sheet tabs landed cleanly: **Currency row 131**, **SKU row 15**, **100 QR rows (1678–1777)** — no duplicates. Now generating the QR labels + manifests with the canonical compiler on nelanco (setting up `gdrive_key.json`, deps, and an Ubuntu font since the wrapper's macOS Helvetica path won't resolve):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deps + font ready. Now running the canonical compiler — it will process only our 100 new rows (skips existing), generate compiled labels → `pngs/` + JSON manifests → `qrs/`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 100 labels + manifests generated. Now checking what the run left in the working tree (it processed the whole sheet, so I must isolate exactly our 100 CT artifacts) and verifying a sample manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 100 labels + 100 manifests generated. The compiler rewrote pre-existing tracked pngs/qrs (3220 modified) and created 132 non-CT untracked files — I must isolate **only our 100 CT artifacts** for the registry commit. Cleaning up and staging precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 100/100 manifests + PNGs generated. The full-sheet compiler also rewrote old collateral (3220 modified + 132 untracked non-CT) — I'll restore those so the registry commit contains **only** our 100 CT assets, rebuild the index, and commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean state: exactly **332 untracked files, 200 CT** (100 pngs + 100 qrs) + 132 pre-existing non-CT untracked (already-there files I must not touch). Now committing only the CT artifacts + rebuilding the index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Exactly **201 staged** (100 pngs + 100 qrs + 1 index) with the 132 pre-existing untracked files left alone. Committing + pushing to a feature branch (not main), then opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Now opening the PR and building the **zip** (100 compiled labels for printing) in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#5** created. `zip` isn't installed on the nelanco box — using Python to build the zip, then pulling it to my box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zip built (100 compiled labels, 6.2 MB). Pulling it to my box and sending it here for UAT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zip is on my box. Now creating the product details page (PDP) on **agroverse_shop_beta** per the SOP — with **no price / no buy button** (offline-only via QR scan). Let me fetch the exact existing PDP structure to replicate conventions:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -859,4 +880,38 @@ My mistake — the search and replace were identical (no actual change). Let me 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"EOF" import gspread gc = gspread.service_; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'set -e; cd /opt/claude_workspace/lineage-assets/scripts/qr_generator && cp /opt/cl; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets/scripts/qr_generator && timeout 240 ./gene; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] is the PDP already live on agroverse.shop?
+
+
+### 🤖 Autopilot
+
+Quick check — the PDP lives on a PR branch in `agroverse_shop_beta` and nothing's been merged or promoted, so it should NOT be live on prod yet. Let me verify against the live site:
+
+
+### 🤖 Autopilot
+
+**No — the PDP is not live on agroverse.shop.** Just verified it directly:
+
+**Live site check:** `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` → **404** (GitHub Pages not-found handler). The page doesn't exist on production.
+
+**Why:** the PDP is only a PR branch. All three shop PRs are still **open, unmerged**:
+
+| PR | Title | State |
+|---|---|---|
+| **#197** | Add Cacao Tea 50g PDP (offline QR-scan sales only) | open |
+| **#198** | Cross-list on Oscar's Farm page | open |
+| **#199** | Cross-list on AGL4 shipment page | open |
+
+### What it takes to go live (beta-first flow)
+1. **Merge #197 → #198 → #199** into `agroverse_shop_beta` main → PDP + cross-lists appear on the **beta site** for UAT.
+2. You review the beta render.
+3. On your **explicit approval** → `sync_beta_to_prod` promotes to `agroverse_shop_prod` (which serves agroverse.shop). I never auto-promote.
+
+The 100 QR codes / ledger rows / lineage-assets PR #5 and the zip are already done and independent of this — the sachets can be labeled and sold as soon as you approve.
+
+Want me to **merge #197–199 now** (beta only, so you can UAT on the beta site)? I won't touch prod until you say so.
 
