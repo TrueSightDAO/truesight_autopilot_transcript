@@ -983,21 +983,25 @@ Picking up the AUTO-ADVANCE unit. First, read the SUNMINT plan's RESUME HERE mar
 ### 🤖 Autopilot
 
 The SUNMINT plan header says "All units (PR2–PR8) built and merged" — so the "next unit" must be the remaining non-PR piece (the garbled "→ RUN** (first live link…)" in the directive). Let me read the full plan artifact to find the RESUME HERE marker and that RUN unit, and in parallel verify the FARM plan pristine state (316 lines on main — needed for my #773 repair):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the SUNMINT plan to find the RESUME HERE marker and the RUN unit:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nests recursively. Let me read the next chunk to reach the RESUME HERE / RUN unit in the SUNMINT plan:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifacts are nesting recursively — wasteful. Let me stop reading artifacts and go straight to the local clone: repair my FARM-plan clobber (PR #773) and find the SUNMINT plan's RESUME HERE marker, all via direct file access:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1206,4 +1210,153 @@ That explicit instruction = the ledger-money-movement go + the record picks. I'l
 ———
 **✅ Done this turn — actions taken:**
 • `read google sheet` ×3 → 'Agroverse QR codes' A1:D177 (all QR codes + statuses), L1:L200 (owner emails), 'SunMint Tree Planting' A1:Q30 (all NEW submissions) — built the RUN pick-list
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+RUN
+
+
+### 🤖 Autopilot
+
+Governor said "RUN" — the explicit go for the ledger-money-movement gate. Let me re-read the plan's RUN section to execute it exactly (what I run vs what Gary confirms), then check the executor tooling (dispatch.py / CLI from PR5/PR6):
+
+
+### 🤖 Autopilot
+
+Gary gave the explicit "RUN" — the ledger-money-movement go. Per the plan, the pair should be a **low-stakes real pair** (no separate beta sheet exists — the live sheets are the data). Lowest-stakes choice: **Gary's own QR** (`2024PF_20250505_41`, SOLD, owner `garyjob@gmail.com`) linked to **Gary's own tree submission** (msg 6875, species Cacao, has photo + planting time) — email goes to Gary himself, zero external impact, and it exercises the full path (status flip → evidence copy → ledger booking → owner email).
+
+First, get the authoritative event schema for `TREE PLANTING LINK EVENT`:
+
+
+### 🤖 Autopilot
+
+Schema confirmed: `TREE PLANTING LINK EVENT` — required: **QR Code**, **SunMint Submission Message ID**. Governor-only (server-side GAS check — I sign as Sophia; if the server rejects non-governor signers, that's the guard doing its job and I'll report it).
+
+Plan says the first live link should be confirmed **via `link_tree_planting.html`** (the DApp page) — that's the intended path, not a raw CLI call. But I can't click a browser page; I can drive the same endpoint the page signs against. The RUN step's verification (QR row + SunMint row + ledger row + owner inbox) is what I *can* do. Let me execute the event through the proper channel — first, check how PR6's CLI module is invoked and whether the endpoint is reachable:
+
+
+### 🤖 Autopilot
+
+No CLI module found on disk and no Edgar env keys in the autopilot .env — but there's a `dao_protocol` checkout at `/opt/truesight_autopilot/dao_protocol`. Let me check what's in it (does it have the PR6 CLI module? is there a dao_client module?) and how submissions are normally made from this box:
+
+
+### 🤖 Autopilot
+
+The local `/opt/truesight_autopilot/dao_protocol` checkout is **stale** (HEAD `78b8b05`, before PR5/PR6 merged) — it has `report_tree_planting.py` but **no `link_tree_planting.py`**. The PR6 CLI module lives on the repo's `main`. Let me check the remote main for the exact CLI invocation and confirm the module's interface:
+
+
+### 🤖 Autopilot
+
+CLI interface confirmed. Now — the plan's RUN says "**confirms via `link_tree_planting.html`**" — the DApp page is the *intended* confirmation surface, but the CLI submits the same event through the same Edgar endpoint with the same governor gate. Since I can't click a browser, the CLI is the equivalent execution channel.
+
+I need to run it from a checkout that has the module (the repo's main). Let me update the local checkout and inspect how it signs (identity to use — it must be a governor to pass the server gate):
+
+
+### 🤖 Autopilot
+
+Main has the module. Now the key question: **which identity signs the submission, and is it a governor?** The tool I have (`submit_contribution`) signs with the autopilot's registered identity — that's how I've submitted CONTRIBUTION EVENTs before. Let me check what identity the `submit_contribution` tool uses and whether Sophia's identity is registered as a governor (the server will reject non-governors):
+
+
+### 🤖 Autopilot
+
+The `submit_contribution` tool signs as **Sophia Truesight (admin+sophia@truesight.me)** — my registered identity. The event is governor-only, so the server will accept it **if Sophia is on the Governors tab**. The cleanest way to run RUN is through my `submit_contribution` tool — the same Edgar endpoint the DApp/CLI hits, signing as Sophia. Let me submit the low-stakes pair: `2024PF_20250505_41` (SOLD, owner garyjob@gmail.com — Gary's own QR) + SunMint msg 6875 (NEW, Cacao, has photo + planting time):
+
+
+### 🤖 Autopilot
+
+The tool rejected the submission as "duplicate" — but the **reason is a guard, not a real duplicate**: the `submit_contribution` tool has a built-in **duplicate guard** that treats any QR with status `SOLD` as "already processed" — it's designed for SALES EVENTS (where a SOLD QR means the sale was already recorded) and is **blocking the TREE PLANTING LINK EVENT**, which *requires* a SOLD QR by definition.
+
+This is a **tool-level guard conflict**: the LINK event's whole purpose is to take a `SOLD` QR → `ASSIGNED_TO_TREE`. The generic duplicate guard can't distinguish "this QR was already linked to a tree" from "this QR is SOLD." I must not fight the guard by picking a different QR (that would just fail the same way) — this is a real gap in the tooling that blocks the RUN unit.
+
+Let me confirm this is a guard issue (not a genuine duplicate) by checking the ledger record for any prior tree-link, and check the plan's §4 RUN wording once more — the plan says RUN is done **via `link_tree_planting.html`**, which is the **DApp path** (governor-signed, separate from this tool). The tool I used is the wrong channel; the plan intends the DApp page. Let me verify there's no prior link and then surface this to Gary with the exact options:
+
+
+### 🤖 Autopilot
+
+Two critical findings:
+
+1. **The ledger record for `2024PF_20250505_41` shows `email: ""` — the QR I picked has NO owner email** (the sheet's col L shows garyjob@gmail.com for row 41 but the DAO ledger ground truth has empty email). UAT step 7 needs a real inbox — and the *plan's RUN* explicitly wants a "SOLD+email QR." So this QR is a poor choice anyway; the ledger says the email isn't bound.
+
+2. **The duplicate-guard conflict is confirmed:** the `submit_contribution` tool's built-in guard rejects any SOLD QR as "already processed" — it cannot express a TREE PLANTING LINK EVENT, whose precondition *is* SOLD. The plan's intended path (UAT step 3, RUN via `link_tree_planting.html`) is the **DApp page** — governor-signed through the browser, which bypasses this tool-level guard entirely.
+
+This is the correct stopping point: **the RUN unit's first live link must be executed through `link_tree_planting.html` (the DApp), signed by Gary (or a governor identity), not through my `submit_contribution` tool** — both because the tool's guard blocks it and because the plan says the governor confirms via the DApp. Let me verify my read on the DApp page availability and what the governor does there, then report the exact next action to Gary:
+
+
+### 🤖 Autopilot
+
+Two decisive findings that end this turn cleanly:
+
+1. **`https://dapp.truesight.me/link_tree_planting.html` returns 404** — the DApp page (PR7, `dapp_beta`) is **not deployed to prod** (dapp.truesight.me = `dapp_prod`). PR7 merged to `dapp_beta` only; promotion to `dapp_prod` is a **separate always-stop gate** per plan §2 ("Promotion dapp_beta → dapp_prod is a separate always-stop gate, not bundled into this plan's PRs — ask when that promotion is actually wanted"). So the plan's intended RUN surface (`link_tree_planting.html`) is **only on beta**, and even the beta URL is a different host.
+
+2. **The `submit_contribution` tool's duplicate guard blocks the LINK event** (treats SOLD QR as already-processed). And the QR I picked has **no email in the ledger ground truth** — wrong pick for "SOLD+email QR."
+
+**This is a hard, correct stop.** RUN requires one of these that I **cannot do alone**:
+
+- **Option A (plan-intended):** Promote `dapp_beta → dapp_prod` (the always-stop gate — Gary's explicit call), then Gary signs into `link_tree_planting.html` on prod and performs the link himself (it's governor-signed in-browser).
+- **Option B:** Use the CLI (`truesight_dao_client.modules.link_tree_planting`) from a fresh checkout, signing as Sophia — **if Sophia is a governor** (server-side GAS check). My `submit_contribution` tool route is blocked by its own duplicate guard, but the CLI module exists precisely for this and doesn't have that guard. This still needs the prod deploy of PR4's handler + endpoints (deploys said done in tracker) — but the **signing identity must be a governor**.
+
+The honest state: **I've hit the edge of what I can execute autonomously.** The link itself (a) requires the DApp on a reachable host, (b) is governor-gated, and (c) the tooling guard conflicts. Let me verify Option B's viability (is Sophia a governor? does the CLI work?) before reporting — checking the Governors source and CLI dry-run:
+
+
+### 🤖 Autopilot
+
+CLI works and has a `--dry-run` flag. Let me run the dry-run with the correct pair (I'll re-check the QR email first — the sheet showed garyjob@gmail.com at row 41, but the ledger ground truth showed empty; the dry-run will show what the CLI signs). Running dry-run for the lowest-stakes pair:
+
+
+### 🤖 Autopilot
+
+The dry-run works — the CLI builds the exact signed payload (correct labels, valid signature). But the dry-run **doesn't send** — and here's the crux:
+
+**I've reached the boundary of what I can safely execute.** The actual send requires:
+1. **The signing identity to be a governor** (server-side GAS `Governors` tab check — the plan says "Rejected server-side if the signer isn't a governor"). The CLI signs with whatever identity the local key is — and I must confirm **that** identity is governor-approved *before* sending, or the send will just be logged and skipped (and worse, if it's Sophia's key and Sophia isn't a governor, it fails silently).
+2. **The handler to be live** — the tracker says all 4 GAS targets deployed (including the PR4 handler), so that part is done.
+
+Let me check which identity the CLI will sign as (the local key in the checkout) — then I'll know if Option B can proceed or needs Gary's browser:
+
+
+### 🤖 Autopilot
+
+The CLI signs from `truesight_dao_client/.env` (EMAIL + PRIVATE_KEY) — and there's **no .env in the checkout** (the dry-run still produced a signature, which means it generated a throwaway keypair or has a fallback). Without a configured governor identity, a real send would fail the server-side governor check.
+
+**This is the correct, complete stop.** Here's the honest end-state:
+
+## ⛔ RUN — blocked at the final gate: needs Gary's governor-signed action
+
+**What I verified this turn:**
+- ✅ Schema: `TREE PLANTING LINK EVENT` — required `QR Code` + `SunMint Submission Message ID` (governor-only, server-side GAS check)
+- ✅ CLI exists (PR6, on `main`): builds the exact signed payload correctly (dry-run verified)
+- ✅ All 4 GAS targets deployed (per tracker) — the handler is live
+- ⚠️ **`dapp.truesight.me/link_tree_planting.html` → 404** — DApp page only on `dapp_beta`, not promoted to prod (separate always-stop gate)
+- ⚠️ **My `submit_contribution` tool's duplicate-guard blocks the LINK event** (treats SOLD QR as already-processed)
+- ⚠️ **The CLI checkout has no governor identity configured** (no `.env`) — a send would fail the server-side Governors check
+- ⚠️ **The QR I picked (`2024PF_20250505_41`) has no email in ledger ground truth** — not a proper "SOLD+email" pair
+
+**The RUN unit's execution is genuinely Gary's to perform** — it's a governor-gated, money-moving, production-data action:
+
+**To complete RUN, Gary needs to do ONE of:**
+1. **Promote dapp_beta → dapp_prod** (the always-stop gate) → then sign into `dapp.truesight.me/link_tree_planting.html` and perform the link in-browser (pick QR + submission, confirm, sign). This is the plan's intended path. *(Or use the beta host if the page is reachable there.)*
+2. **Configure a governor identity** (`truesight_dao_client/.env` with EMAIL + PRIVATE_KEY of a governor) → then I can run the CLI send (or Gary runs it) — but this still books ledger money, so Gary must confirm the pair.
+3. **Tell me a different pair + explicitly authorize me to send via the CLI** with a governor identity — the strongest form of the explicit go.
+
+**Pair ready when Gary picks:** QR `2024PF_20250505_41` (SOLD, AGL4) + SunMint msg `6875` (NEW, Cacao, photo, 2025-07-25) — though I'd recommend a QR **with a real ledger email** for a true end-to-end (the sheet has emails on `_03`, `_13`, `_21`, `_25`, `_33` etc. — but ledger ground truth may differ; that's exactly what the DApp list shows).
+
+**I've done everything an agent can do short of the governor's own signed action.** Standing by — say which option and I'll execute my half.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → SUNMINT plan (RUN section: needs explicit go; DApp-confirmed)
+• `lookup event docs` → TREE PLANTING LINK EVENT schema (QR Code + SunMint Submission Message ID, governor-only)
+• `submit contribution` → blocked by duplicate-guard (SOLD QR = "already processed") — confirmed guard conflict
+• `lookup qr code` → 2024PF_20250505_41: SOLD, **no email** in ledger ground truth
+• `read repo file` → link_tree_planting.py CLI module (PR6) interface confirmed
+• `ssh run` ×5 → confirmed main has CLI; dry-run produces valid signed payload; checkout has **no governor identity** (.env absent)
+• `http fetch` → dapp.truesight.me/link_tree_planting.html → **404** (not promoted to prod)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp/aac_fix 2>/dev/null && git fetch origin main 2>&1 | tail -1 && echo "=== RUN section of plan ===" && git show origin/main:plans/SUNM; cd /tmp && echo "=== find link_tree_planting CLI module ===" && find / -name "link_tree_planting*.py" -not -path "*/node_modules/*" 2>/dev/n; cd /opt/truesight_autopilot/dao_protocol && echo "=== repo identity ===" && git remote -v 2>/dev/null | head -2 && git log --oneline -3 2>/d; …(+6 more)
+• `submit contribution` → https://agroverse.shop/agl4
 
