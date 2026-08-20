@@ -2091,6 +2091,7 @@ merge the PR
 ### 🤖 Autopilot
 
 Merging tokenomics #398 — the column-collision fix + email lat/long + SCHEMA alignment.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2146,21 +2147,30 @@ Merged the column-collision + email fix PR:
 ### 🤖 Autopilot
 
 Per protocol, reading the plan's RESUME HERE + gate first, then executing the prerequisite deploy (the merged #398 handler must be live on GAS before any real link).
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's RESUME HERE + gate sections (the RUN unit definition) from the artifact, and check the plan's §5 gate wording.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the RUN + UAT sections (§4–§5) to see the exact next unit and its gate conditions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifacts are nesting — let me pull the plan's §4 RUN + RESUME HERE sections directly with a targeted read instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2172,6 +2182,7 @@ The plan's §4 RESUME HERE → **RUN** (first live link) — and §2 is unambigu
 And §4's own resume text: *"**Ledger-money-movement gate (§2) — needs an explicit go.** After RUN: UAT (§5, always-stop gate)."*
 
 The AUTO-ADVANCE directive says "Honor any gate marker. Never deploy to production or move money on your own." So the RUN unit is **gated** — I must not execute the first live link (nor the #398 production deploy it depends on) without Gary's explicit go. What I *can* do safely is stage everything so the go is one step away. Let me sync the deploy checkout and verify the merged handler is correct:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2218,11 +2229,13 @@ Deploy.
 ### 🤖 Autopilot
 
 Gary explicitly said "Deploy." — that clears the clasp-deploy gate for #398. Deploying the merged handler (AA/AB column fix + email lat/long) to the live QR-codes GAS project:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy succeeded — 4 files pushed live (appsscript.json, process_qr_code_updates.js, process_tree_planting_link.js, Version.gs). Let me verify the **live** deployment actually carries the AA/AB fix + lat/long email (pull-back check, so we're not trusting the push blindly):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2268,6 +2281,7 @@ So I need a separate explicit `go` from you for the RUN step itself — it books
 The AUTO-ADVANCE directive points at the **RUN** unit — but the plan's own §2/§4 mark RUN as an **always-stop gate** (ledger money-movement: books the `Cacao Tree Planted` fulfillment pair against a real managed ledger + emails a real owner), and the directive itself says "Honor any gate marker. Never move money on your own." Gary's "Deploy." cleared the deploy gate only — he has **not** yet given the RUN go. So I will **not** execute the first live link.
 
 What I *can* do is stage RUN so your go is one step away — pull the candidate lists (no PII in the public caches) so you can pick the actual QR + submission:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2381,41 +2395,49 @@ https://beta.dapp.truesight.me/link_tree_planting.html
 ### 🤖 Autopilot
 
 Gary's PDF shows the exact failure: the dapp POSTed a `[TREE PLANTING REJECT EVENT]` and Edgar replied `"status": "ok", "signature_verification": "no_signature_format"` — the server accepted the HTTP call but couldn't verify the signature, so the event wasn't processed. Let me find where Edgar emits `no_signature_format` and how the dapp's submit functions build the envelope.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the error source — `dao_controller.rb` emits `no_signature_format`. Let me read how Edgar parses signatures there and compare `submitReject()` vs `submitLink()` payloads in the dapp:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `submitReject()` mirrors `submitLink()` exactly — so the failure is server-side signature parsing, not the dapp code shape. The `dao_controller.rb` read 404'd on ref `main` — let me fetch it at the commit the search found, and check what `API_ENDPOINT` the dapp posts to:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The controller read landed in an artifact. The key detail: the dapp posts to `window.Routes.edgar.submit` (not the Rails controller directly) and the helper class is loaded from a shared JS file. Let me read the controller's signature-verification logic from the artifact and find the actual signature parsing:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The server said `no_signature_format` — meaning the **text it received** lacked the `--------` / `My Digital Signature:` / `Request Transaction ID:` markers, even though the PDF shows the payload had them. Key question: which server actually handled it. The dapp uses `window.Routes.edgar.submit` from `routes.js`. Let me check that + find the real code emitting `signature_verification` in dao_protocol:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dapp posts to `https://edgar.truesight.me/dao/submit_contribution` (the Rails controller we're reading — sentiment_importer is the "edgar" backend). The `no_signature_format` comes from that controller's guard: it checks `text.include?("--------") && text.include?("My Digital Signature:") && text.include?("Request Transaction ID:")`. The PDF's "Signed request" shows those markers — but the **actual POSTed `text`** apparently didn't. Let me see the rest of the controller (how it renders the response + where `signature_verification` becomes the JSON field) and the helper's payload format:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The helper builds `payload` (ends with `--------`) and `shareText` (which includes the `My Digital Signature:` + `Request Transaction ID:` blocks). The dapp POSTs `{ text: payload, ... }` — but the controller's `no_signature_format` guard requires all three markers (`--------` **and** `My Digital Signature:` **and** `Request Transaction ID:`), which only exist in `shareText`. That looks like the bug. Let me confirm what a working page posts, and read the rest of the controller (what it does after the guard):
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The controller's guard requires **all three markers** (`--------` + `My Digital Signature:` + `Request Transaction ID:`) — but the dapp posts `text: payload` (which only ends with `--------`), same as the other pages. Yet the response was `status: "ok"` with `no_signature_format` — meaning the server likely **processed it anyway** (the verification is "for debugging without disrupting UX"). Let me read the controller's tail (what it renders + whether it gates processing) and check whether the REJECT actually landed in the sheets:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2520,4 +2542,166 @@ The dapp was POSTing `{ text: payload }` — just the event lines ending in `---
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/link_tree_planting.html" -o ltp.html && echo "=== submitRe; cd /tmp && echo "=== submitLink (430-505) ===" && sed -n '430,505p' ltp.html && echo "=== submitReject (505-580) ===" && sed -n '505,580p' l; cd /tmp && echo "=== API_ENDPOINT + EdgarPayloadHelper def ===" && grep -n "API_ENDPOINT\s*=\|const API_ENDPOINT\|class EdgarPayloadHelper\|; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Failed to load resource: the server responded with a status of 404 ()
+
+
+### 🤖 Autopilot
+
+A 404 on beta — let me find which resource is missing. The page references shared JS files; after the #66/#67 rewrite one of those paths may not exist. Checking the page's resource references and their HTTP status codes:
+
+
+### 🤖 Autopilot
+
+All static resources are 200 — so the 404 is a **data fetch** (the cache URLs or the Edgar POST endpoint), not a page asset. Let me find the fetch URLs inside the JS and check each:
+
+
+### 🤖 Autopilot
+
+All static assets 200 — so the 404 is at runtime, either the data fetches or the POST target. Let me check the API_ENDPOINT fallback (lines 271–273) and what routes.js actually defines:
+
+
+### 🤖 Autopilot
+
+Static assets and caches are all 200 — so the 404 is the **POST target**. Let me check what `window.Routes.edgar.submit` resolves to in routes.js and probe the Edgar endpoint directly:
+
+
+### 🤖 Autopilot
+
+The Edgar POST endpoint is 200 and routes.js resolves correctly. So the 404 is elsewhere. The page also loads `tdg_balance.js` and the identity check hits `assetVerify`. Let me check tdg_balance.js and the other runtime fetches — plus whether the 404 happened on the **photo** or a **bad cache URL** at render time. Let me look at the full runtime network surface:
+
+
+### 🤖 Autopilot
+
+`tdg_balance.js` and `dao_members_cache.js` fetch `treasury-cache/dao_members.json` — let me check that returns 200, and also the `assetVerify` GAS endpoint, since those are the remaining runtime fetches:
+
+
+### 🤖 Autopilot
+
+The **photo URL** (line 371–372, `imgEl.src = sub.photo_url`) is the likely 404 — one or more SunMint submissions in the cache have a photo URL that no longer resolves (the sunmint images may have moved/been deleted). The `assetVerify` 302 is a redirect (normal for GAS /exec). Let me check every `photo_url` in the live cache for HTTP status:
+
+
+### 🤖 Autopilot
+
+**Found it — 3 photo URLs 404.** Three SunMint submissions have photo URLs pointing at `https://github.com/TrueSightDAO/sunmint/tree/main/images/<name>` — a **`tree` URL (the GitHub browse page), not a `raw` URL**. Browsers can't render a GitHub HTML tree page as an `<img>` (and they actually 404 on these since the filenames contain `MIIBIjAN…` base64 chars). The correct form is `raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/<name>`. The other 10 work because they already use `raw.githubusercontent.com`.
+
+So when Gary selects one of those 3 submissions, the page tries to load the broken `img` → the 404 in console. Fix: **normalize photo URLs in the cache generator** (rewrite `github.com/.../tree/main/` → `raw.githubusercontent.com/.../main/`). Let me verify the raw form of one broken URL resolves before patching:
+
+
+### 🤖 Autopilot
+
+Now the full picture is clear:
+
+- **8 of 13** photo URLs use the **`github.com/.../tree/` format** (wrong — an HTML page, not raw bytes). Of those, **5 resolve fine** when rewritten to `raw.githubusercontent.com` — but **3 are genuinely missing** (404 even in raw form: the 2025-08-08/08-09 files simply aren't in the repo).
+- The page itself is fine — it's a **data problem** (bad photo URLs in the cache), which means the 404 Gary saw is the broken `<img>` on those 3 submissions.
+
+**Fix plan (two parts):**
+1. **Cache generator** (`sync_pending_caches.py`): normalize `github.com/.../tree/main/` → `raw.githubusercontent.com/.../main/` when writing `photo_url` (fixes 5; the 3 genuinely-missing stay 404).
+2. **Page** (`link_tree_planting.html`): on image load error, show a graceful "photo unavailable" placeholder instead of a broken-image 404 in console.
+
+Let me patch the cache generator (normalize + skip-404 candidates) and the page (onerror fallback):
+
+
+### 🤖 Autopilot
+
+Let me see the exact `_cell`/photo_url handling and the item dict so I patch precisely:
+
+
+### 🤖 Autopilot
+
+Now I have the exact code. Patching `build_sunmint_pending` to normalize the photo URL (tree→raw) with a `_normalize_photo_url` helper, then re-push the cache and open the page-side PR (graceful fallback on image error):
+
+
+### 🤖 Autopilot
+
+Normalizer works. Now run the patched generator against the real sheet (dry-run) to confirm the cache regenerates with normalized URLs:
+
+
+### 🤖 Autopilot
+
+Now run the dry-run with the SA creds to regenerate the cache locally with normalized URLs:
+
+
+### 🤖 Autopilot
+
+Cache regenerates cleanly — **0 tree-format URLs remain** (all 13 normalized to raw). Now: (1) push the regenerated cache to `lineage-assets`, (2) sync the fixed generator script, (3) patch the page to show a graceful placeholder on image error. Pushing the cache + script first:
+
+
+### 🤖 Autopilot
+
+Cache pushed (`95b7704`). Now sync the fixed generator script to `lineage-assets` and verify the live cache normalized:
+
+
+### 🤖 Autopilot
+
+The live cache still shows 8 tree-format URLs — that's **CDN cache lag** (raw.githubusercontent edge). The Contents API PUT succeeded (commit `95b7704`), so the canonical file is fixed; raw just hasn't propagated yet. Let me verify via the authoritative Contents API (not the CDN):
+
+
+### 🤖 Autopilot
+
+**Canonical file confirmed fixed** (Contents API, commit `07dd724`): 0 tree-format URLs, all 13 normalized to raw — the raw.githubusercontent "8" was just CDN cache lag, will propagate.
+
+Now the page-side graceful fallback (so even the 3 genuinely-missing photos show a placeholder, not a 404 in console). Opening the dapp PR:
+
+
+### 🤖 Autopilot
+
+The search didn't match — let me pull the exact photo-render block from main:
+
+
+### 🤖 Autopilot
+
+The actual code uses `capEl` (not `photoCaptionEl`) and has a different structure. Retrying the edit with the exact text:
+
+
+### 🤖 Autopilot
+
+PR opened. Let me verify the branch has the fallback wired correctly:
+
+
+### 🤖 Autopilot
+
+Verified — the fallback is on the branch (line 373–377). Here's the full picture:
+
+## What caused the 404
+
+The console `404` Gary saw is the **tree photo `<img>` failing to load** on certain SunMint submissions. Two data problems:
+1. **8 of 13** photo URLs were stored in `github.com/.../tree/...` format (a GitHub HTML browse page, not raw image bytes) — browsers can't render that as an image.
+2. **3 of those 8** are genuinely absent from the repo (2025-08-08/09 files) — even the correct raw URL 404s.
+
+## Fixes landed
+
+**Data (lineage-assets) — done + verified:**
+- `sync_pending_caches.py` now **normalizes** `tree` → `raw.githubusercontent.com` on every cache generation
+- Regenerated + pushed `sunmint_pending.json` (commit `07dd724`); **canonical blob confirmed: 0 tree-format URLs, 13/13 raw** (the intermediate "still 8" was GitHub CDN lag)
+
+**Page (dapp_beta #71)** — `fix/link-tree-planting-photo-fallback`, commit `bdc419c`:
+- `imgEl.onerror` fallback: on load failure, clears the broken src and shows **"tree photo unavailable"** in the caption instead of a 404 in the console
+- Verified on branch (lines 373–377)
+
+## RESUME HERE →
+
+1. **Merge dapp_beta #71** (graceful photo fallback; auto-deploys to beta)
+2. Retry on `beta.dapp.truesight.me/link_tree_planting.html`: pick a submission — photo shows for the 10 working; the 3 missing ones show the placeholder (no 404). The 3 missing photos are in the sheet (col I) — if Gary wants them restored, the original Telegram images would need re-uploading to `sunmint/images/` (I can list the exact 3 filenames).
+3. **Mark Invalid** is now unblocked (it was the original failing action) — and still needs no gate (safe). **Link** still needs the RUN go (ledger money-movement).
+
+**✅ Done this turn:** diagnosed the 404 (bad photo URL format + 3 missing files), fixed data (normalizer + regenerated cache, verified canonical), opened dapp_beta #71 (graceful fallback). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → checked page assets (all 200), routes.js edgar submit (200), dao_members (200), assetVerify (302), then HEAD-checked all 13 photo_urls → found 8 tree-format + 3 genuinely-missing; verified raw-form of 5 works; patched `_normalize_photo_url` in sync_pending_caches.py; regenerated (13 items, 0 tree-format); pushed cache (07dd724) + script (90acc59); verified canonical blob; opened dapp_beta #71 (bdc419c); verified onerror on branch
+• `git push changes` → dapp_beta #71
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → probed beta page + all assets (200s); routes.js edgar.submit (200); dao_members (200); assetVerify (302); HEAD-checked all 13 photo_urls (found 8 tree-format, 3 of which are 404 even raw); confirmed 5 raw-form 200s; patched generator (`_normalize_photo_url`); regenerated cache locally (0 tree-format); pushed to lineage-assets via Contents API (sunmint_pending.json @ 07dd724, script @ 90acc59); verified canonical blob 0/13; opened dapp_beta #71 (bdc419c); verified fallback on branch
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && echo "=== beta page resource refs ===" && curl -s "https://beta.dapp.truesight.me/link_tree_planting.html" -o beta_ltp.html && gr; cd /tmp && echo "=== fetch/URL consts in beta page ===" && grep -nE "fetch\(|raw.githubusercontent|API_ENDPOINT\s*=|SUNMINT_ENDPOINT|QR_CODE; cd /tmp && echo "=== API_ENDPOINT fallback ===" && sed -n '269,280p' beta_ltp.html && echo "=== routes.js content ===" && curl -s "https://b; …(+15 more)
 
