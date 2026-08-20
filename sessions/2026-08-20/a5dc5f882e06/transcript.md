@@ -2305,16 +2305,19 @@ Say the word on the prod promotion whenever you're ready.
 ### 🤖 Autopilot
 
 Auto-advance: next unit = document the `_3`→`_101` VOID/replacement in OPEN_FOLLOWUPS.md so future sessions never treat serial `_3` as live. Let me read the current file to find the exact anchor:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file structure is clear — I'll add the `_3`→`_101` VOID note as the first entry under ## Pending so future sessions never treat serial `_3` as live:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#776** opened. Merging per the standing directive:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2361,11 +2364,13 @@ Say the word when you want the prod promotion.
 ### 🤖 Autopilot
 
 Auto-advance: checking whether any genuine next unit remains. All build units are merged (PDP/cards/images #197–205, batch label #208, self-check #7, VOID doc #776); the only remaining step (prod promotion) is governor-gated and I must never do it autonomously. Let me do a read-only verification that the beta site actually reflects the last merges (v2 hero + corrected batch text), so I can confirm UAT-readiness rather than invent a busywork PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All four pages now serve the v2 hero photo — beta is converged. One precise check on the corrected batch text (my earlier grep's `-m1` only matched the first hit, the hero image):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2409,16 +2414,19 @@ The **only** remaining step is **promote to prod** (`sync_beta_to_prod(agroverse
 ### 🤖 Autopilot
 
 Auto-advance: the one genuine remaining bookkeeping unit is the **CONTEXT_UPDATES.md event-log entry** — the OPEN_FOLLOWUPS workflow requires appending to the append-only log when work ships, and this multi-session cacao tea 50g delivery (with the `_3` VOID + zip v2 + prod-pending state) has never been logged. Let me check the log's format first:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The format is clear (`YYYY-MM-DD | <agent-id> | <short note>`). Let me get the exact tail of the file to anchor my append:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final tail of the file to get the exact last line for a clean append:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2552,4 +2560,67 @@ Verifying Gary's "100 entries in our registry" ask surfaced a gap in the **regis
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo "=== qrs_index.json: CT entry count on main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index.json" | python3 -c " import json,sys d=json.load(sys.s; echo "=== _101 manifest on main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs/2024OSCAR_CT_20260820_; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Hey, yeah, so for the Oscar Cacao T page, there's still the repeated images, as well as one image which is a QR code image which is not supposed to be there. Can you fix it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Found it — the PDP gallery has the QR label image (line 123) plus the v1 product photo (line 124) which duplicates the hero. Let me also check the other pages for stray QR images, then fix the PDP:
+
+
+### 🤖 Autopilot
+
+Good — the card pages are clean (only the correct hero photo). The issue is isolated to the **PDP**: the gallery has the **QR label image** (not supposed to be there — the QR code is printed on the physical packet, not shown on the PDP) and a **v1 photo that duplicates the hero**. Let me fix the PDP gallery — drop the QR label and the v1 duplicate, keep the hero + the loose-leaves shot:
+
+
+### 🤖 Autopilot
+
+The search string didn't match — likely whitespace differs (I trimmed the JSON-LD `img` block earlier, or indentation differs). Let me read the exact bytes around the gallery:
+
+
+### 🤖 Autopilot
+
+The HTML is flat (no indentation). Retrying with the exact structure:
+
+
+### 🤖 Autopilot
+
+PR **#218** opened. Merging per your standing "merge all PRs" directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — cacao tea PDP gallery cleaned ✅
+
+### What you flagged
+- **Repeated images** on the Oscar Cacao Tea page — the gallery had the **v1 product photo** (same subject as the hero)
+- **A QR-code image that shouldn't be there** — the `2024OSCAR_CT_20260820_1.png` label was in the gallery (QRs are printed on the physical packet and scanned offline — not shown on the web page)
+
+### What I changed
+| PR | Change | State |
+|---|---|---|
+| **agroverse_shop_beta #218** — *fix: remove QR label image + duplicate hero photo from cacao tea PDP gallery* | Removed both stray `<img>`s from the gallery: the **QR label PNG** and the **v1 duplicate photo**. The gallery now shows only the **loose cacao tea leaves** shot. Hero, og/twitter share image, and JSON-LD image all unchanged (still your v2 product photo). | ✅ **merged** (sha `df6756e`) |
+
+I also checked the category / farm / shipment card pages — they're clean (no QR images, no duplicates), so this was PDP-only.
+
+GH Pages rebuilds in ~1–3 min; after that the PDP shows just the hero + the one loose-leaves gallery image.
+
+---
+**RESUME HERE →** Next turn:
+1. Hard-refresh the beta PDP after a couple minutes — confirm hero (your photo) + single loose-leaves gallery image, no QR label, no duplicate.
+2. **Still the standing final step: promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) on your explicit approval — www.agroverse.shop is still not live with any of this.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | grep -; for f in "category/retail-packs/index.html" "farms/oscar-bahia/index.html" "shipments/agl4/index.html"; do echo "=== $f ==="; curl -s "https; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | sed -n
+• `merge pr` → ✅ PR #218 on agroverse_shop_beta merged successfully (sha: df6756e23dab5885465bedffc543b39c8968cf1f). Pull Request successfully merged
 
