@@ -856,6 +856,7 @@ First, locate all hero image slots on the agl4 page (banner, `.shipment-image`, 
 ### 🤖 Autopilot
 
 Unexpected: the agl4 page on `origin/main` **already has** `data-media-slot="hero"` on both hero imgs (lines 1004, 1161) with hardcoded src/alt already stripped — exactly what PR1 is supposed to produce. But no `media.json` exists yet and no loader script tag. Let me check git history to understand what's already on main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -863,11 +864,13 @@ Unexpected: the agl4 page on `origin/main` **already has** `data-media-slot="her
 Whoa — **PR1 already exists on main**: commit `81e170f` "PR1: migrate shipments/agl4 to media.json (fixes agl14.avif bug + hero-video console error)" is already merged. agl4 has `media.json`, the loader script tag, and `data-media-slot="hero"` slots — the full migration. Someone (Gary, or another agent) already did PR1 between my last turn and now.
 
 Let me verify the merged state is complete and correct (media.json content, bug actually fixed, no console-error regression), and check the resume tracker + whether subsequent PRs (2-8) are also done:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I need to be careful here. The git log shows `81e170f` "PR1: migrate shipments/agl4..." as a commit I saw via `git log -- shipments/agl4/index.html`, but the **origin/main log (last 15)** shows `3b86936 PR0` as the newest commit and does NOT show `81e170f` in the linear history. That means `81e170f` might be on a **different branch** (someone's PR1 branch) that I'm seeing because my local `pr1-agl4` branch checked out from origin/main... Let me verify whether `81e170f` is actually reachable from `origin/main` or is a stray commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -877,6 +880,7 @@ Mystery solved — **`81e170f` is NOT on main.** It's the **stray commit on my o
 So the real state: **`origin/main` does NOT have PR1.** agl4 on main still has the hardcoded hero imgs with `src=`/`alt=`, no `media.json`, no loader tag. The `data-media-slot="hero"` I saw in the working tree is from my **stray local commit**, not main.
 
 Wait — but the working tree diff showed a change at line 1001... let me look at what exactly the stray commit contains vs main, then decide: keep it (if it's a good PR1) or redo cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -890,6 +894,7 @@ Excellent — the stray commit `81e170f` is **exactly what PR1 should be** (auth
 5. New `tests/media-gallery-shipment.spec.ts` (47 lines)
 
 This was clearly a **partial PR1 run** from a previous turn (before the session boundary) that got committed locally but never pushed. It's complete and correct. Let me verify it's exactly Option A (video stays in place — yes, line 964 `shipment-hero-video` untouched), check the spec + .gitignore, run the test, then push as PR1:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -897,6 +902,7 @@ This was clearly a **partial PR1 run** from a previous turn (before the session 
 The stray commit is a **complete, correct PR1** — exactly Option A, with the hero-video console-error fix (`play is not a function`) that UAT U2 would have caught, a proper spec asserting both hero slots + video in place + zero console errors, and the `.gitignore` snapshot-dir fix. The spec even documents "per Option A" — so it was built after Gary's A decision in a prior session turn.
 
 Now let me run the test to verify it passes, then push as PR1. The branch `pr1-agl4` is already on this commit. Let me run the spec standalone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -904,11 +910,13 @@ Now let me run the test to verify it passes, then push as PR1. The branch `pr1-a
 ✅ **Spec passes (1 passed, 3.3s)** — media.json 200, loader loads, both hero slots get agl4.avif, video in place, zero console errors.
 
 Now push PR1. The branch `pr1-agl4` is already on commit `81e170f` locally but has never been pushed to origin. Let me push it and open the PR. Let me find the push auth and do it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Everything up-to-date" with tracking set up — meaning the branch **already exists on origin** (from the partial run in a prior session that must have pushed it). Let me check if a PR already exists for `pr1-agl4`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -916,6 +924,7 @@ Now push PR1. The branch `pr1-agl4` is already on commit `81e170f` locally but h
 PR1 already exists: **[#200 PR1: Migrate shipments/agl4 to media.json (fixes agl14.avif bug + hero-video console error)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/200)** — open, `pr1-agl4 → main`. The partial run in the prior session had already pushed the branch AND opened the PR before the session ended.
 
 Let me verify the PR diff is exactly my 4 files (no strays) and check its state (draft? has the agl14.avif fix?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -923,21 +932,25 @@ Let me verify the PR diff is exactly my 4 files (no strays) and check its state 
 PR1 is **complete and clean**: [#200](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/200) — 4 files (+64/−3), not a draft, with a proper body ("Fixes two live bug…" — the agl14.avif + hero-video console error). This matches the plan's PR1 scope exactly (Option A: hero video stays in place, externalized hero image + bug fixes).
 
 Everything PR1 needs is done and open. Let me update the plan's resume tracker to reflect reality, then report. First check the current tracker state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: PR0 #196 merged 10:36 UTC, PR1 #200 open. The plan tracker in the repo — let me update the resume tracker via a PR to `agentic_ai_context` (per the plan's §5: report contributions + track). But first, the more important standing item: **report the PR0 contribution event** (plan §5: after each PR merges, report a `[CONTRIBUTION EVENT]` before starting next unit). PR0 merged at 10:36 — I should report that contribution. Let me do both: update the plan tracker + report PR0's contribution:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me report the PR0 contribution event (per plan §5) and update the plan's resume tracker in parallel. The PR0 contribution: merged at 10:36 UTC, work across the prior session (loader + oscar-bahia pilot + spec + follow-up repair). Let me report it and update the tracker:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Contribution reported. Now update the plan's resume tracker via a PR to `agentic_ai_context` (PR0 → done, PR1 → open). Let me read the exact current tracker lines from the plan file in the repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1053,4 +1066,67 @@ Nothing further is executable this turn without violating the explicit-go / mone
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/aac_fix 2>/dev/null && git fetch origin main 2>&1 | tail -1 && git checkout main 2>&1 | tail -1 && echo "=== pristine plan line coun; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== FARM plan: resume tracker area on pristine main ===" && git show origin; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && git checkout -B tracker/farm-shipment-media-json-pr0-pr1 origin/main 2>&1 | tail ; …(+5 more)
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE points at SUNMINT's RUN unit — but last turn I identified it carries an explicit ledger-money-movement gate. Let me re-read the plan's §2 gate and the RUN section precisely so I report the unblock requirements accurately, and check whether the two "first live link" records have been picked yet:
+
+
+### 🤖 Autopilot
+
+Confirmed — the RUN unit has **two hard gates**, both stop-and-ask:
+
+1. **Ledger money-movement gate (§2, always-stop):** "The RUN step (§4) that first executes PR4 against production data needs an explicit `go`" — same as the BEC precedent (mint-only, human confirms the money-moving step).
+2. **Governor must pick the records:** "governor picks one real SOLD+email QR and one real NEW Sunmint submission" — I cannot select these on Gary's behalf; it's his call on which real records to link.
+3. And it executes **PR4 against production data** (flips QR status, books ledger entry, emails the QR owner).
+
+Per my standing rules (never move money/issue TDG without an explicit governor command; never act on another's behalf for gated choices) and the directive itself ("honor any gate marker; never deploy to production or move money on your own"), **RUN cannot proceed until Gary gives the explicit go and names the two records.**
+
+Let me check the full §4 tracker to report exactly what's done vs pending, then stop at the gate cleanly:
+
+
+### 🤖 Autopilot
+
+The tracker confirms the full picture. **All build units (PR0–PR8) are merged.** Only **RUN** and **UAT** remain — and both are gated:
+
+| Unit | Built | Merged | Contribution reported |
+|---|---|---|---|
+| PR0–PR8 (all build units) | ✅ | ✅ merged | ⬜ (none reported yet) |
+| **RUN** (first live link) | ⬜ | — | ⬜ |
+| **UAT** | ⬜ | — | ⬜ |
+
+## ⛔ Stopping at the RUN gate — cannot execute autonomously
+
+**Why I'm not running it:** the RUN unit is a **ledger money-movement + production-data action with two explicit always-stop gates**, and the AUTO-ADVANCE directive itself says *"honor any gate marker; never deploy to production or move money on your own."*
+
+**Exactly what's blocked (from §2 + §4):**
+1. **Ledger money-movement gate (§2):** "The RUN step (§4) that first executes PR4 against production data needs an explicit `go`" — RUN books the fulfillment ledger entry (`Cacao Tree Planted` / Asset leg) against a **real managed ledger**. This is TDG/money movement → my hard rule: *never move money/issue TDG without an explicit governor command.*
+2. **Governor picks the records:** RUN = "governor picks one real **SOLD+email QR** and one real **NEW Sunmint submission**, confirms via `link_tree_planting.html`" — the choice of which live records to link is **Gary's**, not mine to make.
+3. **Production-data effect:** RUN flips a real QR's status to `ASSIGNED_TO_TREE`, stamps planting evidence, **emails the real QR owner**, books the ledger entry.
+
+## What I need from Gary to execute RUN
+
+- **Explicit go** for the ledger-money-movement gate ("go" on RUN)
+- **The two records:** (a) one real SOLD QR code with an owner email, (b) one real NEW Sunmint Tree Planting submission (I can pull candidates from the sheets for Gary to choose, but he picks)
+- Confirmation method: Gary (or I, once he confirms the picks) drives `link_tree_planting.html`
+
+**Also outstanding (from prior turns, independent of this gate):**
+- **FARM plan** — PR1 **#200** open awaiting human merge (then → PR2 santa-ana+paulo); tracker PR **#773** (+3/−3, clean) awaiting merge
+- **SUNMINT contribution reporting** — PR0–PR8 contributions (§6: report after each merge) are **still unreported** — I can batch-report those once RUN/UAT complete, or per Gary's preference
+
+I'm standing by at the gate with everything else clean. **Say "go" + name the two records (or ask me to pull candidates) and I'll execute RUN end-to-end, then hand to UAT (always-stop).**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → read SUNMINT §2 authorization envelope (ledger money-movement = always-stop gate, needs explicit go) + §4 resume tracker (PR0–PR8 all merged; RUN + UAT remaining, both gated)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== SUNMINT plan §2 ledger gate + RUN section ===" && git show origin/main:; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== SUNMINT plan §4 tracker full ===" && git show origin/main:plans/SUNMINT
 
