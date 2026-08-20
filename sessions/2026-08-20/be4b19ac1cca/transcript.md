@@ -3248,11 +3248,13 @@ Both PDFs are the same page size (841.89 × 595.28 landscape A4), and the bottom
 ### 🤖 Autopilot
 
 Both PDFs are identical in the bottom half (signatures, VERIFY, cert ID at exactly the same positions) — but the body text changed: "more than 200 hours" → "200 hours", and the paragraph reflowed **up by 20pt**. Before updating anything, I need to check whether the **recipient-name line and the two date fields** moved (those are the overlay targets in cert_config.json):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Python f-string backslash syntax error — let me fix the script (assign the color to a variable first):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3260,56 +3262,67 @@ Python f-string backslash syntax error — let me fix the script (assign the col
 Both PDFs are structurally **identical** for every overlay field — same page size, same name underline (y=291.5, x=197–644.9), same date boxes (y=417–435), same signatures/VERIFY/cert-ID positions. The only change is the **body paragraph**: "more than 200 hours" → "200 hours", reflowing 4 lines to 3 (lower lines shift up ~20pt, but nothing the overlay touches). So the coordinates in cert_config.json stay valid — I just need to swap the template file.
 
 Let me smoke-render with the new template first to confirm alignment before committing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone didn't land — the `-q` flag with `gh repo clone` output redirect swallowed an error. Let me check and retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The new PDF landed (172KB) but the clone failed silently. Let me see the actual clone error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone OK (`gh repo clone` was the issue — plain git works). Now smoke-render with the new template:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Different signature — let me check the actual function signature in the current `cert_overlay.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full signature and how build_cv_cache.py calls it, so my smoke render matches exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the correct signature. Let me run the smoke render properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Smoke render succeeded (199KB). Let me visually verify the output — extract the text and check the overlay landed at the right positions (especially the recipient name and dates relative to the new template's layout):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Smoke render confirms the swap is safe — the new template's body text is in effect ("completed" at x=178 vs the old x=219.8), the date lands inside the date box (y 416.7–431.9 within 417–435), the name renders on the underline, and the signature/VERIFY/cert-ID positions are byte-identical to before. Now committing the new template to lineage-engine (the operational repo that renders):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #21 opened. Let me verify it's clean/mergeable, then merge (per the established pattern for this arc — Gary's "Updated certificate template" + prior approvals authorize the swap):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CLEAN and MERGEABLE — only the two expected files. Merging, then re-triggering the build so new certificates render with the v1.3 template:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3355,51 +3368,61 @@ Validate end to end and then surface the output pdf here
 ### 🤖 Autopilot
 
 Full E2E with a fresh sheet entry, then I'll surface the certificate PDF right here. Starting — checking the sheet's current state and the E2E scripts:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet now has a new real entry at the bottom (Shahbaz Testing — pending, not part of this test). I'll insert a fresh, clearly-marked dummy row for this E2E (row 8), then drive the full flow. Inserting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 8 inserted. Now the sign-in step — running the signin script (fires EMAIL REGISTERED, saves fresh keypair):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sign-in initiated — fresh keypair generated, verification email sent. Now grabbing the verification link from the admin mailbox:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me broaden the search — the verification email's subject may differ:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The newest verification email listed is from the previous test (12:16 UTC). My sign-in just fired — the new email may still be indexing. Let me re-query:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The new email isn't indexed yet (Gmail lag). Let me wait a few seconds and re-check:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh verification link captured: `vk=iRsUsCdpNRO1yu4Q4sOMvxYi9szNpeiO9U3FmesitJs` (09:17:57 -0500 = just now). Completing sign-in with the saved keypair:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `#bootStatus` element doesn't exist in the current UI (the earlier scripts used different selectors). Let me check the actual page structure with a quick probe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page is stuck on "BOOTING…" even with the seeded keypair — meaning the boot/identity resolution didn't complete within 8s. The verify link consumption (EMAIL VERIFICATION EVENT) likely needs the actual verification flow rather than just seeding localStorage. Let me check the boot logic — what makes boot finish (maybe it submits the verification event itself via the URL param, or waits for a specific localStorage key):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3505,4 +3528,48 @@ Also noted: the "Process pending events" button **is** required to commit (event
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' echo "=== E2E scripts present ===" ls -la /tmp/ivy_e2e_; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e cd /tmp python3 - <<PY import gspread, datetime ; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e cd /tmp python3 ivy_e2e_signin.py 2>&1 | tail -1; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Pull the pdf and surface it
+
+
+### 🤖 Autopilot
+
+Pulling the certificate PDF down to this box and surfacing it:
+
+
+### 🤖 Autopilot
+
+PDF is on this box (230KB, valid PDF 1.7). Surfacing it now:
+
+
+### 🤖 Autopilot
+
+## ✅ Certificate PDF surfaced
+
+The certificate is attached to this thread — **IVY E2E Test 4 certificate**, rendered with the updated **v1.3 template**:
+
+- **Recipient:** Dummy E2E Test 4 (v1.3)
+- **Wording:** "has completed **200 hours** of study and practice…" (the updated template, confirmed — not "more than 200")
+- **Date of Certification:** 20 August 2026
+- **pk_hash:** `pk-1Q3PrgUZPM3k`
+- **Verified:** 230KB, valid PDF 1.7, 1 page, pulled from `lineage-credentials@main/_cache/cv/dummy-e2e-test-4-v1-3__ivy-yoga__cert.pdf`
+
+**Full E2E recap (all validated live):**
+1. ✅ New entry in the Google Sheet (row 8)
+2. ✅ Signed in as admin (verification email flow)
+3. ✅ Attested the row (event → "Process pending events" → committed `c1917a20`)
+4. ✅ Build regenerated the cache (run `32379554471`, success)
+5. ✅ All 7 artifacts on GitHub (JSON/MD/PDF/QR + `__ivy-yoga.pdf` + `__cert.pdf`)
+6. ✅ **Certificate PDF rendered with v1.3 + surfaced here**
+
+The credential profile is also live at `truesight.me/programs/ivy-yoga/credentials/#pk-1Q3PrgUZPM3k`.
+
+One note: row 8 (plus the earlier dummy rows 4, 5, 6) are test artifacts in the roster/registry — say the word if you want them cleaned up.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -sL "https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/cv/dummy-e2e-test-4-v1-3__ivy-yoga__cert.pdf" -o /t
 
