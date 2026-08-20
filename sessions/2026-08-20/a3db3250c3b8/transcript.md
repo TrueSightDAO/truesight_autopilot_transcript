@@ -3297,6 +3297,7 @@ Gary wants sentinels (LLM agents like Sophia) to be able to link QR codes to tre
 ### 🤖 Autopilot
 
 This is a well-defined change: the plan's own goal says **"a governor (or Sophia / an authorized LLM agent, signing as themselves)"** — so the strict `isGovernorByName_` gate PR4 implemented actually deviates from the design intent. And Sentinel is a formal DAO role (6 sentinels, governor-equivalent ops without voting). Let me recon the exact gate + the sentinel flag source before opening the fix.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3304,16 +3305,19 @@ This is a well-defined change: the plan's own goal says **"a governor (or Sophia
 Sentinel is a formal DAO role — 6 sentinels flagged `TRUE` in the Contact sheet (Sophia Truesight, Claude Anthropic, Kimi Moon, Deep Seek, Open Ai, truesight-autopilot), and `dao_members.json` gives Sophia `roles: [member, sentinel]`. The plan's own §0 goal even says "a governor **(or Sophia / an authorized LLM agent, signing as themselves)**" — so the strict `isGovernorByName_` gate PR4 built deviates from the design intent. The current gate blocks sentinels entirely.
 
 Let me recon the exact handler constants (tab names) + the DApp permission structure so the fix is precise:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The design intent (plan §0) is explicitly "a governor **(or Sophia / an authorized LLM agent, signing as themselves)**" — so the strict governor-only gate deviates from what Gary originally specified. Sentinels are a formal role (6 flagged `TRUE` in Contact sheet; Sophia has `roles: [member, sentinel]` in dao_members.json). Let me get the exact gate text + the permission entry + page copy to build a precise fix:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. The gate needs to become governor **OR sentinel** (matching the plan's §0 design intent and the DAO's formal Sentinel role). Before opening the fix, let me verify where the "Contributors contact information" tab lives (so the sentinel lookup points at the right spreadsheet) and read the page's auth block:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3461,4 +3465,52 @@ The photo-validation feature only matters **if sentinels can act at all** — #3
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/link_tree_planting.html" -o ltp.html && echo "=== photo pr; echo "=== PR #399 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/399" | python3 -c "import json,sys; d=js
 • `merge pr` → ✅ PR #399 on tokenomics merged successfully (sha: 349072336e9addeea1a0ff47712216ad6d585942). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE targets **RUN (first live link)** — which is the ledger money-movement gate (§2/§4: "needs an explicit go"), and the directive itself says "Never deploy to production or move money on your own." Gary has not given the RUN go. Let me do a quick read-only verification of what's staged, then hold at the gate.
+
+
+### 🤖 Autopilot
+
+Interesting — the raw.githubusercontent for main shows **line 349 still has the OLD gate** (`isGovernorByName_`), even though #399 was merged. That's likely CDN lag OR the merge didn't touch what I expect. Let me check the authoritative GitHub API for main's current state of that file.
+
+
+### 🤖 Autopilot
+
+Confirmed via the authoritative API: **main's handler has the sentinel gate** (sentinel fn 1, authorized fn 1, old gate 0, new gate 2) — the earlier raw.githubusercontent "old gate" was **CDN cache lag** again. Test row **#7021 is still `NEW`** in the sheet (15 rows total).
+
+## Status: RUN is gated — holding per plan §2/§4
+
+The AUTO-ADVANCE targets **RUN (first live link)** — the plan marks it as the **ledger money-movement always-stop gate** (§2: "Ledger money-movement… needs an explicit go"; §4 resume: "**Ledger-money-movement gate (§2) — needs an explicit go**"). Gary has **not** given that go. The directive itself says "Never deploy to production or move money on your own." So I'm holding at the gate — no link submitted, no ledger touched.
+
+**Verified this turn (all read-only):**
+- ✅ **Sentinel gate is in main** (authoritative API: 26,206 bytes, `isAuthorizedOperator_` gate live in git; the raw "old gate" was CDN lag)
+- ✅ Test row **#7021** still `NEW` (15 rows, status col M) — ready for the E2E once the gate is deployed
+- ⏳ **Live GAS deploy of #399 is NOT confirmed** — the clasp-pushed production handler may still be the governor-only version (deploy is a production action → also gated)
+
+## What's blocking (two gates)
+
+1. **Deploy #399 to GAS** — production webhook change → needs Gary's explicit go (or his "deploy" like last time)
+2. **RUN (first live link)** — ledger money-movement → needs Gary's explicit "go for RUN"
+
+## RESUME HERE →
+
+- **Gary's "deploy #399"** → I clasp-push the sentinel gate live, then verify via pull-back
+- **Gary's "go for RUN"** → I execute the first real link (staged: `2024PF_20250505_03` + `#171`, or pick your own), then verify QR row / SunMint row / ledger / owner email together
+- Or **"drive the E2E"** → once #399 is deployed, I sign as Sophia (sentinel) to Mark Invalid test row #7021 — the photo-validation step Gary described can be layered on as the next feature unit
+
+**✅ Done this turn (read-only):** confirmed sentinel gate in main (authoritative), confirmed #7021 still NEW, identified the two pending gates (deploy + RUN). No writes, no deploy, no submission — gates honored.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== 1) Live GAS handler: sentinel gate deployed yet? ===" && cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokeno; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') sh =; echo "=== Authoritative: main's handler via Contents API ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/goog
 
