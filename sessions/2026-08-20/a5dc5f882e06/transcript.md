@@ -1542,26 +1542,31 @@ The label decodes empty — that's a serious flag. Let me inspect the zip's comp
 ### 🤖 Autopilot
 
 No unzip on this box — I'll use Python to inspect the zip contents and decode the labels:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical finding:** the compiled labels decode inconsistently — `_1` and `_10` → **empty (no QR!)**, `_100` → decodes fine. Let me test all 100 to see the scope of the defect:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical defect found — 76 of 100 labels have an EMPTY/unscannable QR.** This is a UAT blocker. Let me diagnose the generator before fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **UAT blocker found.** Let me pin down the root cause in the generator before converging — checking how `batch_compiler.py` builds the QR (error correction, logo overlay):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 76/100 unscannable is a UAT blocker. One decisive diagnostic — decode a known-good house-format label (CC batch) with the same tool to prove whether the decoder works and the defect is CT-specific:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1748,4 +1753,70 @@ Say the word on any of those.
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/298481f3640c47419e13ad1647c8cc77.jpg') print('size:', im.
 • `merge pr` → ✅ PR #204 on agroverse_shop_beta merged successfully (sha: faeffaa357c6e4209881b7388646b13feb0a4aa2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Merge it
+
+
+### 🤖 Autopilot
+
+"Merge it" — I'll take that as the go for the outstanding card-image update (category/farm/shipment tea cards still show the QR label art; I'll swap them to the hero photo and merge). Let me first find the exact image refs in the three cards:
+
+
+### 🤖 Autopilot
+
+All three tea cards use the QR label image. Swapping all three to the v2 hero photo in one PR, then merging:
+
+
+### 🤖 Autopilot
+
+PR #205 opened. Merging per your directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — cacao tea cards now use the product photo everywhere ✅
+
+### What changed
+| PR | Change | State |
+|---|---|---|
+| **#205** | Swapped the cacao tea **card images** on all three pages from the QR label art → your **v2 hero photo** (`cacao-tea-oscars-farm-50g-hero.jpg`): | ✅ **merged** (sha `f6cd051`) |
+| | • `category/retail-packs/index.html` (line 505) | |
+| | • `farms/oscar-bahia/index.html` (line 573) | |
+| | • `shipments/agl4/index.html` (line 1129) | |
+
+### Image consistency now (whole shop, beta)
+| Where | Image |
+|---|---|
+| PDP hero | v2 photo |
+| PDP gallery | leaves → QR label → v1 photo |
+| Category card | v2 photo |
+| Farm card | v2 photo |
+| Shipment card | v2 photo |
+| og/twitter share | v2 photo |
+
+Everything cacao-tea now shows the same approved product photo — no more label art on cards, no more ceremonial cacao anywhere on the tea. GH Pages rebuild ~1–3 min.
+
+---
+**RESUME HERE →** Next turn:
+1. Hard-refresh beta after ~2–3 min — confirm cards + PDP hero all show the v2 photo.
+2. **Promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) — the final step, only on your explicit approval; www.agroverse.shop still shows none of this.
+3. Standing item: re-mint label `_3` (one genuinely unscannable QR) + re-zip for 100/100 clean before printing.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → for f in "category/retail-packs/index.html" "farms/oscar-bahia/index.html" "shipments/agl4/index.html"; do echo "=== $f ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/$f" | grep -n -i "cacao-tea\|CT_20260820\|oscars-farm" | head -20; done
+• `merge pr` → ✅ PR #205 on agroverse_shop_beta merged successfully (sha: f6cd0510cd297f7a91feee6b356d50a7fd8435b5). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → for f in "category/retail-packs/index.html" "farms/oscar-bahia/index.html" "shipments/agl4/index.html"; do echo "=== $f ==="; curl -s "https
+• `merge pr` → ✅ PR #205 on agroverse_shop_beta merged successfully (sha: f6cd0510cd297f7a91feee6b356d50a7fd8435b5). Pull Request successfully merged
 
