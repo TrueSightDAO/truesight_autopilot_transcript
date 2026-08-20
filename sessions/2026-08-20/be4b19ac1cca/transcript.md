@@ -2813,66 +2813,79 @@ No results with that subject — let me search more broadly for the verification
 ### 🤖 Autopilot
 
 The newest IVY verification email visible is from 03:56:34 (-0700 = this morning's E2E-2). My sign-in just fired — the new email may still be indexing or landed later. Let me read the top message's full date to confirm which one it is:
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That's this morning's email (03:56 PDT = 10:56 UTC). My sign-in just fired a new one — let me re-query to catch the fresh email:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh verification link captured: `vk=b7h59uTtHF-gvNT59HAmQaWa_gvfRRm_fRgrgHeFftQ` (07:16:05 -0500 = just now). Completing sign-in with the new keypair:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still booting after 9s — the verify submission may take a bit longer (the EMAIL VERIFICATION EVENT + identity resolution round-trip). Let me wait longer and re-check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still booting after 15s — the verification round-trip may have already landed from the previous run (boot state persists across loads). Let me load the plain page with the seeded keypair and check if we're verified:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **ADMIN mode VERIFIED** and the queue shows row 6 "Dummy E2E Test 3 (Voice)" as **pending with an Attest button**. Now clicking Attest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Attest clicked — the queue now shows **"Pending 1 pending"** (transitioning) and "Already attested 4 done". Let me wait for the submission to complete and the row to move to processed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Attestation submitted** — queue now shows "Pending 0", "Already attested 5 done", "No pending rows". The signed event went through. Now let me verify the full chain: sheet backfill + lineage-credentials commits:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet backfilled (`processed`, `pk-r3h5iUF7-TG8`, commit `cad52b22`), and the two attestation commits landed in lineage-credentials. Now **the key ask: verify the PDFs actually exist on GitHub**. Let me check the committed artifacts for this credential:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CV artifacts 404 — the cache build hasn't run since the attestation commits, OR the slug is different. The last cache regen (`96cffff5e`) is *below* the attestation commits in the log, meaning the build hasn't picked up the new credential yet. Let me check the workflow run status and the actual slug in the identity commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build is **in flight**: run `32368122514` (push on `cad52b22` — the attestation commit) is **pending**, and a workflow_dispatch `32368050648` is in_progress. The identity confirms `names: ["Dummy E2E Test 3 (Voice)"]` → slug will be `dummy-e2e-test-3-voice`. Let me wait for the build and re-check the artifacts:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 5 PDF/JSON/MD artifacts now return 200 on GitHub main.** The aliases query returned empty — let me check the actual aliases key format (may use a different lookup), and verify the certificate PDF content is valid:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **FULLY VERIFIED.** The mock E2E completed end-to-end. Let me also confirm the jsDelivr CDN serves it (the same path Gary originally checked) to close the loop completely:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2919,11 +2932,13 @@ One small note: the aliases.json registry (104 keys) doesn't include this dummy'
 ### 🤖 Autopilot
 
 Continuing the E2E hardening — the one loose end from last run was the aliases registry not showing the new credential. Let me investigate whether that's a real gap, and verify the profile page actually renders:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a real gap: the CV artifacts exist, but **`aliases.json` doesn't map the new pk-hash** — while the two earlier dummies ARE mapped. The profile link `#pk-r3h5iUF7-TG8` likely won't resolve. Let me dig into how aliases.json is generated vs the CV files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3028,4 +3043,18 @@ Both download buttons point at the exact jsDelivr URLs we verified return **200*
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== aliases.json on main: full lookup for new pk + test pks ===" c; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== build script: alias generation ===" curl -s "https://raw.githu; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== build_cv_cache.py lines 740-775 (slug assignment) ===" sed -n ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Can you share your URL to the administration panel? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The IVY administration panel is live at **https://ivy-yoga.truesight.me/**
+
+That's the admin console for the IVY yoga program — it loads its configuration from the web manifest at `truesight.me/programs/ivy-yoga/manifest.json`, and the roster Google Sheet is linked right in the header (the "Roster sheet ↗" pill we added).
+
+You'll sign in with your verified email (the same flow we tested — it sends a verification email), and once verified you'll see the pending roster rows with the Attest button, plus the already-attested list. It's the same console we drove end-to-end in the E2E tests, so you can trust what you see there.
 
