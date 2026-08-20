@@ -567,6 +567,7 @@ Want me to start with **PR-A** (the DApp invalid-tree control)? It's the piece b
 ### 🤖 Autopilot
 
 Gary — understood: **PR-B (tokenomics)**, and the first step is to pull the live GAS deployment before touching anything, so Claude's un-pushed edits don't get clobbered. Let me set that up: check the clasp setup on the box, and read the rest of the current handler so I know exactly where the reject branch goes.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -680,4 +681,59 @@ go
 4. Then the **first real link UAT** (needs your go — money/ledger movement).
 
 Still open from your message: the **tree-status storage** decision (dedicated sheet tab vs. the GitHub `lineage-assets` JSON cache). My recommendation after verifying: keep the sheet as the source of truth (SunMint row M + R/S + tracking tab), and **mirror the status into `lineage-assets` JSON** on link/reject (PR-C) — that gives you both the sheet you asked about and a machine-readable record. Say the word and I'll fold that into PR-C.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] keep going until UAT
+
+
+### 🤖 Autopilot
+
+"Keep going until UAT" — clear directive. Current unit = complete the reject-path (tokenomics #396): merge it, deploy the handler to GAS, then next unit = PR-A (dapp invalid-tree control). Merging #396 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #396** (sha `be92958`)
+
+## What I did this turn
+
+Merged the **reject/invalid-tree path** PR — the second piece of the "keep going until UAT" run:
+
+**tokenomics #396** (branch `feat/tree-planting-reject-invalid`, built on the live `clasp pull`):
+- New `[TREE PLANTING REJECT EVENT]` marker in `process_tree_planting_link.js`
+- `extractTreePlantingLinkInfo_` now parses an optional `- Reason:` field
+- New handler branch: a governor (verified by signature) can mark a `NEW` SunMint submission → `INVALID`, recording `REJECTED` + reason in the `Tree Planting Link` tracking tab. **No** QR status change, **no** ledger booking, **no** owner email — an invalid tree can't touch the sold QR.
+- `SCHEMA.md` SunMint col M enum updated → `NEW → LINKED | INVALID`
+- Existing LINK path untouched (purely additive)
+
+## Where the run stands (toward UAT)
+
+| Unit | State |
+|---|---|
+| UX standardization + dropdowns (`link_tree_planting.html`) | ✅ dapp_beta #63 merged, live on beta |
+| Reject/invalid backend (`[TREE PLANTING REJECT EVENT]`) | ✅ **tokenomics #396 merged this turn** |
+| Deploy handler to GAS project (`1UrBg…`) | ⏭️ next |
+| PR-A: dapp "Mark invalid" control | ⏭️ after deploy |
+| PR-C: lineage-assets JSON cross-links (QR↔tree) | ⏭️ |
+| **UAT** (real link + invalid flow, first live tree-QR link w/ ledger movement) | ⏸️ gate: Gary's go for the money-movement link |
+
+## RESUME HERE →
+
+1. **Deploy the merged handler to GAS** — `cd /home/ubuntu/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp push` (dry-run first via `gas_deploy_project` tool, then `push=true`), so the reject path is live server-side.
+2. **PR-A (dapp_beta):** add the "Mark invalid" third action to `link_tree_planting.html` — signs + submits a `[TREE PLANTING REJECT EVENT]` (QR + SunMint message id + reason), same UX conventions as #63.
+3. **PR-C (lineage-assets):** wire QR JSON ↔ tree JSON cross-links (`linked_tree` on the QR record, `sponsor_qr` + `linked_at` on the tree record) — resolves Gary's "QR record should link to tree GitHub JSON" ask.
+4. **UAT:** governor runs the first real link + first invalid on beta, verifying the sheet writes (SunMint M→LINKED/INVALID, QR D→ASSIGNED_TO_TREE, tracking tab, ledger pair) — the money-movement part needs Gary's explicit go.
+
+**✅ Actions this turn:** merged tokenomics #396. No new PRs opened (one-PR-per-turn). Ready to deploy + continue next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #396 on tokenomics merged successfully (sha: be92958f0a5301dd8b036490e2758d5c71d25bda). Pull Request successfully merged
 
