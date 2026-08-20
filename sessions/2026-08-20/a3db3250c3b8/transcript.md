@@ -1697,31 +1697,37 @@ The photo column is **col I (index 8)** with public GitHub URLs — safe to flow
 ### 🤖 Autopilot
 
 Patch applied but the shell quoting broke on the inline verification. Let me rerun with a script file to avoid the nesting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache pushed. Now verify photo_url is in the live cache, then patch the page (add photo preview on selection):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `photo_url` is live in the cache (13 items, GitHub image URLs). Now patch the page to show the photo when a submission is selected — add a photo container + render it in `updateSelectionSummary`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll write the two page edits: (1) a photo preview div after the summary, (2) `updateSelectionSummary` renders the photo + caption when a submission with a photo is selected. Opening the dapp PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **dapp_beta #67** opened (commit `8085cce`). Now sync the updated cache script to `lineage-assets` so repo == what cron runs:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both changes in place. Quick sanity check that the photo URLs actually resolve (so the preview won't 404):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1765,11 +1771,13 @@ The photo URL resolves (200, image/jpeg, ~188KB) — the preview will render.
 ### 🤖 Autopilot
 
 "Merge all PRs" — let me enumerate what's open across the affected repos first.
+[2 tool result(s) compacted: list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Merge all PRs" — in context that means the two open PRs from this thread's work: **dapp_beta #67** (photo preview) and **agentic_ai_context #772** (manifest row). (#65 is already closed — not in the open list. dapp_beta #46/#41 and the agentic_ai_context docs PRs are from other sessions, not this work stream — I won't touch those without a word.) Merging both:
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1821,11 +1829,13 @@ Once a tree is linked up with a QR code is a notification email being sent out t
 ### 🤖 Autopilot
 
 Let me verify both — the email notification path and the sheet association — from the plan + the live handler code.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both confirmed in the live handler — but I want to see the exact email body before I answer on lat/long:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1888,46 +1898,60 @@ Also can you make sure to update SCHEMA.md with the column updates you mentioned
 ### 🤖 Autopilot
 
 Gary wants three things: (1) the email body fix (lat/long), (2) SCHEMA.md updated for the column writes, (3) actual headers inserted into the sheet if missing. Let me recon the SCHEMA.md sections and test the SA's write access to the sheet in parallel.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SCHEMA.md already documents R/S for the SunMint tab, but the **live sheet is missing the R/S headers** (17 cols, R1/S1 empty) and col O still reads "Notarization URL" (SCHEMA corrected it to "GitHub Commit URL"). Let me check the QR-codes SCHEMA section + the email call site, and test SA write access to the sheet in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Headers are in the sheet (R/S/O1 written + verified). SCHEMA.md already covers both tabs well (M/R/S on SunMint, N/O/P/R/X + D-enum on QR). Now let me verify the QR-codes sheet headers match SCHEMA's claims (does the live sheet have N/O/P/R/X headers?), so SCHEMA ↔ sheet stay consistent:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Header check done — and I caught a **real discrepancy**: the live `Agroverse QR codes` sheet has **26 columns** with **X = "Review Click Through Date"**, but SCHEMA.md documents **X = "Tree Planted Notification Sent Date"** (the handler's `TPL_NOTIFICATION_SENT_COL = 23` writes to col 24 = X). That's a collision — the email-date stamp would land in the review-click-through column. Let me read the full SCHEMA QR table + check whether X has data / is referenced elsewhere before deciding the fix:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SCHEMA.md documents W/X as Sold Date / Tree Planted Notification Sent Date — but the **live sheet's actual W/X/Y are the review-follow-up columns** ("Review Email Sent Date", "Review Click Through Date", "Review Submit Date"). That means the handler's notification stamp (writes col X) would land in the **review click-through column** — a real collision. Let me verify who owns W/X/Y and check the sale-script's sold-date constant before I patch:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `process_qr_code_updates.js` 0 lines — wrong path. Let me find the real file and understand the review-columns ownership (X in the live sheet is "Review Click Through Date" — a separate workflow's column that SCHEMA's X claims for the tree-planted notification; that's a collision I must resolve before writing).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The directory listing failed — and I've confirmed a **real column collision**: the live `Agroverse QR codes` sheet uses **W/X/Y = review-follow-up columns** ("Review Email Sent Date" / "Review Click Through Date" / "Review Submit Date"), but SCHEMA.md documents **W = Sold Date, X = Tree Planted Notification Sent Date**. The handler stamps its notification date into **col X = "Review Click Through Date"** — it would corrupt the retailer-review workflow on the first real link. Let me find where the review columns are documented and which scripts write W/X/Y:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pin down who owns the review columns (W/X/Y in the live sheet) — check the handler's constants vs the qr update/sale scripts and `all_sheets_structure.json`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Critical finding confirmed: **`process_qr_code_updates.js` writes Sold Date to column W (index 22)** — matching SCHEMA. But the **live sheet has "Review Email Sent Date" in W** and **"Review Click Through Date" in X**. So the live sheet's columns W/X/Y belong to a **review-follow-up workflow** that's been layered onto the QR sheet *after* SCHEMA was written, and both the sold-date stamp and the tree-notification stamp would clobber review data. Let me confirm what actually writes the review columns before I touch anything:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2042,4 +2066,59 @@ Converging — here's the state of the "easy fix + SCHEMA + headers" work.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/SCHEMA.md" -o schema.md && wc -l schema.md && echo "=== S; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') try:; cd /tmp && echo "=== QR codes sheet section in SCHEMA ===" && grep -n "ASSIGNED_TO_TREE\|Tree Planting Date\|Latitude\|Longitude\|Seedling P; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+merge the PR
+
+
+### 🤖 Autopilot
+
+Merging tokenomics #398 — the column-collision fix + email lat/long + SCHEMA alignment.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #398** (sha `0bcc261`)
+
+## What I did this turn
+
+Merged the column-collision + email fix PR:
+
+**tokenomics #398** (`fix/tree-planting-column-collision`) — all 6 commits landed:
+1. **Sold Date stamp moved W → AA** (index 22 → 27) in `process_qr_code_updates.js` — no longer clobbers the live sheet's "Review Email Sent Date" column
+2. **Tree Planted Notification stamp moved X → AB** (index 23 → 27) in `process_tree_planting_link.js` — no longer clobbers "Review Click Through Date"
+3. **Owner email now includes `Location: <latitude>, <longitude>`** (your "easy fix" ask) — added to the body with planting date + photo
+4. **SCHEMA.md** QR-table W/X/Y/AA/AB rows aligned to the live sheet headers (verified in place; the other AA/AB at line 1438 are a different sheet's table, untouched)
+5. Sheet headers **already inserted live** (SunMint R/S/O1 + QR AA/AB), so humans can read the new columns
+
+## State of the SunMint tree-QR run
+
+| Item | State |
+|---|---|
+| Public caches + page reads them (#66) | ✅ live |
+| Photo preview (#67) | ✅ live |
+| Reject/Mark Invalid backend + dapp (#396/#64) | ✅ live |
+| Column collision fixed (AA/AB) + email lat/long + SCHEMA (#398) | ✅ **merged this turn** |
+| **Deploy #398 to GAS** (so AA/AB + lat/long go live) | ⏭️ **NEXT — critical before any real link** |
+| UAT (first real link) | ⏸️ gated on Gary's go |
+
+## RESUME HERE →
+
+1. **Deploy the merged handler to GAS** — `clasp push` on the QR-codes project (`1UrBgqLnn…`) so the AA/AB stamps + email lat/long are live. Verify the pushed file has `= 27` and `Location:`.
+2. **UAT** — first real Link on beta (gated on Gary's explicit go): pick SOLD bag + NEW SunMint submission → Link; verify sheet writes (QR→ASSIGNED_TO_TREE, AA sold date / AB notification date, SunMint M→LINKED + R/S) and the owner email contains date + lat/long + photo. Also test **Mark Invalid** (safe anytime).
+
+**✅ Actions this turn:** merged tokenomics #398. No new PRs opened. Next step is the GAS deploy (fresh turn).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #398 on tokenomics merged successfully (sha: 0bcc261b666a7979a49cc4426b2a0087409e1885). Pull Request successfully merged
 
