@@ -1500,36 +1500,43 @@ Let me look at the actual attachment and compare it with what the page is servin
 ### 🤖 Autopilot
 
 The page is now serving the label image (fix #202 propagated), so the question is what's wrong with **this** image. The attached screenshot shows the QR label — and the OCR text reads **"2024O0SCAR_CT_20260820_1"**, which looks like a typo (extra `0`) in the label text. The real batch code should be `2024OSCAR_CT_20260820_1`. Let me verify what the QR actually encodes and what the label really prints:
+[2 tool result(s) compacted: scan_qr_from_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me decode the QR from the label itself to see what it actually encodes, and compare with the ledger row — the OCR on both your screenshot and my copy reads something like `20240SCAR`/`2024O0SCAR`, which would be a **typo in the label text** if real:
+[2 tool result(s) compacted: scan_qr_from_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both scans of the label came back **no QR code detected** — and both the user's screenshot OCR and mine read the code as `2024O0SCAR/20240SCAR` (with an extra character). I need to determine if this is just OCR noise or a real defect in the generated label. Let me decode the QR with proper libraries and inspect the label template:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No cv2 on the nelanco box. Let me check what QR-decode tools are available (zbarimg, pyzbar) on either box, and inspect the label's QR region directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 pyzbar works on my box. Let me decode the label's QR directly to see what it actually encodes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The label PNG decodes empty — I need to see what's actually in the compiled label (the one in the zip). Let me inspect the compiled versions and check whether the QR is even present:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The label decodes empty — that's a serious flag. Let me inspect the zip's compiled labels (what actually gets printed) and check whether their QR codes scan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1674,4 +1681,71 @@ Want me to also swap the three card images to your photo (step 2)?
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/87e869a73b2142db9f5c456cdb17e137.jpg') print('size:', im.
 • `merge pr` → ✅ PR #203 on agroverse_shop_beta merged successfully (sha: 7dfdf26252837b1b78d8ff4695d42dcb66513b44). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+This as main image instead??
+
+[Attachment auto-processed: **298481f3640c47419e13ad1647c8cc77.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me inspect the new image and then swap it in as the hero:
+
+
+### 🤖 Autopilot
+
+1280×1280 square — good hero dimensions. Uploading it and swapping it in as the PDP main image (keeping the previous photo in the gallery so we don't lose it):
+
+
+### 🤖 Autopilot
+
+Uploaded. Now swapping the hero + share metadata to the new image (previous photo moves into the gallery):
+
+
+### 🤖 Autopilot
+
+PR #204 opened. Merging per your standing directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — PDP hero now uses your v2 photo ✅
+
+### What changed
+| PR | Change | State |
+|---|---|---|
+| (direct upload) | Added your v2 photo: `assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg` (1280×1280) | ✅ on main |
+| **#204** | **PDP hero → your v2 photo**; `og:image` / `twitter:image` / JSON-LD image all updated to the v2 photo. **v1 photo kept** — moved into the gallery (alongside the QR label + loose leaves) so it isn't lost. | ✅ **merged** (sha `faeffaa`) |
+
+### PDP image stack now
+- **Hero:** v2 photo (your latest)
+- **Gallery:** agl4.avif (loose leaves) → QR label → v1 photo
+- **Share cards (og/twitter):** v2 photo
+
+GH Pages rebuild ~1–3 min; then the beta PDP hero shows your v2 image.
+
+---
+**RESUME HERE →** Next turn:
+1. Hard-refresh the beta PDP after ~2–3 min — confirm the v2 hero renders and the gallery shows label + v1 photo.
+2. Confirm whether you want the **category/farm/shipment cards** to also use a photo (currently they show the QR label image) — one PR to update all three if you say go.
+3. **Promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) — still the final step, only on your approval.
+4. Standing item: re-mint label `_3` (the one genuinely unscannable QR) + re-zip for 100/100 clean.
+
+Say the word on any of those.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/298481f3640c47419e13ad1647c8cc77.jpg') print('size:', im.
+• `merge pr` → ✅ PR #204 on agroverse_shop_beta merged successfully (sha: faeffaa357c6e4209881b7388646b13feb0a4aa2). Pull Request successfully merged
 
