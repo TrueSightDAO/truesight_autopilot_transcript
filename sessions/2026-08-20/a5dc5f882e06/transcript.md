@@ -2861,16 +2861,19 @@ Interesting — the JSON has **`Price: null`** for this QR row! Yet the live sca
 ### 🤖 Autopilot
 
 The checkout page is JS-obfuscated (no readable cancel URL in the raw HTML — it's resolved client-side). I have enough to explain the root cause. Let me do one final check — whether the QR sheet's landing_page for ALL 100 rows is the agl4 page (I verified _1/_2) and whether a **manual Stripe Payment Link** was created for this SKU (that's what would carry the beta PDP cancel URL). Checking the nelanco thread for the payment link config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cacao-tea thread (`ab2a3ffb`) and another (`0daf2510`) mention payment links. Let me extract the exact payment-link/cancel-URL config from those transcripts — that's where the beta PDP got baked in:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One decisive check — how Edgar's Stripe client builds the session (does it override cancel_url?) and what the actual 302 redirect target is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3030,4 +3033,125 @@ Want me to promote to prod now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"EOF" import gspread from gspread import C; echo "=== edgar live lookup now ==="; curl -s "https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_1&format=jso
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Promote to prod
+
+
+### 🤖 Autopilot
+
+Explicit approval received — promoting the beta shop to prod now:
+
+
+### 🤖 Autopilot
+
+Sync succeeded. Verifying the cacao tea PDP + cards are live on **www.agroverse.shop**:
+
+
+### 🤖 Autopilot
+
+301 on the PDP and 0 matches — likely a redirect (www → non-www, or missing trailing slash) and/or the Pages rebuild hasn't propagated. Let me follow redirects and check the canonical URL:
+
+
+### 🤖 Autopilot
+
+The prod repo **main has the PDP** (raw 200), but the live site 404s — classic GH Pages rebuild lag (same as beta earlier). Let me check the prod Pages deployment status:
+
+
+### 🤖 Autopilot
+
+API shape differs — let me check the raw deployments response:
+
+
+### 🤖 Autopilot
+
+Pages API 404s on the prod repo — meaning **prod may not have GitHub Pages enabled at all**, or it's configured differently than beta. Let me check how www.agroverse.shop is actually served (CNAME/DNS + what serves the site):
+
+
+### 🤖 Autopilot
+
+Pages API 404s for **both** repos, yet both sites serve content — so the sites aren't served via per-repo Pages. Both CNAMEs point to **truesightdao.github.io** (the org site). Let me check how the org site actually deploys (the repo + any Actions workflow):
+
+
+### 🤖 Autopilot
+
+Both CNAMEs point to `truesightdao.github.io` — so the sites are served from an **org-level Pages repo** (`TrueSightDAO.github.io`), not per-repo Pages. Let me find it and check how the deploy actually works:
+
+
+### 🤖 Autopilot
+
+Something else serves agroverse.shop (a real server — it returns a full HTML doc, not a GH 404). The 301 from truesightdao.github.io/agroverse_shop_prod/... suggests a redirect. Let me check the actual server hosting agroverse.shop — likely nginx on the Nelanco infra:
+
+
+### 🤖 Autopilot
+
+Key finding: **agroverse.shop IS served by GitHub Pages** (185.199.x.x = GH Pages IPs, `server: GitHub.com`, `last-modified: Jul 18`), but the prod repo's Pages API 404s — so the site is **not** auto-deployed from `agroverse_shop_prod` main. The `last-modified: Jul 18` predates today's promotion → the live www site is **stale** (old content, from Jul 18).
+
+So the sync merged code into `agroverse_shop_prod` main, but **GitHub Pages isn't building/deploying that repo** — that's why www 404s on the PDP. Let me find how the Pages site for agroverse.shop is actually wired (org Pages can only come from a repo named `<org>.github.io`; since that 404s, this must be an **org-level Pages setup pointing at agroverse_shop_prod** via the org's Pages settings, or the site deploys from another branch). Let me check the repo's branch + any gh-pages branch + the org pages config:
+
+
+### 🤖 Autopilot
+
+`has_pages: True` for the prod repo — but the Pages API 404s (needs auth) and `last-modified` is Jul 18. Let me check the actual deployment state — the site's current content vs the repo main, and whether a Pages build is pending. The key question: does www serve from **main** (and is just lagging) or from a **stale build**?
+
+
+### 🤖 Autopilot
+
+The prod repo `main` has everything (PDP merged 15:42Z today), but www still serves the **pre-promotion build** — the cacao tea card isn't on the www category page yet (grep = 0). This is the GH Pages rebuild lag after the sync merge. Let me confirm and set a watcher so we know when www catches up:
+
+
+### 🤖 Autopilot
+
+Still not live after the sync + wait. The sync merged into `main` (has_pages: True), but www isn't updating. This is exactly the kind of **deployment wiring** issue I shouldn't guess at. Let me check the last actual www deploy (its `last-modified` header was Jul 18) — if www's served content is from Jul 18, the Pages build isn't picking up the new main at all. Let me verify the served index etag against the repo, and check for a build failure:
+
+
+### 🤖 Autopilot
+
+There it is — **"pages build and deployment" is `in_progress`** (started 15:42:06Z, head_sha `ae4463a4` = today's sync). The build is running right now; the Jul 18 last-modified is the previous deploy. GH Pages is rebuilding for the new main — it just takes a few minutes. Let me set a watcher so we're notified the moment www serves the PDP, then report:
+
+
+### 🤖 Autopilot
+
+Watcher unavailable in this chat type — I'll verify manually. The build is confirmed running; let me check its completion state:
+
+
+### 🤖 Autopilot
+
+🎉 **It's LIVE!** The Pages build completed and www.agroverse.shop now serves the cacao tea:
+
+| Check | Result |
+|---|---|
+| **PDP on prod** (`agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`) | ✅ **200** — live |
+| **Category card** (`/category/retail-packs/`) | ✅ tea card present |
+| **QR landing URL** (`agroverse.shop/shipments/agl4`) | ✅ now live on prod |
+
+## ✅ Production promotion complete
+
+### What happened
+1. **`sync_beta_to_prod(agroverse_shop_prod)`** — merged beta main → prod fork (`ae4463a4`)
+2. **GH Pages build** ran (`in_progress` at 15:42Z → completed) — the ~10 min lag was the Pages rebuild, not a failure
+3. **Verified live:** PDP 200 + category card on www.agroverse.shop
+
+### Full end-state (everything live on prod)
+- **PDP** — `agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` (v2 hero photo, single gallery image, mobile-tuned, no price/buy button — offline QR-scan sales)
+- **Cards** — category, farm, shipment pages all cross-listed
+- **QR flow** — sheet landing_page = **`www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`** (101 rows) → scan → Edgar → Stripe $10 → **cancel lands on the prod PDP** (matches your request), pay → SOLD
+- **Registry** — 100 manifests + PNGs + corrected index on lineage-assets main
+
+### One note for the record
+The 101 sheet rows now point to **www** — and www is now live, so everything is consistent. No more beta URLs anywhere in the CT flow.
+
+---
+**RESUME HERE →** Optional final QA: scan one QR from zip v2 on a phone → confirm Stripe → cancel lands on `www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`. Everything else is done — the cacao tea 50g packet is fully built, promoted, and live end-to-end. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `sync beta to prod` → ✅ agroverse_shop_prod: Successfully fetched and merged from upstream TrueSightDAO:main (merge_type: merge)
+• `ssh run` ×10 → PDP 301→404 → found www stale (last-modified Jul 18) → prod main has PDP (raw 200) → Pages API 404s (per-repo) → DNS = truesightdao.github.io (org Pages) → prod repo has_pages: True → actions runs: "pages build and deployment" in_progress @ 15:42Z ae4463a4 → after build: PDP **200**, category tea card **1** ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → echo "=== PDP on www ==="; curl -s -o /dev/null -w "PDP code=%{http_code} " "https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-5; echo "=== follow PDP redirect ==="; curl -s -o /dev/null -w "final=%{url_effective} code=%{http_code} " -L "https://www.agroverse.shop/produ; echo "=== prod pages deployments ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_prod/pages/deployments?per_page=3" ; …(+10 more)
 
