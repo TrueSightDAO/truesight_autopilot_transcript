@@ -2023,16 +2023,19 @@ The push to the existing branch was rejected (the tool's fresh clone is based on
 ### 🤖 Autopilot
 
 The branch still has the old W/X rows (900-901) and I need to check the 2 existing AA/AB matches — they may be in a different sheet's table. Let me do the SCHEMA edit locally with python (precise, no escaping issues) and upload via Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The two pre-existing AA/AB rows are in a *different* table (line 1438-1439, "Updated Date"/"Resolved URL" — another sheet's columns), so no conflict. The QR-sheet table (899-901) is now fixed in `schema_fixed.md`. Let me verify the edit looks right, then upload to the branch via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SCHEMA.md is correctly updated (4 AA/AB rows total = 2 in this QR table + 2 in the other sheet's table, both valid). Now uploading to the PR branch via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2251,4 +2254,51 @@ So I need a separate explicit `go` from you for the RUN step itself — it books
 **✅ Done this turn — actions taken:**
 • `gas deploy project` → ok
 • `ssh run` → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && rm -rf /tmp/v
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE directive points at the **RUN** unit — but the plan's own §2/§4 mark RUN as an **always-stop gate** (ledger money-movement: books the `Cacao Tree Planted` fulfillment pair against a real managed ledger + emails a real owner), and the directive itself says "Honor any gate marker. Never move money on your own." Gary's "Deploy." cleared the deploy gate only — he has **not** yet given the RUN go. So I will **not** execute the first live link.
+
+What I *can* do is stage RUN so your go is one step away — pull the candidate lists (no PII in the public caches) so you can pick the actual QR + submission:
+
+
+### 🤖 Autopilot
+
+Candidates staged and clean. Here's the state of the RUN unit:
+
+## ⚠️ RUN is gated — I did not execute the first live link
+
+Per the plan's §2 authorization envelope, RUN carries the **ledger money-movement always-stop gate** (books the `Cacao Tree Planted` fulfillment pair against a real managed ledger, emails a real owner). Your "Deploy." cleared the deploy gate only — there's no RUN `go` yet, and the AUTO-ADVANCE directive explicitly says *"Honor any gate marker. Never move money on your own."* So I'm holding at the gate and have staged the pick.
+
+## Staged candidates (public caches, no PII)
+
+**Sold QRs pending tree link (414):** first five — `2024OSCAR_CC_20260620_3/_2/_1`, `2024OSCAR_CB_20260620_7/_6` (Oscar's Farm, Brazil, all SOLD). Any of these is a valid pick.
+
+**SunMint submissions pending link (13):** first five — all NEW, Oregon coordinates (Corvallis area ~44.5°N / Portland ~45.5°N), species field currently empty in the cache (the sheet's col N "Specie" appears blank for these rows — worth noting, the link will still work but the email/tree record will lack species unless we backfill it).
+
+## What happens on your `go`
+
+1. You pick (or I propose) **one** sold QR (e.g. `2024OSCAR_CC_20260620_3`) + **one** NEW submission (e.g. the first, msg id from the sheet)
+2. Confirm the link on `https://beta.dapp.truesight.me/link_tree_planting.html` (or I submit the `[TREE PLANTING LINK EVENT]` on your behalf once signed)
+3. We verify by hand: QR row (D→ASSIGNED_TO_TREE, N/O/P/R, AB stamp), SunMint row (M→LINKED, R/S), ledger Transactions row, owner inbox (email should now include `Location: lat, long` + photo)
+
+**Say "go for RUN" (or name the specific QR + submission) and I'll execute it.** Until then I'm holding at the gate per the plan.
+
+**✅ Done this turn:** read plan (RUN gate confirmed), staged candidate lists from the public caches (414 sold QRs / 13 NEW submissions, no PII), did **not** execute the gated money-movement link. No PRs opened/merged, nothing deployed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl sold_pending_tree.json + sunmint_pending.json from lineage-assets, printed counts + first-5 samples (qr_code/farm/country/status and lat/long/status) — no PII, no sheet writes, no ledger touches
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== sold_pending_tree.json: count + sample (no PII) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage
 
