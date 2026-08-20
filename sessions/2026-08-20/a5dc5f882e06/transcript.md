@@ -2432,16 +2432,19 @@ Let me read the final tail of the file to get the exact last line for a clean ap
 ### 🤖 Autopilot
 
 Let me get the exact last line of the file for a clean append:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact tail. Appending the cacao tea 50g delivery entry to the append-only log:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#777** opened. Merging per the standing directive:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2485,16 +2488,19 @@ CONTEXT_UPDATES.md is the append-only event log — this multi-session delivery 
 ### 🤖 Autopilot
 
 Auto-advance: before opening any PR, let me verify the one remaining unconfirmed deliverable — Gary's original ask was "100 additional entries in **our registry**" — the registry is `lineage-assets/qrs/` + `qrs_index.json` (what `truesight.me/physical-assets/serialized` reads). All build PRs are merged; let me confirm the index on main actually contains all 100 CT serials (read-only; if it's short, that's a genuine fix PR):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 100 CT entries confirmed on main, but my field-access guess for serials failed (`has _101? False` is suspicious since #6 merged `_101`). Let me inspect the actual entry structure to verify the serials correctly (read-only):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Real defect found in the registry.** The `qrs_index.json` on main still contains serial `_3` (VOID) and **omits `_101`** — the index was never rebuilt after the void/replacement in lineage-assets #6. Since `truesight.me/physical-assets/serialized` reads this index, it currently shows `_3` as live and misses `_101`. This is a genuine fix unit. Let me check the `_101` manifest (to mirror its exact scan_target) and confirm the `_3` manifest is gone from main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2623,4 +2629,80 @@ GH Pages rebuilds in ~1–3 min; after that the PDP shows just the hero + the on
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | grep -; for f in "category/retail-packs/index.html" "farms/oscar-bahia/index.html" "shipments/agl4/index.html"; do echo "=== $f ==="; curl -s "https; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | sed -n
 • `merge pr` → ✅ PR #218 on agroverse_shop_beta merged successfully (sha: df6756e23dab5885465bedffc543b39c8968cf1f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Can we make sure the page shows properly on mobile??
+
+
+### 🤖 Autopilot
+
+Let me check the PDP's mobile readiness — viewport meta, responsive CSS, and how it compares to the known-good ceremonial cacao page:
+
+
+### 🤖 Autopilot
+
+The page has a responsive foundation (768px media query, fluid grid, 56.25% video embeds). Let me verify the viewport meta tag exists and compare against the reference ceremonial cacao PDP for mobile gaps:
+
+
+### 🤖 Autopilot
+
+The tea PDP has the viewport meta, 768px media query, and fluid layout. Let me check the mobile menu markup/JS and whether `.detail-row` (150px label column) needs a mobile fallback — the reference PDP grep returned nothing (path may differ), so let me check the mobile menu + compare to the reference PDP properly:
+
+
+### 🤖 Autopilot
+
+The tea PDP has solid responsive foundations (viewport meta ✅, 768px collapse, fluid video). The main mobile risk is the `.detail-row` 150px label column crowding on narrow screens. Let me compare with the reference ceremonial cacao PDP's mobile CSS and check the shared nav:
+
+
+### 🤖 Autopilot
+
+The tea PDP is missing the mobile refinements the reference PDP has: the ceremonial cacao page **collapses `.detail-row` to a single column** on small screens (line 408) and has a **480px block** — the tea page's 150px label column stays fixed, which crowds on phones. That's the genuine mobile gap. Adding the mobile CSS to match the reference:
+
+
+### 🤖 Autopilot
+
+PR **#219** opened. Merging per your standing directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — cacao tea PDP is now mobile-tuned ✅
+
+### What I checked first
+The page already had a solid responsive base: **viewport meta** ✅, 768px two-column collapse for the header ✅, fluid gallery + 56.25% video embeds ✅, shared mobile nav (`shared-chrome.js` + hamburger) ✅.
+
+### The real gap (vs the reference ceremonial-cacao PDP)
+The tea page was **missing** what the reference PDP does on phones:
+- `.detail-row` kept its **fixed 150px label column** on narrow screens → the "Harvest Year / Shipment / QR batch" rows crowded on mobile
+- No ≤480px small-screen tuning (heading size, gallery spacing)
+
+### What I changed
+| PR | Change | State |
+|---|---|---|
+| **agroverse_shop_beta #219** — *fix: mobile polish for cacao tea PDP (stack detail rows, tighten 480px layout)* | At **≤768px**: `.detail-row` stacks to a single column (label above value), tighter section padding, smaller h1. At **≤480px**: smaller h1 (24px), tighter gallery gap + shorter image height, smaller media-block heading. Matches the reference PDP's mobile behavior. | ✅ **merged** (sha `a44b7ce`) |
+
+GH Pages rebuilds ~1–3 min; then the PDP renders cleanly on phones (single column, stacked detail rows, no horizontal overflow).
+
+---
+**RESUME HERE →** Next turn:
+1. After the rebuild, spot-check the beta PDP on your phone / narrow devtools viewport (`beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/`) — confirm no horizontal scroll, stacked detail rows, tidy video/gallery.
+2. **Still the standing final step: promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) on your explicit approval — www.agroverse.shop is still not live with any of this.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → sed -n 1,120p tea PDP (viewport ✅, 768px media query ✅); grep viewport=1 ✅; body top + mobile-menu JS ✅; ref PDP media queries (detail-row collapse @408, 480px block @519) + shared-chrome.js 200
+• `git push changes` → PR https://github.com/TrueSightDAO/agroverse_shop_beta/pull/219 (commit 90809e1)
+• `merge pr` → ✅ PR #219 merged (sha a44b7ce)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== TEA PDP: head/CSS ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-; echo "=== TEA PDP head (top) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia; echo "=== TEA PDP body top (menu markup) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page; …(+1 more)
+• `merge pr` → ✅ PR #219 on agroverse_shop_beta merged successfully (sha: a44b7ce3e89e8cfb54e737570bd702272bcecbee). Pull Request successfully merged
 
