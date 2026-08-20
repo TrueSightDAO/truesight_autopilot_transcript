@@ -2637,31 +2637,37 @@ Let me see the exact `_cell`/photo_url handling and the item dict so I patch pre
 ### 🤖 Autopilot
 
 Now I have the exact code. Patching `build_sunmint_pending` to normalize the photo URL (tree→raw) with a `_normalize_photo_url` helper, then re-push the cache and open the page-side PR (graceful fallback on image error):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Normalizer works. Now run the patched generator against the real sheet (dry-run) to confirm the cache regenerates with normalized URLs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now run the dry-run with the SA creds to regenerate the cache locally with normalized URLs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache regenerates cleanly — **0 tree-format URLs remain** (all 13 normalized to raw). Now: (1) push the regenerated cache to `lineage-assets`, (2) sync the fixed generator script, (3) patch the page to show a graceful placeholder on image error. Pushing the cache + script first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache pushed (`95b7704`). Now sync the fixed generator script to `lineage-assets` and verify the live cache normalized:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live cache still shows 8 tree-format URLs — that's **CDN cache lag** (raw.githubusercontent edge). The Contents API PUT succeeded (commit `95b7704`), so the canonical file is fixed; raw just hasn't propagated yet. Let me verify via the authoritative Contents API (not the CDN):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2837,4 +2843,61 @@ Verified on the branch. Once merged it auto-deploys to beta — and it pairs wit
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== live cache: item keys + first 3 ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/sun; cd /tmp && echo "=== option render 325-355 ===" && sed -n '325,355p' ltp.html; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/fix/sunmint-dropdown-unique-id/link_tree_planting.html" -o ltp7
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go
+
+
+### 🤖 Autopilot
+
+"Go" — merging dapp_beta #72 (the unique-ID dropdown fix) so it deploys to beta.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — dapp_beta #72** (sha `bb56cf3`)
+
+## What I did this turn
+
+Merged the unique-ID dropdown fix — auto-deploys to beta on merge to `dapp_beta`.
+
+**dapp_beta #72** (`fix/sunmint-dropdown-unique-id`): each "Sunmint submissions pending link" option is now prefixed with `#<telegram_message_id>` (the unique key already used end-to-end — the dapp posts it as "Sunmint Submission Message ID", the handler addresses the exact sheet row with it). So the dropdown now reads:
+- Before: `Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181`
+- After: **`#171 · Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181`**
+
+Verified on the branch pre-merge. This is what makes each submission unambiguous (10+ "Gary Teh" rows are now distinguishable) and gives the Mark Invalid / Link flows a precise handle to point at.
+
+## Where the SunMint tree-QR run stands
+
+| Item | State |
+|---|---|
+| Public caches + page reads them (#66) | ✅ live |
+| Photo preview + graceful fallback (#67, #71) | ✅ live |
+| Unique ID in dropdown (#72) | ✅ **merged this turn** |
+| Reject/Mark Invalid backend + dapp (#396/#64) | ✅ live |
+| shareText submit fix (#70) — unblocks Mark Invalid + Link | ✅ live |
+| Column-collision fix deployed to GAS (#398 deploy) | ✅ live |
+| **Mark Invalid retest** (was failing with `no_signature_format`) | ⏭️ next |
+| **Link — first real link (RUN)** | ⏸️ gated on Gary's go (ledger money-movement) |
+
+## RESUME HERE →
+
+1. **Retest Mark Invalid on beta** (now that #70 shareText fix + #72 ID are live): pick `#171` → **Mark Invalid** (reason: "looks like the insight of a restaurant") → expect `signature_verification: success`, SunMint row flips to `INVALID`.
+2. **Refresh the cache** after the invalid lands (`sync_pending_caches.py --push`) so `#171` drops out of the dropdown persistently (cron also does this every 30 min; I can run it immediately on your word). Optionally add the instant front-end removal as a tiny follow-up PR.
+3. **Link (RUN)** — the first real link books the ledger pair + emails the owner → still needs Gary's explicit go per plan §2/§4.
+
+**✅ Actions this turn:** merged dapp_beta #72. No new PRs opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #72 on dapp_beta merged successfully (sha: bb56cf3f0d22e90aec0befc2d9ea804b5409a260). Pull Request successfully merged
 
