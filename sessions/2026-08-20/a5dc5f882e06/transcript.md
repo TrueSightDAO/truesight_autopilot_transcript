@@ -17,22 +17,46 @@
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: search_context, search_context, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found key leads. Let me dig into the tea cost basis — there are two candidate figures (bulk raw vs repacked). Checking provenance:
+[3 tool result(s) compacted: search_context, search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the full treasury cache to see all cacao-tea-related items and their cost basis:
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two tea cost bases are surfacing — let me resolve which is the right one for loose cacao tea, and check the repack composition:
+[3 tool result(s) compacted: read_repo_file, read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the AGL13 cacao tea cost basis and check for a "loose cacao tea" inventory line:
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -104,4 +128,35 @@ Based on the ledger, treasury cache, and the June 2026 freight manifest, the ans
 - FounderHaus already carries one Agroverse line ("8 Ounce Package Kraft Pouch QN226716310BR – FounderHaus Brazil", 3 units @ $8.59) — so this is an extension of an existing consignment relationship, not a cold start.
 
 Want me to draft a pricing/margin proposal for FounderHaus (COGS → suggested retail per 25 g sachet), or log this research somewhere?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] I mean check out currency record
+
+
+### 🤖 Autopilot
+
+Got it — you want the actual currency record for cacao tea in the ledger/treasury, not my freight-manifest inference. Let me pull the authoritative records.
+
+
+### 🤖 Autopilot
+
+Here's the actual currency record from the **Currencies** tab of the Main Ledger — all cacao tea lines:
+
+| Currency (ledger record) | Price in USD | Unit | → per 25 g |
+|---|---|---|---|
+| **Cacao Tea (Kilograms) Santos 20260213 – AGL13** | **$10.18234711** | per kg | **$0.2546** |
+| **Cacao Tea (loose grams) CP340993869BR – AGL8** | **$0.0136601548** | per gram | **$0.3415** |
+| Cacao Tea – … Paulo 2024 \| Santos 018-2025 016-2025 \|\| Ilhéus – AGL8 | $0 (no cost basis) | per kg | $0.00 |
+| Cacao Tea 1LB – Oscar Fazenda 2024 | $0 (no cost basis) | per lb | $0.00 |
+| Cacao Tea 1g \| Cacao Almonds KG – Organic (Fazenda São Jorge) \| 20260710 (repacked SKU) | $0.112482092 | per gram | $2.81 (outlier — from $100.89/kg almonds) |
+
+### So the answer depends on which currency record you're using:
+
+- **AGL13 Santos tea** ($10.18/kg) → **$0.25 per 25 g** ← the priced bulk-tea record, matches the freight manifest line (21 kg @ $10.18 = $213.83)
+- **AGL8 loose grams** ($0.01366/g) → **$0.34 per 25 g**
+- **AGL8 Paulo tea / Oscar 1LB** → **$0 per 25 g** (freight cost already sunk, recorded at zero)
+
+The record most defensible to quote FounderHaus for loose tea is **$10.18234711/kg → $0.25/25g** (AGL13 Santos), with the AGL8 loose-grams at $0.34/25g as the alternative. Happy to pull the full raw `currencies` tab or the treasury-cache JSON lines if you want the exact ledger rows.
 
