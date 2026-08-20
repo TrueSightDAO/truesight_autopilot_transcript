@@ -1679,16 +1679,19 @@ Gary's right — the SunMint submission includes a tree photo, so selecting one 
 ### 🤖 Autopilot
 
 The sheet has **col I = "Photo of Tree Planted"** with **public GitHub URLs** (`raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/*.jpg`) — so the photo can flow through the public cache safely (already public, no PII gate). Two edits needed: (1) cache generator adds `photo_url`, (2) page shows the photo on selection. Let me grab the exact code regions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the photo URL path (col I, index 8 — `photo_url`) and the page's render/summary logic. Let me grab the item dict + COL dict from the cache script so I can add `photo_url` cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The photo column is **col I (index 8)** with public GitHub URLs — safe to flow through the public cache. Two changes: (1) cache script adds `photo_url`, (2) page shows the photo on selection. Patching the script + re-pushing the cache first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1870,4 +1873,173 @@ So: the QR row carries the tree's evidence (date/lat/long/photo), and the SunMin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && sed -n '205,235p' ptl.js && echo "=== call site ===" && grep -n "sendTreePlantedNotificationEmail_\|ownerEmail\|Owner Email\|TPL_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Do up the easy fix.
+Easy fix if you want it — I can add Latitude: / Longitude: lines to the body.
+
+Also can you make sure to update SCHEMA.md with the column updates you mentioned. If the header values are not already inserted into the google sheet please insert them that way humans can understand
+
+
+### 🤖 Autopilot
+
+Gary wants three things: (1) the email body fix (lat/long), (2) SCHEMA.md updated for the column writes, (3) actual headers inserted into the sheet if missing. Let me recon the SCHEMA.md sections and test the SA's write access to the sheet in parallel.
+
+
+### 🤖 Autopilot
+
+SCHEMA.md already documents R/S for the SunMint tab, but the **live sheet is missing the R/S headers** (17 cols, R1/S1 empty) and col O still reads "Notarization URL" (SCHEMA corrected it to "GitHub Commit URL"). Let me check the QR-codes SCHEMA section + the email call site, and test SA write access to the sheet in parallel:
+
+
+### 🤖 Autopilot
+
+Headers are in the sheet (R/S/O1 written + verified). SCHEMA.md already covers both tabs well (M/R/S on SunMint, N/O/P/R/X + D-enum on QR). Now let me verify the QR-codes sheet headers match SCHEMA's claims (does the live sheet have N/O/P/R/X headers?), so SCHEMA ↔ sheet stay consistent:
+
+
+### 🤖 Autopilot
+
+Header check done — and I caught a **real discrepancy**: the live `Agroverse QR codes` sheet has **26 columns** with **X = "Review Click Through Date"**, but SCHEMA.md documents **X = "Tree Planted Notification Sent Date"** (the handler's `TPL_NOTIFICATION_SENT_COL = 23` writes to col 24 = X). That's a collision — the email-date stamp would land in the review-click-through column. Let me read the full SCHEMA QR table + check whether X has data / is referenced elsewhere before deciding the fix:
+
+
+### 🤖 Autopilot
+
+SCHEMA.md documents W/X as Sold Date / Tree Planted Notification Sent Date — but the **live sheet's actual W/X/Y are the review-follow-up columns** ("Review Email Sent Date", "Review Click Through Date", "Review Submit Date"). That means the handler's notification stamp (writes col X) would land in the **review click-through column** — a real collision. Let me verify who owns W/X/Y and check the sale-script's sold-date constant before I patch:
+
+
+### 🤖 Autopilot
+
+`process_qr_code_updates.js` 0 lines — wrong path. Let me find the real file and understand the review-columns ownership (X in the live sheet is "Review Click Through Date" — a separate workflow's column that SCHEMA's X claims for the tree-planted notification; that's a collision I must resolve before writing).
+
+
+### 🤖 Autopilot
+
+The directory listing failed — and I've confirmed a **real column collision**: the live `Agroverse QR codes` sheet uses **W/X/Y = review-follow-up columns** ("Review Email Sent Date" / "Review Click Through Date" / "Review Submit Date"), but SCHEMA.md documents **W = Sold Date, X = Tree Planted Notification Sent Date**. The handler stamps its notification date into **col X = "Review Click Through Date"** — it would corrupt the retailer-review workflow on the first real link. Let me find where the review columns are documented and which scripts write W/X/Y:
+
+
+### 🤖 Autopilot
+
+Let me pin down who owns the review columns (W/X/Y in the live sheet) — check the handler's constants vs the qr update/sale scripts and `all_sheets_structure.json`:
+
+
+### 🤖 Autopilot
+
+Critical finding confirmed: **`process_qr_code_updates.js` writes Sold Date to column W (index 22)** — matching SCHEMA. But the **live sheet has "Review Email Sent Date" in W** and **"Review Click Through Date" in X**. So the live sheet's columns W/X/Y belong to a **review-follow-up workflow** that's been layered onto the QR sheet *after* SCHEMA was written, and both the sold-date stamp and the tree-notification stamp would clobber review data. Let me confirm what actually writes the review columns before I touch anything:
+
+
+### 🤖 Autopilot
+
+I need to stop burning tool rounds on the sheet-JSON introspection and make a decision. Here's what I know for certain:
+
+**The core issue:** the **live sheet** has W/X/Y = review-follow-up columns, but **SCHEMA.md + `process_qr_code_updates.js`** document/stamp **W = Sold Date** (index 22). And the tree-planting-link handler stamps **X** (index 23) for the notification. The live sheet's X = "Review Click Through Date" — so the notification stamp would **corrupt review data**.
+
+The right move (aligning code to the live sheet, not the reverse — since review columns are an existing workflow I must not clobber): **move the tree-planted notification to a free column (Y)** and **move Sold Date to Z** (both currently empty of data in rows 2–50), and fix SCHEMA to match the live headers. Let me verify W/X/Y/Z data + the review workflow's owner first, then do the surgical fix.
+
+
+### 🤖 Autopilot
+
+**Critical finding — a real column collision.** The live `Agroverse QR codes` sheet has **W/X/Y = retailer-review workflow columns** ("Review Email Sent Date" / "Review Click Through Date" / "Review Submit Date" — owned by the go_to_market email-agent scripts), but the code stamps **Sold Date → W** (`process_qr_code_updates.js` index 22) and **Tree Planted Notification → X** (`process_tree_planting_link.js` index 23). Both would **corrupt the review workflow** on the first real write. All of W–Z are empty in rows 2–400 so nothing is corrupted yet — caught pre-UAT.
+
+The fix (align code to the live sheet, never clobber an existing workflow): move both stamps to **free columns AA (Sold Date)** and **AB (Tree Planted Notification Sent Date)**, insert those headers, and update the code constants + SCHEMA. Executing — first the sheet headers:
+
+
+### 🤖 Autopilot
+
+Headers **AA1/AB1 written** (grid max is 28 columns, so AC doesn't exist — AA=27, AB=28 are the last two, perfect). Sold Date + Tree Planted Notification Sent Date are now real columns on the live sheet. Now the code fix — both handlers' constants move to the free columns (W→AA, X→AB), and I'll also add the lat/long to the email body while I'm in the handler:
+
+
+### 🤖 Autopilot
+
+I have everything needed for the fix. Let me make the two code changes via PR: (1) `process_tree_planting_link.js` — notification stamp W→AA (index 23→27), add lat/long to the email body; (2) `process_qr_code_updates.js` — Sold Date stamp W→AA (index 22→27); (3) SCHEMA.md — align W/X/Y/AA/AB docs to the live sheet. Opening the PR:
+
+
+### 🤖 Autopilot
+
+The edit failed — likely my `\\u2014` escaping is off (the file uses a literal em-dash, and my search string has `\\u2014` which doesn't match the raw char). Let me check the exact bytes and retry with literal characters:
+
+
+### 🤖 Autopilot
+
+The file uses a literal em-dash (UTF-8 bytes), so my search with `\\u2014` didn't match. Retrying with the literal `—` character:
+
+
+### 🤖 Autopilot
+
+PR #398 opened — but I haven't yet made the **SCHEMA.md** edit (part of Gary's explicit ask and promised in the PR body). Let me complete the unit by updating SCHEMA.md on the same branch:
+
+
+### 🤖 Autopilot
+
+The SCHEMA edit failed — likely a whitespace/character mismatch in the long search string. Let me grab the exact SCHEMA lines 898–902 and retry with the precise text:
+
+
+### 🤖 Autopilot
+
+The issue: my search string used `\\u2192` (literal `\u2192`) but the file has the actual `→` character. Also the earlier em-dash in my W-row search didn't match the file's literal `—`. Let me retry with exact literal characters (actual `→` and `—`):
+
+
+### 🤖 Autopilot
+
+The push to the existing branch was rejected (the tool's fresh clone is based on main, so its new commit diverged from the branch tip `b04c695`). I'll fix SCHEMA.md directly on the branch via the Contents API instead (single-file write to the same feature branch, keeping PR #398 intact). Let me build the corrected SCHEMA locally and upload it:
+
+
+### 🤖 Autopilot
+
+The branch still has the old W/X rows (900-901) and I need to check the 2 existing AA/AB matches — they may be in a different sheet's table. Let me do the SCHEMA edit locally with python (precise, no escaping issues) and upload via Contents API:
+
+
+### 🤖 Autopilot
+
+The two pre-existing AA/AB rows are in a *different* table (line 1438-1439, "Updated Date"/"Resolved URL" — another sheet's columns), so no conflict. The QR-sheet table (899-901) is now fixed in `schema_fixed.md`. Let me verify the edit looks right, then upload to the branch via the Contents API:
+
+
+### 🤖 Autopilot
+
+SCHEMA.md is correctly updated (4 AA/AB rows total = 2 in this QR table + 2 in the other sheet's table, both valid). Now uploading to the PR branch via the Contents API:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — here's the state of the "easy fix + SCHEMA + headers" work.
+
+## ✅ Done this turn
+
+**1. Sheet headers inserted (humans can read):**
+- `SunMint Tree Planting` tab: **R1 = "Linked QR Code"**, **S1 = "Linked At"**, **O1 = "GitHub Commit URL"** (was the stale "Notarization URL") — written + verified
+- `Agroverse QR codes` tab: **AA1 = "Sold Date"**, **AB1 = "Tree Planted Notification Sent Date"** — written + verified (grid max = 28 cols, AA/AB are the last free slots; AC doesn't exist, so nothing stepped on)
+
+**2. Found a REAL pre-UAT bug — column collision:**
+- Live sheet **W/X/Y = retailer-review workflow** ("Review Email Sent Date" / "Review Click Through Date" / "Review Submit Date" — owned by go_to_market email-agent scripts)
+- But code stamped **Sold Date → W** (`process_qr_code_updates.js` idx 22) and **Tree Planted Notification → X** (`process_tree_planting_link.js` idx 23)
+- → The first real sale or first real tree link would have **corrupted the review workflow**. All W–Z empty in rows 2–400, so nothing corrupted yet — caught before UAT.
+
+**3. PR [tokenomics #398](https://github.com/TrueSightDAO/tokenomics/pull/398) opened** (branch `fix/tree-planting-column-collision`, 6 commits incl. SCHEMA fix at `16402c3`):
+- `SOLD_DATE_COL_DEST` 22 → **27 (AA)** — sold-date stamp out of the review columns
+- `TPL_NOTIFICATION_SENT_COL` 23 → **27 (AB)** — notification stamp out of review columns
+- **Email body now includes `Location: <lat>, <lng>`** (Gary's ask) — signature + call site updated
+- **SCHEMA.md** QR-table W/X/Y/AA/AB rows aligned to the live sheet (verified in place; the other AA/AB rows at line 1438 are a different sheet's table — untouched)
+
+## ⚠️ Blocking / critical
+
+- **PR #398 is NOT merged and NOT deployed.** The live GAS handler **still has the old X-column stamp** — a real link run before deploy would write into "Review Click Through Date". **Deploy must happen before any real link.**
+
+## RESUME HERE →
+
+1. **Merge tokenomics #398** → then **`clasp push`** to the QR-codes GAS project (`1UrBgqLnn…`) so both the AA/AB column fix + email lat/long go live.
+2. Verify the deployed handler (grep the pushed file for `= 27` + `Location:`).
+3. **UAT** — first real Link on beta (gated on Gary's go; now safe re: review columns), then verify sheet writes (AA sold date / AB notification date / SunMint R/S) + the owner email contains lat/long + photo.
+
+**✅ Done this turn:** headers R/S/O1 (SunMint) + AA/AB (QR) inserted in live sheets; PR #398 opened with column-collision fix + email lat/long + SCHEMA alignment. Not merged/deployed yet — that's the very next step.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/SCHEMA.md" -o schema.md && wc -l schema.md && echo "=== S; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') try:; cd /tmp && echo "=== QR codes sheet section in SCHEMA ===" && grep -n "ASSIGNED_TO_TREE\|Tree Planting Date\|Latitude\|Longitude\|Seedling P; …(+13 more)
 
