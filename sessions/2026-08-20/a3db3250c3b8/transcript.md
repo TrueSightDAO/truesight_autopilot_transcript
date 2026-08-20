@@ -2302,3 +2302,222 @@ Per the plan's §2 authorization envelope, RUN carries the **ledger money-moveme
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== sold_pending_tree.json: count + sample (no PII) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage
 
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Seeing Submission failed... Go figre out why and the fix it
+
+[Attachment auto-processed: **3374430dcf6c482f8fa4c33af42f855c.pdf**]
+- Type: PDF (3 pages, 2264 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Link Tree to QR
+1,022,165 voting rights · ~$7,441.36 est. cash-out value
+Link Tree Planting
+Signed in as Gary Teh
+Governor-only. Pick a sold QR code and a pending Sunmint tree-planting submission, then confirm the link. This flips the QR to
+ASSIGNED_TO_TREE, copies the planting evidence onto the QR row, books the ledger fulfillment entry, and emails the QR owner.
+Governor
+Lists below are read from the public DAO JSON caches (lineage-assets: sold_pending_tree.json + sunmint_pending.json).
+Sold QR codes pending tree link
+2024OSCAR_CC_20260620_3 · Oscar's Farm · Brazil · 2024 · minted 2026-06-20
+Sunmint submissions pending link
+Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181
+48
+8/20/26, 4:48 PM
+Link Tree Planting · TrueSight DAO
+https://beta.dapp.truesight.me/link_tree_planting.html
+1/3
+
+--- Page 2 ---
+Will link QR 2024OSCAR_CC_20260620_3 to the Gary Teh submission planted 2025-07-11.
+Gary Teh · planted 2025-07-11 · 44.560058, -123.262181
+Link Tree Planting
+Mark Invalid
+looks like the insight of a restaurant
+Mark Invalid flips the SunMint submission to INVALID (governor-only). It does NOT change the QR code status, book ledger entries, or email the owner.
+Submission failed:
+Signed request:
+[TREE PLANTING REJECT EVENT]
+- QR Code: 2024OSCAR_CC_20260620_3
+- SunMint Submission Message ID: 171
+- Updated by: Gary Teh
+- Reason: looks like the insight of a restaurant
+--------
+48
+8/20/26, 4:48 PM
+Link Tree Planting · TrueSight DAO
+https://beta.dapp.truesight.me/link_tree_planting.html
+2/3
+
+--- Page 3 ---
+My Digital Signature: 
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvjz65oTPCrTi5EtWlj08s/zjCI/tunYgccy3uPI7VH+b89IsRHcERebdiLivk19w4S0uE2CGDaoAhWoC6
+Request Transaction ID: 
+QyjyT0xXdBbgqlWBqlwco6pQH25J8MFOhs7i6fzBCv3WZ4x2gPllL49nXnougHnFtQHBFocRl+HTUyfn0xL3HLCadIELyZdWGhkeEY5wP0aZ25mB3sWQy3Lkd3iSi
+This submission was generated using https://beta.dapp.truesight.me/link_tree_planting.html
+Verify submission here: https://dapp.truesight.me/verify_request.html
+Server response:
+{
+  "status": "ok",
+  "signature_verification": "no_signature_format",
+  "fileUploadedToGithub": false,
+  "emailRegistration": null
+}
+Reload Latest Version
+View Source Code
+48
+8/20/26, 4:48 PM
+Link Tree Planting · TrueSight DAO
+https://beta.dapp.truesight.me/link_tree_planting.html
+3/3
+```
+
+
+### 🤖 Autopilot
+
+Gary's PDF shows the exact failure: the dapp POSTed a `[TREE PLANTING REJECT EVENT]` and Edgar replied `"status": "ok", "signature_verification": "no_signature_format"` — the server accepted the HTTP call but couldn't verify the signature, so the event wasn't processed. Let me find where Edgar emits `no_signature_format` and how the dapp's submit functions build the envelope.
+
+
+### 🤖 Autopilot
+
+Found the error source — `dao_controller.rb` emits `no_signature_format`. Let me read how Edgar parses signatures there and compare `submitReject()` vs `submitLink()` payloads in the dapp:
+
+
+### 🤖 Autopilot
+
+`submitReject()` mirrors `submitLink()` exactly — so the failure is server-side signature parsing, not the dapp code shape. The `dao_controller.rb` read 404'd on ref `main` — let me fetch it at the commit the search found, and check what `API_ENDPOINT` the dapp posts to:
+
+
+### 🤖 Autopilot
+
+The controller read landed in an artifact. The key detail: the dapp posts to `window.Routes.edgar.submit` (not the Rails controller directly) and the helper class is loaded from a shared JS file. Let me read the controller's signature-verification logic from the artifact and find the actual signature parsing:
+
+
+### 🤖 Autopilot
+
+The server said `no_signature_format` — meaning the **text it received** lacked the `--------` / `My Digital Signature:` / `Request Transaction ID:` markers, even though the PDF shows the payload had them. Key question: which server actually handled it. The dapp uses `window.Routes.edgar.submit` from `routes.js`. Let me check that + find the real code emitting `signature_verification` in dao_protocol:
+
+
+### 🤖 Autopilot
+
+The dapp posts to `https://edgar.truesight.me/dao/submit_contribution` (the Rails controller we're reading — sentiment_importer is the "edgar" backend). The `no_signature_format` comes from that controller's guard: it checks `text.include?("--------") && text.include?("My Digital Signature:") && text.include?("Request Transaction ID:")`. The PDF's "Signed request" shows those markers — but the **actual POSTed `text`** apparently didn't. Let me see the rest of the controller (how it renders the response + where `signature_verification` becomes the JSON field) and the helper's payload format:
+
+
+### 🤖 Autopilot
+
+The helper builds `payload` (ends with `--------`) and `shareText` (which includes the `My Digital Signature:` + `Request Transaction ID:` blocks). The dapp POSTs `{ text: payload, ... }` — but the controller's `no_signature_format` guard requires all three markers (`--------` **and** `My Digital Signature:` **and** `Request Transaction ID:`), which only exist in `shareText`. That looks like the bug. Let me confirm what a working page posts, and read the rest of the controller (what it does after the guard):
+
+
+### 🤖 Autopilot
+
+The controller's guard requires **all three markers** (`--------` + `My Digital Signature:` + `Request Transaction ID:`) — but the dapp posts `text: payload` (which only ends with `--------`), same as the other pages. Yet the response was `status: "ok"` with `no_signature_format` — meaning the server likely **processed it anyway** (the verification is "for debugging without disrupting UX"). Let me read the controller's tail (what it renders + whether it gates processing) and check whether the REJECT actually landed in the sheets:
+
+
+### 🤖 Autopilot
+
+Root cause found. The SunMint row (msg 171) is still `NEW` — the REJECT **never landed**. The dapp posts `text: payload` (only `[TREE PLANTING REJECT EVENT]\n- QR Code: ...\n--------`), but the controller's `no_signature_format` guard requires the payload to also contain `My Digital Signature:` and `Request Transaction ID:` — those markers only exist in `shareText`, which the dapp never sends. Every page posts `text: payload`; the guard is checking for the **share-text format** — so this page's submission (and any submit via this pattern) never gets processed.
+
+Let me read the controller's tail to confirm exactly what happens post-guard (is `signature_verification == 'no_signature_format'` treated as failure?), then I'll know the precise fix:
+
+
+### 🤖 Autopilot
+
+The nested artifacts are eating rounds. Let me get the controller tail + check whether the submission even reached the raw-log sheet the GAS cron scans, in one shot:
+
+
+### 🤖 Autopilot
+
+The commit ref path 404'd (likely renamed). Let me fetch via the GitHub API (default branch) and check whether the submission reached the raw-log sheet the GAS cron scans:
+
+
+### 🤖 Autopilot
+
+`dao.rb` is 0 lines — curl is failing silently. Let me use the org code-search result path from before and try the GitHub API with the right branch name, checking the actual repo default branch:
+
+
+### 🤖 Autopilot
+
+The `sentiment_importer` repo isn't accessible via API from this box (private + no creds for it), but `read_repo_file` worked earlier at the specific commit. The `no_signature_format` string is in that controller — the guard is definitive. Let me use `read_repo_file` at the working commit to read the controller's tail, and separately confirm the dapp fix needed by comparing with how other pages handle the response. Let me get the controller tail via read_repo_file:
+
+
+### 🤖 Autopilot
+
+Let me check two decisive things: (1) did the REJECT text land in the sheet the GAS cron scans, and (2) how the GAS handler resolves the signer (does it need the full signature block in the text?).
+
+
+### 🤖 Autopilot
+
+Root cause is now **confirmed** with full evidence:
+
+1. **The REJECT never landed anywhere** — `Telegram Chat Logs` has zero rows containing the marker, and the SunMint row is still `NEW`.
+2. **The GAS handler needs the full share-text format to resolve the governor** — it parses `My Digital Signature:` (line 193) and `Request Transaction ID:` (line 174) from the text to resolve the signer via `resolveContributorNameFromPublicSignature_` → `isGovernorByName_` (lines 348-350). **Without the signature block, even if the row landed, it would be rejected as "not a governor".**
+3. **The dapp only sends `text: payload`** — `payload` ends with `--------` but has **no** `My Digital Signature:` / `Request Transaction ID:` blocks (those live only in `shareText`, which the dapp displays but never POSTs). The controller's `no_signature_format` guard confirms this is the exact miss.
+
+So the failure is a **format mismatch in the POST body**: the server + GAS handler expect the full signed share-text (payload + signature blocks), but the page sends just the bare payload. Every page does this (`update_qr_code.html` line 1167 also sends `text: payload`), but this event's handler is the first to *require* the signature to resolve the actor — so it fails.
+
+**The fix (dapp_beta PR):** post `text: shareText` instead of `text: payload` in `submitLink()` and `submitReject()` on `link_tree_planting.html` (the `shareText` is exactly the full signed request with the `--------`, `My Digital Signature:`, `Request Transaction ID:` blocks). The controller will then see the full format, verify the signature, and the GAS handler will resolve Gary as governor and process the link/reject. Let me open the PR:
+
+
+### 🤖 Autopilot
+
+The tool needs the actual edit. Let me apply the two line changes (payload → shareText) with a proper edits list:
+
+
+### 🤖 Autopilot
+
+I dropped the required top-level fields when I switched to the edits list. Retrying with all of them:
+
+
+### 🤖 Autopilot
+
+The search string doesn't match — likely whitespace or the em-dash differs. Let me pull the exact bytes of both fetch blocks from main:
+
+
+### 🤖 Autopilot
+
+The file matches my search (the `payload` string is exact) — the tool's fresh clone may be based on a stale/other ref, or the em-dash (M-bM-^@M-^T = UTF-8 `—`) in my search string got mangled in transit. Let me use `replace_all`-style minimal hunks that avoid the em-dash entirely — just the single line `body: JSON.stringify({ text: payload, ...})`:
+
+
+### 🤖 Autopilot
+
+PR opened. Let me verify the branch actually has both changes (`text: shareText` in both submit functions, not just one) before reporting:
+
+
+### 🤖 Autopilot
+
+Both POSTs now send `shareText` (2 occurrences, 0 remaining bare-payload) — the grep for line numbers exited nonzero only because the third `grep -n` found nothing to print after the counts (actually it should have; the nonzero is from the last grep matching nothing on `text: shareText` without the full string — not a problem, the counts confirm it). 
+
+**Root cause found and fixed.**
+
+## What was wrong
+
+The dapp was POSTing `{ text: payload }` — just the event lines ending in `--------`. But both the Edgar server (`dao_controller.rb` guard → `no_signature_format`) **and** the GAS handler (`process_tree_planting_link.js` lines 172–193) require the **full signed share text** — which includes `My Digital Signature: <public_key>` and `Request Transaction ID: <signature>` — to (a) pass the format guard and (b) resolve the signer → governor check. Without it: `no_signature_format` on the server, and even if the row landed the handler would log "signer is not a governor".
+
+**Verified the failure was real:** `Telegram Chat Logs` has zero REJECT rows; SunMint row (msg 171) is still `NEW` — the event never landed.
+
+## The fix
+
+**dapp_beta #70** (`fix/link-tree-planting-post-sharetext`, commit `0092303`): both `submitLink()` and `submitReject()` now POST `text: shareText` (the full signed request the helper already builds) instead of the bare `payload`. The `request_transaction_id` field is unchanged (dedup still works). Verified on the branch: **2× `shareText`, 0× bare `payload`**.
+
+## RESUME HERE →
+
+1. **Merge dapp_beta #70** (auto-deploys to beta) — then retry on `beta.dapp.truesight.me/link_tree_planting.html`: pick `2024OSCAR_CC_20260620_3` + submission msg 171 → **Mark Invalid** (with your reason). It should now return `signature_verification: success` and the SunMint row should flip to `INVALID`.
+2. **Important — Link still needs your RUN go** (ledger money-movement gate). Mark Invalid is safe; Link books the ledger pair + emails the owner, so only do it when you're ready to authorize the first real link.
+3. If anything else fails, the next diagnostic is the GAS `Logger.log` (View → Logs in the `1UrBg…` project) — the handler logs the governor-resolution result.
+
+**✅ Done this turn:** diagnosed the exact failure (format mismatch — bare payload vs full signed share text), confirmed the event never landed, fixed via dapp_beta #70 (both submit functions POST `shareText`), verified 2/0 on the branch. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → grep'd helper + controller guard + handler signer-resolution; read controller tail; scanned Telegram Chat Logs (0 REJECT rows) + SunMint row 171 (still NEW); verified branch has 2× shareText / 0× payload
+• `git push changes` → dapp_beta #70 (commit 0092303)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/link_tree_planting.html" -o ltp.html && echo "=== submitRe; cd /tmp && echo "=== submitLink (430-505) ===" && sed -n '430,505p' ltp.html && echo "=== submitReject (505-580) ===" && sed -n '505,580p' l; cd /tmp && echo "=== API_ENDPOINT + EdgarPayloadHelper def ===" && grep -n "API_ENDPOINT\s*=\|const API_ENDPOINT\|class EdgarPayloadHelper\|; …(+12 more)
+
