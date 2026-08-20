@@ -559,6 +559,7 @@ jsDelivr is serving the **new** IVY cache, the web manifest is live on prod, and
 ### 🤖 Autopilot
 
 Per-program cert PDF 404 is **expected** — `program_assets/` in lineage-engine only has `butterfly-effect` + `tribomirim` (no `ivy-yoga`), so `_render_program_certificate` warn-and-skips (IVY's certificate rendering is gated on PR3, pending your fee/branding decision). Let me confirm the registry mapping + the MD artifact to close the verification:
+[2 tool result(s) compacted: read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -730,4 +731,162 @@ That's everything executable on this arc until your PR3 decisions land — the c
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #19 on lineage-engine merged successfully (sha: ccf85d31565829bb6cbe3f1287e93346f3c11e2c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] do a dummy test from inserting new record on that google sheet until sign in until click to attest and verify that it is showing in our registry
+
+
+### 🤖 Autopilot
+
+Full dummy E2E test: insert roster row → sign in → attest → verify registry. Let me first map the exact flow — how the admin console reads the roster and submits attestations, and the roster sheet's schema:
+
+
+### 🤖 Autopilot
+
+The roster already has a QA E2E instructor (with `pk_hash pk-LaDRlxRBcvN6` — the sample from the earlier test). For a **fresh** dummy test I need to understand the full mechanics: how the admin console reads the roster, how attestation submits, and how it lands in the registry. Let me read the console's JS (from the earlier fetch) and the server-side GAS endpoint:
+
+
+### 🤖 Autopilot
+
+Now I understand the architecture. The flow is: roster row → admin console (browser, WebCrypto) → signed `[CREDENTIALING ATTESTATION EVENT]` → Edgar → GAS handler verifies attestor → commits to lineage-credentials → build regenerates cache → registry page. To run a genuine dummy E2E I need to see (a) what the previous QA test produced in lineage-credentials, (b) the rest of the console's attestation code, (c) the handler's authority verification, and (d) which mailbox the sign-in verification email lands in:
+
+
+### 🤖 Autopilot
+
+Full E2E dummy test: insert roster row → sign in → attest → verify registry. Let me first map the executable path — read the rest of the console's sign-in/attest code, the GAS handler's processing flow, and check what browser automation is available on the boxes:
+
+
+### 🤖 Autopilot
+
+Playwright (Python) is available on **nelanco-claude** — that's our browser automation path. Now let me get the rest of the admin console's sign-in/attest handlers, the GAS processing function, and check which mailbox receives verification emails + whether the SA has sheet write access:
+
+
+### 🤖 Autopilot
+
+Tooling is ready: Python **Playwright + Chromium** and **gspread** both work on nelanco-claude, and the IVY SA key + Gary's OAuth tokens are there. Now I need the exact sign-in/attest mechanics (rest of console JS), the GAS commit path, the existing test credential's structure (so my dummy lands identically), and which mailbox receives verification mail:
+
+
+### 🤖 Autopilot
+
+Key finding: verification emails land in the **admin mailbox** (`admin@truesight.me`), and the earlier test already registered `admin@truesight.me` via this exact flow (9 emails Aug 19–20). Now I need the full console JS in one clean read (the nested artifacts are getting unwieldy), the existing credential's identity.json, the **current** sheet editor list (is admin@truesight.me an editor?), and write access for inserting the dummy roster row:
+
+
+### 🤖 Autopilot
+
+Everything is confirmed for the E2E: **admin@truesight.me is a roster-sheet editor** (trust circle), the SA **can write** the sheet (1000-row capacity), and verification emails go to the **admin mailbox** which I can read. The earlier test already registered admin@truesight.me.
+
+Now let me read the console's actual sign-in + attest JS (the part after the header) and the GAS handler's commit flow to know exactly what the attest button submits:
+
+
+### 🤖 Autopilot
+
+Getting closer — I now have the sign-in flow (keygen → `?em&vk` verification link → EMAIL VERIFICATION EVENT). Let me read the rest: the boot/identity resolution and the attest button handler — the exact payload shape I need to reproduce:
+
+
+### 🤖 Autopilot
+
+I have the full flow now. Before building the E2E, let me confirm the exact attestation submission format by reading the GAS handler's processing section (what it parses + commits) and check the manifest's credential URL template + whether a prior attestation already exists for the sample:
+
+
+### 🤖 Autopilot
+
+One attestation already exists for the sample (from the earlier broken-UI test — it committed but never rendered; now it renders). For a **fresh** dummy E2E I need the attest-button handler — the exact payload it builds. Let me read the tail of the console HTML (the queue/attest JS):
+
+
+### 🤖 Autopilot
+
+I now have the complete console flow. One critical detail to confirm before running the dummy E2E: what makes a roster row appear in the **pending queue** (`list_pending_rows` criteria) and how the GAS handler commits. Let me read the full GAS endpoint file in one clean fetch:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the GAS handler — the `process_attestation_events` function that actually verifies and commits:
+
+
+### 🤖 Autopilot
+
+I now have the complete picture. The E2E is fully mapped — the flow is: roster row (pending = status not in {processed, certificate_issued}) → admin console sign-in (keygen → EMAIL REGISTERED EVENT → verification email → EMAIL VERIFICATION EVENT) → Attest (CREDENTIALING ATTESTATION EVENT) → Edgar → GAS handler → lineage-credentials commit → build → cache.
+
+Let me check the existing attestation JSON to model the expected commit, confirm the manifest, and then write the actual E2E driver script. First the existing attestation + manifest + whether Gary's gmail has old verification links:
+
+
+### 🤖 Autopilot
+
+I have the full attestation payload shape and manifest. Let me read the rest of the GAS processing loop to confirm how attestor authority is resolved (key→email mapping) before building the E2E driver:
+
+
+### 🤖 Autopilot
+
+I have the complete flow mapped. This is a **live E2E test with dummy data** (same pattern as the existing "QA E2E Test Instructor" row). Executing now. First: check the roster's full header row (status/audit columns), confirm the pending-queue endpoint sees rows, and check whether the build workflow auto-triggers on push:
+
+
+### 🤖 Autopilot
+
+I have the complete flow mapped. Executing the dummy E2E now — **Phase A: insert a fresh dummy roster row** (matching the existing test-row pattern; explicitly authorized dummy data):
+
+
+### 🤖 Autopilot
+
+Dummy row inserted at sheet row **4**. Now let me confirm the GAS `list_pending_rows` endpoint sees it (so the console queue will show it), and read the latest verification email's link so the Playwright sign-in can consume it:
+
+
+### 🤖 Autopilot
+
+The dummy row appears in the pending queue (sheet row **4**). Now **Phase B: browser sign-in** — I'll drive the real admin console with Playwright: load the page, enter `admin@truesight.me` (a roster editor), generate the keypair, trigger the EMAIL REGISTERED EVENT, then capture the fresh verification link from the admin mailbox to complete sign-in:
+
+
+### 🤖 Autopilot
+
+Sign-in initiated — keypair generated, EMAIL REGISTERED EVENT fired, verification email sent. Now let me fetch the fresh verification link from the admin mailbox and complete the sign-in:
+
+
+### 🤖 Autopilot
+
+Fresh verification link captured (03:31:11, `vk=fJoIiJ2...`). Now completing sign-in: seed the saved keypair into a browser context, consume the verification link (fires EMAIL VERIFICATION EVENT), and confirm we land in admin mode with the dummy row in the queue:
+
+
+### 🤖 Autopilot
+
+The goto timed out on networkidle — likely because the verification link triggers an Edgar submission + reload that never settles to networkidle. Let me retry with a shorter, more resilient wait (domcontentloaded + explicit sleep):
+
+
+### 🤖 Autopilot
+
+**Sign-in complete — ADMIN mode verified** (`truesight-autopilot`, STATUS VERIFIED), and the queue shows my dummy row (row 4) as pending. Now **Phase C: click Attest** on the Dummy E2E row — this fires the signed CREDENTIALING ATTESTATION EVENT through Edgar:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — here's where the dummy E2E stands:
+
+## ✅ Done so far (live, real stack — dummy data only)
+
+| Phase | Result |
+|---|---|
+| **A. Insert roster row** | ✅ "Dummy E2E Test (Sophia)" appended at sheet row **4** (SA write worked); shows as **pending** in `list_pending_rows` |
+| **B. Sign in** | ✅ Playwright on nelanco-claude drove the real console: keypair generated → `EMAIL REGISTERED EVENT` → verification email read from admin mailbox → `EMAIL VERIFICATION EVENT` consumed → **ADMIN mode confirmed** (truesight-autopilot, STATUS VERIFIED) |
+| **C. Attest** | 🔶 **Click fired** on the Dummy E2E row (`clicked:1`) — but the queue re-rendered to "Loading queue…" before I could read the submission state (the console's 8s-delayed refresh kicked in mid-read). No confirmation yet that the `[CREDENTIALING ATTESTATION EVENT]` landed in Edgar → Telegram Chat Logs → GAS handler → lineage-credentials. |
+
+## What's still blocking / next verification steps
+
+1. **Confirm the event reached Edgar/TCL** — check the `Credentialing Attestation Events` intake tab (status PENDING/PROCESSED) and/or Telegram Chat Logs for the new `[CREDENTIALING ATTESTATION EVENT]` row.
+2. **Trigger processing if needed** — the panel's "Process pending events" button (or hit `process_attestation_events` on the central GAS endpoint) to commit identity.json + attestation JSON to lineage-credentials.
+3. **Verify the registry commit** — new `programs/ivy-yoga/pk-<new-hash>/` dir appears; build workflow auto-runs on push (confirmed workflow triggers on `programs/**`).
+4. **Verify rendering** — `_cache/cv/*.json` regenerated + jsDelivr purged → credential shows at `truesight.me/programs/ivy-yoga/credentials/#pk-<hash>` (the "showing in our registry" acceptance).
+5. **Note:** the dummy row will be back-filled to `status=processed` with pubkey/pk_hash/profile_url (exactly like the earlier "QA E2E Test Instructor" row) — that's the expected end state, and it's explicitly dummy data.
+
+## RESUME HERE → next turn
+
+Pick up at **Phase D: verify the attestation pipeline** — (1) read the `Credentialing Attestation Events` intake tab + Telegram Chat Logs for the new event, (2) if PENDING, hit `process_attestation_events` via the panel/GAS, (3) confirm the lineage-credentials commit for the new `pk-` hash, (4) wait for the build run + jsDelivr purge, then (5) confirm the dummy credential renders on the public credentials page. The keypair is saved at `/tmp/ivy_e2e_pub.txt` + `/tmp/ivy_e2e_priv.txt` on nelanco-claude, and the dummy row is at roster sheet row 4.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== autopilot node/playwright ==="; which node npx python3 2>/dev/null; node -e "try{require.resolve('playwright');console.log('playwr; ssh -o ConnectTimeout=10 nelanco-claude 'echo "=== SA key ==="; ls -la ~/ivy_yoga_google_private_key.json 2>/dev/null; ls ~/*.json 2>/dev/nu; ssh -o ConnectTimeout=10 nelanco-claude 'cd /tmp && python3 -c " import gspread, json gc = gspread.service_account(filename=\"/home/ubuntu/i; …(+5 more)
 
