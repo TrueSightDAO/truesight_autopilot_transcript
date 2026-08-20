@@ -234,11 +234,13 @@ Which way do you want to go?
 ### 🤖 Autopilot
 
 The trigger fired again without naming a plan. Before stopping again, let me do a deeper sweep for any plan that's genuinely ready to auto-start (an `Auto-start: yes` marker, a handoff naming the next unit, or remaining manifest rows I haven't seen).
+[3 tool result(s) compacted: search_context, check_handoffs, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest is dense — let me read the remaining rows (the tail I haven't seen) and the Sophia handoff protocol's auto-start section to be thorough before deciding.
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -393,4 +395,23 @@ I've pinned a note so this decision survives context trims, and I'll keep treati
 - **"SunMint UAT"** → prep in 11596, but final go is yours (books the ledger + emails owner).
 
 Otherwise, I'm parked here continuing the research thread — happy to go deeper on the ocean-plastic barge question whenever you want (economics, Manta status, or a concept brief).
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Holding the line — this is the 5th identical trigger, and nothing has changed since the last check minutes ago.
+
+**No-op confirmed (5x):** thread 11973 has no attached plan; every active plan lives in its own topic; this thread is research-only. The protocol's fail-closed rule means I do **not** manufacture a unit or grab a random PR just because the ping repeats — opening and merging an arbitrary "fix" with no plan behind it would be the ungrounded action this gate exists to prevent.
+
+To flip me from no-op to execution, name one plan in your next message:
+- **Farm/Shipment Media JSON** → PR0 in 11590 (beta, self-merge OK)
+- **QR Self-Serve Currency** → PR1 in 7611 (PR only, you merge)
+- **SunMint UAT** → prep in 11596 (final go is yours — books ledger + emails owner)
+
+If these AUTO-ADVANCE pings are automated and you'd like them to stop landing here, that's likely a trigger-config issue on the sender side — worth a check, since there's genuinely nothing for them to advance in this thread. Meanwhile I remain available here for the ocean-plastic research whenever you want to go deeper.
 
