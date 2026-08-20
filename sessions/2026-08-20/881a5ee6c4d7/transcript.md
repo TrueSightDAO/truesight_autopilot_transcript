@@ -312,3 +312,28 @@ Want me to:
 1. Verify the QR batch pipeline's output format against the Rollo driver (check `AGROVERSE_QR_CODE_BATCH_GENERATION.md` + batch compiler) to confirm zero-rework compatibility?
 2. Save the recommendation as a sourcing note in `market_research/` or `agentic_ai_context` so it's on record for the Brazil team?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] what is the link to buy that?
+
+
+### 🤖 Autopilot
+
+Here you go — the links I found in the live search results:
+
+**1. Rollo X1038 USB (the one I recommend — same as US model, wired)**
+🔗 https://www.mercadolivre.com.br/impressora-termica-rollo-x1038-etiquetas-4x6-polegadas-usb/p/MLB2026873362
+→ ~R$ 636 · 203dpi · USB · 4×6" (handles your 4×2" = 101×50mm stock too)
+
+**2. Rollo wireless (Bluetooth, AirPrint) — pick this if your US units are wireless**
+🔗 https://produto.mercadolivre.com.br/MLB-4546576465-impressora-de-etiquetas-sem-fio-rollo-thermal-4x6-airprint-w-_JM
+→ ~R$ 662 · same printer, Bluetooth/Wi-Fi
+
+**3. Rollo X1040 Wi-Fi (newer model)**
+🔗 https://www.mercadolivre.com.br/impressora-termica-rollo-x1040-wi-fi-etiquetas-4x6-polegadas/p/MLB2066334486
+
+⚠️ Caveats:
+- Mercado Livre blocks automated page-fetching, so I can't verify price/stock/seller *live* — these are from current search results and will drift. Click through to confirm the seller rating, freight, and bivolt (127/220V) before buying.
+- If you tell me whether your US printer is **USB or wireless**, I can tell you definitively which link to order (1 vs 2).
+
