@@ -1001,11 +1001,13 @@ Found it — the branch is `feat/oscar-cacao-tea-50g-100-qr` and we're already o
 ### 🤖 Autopilot
 
 The `gh` version doesn't accept `--yes`. Retrying with the correct flag set:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merge ran (the output shows the squash-merge diff landing all 100 pngs + 100 qrs on main). Verifying final state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1052,31 +1054,37 @@ https://beta.agroverse.shop/category/retail-packs/index.html
 ### 🤖 Autopilot
 
 Good question — let me check the actual beta category page and whether the tea card is listed there (I merged the PDP + farm + shipment cross-lists, but the **retail-packs category index** may need its own card).
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The beta category page is live (200), but I need to verify whether the **tea card** actually appears on it. Let me check the full page content for the product cards:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page body is large — let me find the actual product grid section to confirm whether the tea card is present:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The category page shows only the 200g ceremonial cacao cards so far. Let me see the rest of the grid to confirm whether the tea card is anywhere on it:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The beta category page is live, but I can see the product grid only contains the three existing 200g cacao cards — no tea card. Let me verify the PDP itself is live on beta so I can point you to the right URL:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDP **is live on beta** — but not on the retail-packs category page yet. Let me fix that: I cross-listed the tea on the farm and shipment pages, but not the `category/retail-packs/` index. Reading the category page source to add the card:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1210,4 +1218,47 @@ Want me to ping you when the watcher fires, or will you check the beta URL yours
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== MAIN (raw github) tea card? ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/category/retail-; echo "=== Pages deployments (latest 5) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/pages/deployments?per_pa
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] yup
+
+
+### 🤖 Autopilot
+
+Quick check — has the beta rebuild caught up?
+
+
+### 🤖 Autopilot
+
+## 🎉 Beta is live — everything's up
+
+| Check | Beta URL | Status |
+|---|---|---|
+| **Retail-packs category** — tea card now renders | `beta.agroverse.shop/category/retail-packs/` | ✅ **Card present** (grep = 1) |
+| **PDP** — 50g cacao tea page | `beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` | ✅ 200 |
+| Farm cross-list (Oscar's Farm page) | merged #198 | ✅ on beta |
+| Shipment cross-list (AGL4 page) | merged #199 | ✅ on beta |
+
+The GH Pages rebuild caught up. You should now see the **"Cacao Tea (50g) – Oscar's Farm, Bahia Brazil, 2024"** card in the retail-packs grid — no price, no buy button, with "Available in person · Each packet carries a unique QR code."
+
+### UAT checklist — all green ✅
+- [x] Currency record (Main Ledger Currencies #131)
+- [x] SKU record (Agroverse SKUs #15)
+- [x] 100 QR codes (rows #1678–1777, MINTED)
+- [x] 100 labels + manifests → lineage-assets main
+- [x] Zip of 100 labels → this chat (msg 11773)
+- [x] PDP live on beta (no price/buy)
+- [x] Category card live on beta
+- [x] Farm + shipment cross-lists on beta
+
+### Only step left: **promote to production**
+Nothing is on **www.agroverse.shop** yet — all of it is beta-only, per the beta-first flow. Say the word (**"promote to prod"** / **"sync to prod"**) and I'll run `sync_beta_to_prod(agroverse_shop_prod)`. After that, www.agroverse.shop will show the same PDP + cards, and the 100 QR codes' landing page (`agroverse.shop/shipments/agl4`) will resolve correctly for scanning.
+
+One thing to confirm before promo: the category page + PDP currently link to `agroverse.shop/...` canonical URLs — the beta CNAME intentionally differs, so after the sync the links resolve to prod as designed. Ready when you are.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== BETA retail-packs: tea card present? ==="; curl -s "https://beta.agroverse.shop/category/retail-packs/index.html" | grep -c "oscar
 
