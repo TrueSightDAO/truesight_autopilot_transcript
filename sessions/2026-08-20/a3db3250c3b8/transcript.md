@@ -2687,11 +2687,13 @@ The search didn't match — let me pull the exact photo-render block from main:
 ### 🤖 Autopilot
 
 The actual code uses `capEl` (not `photoCaptionEl`) and has a different structure. Retrying the edit with the exact text:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Let me verify the branch has the fallback wired correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2950,4 +2952,69 @@ The AUTO-ADVANCE points at **RUN (first live link)** — but per the plan's §2/
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What if you injected a fake entry via 
+
+https://sunmint.truesight.me/
+
+And then marked that entry as invalid later as an end to end test case??
+
+
+### 🤖 Autopilot
+
+That's a great idea — and it's the **right way to do E2E without touching the gates**, because **Mark Invalid is explicitly safe** (per the handler: does NOT change QR status, does NOT book ledger entries, does NOT email the owner). So this tests the whole pipeline — submission → sheet → cache → dropdown → invalid → gone — without any money movement.
+
+Let me verify the mechanics: how sunmint.truesight.me submits, whether I can inject the fake entry server-side, and how it lands in the sheet.
+
+
+### 🤖 Autopilot
+
+That's an excellent idea — and it's the **right way to run the E2E without tripping the money gate**, because Mark Invalid is explicitly safe (no QR change, no ledger booking, no owner email). It exercises the whole loop: submission → sheet → cache → dropdown → Mark Invalid → gone.
+
+Before I commit to it, I need to confirm **how a sunmint.truesight.me submission actually lands in the SunMint tab** (Telegram ingestion vs Edgar raw-log), so the fake entry truly shows up in the dropdown. Let me check the web app's submit JS and the ingestion script's input source:
+
+
+### 🤖 Autopilot
+
+Let me pin down exactly where the sunmint web app POSTs its signed submission (so I know if a server-side injection can reach the SunMint tab at all):
+
+
+### 🤖 Autopilot
+
+The web app POSTs a multipart `[TREE PLANTING EVENT]` to Edgar (`edgar.truesight.me/dao/submit_contribution`), but the link page's dropdown reads the **SunMint tab**, which is fed from **Telegram Chat Logs** — so I need to check whether a web-app submission ever reaches the SunMint tab (is there an Edgar→sheet ingestion?), or whether the dropdown only ever sees Telegram-ingested rows.
+
+
+### 🤖 Autopilot
+
+I've confirmed the **ingestion topology** — and it changes the shape of the E2E test:
+
+**How the SunMint tab gets fed (the dropdown's source):**
+- The SunMint tab is populated **only by `processTelegramLogs()`** (GAS cron on the `1Jp8qNI…` project), which scans the **"Telegram Chat Logs" tab** for new `[TREE PLANTING EVENT]` messages posted by the farmer-bot into the DAO Telegram chat.
+- **The sunmint web app (`sunmint.truesight.me`) does NOT feed the SunMint tab.** It POSTs a signed multipart `[TREE PLANTING EVENT]` to `edgar.truesight.me/dao/submit_contribution` (the Rails controller) — that lands in Edgar's submission log, **not** the Telegram log / SunMint tab. So a web-app submission alone **won't appear in the dropdown** unless there's an Edgar→Telegram→sheet bridge (none found in this project).
+
+**So the cleanest fake-entry injection that *will* show in the dropdown is a direct SunMint-tab append** (via the same SA I've been using for the cache), with:
+- A unique **Telegram Message ID** (e.g. `90001` — the dedup key)
+- `Status = NEW`, a fake but public photo URL, name, lat/lng, species, date
+- No signature needed (the tab doesn't require one for a row to exist — only the link/reject **handler** validates governor signatures on the *event*, not on tab rows)
+
+**Then the E2E:** inject fake row → run `sync_pending_caches.py --push` (or wait ≤30 min cron) → the fake shows in the dropdown as `#90001 · …` → Gary clicks **Mark Invalid** → handler flips it to `INVALID` (safe: no QR, no ledger, no email) → next cache regen drops it → **gone, persistently.**
+
+This tests: injection path, cache sync, dropdown rendering, unique-ID, signature-gated reject, INVALID flip, cache drop — the **whole pipeline except the actual Link (money-movement)**, which stays gated.
+
+**One catch to flag:** because the fake row bypasses the Telegram real-message path, it's a test row — I'd **clean it up** (delete the row + purge from cache) after the test so it never shows in production data.
+
+**Your call — two options:**
+- **Option A (recommended):** I inject the fake row into the SunMint tab now, push the cache, and you do the Mark Invalid on beta; I verify + clean up after.
+- **Option B:** You do the full real-path injection by posting a `[TREE PLANTING EVENT]` via the Telegram bot into the DAO chat yourself, wait for the GAS cron to ingest it, then Mark Invalid — truer to production but slower and involves the real chat.
+
+Say **"go A"** (or **"go B"**) and I'll execute. Either way, the real **Link** stays gated on your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== sunmint GAS project files (1Jp8qNI) ===" && ls -la /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmO; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== pro; cd /tmp && curl -s "https://sunmint.truesight.me/" -o sunmint.html && echo "=== fetch/endpoint calls in sunmint web app ===" && grep -oE "(f; …(+1 more)
 
