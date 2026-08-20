@@ -17,17 +17,25 @@
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Good first pass — I have some leads. Let me dig deeper on specific projects building vessels/structures *from* recycled plastic.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good coverage forming. Let me verify the biggest named projects and check whether anyone builds actual cargo barges (vs. small boats/pontoons) from this material.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong leads. Let me chase the most relevant one — a pilot cargo barge float test — plus the "Recycled Island" floating park project and any other barge-scale efforts.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -146,4 +154,54 @@ Want me to:
 1. **Dig into Kubik's tech/process specs** (what a barge-grade hull would need, feedstock requirements)?
 2. **Contact NCA Ethiopia / Kubik** to explore a partnership or pilot for the DAO?
 3. **Draft a concept brief** (plastic-waste barge for river logistics in cacao regions, modeled on Kubik + Eco Brixs)?
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+[AUTO-ADVANCE] Understood — but I need to be careful here: this conversation has no defined plan units so far (we were doing plastic-barge research, not executing a code plan). Let me check the backlog and open PRs to find what "the next unit" refers to before touching anything.
+
+
+### 🤖 Autopilot
+
+The auto-advance protocol lives in `plans/SOPHIA_AUTO_ADVANCE_PLAN.md`, and the active plan has a `RESUME HERE` pointer. Let me read the protocol and find the active plan tracker.
+
+
+### 🤖 Autopilot
+
+This thread was doing plastic-barge **research**, not executing a plan — so "the next unit" isn't obvious. Per the protocol, ambiguity about *where I am* fails closed (no guessing). Let me check the master operating instructions and the handoff manifest to identify the active plan for this thread.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE instruction requires me to find which plan is attached to **this** thread (11973). Let me search for that thread ID.
+
+
+### 🤖 Autopilot
+
+I've hit the ambiguity gate and I'm **stopping rather than guessing** — that's the correct behavior per the auto-advance protocol (§2a, item 3: *"Can't locate the next unit — no RESUME HERE, unit not found → fails closed"*).
+
+## What I checked
+1. **`plans/SOPHIA_AUTO_ADVANCE_PLAN.md`** — the auto-advance protocol. A proper trigger names the plan (`Execute the next PR (RESUME HERE) in <plan>`). This message names no plan.
+2. **`handoffs/HANDOFF_MANIFEST.md`** — the single source of truth for active plans/handoffs. Several are active, but **none is tied to thread 11973**:
+   - SunMint → QR tree-link (thread 11596) — at UAT gate, needs your explicit go
+   - Farm/Shipment Media JSON (thread 11590) — parked GO-ready, RESUME HERE = PR0
+   - White-label Phase 2 — runner is nelanco-claude, not Sophia
+3. **`search_context("11973")`** → **0 matches**. No plan, tracker, or handoff references this thread ID.
+4. **This thread's actual content** — the last several turns were **plastic-barge market research** (Ethiopia tech: Kubik, EON, NCA Gambella Eco Boat, etc.). No PR plan was ever created or attached to it.
+
+## Why I won't just pick something
+- There are **19 open PRs** on `truesight_autopilot` and multiple active plans — picking one at random would be exactly the kind of ungrounded guess the fail-closed rule exists to prevent.
+- **Own-repo gate:** `truesight_autopilot` PRs are explicitly **never self-merged** (human reviews + merges) — so even if the "next unit" were in that repo, "open and merge yourself" wouldn't apply there.
+- Your instruction also says "never deploy to production" — noted and respected; nothing here is near a deploy anyway.
+
+## What I need from you (one of)
+1. **Which plan should I execute next?** Name it (e.g. "Farm/Shipment Media JSON — PR0"), and I'll pick up its RESUME HERE unit, open + merge the PR (self-merge OK for beta repos per the go-on-plan authorization), report the contribution, then stop.
+2. If this AUTO-ADVANCE was a **misfire** (no plan intended — this thread was research), say so and I'll stand down; optionally I can convert the plastic-barge research into a market-research deliverable if you want one.
+
+Which way do you want to go?
 
