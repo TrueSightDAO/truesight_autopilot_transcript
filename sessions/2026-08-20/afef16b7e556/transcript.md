@@ -4854,6 +4854,7 @@ The photo's OCR came back low-confidence ("lOripa Ss technology Tuture" — like
 ### 🤖 Autopilot
 
 Let me check the treasury records.
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5043,4 +5044,64 @@ Here's what the research says — the canonical numbers:
 **The honest caveat the papers all add:** this is the *full-collapse* scenario — not this century. Current projections to 2100 are 0.3–2.0 m depending on emissions (NOAA/IPCC). The 65–70 m is the "eventually, if every last bit goes" figure — it takes millennia, but it's the number that makes the point about what's at stake.
 
 Want me to pull the Bamber 2019 abstract in full, or package this into a one-page briefing PDF for the China ESG conversations?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Generate pdf indicating the sources of each ice that adds up to what you suggested 
+
+For each source point to research paper url
+
+
+### 🤖 Autopilot
+
+Let me verify the canonical paper URLs first, then build the PDF.
+
+
+### 🤖 Autopilot
+
+I have the canonical sources. Now let me build the PDF with each ice source and its research paper URL.
+
+
+### 🤖 Autopilot
+
+The Oblique variant isn't installed. Let me check which DejaVu fonts exist and fix.
+
+
+### 🤖 Autopilot
+
+No Oblique variants — only Regular and Bold. Let me fix the font registration.
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me verify the content renders correctly.
+
+
+### 🤖 Autopilot
+
+Verified — all content renders correctly across 2 pages. Sending the PDF.
+
+
+### 🤖 Autopilot
+
+Sent! 📄 **"If All the Ice Melts"** (2 pages) — each ice source with its research paper URL:
+
+**The breakdown:**
+
+| Ice Source | Rise | Paper | URL |
+|---|---|---|---|
+| **Antarctic Ice Sheet** | ~58 m | Fretwell et al. 2013, Bedmap2, *The Cryosphere* | tc.copernicus.org/articles/7/375/2013 |
+| **Greenland Ice Sheet** | ~7.4 m | Morlighem et al. 2017, BedMachine v3, *GRL* | agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2017GL074954 |
+| **Mountain glaciers + ice caps** | ~0.3–0.5 m | NSIDC / NASA Sea Level portal | nsidc.org + sealevel.nasa.gov |
+| **Combined total** | **~65–70 m** | NSIDC / NASA / AMNH | (links in doc) |
+| **Multi-century collapse** | 2.3 m + 0.4 m by 2300 (high-emissions median) | Bamber et al. 2019, *Nature Climate Change* | nature.com/articles/s41558-019-0430-x |
+
+The one honest caveat baked in: the 65–70 m figure is the *full-collapse, millennial-scale* outcome — not this century. Bamber et al. gives the credible near-term expert estimate (~2.7 m total by 2300 under high emissions). The document closes with the tie-back: what the DAO restores is measured against what we stand to lose.
+
+Want this also uploaded to the repo as a shareable artifact (e.g. for the China ESG conversations)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && cat > make_ice_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- import re from reportlab.lib.pagesizes import A4 from reportlab.lib.unit; ls /usr/share/fonts/truetype/dejavu/ 2>/dev/null; echo "---"; fc-list 2>/dev/null | grep -i dejavu | head -10; cd /tmp && sed -i "s|pdfmetrics.registerFont(TTFont('Helvetica-Oblique', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf'))|pdfmetr
 
