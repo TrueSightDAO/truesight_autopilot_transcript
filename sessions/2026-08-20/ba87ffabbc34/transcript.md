@@ -869,16 +869,19 @@ Main PR is up (beta). The snapshot edit failed on an exact-string mismatch (BOM/
 ### 🤖 Autopilot
 
 Both PRs are up. Now let me verify the local test suite passes before merging (per the hard rule for code changes — these are content-only, but let me confirm nothing else is affected), and check the beta PR diff.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the beta PR diff properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff verified — clean and correct. Both PRs are ready. Per your go on this task, I'll merge both now (beta + context repo — **not** prod; promotion to truesight.me waits for your explicit approval).
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1033,4 +1036,73 @@ Good news, Gary — I researched this and there are real, named sources of money
 One important caveat: the Amazon Fund and Banco da Amazônia only fund projects in the **Legal Amazon**, so those apply to our mission plots in the Amazon, not the Bahia cacao farms. For Bahia, the chocolate-industry funds and Atlantic Forest restoration programs are the right vehicles.
 
 My honest recommendation: the single highest-leverage move is **submitting to Terra Global's RFP** — they're the proven template for exactly our project type, and they can fund development costs, not just planting. Want me to draft that submission, or build the full funding-source shortlist as a one-page document?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] can you do a deep dive research and really really do research deep deep and then after that only then you come back to me with the RFP [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — full deep-dive first, then I come back with the RFP. Let me start by pulling Terra Global's actual RFP requirements in full, plus their precedent deals.
+
+
+### 🤖 Autopilot
+
+I have Terra's RFP eligibility in full, and the Andean Cacao precedent. Critical finding already: **Terra's minimum project size for tree planting is 3,000 hectares** — that reshapes the whole financing strategy. Let me verify the full RFP form details and check the eligibility fit more precisely.
+
+
+### 🤖 Autopilot
+
+Found the actual RFP submission form (Jotform). Let me extract the full question set — this is the exact thing we need to answer — plus research the remaining pieces: Brazil eligibility specifics and VM0047 data requirements.
+
+
+### 🤖 Autopilot
+
+Good progress. I have the RFP structure and the form's section headers. Now let me fill the remaining gaps: Brazil's FCPF/UNREDD status (a preference criterion), the detailed form questions, and the chocolate-industry funding angle.
+
+
+### 🤖 Autopilot
+
+One more verification pass — Brazil's FCPF/UNREDD status (a Terra preference criterion) and the exact Jotform questions so the RFP draft maps 1:1.
+
+
+### 🤖 Autopilot
+
+I have everything I need — the full RFP eligibility, the Jotform structure (7 sections), the Andean Cacao precedent details, VM0047 requirements, Brazil's FCPF/UNREDD status, and the chocolate-industry funding landscape. Now let me build the RFP response draft as a PDF you can review.
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it to you now.
+
+
+### 🤖 Autopilot
+
+Deep-dive complete — and the RFP draft is ready for your review. **`sunmint_terra_rfp_draft_v1.pdf`** (4 pages) is in the thread now.
+
+## What the deep dive uncovered (the important stuff)
+
+**1. The single most important finding — Terra's minimum project size.**
+Terra's RFP requires **3,000 hectares minimum** for tree-planting projects (scalable to 5,000+), not the 20–50 ha pilot we'd imagined. **Good news:** the RFP explicitly allows **phased design** — "new areas in the same geography… added over time." So the RFP must be framed at **mission/program scale (10,000 ha, phased)**, with the Bahia pilot as Phase 1. That reframes everything: we're not applying for the pilot, we're applying to build a 10,000-hectare program.
+
+**2. We are genuinely eligible — on paper.** Brazil: tropical ✓, FCPF REDD+ country participant ✓ (Terra's explicit preference), UN-REDD partner ✓. Project type: cacao agroforestry = exactly Terra's listed *"tree planting for agroforestry systems for high-value crops."* Our entity structure (Próspera LLC + Brazilian co-ops + US importer) matches their readiness criteria — defined boundaries, secured tenure via co-ops, local implementing entity, initial community engagement.
+
+**3. The Andean Cacao precedent is even stronger than I thought.** Terra itself did it — RRG Nature Based Solutions + Terra, VM0047 + CCB, **56,000+ VCUs first issuance**, and Terra's CEO confirms a *second* ARR is already in final VVB validation under VM0047. SunMint is literally the same model in a new country.
+
+**4. The 7-section Jotform is now mapped 1:1.** The PDF answers every section — Background, Carbon Typology/Baseline, Financials, Communities/Tenure, Implementing Partners/Government, Emission Reductions, NDA — with `[BRACKET]` placeholders for the data we still need to produce.
+
+**5. Readiness gap checklist (what blocks submission):** GIS boundary files, baseline land-use data, land tenure docs (CAR numbers), formalized community engagement records, refined budget, PDD outline, VVB shortlist, and offtake-buyer pre-signals.
+
+## The hard truth in the draft
+
+We are **not ready to submit today** — the gaps (boundary files, baseline data, tenure docs) are real and Terra only reviews complete applications. But the RFP gives us the exact checklist, and the first item — commissioning **NOR Space's potential analysis** — simultaneously fills the biggest data gaps AND produces the VM0047 baseline evidence. That's the highest-leverage next investment.
+
+**What I need from you:**
+1. Review the PDF, mark up the brackets (esp. land tenure + co-op specifics you know that I don't)
+2. **Go** on submitting to Terra's RFP once you've filled the brackets — I'll draft the actual Jotform submission text + attachments
+3. Or **go** on commissioning the NOR Space feasibility quote first (which makes the RFP far stronger)
+
+Which way do you want to lean?
 
