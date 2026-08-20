@@ -956,6 +956,7 @@ Contribution reported. Now update the plan's resume tracker via a PR to `agentic
 ### 🤖 Autopilot
 
 Let me update the tracker via `git_push_changes` — marking PR0 (opened ✓, merged ✓, contribution ✓) and PR1 (opened ✓), and updating RESUME HERE to PR2:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -976,6 +977,7 @@ Let me update the tracker via `git_push_changes` — marking PR0 (opened ✓, me
 ### 🤖 Autopilot
 
 Picking up the AUTO-ADVANCE unit. First, read the SUNMINT plan's RESUME HERE marker (per handoff instruction), and in parallel check the state of the FARM plan file locally so I can repair the clobber I just created (PR #773):
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1129,4 +1131,79 @@ I'm standing by at the gate with everything else clean. **Say "go" + name the tw
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== SUNMINT plan §2 ledger gate + RUN section ===" && git show origin/main:; cd /tmp/aac_fix && git fetch origin main 2>&1 | tail -1 && echo "=== SUNMINT plan §4 tracker full ===" && git show origin/main:plans/SUNMINT
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The RUN gate genuinely cannot be crossed by me (explicit go + governor-picked records + ledger money movement), so instead of stopping empty-handed I'll do the maximum *useful, read-only* prep this turn: pull candidate records from the live sheets so Gary's half of the gate (picking) is a one-click decision. Read-only lookups — no money movement, no production writes.
+
+
+### 🤖 Autopilot
+
+Data pulled — I found the concrete candidates. Let me scan a wider range of the QR sheet for other SOLD+email rows to give Gary a proper menu (read-only):
+
+
+### 🤖 Autopilot
+
+Now I have the full candidate set. Let me map email → QR code precisely (the QR sheet rows are offset by 1: row 2 = `2024PF_..._01`, but emails sit at specific row indices). Let me pull QR codes + statuses for the rows that have emails, to build an accurate pick-list for Gary:
+
+
+### 🤖 Autopilot
+
+I have enough to build the pick-list. The RUN gate is still Gary's call — but I can present the **exact candidates** so he can pick in one message. Here's the menu:
+
+## 🎯 RUN — ready for Gary's pick (one SOLD+email QR + one NEW Sunmint submission)
+
+**SOLD QR codes with owner emails** (row → code → email):
+
+| QR code | Status | Owner Email | Ledger |
+|---|---|---|---|
+| `2024PF_20250505_03` | SOLD | alexandrefer1231@gmail.com | AGL4 |
+| `2024PF_20250505_13` | SOLD | melinda_larios@hotmail.com | AGL4 |
+| `2024PF_20250505_21` | SOLD | david.upchurch@yahoo.com | AGL4 |
+| `2024PF_20250505_25` | SOLD | ZanderAuerbach@gmail.com | AGL4 |
+| `2024PF_20250505_28` | **MINTED** | kirsten@kikiscocoa.com | AGL4 |
+| `2024PF_20250505_30` | SOLD | robinkim@email.com | AGL4 |
+| `2024PF_20250505_33` | SOLD | ashleywertheimer@gmail.com | AGL4 |
+| `2024PF_20250505_41` | SOLD | garyjob@gmail.com | AGL4 |
+| `2024SJ_20250508_6` | **MINTED** | Jrunnion@rocketmail.com | AGL6 |
+| `2024SJ_20250508_15` | SOLD | samuel.henschen@gmail.com | AGL6 |
+| `2024SJ_20250515_NIBS_8` | SOLD | will.chen85@gmail.com | AGL6 |
+| (agl0/agl1 rows) | SOLD | something@garyteh.com | — |
+| `2024SS_...` | SOLD | gigovv@gmail.com | — |
+| `...` | SOLD | ewong@gogreatop.com | — |
+| `...` | SOLD | shonniescott@comcast.net | — |
+| `...` | SOLD | nora@noraharon.com | — |
+| `...` | SOLD | ryan.williams@theblockchainacademy.com | — |
+
+**NEW SunMint Tree Planting submissions** (all garyjob / Gary Teh, status NEW, planted 2025-07-11/12/25/26):
+
+| Telegram Msg ID | Date | Lat/Long | Photo |
+|---|---|---|---|
+| 171 | 2025-07-11 | 44.560058, −123.262181 | ✅ |
+| 6411 | 2025-07-11 | 44.560043, −123.262156 | ✅ |
+| 6422 | 2025-07-11 | 44.586852, −123.258001 | ✅ |
+| 6444 | 2025-07-12 | 44.440347, −123.284624 | ✅ |
+| 6872 | 2025-07-25 | 45.512582, −122.632664 | ✅ |
+| 6875 | 2025-07-25 | 45.497431, −122.569062 | ✅ |
+
+## ⛔ Still blocked on the explicit-go gate — I cannot execute RUN
+
+Per SUNMINT §2: **"The RUN step that first executes PR4 against production data needs an explicit `go`"** (ledger money-movement, always-stop). And the RUN unit requires **Gary to pick the records**. I've done all the read-only prep — the menu above is ready.
+
+**To launch RUN, reply with e.g.:**
+> "go — link `2024PF_20250505_03` (alexandrefer1231@gmail.com) to SunMint msg 6875 (2025-07-25, 45.497431, −122.569062)"
+
+That explicit instruction = the ledger-money-movement go + the record picks. I'll then execute via `link_tree_planting.html`, verify QR row + SunMint row + ledger Transactions row + owner inbox, and hand to UAT (always-stop).
+
+**Standing by — no further action possible this turn without the explicit go.**
+
+———
+**✅ Done this turn — actions taken:**
+• `read google sheet` ×3 → 'Agroverse QR codes' A1:D177 (all QR codes + statuses), L1:L200 (owner emails), 'SunMint Tree Planting' A1:Q30 (all NEW submissions) — built the RUN pick-list
 
