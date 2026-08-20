@@ -1732,16 +1732,19 @@ The push output looks odd (the "create a PR" hint suggests the push succeeded, b
 ### 🤖 Autopilot
 
 The branch IS pushed (remote ref `5bcc901` exists) but `gh pr create` repo-detection is failing. Let me pass `--head` explicitly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR created. Now merging it (AUTO-ADVANCE authorizes open + merge):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Merged. Let me verify and report the contribution:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1777,51 +1780,61 @@ The IVY arc is now **fully clean**: infrastructure ✅, fixes ✅, E2E verified 
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — executing the next unit. The IVY arc is complete (PR3 gated), so per the manifest the next executable PR is **dapp_beta #66** (SunMint plan, RESUME HERE = merge it). Let me verify its state and check no IVY-arc PRs were left open:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dapp_beta #66 is already MERGED (so SunMint's merge-unit is done; its UAT needs Gary's explicit go). For the IVY arc, there's still **agentic_ai_context#761** open — an IVY plan doc PR (opened Aug 18, pre-dates my #774 tracker refresh). Let me inspect it to decide: merge (if it has unique content) or supersede (if #774 already covered it):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #761 is a substantive IVY-plan UAT-status doc PR by Claude (richer than my #774 §4 refresh — it has the full §6 UAT table with statuses, PR1-fix rows, roster restructure, prod promotion). But it edits the same file I just merged #774 into — possible conflict. Let me check its mergeability before deciding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #761 is **CONFLICTING** — my #774 refresh (merged 11:22) touched the same §4 tracker. But #761 carries genuinely valuable content my #774 lacks: the full **§6 UAT table with statuses**, PR1-fix rows (#2/#4), roster restructure, prod-promotion rows, and an updated PDF export. The right move: resolve the conflict by merging main into #761's branch (keeping both #774's post-session fixes AND #761's §6 UAT detail), then merge the PR. Executing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Shallow-clone history truncation caused "unrelated histories" — I need to deepen before merging. Let me unshallow and retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merge brought in main's changes cleanly except one file: `plans/IVY_YOGA_COHORT_ONBOARDING_PLAN.md` (UU conflict). Let me resolve it — keep #761's richer §6 UAT table but merge in my #774 §4 refresh. Let me look at the conflict markers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both versions have value: #761 has the richer §6 UAT table + PR1-fix rows; my #774 has the post-plan session fixes list. Best resolution: **merge both** — keep #761's detailed table, fold in my post-plan fixes, and update UAT statuses to reflect the dummy E2E already done this session. Writing the resolution:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conflict resolved and pushed to the PR branch. Now verify the PR is mergeable and merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #761 merged. Let me verify the merged file has no leftover conflict markers and both contributions are coherent on main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The raw.githubusercontent result looks stale (shows the OLD text, and the merge just happened seconds ago — raw CDN is likely caching). The GitHub API is authoritative. Let me verify at the actual merge commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1867,26 +1880,31 @@ IVY arc done. Next executable work in the manifest: **SunMint tree-QR linking** 
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — executing the next unit. IVY arc is fully done (PR3 gated), so let me check the manifest for the next parked plan and its exact RESUME HERE state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full artifact to find the SunMint and Farm/Shipment rows specifically:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the SunMint and Farm/Shipment rows specifically:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two candidate plans: **SunMint** (next step = merge dapp_beta #66 — already MERGED, so its next unit is UAT which needs Gary's explicit go = gated) and **Farm/Shipment Media JSON** (RESUME HERE = **PR0** — loader + pilot `farms/oscar-bahia` in agroverse_shop_beta). The executable next PR is Farm/Shipment PR0. Let me read the plan to get PR0's exact scope:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Next unit confirmed: **Farm/Shipment Media JSON PR0** — add `js/media-gallery.js` loader + migrate `farms/oscar-bahia` + Playwright spec, in `agroverse_shop_beta` (beta-first, no prod). Let me read the loader spec in the plan and inspect the current repo state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1994,5 +2012,128 @@ The Farm/Shipment Media JSON plan's **PR0 was already merged** (media-gallery.js
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== HANDOFF_MANIFEST rows ===" curl -sL "https://raw.githubusercon; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_cont; ssh -o ConnectTimeout=15 nelanco-claude 'curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/FARM_SHIPMEN; …(+12 more)
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — executing the next unit (Farm/Shipment PR2). Let me check for an open PR2 and get its exact scope from the plan:
+
+
+### 🤖 Autopilot
+
+No PR2 open yet — I'll build it. Let me inspect both farm pages' media structure (videos, headings, captions, in-body images) and the existing farm spec:
+
+
+### 🤖 Autopilot
+
+Let me capture the exact video-section markup (titles, iframe attrs, captions, inline styles) for both pages so the migration preserves the current look exactly:
+
+
+### 🤖 Autopilot
+
+Let me read the plan's §2a reference JSON examples to see exactly how the executor expects santa-ana (with its in-body image + morbeck section) to be structured:
+
+
+### 🤖 Autopilot
+
+PR2 scope confirmed (santa-ana: 3 videos + 1 in-body product image; paulo: 1 video = 5 items). Let me check the CSS classes the loader reuses (to preserve layout) before building:
+
+
+### 🤖 Autopilot
+
+CSS classes are all in place (the loader's output will be styled exactly like today). I have everything needed. Now building PR2 — writing a Python edit script that performs all page migrations + media.json creation, then runs the tests:
+
+
+### 🤖 Autopilot
+
+Migrations applied cleanly. Now extending the farm spec to cover both pages (per PR2 scope) and validating with a quick HTML sanity check:
+
+
+### 🤖 Autopilot
+
+santa-ana test failed at the console-errors assertion (line 51). Let me see the error context to find what console error occurred:
+
+
+### 🤖 Autopilot
+
+`SyntaxError: Identifier 'cachedPath' has already been declared` on santa-ana — a **pre-existing page error** (two scripts both declaring `cachedPath`), unrelated to my media migration. Let me confirm it exists on main (pre-migration) so the spec can be written to not fail on pre-existing errors:
+
+
+### 🤖 Autopilot
+
+`partners-data.js` declares `let cachedPath` at top-level, and **both** `partners-data.js` AND `brazilian-path-data.js` (line 709) are loaded — `brazilian-path-data.js` must also declare `cachedPath`. This is a **pre-existing bug on all farm pages**, unrelated to my migration. Let me confirm and decide: the plan's spec convention says "zero console errors", but this pre-existing error would fail even oscar-bahia's old spec... unless oscar-bahia passes because it loads scripts in a different order. Let me check:
+
+
+### 🤖 Autopilot
+
+Interesting — oscar-bahia loads both files and has **zero** errors, but santa-ana throws `cachedPath` re-declared. `brazilian-path-data.js` doesn't declare `cachedPath` (grep empty). So where's the duplicate? Let me diff the script loading between the two pages — maybe santa-ana loads `partners-data.js` **twice** or another file that declares it:
+
+
+### 🤖 Autopilot
+
+Found it — a **pre-existing duplication bug** in santa-ana: lines 700–702 load `config.js`, `farms-data.js`, `partners-data.js` **twice** (once at 700–702, again at 703–705). The first `partners-data.js` declares `cachedPath`; the second re-declares → SyntaxError. This exists on main (my migration didn't add those lines). My edit script replaced only the *first* `add-to-cart.js` occurrence and inserted the script tag after the first block.
+
+The right fix: **remove the duplicate script block (700–702)** — a genuine pre-existing bug my PR2 should fix (and it's exactly why the console-error assertion exists). Let me fix it:
+
+
+### 🤖 Autopilot
+
+**All 3 farm spec tests pass** (oscar-bahia, santa-ana, paulo) — including zero console errors after the duplicate-script fix. Also let me run the shipment spec as regression, then verify HTML validity and commit:
+
+
+### 🤖 Autopilot
+
+All tests pass (3 farm + 1 shipment regression), JSON valid, clean diff. Committing and opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #206 opened. It's clean (mine, tested). Per the AUTO-ADVANCE directive (open AND merge the next fix PR), merging it — but first confirming mergeability:
+
+
+### 🤖 Autopilot
+
+PR #206 merged (commit `9a73c14`). Logging the contribution per the plan's §0.6:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit complete
+
+**PR [agroverse_shop_beta#206](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/206) — built, tested, merged** (commit `9a73c14`, 11:33:20Z) + contribution logged.
+
+### What happened
+Farm/Shipment Media JSON plan **PR2** (no PR was open — I built it):
+
+1. **Migrated `farms/fazenda-santa-ana-bahia`**: morbeck product image → `data-media-slot="hero"` + 3 YouTube videos (`Kn13I7ijufs`, `J80B6TgWtFs`, `PwUu7ACzBdk`) → `media.json` (titles/captions preserved verbatim)
+2. **Migrated `farms/paulo-la-do-sitio-para`**: 1 YouTube video (`8PIi57AOEE0`) → `media.json`
+3. **Bonus fix — pre-existing live bug:** santa-ana loaded `config.js`/`farms-data.js`/`partners-data.js` **twice** → `SyntaxError: Identifier 'cachedPath' has already been declared` on the live page. Deduplicated (found via the spec's zero-console-errors assertion).
+4. **Extended** `tests/media-gallery-farm.spec.ts` to all 3 farm pages (oscar-bahia regression + santa-ana + paulo)
+
+**Local testing (plan §0.5):** farm spec **3 passed**, shipment regression **1 passed** — zero console errors asserted, JSON validity checked.
+
+### State of the plan
+| Unit | Status |
+|---|---|
+| PR0 (loader + oscar-bahia) | ✅ merged |
+| PR1 (agl4 + bug fix) | ✅ merged |
+| **PR2 (santa-ana + paulo)** | ✅ **merged this turn** |
+| PR3 (sao-jorge + vivi) | ⏳ next |
+| PR4–PR7 (shipments) | pending |
+| PR8 (conventions doc) | pending |
+| PR9 (UAT) | gate: always-stop |
+
+## RESUME HERE → next unit (fresh turn)
+**PR3** — migrate farm pages `fazenda-sao-jorge-bahia` + `vivi-jesus-do-deus-itacare` (6 media items). Per plan: do **not** create media.json for `fazenda-analuana-bahia` / `fazenda-capelavelha-bahia` (zero story media). Same flow: inspect → migrate → extend spec → local test → PR → merge → contribute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs in agroverse_shop_beta ===" gh pr list --repo TrueSig; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q main && git pull -q origin main 2>&1 |; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "===== santa-ana: lines 540-615 =====" sed -n '54; …(+12 more)
 • `submit contribution` → Contribution submitted successfully.
 
