@@ -3329,16 +3329,19 @@ I have everything. The fix touches three layers to match the plan's §0 design i
 3. **Page copy/badge** (`link_tree_planting.html`): "Governor-only" → "Governor or Sentinel", badge text "Governor" → "Governor / Sentinel", and the onDenied text.
 
 Let me open the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I made a serious mistake — I passed an **empty content** write for the handler file, which would have wiped the entire 500-line file. Let me verify immediately what the branch actually contains:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — **the branch file is EMPTY (0 lines)**. My `writes` with empty content wiped the handler on that branch. I need to fix this immediately: restore the full 500-line file from main, then apply the actual sentinel-gate edit. Let me pull the correct main version and build the proper edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3513,4 +3516,120 @@ The AUTO-ADVANCE targets **RUN (first live link)** — the plan marks it as the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== 1) Live GAS handler: sentinel gate deployed yet? ===" && cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokeno; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') sh =; echo "=== Authoritative: main's handler via Contents API ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/goog
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Make sure pull from GAS and then deploy and then merge
+
+
+### 🤖 Autopilot
+
+Gary's order: **pull from GAS → deploy → merge**. Let me first check what's open (so I know what "merge" targets) and pull the live GAS state in parallel.
+
+
+### 🤖 Autopilot
+
+Pull complete — 4 files pulled live. The live `process_tree_planting_link.js` is **24,407 bytes** vs git main's 26,206 — so the live GAS deployment differs from git main. Let me diff to see what's un-pushed (Claude's work?) before deploying anything.
+
+
+### 🤖 Autopilot
+
+Clear picture now:
+
+- **Live GAS = OLD (governor-only)**: live-pulled `process_tree_planting_link.js` has **0** `isSentinelByName_`, **0** `doPost` — it's the pre-#399 version. (The live pull also brought `Code.js` 25,319 bytes + `Version.js` — the GAS project's other files.)
+- **Git main = NEW (sentinel gate, 26,206 bytes)** — includes the sentinel functions + authorized-operator gate.
+
+Gary said **"pull from GAS and then deploy and then merge"** — but the diff shows live is *behind* git (missing the sentinel gate). Deploying the local (pulled) state would **roll back the sentinel gate** — so I need to resolve this. The intent is: pull any un-pushed work (Claude's), then push the merged state, then merge any open PR.
+
+The right sequence: **reconcile** — keep the sentinel gate (git main) + ensure nothing Claude left un-pushed is lost. The live pull shows no un-pushed *tree-planting* work (it's the old version). Let me check whether `Code.js`/`Version.js` have un-pushed content vs git before deciding, then push git-main state to GAS:
+
+
+### 🤖 Autopilot
+
+Key facts:
+- **`Code.js` == git HEAD** (identical sha) — no un-pushed work there
+- **`process_tree_planting_link.js` is modified (M)** — that's the live-pulled old version overwriting the sentinel version locally. Git HEAD = sentinel (new)
+- **`Version.js` is untracked** — the live pull created it (GAS names it `.js`, git tracks `.gs`)
+
+So there's **no un-pushed Claude work to preserve** — live GAS is simply *behind* git main (running the pre-sentinel handler). The correct "deploy" = push the **git-main (sentinel)** version to GAS, not the stale pulled one. Let me restore the sentinel version locally (checkout HEAD), keep Version.js handling in mind, and deploy the reconciled state:
+
+
+### 🤖 Autopilot
+
+Reconciled: `process_tree_planting_link.js` = 542 lines with sentinel gate (3 refs). But two things need care before push:
+1. **`Version.js` (untracked, 1122 bytes)** — clasp will push it (not in .claspignore), but git tracks `Version.gs`. Pushing `.js` adds a duplicate file to the live project. I'll remove it (or rename) so the push only contains the tracked files.
+2. **`process_qr_code_updates.js` (26,634)** — is the live-pulled version the same as git main? (The earlier pull overwrote it; if git main has newer AA-column changes I should keep git's.) Let me verify, then clean Version.js and push.
+
+
+### 🤖 Autopilot
+
+`process_qr_code_updates.js` matches git HEAD exactly — only `Version.js` is untracked. Now the deploy: remove the stray `Version.js` (git tracks `Version.gs`; pushing `.js` would duplicate it on the live project), then `clasp push` the reconciled (sentinel) state:
+
+
+### 🤖 Autopilot
+
+**Deployed** — `clasp push --force` pushed 4 files including `process_tree_planting_link.js` (the 26,206-byte **sentinel-gate** version, replacing the old governor-only live one) + `Version.gs`. Let me verify the live deploy actually took (pull-back check), then handle "merge".
+
+
+### 🤖 Autopilot
+
+**Deploy verified live** — pull-back shows the live GAS now has the sentinel gate (3 `isSentinelByName_` refs; the old live had 0). The sentinel capability is now **live server-side**: Sophia (sentinel) can sign link/reject events.
+
+Now "merge" — the only tokenomics PR from this thread's work still open is **#397** ("close TREE PLANTING LINK ingestion gap — add doPost webhook"). That's the RSA→tab bridge I proposed earlier (Gary's "missing GAS"). Let me check it's the same branch/work and merge it:
+
+
+### 🤖 Autopilot
+
+PR #397 is exactly the bridge — it adds a `doPost` webhook to `process_tree_planting_link.js` so the dapp's signed POST (via Edgar dispatch) can trigger the link handler directly, closing the dead-bot-feed gap. This is the RSA→processing path that makes RUN actually executable. Merging it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Pull → deploy → merge — all three done** (per your exact order)
+
+## What I did this turn
+
+**1. Pulled from GAS** (`clasp pull`, 4 files)
+- **No un-pushed Claude work found** — live `Code.js` and `process_qr_code_updates.js` are byte-identical to git HEAD; the only live-pull artifact was a stray `Version.js` (git tracks `Version.gs`; removed it)
+- **Key finding:** live GAS was running the **OLD governor-only** handler (0 sentinel refs) — *behind* git main, not ahead
+
+**2. Deployed to GAS** (`clasp push --force`, 4 files)
+- Pushed the **sentinel-gate** `process_tree_planting_link.js` (26,206 bytes, 542 lines, 3 sentinel refs) + `process_qr_code_updates.js` + `appsscript.json` + `Version.gs`
+- **Verified live via pull-back:** live GAS now shows `isSentinelByName_` × 3 (was 0) — the sentinel capability is **live server-side**. Sophia (sentinel) can now sign link/reject events and pass the gate.
+
+**3. Merged tokenomics #397** (sha `95d9f02`) — *"close TREE PLANTING LINK ingestion gap — add doPost webhook"*
+- This is the **RSA→processing bridge**: adds `doPost` to `process_tree_planting_link.js` so a dapp/Edgar signed POST can trigger the link handler directly — closing the dead-Telegram-bot-feed gap that blocked the RUN unit.
+- **Note:** #397 is merged in git but **not yet clasp-deployed** — the live GAS still runs the pre-#397 handler (no doPost yet). That deploy is the next action.
+
+## State of the run
+
+| Item | State |
+|---|---|
+| Sentinel gate (#399) — git + **live GAS** | ✅ deployed + verified |
+| RSA→processing doPost bridge (#397) | ✅ merged in git, ⏳ **not yet deployed** |
+| Photo-validation step (Gary's ask) | ⏳ not started (design next) |
+| Mark Invalid E2E (test row #7021) | ⏳ ready — gate now passes for Sophia |
+| RUN (first live link) | ⏸️ gated (ledger money-movement — needs Gary's go) |
+
+## RESUME HERE →
+
+1. **Deploy #397 to GAS** (`clasp push` on `1UrBg…` — pull first per your convention) so the doPost webhook goes live
+2. **E2E: Mark Invalid actually works** — I sign as Sophia (sentinel, now gate-passing) to mark test row **#7021** INVALID → verify sheet flip + cache drop + persistence. This completes the E2E you asked for
+3. **Photo-validation step** (your "validate the tree in the photo" ask) — design: photo confirmation gate before Link/Mark Invalid; optionally define "Mark Proof"
+4. **RUN** — first real link, still gated on your explicit go (ledger money-movement)
+
+**✅ Actions this turn:** pulled GAS (no un-pushed work), deployed sentinel handler to GAS + verified live, merged tokenomics #397. One PR merged — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== dif; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== wha; …(+5 more)
+• `merge pr` → ✅ PR #397 on tokenomics merged successfully (sha: 95d9f029373878e048291a270cfeb4fe774c121c). Pull Request successfully merged
 
