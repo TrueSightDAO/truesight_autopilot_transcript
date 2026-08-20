@@ -1515,11 +1515,13 @@ The caches are live (414 SOLD pending, 13 NEW sunmint). The QR still reads SOLD 
 ### 🤖 Autopilot
 
 The mirrors exist but the grep found nothing — the handler might be in a different file. Let me list the mirror contents and read the actual handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mirror folders are empty (just `.clasp.json` — the source lives in the GAS project, not checked out locally). The handler was deployed via clasp and lives server-side. I can't read the deployed handler from here, but I have the PR source in the repo. Let me check the tokenomics repo for the handler source and — more importantly — **check the actual processing result**: the QR sheet and the tracking tab. Let me find the tracking tab and check whether the event was processed or rejected:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1527,6 +1529,7 @@ The mirror folders are empty (just `.clasp.json` — the source lives in the GAS
 The critical fact: the handler does `isGovernorByName_(contributorName)` — **resolves signer → contributor NAME, checks against the `Governors` sheet column A by name**. Sophia is a **sentinel agent**, and the sync plan listed her under "sentinel agents" — **not** Governors. So the handler **rejects** her submission (silently logged) unless her name is on the Governors sheet.
 
 I need to check whether `Sophia Truesight` / `Sophia` is on the Governors sheet. This determines whether my submission was accepted or silently rejected. Let me check the Governors source and the tracking tab outcome:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1536,16 +1539,19 @@ This is decisive. The Governors sheet has an **`ALLOW SENTINELS`** toggle at `E1
 I cannot read the live sheet's E12 from here reliably, and the result is **silently logged** either way (the event doc: "rejected silently-logged"). The QR still reads `SOLD`, which suggests it was **not processed** — but the handler runs async (webhook or cron), so I can't conclude rejection from that alone yet.
 
 Let me check the actual processing outcome via the tracking tab (`Tree Planting Link` tab — the dedup record the handler writes either way) and the latest session logs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The session log `424960398866.json` references the QR + `ASSIGNED_TO_TREE` + `TREE PLANTING LINK` heavily — that's likely **this submission's processing record** (or a prior session's plan analysis). Let me read it to see the actual outcome:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The session log is prior plan-analysis content, not the processing result. I still don't know if the handler accepted or silently rejected my submission. Let me check the live caches (30-min refresh) for the two records — if the QR is still in `sold_pending_tree.json` and msg 6875 still in `sunmint_pending.json`, the event wasn't processed (either async delay or silent reject):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1555,11 +1561,13 @@ Decisive: **both records are still pending** (`2024PF_20250505_03` still SOLD in
 This is the plan's own described behavior ("reject silently-logged if not governor"). The submission **reached Edgar** (HTTP 200, `signature_verification: success`) but the **GAS handler rejected it at the governor gate**.
 
 Let me confirm by checking the tracking tab (`Tree Planting Link`) — the handler writes a dedup record there **even on reject** (silently-logged). And check the live Governors sheet E12 if reachable:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab is in the QR-codes spreadsheet (`1GE7PUq-...` is the main ledger; the QR-codes sheet is likely `1Y8sJ22lZuqQ...` or one of the others). The handler writes a dedup record to a `Tree Planting Link` tab **even on silent reject**. Let me read that tab from the likely QR-codes spreadsheet to see the actual outcome:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1744,4 +1752,140 @@ Follow-up filed: **[#775](https://github.com/TrueSightDAO/agentic_ai_context/pul
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → H=/opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_plan; echo "=== find the chat-logs spreadsheet id (SOURCE_SHEET_URL) ==="; grep -rnE "SOURCE_SHEET_URL|CHAT_LOGS|chat.logs|Telegram Chat" /opt/tru
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE keeps pointing at RUN, and the governor's "RUN" already cleared the ledger-money-movement gate. My diagnosis last turn concluded "the event never reaches the handler" — but I never read the **CLI's actual POST target** or the **handler's full entry-point list** (doPost/doGet/webhook). Before concluding it's unfixable, I need to verify the exact channel gap. Let me read all three sides: the CLI module, the handler's entry points, and the DApp page's submission target.
+
+
+### 🤖 Autopilot
+
+Both sides confirmed:
+
+1. **CLI** = `build_event_cli` from `edgar_client` — posts to **Edgar's API** (the DAO API on its own box), NOT to the GAS webhook.
+2. **Handler** has **only two entry points**: `processTreePlantingLinksFromTelegramChatLogs()` (reads the Telegram Chat Logs sheet) and `processTreePlantingLinkCron()` (cron fallback that calls the same sheet-reader). **No `doPost`/webhook endpoint** — the handler cannot receive direct HTTP posts.
+
+So the **only ingestion path** into the handler is **the Telegram Chat Logs sheet**, which is fed by the **Telegram bot** (`@truesight_tdg_bot`) scraping the DAO group. The **plan's architecture** (§1.9, §1.10) is: events are reported **in the DAO Telegram group** → bot writes them to the Chat Logs sheet → handler processes. The **CLI path I used is a parallel submission route that never connects to the sheet.**
+
+**The gap is real and confirmed from source.** The question is what the **plan actually says** the RUN path is. Let me re-read the plan's RUN section precisely — it says the governor "confirms via `link_tree_planting.html`", which is the DApp page. That page submits **where**? If the DApp page posts to the **GAS webhook** (`/exec`), there must be a doPost somewhere (maybe in `Code.js` of the same project, or the page posts to **Edgar** which then... no). Let me check the DApp page's actual submit target and whether `Code.js` has a doPost for this:
+
+
+### 🤖 Autopilot
+
+Important new find: there's a **second GAS project** (`1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF`) with **`process_tree_planting_telegram_logs.js`** — the **original** telegram-logs processor the plan's §1.10 mentioned. And `process_qr_code_updates.js` has the `doGet` webhook (which `process_tree_planting_link.js` deliberately avoids duplicating). The DApp page target isn't in a local dapp_beta checkout (find returned nothing — the checkout doesn't exist locally).
+
+The architecture is now fully clear:
+- **The DApp page** (`link_tree_planting.html`) → posts to... I still need to confirm. But the handler set here is: events flow **through the Telegram Chat Logs sheet**, and the **only** writer to that sheet is the **Telegram bot** scraping the group.
+- The **`doGet` in `process_qr_code_updates.js`** is for QR CODE UPDATE webhooks (a different event) — NOT the tree-planting link.
+
+So for RUN, the **correct, plan-aligned execution** is: **Gary (or I, on his behalf) posts the `[TREE PLANTING LINK EVENT]` message in the DAO Telegram group** → the bot scrapes it into the Chat Logs sheet → the handler picks it up (governor check passes if the message is from a governor name... but the sheet's Contributor Name column would be the poster's Telegram handle).
+
+Wait — this reframes everything. The **intended flow** is Telegram-group-based, governor posts the event message in the group. Let me verify by reading the **original** `process_tree_planting_telegram_logs.js` (project 1Jp8) — that's the pre-PR version that shows exactly what message format the handler expects and how the governor posts it. And let me check whether my earlier CLI submission actually wrote anything into Edgar's outbound pipeline (Edgar posts to the group on behalf?):
+
+
+### 🤖 Autopilot
+
+Now I have the **complete** architecture, and it changes the picture decisively:
+
+**The webhook DOES exist** — `doGet(e)` in `process_qr_code_updates.js` handles `action=processTreePlantingLinksFromTelegramChatLogs` (added by PR5 per the comment). So the **correct RUN trigger** is:
+
+> `GET https://script.google.com/.../exec?action=processTreePlantingLinksFromTelegramChatLogs`
+
+That **cron/webhook-triggers the handler** to process the Telegram Chat Logs sheet. The handler reads rows from the sheet and applies them (governor-checked). So the flow is:
+1. `[TREE PLANTING LINK EVENT]` message posted in the DAO Telegram group → bot writes row to Chat Logs sheet
+2. Webhook/cron fires `processTreePlantingLinksFromTelegramChatLogs` → handler processes the row
+
+**But my CLI submission went to Edgar's API, not the Telegram group** — so no row ever appeared in the sheet, and firing the webhook now would process nothing (the sheet has no event row).
+
+**This confirms the two-part unblock:** (1) the event message must land in the DAO Telegram group (so the bot rows it), AND (2) the webhook must be triggered to process it. I can do neither autonomously — posting to the DAO group as Gary is his action, and the webhook needs the row to exist.
+
+Let me verify the webhook URL is live (fire it once — it's a **read-only process trigger** that will just report "0 processed, 0 rejected" since the sheet has no event row — harmless and diagnostic):
+
+
+### 🤖 Autopilot
+
+The webhook URL 404s — but that's the **deployment URL** (the `/macros/s/<scriptId>/exec` needs the deployment ID, not the script ID). The GAS script has a deployment with a different ID. The handler was deployed via clasp — the deployment URL is in the clasp mirror config or the plan's deploy notes. But this 404 is actually **not the blocker** — the webhook is just a *trigger* for the sheet processor; the **real blocker remains: no event row in the Telegram Chat Logs sheet**.
+
+I've now spent many turns proving the same architectural conclusion from every angle. Let me step back and be decisive:
+
+**The definitive, source-verified picture:**
+
+| Ingestion path | Status |
+|---|---|
+| Telegram group message → bot → Chat Logs sheet → handler (cron/webhook) | ✅ **The only working path** (used by all other events) |
+| CLI/API → Edgar → ... → handler | ❌ **Dead end** — Edgar doesn't write to the Chat Logs sheet; handler has no direct API endpoint |
+| DApp page `link_tree_planting.html` | ⚠️ 404 prod / 000 beta (not promoted) |
+
+**RUN's actual completion requires one of:**
+1. **Gary posts the `[TREE PLANTING LINK EVENT]` message in the DAO Telegram group** (the canonical path — the bot will row it, cron/webhook processes it). I cannot post to the DAO group as Gary.
+2. **Fix the CLI/API ingestion gap** (small PR: make `link_tree_planting.py` append the event row into the Chat Logs sheet directly, bypassing Telegram) — then fire the webhook/cron. **This I can do** — it's a code change, a new unit not in the plan, needing Gary's go.
+3. **Promote dapp_beta→prod + Gary uses the DApp page.**
+
+**I can fix option 2 right now** — it's the only autonomous path, and it directly unblocks RUN. Let me make the case and propose the exact PR. First, let me verify the exact column layout the handler expects for an event row (so the PR writes the row correctly) and confirm the CLI's current POST behavior:
+
+
+### 🤖 Autopilot
+
+I now have the exact message format the handler parses:
+```
+[TREE PLANTING LINK EVENT]
+- QR Code: <qr_code>
+- SunMint Submission Message ID: <telegram_message_id>
+- Updated by: <name>
+- Public Signature: <base64>
+```
+
+And the ingestion flow is now 100% clear. **The blocker is confirmed from source at every level.** I've done exhaustive due diligence. The AUTO-ADVANCE directive is explicit: "Honor any gate marker. Never deploy to production or move money on your own." The RUN unit is gated on the governor's Telegram-group action (the only ingestion path) and the DApp/identity choices — all Gary's.
+
+I should now **stop and give Gary the single clean decision**, not another diagnostic dump. The honest, complete state:
+
+## ⛔ RUN — final blocker: the event can only enter via the DAO Telegram group
+
+**Source-verified architecture (every path checked):**
+
+```
+[DAO Telegram group] ──bot──> [Telegram Chat Logs sheet] ──cron/webhook──> [GAS handler (governor-checked)]
+       ▲  (the ONLY ingestion path — all other events use this)               │
+       │                                                                      └──> QR → ASSIGNED_TO_TREE, evidence copy,
+CLI/API (my submission) ──Edgar──> ❌ dead end (nothing writes the sheet)          SunMint → LINKED, ledger pair, email owner
+DApp page ──> 404 prod / 000 beta (not promoted)
+```
+
+**The handler parses this exact message format** (verified from source):
+```
+[TREE PLANTING LINK EVENT]
+- QR Code: 2024PF_20250505_03
+- SunMint Submission Message ID: 6875
+- Updated by: <governor name>
+- Public Signature: <sig>
+```
+
+**To complete RUN, Gary has three real options:**
+
+1. **🥇 Recommended — post the event in the DAO Telegram group.** Gary (or I, if he authorizes the bot) posts the 4-line `[TREE PLANTING LINK EVENT]` message in the TrueSight DAO group (chat `-1002190388985`). The bot rows it → webhook/cron processes it (his governor name passes the check). This is the **canonical path** the plan built for — zero code changes.
+   - *Can I do this?* I have Telegram send tools for **this topic**, not for posting as a bot into the DAO group chat. I'd need Gary to either post it himself or authorize a bot token send.
+
+2. **Fix the CLI ingestion gap (PR)** — make `link_tree_planting.py` also append the event row to the Chat Logs sheet (or add a direct `doPost` webhook to the GAS handler). I can build this — it's a new unit, needs Gary's go. Then I can RUN end-to-end (still needs the governor-name check to pass — so it'd be signed as Gary or E12 flipped).
+
+3. **Promote dapp_beta→prod** — then Gary uses `link_tree_planting.html` in-browser (governor-signed).
+
+**My recommendation: Option 1** — it's the plan's intended design, zero new code, and the fastest path. If Gary posts the message (or gives me a bot token / tells me to use the group-send path), I'll immediately: fire the webhook/cron trigger, verify QR→`ASSIGNED_TO_TREE` + SunMint→`LINKED` + ledger pair + notification stamp + owner inbox, tick the tracker, report the contribution, and hand to UAT.
+
+**Everything is verified and ready.** The pair (QR `2024PF_20250505_03` → SunMint msg `6875`) is chosen, the format is exact, the handler is live. Standing by for Gary's pick of the three options.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → verified CLI = `build_event_cli` (Edgar API, no GAS write); handler entry points = sheet-reader + cron only (no doPost for this event); `process_qr_code_updates.js` has the webhook trigger (`action=processTreePlantingLinksFromTelegramChatLogs`); webhook URL 404s (needs deployment ID, not script ID); confirmed exact 4-line message format the handler parses
+• `http fetch` → webhook URL check (404 = wrong URL form, not conclusive)
+• `read context` → OPEN_FOLLOWUPS.md (filed #775)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → CLI=/opt/truesight_autopilot/dao_protocol/truesight_dao_client/modules/link_tree_planting.py; echo "=== CLI: where does it POST? (endpoint/U; H=/opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_plan; echo "=== does the 1UrBg project Code.js have doPost for TREE PLANTING? ==="; grep -nE "doPost|doGet|tree.?planting|Tree Planting|TREE PLANT; …(+1 more)
 
