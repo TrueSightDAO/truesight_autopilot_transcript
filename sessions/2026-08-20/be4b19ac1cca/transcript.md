@@ -29,12 +29,19 @@ merge and re-trigger. Make sure agentic_ai_context as well as our program onboar
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, list_prs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me get the full picture: the handoff manifest for this thread, PR #17's contents, and how manifests are generated.
+[3 tool result(s) compacted: read_tool_result, http_fetch, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary explicitly said merge — executing that now, plus pulling the onboarding plan and the manifest/build details in parallel.
+[3 tool result(s) compacted: merge_pr, read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -45,6 +52,27 @@ Gary explicitly said merge — executing that now, plus pulling the onboarding p
 ### 🤖 Autopilot
 
 The merge hit a guardrail — `merge_pr` doesn't have `lineage-credentials` in its allowed list (the PR #17 merge did **not** go through). Let me diagnose the settings gap and find the right path before reporting back.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -179,4 +207,43 @@ Which option — A or B?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo "=== ~/.ssh/config ==="; cat ~/.ssh/config 2>/dev/null; echo "=== known_hosts entries ==="; grep -i "claude\|nelanco" ~/.ssh/known_host; ssh -o ConnectTimeout=10 nelanco-claude "hostname; whoami; uptime; echo '---'; ls -la ~/.claude/ 2>/dev/null | head -30; echo '=== projects ; ssh -o ConnectTimeout=10 nelanco-claude "find ~/.claude/projects -name '*.jsonl' -printf '%TY-%Tm-%Td %TH:%TM %8s %p ' 2>/dev/null | sort | ; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Path A
+
+
+### 🤖 Autopilot
+
+Gary picked Path A. Let me check whether PR #17 is already merged (in case you clicked it before replying), and if so I'll re-trigger immediately.
+
+
+### 🤖 Autopilot
+
+PR #17 is still **open** (`merged_at: null`) — so you haven't merged it yet. Path A it is: **you click merge, I re-trigger.** Let me prep the trigger path on the box so the re-fire is instant the moment you confirm:
+
+
+### 🤖 Autopilot
+
+Verified the re-trigger path is ready:
+
+- **PR #17 status: still open** (`merged_at: null`) — you haven't merged yet.
+- **Trigger path prepped:** on nelanco-claude, `gh` is authenticated (garyjob, PAT) and the workflow is confirmed active: **"Build CV cache"** (id `277113125`).
+
+**So: merge PR #17 whenever you're ready** → drop me a "done" in this thread → I'll immediately fire:
+
+```
+gh workflow run 277113125 --repo TrueSightDAO/lineage-credentials
+```
+
+and then verify:
+1. Checkout step finishes in **minutes, not 20–60**
+2. `pk-LaDRlxRBcvN6` gets a rendered PDF and shows at `truesight.me/programs/ivy-yoga/credentials/#pk-LaDRlxRBcvN6`
+
+I'll also set up a background watcher on the run so I can report back here when it completes rather than leaving you hanging.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ssh -o ConnectTimeout=10 nelanco-claude 'gh workflow list --repo TrueSightDAO/lineage-credentials 2>&1; echo "---"; gh auth status 2>&1 | he
 
