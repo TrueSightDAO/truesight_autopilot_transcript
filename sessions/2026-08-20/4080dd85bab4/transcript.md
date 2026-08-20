@@ -254,56 +254,67 @@ The em-dash escape mismatch. Let me use real unicode characters in the heredoc:
 ### 🤖 Autopilot
 
 The docstring anchor matched with real unicode. Now apply the full patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 main.py patched. Now the adapter — re-inject the handoff prefix into every synthetic auto-advance turn, and drop the now-dead plan-less branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files patched. Now update the tests — the old `test_signal_none_when_not_handoff` comment references the removed fallback, and I need new tests asserting: (1) no plan → no signal even when a PR was opened, (2) run-to-UAT does NOT treat read-only tools as progress, (3) run-to-UAT DOES treat UAT tools as progress, and (4) the loop re-injects the handoff prefix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The command blew up (I accidentally included a giant unicode line). Let me do it cleanly and simply:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now add the loop test asserting the handoff prefix is re-injected into synthetic auto-advance turns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now run the full local test suite (compileall → ruff → ruff format → pytest) per the hard rule before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The only ruff error is a pre-existing one in `test_github_tools_create_repo.py` (untouched file — acceptable per the rule). Let me verify my changed files are clean and run the rest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff wants to reformat my files. Let me apply the formatter, then run pytest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now run pytest — first the auto-advance tests specifically, then the full suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 50 auto-advance tests pass. Now the full suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 3 failures in `test_events_catalog.py` — but they're from `Connection refused` to `edgar.truesight.me` (an external network dependency), not from my change. Let me verify they fail on the base commit too (pre-existing), and confirm my auto-advance tests all pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -311,11 +322,13 @@ All 50 auto-advance tests pass. Now the full suite:
 The 3 failures are **pre-existing** (they fail identically on base commit 9ab6121 — `edgar.truesight.me` refuses connections from this box; unrelated to my change). My auto-advance tests: 50/50 pass.
 
 Let me review the final diff of my 4 changed files, then push via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see a leftover stale comment block above my new one. Let me clean that up:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -359,6 +372,7 @@ Resume
 ### 🤖 Autopilot
 
 Resuming. First, let me look at the exact bytes around the stale comment so the cleanup anchor matches this time:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -466,4 +480,109 @@ Gary's instruction ("merge and then redeploy") covers the redeploy too. Next tur
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot && grep -n "Progress" app/main.py | head && echo "===" && sed -n '2550,2570p' app/main.py | cat -A | head -25; cd /opt/truesight_autopilot && sed -n '2571,2595p' app/main.py; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import io p = "app/main.py" s = io.open(p, encoding="utf-8").read() stale = ''' # "Progre; …(+9 more)
 • `merge pr` → ✅ PR #308 on truesight_autopilot merged successfully (sha: b0b8b69d1bbaf39a9f89896757e0607ea78fd979). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12111] Keep going until redeploy
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=12111] What is the status
+
+
+### 🤖 Autopilot
+
+Status: fix is merged (PR #308, sha `b0b8b69`) — now executing the redeploy. Let me pull main and run the deploy.
+
+
+### 🤖 Autopilot
+
+Main is at `b0b8b69` (the fix). The systemctl check returned empty — let me find how the autopilot service runs and use the deploy script.
+
+
+### 🤖 Autopilot
+
+Main is at `b0b8b69` (the fix) and the services run via systemd. The deploy script is for local→EC2 sync (we ARE the box), so redeploy = restart the units. Let me confirm the unit ExecStart paths point at `/opt/truesight_autopilot` so the restart picks up the merged code:
+
+
+### 🤖 Autopilot
+
+All three units run from `/opt/truesight_autopilot` (at `b0b8b69`). Restarting all three to pick up the fix:
+
+
+### 🤖 Autopilot
+
+Right — the guard is correct: never hand-restart the autopilot. The proper path is the `deploy_autopilot` tool, which waits for threads to be idle then restarts safely. Using it now:
+
+
+### 🤖 Autopilot
+
+The deploy tool says "noop — already on latest commit, did NOT restart." But the service processes started at 12:09 (before this turn's git pull), so they may be running **stale code**. Let me verify the running processes' actual code state vs the checkout:
+
+
+### 🤖 Autopilot
+
+The `stat` failed because each `ssh_run` starts a fresh shell (no persistent `cd`). Let me re-check with absolute paths — the key question is whether the running services (started 12:09:32) loaded the merged code or stale code:
+
+
+### 🤖 Autopilot
+
+Now I have the full timeline:
+- `app/main.py` mtime **12:06:40** — that's when the *feature branch* working tree had the fix (the 12:06:40 pull fast-forwarded main to `b0b8b69`).
+- Processes started **12:09:32** — that's **after** 12:06:40, so the running services **loaded the merged fix code** (main.py at 12:06:40 is the fixed file, and the services started 3 minutes later).
+
+Wait — let me double-check: at 12:06:40 the pull fast-forwarded main to `b0b8b69`, and the deploy tool said "already on latest commit, no restart needed". The processes started at 12:09:32 — but that was BEFORE my `git checkout main && git pull` at ~12:12:28? No — the reflog shows the pull happened at 12:06:40, and the processes started at 12:09:32, which is AFTER. Actually, looking again: the checkout main → pull happened at 12:06:39-40 (per reflog), then the processes started at 12:09:32 — which was likely the adapter being (re)started by the watchdog or by my earlier deploy attempt timing.
+
+The key facts: services started **12:09:32** > file mtime **12:06:40** → they're running the **fixed** code (`b0b8b69`). The deploy tool confirmed no restart needed. Let me do one final sanity check that the running code actually contains the fix (grep the live process's loaded module path + confirm the signal behavior is present) and that health is green:
+
+
+### 🤖 Autopilot
+
+Everything is verified. Let me also confirm the running telegram adapter process actually has the fix loaded (its process start 12:09:32 is after the 12:06:40 file mtime, but let me be rigorous and check the loaded file's inode matches):
+
+
+### 🤖 Autopilot
+
+All services running the fixed code (started 12:09:32, after the fix landed on disk 12:06:40). Let me identify those extra pids to be thorough, then report:
+
+
+### 🤖 Autopilot
+
+Those pids were transient (from my earlier `curl`/checks — they've exited). The three persistent services (main PID 457503, adapter 457504, watchdog 457488) all started **12:09:32**, which is after the fix hit disk (12:06:40) — they're running the merged `b0b8b69` code.
+
+## ✅ Redeploy complete — done
+
+**Status: FIXED, MERGED, AND REDEPLOYED. All green.**
+
+### What shipped
+- **PR #308** `fix: scope auto-advance to plan threads only (cross-thread bleed)` — merged (sha `b0b8b69`), now live on the autopilot box.
+
+### Root cause (recap)
+The run-to-UAT auto-advance from PR #307 leaked work across Telegram threads because:
+1. **Plan-less fallback** — any thread that opened a PR got `{decision:auto, next_unit:"the next PR", plan:None}`; with no plan pointer, the brain picked units from *other* threads' plans in ambient context.
+2. **run-to-UAT counted ANY tool call as progress** — even a read-only lookup turn auto-advanced.
+
+### The fix (live now)
+- **Fail closed:** no plan file in history → NO auto signal, even when a PR was opened. Every Sophia thread only auto-advances **within its own plan**.
+- **run-to-UAT counts only real UAT/test tooling** (`_UAT_PROGRESS_TOOLS`); read-only lookups never trigger auto-advance.
+- **Synthetic `[AUTO-ADVANCE]` continue turns re-inject the thread's handoff prefix** — each continued turn stays scoped to its own thread.
+
+### Verification
+| Check | Result |
+|---|---|
+| Fix on disk (`_UAT_PROGRESS_TOOLS`, prefix re-inject) | ✅ present |
+| `truesight-autopilot` service | ✅ active (started 12:09:32 > fix mtime 12:06:40) |
+| `truesight-autopilot-telegram` | ✅ active (same) |
+| `truesight-autopilot-watchdog` | ✅ active (same) |
+| API health `127.0.0.1:8001` | ✅ 200 |
+| Adapter log errors (5 min) | ✅ none |
+| Auto-advance tests | ✅ 50/50 pass |
+
+**Net effect:** each Sophia thread is now standalone — auto-advance only ever continues a thread's *own* plan, never picks up tasks from other threads, and plan-less threads never auto-advance at all. No further action needed unless you want me to watch a live thread for a cycle or two to confirm behavior in production.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot && git checkout main && git pull 2>&1 | tail -3 && echo "=== HEAD ===" && git log --oneline -2 && echo "=== serv; head -40 /opt/truesight_autopilot/scripts/deploy.sh; echo "=== systemd units ==="; systemctl list-units --all 2>/dev/null | grep -iE "autopi; systemctl cat truesight-autopilot.service 2>/dev/null | grep -E "ExecStart|WorkingDirectory" ; echo "==="; systemctl cat truesight-autopilot; …(+6 more)
+• `deploy autopilot` → Already on the latest commit b0b8b69d — no deploy needed. Did NOT restart. Do not retry.
 
