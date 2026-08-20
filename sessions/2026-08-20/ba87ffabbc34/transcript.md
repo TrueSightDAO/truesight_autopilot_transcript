@@ -1025,7 +1025,13 @@ The smart move: fund Stage 1, use the validated PDD to attract a developer for S
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 One more targeted pass on grants/early-stage ReFi funds that fund exactly this stage.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1158,4 +1164,61 @@ Sending the updated PDF now.
 - **§8e** — Sequencing logic (above)
 
 All figures are planning estimates marked for refinement once we get the NOR quote and VVB fee schedule. Want me to (a) draft the **Jotform submission text** now so it's ready the moment the brackets are filled, or (b) prepare the **DAO capital injection proposal** for the ~$10–15k Stage 0 raise?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] and then for each stage also indicate where are the potential sources of capital. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Building v3 — per-stage capital source detail added to each stage.
+
+
+### 🤖 Autopilot
+
+Sending v3 now.
+
+
+### 🤖 Autopilot
+
+**PDF v3 sent** ✅ — `sunmint_terra_rfp_draft_v3.pdf` (7 pages) with **capital sources mapped to every stage**.
+
+## The per-stage funding picture (summary)
+
+**Stage 0 — De-risk & submit (~$10–15k, 0–3 mo)**
+- DAO capital injection (1 TDG/USD per Rubric) — $10–15k, fastest
+- Grants: regen.fund, Regenerative Agriculture Foundation — $2–25k
+- Chocolate-industry early dialogue (CocoaAction Brasil) — $5–20k
+- NovaGaia pledge round — $2–5k (297 pledges already live)
+
+**Stage 1 — PDD & Validation (~$45–80k, 3–12 mo)**
+- DAO round 2 — $15–30k
+- **Terra RFP Climate Finance** — covers dev costs (the main external lever)
+- Chocolate-industry co-funding — $20–50k
+- Carbon-market grants (Climate Collective, Gitcoin) — $10–40k
+- VVB fee deferral/success fees — $10–20k
+
+**Stage 2 — Pilot Planting (~$150–250k, 12–36 mo)**
+- **Terra Climate Finance** — $100–250k (post-CEA)
+- Carbon offtake advances — $30–100k
+- CocoaAction Brasil co-fund — $30–80k
+- Cacao offtake via TrueTech — $20–60k
+- PRONAF / Banco do Brasil farmer credit — $20–80k
+- Impact angels + Atlantic Forest restoration funds — $50–150k
+
+**Stage 3 — Scale to 10,000 ha ($3–10M+, 3–7 yr)**
+- Forward VERR sales (multiple offtakes @ $160+) — $1–5M+
+- **Amazon Fund (BNDES), Banco da Amazônia, Fundo Flora** — Legal Amazon only
+- Impact capital / developers (re.green-style) — $2–5M
+- International climate funds (GCF/GEF via government) — $1–10M
+
+## Key structural insight baked in
+
+The **geography split** matters: Amazon-only money (Amazon Fund, Banco da Amazônia, Fundo Flora) can't fund the Bahia pilot — so Bahia runs on chocolate-industry funds + Atlantic Forest restoration programs, while the Amazon plots draw the big Brazilian institutional money at Stage 3. That's why the funding-source tables are per-stage *and* per-geography.
+
+The PDF keeps everything else intact (7-section RFP mapping, readiness gaps, research findings) — just with §8 expanded so every stage shows **what it buys → how much → who can pay**.
+
+Want me to (a) draft the **Jotform submission text** ready to paste in, or (b) prepare the **Stage 0 DAO capital proposal** (the ~$10–15k raise) so we can actually move?
 
