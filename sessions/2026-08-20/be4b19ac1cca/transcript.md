@@ -2053,46 +2053,55 @@ No PR2 open yet — I'll build it. Let me inspect both farm pages' media structu
 ### 🤖 Autopilot
 
 Let me capture the exact video-section markup (titles, iframe attrs, captions, inline styles) for both pages so the migration preserves the current look exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's §2a reference JSON examples to see exactly how the executor expects santa-ana (with its in-body image + morbeck section) to be structured:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2 scope confirmed (santa-ana: 3 videos + 1 in-body product image; paulo: 1 video = 5 items). Let me check the CSS classes the loader reuses (to preserve layout) before building:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CSS classes are all in place (the loader's output will be styled exactly like today). I have everything needed. Now building PR2 — writing a Python edit script that performs all page migrations + media.json creation, then runs the tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Migrations applied cleanly. Now extending the farm spec to cover both pages (per PR2 scope) and validating with a quick HTML sanity check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 santa-ana test failed at the console-errors assertion (line 51). Let me see the error context to find what console error occurred:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `SyntaxError: Identifier 'cachedPath' has already been declared` on santa-ana — a **pre-existing page error** (two scripts both declaring `cachedPath`), unrelated to my media migration. Let me confirm it exists on main (pre-migration) so the spec can be written to not fail on pre-existing errors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `partners-data.js` declares `let cachedPath` at top-level, and **both** `partners-data.js` AND `brazilian-path-data.js` (line 709) are loaded — `brazilian-path-data.js` must also declare `cachedPath`. This is a **pre-existing bug on all farm pages**, unrelated to my migration. Let me confirm and decide: the plan's spec convention says "zero console errors", but this pre-existing error would fail even oscar-bahia's old spec... unless oscar-bahia passes because it loads scripts in a different order. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — oscar-bahia loads both files and has **zero** errors, but santa-ana throws `cachedPath` re-declared. `brazilian-path-data.js` doesn't declare `cachedPath` (grep empty). So where's the duplicate? Let me diff the script loading between the two pages — maybe santa-ana loads `partners-data.js` **twice** or another file that declares it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2100,16 +2109,19 @@ Interesting — oscar-bahia loads both files and has **zero** errors, but santa-
 Found it — a **pre-existing duplication bug** in santa-ana: lines 700–702 load `config.js`, `farms-data.js`, `partners-data.js` **twice** (once at 700–702, again at 703–705). The first `partners-data.js` declares `cachedPath`; the second re-declares → SyntaxError. This exists on main (my migration didn't add those lines). My edit script replaced only the *first* `add-to-cart.js` occurrence and inserted the script tag after the first block.
 
 The right fix: **remove the duplicate script block (700–702)** — a genuine pre-existing bug my PR2 should fix (and it's exactly why the console-error assertion exists). Let me fix it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 3 farm spec tests pass** (oscar-bahia, santa-ana, paulo) — including zero console errors after the duplicate-script fix. Also let me run the shipment spec as regression, then verify HTML validity and commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All tests pass (3 farm + 1 shipment regression), JSON valid, clean diff. Committing and opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2260,5 +2272,110 @@ Farm/Shipment Media JSON plan **PR3** (no PR was open — I built it):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== plan PR3 scope ===" grep -n -A 3 "PR3" /tmp/fsmp.md | head -12; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q main && git pull -q origin main 2>&1 |; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "===== sao-jorge: hero video block (420-440) ====; …(+7 more)
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — next unit: Farm/Shipment PR4 (shipment pages agl0, agl1, agl2). Let me check for an open PR and inspect the target pages:
+
+
+### 🤖 Autopilot
+
+PR #209 is open but titled "PR2" — which I already merged as #206. Let me check whether it's a stale duplicate, and inspect agl2's video block + the agl4 media.json shape to model PR4:
+
+
+### 🤖 Autopilot
+
+PR #209 is a **stale CONFLICTING duplicate** of my already-merged #206 (same files, opened 1 min after #206 merged) — I'll close it as superseded, not merge. Now let me see the existing shipment spec + agl4's exact pattern (from PR1) to replicate for agl0/1/2:
+
+
+### 🤖 Autopilot
+
+Now I have the full PR4 picture:
+
+- **agl0**: hero-only (shipment-image + farmer-photo both agl0.avif), no video → 2 hero slots + empty gallery
+- **agl1**: hero-only (shipment-image + farmer-photo both agl1.avif), no video → 2 hero slots + empty gallery
+- **agl2**: hero+1-video → 2 hero slots (agl2.avif) + 1 YouTube (`Kn13I7ijufs`) → **but** the shipment spec currently asserts the hero video **stays inline** (Option A from PR1) — so agl2's video should stay as `.shipment-hero-video` iframe, NOT be moved to a gallery. That matches "hero+1-video ×1" per the plan.
+
+So the pattern per page: convert the 2 hero `<img>`s to `data-media-slot="hero"` empty slots, add media.json with hero + gallery, add the script tag. For agl2, keep the video iframe inline (like agl4 does).
+
+Let me build PR4 now. First close the stale PR #209, then do the migration:
+
+
+### 🤖 Autopilot
+
+agl0 migrated, but agl1's pattern differs. Let me check agl1's exact markup (its alt text was "AGL1 - Coopercabruca" on the shipment-image):
+
+
+### 🤖 Autopilot
+
+agl1's shipment-image alt is "AGL1 - Coopercabruca" (not "AGL1 - Early Commercial Import" — that was the og/social one). Let me fix the migrate call for agl1 and continue with agl2:
+
+
+### 🤖 Autopilot
+
+All three migrated cleanly. Now extending the shipment spec to cover agl0/agl1/agl2 (hero-only ×2, hero+video ×1), then running all tests:
+
+
+### 🤖 Autopilot
+
+All 4 shipment specs pass. Running the farm spec as regression, then committing + PR:
+
+
+### 🤖 Autopilot
+
+PR #210 opened. Confirming mergeability and merging:
+
+
+### 🤖 Autopilot
+
+PR #210 merged (commit `c35c11d`). Logging the contribution:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit complete
+
+**PR [agroverse_shop_beta#210](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/210) — built, tested, merged** (commit `c35c11d`, 11:39:25Z) + contribution logged.
+
+### What happened
+Farm/Shipment Media JSON plan **PR4** (no PR was open — I built it):
+
+1. **Migrated `shipments/agl0`** (hero-only): both slots → `agl0.avif` from media.json, empty gallery
+2. **Migrated `shipments/agl1`** (hero-only): both slots → `agl1.avif` — caught a live alt-text inconsistency (shipment-image alt was "AGL1 - Coopercabruca", not the og: "Early Commercial Import") and preserved the real one
+3. **Migrated `shipments/agl2`** (hero + 1 video): both slots → `agl2.avif`; the hero video (`Kn13I7ijufs`) **stays inline** as `.shipment-hero-video` per PR1's Option A (no gallery iframes on shipment pages)
+4. **Extended** shipment spec to **4 pages** (agl4/agl0/agl1/agl2): each asserts both slots resolve to the page's **own** avif (no cross-shipment bleed), alt from JSON, inline video intact where present, zero console errors
+5. **Closed stale duplicate PR #209** — same scope as my merged #206 (opened 1 min after, CONFLICTING/DIRTY), closed with a comment pointing at #206
+
+**Local testing (plan §0.5):** shipment spec **4 passed**, farm regression **5 passed** — zero console errors.
+
+### State of the plan
+| Unit | Status |
+|---|---|
+| PR0–PR3 | ✅ merged |
+| **PR4 (agl0, agl1, agl2)** | ✅ **merged this turn** |
+| PR5 (agl5, agl7, agl8 — hero-only ×2 + distinct-farmer-photo ×1) | ⏳ next |
+| PR6 (agl10, agl13, agl14) | pending |
+| PR7 (agl3, agl9) | pending |
+| PR8 (conventions doc) | pending |
+| PR9 (UAT) | gate: always-stop |
+
+## RESUME HERE → next unit (fresh turn)
+**PR5** — migrate shipment pages **`agl5`, `agl7`, `agl8`** (hero-only ×2 + hero+distinct-farmer-photo ×1 — **agl8's farmer photo is a genuinely different image from its hero**; verify the JSON keeps them distinct, don't collapse into one hero value). Same flow: inspect → migrate → extend spec → local test → PR → merge → contribute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs touching agl0/agl1/agl2 ===" gh pr list --repo TrueSig; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== PR 209 metadata ===" gh pr view 209 --repo TrueSight; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "=== shipment spec (current) ===" cat tests/media-gall; …(+6 more)
+• `submit contribution` → Contribution submitted successfully.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs touching agl0/agl1/agl2 ===" gh pr list --repo TrueSi; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== PR 209 metadata ===" gh pr view 209 --repo TrueSightDAO/agrove; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "=== shipment spec (current) ===" cat tests/media; …(+6 more)
 • `submit contribution` → Contribution submitted successfully.
 
