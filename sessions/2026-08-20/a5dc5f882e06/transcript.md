@@ -395,6 +395,7 @@ The video is verified live. Now let me carry the SKU work forward. Let me find t
 ### 🤖 Autopilot
 
 The nelanco-claude session hit its limit mid-task — "Two things genuinely block me..." was the last message before reset. There's a second transcript (`0daf2510`, timestamped later) that also matches Emelin/tea/loose — that may be the continuation after the reset. Let me check it, plus the ledger's SKU tab:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -514,4 +515,95 @@ Yes — and I already did exactly that this session. Here's the honest picture:
 2. **Just ad-hoc:** anytime you say "check what Claude and I discussed about X", I SSH over and grep the transcripts live (no code changes).
 
 Want me to build the harness (option 1), or keep it ad-hoc?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Follow the SOP on creating new retail packets for sale.
+
+currency
+sku 
+product details page on agroverse 
+QR for each unit of this new 50 gram agroverse cacao tea from oscar farm vintage 2024 
+
+Caveat is that the cacao tea should not be made available for sale on that specific product detail page since sale will be mostly occurring offline via scanning of the QR codes associated with the 50 gram bags of cacao tea
+
+
+### 🤖 Autopilot
+
+Following the SOP. Let me pull the exact conventions — QR batch naming, product creation checklist, specs/sheet workflow — plus re-check the nelanco-claude thread for the currency/cost decision on the 50g tea:
+
+
+### 🤖 Autopilot
+
+Let me locate and read the QR batch generation playbook (the canonical SOP for the QR step), and check the currency/SKU sheet structure:
+
+
+### 🤖 Autopilot
+
+Let me locate the exact path of the QR batch playbook in the tree listing:
+
+
+### 🤖 Autopilot
+
+Let me pull the canonical QR batch playbook and the actual QR tab format in one shot, plus the farm/shipment pages I'll need to cross-list on:
+
+
+### 🤖 Autopilot
+
+Let me locate the exact path of the QR batch playbook (it's referenced but the root-path read 404'd — likely moved to a subdirectory):
+
+
+### 🤖 Autopilot
+
+Found it — `agroverse/AGROVERSE_QR_CODE_BATCH_GENERATION.md`. Let me read it (the canonical QR SOP) plus the QR postmortem (pitfalls), and check the farms/oscar page structure:
+
+
+### 🤖 Autopilot
+
+I have the QR playbook. Now let me gather the build pieces: Oscar farm page + AGL4 shipment page (for cross-listing), existing CT QR naming, and whether I have sheet-write credentials on my box:
+
+
+### 🤖 Autopilot
+
+I have the SOPs and conventions. Now let me grab the reference PDP (same farm + weight class), the exact cross-list anchors on the farm/shipment pages, and check whether the nelanco box holds the sheet-write credential I'd need for the currency/SKU/QR rows:
+
+
+### 🤖 Autopilot
+
+I've completed the SOP research and recovered the full context. Here's the execution plan mapped to the SOPs, with the decisions I need from you before I write anything.
+
+## The task (per your instruction)
+New retail packet: **50g Agroverse cacao tea — Oscar's Farm, Bahia, Brazil, 2024 (AGL4)**. Four SOP steps: **currency → SKU → PDP → QR batch**. Caveat honored: **no sale price / no add-to-cart on the PDP** — purchase happens offline via QR scan.
+
+## What the SOPs require (verified)
+
+| Step | SOP | Key facts |
+|---|---|---|
+| **1. Currency** | `Currencies` tab, col A string must match QR tab col I | Oscar tea is currently **unpriced** on the ledger ("Cacao Tea 1LB – Oscar Fazenda 2024", $0 basis). Closest priced loose-tea records: AGL8 loose grams **$0.01366/g → $0.68/50g**; AGL13 Santos **$10.18/kg → $0.51/50g**. |
+| **2. SKU** | `Agroverse SKUs` tab; slug must be URL-exact | Proposed: `oscar-bahia-cacao-tea-50g` → "Cacao Tea – Oscar's Farm, Bahia Brazil, 2024 (50g)". Existing placeholder is the 1lb variant. |
+| **3. PDP** | `AGROVERSE_SHOP_NEW_SKU_WEB_CHECKLIST` + `PRODUCT_CREATION_CHECKLIST` + page conventions | New `product-page/oscar-bahia-cacao-tea-50g/index.html` in **agroverse_shop_beta** (beta-first, PR). Shared nav/footer, hero + `.gallery`, JSON-LD, wholesale banner. **No price, no buy button.** Cross-list `item-card` on `farms/oscar-bahia/` + `shipments/agl4/`. **Not** in Merchant Center feed (no price). |
+| **4. QR batch** | `agroverse/AGROVERSE_QR_CODE_BATCH_GENERATION.md` + postmortem | Naming: product token **`CT`** (cacao tea), e.g. `2024OSCAR_CT_<YYYYMMDD>_<n>` (matches postmortem's `2024OSCAR_CC_*` pattern). Landing page `https://www.agroverse.shop/shipments/agl4`, ledger `https://agroverse.shop/agl4`, farm E–H = Oscar Farm/Bahia/Brazil/2024, col I = new currency string, col J = batch date. Compile PNGs via `batch_compiler.py` → commit to `tokenomics/.../package_qr_codes/` + `lineage-assets` (for truesight.me). |
+
+## Decisions I need from you (blocking)
+
+1. **Quantity** — the nelanco-claude thread planned **100 sachets** (the "100 satchet QR codes" in its final question). Confirmed 100, or different?
+2. **Currency cost basis** — Oscar's tea has no price on the books. Record the new currency at:
+   - **(a)** $0 (mirror the Oscar 1LB placeholder — freight sunk), or
+   - **(b)** $0.01366/g → **$0.68/50g** (AGL8 loose-tea basis — closest priced loose-tea reference), or
+   - **(c)** $10.18/kg → **$0.51/50g** (AGL13 Santos bulk basis)
+   - (Retail stays **$10/50g** per your earlier call.)
+3. **QR id prefix** — OK with `2024OSCAR_CT_<date>_<n>`? (Alternatively `OSCAR_CT_<date>_<n>`.)
+4. **Sheet-write host** — my autopilot box has **no gspread / no Google creds**; the nelanco-claude box has both (`market_research/google_credentials.json` + `batch_compiler.py`). OK to write the currency/SKU/QR rows via the nelanco-claude box over SSH (the documented workaround path from the QR postmortem)?
+
+## What I can do the moment you confirm
+1. Open the **PDP PR** in `agroverse_shop_beta` (no price, no buy button, cross-listings) for your review — beta only, nothing merged.
+2. Write the **currency + SKU + QR rows** (100 units) to the Main Ledger via nelanco-claude.
+3. Run `batch_compiler.py` → commit `compiled_*.png` + manifests to `tokenomics` + `lineage-assets`.
+
+Say "go with (a/b/c), 100 units, prefix X, use nelanco-claude" and I'll execute. Or if you'd rather I start the PDP PR now on the proposed slug, say so and I'll build it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ssh -o BatchMode=yes -o ConnectTimeout=10 nelanco-claude 'python3 - <<"EOF" import json fn = "/home/ubuntu/.claude/projects/-opt-claude-work; echo "=== google creds on autopilot ==="; find ~ -maxdepth 4 -iname "*google*cred*" -o -maxdepth 4 -iname "gdrive_key.json" -o -maxdepth 4 -; ssh -o BatchMode=yes -o ConnectTimeout=10 nelanco-claude 'ls -la /opt/claude_workspace/market_research/google_credentials.json /opt/claude_w
 
