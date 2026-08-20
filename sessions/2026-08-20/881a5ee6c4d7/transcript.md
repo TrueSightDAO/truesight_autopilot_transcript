@@ -1415,16 +1415,19 @@ Let me get the exact hero img lines + video containers for all three pages, and 
 ### 🤖 Autopilot
 
 PR6 scope confirmed: all three pages have hero imgs (same image for both slots) + inline hero video (agl10 = native HTML5 mp4, agl13 = YouTube iframe `FthJ9mftGsY`, agl14 = YouTube iframe `BI55aQ6B73U`), all have the duplicate config include, all need dedupe + loader. Building the transform now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 transformed. Note: agl10 uses a native HTML5 `<video>` (not YouTube iframe) — the spec's `.shipment-hero-video` check expects a `src` attribute with the video ID, but a `<video>` element has `<source>` children instead. Let me extend the spec carefully for agl10's native video, then run tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 8 passed, but **agl10 and agl14 failed**. Let me see the actual failure detail.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1434,51 +1437,61 @@ Two distinct pre-existing bugs surfaced in the test:
 2. **agl14**: `heroVideo.play is not a function` pageerror — the **hero-video bug** PR #200 fixed on agl4, but agl14 has its *own* inline script that still calls `.play()` on a YouTube **iframe**. agl13 passed, so its script differs.
 
 Let me inspect the inline hero-video scripts on agl13/agl14 to fix agl14 properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 agl14 has the **exact `heroVideo.play()` on an iframe bug** PR #200 fixed on agl4 — I'll apply the same guard. For agl10, the 403 is from the Wix-hosted video CDN (pre-existing external resource). Let me check whether the Wix video is actually dead, and look at agl14's full script context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 agl14 has the same `.play()` on an iframe bug PR #200 fixed — I'll apply the identical guard. For agl10, the mp4 403s — but this may be Referer-gated hotlink protection (test runs from localhost). Let me verify with a browser-like Referer before deciding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Wix mp4 is **genuinely dead** (403 with any referer) — agl10's native video is broken content on the live page. Let me re-read the plan's PR6 spec to confirm whether agl10 was supposed to be hero-only (its video being dead) before I decide to remove the dead video block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan confirms: **agl10 = "hero-only ×1"** — its media table (line 46) shows `agl10.avif` with no video column entry. The dead Wix video on agl10 is exactly the kind of broken content this migration should clean up. I'll remove agl10's dead native-video block (the mp4 403s permanently) and guard agl14's `.play()` bug. Let me apply both fixes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agl10 block is cleanly delimited (ends right before the shipment-container). Let me remove it, and update the spec so agl10 is hero-only (no nativeVideo).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **10 passed** — all shipment pages green (agl10 dead-video removed, agl14 `.play()` guard fixed). Run farm spec for regression, then commit + push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **10 shipment + 5 farm passed**, committed + pushed. Opening PR #214 (and closing the parallel duplicate #213 first).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #214 created, duplicate #213 closed. Check mergeability, then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #214 is **mergeable and clean**. Merging now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1667,4 +1680,57 @@ After PR8, **PR9 = UAT on beta.agroverse.shop — an always-stop gate** (needs G
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp/agroverse_shop_beta_pr0 && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "=== main HEAD ==="; git log --oneli; cd /tmp/agroverse_shop_beta_pr0 && echo "=== meta youtube tag ==="; grep -n "agroverse:youtube" shipments/agl6/index.html; echo "=== hero im; cd /tmp/agroverse_shop_beta_pr0 && echo "=== lazy-load script (1640-1700) ==="; sed -n '1640,1700p' shipments/agl6/index.html; echo "=== gal; …(+9 more)
 • `merge pr` → ✅ PR #215 on agroverse_shop_beta merged successfully (sha: beeeccf2d27ae26cddbd47b15ca37439d40b7460). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] can we also source for kraft pouch on AliExpress which are large enough to hold 50grams of cacao?
+
+
+### 🤖 Autopilot
+
+Good follow-on — sourcing the pouch completes the Brazil packaging kit (labels + pouches). Let me first check the DAO context for existing packaging conventions, then research AliExpress.
+
+
+### 🤖 Autopilot
+
+No existing packaging conventions in the DAO context — this is a fresh sourcing item. Let me pull concrete AliExpress listings with dimensions that actually hold 50g of cacao.
+
+
+### 🤖 Autopilot
+
+Good data. A **100×160mm stand-up pouch comfortably holds 50g of cacao** (that size class is rated for 28–227g of coffee/cacao; the 4×6.5" ≈ 102×165mm pouch is the classic "2oz/60g" size — perfect for 50g). Let me pull the two most promising concrete listings to confirm dimensions and verify one URL live.
+
+
+### 🤖 Autopilot
+
+AliExpress blocks direct page extraction (same as before), so prices are from live search snippets — verify before ordering. But the data is consistent and the sizing math is solid:
+
+## Kraft pouches for 50g cacao — AliExpress options
+
+**Capacity math first:** 50g of cacao (beans/nibs, ~0.45 g/ml) ≈ **110–130 ml volume**. A **9×14cm (90×140mm) stand-up pouch** holds ~250ml — plenty; a **10×16cm** holds even more (that class is rated to 227g of coffee). So anything in the **9×14 → 10×16cm** range works for 50g.
+
+| Option | Price | Size | Per-pouch |
+|---|---|---|---|
+| **50/100pcs Kraft Ziplock Coffee Bags** ([item 3256810152754840](https://www.aliexpress.com/item/3256810152754840.html)) | **$6.43** (30% off $9.19) | 9×14cm | ~$0.13 |
+| **StoBag 50pcs Kraft Paper Bag with Window + Zipper** (from wholesale search) | **$14.56** | ~10×16cm class | ~$0.29 |
+| **White Kraft Stand-Up, Zip-Lock, Heat-Seal** ([item 1005006808035261](https://www.aliexpress.com/item/1005006808035261.html)) | **$14.40/50pc** | **9×14×3cm** (gusset bottom — stands up) | ~$0.29 |
+| **Black kraft ziplock w/ window** ([item 1005010047967951](https://www.aliexpress.com/item/1005010047967951.html)) | varies | 9×14cm → 26×35cm | ~$0.13–0.30 |
+
+## My recommendation
+- **Cheapest & sufficient:** the **$6.43 / 50pc 9×14cm kraft ziplock** (item `3256810152754840`) — under $0.15/pouch, food-grade kraft, ziplock reseal, "Coffee Bags for Small Business" spec. Works for 50g.
+- **If you want it to stand on a shelf:** the **9×14×3cm gusset version** (item `1005006808035261`) — same price band, bottom gusset = stands up for retail display.
+- **Prefer a window?** Kraft with a clear window (shows the cacao) runs ~$0.29/pouch — nicer presentation for retail, worth it if these are customer-facing.
+
+## Brazil import math (same as the printer)
+- Both picks are **< $50 per lot** → only **20% import tax** (not the 60%+ICMS bracket) — a 50-pack lands ≈ **$8–18 USD all-in (~R$ 40–95)**. Trivial vs. the R$ 2,080 printer lesson.
+- Buy from a **"Remessa Conforme"** store so tax is prepaid at checkout.
+
+Two honesty notes:
+1. I couldn't verify the *current* price/stock live (JS-blocked) — click through to confirm seller rating + exact size before paying.
+2. The DAO context has **no existing packaging convention** (I searched — zero hits), so this is a fresh sourcing item; I'd suggest logging it alongside the printer research.
+
+Want me to:
+1. **Log both sourcing items** (printer + pouches) as a contribution/note so the Brazil ops kit is on record?
+2. **Dig for the window version's exact listing URL** so you have a concrete third link?
 
