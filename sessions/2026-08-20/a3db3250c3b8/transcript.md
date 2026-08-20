@@ -2675,11 +2675,13 @@ The live cache still shows 8 tree-format URLs — that's **CDN cache lag** (raw.
 **Canonical file confirmed fixed** (Contents API, commit `07dd724`): 0 tree-format URLs, all 13 normalized to raw — the raw.githubusercontent "8" was just CDN cache lag, will propagate.
 
 Now the page-side graceful fallback (so even the 3 genuinely-missing photos show a placeholder, not a 404 in console). Opening the dapp PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search didn't match — let me pull the exact photo-render block from main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2900,4 +2902,52 @@ Verified on the branch pre-merge. This is what makes each submission unambiguous
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #72 on dapp_beta merged successfully (sha: bb56cf3f0d22e90aec0befc2d9ea804b5409a260). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE points at **RUN (first live link)** — but per the plan's §2/§4 this unit carries the **ledger money-movement always-stop gate**, and the directive itself says "Never move money on your own." So I'll hold at the gate, but do all the **non-gated verification** so your explicit go is the only thing left: confirm the QR's owner email is present, the SunMint row is still NEW, and the ledger Transactions target exists.
+
+
+### 🤖 Autopilot
+
+**RUN is verified and staged — but I'm holding at the gate.** Per plan §2/§4, the first live link books real ledger entries + emails a real owner (money-movement) — and the AUTO-ADVANCE directive itself says "Never move money on your own." So I did all the **non-gated verification** so your explicit `go` is the only thing left:
+
+## RUN readiness check (all verified from live sheets)
+
+**QR candidate — `2024PF_20250505_03`** (Oscar Farm, Bahia, Brazil, SOLD):
+- ✅ Owner Email = **alexandrefer1231@gmail.com** (real recipient for the notification)
+- ✅ Ledger = `https://agroverse.shop/agl4` (resolves via `Shipment Ledger Listing` → managed AGL4 ledger)
+- Note: `2024PF_20250505_01`/`_02` have **no owner email** — the handler would log "notification skipped". `_03` is the right pick.
+
+**SunMint candidate — `#171`** (Gary Teh, planted 2025-07-11, 44.560058, -123.262181):
+- ✅ Status still `NEW` (the earlier failed reject never landed — confirmed)
+- ✅ Photo URL present + raw format; `Linked QR Code`/`Linked At` columns (R/S) empty, ready to be written
+- ✅ Telegram Message ID 171 is the unique handle
+
+**Ledger path (verified in the live handler):**
+- `resolveManagedLedgerSpreadsheetUrl_` → `Shipment Ledger Listing` L→AB lookup → managed ledger's **`Transactions` tab** → appends the **fulfillment pair** (`Cacao Tree Planted` booking, mirroring the sale-time row shape). This is the money-movement the gate protects.
+- On link, the QR row gets D→`ASSIGNED_TO_TREE` + N/O/P/R + AB (notification date); SunMint row gets M→`LINKED` + R (QR) + S (timestamp); owner email goes out with date + **lat/long** + photo.
+
+## What I did NOT do
+
+- ❌ Did not submit the link (no `[TREE PLANTING LINK EVENT]` was signed/submitted)
+- ❌ Did not touch the ledger, the sheet writes, or the owner's inbox
+
+## RESUME HERE →
+
+**Say "go for RUN"** and I'll execute the first real link exactly as staged: submit the `[TREE PLANTING LINK EVENT]` for **`2024PF_20250505_03` + `#171`** (or swap in any QR+submission you name), then verify together: QR row D→ASSIGNED_TO_TREE + N/O/P/R/AB, SunMint row M→LINKED + R/S, ledger `Transactions` row, and the owner email (date + lat/long + photo) in alexandrefer1231@gmail.com's inbox.
+
+**✅ Done this turn (all read-only):** verified QR owner email + ledger resolution, SunMint #171 still NEW + photo ready, and the ledger-write path in the live handler. No writes, no submission, no deploy — gate honored.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
 
