@@ -268,6 +268,7 @@ Want me to:
 ### 🤖 Autopilot
 
 Good question — let me check the current USD→BRL rate first so we're comparing apples to apples, because part of the answer is currency.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -475,4 +476,48 @@ Compare that to:
 Want me to:
 1. Pull a **specific AliExpress item link** (with seller rating + Remessa Conforme badge) so you have a concrete one to click?
 2. Verify the exact model you and Kirsten use in the US (from receipts/transcripts) so I can match the AliExpress unit spec-for-spec?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] what is the URL to make the purchase?
+
+
+### 🤖 Autopilot
+
+Let me verify the concrete AliExpress item links I found so I can give you a clickable URL rather than a search page.
+
+
+### 🤖 Autopilot
+
+I found concrete, verified item URLs (from live AliExpress results — product pages, not just search). Here are the direct purchase links, best first:
+
+## ✅ Direct AliExpress purchase links (verified URLs)
+
+**1. Phomemo M421 — 4×6" Bluetooth thermal label printer — $69.60 (50% off)**
+🔗 https://www.aliexpress.com/item/1005009336889771.html
+- 203dpi · 20ppm · Bluetooth 5.0 + USB · prints 4×6" shipping labels · works with phone + PC (Windows/Mac) · CE/FCC/RoHS
+- **Best match for your Rollo-class workflow** (same 203dpi, same 4×6/4×2 label sizes, USB available)
+
+**2. Phomemo M421 (alternate listing, same model) — ~$69**
+🔗 https://www.aliexpress.com/item/1005009337150168.html
+
+**3. Marklife D100 — 4×6" Bluetooth thermal — 203dpi, 20ppm**
+🔗 https://www.aliexpress.com/item/1005009021873520.html
+
+**4. Phomemo M421 variant — Bluetooth 5.0 + USB**
+🔗 https://www.aliexpress.com/i/1005009465379031.html
+
+## Which to buy
+- **If you print from a computer** (your QR batch pipeline does): get the **M421** (or any listing that explicitly says **USB + Bluetooth**) — USB is the reliable path for high-volume batch runs.
+- **Avoid** the generic "$67–97" search-page listings that only say Bluetooth — check the description says USB too.
+
+## ⚠️ Before you click — the Brazil tax reality (Remessa Conforme)
+At **$69.60** (>$50), import tax = **60% minus $20 credit + 17% ICMS** → lands around **~$108–115 USD ≈ R$ 560–600** all-in. Still **~1/4 the price** of the Amazon.com.br Rollo (R$ 2.080).
+
+**Make sure the listing ships to Brazil with Remessa Conforme** — at checkout AliExpress shows the tax prepaid. If the store isn't enrolled, you'll face customs fees at delivery instead.
+
+One honest caveat: I can verify the *URLs* exist and match the spec (203dpi, 4×6, BT+USB), but I **cannot render AliExpress's JS item pages** to confirm the *current* price/seller rating live — those prices are from today's search results. Click through and confirm the price + "Remessa Conforme" before paying.
+
+Want me to save this purchase recommendation as a sourcing note in `agentic_ai_context` or `market_research/` so the Brazil team has it?
 
