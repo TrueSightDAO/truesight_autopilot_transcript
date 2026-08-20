@@ -928,26 +928,31 @@ Both PRs merged. Here's the turn report.
 ### 🤖 Autopilot
 
 Good question — let me ground this in what's actually in our context before proposing a financing path.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the whitepaper's financing language and the Prospera entity details, plus search for any investor references.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look for the Prospera operating agreement and any financing/treasury docs in the repos.
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Prospera Operating Agreement is the governance entity doc — let me read it, plus check the treasury-cache for current financial position.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for any existing proposals or financing language in the DAO's governance docs.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1105,4 +1110,52 @@ We are **not ready to submit today** — the gaps (boundary files, baseline data
 3. Or **go** on commissioning the NOR Space feasibility quote first (which makes the RFP far stronger)
 
 Which way do you want to lean?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] In the PDF, can you also include the optimized funding needs for each item, so that we can have a picture of what we need for capital and when and which stage. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Building the capital plan into the RFP draft — itemized, staged, with timing and funding sources.
+
+
+### 🤖 Autopilot
+
+Sending the updated PDF now.
+
+
+### 🤖 Autopilot
+
+**PDF v2 sent** ✅ — `sunmint_terra_rfp_draft_v2.pdf` (6 pages) with the full optimized capital plan.
+
+## The capital picture at a glance
+
+| Stage | When | What it buys | Capital | Who pays |
+|---|---|---|---|---|
+| **0 — De-risk & submit** | 0–3 mo | NOR feasibility, legal/tenure, community records, Terra RFP | **~$10–15k** | DAO injection + grants |
+| **1 — PDD & Validation** | 3–12 mo | PDD, NOR baseline, VVB validation, Terra selection | **~$45–80k** | DAO + Terra RFP + chocolate funds |
+| **2 — Pilot Planting** | 12–36 mo | 20–50 ha + maintenance + MRV | **~$150–250k** | Terra + offtake advances |
+| **3 — Scale to 10,000 ha** | 3–7 yr | Phased expansion Bahia + Amazon | **$3–10M+** | Forward VERR sales, Amazon Fund, impact capital |
+
+## The key design principle (Section 8e)
+
+**Stage-gated funding — we never fund the whole thing ourselves.** Each stage's output de-risks the next, bigger source:
+
+1. Spend **~$10k first** (NOR quote + legal/tenure) → produces RFP-ready data + a go/no-go gate
+2. **Submit Terra RFP** → if selected, Terra covers much of Stage 1–2 development (their model: upfront investment + long-term VERR purchase)
+3. **Hard gate rule:** no Stage 2 planting capex until the PDD is validated **and** an offtake is signed
+4. **Minimum viable ask today:** ~$10–15k DAO capital injection (≈10–15k TDG per Rubric) bridges our ~$11.6k treasury to the Stage 0 gate and makes the RFP credible
+
+## What's itemized in the PDF
+
+- **§8a** — Capital roadmap table (above)
+- **§8b** — Stage 1 itemized budget: NOR feasibility $10–20k · PDD dev $10–15k · VVB validation $10–20k · legal/tenure $5–10k · community+plots $5–8k · contingency → **~$45–80k**
+- **§8c** — Stage 2 itemized budget: land prep $5–15k · seedlings $10–25k · planting $5–15k · maintenance yr 1–3 $30–60k · MRV ops $15–30k · co-op management $20–40k → **~$150–250k** (~$4–6k/ha)
+- **§8d** — Funding source map (who pays when)
+- **§8e** — Sequencing logic (above)
+
+All figures are planning estimates marked for refinement once we get the NOR quote and VVB fee schedule. Want me to (a) draft the **Jotform submission text** now so it's ready the moment the brackets are filled, or (b) prepare the **DAO capital injection proposal** for the ~$10–15k Stage 0 raise?
 
