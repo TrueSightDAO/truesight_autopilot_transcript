@@ -3737,11 +3737,13 @@ Now the E2E: I'll sign a REJECT event with Sophia's key, append it as a row to T
 ### 🤖 Autopilot
 
 Signed as Sophia. Now I need to verify Sophia's public key actually resolves to "Sophia Truesight" (per the handler's `resolveContributorNameFromPublicSignature_` against the Contributors tab) — if it doesn't match, the gate rejects. Let me check the Contributors tab's digital signature column matches my pub key, then append the row to Telegram Chat Logs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `Contributors Digital Signatures` tab (col E) is where the handler resolves signers. Sophia row 68 exists — let me get her stored digital signature and compare against my box key's pubkey. If they match, I can sign and pass the gate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3749,6 +3751,7 @@ The `Contributors Digital Signatures` tab (col E) is where the handler resolves 
 **Critical: the box's PRIVATE_KEY does NOT match Sophia's registered signature.** The box key resolves to something else — signing with it would fail `resolveContributorNameFromPublicSignature_` (or worse, resolve to an unknown name → gate rejects). So the box's `.env` PRIVATE_KEY is **not** Sophia's registered identity.
 
 Let me check what the box's key actually resolves to (is there an entry matching the box pubkey?), and check whether any other key on the box matches Sophia's registered signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3756,6 +3759,7 @@ Let me check what the box's key actually resolves to (is there an entry matching
 **Key resolved.** The box's PRIVATE_KEY **does** match a registered entry: row 145, **"Sophia Truesight"** — it's a *different* registered key for Sophia (she has multiple; row 68 has another). `resolveContributorNameFromPublicSignature_` will find the box key at row 145 → resolves to **"Sophia Truesight"** → sentinel check (col W TRUE) → **gate passes**.
 
 Now the E2E: append the signed REJECT row to Telegram Chat Logs (col G = the share text), then trigger the GAS processor. Let me append the row with a unique update id, then find the processor's trigger (doGet / cron exec URL):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3924,4 +3928,65 @@ Option 1 is right: a tiny PR to `Code.js` adding `?action=processTreePlantingLin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+1. Merge tokenomics #400 (on your word — or I merge per your standing "keep going" authorization... actually per the one-PR-per-turn rule I'll stop here and wait for the next turn/your go to merge)
+2. Deploy to GAS (clasp push on 1UrBg…, pull-first per your convention)
+3. Invoke https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec?action=processTreePlantingLinkCron
+4. Verify + cleanup: SunMint row 7021 → INVALID; tracking tab REJECTED; cache regen drops #7021 (persistent); remove test row from Telegram Chat Logs; confirm dropdown = 13
+5. Then the Link E2E (still gated on your go — money movement) + photo-validation step
+
+
+### 🤖 Autopilot
+
+Executing the full list — merge #400, deploy, invoke, verify+cleanup. Starting with the merge:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #400** (sha `6ef80e2`)
+
+## What I did this turn
+
+Merged the **doGet trigger** PR — the invocation path the E2E was missing:
+
+**tokenomics #400** (`fix/tree-planting-doGet-trigger`, commit `962a799` → merged `6ef80e2`):
+- Added `?action=processTreePlantingLinkCron` to `Code.js` `doGet` (mirroring the existing QR-code action)
+- It calls `processTreePlantingLinksFromTelegramChatLogs()` directly — the processor that handles both `[TREE PLANTING LINK EVENT]` and `[TREE PLANTING REJECT EVENT]` with the governor-or-sentinel gate
+- Now a simple `GET <deployment-url>?action=processTreePlantingLinkCron` runs the whole scan
+
+This unblocks the E2E: the signed REJECT row (update id **469027793**) is already staged in Telegram Chat Logs, waiting for the processor to pick it up.
+
+## E2E status
+
+| Step | State |
+|---|---|
+| Sophia REJECT for #7021 signed + staged (row 469027793) | ✅ |
+| #397 (doPost + REJECT handler) deployed live | ✅ |
+| Trigger path (`?action=processTreePlantingLinkCron`) | ✅ **merged this turn** |
+| Deploy #400 to GAS | ⏭️ next |
+| Invoke the trigger → #7021 → INVALID | ⏭️ after deploy |
+| Verify + cleanup (tracking REJECTED, cache drop, remove test row) | ⏭️ after invoke |
+
+## RESUME HERE →
+
+1. **Deploy #400 to GAS** — `clasp push` on `1UrBg…` (pull-first per your convention; watch for the stray `Version.js` conflict)
+2. **Invoke** `https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec?action=processTreePlantingLinkCron` (with a `?`-parameter-friendly GET; may need `?action=` on the /exec URL)
+3. **Verify:** SunMint row 7021 → `INVALID` (col M); tracking tab logs REJECTED; cache regen (`sync_pending_caches.py --push`) drops #7021 persistently; remove test row from Telegram Chat Logs; confirm dropdown = 13
+4. **Then:** the Link E2E (still gated on your explicit go — money movement) + the photo-validation step you described
+
+**✅ Actions this turn:** merged tokenomics #400. No new PRs opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #400 on tokenomics merged successfully (sha: 6ef80e295c3d52f9a36b31b60c036f91c2588ff0). Pull Request successfully merged
 
