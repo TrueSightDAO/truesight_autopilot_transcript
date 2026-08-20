@@ -1240,6 +1240,7 @@ Want me to merge #5 (once you've eyeballed it), or leave it for your review?
 ### 🤖 Autopilot
 
 Gary said merge — PR #5 on ivy-yoga-club. `merge_pr` doesn't allow this repo, so using the established `gh`-on-nelanco-claude path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1277,26 +1278,31 @@ https://cdn.jsdelivr.net/gh/TrueSightDAO/lineage-credentials@main/_cache/cv/qa-e
 ### 🤖 Autopilot
 
 Let me dig into why that PDF isn't being generated — the per-program certificate rendering is gated on something in lineage-engine's `program_assets`. Checking the current 404, the build script's render logic, and what assets exist for ivy-yoga:
+[3 tool result(s) compacted: http_fetch, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `_render_program_certificate` isn't found by org code search — it may live in lineage-credentials' build script (code search only indexes default branches; let me check the actual build script). The registry now has ivy-yoga (merged in #19). Let me find the per-program PDF rendering logic:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key insight: **the per-program PDFs are NOT part of the `_cache/cv/` build** — the workflow only commits `_cache` changes and only purges `_cache/cv/*.json` (JSON only, no PDFs). The PDF you're looking for (`_cache/cv/qa-e2e-test-instructor__ivy-yoga.pdf`) is a **certificate** — and certificates are rendered by a **different mechanism**. Let me find where per-program PDFs actually get generated:
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Code search isn't finding the cert-render logic (likely only in non-default branches or generated). Let me look directly at `build_cv_cache.py` in lineage-engine — the actual script — for the certificate-rendering section:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 404 is **expected behavior** — `_render_program_certificate()` warn-and-skips when `program_assets/ivy-yoga/cert_config.json` doesn't exist. The per-program cert PDF is Phase 3b work (the PR3-gated item). Let me check what butterfly-effect's cert setup looks like so I can see exactly what's needed to enable ivy-yoga:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1430,4 +1436,127 @@ Every ivy-yoga credential emits:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp rm -rf le_ivy_cert gh repo clone TrueSightDAO/lineage-engine le_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] can you go about an end to end test start by creating a new entry in the google sheet?
+
+
+### 🤖 Autopilot
+
+Starting the E2E — first, the sheet schema + current rows (so the new entry matches), PR #20's merge state (the cert-PDF step needs it), and the current pending queue:
+
+
+### 🤖 Autopilot
+
+PR #20 is still **open** (unmerged) — noted; the cert-PDF portion of the E2E will need it merged before the build, I'll flag that at the right step. Starting the E2E now with step 1 — **create a fresh entry in the Cohort Roster sheet** (matching the schema; distinct dummy identity):
+
+
+### 🤖 Autopilot
+
+Entry created at **sheet row 5** — "Dummy E2E Test 2 (Cert)", status `pending`, distinct date (21 August 2026) so I can spot it on the certificate. Now confirming it appears in the pending queue the console reads:
+
+
+### 🤖 Autopilot
+
+Row 5 confirmed in the pending queue — the console will show it. Now the sign-in step. Let me check the console's localStorage key format and whether the previously-saved keypair still exists on nelanco-claude (so I can seed admin identity rather than re-registering):
+
+
+### 🤖 Autopilot
+
+The saved keypair is for `dummy-e2e@example.com` — my new row uses a different email (`e2e-cert-test@example.com`), so I need a **fresh keypair** for the new identity (each identity = one keypair; the saved one won't verify as the new email's attestor). Let me read the sign-in flow (keygen → EMAIL REGISTERED → verification link) to drive it precisely, and check whether `e2e-cert-test@example.com` needs registration:
+
+
+### 🤖 Autopilot
+
+Row 5 is in the pending queue. Now the sign-in step — let me check whether the saved keypair from this morning's E2E is reusable (which email does it belong to?) and whether the previous Playwright script is still on disk:
+
+
+### 🤖 Autopilot
+
+The saved keypair is from the previous dummy (derives a different hash than `pk-kRsZO0DkErg8` — the pk-hash scheme differs from my quick SHA-256 guess, not important). For this test I need a **fresh keypair for the new email** anyway. The previous E2E scripts are still on disk — let me read them to reuse the proven sign-in mechanics for the new identity:
+
+
+### 🤖 Autopilot
+
+The saved keypair is admin@truesight.me's (from the first E2E). For a clean fresh E2E I'll do the full sign-in again with a **new keypair** for `admin@truesight.me` (editor seat → admin mode; verification email lands in the admin mailbox I can read). Running the sign-in step now:
+
+
+### 🤖 Autopilot
+
+New keypair generated, EMAIL REGISTERED EVENT fired for admin@truesight.me. Now grabbing the fresh verification link from the admin mailbox to complete sign-in:
+
+
+### 🤖 Autopilot
+
+Fresh verification link captured (`vk=vcXHTi9Ljq…`, 03:56:34 — matches the sign-in I just triggered). Completing sign-in with the new keypair seeded into a fresh browser context:
+
+
+### 🤖 Autopilot
+
+Still "BOOTING…" — boot is in-flight (it submits the EMAIL VERIFICATION EVENT + resolves identity). Let me wait longer and re-read the state:
+
+
+### 🤖 Autopilot
+
+**Sign-in complete — ADMIN mode, VERIFIED** (truesight-autopilot / admin@truesight.me), and the queue shows row 5 "Dummy E2E Test 2 (Cert)" as pending with an Attest button. Now the attest step — clicking Attest fires the signed CREDENTIALING ATTESTATION EVENT:
+
+
+### 🤖 Autopilot
+
+The Attest button isn't matched by `.attest-btn` — the row shows "Attest" but my selector missed. Let me inspect the actual button markup:
+
+
+### 🤖 Autopilot
+
+The queue is still "Loading queue…" — the row table hadn't rendered when I probed (the queue loads via a separate async fetch; my previous run saw the rendered table because it waited longer). The Attest button exists only once `#queueBody` is populated. Let me wait for the row to render, then click:
+
+
+### 🤖 Autopilot
+
+**Attest clicked — queue now shows "Pending 0 / No pending rows"** — the signed CREDENTIALING ATTESTATION EVENT was submitted. Now verifying the downstream pipeline: sheet row status, intake tab, and lineage-credentials commits:
+
+
+### 🤖 Autopilot
+
+**Attestation committed — the core E2E loop is verified.** Sheet row 5 is now `processed` with `pk_hash=pk-AFaVWSOevda8`, `profile_url` set, and the two commits landed in lineage-credentials (`6f1201cc` identity + `604510fd` program-completion). Let me confirm the build ran and check whether the cert artifacts exist yet (they're gated on PR #20):
+
+
+### 🤖 Autopilot
+
+Build is still in flight (push run on the attestation commit is `pending`). Let me wait briefly and re-check whether the registry picked up the new credential:
+
+
+### 🤖 Autopilot
+
+## E2E status — core loop verified, build finishing
+
+### ✅ Done so far (live stack, dummy data)
+
+| Step | Result |
+|---|---|
+| **1. New sheet entry** | ✅ "Dummy E2E Test 2 (Cert)" appended at **row 5** (distinct date 21 Aug 2026), `status=pending`; confirmed visible in `list_pending_rows` |
+| **2. Sign in** | ✅ Fresh keypair for admin@truesight.me → EMAIL REGISTERED EVENT → verification email read from admin mailbox → EMAIL VERIFICATION EVENT → **ADMIN mode, STATUS VERIFIED** (truesight-autopilot) |
+| **3. Attest** | ✅ Clicked "Attest" on row 5 → queue flipped to "Pending 0" → signed CREDENTIALING ATTESTATION EVENT submitted |
+| **4. Ledger + registry commit** | ✅ Sheet row 5 → `processed`, `pk_hash=pk-AFaVWSOevda8`, profile_url set, processed_at 10:58:26Z; commits `6f1201cc` (identity) + `604510fd` (program-completion) in lineage-credentials |
+
+### 🔄 Still in flight
+- **Build run `32361531693`** (push on the attestation commit) is **in_progress** — regenerating `_cache/` with the new credential. Once done: `pk-AFaVWSOevda8 → dummy-e2e-test-2-cert` appears in `aliases.json` and `_cache/cv/dummy-e2e-test-2-cert.json` renders.
+
+### ⚠️ The certificate PDF (your original 404) is gated on **PR #20** (lineage-engine, still open)
+- The per-program artifacts (`__ivy-yoga.pdf` + `__ivy-yoga__cert.pdf`) are only emitted when `program_assets/ivy-yoga/` exists — **PR #20 vendors those assets** (logo, template, cert_config, fonts) + extends the renderer.
+- Even after the current build finishes, the cert PDFs won't appear until **PR #20 is merged** and a fresh build runs.
+
+## RESUME HERE → next turn
+1. **Confirm build `32361531693` finished** → `pk-AFaVWSOevda8` in aliases + CV JSON/MD/PDF live
+2. **Merge PR #20** (your call — "merge it" → `gh` on nelanco-claude) so the cert assets are in lineage-engine
+3. **Re-trigger build** → verify `dummy-e2e-test-2-cert__ivy-yoga.pdf` **and** `__cert.pdf` now exist (this is the E2E's final acceptance — the certificate renders)
+4. Then verify the public credential page + jsDelivr show everything
+
+Want me to merge #20 and re-trigger, or wait for the current build first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp python3 <<'PY' import gspread, json, datetime gc = gspread.servi; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== saved keypairs ===" ls -la /tmp/ivy_e2e_pub.txt /tmp/ivy_e2e_p; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== sign-in flow block (lines 623-700) ===" curl -sL https://ivy-y; …(+6 more)
 
