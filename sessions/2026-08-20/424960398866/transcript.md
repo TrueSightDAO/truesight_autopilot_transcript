@@ -2252,11 +2252,13 @@ oscar-bahia (pilot), vivi, and all shipments pass. So the loader works, but **3 
 ### 🤖 Autopilot
 
 HTML/JSON are all correct on the failing pages — containers, script tags, media.json all present with 200. Yet 0 iframes. This smells like a **JS error killing the loader** — likely the **duplicate script-tag bug** I fixed on oscar-bahia in PR0 (config.js/farms-data.js/partners-data.js included twice → `cachedPath already declared`), which PR2/PR3 pages may still have. Let me capture the actual console errors on the failing pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No console errors, no duplicate scripts — yet santa-ana/paulo/sao-jorge render **0 iframes** while oscar-bahia/vivi render theirs. The pages are structurally identical, so the difference must be in **how media-gallery.js handles them**. My earlier check counted `iframe.farm-video` — but maybe the loader renders iframes with a **different class** on those pages, or a **race** (my 1.5s wait vs YouTube embed timing). Let me check what's actually in the DOM after load — dump the container's innerHTML and check for any iframe regardless of class:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2274,6 +2276,7 @@ No console errors, no duplicate scripts — yet santa-ana/paulo/sao-jorge render
 My earlier "failures" were a **test artifact**: I used `domcontentloaded` + an immediate count, and the loader builds the gallery **after** DOMContentLoaded (it fetches media.json async, then renders). The `iframe.farm-video` count was taken too early. sao-jorge has no `#media-gallery` because it uses two `data-media-gallery` containers (story-videos + photos) — by design per PR3.
 
 So the farm/shipment media feature **works end-to-end on beta.agroverse.shop**. Let me confirm the shipments too (agl4 hero, agl6 special case, agl8 farmer distinction) with the corrected wait, then check U6 (media.json fetch failure fallback) since that's the one UAT criterion that could still fail:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2462,4 +2465,130 @@ Want me to also check anything else on that page while you're in there?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/aac_fix 2>/dev/null && git fetch -q origin main && echo "=== plan: DApp page URL mentions ===" && git show origin/main:plans/SUNMINT
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Why seeing this??? I have already a RSA key pair
+
+[Attachment auto-processed: **a5fbfb91608148f4afb73fb1d9992af2.jpg**]
+- Type: Image (OCR confidence: 87.5%, quality: good)
+
+Extracted text:
+```
+TE Beir) 1 beta.dapp.truesight.me > Home Loading your TDG holdings... Signature not registered Your digital signature is not yet registered on the DAO ledger. Reload Latest Version View Source Code
+```
+
+
+### 🤖 Autopilot
+
+Gary's hitting "Signature not registered" on the beta DApp — let me diagnose: how the DApp checks his signature, whether his public key is actually in the ledger, and whether the cache the page reads is stale. Checking in parallel:
+
+
+### 🤖 Autopilot
+
+The page checks against the **treasury-cache `dao_members.json` snapshot**, not the live sheet — so the mismatch is likely a stale/missing key in that cache. Let me verify both sides: what the cache actually holds for Gary, and where the "Signature not registered" message comes from:
+
+
+### 🤖 Autopilot
+
+Let me find Gary's entry in the cache and the exact source of the "Signature not registered" message in the DApp:
+
+
+### 🤖 Autopilot
+
+The cache has Gary with 63 ACTIVE keys — so the data side is fine. The issue must be in how the page checks the browser's stored key. Let me find the exact message source:
+
+
+### 🤖 Autopilot
+
+The exact string isn't in dapp_beta by that phrasing. Let me find where it comes from — likely a shared gate script:
+
+
+### 🤖 Autopilot
+
+Let me confirm exactly what the DApp gate checks — reading the home page auth logic:
+
+
+### 🤖 Autopilot
+
+The message comes from the home page's gate, which checks the browser's stored key against the cache. Key suspicion: **localStorage is per-origin** — Gary's keypair lives under `dapp.truesight.me` (prod), but `beta.dapp.truesight.me` is a different origin with empty localStorage → "not registered." Let me verify how the gate reads the stored key:
+
+
+### 🤖 Autopilot
+
+Found the mechanism. `tdg_balance.js` reads `localStorage.getItem('publicKey')` — and **localStorage is per-origin**. The screenshot shows the message even though the cache has Gary's 63 keys. Let me check the permissions/gate code to see exactly what produces "Signature not registered" and what localStorage keys it expects:
+
+
+### 🤖 Autopilot
+
+Let me find the exact source of that message org-wide:
+
+
+### 🤖 Autopilot
+
+GitHub API rate-limited. Let me clone dapp_beta locally and grep for the message directly:
+
+
+### 🤖 Autopilot
+
+Found the pattern. Now let me find where the home page shows that exact message:
+
+
+### 🤖 Autopilot
+
+The message text ("Reload Latest Version / View Source Code") is distinctive — let me find its exact source to pin down the logic:
+
+
+### 🤖 Autopilot
+
+Found it — **`link_tree_planting.html:596-601`**. The "Signature not registered" comes from the page's gate logic. Let me read that exact block to see what triggers it (which key it checks, what it compares against):
+
+
+### 🤖 Autopilot
+
+The gate logic is clear: it reads `publicKey` from **localStorage** and looks it up in the `dao_members.json` cache. Gary has a key stored (otherwise he'd see "Sign in first"), but that specific key isn't matching the ledger cache. Let me check how `create_signature.html` stores/registers keys to pinpoint why:
+
+
+### 🤖 Autopilot
+
+Now I understand the full flow. The page stores `publicKey` in **localStorage** and checks it against the `dao_members.json` cache. Gary HAS a key stored (or he'd see "Sign in first"), but that key isn't matching the cache. The most likely cause: **he's on `beta.dapp.truesight.me` but his key was registered via the `dapp.truesight.me` (prod) origin — localStorage is per-origin, so the beta page can't see his prod-stored key.** OR his key is one of the many Gary keys, but the specific one stored in the beta origin's localStorage isn't in the cache.
+
+Let me verify the exact likely cause and give Gary a clear path. Let me check whether the cache contains ALL 63 of Gary's keys (it should) and whether there's a simpler explanation — the **beta origin may have an old/other key stored**. I can't read Gary's browser localStorage, but I can confirm the cache side is complete and give him the precise fix.
+
+
+### 🤖 Autopilot
+
+The cache is complete — all 63 of Gary's keys are ACTIVE and present. So the ledger + cache side is fine. The issue is on **Gary's browser side** on the beta origin. Let me give him the clear diagnosis and fix:
+
+## Why you're seeing "Signature not registered"
+
+Your **key is registered fine** — the DAO ledger has all 63 of your active keys, and the cache the page reads (`dao_members.json`, refreshed 14:18 UTC today) contains them all.
+
+The problem is on the **browser side, specifically the beta origin**:
+
+- The DApp stores your keypair in **localStorage**, which is **per-origin** (per website address).
+- `beta.dapp.truesight.me` is a **different origin** than `dapp.truesight.me` — so the beta site **can't see** the key you created/saved on the main DApp.
+- The beta page found **a publicKey in its own localStorage**, but that particular key **isn't the one that matches the ledger** (or it's an empty/old placeholder), so the lookup fails → "Signature not registered."
+
+**The fix (takes ~1 minute):**
+
+1. On **beta.dapp.truesight.me**, open **"Digital Signature Creator"** (`create_signature.html`).
+2. If it shows a key already there, click through to **re-register / create a fresh keypair** (or check if the shown public key matches one on the ledger).
+3. Most reliable: **clear the beta origin's localStorage** and re-create your signature there:
+   - DevTools → Application → Local Storage → `https://beta.dapp.truesight.me` → delete the `publicKey`/`privateKey` entries → reload.
+   - Then go to **create_signature.html**, register your email, and follow the verification link.
+4. Once registered on beta, the page will recognize you as **Gary Teh / Governor** and show the two picker lists.
+
+**Quick alternative if you just want the tree-linking working now:** use the **prod** DApp (`dapp.truesight.me`) where your key already lives — but the page is only deployed on beta so far (404 on prod). So beta + fresh key registration is the way.
+
+**One thing to double-check:** make sure you're not in a private/incognito window (localStorage is emptied there) and that you're not accidentally on a different subdomain variant.
+
+Want me to walk through anything else, or should I file a small DApp improvement so the beta page detects a cross-origin key and prompts you to register instead of showing the bare "not registered" message?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json" -o dao_members.json && python3 - <<; cd /tmp && rm -rf dapp_beta && git clone --depth 1 https://github.com/TrueSightDAO/dapp_beta.git 2>&1 | tail -1 && cd dapp_beta && echo "===; cd /tmp/dapp_beta && echo "=== 'Loading your TDG holdings' source ===" && grep -rn "Loading your TDG holdings\|Signature not registered" --i; …(+4 more)
 
