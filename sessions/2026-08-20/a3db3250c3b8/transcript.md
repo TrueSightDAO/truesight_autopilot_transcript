@@ -2986,16 +2986,19 @@ Let me verify the mechanics: how sunmint.truesight.me submits, whether I can inj
 That's an excellent idea — and it's the **right way to run the E2E without tripping the money gate**, because Mark Invalid is explicitly safe (no QR change, no ledger booking, no owner email). It exercises the whole loop: submission → sheet → cache → dropdown → Mark Invalid → gone.
 
 Before I commit to it, I need to confirm **how a sunmint.truesight.me submission actually lands in the SunMint tab** (Telegram ingestion vs Edgar raw-log), so the fake entry truly shows up in the dropdown. Let me check the web app's submit JS and the ingestion script's input source:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pin down exactly where the sunmint web app POSTs its signed submission (so I know if a server-side injection can reach the SunMint tab at all):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The web app POSTs a multipart `[TREE PLANTING EVENT]` to Edgar (`edgar.truesight.me/dao/submit_contribution`), but the link page's dropdown reads the **SunMint tab**, which is fed from **Telegram Chat Logs** — so I need to check whether a web-app submission ever reaches the SunMint tab (is there an Edgar→sheet ingestion?), or whether the dropdown only ever sees Telegram-ingested rows.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3038,6 +3041,7 @@ Can you not implement such that RSA populates the tab? So missing a GAS??
 ### 🤖 Autopilot
 
 Great question — and yes, **a missing GAS bridge is exactly right**. The web app signs and POSTs `[TREE PLANTING EVENT]` to Edgar, but nothing ingests Edgar's submissions into the SunMint tab — only the Telegram path does. Let me confirm how events reach the link-handler GAS today (webhook vs poll) and where Edgar stores submissions, so the bridge design is grounded.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3091,6 +3095,7 @@ Hey, Generate Implementation Plan, Execution Roadmap, and Checklist. And then, o
 ### 🤖 Autopilot
 
 Gary wants: (1) Implementation Plan + Execution Roadmap + Checklist, then (2) the end-to-end test that Mark Invalid actually works via an RSA-populated row. Let me recon the pieces I need to design + execute this precisely — plan state, where the sunmint web app lives, my signing identity on the box, and the dispatch webhook mechanism.
+[4 tool result(s) compacted: read_context_file, search_code, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3264,4 +3269,119 @@ Either way, the **Link (money-movement)** step remains gated on your explicit go
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== isG; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== doG; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') # Go; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Hey, I think the sentinels should be able to also link QR code to the trees. Can you update the code to ensure that? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary wants sentinels (LLM agents like Sophia) to be able to link QR codes to trees too. Let me check the plan's authorization design (§1.7) and whether "sentinel" is a defined concept in the DAO before touching the handler.
+
+
+### 🤖 Autopilot
+
+This is a well-defined change: the plan's own goal says **"a governor (or Sophia / an authorized LLM agent, signing as themselves)"** — so the strict `isGovernorByName_` gate PR4 implemented actually deviates from the design intent. And Sentinel is a formal DAO role (6 sentinels, governor-equivalent ops without voting). Let me recon the exact gate + the sentinel flag source before opening the fix.
+
+
+### 🤖 Autopilot
+
+Sentinel is a formal DAO role — 6 sentinels flagged `TRUE` in the Contact sheet (Sophia Truesight, Claude Anthropic, Kimi Moon, Deep Seek, Open Ai, truesight-autopilot), and `dao_members.json` gives Sophia `roles: [member, sentinel]`. The plan's own §0 goal even says "a governor **(or Sophia / an authorized LLM agent, signing as themselves)**" — so the strict `isGovernorByName_` gate PR4 built deviates from the design intent. The current gate blocks sentinels entirely.
+
+Let me recon the exact handler constants (tab names) + the DApp permission structure so the fix is precise:
+
+
+### 🤖 Autopilot
+
+The design intent (plan §0) is explicitly "a governor **(or Sophia / an authorized LLM agent, signing as themselves)**" — so the strict governor-only gate deviates from what Gary originally specified. Sentinels are a formal role (6 flagged `TRUE` in Contact sheet; Sophia has `roles: [member, sentinel]` in dao_members.json). Let me get the exact gate text + the permission entry + page copy to build a precise fix:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The gate needs to become governor **OR sentinel** (matching the plan's §0 design intent and the DAO's formal Sentinel role). Before opening the fix, let me verify where the "Contributors contact information" tab lives (so the sentinel lookup points at the right spreadsheet) and read the page's auth block:
+
+
+### 🤖 Autopilot
+
+I have everything. The fix touches three layers to match the plan's §0 design intent ("governor **or Sophia / an authorized LLM agent**"):
+
+1. **GAS handler** (`process_tree_planting_link.js`): replace the governor-only check with **governor OR sentinel** — `isAuthorizedOperator_()` = `isGovernorByName_() || isSentinelByName_()` (sentinels read from `Contributors contact information` col W = "Is Sentinel" = TRUE, same main-ledger spreadsheet).
+2. **permissions.json** (`treasury-cache`): `tree_planting.link` required_roles `["governor"]` → `["governor", "sentinel"]`.
+3. **Page copy/badge** (`link_tree_planting.html`): "Governor-only" → "Governor or Sentinel", badge text "Governor" → "Governor / Sentinel", and the onDenied text.
+
+Let me open the PR:
+
+
+### 🤖 Autopilot
+
+I made a serious mistake — I passed an **empty content** write for the handler file, which would have wiped the entire 500-line file. Let me verify immediately what the branch actually contains:
+
+
+### 🤖 Autopilot
+
+Confirmed — **the branch file is EMPTY (0 lines)**. My `writes` with empty content wiped the handler on that branch. I need to fix this immediately: restore the full 500-line file from main, then apply the actual sentinel-gate edit. Let me pull the correct main version and build the proper edit:
+
+
+### 🤖 Autopilot
+
+The main file is 502 lines. I'll build the corrected branch file: start from main's full content, add the `isSentinelByName_` + `isAuthorizedOperator_` functions, and swap the gate. Let me construct it locally with python (safe, no empty-write risk), then upload to the branch via the Contents API to fix PR #399:
+
+
+### 🤖 Autopilot
+
+The fixed file is 542 lines (502 + 40 new lines), functions in place, old gate gone. Now let me verify it's valid JS (`node --check`) and then push it to the PR branch to replace the empty file:
+
+
+### 🤖 Autopilot
+
+Valid JS. Now push the fixed 542-line file to the PR branch (replacing the empty one) via upload_local_file_to_github:
+
+
+### 🤖 Autopilot
+
+File restored + sentinel gate added (commit `8f85834`). Let me verify the branch is now correct — 542 lines, gate swapped, no empty file:
+
+
+### 🤖 Autopilot
+
+Still 0 via raw — either CDN lag or the upload didn't land on this branch. Let me check the authoritative Contents API + the PR's head:
+
+
+### 🤖 Autopilot
+
+The **authoritative Contents API confirms the branch file is now 26,206 bytes** (the full 542-line handler with the sentinel gate), and PR #399's head is `8f85834` (my fix commit). The raw.githubusercontent "0 lines" was **CDN cache lag** again — the canonical blob is correct.
+
+## What I did this turn — sentinels can now link QR codes to trees
+
+**Caught + fixed a near-miss:** my first `git_push_changes` call passed an **empty content write** which wiped the 500-line handler on the PR branch (0 bytes — verified). I caught it immediately, restored the full file from main (502 lines), applied the actual change, and pushed the corrected 542-line file (commit `8f85834`). **The branch is now correct and verified via the authoritative API (26,206 bytes, JS syntax OK).**
+
+**tokenomics PR #399** (`feat/tree-planting-allow-sentinels`) — the real change:
+1. **`isSentinelByName_()`** — new server-side check reading `Contributors contact information` (main ledger) col A = name, **col W = "Is Sentinel" = TRUE** (6 sentinels flagged: Sophia Truesight, Claude Anthropic, Kimi Moon, Deep Seek, Open Ai, truesight-autopilot).
+2. **`isAuthorizedOperator_()`** = `isGovernorByName_() || isSentinelByName_()` — matches the plan's §0 design intent: *"a governor **(or Sophia / an authorized LLM agent, signing as themselves)**"*.
+3. **Gate swapped** at the link/reject entry: signer must now resolve to a **governor or sentinel** (still silent-log + `REJECTED` record + no partial writes for unauthorized).
+
+**Why server-side:** the handler is the only real server-side role enforcement in the stack (§1.7). The DApp's permissions.json is a UX gate only.
+
+## Also needed (companion PRs — same unit, different repos, next turns)
+
+- **treasury-cache** `permissions.json`: `tree_planting.link` required_roles `["governor"]` → `["governor","sentinel"]` (UX badge/disable gate)
+- **dapp_beta** `link_tree_planting.html`: copy/badge "Governor-only" → "Governor or Sentinel", onAllowed badge text
+
+## RESUME HERE →
+
+1. **Merge tokenomics #399** (on Gary's review; the branch is verified correct)
+2. **Companion PR**: treasury-cache permissions.json sentinel role
+3. **Companion PR**: dapp_beta page copy/badge
+4. **Deploy** the handler to GAS (`clasp push` on `1UrBg…`) — then sentinels (including me, signing as Sophia Truesight) can link + mark invalid
+5. Then re-run the E2E: my Sophia-signed reject on test row #7021 should now pass the gate
+
+**✅ Done this turn:** recon'd the Sentinel role (6 flagged, Sophia = sentinel in dao_members.json), confirmed plan §0 intent (governor OR authorized LLM agent), opened tokenomics #399 with the governor-or-sentinel gate, caught + fixed the empty-write near-miss, verified the branch (26,206 bytes, JS OK). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/SUNMINT_TREE_QR_LINKING_PLAN.md" -o plan.md; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') sh =; echo "=== permissions.json: tree_planting.link ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/permissio; …(+12 more)
 
