@@ -3781,6 +3781,7 @@ No `ScriptApp.newTrigger` in the handler — the processor is triggered by the *
 So the cleanest trigger: call the **@HEAD doPost** with my REJECT? No — it checks `isGovernorByName_` and LINK marker only.
 
 Let me check: is there a time-based trigger already set on the project (the cron fallback the dispatch comment mentioned)? And does the doPost call the processor at the end? Let me read the tail of doPost:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3788,11 +3789,13 @@ Let me check: is there a time-based trigger already set on the project (the cron
 doPost is short — it appends to Telegram Chat Logs but does **not** call the processor itself; it relies on the **cron** (`processTreePlantingLinksFromTelegramChatLogs` run by a time trigger). So the E2E needs the cron to fire, OR I trigger the processor directly.
 
 The processor is a **plain GAS function** — it can't be called via /exec URL directly unless it's exposed (GAS only exposes doGet/doPost to web). So the trigger path is: **wait for the GAS time-trigger cron** (which the plan says runs every N minutes). Let me check if the trigger exists and how often — read the plan's cron section + look for the trigger setup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan says PR4 ships a **`processTreePlantingLinkCron`** — the cron function. Let me find it in the merged handler and check whether it's a standalone callable (so I can trigger it via the @HEAD exec URL or confirm the trigger exists):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3800,6 +3803,7 @@ The plan says PR4 ships a **`processTreePlantingLinkCron`** — the cron functio
 The cron function `processTreePlantingLinkCron()` exists but needs a **time-driven trigger set up in the Apps Script UI** — which may not exist. The E2E can't wait for an unset trigger. The fastest reliable path: **invoke the processor function directly through the GAS API** (the @HEAD deployment's exec URL can call any exposed function via `?function=` if the deployment is configured that way — actually, GAS web deployments only expose doGet/doPost).
 
 Let me check whether a trigger actually exists on the project, and if not, find another invocation path. Actually — the cleanest is to check if `processQrCodeUpdatesFromTelegramChatLogs` (the sibling processor) has a working trigger I can piggyback on, or check the plan's note about the trigger setup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3809,11 +3813,13 @@ No trigger instructions found in the plan, and no webhook env on the autopilot b
 **The most reliable E2E trigger:** use the **@HEAD doPost webhook** deployment URL (`AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ`) — but it rejects REJECT (only LINK) and checks governor only. However — doPost **appends to Telegram Chat Logs** which is exactly what I already did manually. The processor still needs running.
 
 Let me check if the project has an **exec run-as-the-owner** path — the GAS API `run` endpoint. Actually, the practical answer: **GAS time triggers can't be verified from here**, but the `doPost` webhook can be called with the LINK marker to prove the webhook works. For the REJECT E2E, the manual sheet append is done — I need the processor to run. Let me check if `Code.js` (the other file in the project) has trigger setup or a run endpoint:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `Code.js` has `doGet` × 3 — one of them might be a trigger/status endpoint. Let me check those doGet functions — if there's an admin endpoint that runs the processor, I can invoke it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3881,11 +3887,13 @@ keep going to check
 ### 🤖 Autopilot
 
 Continuing — checking the remaining `doGet` actions in `Code.js` for a tree-planting trigger and the deployment serving it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only one `doGet` (QR-code action) — the tree-planting processor isn't exposed via doGet. Let me read the full `doPost` in the deployed handler (#397) — it may call the processor after appending (which would give me a webhook trigger path).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4082,4 +4090,111 @@ Converging — I've hit the per-turn limit. Here's the state.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && git fetch ori; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploym; cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') # Su; …(+1 more)
 • `gas deploy project` → ok
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I think all GAS deployment by convention should be pull first to ensure we are not overriding stuff in production accidentally before we deploy. THis should be a convention we follow
+
+
+### 🤖 Autopilot
+
+Gary's right — and it matches what we hit this session (the "Conflicting files found" guard, and the live-vs-git drift on `process_tree_planting_link.js`). Let me codify this as a real convention: check what `deploy_gas_project.py` currently does, and where the operating instructions describe deploys.
+
+
+### 🤖 Autopilot
+
+The deploy script does a bare `clasp push --force` with no pull-first step, and there's no documented convention. Let me see the push/main portion so I can add pull-first correctly:
+
+
+### 🤖 Autopilot
+
+This is the right call — and exactly what bit us this session (the "Conflicting files found" guard, and the live-vs-git drift on `process_tree_planting_link.js`). The deploy script currently does a bare `clasp push --force` with **no pull-first step**, and there's no written convention. Let me implement pull-first as an enforced convention in the deploy script:
+
+
+### 🤖 Autopilot
+
+My command was too large. Let me do this properly via a PR (repo-class rule anyway). First grab the exact anchors I need to edit:
+
+
+### 🤖 Autopilot
+
+I have all the anchors. Now opening the PR that makes **pull-first an enforced convention** in `deploy_gas_project.py`:
+
+
+### 🤖 Autopilot
+
+The inline commands are too large for the tool. Let me apply the changes via a script file on the box instead, then open the PR with focused edits.
+
+
+### 🤖 Autopilot
+
+All 5 changes applied, compiles, runs. Let me verify the diff looks clean and confirm the dry-run now shows the pull + drift check (without actually pulling, since dry-run skips):
+
+
+### 🤖 Autopilot
+
+The change is clean (+57 lines). Now opening the PR with the diff:
+
+
+### 🤖 Autopilot
+
+The tool needs the actual file change. Let me pass the whole file as a write (it's ~300 lines) — first grab it so I can include the exact content:
+
+
+### 🤖 Autopilot
+
+I have the full file. Now opening the PR with the complete file content (with the pull-first + drift gate added):
+
+
+### 🤖 Autopilot
+
+Retrying with top-level params and compact edits instead of a full-file write:
+
+
+### 🤖 Autopilot
+
+**PR #401 opened** — the pull-first convention is now codified. Let me verify the branch file is correct (all 4 edits applied, compiles):
+
+
+### 🤖 Autopilot
+
+**Verified on the branch** — all 4 edits present (run_clasp_pull, check_drift, args.allow_drift usage, "refusing to push" guard ×2, docstring convention) and the file compiles clean.
+
+## ✅ Codified the convention — tokenomics PR #401
+
+Gary's directive is now enforced in the deploy tooling, not just a habit:
+
+**tokenomics #401** (`convention/gas-pull-first`, commit `dc9b0ca`) — `scripts/deploy_gas_project.py`:
+1. **`clasp pull` runs automatically before every push** (new `run_clasp_pull()`) — no more bare `clasp push --force` onto unknown production state
+2. **Drift gate** (new `check_drift()`): after the pull, if `git status` on the project folder shows **live ≠ git HEAD** (un-pushed production work exists — the exact thing that burned us with `process_tree_planting_link.js`), the deploy **ABORTS** with "X refusing to push — un-pushed production work exists"
+3. **`--allow-drift`** flag as the explicit dangerous override (mirrors `--allow-identity-mismatch`)
+4. Docstring documents the convention so it survives as the default behavior for every future deploy
+
+**Why this matters (what we hit this session):**
+- The "Conflicting files found" clasp guard twice blocked pushes
+- The live-pull showed GAS running the old governor-only handler while git had the sentinel gate — a blind push would have clobbered whichever side was newer
+- Now: pull → compare → abort if drift → push only when reconciled
+
+**Verified:** branch file has all 4 edits (grep-verified), `py_compile` OK. The 30-min cron + all future `gas_deploy_project` calls will now enforce pull-first.
+
+## RESUME HERE →
+
+1. **Merge tokenomics #401** (on your word, or per the standing go) — then it's the convention for all GAS deploys
+2. **Back to the E2E** (the actual workstream): the REJECT row for #7021 is staged; the remaining blocker was the **@HEAD sign-in vs @9-anonymous split** — the fix is creating an anonymous deployment of the new Code.js (or invoking the processor via the `processTreePlantingLinksFromTelegramChatLogs` alias @9 already lists, once the new code is behind it)
+3. Then: verify #7021 → INVALID, cache drop, cleanup, and the Link E2E (still gated on your go)
+
+**✅ Actions this turn:** applied + verified the pull-first convention change (compiles, runs, grep-verified), opened tokenomics #401. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → patched deploy_gas_project.py (pull-first + drift gate + --allow-drift + docstring), py_compile + run verified, diff stat +57 lines, read full file
+• `git push changes` → tokenomics #401 (commit dc9b0ca)
+• `ssh run` → verified branch: run_clasp_pull=1, check_drift=1, allow_drift=1, refusing-to-push=2, docstring=1, COMPILE OK
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== deploy_gas_project.py: head ===" && sed -n '1,80p' scripts/deploy_gas_project.py; cd /opt/truesight_autopilot/context/tokenomics && sed -n '80,220p' scripts/deploy_gas_project.py; cd /opt/truesight_autopilot/context/tokenomics && echo "=== run_clasp_push block ===" && grep -n "def run_clasp_push\|def run_post_push_hook; …(+3 more)
 
