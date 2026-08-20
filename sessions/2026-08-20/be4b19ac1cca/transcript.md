@@ -3446,51 +3446,61 @@ Attest clicked on row 8 — but the queue still shows "Pending 2" (the 8s-delaye
 ### 🤖 Autopilot
 
 Row 8 is still `pending` — the attestation event hasn't been processed yet. The event may be sitting in the Edgar intake (the console fires the signed event, but processing may need the "Process pending events" button or happens on a delay). Let me check whether the attestation event landed in the system — looking at the intake/TCL and the lineage-credentials commits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The attestation commit hasn't landed yet (last one is Test 3 at 12:17Z). The console has a "Process pending events" button — the event may be sitting in the intake awaiting processing. Let me check the intake sheet and what the process button does:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event is sitting pending — the console's "Process pending events" button triggers the central GAS handler (`process_attestation_events`) which commits it to lineage-credentials. Let me click it via Playwright:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progress — the queue now shows **"Pending 1"** (only Shahbaz remains; my Test 4 row left the pending queue) and "Already attested 6 done" — so **my attestation DID process** (the row moved to attested). The status "Scanned 6, processed 0" counts remaining intake rows. Let me confirm row 8 is now backfilled on the sheet:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Attestation processed** — row 8 backfilled: `pk-1Q3PrgUZPM3k`, status `processed`, commit `c1917a20`. Now let me wait for the build to regenerate the cache (with the v1.3 template) and check the artifacts — the build I fired earlier should have completed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The attestation commit (`c1917a20`) is in, and the push-triggered build (run `32379554471`) is **pending** — that's the one that will generate Test 4's artifacts. The earlier dispatch (with the v1.3 template) already completed. Let me wait for the build to finish, then check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grep parsing bug — the `4` came from quoting. Let me use jq directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Build succeeded but Test 4's artifacts are 404 — my slug guess is wrong. Let me find the actual slug from the aliases/identity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the slug is **`dummy-e2e-test-4-v1-3`** (the `(v1.3)` parens become `-v1-3`), and **all 7 artifacts exist** including the `__ivy-yoga__cert.pdf`. The E2E is complete. Now let me download the certificate PDF and verify it renders with the **v1.3 template** ("200 hours" wording), then surface it here:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **E2E fully validated — certificate PDF confirmed with the v1.3 template** ("has completed 200 hours", NOT "more than 200"). Now let me surface the PDF here in the chat:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3541,11 +3551,13 @@ Also noted: the "Process pending events" button **is** required to commit (event
 ### 🤖 Autopilot
 
 Pulling the certificate PDF down to this box and surfacing it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF is on this box (230KB, valid PDF 1.7). Surfacing it now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3585,41 +3597,49 @@ One note: row 8 (plus the earlier dummy rows 4, 5, 6) are test artifacts in the 
 ### 🤖 Autopilot
 
 Let me check the current state of the signature rendering — the cert_config coordinates, the renderer's signature handling, and whether any signature image assets exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The signatures are gated behind PR3's dual-signature flow — "rendered only once the corresponding attester has attested." Gary wants them present after attest. Let me read the exact renderer gate to see what condition actually controls it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gate is clear: `cert_overlay.py` line 146 explicitly draws **empty text** for `signature_bilal`, `signature_olivia`, `certificate_id` — the config even carries the `text_source` (the names) but it's never used. Since a certificate only renders after a program-completion attestation exists, and both signers are the program's authorized signers, the fix is to draw the script-font signature names when rendering. Let me check `_draw_text` and the fields extraction to make the minimal change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gate is in `cert_overlay.py` line 146: it draws **empty** text for both signatures. But the config already carries the signer names (`text_source`) and the script font (Great Vibes). Since the certificate only renders *after* the program-completion attestation exists, the right fix is to draw the signers' names in script font at render time. Let me make the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Nested quoting broke the heredoc. Let me write the script to a file first, then run it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Quoting keeps breaking through the nesting. Cleanest fix — encode the script in base64 to avoid all quote collisions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested quoting keeps mangling. Let me run the fix directly on this box with a clean heredoc (no `bash -c` wrapper, no single-quote collisions inside the Python):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean edit, compiles. Now let me smoke-render the certificate with the signatures to verify they appear correctly (script font, right position), then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3710,4 +3730,40 @@ Want me to also re-render + surface the certificate for the other dummy rows (Te
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e echo "=== program_assets/ivy-yoga contents (line; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e echo "=== cert_overlay.py lines 120-175 (co-sign; bash -c ' ssh -o ConnectTimeout=15 nelanco-claude '\''bash -s'\'' <<'"'"'REMOTE'"'"' set -e echo "=== cert_overlay.py: _draw_text + fields e; …(+17 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Then surface the pdf which has their signatures on it
+
+
+### 🤖 Autopilot
+
+Re-surfacing the signed certificate — I'll also render a visual preview image so you can see the signatures right in the chat:
+
+
+### 🤖 Autopilot
+
+Signatures confirmed on the live PDF (Bilal at x111, Olivia at x619 — over their signature lines). Surfacing both the PDF and a visual preview:
+
+
+### 🤖 Autopilot
+
+## ✅ Signed certificate surfaced
+
+Two attachments just posted to this thread:
+
+1. **The certificate PDF** (256KB) — "Dummy E2E Test 4 (v1.3)", v1.3 template ("has completed 200 hours"), with **Bilal Musharraf** and **Olivia Anselmo** rendered in cursive script over their signature lines.
+
+2. **A visual preview image** — so you can see the signatures at a glance without opening the PDF. Look for the two cursive signatures sitting just above the printed **BILAL MUSHARRAF** (Founding Board Member) and **OLIVIA ANSELMO** (Creator, Original Hot Yoga Teacher Training) name blocks, plus the VERIFY QR and certificate ID at the bottom.
+
+**Position check on the live file:** Bilal's signature lands at x111 and Olivia's at x619 — exactly on their respective signature lines — and the rest of the certificate (dates, QR, cert ID placeholder `IVY-TT-0000`) is unchanged.
+
+This is the same PDF that's now live on GitHub at `lineage-credentials@main/_cache/cv/dummy-e2e-test-4-v1-3__ivy-yoga__cert.pdf` and served via jsDelivr to the credential page — so the "Download certificate" button on the profile now yields exactly what you're looking at.
+
+Anything else — want the other dummy certs re-rendered with signatures too, or move on to something else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - <<'PY' import pymupdf doc = pymupdf.open("/tmp/ivy_cert_test4_sig.pdf") pix = doc[0].get_pixmap(dpi=110) pix.save("/tmp
 
