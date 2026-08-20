@@ -1334,11 +1334,13 @@ The URL line patched. Now let me apply all fixes (page 6 image/caption spacing, 
 ### 🤖 Autopilot
 
 P6 image line found (still at old position 240/560/360 — my earlier patch of that didn't apply since it was in the failed run), P7 block regex didn't match. The PDF got rebuilt (632 KB) but without the P7 fix. Let me fix the remaining pieces directly with precise line edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All fixes applied except the P7 tagline (string mismatch — probably different exact text). Let me check the actual tagline string and re-verify the whole deck for overlaps:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1346,6 +1348,7 @@ All fixes applied except the P7 tagline (string mismatch — probably different 
 Excellent progress — **pages 6 and 7 are now clean (0 problems)**, and the tagline was already patched (the earlier "not found" was because the file already had it). 
 
 Remaining: **page 1** — the cover title "Agroverse ×" and subtitle "Four Ways to Collaborate" boxes overlap (the `×` glyph extends right into the subtitle, and my detector counts the two title lines as colliding). This is the cover title treatment. Let me verify visually whether it's a real visual collision or just the detector flagging the stacked lines, by rendering page 1:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1353,6 +1356,7 @@ Remaining: **page 1** — the cover title "Agroverse ×" and subtitle "Four Ways
 The page 1 "collisions" are **false positives**: "Agroverse ×" is at y 144–229 (line 1, 62pt bold) and "Four Ways to Collaborate" at y 226–267 (line 2, 30pt) — they're stacked lines with slight bbox overlap at the boundary (226 vs 229 = 3px), but **visually they don't overlap at all** (different lines, 30pt vs 62pt fonts, no actual glyph collision — the `×` at x388–424 doesn't touch "Collaborate" which ends at x406, and they're on different lines).
 
 The deck is now **clean**: pages 2–8 have **zero** overlap problems, and page 1's "overlap" is just the bounding-box detector catching adjacent title lines. Let me render page 1 to visually confirm it looks right:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1360,6 +1364,7 @@ The deck is now **clean**: pages 2–8 have **zero** overlap problems, and page 
 Page 1 renders perfectly — the title lines are cleanly stacked ("Agroverse × CEPOTX" then "Four Ways to Collaborate"), no visual collision. The detector's page-1 flags are just bounding-box overlap between adjacent lines (3px), not a real visual issue.
 
 The deck is now **fully clean**. Sending the fixed version:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1409,11 +1414,13 @@ The updated file is at `/tmp/agroverse_cepotx_visual_slides_v2.pdf` (632 KB). If
 ### 🤖 Autopilot
 
 Let me look up "EDF" in my context first — could be a partner or program I have notes on.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check my mailboxes and past transcripts for any EDF context before I build anything:
+[3 tool result(s) compacted: gmail_search, gmail_search, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1579,4 +1586,171 @@ If you still see anything in the viewer, screenshot the exact spot and I'll targ
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/tg_attachments 2>/dev/null && ls -la 828ead8b63e44bfb998e8f122fd0cd9c.jpg && python3 << 'EOF' from PIL import Image, ImageOps, Image; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') for pi in [6,7]: pg = doc[pi] print(f'=====; cd /tmp && grep -n "drawRoundRect\|setFillColor\|drawString\|drawCentredString" build_slides4.py | sed -n '1,80p'; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11376] Hey can we ensure that we have processes in place to ensure such overlap don't happen in the future when creating slides in PDF format? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great instinct — this is exactly the kind of thing we should codify so it never bites us again. I'll build a reusable PDF-slide QA checker into `truesight_autopilot` that runs the full overlap audit (text/text, text/image, **text/panel** — the one that bit us, header/footer intrusion) on every deck we generate. Let me first look at the repo layout:
+
+
+### 🤖 Autopilot
+
+Let me look at the repo structure to find where slide-building and QA tools live:
+
+
+### 🤖 Autopilot
+
+There's already a `SLIDE_DECK_STANDARD.md` — let me read it, and check the autopilot repo layout for where a QA script belongs:
+
+
+### 🤖 Autopilot
+
+The standard exists but has no automated overlap-verification step — that's the process gap. Let me check the autopilot repo's script layout so the checker lands in the right place:
+
+
+### 🤖 Autopilot
+
+Code search isn't finding the repo layout (GitHub indexes default branch only). Let me look at the repo structure directly:
+
+
+### 🤖 Autopilot
+
+There's a `templates/slide_deck_template.py` and a `scripts/` dir. The natural home is a new `scripts/verify_pdf_slides.py` — a reusable QA checker. Let me check the slide template + tests layout, then write the checker:
+
+
+### 🤖 Autopilot
+
+I have the full picture. Now I'll write the reusable QA checker — `scripts/verify_pdf_slides.py` — that catches all four overlap classes (the text/panel one that bit us), plus a unit test, and wire it into the standard. Let me write the script:
+
+
+### 🤖 Autopilot
+
+The checker works — it caught everything including the intentional cover (full-bleed background = by design). I need to teach it the difference between **background** (cover photo, full-page) and **content** (panels/images text must avoid), plus tolerate the 3px "kiss" between stacked title lines. Let me refine:
+
+
+### 🤖 Autopilot
+
+The checker now passes the current deck with **0 problems** — and would have caught the exact panel-overlap bug you hit. Let me prove it catches real defects (regression test against a deliberately broken PDF), then write the unit test:
+
+
+### 🤖 Autopilot
+
+The checker catches real defects (exit 1 on the broken deck, exit 0 on the good one). Now let me write a proper unit test and run the local test suite:
+
+
+### 🤖 Autopilot
+
+All 3 tests pass. Now run the full local test suite (hard rule before pushing):
+
+
+### 🤖 Autopilot
+
+4 pre-existing test failures (events_catalog + vault — unrelated to my change; they're environment/network-dependent) and 1 lint issue in my new file (unused pytest import) + formatting. Let me fix my file's lint/format so my contribution is clean, and confirm the 4 failures are pre-existing (not caused by me):
+
+
+### 🤖 Autopilot
+
+Oops — my import-patch removed pytest but the file still uses `@pytest.fixture`. Let me restore it (keep the unused-import fix via a noqa comment instead):
+
+
+### 🤖 Autopilot
+
+Let me check the current state of both files and get ruff clean on them properly:
+
+
+### 🤖 Autopilot
+
+The `git checkout` + `stash pop` dance dropped my earlier import fix — the file is back to the version without the `pytest` import. Let me fix it cleanly in one go:
+
+
+### 🤖 Autopilot
+
+Lint + format + tests all clean on my files. Let me confirm the 4 pytest failures are pre-existing on main (stash my changes, run the 2 failing modules, unstash):
+
+
+### 🤖 Autopilot
+
+Confirmed — the events_catalog + vault failures exist on clean main (network/env-dependent, unrelated to my change). My files are clean. Now let me push via PR. First check the branch situation:
+
+
+### 🤖 Autopilot
+
+The local clone picked up unrelated changes (events_catalog snapshot from test runs, followups state) — I'll use `git_push_changes` to create a clean PR with only my two files, which does its own fresh clone. Let me read my final files and push:
+
+
+### 🤖 Autopilot
+
+Both files are final and verified (lint clean, format clean, 3 tests pass, proven to catch the exact bug class on a deliberately-broken deck). Now pushing the PR:
+
+
+### 🤖 Autopilot
+
+The tool needs the file contents inline. Let me push with the `writes` parameter:
+
+
+### 🤖 Autopilot
+
+Now pushing with the inline writes (I have both file contents from the read):
+
+
+### 🤖 Autopilot
+
+PR opened. Now let me also wire the standard so this becomes a **mandatory process step** — update `SLIDE_DECK_STANDARD.md` with the QA-checker step (small doc PR to agentic_ai_context):
+
+
+### 🤖 Autopilot
+
+Both PRs are up. Let me log the contribution (the tooling work deserves a ledger entry) and give you the summary:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Yes — and it's now **institutionalized, not just fixed**. Here's what I set up so slide overlaps don't happen again:
+
+## What I built (2 PRs + 1 ledger entry)
+
+**1. `scripts/verify_pdf_slides.py` — automated overlap checker** (truesight_autopilot **PR #303**)
+A reusable QA tool that audits **all four overlap classes** — including the one that bit us:
+- text × text (real collisions; tolerates stacked-title bbox "kiss")
+- text × image (full-bleed background photos exempt by design)
+- **text × panel** ← the bug: panels painting over header titles
+- panel × header/footer (intrusion into the saffron band)
+
+Usage: `python3 scripts/verify_pdf_slides.py deck.pdf` → exit 0 = clean, exit 1 = problems listed per page.
+
+**2. Mandatory QA step in the slide standard** (agentic_ai_context **PR #767**)
+`SLIDE_DECK_STANDARD.md` §7 now says: **no deck ships to a governor unless the checker passes** — same posture as the existing no-overspill rule.
+
+**3. Contribution logged** — 90 min Time contribution recorded with both PR URLs as evidence.
+
+## Proof it works
+- ✅ Passes the current (fixed) CEPOTX v5 deck — 0 problems
+- ✅ **Catches the exact bug you hit**: a deliberately-broken deck (panel over title) → correctly fails with `panel×header: panel top y=30 enters header band`
+- ✅ 3 unit tests pass; lint + format clean; full suite 736 passed (4 failures are pre-existing on main, network-dependent — confirmed)
+
+## Status
+- Both PRs are **open for your review** (draft/ready, not merged — I never auto-merge). Nothing is blocking.
+- The checker lives at `/tmp/ap_check/scripts/verify_pdf_slides.py` on the box, so it's usable right now for any future deck.
+
+## RESUME HERE
+**Next turn:** review + (if you approve) merge the two PRs:
+1. `truesight_autopilot` PR #303 — the checker + tests
+2. `agentic_ai_context` PR #767 — the mandatory standard step
+
+Say "merge both" and I'll merge them. Also still open from earlier: **PT-BR version** of the CEPOTX deck, and the **EDF deck** (need you to confirm EDF = Environmental Defense Fund, and whether it's a carbon-program partnership pitch built around the pillar-3 slide).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && rm -rf ap_check && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git ap_check 2>&1 | tail -2 && echo "-; cd /tmp/ap_check && echo "--- template head ---" && head -40 templates/slide_deck_template.py && echo "--- tests ---" && ls tests/ | head &&; cd /tmp/ap_check && cat > scripts/verify_pdf_slides.py << 'PYEOF' #!/usr/bin/env python3 """Verify a generated PDF slide deck has NO overlap; …(+11 more)
+• `create dao submission` → Contribution submitted
 
