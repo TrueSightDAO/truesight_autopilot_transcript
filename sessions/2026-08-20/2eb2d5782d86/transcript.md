@@ -1310,21 +1310,25 @@ Let me look at the actual geometry: boxes are 240×110. "USA market" at (120,260
 Also the OCR "One closed loop — how the four" + "Planting" on the same line = the header title and the Planting box title ARE colliding.
 
 Let me fix all three pages properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first assertion failed — the page 6 caption string doesn't match exactly (escaping). Let me check the actual literal strings in the file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build script has the literal `·` character (not `\u00b7` escape). Let me patch using the exact literal strings:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The URL line patched. Now let me apply all fixes (page 6 image/caption spacing, page 7 loop layout) and rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1475,4 +1479,104 @@ So you're looking at the carbon + IoT monitoring slide. Combined with your "EDF"
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments 2>/dev/null && ls -la 3d49d749c76148d78406ac8e1269f9b5.jpg && python3 << 'EOF' from PIL import Image, ImageOps, Image; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') print('pages:', doc.page_count) pg = doc[4]; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') pg = doc[4] # image areas on page 5 for im
+
+
+### 🧑 Governor
+
+Still seeing overlap
+
+[Attachment auto-processed: **828ead8b63e44bfb998e8f122fd0cd9c.jpg**]
+- Type: Image (OCR confidence: 20.0%, quality: poor)
+
+Extracted text:
+```
+toms)
+```
+
+
+### 🤖 Autopilot
+
+Still seeing overlap — let me inspect this new screenshot and run a much stricter audit on the actual PDF (including same-block line collisions, which my earlier check skipped).
+
+
+### 🤖 Autopilot
+
+"8 of 8 — Mission tie-back" — that's the final slide. My earlier audits only checked text-vs-text and text-vs-image, **not text-vs-drawn-shapes** (the panels/boxes on slides 7–8). Let me do the full check including drawn rectangles:
+
+
+### 🤖 Autopilot
+
+Found it — **page 8 (the "Mission tie-back" slide you're looking at) has the overlap**: the heading "What we're asking from CEPOTX" (at y 60–101) sits **above** the white panel that starts at y=90, so the title text visually collides with the panel's top edge. That's exactly the overlap you're seeing in the screenshot.
+
+The fix: move the panel down (or the heading up) so the title sits cleanly above the panel, not on its edge. Let me look at the exact draw code for page 8 and patch it:
+
+
+### 🤖 Autopilot
+
+Let me see the full page 8 code block to patch the panel position:
+
+
+### 🤖 Autopilot
+
+Found it — **page 8's content panels start 20px too high** (top edge at y=90 top-down), poking up under the header band and colliding with the title text "What we're asking from CEPOTX" (which ends at y=101). My earlier audits only checked text-vs-image and text-vs-text — I missed text-vs-**drawn-panels**. Let me check which other pages have panels and fix them all:
+
+
+### 🤖 Autopilot
+
+**Found the root cause.** My earlier audits checked text-vs-text and text-vs-image — but **not text-vs-drawn-panels**. The content panels on slides 5, 6, and 8 start 20–30px too high and **poke up into the header band, painting cream over the bottom of the title text** (drawn after the title). That's the overlap you're seeing on the "8 of 8 — Mission tie-back" screenshot (and slides 5–6 have the same bug).
+
+Fix: drop the panel tops below the header band (top edge ≥ 112px) on all affected pages, then rebuild + full re-audit:
+
+
+### 🤖 Autopilot
+
+The audit now flags 1 "panel into header" per page — but that's the **saffron header bar itself** (the `rect(0, H-110, W, 110)` band is a drawn shape that spans the top 110px, which IS the header). That's expected — the header bar is supposed to be there. The **real** check is whether *content panels* (cream/green boxes) intrude. Let me refine the audit to ignore the header bar itself and check the actual content panels:
+
+
+### 🤖 Autopilot
+
+The audit is now clean — **0 real problems** on pages 2–8. Page 1's "PANEL y0-720" is the full-bleed cover background image (by design — text sits on the darkened hero photo, which is intentional).
+
+So the panel-intrusion bug is fixed: slides 5, 6, and 8 panels no longer poke into the header band. Let me render the three fixed pages and OCR them to visually confirm the title/panel separation:
+
+
+### 🤖 Autopilot
+
+All three pages now render cleanly — titles fully readable, panels clear of the header band, no text-over-panel spill. Let me do a final word-count/visual diff and send the fixed deck:
+
+
+### 🤖 Autopilot
+
+✅ **v5 sent — the overlap is finally fixed at the root.**
+
+## What was actually wrong (and why earlier checks missed it)
+
+Your "8 of 8 — Mission tie-back" screenshot exposed a bug my earlier audits **couldn't catch**: they only checked text-vs-text and text-vs-image, but **not text-vs-drawn-panels**.
+
+- On slides 5, 6, and 8, the cream/green content panels started **20–30px too high** — their top edge poked up *under* the header band and **painted over the bottom of the title text** (the panel is drawn *after* the title, so it covered it).
+- That's exactly what you saw: title text colliding with the panel below it.
+
+## The fix
+Lowered all 4 content panels (slides 5, 6, 8 left + right) so their tops sit **below the 110px header band** (edge now at y=112), then rebuilt.
+
+## Verification (full audit including drawn shapes now)
+```
+page 2: 0 ✅   page 3: 0 ✅   page 4: 0 ✅
+page 5: 0 ✅ (was panel-into-header)
+page 6: 0 ✅ (was panel-into-header)
+page 7: 0 ✅
+page 8: 0 ✅ (was panel-into-header)
+page 1: intentional full-bleed cover (darkened bg) ✅
+```
+Also rendered + OCR'd pages 5, 6, 8 — titles and panels read cleanly, no spill.
+
+If you still see anything in the viewer, screenshot the exact spot and I'll target it — but the geometry is now verified at every layer (text, images, *and* panels).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → audited all pages incl. drawn shapes → found panels on slides 5/6/8 intruding into header → patched 4 panel positions → rebuilt → full re-audit → rendered+OCR'd 3 fixed pages; `send_telegram_attachment` → msg 11505
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/tg_attachments 2>/dev/null && ls -la 828ead8b63e44bfb998e8f122fd0cd9c.jpg && python3 << 'EOF' from PIL import Image, ImageOps, Image; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') for pi in [6,7]: pg = doc[pi] print(f'=====; cd /tmp && grep -n "drawRoundRect\|setFillColor\|drawString\|drawCentredString" build_slides4.py | sed -n '1,80p'; …(+5 more)
 
