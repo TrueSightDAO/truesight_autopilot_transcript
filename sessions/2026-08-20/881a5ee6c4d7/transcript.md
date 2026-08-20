@@ -2121,41 +2121,49 @@ The compostable pouch quotes are 15×12cm (quoted) and 15×21cm (requested). But
 ### 🤖 Autopilot
 
 The Alibaba 269035810001023771 order was a **sample kit** (200 varied bag samples). Let me find the actual bulk pouch orders — the `20250219006` order token and any others — for the real dimensions.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "Bag procurement project with source pack" thread (from Banna at Source Pack) is the bulk-order negotiation — that's where the real pouch specs live. Let me read it.
+[2 tool result(s) compacted: gmail_read_message, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key find — the bulk Source Pack order specs: **15W × 21+8 cm zipper standing bag**. Now let me find the other pouch order tokens (`20250219006` = "Kraft Pouches - 2023") to compare which is smallest.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `20250219006` order token isn't in email (it may be an internal ID). Let me check the "Kraft Pouches - 2023" entry in the ledger and any other pouch supplier threads, plus check the WHITE_LABEL plan and exports for pouch records.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify whether the smaller (15×12cm) compostable pouch was actually ordered or just quoted — that determines the true smallest purchased size.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Order **241680186501023771** (2,000 items, delivered Mar 2025) is another pouch order. Let me read it for dimensions.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Order 241680186501023771 is another sample kit (200 items, varied). Let me do a final check for any earlier bulk pouch orders (2023–2024) and the foam box spec that hints at pouch size, then compile the answer.
+[2 tool result(s) compacted: gmail_search, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the white-label plan and exports for pouch specs, and confirm the foam box capacity (120 pouches) dimension hint.
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2199,11 +2207,13 @@ https://www.mercadolivre.com.br/saco-stand-up-pouch-papel-zip-kraft-cvisor-10x15
 ### 🤖 Autopilot
 
 Logging the contribution for you and Paloma — first checking the event catalog for the exact CONTRIBUTION EVENT format.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logging the contribution now — direct submission (no approval gate):
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2236,16 +2246,19 @@ Also worth noting: the **10×15cm kraft pouch with window** from your link match
 ### 🤖 Autopilot
 
 Let me check what we know about the 100 QR codes and Paloma's role before recording anything.
+[3 tool result(s) compacted: lookup_event_docs, search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me dig for the specific 100 QR codes referenced — checking context for tea-bag batches and recent QR registrations.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context has no record of a "100 QR codes" batch — let me check the QR codes ledger to see what batches exist and whether a 100-code set is registered.
+[3 tool result(s) compacted: list_directory, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2331,4 +2344,78 @@ Want me to verify the sheet's manager column actually shows Paloma now, or add t
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] Just make sure it was originally with Paloma
+
+
+### 🤖 Autopilot
+
+Let me verify the original custody record — checking who was originally associated with the batch (Paloma vs Gary) before anything else.
+
+
+### 🤖 Autopilot
+
+The context confirms Paloma is the Brazil ops owner. Now let me verify the **actual ledger sheet** — the source of truth for the QR rows — to see who was originally recorded as manager for the tea batch rows (1678–1777).
+
+
+### 🤖 Autopilot
+
+Found the sheet structure — **column K = "QR code location"**, **column U = "Manager Name"**. Now let me read the actual tea batch rows (1678–1778) to see what was recorded as the original location/manager for these 100 codes.
+
+
+### 🤖 Autopilot
+
+The sheet shows the tea batch rows with **Manager = Gary Teh** and **"QR code location" column K = empty**. Let me verify what thread 11578 (where the zip was delivered) is — whether that ties to Paloma — and read the full CONTEXT_UPDATES entry.
+
+
+### 🤖 Autopilot
+
+Let me check what thread 11578 was — the delivery thread for the batch — and whether Paloma was the original custodian.
+
+
+### 🤖 Autopilot
+
+Let me find the exact delivery entry in CONTEXT_UPDATES (the #777 line) via the local clone.
+
+
+### 🤖 Autopilot
+
+Straight answer: **the ledger does not currently show the batch as originally with Paloma** — and I want to be honest about exactly what's recorded before "making sure" of anything.
+
+## What the source-of-truth sheet actually says
+
+I read the **Agroverse QR codes** tab (rows 1678–1778) directly for the tea batch `2024OSCAR_CT_20260820_1..100` + `_101`:
+
+| Column | Value for this batch |
+|---|---|
+| **Manager Name** (col U) | **"Gary Teh"** — every row (1678–1777), incl. VOID `_3` and replacement `_101` |
+| **QR code location** (col K) | **empty** — no location recorded |
+| Status | MINTED (except `_3` = VOID) |
+| Context | Batch created for **FounderHaus offline QR-scan sales** (CONTEXT_UPDATES #777) |
+
+So the record says the codes were minted under **Gary**, with **no location** — not "Paloma." I cannot truthfully state the sheet had Paloma as original custodian; it doesn't.
+
+## What I logged earlier (and its limits)
+
+- The **INVENTORY MOVEMENT (Gary → Paloma)** event I submitted is recorded in the Edgar event log as a custody-transfer event.
+- It did **not** change the sheet's Manager column — the sheet still reads "Gary Teh." (Events are audit-log records; the sheet column is the operational source of truth, updated via the GAS QR processors.)
+
+## What's most likely true in the physical world
+
+- The batch was minted **for FounderHaus offline sales**, and the FounderHaus person is **Paloma** (the export-entity brief is literally "Prepared for Paloma — FounderHaus"). So the labels very plausibly went to Paloma physically — but **that fact was never written into the ledger**.
+
+## To make the record correct, pick one:
+
+1. **Set Manager → Paloma on the sheet** (100 rows) as the holder for the offline FounderHaus sales — this matches reality. This is a sheet write; I'd drive it via the QR-update GAS processor (`process_qr_code_updates.js`) or you can do it in the sheet. I don't have a direct sheet-write tool — I'd flag the rows and run the processor.
+2. **Keep Gary as mint-manager + the INVENTORY MOVEMENT as the transfer record** — accurate but then the "originally with Paloma" story isn't in the ledger.
+3. If the codes were *always* Paloma's (never Gary's in practice), tell me — I'll log a correction note so the record reflects that, and we set the sheet manager to Paloma.
+
+Which reflects reality: were the physical labels handed to Paloma at mint time (option 1/3), or did Gary hold them first and ship to Paloma (option 2)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/context/agentic_ai_context 2>/dev/null && git pull origin main -q 2>&1 | tail -1; grep -n "11578\|cacao tea\|202
 
