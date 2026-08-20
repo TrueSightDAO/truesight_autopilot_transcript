@@ -1339,31 +1339,37 @@ https://beta.agroverse.shop/assets/images/products/oscars-farm.jpeg
 ### 🤖 Autopilot
 
 You're right — that's the ceremonial cacao product shot (200g cacao), not cacao tea. Let me find what cacao-tea imagery actually exists in the repos, then fix the PDP.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No dedicated tea image in `products/` yet. Let me check the `packaging/` subfolder, truesight_me's shipment assets (the gallery references `agl4.avif`), and search for any cacao-tea image across repos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No dedicated tea image found yet. The PDP gallery already references `truesight_me/main/assets/shipments/agl4.avif` — let me check whether that path actually exists, look for tea imagery in the QR label assets I generated, and search more broadly for any cacao tea photo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `agl4.avif` exists (200) but that's the shipment photo. Code-search API is rate-limited. Let me check what images exist in truesight_me's assets tree properly, and look at the compiled label PNGs (they may show the tea packet design):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR label PNGs ARE the authentic tea assets — `2024OSCAR_CT_*.png` are the actual labels for this exact tea batch. Let me check the packaging images and a sample CT label to see what's usable:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me inspect the two candidate images (the packaging front + the actual CT label) to see what they actually show before choosing the replacement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1373,16 +1379,19 @@ This is decisive:
 - **`2024OSCAR_CT_20260820_1.png`** (450×350) = the **actual cacao tea label** — OCR reads *"Harvest 2024 · Oscar's Farm, Bahia, Brazil · Your tree is getting planted · 2024OSCAR_CT_20260820_1"*. **This is the authentic tea asset.**
 
 The honest fix: the PDP's main image should be the **real tea label** (which we minted and which is what customers actually see on the 50g packet), not the ceremonial cacao shot. Let me update the PDP hero image + gallery to use the CT label. First, upload the label into the shop's product assets, then update the PDP:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The label is the authentic tea asset. Before building the fix, let me gather (1) what image the tea cards on the category/farm/shipment pages currently use, (2) whether a real tea photo exists anywhere (nelanco box, Emelin's video thumbnail), so I fix all occurrences consistently:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the tea cards on **all three pages** use the wrong `oscars-farm.jpeg` (ceremonial cacao). And on the nelanco box there's a **2016-era tea label** (`compiled_Oscar_Farm_2024OSCAR_TEA_20260315_1.png`) — an earlier Oscar tea batch label, plus a partner SLO tea photo. Let me compare that older tea label against our new one to see which is the better asset:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1390,11 +1399,13 @@ Key finding: the tea cards on **all three pages** use the wrong `oscars-farm.jpe
 The labels are visually identical in design (only batch code differs) — and the **current batch label** (`2024OSCAR_CT_20260820_*.png`) is the authentic tea asset, minted for these exact 100 packets. That's what customers will physically hold.
 
 **Fix:** point the PDP hero + gallery and all three tea cards at the real tea label instead of the ceremonial cacao photo. Opening the PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Given your standing "merge all PRs" directive for this task, merging #202 so the fix goes live on beta:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1483,6 +1494,7 @@ Harvest 2024 Oscar's Farm, Bahia, Brazil Your tree is getting planted 2024O0SCAR
 ### 🤖 Autopilot
 
 Let me look at the actual attachment and compare it with what the page is serving right now:
+[2 tool result(s) compacted: list_directory, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1590,4 +1602,76 @@ Want me to re-mint `_3` and ship a corrected zip now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → echo "=== what image is the beta PDP serving NOW? ==="; curl -s "https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/" | grep; cd /tmp && curl -s -o ct_label.png "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/2024OSCAR_CT_20260820_1.png" && ; echo "=== manifest for label _1 ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs/2024OSCAR_CT_20260820_; …(+11 more)
+
+
+### 🧑 Governor
+
+Perhaps use this as main image instead??
+
+[Attachment auto-processed: **87e869a73b2142db9f5c456cdb17e137.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Good idea — a real product photo beats the label art as a hero. Let me inspect the attachment first, then wire it into the PDP:
+
+
+### 🤖 Autopilot
+
+Good call — a real product photo as the hero will read far better than label art. The attachment is a 1070×1280 JPEG (warm brown tones — consistent with a cacao tea product shot). Let me wire it in: read the current PDP to find all image refs, and upload the photo to the shop assets in parallel.
+
+
+### 🤖 Autopilot
+
+Photo uploaded to shop assets. Now let me see the PDP body markup (hero + gallery) so I can swap the main image to the new photo:
+
+
+### 🤖 Autopilot
+
+I have everything. Swapping the PDP hero + share metadata to the new product photo (keeping the label in the gallery), then merging per your standing directive:
+
+
+### 🤖 Autopilot
+
+PR #203 opened. Merging per your standing "merge all PRs" directive for this task:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — PDP hero now shows the real cacao tea photo 📸
+
+### What changed
+| PR | Change | State |
+|---|---|---|
+| (direct upload) | Added your photo to shop assets: `assets/images/products/cacao-tea-oscars-farm-50g.jpg` (1070×1280) | ✅ on main |
+| **#203** | **PDP hero image → your product photo** (was the QR label art). Also updated `og:image`, `twitter:image`, and JSON-LD `image` (photo first, label second). The QR label **stays in the gallery** as the second thumbnail — good, because customers should still see the packet label. | ✅ **merged** (sha `7dfdf26`) |
+
+### Result on the PDP
+- **Hero (main image):** your real cacao tea product photo
+- **Gallery:** `agl4.avif` (loose tea leaves) + the QR packet label
+- **Share cards (og/twitter):** now show the photo, not the label
+
+Your photo was uploaded **directly to `main`** (Contents API, not a branch), so it's already live on beta — the #203 merge triggers the GH Pages rebuild (~1–3 min) before the hero swap is visible. After that: `beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` shows the photo as the hero.
+
+---
+**RESUME HERE →** Next turn:
+1. Hard-refresh the beta PDP after ~2–3 min — confirm the hero is your photo and the gallery still shows the label + leaves.
+2. Also confirm the **category/farm/shipment cards** — they currently use the label image too; if you want the photo there as well, I'll update those three cards in one PR.
+3. Then the **final remaining step: promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) on your approval — nothing has gone to www.agroverse.shop yet.
+4. (Standing) Re-mint label `_3` (the one genuine unscannable QR) + re-zip if you want 100/100 clean before printing.
+
+Want me to also swap the three card images to your photo (step 2)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/87e869a73b2142db9f5c456cdb17e137.jpg') print('size:', im.
+• `merge pr` → ✅ PR #203 on agroverse_shop_beta merged successfully (sha: 7dfdf26252837b1b78d8ff4695d42dcb66513b44). Pull Request successfully merged
 
