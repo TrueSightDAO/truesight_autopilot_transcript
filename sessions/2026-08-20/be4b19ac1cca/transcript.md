@@ -1910,31 +1910,37 @@ Next unit confirmed: **Farm/Shipment Media JSON PR0** — add `js/media-gallery.
 ### 🤖 Autopilot
 
 Let me read the loader JS design spec (the exact behavior PR0 must implement) and the current oscar-bahia page:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the full loader spec from the plan and inspect the actual repo files (oscar-bahia page + existing tests):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR0 scope is fully specified (loader JS spec + media.json schema + page migration steps + Playwright spec). Now let me clone agroverse_shop_beta and inspect the current state — oscar-bahia page, js/ dir, tests/ setup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo **already contains** `js/media-gallery.js`, the oscar-bahia `id="media-gallery"` container (line 490), the script tag (line 687), AND `tests/media-gallery-farm.spec.ts` — PR0 may already be done. Let me check the actual state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR0 is already merged** (media-gallery.js + oscar-bahia media.json + test are all on main at `f6cd051`). The next unit is **PR1** — migrate `shipments/agl4` — and it's **already open as PR #200** ("Migrate shipments/agl4 to media.json (fixes agl14.avif bug + hero-video console error)"). Let me verify #200 is complete, mergeable, and implements PR1 correctly before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #200 is clean (MERGEABLE, CLEAN), touches exactly PR1's scope (agl4 index.html + media.json + shipment test), and is authored by garyjob (the plan's executor). Let me verify the diff content matches the plan's PR1 requirements (hero slots, video, the agl14→agl4 bug fix, test assertions) before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1947,36 +1953,48 @@ PR #200's diff is exactly PR1's scope and is high quality:
 - Script tag added, .gitignore for test snapshots
 
 Let me attempt a quick local validation of the new spec before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo has no node_modules (needs `npm ci`), but Playwright browsers are installed. Let me install deps and run the new spec locally to validate before merging — this is the plan's own test-before-merge discipline:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deps installed. Now start a local server and run the new shipment spec (the plan's test-before-merge):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Version mismatch — npm ci pulled a Playwright that expects `chromium_headless_shell-1208`, but the box has `-1234`. Let me install the matching browser build:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Test PASSED** — both hero slots resolve to agl4.avif (not agl14), correct alt, hero video intact, zero console errors. Let me also run the farm spec as a regression check, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both specs pass (shipment 1.7s, farm regression 2.2s). PR #200 is validated — merging it (the plan's PR1, next executable unit):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #200 merged (commit `a510006`). Per the plan's authorization envelope (§0.6), standard AI-agent contribution reporting after each merged PR is expected. Let me log the contribution:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2023,11 +2041,13 @@ The Farm/Shipment Media JSON plan's **PR0 was already merged** (media-gallery.js
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — executing the next unit (Farm/Shipment PR2). Let me check for an open PR2 and get its exact scope from the plan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No PR2 open yet — I'll build it. Let me inspect both farm pages' media structure (videos, headings, captions, in-body images) and the existing farm spec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2135,5 +2155,110 @@ Farm/Shipment Media JSON plan **PR2** (no PR was open — I built it):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== open PRs in agroverse_shop_beta ===" gh pr list --repo TrueSig; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q main && git pull -q origin main 2>&1 |; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "===== santa-ana: lines 540-615 =====" sed -n '54; …(+12 more)
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — next unit: Farm/Shipment PR3. Let me pull the exact PR3 scope from the plan and check for any already-open PR:
+
+
+### 🤖 Autopilot
+
+No open PR for PR3 — building it. Let me inspect both target pages' media sections:
+
+
+### 🤖 Autopilot
+
+PR3 scope is clear now: sao-jorge has **4 media items** (2 portrait YouTube + 2 images) + vivi has **2 videos** = 6 total. Let me read the full structure with captions/titles for both pages:
+
+
+### 🤖 Autopilot
+
+Now let me read the loader (`js/media-gallery.js`) to understand exactly what it supports — portrait aspect, multiple gallery containers, image items:
+
+
+### 🤖 Autopilot
+
+The loader supports one `#media-gallery` per page with youtube + image items — but sao-jorge has **two** containers + **portrait** videos (9:16, `padding-bottom:177.77%`), which the loader renders as 16:9 by default. To preserve the current look faithfully I'll add a tiny backward-compatible `aspect: "portrait"` option to the loader, then migrate. Let me check script-tag anchors first, then build:
+
+
+### 🤖 Autopilot
+
+sao-jorge has no `add-to-cart.js`. Let me see its tail scripts to find the right anchor, and check how many farm-videos-containers it has:
+
+
+### 🤖 Autopilot
+
+Now I understand everything. sao-jorge has **two gallery containers** (2 portrait videos + 2 photos) + a wix hero video (leave alone); vivi has **one container** with 2 videos. The loader currently supports only one `#media-gallery` + 16:9. I'll extend the loader backward-compatibly (`data-media-gallery` multi-container + `section` filtering + `aspect: portrait` + image `fallback`), then migrate both pages. Building now:
+
+
+### 🤖 Autopilot
+
+Migrations applied cleanly (the remaining `sao-jorge-matheus` refs are legit og:image meta + the shipments item-card, not the gallery). Now extending the farm spec to cover sao-jorge (2 containers, portrait, images) + vivi, then running all tests:
+
+
+### 🤖 Autopilot
+
+All 5 farm specs pass. Running the shipment spec as regression, then committing + PR:
+
+
+### 🤖 Autopilot
+
+PR #207 opened. Confirming mergeability and merging (AUTO-ADVANCE: open + merge):
+
+
+### 🤖 Autopilot
+
+PR #207 merged (commit `ea556e3`). Logging the contribution:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit complete
+
+**PR [agroverse_shop_beta#207](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/207) — built, tested, merged** (commit `ea556e3`, 11:36:39Z) + contribution logged.
+
+### What happened
+Farm/Shipment Media JSON plan **PR3** (no PR was open — I built it):
+
+1. **Migrated `farms/fazenda-sao-jorge-bahia`** (the complex one): TWO sectioned containers —
+   - `story-videos`: 2 portrait YouTube (`sLNS9pZUBVw` swamp walk, `33nwH67UIag` Bean to Bliss Ep12), titles/captions preserved
+   - `photos`: 2 images (matheus-mailan photo, AGL6 lot imagery with fallback)
+2. **Migrated `farms/vivi-jesus-do-deus-itacare`**: 2 YouTube videos (`FthJ9mftGsY`, `Z2RPqJzqS2k`) in `#media-gallery`
+3. **Extended `js/media-gallery.js` backward-compatibly** (no breakage to existing pages): multi-container support via `[data-media-gallery]` + `section` filter, `aspect: "portrait"` (9:16 frame, centered 420px column — preserves São Jorge's vertical-video look), image `fallback` (onerror)
+4. **Extended** farm spec to all **5 farm pages** (oscar/santa-ana/paulo/sao-jorge/vivi); sao-jorge asserts 2 sectioned containers + photos box renders **images not iframes**
+5. Per plan: **no** media.json/script tag for `analuana`/`capelavelha` (zero story media)
+
+**Local testing (plan §0.5):** farm spec **5 passed**, shipment regression **1 passed** — zero console errors asserted.
+
+### State of the plan
+| Unit | Status |
+|---|---|
+| PR0–PR2 | ✅ merged |
+| **PR3 (sao-jorge + vivi)** | ✅ **merged this turn** |
+| PR4 (agl0, agl1, agl2) | ⏳ next |
+| PR5 (agl5, agl7, agl8) | pending |
+| PR6 (agl10, agl13, agl14) | pending |
+| PR7 (agl3, agl9) | pending |
+| PR8 (conventions doc) | pending |
+| PR9 (UAT) | gate: always-stop |
+
+## RESUME HERE → next unit (fresh turn)
+**PR4** — migrate shipment pages **`agl0`, `agl1`, `agl2`** (hero-only ×2 + hero+1-video ×1), extend `tests/media-gallery-shipment.spec.ts`. Same flow: inspect → migrate → extend spec → local test → PR → merge → contribute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== plan PR3 scope ===" grep -n -A 3 "PR3" /tmp/fsmp; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q main && git pull -q origin main 2>&1 |; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "=== sao-jorge: video/embed + hero-ish sections ===" grep -n "youtube; …(+6 more)
+• `submit contribution` → Contribution submitted successfully.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== plan PR3 scope ===" grep -n -A 3 "PR3" /tmp/fsmp.md | head -12; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q main && git pull -q origin main 2>&1 |; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta echo "===== sao-jorge: hero video block (420-440) ====; …(+7 more)
 • `submit contribution` → Contribution submitted successfully.
 
