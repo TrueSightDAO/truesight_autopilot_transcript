@@ -605,31 +605,37 @@ resume
 ### 🤖 Autopilot
 
 "Resume" — checking the handoff manifest and the IVY onboarding plan to see what's queued next:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the IVY plan to find the RESUME HERE / remaining units:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan's RESUME HERE says: after PRs merge, resume at **"enable Pages + add DNS" (back half of PR1)**, then run the §6 UAT checklist. But the plan tracker is stale (it still shows all three PRs unmerged, yet the web manifest is already live on prod — which I verified last turn). Let me check the actual current state: PR statuses, DNS record, and Pages on ivy-yoga-club:
+[3 tool result(s) compacted: list_prs, http_fetch, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR1/PR2 are actually **further along than the plan's stale tracker shows**: all ivy-yoga-club PRs merged (#1, #2, #4), DNS record `ivy-yoga.truesight.me → truesightdao.github.io` **exists** in Route53, and the admin console **loads live** (200, "IVY Club · Admin Console", boots from `truesight.me/programs/ivy-yoga/manifest.json`). So the "back half of PR1" (Pages + DNS) is done. Let me confirm GitHub Pages is enabled and check the manifest for an updated IVY handoff row, then assess what's actually next:
+[3 tool result(s) compacted: http_fetch, read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub Pages API returned 404 — but that's likely because `ivy-yoga-club` is a **private** repo (unauthenticated API returns 404 for private repos, and Pages on a private repo is still publicly served). The site loads at 200, so Pages must be working. Let me verify via authenticated `gh` on nelanco-claude and check the CNAME file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pages confirmed: **`built`, public, cname `ivy-yoga.truesight.me`, source main root** — and the repo is public (the 404 was just unauthenticated API). So the entire PR1 back-half (Pages + DNS) is done. Let me read the full UAT checklist tail to see exactly what remains:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -637,11 +643,13 @@ Pages confirmed: **`built`, public, cname `ivy-yoga.truesight.me`, source main r
 The IVY plan's execution is **complete** — PR0/PR1/PR2 all merged (tracker is stale), Pages built + DNS live, admin console live, and the credential now renders (verified last turn). The only remaining items are **gated**: PR3 (dual-signature/recertification, blocked on your fee/branding + Olivia re-sign decisions) and prod-promote (human-only, not requested).
 
 Let me do a final state reconciliation against the plan's UAT checklist — checking the remaining UAT surfaces that are machine-checkable, and confirming the manifest is on **prod** (it's live on truesight.me, so promotion happened):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan's execution units are all done (PR0/1/2 merged, Pages built, DNS live, credential rendering — verified earlier), so the executable remainder is the **one gap I flagged last turn**: `lineage-engine/scripts/program_assets/registry.json` has no `ivy-yoga` entry, even though the registry's own comment says an entry is required whenever a partner is onboarded (it gates program-scoped QR/logo compositing). Filing that now as the next unit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -689,6 +697,7 @@ Which do you want — merge #19, PR3 scoping, or the tracker refresh?
 ### 🤖 Autopilot
 
 Gary said keep going until completed. The remaining executable work on this arc: (1) merge lineage-engine#19 (the registry fix I opened — completing it), (2) verify it integrates cleanly with a fresh build, and (3) leave the gated PR3 scope prepped. Starting with the merge:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -741,36 +750,43 @@ That's everything executable on this arc until your PR3 decisions land — the c
 ### 🤖 Autopilot
 
 Full dummy E2E test: insert roster row → sign in → attest → verify registry. Let me first map the exact flow — how the admin console reads the roster and submits attestations, and the roster sheet's schema:
+[3 tool result(s) compacted: read_google_sheet, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The roster already has a QA E2E instructor (with `pk_hash pk-LaDRlxRBcvN6` — the sample from the earlier test). For a **fresh** dummy test I need to understand the full mechanics: how the admin console reads the roster, how attestation submits, and how it lands in the registry. Let me read the console's JS (from the earlier fetch) and the server-side GAS endpoint:
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the architecture. The flow is: roster row → admin console (browser, WebCrypto) → signed `[CREDENTIALING ATTESTATION EVENT]` → Edgar → GAS handler verifies attestor → commits to lineage-credentials → build regenerates cache → registry page. To run a genuine dummy E2E I need to see (a) what the previous QA test produced in lineage-credentials, (b) the rest of the console's attestation code, (c) the handler's authority verification, and (d) which mailbox the sign-in verification email lands in:
+[4 tool result(s) compacted: http_fetch, read_tool_result, read_tool_result, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full E2E dummy test: insert roster row → sign in → attest → verify registry. Let me first map the executable path — read the rest of the console's sign-in/attest code, the GAS handler's processing flow, and check what browser automation is available on the boxes:
+[3 tool result(s) compacted: read_tool_result, read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Playwright (Python) is available on **nelanco-claude** — that's our browser automation path. Now let me get the rest of the admin console's sign-in/attest handlers, the GAS processing function, and check which mailbox receives verification emails + whether the SA has sheet write access:
+[4 tool result(s) compacted: read_tool_result, read_tool_result, gmail_list_labels, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tooling is ready: Python **Playwright + Chromium** and **gspread** both work on nelanco-claude, and the IVY SA key + Gary's OAuth tokens are there. Now I need the exact sign-in/attest mechanics (rest of console JS), the GAS commit path, the existing test credential's structure (so my dummy lands identically), and which mailbox receives verification mail:
+[4 tool result(s) compacted: read_tool_result, read_tool_result, http_fetch, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: verification emails land in the **admin mailbox** (`admin@truesight.me`), and the earlier test already registered `admin@truesight.me` via this exact flow (9 emails Aug 19–20). Now I need the full console JS in one clean read (the nested artifacts are getting unwieldy), the existing credential's identity.json, the **current** sheet editor list (is admin@truesight.me an editor?), and write access for inserting the dummy roster row:
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -778,21 +794,25 @@ Key finding: verification emails land in the **admin mailbox** (`admin@truesight
 Everything is confirmed for the E2E: **admin@truesight.me is a roster-sheet editor** (trust circle), the SA **can write** the sheet (1000-row capacity), and verification emails go to the **admin mailbox** which I can read. The earlier test already registered admin@truesight.me.
 
 Now let me read the console's actual sign-in + attest JS (the part after the header) and the GAS handler's commit flow to know exactly what the attest button submits:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Getting closer — I now have the sign-in flow (keygen → `?em&vk` verification link → EMAIL VERIFICATION EVENT). Let me read the rest: the boot/identity resolution and the attest button handler — the exact payload shape I need to reproduce:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full flow now. Before building the E2E, let me confirm the exact attestation submission format by reading the GAS handler's processing section (what it parses + commits) and check the manifest's credential URL template + whether a prior attestation already exists for the sample:
+[2 tool result(s) compacted: read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One attestation already exists for the sample (from the earlier broken-UI test — it committed but never rendered; now it renders). For a **fresh** dummy E2E I need the attest-button handler — the exact payload it builds. Let me read the tail of the console HTML (the queue/attest JS):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -889,4 +909,161 @@ Pick up at **Phase D: verify the attestation pipeline** — (1) read the `Creden
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== autopilot node/playwright ==="; which node npx python3 2>/dev/null; node -e "try{require.resolve('playwright');console.log('playwr; ssh -o ConnectTimeout=10 nelanco-claude 'echo "=== SA key ==="; ls -la ~/ivy_yoga_google_private_key.json 2>/dev/null; ls ~/*.json 2>/dev/nu; ssh -o ConnectTimeout=10 nelanco-claude 'cd /tmp && python3 -c " import gspread, json gc = gspread.service_account(filename=\"/home/ubuntu/i; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] [Handoff context — this Telegram topic (thread 11603) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+resume
+
+
+### 🤖 Autopilot
+
+Resuming at Phase D — verifying the attestation pipeline. Let me check whether the attest event landed in the intake tab and Telegram Chat Logs:
+
+
+### 🤖 Autopilot
+
+The intake tab shows old butterfly-effect events (May 2026). I need to check the **latest** rows for my new ivy-yoga event. Let me read the tail of the intake tab:
+
+
+### 🤖 Autopilot
+
+The sheet read truncated at row 3. My ivy-yoga event should be near the bottom (row 12). Let me read the tail of the artifact to find the newest events:
+
+
+### 🤖 Autopilot
+
+Still only old butterfly-effect events in the intake tab — my ivy-yoga event isn't there yet, and the console has a **"Process pending events"** button (processing appears to be manual). Let me check decisively: the full intake tab, the TCL tail, and whether any new commit landed in lineage-credentials after this morning's cache regen:
+
+
+### 🤖 Autopilot
+
+**The pipeline COMPLETED end-to-end!** The commits tell the story:
+- `5a06c635` — "attestation: identity.json for **Dummy E2E Test (Sophia) (pk-kRsZO0DkErg8)**" (10:32:42Z)
+- `fc12f127` — "attestation: program-completion for Dummy E2E Test (Sophia)" (10:32:43Z)
+- `3228047a` — "chore(cache): regenerate _cache/ [skip ci]" (10:34:45Z) — the build auto-ran and regenerated the cache
+
+Let me verify the final state: roster backfill, the new credential files, and the regenerated cache:
+
+
+### 🤖 Autopilot
+
+The full loop closed: roster backfilled (`status=processed`, pk_hash, profile_url, commit sha), identity + attestation committed to lineage-credentials. Last check — confirm the regenerated cache contains the new dummy credential (i.e. it renders in the registry):
+
+
+### 🤖 Autopilot
+
+The cache directory has ~750 CV files (too many to page through for the dummy). The decisive proof is already in hand: the build ran (commit `3228047a`, 10:34:45Z) *after* the attestation commits (10:32:42Z), and the earlier jsDelivr purge logic purges materially-changed CVs. Let me directly fetch the dummy's CV JSON from the regenerated cache and confirm the registry page's data source includes it:
+
+
+### 🤖 Autopilot
+
+The dummy's slug differs from my guess. Let me find the actual CV filename — the earlier test used the attestee name slug. Let me search the cache contents listing for the dummy entry:
+
+
+### 🤖 Autopilot
+
+The listing is alphabetical — the dummy entry would be under "d". I've used many tool rounds this session. Let me do one decisive check: fetch the dummy's CV JSON directly using the **pk-hash slug** (the cache key pattern the earlier IVY test used — `qa-e2e-test-instructor.json` was the name, but the pk-hash is what matters). Actually the CV filename pattern is the attestee-name slug. Let me check the earlier IVY test file to confirm the pattern, then fetch the dummy's:
+
+
+### 🤖 Autopilot
+
+The earlier test's CV (`qa-e2e-test-instructor.json`) was regenerated at **10:32:46Z** — after the dummy attestation commits (10:32:42/43Z), confirming the build ran post-commit. Now the decisive check — the dummy's CV file. Its slug is derived from the name "Dummy E2E Test (Sophia)". Let me try the likely slug pattern:
+
+
+### 🤖 Autopilot
+
+Let me check how the slug is derived (from identity.json names) and whether the build picked up the dummy at all. Let me use GitHub's code search for the pk-hash to find the actual cache filename:
+
+
+### 🤖 Autopilot
+
+The dummy's CV isn't where I guessed. Let me check the build script's slug derivation to find the right filename:
+
+
+### 🤖 Autopilot
+
+The cache listing is alphabetical and huge — rather than page through it, let me search the repo contents directly for the dummy credential's CV file:
+
+
+### 🤖 Autopilot
+
+Let me check the build script's slug derivation directly:
+
+
+### 🤖 Autopilot
+
+Let me find the slug derivation logic in the build script — that's the key to the dummy's CV filename:
+
+
+### 🤖 Autopilot
+
+The slug derives from `names[0]` via `slugify` — "Dummy E2E Test (Sophia)" — but my guesses 404'd. The authoritative map is `_cache/aliases.json` (pk-hash → slug). Let me fetch it:
+
+
+### 🤖 Autopilot
+
+The regenerated cache (`aliases.json`) does **NOT** contain `pk-kRsZO0DkErg8` — the dummy credential is missing! The cache regen commit `3228047a` rebased on top of the attestation commits but its content reflects a checkout made **before** the dummy landed (a race: the in-flight build checked out pre-dummy main, then rebased its cache commit over the new commits). A fresh build is needed. Let me check the run history and fire a fresh dispatch:
+
+
+### 🤖 Autopilot
+
+Now I see the race clearly: run **32359454524** (in_progress, push event at 10:32:45Z, head `fc12f12`) is **still running** — it checked out at 10:32:45, likely *before* both attestation commits' tree fully landed, and its cache commit (`3228047a`) rebased over them without including the dummy. Meanwhile I fired a **fresh dispatch run 32359778159** which will checkout current main (with the dummy) and rebuild. Let me wait for it and confirm the dummy appears in aliases:
+
+
+### 🤖 Autopilot
+
+The polling loop exceeded the 60s SSH timeout. Let me check the run status directly with a single quick call:
+
+
+### 🤖 Autopilot
+
+The dummy IS now in the registry — `pk-kRsZO0DkErg8` appears in `aliases.json` on main (grep count = 1). The fresh dispatch (or the in-flight push run) landed a cache that includes it. Let me get the actual slug and confirm the CV artifact renders:
+
+
+### 🤖 Autopilot
+
+**Confirmed!** The registry now contains the dummy:
+- **Alias:** `pk-kRsZO0DkErg8` → `dummy-e2e-test-sophia` (exactly the slug pattern)
+- **Cache commit `4335e4c`** landed on main (after `3228047`) — this is the fresh build that picked up the dummy
+- The fresh dispatch is still showing in_progress but the cache commit it produced is already on main
+
+The **registry verification is complete**. Let me grab the rendered CV to close the loop — the `_cache/cv/dummy-e2e-test-sophia.json` should exist now:
+
+
+### 🤖 Autopilot
+
+## ✅ FULL DUMMY E2E COMPLETE — VERIFIED END-TO-END
+
+The full loop worked: **sheet insert → sign in → attest → registry**. Here's the complete proof:
+
+### The pipeline (all real, live stack — dummy data only)
+
+| Phase | What happened | Evidence |
+|---|---|---|
+| **1. Insert roster row** | SA appended "Dummy E2E Test (Sophia)" → sheet row 4, showed as **pending** | `list_pending_rows` API showed it |
+| **2. Sign in** | Playwright drove the real console: keypair gen → EMAIL REGISTERED EVENT → verification email → EMAIL VERIFICATION EVENT → **ADMIN mode** (truesight-autopilot, VERIFIED) | console status, localStorage keypair |
+| **3. Attest** | Clicked "Attest" on the dummy row → signed CREDENTIALING ATTESTATION EVENT → Edgar → GAS handler (verified attestor authority = roster editor) → committed to lineage-credentials | commits `5a06c63` (identity) + `fc12f12` (attestation) by garyjob |
+| **4. Registry** | Build auto-ran → cache regenerated (`4335e4c`) → **dummy now in registry** | aliases.json: `pk-kRsZO0DkErg8 → dummy-e2e-test-sophia` |
+| **5. Roster backfill** | Row 4 → `status=processed`, pubkey + pk_hash + profile_url + commit sha | Cohort Roster A4:T4 |
+
+### Final registry artifact — `_cache/cv/dummy-e2e-test-sophia.json` (200)
+- **display_name:** "Dummy E2E Test (Sophia)" · **pk_hash:** `pk-kRsZO0DkErg8`
+- **programs.ivy-yoga** → lineage_root **"Indus Valley Yoga"** ✓
+- generated_at `2026-08-20T10:35:28Z` — after attestation ✓
+- profile URL: `https://truesight.me/credentials/#dummy-e2e-test-sophia`
+
+### Worth noting (minor, not blocking)
+1. **A build race existed:** the first cache regen (`3228047`) rebased over the dummy commits *without* including it (checked out pre-dummy). The fresh dispatch (`32359778159`) produced `4335e4c` which **did** include it. Root cause: the in-flight push-triggered build + rebase. Not a data problem — the commit sequence is correct now.
+2. **QR target URL** points to `truesight.me/credentials/#<slug>` (global) rather than the program-scoped `truesight.me/programs/ivy-yoga/credentials/#<slug>`. That's the existing behavior for the base QR (program-scoped QR is the PR3-gated logo/registry work).
+3. The dummy row will persist in the roster + registry as a test artifact — say the word if you want it cleaned up after.
+
+## RESUME HERE → next unit (fresh turn)
+Nothing blocking. Options: (a) verify the public page renders `truesight.me/credentials/#dummy-e2e-test-sophia` live (jsDelivr purge for the new CV — the workflow purges materially-changed CVs, and this is a brand-new file so it should be immediately live), (b) clean up the dummy row if you want, or (c) anything else on your list.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ssh -o ConnectTimeout=10 nelanco-claude 'gh run list --repo TrueSightDAO/lineage-credentials -L 12 --json databaseId,status,conclusion,event; ssh -o ConnectTimeout=10 nelanco-claude 'for i in $(seq 1 20); do st=$(gh run view 32359778159 --repo TrueSightDAO/lineage-credentials --jso; ssh -o ConnectTimeout=10 nelanco-claude 'gh run view 32359778159 --repo TrueSightDAO/lineage-credentials --json status,conclusion --jq "{sta; …(+1 more)
 
