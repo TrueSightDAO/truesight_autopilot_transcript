@@ -414,6 +414,7 @@ The log shows a cache commit step ran at 09:47:07Z. Let me verify the actual out
 2. **Purged jsDelivr** for `_cache/cv/qa-e2e-test-instructor.json` — the IVY test attestation's CV — meaning it's now in the regenerated cache (the purge only fires for materially-changed CVs, and this is exactly the `pk-LaDRlxRBcvN6` credential)
 
 Let me confirm the IVY CV content is actually rendered with the credential now:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -421,21 +422,25 @@ Let me confirm the IVY CV content is actually rendered with the credential now:
 IVY credential is **fully verified end-to-end** — `_cache/cv/qa-e2e-test-instructor.json` now carries `programs.ivy-yoga` (lineage_root "Indus Valley Yoga"), generated 09:45:06Z, jsDelivr purged, cache commit `518b6c8` pushed. The whole fix is confirmed working.
 
 Now executing the future-proofing (your "proceed"). Let me pull the playbook, check the handoff manifest remainder for this thread, the RSA onboarding flow, and the followups file:
+[4 tool result(s) compacted: read_tool_result, read_context_file, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The playbook got truncated right at §5.3 (manifest section). Let me read the rest of it and search for the "program onboard RSA flow" — the scripted path that creates manifests:
+[3 tool result(s) compacted: read_tool_result, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build is verified complete and the IVY credential renders. Now the future-proofing work. Let me understand the "program onboard RSA flow" — likely the tokenomics GAS registration script — and the canonical butterfly-effect manifest shape:
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the RSA/self-serve program registration flow spec and the IVY plan's §3 (what PR2 actually did for manifests) to nail the exact gap:
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -581,4 +586,90 @@ Verification is complete. Here's the full report:
 3. Nothing else outstanding — the credentialing fix is fully shipped and verified (lineage-credentials #17 ✅, playbook #770 ✅).
 
 Want me to file the registry.json gap, or hold it for PR3?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] [Handoff context — this Telegram topic (thread 11603) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+resume
+
+
+### 🤖 Autopilot
+
+"Resume" — checking the handoff manifest and the IVY onboarding plan to see what's queued next:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the IVY plan to find the RESUME HERE / remaining units:
+
+
+### 🤖 Autopilot
+
+The plan's RESUME HERE says: after PRs merge, resume at **"enable Pages + add DNS" (back half of PR1)**, then run the §6 UAT checklist. But the plan tracker is stale (it still shows all three PRs unmerged, yet the web manifest is already live on prod — which I verified last turn). Let me check the actual current state: PR statuses, DNS record, and Pages on ivy-yoga-club:
+
+
+### 🤖 Autopilot
+
+PR1/PR2 are actually **further along than the plan's stale tracker shows**: all ivy-yoga-club PRs merged (#1, #2, #4), DNS record `ivy-yoga.truesight.me → truesightdao.github.io` **exists** in Route53, and the admin console **loads live** (200, "IVY Club · Admin Console", boots from `truesight.me/programs/ivy-yoga/manifest.json`). So the "back half of PR1" (Pages + DNS) is done. Let me confirm GitHub Pages is enabled and check the manifest for an updated IVY handoff row, then assess what's actually next:
+
+
+### 🤖 Autopilot
+
+GitHub Pages API returned 404 — but that's likely because `ivy-yoga-club` is a **private** repo (unauthenticated API returns 404 for private repos, and Pages on a private repo is still publicly served). The site loads at 200, so Pages must be working. Let me verify via authenticated `gh` on nelanco-claude and check the CNAME file:
+
+
+### 🤖 Autopilot
+
+Pages confirmed: **`built`, public, cname `ivy-yoga.truesight.me`, source main root** — and the repo is public (the 404 was just unauthenticated API). So the entire PR1 back-half (Pages + DNS) is done. Let me read the full UAT checklist tail to see exactly what remains:
+
+
+### 🤖 Autopilot
+
+The IVY plan's execution is **complete** — PR0/PR1/PR2 all merged (tracker is stale), Pages built + DNS live, admin console live, and the credential now renders (verified last turn). The only remaining items are **gated**: PR3 (dual-signature/recertification, blocked on your fee/branding + Olivia re-sign decisions) and prod-promote (human-only, not requested).
+
+Let me do a final state reconciliation against the plan's UAT checklist — checking the remaining UAT surfaces that are machine-checkable, and confirming the manifest is on **prod** (it's live on truesight.me, so promotion happened):
+
+
+### 🤖 Autopilot
+
+The plan's execution units are all done (PR0/1/2 merged, Pages built, DNS live, credential rendering — verified earlier), so the executable remainder is the **one gap I flagged last turn**: `lineage-engine/scripts/program_assets/registry.json` has no `ivy-yoga` entry, even though the registry's own comment says an entry is required whenever a partner is onboarded (it gates program-scoped QR/logo compositing). Filing that now as the next unit:
+
+
+### 🤖 Autopilot
+
+PR opened — stopping here per the one-PR-per-turn rule.
+
+## What "resume" revealed
+
+I resumed from the IVY plan (`IVY_YOGA_COHORT_ONBOARDING_PLAN.md`). Its §4 resume tracker is **stale** — it claims PR0/PR1/PR2 are all unmerged and Pages/DNS pending. Live state (verified this turn):
+
+| Unit | Status |
+|---|---|
+| PR0 plan (agentic_ai_context#755) | ✅ merged (plan is the doc I read) |
+| PR1 scaffold (ivy-yoga-club#1, #2, #4) | ✅ all merged |
+| GitHub Pages | ✅ **built**, public, cname `ivy-yoga.truesight.me`, source main root |
+| Route53 DNS | ✅ `ivy-yoga.truesight.me → truesightdao.github.io` exists (Explorya zone) |
+| PR2 web manifest | ✅ live on prod (`truesight.me/programs/ivy-yoga/manifest.json`, 200) |
+| Admin console | ✅ live (`ivy-yoga.truesight.me` 200, boots from the manifest, IVY branding) |
+| Credential rendering | ✅ verified last turn (`pk-LaDRlxRBcvN6` renders) |
+| PR3 dual-signature/recert | ⛔ **gated** on your fee/branding + Olivia re-sign decisions |
+| Promote to prod | n/a — already live (manifest on prod) |
+
+## What I did this turn
+
+**Opened [lineage-engine#19](https://github.com/TrueSightDAO/lineage-engine/pull/19)** — the one real gap the resume surfaced: `scripts/program_assets/registry.json` still only maps `tribomirim` + `butterfly-effect`, but its own contract says *"add a new entry whenever a partner is onboarded."* Added `ivy-yoga` → `["ivy-yoga"]`. This completes the program-registration contract (program-scoped QR/logo compositing now resolves explicitly). Cert-asset wiring (`program_assets/ivy-yoga/` dir) stays PR3-gated.
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Merge lineage-engine#19** (your call — "merge it" and I'll do it via `gh` like #17/#770; my `merge_pr` tool can't touch lineage-engine either)
+2. **PR3 (gated, needs your decisions):** dual-signature (Bilal + Olivia) + recertification button — blocked on (a) fee/branding model, (b) does Olivia re-sign every renewal. Once you decide, I can scope PR3.
+3. **Optional:** update the IVY plan's stale §4 tracker to reflect the true merged/live state (small agentic_ai_context PR) — say the word.
+
+Which do you want — merge #19, PR3 scoping, or the tracker refresh?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ssh -o ConnectTimeout=10 nelanco-claude 'gh api repos/TrueSightDAO/ivy-yoga-club/pages --jq "{url: .html_url, status: .status, cname: .cname
 
