@@ -478,11 +478,13 @@ Validation failed — likely the JSON body has an issue (maybe the em-dash or es
 ### 🤖 Autopilot
 
 The error is clear: **"No commits between main and feat/media-gallery-json-pilot"** — my local push succeeded, but the branch has **no commits** (I created the branch, staged files, but never committed!). Let me commit and force-push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Committed (`0fda4cc`, 4 files, +141/−36) and pushed. Now create the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -490,26 +492,31 @@ Committed (`0fda4cc`, 4 files, +141/−36) and pushed. Now create the PR:
 🎉 **PR0 is open: [agroverse_shop_beta#196](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/196)** — state open, beta-only, no self-merge (gate 1 satisfied).
 
 Now file the follow-up for the site-wide duplicate-script bug in OPEN_FOLLOWUPS.md (as promised in the PR body), so it's tracked per the self-improvement rule. Let me check the current file first:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the OPEN_FOLLOWUPS.md structure. Let me add the site-wide duplicate-script fix entry under `## Pending` via a PR. First, let me get the exact insertion point (the `## Pending` section start):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the structure. Now I'll add the follow-up entry under `## Pending` via a PR to `agentic_ai_context`. The entry documents the site-wide duplicate-script bug found during PR0:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ Wait — I need to verify something important. The `read_context_file` output was truncated at 121KB+ (I only saw part of the file), but in my `writes` I provided a **truncated** version of OPEN_FOLLOWUPS.md — I may have accidentally deleted existing follow-up entries. Let me check the PR diff immediately:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Damage detected: +14 / −1759.** My truncated write clobbered the file — the artifact read was truncated and I unknowingly wrote a partial copy. I must fix this immediately. Let me get the full original file from main, then rewrite the PR branch to be a clean insertion only:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -558,11 +565,13 @@ fix it
 ### 🤖 Autopilot
 
 Fixing PR #771 now — restoring the pristine 1900-line file and inserting only the one new entry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commit landed on local `main` instead of the feature branch (checkout of the remote branch failed — needs `-b`). Local main is NOT pushed (good), so I'll rebranch correctly: save the fixed file, create the feature branch from origin's version, write the file, commit, force-push, then reset local main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -689,4 +698,114 @@ I'm at a hard stop. Reporting clearly:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/agroverse_shop_beta && echo "=== hero/img slots in agl4 ===" && grep -nE '<img|class="(shipment-image|farmer-photo|hero|banner)"|far; cd /tmp/agroverse_shop_beta && echo "=== 955-1010 (video + hero) ===" && sed -n '955,1010p' shipments/agl4/index.html && echo "=== 1140-1160; cd /tmp/agroverse_shop_beta && echo "=== js/media-gallery.js ===" && cat js/media-gallery.js && echo "=== tests/media-gallery-farm.spec.ts =; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md`. Before responding, read it with read_context_file("plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I merged PR 0
+
+
+### 🤖 Autopilot
+
+PR0 merged — proceeding to **PR1 (agl4 + agl14.avif bug fix)**. First verify the merge landed on main and re-read the plan's §2 migration rules:
+
+
+### 🤖 Autopilot
+
+PR0 is **merged** and `js/media-gallery.js` is on `origin/main`. Now let me pull the §2 migration rules from this turn's plan artifact (hero placeholder convention, exact steps):
+
+
+### 🤖 Autopilot
+
+I have the §2 rules (hero slot: `data-media-slot="hero"` + remove hardcoded src/alt). Now let me get the tail of §2 (the exact "steps 2-4" for the video container + script tag) and check the current main's agl4 page state (it's a fresh clone — the local working tree is still on PR0's branch, need main's version):
+
+
+### 🤖 Autopilot
+
+I now have complete PR1 requirements:
+- `shipments/agl4/media.json` — hero (agl4.avif, alt "AGL4 - Oscar's Farm", fallback) + gallery (youtube BI55aQ6B73U, title/caption from live markup if any)
+- HTML: hero imgs (`.shipment-image`, `.farmer-photo`) get `data-media-slot="hero"` + hardcoded src/alt **removed**; video container replaced with empty `id="media-gallery"`; add loader script tag
+- New `tests/media-gallery-shipment.spec.ts` (hero src on all slots + video iframe)
+- Call out the `agl14.avif` bug fix in the PR description
+
+Let me set up a clean working tree on main and inspect the exact current agl4 page + check the video section for title/caption text:
+
+
+### 🤖 Autopilot
+
+Important detail: agl4's video is in a **`.shipment-hero-video-container`** (hero-adjacent absolute-positioned iframe, `.shipment-hero-video` class with inline `style="position:absolute"`), **not** a `.farm-video-container` gallery section. There's also a JS reference at line 1341 (`const heroVideo = document.querySelector('.shipment-hero-video')`) I must check — if I remove that iframe, the JS will throw.
+
+Let me inspect the JS at 1330–1350 and the hero-video CSS classes, plus confirm there's no title/caption text around the video:
+
+
+### 🤖 Autopilot
+
+Key discovery: agl4's video is a **hero-background iframe** (`.shipment-hero-video`, autoplay-muted portrait video, CSS `object-fit: contain`, max-width 500px) — NOT a gallery section. And there's `setupHeroVideo()` JS at 1341 that queries `.shipment-hero-video` — if I delete the iframe, that JS silently no-ops (guarded by `if (heroVideo)`) but the video would be **lost entirely**.
+
+The plan's §2a reference JSON for agl4 puts the video in `gallery` — but that would render it as a `.farm-video-section` below the story, **not** as the hero video. I need to decide the correct migration. Let me check `setupHeroVideo()`'s call site and whether the loader can support a hero-video concept, or whether the video should stay in the hero container:
+
+
+### 🤖 Autopilot
+
+This is a genuine design decision the plan didn't fully anticipate. agl4's video is a **hero-background autoplay video** with bespoke CSS (`.shipment-hero-video`, 500px portrait, absolute positioning) and a `setupHeroVideo()` autoplay JS — completely different from the farm-page gallery videos the loader was built for.
+
+I must not guess on this — it's a scope question with two defensible answers. Let me check how the OTHER video shipments (agl2, agl6, agl13, agl14) structure their videos, to see if agl4 is unique or if there's a pattern the plan's `gallery` mapping was designed around:
+
+
+### 🤖 Autopilot
+
+Now the pattern is clear. **All 4 video shipments (agl2, agl4, agl13, agl14) use the same hero-background autoplay video pattern** (`.shipment-hero-video-container` + `.shipment-hero-video` + `setupHeroVideo()` JS). This is a **shipment-page hero video**, distinct from the farm-page gallery video.
+
+The plan's §2a reference JSON put agl4's video in `gallery` — but the loader renders gallery items as `.farm-video-section` blocks, which would **break the hero layout** (the absolute-positioned, 500px portrait, autoplay hero video). The plan's schema has `hero.type: "image" only for now` — it did **not** anticipate hero videos.
+
+This is a real gap. The cleanest option that stays within the plan's schema is: **keep the hero video where it is** (it's not a "story gallery" item — it's the page hero), and note that the JSON externalization applies to the hero *image* slots and the gallery. But the plan explicitly listed the video in agl4's JSON...
+
+I should not silently diverge from the plan. Let me present this decision point to Gary clearly — it affects PR1 and PR4/PR6 (agl2, agl13, agl14 same pattern):
+
+
+### 🤖 Autopilot
+
+Confirmed: agl2/agl13/agl14 share the same hero-video pattern (agl14 even has `setupHeroVideo` 2× — likely a copy-paste duplication bug like agl4). This affects **PR4 and PR6 too**, not just PR1.
+
+I'm now at a genuine design fork that the plan didn't cover, and per my rules (never guess on scope; ask the governor) I should present it. But first — let me re-read the plan's exact wording on shipment video handling one more time to make sure I'm not missing an explicit instruction (the §0.2 table says agl4 "YouTube: BI55aQ6B73U" and §2a JSON has it in `gallery` — but maybe §3/§4 says something about hero videos):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. **UAT U2 is the key clue**: it says the agl4 hero photo should show "in the banner **and** in the 'farmer photo' spot — both now the same correct AGL4 image." UAT says nothing about moving the hero *video* — it only asserts hero photos + farmer photo. The §2a JSON's `gallery` entry for the video was written by the plan author who saw the inventory table ("YouTube: BI55aQ6B73U") but likely **didn't realize it was a hero-background video, not a story-gallery video**.
+
+Let me read the UAT tail and then present the decision. I'm fairly confident the right call is: **keep agl4's hero video in place (hero slot), don't move it to the gallery** — but I must verify with Gary because it diverges from the literal §2a JSON. Let me read the UAT tail first:
+
+
+### 🤖 Autopilot
+
+I now have the complete plan. Before building PR1, I've hit a **genuine design gap** that needs Gary's call — I will not guess on scope:
+
+## ⛔ Design decision needed before PR1
+
+**The plan's §2a reference JSON puts agl4's video in `gallery` — but agl4's video is NOT a gallery video.** It's a **hero-background autoplay video**:
+
+- `.shipment-hero-video-container` + `.shipment-hero-video` (absolute-positioned, portrait 500px, `object-fit: contain`, autoplay-muted) — bespoke hero styling, completely different from the farm-page `.farm-video-section` gallery layout
+- Driven by `setupHeroVideo()` JS (autoplay + click-to-play fallback)
+- **Same pattern on agl2, agl13, agl14** (and agl6's is a *third* variant — lazy meta-tag pattern)
+
+**If I follow the plan literally** (video → `gallery`), the loader renders it as a `.farm-video-section` block below the story — **destroying the hero video layout** (no autoplay, no portrait positioning, wrong visual treatment). The page would regress visually, and UAT U2 only checks hero *photos* + farmer photo, so it wouldn't even catch it.
+
+**The plan's schema has `hero.type: "image" only`** — it never anticipated hero videos.
+
+**My recommendation:** keep the hero video **in place** (externalize only the hero *image* slots + fix the `agl14.avif` bug via `media.json` hero). Do **not** move the hero video into `gallery`. The loader handles the hero image; the video stays as-is. This preserves the live page exactly while still fixing the bug and externalizing what the plan actually targets (images). If Gary wants hero videos externalized too, that's a loader extension (`hero.type: "youtube"`) — a bigger change I can do as a follow-up.
+
+**How do you want to handle the agl4 (and agl2/13/14) hero video?**
+
+- **A)** Keep hero video in place; PR1 externalizes hero *image* + fixes bug only (my recommendation, smallest safe change)
+- **B)** Extend loader with `hero.type: "youtube"` and externalize hero videos too (bigger change, touches all 4 video shipments)
+- **C)** Follow plan literally (video into gallery) — I advise against; regresses the hero layout
+
+Once you pick, I'll build PR1 immediately.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/agroverse_shop_beta && git fetch origin main 2>&1 | tail -1 && echo "=== loader on main? ===" && git ls-tree origin/main --name-only; cd /tmp/agroverse_shop_beta && git checkout -B pr1-agl4 origin/main 2>&1 | tail -1 && echo "=== video container region 958-975 ===" && sed -; cd /tmp/agroverse_shop_beta && echo "=== 1325-1355 (heroVideo JS) ===" && sed -n '1325,1355p' shipments/agl4/index.html && echo "=== 120-145; …(+3 more)
 
