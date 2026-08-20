@@ -1608,11 +1608,13 @@ Still 520 via raw — but the push returned new commit shas. This is raw.githubu
 **Confirmed fixed via the authoritative Contents API:** `sold_pending_tree.json` now holds **414 real cacao bags, zero `pk-*` tree records** (the earlier "520" was just raw.githubusercontent CDN cache lag — the API shows the new blob at commit `1ae7ac5`). The `asset_type` filter + sha-correct PUT both work.
 
 Now the remaining items: sync the fixed script back to `lineage-assets`, then merge #66, close #65, merge #772. Syncing the script + merging #66:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script synced (commit `4a05e8f`). Now merge dapp_beta #66 (the public-cache rewrite that makes the page read these caches) — this is the one Gary's architecture hinges on:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1671,6 +1673,7 @@ The photo of the tree should show
 ### 🤖 Autopilot
 
 Gary's right — the SunMint submission includes a tree photo, so selecting one should display it. Let me check the live sheet's photo column + whether rows have photo URLs, and the page's current selection-render logic:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1803,4 +1806,68 @@ The photo URL resolves (200, image/jpeg, ~188KB) — the preview will render.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #67 on dapp_beta merged successfully (sha: d4516c5437f69e5b9356033a3acaa96aea46e0a5). Pull Request successfully merged; ✅ PR #772 on agentic_ai_context merged successfully (sha: 6a3ecb771748048149a6ade174d5735eaf149e03). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Once a tree is linked up with a QR code is a notification email being sent out to the email address of associated with the QR code. The owner basically the latitude longitude as well as a photo of the tree can you verify. And also how are we associating the tree with the QR code in the Google sheet? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify both — the email notification path and the sheet association — from the plan + the live handler code.
+
+
+### 🤖 Autopilot
+
+Both confirmed in the live handler — but I want to see the exact email body before I answer on lat/long:
+
+
+### 🤖 Autopilot
+
+Verified against the live deployed handler (`process_tree_planting_link.js`, 500 lines, currently live on GAS). Here's the straight answer:
+
+## 1. Yes — a notification email IS sent on link
+
+On a successful link, the handler calls `sendTreePlantedNotificationEmail_()` → **`MailApp.sendEmail` to the QR code's Owner Email (col L)**. Subject: *"Your Sunmint tree (`<qrCode>`) has been planted"*. Body contains:
+- Planting date
+- **Photo URL** (link to the tree photo)
+- A "view full record" link (`https://truesight.me/qr/?id=<qrCode>`)
+
+**However — latitude and longitude are NOT in the email.** The body only has planting date + photo + lookup link. So your assumption is half right: photo ✅, lat/long ❌ (not included). Easy fix if you want it — I can add `Latitude:` / `Longitude:` lines to the body.
+
+It also stamps **column X (Tree Planted Notification Sent Date)** on the QR row, and if the QR has no owner email it logs "notification skipped" rather than failing the link.
+
+## 2. How the tree is associated with the QR in the Google Sheet
+
+It's a **bidirectional write across the two sheets** on link:
+
+**On the `Agroverse QR codes` row (Main Ledger, `1GE7PUq…`):**
+- **D** status → `ASSIGNED_TO_TREE`
+- **N** Tree Planting Date ← SunMint col G (date)
+- **O** Latitude ← SunMint col K
+- **P** Longitude ← SunMint col L
+- **R** Tree Seedling Photo URL ← SunMint col I
+- **X** Notification Sent Date (stamped when the email goes out)
+
+**On the `SunMint Tree Planting` row (Telegram Chat Logs sheet, `1qbZZhf…`):**
+- **M** status → `LINKED`
+- **R** (new col) = the linked **QR code** — this is the back-reference
+- **S** (new col) = linked-at timestamp
+
+Plus a **`Tree Planting Link` tracking tab** logs every outcome (LINKED/REJECTED), and the **ledger** books the `Cacao Tree Planted` fulfillment entry.
+
+So: the QR row carries the tree's evidence (date/lat/long/photo), and the SunMint row carries the QR back-reference. Both sides point at each other. That's the full sheet association.
+
+## The one gap vs. your expectation
+
+**Latitude/longitude aren't in the notification email** — only date + photo + record link. Want me to add them (small PR to the handler + redeploy)? That's the only thing missing from what you described.
+
+(The photo itself is the GitHub-mirrored image under `TrueSightDAO/sunmint/images/`, which is what the email links to and what the cache/dropdown now shows.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && sed -n '205,235p' ptl.js && echo "=== call site ===" && grep -n "sendTreePlantedNotificationEmail_\|ownerEmail\|Owner Email\|TPL_
 
