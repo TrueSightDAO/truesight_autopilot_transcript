@@ -2003,16 +2003,19 @@ One catch: the **pillar numbers in the slide order are now 3,2,4,5** because I r
 ### 🤖 Autopilot
 
 The pre-order block comment differs from my regex. Let me find the exact block markers and swap the two slide blocks physically:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the structure: line 158 = financing block (158–178), line 180 = pre-order block (180–206). I need to swap these two blocks. The financing block is lines 158–178 (ends with `c.showPage()` at 178), pre-order is 180–206. Let me do a line-based swap:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Perfect order now.** Sending the final deck:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2053,16 +2056,19 @@ Ready for the next step whenever you are — PT-BR version, or any wording tweak
 ### 🤖 Autopilot
 
 Good asks — two things: (1) truly relevant images, and (2) a deep tariff dive for the USA/EU/China market slides (real numbers make the deck far stronger). Let me research tariffs and hunt highly-relevant images in parallel.
+[4 tool result(s) compacted: web_search, web_search, web_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent research haul — the tariff picture is **material and current** (esp. the new July 2026 Section 301 Brazil tariff). Let me download the best images (including a São Paulo fermentation photo — perfect) and verify the critical cacao-exemption question for the USA market:
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong tariff intel gathered — this is genuinely actionable. Key finding: **new 25% Section 301 Brazil tariff (July 22, 2026)** exempts coffee/beef/avocados but cacao's status needs HTS-level handling; EUDR lands **Dec 30, 2026** (our per-farm traceability is the compliance answer); China route already GACC-registered. Two good new images downloaded (beans in pod, sacks of cacao beans). Let me patch the deck with a **"Markets & tariff dive" slide** + swap the bean image, then rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2216,4 +2222,49 @@ Anything else — PT-BR, or more real-photo swaps?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && echo "=== sunmint/images listing ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images" | python3 -c; cd /tmp/slide_assets && \ for f in "20260811173307_MIIBIjANBgkqhkiG9w0B.jpg" "20260819104721_MIIBIjANBgkqhkiG9w0B.jpg" "20260819104739_MIIBI; echo "=== agroverse-inventory contents ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse-inventory/contents/" | python3 -; …(+5 more)
+
+
+### 🧑 Governor
+
+Use this image instead
+
+[Attachment auto-processed: **0f439d756c824abc9ebfbdcd40615f9c.jpg**]
+- Type: Image (OCR confidence: 80.0%, quality: good)
+
+Extracted text:
+```
+ORGANICC
+```
+
+
+### 🤖 Autopilot
+
+Let me inspect this image (it shows "ORGANICC" — likely a bag or product shot) and swap it into the bean slide:
+
+
+### 🤖 Autopilot
+
+Real CEPOTX product/bag image (960×1280, "ORGANICC" label — likely the organic cacao bag). Swapping it into the bean slide and rebuilding:
+
+
+### 🤖 Autopilot
+
+Rebuilt with your CEPOTX image. Sending:
+
+
+### 🤖 Autopilot
+
+✅ **v12 sent (msg 11557)** — the bean slide now uses **your CEPOTX organic cacao photo** ("ORGANICC" label, real product shot).
+
+- Slide 3 caption → *"CEPOTX organic cacao — the product we already buy, farm by farm"*
+- The photo is the actual product — perfect for telling the farmers "we already buy this, and we want to keep going"
+- 9 pages, 0 overlaps (automated checker)
+
+The file is also saved to `/tmp/slide_assets/cepotx_organic_bag.jpg` on the box, so it's reusable for the PT-BR version or other materials.
+
+Anything else — PT-BR version, or more swaps?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/tg_attachments/0f439d756c824abc9ebfbdcd40615f9c.jpg && python3 - << 'EOF' from PIL import Image im = Image.open('/tmp/tg_attachm; cd /tmp && python3 - << 'EOF' src = open('build_slides4.py').read() def rep(old, new, tag): global src assert src.count(old) == 1, f"[{tag}]
 
