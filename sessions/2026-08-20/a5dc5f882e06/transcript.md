@@ -2069,21 +2069,25 @@ PR **#6** opened on lineage-assets. The governor's standing "merge all PRs" dire
 ### 🤖 Autopilot
 
 PR **#6 merged** (squash `db6ec47`) — main now has `_101` png + manifest, and `_3`'s png + manifest are gone. (The merge also pulled in two pre-existing cache refresh commits `55f277b`/`ad3d4f9` that were ahead on main — unrelated to us, left as-is.) Now pulling the corrected zip to my box and delivering it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zip v2 verified on my box: **100 entries, no `_3`, has `_101`**. Sending it here:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Telegram rate-limited (retry after 39s). Let me wait and retry the delivery:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying the zip delivery now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2279,4 +2283,60 @@ Say the word on the prod promotion whenever you're ready.
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/product-page/oscar-bahia-cacao-tea-50g/index.html" | grep -
 • `merge pr` → ✅ PR #208 on agroverse_shop_beta merged successfully (sha: 147cec6637eae3e9b012a9eb726cb406ecf6ec27). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Auto-advance: next unit = document the `_3`→`_101` VOID/replacement in OPEN_FOLLOWUPS.md so future sessions never treat serial `_3` as live. Let me read the current file to find the exact anchor:
+
+
+### 🤖 Autopilot
+
+The file structure is clear — I'll add the `_3`→`_101` VOID note as the first entry under ## Pending so future sessions never treat serial `_3` as live:
+
+
+### 🤖 Autopilot
+
+PR **#776** opened. Merging per the standing directive:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — VOID serial documented in the cross-session backlog ✅
+
+### What changed
+| PR | Change | State |
+|---|---|---|
+| **agentic_ai_context #776** — *docs: note cacao tea 50g QR serial _3 VOID (replaced by _101)* | Added an informational entry at the top of **## Pending** in `OPEN_FOLLOWUPS.md`: serial `2024OSCAR_CT_20260820_3` is **VOID** (undecodable label from mint QA, reproduced on two mint runs), replaced by `_101`; references lineage-assets #6 (void/re-mint) + #7 (decodability self-check), and states clearly: **do not treat `_3` as a live serial** — any future lookup/scan of `_3` should be answered with the VOID note. | ✅ **merged** (sha `7edfcc7`) |
+
+### Why
+Future sessions, agents (Claude/Cursor/Codex/Kimi), and humans reading the backlog will now know `_3` is dead — no risk of re-minting, re-shipping, or answering a `_3` scan with a live-serial response. It also cross-references the two fixes (void/re-mint #6, self-check #7) so the history is traceable in one place.
+
+---
+**RESUME HERE →** Next turn (all optional / governor-gated):
+1. **Promote to prod** (`sync_beta_to_prod(agroverse_shop_prod)`) — the standing final step, only on your **explicit approval**. After it, www.agroverse.shop shows the full cacao tea 50g experience (PDP + cards + corrected batch text + v2 hero photo).
+2. Verify the beta PDP's corrected QR-batch wording + v2 hero after the last GH Pages rebuilds.
+3. No other outstanding units — the cacao tea 50g build (currency, SKU, 100 QR codes, labels, manifests, PDP, cross-lists, zip v2, self-check hardening, VOID doc) is complete.
+
+Say the word when you want the prod promotion.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → OPEN_FOLLOWUPS.md (structure, ## Pending anchor, workflow)
+• `git push changes` → PR https://github.com/TrueSightDAO/agentic_ai_context/pull/776 (commit c3675c5)
+• `merge pr` → ✅ PR #776 merged (sha 7edfcc7)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #776 on agentic_ai_context merged successfully (sha: 7edfcc782d73655e48a3f88955d349e9e456a727). Pull Request successfully merged
 
