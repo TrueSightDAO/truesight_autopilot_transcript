@@ -2602,6 +2602,7 @@ The Edgar POST endpoint is 200 and routes.js resolves correctly. So the 404 is e
 ### 🤖 Autopilot
 
 The **photo URL** (line 371–372, `imgEl.src = sub.photo_url`) is the likely 404 — one or more SunMint submissions in the cache have a photo URL that no longer resolves (the sunmint images may have moved/been deleted). The `assetVerify` 302 is a redirect (normal for GAS /exec). Let me check every `photo_url` in the live cache for HTTP status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2609,6 +2610,7 @@ The **photo URL** (line 371–372, `imgEl.src = sub.photo_url`) is the likely 40
 **Found it — 3 photo URLs 404.** Three SunMint submissions have photo URLs pointing at `https://github.com/TrueSightDAO/sunmint/tree/main/images/<name>` — a **`tree` URL (the GitHub browse page), not a `raw` URL**. Browsers can't render a GitHub HTML tree page as an `<img>` (and they actually 404 on these since the filenames contain `MIIBIjAN…` base64 chars). The correct form is `raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/<name>`. The other 10 work because they already use `raw.githubusercontent.com`.
 
 So when Gary selects one of those 3 submissions, the page tries to load the broken `img` → the 404 in console. Fix: **normalize photo URLs in the cache generator** (rewrite `github.com/.../tree/main/` → `raw.githubusercontent.com/.../main/`). Let me verify the raw form of one broken URL resolves before patching:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2623,11 +2625,13 @@ Now the full picture is clear:
 2. **Page** (`link_tree_planting.html`): on image load error, show a graceful "photo unavailable" placeholder instead of a broken-image 404 in console.
 
 Let me patch the cache generator (normalize + skip-404 candidates) and the page (onerror fallback):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact `_cell`/photo_url handling and the item dict so I patch precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2768,4 +2772,69 @@ Both auto-deploy to beta on merge to `dapp_beta`.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #70 on dapp_beta merged successfully (sha: 2e14320c74836dfaffcff06224d319975c43d210). Pull Request successfully merged; ✅ PR #71 on dapp_beta merged successfully (sha: 26fd05b308128a0266a91bac4b084c9fc66bc7c6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+I wonder if there is a way to uniquely identify a Sunmint submissions pending link on this page https://beta.dapp.truesight.me/link_tree_planting.html
+
+
+### 🤖 Autopilot
+
+Good idea — right now the dropdown shows `name · date · lat/lng`, and with 10 "Gary Teh" submissions some look identical. The natural unique key already exists: `telegram_message_id` (msg 171, 6411, …) — that's what the handler uses to address the row. Let me confirm the cache fields + the dropdown render code, then add the ID to the option label.
+
+
+### 🤖 Autopilot
+
+The unique key already exists in the cache — `telegram_message_id` (171, 6411, 6422…). Let me see the exact option-render block to add it to the visible label:
+
+
+### 🤖 Autopilot
+
+The dropdown label is `name — species · planted date · lat, lng` — with 10 "Gary Teh" rows, several look identical. I'll prefix each option with `#<telegram_message_id>` (the unique key the handler already uses to address the row). Opening the small PR:
+
+
+### 🤖 Autopilot
+
+Escaping issue — the branch file has literal `—` and `·` characters (not `\u2014` escapes). Let me use the literal characters in the search:
+
+
+### 🤖 Autopilot
+
+PR **dapp_beta #72** opened (commit `86dda31`). Let me verify the branch shows the unique ID format:
+
+
+### 🤖 Autopilot
+
+Verified on the branch — each option now reads `#171 · Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181`.
+
+## Answer: yes, there's already a unique key — and now it's visible
+
+Every SunMint submission carries **`telegram_message_id`** (171, 6411, 6422, …) — that's the unique key the whole pipeline uses (the dapp posts it as "SunMint Submission Message ID", the GAS handler uses it to address the exact sheet row, the cache stores it). It just wasn't shown in the dropdown, so with 10+ "Gary Teh" submissions you couldn't tell rows apart.
+
+**dapp_beta #72** (commit `86dda31`) prefixes each dropdown option with `#<telegram_message_id>`:
+- Before: `Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181`
+- After: `#171 · Gary Teh — N/A · planted 2025-07-11 · 44.560058, -123.262181`
+
+Verified on the branch. Once merged it auto-deploys to beta — and it pairs with the Mark Invalid flow: pick `#171`, mark invalid, and that exact ID is what disappears from the dropdown.
+
+## RESUME HERE →
+
+1. **Merge dapp_beta #72** (unique ID in dropdown)
+2. Then the **Mark Invalid retest** (now that #70 shareText fix is live): pick e.g. `#171` → Mark Invalid → expect `signature_verification: success` + row flips INVALID
+3. **Refresh the cache** after the invalid lands (`sync_pending_caches.py --push`) so `#171` drops out of the dropdown persistently — or I can add the immediate front-end removal as a tiny follow-up so it vanishes on the spot
+4. **Link** still needs the RUN go (ledger money-movement gate)
+
+**✅ Done this turn:** confirmed `telegram_message_id` is the unique key, opened dapp_beta #72 to show it in the dropdown, verified on branch. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read live cache (keys + 3 samples), grepped page for render code, read renderSunmintList block, opened dapp_beta #72 (86dda31), verified option text on branch
+• `git push changes` → dapp_beta #72
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== live cache: item keys + first 3 ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/sun; cd /tmp && echo "=== option render 325-355 ===" && sed -n '325,355p' ltp.html; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/fix/sunmint-dropdown-unique-id/link_tree_planting.html" -o ltp7
 
