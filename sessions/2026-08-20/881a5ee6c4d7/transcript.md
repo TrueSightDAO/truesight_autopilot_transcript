@@ -912,31 +912,37 @@ Found it — my spec has a **variable-shadowing bug**: the loop variable `const 
 ### 🤖 Autopilot
 
 2 pass, santa-ana fails. Let me see its specific failure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR0's commit fixed a "duplicate config.js/farms-data.js/partners-data.js includes (cachedPath console error)" on oscar-bahia — santa-ana has the same pre-existing bug, which now fails the zero-console-errors assertion. Let me check its script includes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **santa-ana has duplicate `config.js`/`farms-data.js`/`partners-data.js` includes** (lines 699–704, the same bug PR0 fixed on oscar-bahia), causing `cachedPath` SyntaxError. Paulo is fine. I'll dedupe santa-ana as part of PR2 (same fix PR0 applied), then rerun.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **3 passed.** Now run the local test suite (hard rule before push) and commit + push + open PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly per plan (2 HTML pages + 2 media.json + spec; the `195:`/`556:` hits are CSS + our new container). Committing and pushing the PR now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Now opening the PR via gh and merging it (AUTO-ADVANCE authorizes open+merge).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1072,5 +1078,129 @@ After #209 merges, the plan's remaining units are PR3/PR4 (shipments `agl5`+… 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/agroverse_shop_beta_pr0 && echo "=== git credential config ==="; git config --get credential.helper; echo "=== ~/.git-credentials ex; sed -n '1,60p' /opt/truesight_autopilot/scripts/git-credential-sophia.sh; python3 - <<'EOF' import os, json, urllib.request, urllib.error pat = None env_path = "/opt/truesight_autopilot/.env" with open(env_path) as
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Continuing from RESUME HERE: rebase `pr2-media-migration` onto latest main, resolve conflicts, re-test, force-push, then merge PR #209. Let me start by fetching and rebasing.
+
+
+### 🤖 Autopilot
+
+Main has moved significantly — **PR2 (#206) and PR3 (#207) are ALREADY merged**. My PR #209 duplicates already-merged work (#206). Let me abort the rebase and verify what main already has, so I don't merge a duplicate.
+
+
+### 🤖 Autopilot
+
+Critical finding: **PR2 is already merged on main as #206** (commit `9a73c14`, co-authored by me) — and **PR3 (#207)** is merged too. My PR #209 is a **duplicate** of already-merged work. The parallel execution (another Sophia session or Gary) completed it. I must NOT merge #209 — it's redundant and conflicts. Let me close it as superseded and determine the true next unit.
+
+
+### 🤖 Autopilot
+
+PR #209 closed as superseded (already merged as #206). Now I need the actual plan file to find the true next unit. Let me locate and read it.
+
+
+### 🤖 Autopilot
+
+Let me read the plan's PR list section to determine the true next unit after PR2/PR3.
+
+
+### 🤖 Autopilot
+
+**Key finding:** PR2 and PR3 are **already merged on main** (#206, #207 — the plan advanced in parallel), so my PR #209 was a duplicate — **closed it as superseded**. The plan's true next unit is **PR4: migrate shipment pages `agl0`, `agl1`, `agl2`** (hero-only ×2 + hero+1-video ×1, extend shipment spec). Let me inspect the three target pages and the existing shipment spec.
+
+
+### 🤖 Autopilot
+
+PR4 scope confirmed: **agl0 + agl1 (hero-only ×2) + agl2 (hero + 1 video)**. Let me study the PR1/agl4 pattern (already merged) — its media.json, the shipment spec, and the loader — so PR4 replicates it exactly.
+
+
+### 🤖 Autopilot
+
+Let me see how PR1 converted agl4 (the reference pattern) and the current agl2 video block + script sections, so PR4 edits match exactly.
+
+
+### 🤖 Autopilot
+
+PR4 pattern is clear (agl4 reference: imgs → `data-media-slot="hero"`, media.json hero, loader script tag; hero video stays inline per Option A). I have the exact img lines for all three pages. Now let me capture the exact script sections (to place the loader tag) and confirm no duplicate-include bugs on these pages.
+
+
+### 🤖 Autopilot
+
+PR4 scope is fully mapped. Key extra finding: **agl0 and agl1 have the same duplicate `config.js`/`universal-nav.js` includes** (lines 1220–1223, 1228–1231) that break JS (the `cachedPath` bug PR0/PR2 fixed) — the shipment spec asserts zero console errors, so I must dedupe them in this PR. agl2 keeps its inline hero video (Option A, like agl4). Now building all PR4 changes + running the test in one scripted run.
+
+
+### 🤖 Autopilot
+
+Python f-string syntax error — nothing was applied (verify confirms no changes). Let me fix the script and rerun.
+
+
+### 🤖 Autopilot
+
+All three transformed correctly (2 hero slots each, loader added, duplicate config.js deduped). Now extend the shipment spec to cover all 4 shipment pages, then run the tests.
+
+
+### 🤖 Autopilot
+
+**4 passed** (agl4, agl0, agl1, agl2). Now run the farm spec too (ensure no regression), then commit, push, and open the PR.
+
+
+### 🤖 Autopilot
+
+All tests green (4 shipment + 5 farm) and branch pushed. Now opening the PR with the PAT that worked before, then merging.
+
+
+### 🤖 Autopilot
+
+PR #211 created. Merging it now (AUTO-ADVANCE authorizes open+merge).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## This turn: PR4 built, tested, PR #211 opened — merge blocked by conflicts (again)
+
+### ✅ Completed
+- **PR #211 opened** from branch `pr4-shipment-media-migration`:
+  🔗 https://github.com/TrueSightDAO/agroverse_shop_beta/pull/211
+- Scope = plan §5a **PR4**: migrate `shipments/agl0`, `agl1` (hero-only ×2) + `agl2` (hero + 1 inline hero-video) to the JSON-driven media pattern:
+  - `agl0/agl1/agl2/index.html` — both hero imgs (`.shipment-image` + `.farmer-photo`) → `data-media-slot="hero"`; loader script tag added; **agl0+agl1 duplicate `config.js`/`universal-nav.js` includes deduped** (the `cachedPath already declared` SyntaxError — same bug PR0/PR2 fixed)
+  - `agl0/agl1/agl2/media.json` — **new**, each with hero src/alt/fallback (agl0.avif / agl1.avif / agl2.avif)
+  - `tests/media-gallery-shipment.spec.ts` — extended to cover all 4 shipment pages
+- **Tests: 4 passed** (shipment spec) + **5 passed** (farm spec, no regression) — all zero console errors
+- Branch pushed, PR created via the `TRUESIGHT_DAO_AUTOPILOT` PAT (never printed)
+
+### ⚠️ Blocking — merge failed: **merge conflicts (405)**
+`merge_pr #211` → *"Pull Request has merge conflicts"*. Main moved after my branch point (I branched from `147cec6`), so at least one file now differs from current `origin/main` — most likely `tests/media-gallery-shipment.spec.ts` or an agl page if a parallel PR touched them.
+
+**Nothing lost** — branch has all tested changes; this is a stale-base issue, not a code issue.
+
+## RESUME HERE → next turn
+1. `cd /tmp/agroverse_shop_beta_pr0 && git checkout pr4-shipment-media-migration && git fetch origin && git rebase origin/main` → resolve conflicts (keep my 4-page shipment spec coverage; re-check agl0/1/2 hero slots + dedupe if main changed them)
+2. Re-run: `npx playwright test tests/media-gallery-shipment.spec.ts` + `tests/media-gallery-farm.spec.ts` → expect 4 + 5 passed
+3. `git push --force-with-lease origin pr4-shipment-media-migration` → PR #211 auto-updates
+4. `merge_pr(agroverse_shop_beta, 211)` → then **STOP** (one PR per turn) and report the contribution
+
+After #211, plan's next unit is **PR5: `agl5`, `agl7`, `agl8`** (hero-only ×2 + hero+distinct-farmer-photo ×1 — keep `agl8`'s farmer photo distinct from hero per plan §5a). Beta only — no prod, no money.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → rebase-abort + main inventory (found #206/#207 already merged; closed duplicate PR #209 as superseded); mapped PR4 scope (agl0/1/2 hero imgs, agl2 inline video, agl0/1 duplicate-include bug); studied agl4 reference; applied 3-page transform (hero slots + dedupe + loader) + 3 new media.json; extended shipment spec; **4+5 tests passed**; committed + pushed `pr4-shipment-media-migration`
+• `ssh run` → opened **PR #211**
+• `merge pr` → ❌ 405 merge conflicts — reported, not forced
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp/agroverse_shop_beta_pr0 && git fetch origin 2>&1 | tail -2; echo "=== current branch state ==="; git branch -vv | grep pr2; echo "==; cd /tmp/agroverse_shop_beta_pr0 && git rebase --abort 2>&1; echo "=== what #206 changed (files) ==="; git show --stat 9a73c14 | head -20; ec; cd /tmp/agroverse_shop_beta_pr0 && python3 - <<'EOF' import json, urllib.request, urllib.error pat = None with open("/opt/truesight_autopilo; …(+10 more)
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
