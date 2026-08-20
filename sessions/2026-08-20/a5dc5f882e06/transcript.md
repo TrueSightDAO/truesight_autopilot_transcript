@@ -62,11 +62,13 @@ Let me verify the AGL13 cacao tea cost basis and check for a "loose cacao tea" i
 ### 🤖 Autopilot
 
 Let me check the canonical currency definitions and the AGL13/AGL8 tea ledgers to pin down the actual cost basis:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the authoritative unit costs from the Main Ledger sheet and search the treasury cache for all tea/husk lines:
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -159,4 +161,96 @@ Here's the actual currency record from the **Currencies** tab of the Main Ledger
 - **AGL8 Paulo tea / Oscar 1LB** → **$0 per 25 g** (freight cost already sunk, recorded at zero)
 
 The record most defensible to quote FounderHaus for loose tea is **$10.18234711/kg → $0.25/25g** (AGL13 Santos), with the AGL8 loose-grams at $0.34/25g as the alternative. Happy to pull the full raw `currencies` tab or the treasury-cache JSON lines if you want the exact ledger rows.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] I remember that Emelin had a video on how she makes cacao tea somewhere can you help verify too
+
+
+### 🤖 Autopilot
+
+Emelin (Emelin Jung) is a known DAO contributor — but no direct hit yet on a cacao-tea video. Let me search the transcripts and the web.
+
+
+### 🤖 Autopilot
+
+The web results are noise (Tavily's synthesized "answer" is not a real video). Emelin Jung is a DAO contributor, so the video reference likely lives in our own chat transcripts. Let me search the transcript files directly:
+
+
+### 🤖 Autopilot
+
+The chat dumps show up but GitHub search only surfaces file-level matches. Let me check the content/marketing repos directly and search for any tea recipe/video reference in context:
+
+
+### 🤖 Autopilot
+
+Still no direct hit. Let me try targeted web searches for Emelin Jung's actual video and check the credentialing platform doc for how her content is cataloged:
+
+
+### 🤖 Autopilot
+
+Emelin is **Emelin Frances Lisboa** (Agroverse brand/website contributor). Let me look for where her video might live — checking our own content assets and a couple more targeted searches:
+
+
+### 🤖 Autopilot
+
+The public sites don't surface an Emelin tea video directly. Let me check our own media/asset repos and the Instagram account, which has a **"Recipes"** highlight — that's the most likely home for it:
+
+
+### 🤖 Autopilot
+
+Still no direct hit. Let me search the site asset repos for any video file or recipe content, and check the go_to_market content folder structure:
+
+
+### 🤖 Autopilot
+
+No luck in the code repos either. Let me check our media assets folder directly and look at the transcripts repo (which may hold an attachment from Emelin):
+
+
+### 🤖 Autopilot
+
+Two promising repos: **aora_raw_footage** (raw source footage) and **notarizations** (media uploads). Let me check both for cacao-tea content:
+
+
+### 🤖 Autopilot
+
+Let me look directly at the aora_raw_footage repo contents and the aora repo file tree:
+
+
+### 🤖 Autopilot
+
+Let me check the session transcripts repo directly for any Emelin/tea content, and look at the aora modules folder:
+
+
+### 🤖 Autopilot
+
+Emelin was the brand designer — let me check the agroverse-designs repo and store_interaction_attachments:
+
+
+### 🤖 Autopilot
+
+I've done a thorough sweep. Let me do one final check — the Instagram "Recipes" highlight is the strongest lead, and let me confirm whether Emelin's known content (CV/testimonial) references video work:
+
+
+### 🤖 Autopilot
+
+I've done a thorough sweep and can't verify the video from what I can access. Here's what I searched:
+
+**DAOs context & repos (content search + GitHub code search org-wide):**
+- `agentic_ai_context` — Emelin appears only as a **DAO contributor** (credentialing CV pattern, Brazil export entity member #15 with 25,621 TDG, external collaborator `emelinjung@gmail.com`). No video reference.
+- `go_to_market`, `truesight_me`, `agroverse_shop`, `aora`, `aora_raw_footage`, `notarizations`, `agroverse-designs`, `truesight_autopilot_transcript` — no Emelin / cacao-tea / recipe video matches.
+- Old tokenomics chat dumps (beer hall / town hall / sunmint) — Emelin appears in the conversation history, but nothing tying her to a tea video.
+
+**Public web:**
+- No verified result. Tavily returned generic cacao-tea reels (Caribbean cocoa tea, cacao-shell tea, milk tea) — none by Emelin. Her LinkedIn (**Emelin Frances Lisboa — Agroverse**) confirms she's the brand/website designer, but no video link.
+
+**Strongest lead I found:** the **agroverse.shop Instagram "Recipes" highlight** (`/stories/highlights/18037784692897170/`) — the account has a dedicated Recipes highlight with reels. That's the most likely home for a cacao-tea how-to. I can't browse inside the highlight (requires login), but a human with the account can check it in seconds.
+
+**To help me search better — do you remember:**
+- Platform? (Instagram reel / TikTok / YouTube / WhatsApp)
+- Rough date?
+- Was it on the Agroverse account, TrueSight DAO account, or her personal account?
+
+If it's not findable, I can log a follow-up in OPEN_FOLLOWUPS.md so we track it down (or get Emelin to re-share the link) — say the word.
 
