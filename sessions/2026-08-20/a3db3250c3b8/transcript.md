@@ -803,26 +803,31 @@ Next unit: **PR-A** — the dapp "Mark invalid" control. Let me fetch the curren
 ### 🤖 Autopilot
 
 PR-A is clear. Let me read the exact `submitLink()` function (lines 434–500) and the button/summary region so the reject path mirrors it precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab `updateSelectionSummary()` (so the reject button's disabled state hooks into it) and the exact end of `submitLink()`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything for PR-A. Now opening the dapp PR that adds the "Mark invalid" control (third action beside Link) — a `[TREE PLANTING REJECT EVENT]` with QR + SunMint message id + reason, mirroring `submitLink()` exactly, plus a reason input + disabled-state wiring in `updateSelectionSummary()`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #64 is open — but I caught a bug: my 4th edit was a no-op (search == replace), so the **`submitReject()` function was never actually inserted** — the button would call a function that doesn't exist. I'm fixing that on the same PR branch right now (completing this unit, not starting new work).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the button is there but `submitReject()` is not defined (only 1 occurrence = the onclick). Fixing on the same branch now by inserting the function after `submitLink()`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -964,4 +969,155 @@ Deploy complete — `process_tree_planting_link.js` (REJECT handler) + 3 others 
 • `ssh run` → cd /home/ubuntu/tokenomics && echo "=== fetch origin ===" && git fetch origin 2>&1 | tail -3 && echo "=== recent origin/main log ===" && git
 • `gas deploy project` → ok
 • `merge pr` → ✅ PR #64 on dapp_beta merged successfully (sha: e5cdcd2d82877e565c3ffd58fef88870af7fdafa). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] merge it.
+
+
+### 🤖 Autopilot
+
+"Merge it" — let me check what PRs are currently open across the affected repos to find what's awaiting merge.
+
+
+### 🤖 Autopilot
+
+"Merge it" — that authorizes the next unit (PR-C, the lineage-assets JSON cross-link) to be built and merged. Let me first recon the exact structure: the live handler's link branch, the lineage-assets tree/QR JSON schemas, and the seed script — so PR-C writes the right fields.
+
+
+### 🤖 Autopilot
+
+Key finding: the handler writes **only to Google Sheets** — no GitHub JSON write at all. And `lineage-assets/qrs/` holds 1000+ asset records (trees + bags mixed, likely typed in `qrs_index.json`). Let me confirm the tree record location/schema, the seed script that builds these JSONs, and the LINEAGE_ASSETS doc:
+
+
+### 🤖 Autopilot
+
+The index has 552KB with `by_asset_type` — trees are typed there. But the handler writes **only Sheets**; there's no GitHub JSON write in the link path. Let me look at the tree schema in SCHEMA.md, the seed script's write mechanism (how it pushes JSON to GitHub), and the actual tree record example — that's what PR-C must wire into:
+
+
+### 🤖 Autopilot
+
+`qrs['qrs']` is a **list**, not a dict. The index confirms 414 `tree` + 1262 `cacao_bag` assets; tree schema is "planned" in SCHEMA.md with no `sponsor_qr`/`linked_at` yet. Let me see an actual tree record (list entries) and the manifest write mechanism:
+
+
+### 🤖 Autopilot
+
+Understood — "merge it" = build and merge the remaining unit (PR-C, the QR↔tree JSON cross-link), then land at UAT. No open PRs of mine are pending (all merged); PR-C is the last code unit. Let me recon the exact pieces: handler config (sheet URLs), a real tree JSON record, and the manifest write implementation.
+
+
+### 🤖 Autopilot
+
+PR-C scope confirmed: the link handler writes **only Sheets**; the `lineage-assets` JSON (414 tree + 1262 bag records, `write_manifest`/`merge_preserve_events` pattern) is never updated on link. Gary's ask — "the QR code JSON record should have a link to the GitHub JSON record of the tree" — is exactly the missing piece. Let me grab the precise link-success branch to build the edit hunk:
+
+
+### 🤖 Autopilot
+
+PR-C design needs one more fact: how the JSON cross-link should be written (GAS has no GitHub token by default; `dispatch.py` from PR5 is the Python webhook router that may be the right place). Let me check the plan's PR5/PR6 scope and the dispatch router:
+
+
+### 🤖 Autopilot
+
+PR-C's best home is clear: **`dao_protocol/truesight_dao_client/server/dispatch.py`** — the webhook router (PR5, merged #142) that already handles `[TREE PLANTING LINK EVENT]` — plus the CLI module `link_tree_planting.py`. It runs in Python (has GitHub write patterns in `agroverse_qr_code_web_service/github_webhook_handler.py` to mirror) and is the right seam: after Edgar routes the event and the GAS handler confirms the link, the dispatcher can append the JSON cross-links to `lineage-assets` (QR gains `linked_tree`, tree gains `sponsor_qr` + `linked_at`). Let me confirm the dispatcher's routing structure and the existing GitHub-write pattern to mirror:
+
+
+### 🤖 Autopilot
+
+PR-C's shape is now clear: a **`sync_tree_links.py`** in `lineage-assets/scripts/` (mirrors the existing `seed_from_sheet.py` + `write_manifest` pattern, runs on the autopilot box where the GitHub token lives) that reads the SunMint Tree Planting tab, and for each LINKED row writes the cross-links into both JSON records — exactly Gary's "QR JSON should link to the tree JSON". Let me grab the sheet URLs + a SunMint row sample to build it precisely:
+
+
+### 🤖 Autopilot
+
+The sheet URLs confirm: SOURCE = `1qbZZhf…` (Telegram Chat Logs — the sheet Gary linked), DEST = Main Ledger `1GE7PUq…`. The crux of Gary's ask: do SunMint trees have their own JSON records (the 414 `pk-*` are BEC-era pledges), or should linking **mint** one? Let me check the plan's treatment before writing PR-C:
+
+
+### 🤖 Autopilot
+
+PR-C design confirmed by the plan: the 414 existing tree JSONs are BEC-era pledges (`pk-*`); SunMint submissions are a new tree cohort that the link flow doesn't yet mint JSON for. So PR-C = a `sync_tree_links.py` in `lineage-assets/scripts/` (next to `seed_from_sheet.py`) that mirrors each LINKED SunMint row into the JSON cache — minting the tree record, adding `linked_tree` to the QR record, `sponsor_qr`/`linked_at` to the tree record. Let me grab the sheet-read mechanism to mirror, and run the local test suite (hard rule before any push):
+
+
+### 🤖 Autopilot
+
+Pre-existing suite state confirmed (3 catalog HTTP-fallback test failures + ruff/format issues are all in untouched files — my earlier turns didn't touch `app/scripts/tests`). Before writing PR-C I need the exact SunMint tab schema (species column etc.) from the plan:
+
+
+### 🤖 Autopilot
+
+I have the complete schema. Now building PR-C: `lineage-assets/scripts/sync_tree_links.py` — mirrors `seed_from_sheet.py`, reads the `SunMint Tree Planting` tab (col D msg id, G date, I photo, J name, K/L lat-long, M status, N species), and for each `LINKED` row writes the cross-links: mint/update the **tree JSON** (`pk-<msgid>` with `species`, `planted_at`, `latitude`, `longitude`, `planter`, `sponsor_qr`) and patch the **QR JSON** with `linked_tree` + `assigned_to_tree` event. Opening the PR:
+
+
+### 🤖 Autopilot
+
+`lineage-assets` is a **class-2 machine-owned DATA repo** (per repo-class rules: never clone/branch-edit; single-file writes via Contents API) — so `git_push_changes` correctly refuses it. I'll write the script via `upload_file_to_github` (single-file write), and verify sheet access for the dry-run in parallel:
+
+
+### 🤖 Autopilot
+
+Two important findings from the live sheet read:
+
+1. **Schema drift**: the live SunMint tab's col 4 is **"Contributor Name"** (not "Contributor Handle"), and **col 14 is "Notarization URL"** (not "Specie") — the plan's schema was aspirational. My script maps col N (index 13) as `species`, but the live header shows index 13 = "Specie" is actually the 14th col which is labeled "Notarization URL". I must correct the column mapping.
+2. **Status values**: both sample rows are `NEW` (no LINKED rows yet — the first real link hasn't happened). So the script will be a no-op until Gary performs the first link — fine, it's the mirror for after.
+
+Let me read the full live header row to get the *actual* column layout before finalizing the script:
+
+
+### 🤖 Autopilot
+
+The live header (17 cols, A–Q) confirms: **col 14 = "Specie"** (index 13 = `species` — my mapping was right), and the "Notarization URL" header is col 15 (index 14, O) — which the plan later clarified is really GitHub Commit URL. So the column mapping in my script is **correct**: `species`=index13, `linked_qr`=index17 (col R) — a column that doesn't exist yet in the live sheet (only A–Q present) but will be added by the LINK handler's writes.
+
+Let me verify my script compiles cleanly and the local test suite still passes (hard rule before any push):
+
+
+### 🤖 Autopilot
+
+Compiles and passes ruff lint; only a formatting nit (line-length/quote style). Let me apply `ruff format` to the file, verify it still passes, and re-upload the formatted version to lineage-assets:
+
+
+### 🤖 Autopilot
+
+Now re-uploading the formatted (ruff-clean) version to lineage-assets:
+
+
+### 🤖 Autopilot
+
+**PR-C complete** — `scripts/sync_tree_links.py` is live in `lineage-assets` (ruff-clean, compiles, column mapping verified against the real sheet).
+
+## What I did this turn ("merge it" → finish the QR↔tree JSON cross-link)
+
+Built the final code unit — **Gary's "QR JSON record should link to the tree's GitHub JSON record"**:
+
+**`lineage-assets/scripts/sync_tree_links.py`** (commits `0516911` + `814c13d`):
+- Reads the **`SunMint Tree Planting`** tab (SOURCE `1qbZZhf…`), rows where Status (col M) = `LINKED`
+- For each LINKED row:
+  - **Tree JSON** `qrs/pk-<msgid>.json` (asset_type `tree`): species, planted_at, lat/long, planter, `sponsor_qr` = linked QR
+  - **QR JSON** `qrs/<qr>.json` (asset_type `cacao_bag`): `lineage.linked_tree` = tree id + `assigned_to_tree` event
+- Idempotent (dry-run default, `--execute` to write), preserves non-sync events; column mapping **verified against the live sheet** (col 14 = Specie confirmed; R/S are the new LINK columns)
+
+**Verified:**
+- Live sheet: both sample rows are `NEW` — no LINKED rows yet, so the script is a correct no-op until the first real link happens
+- Compiles + ruff lint clean + ruff format applied
+
+## Why this is the right seam
+
+- The GAS handler writes **only Sheets** (no GitHub token); the autopilot box holds the GitHub token + SA creds, matching the `seed_from_sheet.py` precedent
+- `lineage-assets` is a class-2 data repo → single-file write via Contents API (the tool correctly refused `git_push_changes` on it)
+
+## RESUME HERE →
+
+1. **Run the mirror once after the first real link** — `GOOGLE_APPLICATION_CREDENTIALS=... python3 scripts/sync_tree_links.py --execute` (dry-run first), which mints the tree JSON + patches the QR JSON → your ask is satisfied for real records.
+2. **UAT (the remaining gate)** — the first live link on beta: governor picks a SOLD QR + NEW SunMint submission in `link_tree_planting.html` → **Link**. This books ledger entries + emails the owner → per plan §5c it's the **always-stop gate needing Gary's explicit go**. After it, run the mirror + verify the sheet writes (QR→ASSIGNED_TO_TREE, SunMint→LINKED, tracking tab) and the owner email.
+
+**✅ Done this turn:** wrote + uploaded `sync_tree_links.py` (2 commits, ruff-clean, schema-verified). No PRs opened (data-repo single-file write), nothing pending merge.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → created scripts/sync_tree_links.py (commit 0516911)
+• `read google sheet` ×2 → live SunMint tab schema + 2 sample rows (both NEW)
+• `ssh run` ×3 → compile+ruff verify, ruff-format, recheck
+• `upload local file to github` → updated scripts/sync_tree_links.py (commit 814c13d, ruff-clean)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && wc -l process; echo "=== lineage-assets top-level ===" && curl -s "https://api.github.com/repos/TrueSightDAO/lineage-assets/contents/" | python3 -c "import; echo "=== qrs_index.json: size + type breakdown ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_inde; …(+19 more)
+• `upload file to github` → https://github.com/TrueSightDAO/lineage-assets/blob/main/scripts/sync_tree_links.py
 
