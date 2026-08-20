@@ -1151,26 +1151,31 @@ resume
 ### 🤖 Autopilot
 
 Resuming per the handoff. Checking the manifest registry and verifying the beta site state in parallel:
+[2 tool result(s) compacted: read_context_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff registry's cacao-tea task isn't a separate plan row — this thread **is** the execution. The beta category page still shows the **old etag** (same as before PR #201), so either GH Pages hasn't rebuilt or the CDN is caching. Let me confirm the card is actually in `main` and re-fetch beta with a cache-buster:
+[2 tool result(s) compacted: read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The beta site is still serving the **old etag** — GH Pages likely hasn't rebuilt yet, but let me confirm the card is actually in `main` by reading the tail of the repo file (the grid section):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the repo file to confirm the tea card is actually in `main`:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me stop reading artifacts in circles and run one decisive check — grep `main` for the tea card and compare with what the live beta serves:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1181,6 +1186,7 @@ Decisive finding:
 - The **PDP is live on beta** (200 — from #197, propagated earlier)
 
 So it's purely a **GH Pages deploy lag/cache** — the code is merged, the site just hasn't rebuilt that file yet. Let me check the Pages deployment status to confirm it's lag (not a failed build):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1188,6 +1194,7 @@ So it's purely a **GH Pages deploy lag/cache** — the code is merged, the site 
 The deploy pipeline shows the merge on `main` (commit `7dde445`) with no failed build — this is just GH Pages **build lag**: #197 (PDP) propagated earlier; #201 (category card) merged minutes ago and the site hasn't rebuilt yet. Pages deploys typically take 1–3 min.
 
 Let me set a watcher so we get notified the moment the tea card appears on the beta category page:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1232,6 +1239,7 @@ Want me to ping you when the watcher fires, or will you check the beta URL yours
 ### 🤖 Autopilot
 
 Quick check — has the beta rebuild caught up?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1275,6 +1283,7 @@ One thing to confirm before promo: the category page + PDP currently link to `ag
 ### 🤖 Autopilot
 
 Let me fetch the live beta PDP and show you what it contains:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1427,4 +1436,32 @@ Then — on your approval — the **final step remains: promote to prod** (`sync
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo "=== agroverse_shop_beta assets/images/products ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/a; echo "=== packaging/ subfolder ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/assets/images/products/; echo "=== does truesight_me agl4.avif exist? ==="; curl -s -o /dev/null -w "%{http_code} " "https://raw.githubusercontent.com/TrueSightDAO/t; …(+6 more)
 • `merge pr` → ✅ PR #202 on agroverse_shop_beta merged successfully (sha: 2d2be09725bfe740b87a2be1811265ea2d16c874). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] What is the URL of the page
+
+
+### 🤖 Autopilot
+
+The cacao tea product page URL:
+
+**Beta (where it's live now):**
+```
+https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
+```
+
+**Production (www — not live yet, pending your promote approval):**
+```
+https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
+```
+
+Related pages:
+- Category index: `https://beta.agroverse.shop/category/retail-packs/index.html`
+- Farm cross-list: `https://beta.agroverse.shop/farms/oscar-bahia/`
+- Shipment AGL4: `https://beta.agroverse.shop/shipments/agl4/`
+- QR scan landing (per the QR batch): `https://www.agroverse.shop/shipments/agl4` — this is what the 100 QR codes resolve to when scanned
+
+Note: after the #202 merge (tea label fix), GH Pages needs ~1–3 min to rebuild before the hero image shows the label instead of the ceremonial cacao shot.
 
