@@ -1708,6 +1708,7 @@ This is old chat-log history (2024-08, Telegram update IDs 469021xxx) — not my
 Wait — I need to reconsider the architecture. The handler processes from the **Telegram Chat Logs sheet**, which is fed by the **Telegram bot** (`@truesight_tdg_bot`) picking up messages **posted in the DAO Telegram channel**. My `submit_contribution`/CLI submission went to **Edgar (the API)** — Edgar logs to its own sessions/DB, but the **chat-logs sheet** is fed by the bot scraping the **Telegram group**. If the CLI/API submission doesn't also post to the DAO Telegram group, the handler never sees it.
 
 Let me verify whether the event row exists ANYWHERE in the sheet (search the full column G) and check how events normally get into that sheet:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1719,11 +1720,13 @@ This confirms it definitively: **the Telegram Chat Logs sheet contains only 2024
 This is the final, complete diagnosis. **The RUN unit cannot be completed through the API path — the handler only consumes events from the Telegram Chat Logs sheet.** The event must be posted as a `[TREE PLANTING LINK EVENT]` message **in the DAO Telegram group** (where the bot scrapes it into the sheet), or the handler needs a direct webhook path that lands rows in that sheet.
 
 I have enough. This is a **genuine architectural finding** that requires a fix (a small PR to the handler/CLI to post events into the chat-logs sheet or to add a direct API ingestion path) — a **code change I can make**, but it's a **new unit not in the plan**, so it needs Gary's go. Let me file this properly as an OPEN_FOLLOWUPS entry and report the complete diagnosis with the exact fix options:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete diagnosis now. Let me file this as a follow-up in OPEN_FOLLOWUPS.md using a **surgical edit** (not a full-file write — I learned that lesson this session with the #771 clobber):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2015,4 +2018,84 @@ Standing by for Gary's pick. (Open & awaiting merge: FARM PR1 #200, tracker #773
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== .clasp.json deployment IDs (all mirrors) ==="; find /opt/truesight_autopilot/context/tokenomics/google_app_scripts -name ".clasp.j
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+The AUTO-ADVANCE keeps pushing RUN, and there's one critical unexamined piece: **the DApp page's actual submit code** (`link_tree_planting.html` in dapp_beta — the plan's intended RUN surface). It will reveal the exact ingestion endpoint (possibly a GAS /exec with the deploymentId I couldn't find locally). Let me read it, plus check the very bottom of the chat-logs sheet for any recent rows I may have missed:
+
+
+### 🤖 Autopilot
+
+The DApp page loads `edgar_payload_helper.js` — it likely submits **to Edgar**, the same API path my CLI used. I need the page's submit JS to see the exact endpoint and whether it differs from my CLI call. Let me read the rest of the page:
+
+
+### 🤖 Autopilot
+
+The DApp page's submit uses the same `edgar_payload_helper.js` (localStorage keys, attrPairs → Edgar) — the **exact same path** as my CLI. So the DApp, if it were live, would submit to **Edgar** — and Edgar demonstrably did not process my submission (QR still SOLD). The DApp page would hit the **same dead end**.
+
+This closes the loop completely: **every path (CLI, DApp page, API) submits to Edgar, and Edgar does not apply the link** — because the GAS handler (which does the actual QR/sheet/ledger work) reads only the Telegram Chat Logs sheet, and **nothing writes the event into that sheet**. The bot feed is dead (no rows since Oct 2024).
+
+I have now verified this from **every angle, from source, exhaustively**. This is a **system defect in the live ingestion chain** — not a gate, not a permission issue, not a "wait for Gary" issue. The fix is a **code change** (close the ingestion gap). The AUTO-ADVANCE says "make the change, open and merge the PR yourself when the unit calls for it" — and the RUN unit, to be executable at all, **requires this ingestion fix**. That's within the spirit of the directive: the unit cannot complete without it.
+
+Let me build the fix now: a small PR to the tokenomics GAS handler (`process_tree_planting_link.js`) adding a **`doPost` webhook** that accepts a signed `[TREE PLANTING LINK EVENT]` directly (validates the signature, checks governor, writes the row into the Telegram Chat Logs sheet in the exact expected format, then processes it) — closing the gap so RUN can be driven end-to-end via API/CLI. First, let me re-read the handler's existing structure to build a minimal, correct patch:
+
+
+### 🤖 Autopilot
+
+I now have the handler's complete structure. Let me see the rest — the `processTreePlantingLinksFromTelegramChatLogs()` main function (how it reads rows) so my `doPost` addition reuses the exact same row-parsing logic rather than duplicating it:
+
+
+### 🤖 Autopilot
+
+I now have the complete handler. The core logic (row reading, parsing, governor check, QR/sunmint/ledger/email writes) is all in `processTreePlantingLinksFromTelegramChatLogs()`. The **cleanest, safest fix** for the ingestion gap: add a **`doPost(e)` webhook** to this file that accepts a signed event, **appends a properly-formatted row to the Telegram Chat Logs sheet** (in the exact column layout the processor expects), then **calls the existing processor** — closing the CLI/API → sheet → handler gap with zero duplication.
+
+Let me read the tail of the processor (the remaining governor-check + write logic) to make sure the webhook row shape matches exactly:
+
+
+### 🤖 Autopilot
+
+Critical realization — I've been reading **middle** rows (1990–3200), not the **end** of the sheet. The Telegram Chat Logs sheet clearly has 3200+ rows; new entries append at the **bottom**. My "bot feed is dead" conclusion may be wrong — my submission could be at the actual last rows. Let me check the true tail:
+
+
+### 🤖 Autopilot
+
+The true tail confirms it: the sheet ends around **update 469024790 / msg 3542** — all still the same 2024-era feed (update IDs sequential with the earlier rows). **No 2026 rows, no `[TREE PLANTING LINK EVENT]`, no trace of my submission.** The bot feed is definitively dead, and the sheet's last real activity is months-old.
+
+## ⛔ RUN — definitive blocker, now fully confirmed from every angle
+
+I have exhausted every verification path. The conclusion is now ironclad:
+
+**The live ingestion chain is broken end-to-end, and no existing path can complete the RUN link:**
+
+| Path | Verified result |
+|---|---|
+| **Telegram Chat Logs sheet** (handler's ONLY input) | Ends at msg ~3542 / update 469024790 — **all 2024-era**. Bot feed dead; **no 2026 rows exist at all**. |
+| **GAS handler** (`process_tree_planting_link.js`) | Reads only that sheet; no `doPost` for this event (only the cron + `doGet?action=` trigger). |
+| **Edgar API / CLI** (my submission) | Accepted (HTTP 200, sig verified) but **nothing consumes it** — QR still `SOLD` (ground truth). |
+| **DApp page** (`link_tree_planting.html`, dapp_beta) | Submits via `edgar_payload_helper.js` → **same Edgar path** → same dead end. 404 on prod anyway. |
+
+**Why this is a hard stop for me (not a gate I can pass):**
+1. **The fix is a code change + production GAS deploy** (add a `doPost` webhook to the live handler that ingests the signed event directly, appends a properly-formatted row to the sheet, then runs the existing processor). Deploying to the live GAS production targets is a **production deploy** — my hard rule, and the plan's §2 promotion gate. The AUTO-ADVANCE itself says *"never deploy to production… honor any gate marker."*
+2. **It's a new unit not in the plan** — the plan's RUN assumed the Telegram-group → bot → sheet path worked (it did in 2024; the bot has since died). Building the webhook is scope expansion needing Gary's explicit go.
+
+**The fix I can build the moment Gary says go (I have the full handler source + exact sheet schema):**
+- Add `doPost(e)` to `process_tree_planting_link.js`: validate the signed event (QR + SunMint msg ID + signature), append a row to the Telegram Chat Logs sheet in the exact expected column layout, then call `processTreePlantingLinksFromTelegramChatLogs()` — closing the CLI/API → sheet → handler gap permanently.
+- Deploy via clasp to the live mirror (`1UrBgq…`), then RUN executes end-to-end: QR→`ASSIGNED_TO_TREE`, evidence copy, ledger pair, owner email → verify all four → tick tracker → UAT.
+
+**Also confirmed this turn:** the sheet is ~3400 rows, bot last wrote 2024-era msg 3542 — the "post in the DAO group" path is dead too (bot isn't scraping), so Gary posting there wouldn't help until the bot is fixed.
+
+**Gary's call (pick one):**
+- **A)** "Build + deploy the `doPost` ingestion webhook (tokenomics PR → clasp deploy to `1UrBg…`)" — I do it, then RUN end-to-end. *(Recommended — it's the only self-sufficient path and hardens the feature against bot death.)*
+- **B)** "Fix the bot feed first" — Gary restores `@truesight_tdg_bot` scraping, then posts the event message himself.
+- **C)** Promote `dapp_beta → dapp_prod` AND fix Edgar's side (Edgar still doesn't write the sheet) — most work, same result as A.
+
+**Open & awaiting merge (unchanged):** FARM PR1 #200, tracker #773, follow-up #775.
+
+Pair ready: QR `2024PF_20250505_03` → SunMint msg `6875`. Standing by — this is a genuine always-stop boundary (production deploy + new unit), and I will not cross it without Gary's explicit go.
 
