@@ -187,6 +187,7 @@ Let me find specifics on which label printers Gary and Kirsten use, then researc
 ### 🤖 Autopilot
 
 The context doesn't record the exact printer models. Let me check the white-label plan (which mentions the 4×2 label stock) and search transcripts for any printer model mentioned.
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -336,4 +337,68 @@ Here you go — the links I found in the live search results:
 ⚠️ Caveats:
 - Mercado Livre blocks automated page-fetching, so I can't verify price/stock/seller *live* — these are from current search results and will drift. Click through to confirm the seller rating, freight, and bivolt (127/220V) before buying.
 - If you tell me whether your US printer is **USB or wireless**, I can tell you definitively which link to order (1 vs 2).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] The prices you reported are wrong
+
+
+### 🤖 Autopilot
+
+You're right to call that out — I flagged those as from search snippets and unverified. Let me try to actually pull the live listing data now instead of guessing.
+
+
+### 🤖 Autopilot
+
+Mercado Livre blocks the browser pages (403 + JS-rendered). Let me try their public API directly — it serves live item data without the anti-bot page.
+
+
+### 🤖 Autopilot
+
+Both direct fetches are blocked (403 anti-bot, 401 auth). Let me try alternative price sources — Google Shopping-style aggregators and the Mercado Livre blog — to cross-check current prices.
+
+
+### 🤖 Autopilot
+
+Fair — let me actually get verified current prices instead of trusting search snippets. Trying Mercado Livre's public search API and a Brazilian price-comparison site:
+
+
+### 🤖 Autopilot
+
+Let me try to verify against the two sites that *do* show content — Amazon.com.br (which carries the Rollo X1038) and Zoom (BR price aggregator).
+
+
+### 🤖 Autopilot
+
+You're right, and I want to be straight about what happened. Let me try to pin down a verifiable number before responding.
+
+
+### 🤖 Autopilot
+
+You're right, and I owe you a correction. I finally got a **verified, live price** — from Amazon.com.br, which carries the exact same Rollo X1038:
+
+## Verified price for the Rollo X1038 in Brazil (Amazon.com.br, live)
+| Line | Amount |
+|---|---|
+| Item | R$ 1.133,93 |
+| **Import taxes (estimated)** | **R$ 946,02** |
+| **Total** | **R$ 2.079,95** |
+
+That's the real number. My earlier "R$ 636" from the Mercado Livre snippet was wrong — it was an unverifiable search-snippet figure (ML blocks automated access, so I never actually confirmed it, and I should have said so more forcefully than I did). The actual cost of getting the same printer into Brazil is ~R$ 2,080 — **~$400 USD**, roughly 2× the US price. **You were right to flag it.**
+
+## What this changes — the recommendation flips
+
+The whole reason the Rollo looked "cheap" was that snippet price. With the verified number, the math is:
+
+- **Rollo X1038 imported (Amazon.com.br): R$ 2.080** — the ~R$ 946 is pure import tax (II + IPI + ICMS). You're paying double for the privilege of the same US model.
+- **Elgin L42DT (made in Brazil): R$ 979–1,899** — *no import tax*, local warranty and Portuguese support. At its typical ~R$ 1,000–1,300 street price, it's **~40–50% cheaper than importing the Rollo**.
+
+So my honest recommendation now: **buy the Elgin L42DT (or L42 Pro) for the Brazil sites, not the Rollo.** The "different drivers" concern I raised earlier is real but minor — the QR label format (101×50mm, 203dpi, ZPL/thermal) prints identically, and Elgin is the de-facto standard in Brazilian e-commerce with drivers for all marketplaces. Saving ~R$ 800–1,000 per printer across two sites easily covers the one-time template/driver setup.
+
+The one thing worth verifying before ordering: **what exactly did the US units cost you?** If you bought the Rollos at $199.99 each, the Brazil cost per unit is ~2× — so the Elgin is the clear winner. If your US units were a cheaper import brand (Nelko/other at ~$67), then the comparison is different and I'd look at the iDPRT/FY1075/Tanca budget tier on Zoom (~R$ 390–805 band) for Brazil instead.
+
+Want me to:
+1. **Pull verified prices for the Elgin L42DT and the budget tier** (iDPRT / FY1075) from Zoom — same method that just worked — so we have a fully verified comparison table?
+2. Check what model you actually bought in the US (receipts/transcripts) so the comparison is apples-to-apples?
 
