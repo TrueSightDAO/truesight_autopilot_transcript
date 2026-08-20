@@ -1112,66 +1112,79 @@ Main has moved significantly — **PR2 (#206) and PR3 (#207) are ALREADY merged*
 ### 🤖 Autopilot
 
 Critical finding: **PR2 is already merged on main as #206** (commit `9a73c14`, co-authored by me) — and **PR3 (#207)** is merged too. My PR #209 is a **duplicate** of already-merged work. The parallel execution (another Sophia session or Gary) completed it. I must NOT merge #209 — it's redundant and conflicts. Let me close it as superseded and determine the true next unit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #209 closed as superseded (already merged as #206). Now I need the actual plan file to find the true next unit. Let me locate and read it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's PR list section to determine the true next unit after PR2/PR3.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key finding:** PR2 and PR3 are **already merged on main** (#206, #207 — the plan advanced in parallel), so my PR #209 was a duplicate — **closed it as superseded**. The plan's true next unit is **PR4: migrate shipment pages `agl0`, `agl1`, `agl2`** (hero-only ×2 + hero+1-video ×1, extend shipment spec). Let me inspect the three target pages and the existing shipment spec.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR4 scope confirmed: **agl0 + agl1 (hero-only ×2) + agl2 (hero + 1 video)**. Let me study the PR1/agl4 pattern (already merged) — its media.json, the shipment spec, and the loader — so PR4 replicates it exactly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how PR1 converted agl4 (the reference pattern) and the current agl2 video block + script sections, so PR4 edits match exactly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR4 pattern is clear (agl4 reference: imgs → `data-media-slot="hero"`, media.json hero, loader script tag; hero video stays inline per Option A). I have the exact img lines for all three pages. Now let me capture the exact script sections (to place the loader tag) and confirm no duplicate-include bugs on these pages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR4 scope is fully mapped. Key extra finding: **agl0 and agl1 have the same duplicate `config.js`/`universal-nav.js` includes** (lines 1220–1223, 1228–1231) that break JS (the `cachedPath` bug PR0/PR2 fixed) — the shipment spec asserts zero console errors, so I must dedupe them in this PR. agl2 keeps its inline hero video (Option A, like agl4). Now building all PR4 changes + running the test in one scripted run.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Python f-string syntax error — nothing was applied (verify confirms no changes). Let me fix the script and rerun.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three transformed correctly (2 hero slots each, loader added, duplicate config.js deduped). Now extend the shipment spec to cover all 4 shipment pages, then run the tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **4 passed** (agl4, agl0, agl1, agl2). Now run the farm spec too (ensure no regression), then commit, push, and open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All tests green (4 shipment + 5 farm) and branch pushed. Now opening the PR with the PAT that worked before, then merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #211 created. Merging it now (AUTO-ADVANCE authorizes open+merge).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1226,11 +1239,13 @@ After #211, plan's next unit is **PR5: `agl5`, `agl7`, `agl8`** (hero-only ×2 +
 ### 🤖 Autopilot
 
 Continuing from RESUME HERE: rebase `pr4-shipment-media-migration` onto latest main, resolve conflicts, re-test, force-push, merge PR #211. Starting with fetch + rebase.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Main already has **PR4 merged as #210** (commit `c35c11d`) — a parallel execution beat me to it again (same as #206/#207 vs my #209). My #211 is a duplicate. Let me abort the rebase, close #211 as superseded, and find the true next unit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1359,4 +1374,153 @@ Follow the same proven loop:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /tmp/agroverse_shop_beta_pr0 && git checkout -q pr4-shipment-media-migration 2>&1 | tail -1; git fetch origin main 2>&1 | tail -2; echo "; cd /tmp/agroverse_shop_beta_pr0 && git rebase --abort 2>&1 | tail -1; python3 - <<'EOF' import json, urllib.request, urllib.error pat = None; cd /tmp/agroverse_shop_beta_pr0 && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "=== agl5/agl7/agl8 media.json on ma; …(+11 more)
 • `merge pr` → ✅ PR #212 on agroverse_shop_beta merged successfully (sha: a64555903f6f0e141e47258c490b47bf9c85cf30). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Continuing: next unit is PR6 — migrate `shipments/agl10`, `agl13`, `agl14`. First, check whether a parallel session already merged it (the pattern that bit me twice), and map the exact scope.
+
+
+### 🤖 Autopilot
+
+PR6 is NOT done (no media.json for agl10/13/14 on main, no open PR for it). Note: PR #213 is a **duplicate** of my just-merged #212 (a parallel session pushed the same pr5 content) — I'll close it as superseded. Now mapping PR6 scope.
+
+
+### 🤖 Autopilot
+
+Let me get the exact hero img lines + video containers for all three pages, and check the agl14 farmer-photo situation (the original live bug).
+
+
+### 🤖 Autopilot
+
+PR6 scope confirmed: all three pages have hero imgs (same image for both slots) + inline hero video (agl10 = native HTML5 mp4, agl13 = YouTube iframe `FthJ9mftGsY`, agl14 = YouTube iframe `BI55aQ6B73U`), all have the duplicate config include, all need dedupe + loader. Building the transform now.
+
+
+### 🤖 Autopilot
+
+All 3 transformed. Note: agl10 uses a native HTML5 `<video>` (not YouTube iframe) — the spec's `.shipment-hero-video` check expects a `src` attribute with the video ID, but a `<video>` element has `<source>` children instead. Let me extend the spec carefully for agl10's native video, then run tests.
+
+
+### 🤖 Autopilot
+
+8 passed, but **agl10 and agl14 failed**. Let me see the actual failure detail.
+
+
+### 🤖 Autopilot
+
+Two distinct pre-existing bugs surfaced in the test:
+1. **agl10**: 403 on the Wix-hosted native video poster/source (external CDN, pre-existing, not from my change — but the spec's zero-console-errors assertion catches it)
+2. **agl14**: `heroVideo.play is not a function` pageerror — the **hero-video bug** PR #200 fixed on agl4, but agl14 has its *own* inline script that still calls `.play()` on a YouTube **iframe**. agl13 passed, so its script differs.
+
+Let me inspect the inline hero-video scripts on agl13/agl14 to fix agl14 properly.
+
+
+### 🤖 Autopilot
+
+agl14 has the **exact `heroVideo.play()` on an iframe bug** PR #200 fixed on agl4 — I'll apply the same guard. For agl10, the 403 is from the Wix-hosted video CDN (pre-existing external resource). Let me check whether the Wix video is actually dead, and look at agl14's full script context.
+
+
+### 🤖 Autopilot
+
+agl14 has the same `.play()` on an iframe bug PR #200 fixed — I'll apply the identical guard. For agl10, the mp4 403s — but this may be Referer-gated hotlink protection (test runs from localhost). Let me verify with a browser-like Referer before deciding.
+
+
+### 🤖 Autopilot
+
+The Wix mp4 is **genuinely dead** (403 with any referer) — agl10's native video is broken content on the live page. Let me re-read the plan's PR6 spec to confirm whether agl10 was supposed to be hero-only (its video being dead) before I decide to remove the dead video block.
+
+
+### 🤖 Autopilot
+
+The plan confirms: **agl10 = "hero-only ×1"** — its media table (line 46) shows `agl10.avif` with no video column entry. The dead Wix video on agl10 is exactly the kind of broken content this migration should clean up. I'll remove agl10's dead native-video block (the mp4 403s permanently) and guard agl14's `.play()` bug. Let me apply both fixes.
+
+
+### 🤖 Autopilot
+
+The agl10 block is cleanly delimited (ends right before the shipment-container). Let me remove it, and update the spec so agl10 is hero-only (no nativeVideo).
+
+
+### 🤖 Autopilot
+
+**10 passed** — all shipment pages green (agl10 dead-video removed, agl14 `.play()` guard fixed). Run farm spec for regression, then commit + push.
+
+
+### 🤖 Autopilot
+
+**10 shipment + 5 farm passed**, committed + pushed. Opening PR #214 (and closing the parallel duplicate #213 first).
+
+
+### 🤖 Autopilot
+
+PR #214 created, duplicate #213 closed. Check mergeability, then merge.
+
+
+### 🤖 Autopilot
+
+PR #214 is **mergeable and clean**. Merging now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #214 merged — this turn's unit complete.**
+
+## What I did this turn
+
+**Merged `agroverse_shop_beta` PR #214** (squash, sha `1598d96`) — *"PR6: migrate shipment pages agl10, agl13, agl14 to media.json (remove dead Wix video, fix agl14 play guard)"* — the plan §5a **PR6** unit.
+
+### Path this turn
+1. **Pre-checked for parallel duplicates** (the pattern that bit me twice): confirmed PR6 un-done (no media.json on main, no open PR). Closed duplicate **PR #213** (parallel re-push of my merged #212) as superseded.
+2. Mapped scope, transformed pages, ran tests, pushed, opened **PR #214**, verified mergeable+clean, merged.
+
+### What PR #214 changed
+| File | Change |
+|---|---|
+| `shipments/agl10/index.html` | 2 hero imgs → `data-media-slot="hero"`; **removed permanently-dead Wix native `<video>`** (mp4 403s with any Referer — verified; plan lists agl10 as hero-only); deduped duplicate `config.js`/`universal-nav.js`; loader tag |
+| `shipments/agl10/media.json` | **New** — hero: agl10.avif |
+| `shipments/agl13/index.html` | 2 hero imgs → slots; YouTube hero video (FthJ9mftGsY) stays inline (Option A); dedupe; loader |
+| `shipments/agl13/media.json` | **New** — hero: agl13.avif |
+| `shipments/agl14/index.html` | 2 hero imgs → slots; **fixed `heroVideo.play is not a function` pageerror** (same `typeof === 'function'` guard PR #200 used on agl4); dedupe; loader |
+| `shipments/agl14/media.json` | **New** — hero: agl14.avif |
+| `tests/media-gallery-shipment.spec.ts` | Extended to all **10** shipment pages |
+
+### Testing (before push — hard rule)
+- `npx playwright test tests/media-gallery-shipment.spec.ts` → **10 passed** (zero console/page errors)
+- `npx playwright test tests/media-gallery-farm.spec.ts` → **5 passed** (no regression)
+
+### Two real bugs fixed beyond the migration (found by the zero-console-errors spec)
+- **agl10**: dead Wix-hosted mp4 (403 permanent) — removed
+- **agl14**: `.play()` on a YouTube iframe threw a pageerror on every load — guarded (same fix as #200 on agl4)
+
+### Notes
+- PR #213 closed, not merged (duplicate of merged #212). No work lost.
+- Beta repo only — no prod, no money, no irreversible gate.
+
+## RESUME HERE → next unit
+Next plan unit: **PR7 — `shipments/agl6`**, the special case: **retire the `<meta name="agroverse:youtube:agl6-sao-jorge-hot-chocolate">` tag and its bespoke inline lazy-load `<script>` entirely**, replacing both with `media.json` + the shared loader (the one page proving the new system fully supersedes the old ad-hoc meta-tag pattern). Extend spec. Per §5a.
+
+Proven loop:
+1. `git fetch origin main` → confirm agl6/media.json absent + no open PR7 (parallel-session guard)
+2. Branch `pr7-agl6-special-case`, remove meta tag + inline lazy-load script, convert hero slots, add media.json, extend spec
+3. `npx playwright test` shipment (→ 11 passed) + farm (→ 5 passed)
+4. Push → open PR via PAT → check mergeable → `merge_pr` → **STOP**, report contribution
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → parallel-dupe pre-check (closed PR #213 as superseded); mapped agl10/13/14 (agl10 = dead Wix mp4, agl14 = `.play()` bug); transformed 3 pages + 3 media.json; removed agl10 dead video; guarded agl14 play; extended spec (10 pages); **10+5 passed**; committed + pushed `pr6-shipment-media-migration`; opened **PR #214**; verified mergeable+clean
+• `merge pr` → ✅ PR #214 merged (sha 1598d96)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp/agroverse_shop_beta_pr0 && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "=== main HEAD ==="; git log --oneli; cd /tmp/agroverse_shop_beta_pr0 && for p in agl10 agl13 agl14; do echo "=== $p ==="; grep -n -E "shipment-image|farmer-photo|youtube|video|m; cd /tmp/agroverse_shop_beta_pr0 && for p in agl10 agl13 agl14; do echo "=== $p imgs ==="; grep -n -E '<img (alt|class)=' shipments/$p/index.; …(+12 more)
+• `merge pr` → ✅ PR #214 on agroverse_shop_beta merged successfully (sha: 1598d96fdb2e0ee5c0eb5bbe4049262f5c73a419). Pull Request successfully merged
 
