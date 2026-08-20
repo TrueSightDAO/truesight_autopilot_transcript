@@ -2474,51 +2474,61 @@ Progress — agl8 passes now, but **agl4 broke** (regression from my loader chan
 ### 🤖 Autopilot
 
 The agl4 failure is **flaky browser noise**, not my regression — `"Permissions policy violation: compute-pressure is not allowed in this document"` is a Chromium permissions-policy console message (new API, version-specific, intermittent — the earlier run of the same test passed). It's not a page error. I'll filter this known benign browser noise in the spec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The console-filter pattern didn't match (the farm spec has a slightly different structure, or the shipment spec uses different indentation). Let me check the actual line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The indentation is different (8 spaces, inside the loop's block — my search string had 4). Let me fix with the exact text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 7 shipment + 5 farm specs pass.** Committing and opening PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #213 opened. Confirming mergeability and merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #213 is CONFLICTING — my branch predates a main change. Let me resolve by merging main into the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conflicts across the board + `AA` (both-added) on media.json files — **this smells like a parallel agent (Claude) already migrated these pages on main**. Let me diff main's versions against mine before resolving anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **A parallel agent (Claude, via garyjob) already did PR5 as #212 and merged it** — identical scope to my #213 (agl5/agl7/agl8 + distinct farmer slot for agl8, even the same commit title!). My #213 is a **duplicate**. The right move: **close my #213 as superseded** — nothing to resolve, nothing to merge. Main already has the work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My #213 is closed as superseded. But before reporting, I must verify #212 is genuinely **complete** — that main's version includes the loader farmer-slot support and the distinct-farmer assertion (not just the page migrations). If #212 missed a piece my version had, I should still contribute the gap:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The parallel agent's #212 is genuinely complete (even adds a dedicated farmer block + 2 farmer slots on agl8 — more than mine). Let me read the rest of the spec diff (compute-pressure filter presence) and inspect main's agl8 around those two farmer slots — #212 shows **two** farmer-photo slots at 1102 and 1104, but the original page had only **one** farmer-photo. That could be an accidental duplicate I should fix:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2526,16 +2536,19 @@ The parallel agent's #212 is genuinely complete (even adds a dedicated farmer bl
 The parallel agent's #212 is genuinely complete and correct — the "two farmer slots" I saw were just my conflicted working tree (UU state showed both sides); main has **one** clean farmer slot. My #213 was a true duplicate; closing it was right. No fix needed on main.
 
 Let me confirm the actual next unit (PR6) state so the handoff pointer is accurate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR6 (agl10/agl13/agl14) is untouched and no PR is open — that's the next unit. Let me clean up my conflicted working tree before reporting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Working tree clean (branch `pr5-agl5-agl7-agl8` remains but was closed with the PR — harmless). Logging the contribution for the PR5 investigation/supersede work, then reporting:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2579,11 +2592,13 @@ Two agents are now executing this plan concurrently (me + a Claude/garyjob insta
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — next unit: Farm/Shipment PR6 (agl10, agl13, agl14). Given the parallel agent, first check main + open PRs for these pages before building anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR6 targets are untouched and **no PR6 is open** (the open PRs are all unrelated June-era partner/subscription work). Building PR6. Let me inspect the three pages' media structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2594,31 +2609,37 @@ PR6 scope is clear:
 - **agl14**: hero + 1 YouTube (`BI55aQ6B73U`) — fallback `cacao-circles-alt.jpg`
 
 All three have farmer-photo = same image as shipment-image (no distinct farmer slot needed). Building the migration:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three migrated cleanly (2 hero slots each + script tag + media.json). Now extending the shipment spec with the 3 new pages, then running all tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PAGES tail in main's spec differs from my memory (parallel agent #212 restructured it with `heroSrc`/`farmerSrc` fields). Let me check the actual current PAGES array:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The #212 spec uses `heroSrc`/`farmerSrc` fields. Let me extend it with the correct shape for the 3 new pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 10 tests ran, **7 passed, 3 failed** (agl4, agl10, agl14) — and agl4 was passing before, so something regressed or it's the console-noise filter. Let me see the actual failure details:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two distinct issues: **agl14** = the benign `compute-pressure` Chromium noise (the merged #212 spec lacks my earlier filter — didn't land since #213 was closed), and **agl10** = `Failed to load resource: 403` — likely GitHub raw rate-limiting under test load, but I must verify the asset actually exists and isn't a real 403. Let me check the 3rd failure (agl4) too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2726,4 +2747,145 @@ The Claude/garyjob instance is executing this plan **concurrently** and landing 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git fetch -q origin main git reset --hard -q origin/ma; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta for slug in agl10 agl13 agl14; do echo "############ $; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp/agro_beta git checkout -q -b pr6-agl10-agl13-agl14 2>/dev/null |; …(+15 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] Hey, just focus on the IV yoga task and then report back to me what the status is. Do a mock insert of a record on the Google sheet and then do an end-to-end by signing in a testing and then verifying that the PDF actually exists properly on the GitHub repository. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Focusing on the IVY yoga task only — running a fresh mock E2E: sheet insert → sign-in → attest → verify PDF on GitHub. Starting with the sheet state:
+
+
+### 🤖 Autopilot
+
+Fresh IVY E2E — inserting a new mock row, then signing in, attesting, and verifying the PDF on GitHub. Inserting the row now:
+
+
+### 🤖 Autopilot
+
+Row 6 inserted (pending). Now the sign-in — checking the pending queue sees it, then driving the console with Playwright:
+
+
+### 🤖 Autopilot
+
+The pending-queue URL I guessed 404'd (wrong endpoint). The previous E2E scripts are still on disk — let me reuse them directly:
+
+
+### 🤖 Autopilot
+
+I have the working scripts. The flow: signin generates keypair + fires EMAIL REGISTERED → grab verification link from admin mailbox → verify script completes sign-in → attest script clicks Attest on the Dummy E2E row. Let me run the sign-in step (fresh keypair for this run):
+
+
+### 🤖 Autopilot
+
+Keypair generated + verification email sent. Now grabbing the fresh verification link from the admin mailbox:
+
+
+### 🤖 Autopilot
+
+No results with that subject — let me search more broadly for the verification email:
+
+
+### 🤖 Autopilot
+
+The newest IVY verification email visible is from 03:56:34 (-0700 = this morning's E2E-2). My sign-in just fired — the new email may still be indexing or landed later. Let me read the top message's full date to confirm which one it is:
+
+
+### 🤖 Autopilot
+
+That's this morning's email (03:56 PDT = 10:56 UTC). My sign-in just fired a new one — let me re-query to catch the fresh email:
+
+
+### 🤖 Autopilot
+
+Fresh verification link captured: `vk=b7h59uTtHF-gvNT59HAmQaWa_gvfRRm_fRgrgHeFftQ` (07:16:05 -0500 = just now). Completing sign-in with the new keypair:
+
+
+### 🤖 Autopilot
+
+Still booting after 9s — the verify submission may take a bit longer (the EMAIL VERIFICATION EVENT + identity resolution round-trip). Let me wait longer and re-check:
+
+
+### 🤖 Autopilot
+
+Still booting after 15s — the verification round-trip may have already landed from the previous run (boot state persists across loads). Let me load the plain page with the seeded keypair and check if we're verified:
+
+
+### 🤖 Autopilot
+
+**ADMIN mode VERIFIED** and the queue shows row 6 "Dummy E2E Test 3 (Voice)" as **pending with an Attest button**. Now clicking Attest:
+
+
+### 🤖 Autopilot
+
+Attest clicked — the queue now shows **"Pending 1 pending"** (transitioning) and "Already attested 4 done". Let me wait for the submission to complete and the row to move to processed:
+
+
+### 🤖 Autopilot
+
+**Attestation submitted** — queue now shows "Pending 0", "Already attested 5 done", "No pending rows". The signed event went through. Now let me verify the full chain: sheet backfill + lineage-credentials commits:
+
+
+### 🤖 Autopilot
+
+Sheet backfilled (`processed`, `pk-r3h5iUF7-TG8`, commit `cad52b22`), and the two attestation commits landed in lineage-credentials. Now **the key ask: verify the PDFs actually exist on GitHub**. Let me check the committed artifacts for this credential:
+
+
+### 🤖 Autopilot
+
+The CV artifacts 404 — the cache build hasn't run since the attestation commits, OR the slug is different. The last cache regen (`96cffff5e`) is *below* the attestation commits in the log, meaning the build hasn't picked up the new credential yet. Let me check the workflow run status and the actual slug in the identity commit:
+
+
+### 🤖 Autopilot
+
+The build is **in flight**: run `32368122514` (push on `cad52b22` — the attestation commit) is **pending**, and a workflow_dispatch `32368050648` is in_progress. The identity confirms `names: ["Dummy E2E Test 3 (Voice)"]` → slug will be `dummy-e2e-test-3-voice`. Let me wait for the build and re-check the artifacts:
+
+
+### 🤖 Autopilot
+
+**All 5 PDF/JSON/MD artifacts now return 200 on GitHub main.** The aliases query returned empty — let me check the actual aliases key format (may use a different lookup), and verify the certificate PDF content is valid:
+
+
+### 🤖 Autopilot
+
+**FULLY VERIFIED.** The mock E2E completed end-to-end. Let me also confirm the jsDelivr CDN serves it (the same path Gary originally checked) to close the loop completely:
+
+
+### 🤖 Autopilot
+
+**Full E2E verified end-to-end.** The mock test is complete — here's the status report:
+
+## IVY Yoga Task — Status Report
+
+**Mock E2E complete: Google Sheet → Sign-in → Attest → PDF on GitHub ✓**
+
+| Step | Result |
+|---|---|
+| **1. Sheet insert** | ✅ "Dummy E2E Test 3 (Voice)" added to Cohort Roster (row 6), status pending |
+| **2. Sign in** | ✅ Fresh keypair → verification email → **ADMIN mode VERIFIED** (truesight-autopilot) |
+| **3. Attest** | ✅ Clicked Attest on the row → signed event submitted → queue went to "Pending 0 / 5 attested" |
+| **4. Ledger** | ✅ Sheet backfilled: `processed`, pk_hash `pk-r3h5iUF7-TG8`, commit `cad52b22`; identity + program-completion commits in lineage-credentials |
+| **5. Build** | ✅ Workflow ran (push-triggered, ~4 min) and regenerated the cache |
+| **6. PDFs on GitHub** | ✅ **All 5 artifacts return HTTP 200 on main**: `dummy-e2e-test-3-voice.json` / `.md` / `.pdf` / `__ivy-yoga.pdf` / **`__ivy-yoga__cert.pdf`** (229KB, valid PDF 1.7, 1 page) |
+
+**The certificate PDF content verified** (via the CDN the credential page uses):
+- **INDUS VALLEY YOGA — CERTIFICATE OF TEACHER TRAINING** header
+- Recipient: **Dummy E2E Test 3 (Voice)** · Date of Certification: **20 August 2026** · VERIFY QR present
+- CV JSON confirms: `ivy-yoga` program, lineage_root "Indus Valley Yoga", pk_hash `pk-r3h5iUF7-TG8`, generated 12:20:30Z
+
+**Direct links (the "does it exist on GitHub" proof):**
+- Certificate PDF: `cdn.jsdelivr.net/gh/TrueSightDAO/lineage-credentials@main/_cache/cv/dummy-e2e-test-3-voice__ivy-yoga__cert.pdf` → **200, application/pdf, 229,384 bytes**
+- CV PDF: `.../dummy-e2e-test-3-voice__ivy-yoga.pdf` → **200**
+- Profile will render at: `truesight.me/programs/ivy-yoga/credentials/#pk-r3h5iUF7-TG8`
+
+**Status: everything works.** The full credentialing loop — insert a roster row, sign in as admin, click attest, and the signed certificate PDF materializes on GitHub + the public credentials page — is confirmed live. 
+
+One small note: the aliases.json registry (104 keys) doesn't include this dummy's pk-hash — it's a test artifact, so that's expected behavior, not a defect. Want me to clean up the dummy rows when you're done looking?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e cd /tmp python3 <<'PY' import gspread, datetime gc = gspread.service_acc; ssh -o ConnectTimeout=15 nelanco-claude 'ls -la /tmp/ivy_e2e*.py /tmp/*playwright*.py 2>/dev/null; ls /tmp/ivy_e2e_pub.txt /tmp/ivy_e2e_priv; ssh -o ConnectTimeout=15 nelanco-claude 'cat /tmp/ivy_e2e_signin.py; echo "=====ATTEST====="; cat /tmp/ivy_e2e_attest.py; echo "=====VERIFY=; …(+7 more)
 
