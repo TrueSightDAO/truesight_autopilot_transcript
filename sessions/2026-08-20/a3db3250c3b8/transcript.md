@@ -1975,41 +1975,49 @@ The fix (align code to the live sheet, never clobber an existing workflow): move
 ### 🤖 Autopilot
 
 Headers **AA1/AB1 written** (grid max is 28 columns, so AC doesn't exist — AA=27, AB=28 are the last two, perfect). Sold Date + Tree Planted Notification Sent Date are now real columns on the live sheet. Now the code fix — both handlers' constants move to the free columns (W→AA, X→AB), and I'll also add the lat/long to the email body while I'm in the handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything needed for the fix. Let me make the two code changes via PR: (1) `process_tree_planting_link.js` — notification stamp W→AA (index 23→27), add lat/long to the email body; (2) `process_qr_code_updates.js` — Sold Date stamp W→AA (index 22→27); (3) SCHEMA.md — align W/X/Y/AA/AB docs to the live sheet. Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit failed — likely my `\\u2014` escaping is off (the file uses a literal em-dash, and my search string has `\\u2014` which doesn't match the raw char). Let me check the exact bytes and retry with literal characters:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file uses a literal em-dash (UTF-8 bytes), so my search with `\\u2014` didn't match. Retrying with the literal `—` character:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #398 opened — but I haven't yet made the **SCHEMA.md** edit (part of Gary's explicit ask and promised in the PR body). Let me complete the unit by updating SCHEMA.md on the same branch:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SCHEMA edit failed — likely a whitespace/character mismatch in the long search string. Let me grab the exact SCHEMA lines 898–902 and retry with the precise text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The issue: my search string used `\\u2192` (literal `\u2192`) but the file has the actual `→` character. Also the earlier em-dash in my W-row search didn't match the file's literal `—`. Let me retry with exact literal characters (actual `→` and `—`):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push to the existing branch was rejected (the tool's fresh clone is based on main, so its new commit diverged from the branch tip `b04c695`). I'll fix SCHEMA.md directly on the branch via the Contents API instead (single-file write to the same feature branch, keeping PR #398 intact). Let me build the corrected SCHEMA locally and upload it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2195,4 +2203,52 @@ Alternatively, if you only want the deploy first, say "deploy #398" and I'll pus
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== current HEAD ===" && git log --oneline -1 && git fetch origin 2>&1 | tail -1 && ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/SUNMINT_TREE_QR_LINKING_PLAN.md" -o plan.md; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin 2>&1 | tail -1 && git checkout main 2>/dev/null; git reset --hard origin/
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Deploy.
+
+
+### 🤖 Autopilot
+
+Gary explicitly said "Deploy." — that clears the clasp-deploy gate for #398. Deploying the merged handler (AA/AB column fix + email lat/long) to the live QR-codes GAS project:
+
+
+### 🤖 Autopilot
+
+Deploy succeeded — 4 files pushed live (appsscript.json, process_qr_code_updates.js, process_tree_planting_link.js, Version.gs). Let me verify the **live** deployment actually carries the AA/AB fix + lat/long email (pull-back check, so we're not trusting the push blindly):
+
+
+### 🤖 Autopilot
+
+**Deploy verified live.** The pull-back check confirms:
+- Live `process_tree_planting_link.js` has `TPL_NOTIFICATION_SENT_COL = 27` (AB stamp) ✅ and the `Location: ${latitude}, ${longitude}` email line ✅
+- Live `process_qr_code_updates.js` has `SOLD_DATE_COL_DEST = 27` (AA stamp) ✅
+- Live sheet headers AA1 = "Sold Date", AB1 = "Tree Planted Notification Sent Date" ✅
+
+The production webhook now runs the corrected handler — no more risk of stamping the review-workflow columns, and the owner email will include lat/long. That clears the **clasp-deploy gate** for #398.
+
+## What's next (per the plan's §4 RESUME HERE)
+
+The next unit is **RUN — the first live link**, and that carries the **ledger money-movement gate (§2)** which is a *separate* always-stop gate from the deploy. The plan's resume text is explicit:
+
+> "**Ledger-money-movement gate (§2) — needs an explicit go.** After RUN: UAT (§5, always-stop gate)."
+
+So I need a separate explicit `go` from you for the RUN step itself — it books the ledger fulfillment pair against a real managed ledger and emails a real owner. When you say "go for RUN" (or similar), I'll:
+
+1. Pick one real SOLD+email QR + one real NEW Sunmint submission
+2. Walk you through confirming the link on `https://beta.dapp.truesight.me/link_tree_planting.html`
+3. Verify by hand: QR row (D→ASSIGNED_TO_TREE, N/O/P/R, AB stamp), SunMint row (M→LINKED, R/S), ledger Transactions row, owner inbox
+
+**✅ Done this turn:** deployed #398 to production GAS (your explicit go), verified live via pull-back (AA/AB stamps + lat/long email + sheet headers all present). No PRs opened/merged (deploy step, not a code change).
+
+**RESUME HERE → RUN (first live link)** — needs your explicit `go` for the ledger money-movement gate.
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` → ok
+• `ssh run` → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && rm -rf /tmp/v
 
