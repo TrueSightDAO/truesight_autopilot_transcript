@@ -2134,6 +2134,7 @@ You want the tariff slide removed from the deck. Let me delete that block from t
 ### 🤖 Autopilot
 
 Tariff slide removed cleanly — back to 9 pages, order intact, 0 overlaps. Sending:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2308,4 +2309,100 @@ One thing I *can* offer: the image is a **portrait (430×560)** sitting in a sli
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 << 'EOF' import fitz doc = fitz.open('agroverse_cepotx_visual_slides_v2.pdf') pg = doc[2] # page 3 = bean slide print("==
+
+
+### 🧑 Governor
+
+Photos seems too stretched sideways
+
+[Attachment auto-processed: **b896434c25834084b90c88b4cf4eb423.jpg**]
+- Type: Image (OCR confidence: 77.3%, quality: good)
+
+Extracted text:
+```
+agroverse_cepotx_visual_slides_v2.pdf Already buying — and we want to keep going We aeaty purchase CEPOTX organic cacao — this continues and grows, Fair market pricing in BRL. paid on delivery ~ direct, no middlemen. Every lot raced farm-by-tarm via QR + TrueChain tedger. “The foundation of everyhing else: your beans. bought today. ‘As nov pillars come online, bean purchases keep flowing fist Why it matters Immediate income — no waiting Deepens our partnership Proves demand belore new investmants
+```
+
+
+### 🤖 Autopilot
+
+Good catch — the image is portrait (430×560) but the draw box is landscape (560×430), so it's being stretched. Let me find the draw call and fix the aspect ratio:
+
+
+### 🤖 Autopilot
+
+Found it — line 139 draws the portrait photo (430×560) into a landscape box (560×430) with `preserveAspectRatio=False`, hence the sideways stretch. Let me check the helper and patch the box to a portrait ratio:
+
+
+### 🤖 Autopilot
+
+Found it — the bean photo (portrait 430×560 → ratio 0.75) is drawn into a landscape box (560×430) with `preserveAspectRatio=False`, so it stretches sideways. Let me check all other images for the same issue, then fix:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed: `p0_img` is prepped portrait (430×560) but drawn into a landscape box (560×430) with `preserveAspectRatio=False` → sideways stretch. Let me check the chocolate image too (500×250 prepped vs 500×190 drawn — also mismatched), then fix both:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed. The bean photo (portrait 430×560) is drawn into a **landscape** box (560×430) with `preserveAspectRatio=False` → stretched sideways. The chocolate image (500×250 prepped) is drawn at 500×190 → also stretched. Let me fix all three mismatches (bean, chocolate, Frasky):
+
+
+### 🤖 Autopilot
+
+The aspect fix exposed layout knock-ons: the taller bean image now pokes into the header band, and the chocolate caption now sits inside the image span. Fixing both:
+
+
+### 🤖 Autopilot
+
+Clean — but let me verify the prep function actually crops to the box ratio, so the bean image isn't still subtly stretched (prepped 0.768 vs drawn 0.864):
+
+
+### 🤖 Autopilot
+
+`prep()` does cover-crop to the box ratio — so `p0_img` was pre-cropped to 430×560 (0.768) at prep time. But the draw call at 380×440 (0.864) then *re-stretches* it slightly. The mismatch is the draw-box ratio vs prep-box ratio. Cleanest fix: make the draw box match the **prep ratio** (0.768):
+
+
+### 🤖 Autopilot
+
+The image now extends up into the header title (top at 150 → header band ends at 610). Lowering it below the band:
+
+
+### 🤖 Autopilot
+
+Clean — no stretch, no overlap. Let me do a final visual sanity check by rendering the bean slide, then send:
+
+
+### 🤖 Autopilot
+
+The embedded image ratio (0.768) now exactly matches the drawn rect ratio (0.768) — **no stretch**. Sending the fixed deck:
+
+
+### 🤖 Autopilot
+
+✅ **v13 sent (msg 11563)** — sideways stretch fixed.
+
+## Root cause
+The `prep()` helper cover-crops each photo to a target ratio, but the draw calls passed a **different** box ratio with `preserveAspectRatio=False` → the image got re-stretched sideways. The bean photo was worst (portrait 0.768 prepped → drawn in a 1.3 landscape box).
+
+## Fixes
+| Slide | Before | After |
+|---|---|---|
+| **Bean photo** | drawn 560×430 (landscape) → stretched sideways | drawn 380×495 portrait, ratio **0.768 = 0.768** ✅ |
+| **Chocolate bar** | prepped 500×250, drawn 500×190 → squeezed | drawn 500×250 (true 2.0 ratio) ✅ |
+| **Frasky** | prepped 560×360, drawn 540×330 → slightly off | drawn 540×347 (true 1.556) ✅ |
+
+## Verified
+- Embedded image ratio == drawn rect ratio on every image (no distortion)
+- 0 overlaps (automated checker)
+- Bean image clears the header band (top at y=115)
+
+I also checked the other images (cover aerial, farmers, cacao pods, factory, sensors) — their prep ratios match their draw boxes, so they were never distorted.
+
+Anything else — PT-BR version, or more tweaks?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && grep -n "p0_img\|drawImage" build_slides4.py | head -20 && echo "=== bean slide draw section ===" && grep -n "PILAR 1" build_slid; cd /tmp && sed -n '50,70p' build_slides4.py && echo "=== line 139 context ===" && sed -n '130,145p' build_slides4.py; cd /tmp && grep -n "img_with_caption\|prep(" build_slides4.py | head -30; …(+4 more)
 
