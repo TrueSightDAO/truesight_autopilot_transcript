@@ -2182,6 +2182,7 @@ The wrapper's locked params and the loop structure are clear — the fix slots i
 ### 🤖 Autopilot
 
 PR **#7** opened. Before merging — validating the modified `batch_compiler.py` compiles and the self-check logic actually catches dead labels (test on the nelanco box where the real labels live):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2193,6 +2194,7 @@ Verification is conclusive:
 - `_3` correctly absent on this branch (deleted in #6) ✅
 
 The self-check works. Merging PR #7 per the standing directive:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2241,16 +2243,19 @@ The `_3` defect cost a manual VOID + re-mint + zip rebuild. From now on, any fut
 ### 🤖 Autopilot
 
 Auto-advance: next unit — finalize PDP accuracy. The PDP's QR-batch field still says "1 – 100", but serial `_3` is VOID (replaced by `_101`). A customer-facing page shouldn't imply `_3` is live. Let me check the exact current text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDP says `2024OSCAR_CT_20260820_1 – 100`, implying serials 1–100 are all live — but `_3` is VOID (replaced by `_101`). Fixing the batch label to be accurate on the customer-facing page:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#208** opened. Merging per the standing directive:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2462,4 +2467,89 @@ CONTEXT_UPDATES.md is the append-only event log — this multi-session delivery 
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/CONTEXT_UPDATES.md" | tail -8
 • `merge pr` → ✅ PR #777 on agentic_ai_context merged successfully (sha: e9a185fcfc726cbd91ee08a0c4e771e828044b26). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+Auto-advance: before opening any PR, let me verify the one remaining unconfirmed deliverable — Gary's original ask was "100 additional entries in **our registry**" — the registry is `lineage-assets/qrs/` + `qrs_index.json` (what `truesight.me/physical-assets/serialized` reads). All build PRs are merged; let me confirm the index on main actually contains all 100 CT serials (read-only; if it's short, that's a genuine fix PR):
+
+
+### 🤖 Autopilot
+
+100 CT entries confirmed on main, but my field-access guess for serials failed (`has _101? False` is suspicious since #6 merged `_101`). Let me inspect the actual entry structure to verify the serials correctly (read-only):
+
+
+### 🤖 Autopilot
+
+**Real defect found in the registry.** The `qrs_index.json` on main still contains serial `_3` (VOID) and **omits `_101`** — the index was never rebuilt after the void/replacement in lineage-assets #6. Since `truesight.me/physical-assets/serialized` reads this index, it currently shows `_3` as live and misses `_101`. This is a genuine fix unit. Let me check the `_101` manifest (to mirror its exact scan_target) and confirm the `_3` manifest is gone from main:
+
+
+### 🤖 Autopilot
+
+Two clear defects confirmed on main:
+1. **`qrs_index.json`** — still lists `_3` (VOID) and **omits `_101`** → the serialized page is wrong.
+2. **`pngs/2024OSCAR_CT_20260820_3.png`** — still exists (should be removed; the VOID label shouldn't be printable).
+
+The `_3` manifest is gone (404 ✓). The fix: rebuild the index to drop `_3` + add `_101`, and delete the stale `_3` PNG. Since `qrs_index.json` is a derived machine-owned file and the change is a single-file write + one delete, let me patch it via the repo (fetch current index, rebuild from the manifests, push). First, let me grab the current full index and the `_101`/`_3` entries to rebuild correctly:
+
+
+### 🤖 Autopilot
+
+The index has a richer schema (`generated_at`, `qr_count`, `by_status`, `by_asset_type` + a `qrs` list presumably). The right way to rebuild it is the **canonical index builder** on the nelanco box (it derives the index from the manifests — exactly what #6 skipped). Let me find and run the index rebuild script there:
+
+
+### 🤖 Autopilot
+
+`build_index.py` is the canonical index builder (derives `qrs_index.json` from the manifests). Let me read it to confirm it pulls from the checked-out repo state (so after `git pull` it'll see `_101` manifest + no `_3` manifest) and check how it's invoked:
+
+
+### 🤖 Autopilot
+
+`build_index.py` derives the index purely from the `qrs/*.json` manifests on the checkout. On the nelanco box, the checkout is on `main` (post-#6 merge) → it has `_101.json`, no `_3.json` → a rebuild will produce the correct index. Plan: pull latest main on nelanco, run `build_index.py`, verify `_3` gone + `_101` present, then open a PR for the index + delete the stale `_3` PNG. Executing:
+
+
+### 🤖 Autopilot
+
+Index rebuilt correctly: 1776 rows, **`_3` gone, `_101` present** (the count stays 1776 since `_3`→`_101` is a 1-for-1 swap). Now committing the rebuilt index + deleting the stale `_3` PNG via a PR on a feature branch:
+
+
+### 🤖 Autopilot
+
+PR **#8** opened. Merging per the standing directive:
+
+
+### 🤖 Autopilot
+
+## Done — registry index fixed ✅
+
+### What I found (read-only check → real defect)
+Verifying Gary's "100 entries in our registry" ask surfaced a gap in the **registry** (`lineage-assets/qrs_index.json`, which powers `truesight.me/physical-assets/serialized`):
+- **`_3` (VOID) was still listed as a live MINTED serial** — the index was never rebuilt after the void/replacement
+- **`_101` was missing** from the index entirely
+- The stale **`pngs/2024OSCAR_CT_20260820_3.png`** (the VOID, unprintable label) was still in the repo
+
+### What I did
+| PR | Change | State |
+|---|---|---|
+| **lineage-assets #8** — *fix: rebuild qrs_index (drop VOID _3, add _101); remove stale _3 PNG* | Rebuilt `qrs_index.json` via the **canonical `scripts/build_index.py`** from the `qrs/` manifests (the proper rebuild #6 skipped): **`_3` removed, `_101` added**, 1-for-1 swap (qr_count 1776), `generated_at`/`by_status` refreshed. Also **deleted the stale `_3` PNG** (VOID label no longer printable). | ✅ **merged** (squash, delete-branch) |
+
+### Verified on main after merge
+- `has _3: False` · `has _101: True` · `pngs/..._3.png` gone (0 tracked)
+- The serialized page (`truesight.me/physical-assets/serialized`) now shows the correct 100 serials: `_1.._2, _4.._100` + `_101`, no dead `_3`
+
+---
+**RESUME HERE →** Registry is now fully consistent (sheet rows, 100 manifests, 100 PNGs, index). The **only remaining step** in the entire task remains **prod promotion** — hard governor-gated, never autonomous: on your word **"promote to prod"** → `sync_beta_to_prod(agroverse_shop_prod)` → www.agroverse.shop live + QR landing (`agroverse.shop/shipments/agl4`) resolves on prod.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → curl raw qrs_index.json on main → found `_3` still listed, `_101` missing; inspected index schema (dict: generated_at/source/qr_count/by_status/qrs); found canonical scripts/build_index.py (derives index from qrs/ manifests); on nelanco: pull main → run build_index.py → verified _3 gone/_101 present (1776 rows); branch fix/ct-index-rebuild → git rm _3.png → commit → push → PR #8 → gh pr merge 8 --squash --delete-branch → verify main (has _3 False, has _101 True, _3.png untracked)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== qrs_index.json: CT entry count on main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index.json" | python3 -c " import json,sys d=json.load(sys.s; echo "=== _101 manifest on main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs/2024OSCAR_CT_20260820_; …(+6 more)
 
