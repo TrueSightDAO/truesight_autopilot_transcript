@@ -1619,6 +1619,7 @@ Merge command returned rc=0. Let me verify PR #20 is actually merged, then re-tr
 ### 🤖 Autopilot
 
 The certificate renders perfectly. Let me verify the **original URL Gary hit** (the qa-e2e-test-instructor one) now also resolves — that's the acceptance criterion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1683,41 +1684,49 @@ The E2E acceptance is fully met: **sheet insert → sign in → attest → regis
 ### 🤖 Autopilot
 
 AUTO-ADVANCE — executing the next executable unit. Let me confirm the current plan state and what's queued next:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 AUTO-ADVANCE: execute the next unit. Let me read the rest of the manifest (IVY row, if any) and the IVY plan's tracker/PR3 sections to determine the next executable PR:
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the IVY plan (§4 tracker / §5 PR3 scope) to determine the exact next unit:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the IVY plan (§4 tracker + §5 PR3 scope) to determine the next executable unit:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested artifacts are deep — let me fetch the plan's §4 tracker and §5 PR3 sections directly from the repo to see the exact next unit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the plan state. All IVY plan units are merged/live; PR3 is gated on Gary's decisions; the one genuine remaining defect in this arc is the **stale §4 tracker** (still claims PR0/1/2 unmerged and Pages/DNS pending — no longer true). That's the next executable fix PR. Let me get the exact current §4 text to edit precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 AUTO-ADVANCE: executing the next unit — the stale §4 tracker in the IVY plan (all units are actually merged/live; the tracker still claims they're unmerged). Let me check whether the handoff manifest has an IVY row to update too, then make the doc fix via the gh path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push output looks odd (the "create a PR" hint suggests the push succeeded, but `gh pr create` said the branch isn't remote). Let me check the actual state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1848,4 +1857,142 @@ IVY arc done. Next executable work in the manifest: **SunMint tree-QR linking** 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== dapp_beta #66 (SunMint public-cache rewrite) ===" gh pr view 6; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== #761 metadata ===" gh pr view 761 --repo TrueSightDAO/agentic_; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e gh pr view 761 --repo TrueSightDAO/agentic_ai_context --json state,merge; …(+7 more)
+
+
+### 🧑 Governor
+
+[AUTO-ADVANCE] Execute only the next unit (the next PR). Open and merge the next fix PR yourself, report the contribution, then stop. Never deploy to production on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE — executing the next unit. IVY arc is fully done (PR3 gated), so let me check the manifest for the next parked plan and its exact RESUME HERE state:
+
+
+### 🤖 Autopilot
+
+Let me read the full artifact to find the SunMint and Farm/Shipment rows specifically:
+
+
+### 🤖 Autopilot
+
+Let me get the SunMint and Farm/Shipment rows specifically:
+
+
+### 🤖 Autopilot
+
+Two candidate plans: **SunMint** (next step = merge dapp_beta #66 — already MERGED, so its next unit is UAT which needs Gary's explicit go = gated) and **Farm/Shipment Media JSON** (RESUME HERE = **PR0** — loader + pilot `farms/oscar-bahia` in agroverse_shop_beta). The executable next PR is Farm/Shipment PR0. Let me read the plan to get PR0's exact scope:
+
+
+### 🤖 Autopilot
+
+Next unit confirmed: **Farm/Shipment Media JSON PR0** — add `js/media-gallery.js` loader + migrate `farms/oscar-bahia` + Playwright spec, in `agroverse_shop_beta` (beta-first, no prod). Let me read the loader spec in the plan and inspect the current repo state:
+
+
+### 🤖 Autopilot
+
+Let me read the loader JS design spec (the exact behavior PR0 must implement) and the current oscar-bahia page:
+
+
+### 🤖 Autopilot
+
+Let me get the full loader spec from the plan and inspect the actual repo files (oscar-bahia page + existing tests):
+
+
+### 🤖 Autopilot
+
+PR0 scope is fully specified (loader JS spec + media.json schema + page migration steps + Playwright spec). Now let me clone agroverse_shop_beta and inspect the current state — oscar-bahia page, js/ dir, tests/ setup:
+
+
+### 🤖 Autopilot
+
+The repo **already contains** `js/media-gallery.js`, the oscar-bahia `id="media-gallery"` container (line 490), the script tag (line 687), AND `tests/media-gallery-farm.spec.ts` — PR0 may already be done. Let me check the actual state:
+
+
+### 🤖 Autopilot
+
+**PR0 is already merged** (media-gallery.js + oscar-bahia media.json + test are all on main at `f6cd051`). The next unit is **PR1** — migrate `shipments/agl4` — and it's **already open as PR #200** ("Migrate shipments/agl4 to media.json (fixes agl14.avif bug + hero-video console error)"). Let me verify #200 is complete, mergeable, and implements PR1 correctly before merging:
+
+
+### 🤖 Autopilot
+
+PR #200 is clean (MERGEABLE, CLEAN), touches exactly PR1's scope (agl4 index.html + media.json + shipment test), and is authored by garyjob (the plan's executor). Let me verify the diff content matches the plan's PR1 requirements (hero slots, video, the agl14→agl4 bug fix, test assertions) before merging:
+
+
+### 🤖 Autopilot
+
+PR #200's diff is exactly PR1's scope and is high quality:
+- **agl4 hero slots** (`shipment-image` + `farmer-photo`) both get `data-media-slot="hero"` — the farmer-photo `agl14.avif` bug is fixed by construction (both slots now resolve from media.json → agl4.avif)
+- **media.json** with correct hero (agl4.avif + fallback + alt) 
+- **Playwright spec** asserts both slots = agl4.avif, not agl14, correct alt, hero video iframe intact, zero console errors
+- **Bonus fix:** `setupHeroVideo()` guard (`typeof play === 'function'`) — prevents a real console error when the hero is a YouTube iframe
+- Script tag added, .gitignore for test snapshots
+
+Let me attempt a quick local validation of the new spec before merging:
+
+
+### 🤖 Autopilot
+
+The repo has no node_modules (needs `npm ci`), but Playwright browsers are installed. Let me install deps and run the new spec locally to validate before merging — this is the plan's own test-before-merge discipline:
+
+
+### 🤖 Autopilot
+
+Deps installed. Now start a local server and run the new shipment spec (the plan's test-before-merge):
+
+
+### 🤖 Autopilot
+
+Version mismatch — npm ci pulled a Playwright that expects `chromium_headless_shell-1208`, but the box has `-1234`. Let me install the matching browser build:
+
+
+### 🤖 Autopilot
+
+**Test PASSED** — both hero slots resolve to agl4.avif (not agl14), correct alt, hero video intact, zero console errors. Let me also run the farm spec as a regression check, then merge:
+
+
+### 🤖 Autopilot
+
+Both specs pass (shipment 1.7s, farm regression 2.2s). PR #200 is validated — merging it (the plan's PR1, next executable unit):
+
+
+### 🤖 Autopilot
+
+PR #200 merged (commit `a510006`). Per the plan's authorization envelope (§0.6), standard AI-agent contribution reporting after each merged PR is expected. Let me log the contribution:
+
+
+### 🤖 Autopilot
+
+## ✅ AUTO-ADVANCE unit complete
+
+**PR [agroverse_shop_beta#200](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/200) — validated + merged** (commit `a510006`, 11:28:49Z) + contribution logged.
+
+### What happened
+The Farm/Shipment Media JSON plan's **PR0 was already merged** (media-gallery.js loader + oscar-bahia pilot + farm spec on main). So the next executable unit was **PR1** — which was already open as **#200** by the plan executor (garyjob). I:
+
+1. **Verified scope** — diff touches exactly PR1: `shipments/agl4/index.html` (both hero slots → `data-media-slot="hero"`), `agl4/media.json` (hero agl4.avif + fallback + alt), `tests/media-gallery-shipment.spec.ts`, `.gitignore`, script tag
+2. **Confirmed it fixes the live bug** — farmer-photo slot previously pointed at `agl14.avif` (copy-paste error); now both slots resolve from media.json → `agl4.avif` by construction
+3. **Bonus fix found** — `setupHeroVideo()` guard (`typeof heroVideo.play === 'function'`) prevents a real console error when the hero is a YouTube iframe
+4. **Ran the tests locally** (plan's test-before-merge): `npm ci` + installed matching Chromium, then:
+   - `media-gallery-shipment.spec.ts` → ✅ **1 passed** (1.7s)
+   - `media-gallery-farm.spec.ts` (PR0 regression) → ✅ **1 passed** (2.2s)
+5. **Merged** via `gh` (squash, `a510006`, branch deleted) — beta repo, no prod, no money
+6. **Logged [CONTRIBUTION EVENT]** (30 min, Sophia Truesight) per the plan's §0.6 expectation
+
+### State of the plan
+| Unit | Status |
+|---|---|
+| PR0 (loader + oscar-bahia) | ✅ merged (on main) |
+| **PR1 (agl4 + bug fix)** | ✅ **merged this turn** |
+| PR2–PR7 (remaining farm/shipment pages) | ⏳ next |
+| PR8 (doc update) | pending |
+| PR9 (UAT gate) | pending — always-stop |
+
+## RESUME HERE → next unit (fresh turn)
+**PR2** — migrate farm pages `fazenda-santa-ana-bahia` + `paulo-la-do-sitio-para` (5 media items), extend the farm Playwright spec. (If a PR is already open for it, same validate→merge flow as #200.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== HANDOFF_MANIFEST rows ===" curl -sL "https://raw.githubusercon; ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_cont; ssh -o ConnectTimeout=15 nelanco-claude 'curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/FARM_SHIPMEN; …(+12 more)
+• `submit contribution` → Contribution submitted successfully.
 
