@@ -2109,11 +2109,13 @@ Alibaba blocks direct fetch. The ledger names encode *capacity* (8 oz = 227g cla
 ### 🤖 Autopilot
 
 Found the source. Order **269035810001023771** = 1,200 kraft pouches from **Source Pack (Alibaba)** — and there's a separate compostable pouch quote with **15cm × 21cm** dimensions. Let me read the full emails to extract the exact sizes.
+[2 tool result(s) compacted: gmail_read_message, gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The compostable pouch quotes are 15×12cm (quoted) and 15×21cm (requested). But the **actually-purchased** pouches are the Alibaba order 269035810001023771 (1,200 units from Source Pack) and order 20250219006. Let me read those order emails for dimensions.
+[2 tool result(s) compacted: gmail_read_message, gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2220,6 +2222,111 @@ Both sourcing links included in the description for the record.
 Note: it's logged as **1 hour total for the pair** (per your "spent 1 hour researching"). If you'd rather log it as 30 min each (Gary 30 + Paloma 30) or want the printer/pouch specs extracted as separate research notes, tell me and I'll adjust.
 
 Also worth noting: the **10×15cm kraft pouch with window** from your link matches the AliExpress sizing math from earlier (10×16cm class ≈ 50g cacao) — nice validation that the Brazil-local sourcing lands in the same size family. If you want, I can pull the current ML price of both items and log a consolidated sourcing note (printer + pouch + label stock) for the Brazil ops kit.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11684] Make sure the location of the 100 QR codes are with Paloma
+
+
+### 🤖 Autopilot
+
+Let me check what we know about the 100 QR codes and Paloma's role before recording anything.
+
+
+### 🤖 Autopilot
+
+Let me dig for the specific 100 QR codes referenced — checking context for tea-bag batches and recent QR registrations.
+
+
+### 🤖 Autopilot
+
+The context has no record of a "100 QR codes" batch — let me check the QR codes ledger to see what batches exist and whether a 100-code set is registered.
+
+
+### 🤖 Autopilot
+
+Found it — the **100 cacao tea QR codes** (`2024OSCAR_CT_20260820_1..100`, SKU `oscar-bahia-cacao-tea-50g`). Let me read the full snapshot section to see their current location/status and what the advisory recommends.
+
+
+### 🤖 Autopilot
+
+The snapshot references the tea QR batch. Let me read the full relevant section (lines ~245–270) to see the exact location/status details.
+
+
+### 🤖 Autopilot
+
+Two commits directly reference this batch's location:
+- `e9a185f` — "docs: **log cacao tea 50g Oscar Farm QR batch delivery to CONTEXT_UPDATES** (#777)"
+- `7edfcc7` — "docs: note cacao tea 50g QR serial _3 VOID (replaced by _101) (#776)"
+
+Let me read the CONTEXT_UPDATES section that records where the batch was delivered.
+
+
+### 🤖 Autopilot
+
+The file is long — let me search it directly for the tea batch delivery entry (#777).
+
+
+### 🤖 Autopilot
+
+Let me read the exact CONTEXT_UPDATES entry (line ~215) and the OPEN_FOLLOWUPS section for full delivery details.
+
+
+### 🤖 Autopilot
+
+I found the key data — the CONTEXT_UPDATES entry #777 (via search hit) says the "corrected zip v2 (100 scannable labels) delivered to thread 11578". Let me read the exact delivery line and check what it says about physical location/handoff.
+
+
+### 🤖 Autopilot
+
+The batch was delivered as a zip to Telegram thread 11578, but Gary's ask is about the **physical location** of the 100 labels being with Paloma. Let me check how QR code locations are recorded — the QR sheet and any location field.
+
+
+### 🤖 Autopilot
+
+Let me check the current record for one of the tea QR codes and find the QR codes sheet structure to see how location/manager is recorded.
+
+
+### 🤖 Autopilot
+
+The current record shows the batch is **MINTED with Manager = Gary Teh**. To move custody to Paloma I need to check the QR sheet structure and confirm Paloma's registration. Let me find the sheet and check a few more codes.
+
+
+### 🤖 Autopilot
+
+Found the current state — the 100 tea QR codes (`2024OSCAR_CT_20260820_1..100`, SKU cacao-tea-50g) are **MINTED with Manager = Gary Teh** (and `_3` is VOID, replaced by `_101`). To make the physical location "with Paloma" in the ledger, I'll record an **INVENTORY MOVEMENT** (custody transfer: Gary → Paloma) for the 100 scannable labels.
+
+Submitting directly (no approval gate):
+
+
+### 🤖 Autopilot
+
+✅ **Recorded — the 100 QR labels' location is now logged as with Paloma.**
+
+**INVENTORY MOVEMENT** submitted successfully:
+- **Manager Name:** Gary Teh
+- **Recipient Name:** Paloma
+- **Inventory Item:** Cacao Tea 50g QR code labels (batch `2024OSCAR_CT_20260820`)
+- **QR Code:** `2024OSCAR_CT_20260820_1..100` (excluding `_3` which is VOID) + replacement `_101`
+- **Quantity:** 100
+- **Destination:** Agroverse QR codes sheet (Cacao Tea 50g batch)
+
+## What I verified first
+- The batch exists in the ledger: **100 QR codes** `2024OSCAR_CT_20260820_1..100` (SKU `oscar-bahia-cacao-tea-50g`, $10 retail), status **MINTED**, manager **Gary Teh** — rows 1678–1777
+- Serial **`_3` is VOID** (undecodable mint defect → replaced by `_101`, row 1778)
+- The corrected zip v2 (100 scannable labels) was delivered to Telegram thread 11578 (msg 11992) — the digital delivery record
+- **Paloma** is already an established DAO member (legal-entity + ops owner with you in `TRACK_MAP.md`)
+
+## Two follow-ups worth doing
+1. **Physically** — if the printed labels are currently with Gary (SF) and need to *actually* be with Paloma (Brazil), the movement event records intent/ledger custody; the physical transfer (shipping) is separate. Let me know if you need a shipping/tracking note attached.
+2. **Sheet column** — the ledger row's *manager* column is the authoritative "where it is" field. The INVENTORY MOVEMENT event should update it to Paloma; if you want me to verify the sheet itself updated (or if the movement event is purely an audit log), I can check the Agroverse QR codes sheet directly.
+
+Want me to verify the sheet's manager column actually shows Paloma now, or add the shipping/tracking detail if labels are being sent to her?
 
 ———
 **✅ Done this turn — actions taken:**
