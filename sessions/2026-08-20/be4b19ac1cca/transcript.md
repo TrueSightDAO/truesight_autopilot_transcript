@@ -134,46 +134,60 @@ SSH works — I'm on the box (`ip-172-31-8-213`, up 36 days, 6 users logged in).
 **Yes — it's possible, and I just proved it.** The autopilot box already has a `nelanco-claude` alias in `~/.ssh/config` (`100.57.50.48`, ubuntu, autopilot's ed25519 key), and my test SSH landed on the box (`ip-172-31-8-213`, up 36 days, 6 users logged in). Claude Code's session history lives there as JSONL transcripts under `~/.claude/projects/` — I found **28 session files** (150KB–20MB each) spanning Jul 15 → today, including several from **today 08:56–09:33** (the sessions that produced PR #17).
 
 Let me now actually read the relevant history — first identify which session(s) contain the lineage-credentials/IVY work, then pull the conversation digest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The session `f5ff51bc…` (09:31 today) is exactly when PR #17 was opened. Let me pull the conversation digest from it and the other recent sessions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The f5ff51bc session's user prompts don't obviously show the lineage work — the keyword matches are probably inside assistant tool calls. Let me pinpoint which session actually contains the PR #17 work by searching the raw transcripts:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `0daf2510…` (09:33, 6.9MB) is **the** session — it has `build-cv-cache: 40`, `fetch-depth: 10`, `manifest.json: 137`, and 4 references to `lineage-credentials/pull/17`. Let me extract its conversation digest — user prompts first (Gary's actual instructions), then key assistant reasoning:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The digest cut off — let me read the rest of the artifact and pull the PR #17-specific portion from the tail of that session:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact was the earlier digest (truncated at U97) — and my needle-print script had a Python f-string syntax error. Let me fix the script and get the PR #17 portion of that session:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full context from the actual Claude session on nelanco-claude. Let me read the tail end of that session (L2369+) to capture Claude's final summary and anything after the PR was opened:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript history confirms everything — and surfaced one extra open item I should flag. Let me quickly check the state of the SOP PR Claude also opened in that same session:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me quickly check the state of PR #768 that Claude mentioned in the session (the SOP it opened):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -220,6 +234,7 @@ Which option — A or B?
 ### 🤖 Autopilot
 
 Gary picked Path A. Let me check whether PR #17 is already merged (in case you clicked it before replying), and if so I'll re-trigger immediately.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -353,4 +368,106 @@ Still in progress (job started 09:44:39Z). The old run took ~20min on checkout a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → ssh -o ConnectTimeout=10 nelanco-claude 'gh pr merge 17 --repo TrueSightDAO/lineage-credentials --squash --delete-branch 2>&1' 2>&1 | head -; ssh -o ConnectTimeout=10 nelanco-claude 'gh workflow run 277113125 --repo TrueSightDAO/lineage-credentials 2>&1; echo "rc=$?"; sleep 8; gh r; ssh -o ConnectTimeout=10 nelanco-claude 'gh run cancel 32353825246 --repo TrueSightDAO/lineage-credentials 2>&1; echo "cancel_rc=$?"' 2>&1 |; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11603] [Handoff context — this Telegram topic (thread 11603) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+proceed
+
+
+### 🤖 Autopilot
+
+"Proceed" — checking the handoff manifest for this thread's plan reference, and pulling the build run status in parallel:
+
+
+### 🤖 Autopilot
+
+**The build run COMPLETED — success at 09:47:18Z in ~2.5 minutes** (started 09:44:39Z) — versus the old 20–60min checkout. The `fetch-depth: 2` fix works. Now let me verify the IVY credential actually got rendered this time, then proceed with the future-proofing work:
+
+
+### 🤖 Autopilot
+
+The log shows a cache commit step ran at 09:47:07Z. Let me verify the actual outcome — did it push cache changes, and does the regenerated cache now include the IVY CV? Let me check the commit and the cache contents:
+
+
+### 🤖 Autopilot
+
+**Excellent — the verification is essentially complete.** The run:
+1. **Pushed a cache commit** `518b6c8` "chore(cache): regenerate _cache/ [skip ci]" (pushed on attempt 1)
+2. **Purged jsDelivr** for `_cache/cv/qa-e2e-test-instructor.json` — the IVY test attestation's CV — meaning it's now in the regenerated cache (the purge only fires for materially-changed CVs, and this is exactly the `pk-LaDRlxRBcvN6` credential)
+
+Let me confirm the IVY CV content is actually rendered with the credential now:
+
+
+### 🤖 Autopilot
+
+IVY credential is **fully verified end-to-end** — `_cache/cv/qa-e2e-test-instructor.json` now carries `programs.ivy-yoga` (lineage_root "Indus Valley Yoga"), generated 09:45:06Z, jsDelivr purged, cache commit `518b6c8` pushed. The whole fix is confirmed working.
+
+Now executing the future-proofing (your "proceed"). Let me pull the playbook, check the handoff manifest remainder for this thread, the RSA onboarding flow, and the followups file:
+
+
+### 🤖 Autopilot
+
+The playbook got truncated right at §5.3 (manifest section). Let me read the rest of it and search for the "program onboard RSA flow" — the scripted path that creates manifests:
+
+
+### 🤖 Autopilot
+
+The build is verified complete and the IVY credential renders. Now the future-proofing work. Let me understand the "program onboard RSA flow" — likely the tokenomics GAS registration script — and the canonical butterfly-effect manifest shape:
+
+
+### 🤖 Autopilot
+
+Let me read the RSA/self-serve program registration flow spec and the IVY plan's §3 (what PR2 actually did for manifests) to nail the exact gap:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the RSA program-registration GAS script to see whether APPROVED rows trigger any manifest provisioning, and check for any script that generates the lineage-credentials internal manifest:
+
+
+### 🤖 Autopilot
+
+I now have the complete picture. Confirmed gap analysis:
+
+- **Playbook** `CREDENTIALING_COHORT_PROGRAM_ONBOARDING.md` §5.3 only documents the **web-facing** manifest in `truesight_me_beta` — it never mentions the **internal lineage-credentials copy** that `build_cv_cache.py` actually reads.
+- **RSA flow** (`process_program_registration_telegram_logs.js` in tokenomics GAS) only collects `[PROGRAM REGISTRATION REQUEST]` events as PENDING rows — **no provisioning at all** (explicitly governor-gated per its own header). So it can't generate the internal manifest today; the gap belongs in the backlog for when that approval flow is built.
+- Neither place has a duplicate entry in `OPEN_FOLLOWUPS.md` (verified — no existing entry).
+
+Opening **one focused PR** to `agentic_ai_context` that fixes both: adds §5.3a (the internal manifest step, with the IVY failure as the cautionary tale) and files the RSA-flow gap in `OPEN_FOLLOWUPS.md`:
+
+
+### 🤖 Autopilot
+
+PR opened. Stopping here per the one-PR-per-turn rule.
+
+## ✅ What I did this turn
+
+**1. Verified the fix end-to-end (PR #17 merged + re-triggered earlier):**
+- Fresh run **32355379967 completed SUCCESS in ~2.5 min** (09:44:39 → 09:47:18Z) vs the old 20–60 min checkout
+- Pushed cache commit `518b6c8` and purged jsDelivr for `_cache/cv/qa-e2e-test-instructor.json`
+- Confirmed `_cache/cv/qa-e2e-test-instructor.json` now contains `programs.ivy-yoga` (lineage_root "Indus Valley Yoga", `pk-LaDRlxRBcvN6`) — **the credential is now rendered** and will show at `truesight.me/programs/ivy-yoga/credentials/#pk-LaDRlxRBcvN6`
+- Confirmed the merged workflow on main has `fetch-depth: 2` and `programs/ivy-yoga/manifest.json` exists
+
+**2. Future-proofing (your ask — make agentic_ai_context + RSA flow generate the internal manifest):**
+- Diagnosed the gap: the playbook `CREDENTIALING_COHORT_PROGRAM_ONBOARDING.md` §5.3 only documents the **web-facing** manifest; the RSA flow (`process_program_registration_telegram_logs.js`) only collects PENDING rows — provisioning is governor-gated/manual
+- **Opened PR #770** (agentic_ai_context): adds **§5.3a "Internal data-repo manifest (PR to lineage-credentials) — REQUIRED, easy to miss"** with the canonical shape + IVY incident as cautionary tale, **and** files a Pending entry in `OPEN_FOLLOWUPS.md` for the RSA-flow provisioning gap
+
+## 📄 PR
+
+- **https://github.com/TrueSightDAO/agentic_ai_context/pull/770** — future-proof credentialing onboarding: internal lineage-credentials manifest step + backlog entry
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Review/merge PR #770** (agentic_ai_context) — your call, or tell me "merge it" and I'll do it via the same `gh` path as #17
+2. Optional: confirm the IVY credential page renders (jsDelivr purge is done, so it should be live now)
+3. The `OPEN_FOLLOWUPS.md` entry (RSA-flow provisioning creating both manifests) stays as a Pending backlog item until the governor-gated approval flow is built — no action needed now
+
+Want me to merge #770?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ssh -o ConnectTimeout=10 nelanco-claude 'gh run view 32355379967 --repo TrueSightDAO/lineage-credentials --json status,conclusion,jobs --jq ; ssh -o ConnectTimeout=10 nelanco-claude 'gh run view 32355379967 --repo TrueSightDAO/lineage-credentials --log 2>&1 | grep -iE "ivy|LaDRlxRB; ssh -o ConnectTimeout=10 nelanco-claude 'gh run view 32355379967 --repo TrueSightDAO/lineage-credentials --log 2>&1 | grep -iE "Pushed on at
 
