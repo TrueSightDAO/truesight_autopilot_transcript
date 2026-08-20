@@ -814,31 +814,37 @@ GitHub search isn't indexing agroverse_shop_beta content — I'll read the produ
 ### 🤖 Autopilot
 
 Zip delivered (msg 11773). Now the PDP build — first, the tail of the shipment page to find the exact end of the product grid (so the cross-listing edit matches exactly):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full structure. Building the PDP now — a new **`product-page/oscar-bahia-cacao-tea-50g/index.html`** in `agroverse_shop_beta` replicating the reference PDP conventions exactly, but with **no price, no add-to-cart** (offline QR-scan sales only, per your caveat). Creating the beta branch + PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDP PR opened: **agroverse_shop_beta#197**. Now the final SOP step — cross-list the tea on the **farm page** and **shipment page** (item-cards), then report. Editing the farm page first:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Farm cross-list PR: **#198**. Now the shipment (AGL4) page cross-list — finding the exact tail of its "Products from This Shipment" grid to anchor the edit:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact end of the "Products from This Shipment" grid on the shipment page to anchor the cross-list edit:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact anchor. Adding the tea item-card to the **AGL4 shipment page** product grid:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1028,4 +1034,91 @@ The merge ran (the output shows the squash-merge diff landing all 100 pngs + 100
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets && git fetch origin --prune -q && git chec; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets && gh pr view 5 --json headRefName,baseRef; ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace/lineage-assets && git pull -q origin feat/oscar-cacao-tea; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] So I am assuming I will be able to see it at some point here
+
+https://beta.agroverse.shop/category/retail-packs/index.html
+
+
+### 🤖 Autopilot
+
+Good question — let me check the actual beta category page and whether the tea card is listed there (I merged the PDP + farm + shipment cross-lists, but the **retail-packs category index** may need its own card).
+
+
+### 🤖 Autopilot
+
+The beta category page is live (200), but I need to verify whether the **tea card** actually appears on it. Let me check the full page content for the product cards:
+
+
+### 🤖 Autopilot
+
+The page body is large — let me find the actual product grid section to confirm whether the tea card is present:
+
+
+### 🤖 Autopilot
+
+The category page shows only the 200g ceremonial cacao cards so far. Let me see the rest of the grid to confirm whether the tea card is anywhere on it:
+
+
+### 🤖 Autopilot
+
+The beta category page is live, but I can see the product grid only contains the three existing 200g cacao cards — no tea card. Let me verify the PDP itself is live on beta so I can point you to the right URL:
+
+
+### 🤖 Autopilot
+
+The PDP **is live on beta** — but not on the retail-packs category page yet. Let me fix that: I cross-listed the tea on the farm and shipment pages, but not the `category/retail-packs/` index. Reading the category page source to add the card:
+
+
+### 🤖 Autopilot
+
+Let me see the product grid section of the category page to find the exact insertion point:
+
+
+### 🤖 Autopilot
+
+I can see the exact product-card structure. The tea card should be added to this retail-packs grid — matching the existing cards' style but **without price / add-to-cart** (offline QR-scan sales only). Let me find the end of the grid to anchor the insertion:
+
+
+### 🤖 Autopilot
+
+Found the exact end of the grid. **Short answer: the PDP is live on beta, but the tea card isn't on the retail-packs category page yet** — I cross-listed it on the farm + shipment pages but not the category index. Adding it now (matching the page's card pattern, **without price / add-to-cart** per your offline-sales caveat):
+
+
+### 🤖 Autopilot
+
+PR opened. Now let me merge it so the card appears on the beta site (you've already given the "merge all PRs" directive this task, but since this is a new PR — I'll merge per your standing instruction and note it clearly):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Done — Cacao Tea 50g card now on the retail-packs category page
+
+### What I found
+You're right to check that URL — **the tea card was missing from it**. The PDP itself was live on beta (`beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` → 200 ✅), and I'd cross-listed the tea on the **farm page** (#198) and **shipment page** (#199) — but I'd never added it to the **`category/retail-packs/`** index. That's why the category page still showed only the old 200g cacao + chocolate cards.
+
+### What I did
+| PR | Change | State |
+|---|---|---|
+| **#201** — *Add Cacao Tea 50g card to retail-packs category page* | Inserted the tea `product-card` into the retail-packs grid, matching the page's card markup (Oscar's Farm image, AGL4 shipment link) but **deliberately no price and no Add-to-Cart** — consistent with your offline QR-scan-only caveat | ✅ **merged** (sha `7dde445`) |
+
+Card text: *"Cacao Tea (50g) – Oscar's Farm, Bahia Brazil, 2024 · From AGL4 Shipment · Available in person · Each packet carries a unique QR code"* → links to the PDP.
+
+### Why merged immediately
+You gave the standing "merge all PRs" directive earlier this task; this was the one remaining gap in that scope, so I merged it. It's now on `agroverse_shop_beta` main → **live on the beta site** (GitHub Pages may take ~1 min to rebuild).
+
+---
+**RESUME HERE →** Next turn: (1) refresh `https://beta.agroverse.shop/category/retail-packs/index.html` and confirm the tea card renders (hard-refresh / clear cache — GH Pages CDN can lag a minute); (2) optionally scan one QR from the zip against the beta landing (`agroverse.shop/shipments/agl4`) to confirm end-to-end traceability; (3) on your explicit approval → `sync_beta_to_prod(agroverse_shop_prod)` to promote the PDP + cards to www.agroverse.shop.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #201 on agroverse_shop_beta merged successfully (sha: 7dde4459dbfc4a4ae6e0f134fe422372b81674ce). Pull Request successfully merged
 
