@@ -2992,21 +2992,25 @@ Rather than page through the shell's 22KB of JS, let me just verify the truth di
 ### 🤖 Autopilot
 
 The page renders perfectly — **"Credential — IVY"** title (the JS overrides the static Butterfly Effect title), full profile body with the name, program, lineage root, QR, and **both download buttons**. But there are **2 console 404s** — let me identify them (the user wants this fully clean end-to-end):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Real bug found.** The credential page tries to load `lineage-assets/qrs/pk-r3h5iUF7-TG8.json` (the QR metadata) — **404 on both jsDelivr and raw**. That's why it falls back to generating the QR from the CV data. The QR system expects a **QR record in lineage-assets** that the pipeline isn't creating for program-attested credentials. Let me check how butterfly-effect (which works) gets its QR record, and how the build generates them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR records in `lineage-assets/qrs/` are cacao-bag QRs, not credential QRs — and **all four test credentials 404** on the credential-QR lookup, including the original qa-e2e one. Let me check whether this also happens for real butterfly-effect credentials (i.e. is this a general gap or an IVY-only one), and what the shell expects from that file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **This is a general pre-existing gap, not IVY-specific**: even real butterfly-effect credentials (gary-teh, bilal) 404 on `lineage-assets/qrs/<pk>.json`. The page falls back gracefully (renders the QR from CV data), so it's a **latent non-blocking issue** — but it means the "SCAN THIS CREDENTIAL" QR always renders via fallback and every credential page logs 2 console 404s. Let me find where the shell consumes that QR record to understand the fallback, then decide the right fix scope:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3017,6 +3021,7 @@ The QR records in `lineage-assets/qrs/` are cacao-bag QRs, not credential QRs �
 - The credential page itself renders **completely correctly**: correct IVY title, name, program, lineage root, QR, both download buttons (which we verified return 200)
 
 So the E2E is genuinely clean end-to-end. One thing I want to confirm — the download buttons actually point at the working PDFs. Let me verify the button hrefs resolve:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3181,4 +3186,149 @@ Understood — logging the bottom-line times as contribution events. Two events 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → bash -c ' echo "=== recent CONTRIBUTION EVENTS in ledger (attribution conventions) ===" cd /tmp && rm -rf tokenomics && git clone -q --depth; bash -c ' echo "=== how prior contribution events look (samples from transcripts / context) ===" grep -rn "CONTRIBUTION EVENT\|contribution.
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+Updated certificate template
+
+[Attachment auto-processed: **d9063236835449299c5887f076b95e09.pdf**]
+- Type: PDF (1 page, 644 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+I N D U S  V A L L E Y  Y O G A
+C E RT I F I C AT E
+O F  T E A C H E R  T R A I N I N G
+This is to certify that
+has completed  200 hours of study and practice conducted by Indus Valley Yoga, and is recognized as an
+IVY Certified Hot Yoga Teacher. The program is based on the original hot yoga regimen by Bikram Chaudhry
+and updated by Olivia Anselmo of Liv for Yoga, LLC, covering 26 postures and 2 breathing exercises. 
+DAT E  O F  C E R T I F I C AT I O N
+DAT E  O F  L A S T  R E N E WA L
+BILAL MUSHARRAF
+Founding Board Member
+Indus Valley Yoga
+OLIVIA ANSELMO
+Creator, Original Hot Yoga Teacher Training
+Liv for Yoga, LLC
+VERIFY
+IVY-TT-0000
+```
+
+
+### 🤖 Autopilot
+
+The updated certificate template — let me compare it against what's currently vendored in lineage-engine, and examine the new PDF's layout so the overlay coordinates still align:
+
+
+### 🤖 Autopilot
+
+Received the updated certificate template. Let me analyze it against the currently vendored one — page size and field positions matter because the overlay coordinates in `cert_config.json` were reverse-engineered from the old PDF:
+
+
+### 🤖 Autopilot
+
+Both PDFs are the same page size (841.89 × 595.28 landscape A4), and the bottom section (signatures, VERIFY, cert ID) is at identical positions — but the **body text moved** (the "of" shifted left x=364→283, "Olivia" body mention moved up ~20pt). That suggests the recipient-name line and possibly the dates moved too. Let me do a full text + position comparison to see exactly what changed before updating anything:
+
+
+### 🤖 Autopilot
+
+Both PDFs are identical in the bottom half (signatures, VERIFY, cert ID at exactly the same positions) — but the body text changed: "more than 200 hours" → "200 hours", and the paragraph reflowed **up by 20pt**. Before updating anything, I need to check whether the **recipient-name line and the two date fields** moved (those are the overlay targets in cert_config.json):
+
+
+### 🤖 Autopilot
+
+Python f-string backslash syntax error — let me fix the script (assign the color to a variable first):
+
+
+### 🤖 Autopilot
+
+Both PDFs are structurally **identical** for every overlay field — same page size, same name underline (y=291.5, x=197–644.9), same date boxes (y=417–435), same signatures/VERIFY/cert-ID positions. The only change is the **body paragraph**: "more than 200 hours" → "200 hours", reflowing 4 lines to 3 (lower lines shift up ~20pt, but nothing the overlay touches). So the coordinates in cert_config.json stay valid — I just need to swap the template file.
+
+Let me smoke-render with the new template first to confirm alignment before committing:
+
+
+### 🤖 Autopilot
+
+Clone didn't land — the `-q` flag with `gh repo clone` output redirect swallowed an error. Let me check and retry:
+
+
+### 🤖 Autopilot
+
+The new PDF landed (172KB) but the clone failed silently. Let me see the actual clone error:
+
+
+### 🤖 Autopilot
+
+Clone OK (`gh repo clone` was the issue — plain git works). Now smoke-render with the new template:
+
+
+### 🤖 Autopilot
+
+Different signature — let me check the actual function signature in the current `cert_overlay.py`:
+
+
+### 🤖 Autopilot
+
+Let me see the full signature and how build_cv_cache.py calls it, so my smoke render matches exactly:
+
+
+### 🤖 Autopilot
+
+Now I have the correct signature. Let me run the smoke render properly:
+
+
+### 🤖 Autopilot
+
+Smoke render succeeded (199KB). Let me visually verify the output — extract the text and check the overlay landed at the right positions (especially the recipient name and dates relative to the new template's layout):
+
+
+### 🤖 Autopilot
+
+Smoke render confirms the swap is safe — the new template's body text is in effect ("completed" at x=178 vs the old x=219.8), the date lands inside the date box (y 416.7–431.9 within 417–435), the name renders on the underline, and the signature/VERIFY/cert-ID positions are byte-identical to before. Now committing the new template to lineage-engine (the operational repo that renders):
+
+
+### 🤖 Autopilot
+
+PR #21 opened. Let me verify it's clean/mergeable, then merge (per the established pattern for this arc — Gary's "Updated certificate template" + prior approvals authorize the swap):
+
+
+### 🤖 Autopilot
+
+CLEAN and MERGEABLE — only the two expected files. Merging, then re-triggering the build so new certificates render with the v1.3 template:
+
+
+### 🤖 Autopilot
+
+## ✅ Updated certificate template — shipped
+
+**What you sent:** the updated IVY certificate PDF (the one reading "has completed **200** hours" — dropped the "more than", body reflowed from 4 to 3 lines).
+
+**What I did:**
+
+1. **Compared it against the vendored v1.2** (position-by-position, pymupdf):
+   - Page size identical (841.89 × 595.28 landscape A4)
+   - **All overlay positions identical** — name underline (y=291.5, x=197–645), both date boxes (y=417–435), signatures, VERIFY, cert ID at the exact same coordinates
+   - Only the body paragraph changed (200 hours wording, reflowed up ~20pt — nothing the overlay touches)
+   - → **cert_config.json coordinates stay valid**, no re-reverse-engineering needed
+
+2. **Smoke-rendered** with the new template before touching anything: 199KB output, name lands on the underline, date lands inside the box, new body text in effect ✓
+
+3. **PR [#21](https://github.com/TrueSightDAO/lineage-engine/pull/21)** — swapped `cert_template.pdf` → v1.3 + updated the config comment. Verified MERGEABLE/CLEAN, **merged** (commit `38fa91f`, 14:07:28Z).
+
+4. **Re-triggered the cache build** (run `32378254953`, queued) — all certificate PDFs will now regenerate with the v1.3 template.
+
+**Effect once the build finishes:** every IVY certificate (including the test ones) renders with the updated wording — "has completed 200 hours of study and practice…" — at the same live URLs:
+- `…/dummy-e2e-test-3-voice__ivy-yoga__cert.pdf` (and all other `<slug>__ivy-yoga__cert.pdf` files)
+- jsDelivr path updates automatically after the purge
+
+**Note:** only the *template file* changed — no renderer code, no config coordinates. The new template also still has "VERIFY / IVY-TT-0000" placeholders, and signatures still render blank until PR3 (the dual-signature flow), same as before.
+
+Want me to verify the regenerated cert after the build completes (say the word and I'll pull one of the cert PDFs and confirm the "200 hours" text is in the rendered output)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×20 → ssh -o ConnectTimeout=15 nelanco-claude 'bash -s' <<'REMOTE' set -e echo "=== current vendored cert assets in lineage-engine ===" gh api "re; bash -c ' echo "=== new PDF: page size + text layout ===" python3 - <<'"'"'PY'"'"' import fitz doc = fitz.open("/tmp/tg_attachments/d9063236; bash -c ' echo "=== current vendored cert_template.pdf: page size + key field boxes ===" ssh -o ConnectTimeout=15 nelanco-claude "cd /tmp &&; …(+14 more)
 
