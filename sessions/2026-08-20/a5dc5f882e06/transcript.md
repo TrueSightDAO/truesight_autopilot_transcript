@@ -2799,11 +2799,13 @@ Let me see how `successUrl` and `cancelUrl` are built (the code around line 500�
 ### 🤖 Autopilot
 
 The QR encodes the **Edgar resolve URL** → provenance page. The Stripe cancel behavior is coming from a **Stripe Payment Link** (static QR page can't create sessions). Let me find the Payment Link config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR encodes the **Edgar resolve URL** (`edgar.truesight.me/agroverse/qr-code-check?qr_code=...`), not the truesight.me page directly. Let me trace what Edgar does with a scan — that's where the Stripe step must come from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2811,41 +2813,49 @@ The QR encodes the **Edgar resolve URL** (`edgar.truesight.me/agroverse/qr-code-
 Found it. The QR → Edgar resolve → **redirects straight to `checkout.stripe.com`** (a live Payment Link, `cs_live_...`). So the scan jumps directly into a Stripe checkout — and when the customer **cancels**, Stripe sends them to the **cancel_url configured on that Payment Link**, which is currently the **beta PDP**. That's exactly the behavior you're seeing.
 
 The fix: the Payment Link's `cancel_url` should send customers back to the **QR provenance page / shipment landing** (`agroverse.shop/shipments/agl4`), not the beta PDP. Let me check what's currently configured and where the Payment Link is managed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual `/qr-code-check` handler on Edgar — that's where the Stripe cancel/success URLs are decided:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handler is `dao_client/truesight_dao_client/server/routes/qr_code_check.py`. Let me read it to see exactly how it redirects to Stripe and what cancel/success URLs it uses:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo path moved. Let me read it from the nelanco box where the source lives:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Edgar handler builds the Stripe **cancel_url from the QR row's `landing_page`** column. The user's cancel landed on the beta PDP — so the sheet's landing_page (or a manually-created Stripe Payment Link) points there. Let me check the actual QR sheet rows for the CT batch:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet's `landing_page` (col B) is `https://www.agroverse.shop/shipments/agl4` — **not** the beta PDP. So the cancel-redirect isn't coming from the sheet. The nelanco-claude thread planned a **manual Stripe Payment Link** — let me check what URL that thread actually configured (the smoking gun):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript grep came back empty (maybe path differs). Let me check the live Stripe Payment Link itself — the checkout URL I found (`cs_live_...`) is a real live-mode link. The cancel behavior is embedded in **that** Payment Link's config, which only Stripe can change. Let me confirm the exact link config by fetching the checkout page and looking for the cancel URL / PDP reference:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the JSON has **`Price: null`** for this QR row! Yet the live scan redirected to Stripe checkout. That means the **Stripe Payment Link was created manually** (not via Edgar, which would need a Price) — and that manual Payment Link has the beta PDP baked in as its return/cancel URL. Let me check whether the QR rows have a Price elsewhere (the col for `Price`) and look at what the live checkout session's cancel_url actually is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2977,4 +2987,47 @@ The cancel URL is now **beta** — which matches your request today. When you ev
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo "=== who serves edgar.truesight.me /agroverse/qr-code-check ==="; ssh -o BatchMode=yes -o ConnectTimeout=15 dao_protocol 'hostname; ls ; echo "=== deployed qr_code_check handler location ==="; find / -name "qr_code_check.py" -not -path "*/node_modules/*" 2>/dev/null | head; ec; echo "=== my ssh config hosts ==="; grep -A3 "Host " ~/.ssh/config 2>/dev/null | head -60; echo "=== can I reach dao_protocol api directly? ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11578] Nicely done! Can you update the URLs to point to prod instead of beta on the Google Sheets??
+
+
+### 🤖 Autopilot
+
+On it — flipping all 101 CT rows from beta to prod landing page in the sheet. Updating now:
+
+
+### 🤖 Autopilot
+
+All 101 rows updated. Now verifying Edgar reflects the change live:
+
+
+### 🤖 Autopilot
+
+## ✅ Done — all 101 QR rows now point to prod
+
+| Check | Result |
+|---|---|
+| **Sheet update** | 101/101 CT rows (1678–1778) col B → `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` — **0 mismatches** |
+| **Edgar live lookup** | `landing_page: https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` · `Price: 10` ✅ |
+
+### Flow now
+Scan QR → Edgar → Stripe Checkout ($10) →
+- **Pay** → reconcile → marked SOLD
+- **Cancel** → `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` (+UTM params) — **prod URL**
+
+### One honest caveat
+The landing page now points to the **prod URL** — but the cacao tea PDP is **not yet live on www.agroverse.shop** (it's beta-only; prod promotion is still pending your GO). So **today**, a cancelled scan would land on a 404 on prod. The URLs are correct for when we promote.
+
+**Two options (your call):**
+1. **Promote now** — say "promote to prod" and I'll run `sync_beta_to_prod(agroverse_shop_prod)` so the PDP goes live on www and the URLs resolve. (Recommended — makes everything consistent.)
+2. **Hold** — keep URLs pointing at prod and promote later; until then cancelled scans hit a 404 on www.
+
+Want me to promote to prod now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ssh -o BatchMode=yes -o ConnectTimeout=15 nelanco-claude 'cd /opt/claude_workspace && python3 - <<"EOF" import gspread from gspread import C; echo "=== edgar live lookup now ==="; curl -s "https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_1&format=jso
 
