@@ -54,11 +54,13 @@ Let me check for anything newer than Aug 21 (Jeffrey said paperwork "next week")
 ### 🤖 Autopilot
 
 Let me verify the current date and check the public registration status of BIONPACT Pte. Ltd.
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do a final check for any replies that arrived after Aug 21 (today), and confirm nothing is sitting unread.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -108,11 +110,13 @@ Here's the full picture from your inbox. 🏢
 ### 🤖 Autopilot
 
 Let me check what calendar tooling exists in the DAO context before I promise anything.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what calendar infrastructure and credentials exist on this box before promising anything.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -226,4 +230,24 @@ You're right that this box **does** hold your Google credentials — but the one
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== find token files anywhere ==="; find / -maxdepth 6 -name "*.json" 2>/dev/null | grep -viE 'site-packages|node_modules|/proc|/sys|/; echo "=== gary_token.json shape (no secrets) ==="; python3 -c " import json d=json.load(open('/opt/truesight_autopilot/config/gmail/gary_tok; echo "=== GOOGLE_CALENDAR_ID anywhere on box ==="; grep -rI "GOOGLE_CALENDAR_ID" /opt/truesight_autopilot /home/ubuntu/tokenomics /tmp/token; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12670] Yeah, that all of token is I'm referring to that inbox. Can you like check it out? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Checked it out — so here's the deal in plain terms:
+
+That inbox token — `garyjob@agroverse.shop` — is your Gmail OAuth key, and it's only authorized for **mail**, not calendar. That's a Google security rule: a mail token can't touch your calendar, and I can't upgrade it myself without you clicking an authorization once in a browser. So there's no way for me to write directly onto your Google Calendar right now — the credential just doesn't have that permission.
+
+But I don't want to leave you hanging. The **fastest fix that needs nothing from you** is a **Telegram reminder**: I set up a scheduled job on this box that pings this chat at 12pm tomorrow — "⏰ BIONPACT — check Jeffrey/Prima email, paperwork due this week." This box runs 24/7, so it'll fire. I can also attach the summary of what to check.
+
+The only thing I need is: **what timezone are you in right now** — is 12pm your Singapore time, California time, or somewhere else? Tell me the city and I'll set it up right away. And if later you want it on your actual Google Calendar, it's a one-time share of your calendar to my service account, and then I can do it forever.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== all OAuth tokens: mailbox + scopes ==="; python3 - <<'EOF' import json, glob, os from google.oauth2.credentials import
 
