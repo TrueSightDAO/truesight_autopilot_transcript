@@ -3145,6 +3145,7 @@ This is a production-impacting incident — a live GAS project (`Parse Telegram 
 ### 🤖 Autopilot
 
 Production incident — I need to fix this now. First, full recon: git history of the project folder (what happened), whether a Credentials.js exists anywhere (git history / other projects / disk), the deployment list, and the appsscript.json config — then I'll rebuild the file idempotently.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3152,16 +3153,19 @@ Production incident — I need to fix this now. First, full recon: git history o
 Confirmed the incident is real: **live file list for `1dsWec…` is missing `Credentials.js`** (never git-tracked, live-only), while `Parse Telegram ChatLogs.js` calls `setApiKeys()` (line 16) + `getCredentials()` (line 17) and reads `creds.XAI_API_KEY` + `creds.TELEGRAM_API_TOKEN` (lines 22/29/1335). A clasp push from a local folder without the file removed it from live — the exact footgun the verifier described.
 
 Now the fix. Let me model the new `Credentials.js` on the working one in the SunMint project + the sample, and check the parser's header for the exact contract:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. The parser needs `creds.XAI_API_KEY` + `creds.TELEGRAM_API_TOKEN` (+ SHEET_ID in the sample). Script Properties are the real storage (untouched by pushes), so I'll write an **idempotent** `Credentials.js` that only seeds `REPLACE_ME` when a property is missing — never clobbering the live values. Creating it in the project folder, then verifying the push would include it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `clasp status` shows exactly what will push: **appsscript.json, Credentials.js, Parse Telegram ChatLogs.js, Version.gs** — the `.claspignore` correctly excludes the 3 legacy files, and Credentials.js is included. Now push (no `--force` needed — plain push works when the file is additive):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3169,26 +3173,31 @@ I have the full picture. The parser needs `creds.XAI_API_KEY` + `creds.TELEGRAM_
 The push was **rejected by clasp's own syntax check**: `SyntaxError: Unexpected token ')' line: 3 file: Credentials.gs` — clasp is treating my new `Credentials.js` as `Credentials.gs`?? No — the error references `Credentials.gs` (line 3), which doesn't exist locally... This is clasp **pulling the live `Credentials.gs`** (the file that WAS live before my push — the live project actually has a `Credentials.gs`, not `.js`!) and checking it. And the isolated pull-back confirms: **live now has NO Credentials file at all** (pull got only appsscript.json, Parse Telegram ChatLogs.js, Version.js) — so my push didn't land (aborted by the syntax check).
 
 Key insight: **the live project had `Credentials.gs` (not `.js`)** — clasp's filePushOrder/scriptExtensions map both, but the original live file was `.gs`. My new `.js` file is fine; the syntax error is clasp choking on something. Let me check if there's a `Credentials.gs` reference somewhere + validate my file's syntax standalone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it — my own comment had a JS landmine.** Line 3 contains `google_app_scripts/**/Credentials.js` — the `**/` sequence **closes the block comment early**, making the rest of the line code → `SyntaxError: Unexpected token ')'`. That's what clasp's syntax check caught (it correctly refused to push an invalid file). Rewriting the comment without `**/`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Pushed 4 files** including Credentials.js. Now the critical verification the verifier demanded: pull-back (confirm live file list) **and** GET the live /exec endpoint to confirm the ReferenceError is gone:
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Pull-back confirms live now has Credentials.js** (4 files pulled, `function setApiKeys` present) — but the **@12 deployment URL still returns the ReferenceError** because it's **pinned to an old version snapshot** (created before Credentials.js existed). `clasp push` updated HEAD only. I need to redeploy the deployment to a version that includes Credentials.js:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New deployment created: `AKfycbx70xL4lSyj3Bv-B6V_3103Sd8DtUx6C5bD4iTO6xZeVxktIi_jn3c1jH-ttoHMxKs` @13. Now the final verification — GET the new /exec URL and confirm it returns a normal response (no ReferenceError):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3247,11 +3256,13 @@ This is a live incident on the real sales webhook — please prioritize over the
 ### 🤖 Autopilot
 
 You're right — @12 is the production deployment and I wrongly left @13 floating. Fixing now: update @12 in place, verify the URL, then remove @13.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 @12 updated in place → now @14 (the current HEAD incl. Credentials.js). Now the verification GET on the production @12 URL, plus removing the stray @13 deployment:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3423,4 +3434,230 @@ The authoritative API confirms the branch is **correct** — the raw.githubuserc
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== deploy_gas_project.py: functions + key lines ===" && grep -n "^def \|^ def \|cla; cd /opt/truesight_autopilot/context/tokenomics && echo "=== local HEAD ===" && git log --oneline -3 && echo "=== is pull-first (#401) in loc; cd /tmp && echo "=== current main deploy_gas_project.py: pull-first present? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+New task — RUN was executed (governor-authorized) and needs your investigation + fix on a real ledger discrepancy.
+
+What happened: I submitted a real [TREE PLANTING LINK EVENT] via dao_client (QR Code: 2024OSCAR_CC_20260620_1, SunMint Submission Message ID: 171, Updated by: Gary Teh) — this is the plan's first live RUN. Tracking tab "Tree Planting Link" row shows Telegram Update ID Edgar_20260821130119_001 → Outcome LINKED, Reason OK, Processed 2026-08-21T13:01:31.882Z.
+
+✅ Correct: QR row (2024OSCAR_CC_20260620_1) in "Agroverse QR codes" — status→ASSIGNED_TO_TREE, tree planting date/lat/long/photo all correctly populated.
+✅ Correct: SunMint row (msg 171) in "SunMint Tree Planting" — Status→LINKED, Linked QR Code/Linked At populated.
+
+❌ WRONG: the ledger fulfillment entry. Ledger AGL4, spreadsheet 1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc, "Transactions" tab, row 150. Expected TWO rows from appendTreePlantingLedgerFulfillment_ (process_tree_planting_link.js line ~292): [today, message, "Gary Teh", -1, "Cacao Tree To Be Planted", "Liability"] and [today, message, "Gary Teh", 1, "Cacao Tree Planted", "Asset"]. What actually landed: ONE row — col A (date) blank, col B = the full raw signed event text, col C = "Gary Teh", col D = -1.00, col E/F blank. No second (+1) row exists. Total row count is still 150 (was 149 before RUN), confirming only one row got appended, not two.
+
+The tracking table shows ledgerBooked=true (i.e. appendTreePlantingLedgerFulfillment_ returned true, no exception) — so the code believes it wrote both rows. I independently pulled the LIVE deployed process_tree_planting_link.js (isolated clasp pull) and it is byte-identical to the current git HEAD version of appendTreePlantingLedgerFulfillment_, which is correctly coded (atomic 2-row setValues call, proper date/item-name/classification). So this isn't a stale-deploy or obvious code bug I could find.
+
+What I ruled out as the source of the malformed row: dao_protocol's Python code (grepped server/routes/dao.py, server/dispatch.py, server/sheets/ — no code path writes to any "Transactions" tab or AGL4 spreadsheet, only the synchronous "Telegram Chat Logs" write exists); other tokenomics GAS projects with ledger-writing code (sales_update_managed_agl_ledgers.js's processNonAgl4Transactions explicitly SKIPS agl4 by its own filter condition, and produces a 3-row shape anyway, not a match). Tracking tab confirms exactly ONE execution processed this event (no duplicate/race entry for the same row).
+
+Please investigate root cause (things I could not check: Apps Script execution logs/Stackdriver for this project around 2026-08-21T13:01:30Z — look for concurrent executions or a second trigger firing near that timestamp; the spreadsheet's Version History for row 150 to see if a human or which script account made the edit) and then fix: replace the malformed row 150 with the correct two-row pair (today's date, "Cacao Tree To Be Planted"/Liability, "Cacao Tree Planted"/Asset, same message + "Gary Teh" contributor) so the ledger reflects the real fulfillment correctly. This is a real financial/audit-trail record — please verify your fix (re-read the rows back) before declaring it done, and post the result into this thread. If you find the row shape is actually being written by some function I haven't located, please cite the exact file/line so we can fix the root cause too, not just patch this one row.
+
+
+### 🤖 Autopilot
+
+A real ledger discrepancy on the first live RUN — I'll investigate with fresh eyes, not just patch the row. Let me start by reading the exact ledger-append code (git HEAD == live, per your independent check) and pulling the actual sheet state around row 150.
+
+
+### 🤖 Autopilot
+
+The malformed row is visible: col B = full signed event text, col C = "Gary Teh", col D = -1.00, A/E/F blank. The git-HEAD code writes a clean 2-row atomic pair. Let me read the full ledger function + call site, and grep for the `Edgar_` update-id format (that prefix is a big clue about which path processed the RUN):
+
+
+### 🤖 Autopilot
+
+The malformed row is exactly as described: 4 cells (A blank, B = full event text, C = "Gary Teh", D = -1.00), E/F never written. The git-HEAD code writes a clean 6-cell × 2-row pair. Key clue: the tracking update ID is `Edgar_20260821130119_001` — that prefix comes from **dao_protocol's synchronous Telegram Chat Logs write**, meaning the GAS cron picked the row up from the sheet (not doPost, which uses `WEBHOOK-<timestamp>`).
+
+Let me investigate deeper: the other ledger-writing GAS code, the Apps Script execution history around 13:01:30Z (concurrency check), and the exact tracking + TCL rows.
+
+
+### 🤖 Autopilot
+
+Interesting — the `sales_update_managed_agl_ledgers.js` curl was to the **wrong project** (`1UrBg…` = tree-planting, not `1dsWec…` = sales). The actual sales ledger-writer lives in **project `1duQFfTO0Pj0lC4tPVNmMOhNOS1GvJgzqVxXbsEDu-eqt_64DwxvrOVyl`**. That's the prime suspect for writing the malformed row — let me read its ledger code (filter + row shape) carefully:
+
+
+### 🤖 Autopilot
+
+**Prime suspect found.** `sales_update_managed_agl_ledgers.js` (project `1duQFf…`) — `processNonAgl4Transactions()` writes to a "Transactions" sheet and, critically, **includes "Cacao Tree To Be Planted"/"Liability"** (line 373-374) — the exact E/F values the malformed row is missing. And its filter (line 301) `agroverseValue !== 'https://agroverse.shop/agl4'` means it **skips agl4** — but wait, let me read the full row shape + how it decides rows, because the malformed row has only ONE row with `-1.00` and the message in col B, which matches this function's row shape, not the tree-planting one. Let me read lines 281-390:
+
+
+### 🤖 Autopilot
+
+Now I can compare precisely. The suspect function writes a **3-row** block: row1 `[salesDate, message, inventoryContributor, -1, inventoryType, 'Assets']`, row2 `[salesDate, message, cashContributor, salePrice, 'USD', 'Assets']`, row3 `[salesDate, message, 'SunMint Tree Planting Contract - <name>', 1, 'Cacao Tree To Be Planted', 'Liability']`.
+
+**But the malformed row 150 has E/F BLANK** — this function always writes E/F. And its filter requires `agroverseValue !== 'https://agroverse.shop/agl4'` — **agl4 is explicitly skipped**. So this function **can't** be the writer (it wouldn't touch agl4, and the malformed row lacks the E/F it always writes).
+
+The malformed row matches a DIFFERENT shape: exactly `[?, message, contributorName, -1]` with nothing after — col A blank. Let me look for a writer that produces exactly that 4-cell shape. The tree-planting function writes 6 cells. Let me check the ledger URL resolution + whether there's a **different append path** (e.g. `appendRow([message, contributorName, -1])` or a `.setValue` on col D only), and check the version history of the sheet:
+
+
+### 🤖 Autopilot
+
+Let me look at this from the **sheet's own data** angle — the malformed row's exact shape + the surrounding rows tell me who wrote it. The row landed as `["", message, "Gary Teh", -1.00]` — 4 cells, A blank, no E/F. Let me check the **version history** of the sheet around that time and whether the row was written by a specific script identity, plus check if there's any other code that appends a bare 4-cell row:
+
+
+### 🤖 Autopilot
+
+Critical insight: the malformed row has col A **blank** (not today's date), cols E/F **blank** (not "Cacao Tree To Be Planted"/"Liability"). The tree-planting function's first row would be `[today, message, contributor, -1, 'Cacao Tree To Be Planted', 'Liability']` — 6 cells with date + E/F filled. The malformed row is only `["", message, "Gary Teh", -1.00]` — **4 cells**. So this is NOT the tree-planting function's output (it writes 6 cells). It's also not `processNonAgl4Transactions` (which writes 3 rows with E/F always filled + a `SunMint Tree Planting Contract` label).
+
+The exact 4-cell shape `[blank, message, "Gary Teh", -1.00]` with nothing after — let me check the **version history** of the sheet and hunt for any code that produces this. The `message` in col B and `-1` in col D with blank A/E/F suggests something that did `getRange(row, 2, 1, 3).setValues([[message, contributor, -1]])` — col B start. Let me search the whole org for that pattern and check the tracking-tab + TCL rows:
+
+
+### 🤖 Autopilot
+
+The tracking tab confirms the RUN processed at 13:01:31.882Z (row 11675). Now the critical hypothesis: **two GAS projects share the same Telegram Chat Logs source sheet** — and the **sales processing project** (`1dsWec`, the one we just fixed Credentials.js for) also scans that sheet. If the sales parser regex-matches "QR Code:" in any message, it could have half-processed this tree-planting event and written the malformed 4-cell row. Let me read the sales project's parsers:
+
+
+### 🤖 Autopilot
+
+The sales parser writes to **"QR Code Sales"** (not the AGL4 "Transactions" tab) — so it's not the row-150 writer. But I need to verify the **regex patterns** in the sales parser — if `[TREE PLANTING LINK EVENT]` messages match a sales pattern, the sales project could have consumed the same TCL row and written to a different sheet. Let me check the patterns + the ledger-write path, and the exact shape of what the sales parser appends:
+
+
+### 🤖 Autopilot
+
+The sales parser writes to "QR Code Sales" only — not the Transactions tab. So row 150's writer is still unidentified. The current `appendTreePlantingLedgerFulfillment_` writes a 2×6 atomic block — it cannot produce a single 4-cell row. The row shape `["", message, "Gary Teh", -1.00]` (message in B, name in C, -1 in D, A/E/F empty) suggests an **older deployed version** of the function wrote a different shape, OR a concurrent/partial write. Let me check the git history of the ledger function across this session's PRs and try the Apps Script execution logs for the 13:01Z window:
+
+
+### 🤖 Autopilot
+
+The executions API returned HTML (needs OAuth, not the clasp token). Let me read the **original `d532ef3d` version** of the ledger function (the pre-PR state that might've been live when RUN executed) and compare its row shape — this is the key to whether an older deployed function wrote the 4-cell row:
+
+
+### 🤖 Autopilot
+
+**Critical finding:** the ledger function has been **identical across every version** — original `d532ef3d`, #396, and current — always the atomic 2×6 `[today, message, contributor, -1, 'Cacao Tree To Be Planted', 'Liability']` + `[today, message, contributor, 1, 'Cacao Tree Planted', 'Asset']` via `setValues`. **No version ever wrote a 4-cell `["", message, "Gary Teh", -1]` row.** So the tree-planting code **cannot** be the writer of row 150.
+
+The shape `["", message, "Gary Teh", -1]` (4 cells, blank A/E/F) matches a **3-column `setValues([[message, contributor, -1]])` starting at col B** — OR a **partial write** that got truncated. Let me check the **sheet's version history** and look for the actual write in the Apps Script Stackdriver logs, plus check whether the **sale-time `processNonAgl4Transactions`** could have produced this via a **failed/partial setValues** (its first row has E=`inventoryType`, F='Assets' — but if `inventoryType` were '' and it only wrote 4 cells...). Let me check the **actual QR row** for the ledger URL and whether the sale-time ledger entry exists for this QR:
+
+
+### 🤖 Autopilot
+
+The tab name needs checking. Let me find the QR row for `2024OSCAR_CC_20260620_1` in the Agroverse QR codes sheet (using the correct tab name) and check its ledger URL column + status:
+
+
+### 🤖 Autopilot
+
+The main spreadsheet (`1qbZZh…`) doesn't have the "Agroverse QR codes" tab — the QR row with `2024OSCAR_CC_20260620_1` lives in a **different spreadsheet** (the actual QR ledger). The "Agroverse QR codes" sheet is referenced by the tree-planting handler via `DESTINATION_SHEET_URL`. Let me find that URL + read the QR row's columns (status, ledger URL, owner email):
+
+
+### 🤖 Autopilot
+
+The handler reads the QR row from `DESTINATION_SHEET_URL` (the "Agroverse QR codes" spreadsheet — a **different** spreadsheet from `1qbZZh…`, which is the SOURCE). The QR row's column C = ledger URL, which resolves via Shipment Ledger Listing to the AGL4 spreadsheet (`1Uo5p3…`). Let me find `DESTINATION_SHEET_URL` (in process_qr_code_updates.js) and read the actual QR row + the AGL4 ledger listing row, to see what ledger the QR resolved to:
+
+
+### 🤖 Autopilot
+
+The QR ledger is `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU` (the main ledger — which I have SA access to). Let me read the QR row for `2024OSCAR_CC_20260620_1` (columns A, C, D, L, N, O, P, R, AA, AB) and the Shipment Ledger Listing row for the ledger URL:
+
+
+### 🤖 Autopilot
+
+Row 1 is `2024PF_20250505_01` (not the RUN's `2024OSCAR_CC_20260620_1`). Let me search the QR tab for the actual RUN QR and read its full row:
+
+
+### 🤖 Autopilot
+
+The QR row (A1572) confirms: ledger = `https://agroverse.shop/agl4`, status = ASSIGNED_TO_TREE (correct), owner email = ewong@gogreatop.com, tree data populated. So the RUN itself worked — the QR row, SunMint row, and tracking are all correct. Only the **ledger row 150** is malformed.
+
+Now the key question: the ledger URL `https://agroverse.shop/agl4` resolves (via Shipment Ledger Listing L→AB) to spreadsheet `1Uo5p3…`. The handler's `appendTreePlantingLedgerFulfillment_` — if it ran correctly — would have written the 2×6 pair. But it wrote 1×4. Let me verify the **Shipment Ledger Listing** actually maps `https://agroverse.shop/agl4` → `1Uo5p3…`, and check whether there's possibly a **different sheet** (gid) in that spreadsheet that the `Transactions` tab resolves to:
+
+
+### 🤖 Autopilot
+
+Confirmed: `https://agroverse.shop/agl4` → `1Uo5p3…` (the Transactions spreadsheet where row 150 lives). So the handler resolved the right ledger. The question remains: **why did the append write 1×4 instead of 2×6?**
+
+The write is atomic (`setValues` on a 2×6 range) — it cannot half-write. But there's one scenario: **a concurrent execution of the SAME handler ran at 13:01**, and both resolved `getLastRow()` to 149; one wrote rows 150–151 (the pair), and the other wrote... no. Let me look at the actual **Apps Script execution/Stackdriver logs** — the one thing I haven't checked. The `Logger.log` in `appendTreePlantingLedgerFulfillment_` would show `failed:` or nothing. Let me try to access the execution logs via the Apps Script API with a proper OAuth token:
+
+
+### 🤖 Autopilot
+
+The executions API is a dead end (404). Let me gather decisive evidence from the other angles: (1) merged cells/formatting on the Transactions tab (a merge would explain the blank A + dropped E/F), (2) every reference to the AGL4 spreadsheet ID across the org (who else could write to it), and (3) `processTokenizedTransactions` — the OTHER sales ledger writer I haven't read yet:
+
+
+### 🤖 Autopilot
+
+Notable: the AGL4 spreadsheet's **only** org-code reference is an unrelated CSV — so **no other GAS code has this spreadsheet ID hardcoded**. The only writers are (a) the tree-planting handler via URL resolution, and (b) the sales `processNonAgl4Transactions` (which skips agl4). This **rules out** an external hardcoded writer.
+
+Let me check the merge state properly (a merged cell would explain the blank A + dropped columns), and examine the **whole row 150 + row 151** for any hidden content (e.g. row 151 empty vs deleted):
+
+
+### 🤖 Autopilot
+
+Let me fix the auth access:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — here's the investigation state on the **AGL4 ledger row-150 discrepancy**.
+
+## What I've established (verified, not guessed)
+
+**1. The RUN itself worked correctly** (QR row A1572 verified):
+- QR `2024OSCAR_CC_20260620_1`: status `ASSIGNED_TO_TREE`, ledger `https://agroverse.shop/agl4`, owner email `ewong@gogreatop.com`, tree date `20250711`, lat/long + photo populated ✅
+- Shipment Ledger Listing row 6 confirms `agroverse.shop/agl4` → `1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc` (the Transactions spreadsheet) ✅
+- Tracking tab row 3: `Edgar_20260821130119_001`, QR, msg 171, **LINKED / OK**, 13:01:31.882Z ✅
+
+**2. The tree-planting handler CANNOT produce the malformed row.** `appendTreePlantingLedgerFulfillment_` is **byte-identical across every version** (original `d532ef3d`, #396 `be92958f`, current main): always an atomic `setValues` of the **2×6 pair** `[today, message, contributor, -1, 'Cacao Tree To Be Planted', 'Liability']` + `[today, message, contributor, 1, 'Cacao Tree Planted', 'Asset']`. **No version ever wrote a 1×4 `["", message, "Gary Teh", -1]` row.**
+
+**3. Ruled out the other ledger writers:**
+- `processNonAgl4Transactions` (project `1duQFf…`): writes a **3-row** block with E/F always filled (`'Assets'`/`'Liability'`) and **explicitly skips** `https://agroverse.shop/agl4` (line 301 filter) — cannot be it
+- Sales parser (project `1dsWec`): writes to **"QR Code Sales"** tab only, never the Transactions tab — not it
+- **No org code hardcodes spreadsheet `1Uo5p3…`** (org-wide code search: only 1 hit, an unrelated CSV) — no external hardcoded writer exists
+
+**4. The malformed shape is a fingerprint:** `[message, "Gary Teh", -1]` starting at **column B** (A blank, E/F blank, no row 151). This is a **partial/merged-cell write**, not a code-version difference.
+
+## Most likely root cause (unconfirmed — blocked on 2 checks)
+
+The write targeted `A150:F151` but only `B150/C150/D150` landed, with **row 151 absent entirely**. Two leading hypotheses:
+- **(H1) Merged cells / sheet structure on Transactions**: if cells around A150 are merged (or the sheet's last-row/grid behaves oddly), `setValues` silently drops writes to non-anchor cells. My merge check **failed on a gspread API quirk** (`Client` has no `.auth`) — never completed.
+- **(H2) A concurrent/racing execution** at 13:01:31: two processor runs resolved `getLastRow()=149`; one wrote the pair, the other wrote something else / a partial range. The verifier's "exactly ONE execution" was inferred from tracking, not from execution logs (which I could not access — Apps Script executions API returns 404 for this project).
+
+## Still blocking (needs next turn)
+
+1. **Merge/format check on Transactions A140:F156** (fix the gspread auth call — I was close)
+2. **Version History** of spreadsheet `1Uo5p3…` around 13:01Z (who wrote row 150 — script identity vs human)
+3. Confirm **which deployment/version was live at 13:01** (was it @12-pinned-#402, or a later push?)
+4. Then **fix**: replace malformed row 150 with the correct 2×6 pair (date, message, "Gary Teh", -1/1, "Cacao Tree To Be Planted"/Liability, "Cacao Tree Planted"/Asset) and **re-read the rows back** to verify
+
+## RESUME HERE →
+1. Rerun the merge/format check (correct gspread creds access) + pull Version History for row 150
+2. Determine the live version at 13:01 (deployment pin) — if it was pre-#402-era code, that changes the analysis
+3. Fix row 150 → correct 2-row pair; verify by re-reading; post result here
+4. If merges/version-history reveal a structural cause (H1), add a defensive fix (e.g. clear/avoid merged ranges or assert post-write row count) as a PR
+
+**✅ Done this turn (investigation, read-only):** verified RUN's QR/tracking correctness; proved handler code (all versions) writes 2×6 atomically; ruled out sales writers + hardcoded references; narrowed to merged-cell or race cause. No writes made to the ledger — the fix is staged for next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → read live handler + all historical versions (d532ef3d/be92958f/current) of appendTreePlantingLedgerFulfillment_ (identical 2×6 atomic); read processNonAgl4Transactions (3-row, skips agl4); read sales parser (QR Code Sales tab only); org-wide search for 1Uo5p3 (1 unrelated CSV hit); QR row A1572 verified (ASSIGNED_TO_TREE, agl4, email, tree data); Shipment Ledger Listing row 6 verified (agl4→1Uo5p3); tried Apps Script executions API (404); merge check failed on gspread auth quirk (blocked)
+
+———
+**✅ Done this turn — actions taken:**
+• `read google sheet` ×2 → Transactions!A140:F155 (row 150 malformed: A blank, B=full event text, C=Gary Teh, D=-1.00, E/F blank, no row 151); Transactions!A150:F150 (exact 4-cell row)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → commits touching handler (6 commits, ledger fn unchanged since d532ef3d); verified DESTINATION_SHEET_URL=1GE7PUq (QR ledger); read QR row A1572; verified Shipment Ledger Listing agl4→1Uo5p3; tried executions API via OAuth (404); AGL4 tabs listed (Balance/Unit Costing/Transactions/States/Entities/Pricing/Freighting/Payload)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → read process_qr_code_updates.js constants (DESTINATION_SHEET_URL=1GE7PUq, STATUS_COL_DEST=D, EMAIL_COL_DEST=L, SOLD_DATE_COL_DEST=AA); read handler constants (TPL_LEDGER_URL_COL=C, tree cols N/O/P/R, sunmint cols); read original + #396 ledger fn (identical 2×6); org code search for 1Uo5p3 (1 CSV)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → grep sales parser patterns + ledger path (QR Code Sales only); read Transactions!A145:F151 (row 150 malformed confirmed); commits history (ledger fn unchanged); executions API 404; sheet tabs
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → curl handler (all versions identical 2×6); read Transactions A140:F155 (row 150 = 4-cell malformed); grep sales parser (patterns, QR Code Sales dest); org search 1Uo5p3 (1 CSV hit)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×27 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== appendTreePlantingLedgerFulfillment_ full (281-315) ===" && sed -n '281,315p' ptpl.js && echo "" && echo "=== call site; cd /tmp && echo "=== Edgar_ / fakeUpdateId / WEBHOOK- patterns in current code ===" && grep -n "Edgar_\|fakeUpdateId\|WEBHOOK-\|create_signa; …(+20 more)
 
