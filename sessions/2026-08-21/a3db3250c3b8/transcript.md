@@ -3606,6 +3606,7 @@ The write is atomic (`setValues` on a 2×6 range) — it cannot half-write. But 
 ### 🤖 Autopilot
 
 The executions API is a dead end (404). Let me gather decisive evidence from the other angles: (1) merged cells/formatting on the Transactions tab (a merge would explain the blank A + dropped E/F), (2) every reference to the AGL4 spreadsheet ID across the org (who else could write to it), and (3) `processTokenizedTransactions` — the OTHER sales ledger writer I haven't read yet:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3840,4 +3841,50 @@ Status update — here's exactly where things stand:
 **The fix itself is ready** — I have the exact message text (read from B150, not retyped), the correct two-row shape, and the verification step (re-read A150:F151). Just need write access to land it.
 
 **Nothing else is blocked** — the tree-QR plan is otherwise green. Which option do you want?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What is the SA account to add to which sheet?
+
+
+### 🤖 Autopilot
+
+Let me pull the exact SA email from the credentials file and confirm the spreadsheet identity:
+
+
+### 🤖 Autopilot
+
+Here's exactly what to add:
+
+## The SA account to grant access to
+
+```
+agroverse-market-research@get-data-io.iam.gserviceaccount.com
+```
+
+## The spreadsheet to add it to
+
+**AGL4 ledger spreadsheet:**
+`1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`
+
+(That's the spreadsheet the Shipment Ledger Listing maps `https://agroverse.shop/agl4` →, with the **Transactions** tab where row 150 lives.)
+
+## How to grant (30 seconds)
+
+1. Open `https://docs.google.com/spreadsheets/d/1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`
+2. Click **Share** (top-right)
+3. Add `agroverse-market-research@get-data-io.iam.gserviceaccount.com`
+4. Set role to **Editor**
+5. Send/Share
+
+Then say **"done"** — I'll immediately write the corrected two-row pair (row 150: `-1 / Cacao Tree To Be Planted / Liability`; row 151: `+1 / Cacao Tree Planted / Asset`, same message + "Gary Teh" + date) and **re-read A150:F151** to verify before posting the result.
+
+(Note: this is the same SA used for market research — granting it Editor on the AGL4 ledger also lets it read/write that ledger generally. If you'd rather not grant Editor broadly, **Option B** from before — the temporary GAS fix action, which needs no sharing change — is the alternative.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu && python3 -c " import json d = json.load(open('creds/google_credentials.json')) print('client_email:', d.get('client_email'
 
