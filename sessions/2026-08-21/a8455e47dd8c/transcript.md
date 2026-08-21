@@ -4890,11 +4890,13 @@ These are the exact documents you asked for. Want me to also file them into the 
 ### 🤖 Autopilot
 
 Good question — let me actually inspect what's in the PoA template and the tutorial to answer precisely rather than guess.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The .doc is a **fillable Word template** — a standard Brazilian customs PoA. Let me confirm its structure and also quickly check the tutorial PDF to explain the full picture.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5295,6 +5297,244 @@ PDF gerado. Vou enviar para este thread.
 - Marcas e números, observações (ISPM#15, grau alimentício)
 
 Pode enviar o **segundo documento** (a Commercial Invoice) que eu traduzo também.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-21/dc39125ed112/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **4c42c42837754ce69092ff373dc46647.pdf**]
+- Type: PDF (3 pages, 2838 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Commercial Invoice — Black King to TrueTech Inc (Rev 2, FOB)
+TrueSight DAO
+Page 1
+COMMERCIAL INVOICE
+Invoice No: INV-2026-0611-001
+Date: June 11, 2026
+Revision: Rev 2 — FOB only (freight paid by buyer)
+Seller (Exporter)
+Company: Black King
+CNPJ: 50.042.585/0001-80
+Address: R. Cel. Paiva, 46 - Centro, Ilhéus - BA, 45653-310, Brazil
+Contact: Matheus Reis
+Buyer (Importer)
+Company: TrueTech Inc
+EIN: 88-3411514
+CBP Importer Number: 88-341151400
+Address: 1423 Hayes St, San Francisco, CA 94117, USA
+Contact: Gary Teh
+Shipment Details
+Transport: Air Freight (SSA → SFO)
+Incoterms: FOB (Free on Board) — Salvador, Brazil
+Country of Origin: Brazil
+Country of Destination: United States
+Payment Terms: As per agreement between Black King and TrueTech Inc
+Line Items
+#
+HS Code
+Description
+Qty
+Unit
+Unit Price
+(USD)
+Total (USD)
+1
+1801.00.00
+Cacao Nibs
+Kraft Pouch (8
+oz) — Ilhéus,
+Brazil 2024
+137
+Pouch
+$6.64
+$909.68
+2
+1803.10.00
+Cacao Husk
+(KG) — Ilhéus,
+Brazil
+20
+KG
+$17.79
+$355.71
+
+--- Page 2 ---
+Commercial Invoice — Black King to TrueTech Inc (Rev 2, FOB)
+TrueSight DAO
+Page 2
+#
+HS Code
+Description
+Qty
+Unit
+Unit Price
+(USD)
+Total (USD)
+3
+1803.10.00
+Cacao Mass
+Bar (500g) —
+Ilhéus, Brazil
+2024
+37
+Bar
+$15.70
+$580.90
+4
+1801.00.00
+Cacao Nibs
+(KG) — Ilhéus,
+Brazil 2024
+80
+KG
+$24.62
+$1,969.48
+5
+1801.00.00
+Cacao
+Almonds (KG)
+— La do Sitio,
+Pará [AGL8]
+10
+KG
+$0.00
+$0.00
+6
+2106.90.00
+Cacao Tea
+(KG) — Paulo
+2024, Santos
+[AGL8]
+12
+KG
+$0.00
+$0.00
+7
+1803.10.00
+Ceremonial
+Cacao Pouch
+(200g) —
+Paulo 2024,
+Santos [AGL8]
+169
+Pouch
+$10.37
+$1,752.53
+8
+1801.00.00
+Cacao
+Almonds (KG)
+— Vivi's Farm,
+Itacaré
+[AGL13]
+15
+KG
+$7.87
+$118.05
+9
+1801.00.00
+Cacao Nibs
+(KG) —
+Santos 2026
+[AGL13]
+100
+KG
+$10.18
+$1,018.23
+10
+2106.90.00
+Cacao Tea
+(KG) —
+Santos 2026
+[AGL13]
+21
+KG
+$10.18
+$213.83
+11
+1801.00.00
+Cacao
+Almonds (KG)
+— Oscar's
+Farm, Bahia
+[AGL14]
+10
+KG
+$11.41
+$114.12
+Totals
+Amount
+Total Quantity:
+611 units
+
+--- Page 3 ---
+Commercial Invoice — Black King to TrueTech Inc (Rev 2, FOB)
+TrueSight DAO
+Page 3
+Amount
+Total Net Weight:
+~307.3 kg
+Total Gross Weight (incl. pallet):
+~342.3 kg
+Total Invoice Value (FOB Salvador):
+$7,032.53
+Freight: Paid directly by buyer (TrueTech Inc) — not included in this invoice.
+Notes
+• Quantities and weights verified by Matheus Reis on June 11, 2026.
+• 1 × Cacao Mass Bar (500g) removed — damaged from previous shipment.
+• 1 × Ceremonial Cacao Pouch (200g) removed — withdrawn for marketing/recipe development.
+• All cacao products are organic, single-origin, and directly sourced from family farms in Bahia and Pará,
+Brazil.
+• HS Codes: Cacao beans/nibs = 1801.00.00, Cacao mass/paste = 1803.10.00, Cacao tea = 2106.90.00
+• Items marked [AGL8], [AGL13], [AGL14] are from investor-ledger-managed inventory.
+• FDA Prior Notice will be filed separately by TrueTech Inc.
+Authorized Signature:
+_________________________
+Gary Teh
+TrueTech Inc / TrueSight DAO
+```
+
+
+### 🤖 Autopilot
+
+Segundo documento recebido — a **Commercial Invoice**. Vou persistir e gerar a versão em português.
+
+
+### 🤖 Autopilot
+
+Agora vou gerar a versão em português da Commercial Invoice como PDF.
+
+
+### 🤖 Autopilot
+
+PDF gerado. Enviando para o thread.
+
+
+### 🤖 Autopilot
+
+**Documento 2 de 2 traduzido** ✅ — **Fatura Comercial (Commercial Invoice) em português** enviada neste thread:
+
+📄 `commercial_invoice_rev2_PT.pdf`
+
+**O que foi traduzido:**
+- Cabeçalhos (Fatura Comercial, Vendedor, Comprador, Dados do Embarque)
+- Tabela dos 11 itens com valores em USD (Nibs de Cacau, Casca, Massa, Amêndoas, Chá, Cacau Cerimonial)
+- Totais (611 unidades, ~307,3 kg líquido, ~342,3 kg bruto, **$7.032,53 FOB**)
+- Observações (itens removidos, organicidade, AGL8/13/14, FDA Prior Notice)
+
+**Resumo — ambos os documentos traduzidos para português:**
+1. ✅ **Lista de Embarque** (PL-2026-0611-001) — enviada antes
+2. ✅ **Fatura Comercial** (INV-2026-0611-001 Rev 2 FOB) — enviada agora
+
+Quer que eu salve as versões em português no repositório (ex.: `agentic_ai_context/exports/`) para referência futura?
 
 ———
 **✅ Done this turn — actions taken:**
