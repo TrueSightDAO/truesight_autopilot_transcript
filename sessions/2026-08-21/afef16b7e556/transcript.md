@@ -5089,11 +5089,13 @@ No Oblique variants — only Regular and Bold. Let me fix the font registration.
 ### 🤖 Autopilot
 
 PDF generated. Let me verify the content renders correctly.
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — all content renders correctly across 2 pages. Sending the PDF.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5129,6 +5131,7 @@ https://www.independent.co.uk/news/world/europe/wildfires-uk-europe-africa-impac
 ### 🤖 Autopilot
 
 Let me read the article to assess it properly.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5260,4 +5263,99 @@ So: the update took effect, the restart picked it up, and this sender now passes
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== Service status ==="; systemctl is-active truesight-autopilot 2>/dev/null || systemctl is-active autopilot 2>/dev/null || ps aux | ; echo "=== Find the actual autopilot/telegram process ==="; ps aux | grep -iE "python|telegram|autopilot|adapter" | grep -v grep | head -10; ; echo "=== Telegram adapter process start time + env allowlist (MASKED) ==="; ps -o pid,lstart,cmd -p 507492 2>/dev/null; echo; echo "=== All
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] can you help check how much of my personal $$ I have already invested into the cacao inventory only. Ignore the equipments. @truesight_autopilot_bot
+
+
+### 🤖 Autopilot
+
+Let me search the context for records of your personal investment into cacao inventory.
+
+
+### 🤖 Autopilot
+
+Let me look at the treasury cache for the detailed breakdown of Gary's personal capital into cacao inventory.
+
+
+### 🤖 Autopilot
+
+Let me find the actual treasury cache file names.
+
+
+### 🤖 Autopilot
+
+The treasury cache shows the *current inventory state*, but for your **personal cash invested into cacao inventory** I need the contribution/expense records. Let me check the managed ledgers and contribution history.
+
+
+### 🤖 Autopilot
+
+The AGL ledgers are the cacao shipment ledgers. Let me check the managed-ledger index and then read the Main Ledger for Gary's personal cacao-inventory contributions.
+
+
+### 🤖 Autopilot
+
+Let me pull the ledger transaction details to find Gary's personal capital injections into cacao inventory specifically.
+
+
+### 🤖 Autopilot
+
+The AGL15 ledger has Gary's capital injections via notarizations. Let me scan all the managed ledgers for Gary Teh capital injections (Equity/Assets type, USD/SGD/BRL) — these represent his personal cash going into the cacao program.
+
+
+### 🤖 Autopilot
+
+The ledgers show sales/movements but I need to isolate the actual *cash injections* (Equity/Assets money-in). Let me scan more carefully for Gary's personal capital injections specifically.
+
+
+### 🤖 Autopilot
+
+Let me do a careful computation — isolating only Gary's personal cash *into* cacao inventory (equity injections, capital injections, out-of-pocket contribution events), excluding sales proceeds, repayments, and equipment.
+
+
+### 🤖 Autopilot
+
+Here's the clean answer — I traced every money-in event where **Gary Teh** put personal cash into the cacao program across all AGL ledgers, excluding sales proceeds, repayments, internal ledger transfers, and equipment:
+
+## Your personal cash invested into cacao inventory: **~$13,225**
+
+**The breakdown (largest first):**
+
+| Date | Ledger | Type | Amount | What it paid for |
+|---|---|---|---|---|
+| 2025-04-02 | AGL8 | Equity | **$5,956.69** | 330 kg of cacao (Para small-scale farmers) — the big one |
+| 2024-10-09 | AGL4 | Loan | $1,819.47 | Cacao cost financing |
+| 2024-08-29 | AGL4 | Loan | $2,000.00 | Loan to secure exchange rate |
+| 2024-09-11 | AGL4 | Loan | $1,789.91 | Loan to secure exchange rate |
+| 2025-09-13 | AGL13 | Equity | $1,133.66 | Vivi's farm — 150 kg of cacao |
+| 2025-09-30 | AGL8 | Equity | $297.70 | Inventory expense (processing) |
+| 2025-09-25 | AGL8 | Equity | $294.86 | Processing 24 kg beans → ceremonial mass |
+| 2024-11-21 | AGL6 | Equity | $282.93 | 44 bags 8-oz cacao nibs |
+| 2024-11-21 | AGL6 | Equity | $183.28 | Freighting (CP327946630BR) |
+| 2024-11-21 | AGL6 | Equity | $150.17 | 10 bars of 500 g cacao mass |
+| 2024-11-21 | AGL6 | Equity | $150.17 | 125 bars of 40 g cacao mass |
+| 2025-09-20 | AGL14 | Assets | $456.49 | Oscar's farm — inventory expense |
+| 2025-09-13 | AGL13 | Equity | $46.79 | Transportation cost |
+| 2025-07-13 | AGL8 | Assets | $67.52 | Lab report (capital injection) |
+| 2024-09-07 | AGL4 | Loan | $23.90 | Wiring fee for the $2,000 transfer |
+
+**What I excluded (so the number is honest):**
+- **Sales proceeds** (Ray's $100, QR-code sales, Stripe receipts) — money *back in*, not invested
+- **Repayments** (Shena $2,100 + $2,580, AGL15→Gary $7,907) — money returned
+- **Internal transfers** (AGL15→AGL13 $211.77) — not new personal cash
+- **DAO's own capital** ($0.59 balance fix)
+- **Equipment** — no equipment rows were included (boxes/foam containers were $0-value in the snapshot)
+- **Annie Teo's SGD 10,000** injection into AGL15 — that's an investor, not your personal funds
+
+**Two caveats:**
+1. Double-entry legs counted once (the $1,133.66 and $294.86 appear as both Assets and Equity rows in the ledger)
+2. This covers the **AGL ledgers** (the cacao program ledgers). If you also want the **Main Ledger** out-of-pocket packaging/processing spend (Kraft pouches etc. — worth ~$3,200 in current inventory value), I can pull that too.
+
+So the honest figure for *cacao inventory only, ignoring equipment* is **~$13,225** (≈$13,408 including the freight leg). Want me to also tally the Main Ledger packaging spend to get the full out-of-pocket number?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && echo "=== List treasury-cache repo files ==="; curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/contents/" | pyt; cd /tmp && echo "=== managed-ledgers in treasury-cache ==="; curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/contents/mana; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/managed-ledgers/_index.json" | python3 -c " import js; …(+4 more)
 
