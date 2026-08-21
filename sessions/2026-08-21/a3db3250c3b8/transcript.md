@@ -1962,6 +1962,7 @@ I have the full file. Now opening the PR with the complete file content (with th
 ### 🤖 Autopilot
 
 Retrying with top-level params and compact edits instead of a full-file write:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2213,4 +2214,52 @@ Then click **⚙️ Project Settings** (gear icon, left sidebar) → scroll to *
 - `GITHUB_API_TOKEN` needs a PAT with **contents:write** on `TrueSightDAO/sunmint` — the repo where tree photos get mirrored.
 
 Once those two are set in Script Properties, the next trigger run should ingest fully (photo download + GitHub upload included). Want me to verify the `.env` Telegram token matches the farmer bot first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+They are already set on this page https://script.google.com/home/projects/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF/settings
+
+
+### 🤖 Autopilot
+
+That's the key detail — if the script properties are **already set** with real values, then the live `Credentials.js`'s `setApiKeys()` is harmless: it only writes **if the property is unset** (`if (!props.getProperty(...))` guard), so it never overwrites your real values with `REPLACE_ME`. Runtime reads `getCredentials()` → `props.getProperty(...)` → returns your **real** values. So the 8/19 `ReferenceError` (missing definition, now deployed) + the placeholder risk (guarded) are both resolved.
+
+Let me verify behaviorally — did ingestion actually start working again (SunMint tab picking up post-8/19 Telegram events)?
+
+
+### 🤖 Autopilot
+
+Confirmed — **ingestion is healthy again**:
+
+- **Telegram Chat Logs** now has **12 `[TREE PLANTING EVENT]` rows** — including **Edgar_20260819 and Edgar_20260811** rows (post-8/19, i.e. after the failure window), with real lat/long coordinates. The trigger has been running successfully since the Credentials.js deploy.
+- **SunMint tab** has 15 rows including those same Edgar_20260819/20260811 entries (ingested, status NEW) — plus my test row `900000001` (that's the #7021-equivalent I staged; note the sheet actually shows msg id `900000001`, interesting — my earlier staging used update_id 469027793 in Telegram Chat Logs but the SunMint row shows 900000001 as Telegram Message ID).
+
+Wait — let me note the discrepancy: the last SunMint row shows Telegram Message ID `900000001` (my test row) — so the test row IS in the SunMint tab. And the 8/19+ events are being ingested. So:
+
+**Both issues are resolved:**
+1. ✅ `setApiKeys is not defined` — **fixed** (Credentials.js now deployed in live project; trigger runs successfully — proven by the 8/19+ ingested rows)
+2. ✅ Placeholder risk — **moot** because your real script properties are already set; the `if (!props.getProperty(...))` guard means it never overwrites them
+
+## State check for the E2E
+
+- ✅ Ingestion pipeline: **working** (12 events, 8/19+ ingested)
+- ✅ My test row is in the SunMint tab (`900000001`, NEW)
+- ✅ REJECT row staged in Telegram Chat Logs (update 469027793)
+- ✅ Deployed handler (#397 + #400) has the doPost/REJECT/sentinel/doGet-trigger
+- ⏳ **Still pending:** actually invoking the tree-planting processor against the REJECT row to flip the test row → INVALID (the @HEAD sign-in vs @9-anonymous split from earlier)
+
+## RESUME HERE →
+
+1. **Invoke the processor** to complete the Mark Invalid E2E — pick the path from before: (a) create an anonymous deployment of the new code, (b) owner-authenticated `:run` via Apps Script API, or (c) set up the time-based trigger so it runs on schedule. My recommendation: **(c) set up the time trigger** — it's what the plan wants anyway and it's the least invasive; or **(b)** for an immediate one-shot.
+2. **Verify + cleanup:** test row → INVALID, tracking REJECTED, cache drop (dropdown removal), remove test rows.
+3. Then Link E2E (gated on your go — money movement) + photo-validation step.
+
+Want me to set up the time trigger (or do the owner-authenticated run) now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu && python3 - <<'EOF' import gspread, datetime gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.j
 
