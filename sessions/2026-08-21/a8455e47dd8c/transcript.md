@@ -4716,31 +4716,37 @@ The PoA doc isn't surfacing in email. Let me search the repos — the checklist 
 ### 🤖 Autopilot
 
 Let me read the checklist section that mentions the PoA to see what's documented about it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checklist confirms the PoA was signed in June 2026 but doesn't contain Omega's actual instructions doc. Let me search the email threads for the original instructions from Omega.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The searches keep returning the same main thread. The PoA instructions may be in the early part of that thread (May 2026). Let me look for the original emails with the RADAR/broker registration instructions.
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PoA instructions may be in a separate thread. I see thread `19e2102a34ab546a` (the habilitação message from Gerson). Let me search that thread and also look for early-May messages.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the admin mailbox too and try different phrasing for the PoA instructions.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do a final check of the fda_fsvp repo and any PoA document files in the org.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4864,4 +4870,54 @@ These are the exact documents you asked for. Want me to also file them into the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && ls ~/truesight_autopilot 2>/dev/null | head; find / -maxdepth 4 -name "*.py" -path "*gmail*" 2>/dev/null | head -10; pip list 2>/; cd /opt/truesight_autopilot && grep -rl "gmail" --include="*.py" . 2>/dev/null | head; echo "---"; grep -rn "get_attachment\|attachments\|us; grep -rln "def gmail\|gmail_search\|GmailService\|SCOPES.*gmail" /opt/truesight_autopilot --include="*.py" 2>/dev/null | grep -v site-packag; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Is the power of attorney just a PDF document or??
+
+
+### 🤖 Autopilot
+
+Good question — let me actually inspect what's in the PoA template and the tutorial to answer precisely rather than guess.
+
+
+### 🤖 Autopilot
+
+The .doc is a **fillable Word template** — a standard Brazilian customs PoA. Let me confirm its structure and also quickly check the tutorial PDF to explain the full picture.
+
+
+### 🤖 Autopilot
+
+Now I can answer precisely. **No — the PoA is not just a PDF.** It's a **two-part system**, and the documents we pulled are only half of it:
+
+**Part 1 — The DOCUMENT (the .doc template, NOT a PDF):**
+
+The `Modelo Procuração Omega - Padrão.doc` is a **fillable Word template** — a standard Brazilian customs power of attorney. From the text inside it, it:
+- Names the **OUTORGANTE** (grantor = Black King / Matheus) and the **OUTORGADOS** (grantees = Omega + its customs brokers)
+- Grants powers: representation before **all customs units (Unidades Aduaneiras)**, access to **SISCOMEX**, acts under **count and order (por conta e ordem)** of Black King
+- References Law 6.759/2009 (the customs regulation), GCEX/CGIM/CGEQ/CGAB/COORD/COSIS/SECEX bodies, and the despachantes by name
+
+**Why .doc, not PDF:** because it must be **edited** — you fill in Black King's CNPJ, Matheus's details, the 3 brokers' CPFs, and the representation end date, **print, sign (wet signature), and notarize (reconhecer firma)** in a cartório. It's a legal instrument, not a static PDF.
+
+**Part 2 — The SYSTEM REGISTRATION (the tutorial, which is the PDF):**
+
+`TUTORIAL - CADASTRO DE REPRESENTANTE NO SISCOMEX.pdf` (3 pages, screenshot walkthrough):
+1. Go to **portalunico.siscomex.gov.br** → click **IMPORTADOR/EXPORTADOR**
+2. "NÃO SOU UM ROBÔ" captcha → **ACESSAR COM CERTIFICADO DIGITAL** (login with **e-CPF/e-CNPJ certificate**)
+3. Click **CADASTRO DE INTERVENIENTES** (intervenient registration)
+4. Fill in: **CNPJ/CPF** of the represented party (Black King), **Tipo de atuação: IMPORTADOR/EXPORTADOR**, **CPF of each despachante** (Valéria, Lazaro, Mauricio), **Data final** (end date of representation), tick **"GESTOR DO CATÁLOGO DE PRODUTOS"** → **ADICIONAR**
+
+**So the complete PoA process is:**
+1. 📝 **Fill + sign + notarize the .doc template** (paper instrument) → send scanned copy to Omega
+2. 💻 **Register the 3 brokers in SISCOMEX** via Portal Único using Matheus's digital certificate (the tutorial)
+3. ✅ Both done = Omega is officially authorized to handle Black King's export customs paperwork
+
+**What Matheus actually did (from the thread):** May 18 he replied *"Segue procuração assinada"* — he signed the PoA. And the SOP marks both SISCOMEX/RADAR and PoA as **done (Jun 2026)**.
+
+So: the **PoA itself = signed/notarized Word doc + SISCOMEX registration**, not just a PDF. The PDFs from Omega are the *proposal* and the *tutorial* — the PoA template is the .doc. Want me to file all three into the repo with this explanation?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/omega_pdf && python3 -c " import subprocess # extract text from the .doc via antiword or catdoc if available, else strings try: out ; cd /tmp/omega_pdf && python3 -c " import fitz doc = fitz.open('omega_2026-05-18_tutorial_radar_siscomex__TUTORIAL_-_CADASTRO_DE_REPRESENTENT
 
