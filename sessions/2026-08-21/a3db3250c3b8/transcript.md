@@ -2814,16 +2814,19 @@ The credential helper uses **`TRUESIGHT_DAO_AUTOPILOT`** PAT — that's the org-
 ### 🤖 Autopilot
 
 **Cache pushed successfully** — `sunmint_pending.json` → `7319c1c` (13 items) and `sold_pending_tree.json` → `47bb0ab` (414). The `TRUESIGHT_DAO_AUTOPILOT` PAT was the right one (also garyjob's, but with write scopes). Let me verify the live cache no longer contains the test row (CDN lag caveat — check the canonical blob):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The env var isn't set in this shell (new ssh session). Let me source it and retry the canonical check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The canonical file has only **3 items** and they're strings, not dicts — that's not the same structure. Wait — this is the **Contents API caching a stale/older version**, or there's a **different file** at that path. Actually — the script pushed to `7319c1c` but the canonical blob shows commit `01ac799` with 3 string items. That looks like **the file was overwritten by a concurrent process** (the 30-min cron!), or the script pushed to a different path. Let me check the raw file + recent commits on lineage-assets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2880,16 +2883,19 @@ That way I could just print the page (like a certificate) and then share the pri
 ### 🤖 Autopilot
 
 Two asks to nail down: (1) the page buttons must actually complete the action end-to-end from the dapp click (not just via my manual invocation), and (2) the signed-payload certificate display like report_contribution.html. Let me recon both: how report_contribution renders the post-submit payload, and whether the dapp's POST actually triggers the processor (the Edgar → GAS chain).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two recon findings so far: the link page **already sets** `requestPre.textContent = shareText` (lines 487/565) — so the payload display exists. But I need to verify it's *visible* and printable, and — critically for ask #1 — whether a dapp **click** actually triggers processing (dispatch routing for REJECT + doPost running the processor). Let me check both:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two gaps identified for ask #1, and the print gap for ask #2. Let me confirm the dispatch webhook mechanism + env var name, and check whether ltp.html has any print styles:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3060,4 +3066,41 @@ This makes a dapp click **actually process** — the missing link between the pa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && echo "=== dapp API_ENDPOINT ===" && curl -s "https://beta.dapp.truesight.me/link_tree_planting.html" -o ltp.html && grep -n "API_; cd /tmp && echo "=== webhook_trigger module ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_; cd /tmp && echo "=== dao_protocol server files ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/trees/main?recurs; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+@nelanco_claude_bot can you monitor this thread?
+
+
+### 🤖 Autopilot
+
+Gary's asking the nelanco_claude_bot instance to monitor this thread. Let me find its registered agent name in the registry so I can hand it the current context properly.
+
+
+### 🤖 Autopilot
+
+Let me check the HANDOFF_MANIFEST to see if there's a registered mailbox/target for the nelanco claude bot:
+
+
+### 🤖 Autopilot
+
+Quick correction on identity + what I can do:
+
+**I'm Sophia** (this thread's autopilot instance) — not the nelanco claude bot. The `@nelanco_claude_bot` you're pinging is the **interactive Claude Code box** (`nelanco-claude`, per `NELANCO_CLAUDE_CODE_BOX_PLAN.md`), which is a separate runner — it's not one of the registered handoff targets in the agent registry (`agents/*.json` only registers `sophia` and `bionpact`), and it monitors threads on its own schedule, not via my mailbox.
+
+**What I can do to help:**
+- **Post a full state summary into this topic** so *any* monitor (Claude on the nelanco box, a future Sophia turn, or you) can pick up the exact context — I can also write it as a handoff file the nelanco box reads (`handoffs/` convention)
+- **Hand off to `bionpact`** (the Ops sibling autopilot) if you want ops-side monitoring of this thread
+- Keep monitoring myself — this thread's E2E work is mid-flight, so I'm the natural owner right now
+
+**If you specifically want nelanco_claude_bot monitoring this thread:** ping it directly in a topic it participates in, or `ssh nelanco-claude → tmux → claude` and point it at this thread + the plan file. It reads `agentic_ai_context` the same way I do — it can pull `plans/SUNMINT_TREE_QR_LINKING_PLAN.md` + this thread's history and take over.
+
+Want me to post a **state summary** to this topic (for any monitor) and/or **hand off to bionpact**? Or are you good with me continuing as the owner here?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -la /opt/truesight_autopilot/context/agentic_ai_context/agents/ 2>/dev/null && echo "---" && for f in /opt/truesight_autopilot/context/ag
 
