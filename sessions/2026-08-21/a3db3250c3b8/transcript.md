@@ -2571,36 +2571,43 @@ Step 1: deploy #402 to GAS, pull-first per the convention.
 ### 🤖 Autopilot
 
 **Drift detected — exactly what the convention is designed to catch.** The `clasp pull` overwrote the local file with the **live** version, which is pre-#402 (line 364 still has the old LINK-only filter). Git HEAD (3d45ab8) has the fix. So: live is **behind** git — this is what deploying #402 fixes. Restoring the local file to git HEAD (#402), then pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `git checkout` failed and broke the chain. Let me diagnose why — check whether the file is actually tracked and what git says:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `git restore` succeeded (RESTORED). The grep returned nothing because my pattern was wrong (the line ends `…MARKER)) continue;` — no ` && !message.includes` after the second marker). Let me verify the file properly and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Deployed** — line 364 now has the #402 fix (both markers admitted), pushed 4 files. Step 2: invoke the anonymous deployment URL to run the processor and process my staged REJECT row:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The anonymous deployment URL now returns **404 "Page Not Found"** — it worked earlier this session (returned the "No valid action" + processor messages), but after my `clasp push` the deployment got invalidated/repinned (pushing updates @HEAD but the v11 anonymous deployment may have been replaced). Let me check the deployments list to see what's live now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deployment exists (@11, pinned to v10) but returns 404. This is a known GAS quirk: when you `clasp push` after creating a deployment, the **@HEAD** moves but versioned deployments stay valid... unless the push invalidated it. The 404 "Page Not Found" on the anonymous URL often means the deployment needs a **moment to propagate** or the URL casing. Let me retry the invocation once (it worked minutes ago) and check the deployment's access by hitting @HEAD directly:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The retry worked (the 404 was transient propagation) — **`✅ 0 linked, 0 rejected, 0 errors`**. But still **0 rejected** — my staged REJECT row should have been processed now that the filter fix is live. Something else is filtering it out. Let me check the tracking tab (did it record anything?) and re-examine what the processor sees for row 11672 — particularly the `processedRowNumbers` dedup and the exact message content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2611,6 +2618,7 @@ Two important findings:
 2. **CRITICAL: the TCL sheet's headers are NOT what the processor expects!** `allr[0]` (row 1) = `['Next Expected Airdrop Date', '', '', '', '', '', '2025-06-21', ...]` — that's a **data row**, not a header row. So the sheet's **row 1 is data**, not headers. The processor uses `getDataRange().getValues()` starting at row 0 (= row 1) and `MESSAGE_COL` — if the processor assumes a header row, my row might be off by one, OR the processor's `SOURCE_SHEET_NAME` points to a different sheet entirely.
 
 Let me check the processor's constants (SOURCE_SHEET_NAME, MESSAGE_COL, TELEGRAM_UPDATE_ID_COL) and the actual tab names:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2621,6 +2629,7 @@ Key facts:
 - The processor reads `sourceSheet.getDataRange()` (Telegram Chat Logs) and dedups via the tracking tab's **first column (row numbers)** — `processedRowNumbers`
 
 The processor said **0 rejected** — meaning either it didn't see my row's marker (but it has `[TREE PLANTING REJECT EVENT]`), OR the row was **already recorded in the tracking tab** (dedup). Let me check the "Tree Planting Link" tab for rows referencing update 469027793 or row 11672:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2630,6 +2639,7 @@ The tracking tab shows only **row 11643** (the old LINK test from the earlier @9
 Wait — the filter fix is deployed (line 364 confirmed). Unless... the **deployed @11 version is v10**, and my `clasp push` updated @HEAD but the **v11 deployment is pinned to v10** (created before the #402 push). The invocation hit @11 → v10 code → **old filter** → skips REJECT rows. That's it! The anonymous deployment runs **v10**, not the freshly-pushed HEAD with the #402 fix.
 
 Let me verify by checking what v10's line 364 looks like (does it have the fix?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2637,21 +2647,25 @@ Let me verify by checking what v10's line 364 looks like (does it have the fix?)
 **Root cause confirmed.** The anonymous deployment (@11) is pinned to **version 10** — which contains #397+#399+#400 but **NOT the #402 filter fix** (v10 was saved before #402 was merged/pushed). So my invocation ran the OLD code that skips REJECT rows → "0 rejected". The fix (#402) is live in @HEAD but the anonymous URL points at v10.
 
 **Fix: save the current code (with #402) as a new version, and update the anonymous deployment to point at it.** Let me create v12 and redeploy the anonymous URL to it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New deployment @12 created, pinned to the #402 code. But @12 may not be anonymous (clasp deploy reads the manifest — which has `ANYONE_ANONYMOUS` — so it should be). Let me invoke @12 to process the REJECT row:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **"1 linked, 0 rejected"** — the processor processed one row as a **LINK**, not a reject. My staged row 11672 is a REJECT — so something else got LINKED, which would be the money-movement RUN gate I did NOT have authorization for. I need to check immediately what actually happened:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The REJECT WORKED.** Tracking tab row 3: **row 11672 → REJECTED, "E2E test - mark invalid", 2026-08-21T09:28:17Z, Updated By Sophia Truesight.** The "1 linked" in the return is just the processor's misleading label for "1 processed" (a successful REJECT increments `processed`). Now verify the SunMint row 7021 flipped to INVALID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2710,21 +2724,25 @@ Keep going until 1. Deploy #402 to GAS — clasp push on 1UrBg… (pull-first pe
 ### 🤖 Autopilot
 
 Continuing the list. Steps 1–3 are **already done and verified** (deployed #402 pull-first → invoked @12 → tracking REJECTED + SunMint 7021 → INVALID). Now **step 4: cleanup** — delete the two test rows, regen + push the cache, verify the dropdown feed is back to 13:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Test rows deleted. Now regen + push the cache so the dropdown feed drops back to 13 (persistent removal):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wrong path — the script lives elsewhere. Let me find it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `sync_pending_caches.py` isn't in tokenomics/scripts. It lives in the lineage-assets repo (I ran it there earlier this session). Let me locate it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2831,4 +2849,122 @@ The full chain — sign as sentinel → stage → anonymous invoke → processor
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /home/ubuntu && python3 - <<'EOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') sh =; cd /home/ubuntu && python3 - <<'EOF' import subprocess, json # Run the cache generator + push r = subprocess.run( ["python3", "/opt/truesigh; find /opt/truesight_autopilot -name "sync_pending_caches.py" 2>/dev/null; ls /opt/truesight_autopilot/context/tokenomics/scripts/ 2>/dev/nul; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Make sure when i click on any of the buttons this actually happens
+
+also when by convention of UI/UX of other dapp pages, after I either click on "Link Tree Planting" or "Mark Invalid" on this page. 
+https://beta.dapp.truesight.me/link_tree_planting.html
+
+The details of the signed payload should be displayed below. Much like how it is with 
+https://beta.dapp.truesight.me/report_contribution.html
+
+That way I could just print the page (like a certificate) and then share the printed page.
+
+
+### 🤖 Autopilot
+
+Two asks to nail down: (1) the page buttons must actually complete the action end-to-end from the dapp click (not just via my manual invocation), and (2) the signed-payload certificate display like report_contribution.html. Let me recon both: how report_contribution renders the post-submit payload, and whether the dapp's POST actually triggers the processor (the Edgar → GAS chain).
+
+
+### 🤖 Autopilot
+
+Two recon findings so far: the link page **already sets** `requestPre.textContent = shareText` (lines 487/565) — so the payload display exists. But I need to verify it's *visible* and printable, and — critically for ask #1 — whether a dapp **click** actually triggers processing (dispatch routing for REJECT + doPost running the processor). Let me check both:
+
+
+### 🤖 Autopilot
+
+Two gaps identified for ask #1, and the print gap for ask #2. Let me confirm the dispatch webhook mechanism + env var name, and check whether ltp.html has any print styles:
+
+
+### 🤖 Autopilot
+
+Two clear findings, and one critical gap for ask #1:
+
+**Ask #1 (buttons must actually do it):** The dapp POSTs to Rails, but the processing chain is broken:
+- Rails dispatch fires a **GET `?action=` webhook** to GAS — but the GAS action just **scans the sheet**; the event text is never passed, so nothing lands in the sheet
+- The Telegram bot feed that used to fill the sheet **has been dead since 2024** (per the doPost comment)
+- Result: a click stores the event in Rails but **nothing processes it** — until/unless someone appends a row manually (exactly what I did in the E2E)
+- The **fix already half-exists**: `doPost` (#397) accepts a signed event directly, appends a row, and runs the processor — but it's **LINK-only** (line 572 rejects REJECT) and the **dapp never calls it**
+
+**Ask #2 (certificate):** the page already fills `requestPre` with the shareText + shows `#submissionResult` — but there are **no `@media print` styles** (grep found none), so printing clips the long payload (the exact issue DAPP_PAGE_CONVENTIONS §16 fixes on report_contribution).
+
+Let me read the full doPost to build the exact fix (accept REJECT + idempotent append so double-POSTs can't double-book a LINK):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Three server-side gaps in `doPost` that block "click → actually happens":
+
+1. **LINK-marker-only** (line 572) — a REJECT message is rejected before ingest
+2. **Governor-only** (line 584) — sentinels can't use the webhook (inconsistent with the processor's `isAuthorizedOperator_`)
+3. **No idempotency** — `fakeUpdateId = 'WEBHOOK-' + timestamp` means a double-POST appends a second row → the processor would **double-book a LINK** (two ledger entries + two owner emails). Dangerous.
+
+Let me read the processor's tracking-row shape so the dedupe is correct, then open the fix:
+
+
+### 🤖 Autopilot
+
+I have everything. The dedupe is by **tracking-tab row numbers** (the processor skips `processedRowNumbers`), so doPost idempotency must check the tracking tab for an existing row with the same **transaction id / request id** before appending. Let me check if the parsed object exposes the request id, then open the fix PR:
+
+
+### 🤖 Autopilot
+
+I have the complete picture. The gaps blocking "click → actually happens" and the certificate ask:
+
+**Ask #1 (buttons must actually process):**
+1. **doPost is LINK-only** (line 572) — REJECT clicks get `missing [TREE PLANTING LINK EVENT] message` → Mark Invalid can never work via the page
+2. **doPost is governor-only** (line 584) — inconsistent with the processor's sentinel gate
+3. **No idempotency** — `fakeUpdateId = 'WEBHOOK-' + timestamp` means a double-click appends twice → **double-booked LINK** (2 ledger entries + 2 owner emails). Dangerous.
+4. **The dapp never calls doPost** — it only POSTs to Rails; Rails dispatch fires a GET `?action=` with no event text, so nothing lands in the sheet (Telegram feed dead since 2024)
+
+**Ask #2 (certificate):** page already fills `requestPre` with shareText but has **no `@media print` styles** — printing clips the payload.
+
+The server-side prerequisite is the doPost fix. Opening it:
+
+
+### 🤖 Autopilot
+
+**PR opened — tokenomics #403** (commit `2c0d8e0`): the doPost webhook fix. Let me verify the branch compiles (JS syntax) and the key hunks are present:
+
+
+### 🤖 Autopilot
+
+All hunks verified on the branch (REJECT accepted ×1, sentinel gate ×3, WEBHOOK-txid ×1, dedupe ×5, txid parse ×3, node syntax OK — no errors). 
+
+**Summary of this turn's work — the two asks, and what's now in place:**
+
+## Ask #1 — "buttons must actually happen" (root cause + server fix)
+
+**Why clicks don't process today:** the dapp POSTs to Rails, Rails dispatch fires a GET `?action=` webhook with **no event text** → nothing lands in the sheet; the Telegram bot feed that used to fill it **has been dead since 2024** (per the doPost comment). So a click stores the event but nothing processes it — I had to append rows manually in the E2E.
+
+**tokenomics #403** (`fix/tree-planting-dopost-reject-sentinel-idempotent`, commit `2c0d8e0`) fixes the server-side webhook so it *can* process clicks:
+1. **doPost accepts REJECT** (was LINK-only → Mark Invalid could never process via the webhook)
+2. **doPost uses the sentinel gate** (governor OR sentinel — consistent with the processor; Sophia can use it)
+3. **Idempotent** — update id derived from `Request Transaction ID` (`WEBHOOK-<txid>`), tracking-tab dedupe → a double-click/retry **cannot double-book a LINK** (2 ledger entries + 2 owner emails)
+4. Parses `Request Transaction ID` in the extractor
+
+**Next (dapp_beta, separate PR):** make the page POST shareText to the doPost webhook after the Rails submit → a click then processes **immediately**, and the page shows the webhook result.
+
+## Ask #2 — certificate-style signed payload
+
+- The page **already** fills `requestPre` with the shareText + shows `#submissionResult` (lines 487/565) ✅
+- **Missing: `@media print` styles** (grep found none) — printing clips the long payload. report_contribution.html has exactly this (DAPP_PAGE_CONVENTIONS §16: expand textareas/pre on print). **Fix goes in the same dapp_beta PR.**
+
+## RESUME HERE →
+
+1. **Merge tokenomics #403** → deploy to GAS (pull-first) → create a fresh anonymous deployment of the new code
+2. **dapp_beta PR:** (a) after Rails submit, POST the same shareText to the doPost webhook URL → immediate processing + show the webhook result in `#responsePre`; (b) add `@media print` styles so the page prints as a certificate
+3. **E2E via the page:** Gary clicks Link / Mark Invalid on beta → verify it processes (tracking row + SunMint flip) without manual sheet appends
+4. **Link (RUN)** still gated on your explicit go (money movement)
+
+**✅ Actions this turn:** diagnosed the click→process gap (Rails GET webhook passes no text; Telegram feed dead; doPost LINK-only + governor-only + non-idempotent), opened tokenomics #403 with the server-side fix, verified the branch (all hunks + JS syntax OK). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && curl -s "https://beta.dapp.truesight.me/report_contribution.html" -o rc.html && curl -s "https://beta.dapp.truesight.me/link_tree; cd /tmp && echo "=== Rails edgar submit: what happens after store? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sentiment; cd /tmp && echo "=== ltp.html: is requestPre visible + print styles? ===" && grep -n "requestPre\|@media print\|Signed request\|reportOutput; …(+7 more)
 
