@@ -4032,6 +4032,7 @@ Vou traduzir o documento para português. Primeiro, deixa eu persistir o conteú
 ### 🤖 Autopilot
 
 Primeiro documento recebido — a **Packing List**. Vou gerar a versão em português como PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4425,4 +4426,22 @@ Here's the list ordered by proximity to Jurerê (approximate drive times):
 **Bottom line:** For you in Jurerê, **AR SC Digital in Ingleses is the clear winner** on distance. If you'd rather not go out at all, **SESCON does in-home service**, or **Plátano/Accertive do video-call validation** — all issue the e-CPF that unlocks gov.br Ouro.
 
 Want me to draft a scheduling message (in Portuguese) for AR SC Digital in Ingleses?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] What is the name of the service we are trying to get??
+
+
+### 🤖 Autopilot
+
+The service is a **Certificado Digital e-CPF (ICP-Brasil)** — the digital identity certificate for an individual.
+
+More precisely, what we're trying to obtain:
+
+1. **The certificate:** **e-CPF** (Certificado Digital de Pessoa Física) — issued by an ICP-Brasil-accredited authority. You'd get the **A1** (file on computer, 1-year validity) or **A3** (token/cloud, 3-year validity) model.
+
+2. **Its purpose:** Using it to log into gov.br via "Entrar com Certificado Digital" instantly elevates your account to **nível Ouro (Gold)** — which unlocks e-CAC, SISCOMEX, CNPJ administration, and the other federal services we need for the Black King / Brazil export work.
+
+So when you contact the providers, just say: *"Preciso emitir um certificado digital e-CPF, modelo A1 ou A3, padrão ICP-Brasil."* That's the exact service name they'll recognize.
 
