@@ -4942,11 +4942,13 @@ So: the **PoA itself = signed/notarized Word doc + SISCOMEX registration**, not 
 ### 🤖 Autopilot
 
 Let me check our records for Matheus's CPF.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check Black King's entity file in fda_fsvp — that's the most likely place for Matheus's personal details.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5539,4 +5541,86 @@ Quer que eu salve as versões em português no repositório (ex.: `agentic_ai_co
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-21/dc39125ed112/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] I heard that to login to Gov.Br with gold tier I need a digital certificate 
+
+I am aware that there are companies to do that to Brazil. I am right now in Jurere Florianopolis. Can you help assemble a list of companies and their Google map links that can help me handle that
+
+
+### 🤖 Autopilot
+
+Let me research digital certificate providers in Florianópolis (Jurere area) for you.
+
+
+### 🤖 Autopilot
+
+Encontrei as principais certificadoras em Florianópolis. Deixa eu buscar os links do Google Maps para cada uma.
+
+
+### 🤖 Autopilot
+
+Deixa eu confirmar os endereços das ARs adicionais em Florianópolis.
+
+
+### 🤖 Autopilot
+
+Deixa eu confirmar o endereço da AR SC Digital (Ingleses — o mais próximo de Jurerê).
+
+
+### 🤖 Autopilot
+
+Aqui está a lista completa de empresas que podem emitir seu certificado digital e-CPF (nível Ouro gov.br) em Florianópolis — com links do Google Maps:
+
+## 📍 Certificadoras em Florianópolis
+
+### 🏆 Mais próximos de Jurerê
+
+**1. AR SC Digital — Ingleses** (mais perto de Jurerê, ~15 min)
+- **Endereço:** Rua Intendente João Nunes Vieira, 897, Sala 01 — Ingleses do Rio Vermelho, Florianópolis/SC, CEP 88058-100
+- **Tel:** 0800 555 0860
+- **Google Maps:** https://www.google.com/maps/search/?api=1&query=Rua+Intendente+João+Nunes+Vieira+897+Ingleses+Florianopolis
+- **Site:** https://arscdigital.com.br
+- ⚠️ Obs: o CNPJ oficial lista o endereço como nº 126 (Edif. Comercial Pacheco, Sala 104) — confirmar antes de ir
+
+**2. CDL Florianópolis — Centro** (referência, atendimento presencial + online)
+- **Endereço:** Rua Felipe Schmidt, 679 — Ed. CDL, Centro, CEP 88010-001
+- **Tel:** (48) 3229-7000
+- **Google Maps:** https://www.google.com/maps/search/?api=1&query=Rua+Felipe+Schmidt+679+CDL+Florianopolis
+- **Site:** https://www.cdlflorianopolis.org.br/servicos/certificado-digital
+
+**3. SESCON Grande Florianópolis — Centro**
+- **Endereço:** Av. Rio Branco, 533 — 7º Andar, Centro, CEP 88015-201
+- **Tel:** (48) 3222-1409 / WhatsApp (48) 98478-9494
+- **Google Maps:** https://www.google.com/maps/search/?api=1&query=Av+Rio+Branco+533+Florianopolis
+- **Site:** https://sescongf.com.br/certificados-digitais
+- **Obs:** Também atende em domicílio/empresa (agendar pelo 48 98478-9494)
+
+**4. AR Validar — Florianópolis**
+- **Endereço:** Av. Barão do Rio Branco (área central) — confirmar endereço exato
+- **Tel:** (48) 3028-3700 / WhatsApp (48) 3024-9371
+- **Google Maps:** https://www.google.com/maps/search/?api=1&query=AR+Validar+Florianopolis
+- **Site:** https://arvalidar.com.br
+
+**5. Plátano Digital — Florianópolis** (atendimento humanizado)
+- **WhatsApp:** (54) 99256-9044
+- **Google Maps:** https://www.google.com/maps/search/?api=1&query=Platano+Digital+Florianopolis
+- **Site:** https://platanodigital.com.br/unidade/certificado-digital-florianopolis-sc
+
+**6. Accertive / Cechinel — Florianópolis** (online + presencial)
+- **Site Cechinel:** https://arcechinel.com.br
+- **Site Accertive:** https://accertive.com.br/certificado-digital/sc/florianopolis
+
+---
+
+## 💡 Dicas rápidas
+
+1. **Para gov.br Ouro:** peça o **e-CPF A1 ou A3** (ICP-Brasil) — o **A3 Nuvem** (~R$89–252) é o mais barato e resolve na hora. Com o certificado, o login "Entrar com Certificado Digital" eleva sua conta a Ouro automaticamente.
+2. **Documentos:** CPF, RG/CNH ou passaporte (estrangeiro), comprovante de endereço. Como você é estrangeiro com CPF, leve o passaporte + CPF.
+3. **Presencial é obrigatório na primeira emissão** (coleta biométrica), mas alguns fazem **por videoconferência** — ideal se preferir não sair de Jurerê.
+4. **Mais perto de você:** AR SC Digital (Ingleses) é o mais próximo; se preferir conforto, SESCON atende em domicílio.
+
+Quer que eu prepare um e-mail de agendamento (PT) para uma delas?
 
