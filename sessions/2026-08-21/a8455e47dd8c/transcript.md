@@ -4774,6 +4774,7 @@ I've searched exhaustively and I don't have the Omega PoA instructions doc in an
 ### 🤖 Autopilot
 
 Let me search the inbox more specifically for Omega emails with PDF attachments.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4920,4 +4921,44 @@ So: the **PoA itself = signed/notarized Word doc + SISCOMEX registration**, not 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/omega_pdf && python3 -c " import subprocess # extract text from the .doc via antiword or catdoc if available, else strings try: out ; cd /tmp/omega_pdf && python3 -c " import fitz doc = fitz.open('omega_2026-05-18_tutorial_radar_siscomex__TUTORIAL_-_CADASTRO_DE_REPRESENTENT
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Do you have Matheus CPF on record?
+
+
+### 🤖 Autopilot
+
+Let me check our records for Matheus's CPF.
+
+
+### 🤖 Autopilot
+
+Let me check Black King's entity file in fda_fsvp — that's the most likely place for Matheus's personal details.
+
+
+### 🤖 Autopilot
+
+**Yes — but only partially.** Here's what's on record for Matheus:
+
+**In our records (fda_fsvp `suppliers/black_king/entity.json`):**
+- ✅ **Legal name:** MATHEUS REIS PEREIRA
+- ✅ **Email:** theus.reis.ssa@gmail.com
+- ✅ **Phone:** +55 73 99109-0002
+- ✅ **CNPJ:** 50.042.585/0001-80
+- ❌ **CPF: NOT on record** — the entity file *explicitly excludes it for privacy*: *"FDA registration PINs and any personal CPF are intentionally omitted from this public repo."*
+
+**Why it's missing:**
+1. **Privacy** — the fda_fsvp repo is public; personal CPFs were deliberately excluded
+2. **Different identifier** — CPF (personal, 11 digits) ≠ CNPJ (company, 14 digits). We have the CNPJ everywhere, but Matheus's *personal* CPF was never filed.
+
+**However** — the Operating Agreement (which I have) contains **your** CPF (Gary Teh — 039.733.078-22), and the Omega email thread had the **brokers' CPFs** (Valéria 420.749.165-15, Lazaro 237.915.355-87, Mauricio 374.003.555-20). But Matheus's own personal CPF is not in any document I've been given.
+
+**If you need Matheus's CPF** (e.g., for the SISCOMEX intervenient registration, which uses the *legal rep's* e-CPF certificate), options:
+1. It's embedded in his **e-CPF digital certificate** (he has it — used for the RADAR work)
+2. It appears on the **signed PoA** and any **cartório-notarized documents** he signed
+3. Ask him directly — or pull the CNPJ's "Quadro de Sócios e Administradores" (QSA) at Receita Federal, which for an Empresário Individual lists the owner with CPF (via e-CAC, since it's protected data)
+
+Want me to check the CNPJ QSA via the Brasil API to see if the owner CPF is exposed there?
 
