@@ -4499,6 +4499,7 @@ Want me to add "INAPTA (2+ years missed declarations)" to the SOP's blocker list
 ### 🤖 Autopilot
 
 Let me check the CNPJ's legal nature via public APIs and research whether an Empresário Individual can add a director.
+[2 tool result(s) compacted: http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4548,6 +4549,7 @@ Want me to:
 ### 🤖 Autopilot
 
 Let me draft this as a proper decision document and file it to the repo.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4607,11 +4609,13 @@ Want me to merge #765?
 ### 🤖 Autopilot
 
 Let me generate a PDF version of the decision doc for your chat with Vini.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Now let me send it to you in this thread so you have it for the Vini chat.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4640,21 +4644,25 @@ Indicate that I also regsitered for Br.Gov
 ### 🤖 Autopilot
 
 Let me share the PDF to the repo and log your contribution with it attached.
+[2 tool result(s) compacted: upload_local_file_to_github, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF uploaded fine. The contribution submission hit a CLI arg error — let me retry with the correct parameter mapping.
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `create_dao_submission` tool has a bug passing `--type`. Let me use `submit_contribution` instead — it worked earlier for the 20-min contribution.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `submit_contribution` doesn't attach files, but the PDF is already on GitHub — I'll reference the URL in the description (same effect as attaching).
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4686,6 +4694,11 @@ Both the PDF and the contribution record are in place.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Shared as attachment 📄 — **`Black_King_Admin_Access_Options.pdf`** (3 pages) is now in this thread:
 
 - CNPJ confirmed facts (Empresário Individual 213-5, Inapta/omissão, empty QSA)
@@ -4705,11 +4718,13 @@ Ready to forward to Vini.
 ### 🤖 Autopilot
 
 Let me search for the Omega power of attorney document.
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No hits yet — let me broaden the search across different terms.
+[3 tool result(s) compacted: search_context, search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4772,4 +4787,53 @@ I've searched exhaustively and I don't have the Omega PoA instructions doc in an
 **Most likely reality:** The instructions were probably shared with **Matheus** directly (WhatsApp/email to him, since he's the one who grants the PoA as Black King's legal rep) rather than with us — or they live in an email thread Gmail search isn't surfacing.
 
 **Suggested next step:** The fastest path is to ask **Isis or Gerson at Omega** to re-send the PoA instructions (they'll have it in their sent folder), or ask Matheus to forward what Omega sent him. Want me to draft that request email? And once we get the doc, I'll file it in `fda_fsvp`/`agentic_ai_context` so it's searchable for the future.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] check my inbox with omega services. There should be an email thread with a PDF attached
+
+
+### 🤖 Autopilot
+
+Let me search the inbox more specifically for Omega emails with PDF attachments.
+
+
+### 🤖 Autopilot
+
+Found it! Message `19e272457a324468` from Iolanda Santos (May 14, 2026): *"Encaminhamos anexo, nossa proposta comercial, **modelo de procuração** e abaixo nomes dos despachantes..."* — the PoA model is in the attachment. Let me read it.
+
+
+### 🤖 Autopilot
+
+Found the thread — **`RE: Quote Gary`** (thread `19e2102a34ab546a`). Let me read the May 18 message with the RADAR/SISCOMEX tutorial attachment to capture the instructions.
+
+
+### 🤖 Autopilot
+
+Found the full thread. Here's the complete picture:
+
+**📧 Thread: `RE: Quote Gary` (May 13–18, 2026)**
+
+**The PoA instructions from Omega came in two emails with PDF attachments:**
+
+1. **May 14 — Iolanda Santos** (msg `19e272457a324468`): *"Encaminhamos anexo, nossa proposta comercial, **modelo de procuração**..."* — attached the commercial proposal + **PoA template (modelo de procuração)**, plus the 3 customs brokers' CPFs for RADAR/SISCOMEX:
+   - Valéria Requião Barretto — CPF 420.749.165-15
+   - Lazaro Barbosa Reis — CPF 237.915.355-87
+   - Mauricio Costa Bezerra — CPF 374.003.555-20
+
+2. **May 18 — Iolanda Santos** (msg `19e3b6ba626fbcd8`): *"Encaminhamos anexo **tutorial para inclusão dos despachantes da Omega junto ao radar/SISCOMEX**"* — attached the step-by-step tutorial on how to register Omega's brokers in RADAR. Key line: **"Essa inclusão é feita com o certificado digital e-CPF do responsável legal da empresa"** (done with the legal rep's e-CPF digital certificate).
+
+**What followed (the closing of the loop):**
+- **May 18:** Matheus replied *"Segue procuração assinada"* — signed PoA sent back to Omega ✅
+- The SOP's Phase 0 marks both **SISCOMEX/RADAR registration** and **PoA** as done Jun 2026 ✅
+
+**About the PDF attachments themselves:** The Gmail API returns the message text but **not the attachment bytes** in this read — the PDFs (proposta comercial, modelo de procuração, tutorial RADAR) are attached to those messages but I can't pull the files directly via this tool. They'd need to be downloaded from Gmail (the IDs are above if you want to fetch them).
+
+**Key takeaways for your records:**
+- **PoA model** = the template Omega provided (May 14)
+- **RADAR tutorial** = how to add the 3 brokers using Matheus's e-CPF cert (May 18)
+- **Signed PoA** = Matheus returned it May 18
+
+Want me to file this whole thread summary (emails, dates, what each attachment contained) into the freighting SOP so the PoA instructions are documented even without the raw PDFs?
 
