@@ -4832,6 +4832,7 @@ Let me see if I can pull the actual PDF attachments from Gmail via the local too
 ### 🤖 Autopilot
 
 Google API client is available. Let me find how the autopilot accesses Gmail so I can pull the attachment bytes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4992,4 +4993,34 @@ That screenshot is the **e-CAC (Receita Federal) services menu** — the "Situa�
 **Most likely issue you're hitting:** to see **Black King's CNPJ debts** (50.042.585/0001-80), you must be acting **as the company** — either logged in with the **e-CNPJ certificate**, or with your gov.br **switched to the CNPJ profile** (via the Procuração Eletrônica that Matheus grants in e-CAC). If you're logged in with your own personal CPF and no procuração, the system only shows **your own** debts — Black King's won't appear, which is the classic dead-end here.
 
 What exactly is failing for you — can't log in, can't find the CNPJ's debts, or the certidão shows something unexpected? If you tell me the specific error/behavior, I can pinpoint the fix (e.g., "Alterar perfil de acesso" to switch to the CNPJ, or checking whether the procuração from Matheus is active).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] How to login with the e-CNPJ certificate?
+
+
+### 🤖 Autopilot
+
+Here's how to log into e-CAC with the e-CNPJ certificate — **but first, the critical catch: Matheus's e-CNPJ is EXPIRED (early June 2026)**, so this won't work until it's renewed. That's the very blocker we've been tracking. Steps for when it's renewed (or if he has a second valid cert):
+
+**Setup (once, per computer):**
+1. **Install the certificate** — for A1 (file-based): install the `.pfx`/`.p12` into the browser's certificate store (Chrome: Settings → Privacy → Security → Manage certificates; or install the ICP-Brasil CA chain). For A3 (token/smartcard): install the vendor driver (e.g., SafeNet/Token) and plug it in.
+2. **Browser** — use Chrome or Edge; in private/incognito mode the cert may not load. Install the **"Aplicativo de Assinatura / Safeweb"** plugin if prompted.
+
+**Login flow:**
+1. Go to **cav.receita.fazenda.gov.br** (e-CAC)
+2. Click **"Entrar com GOV.BR"**
+3. Choose **"Certificado Digital"** (NOT password)
+4. Select **Black King's e-CNPJ certificate** (CNPJ 50.042.585/0001-80 — it's labeled with the CNPJ)
+5. Enter the **certificate PIN/password** when the browser prompts
+6. You land in e-CAC **as Black King** — now "Meus Débitos", "Certidões (CND)", "Situação Fiscal" all show the **CNPJ's** data, not a personal CPF's
+
+**Important notes:**
+- **Must use the e-CNPJ, not e-CPF** — if you only see CPF services, you picked the wrong cert
+- **"NÃO SOU UM ROBÔ"** captcha appears; the cert window opens after that
+- If the cert is expired, the portal rejects it — **renewal happens via the issuing CA** (certificadora, e.g. Certisign/Serpro/AC) with the "renovação" process, or Matheus's accountant does it; new certs need the company documents (CNPJ card, contract, Matheus's CPF + ID)
+- Alternative when cert is expired: **gov.br password login** — but only if the account is **linked to the CNPJ** (via procuração) and at **Prata/Ouro** level
+
+Want me to draft a short PT message to Matheus covering (a) renewing the e-CNPJ, and (b) these exact login steps once renewed — so he can pull the debt amounts himself?
 
