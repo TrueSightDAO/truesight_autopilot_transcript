@@ -1968,6 +1968,7 @@ Retrying with top-level params and compact edits instead of a full-file write:
 ### 🤖 Autopilot
 
 **PR #401 opened** — the pull-first convention is now codified. Let me verify the branch file is correct (all 4 edits applied, compiles):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2262,4 +2263,40 @@ Want me to set up the time trigger (or do the owner-authenticated run) now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /home/ubuntu && python3 - <<'EOF' import gspread, datetime gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.j
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is the URL to invoke the reject the tree?
+
+
+### 🤖 Autopilot
+
+Here's the URL to invoke the reject-the-tree processor (the function that scans Telegram Chat Logs and processes `[TREE PLANTING REJECT EVENT]` rows — like the one I staged for the test submission):
+
+## The URL (new code — has REJECT + sentinel gate)
+
+```
+https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec?action=processTreePlantingLinkCron
+```
+
+- This is the **@HEAD deployment** — it runs the current code (`processTreePlantingLinkCron` → `processTreePlantingLinksFromTelegramChatLogs()`), which handles both REJECT and LINK events with the **governor-or-sentinel** gate.
+- Expected result: `✅ Tree planting links processed: 0 linked, 1 rejected, 0 errors` (the 1 rejected = my staged REJECT for the test submission) → then the SunMint row flips to **INVALID**.
+
+## ⚠️ One catch — access
+
+This @HEAD deployment is currently **"Only myself"** (owner-only) — opening it anonymously redirects to the Google sign-in page. So:
+- **If you open it in a browser signed in as the script owner** → it runs directly.
+- **If it redirects to sign-in** → tell me and I'll either (a) create an **anonymous deployment** of the current code, or (b) set up the **time-based trigger** so it runs on schedule automatically (which the plan wants anyway).
+
+## The other one (NOT for this test)
+
+```
+https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=processTreePlantingLinksFromTelegramChatLogs
+```
+- This is the **@9 deployment** — works anonymously ✅ but runs **older code** (governor-only, no REJECT support) — it won't process my staged REJECT correctly. Use the @HEAD one above.
+
+Want me to set up the anonymous deployment (or the time trigger) so you don't have to deal with the sign-in redirect?
 
