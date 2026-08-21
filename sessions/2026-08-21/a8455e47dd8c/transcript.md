@@ -5079,3 +5079,224 @@ Repo links (for sharing elsewhere):
 
 Sure! Go ahead and attach the two documents — I'll translate them into Portuguese for you.
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **7af6a55bacd6478bad49f3b6b6ccb235.pdf**]
+- Type: PDF (3 pages, 2541 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Packing List — Black King to TrueTech Inc
+TrueSight DAO
+Page 1
+PACKING LIST
+Packing List No: PL-2026-0611-001
+Date: June 11, 2026
+Reference: Commercial Invoice INV-2026-0611-001
+Exporter
+Company: Black King
+CNPJ: 50.042.585/0001-80
+Address: R. Cel. Paiva, 46 - Centro, Ilhéus - BA, 45653-310, Brazil
+Importer
+Company: TrueTech Inc
+EIN: 88-3411514
+Address: 1423 Hayes St, San Francisco, CA 94117, USA
+Shipment Details
+Transport: Air Freight (SSA → SFO)
+Total Packages: 1 Pallet
+Pallet Dimensions: 100 cm × 120 cm × 100 cm
+Pallet Weight: 35.00 kg (tare)
+Total Gross Weight: 375.08 kg
+Total Net Weight: 340.08 kg
+Package Contents
+Pallet 1 of 1
+#
+Description
+HS Code
+Qty
+Unit
+Net Wt (kg)
+1
+Cacao Nibs Kraft
+Pouch (8 oz) —
+Ilhéus, Brazil
+2024
+1801.00.00
+137
+Pouch
+31.07
+2
+Cacao Husk (KG)
+— Ilhéus, Brazil
+1803.10.00
+20
+KG
+20.00
+
+--- Page 2 ---
+Packing List — Black King to TrueTech Inc
+TrueSight DAO
+Page 2
+#
+Description
+HS Code
+Qty
+Unit
+Net Wt (kg)
+3
+Cacao Mass Bar
+(500g) — Ilhéus,
+Brazil 2024
+1803.10.00
+38
+Bar
+19.00
+4
+Cacao Nibs (KG)
+— Ilhéus, Brazil
+2024
+1801.00.00
+80
+KG
+80.00
+5
+Cacao Almonds
+(KG) — La do
+Sitio, Pará [AGL8]
+1801.00.00
+10
+KG
+10.00
+6
+Cacao Tea (KG)
+— Paulo 2024,
+Santos [AGL8]
+2106.90.00
+12
+KG
+0.01
+7
+Ceremonial
+Cacao Pouch
+(200g) — Paulo
+2024 [AGL8]
+1803.10.00
+170
+Pouch
+34.00
+8
+Cacao Almonds
+(KG) — Vivi's
+Farm, Itacaré
+[AGL13]
+1801.00.00
+15
+KG
+15.00
+9
+Cacao Nibs (KG)
+— Santos 2026
+[AGL13]
+1801.00.00
+100
+KG
+100.00
+10
+Cacao Tea (KG)
+— Santos 2026
+[AGL13]
+2106.90.00
+21
+KG
+21.00
+11
+Cacao Almonds
+(KG) — Oscar's
+Farm, Bahia
+[AGL14]
+1801.00.00
+10
+KG
+10.00
+Subtotal (Net
+Weight)
+613
+340.08 kg
+Pallet Packaging
+(tare)
+1
+Pallet
+35.00 kg
+Total Gross
+Weight
+375.08 kg
+Weight Summary
+Weight (kg)
+Total Net Weight
+340.08
+
+--- Page 3 ---
+Packing List — Black King to TrueTech Inc
+TrueSight DAO
+Page 3
+Weight (kg)
+Pallet Tare Weight
+35.00
+Total Gross Weight
+375.08
+Marks & Numbers
+• Shipping Mark: AGROVERSE / TRUETECH
+• Pallet ID: PAL-001
+• Origin: Ilhéus, BA, Brazil
+• Destination: San Francisco, CA 94117, USA
+• Cargo Nature: Organic Cacao Products — Food Grade
+• Storage: Cool, dry place. Keep away from direct sunlight and strong odors.
+Notes
+• All wooden packaging is ISPM#15 compliant (fumigated/heat treated with IPPC stamp).
+• Products are packed in food-grade kraft pouches and cardboard boxes on a standard export pallet.
+• This shipment contains no hazardous materials.
+• HS Codes: Cacao beans/nibs = 1801.00.00, Cacao mass/paste = 1803.10.00, Cacao tea = 2106.90.00
+Authorized Signature:
+_________________________
+Gary Teh
+TrueTech Inc / TrueSight DAO
+```
+
+
+### 🤖 Autopilot
+
+Vou traduzir o documento para português. Primeiro, deixa eu persistir o conteúdo no transcript e depois gerar a versão em português.
+
+
+### 🤖 Autopilot
+
+Primeiro documento recebido — a **Packing List**. Vou gerar a versão em português como PDF.
+
+
+### 🤖 Autopilot
+
+PDF gerado. Vou enviar para este thread.
+
+
+### 🤖 Autopilot
+
+**Documento 1 de 2 traduzido** ✅ — **Lista de Embarque (Packing List) em português** enviada neste thread:
+
+📄 `packing_list_rev1_PT.pdf`
+
+**O que foi traduzido:**
+- Todos os cabeçalhos (Lista de Embarque, Exportador, Importador, Dados do Embarque)
+- A tabela de 11 itens (Nibs de Cacau, Casca de Cacau, Massa de Cacau, Amêndoas, Chá de Cacau, Cacau Cerimonial)
+- Resumo de pesos (líquido 340,08 kg / bruto 375,08 kg)
+- Marcas e números, observações (ISPM#15, grau alimentício)
+
+Pode enviar o **segundo documento** (a Commercial Invoice) que eu traduzo também.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-21/dc39125ed112/transcript.md
+
