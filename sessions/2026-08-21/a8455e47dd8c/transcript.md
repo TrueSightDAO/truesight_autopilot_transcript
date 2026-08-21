@@ -4263,6 +4263,7 @@ TrueTech Inc / TrueSight DAO
 ### 🤖 Autopilot
 
 Segundo documento recebido — a **Commercial Invoice**. Vou persistir e gerar a versão em português.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4503,4 +4504,67 @@ Here's the current SOP for shipping cacao from **Matheus's warehouse (Ilhéus, B
 **Current status:** The shipment docs are ready (Commercial Invoice INV-2026-0611-001 $7,032.53 FOB + Packing List, both translated to PT), but the **whole chain is still blocked at Phase 0 — the NF-e** — until Black King's CNPJ is regularized (CNAE + cert renewal + Inapto cleared).
 
 Want me to pull the cost-summary/timeline tables or the Appendix A/B details from the full SOP?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] what are the documents we need and also what are the existing documents we already have in place for this current upcoming freight. Share these as attachments
+
+
+### 🤖 Autopilot
+
+Let me first enumerate exactly what documents exist, then share the relevant ones.
+
+
+### 🤖 Autopilot
+
+Let me see the full exports list to make sure I capture all relevant docs.
+
+
+### 🤖 Autopilot
+
+Let me download the related guide PDFs from the repo so I can share the complete doc set.
+
+
+### 🤖 Autopilot
+
+Now let me share the existing shipment documents as attachments.
+
+
+### 🤖 Autopilot
+
+One hit rate limit — retrying the 4th attachment.
+
+
+### 🤖 Autopilot
+
+All 4 attached. Here's the complete picture:
+
+## 📋 Documents needed for this freight (Ilhéus → SF)
+
+| # | Document | Status |
+|---|----------|--------|
+| 1 | **Commercial Invoice** (INV-2026-0611-001, Rev 2 FOB, $7,032.53) | ✅ **Have it** |
+| 2 | **Packing List** (PL-2026-0611-001, Rev 1) | ✅ **Have it** |
+| 3 | **NF-e (Nota Fiscal Eletrônica) model 55** + DANFE | ❌ **BLOCKED** — Black King can't issue (CNAE/cert/Inapto) |
+| 4 | **DU-E (Declaração Única de Exportação)** — registered in Siscomex by Omega | ⬜ After NF-e |
+| 5 | **Air Waybill (AWB)** | ⬜ Booking (Omega/airline) |
+| 6 | **Phytosanitary Certificate** (for wooden pallets, ISPM#15) | ⬜ At shipment |
+| 7 | **FDA Prior Notice** (filed by TrueTech Inc) | ⬜ Before arrival |
+| 8 | **PoA + RADAR/SISCOMEX registration** (done Jun 2026) | ✅ **In place** |
+| 9 | **Cargo photos** | ⬜ Matheus to send |
+| 10 | **IPPC stamp / fumigation cert** | ⬜ At palletization |
+
+## ✅ Existing docs attached above (4 files)
+
+1. **Commercial Invoice Rev 2 (EN)** — sent 📄
+2. **Packing List Rev 1 (EN)** — sent 📄
+3. **Fatura Comercial (PT)** — sent 📄
+4. **Lista de Embarque (PT)** — sent 📄
+
+The critical missing piece remains **#3 the NF-e** — once Black King's CNPJ is regularized, that unlocks the DU-E and everything downstream. Also on the repo if you need to re-share: the **NF-e self-service guide** (bilingual) and the **export NF-e guide**. Want me to attach those too?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/*.pdf /tmp/*.doc /tmp/*.docx 2>/dev/null; echo "=== omega_pdf ==="; ls -la /tmp/omega_pdf/ 2>/dev/null; cd /tmp && curl -sL -o nfe_guide.pdf "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-11_export_nfe_g
 
