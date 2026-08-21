@@ -4780,11 +4780,13 @@ Let me search the inbox more specifically for Omega emails with PDF attachments.
 ### 🤖 Autopilot
 
 Found it! Message `19e272457a324468` from Iolanda Santos (May 14, 2026): *"Encaminhamos anexo, nossa proposta comercial, **modelo de procuração** e abaixo nomes dos despachantes..."* — the PoA model is in the attachment. Let me read it.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the thread — **`RE: Quote Gary`** (thread `19e2102a34ab546a`). Let me read the May 18 message with the RADAR/SISCOMEX tutorial attachment to capture the instructions.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4824,6 +4826,7 @@ Want me to file this whole thread summary (emails, dates, what each attachment c
 ### 🤖 Autopilot
 
 Let me see if I can pull the actual PDF attachments from Gmail via the local tooling on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4961,4 +4964,32 @@ Let me check Black King's entity file in fda_fsvp — that's the most likely pla
 3. Ask him directly — or pull the CNPJ's "Quadro de Sócios e Administradores" (QSA) at Receita Federal, which for an Empresário Individual lists the owner with CPF (via e-CAC, since it's protected data)
 
 Want me to check the CNPJ QSA via the Brasil API to see if the owner CPF is exposed there?
+
+
+### 🧑 Governor
+
+having issues with
+
+[Attachment auto-processed: **83ee2274c00b462bbbd676981b3df7fb.jpg**]
+- Type: Image (OCR confidence: 79.9%, quality: good)
+
+Extracted text:
+```
+= Federal Revenue Services a2?7@0 QQ cunineet Citizen Business Simples Nacional MEI Real Estate Certif Coen cee eed 4 Check CPF Status My Income Tax eSocial My Debts and Generate DARF My Debt My Processes Federal Tax Outstanding Negotiations Clearance Matters Certificates (CND)
+```
+
+
+### 🤖 Autopilot
+
+That screenshot is the **e-CAC (Receita Federal) services menu** — the "Situação Fiscal" area. Good news: this is exactly the right place to find Black King's debts. Here's what each item means for our purpose:
+
+- **"My Debts and Generate DARF"** (Meus Débitos e Gerar DARF) → the list of federal tax debts with amounts
+- **"My Debt"** → installment plans (parcelamentos) already in place
+- **"Negotiations"** → the transação tributária (debt negotiation with discounts)
+- **"Certificates (CND)"** → the Certidão Conjunta (negative/positive clearance certificate)
+- **"Check CPF Status"** → cadastral status
+
+**Most likely issue you're hitting:** to see **Black King's CNPJ debts** (50.042.585/0001-80), you must be acting **as the company** — either logged in with the **e-CNPJ certificate**, or with your gov.br **switched to the CNPJ profile** (via the Procuração Eletrônica that Matheus grants in e-CAC). If you're logged in with your own personal CPF and no procuração, the system only shows **your own** debts — Black King's won't appear, which is the classic dead-end here.
+
+What exactly is failing for you — can't log in, can't find the CNPJ's debts, or the certidão shows something unexpected? If you tell me the specific error/behavior, I can pinpoint the fix (e.g., "Alterar perfil de acesso" to switch to the CNPJ, or checking whether the procuração from Matheus is active).
 
