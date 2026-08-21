@@ -27,3 +27,30 @@ Context: FounderHaus is a known DAO Web3 partner (WhatsApp group "Prompt Haus: A
 ```
 carat] Chom 2 (raw, poor quality) — preprocessed read: Juliana Melo / FounderHaus / mobile +55 11 99362-2883 / Add to group
 ```
+
+
+---
+
+## Attachment: 90858a6625a84c1c801b3626817715b6.jpg
+
+| Field | Value |
+|-------|-------|
+| **Type** | Image |
+| **Filename** | 90858a6625a84c1c801b3626817715b6.jpg |
+| **Received** | 2026-08-21T20:21:08Z |
+| **Grok Description** | Outdoor daylight scene: two young women planting a small flowering tree in a dug hole on grass. Foreground woman in white tank top and blue jeans crouches smiling at camera; second woman partially vis |
+
+### Extracted Text
+
+```
+Image: Photo (720x1280 JPEG). OCR found no text (0% confidence) — all tesseract passes (upscaled, inverted, thresholded, quadrant, rotations) returned garbage. Grok vision analysis:
+- Scene: Outdoor daylight — two young women planting a small flowering tree in a dug hole on grass. Foreground woman in white tank top + blue jeans crouches smiling at camera; second woman partially visible behind tree holding a white sack.
+- Background: trees, white metal fence, building wall with a sign.
+- Label text visible (Portuguese): "REFE DE VOLUNTARIOS", "Nº 1", "SOMOS VOLUNTARIOS" — likely "Casa do Voluntário" / volunteer house branding ("Refeitório de Voluntários"?).
+- No QR codes, no barcodes. Not a cacao bag/product photo.
+- Likely volunteer/tree-planting activity photo (possibly connected to the DAO's reforestation / Amazon mission, or a volunteer site like a permaculture/regenerative farm project).
+```
+
+### Grok Vision
+
+Outdoor daylight scene: two young women planting a small flowering tree in a dug hole on grass. Foreground woman in white tank top and blue jeans crouches smiling at camera; second woman partially visible behind tree holding a white sack. Background: trees, white metal fence, building wall with sign. Label text visible: "REFE DE VOLUNTARIOS", "Nº 1", "SOMOS VOLUNTARIOS". No QR codes or barcodes. Photo of a tree-planting/volunteer activity, not cacao bags.
