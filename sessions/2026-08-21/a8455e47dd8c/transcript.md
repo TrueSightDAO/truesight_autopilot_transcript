@@ -4038,6 +4038,7 @@ Primeiro documento recebido — a **Packing List**. Vou gerar a versão em portu
 ### 🤖 Autopilot
 
 PDF gerado. Vou enviar para este thread.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4444,4 +4445,62 @@ More precisely, what we're trying to obtain:
 2. **Its purpose:** Using it to log into gov.br via "Entrar com Certificado Digital" instantly elevates your account to **nível Ouro (Gold)** — which unlocks e-CAC, SISCOMEX, CNPJ administration, and the other federal services we need for the Black King / Brazil export work.
 
 So when you contact the providers, just say: *"Preciso emitir um certificado digital e-CPF, modelo A1 ou A3, padrão ICP-Brasil."* That's the exact service name they'll recognize.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can you help describe the currenct SOP regarding exporting of cacao from our warehouse with Matheus to our ware house with Kirsten @truesight_autopilot_bot please do so
+
+
+### 🤖 Autopilot
+
+Let me pull the current SOP to describe it accurately.
+
+
+### 🤖 Autopilot
+
+Here's the current SOP for shipping cacao from **Matheus's warehouse (Ilhéus, BA, Brazil)** to **Kirsten's warehouse (San Francisco, USA)** — per the Brazil→SF Freight Pre-Flight Checklist:
+
+## The flow (6 phases)
+
+**Phase 0 — Regulatory & System Setup** ⚠️ *currently the blocker*
+- ✅ SISCOMEX/RADAR done (Omega's 3 brokers registered)
+- ✅ PoA signed with Omega (Jun 2026)
+- ✅ NCM confirmed: 1801.00.00 (raw beans) + 1803.10.00 (mass/husk) + 2106.90.00 (tea) — **no MAPA clearance needed for USA**
+- ❌ **NF-e NOT issued** — Black King can't issue it: 3 concurrent causes (missing commerce CNAE, expired e-CNPJ cert, CNPJ "Inapto" from unpaid invoices)
+- Pre-flight check for all future shipments: verify e-CNPJ validity + CNPJ not Inapto *before* booking
+- Once NF-e issues: share XML + DANFE with Omega/Graziela + PIX details for payment
+
+**Phase 1 — Cargo Prep (Ilhéus)**
+- Cargo photos shared by Matheus
+- Pallet compliance: ISPM#15 (fumigated, IPPC stamp), phyto certificate for wood
+- Packing at Matheus's warehouse (Ilhéus)
+
+**Phase 2 — Inland Transport (Ilhéus → Salvador)**
+- Road transport: **BRL 6,615 + 0.15% ad-valorem** (with palletization in Salvador); or BRL 7,290 without
+- Omega coordinates pickup from Matheus's warehouse
+
+**Phase 3 — Airport & Export Processing (Salvador)**
+- Palletization BRL 195 + fumigation BRL 500 (3 pallets)
+- Airline booking + quote revalidation (Graziela/Seacos)
+- Export docs: AWB, Commercial Invoice, Packing List, Phytosanitary Certificate
+- Desembaraço by Gerson Argolo (Omega)
+
+**Phase 4 — Air Freight (SSA → SFO)**
+- Tiered rates: ~$3.50/kg (200kg) down to ~$3.20/kg (1000kg)
+- Brazil airport charges ~$0.30/kg (min $250)
+- US terminal fee ~$212.50
+
+**Phase 5 — US Import & Customs (SF)**
+- Import handling $125, customs $150, FDA ~$100
+- Bond, MPF 0.3464%, duty, exam
+
+**Phase 6 — Final Delivery**
+- Delivery to destination warehouse (Kirsten's)
+
+---
+
+**Current status:** The shipment docs are ready (Commercial Invoice INV-2026-0611-001 $7,032.53 FOB + Packing List, both translated to PT), but the **whole chain is still blocked at Phase 0 — the NF-e** — until Black King's CNPJ is regularized (CNAE + cert renewal + Inapto cleared).
+
+Want me to pull the cost-summary/timeline tables or the Appendix A/B details from the full SOP?
 
