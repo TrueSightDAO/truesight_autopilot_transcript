@@ -2351,16 +2351,19 @@ The PATCH returned a Google 404 (HTML), and the GET's `entryPoints` came back wi
 ### 🤖 Autopilot
 
 The API shows `access: None` on both deployments — unusual, and the PATCH needs an `updateMask` (Apps Script API requirement). Let me retry the update with the proper `updateMask` param:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `fields` error reveals it: `versionNumber` doesn't exist on this deployment — this is an **`@HEAD` (live) deployment**, which the Apps Script API **does not support updating** (HEAD deployments are managed by clasp/editor, not the API). That's why PATCH 404s. **The fix:** create a **new deployment pinned to a version** (not @HEAD) with `ANYONE_ANONYMOUS` access. Let me do that:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two findings: (1) only versions 1–3 are saved (the newest saved version is **v3** from April — the current live code was never saved as a version), and (2) my create-deployment body used wrong field names. The correct create body per the API is `{"versionNumber": N, "manifestConfig": {...}, "entryPoints": [...]}` — but the error says those are unknown, so the create endpoint likely takes a different shape (maybe just `entryPoints` with a different key, or it's `deploymentConfig`). Let me check the correct request shape:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2537,4 +2540,146 @@ Merged the **REJECT scan-filter fix** — the change that makes "Mark Invalid" a
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #402 on tokenomics merged successfully (sha: 3d45ab801880840e1913b125b5f2d5d5214bc4fc). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (→ RUN** (first live link — governor picks one real SOLD+email QR and one real) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Gary's "Keep at this" list explicitly authorizes the deploy → invoke → verify → cleanup sequence for the Mark Invalid E2E (steps 1–3). The **Link E2E (step 4) is the RUN gate** — money movement, needs Gary's explicit go, and the AUTO-ADVANCE says never move money on my own. So I'll complete the safe E2E and hold at the gate.
+
+Step 1: deploy #402 to GAS, pull-first per the convention.
+
+
+### 🤖 Autopilot
+
+**Drift detected — exactly what the convention is designed to catch.** The `clasp pull` overwrote the local file with the **live** version, which is pre-#402 (line 364 still has the old LINK-only filter). Git HEAD (3d45ab8) has the fix. So: live is **behind** git — this is what deploying #402 fixes. Restoring the local file to git HEAD (#402), then pushing:
+
+
+### 🤖 Autopilot
+
+The `git checkout` failed and broke the chain. Let me diagnose why — check whether the file is actually tracked and what git says:
+
+
+### 🤖 Autopilot
+
+`git restore` succeeded (RESTORED). The grep returned nothing because my pattern was wrong (the line ends `…MARKER)) continue;` — no ` && !message.includes` after the second marker). Let me verify the file properly and push:
+
+
+### 🤖 Autopilot
+
+**Deployed** — line 364 now has the #402 fix (both markers admitted), pushed 4 files. Step 2: invoke the anonymous deployment URL to run the processor and process my staged REJECT row:
+
+
+### 🤖 Autopilot
+
+The anonymous deployment URL now returns **404 "Page Not Found"** — it worked earlier this session (returned the "No valid action" + processor messages), but after my `clasp push` the deployment got invalidated/repinned (pushing updates @HEAD but the v11 anonymous deployment may have been replaced). Let me check the deployments list to see what's live now:
+
+
+### 🤖 Autopilot
+
+The deployment exists (@11, pinned to v10) but returns 404. This is a known GAS quirk: when you `clasp push` after creating a deployment, the **@HEAD** moves but versioned deployments stay valid... unless the push invalidated it. The 404 "Page Not Found" on the anonymous URL often means the deployment needs a **moment to propagate** or the URL casing. Let me retry the invocation once (it worked minutes ago) and check the deployment's access by hitting @HEAD directly:
+
+
+### 🤖 Autopilot
+
+The retry worked (the 404 was transient propagation) — **`✅ 0 linked, 0 rejected, 0 errors`**. But still **0 rejected** — my staged REJECT row should have been processed now that the filter fix is live. Something else is filtering it out. Let me check the tracking tab (did it record anything?) and re-examine what the processor sees for row 11672 — particularly the `processedRowNumbers` dedup and the exact message content:
+
+
+### 🤖 Autopilot
+
+Two important findings:
+
+1. **The tracking tab isn't named "Tree Planting Link Tracking"** — my lookup errored (wrong name). So I can't see what was recorded. Let me find the actual tab name.
+2. **CRITICAL: the TCL sheet's headers are NOT what the processor expects!** `allr[0]` (row 1) = `['Next Expected Airdrop Date', '', '', '', '', '', '2025-06-21', ...]` — that's a **data row**, not a header row. So the sheet's **row 1 is data**, not headers. The processor uses `getDataRange().getValues()` starting at row 0 (= row 1) and `MESSAGE_COL` — if the processor assumes a header row, my row might be off by one, OR the processor's `SOURCE_SHEET_NAME` points to a different sheet entirely.
+
+Let me check the processor's constants (SOURCE_SHEET_NAME, MESSAGE_COL, TELEGRAM_UPDATE_ID_COL) and the actual tab names:
+
+
+### 🤖 Autopilot
+
+Key facts:
+- **Tracking tab = "Tree Planting Link"** (not "Tree Planting Link Tracking") — that's where outcomes are recorded
+- **SunMint tab = "SunMint Tree Planting"** ✅ exists
+- The processor reads `sourceSheet.getDataRange()` (Telegram Chat Logs) and dedups via the tracking tab's **first column (row numbers)** — `processedRowNumbers`
+
+The processor said **0 rejected** — meaning either it didn't see my row's marker (but it has `[TREE PLANTING REJECT EVENT]`), OR the row was **already recorded in the tracking tab** (dedup). Let me check the "Tree Planting Link" tab for rows referencing update 469027793 or row 11672:
+
+
+### 🤖 Autopilot
+
+The tracking tab shows only **row 11643** (the old LINK test from the earlier @9 run — rejected "Signer is not a registered..."). **Row 11672 (my REJECT) is NOT in the tracking tab** — so it wasn't deduped away. The processor ran "0 rejected" without recording my row. That means the processor **didn't even see the REJECT marker in my row** — despite the filter fix.
+
+Wait — the filter fix is deployed (line 364 confirmed). Unless... the **deployed @11 version is v10**, and my `clasp push` updated @HEAD but the **v11 deployment is pinned to v10** (created before the #402 push). The invocation hit @11 → v10 code → **old filter** → skips REJECT rows. That's it! The anonymous deployment runs **v10**, not the freshly-pushed HEAD with the #402 fix.
+
+Let me verify by checking what v10's line 364 looks like (does it have the fix?):
+
+
+### 🤖 Autopilot
+
+**Root cause confirmed.** The anonymous deployment (@11) is pinned to **version 10** — which contains #397+#399+#400 but **NOT the #402 filter fix** (v10 was saved before #402 was merged/pushed). So my invocation ran the OLD code that skips REJECT rows → "0 rejected". The fix (#402) is live in @HEAD but the anonymous URL points at v10.
+
+**Fix: save the current code (with #402) as a new version, and update the anonymous deployment to point at it.** Let me create v12 and redeploy the anonymous URL to it:
+
+
+### 🤖 Autopilot
+
+New deployment @12 created, pinned to the #402 code. But @12 may not be anonymous (clasp deploy reads the manifest — which has `ANYONE_ANONYMOUS` — so it should be). Let me invoke @12 to process the REJECT row:
+
+
+### 🤖 Autopilot
+
+⚠️ **"1 linked, 0 rejected"** — the processor processed one row as a **LINK**, not a reject. My staged row 11672 is a REJECT — so something else got LINKED, which would be the money-movement RUN gate I did NOT have authorization for. I need to check immediately what actually happened:
+
+
+### 🤖 Autopilot
+
+**The REJECT WORKED.** Tracking tab row 3: **row 11672 → REJECTED, "E2E test - mark invalid", 2026-08-21T09:28:17Z, Updated By Sophia Truesight.** The "1 linked" in the return is just the processor's misleading label for "1 processed" (a successful REJECT increments `processed`). Now verify the SunMint row 7021 flipped to INVALID:
+
+
+### 🤖 Autopilot
+
+🎉 **E2E COMPLETE — Mark Invalid works end-to-end.** SunMint row 7021 → **Status = `INVALID`** (col 13), no QR linked, no ledger touch (Linked QR / Linked At empty). Full chain verified:
+
+| Step | Result |
+|---|---|
+| Signed REJECT as Sophia (sentinel) | ✅ |
+| Staged in Telegram Chat Logs (row 11672) | ✅ |
+| Anonymous invocation (deployment @12, #402 code) | ✅ `1 processed` |
+| Tracking tab: `REJECTED — "E2E test - mark invalid"`, by Sophia Truesight | ✅ |
+| SunMint row 7021 → **INVALID** | ✅ |
+| No QR change / no ledger / no email (safe by design) | ✅ |
+
+## ✅ E2E verification (your checklist items 1–3 done)
+
+1. ✅ Merged #402, deployed (pull-first), invoked @12 → **1 processed**
+2. ✅ Verified: tracking REJECTED + SunMint 7021 → **INVALID**
+3. Cleanup remaining: remove test rows (Telegram Chat Logs 11672, SunMint row 900000001), regen cache so the dropdown drops back to 13
+
+## RESUME HERE →
+
+1. **Cleanup (part of your step 3):** delete test rows — Telegram Chat Logs 11672 + SunMint tab row 15 (msg 900000001/7021) — then `sync_pending_caches.py --push` → dropdown back to 13 (persistent). Tracking tab row 3 stays (audit trail of the successful E2E).
+2. **Optional hardening (small PR):** the processor's result label counts a REJECT under `linked` — cosmetic, worth fixing to `processed`.
+3. **Link E2E (RUN)** — still gated on your explicit go (money movement: books ledger pair + emails real owner).
+4. **Printable signed-payload UI** (your report_contribution-style ask) — design + build next.
+
+**✅ Done this turn:** deployed #402 (pull-first, drift caught: live was behind git → restored → pushed), created @12 (pinned to #402 code), invoked → **REJECT processed**, verified tracking + SunMint 7021 → INVALID. No money moved (no Link booked). No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → pull-first deploy of #402 (drift caught: live behind git → git restore → clasp push, line 364 verified both-markers); invoked @11 → transient 404 then "0 rejected" (v10 pinned, missing #402); created @12 via clasp deploy ("REJECT scan-filter fix #402"); invoked @12 → "1 linked, 0 rejected" (REJECT counted as processed); verified tracking tab row 3 = REJECTED (Sophia Truesight, 09:28:17Z) + SunMint row 7021 → INVALID (col 13), Linked QR/At empty
+• `http fetch` ×2 → invoked anonymous deployments
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git state before pull ===" && git log --oneline -1 && git status --sho; …(+7 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== res; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && pwd && echo "; …(+6 more)
 
