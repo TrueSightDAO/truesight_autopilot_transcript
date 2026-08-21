@@ -4838,6 +4838,7 @@ Google API client is available. Let me find how the autopilot accesses Gmail so 
 ### 🤖 Autopilot
 
 Let me find the actual Gmail tool implementation used by this autopilot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5023,4 +5024,44 @@ Here's how to log into e-CAC with the e-CNPJ certificate — **but first, the cr
 - Alternative when cert is expired: **gov.br password login** — but only if the account is **linked to the CNPJ** (via procuração) and at **Prata/Ouro** level
 
 Want me to draft a short PT message to Matheus covering (a) renewing the e-CNPJ, and (b) these exact login steps once renewed — so he can pull the debt amounts himself?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Surface here the packing list and the invoice
+
+
+### 🤖 Autopilot
+
+Let me locate both documents — the Commercial Invoice (Rev 2 FOB) and the Packing List — and surface them here.
+
+
+### 🤖 Autopilot
+
+Both files exist in the repo. Let me download them and send them here.
+
+
+### 🤖 Autopilot
+
+Both PDFs downloaded. Sending them to this thread now.
+
+
+### 🤖 Autopilot
+
+Both documents surfaced in this thread 📄
+
+1. **Commercial Invoice Rev 2 (FOB)** — `2026-06-11_commercial_invoice_black_king_to_truetech_rev2_fob.pdf`
+   - INV-2026-0611-001, 11 line items, total **USD 7,032.53** (FOB)
+   - Seller: Black King / Matheus Reis Pereira · Buyer: TrueTech Inc (1423 Hayes St, SF)
+
+2. **Packing List Rev 1** — `2026-06-11_packing_list_black_king_to_truetech_rev1.pdf`
+   - Matches the invoice: 11 items, weights (net ~307.3 kg / gross ~342.3 kg), packaging per item
+
+Repo links (for sharing elsewhere):
+- https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-11_commercial_invoice_black_king_to_truetech_rev2_fob.pdf
+- https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-06-11_packing_list_black_king_to_truetech_rev1.pdf
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/autopilot_pdf_*.pdf 2>/dev/null; echo "==="; ls -la /tmp/autopilot_pdf_nfe_guide.pdf 2>/dev/null; echo "=== repo check via API =; cd /tmp && curl -sL -o inv_rev2_fob.pdf "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/exports/2026-06-11_commercia
 
