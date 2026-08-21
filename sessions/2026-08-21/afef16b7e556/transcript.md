@@ -5003,6 +5003,7 @@ Let me quickly check what MoonDAO is, then submit the contribution.
 ### 🤖 Autopilot
 
 MoonDAO is a good UX benchmark — onchain governance, transparent treasury, member voting, even landed a constitution on the Moon. Submitting Paloma's contribution:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5028,6 +5029,7 @@ MoonDAO is a genuinely good reference point for what you're building — they've
 ### 🤖 Autopilot
 
 Let me find the authoritative research on this.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5063,21 +5065,25 @@ For each source point to research paper url
 ### 🤖 Autopilot
 
 Let me verify the canonical paper URLs first, then build the PDF.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the canonical sources. Now let me build the PDF with each ice source and its research paper URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Oblique variant isn't installed. Let me check which DejaVu fonts exist and fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No Oblique variants — only Regular and Bold. Let me fix the font registration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5215,4 +5221,43 @@ The registry only has two registered handoff targets — **sophia** (me) and **b
 Done! 👋 I've posted the hello into this topic so @nelanco_claude_bot will see it when it reads the thread.
 
 Quick note for context: the **nelanco-claude** instance is the interactive Claude Code box (per `NELANCO_CLAUDE_CODE_BOX_PLAN.md`) — it's a runner on the Nelanco infra, not a registered agent-instance in the `agent_handoffs` registry (only Sophia and Bionpact are). So I couldn't route a formal handoff through the mailbox, but the direct greeting in the group works just fine. If you'd like me to also leave a note in `agent_handoffs` for whichever instance reads that inbox, I can.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Re-testing now that TELEGRAM_ALLOWED_USER_IDS was updated   service restarted — @truesight_autopilot_bot, do you recognize this sender as authorized now?
+
+
+### 🤖 Autopilot
+
+Let me verify the running service config on the box to confirm the updated allowlist is loaded.
+
+
+### 🤖 Autopilot
+
+The service is active and the allowlist now has **2 IDs** in the `.env`. Let me confirm the running process actually picked it up (restart applied) rather than still running with a stale env.
+
+
+### 🤖 Autopilot
+
+The telegram adapter service (PID 507492) started at **10:48 today** — after the allowlist update — so it's running with the fresh env. Let me confirm the actual IDs to be certain the new sender is covered (masked, per security rules).
+
+
+### 🤖 Autopilot
+
+Yes — **I recognize this sender as authorized.** ✅
+
+**The evidence, verified on the box:**
+
+1. **Service restarted with fresh env** — `truesight-autopilot-telegram.service` (PID 507492) started **10:48:23 today**, after the allowlist update, so it loaded the new `TELEGRAM_ALLOWED_USER_IDS` from `.env`.
+
+2. **Running process env confirms 2 allowed IDs** — the live adapter process has the updated allowlist (both entries present, masked per security rules).
+
+3. **The functional proof** — I'm receiving and processing this message right now, which only happens if the sender passes the allowlist gate. If you weren't authorized, the adapter would have silently dropped this message and I'd never have seen it.
+
+So: the update took effect, the restart picked it up, and this sender now passes the gate. The re-test is confirmed working. 👍
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== Service status ==="; systemctl is-active truesight-autopilot 2>/dev/null || systemctl is-active autopilot 2>/dev/null || ps aux | ; echo "=== Find the actual autopilot/telegram process ==="; ps aux | grep -iE "python|telegram|autopilot|adapter" | grep -v grep | head -10; ; echo "=== Telegram adapter process start time + env allowlist (MASKED) ==="; ps -o pid,lstart,cmd -p 507492 2>/dev/null; echo; echo "=== All
 
