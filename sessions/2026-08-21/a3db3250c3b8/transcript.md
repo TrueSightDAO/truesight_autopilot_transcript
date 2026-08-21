@@ -2345,6 +2345,7 @@ Progress — token refreshed, but my `call()` helper misparses the HTTPError res
 ### 🤖 Autopilot
 
 The PATCH returned a Google 404 (HTML), and the GET's `entryPoints` came back with `access: None` — the deployment structure may differ from my assumption (HEAD deployments / API representation). Let me dump the full GET response to see what's actually there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2471,4 +2472,69 @@ That way I could just print the page (like a certificate) and then share the pri
 
 Gary wants the link_tree_planting page to show the signed payload details after clicking Link/Mark Invalid — like report_contribution.html does (printable as a certificate). Let me study how report_contribution.html renders the signed payload after submission, then compare with the current link_tree_planting page.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Keep at this 
+
+. Merge tokenomics #402 → deploy to GAS (clasp push, pull-first) → invoke the anonymous URL again
+2. Verify the E2E: processor should now report 1 rejected (my staged Sophia-signed REJECT row 11672) → SunMint row #7021 → INVALID → tracking REJECTED
+3. Cleanup: remove test rows (Telegram Chat Logs 11672, SunMint 900000001) after verification, regen cache (dropdown drops to 13)
+4. Then: Link E2E (gated on your go — money movement) + the photo-validation step
+
+
+### 🤖 Autopilot
+
+Continuing the E2E per your list. Step 1: merge tokenomics #402.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #402** (sha `3d45ab8`)
+
+## What I did this turn
+
+Merged the **REJECT scan-filter fix** — the change that makes "Mark Invalid" actually reachable end-to-end:
+
+**tokenomics #402** (`fix/tree-planting-reject-scan-filter`, commit `6cbe649` → merged `3d45ab8`):
+- The processor's scan loop previously only admitted rows containing `[TREE PLANTING LINK EVENT]` (line 363), which skipped REJECT rows **before** the REJECT branch was reached — making the REJECT path unreachable
+- Fix: the loop now admits rows carrying **either** the LINK **or** REJECT marker
+- My staged Sophia-signed REJECT row (Telegram Chat Logs row 11672) will now be picked up and processed: verified sentinel gate passes → flips SunMint row to INVALID
+
+## E2E status
+
+| Step | State |
+|---|---|
+| Anonymous deployment (v11) created + verified working | ✅ |
+| REJECT scan-filter fix (#402) | ✅ **merged this turn** |
+| Deploy #402 to GAS (pull-first) | ⏭️ next |
+| Invoke anonymous URL → expect `1 rejected` | ⏭️ |
+| Verify: SunMint #7021 → INVALID, tracking REJECTED | ⏭️ |
+| Cleanup: test rows 11672 + 900000001, regen cache | ⏭️ |
+
+## RESUME HERE →
+
+1. **Deploy #402 to GAS** — `clasp push` on `1UrBg…` (pull-first per convention; expect only the stray `Version.js` to remove)
+2. **Invoke** `https://script.google.com/macros/s/AKfycbwU4O8Uf6FqpNw73bI5ZuWecgmhZOb0L3LOEsAfGlgx_dVks-5nrNBZm2TO-S4fVYkm/exec?action=processTreePlantingLinksFromTelegramChatLogs` → expect `✅ 1 rejected`
+3. **Verify:** SunMint row **#7021 → INVALID** (col M), tracking tab shows REJECTED for update 469027793
+4. **Cleanup:** delete test rows (Telegram Chat Logs 11672, SunMint 900000001), regen + push cache → dropdown drops back to 13 (persistent)
+5. **Then:** Link E2E (still gated on your explicit go — money movement) + the printable signed-payload UI (your report_contribution-style ask)
+
+**✅ Actions this turn:** merged tokenomics #402. No new PRs opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #402 on tokenomics merged successfully (sha: 3d45ab801880840e1913b125b5f2d5d5214bc4fc). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #402 on tokenomics merged successfully (sha: 3d45ab801880840e1913b125b5f2d5d5214bc4fc). Pull Request successfully merged
 
