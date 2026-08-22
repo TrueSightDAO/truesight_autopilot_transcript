@@ -1309,11 +1309,13 @@ None of the text layers mention "bags" explicitly, so the bag slide is likely on
 ### 🤖 Autopilot
 
 No explicit "bags" text yet — the bag imagery is likely inside the full-bleed graphics. Let me OCR page 7 (the ingredients graphic) and page 5 thoroughly, and also scan every page for any text like "sacos"/"bags"/"embalagem"/"venda":
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The keyword scan found no "bag/sale" text, and page 7 is the AMAZÔNIA ingredients graphic (Açaí/Castanha/Cupuaçu/Camu-camu icons — no bags). Let me visually inspect the remaining image slides — especially page 5 (park projection) and page 6 (açaí logistics) which may show product bags in photos — by cropping regions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1328,6 +1330,7 @@ I haven't found an explicit "bags for sale" slide in the current 14-page deck �
 The current deck has no slide about product bags for sale — that content doesn't exist in the source PDF (the 13-page original was entirely about the bioeconomy program, supply, revenue, land, and community maps).
 
 Before I remove anything, let me double-check whether you might mean **page 6's "CADEIA DO FRIO / POLPAS CONGELADAS"** (frozen pulp cold-chain logistics — the closest thing to product/packaging imagery) or a **different deck entirely** (e.g. an Agroverse product/cacao-bag deck, which is a separate presentation). Let me check what other decks exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2439,4 +2442,49 @@ What would you like me to do with this original file — rebuild from scratch wi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && ls -la 8af93233d4964fc9a0124243dbbc3ca1.pdf && echo "--- sha256 of new attachment ---" && sha256sum 8af93233d4964f; cd /tmp/tg_attachments && python3 << 'EOF' import fitz doc = fitz.open("8af93233d4964fc9a0124243dbbc3ca1.pdf") print("pages:", doc.page_coun
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Remove the 3rd slide of this deck and then return as attachment
+
+
+### 🤖 Autopilot
+
+Understood — taking the **original 13-page deck you just attached**, removing **slide 3** (*Preliminary Estimate of Potential Supply: Manicoré*), and returning the result as an attachment. Note this is a clean cut from the original source, so slide 6 (Açaí freeze-drying) stays in unless you say otherwise.
+
+
+### 🤖 Autopilot
+
+Deck rebuilt — 12 slides, slide 3 removed. Sending as attachment:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **12-slide deck attached** (`EBCF_Original_minus_slide3.pdf`, 7.3 MB).
+
+**Removed:** Slide 3 — *Preliminary Estimate of Potential Supply: Manicoré Region* (the supply-trajectory table).
+
+**Resulting order (clean cut from the original 13-page source you attached):**
+
+| # | Slide |
+|---|-------|
+| 1 | Bioeconomy Program (title) |
+| 2 | Amazon Ingredients Matrix |
+| 3 | Potential Revenue + Park CAPEX |
+| 4 | Location of 10,000 m² Park land |
+| 5 | Açaí Freeze-Drying — Stage 1 |
+| 6 | Açaí project graphic |
+| 7 | Municipality — office + açaí factory |
+| 8 | EBCF properties — 20,000 ha |
+| 9 | 5 km radius — ~100,000 ha, 80+ communities |
+| 10 | 400 ha SAF plantation |
+| 11 | Benchmark |
+| 12 | Thank you |
+
+Note this version keeps the frozen-pulp/Açaí freeze-drying slide (5) — it was removed only in the earlier *custom* v3 deck. If you want this one to also drop the açaí freeze-drying slide or add the cacao slide, just say which and I'll cut/insert it in seconds.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 << 'EOF' import fitz, os src = fitz.open("/tmp/tg_attachments/8af93233d4964fc9a0124243dbbc3ca1.pdf") print("before:", src
 
