@@ -10,40 +10,6 @@
 
 ### 🤖 Autopilot
 
-Project folder now matches git main exactly (Code.js/Version.gs are git-tracked deletions — expected, they're not in main's file set for this project). `process_tree_planting_link.js` has #409 markers ×5. Now push cleanly, save version, repoint PROD @19 → the NEW version (with #409):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-✅ **PROD is now correctly on #409** — pushed 3 files cleanly, saved v20, PROD deployment → @21, and the live pull-back shows **`sunmint/main`/`ledgerName` ×5** — the allow-list is live in production. (The earlier v18/@19 backward-move was caught and corrected; PROD went @17 → @21.)
-
-Now let me verify the production /exec URL serves the fixed code + run the **LINK event** for the FounderHaus Bougainvillea (QR is SOLD, SunMint row 16 is the real submission `Edgar_20260821175134_006`). First fix the SunMint row 16 (Submitted Name "Unknown" → Paloma Lecheta + lat/long) and check its current state:
-[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two results:
-1. **PROD /exec works** — `✅ Tree planting links processed: 0 linked, 0 rejected, 0 errors` (200, normal response — the PROD deployment serves the fixed code fine)
-2. **Wrong spreadsheet key** — I used `1qbZZhfUGRYpG1MEQ8AxMY9_8ubcIBbUwbFPOkwl2GDAk` but earlier in this session the SunMint sheet was accessed via a different key. The 404 means that key doesn't exist for this SA. Let me find the correct key — I've read "SunMint Tree Planting" rows successfully before (msg 171, TEST-20260822-1, Edgar_20260821175134_006 are all there). Let me check the plan doc / earlier transcripts for the correct spreadsheet ID:
-[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the correct spreadsheet key: **`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`** (I mistyped it earlier — missing `-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`). Now let me fix SunMint row 16 (Submitted Name "Unknown" → Paloma Lecheta, add lat/long if available) and check its current columns:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-My column indices were off (header is 19 cols; I printed E and G instead of J and N). Let me read row 16 with the correct columns:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Now I have the exact row 16 layout (19 columns):
 - col10 (J) Submitted Name = `'Unknown'` → fix to `Paloma Lecheta`
 - col11 (K) Latitude = `'\r'` (blank-ish) → leave or set
@@ -3583,6 +3549,7 @@ Now adding the public `authorizeMailApp()` function — it calls `MailApp.getRem
 ### 🤖 Autopilot
 
 Function added + syntax OK. Now let me open a PR for this change (the proper flow — the governor's standing authorization covers PR→merge), push it to git, and then deploy to GAS. First the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3822,4 +3789,106 @@ Almost — one thing is genuinely still open, and it's the reason we started thi
 2. **LINK-flow hardening** — the original LINK call site still swallows MailApp errors (the same bug #416 fixed in the resend path). Worth a small PR so future links don't silently miss notifications.
 
 If you'd rather move on now, that's your call — but I'd flag the email as **not delivered** in the final report rather than done. Want me to (a) wait for you to do the one-click re-auth then finish the send + verification, (b) just open the hardening PR now, or (c) park it all in the plan doc and close out?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Also: governor sorted out the underlying email issue himself (details TBD, but he's resolved it). New task: once you've confirmed real email delivery works (redeploy your fix with proper error surfacing per my last diagnostic messages, and confirm the resendTreePlantedNotification trigger for FOUNDERHAUS_BOUGAINVILLEA_20260821_1 actually delivers this time — re-check both mailboxes), run a FRESH end-to-end test per §10 (SUNMINT_TREE_QR_LINKING_PLAN.md) with one change: use garyjob@gmail.com as the Owner Email instead of the placeholder test+e2e@truesight.me address.
+
+Procedure (same as §10, one substitution):
+1. Mint a new test QR (e.g. TEST_AGL4_<today>_1), ledger AGL4, generic "SunMint Tree Planting Pledge - QR Code" currency, status MINTED → set directly to SOLD via plain sheet edit (never a real sales event), Owner Email = garyjob@gmail.com.
+2. Insert a dummy SunMint tree-planting submission (TEST- prefixed Telegram Message ID, Status NEW, dummy lat/long, Submitted Name "E2E Test").
+3. Execute the [TREE PLANTING LINK EVENT] (dao_client CLI, governor-signed) linking them.
+4. Verify: QR → ASSIGNED_TO_TREE, SunMint → LINKED, AGL4 main-ledger fulfillment pair correct (contributor "SunMint Tree Planting Contract - agl4").
+5. THE POINT OF THIS RUN: verify BOTH real emails actually arrive at garyjob@gmail.com — the onboarding email (should fire automatically once Owner Email + status SOLD are set, via processBatch — check if/when it fires) AND the tree-planted notification (fires as part of the LINK event, or via your fixed resend action). Confirm actual delivery, not just that code ran without erroring — this is exactly the standard we established from the Paloma debugging.
+6. Invalidate the test QR (status → INVALIDATED) once fully verified.
+7. Fill the §10 Log of runs row.
+
+This is the real regression test for everything we just fixed — please be thorough on the email-delivery verification specifically.
+
+
+### 🤖 Autopilot
+
+Executing the full regression test. First, read the plan's §10 procedure + Log of runs to follow it exactly, and check the current email/delivery state:
+
+
+### 🤖 Autopilot
+
+The resend action still returns the permission error — I need to read the full §10 procedure before running the E2E, and reconcile with the governor's claim that the email issue is resolved. Let me read the plan's §10 + Log of runs section:
+
+
+### 🤖 Autopilot
+
+Let me find the actual §10 E2E test procedure + Log of runs in the plan doc (searching within the full saved artifact):
+
+
+### 🤖 Autopilot
+
+Let me read the §10 E2E procedure + Log of runs in the resume tracker section (the part I haven't seen yet):
+
+
+### 🤖 Autopilot
+
+Let me find the §10 E2E procedure + Log of runs directly (the nested artifact reads are too deep):
+
+
+### 🤖 Autopilot
+
+Let me read the §10 E2E procedure + Log of runs directly from the plan (around line 520-620):
+
+
+### 🤖 Autopilot
+
+Let me find §10's E2E procedure + Log of runs directly (skipping ahead in the doc):
+
+
+### 🤖 Autopilot
+
+I now have the full §10 procedure + Log of runs. Executing the task: first confirm real email delivery works for FounderHaus (re-invoke the resend, check both mailboxes), then run the fresh E2E. Starting with the resend + mailbox checks in parallel:
+
+
+### 🤖 Autopilot
+
+The resend **still fails** with the same MailApp permission error — so delivery for the FounderHaus tree-planted notification is **not yet confirmed**, and the editor grant didn't propagate to the deployment. Before reporting, let me check whether the governor's "resolved" fix lives somewhere else (new code path — e.g. in the admin-owned 1MnAsI project) and see the latest git state:
+
+
+### 🤖 Autopilot
+
+The resend **still fails** with the same MailApp permission error — and the mailboxes confirm only the two onboarding emails (09:42Z, 16:42Z, admin-owned 1MnAsI project) were delivered; **the tree-planted notification has never arrived**. Let me probe once more and check whether the deployment's authorization state changed (the governor's fix may need propagation):
+
+
+### 🤖 Autopilot
+
+I have a clear, evidence-backed picture now — and it requires stopping before the E2E, because the precondition (confirmed real email delivery) is **not met**.
+
+## ⛔ STOP — email delivery is NOT yet confirmed; E2E must wait
+
+**Direct evidence (just now):**
+
+1. **The production resend still fails** with the identical error:
+   > `❌ Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: https://www.googleapis.com/auth/script.send_mail`
+2. **Both mailboxes confirm NO tree-planted notification ever arrived** at paloma@founderhaus.club — only the **two onboarding emails** exist (09:42Z + 16:42Z, both from `admin@truesight.me`, the **admin-owned 1MnAsI project** — which is why those work).
+3. `authorizeMailApp` (1UrBg, editor-run) is **not** routed in doGet (probe returned "No valid action specified") — it only works as an editor Run, and the editor grant does **not** carry to the web-app deployment's separate authorization.
+
+**Why the editor grant didn't fix the deployment:** `appsscript.json` is `"executeAs": "USER_DEPLOYING"` — the `…/exec` web app runs **as the deployer (garyjob) using the deployment's own OAuth grant**, which is granted at *deployment* time in the UI (or when a browser hits the deployment URL while logged in as the deployer). Our `clasp deploy` (API path) **never triggered that authorization dialog** — so the deployment has no `script.send_mail` grant, and every MailApp call in the web app throws, exactly as observed. The **LINK flow** swallows this same exception (the bug #416 fixed only in the resend path) — so a real LINK "succeeds" (status/ledger) while the owner email silently dies.
+
+**The governor's "resolved it myself"** — I can't see it in git (main HEAD is still #418) or in the live behavior (resend still errors). It may be an in-flight UI action (e.g. he re-authorized the deployment in the browser just now — deployment authorization is per-deployment and my probe may have raced it), or something he'll share as "details TBD." Either way, **my job is to confirm actual delivery before running the E2E** — and it's not confirmed.
+
+## What's needed (one of)
+1. **Gary:** open the prod deployment URL **while logged in as garyjob** (the deployer): `https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → approve the authorization prompt → tell me. I re-invoke → verify delivery in both mailboxes → AB1781 gets a genuine stamp.
+2. **OR** share what his fix was (repo/commit/deployment) and I'll deploy + verify it.
+
+## RESUME HERE → (once delivery is confirmed)
+1. Re-invoke the resend → confirm real delivery (HTML MIME part in mailbox) + AB stamp
+2. **Run the fresh §10 E2E** with `Owner Email = garyjob@gmail.com`, test QR `TEST_AGL4_<today>_1`, dummy SunMint submission `TEST-…`, governor-signed LINK via dao_client CLI → verify QR ASSIGNED_TO_TREE, SunMint LINKED, AGL4 main-ledger fulfillment pair (`SunMint Tree Planting Contract - agl4`), tracking LINKED/OK
+3. **THE POINT:** verify BOTH emails actually arrive at garyjob@gmail.com — onboarding (processBatch, admin project — already proven working with Paloma) **and** the tree-planted notification (LINK flow / resend, 1UrBg — needs the deployment auth)
+4. Invalidate the test QR (INVALIDATED) + fill the §10 Log of runs row
+
+**✅ Actions this turn:** re-invoked the resend (still permission error), searched both mailboxes (only the 2 onboarding emails exist — tree-planted notification never delivered), probed authorizeMailApp routing, checked git main (no new fix), read the full §10 procedure + Log of runs. No PRs opened/merged this turn. **Holding the E2E until email delivery is confirmed — per your explicit sequencing.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -2 && echo "=== recent commits (last 10) ===" && git log
 
