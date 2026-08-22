@@ -8,182 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-**Found it — the QR status is already INVALIDATED, not SOLD.** The tracking tab row 7/8 shows: `QR status is "INVALIDATED", expected SOLD`. 
-
-Wait — row 1780 was SOLD (you confirmed, I confirmed). But something set it to INVALIDATED... or the handler read a DIFFERENT row. The processor's QR lookup likely found row 1780 with D=INVALIDATED — meaning someone (or a step) already invalidated it, OR the row number shifted after my earlier inserts. Let me read row 1780's actual current D value + search for the QR code across the sheet:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Row 1780's D is **INVALIDATED** — but you set it SOLD, and I never invalidated it (that's step 4, not yet done). Someone/something flipped it between your SOLD and now. Possibilities: (a) you or another process invalidated it already, (b) an earlier processor invocation (during my multi-turn §10 reads) — no, the processor only flips QR status on successful LINK, (c) a human/Gary set it INVALIDATED preemptively.
-
-Regardless — for the E2E to proceed, the QR needs to be **SOLD** at link time. Per the governor's rule (test QRs move MINTED↔SOLD↔INVALIDATED via direct sheet writes), I'll set D back to **SOLD**, re-run the link (the row already failed twice as INVALIDATED; re-invoking the processor will pick up row 11686 again — but it's already in tracking as REJECTED, and the dedupe is row-number-based... let me check: the processor may re-process 11686 since tracking rows 7/8 reference it, but dedupe uses `processedRowNumbers` from tracking col A = 11686 → it WILL skip it).
-
-So I need a **fresh submission** (new update id) after setting SOLD. Let me: 1) set D=SOLD, 2) re-submit the LINK event (new Edgar row), 3) re-invoke the processor, 4) verify:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-D is now SOLD. Re-submitting the LINK event (fresh update id) and invoking the processor:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Re-submitted (signature_verification: success). Invoking the processor to process the new row:
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Still **1 rejected** — but now the QR is SOLD. Let me check the new rejection reason (tracking tab):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**The LINK worked on the first pass (row 9: LINKED / OK at 09:22:26Z)!** The row 10 rejection is a **duplicate invocation race** — the second invoke (I called the URL twice — once in the previous turn's attempt and once now, or the processor ran twice) found the QR already ASSIGNED_TO_TREE (because row 9 succeeded) → correctly rejected as a duplicate.
-
-So the link event **succeeded**. Now verify all rows (step 3): QR row → ASSIGNED_TO_TREE + tree fields, SunMint row → LINKED + QR/At, main ledger "offchain transactions" → the AGL4 fulfillment pair, and confirm the tracking row:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The output was truncated — the QR row + SunMint row sections got cut off at the top. Let me read the artifact from the start to see the QR/SunMint verification:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The artifact starts mid-output (the QR row + SunMint sections were printed BEFORE this and got truncated in the transfer). The offchain-transactions search only matched sale-time liability rows (the `SunMint Tree Planting Contract - agl4` +1 entries from 2026-06/07/08) — my filter `i > 3800` caught those but I need to check specifically for the NEW fulfillment rows for `2026TEST_20260822_1`. Let me query the offchain tab specifically for the test QR's fulfillment pair (date 20260822, message containing 2026TEST, and Cacao Tree Planted +1):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-QR + SunMint rows are **correct** (ASSIGNED_TO_TREE + tree fields; LINKED + linkedAt), but the **offchain transactions tab has NO fulfillment pair** for the test QR (found 0). The pair must have gone somewhere — either the AGL4 sub-ledger (old behavior = deployed code predates #406) or it's missing entirely. Checking both:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Found it — the fulfillment pair landed on the AGL4 SUB-ledger (old behavior), not the main offchain tab.** Row 151: `['', '[TREE PLANTING LINK EVENT] QR: 2026TEST_20260822_1', 'Sophia Truesight', '-1.00', '', '', '']` — the same malformed 4-cell shape (blank date, E/F blank, no +1 row).
-
-**This means the LIVE deployed code does NOT have the #406 AGL4 fix** — the processor that processed my LINK is running the OLD `appendTreePlantingLedgerFulfillment_` (which targets the QR's resolved sub-ledger = AGL4, writes the 4-cell row). The anonymous @11 deployment I've been invoking is **pinned to v15**... but v15 should have had #406. Wait — let me reconcile: the anonymous deployment was created from `clasp deploy` reading local files. When I deployed #406, did the anonymous URL actually get updated?
-
-The evidence says **no**: the pair went to AGL4's sub-ledger (old path) AND in the malformed 4-cell shape (not even the correct 6-cell sub-ledger shape). So the live processor is running **pre-#406, and possibly pre-#397-era code**. The anonymous deployment URL I've been using all along may be serving an OLD pinned version. I need to redeploy the anonymous deployment to the current HEAD (which has #406 + the correct 2×6 atomic pair).
-
-**This is the same @11-pin issue as before** — the anonymous deployment wasn't updated when I deployed #406 last turn (I only verified the clasp-pushed files, not the deployment pin). Fix: save a new version + `clasp deploy` to create/repoint the anonymous deployment at the current HEAD, then re-run the LINK and verify the pair lands on the main offchain tab.
-
-Let me check the deployments + repoint:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I see the issue: the anonymous deployment `AKfycbwU4O8Uf6FqpNw73bI5ZuWecgmhZOb0L3LOEsAfGlgx_dVks-5nrNBZm2TO-S4fVYkm` is @15 — but **git HEAD is now `d8cd51c` (the #408 INVALIDATED-docs merge), which is AHEAD of what @15 was pinned to**. The local file HAS the AGL4 fix (isAgl4 ×7). But @15 was deployed before... let me check: @15 was created when I deployed #406 (the AGL4 fix) — so @15 SHOULD have it. But the row 151 shows the old 4-cell shape on the sub-ledger...
-
-Wait — actually let me re-check. When I deployed #406, I created a version and the anonymous deployment was repointed. But the processor's behavior (row 151 = 4-cell on AGL4 sub-ledger) shows the OLD code ran. Unless: the @15 deployment executes the code at the time of the LAST push but the deployed version was created BEFORE #406? The deployment list shows @15 with NO description — it may predate #406.
-
-Actually the simplest fix: **create a fresh deployment @16 from the current HEAD** (which has #406), update the anonymous URL, and re-run. Let me do that:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Wait — `grep -c "isAgl4"` returned **5** (not 7 as before — the earlier count included `TPL_MAIN_DAO` lines). But more importantly the git status is clean (only unrelated untracked files). New deployment @16 created: `AKfycbxGzGp__OxVVsztgFyDcHbWGReoK_w8-BVYRZ8DKn2vVagmY5NCSItH7Mh5kLsfkbXY`.
-
-But the local file showed `isAgl4` ×5 while earlier it was ×7 with `TPL_MAIN_DAO` — let me confirm the local file actually has the #406 code (it should — git HEAD is d8cd51c which includes #406 merged). Actually — hold on. Let me check whether the **processor function** in the deployed code actually routes via the AGL4 branch. The key question: does the anonymous URL @16 serve the #406 code? The `clasp deploy` reads local files = git HEAD (which has #406 merged). So @16 = current code with #406. 
-
-But the earlier LINK (processed via @15) wrote to the sub-ledger — meaning @15 did NOT have #406. Let me just verify @16 serves #406 by re-running the LINK flow. First I need the SunMint row back to NEW + QR back to SOLD (both were flipped by the successful LINK), then re-submit the link event and invoke @16:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Reset done (QR → SOLD + cleared tree fields; SunMint → NEW). Now re-submit the LINK event and invoke the NEW @16 deployment (which has #406):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**`1 linked`** — the @16 deployment (with #406) processed it. Now the critical verification — did the fulfillment pair land on the **main ledger's offchain transactions** tab (the #406 fix)? Verifying all rows:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-🎉 **THE #406 FIX WORKS — full E2E verified!** The fulfillment pair landed on the **MAIN DAO ledger's "offchain transactions" tab** exactly as designed:
-
-- **Row 4127**: `[8/22/2026, [TREE PLANTING LINK EVENT] QR: 2026TEST_20260822_1, "SunMint Tree Planting Contract - agl4", -1.00, "Cacao Tree To Be Planted", '', TRUE]`
-- **Row 4128**: `[8/22/2026, [TREE PLANTING LINK EVENT] QR: 2026TEST_20260822_1, "SunMint Tree Planting Contract - agl4", +1.00, "Cacao Tree Planted", '', TRUE]`
-
-Both rows with the correct contributor, classification, and the TRUE flag — **matching the sale-time liability pattern exactly**. The AGL4 fulfillment now discharges on the main ledger where the liability lives.
-
-## Step 4 — Invalidate the test QR (per §10 step 6 / #408):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Step 4 done — QR 1780 → INVALIDATED** (per #408: excluded from pickers/counts, audit trail intact).
-
-**Step 5 — fill the §10 "Log of runs" row** via a small agentic_ai_context PR. Let me read the current §10 Log of runs table structure first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the table format. Now opening the agentic_ai_context PR to fill the Log of runs row with the verified results:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #788 opened** (agentic_ai_context, commit `ab68b18`) — the §10 Log of runs row filled with the verified result.
-
-## ✅ §10 E2E COMPLETE — FULL VERIFICATION (steps 3–6)
-
-**Step 3 — re-read every affected row (actual values):**
-
-| Check | Result |
-|---|---|
-| **QR row 1780** (`Agroverse QR codes`) | `D=ASSIGNED_TO_TREE`, `N=20260822` (tree date), `O=44.5` (lat), `P=-123.2` (long) ✅ |
-| **SunMint row 18** (`SunMint Tree Planting`) | `Status=LINKED`, `Linked QR=2026TEST_20260822_1`, `Linked At=2026-08-22T09:23:54.624Z` ✅ |
-| **Main ledger "offchain transactions"** (row 4127) | `[8/22/2026, [TREE PLANTING LINK EVENT] QR: 2026TEST_20260822_1, "SunMint Tree Planting Contract - agl4", -1.00, "Cacao Tree To Be Planted", '', TRUE]` ✅ |
-| **Main ledger "offchain transactions"** (row 4128) | `[8/22/2026, [TREE PLANTING LINK EVENT] QR: 2026TEST_20260822_1, "SunMint Tree Planting Contract - agl4", +1.00, "Cacao Tree Planted", '', TRUE]` ✅ |
-| **Tracking tab** | `LINKED / OK` (09:23:54Z) ✅ |
-
-**Step 4 — QR 1780 → INVALIDATED** ✅ (per #408; excluded from pickers/counts, audit trail intact)
-
-**Step 5 — §10 Log of runs filled** via agentic_ai_context PR #788 ✅
-
-## Key finding along the way (worth knowing)
-
-The **first attempt** (via the old anonymous deployment @15) wrote the pair to the **AGL4 sub-ledger** in the old 4-cell shape — because @15 was **pinned to pre-#406 code**. The fix: created deployment **@16** (`AKfycbxGzGp__OxVVsztgFyDcHbWGReoK_w8-BVYRZ8DKn2vVagmY5NCSItH7Mh5kLsfkbXY`) from current HEAD (has #406) → re-ran → pair landed **correctly on the main offchain tab**. This confirms the #406 AGL4 routing fix works end-to-end in production.
-
-## RESUME HERE →
-1. **Merge agentic_ai_context #788** (Log of runs — durable record)
-2. **Merge tokenomics #407** ($0-price parser bug — real production bug, independent of this test; your call on timing)
-3. **UAT readiness**: dapp_beta #73 (key-gen redirect) is live on beta — the §10 E2E is now fully green, so the tree-planting pipeline (Mark Invalid + Link + AGL4 fulfillment) is **UAT-ready** for your confirmation
-
-**✅ Actions this turn:** executed §10 steps 1–6 (SunMint dummy row, LINK event via CLI, verified QR/SunMint/main-ledger/tracking, invalidated QR), diagnosed + fixed the @15→@16 deployment-pin issue, opened agentic_ai_context #788 with the Log of runs. One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×18 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread, datetime gc = gspread.service_account(filename='/home/ubuntu/creds/google_credential; cd /opt/truesight_autopilot/dao_protocol && PYTHONPATH=/opt/truesight_autopilot/dao_protocol python3 -m truesight_dao_client.modules.link_tr; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; …(+4 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
@@ -3304,21 +3128,25 @@ I have everything. Now writing the new guarded action in `process_qr_code_update
 ### 🤖 Autopilot
 
 The anchor string didn't match — the actual file likely uses different escape sequences (`\u2139\ufe0f` may be literal in the file vs my Python `\\u` interpretation). Let me check the actual fallback line text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file contains the **literal Unicode characters** (ℹ️), not `\u` escapes. My Python anchor used `\\u2139` which didn't match. Fixing the anchor to use the literal character:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched file built (29,428 B, syntax OK, 4 refs to the new action). Now push it to the #412 branch via the Contents API (replacing the wiped file):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed (commit `589712bd` — the branch file was the empty blob `e69de29b` from the wiped write, now replaced with the full patched file). Verifying the branch file is complete + correct:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3370,16 +3198,19 @@ ROOT CAUSE — TWO real bugs, not one:
 ### 🤖 Autopilot
 
 The governor's diagnosis is precise — two bugs, and #2 (the real error hidden by #1) is the actionable one. Let me read the current post-#413 code to build the surfacing fix correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ptpl file shows the current function (still the swallowing try/catch at 269–293). The resend function grep failed because it's in the other file (or named differently post-#413). Let me find it in pqu_413.js:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The resend function isn't in pqu_413.js's visible scope — it's likely in `process_tree_planting_link.js` post-#413 (the comment at line 133 says "guarded to ASSIGNED_TO_TREE rows in resendTreePlantedNotification_ itself"). Let me find it in the ptpl file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3387,11 +3218,13 @@ The resend function isn't in pqu_413.js's visible scope — it's likely in `proc
 The governor's merged #413 version confirms bug #1 exactly: `resendTreePlantedNotification_` (line 304) calls `sendTreePlantedNotificationEmail_` and **unconditionally returns `{status:'ok'}`** — while the send function's own try/catch swallows the real MailApp error. So "✅ Notification re-sent" is meaningless, and the true MailApp failure is invisible.
 
 **The fix:** make the re-send path surface the real error — add a `rethrowOnError` param to `sendTreePlantedNotificationEmail_` (default false keeps the LINK flow's best-effort semantics unchanged), pass `true` from `resendTreePlantedNotification_` so the actual MailApp exception propagates to the doGet response. Then the real root cause (quota/permissions/scope) becomes visible and fixable. Opening the PR with `edits` hunks (no empty-write footgun):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #415 opened** (commit `19913b68`, 3 `edits` hunks — no empty-write this time). Verifying the branch file (syntax + all 3 hunks present + rethrowOnError wired correctly):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3441,16 +3274,19 @@ Once you redeploy with real error surfacing, re-trigger (?action=resendTreePlant
 ### 🤖 Autopilot
 
 The governor's directive is precise: rewrite `resendTreePlantedNotification_` to call `MailApp.sendEmail` directly (no swallowing wrapper), add `MailApp.getRemainingDailyQuota()` to the response, and let the doGet try/catch surface real errors. This supersedes the #415 approach (which the governor deliberately reverted in favor of a direct call). Let me build the direct-call version — I'll keep #415's branch closed in favor of this cleaner approach. First, get the exact current resend function + the doGet handler to match the response shape:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor's directive is exact: inline the email content directly in `resendTreePlantedNotification_`, call `MailApp.sendEmail` with NO try/catch (the doGet handler's try/catch surfaces real errors), add `MailApp.getRemainingDailyQuota()` to the response, and stamp col AB only on genuine success. Note the doGet uses `qr_code` (underscore) — matching the governor's invocation example. Building the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #416 opened** (commit `ad00b39e`). Verifying the branch: syntax + the direct MailApp call + quota + no wrapper call left in the resend path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3501,11 +3337,13 @@ Also, separate question from the governor: why is there no cron/scheduled trigge
 ### 🤖 Autopilot
 
 Executing both threads: (1) the trigger investigation for processBatch, (2) then merge #416 (the email fix) as the authorized unit action. Starting with parallel recon — sibling trigger-setup conventions in the codebase + an API probe for UI-installed triggers on 1MnAsI:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor's finding is confirmed in source: `processBatch` has **zero** `ScriptApp.newTrigger` setup anywhere, while both sibling functions in the SAME project (`processDonationMintsFromTelegramChatLogs` line 813, `processProgramRegistrationsFromTelegramChatLogs` line 352) DO have trigger-setup code. Now the key question: is there a UI-installed trigger (invisible to git)? Probing the Apps Script triggers API with the working token:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3521,6 +3359,7 @@ The **evidence-based answer** to the governor's question, though, is strong:
 Since I can't read the UI triggers panel via API, the definitive check needs **one human glance** (Edit → Current project's triggers). But the governor also asked: *if there's truly no trigger, fix it with a proper `setupTrigger()`-style function matching the sibling convention.* Given the code comments EXPECT a trigger, the **safe, self-sufficient fix is to add the setupTrigger function for processBatch** (matching siblings) — it makes the schedule explicit in source and removes the "someone must remember to click" failure mode.
 
 Let me read the siblings' setup convention + processBatch's docs to build a matching `setupProcessBatchTrigger_`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3528,6 +3367,7 @@ Let me read the siblings' setup convention + processBatch's docs to build a matc
 I have the sibling convention: an `ensureXHourlyTriggerInstalled_` function that checks existing triggers (by handler function name) and creates an hourly `.timeBased().everyHours(1)` trigger if absent. processBatch is documented to run as a trigger ("GAS marks the trigger run as failed") but has NO setup function — a genuine gap (the governor's finding confirmed).
 
 Now the answer to the governor's question + the fix. Since I've merged/opened a PR this turn? No — I haven't opened/merged a PR this turn yet (the search + API probes were recon). So I can open the trigger-setup PR now. Let me check who calls the siblings' ensure functions (to mirror the wiring — is it called from doGet/doPost or a separate one-time setup?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3537,6 +3377,7 @@ I now have the complete pattern: the siblings install their hourly trigger **ide
 **The answer to the governor's question:** no `ScriptApp.newTrigger` for processBatch anywhere in source — confirmed. The UI triggers panel can't be read via API with my token (404), so the definitive UI check needs one human glance, BUT the code comment at 1843 proves processBatch *expects* trigger context, and the 09:42Z send happened — so either a UI-installed trigger exists (invisible to git) or it was manual. Either way, the **self-healing fix** (matching the sibling convention) removes the dependency on remembering to click Run.
 
 Opening the PR — an `ensureProcessBatchHourlyTriggerInstalled_` (idempotent, sibling-matching) + a call from within `processBatch` itself (so the trigger self-installs on the next run, exactly like the siblings):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3655,4 +3496,41 @@ Branch created ✅ but the file PUT needs the file's sha for the branch (it's a 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /tmp && echo "=== newTrigger in 1MnAsI project folder ===" && grep -rn "ScriptApp.newTrigger\|setupTrigger\|createTrigger" /opt/truesight; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) tok = rc['token; cd /tmp && echo "=== sibling trigger setup: donation mints (813-830) ===" && sed -n '810,832p' /opt/truesight_autopilot/context/tokenomics/g; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Close out 415
+
+
+### 🤖 Autopilot
+
+Closing #415 — it's superseded by #416 (the direct-MailApp approach). Using the GitHub API to close it:
+
+
+### 🤖 Autopilot
+
+✅ **PR #415 closed** — "Surface real MailApp errors in tree-planted notification re-send" is now `closed` (superseded by #416, the direct-MailApp approach).
+
+## What I did this turn
+
+- **Closed tokenomics #415** via the GitHub API (state → closed). It was the earlier `rethrowOnError`-param approach, which the governor deliberately reverted in favor of the cleaner direct-MailApp fix (#416). Closing it prevents confusion about which fix is current.
+
+## RESUME HERE → (next unit)
+
+1. **Merge #416** (the direct-MailApp resend fix — real error surfacing + quota reporting) → deploy the 1UrBg project to GAS → update the PROD deployment in place (the @13→@17 pin lesson) → invoke `?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → **read the ACTUAL error/success (with quota)** → fix the real root cause (MailApp authorization vs quota) → verify delivery (HTML MIME part in the mailbox) — this is the true step-4 completion
+2. **Merge #417** (processBatch hourly-trigger self-installer) → deploy the 1MnAsI project → verify the trigger self-installs on the next processBatch run
+3. Final report to the governor (all four email steps + the trigger gap resolved)
+
+**✅ Actions this turn:** closed #415. No PRs opened/merged this turn — nothing to stop on.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → closed tokenomics #415 via PATCH /pulls/415 (state=closed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - << 'PYEOF' import json, subprocess, urllib.request, urllib.error PAT = subprocess.run(['grep','-m1','^TRUESIGHT_DAO_AUT
 
