@@ -3476,6 +3476,7 @@ Executing: investigate the second-email finding first (read-only), then merge #2
 ### 🤖 Autopilot
 
 The stamp is **col28 = `20260821`** — identical to col10 (QR creation date) and col14 (Tree Planting Date), and it **predates today's actual LINK** (tracking `Edgar_20260822114540_033` at 11:45Z on 08-22). This smells like a stale copy (not a genuine today-send stamp, which would be `20260822`). Let me check the code that stamps col28 — `sendTreePlantedNotificationEmail_` — to see whether it's even invoked in the LINK path, what date it writes, and which account MailApp sends from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3637,4 +3638,17 @@ Per the one-PR-per-turn rule and the governor's explicit "go — merge #299", I'
 
 Executing the next unit — promote the #299 map feature to prod (the governor-approved single-file path) and verify it renders live per §11. First: fetch beta main (post-#299 merge) and confirm the map code, then promote to prod main:
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go
+
+
+### 🤖 Autopilot
+
+Executing the next unit — promote #299 (map embed) to prod via the approved single-file path, then verify live per §11. First, check beta main has the map code and get prod's current state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
