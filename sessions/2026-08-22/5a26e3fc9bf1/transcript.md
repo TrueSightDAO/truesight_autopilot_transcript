@@ -1248,11 +1248,13 @@ Just say the word.
 ### 🤖 Autopilot
 
 Understood — assemble the **complete** presentation: the front-matter slides we'd excluded (title, ingredients matrix, supply estimate, revenue model) plus the Manicoré section **and** the new cacao slide, all in the original narrative order.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full 14-slide deck assembled. Sending it:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1441,4 +1443,49 @@ Note: slide 6 (the açaí project graphic with the AMAZÔNIA/Açaí/Castanha/Cup
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 << 'EOF' import fitz full = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") print("before:", full.page_count, "pages") ou
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Remove the 3rd slide in this
+
+
+### 🤖 Autopilot
+
+Removing slide 3 — *Preliminary Estimate of Potential Supply: Manicoré Region* (the supply-table slide). Rebuilding:
+
+
+### 🤖 Autopilot
+
+Deck rebuilt — 12 slides, supply-estimate slide removed. Sending:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **12-slide deck attached** (`EBCF_Bioeconomy_Full_Deck_v3.pdf`, 7.1 MB).
+
+**Removed:** Slide 3 — *Preliminary Estimate of Potential Supply: Manicoré Region* (the supply-trajectory table: açaí 2.5–4k t, Brazil nut 500–700 t, cocoa 300–500 t, etc.).
+
+**Remaining 12 slides:**
+
+| # | Slide |
+|---|-------|
+| 1 | Bioeconomy Program (title) |
+| 2 | Amazon Ingredients Matrix |
+| 3 | Potential Revenue + Park CAPEX |
+| 4 | Location of 10,000 m² Park land |
+| 5 | Açaí project graphic |
+| 6 | **Cacao Production · Manicoré** |
+| 7 | Municipality — office + açaí factory |
+| 8 | EBCF properties — 20,000 ha |
+| 9 | 5 km radius — ~100,000 ha, 80+ communities |
+| 10 | 400 ha SAF plantation |
+| 11 | Benchmark |
+| 12 | Thank you |
+
+One note: slide 3's removal leaves the **Revenue/CAPEX slide (now #3)** without the supply numbers that fed it — if you'd prefer, I can add a compact supply line back into the revenue slide. Otherwise the deck flows fine as-is.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 << 'EOF' import fitz, os full = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck_v2.pdf") print("before:", full.page_count, "pag
 
