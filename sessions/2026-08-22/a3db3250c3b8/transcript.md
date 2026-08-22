@@ -3395,11 +3395,13 @@ Now I have a unique anchor: the end of `processBatch` (the `throw new Error(...)
 ### 🤖 Autopilot
 
 Syntax error at the end of file — let me inspect the tail to find the issue:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tail looks fine — the issue is elsewhere. The error "Unexpected end of input" at line 2255 with the file ending in a clean function suggests an **unbalanced brace earlier** (a `{` I introduced in hunk 1's template literal? No — hunk 1 is a comment + a call). Let me check my hunk 1 replacement — the original `function processBatch() {` had the body after it; my replacement kept `{`... wait, my hunk1 replaced `function processBatch() {` with the SAME opening line + new lines — the `{` is preserved. Hmm, let me diff-check the patched vs main around the anchors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3607,4 +3609,53 @@ Want me to proceed with merging + deploying both?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== PR #416 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/416" | python3 -c "import jso
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Merge and deploy
+
+
+### 🤖 Autopilot
+
+Merging both PRs, then deploying to their GAS projects. First the merges:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged both — tokenomics #416 + #417.**
+
+## What I did this turn
+
+| PR | Merged | What it does |
+|---|---|---|
+| **#416** | sha `fd47587f` | `resendTreePlantedNotification_` now calls **MailApp.sendEmail directly** (no swallowing wrapper), reports `MailApp.getRemainingDailyQuota()` in the response, stamps col AB only on genuine success, and lets real MailApp errors propagate to the doGet response — the "✅ re-sent" lie is gone. File: `process_tree_planting_link.js` (1UrBg project) |
+| **#417** | sha `a857fb32` | Adds idempotent `ensureProcessBatchHourlyTriggerInstalled_()` (self-installs an hourly `processBatch` trigger from within `processBatch`, matching the sibling convention) — onboarding emails no longer depend on someone clicking Run. File: `qr_code_web_service.js` (1MnAsI project) |
+
+Both were open/verified before merge (syntax OK, small focused diffs +22/−2 and +26/−0).
+
+## RESUME HERE → (deploy + verify — next unit)
+
+1. **Deploy #416** — 1UrBg project (`google_app_scripts/1UrBgqLnnQc6PV4-…`): pull-first per convention → push → save version → **update the PROD deployment in place** (`AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X` — the @13→@17 pin lesson)
+2. **Invoke the resend**: `?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` on the prod URL → **read the ACTUAL response** — real success (with quota number) or the genuine MailApp error (the true root cause: authorization-needs-manual-Run vs quota)
+3. **Verify actual delivery** (HTML MIME part in admin@/garyjob@ mailbox, clear the bogus AB1781 stamp first so the genuine send stamps it fresh)
+4. **Deploy #417** — 1MnAsI project: pull-first → push → run `processBatch` once (manual via GAS editor, or the next trigger) → verify the hourly trigger self-installs (second run = no-op)
+5. Final report to the governor
+
+**✅ Actions this turn:** merged #416 + #417. Two PRs merged — stopping per the one-PR-per-turn rule. Deploys + the resend invocation + delivery verification are the immediate next unit.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → #416 merged (sha fd47587f), #417 merged (sha a857fb32)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #416 on tokenomics merged successfully (sha: fd47587f188f265dc53ccf834ff5ef385c757b4c). Pull Request successfully merged; ✅ PR #417 on tokenomics merged successfully (sha: a857fb326ce2dc9297db89f350e28a698bf9e913). Pull Request successfully merged
 
