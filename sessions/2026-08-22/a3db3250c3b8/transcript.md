@@ -8,40 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-**PR #406 opened** (commit `cf9334e`). Let me verify the branch file is syntactically valid JS and the hunks are all present:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #406 verified** — syntax OK (node --check), all hunks present: `TPL_AGL4_LEDGER_URL` ×2, `TPL_MAIN_DAO_LEDGER_URL` ×3, `TPL_MAIN_DAO_OFFCHAIN_TAB` ×3, `SunMint Tree Planting Contract - agl4` ×2, call-site pass-through ×1, `isAgl4` branch ×5. 31,897 bytes.
-
-## PART 3/4 Task 2 — PR ready
-
-**tokenomics #406** (`fix/tree-planting-agl4-main-ledger-fulfillment`, commit `cf9334e`):
-
-**What it does:** `appendTreePlantingLedgerFulfillment_` now takes `ledgerUrl` and, for **AGL4** QRs (`https://agroverse.shop/agl4` — the *only* main-ledger-special-cased ledger, verified org-wide), discharges the fulfillment pair on the **MAIN DAO ledger's "offchain transactions"** tab — where the sale-time liability actually lives — with:
-- Contributor: **`SunMint Tree Planting Contract - agl4`** (exactly matching `extractAglContractName` + the sale-time booker's pattern)
-- Rows (7-col, same shape as sale-time rows): `[date, message, "SunMint Tree Planting Contract - agl4", -1, "Cacao Tree To Be Planted", '', true]` + `[…, 1, "Cacao Tree Planted", '', true]`
-- **All other ledgers unchanged** — they keep the resolved sub-ledger path (6-col)
-- **Generalized**: keyed on `TPL_AGL4_LEDGER_URL`; any future main-ledger special-case is one more condition
-
-**Verified:** node --check passes; all 5 key hunks confirmed on the branch; 31,897 bytes.
-
-## RESUME HERE →
-1. **Review + merge #406** (governor or per your flow)
-2. **Deploy to GAS** (pull-first per convention) → new version → **verify live** (pull-back shows the AGL4 branch)
-3. **Verify behaviorally**: the next AGL4 tree-planting link (or a re-run of the reverted one once re-approved) books the pair on the main ledger's offchain tab — and the malformed AGL4 row-150 delete (PART 2 item 4, blocked on SA write access to `1Uo5p3…`) can be completed
-
-**✅ Actions this turn:** verified local == git main, confirmed the sale-time contributor pattern (`SunMint Tree Planting Contract - ${extractAglContractName(url)}`), opened tokenomics #406 with the AGL4 main-ledger fulfillment routing, verified branch (syntax + hunks). One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ && echo "=== extractAglContractName in 1duQFf (managed agl ledgers) ===" ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/tree-planting-agl4-main-ledger-fulfillment/google_app_scri
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
@@ -3433,6 +3399,7 @@ Executing — promote the #299 map feature to prod (approved single-file path), 
 ### 🤖 Autopilot
 
 Beta main has the map (25,869 B, 1 embed); prod is behind (24,777 B, 0 embeds). Promoting prod's qr/index.html to beta main's bytes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3567,4 +3534,39 @@ go — independently confirmed the map is genuinely live on prod. Please continu
 
 Executing the email items. First, check the state of #410 (processBatch link fix — the dependency for the onboarding re-send) and the 1MnAsI project's local state + deployments:
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+New UX bug from the governor (separate from the QR-linking work, different repo — sunmint_beta): on the tree-planting submission page (sunmint.truesight.me), the live camera preview is too tall on mobile, pushing the capture/submit buttons off-screen and making them hard to reach.
+
+Root cause found: sunmint_beta/index.html, CSS rule for #treeCameraPreview (~line 127):
+  #treeCameraPreview, #treePhotoPreview {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    ...
+  }
+No height cap — on mobile, the getUserMedia video stream's native aspect ratio combined with width:100% on a narrow viewport produces a very tall element, pushing everything below (capture button, species field, submit button) far down the page.
+
+Suggested fix: add a max-height constraint + object-fit so the preview shrinks to a reasonable viewport size without distorting the video, e.g.:
+  #treeCameraPreview, #treePhotoPreview {
+    width: 100%;
+    max-width: 100%;
+    max-height: 40vh;
+    object-fit: cover;
+    height: auto;
+    ...
+  }
+Tune the exact max-height value (40vh is a starting suggestion) so the capture button + rest of the form stay visible without scrolling on a typical phone viewport. This only affects #treeCameraPreview (the live video) and #treePhotoPreview (the captured-photo preview after tapping capture) — both share this rule already, so one change covers both states.
+
+Check if sunmint_prod needs the same fix (it currently uses a plain native file-input capture, not this live camera view, per my check — so it may not be affected, but worth confirming they're not both live in different rollout states). Normal PR flow. Verify by actually loading the page (per the §11 lesson) and checking the rendered layout / that buttons are visible without excessive scrolling on a mobile viewport size.
+
+
+### 🤖 Autopilot
+
+Executing the sunmint camera-preview UX fix. First, recon: the current CSS in sunmint_beta/index.html, and whether sunmint_prod shares the same live-camera code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
