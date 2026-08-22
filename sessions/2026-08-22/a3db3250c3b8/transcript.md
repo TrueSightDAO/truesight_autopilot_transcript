@@ -3222,11 +3222,13 @@ PART 3/4 — Link the QR to the real Bougainvillea submission: execute [TREE PLA
 ### 🤖 Autopilot
 
 PART 3/4 — but first a critical check: the contributor string. The governor wants the new ledger's fulfillment to use `SunMint Tree Planting Contract - main` (not `- agl4`). #406/#409 hardcoded the AGL4 contributor — let me verify how the #409 branch derives it before running the LINK:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The #409 branch **hardcodes `- agl4` for ALL main-ledger routes** — that would write `SunMint Tree Planting Contract - agl4` for the FounderHaus QR, which the governor explicitly said NOT to do. I need to make the contributor **derived from the ledger URL** (last path segment → `main`), mirroring the sale-time booker. Let me check how the sale-time booker derives it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3234,26 +3236,31 @@ The #409 branch **hardcodes `- agl4` for ALL main-ledger routes** — that would
 The sale-time booker **hardcodes** `'SunMint Tree Planting Contract - agl4'` too (line 199) — there's no dynamic derivation there either. So the pattern is: a fixed contributor per ledger. For the new MAIN ledger, the right contributor is `SunMint Tree Planting Contract - main`. 
 
 The cleanest fix: derive the ledger name from the URL (`https://truesight.me/sunmint/main` → `main`) so the contributor is `SunMint Tree Planting Contract - <ledgerName>` — keeping agl4 → `- agl4` and main → `- main` automatically, and any future allow-listed ledger gets the right name. Let me update the #409 branch with this derivation, then verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched + syntax OK. Now push this update to the #409 branch (same branch — it's not merged yet, so I'm revising it before merge):
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **I just made a serious error** — I uploaded `PLACEHOLDER` as the file content, which would wipe the entire file on the branch. Fixing immediately by uploading the actual patched file from disk:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now verify the branch file is the full corrected version (not PLACEHOLDER, not the wiped version) — checking size + the ledgerName derivation + syntax:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch file shows the **original** 32,293 bytes with the hardcoded `- agl4` (ledgerName = 0) — either the raw.githubusercontent is CDN-lagged (as it was earlier this session) or my local upload didn't take. Let me check the authoritative Contents API at the branch tip + the recent commit history:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3268,11 +3275,13 @@ Now — **critical decision point before running the LINK**: the #409 branch has
 3. Then run the LINK event → verify
 
 Let me check the PR #409 status and whether it needs anything before merge (it's been revised with 3 commits now):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 #409 is open, mergeable, 3 commits (allow-list + ledgerName-derived contributor). The LINK **must not run** until this is merged + deployed (production would otherwise hardcode `- agl4`). Merging it now per the authorized "review → merge → deploy" flow:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3333,6 +3342,7 @@ This is real production/customer-facing work — take the turns you need, post p
 ### 🤖 Autopilot
 
 PART 4/4 — the onboarding-email verification. First, let me establish the current state (did the deploy + LINK from the prior unit actually complete?) and recon the email mechanism + installed triggers in parallel:
+[3 tool result(s) compacted: ssh_run, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3365,6 +3375,7 @@ Please continue from RESUME HERE: (1) close truesight_me_beta PR #295 (unnecessa
 Consolidated to-do absorbed (close #295, deploy #409 to PROD, real QR PNG, landing→`/qr/?id=`, SunMint row 16 fix, LINK, email verification). Key facts from my recon: QR row 1781 is **SOLD with M (onboarding sent) already stamped 8/22/2026** — so an onboarding email may have already fired (with the OLD landing link — I'll verify); PROD deployment @17 predates #409 (local git is behind); processBatch exists in `qr_code_web_service.js` but no `newTrigger` in source — needs an installed-trigger check.
 
 Starting with parallel recon + quick wins:
+[4 tool result(s) compacted: ssh_run, ssh_run, gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3375,6 +3386,7 @@ Big findings in this batch:
 3. 🔎 **The onboarding email was ALREADY SENT**: admin@truesight.me → paloma@founderhaus.club, "Track Your Agroverse Tree Planting Journey", **Sat 22 Aug 2026 09:42:51Z** (SENT) — matches col M stamped 8/22. So processBatch fired (likely a scheduled trigger). **But** it was sent when the landing_page was the old `/sunmint-tree-planting-pledges/main` URL — I need to check what tracking link the email actually contained.
 
 Let me read the sent email + check the manifest/QR page state in parallel:
+[3 tool result(s) compacted: gmail_read_message, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3386,16 +3398,19 @@ Excellent progress. Key findings:
 - ⚠️ **Manifest 404** — `lineage-assets/qrs/FOUNDERHAUS_BOUGAINVILLEA_20260821_1.json` doesn't exist yet; the `/qr/?id=` page renders the shell (200) but the manifest fetch inside will 404 until seeded. `seed_from_sheet.py` is the generator (reads the sheet, emits per-QR JSON).
 
 Next: **deploy #409 to GAS + update PROD deployment in place** (the critical path — the LINK can't run correctly until prod carries #409):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Drift caught again (live was behind git — pre-#409). Restored #409 from git (`sunmint/main` + `ledgerName` ×5, syntax OK). Now push + save version + update PROD deployment in place:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Danger — "Conflicting files found" on push, yet version 18 + @19 were still created.** Version 18 was saved from the **live state** (pre-#409, since the push was refused) — so @19 may have pointed PROD at **pre-#409 code**, making it worse than @17. I must verify + fix immediately. Checking what version 18 actually contains:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3405,11 +3420,13 @@ Drift caught again (live was behind git — pre-#409). Restored #409 from git (`
 Also a file chaos problem: the project folder now has BOTH `Version.gs` (Jun 17, 26KB Code.js era) and `Version.js` (new), plus `Code.js` (old, 25942 bytes) alongside the new files — the folder is polluted with stale files.
 
 **Root cause of the push refusal:** likely the local `process_tree_planting_link.js` I restored doesn't exactly match git main (I used `git show` → file, which may differ in whitespace/encoding from the real tracked blob), OR clasp's conflict detection compares against its own cached snapshot. Let me fix this properly — reset the project folder to EXACT git main content, verify the blob hash matches, then push cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Project folder now matches git main exactly (Code.js/Version.gs are git-tracked deletions — expected, they're not in main's file set for this project). `process_tree_planting_link.js` has #409 markers ×5. Now push cleanly, save version, repoint PROD @19 → the NEW version (with #409):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3417,6 +3434,7 @@ Project folder now matches git main exactly (Code.js/Version.gs are git-tracked 
 ✅ **PROD is now correctly on #409** — pushed 3 files cleanly, saved v20, PROD deployment → @21, and the live pull-back shows **`sunmint/main`/`ledgerName` ×5** — the allow-list is live in production. (The earlier v18/@19 backward-move was caught and corrected; PROD went @17 → @21.)
 
 Now let me verify the production /exec URL serves the fixed code + run the **LINK event** for the FounderHaus Bougainvillea (QR is SOLD, SunMint row 16 is the real submission `Edgar_20260821175134_006`). First fix the SunMint row 16 (Submitted Name "Unknown" → Paloma Lecheta + lat/long) and check its current state:
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3424,16 +3442,19 @@ Now let me verify the production /exec URL serves the fixed code + run the **LIN
 Two results:
 1. **PROD /exec works** — `✅ Tree planting links processed: 0 linked, 0 rejected, 0 errors` (200, normal response — the PROD deployment serves the fixed code fine)
 2. **Wrong spreadsheet key** — I used `1qbZZhfUGRYpG1MEQ8AxMY9_8ubcIBbUwbFPOkwl2GDAk` but earlier in this session the SunMint sheet was accessed via a different key. The 404 means that key doesn't exist for this SA. Let me find the correct key — I've read "SunMint Tree Planting" rows successfully before (msg 171, TEST-20260822-1, Edgar_20260821175134_006 are all there). Let me check the plan doc / earlier transcripts for the correct spreadsheet ID:
+[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the correct spreadsheet key: **`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`** (I mistyped it earlier — missing `-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`). Now let me fix SunMint row 16 (Submitted Name "Unknown" → Paloma Lecheta, add lat/long if available) and check its current columns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My column indices were off (header is 19 cols; I printed E and G instead of J and N). Let me read row 16 with the correct columns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3570,4 +3591,17 @@ Converging — here's the full state of the FounderHaus task.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /tmp && echo "=== close truesight_me_beta #295 ===" && source /opt/truesight_autopilot/.env 2>/dev/null; PAT="${TRUESIGHT_DAO_AUTOPILOT:-; cd /opt/truesight_autopilot/context/tokenomics && echo "=== fetch main ===" && git fetch origin main 2>&1 | tail -1 && echo "=== #409 in mai; cd /tmp && echo "=== manifest exists? ===" && curl -s -o /dev/null -w "%{http_code}" "https://raw.githubusercontent.com/TrueSightDAO/lineage; …(+13 more)
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (note above for the full rationale.) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Executing the next unit — the manifest seed + provenance-page verification (RESUME item 1). First: check how `seed_from_sheet.py` works, whether it's on a cron, and the current manifest state:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
