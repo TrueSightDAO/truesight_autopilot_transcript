@@ -10,138 +10,6 @@
 
 ### 🤖 Autopilot
 
-**Found it: `1m8IZPs…/edgar_send_onboarding_invitation.js`** — the actual onboarding-email sender (the "Track Your Agroverse Tree Planting Journey" email). Let me read it to understand the send mechanism + how to trigger a re-send with the corrected link:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-This is the **onboarding-invitation sender** (via `handleOnboardingInvitationRequest_` + `GmailApp.sendEmail`) — but it sends from the **edgar identity flow** (email verification links), which is a different email than the "Track Your Agroverse Tree Planting Journey" one (that came from `admin@truesight.me` at 09:42Z with the QR tracking link). The governor's PART 4/4 said `processBatch()` in `qr_code_web_service.js` — but that file doesn't have it. The actual Journey email sender must be elsewhere. Given the turn budget, let me check the two remaining candidates + the Gmail sent message's raw body to identify the true sender path:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One more targeted check — `qr_code_web_service.js` matched the grep; let me find `processBatch` + the Journey email builder in it precisely, then I'll converge:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging — here's the full state of the final stretch.
-
-## ✅ DONE & VERIFIED this turn
-
-1. **Prod promotion COMPLETE** — `truesight_me_prod` main now has the inline-photo fix:
-   - `sync_beta_to_prod` hit the **intentional CNAME divergence conflict** (prod=`truesight.me`, beta=`beta.truesight.me`) — per the rule I did NOT force; instead, per your "go", I did the **minimal single-file promotion** (qr/index.html only, commit `d8716578`, CNAME untouched)
-   - **Verified live**: `https://truesight.me/qr/?id=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` now serves 24,615 bytes with `normalizeImageUrl` ×2 — **QR image + inline tree photo + coordinates all render** on truesight.me ✅
-2. **RSA-signature visibility** (part 1 of 2):
-   - **PR #297 opened** (truesight_me_beta, commit `c584096`): `renderEvents()` now displays `signed by <signed_by>` + `ref <sig_ref>` on events when present
-   - **Manifest enriched** (lineage-assets commit `ae748fba`): the `planted` event now carries `signed_by: Gary Teh` + `sig_ref: Edgar_20260822114540_033`
-   - ⚠️ PR #297 is **not yet merged** (one-PR-per-turn — #297 opened this turn)
-
-## 🔴 STILL OPEN (next turn)
-
-1. **Merge PR #297** + promote qr/index.html to prod (same single-file path) → verify the signature line renders on the live page
-2. **Onboarding-email re-send to Paloma** — mechanism FOUND:
-   - It's **`processBatch()` in `qr_code_web_service.js`** (project 1MnAsI…) — line 1846: scans rows where Owner Email set + **col M (Onboarding Email Sent Date) blank**, builds the tracking link as **`${col-B-url}?qr_code=<code>`** (line 2004), sends via `MailApp.sendEmail`, stamps col M
-   - The 09:42Z send used **col B's OLD value** (raw QR text era); col B is now `https://truesight.me/qr/?id=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` — so a re-send will produce the **correct clickable link**
-   - **To trigger**: clear col M (row 1781) → invoke the 1MnAsI deployment (need its doGet action name / URL — the file has `processBatch()`; check how it's exposed + whether a trigger exists) → **verify the new email's body actually contains the clickable URL** before reporting done
-   - No `newTrigger` visible in source — the trigger may be UI-installed (worth checking the project's trigger list, per the governor's original PART 4/4 ask)
-
-## RESUME HERE →
-1. **Merge truesight_me_beta #297** → promote `qr/index.html` to prod (single-file Contents API write, CNAME untouched) → verify live
-2. **Clear col M (row 1781)** → invoke `processBatch` (find the 1MnAsI deployment URL / action) → verify the re-sent email body has the real `https://truesight.me/qr/?id=...` link → confirm delivery (Gmail sent)
-3. **Check the 1MnAsI project's installed triggers** (governor's original ask — diagnose why it fired at 09:42Z: scheduled trigger vs manual) so future onboarding emails are reliable
-4. Final report to the governor (landing URL + what renders + email confirmation)
-
-**✅ Actions this turn:** promoted + verified the inline-photo fix live on truesight.me (single-file prod write, no force); enriched the manifest with signed-event refs (commit `ae748fba`); opened truesight_me_beta #297 (signature visibility); located the exact onboarding-email mechanism (`processBatch` line 1846, link = col-B + `?qr_code=`, col M stamp). One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×16 → sync_beta_to_prod (conflict: intentional CNAME divergence — did NOT force); single-file prod promotion of qr/index.html (commit d8716578, 24,615 B, CNAME untouched); verified truesight.me live (24,615 B, normalizeImageUrl ×2); enriched manifest planted event (sig_ref/signed_by, commit ae748fba); read qr_code_web_service.js (processBatch line 1846, tracking link = col B + ?qr_code=, col M stamp); found edgar_send_onboarding_invitation.js (different email path — not the Journey email)
-• `git push changes` → truesight_me_beta #297 (renderEvents signed_by/sig_ref display)
-• `watch url` → unavailable (topic-only tool)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×22 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT="${TRUESIGHT_DAO_AUTOPILOT:-$KRAKE_IO_PAT}"; echo "=== prod fork: ahead/beh; cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT="${TRUESIGHT_DAO_AUTOPILOT:-$KRAKE_IO_PAT}"; echo "=== prod branches ===" &; cd /tmp && echo "=== diff qr/index.html: prod main vs beta main ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me; …(+19 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Governor: set QR row 1781's state/country columns — State = "Santa Catarina", Country = "Brazil" (matching the Jurerê Internacional/Florianópolis location already in location_text). Please update and re-run seed_from_sheet.py so the manifest picks up the change too.
-
-
-### 🤖 Autopilot
-
-Executing — set State/Country on QR row 1781, then re-run the seed. First, check the current row 1781 values + the exact column indices for State/Country (to match the sheet's header mapping):
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-go — continue: finish State/Country on row 1781, merge #297 + promote qr/index.html to prod (same single-file path), then the email re-send + trigger diagnosis. Governor independently re-verified the page is rendering correctly now (manifest valid, prod has the photo fix) — the earlier "not showing" report was likely just before your promotion landed or a stale browser cache.
-
-
-### 🤖 Autopilot
-
-Executing — State/Country on row 1781, then seed, then #297 merge + prod promotion, then email. First: locate the State/Country columns (header + manifest mapping) and read current row 1781:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-State = col6, Country = col7, both empty; lat/long confirmed at cols 15/16. Setting State/Country, then re-running the seed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**State/Country set** (F1781=`Santa Catarina`, G1781=`Brazil`). Now re-run `seed_from_sheet.py` so the manifest picks up state/country (checking whether `lib/manifest.py` includes them — it may need them in the manifest shape; let me re-run the seed and inspect the regenerated manifest):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The seed wrote 1780 manifests into the local clone's fresh `qrs/` (the sparse checkout has no existing qrs, so it created all). I must NOT push that wholesale — I only need the ONE FounderHaus manifest, and I must confirm it preserved the `sig_ref`/`signed_by` enrichment (build_manifest is supposed to preserve non-seed events). Checking the regenerated file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-⚠️ **The seed regenerated the manifest and LOST my enrichment** — `signed_by`/`sig_ref` are gone from the planted event (seed event types get rebuilt from the sheet, not preserved). The governor's state/country change is in ✅, but I must **re-apply the signature enrichment** and push ONLY this one file (not the 1780-file wholesale). Fixing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Manifest updated** (commit `113e5102`) — now has `state: Santa Catarina`, `country: Brazil` (from the sheet) AND re-applied `signed_by`/`sig_ref` on the planted event. Let me verify the live manifest quickly, then merge #297 + promote to prod:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Manifest verified live**: state `Santa Catarina`, country `Brazil`, planted event has `signed_by`/`sig_ref`. Now merge #297 + promote qr/index.html to prod (the governor's "go" authorizes it):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
 ✅ **Merged — truesight_me_beta #297** (sha `cb91601a`) — the RSA-signature visibility fix.
 
 ## What I did this turn
@@ -3629,26 +3497,31 @@ Git main is still at #418 — no manifest fix merged yet. Let me check for an op
 ### 🤖 Autopilot
 
 No manifest-fix PR exists. The governor's "manifest fix" likely means: **add the explicit `oauthScopes` to appsscript.json** so the `script.send_mail` scope is declared in the manifest — this is what makes the consent screen *include* that scope when the deployment is next authorized in the browser (and documents it properly). Let me check if the governor made a local change on this box, then add the manifest oauthScopes fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No local manifest change either. The "manifest fix" the governor wants is the standard remedy for this exact OAuth gap: **declare the required `oauthScopes` in appsscript.json** so that when the deployment is next (re)authorized in the browser, `script.send_mail` is explicitly requested and granted. I'll add it — with the full scope set the script actually uses (MailApp + sheets/spreadsheets + Drive, per the code):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest updated with the explicit `oauthScopes` (including `script.send_mail`). Now push this to git (PR) and deploy to GAS. First the PR via the raw API path (branch + commit + PR):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #419 opened.** Now the governor said "deploy latest script with the manifest fix" — that's an explicit deploy instruction. Merging #419, then deploying to GAS (pull-first per convention, push, version, update the deployment in place):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3691,21 +3564,25 @@ Branch pushed. Opening the PR:
 ### 🤖 Autopilot
 
 Executing the next unit — deploy #419 (the manifest fix) to GAS. Pull-first per convention, push (now including appsscript.json), save version, update the PROD deployment in place:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest re-applied with the oauthScopes (pull fetched 4 files; I re-applied the git manifest so the push carries #419). Now push, save version, update the PROD deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Conflicting files found" on the push is a red flag — the version/deploy may have snapshotted the **old** state. Let me verify what's actually live now (does the live manifest have oauthScopes? what does @30 serve?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "Conflicting files found" message is just clasp's diff warning (local == live for the manifest — the pull succeeded and the LIVE manifest **does** have the oauthScopes, and @30 was deployed on top). So the manifest fix **is live**. But there's a subtlety: the live **Version.js** differs (clasp auto-manages it), so let me verify the deployment serves @30 with the manifest, then test the resend one more time to see if the deployment's authorization state changed:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3750,6 +3627,7 @@ Fixed
 ### 🤖 Autopilot
 
 The governor's fix worked — the resend returned genuine success (quota 1497). Now the standard we established: **verify actual delivery, not just the response**. Checking both mailboxes + the AB stamp:
+[3 tool result(s) compacted: gmail_search, gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3803,41 +3681,49 @@ Durable lesson for the record: whenever a GAS web app with executeAs=USER_DEPLOY
 The delivery is confirmed and the FounderHaus/Paloma email issue is fully closed — and the durable lesson is well noted (GAS web apps with `executeAs=USER_DEPLOYING` need a human browser consent click for NEW OAuth scopes; `clasp deploy` can't grant them — I'll remember this for future GAS work).
 
 That unblocks the final unit: the **§10 E2E regression test** (the explicit task you set once delivery was confirmed). Let me start it — first, re-reading the exact §10 procedure + Log of runs format, and checking the dao_client CLI + current sheet state:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the §10 procedure directly from the plan file, and locate the dao_client CLI:
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the §10 E2E procedure + Log of runs section (it's in the artifact beyond the 41K chars I read). Let me pull the relevant section of the plan from the artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the remainder of §10 (steps 3–7, the Log of runs format) from the second artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full §10 procedure through step 2. Let me read the remainder (steps 3–7 + the Log of runs format) from the deeper artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifacts are nesting — let me get the deepest one with the remaining steps:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is wasting rounds. Let me fetch the raw plan file directly and extract the remaining steps (3–7) + Log of runs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full §10 procedure (steps 1–7 + Log of runs; note there's already a PASS run logged today: `2026TEST_20260822_1`). Before executing, I need the middle steps (2–4: the SunMint submission + LINK EVENT format) and the dao_client CLI path. Recon in parallel:
+[3 tool result(s) compacted: ssh_run, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3845,6 +3731,7 @@ I have the full §10 procedure (steps 1–7 + Log of runs; note there's already 
 I have the full procedure. Executing **§10 E2E run #2** with the governor's one change (`Owner Email = garyjob@gmail.com`). Note row 1780 was the prior PASS (`2026TEST_20260822_1`, now INVALIDATED) — I'll use `TEST_AGL4_20260822_2` and append a new row.
 
 **Step 1 — mint the test QR** (append a new row 1782, MINTED, generic currency, garyjob@gmail.com):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3852,6 +3739,7 @@ I have the full procedure. Executing **§10 E2E run #2** with the governor's one
 **Step 1 done** — QR `TEST_AGL4_20260822_2` minted at row 1782 (MINTED, AGL4, generic currency, garyjob@gmail.com). 
 
 **Step 2 — set status to SOLD directly** (plain sheet edit, no sales event):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3964,4 +3852,53 @@ Converging — the E2E is mid-execution with one blocker found.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → which dao_client 2>/dev/null; ls /opt/truesight_autopilot/ 2>/dev/null | head; ls /home/ubuntu/ 2>/dev/null | grep -i -E "dao|client|token" ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/SUNMINT_TREE_QR_LINKING_PLAN.md" -o plan.md; cd /tmp && echo "=== §10 steps 2-4 (SunMint submission + LINK EVENT) ===" && awk '/## 10\./,0' plan.md | sed -n '25,65p'; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Not seeing the one for garyjob@gmail.com
+
+
+### 🤖 Autopilot
+
+Checking what should have fired for garyjob@gmail.com — the tree-planted notification can't have sent (the LINK 500'd at step 4), but the onboarding email should fire via processBatch once it runs. Let me verify both the sheet stamps and the mailboxes:
+
+
+### 🤖 Autopilot
+
+Confirmed — **no email has fired for garyjob@gmail.com yet**, and here's the exact why:
+
+## State for `TEST_AGL4_20260822_2` (row 1782)
+
+| Field | Value | Meaning |
+|---|---|---|
+| Status | `SOLD` | set (step 2 ✅) |
+| Owner Email | `garyjob@gmail.com` | set (step 1 ✅) |
+| **M (Onboarding Sent)** | **empty** | processBatch **hasn't run** since the row was set SOLD |
+| **AB (Tree Planted Sent)** | **empty** | correct — the LINK never completed (Edgar 500) |
+
+So **neither email has fired yet** — and that's expected given where we are:
+
+1. **Tree-planted notification** — cannot fire: it's sent as a side-effect of the **LINK event**, and the LINK **500'd at Edgar** (step 4 blocked). Nothing to verify until the LINK succeeds.
+2. **Onboarding email** — *should* fire via **processBatch** (it scans for rows where Owner Email is set + M blank + status SOLD... actually the exact trigger condition per the code is owner set + M blank), **but processBatch is trigger/editor-only** — it runs on a schedule (hourly, once #417's self-installer runs) or via a manual Run. It has **not** run since row 1782 was set. That's why M is empty and nothing landed in garyjob@gmail.com.
+
+## What this tells us
+
+- **Not a bug** — the emails are *correctly pending* on their respective triggers, which we haven't fired since the row went SOLD:
+  - Onboarding → needs **processBatch to run** (I can't invoke it from here — the `clasp run`/Scripts API wall from earlier; it's the **admin-owned 1MnAsI** project, which is the one that *works* — a manual Run by Gary in the editor, or the scheduled trigger, will fire it)
+  - Tree-planted → needs the **LINK event to succeed** (fix the Edgar 500 first — the blocker from last turn)
+
+## RESUME HERE →
+1. **Diagnose the Edgar 500** on the LINK submission — pull `sudo journalctl` on 98.93.94.86 (key `~/.ssh/sophia_infra`, user ubuntu) → grep for `error|traceback|link_tree` → fix root cause (suspects: `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK` unset, dispatch exception) → **retry the LINK** → then verify QR ASSIGNED_TO_TREE / SunMint LINKED / AGL4 fulfillment pair / tracking LINKED/OK
+2. **Fire processBatch** for the onboarding email (Gary: 1MnAsI editor → Run `processBatch`, or it fires on the hourly trigger once #417's self-installer runs — it's the admin-owned project whose MailApp already works) → verify the onboarding email lands in garyjob@gmail.com
+3. **Verify the tree-planted notification** arrives at garyjob@gmail.com after the LINK succeeds (now that deployment auth is fixed, the link's own send should work) — the §11 standard: actual delivery, not just "no error"
+4. **Invalidate** the test QR (D1782 → `INVALIDATED`) + **fill the §10 Log of runs row**
+
+**✅ Actions this turn:** confirmed row 1782's state (SOLD, owner set, M empty, AB empty) + zero emails to garyjob@gmail.com — both emails are correctly pending on their triggers (processBatch for onboarding; the LINK for tree-planted), which haven't fired since the row went SOLD. The LINK 500 remains the blocking item. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w
 
