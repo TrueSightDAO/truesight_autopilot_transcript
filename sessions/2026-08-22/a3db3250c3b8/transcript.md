@@ -8,82 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-New task — RUN was executed (governor-authorized) and needs your investigation + fix on a real ledger discrepancy.
-
-What happened: I submitted a real [TREE PLANTING LINK EVENT] via dao_client (QR Code: 2024OSCAR_CC_20260620_1, SunMint Submission Message ID: 171, Updated by: Gary Teh) — this is the plan's first live RUN. Tracking tab "Tree Planting Link" row shows Telegram Update ID Edgar_20260821130119_001 → Outcome LINKED, Reason OK, Processed 2026-08-21T13:01:31.882Z.
-
-✅ Correct: QR row (2024OSCAR_CC_20260620_1) in "Agroverse QR codes" — status→ASSIGNED_TO_TREE, tree planting date/lat/long/photo all correctly populated.
-✅ Correct: SunMint row (msg 171) in "SunMint Tree Planting" — Status→LINKED, Linked QR Code/Linked At populated.
-
-❌ WRONG: the ledger fulfillment entry. Ledger AGL4, spreadsheet 1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc, "Transactions" tab, row 150. Expected TWO rows from appendTreePlantingLedgerFulfillment_ (process_tree_planting_link.js line ~292): [today, message, "Gary Teh", -1, "Cacao Tree To Be Planted", "Liability"] and [today, message, "Gary Teh", 1, "Cacao Tree Planted", "Asset"]. What actually landed: ONE row — col A (date) blank, col B = the full raw signed event text, col C = "Gary Teh", col D = -1.00, col E/F blank. No second (+1) row exists. Total row count is still 150 (was 149 before RUN), confirming only one row got appended, not two.
-
-The tracking table shows ledgerBooked=true (i.e. appendTreePlantingLedgerFulfillment_ returned true, no exception) — so the code believes it wrote both rows. I independently pulled the LIVE deployed process_tree_planting_link.js (isolated clasp pull) and it is byte-identical to the current git HEAD version of appendTreePlantingLedgerFulfillment_, which is correctly coded (atomic 2-row setValues call, proper date/item-name/classification). So this isn't a stale-deploy or obvious code bug I could find.
-
-What I ruled out as the source of the malformed row: dao_protocol's Python code (grepped server/routes/dao.py, server/dispatch.py, server/sheets/ — no code path writes to any "Transactions" tab or AGL4 spreadsheet, only the synchronous "Telegram Chat Logs" write exists); other tokenomics GAS projects with ledger-writing code (sales_update_managed_agl_ledgers.js's processNonAgl4Transactions explicitly SKIPS agl4 by its own filter condition, and produces a 3-row shape anyway, not a match). Tracking tab confirms exactly ONE execution processed this event (no duplicate/race entry for the same row).
-
-Please investigate root cause (things I could not check: Apps Script execution logs/Stackdriver for this project around 2026-08-21T13:01:30Z — look for concurrent executions or a second trigger firing near that timestamp; the spreadsheet's Version History for row 150 to see if a human or which script account made the edit) and then fix: replace the malformed row 150 with the correct two-row pair (today's date, "Cacao Tree To Be Planted"/Liability, "Cacao Tree Planted"/Asset, same message + "Gary Teh" contributor) so the ledger reflects the real fulfillment correctly. This is a real financial/audit-trail record — please verify your fix (re-read the rows back) before declaring it done, and post the result into this thread. If you find the row shape is actually being written by some function I haven't located, please cite the exact file/line so we can fix the root cause too, not just patch this one row.
-
-
-### 🤖 Autopilot
-
-A real ledger discrepancy on the first live RUN — I'll investigate with fresh eyes, not just patch the row. Let me start by reading the exact ledger-append code (git HEAD == live, per your independent check) and pulling the actual sheet state around row 150.
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The malformed row is visible: col B = full signed event text, col C = "Gary Teh", col D = -1.00, A/E/F blank. The git-HEAD code writes a clean 2-row atomic pair. Let me read the full ledger function + call site, and grep for the `Edgar_` update-id format (that prefix is a big clue about which path processed the RUN):
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The malformed row is exactly as described: 4 cells (A blank, B = full event text, C = "Gary Teh", D = -1.00), E/F never written. The git-HEAD code writes a clean 6-cell × 2-row pair. Key clue: the tracking update ID is `Edgar_20260821130119_001` — that prefix comes from **dao_protocol's synchronous Telegram Chat Logs write**, meaning the GAS cron picked the row up from the sheet (not doPost, which uses `WEBHOOK-<timestamp>`).
-
-Let me investigate deeper: the other ledger-writing GAS code, the Apps Script execution history around 13:01:30Z (concurrency check), and the exact tracking + TCL rows.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — the `sales_update_managed_agl_ledgers.js` curl was to the **wrong project** (`1UrBg…` = tree-planting, not `1dsWec…` = sales). The actual sales ledger-writer lives in **project `1duQFfTO0Pj0lC4tPVNmMOhNOS1GvJgzqVxXbsEDu-eqt_64DwxvrOVyl`**. That's the prime suspect for writing the malformed row — let me read its ledger code (filter + row shape) carefully:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Prime suspect found.** `sales_update_managed_agl_ledgers.js` (project `1duQFf…`) — `processNonAgl4Transactions()` writes to a "Transactions" sheet and, critically, **includes "Cacao Tree To Be Planted"/"Liability"** (line 373-374) — the exact E/F values the malformed row is missing. And its filter (line 301) `agroverseValue !== 'https://agroverse.shop/agl4'` means it **skips agl4** — but wait, let me read the full row shape + how it decides rows, because the malformed row has only ONE row with `-1.00` and the message in col B, which matches this function's row shape, not the tree-planting one. Let me read lines 281-390:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I can compare precisely. The suspect function writes a **3-row** block: row1 `[salesDate, message, inventoryContributor, -1, inventoryType, 'Assets']`, row2 `[salesDate, message, cashContributor, salePrice, 'USD', 'Assets']`, row3 `[salesDate, message, 'SunMint Tree Planting Contract - <name>', 1, 'Cacao Tree To Be Planted', 'Liability']`.
-
-**But the malformed row 150 has E/F BLANK** — this function always writes E/F. And its filter requires `agroverseValue !== 'https://agroverse.shop/agl4'` — **agl4 is explicitly skipped**. So this function **can't** be the writer (it wouldn't touch agl4, and the malformed row lacks the E/F it always writes).
-
-The malformed row matches a DIFFERENT shape: exactly `[?, message, contributorName, -1]` with nothing after — col A blank. Let me look for a writer that produces exactly that 4-cell shape. The tree-planting function writes 6 cells. Let me check the ledger URL resolution + whether there's a **different append path** (e.g. `appendRow([message, contributorName, -1])` or a `.setValue` on col D only), and check the version history of the sheet:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at this from the **sheet's own data** angle — the malformed row's exact shape + the surrounding rows tell me who wrote it. The row landed as `["", message, "Gary Teh", -1.00]` — 4 cells, A blank, no E/F. Let me check the **version history** of the sheet around that time and whether the row was written by a specific script identity, plus check if there's any other code that appends a bare 4-cell row:
-[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Critical insight: the malformed row has col A **blank** (not today's date), cols E/F **blank** (not "Cacao Tree To Be Planted"/"Liability"). The tree-planting function's first row would be `[today, message, contributor, -1, 'Cacao Tree To Be Planted', 'Liability']` — 6 cells with date + E/F filled. The malformed row is only `["", message, "Gary Teh", -1.00]` — **4 cells**. So this is NOT the tree-planting function's output (it writes 6 cells). It's also not `processNonAgl4Transactions` (which writes 3 rows with E/F always filled + a `SunMint Tree Planting Contract` label).
-
-The exact 4-cell shape `[blank, message, "Gary Teh", -1.00]` with nothing after — let me check the **version history** of the sheet and hunt for any code that produces this. The `message` in col B and `-1` in col D with blank A/E/F suggests something that did `getRange(row, 2, 1, 3).setValues([[message, contributor, -1]])` — col B start. Let me search the whole org for that pattern and check the tracking-tab + TCL rows:
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 The tracking tab confirms the RUN processed at 13:01:31.882Z (row 11675). Now the critical hypothesis: **two GAS projects share the same Telegram Chat Logs source sheet** — and the **sales processing project** (`1dsWec`, the one we just fixed Credentials.js for) also scans that sheet. If the sales parser regex-matches "QR Code:" in any message, it could have half-processed this tree-planting event and written the malformed 4-cell row. Let me read the sales project's parsers:
@@ -3559,21 +3483,25 @@ Understood — the §11 postmortem rule applies to this fix too: verify by **act
 ### 🤖 Autopilot
 
 Executing the next unit: promote #298's fix to prod + verify by actual JS execution (per §11). The prod promotion was the governor-approved path (single-file write, CNAME untouched) — the promotion is a prod write but the governor already explicitly said "fix and deploy to BOTH beta and prod immediately" last turn, so I'm authorized. First, confirm the prod promotion actually landed (checking state):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod main does **NOT** have the fix yet (the promotion didn't land — prod is still on the buggy 24,787-byte version with `manifest.qr_id` at line 287). Promoting now — fetch beta main (post-#298 merge) and write it to prod main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good news: beta main **has** the fix (24,777 B, `qrId` in the photo alt, `manifest.qr_id` count 6 → all in-scope render() refs). The prod write 401'd — my PAT extraction in the heredoc failed (the bash-in-python quoting). Let me use a clean approach — write the PAT to a file first, then read it in Python:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Promoted to prod** (commit `a9cc3e7`). Now the critical verification — per §11, **execute the JS, don't just curl**. Let me run the Node VM render harness against BOTH the prod main file and the live page, using the real manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3581,11 +3509,13 @@ Good news: beta main **has** the fix (24,777 B, `qrId` in the photo alt, `manife
 **PROD main verified by actual JS execution** (§11 methodology): 24,777 B, fix present, `manifest.qr_id` count 6 (all in-scope), and the Node VM render of the **prod main bytes** produces the full page — QR image ✅, tree photo `<img>` ✅, coordinates ✅, sig ref ✅, **no ReferenceError**.
 
 Now let me verify the **live** page (after Pages rebuild) — execute the live-served bytes too, and confirm the live URL serves the fixed file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the live page is **24,840 bytes** (not 24,777) with the fix present (`escapeHtml(qrId)` ×1, "Seedling photo for" ×1), but my Node render produced only 456 chars with none of the elements. The 456-char output is likely the **"QR not found" empty state** — meaning the live page's script executed (no ReferenceError — the fix works!) but the fetch in my harness used the stubbed manifest... wait, the harness stubs fetch to return the manifest. 456 chars suggests `renderEmpty` was called. Let me check: the live page may have a different script structure (extra script blocks) so my regex grabbed the wrong IIFE, OR the live page renders "Loading…" — let me look at what the 456 chars actually are:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3595,6 +3525,7 @@ Live page == prod main exactly (24,840 == the same bytes — wait, it says `live
 The 456-char render from the live bytes was a harness artifact (the harness was reading a stale/wrong file — I had overwritten prod_main_qr.html with the live bytes, and the earlier `wc -c` said 24,840 while prod main was 24,777 — meaning the live page was a DIFFERENT build). But the equality check just proved **live == prod main** — so the live page IS the fixed file. The 456-char output must be from a harness/timing issue (the `setTimeout` fired before the async fetch resolved, capturing the initial "Loading…" state).
 
 Let me re-run the render cleanly on the confirmed-identical live bytes with a proper wait for the async render:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3766,4 +3697,71 @@ Everything checks out at the data layer: manifest has the new photo URL + signat
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ls -la /home/ubuntu/staged_files/founderhaus_group_planting.jpg && file /home/ubuntu/staged_files/founderhaus_group_planting.jpg 2>/dev/null; cd /tmp && echo "=== upload new photo to sunmint images/ via Contents API (follows existing convention) ===" && source /opt/truesight_autopi; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') r; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+New feature request from the governor (queue this AFTER the manifest-scope-bug fix + new photo are confirmed done — don't pile it into the same change): for tree-type QR pages where a tree is already assigned/planted (has real lat/long, not the placeholder case), embed a MAP on the page showing where the tree is, not just the coordinates as text.
+
+Suggest: OpenStreetMap embed via iframe (no API key/billing needed, public page friendly) using lineage.latitude/longitude, e.g.:
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=<lng-0.005>,<lat-0.005>,<lng+0.005>,<lat+0.005>&marker=<lat>,<lng>" ...></iframe>
+inside renderLineageTree(lineage) — only render it when both latitude and longitude are present (same guard as the existing coords text line). Google Maps embed is an alternative but needs an API key; OSM avoids that entirely for a page like this. Your call on exact implementation, just make sure it's guarded to tree QRs with real coordinates, doesn't break the cacao_bag layout, and — per the standing §11 lesson — actually load the page and confirm the map renders before reporting done, not just curl.
+
+
+### 🤖 Autopilot
+
+The prerequisite items are confirmed done (scope fix verified live, new photo verified rendering), so the map feature is unblocked. Executing: read the current `renderLineageTree` to find the exact coords guard, then add the OSM iframe.
+
+
+### 🤖 Autopilot
+
+Let me read the full `renderLineageTree` (lines 269–310) to see the coords guard and the media/HTML construction so I add the map in the right place:
+
+
+### 🤖 Autopilot
+
+I have the exact structure. I'll add the OSM map iframe inside `renderLineageTree`, guarded by the same `(lineage.latitude && lineage.longitude)` condition, inserted after the media block. Building the PR with a proper `edits` hunk:
+
+
+### 🤖 Autopilot
+
+**PR #299 opened** (commit `9d5d90f7`). Now the critical §11 verification — **execute the page JS with a real manifest** and confirm the OSM iframe actually renders (not just curl):
+
+
+### 🤖 Autopilot
+
+Almost perfect — one check "failed": `bbox correct: false`. Let me verify the actual bbox the code produced vs my expected string (I may have computed the expected wrong — the code uses `lng-d, lat-d, lng+d, lat+d`; with lat=-27.44301, lng=-48.49907, d=0.005: `-48.50407,-27.44801,-48.49407,-27.43801` — that's what I expected. Let me see what actually rendered):
+
+
+### 🤖 Autopilot
+
+The bbox is **correct** — the actual rendered value is `bbox=-48.504070000000006,-27.44801,-48.49407,-27.438010000000002&marker=-27.44301,-48.49907` — my expected-string test was wrong (floating-point precision: `-48.49907 - 0.005 = -48.504070000000006`, not exactly `-48.50407`). The map embed is perfect: correct bbox around the tree, correct marker, both within the Jurerê Internacional area.
+
+## ✅ Map feature — built, §11-verified, PR ready
+
+**PR #299** (truesight_me_beta, commit `9d5d90f7`, one file `qr/index.html`):
+- **OSM embed iframe** inside `renderLineageTree(lineage)`: `bbox=<lng±0.005>,<lat±0.005>&marker=<lat>,<lng>` + a "Open larger map →" link
+- **Guarded** by `lineage.latitude && lineage.longitude` + `isNaN` checks (same guard as the coords text)
+- cacao_bag and other asset types untouched; placeholder/no-coords trees get no map
+
+**§11 verification (executed the JS, not curl):**
+- ✅ **With real coords** (FounderHaus manifest): full render — **OSM iframe present, marker `-27.44301,-48.49907`, bbox correct** (floating-point precision explains the earlier "false" — the math is right), larger-map link, QR image, tree photo, coords text, **no ReferenceError** (3,177 chars)
+- ✅ **Without coords** (guard test): no OSM iframe (1,531 chars) — the guard works
+
+## RESUME HERE →
+1. **Merge truesight_me_beta #299** (on your review) → promote `qr/index.html` to prod (single-file Contents API write, CNAME untouched — the approved path) → verify live page renders the map (Node VM execution of live bytes)
+2. Then the **Paloma onboarding email re-send** (still queued): merge #410 (processBatch link fix) → deploy 1MnAsI → clear col M → invoke processBatch → verify the SENT email has a real clickable link
+3. Trigger diagnosis + final report
+
+**✅ Actions this turn:** read the current `renderLineageTree` (coords guard at 270), added the OSM iframe (guarded, after media block), opened PR #299, §11-verified by executing the JS: map renders with real coords (marker + bbox correct), guard suppresses it without coords, no ReferenceError. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read renderLineageTree (lines 269-312); opened PR #299 (commit 9d5d90f7, 1 file, edits hunk); §11 Node VM verification: full render with map (marker/bbox correct — floating-point precision on the bbox string), guard test without coords (no map), no ReferenceError
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/qr/index.html" -o qr_map_base.html && wc -c qr_map; cd /tmp && sed -n '269,312p' qr_map_base.html; cd /tmp && echo "=== fetch PR branch file ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/feat/tree-map-em; …(+1 more)
 
