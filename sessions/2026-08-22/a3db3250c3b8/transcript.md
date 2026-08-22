@@ -3745,56 +3745,72 @@ Pipeline + URLs all mapped. Now executing the **real sales submission** via the 
 ### 🤖 Autopilot
 
 The QR validator requires the `2024OSCAR_20260121_32` format — my `TEST_AGL4_20260822_1` fails validation. The real sales pipeline validates the QR format. Let me mint a **format-compliant** test QR (e.g. `2026E2E_AGL4_20260822_1` — matching the pattern `YYYY<FARM>_<DATE>_<N>`), update the QR row, then re-submit the sale:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual validator regex to construct a compliant QR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pattern: `^\d{4}[A-Z]+_\d{8}_\d+$` — **`2026E2E_20260822_1`** should pass... but it failed earlier. Wait — the earlier failure was from `qr_code_format` being called with the **`--item`** value while the installed package (`~/.local/lib/python3.10/...`) has a **different/stricter regex**. Let me test the validator directly from the correct path + update the QR row to a passing format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — `2026E2E_20260822_1` fails because **`E2E` contains a digit** (`[A-Z]+` only, no digits allowed in the farm segment). The regex is `^\d{4}[A-Z]+_\d{8}_\d+$` — farm must be **letters only**. A compliant test QR: **`2026TEST_20260822_1`** (or `2026E2E_...` fails; use `2026TEST_20260822_1`). Let me update the QR row to `2026TEST_20260822_1` and re-submit the sale:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 QR now `2026TEST_20260822_1` (format-compliant). Re-submitting the sale via the production CLI path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run looks perfect — the signed `[SALES EVENT]` payload builds correctly. Executing the real submission (this is the authorized synthetic test — no real money, $0 sale, fake email):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Sale submitted — `signature_verification: success`** (HTTP 200). The `[SALES EVENT]` went through Edgar's real pipeline. Now I need to trigger the chain: the sales parser (1dsWec, `parseTelegramChatLogs`) moves the TCL row → "QR Code Sales", then the tokenizer (1wmgY, `processTokenizedTransactions`) books the liability. Let me check if the TCL row landed + trigger the parser:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `[SALES EVENT]` row landed in TCL (update `Edgar_20260822065524_015`). Now trigger the **sales parser** (1dsWec `parseTelegramChatLogs`) to move it into "QR Code Sales", then the **tokenizer** (1wmgY `processTokenizedTransactions`) to book the liability. Invoking the parser via its anonymous @14 deployment (the one we fixed today):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Timeout (the parser scans all TCL rows — it takes a while). Let me retry with a longer timeout, and if it still times out, use `processSpecificRow` targeting the exact TCL row:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full-scan parser times out over HTTP (GAS has a ~6-min execution limit but the HTTP response often doesn't wait). The run may still complete server-side. Let me check whether the TCL→"QR Code Sales" copy happened (checking the QR Code Sales tab for my test QR), and find my TCL row number for `processSpecificRow` if needed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key finding:** The parser DID copy the sale to "QR Code Sales" row 624 — but with **QR Code value = EMPTY** and **Status = `IGNORED`** (the last col). The parser couldn't extract the QR code from the message. Why: the message says `- Item: 2026TEST_20260822_1` — the parser likely looks for a different label (e.g. `- QR Code:`), OR it looks up the QR in the QR sheet and `IGNORED` because... let me check the parser's extraction logic for the QR field:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3802,6 +3818,7 @@ The full-scan parser times out over HTTP (GAS has a ~6-min execution limit but t
 The parser uses **Grok (LLM) to extract QR + price** from the message, and my synthetic message's structured parse failed ("`[SALES EVENT] present but QR or price missing after parse`" → IGNORED). The CLI's `--item` label puts the QR under `- Item:` — the parser's structured parser likely looks for `- QR Code:` specifically (the DApp's report_sales.html uses `- Item:` too, so Grok normally handles it — but here Grok returned nothing usable, maybe because the price is `0`).
 
 Let me check the structured parse logic (what field names it expects) and the Grok path — maybe I should re-submit with the QR under a label the parser extracts deterministically:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3961,4 +3978,143 @@ Verified — the branch file is correct: **30,377 bytes, 3 redirect messages, 3 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && curl -s "https://beta.dapp.truesight.me/report_sales.html" -o rs.html && curl -s "https://beta.dapp.truesight.me/link_tree_planti; cd /tmp && echo "=== ltp.html: current no-key handling ===" && grep -n "privateKey\|publicKey\|create_signature\|No private key\|Digital Sig; cd /tmp && echo "=== around 435-450 ===" && sed -n '435,450p' ltp.html && echo "=== around 512-525 ===" && sed -n '512,525p' ltp.html && ech; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+One more thing before you run PART 3: the governor wants this test flow documented as a durable, reusable procedure — not just one-off Telegram instructions — so any future LLM (including you, in a later session) can replicate it without re-deriving the design.
+
+Done: committed + merged agentic_ai_context PR #786 — SUNMINT_TREE_QR_LINKING_PLAN.md now has a new §10 "Reusable end-to-end test procedure (synthetic data)" with the full step-by-step (mint test QR on AGL4 with the generic "SunMint Tree Planting Pledge - QR Code" currency, real $0 sale through the actual sales pipeline, dummy SunMint submission, real link event, full verification checklist) plus a "Log of runs" table at the bottom.
+
+Please: pull agentic_ai_context main, read §10 directly (it supersedes/matches my earlier chat instructions — follow the doc as the source of truth), execute it, and when done fill in the "Log of runs" table row (date, test QR code used, sale price, result, notes) via a small PR to agentic_ai_context so the record is durable — not just reported here in Telegram.
+
+
+### 🤖 Autopilot
+
+Executing the durable test procedure per §10. First: pull agentic_ai_context main, read §10 directly (source of truth), and reconcile with what I've already staged (QR 2026TEST_20260822_1, TCL sale row, QR Code Sales row 624 IGNORED).
+
+
+### 🤖 Autopilot
+
+§10 exists in origin/main (PR #786 merged). Let me read §10 in full — it's the source of truth I must follow exactly:
+
+
+### 🤖 Autopilot
+
+I have §10 fully — it's the source of truth and supersedes my earlier SEF1 staging. Key deltas from what I did earlier:
+- QR format: `TEST_AGL4_<YYYYMMDD>_<n>` (I used `2026TEST_20260822_1` — needs to be `TEST_AGL4_20260822_1` per §10, but the sales parser's regex requires `^\d{4}[A-Z]+_\d{8}_\d+$` which **won't match** `TEST_AGL4_20260822_1`... I'll mint per §10 and check whether the parser handles it, or adjust)
+- **Sale price: $0** per §10 (my earlier finding was that $0 → IGNORED in the parser — §10 explicitly says $0, so I need to reconcile: either the parser bug needs fixing, or the tokenizer path differs)
+- LINK via `python -m truesight_dao_client.modules.link_tree_planting` (a real CLI module — I didn't know this existed!)
+- Log of runs table row to fill at the end via PR
+
+Let me first find the `link_tree_planting` CLI module + check the $0 parser issue + my already-staged state:
+
+
+### 🤖 Autopilot
+
+The module exists at `dao_protocol/truesight_dao_client/modules/link_tree_planting.py` but the **installed** package is at `/home/ubuntu/.local/lib/python3.10/site-packages/truesight_dao_client` — I need to check if the installed version has the module (it may be older than the repo). Let me check both + read the module's CLI interface:
+
+
+### 🤖 Autopilot
+
+The repo module exists and is clean — but the **installed** package (`/home/ubuntu/.local/.../modules/`) is older and its listing got cut at 20 entries. Let me check whether the installed package has `link_tree_planting.py` (if not, I need to reinstall/use the repo path):
+
+
+### 🤖 Autopilot
+
+The installed package is **missing** `link_tree_planting.py` (has `report_tree_planting.py` instead) — but the installed `edgar_client.py` DOES have `build_event_cli` (count 2). Two options: (a) reinstall dao_client from the repo, or (b) run the module directly from the repo path with `PYTHONPATH`. Option (b) is safer (no package churn). Let me verify the module runs from the repo path and check its --help:
+
+
+### 🤖 Autopilot
+
+The CLI module runs perfectly from the repo path. Now I have everything §10 needs. Let me reconcile my staged state against §10 and execute. Per §10:
+1. QR must be `TEST_AGL4_20260822_1` (I have `2026TEST_20260822_1` at row 1780 — need to update it)
+2. Sale price $0 (my earlier finding: parser IGNOREs $0 — but §10 says $0, so I need to check whether that's still true or the parser was fixed; the sale already went through at... let me check what I submitted earlier — I submitted $0 originally then planned $5; need to verify current QR Code Sales state)
+3. The dummy SunMint row: I staged TEST-001 but may need to re-verify
+4. LINK via the CLI module (new — cleaner than my manual staging)
+
+Let me first check the current state of everything I've staged so far (QR row 1780, QR Code Sales, SunMint TEST-001, TCL rows) and the §10-compliant path forward:
+
+
+### 🤖 Autopilot
+
+Important state discovered:
+- **QR row 1780**: `2026TEST_20260822_1`, MINTED, correct currency/email/ledger ✅ (needs rename to `TEST_AGL4_20260822_1` per §10)
+- **QR Code Sales row 624**: IGNORED (Grok couldn't parse) — my earlier $0 sale attempt; this row is a **dead end** and its update-id (`Edgar_20260822065524_015`) now sits in TCL
+- **SunMint row 17**: `TEST-UPDATE-001` / `TEST-001` shows **status=LINKED**?! — wait, that's concerning. Let me check: my earlier staging used `TEST-001`... but status LINKED means a LINK event processed it. That was probably from the earlier invocation where "1 linked" happened. Need to check what QR it linked to.
+
+Let me check the SunMint row 17's Linked QR + tracking tab, and decide the clean §10-compliant path (fresh QR per §10 naming, fresh SunMint row, fresh sale at $0, then the CLI LINK):
+
+
+### 🤖 Autopilot
+
+Now the full picture is clear. My earlier synthetic test **actually linked** (SunMint row 17: status LINKED, col18 = `20260821_E2ETEST_SEF_1` (the old SEF1 test QR), col19 = linked-at 06:51:47Z; tracking row 6: `LINKED/OK`). That was the SEF1-based synthetic link from before §10 — it worked but on the **wrong ledger** (SEF1, not AGL4), so it validated nothing about the #406 AGL4 fix.
+
+Per §10 (source of truth), the clean path is a **fresh AGL4 test run**: new QR `TEST_AGL4_20260822_1` (MINTED), fresh $0 sale through the real pipeline, fresh SunMint TEST- row, CLI LINK, then verify the AGL4 main-ledger pair.
+
+Before executing, two §10-critical things to verify:
+1. **The $0 sale → parser IGNORE bug** (my row 624 was IGNORED). §10 mandates $0. If the parser genuinely can't handle $0, that's a blocker to surface — OR the IGNORE was a Grok fluke (my message had `- Item: 2026TEST_20260822_1` and `- Sales price: $0`; Grok returned nothing usable). Let me check the parser's price regex once more + retry the sale (Grok may succeed on a cleaner message).
+2. **The old SEF1 test artifacts** (QR `20260821_E2ETEST_SEF_1`, SunMint row 17 LINKED, TCL rows 11682/11683) — §10 says clean up or clearly mark; these are from the pre-§10 approach. I'll leave them marked but note them (cleanup confirm with governor later).
+
+Let me check the installed sales CLI + the price regex, and re-submit a clean $0 sale for the new AGL4 QR:
+
+
+### 🤖 Autopilot
+
+Confirmed the parser bug precisely (line 524: `if (qrCode && salePrice)` — `salePrice=0` is falsy → $0 sales always IGNORED). This is a **real production bug** that blocks §10's mandated $0 test. This deserves its own fix PR (the parser should accept `salePrice === 0`), because §10 requires $0 as the standard test price.
+
+Let me check the parser's row-append + status logic more (what "IGNORED" writes, whether clearing the status lets the tokenizer pick it up) and the tokenizer's filter (col J empty), then decide: fix the parser (PR) vs. work around. First the tokenizer filter:
+
+
+### 🤖 Autopilot
+
+Confirmed: the tokenizer (line 155-157) requires **col G = agl4 AND col J EMPTY** — my row 624 has J = "IGNORED: ..." so it's skipped forever. The IGNORED status is sticky. So the §10 $0-sale path is **structurally blocked** by the parser's `salePrice` falsy bug — the parser marks it IGNORED and the tokenizer never sees it.
+
+This is a genuine blocker for §10. The right fix: **PR to the sales parser accepting `$0` as a valid price** (change `if (qrCode && salePrice)` → `if (qrCode && salePrice !== '')`, and ensure the parse succeeds with 0). This makes §10's mandated $0 test actually runnable. Let me open that fix — it's small, precise, and unblocks the whole procedure:
+
+
+### 🤖 Autopilot
+
+I have the exact bug: line 524 `if (qrCode && salePrice)` rejects `salePrice=0` (falsy). The fix: `if (qrCode && salePrice !== '')` — accepts 0 but still rejects a missing price (''). This unblocks §10's mandated $0 test. Opening the fix PR on tokenomics:
+
+
+### 🤖 Autopilot
+
+**PR #407 opened** (tokenomics, commit `b306e6c`). Let me verify the branch edit applied correctly (no empty-write this time — I used an `edits` hunk):
+
+
+### 🤖 Autopilot
+
+The grep for the new gate failed on shell quoting (the `!` + quotes), and "old gate: 1" also matches the substring. Let me verify properly with python (bytes 54,240 — the file is intact, not empty):
+
+
+### 🤖 Autopilot
+
+Verified — the branch has BOTH: the fixed gate at char 22543 (`parseSalesEvent`, `salePrice !== ''`) and the **original** `if (qrCode && salePrice)` at char 24284 — that second one is in the OTHER parser (`parseQrCodeEvent`, line ~583, the `[QR CODE EVENT]` path) which I intentionally did NOT change (a $0 QR-code event may legitimately stay gated). The file is intact (54,164 bytes), syntax OK.
+
+**PR #407 verified** — exactly one targeted edit, no collateral damage.
+
+## What I did this turn (§10 execution + the blocking bug found)
+
+1. **Read §10** (the new durable test procedure, agentic_ai_context #786 merged) — it's now the source of truth, superseding my earlier SEF1 staging
+2. **Reconciled prior state:** my earlier synthetic run linked on **SEF1** (SunMint row 17 LINKED to `20260821_E2ETEST_SEF_1`, tracking row 6) — that validated nothing about the AGL4 fix; the earlier $0 sale to `QR Code Sales` row 624 was **IGNORED**
+3. **Found the blocker to §10's mandated $0 sale:** `parseSalesEvent()` line 524 `if (qrCode && salePrice)` — `salePrice=0` is falsy → $0 sales parse as FAILED → written IGNORED → tokenizer (needs col J empty) skips forever. **A real production bug.**
+4. **Opened tokenomics #407** (`fix/sales-parser-zero-price`, commit `b306e6c`): `if (qrCode && salePrice !== '')` — accepts $0, still rejects missing price. Verified: exactly 1 targeted edit, file intact, syntax OK. (The `[QR CODE EVENT]` path's identical-looking gate at line 583 was deliberately left alone — it's a different event type.)
+5. Also verified: the `link_tree_planting` CLI module runs from the repo path (`PYTHONPATH=/opt/truesight_autopilot/dao_protocol`) — the §10 step-4 mechanism works.
+
+## RESUME HERE → (§10 execution continues)
+
+1. **Merge tokenomics #407** (on your review — it unblocks the entire §10 $0-sale procedure)
+2. **Deploy #407 to GAS** (`1dsWec…` project, pull-first per convention) + **redeploy the sales-parser anonymous deployment** to the new version
+3. **Re-run §10 cleanly:** mint `TEST_AGL4_20260822_1` per §10 naming → submit $0 `[SALES EVENT]` via CLI → parser accepts (with #407) → tokenizer books the `+1 Cacao Tree To Be Planted` liability on the main ledger → stage dummy SunMint `TEST-` row → CLI `[TREE PLANTING LINK EVENT]` → verify all rows (QR ASSIGNED_TO_TREE, SunMint LINKED, main-ledger liability + fulfillment pair with `SunMint Tree Planting Contract - agl4`, tracking LINKED/OK)
+4. **Fill the §10 "Log of runs" row** via a small agentic_ai_context PR (durable record)
+5. Cleanup/marking of the pre-§10 SEF1 test artifacts (confirm with governor before removing from real ledgers)
+
+**✅ Actions this turn:** read §10 (source of truth), reconciled prior synthetic state, diagnosed the $0-parser production bug blocking §10, opened tokenomics #407, verified the branch. One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main 2>&1 | tail -1 && git log --oneline -3 origin/main && echo "; cd /opt/truesight_autopilot/context/agentic_ai_context && git show origin/main:plans/SUNMINT_TREE_QR_LINKING_PLAN.md | sed -n '500,600p'; cd /opt/truesight_autopilot && echo "=== link_tree_planting module exists? ===" && find . -path ./node_modules -prune -o -name "*.py" -print; …(+10 more)
 
