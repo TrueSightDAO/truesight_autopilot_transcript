@@ -8,17 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Almost there — independently verified everything (QR 1780 INVALIDATED, SunMint row 18 LINKED, main ledger rows 4127/4128 exact fulfillment pair). Great work landing this.
-
-But one gap before I can tell the governor UAT is ready: I checked `clasp deployments` on the QR-codes project myself and the PRODUCTION deployment ID (AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X — the one dao_protocol's webhook actually calls) is still pinned to @13. Your #406 fix only exists on @16, which is a separate deployment you created just for this test. That means a REAL AGL4 tree-planting link right now would still hit the original bug — exactly the @15-vs-@16 issue you caught during testing, just on the production URL this time.
-
-Please: `clasp deploy --deploymentId AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X` to update the PRODUCTION deployment in place to current HEAD (same in-place-update pattern used for PR-FIX1/FIX2 earlier), then verify: curl the production /exec URL to confirm it's serving current code, and pull-verify the deployed version includes the TPL_AGL4_LEDGER_URL constant from #406. This is the actual blocker for UAT readiness — please prioritize it.
-
-
 ### 🤖 Autopilot
 
 You're right — the production deployment must carry #406, or a real AGL4 link still hits the bug. Updating the production deployment in place now:
@@ -3442,36 +3431,43 @@ and it replaced `}\n}\n\n/**\n * Send a detailed` — so the two `}` were REMOVE
 ### 🤖 Autopilot
 
 Confirmed the bug: at line ~1957 the code jumps from `sendProcessBatchAlert_(failures, sentCount, stampedCount);` straight to the ensure-function doc comment — **the `throw new Error(...); }` and `}` (the if-block close + processBatch close) are GONE**. My anchor2 match included the `throw` block and both closing braces, and my replacement dropped them. Fixing the seam by re-inserting the missing block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Repaired** — 88,086 B, syntax OK, braces balanced (408/408), 4 refs to the ensure function (call in processBatch + definition + 2 comments). Now push this patched file to the PR branch via the Contents API (branch `fix/processbatch-hourly-trigger-self-installer` already exists from the failed git_push attempt — let me verify its state first):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch doesn't exist (the failed git_push_changes didn't create it — the error happened before push). Clean slate. Pushing the patched file + opening the PR via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR body's braces broke the f-string. Let me fix the script — write the PR body with plain string concatenation, not an f-string:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch creation failed with 422 "Reference update failed" — I created the ref from the **file blob sha** (3ed168ba = the file's content sha, not a commit sha). The git/refs endpoint needs a **commit** sha. Let me create the branch from the default branch's commit sha instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch created ✅ but the file PUT needs the file's sha for the branch (it's a NEW file on this branch — the API still wants a sha because the path exists on main? No — for a new branch, the file "exists" from main's perspective). I need to pass the file's sha from MAIN as the base. Let me get main's file sha and retry the PUT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #417 opened** (https://github.com/TrueSightDAO/tokenomics/pull/417, commit `4cfd4b6b`) — the processBatch hourly-trigger self-installer. Let me verify the branch file is complete and correct (syntax + all elements):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3739,4 +3735,73 @@ Both deployments complete:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && echo "=== git main head ===" && git log --oneline ; cd /opt/truesight_autopilot/context/tokenomics && echo "=== update 1UrBg files to main ===" && git checkout origin/main -- google_app_script; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== 1Ur; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Go and invoke https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1
+
+
+### 🤖 Autopilot
+
+Invoking the resend action on the production URL — the moment of truth for the MailApp diagnosis:
+
+
+### 🤖 Autopilot
+
+**ROOT CAUSE FOUND — the truth is finally visible!** The direct-MailApp fix (#416) did exactly its job:
+
+> ❌ **Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: `https://www.googleapis.com/auth/script.send_mail`**
+
+This is **the authorization problem** (the governor's hypothesis #1), not quota exhaustion. The script's OAuth authorization for the `script.send_mail` scope was **never granted** (or was revoked) for this project — so every `MailApp.sendEmail` (and even `getRemainingDailyQuota`) has been throwing this exact permission error, silently swallowed by the old try/catch. That's why:
+- The original LINK's send "worked" (code ran) but no email ever arrived
+- The #413 resend returned "✅" but nothing was delivered
+- Zero trace in any mailbox
+
+**The fix (as the governor predicted):** someone with access to the 1UrBg project's editor needs to **open the Apps Script editor and manually run any function that uses MailApp once** — that triggers the OAuth consent screen, grants `script.send_mail`, and then the resend will genuinely work.
+
+I cannot do this myself (it requires a human browser session / the script owner's OAuth flow). Let me check if there's anything else I can verify meanwhile — the AB stamp state (should NOT have been stamped, since the send threw before the stamp):
+
+
+### 🤖 Autopilot
+
+Confirmed: **AB1781 still shows the stale `20260821`** — the send threw before reaching the stamp (correct behavior; the stamp only happens on genuine success). Col M (`8/22/2026`) is the onboarding email from the processBatch run (16:42Z, verified by the governor with the real clickable link).
+
+## 🎯 ROOT CAUSE CONFIRMED — the MailApp authorization was never granted
+
+**The production invocation finally told the truth:**
+> ❌ **Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: `https://www.googleapis.com/auth/script.send_mail`**
+
+**What this means (the complete picture):**
+- The 1UrBg GAS project's OAuth authorization for `script.send_mail` was **never granted** (or was revoked at some point)
+- Every `MailApp.sendEmail` / `getRemainingDailyQuota` call throws this permission error
+- The old swallowing try/catch in `sendTreePlantedNotificationEmail_` hid this — so the original LINK's owner-notification silently failed, the #413 resend lied with "✅", and zero emails ever went out
+- **Not quota exhaustion** (the governor's less-likely hypothesis — correct call)
+
+**The fix (one human action, as the governor predicted):** open the **1UrBg project** in the Apps Script editor → **Run any function that touches MailApp once** (e.g. `resendTreePlantedNotification` via the Run dropdown, or even just open the editor and accept the OAuth consent) → this grants `script.send_mail` → then the resend action will genuinely send.
+
+**Staged and waiting:**
+- ✅ #416 deployed (PROD @24) — the resend action now surfaces real errors
+- ✅ QR row 1781 correct (owner, landing URL) — col M stamped 8/22 (onboarding ✅)
+- ✅ AB1781 NOT stamped by the failed send (still the stale `20260821` — the code correctly only stamps on success)
+- ⏳ Waiting on: one OAuth grant in the 1UrBg editor, then re-invoke the resend URL
+
+## RESUME HERE →
+1. **Gary (or script owner):** open 1UrBg project in the GAS editor → run any MailApp-using function once → grant `script.send_mail` (OAuth consent)
+2. **Re-invoke**: `…/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → expect real success (with quota) → **verify actual delivery** (HTML MIME part in the mailbox) → AB1781 gets a genuine stamp
+3. **Also** (once authorization is granted): the **LINK-flow hardening** (governor noted the original call site swallows the same way — with auth fixed, future real LINK events will notify owners properly)
+4. Final report to the governor
+
+**✅ Actions this turn:** invoked the production resend action → **got the REAL error** (MailApp permission: `script.send_mail` not authorized) — the true root cause, now visible thanks to #416; verified AB1781 wasn't stamped (correct behavior). No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` → 200: `❌ Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: https://www.googleapis.com/auth/script.send_mail`
+• `ssh run` → AB1781 still `20260821` (stale, not stamped by failed send), M = 8/22/2026, L = paloma@founderhaus.club, B = correct landing URL
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w
 
