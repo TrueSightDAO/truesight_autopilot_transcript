@@ -3383,11 +3383,13 @@ Opening the PR — an `ensureProcessBatchHourlyTriggerInstalled_` (idempotent, s
 ### 🤖 Autopilot
 
 The second hunk's `"}\n"` anchor is too generic. Let me anchor the function insertion to the unique end-of-processBatch signature instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have a unique anchor: the end of `processBatch` (the `throw new Error(...)` block + closing `}` before the `/**` comment of `sendProcessBatchAlert_`). Building the PR with a precise anchor + a scripted local build first (to avoid the empty-write footgun entirely — I'll verify the patched file before pushing):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3533,4 +3535,76 @@ Closing #415 — it's superseded by #416 (the direct-MailApp approach). Using th
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - << 'PYEOF' import json, subprocess, urllib.request, urllib.error PAT = subprocess.run(['grep','-m1','^TRUESIGHT_DAO_AUT
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Explain 416 and 417
+
+
+### 🤖 Autopilot
+
+Let me read both PRs precisely so I explain them accurately — the exact diffs and current state:
+
+
+### 🤖 Autopilot
+
+Both are **open, not merged** — here's what each does, plainly.
+
+---
+
+## PR #416 — "resendTreePlantedNotification_: direct MailApp.sendEmail + quota in response"
+
+**File touched:** `google_app_scripts/1UrBgqLnnQc6PV4-…/process_tree_planting_link.js` (+22/−2) — the **1UrBg** project (the tree-planting LINK processor, the one with the production deployment `AKfycbxMz8cAkJ-…`).
+
+**The problem it fixes:** the governor's two-bug diagnosis —
+1. The old `resendTreePlantedNotification_` (added in #413) called `sendTreePlantedNotificationEmail_`, a wrapper that **swallows MailApp errors in its own try/catch** (only `Logger.log`s them, never rethrows). So a send failure was **invisible**.
+2. `resendTreePlantedNotification_` then **unconditionally returned `{status:'ok'}`** — so the doGet response said "✅ Notification re-sent" even when the email never went out. That's exactly what happened: "✅" was returned, but zero trace of the email in Gmail.
+
+**The fix (the governor's drafted change, which I implemented):**
+- `resendTreePlantedNotification_` **no longer calls the swallowing wrapper**. It inlines the subject/body construction (identical content: same doc template, same tracking link `https://truesight.me/qr/?id=<qr>`).
+- Calls **`MailApp.sendEmail` directly with NO try/catch** around it → a real failure now **propagates up to the doGet handler's own try/catch**, which returns `❌ Error: <actual MailApp message>` in the HTTP response. The truth becomes visible.
+- Calls **`MailApp.getRemainingDailyQuota()` before sending** and includes it in the success response → distinguishes **quota exhaustion** from an **authorization/permission problem** (the two candidates for the real root cause).
+- Stamps col AB (`Tree Planted Notification Sent Date`) with `new Date()` **only on genuine success**.
+- Zero ledger writes — no double-booking risk (the fulfillment pair is already booked from the real LINK).
+
+**Why it matters:** when we re-invoke the production URL after deploying #416, the response will finally tell us the REAL root cause (likely: MailApp authorization never re-granted for the script after some change → needs one manual Run in the GAS editor to trigger the OAuth consent screen; or genuine quota exhaustion — less likely on a Workspace domain at this volume).
+
+---
+
+## PR #417 — "Add idempotent hourly trigger self-installer for processBatch (onboarding emails)"
+
+**File touched:** `google_app_scripts/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/qr_code_web_service.js` (+26/−0) — the **1MnAsI** project (the QR web service that runs `processBatch`, the onboarding-email batch sender).
+
+**The problem it fixes:** the governor's finding — `processBatch` has **zero** `ScriptApp.newTrigger` setup anywhere in the codebase, while its siblings in the SAME project (`processDonationMintsFromTelegramChatLogs`, `processProgramRegistrationsFromTelegramChatLogs`) both self-install hourly triggers from within the processor. So onboarding emails depended on either a UI-installed trigger (invisible to git) or someone manually clicking Run (the 16:42Z re-send only happened because Gary ran it manually).
+
+**The fix (matching the sibling convention exactly):**
+- New **`ensureProcessBatchHourlyTriggerInstalled_()`**:
+  - Checks `ScriptApp.getProjectTriggers()` for an existing trigger whose handler is `processBatch` → **no-op if present** (idempotent; won't duplicate if a UI trigger already exists).
+  - Otherwise creates `ScriptApp.newTrigger('processBatch').timeBased().everyHours(1).create()` — an **hourly** trigger.
+- Called **from within `processBatch()` itself** (in a guarded try, line 1852) — so like the siblings, the trigger **self-installs after the first run**, whether that run came from a manual Run, a webhook, or an existing UI trigger. Re-runs no-op.
+- `processBatch` already re-throws at the end so GAS marks trigger failures — unchanged.
+
+**Why it matters:** makes the onboarding-email schedule **explicit in source and self-healing** — future onboarding emails (Paloma is "only the first of many") no longer depend on someone remembering to click a button. One human check is still worthwhile: Edit → Current project's triggers on the 1MnAsI project (my token can't read the UI panel via API — it 404s).
+
+---
+
+## Current state / what's next
+
+| PR | State | Merge status |
+|---|---|---|
+| **#416** | open | not merged — **waiting on your review** |
+| **#417** | open | not merged — **waiting on your review** |
+
+Both are small, focused, and verified (syntax OK, diffs confirmed above: +22/−2 and +26/−0). **On your "go"** I'll merge → deploy each to its GAS project → update the prod deployment in place → then:
+- #416 path: invoke the resend action → read the REAL error/quota → fix the true root cause → verify actual delivery
+- #417 path: run processBatch once → verify the hourly trigger self-installs
+
+Want me to proceed with merging + deploying both?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== PR #416 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/416" | python3 -c "import jso
 
