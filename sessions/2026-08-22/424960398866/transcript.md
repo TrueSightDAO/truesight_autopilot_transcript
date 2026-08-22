@@ -3878,16 +3878,19 @@ I have the full corrected file. Rather than reconstruct 384 lines inline, I'll c
 ### 🤖 Autopilot
 
 Diff is exactly right. Now commit, push, and open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Opening the PR via the GitHub API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR open: **tokenomics#411**. Now posting findings to thread 11590:
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4064,4 +4067,39 @@ Want me to also draft the small "guarded maintenance action" option (C) as a rea
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== calendar-related GAS scripts / mirrors ==="; find /opt/truesight_autopilot/context/tokenomics/google_app_scripts -maxdepth 2 -inam
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11590] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11590) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Check again
+
+
+### 🤖 Autopilot
+
+Re-checking whether the blocked row correction is now possible (maybe you unprotected the tab or edited manually):
+
+
+### 🤖 Autopilot
+
+Checked — **no change, still blocked**:
+
+| Row | Current (live) | Target |
+|---|---|---|
+| 26 · Bluetooth Label Printer | `1 / 1 / 1` ❌ | `1 / 58.07 / 58.07` |
+| 105 · Stand-Up Pouch Kraft w/Zip | `1 / 100 / 100` ❌ | `100 / 0.130088 / 13.01` |
+
+Both rows are **still uncorrected**, and my write attempt is **still rejected**: *"You are trying to edit a protected cell or object."* The cell protection on the `offchain asset location` tab hasn't changed — none of the service accounts on this box can write to it.
+
+So the correction still needs one of your actions (the same three options, in thread 11590 msg 13106):
+- **A)** You edit the two rows yourself: `C26=1, D26=58.07, E26=58.07` and `C105=100, D105=0.130088, E105=13.01`
+- **B)** Unprotect the tab (or grant edit to `cypher-defense@get-data-io.iam.gserviceaccount.com`) — then I'll write + verify immediately
+- **C)** I draft the small guarded GAS maintenance action (runs as your account) as a review-ready PR — then it's a merge + redeploy away
+
+The deploy side is done and verified (new receipts process correctly), and the follow-up is filed (agentic_ai_context#791) so this won't get lost. Which option do you want to go with?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - <<'EOF' import gspread from google.oauth2 import service_account SCOPES=['https://www.googleapis.com/auth/spreadsheets'
 
