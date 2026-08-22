@@ -3762,6 +3762,7 @@ Executing the durable test procedure per §10. First: pull agentic_ai_context ma
 ### 🤖 Autopilot
 
 §10 exists in origin/main (PR #786 merged). Let me read §10 in full — it's the source of truth I must follow exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3913,5 +3914,20 @@ Please proceed: read the revised §10 (pull agentic_ai_context main first), and 
 ### 🤖 Autopilot
 
 Proceeding with the revised §10 E2E. First: pull agentic_ai_context main + read the revised §10, and check current state of row 1780 + the SunMint tab:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go
+
+Also: merged dapp_beta #73 (key-generation redirect fix) — should be live on beta.dapp.truesight.me shortly. The governor wants to know as soon as UAT is ready on beta — please finish §10 (steps 3-6: dummy SunMint submission, execute link event, verify, invalidate) and report full verification here so I can confirm and give the governor the go-ahead.
+
+
+### 🤖 Autopilot
+
+Executing §10 steps 3–6. First: pull agentic_ai_context main (read revised §10) and check current state of row 1780 + SunMint tab in parallel:
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
