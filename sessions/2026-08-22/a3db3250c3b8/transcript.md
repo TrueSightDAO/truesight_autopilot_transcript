@@ -3659,3 +3659,127 @@ Understood — the §11 postmortem rule applies to this fix too: verify by **act
 **Step 1 — promote to prod** (single-file Contents API write, CNAME untouched, the governor-approved path):
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (note above for the full rationale.) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Executing the next unit: promote #298's fix to prod + verify by actual JS execution (per §11). The prod promotion was the governor-approved path (single-file write, CNAME untouched) — the promotion is a prod write but the governor already explicitly said "fix and deploy to BOTH beta and prod immediately" last turn, so I'm authorized. First, confirm the prod promotion actually landed (checking state):
+
+
+### 🤖 Autopilot
+
+Prod main does **NOT** have the fix yet (the promotion didn't land — prod is still on the buggy 24,787-byte version with `manifest.qr_id` at line 287). Promoting now — fetch beta main (post-#298 merge) and write it to prod main:
+
+
+### 🤖 Autopilot
+
+Good news: beta main **has** the fix (24,777 B, `qrId` in the photo alt, `manifest.qr_id` count 6 → all in-scope render() refs). The prod write 401'd — my PAT extraction in the heredoc failed (the bash-in-python quoting). Let me use a clean approach — write the PAT to a file first, then read it in Python:
+
+
+### 🤖 Autopilot
+
+**Promoted to prod** (commit `a9cc3e7`). Now the critical verification — per §11, **execute the JS, don't just curl**. Let me run the Node VM render harness against BOTH the prod main file and the live page, using the real manifest:
+
+
+### 🤖 Autopilot
+
+**PROD main verified by actual JS execution** (§11 methodology): 24,777 B, fix present, `manifest.qr_id` count 6 (all in-scope), and the Node VM render of the **prod main bytes** produces the full page — QR image ✅, tree photo `<img>` ✅, coordinates ✅, sig ref ✅, **no ReferenceError**.
+
+Now let me verify the **live** page (after Pages rebuild) — execute the live-served bytes too, and confirm the live URL serves the fixed file:
+
+
+### 🤖 Autopilot
+
+Interesting — the live page is **24,840 bytes** (not 24,777) with the fix present (`escapeHtml(qrId)` ×1, "Seedling photo for" ×1), but my Node render produced only 456 chars with none of the elements. The 456-char output is likely the **"QR not found" empty state** — meaning the live page's script executed (no ReferenceError — the fix works!) but the fetch in my harness used the stubbed manifest... wait, the harness stubs fetch to return the manifest. 456 chars suggests `renderEmpty` was called. Let me check: the live page may have a different script structure (extra script blocks) so my regex grabbed the wrong IIFE, OR the live page renders "Loading…" — let me look at what the 456 chars actually are:
+
+
+### 🤖 Autopilot
+
+Live page == prod main exactly (24,840 == the same bytes — wait, it says `live == prod main? True`, so the sizes must match; the earlier `wc -c` showed 24,840 for live and my prod-main write was 24,777... but they compare equal — the 24,840 was actually the live file which the harness overwrote `prod_main_qr.html` with before the last render. Either way: **live == prod main == the fixed version**).
+
+The 456-char render from the live bytes was a harness artifact (the harness was reading a stale/wrong file — I had overwritten prod_main_qr.html with the live bytes, and the earlier `wc -c` said 24,840 while prod main was 24,777 — meaning the live page was a DIFFERENT build). But the equality check just proved **live == prod main** — so the live page IS the fixed file. The 456-char output must be from a harness/timing issue (the `setTimeout` fired before the async fetch resolved, capturing the initial "Loading…" state).
+
+Let me re-run the render cleanly on the confirmed-identical live bytes with a proper wait for the async render:
+
+
+### 🤖 Autopilot
+
+Still 456 chars — the async fetch isn't resolving inside the VM (the `.then(render)` chain needs the microtask queue to flush, and my stub fetch returns a Promise that should resolve... but `vm.runInContext` + the setTimeout pattern means the `.then` callback runs after `setTimeout`'s 2000ms — it should have rendered by then. 456 chars = the "Loading…" empty state never got replaced, OR the render threw silently. Let me debug what's actually in the 456 chars + whether render() executed:
+
+
+### 🤖 Autopilot
+
+**THE LIVE PAGE STILL HAS THE BUG!** The rendered output shows: **"Could not load manifest (manifest is not defined)"** — the live page (24,840 bytes) is executing the **OLD buggy code**. 
+
+But wait — the equality check said `live == prod main`? Let me recheck: I overwrote `/tmp/prod_main_qr.html` with the live bytes before this test, and the earlier comparison was **live vs the overwritten prod file** (both were the live file!). The real prod main (24,777 B, verified fixed earlier via the authoritative API) is DIFFERENT from the live page (24,840 B, buggy). **GitHub Pages hasn't rebuilt yet** — the live site is still serving the OLD build (24,840 B = the #297 build WITHOUT the #298 fix... wait, #297's build was 24,840 with `signed_by`).
+
+So: **prod main = FIXED (24,777 B)** but **live truesight.me = still OLD (24,840 B)** until Pages rebuilds. The 24,840 live page has `escapeHtml(qrId)` ×1 — no wait, that grep earlier showed `escapeHtml(qrId)` ×1 on the live page... but the render proves it's still buggy. Let me look: the live page grep showed "Seedling photo for" ×1 AND `escapeHtml(qrId)` ×1 — but the render says `manifest is not defined`. So the live page has BOTH `escapeHtml(qrId)` AND a `manifest.qr_id` reference somewhere?! Let me check the live page's actual line 287:
+
+
+### 🤖 Autopilot
+
+**Now it's crystal clear:**
+
+- **Prod main (repo) = FIXED**: 24,777 B, line 287 = `escapeHtml(qrId)` (no `manifest.qr_id`), the fix is committed (commit `a9cc3e7`)
+- **Live truesight.me = STILL BUGGY**: 24,840 B, line 287 = `escapeHtml(manifest.qr_id)` — **GitHub Pages hasn't rebuilt yet** (the earlier `escapeHtml(qrId)` ×1 grep on live was matching a different line — the `withQrParam` helper, not line 287)
+
+So the fix is **committed to prod main but not yet live** — Pages rebuild lag (typically 1–5 min, sometimes longer). The Node render **proved the live page is still broken right now** — this is exactly why the §11 methodology matters: curl/grep said "fix present" but executing the JS proved the live page still throws.
+
+Let me register a watcher on the live page to be told when Pages serves the fixed version (the authoritative check — execute the live bytes and confirm no ReferenceError):
+
+
+### 🤖 Autopilot
+
+Watcher unavailable outside a Telegram topic. Let me poll the live page for the fix with a bounded loop (checking the actual served bytes for line 287 = `qrId`):
+
+
+### 🤖 Autopilot
+
+**FIXED LIVE!** Poll 1 already shows: size 24,830 B, `qrId` fix present (×1), `manifest.qr_id` bug absent (×0). GitHub Pages rebuilt. Now the definitive §11 verification — **execute the live page's JS** and confirm the full render with no ReferenceError:
+
+
+### 🤖 Autopilot
+
+**✅ FULLY VERIFIED LIVE — the fix is deployed and the page renders correctly.**
+
+## The ReferenceError outage — FIXED, deployed, PROVEN live
+
+**Final state:**
+- **Prod main (repo)**: fixed (commit `a9cc3e7`, 24,777 B, line 287 = `escapeHtml(qrId)`)
+- **Live truesight.me**: **fixed** (24,830 B, `qrId` at line 287, zero `manifest.qr_id` — Pages rebuilt)
+- **Executed the live page's JS** (Node VM + real manifest) → **full render: QR image ✅, tree photo `<img>` ✅, coordinates ✅, sig ref ✅, NO ReferenceError** (2,890-char render)
+
+**What happened (the full story):**
+1. Governor diagnosed the bug: `renderLineageTree(lineage)` referenced `manifest.qr_id` — `manifest` out of scope (only `lineage` is the parameter). Affects **every tree-type QR with a seedling photo**, live on production. My #296 introduced it.
+2. I'd already fixed it in **#298** (merged last turn, `escapeHtml(qrId)` — `qrId` is the IIFE-scoped var, guaranteed in scope) and proven the fix in a Node VM render harness.
+3. This turn: **promoted to prod** (single-file Contents API write, commit `a9cc3e7`, CNAME untouched) → **verified prod main** by executing its JS (renders fully, no exception) → **polled the live page** → Pages rebuilt → **executed the LIVE page's JS** → full render confirmed.
+
+**The §11 lesson in action:** my curl/grep checks on the live page *initially* suggested "fix present" (the `escapeHtml(qrId)` grep matched a different line, and byte-count looked plausible) — but **executing the JS caught the truth**: the live page was still serving the buggy build until Pages rebuilt. The Node VM harness (the §11 methodology: actually execute, don't just curl) is what confirmed both the bug and the fix. This is now the standard for verifying this page.
+
+## RESUME HERE →
+1. **Paloma onboarding email re-send** (now unblocked — the page is confirmed fixed and renders): merge tokenomics **#410** (processBatch `&`-vs-`?` link fix — prevents a malformed `?id=X?qr_code=Y` URL) → deploy the 1MnAsI project to GAS → clear col M (row 1781) → invoke processBatch → **read the SENT email and verify the body has a real clickable `<a href>` link**
+2. **Trigger diagnosis** (governor's original PART 4/4 ask): why did processBatch fire at 09:42Z? (UI-installed trigger vs manual — `processBatch` isn't URL-routable and no `newTrigger` is in source)
+3. Final report to the governor
+
+**✅ Actions this turn:** promoted the fix to prod main (commit `a9cc3e7`), verified prod main by JS execution (full render, no ReferenceError), polled the live page through the Pages rebuild, **executed the live page's JS — full render confirmed (QR image, tree photo, coords, sig ref, no exception)**. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → prod main check (was buggy — promotion hadn't landed); fetched beta main (24,777 B fixed) → promoted via Contents API (commit a9cc3e7); verified prod main by Node VM render (2890 chars, QR image + photo + coords + sig ref, no ReferenceError); polled live page → Pages rebuilt (24830 B, qrId fix, 0 manifest.qr_id); **executed live page JS → full render, no ReferenceError**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '"'"'"' '); echo "=== beta main post-#298 ==="; …(+1 more)
+
+**URGENT-adjacent finding:** the §11 rule just saved us — the live page initially *looked* fixed via grep but was still serving the buggy build until Pages rebuilt. The Node VM execution is now the verification standard for this page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed '; cd /tmp && grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '"'"'"' ' > /tmp/pat.txt && wc -c /tmp/; cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(cat /tmp/pat.txt); echo "=== prod main verify (authoritative API) ===" &&; …(+7 more)
+
