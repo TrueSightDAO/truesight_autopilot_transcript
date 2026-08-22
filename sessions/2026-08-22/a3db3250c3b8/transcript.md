@@ -8,254 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-What is the SA account to add to which sheet?
-
-
-### 🤖 Autopilot
-
-Let me pull the exact SA email from the credentials file and confirm the spreadsheet identity:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Here's exactly what to add:
-
-## The SA account to grant access to
-
-```
-agroverse-market-research@get-data-io.iam.gserviceaccount.com
-```
-
-## The spreadsheet to add it to
-
-**AGL4 ledger spreadsheet:**
-`1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`
-
-(That's the spreadsheet the Shipment Ledger Listing maps `https://agroverse.shop/agl4` →, with the **Transactions** tab where row 150 lives.)
-
-## How to grant (30 seconds)
-
-1. Open `https://docs.google.com/spreadsheets/d/1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc`
-2. Click **Share** (top-right)
-3. Add `agroverse-market-research@get-data-io.iam.gserviceaccount.com`
-4. Set role to **Editor**
-5. Send/Share
-
-Then say **"done"** — I'll immediately write the corrected two-row pair (row 150: `-1 / Cacao Tree To Be Planted / Liability`; row 151: `+1 / Cacao Tree Planted / Asset`, same message + "Gary Teh" + date) and **re-read A150:F151** to verify before posting the result.
-
-(Note: this is the same SA used for market research — granting it Editor on the AGL4 ledger also lets it read/write that ledger generally. If you'd rather not grant Editor broadly, **Option B** from before — the temporary GAS fix action, which needs no sharing change — is the alternative.)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /home/ubuntu && python3 -c " import json d = json.load(open('creds/google_credentials.json')) print('client_email:', d.get('client_email'
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-New direction from the governor — bigger finding, please execute in full (multiple turns expected, that's fine). Splitting into parts due to length.
-
-PART 1/4 — ROOT CAUSE CONFIRMED (bigger than the malformed row): for AGL4-managed QR codes, the sale-time "Cacao Tree To Be Planted" liability is booked on the MAIN DAO ledger's "offchain transactions" tab (spreadsheet 1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU, tab "offchain transactions") — NOT on AGL4's own sub-ledger (1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc). Verified: row 3854 in "offchain transactions" shows the exact sale-time entry for QR 2024OSCAR_CC_20260620_1 — contributor "SunMint Tree Planting Contract - agl4", +1.00, "Cacao Tree To Be Planted". Written by sales_update_main_dao_offchain_ledger.js processTokenizedTransactions() (project 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n7dhRzs7BmUBQg7fL_sZ), which special-cases agroverseValue === "https://agroverse.shop/agl4" and routes ONLY agl4 sales to the main ledger — every other managed ledger books to its own resolved "Shipment Ledger Listing" sub-ledger via processNonAgl4Transactions (same project, explicitly SKIPS agl4).
-
-But process_tree_planting_link.js's appendTreePlantingLedgerFulfillment_ ALWAYS targets the QR's own "Shipment Ledger Listing"-resolved ledger, with no AGL4 special-case — so it can never actually discharge the real liability for AGL4 QRs. This affects every future AGL4 tree-planting link. Check whether any OTHER managed ledgers have a similar main-ledger special-case (grep sales_update_main_dao_offchain_ledger.js and siblings for other agroverseValue conditions beyond agl4) — if so, generalize the fix, don't just hardcode agl4.
-
-
-### 🤖 Autopilot
-
-Executing PART 1 — recon the sales-ledger project (`1wmgY…`) to map the AGL4 special-case + hunt for other main-ledger special-cases, and verify the sale-time entry on the main ledger. Starting with parallel recon:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Key finding: agl4 is the ONLY special-cased ledger org-wide.** Two conditions exist:
-- Project `1wmgY…` (`sales_update_main_dao_offchain_ledger.js:156`): `agroverseValue === 'https://agroverse.shop/agl4'` → **routes agl4 sales ONLY to the main DAO ledger** ("offchain transactions")
-- Project `1duQFf…` (`sales_update_managed_agl_ledgers.js:301`): `agroverseValue !== 'https://agroverse.shop/agl4'` → **skips agl4**, books everything else to its resolved sub-ledger
-
-So agl4 is unique. Let me read the main-ledger booker's exact row shape + the tree-planting handler's full append function to design the mirror fix:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PART 1 essentially confirmed by the code.** Only `agl4` is special-cased org-wide (project `1wmgY…` line 156 routes agl4 → main ledger; project `1duQFf…` line 301 explicitly skips agl4 → everything else books to its sub-ledger). Let me grab the exact main-ledger constants + verify row 3854 on the main ledger to complete PART 1:
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PART 1 is now **fully confirmed with the actual ledger data**:
-
-**The sale-time liability for QR `2024OSCAR_CC_20260620_1` is on the MAIN DAO ledger** (`1GE7PUq…`, "offchain transactions") — row 3854 area shows the exact 3-row block for its sale (2026-06-26):
-- Row 1: `[20260626, message, "Kirsten Ritschel", -1.00, "Ceremonial Cacao…AGL4", "", TRUE]`
-- Row 2: `[20260626, message, "Gary Teh", 25.00, "USD", "", TRUE]`
-- Row 3: `[20260626, message, "SunMint Tree Planting Contract - agl4", 1.00, "Cacao Tree To Be Planted", "", TRUE]` ← **the liability lives here**
-
-Meanwhile `appendTreePlantingLedgerFulfillment_` always writes to the QR's resolved sub-ledger (`1Uo5p3…` = AGL4) — where the liability **never existed**. **Confirmed: the tree-planting fulfillment can never discharge the real AGL4 liability because it targets the wrong ledger.**
-
-**Only agl4 is special-cased org-wide** (grep: `1wmgY…:156` agl4→main; `1duQFf…:301` skip-agl4; nothing else). So the fix should be **generalized for agl4 specifically** (it's the only main-ledger special case), and I'll add a code comment explaining that.
-
-**PART 1 complete.** Now PART 2 (fix design) — the fix must mirror the sale-time booker: for AGL4 QRs, the fulfillment pair belongs on the **main ledger's "offchain transactions"** tab with the same shape (`[date, message, contributor, -1, "Cacao Tree To Be Planted", "", TRUE]` + `[date, message, contributor, 1, "Cacao Tree Planted", "", TRUE]`), not the AGL4 sub-ledger. Let me read the tree-planting handler's call site + constants to wire this:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I need to see the exact `resolveManagedLedgerSpreadsheetUrl_` + how `appendTreePlantingLedgerFulfillment_` is invoked (the call site right after the sunmint validation) so the fix wires in at the right point:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the complete picture of the wiring. Let me read `resolveManagedLedgerSpreadsheetUrl_` (line 162) to see how it resolves, then I'll design the PART 2 fix — an AGL4 special-case in the fulfillment routing that mirrors the sale-time booker:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PART 1 fully confirmed. Now executing PART 2 — the fix.** Design:
-
-**The fix (generalized for agl4 — the only main-ledger special case):**
-`appendTreePlantingLedgerFulfillment_` should route **AGL4 QRs to the main DAO ledger's "offchain transactions" tab** (mirroring `sales_update_main_dao_offchain_ledger.js`), with the same 7-column row shape the sale-time booker uses (`[date, message, contributor, ±1, classification, '', TRUE]`). All other QRs keep the current resolved-sub-ledger path.
-
-Implementation:
-1. Add constants: `TPL_MAIN_DAO_LEDGER_URL` (= the main ledger spreadsheet URL `1GE7PUq…`), `TPL_MAIN_DAO_OFFCHAIN_TAB = 'offchain transactions'`, `TPL_AGL4_LEDGER_URL = 'https://agroverse.shop/agl4'`
-2. New function `appendTreePlantingLedgerFulfillment_(transactionsSpreadsheetUrl, message, contributorName, ledgerUrl)` — if `ledgerUrl === TPL_AGL4_LEDGER_URL`, target the main ledger's offchain tab (7-col shape); else current resolved path (6-col shape)
-3. Call site passes `ledgerUrl` through
-4. Also fix the **malformed row 150** (Part 3) — replace it with the correct pair on the **main ledger's offchain transactions tab** (that's where the liability actually is), not AGL4's sub-ledger
-
-Opening the PR with the code fix:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ && ls -d 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n7dhRzs7BmUBQg7fL_sZ 2>/dev; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null && echo "=== org-wide: agroverseValue special-cases across AL; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n7dhRzs7BmUBQg7fL_sZ && echo "=== pro; …(+5 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-PART 2/4 — TASK 1: Revert today's real RUN (QR 2024OSCAR_CC_20260620_1 / SunMint msg 171), since it was booked against the wrong ledger:
-• QR row 1572, "Agroverse QR codes" (1GE7PUq): status ASSIGNED_TO_TREE → SOLD; clear Tree Planting Date, Latitude, Longitude, Tree Seedling Photo URL back to blank.
-• SunMint row (msg 171), "SunMint Tree Planting" (1qbZZhf...): Status LINKED → NEW; clear Linked QR Code + Linked At.
-• Remove the malformed row 150 from AGL4's own Transactions tab (1Uo5p3...) — it should not be there at all regardless of shape, since AGL4 discharges on the main ledger, not its own.
-• Annotate (do not silently delete) the "Tree Planting Link" tracking-tab row (Edgar_20260821130119_001) as REVERTED so the audit trail is honest — do not leave it claiming LINKED/OK.
-Verify each reversion by re-reading the rows; post confirmation.
-
-
-### 🤖 Autopilot
-
-Executing PART 2/4 Task 1 — the RUN reversion. First, re-read the current state of all four locations (QR row, SunMint row, AGL4 row 150, tracking row) so I revert precisely and can verify after:
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full current state. Executing the reversion now — QR row (1GE7PUq), SunMint row + tracking annotation (1qbZZhf), and AGL4 row 150 delete (1Uo5p3), each with re-read verification after:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-3 of 4 reverted — **AGL4 row 150 delete hit the 403 wall** (SA still lacks write on `1Uo5p3…`, the sub-ledger). Let me verify the three that succeeded by re-reading:
-[3 tool result(s) compacted: read_google_sheet, read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PART 2/4 Task 1 — 3 of 4 reverted + verified.** Here's the confirmation:
-
-## ✅ Reverted + verified (re-read)
-
-**1. QR row 1572** (`Agroverse QR codes`, 1GE7PUq):
-- `D` = **SOLD** ✅ (was ASSIGNED_TO_TREE)
-- `N` (Tree Planting Date) = **blank** ✅
-- `O` (Latitude) = **blank** ✅
-- `P` (Longitude) = **blank** ✅
-- `R` (Tree Seedling Photo URL) = **blank** ✅
-
-**2. SunMint row 2** (msg 171, `SunMint Tree Planting`, 1qbZZhf):
-- `M` (Status) = **NEW** ✅ (was LINKED)
-- `R` (Linked QR Code) = **blank** ✅
-- `S` (Linked At) = **blank** ✅
-
-**3. Tracking tab row 4** (`Tree Planting Link`, 1qbZZhf) — annotated, not deleted:
-- `E` (Outcome) = **REVERTED** ✅
-- `F` (Reason) = `OK | REVERTED 2026-08-21 — wrong-ledger booking (AGL4 discharges on main DAO ledger, not its own sub-ledger); see SUNMINT_TREE_QR_LINKING_PLAN PART 2/4` ✅
-- Audit trail honest — no longer claims LINKED/OK
-
-## ⚠️ 4. AGL4 row 150 delete — BLOCKED (403)
-
-**`delete_rows(150)` on `1Uo5p3…` Transactions → 403 Forbidden** — the box's SA (`agroverse-market-research@get-data-io…`) still has **no write access** to the AGL4 sub-ledger spreadsheet. I need either:
-- **You grant the SA Editor** on `1Uo5p3nzWsD6HIw98tCiNYSBmSjXeGkdmopsXpket1Mc` (Share → add `agroverse-market-research@get-data-io.iam.gserviceaccount.com` → Editor), then I delete + verify immediately, **or**
-- **Option B**: I do it through the GAS project identity (which has write access there) via a temporary action.
-
-Everything else is done. Once unblocked, deleting row 150 takes ~2 calls (delete + re-read verify).
-
-**RESUME HERE →** grant the SA Editor on `1Uo5p3…` (or say "B") and I'll complete the last reversion item + report. Then PART 2/4 continues (the fix to route AGL4 fulfillment to the main ledger — already designed, ready to PR).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×1 → gspread: QR row 1572 (D→SOLD, N/O/P/R→blank); SunMint row 2 (M→NEW, R/S→blank); tracking row 4 (E→REVERTED, F→annotated); AGL4 delete row 150 → **403 (SA no write on 1Uo5p3)**
-• `read google sheet` ×3 → re-read + verified: QR (SOLD, blanks), SunMint (NEW, blanks), tracking (REVERTED + reason)
-
-———
-**✅ Done this turn — actions taken:**
-• `read google sheet` ×2 → captured pre-revert state (QR row 1572 full row; SunMint rows 1-20 incl. msg 171 LINKED row 2)
-• `ssh run` ×1 → executed reversion writes
-• `read google sheet` ×3 → verified reversion
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×1 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') results = {} # ---- 1; …(+2 more)
-
-———
-**✅ Done this turn — actions taken:**
-• `read google sheet` ×2 → pre-state capture (QR row 1572 full; SunMint A1:T20)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') r
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-PART 3/4 — TASK 2: Fix process_tree_planting_link.js so AGL4 (and any other similarly special-cased ledger you find) discharges the fulfillment pair on the MAIN ledger's "offchain transactions" tab instead of its own sub-ledger — matching the exact contributor/item pattern sales_update_main_dao_offchain_ledger.js uses at sale time ("SunMint Tree Planting Contract - agl4", "Cacao Tree To Be Planted"/"Cacao Tree Planted"). Normal PR → review → merge → deploy flow, verify live.
-
-
-### 🤖 Autopilot
-
-Executing PART 3/4 Task 2 — the AGL4 fulfillment routing fix. First, verify the local project state matches git main (pull-first mindset), then build the PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Local matches git main. Before building the fix, let me confirm the exact contract-name derivation the sale-time booker uses (`extractAglContractName`) so my fulfillment contributor matches it exactly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the exact contract-name pattern: `SunMint Tree Planting Contract - <aglContractName>` where `extractAglContractName('https://agroverse.shop/agl4')` = `'agl4'`. Now building the fix — the fulfillment must target the **main ledger's "offchain transactions"** tab for agl4, with contributor `SunMint Tree Planting Contract - agl4`, and row shape matching the main-ledger booker (`[date, message, contributor, ±1, 'Cacao Tree To Be Planted'/'Cacao Tree Planted', '', TRUE]` — 7 columns):
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The tool needs explicit edits. Building the PR with precise hunks:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 **PR #406 opened** (commit `cf9334e`). Let me verify the branch file is syntactically valid JS and the hunks are all present:
@@ -3494,6 +3246,7 @@ Now the picture is much clearer:
 Hmm — the code says `TPL_NOTIFICATION_SENT_COL = 27` and the stamp is in col28 (`20260821`). If the code stamped col27 (0-indexed 26 → col27 "Sold Date")... but col27 is EMPTY. And col28 has `20260821` which **predates the link**. So the col28 stamp was NOT written by today's LINK run (today's run would have written col27 if it ran this code version, or col28-as-`new Date()` = `20260822`).
 
 Let me resolve the actual column constants in the deployed code + check the git history of the move (was it X→AB? is AB col27 or col28?), and look for what wrote `20260821` to col28:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3503,6 +3256,7 @@ The history clarifies it: commit `0bcc261b` (2026-08-20 19:41Z) "fix: move Sold 
 Wait — that means today's LINK **DID** stamp col28... with `20260821`?? But `new Date()` at execution (08-22 11:45Z) should produce `20260822`. Unless... the value `20260821` came from `sunmintRow[TPL_SUNMINT_STATUS_DATE_COL]` (planting date col G = `20260821`) — no, the send function uses `new Date()` for the stamp. Let me check what format `new Date()` writes — the sheet shows `20260821` (a plain number/string, not a Date object's default serial). If the sheet cell format renders a Date as `YYYYMMDD`... or the value was written by something else.
 
 Actually — let me check the **value type**: is col28 a Date object (formatted) or a string? And critically: **did `MailApp.sendEmail` actually run** — I need the execution log. Let me check the value type + whether the GAS execution log for today's LINK run shows "Sent tree-planted notification":
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3510,6 +3264,7 @@ Actually — let me check the **value type**: is col28 a Date object (formatted)
 `AB1781` is a **string `'20260821'`** — but the code stamps `new Date()` (a Date object, not a string, and would render as the sheet's default date format, not `YYYYMMDD`). So **this value was NOT written by `sendTreePlantedNotificationEmail_`** (which uses `new Date()`). It matches `TPL_SUNMINT_STATUS_DATE_COL` (planting date `20260821`) — suspicious.
 
 There's a **second writer**: `process_tree_planting_telegram_logs.js` (project `1Jp8qN…`) — the OTHER tree-planting project. Let me check how IT stamps the notification column — that may be the source of the stale `20260821`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3520,6 +3275,7 @@ That project sends **Telegram** notifications, not email, and doesn't stamp AB. 
 3. The deployed production code differs from git main (deployed version might stamp differently)
 
 Let me check what the **deployed** 1UrBg project's `sendTreePlantedNotificationEmail_` actually stamps (I can pull-back the live project), plus check whether `assign_gas_owner_emails.py` (the other search hit) touches AB:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3531,6 +3287,7 @@ Now I have decisive evidence:
 3. The **second email search found ZERO records** in both admin@ and garyjob@ mailboxes.
 
 So the most probable truth: **the "Tree Planted Notification Sent Date" stamp of `20260821` is stale/bogus (copied from the planting date), and `sendTreePlantedNotificationEmail_` either never ran for this row or ran without sending**. But wait — the LINK tracking said `LINKED / OK` and the send is "best-effort" inside the LINK handler... Let me check the **GAS execution log** for today's 11:45Z LINK run to see whether `sendTreePlantedNotificationEmail_` actually executed and what it logged ("Sent tree-planted notification to paloma@founderhaus.club" vs "failed" vs "notification skipped"):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3540,21 +3297,25 @@ So the most probable truth: **the "Tree Planted Notification Sent Date" stamp of
 **Conclusion: the `20260821` string in AB1781 was NOT written by the email code.** It was either copied from the planting date, manually set, or written by an older/other flow. The **second email almost certainly never sent** (zero records in both mailboxes + bogus stamp).
 
 The remaining question is the **GAS execution log** for the 11:45Z LINK run — I need to see if `sendTreePlantedNotificationEmail_` logged "Sent..." / "failed" / "skipped". Let me check the Apps Script execution log via the API (the same 1UrBg project), using the clasp token if the scope allows:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clasprc has `tokens` (dict) — let me extract the access token and try the Scripts API executions endpoint to see today's LINK run's log (does it show "Sent tree-planted notification to paloma@founderhaus.club" or "failed" or "skipped"):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The token structure is `tokens.default` (nested) and the direct access token isn't where I looked. The 404 is from an unauthenticated/HTML response — the token extraction needs `tokens.default.access_token`. Let me retry with the right path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The access token IS there (under `tokens.default.access_token`) — my earlier lookup used the wrong key. Retrying the Scripts API executions endpoint with the correct token:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3578,6 +3339,7 @@ Let me consolidate what I know and present the findings + the plan:
 3. **Re-send the tree-planted notification to Paloma** — clear the bogus AB stamp, then invoke the send. Since `sendTreePlantedNotificationEmail_` is only called inside the LINK handler (and re-running the LINK would double-book the ledger), the cleanest path is a **one-off GAS script run** of the send function (or a small doGet action) with the real values — then **verify actual delivery** (search paloma@ in the admin mailbox; check the sent time).
 
 Given the turn budget, let me converge and report — the merge of #299 + the email re-send fix are next-turn work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3585,6 +3347,7 @@ Given the turn budget, let me converge and report — the merge of #299 + the em
 I have the full PR landscape. Relevant to this task: **#299** (map, ready for merge per the governor's "go") and **#410** (processBatch email-link fix — needed before the email re-sends). The others are unrelated (blog posts, other features).
 
 Per the one-PR-per-turn rule and the governor's explicit "go — merge #299", I'll merge #299 now as the final action of this turn, then report the email investigation findings + the next unit.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3664,6 +3427,7 @@ go
 ### 🤖 Autopilot
 
 Executing — promote the #299 map feature to prod (approved single-file path), then verify live per §11. Recon first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3790,4 +3554,17 @@ Python `re` import ordering error — fixing:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed '; cd /tmp && PAT=$(cat /tmp/pat.txt 2>/dev/null || grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '; cd /tmp && PAT=$(cat /tmp/pat.txt) && echo "=== prod main verify (authoritative) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go — independently confirmed the map is genuinely live on prod. Please continue with the two remaining email items.
+
+
+### 🤖 Autopilot
+
+Executing the email items. First, check the state of #410 (processBatch link fix — the dependency for the onboarding re-send) and the 1MnAsI project's local state + deployments:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
