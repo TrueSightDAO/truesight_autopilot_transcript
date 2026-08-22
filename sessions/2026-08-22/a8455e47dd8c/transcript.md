@@ -4610,3 +4610,43 @@ Also noting the key intel from that chat: **Graziela says the RADAR is like an e
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
 
+
+### 🧑 Governor
+
+Is my assumption correct
+
+[Attachment auto-processed: **1c67318016dc4941a1c6141fe248069a.jpg**]
+- Type: Image (OCR confidence: 80.8%, quality: good)
+
+Extracted text:
+```
+aloha Wd Pom 89 fe Agroverse: Ilheus Braz... i 46 a Ae - Seacoast Logisti... Cy Acredito que seja isso que falta een Ae Gary, the radar is like an export license, which will change his CNPJ to APTO, which will be allowed to SL enya Otherwise we need to use a & trading company Pee) He already has RADAR setup that is why he is able to link up the siscomex 9:56AM 7 Could you help check how much is the cost of using a trading company 9:56AM Y Graziela - Seacoast Logistic Ok, let me check again oe Hor ae Oo ev
+```
+
+
+### 🤖 Autopilot
+
+Let me verify the technical details rather than guess — quick check on RADAR, CNPJ status, and the trading company route.
+
+
+### 🤖 Autopilot
+
+**Short answer: mostly NO — the causation actually runs the opposite direction.** Here's the evidence-based breakdown:
+
+**What the research shows:**
+
+1. **RADAR does NOT change CNPJ status.** The prerequisite is the reverse: the CNPJ must be in **"Ativa" cadastral status** to *get and keep* RADAR habilitation. Receita's own Manual de Habilitação and multiple sources confirm: a CNPJ flagged **"Inapta" blocks RADAR/Siscomex** — and can cause the habilitation to be **suspended or canceled**. So "RADAR makes the CNPJ APTO" is backwards; it's "CNPJ must be APTO (Ativa) to have/keep RADAR."
+
+2. **Graziela's second sentence is the more accurate one:** "He already has RADAR, that is why he is able to link up Siscomex." That's true — Black King's RADAR habilitation exists and is how he accesses Portal Único. But if the CNPJ stays "Inapta," that RADAR is at risk of suspension/desabilitação.
+
+3. **What Graziela may actually be seeing:** There's a real distinction in the system between **situação cadastral** (CNPJ Ativa/Inapta) and **situação da habilitação** (RADAR status: habilitada/suspensa/desabilitada). Maybe on the Siscomex side his RADAR shows "APTO/habilitada" and she interpreted that as overriding the CNPJ status. But for the **NF-e / DU-E path**, what matters is the **cadastral status at SEFAZ/RFB** — and "Inapta" blocks NF-e issuance regardless of RADAR.
+
+4. **The trading company route is real and regulated** — "por conta e ordem" or "por encomenda" (IN RFB 1.861/2018). The trading company with its own healthy RADAR exports in its own name; Black King is the adquirente. This bypasses Black King's CNPJ problem entirely but costs a fee (typically 0.5–2% of FOB + documentation fees — Graziela is checking the exact number for you). It also means the export invoice is issued by the trading company, not Black King.
+
+**Bottom line:** Your instinct to double-check is right — Graziela's "RADAR changes CNPJ to APTO" is not accurate per RFB rules. The practical paths remain:
+- **A:** Regularize Black King (CNAE + cert + clear Inapta) → NF-e → DU-E (cleanest, we're already on it)
+- **B:** Trading company "por conta e ordem" (fastest now, costs a fee, invoice in trading's name)
+- **C:** Coopercabruca fallback (already NF-e-capable, indirect export)
+
+Want me to add this clarification (RADAR ≠ CNPJ status fixer) to the SOP so nobody relies on that assumption again?
+
