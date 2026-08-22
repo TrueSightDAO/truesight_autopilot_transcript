@@ -10,53 +10,6 @@
 
 ### 🤖 Autopilot
 
-The sale-time booker **hardcodes** `'SunMint Tree Planting Contract - agl4'` too (line 199) — there's no dynamic derivation there either. So the pattern is: a fixed contributor per ledger. For the new MAIN ledger, the right contributor is `SunMint Tree Planting Contract - main`. 
-
-The cleanest fix: derive the ledger name from the URL (`https://truesight.me/sunmint/main` → `main`) so the contributor is `SunMint Tree Planting Contract - <ledgerName>` — keeping agl4 → `- agl4` and main → `- main` automatically, and any future allow-listed ledger gets the right name. Let me update the #409 branch with this derivation, then verify:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Patched + syntax OK. Now push this update to the #409 branch (same branch — it's not merged yet, so I'm revising it before merge):
-[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-⚠️ **I just made a serious error** — I uploaded `PLACEHOLDER` as the file content, which would wipe the entire file on the branch. Fixing immediately by uploading the actual patched file from disk:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now verify the branch file is the full corrected version (not PLACEHOLDER, not the wiped version) — checking size + the ledgerName derivation + syntax:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The branch file shows the **original** 32,293 bytes with the hardcoded `- agl4` (ledgerName = 0) — either the raw.githubusercontent is CDN-lagged (as it was earlier this session) or my local upload didn't take. Let me check the authoritative Contents API at the branch tip + the recent commit history:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The **authoritative branch tip is correct**: commit `fab8a90` has the full file (32,417 bytes), `ledgerName` ×5, **no** `- agl4` hardcode, no PLACEHOLDER. The raw.githubusercontent was just CDN-lagged. The branch is good.
-
-Now — **critical decision point before running the LINK**: the #409 branch has the fix, but **#409 is NOT merged, NOT deployed**. The production GAS deployment still runs the #406-era code (hardcoded `- agl4`). If I run the LINK event now, the production processor would write `SunMint Tree Planting Contract - agl4` for the FounderHaus QR — exactly what the governor said NOT to do.
-
-**I must not run the LINK yet.** The correct order:
-1. Merge #409 (allow-list + ledgerName-derived contributor)
-2. Deploy to GAS, update PROD deployment in place
-3. Then run the LINK event → verify
-
-Let me check the PR #409 status and whether it needs anything before merge (it's been revised with 3 commits now):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 #409 is open, mergeable, 3 commits (allow-list + ledgerName-derived contributor). The LINK **must not run** until this is merged + deployed (production would otherwise hardcode `- agl4`). Merging it now per the authorized "review → merge → deploy" flow:
 [1 tool result(s) compacted: merge_pr — detail in artifacts]
 
@@ -3555,16 +3508,19 @@ who is the owner of this script?
 ### 🤖 Autopilot
 
 Let me verify directly rather than rely on memory:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me fix the auth import and check the owner via the Drive API properly, plus read the clasp token identity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service account can't see the script file (404 — it has no access). Let me try the Apps Script API project-info endpoint with the clasp token to get the owner directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3602,6 +3558,7 @@ deploy under owner admin@truesight.me
 ### 🤖 Autopilot
 
 Let me investigate what's possible — check what credentials exist on the box (for admin@truesight.me vs garyjob), and confirm who owns the 1MnAsI project (which successfully sends as admin@truesight.me):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3611,11 +3568,13 @@ Excellent — key discovery: **there IS an admin@truesight.me clasp credential**
 - **1UrBg (tree link)** — creator: **garyjob@agroverse.shop** (this is the one with the MailApp authorization problem)
 
 The governor's instruction "deploy under owner admin@truesight.me" — the insight being: the tree-planted notification emails should send **as admin@truesight.me** (consistent with the onboarding emails), which requires the 1UrBg script to be authorized/deployed under admin@truesight.me. Let me check what the admin clasprc is (which project it's for) and whether it can see/deploy 1UrBg:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The admin clasprc's id_token didn't parse in my quick script — let me decode it to confirm it's admin@truesight.me, and check whether that admin token can see/deploy the 1UrBg project (i.e., is admin a collaborator/owner-capable?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3814,4 +3773,73 @@ Function added + syntax OK. Now let me open a PR for this change (the proper flo
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && cd google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu6; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== app; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cat >> proces; …(+1 more)
 • `merge pr` → ✅ PR #418 on tokenomics merged successfully (sha: 985d4378d4a2bfeadb6e5f2fdedf8fb039dcb4fd). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+ignore ownership transfer. GEnerate a function that could be called to trigger the email permission in the script
+
+
+### 🤖 Autopilot
+
+Ignoring ownership transfer — deploying #418's `authorizeMailApp()` to GAS so it's callable in the editor. Pull the 1UrBg project to git main, then push:
+
+
+### 🤖 Autopilot
+
+Pushed to GAS. Now save a version and update the PROD deployment in place (the pin lesson), then verify `authorizeMailApp` is live in the editor:
+
+
+### 🤖 Autopilot
+
+Version 25 saved. Now update the PROD deployment (@24 → @25) in place so the editor + production both serve `authorizeMailApp`:
+
+
+### 🤖 Autopilot
+
+**Deployed — PROD @25.** Now let me verify the function is actually live in the script (pull-back check) and confirm the editor can see it:
+
+
+### 🤖 Autopilot
+
+**Deployed + verified live.** The pull-back of the actual GAS project shows `authorizeMailApp` (1 occurrence, line 715) + the quota call — the function is live in the editor.
+
+## ✅ Done — `authorizeMailApp()` deployed to GAS (PROD @25)
+
+**What's in place:**
+- **`authorizeMailApp()`** — a **public** function (line 715 of `process_tree_planting_link.js`) that calls `MailApp.getRemainingDailyQuota()` and returns the quota as JSON
+- **Deployed**: v25 saved, **PROD deployment @25** (the pin lesson), pull-back verified the live project has the function
+- No doGet/doPost routing needed — it's designed to be run **from the Apps Script editor's Run dropdown**
+
+## How to trigger the email permission (one human step)
+
+**Gary — open the editor and run it once:**
+1. Go to **https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+2. In the function dropdown at the top (currently showing something like `myFunction` or the first function), select **`authorizeMailApp`**
+3. Click **Run**
+4. **Review permissions → Allow** (the OAuth consent screen — this grants `script.send_mail` and the project's other scopes)
+5. The function returns something like `{"status":"ok","quotaRemaining":100,"message":"MailApp is authorized..."}` in the execution log
+
+That one grant is the fix — after it, the production resend action will genuinely send (no more "You do not have permission to call MailApp").
+
+## RESUME HERE →
+1. **Gary: run `authorizeMailApp` in the editor once** (steps above) → approve OAuth consent
+2. **I re-invoke** `…/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → expect genuine success (with quota) → **verify actual delivery** (HTML MIME part in the mailbox) → AB1781 gets a real stamp
+3. **LINK-flow hardening** (the same swallowed exception in the original LINK call site — fix now that the root cause is known) + final report
+
+**✅ Actions this turn:** synced 1UrBg to git main (#418), pushed to GAS (v25), updated PROD deployment in place (@24→@25), pull-back verified `authorizeMailApp` is live in the editor. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main && git checkout origin/main -- 1UrBg folder; grep authorizeMailApp (715) + node --check OK; clasp push (4 files); clasp version 25; clasp deploy --deploymentId AKfycbxMz8cAkJ… @25; pull-back verify (authorizeMailApp ×1 in live, quota at 334/717)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu6; clasp push --force 2>&1 | tail -5; clasp version "authorizeMailApp OAuth trigger" → Created version 25; clasp deploy --deploymentId AKfycbxMz8cAkJ… --versionNumber 25 → Deployed @25
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && git checkout origin/main -- google_app_scripts/1Ur; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== sav; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploy ; …(+1 more)
 
