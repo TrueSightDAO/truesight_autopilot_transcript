@@ -3407,11 +3407,13 @@ The tail looks fine — the issue is elsewhere. The error "Unexpected end of inp
 ### 🤖 Autopilot
 
 Found it: **408 open braces vs 406 close** — my hunk 2's insertion dropped a closing brace. Looking at my replacement: the original had `}\n}\n\n/**\n * Send a detailed...` (processBatch's close + the function's close), and my `ensure_fn` string ends with the doc comment `/**\n * Send a detailed failure report...` but **I removed the two closing braces** in the process. Let me look at the exact seam:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The seam shows the ensure function went in correctly (processBatch → ensure fn → alert doc → sendEmailForQRCode). The brace imbalance (408 vs 406) must be **pre-existing** in the file (unbalanced braces from string literals with braces inside — e.g. template strings / regex containing `{`/`}` that python's count naively counts). Let me verify by counting braces on the MAIN file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3434,6 +3436,7 @@ That's **2 closing braces** (`}` for the if-block, `}` for processBatch). My `en
 ```
 
 and it replaced `}\n}\n\n/**\n * Send a detailed` — so the two `}` were REMOVED and not re-added. That's the 2-brace deficit. The fix: re-add the processBatch closing brace. Let me check the seam again precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3658,4 +3661,82 @@ Both were open/verified before merge (syntax OK, small focused diffs +22/−2 an
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #416 on tokenomics merged successfully (sha: fd47587f188f265dc53ccf834ff5ef385c757b4c). Pull Request successfully merged; ✅ PR #417 on tokenomics merged successfully (sha: a857fb326ce2dc9297db89f350e28a698bf9e913). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Deploy for both
+
+
+### 🤖 Autopilot
+
+Deploying both. First, check both project folders' state + git main sync:
+
+
+### 🤖 Autopilot
+
+Git main now has #416 + #417. Local folders are stale — updating the project files from git main, then pushing both projects:
+
+
+### 🤖 Autopilot
+
+Both files verified from git main (the #416 direct send + quota at 334/349, the #417 ensure function at 1972). Both syntax OK. Now pushing both projects with clasp:
+
+
+### 🤖 Autopilot
+
+1UrBg pushed + version 24 saved. Now update its PROD deployment in place (the pin lesson), then do the same for 1MnAsI:
+
+
+### 🤖 Autopilot
+
+**1UrBg PROD deployment updated: @23 → @24** (now serving #416's direct-MailApp code). Now the same for 1MnAsI (push, version, PROD deployment update):
+
+
+### 🤖 Autopilot
+
+1MnAsI pushed (v29 saved). The deployments are all webhook/registerSingleQRCode actions — none obviously "the" onboarding/processBatch deployment (processBatch isn't URL-routable; it runs in editor/trigger context). So for 1MnAsI, the code update (v29 = HEAD) is what matters for processBatch; the deployments serve the web-app actions. Let me confirm which deployment the webhook actually calls (the one dao_protocol uses — should be @HEAD or the latest registerSingleQRCode) and update it in place so the deployed webhook serves v29 too:
+
+
+### 🤖 Autopilot
+
+Both deployments are effectively live:
+- **1UrBg PROD → @24** (the #416 direct-MailApp resend code) — deployment updated in place, confirmed by the clasp output
+- **1MnAsI → v29 = @HEAD** — processBatch runs in editor/trigger context (not URL-routable), and that context always executes HEAD = v29 with the #417 self-installer. The webhook deployments are untouched (they serve registerSingleQRCode, which #417 doesn't change).
+
+Quick sanity check that the 1UrBg PROD exec URL is serving without error:
+
+
+### 🤖 Autopilot
+
+**PROD deployment confirmed live** — the exec URL responds with the valid-actions message including the new `?action=resendTreePlantedNotification&qr_code=<code>` — so #416 is deployed and the resend action is exposed on the production URL. The 200 response proves the deployment serves v24.
+
+Both deployments complete:
+- **1UrBg**: pushed, v24 saved, **PROD deployment @24** (direct MailApp + quota), exec URL verified (lists the resend action)
+- **1MnAsI**: pushed, v29 saved (= @HEAD, which processBatch executes in trigger/editor context — the #417 self-installer is live there)
+
+## ✅ Both deployed
+
+| Project | Version | PROD deployment | Verified |
+|---|---|---|---|
+| **1UrBg** (#416) | v24 | @23 → **@24** (in place) | exec URL 200, lists `action=resendTreePlantedNotification` ✅ |
+| **1MnAsI** (#417) | v29 | @HEAD (= v29) | processBatch executes HEAD → self-installer live ✅ |
+
+## RESUME HERE → (next unit — the payoff)
+1. **Invoke the resend on PROD**: `https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → **read the ACTUAL response** — genuine success (with quota number) OR the real MailApp error (the true root cause: authorization-needs-manual-Run vs quota)
+2. **Verify actual delivery** (HTML MIME part in admin@/garyjob@ mailbox; clear the bogus AB1781 stamp first so the genuine send stamps it fresh)
+3. **Trigger verification for #417**: run processBatch once (manual or next scheduled run) → confirm the hourly trigger self-installs (second run no-op)
+4. Final report to the governor
+
+**✅ Actions this turn:** pulled both projects to git main, verified #416/#417 code + syntax, pushed 1UrBg (v24) + 1MnAsI (v29), updated 1UrBg PROD deployment in place (@23→@24), verified the prod exec URL serves the resend action. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main && git checkout origin/main -- (1UrBg ptpl + pqu, 1MnAsI qrws); verified #416 (quota 334, direct send 349) + #417 (ensure fn 1972); node --check both; clasp push 1UrBg (4 files) + v24; clasp deploy --deploymentId AKfycbxMz8cAkJ… --versionNumber 24 (→ @24); clasp push 1MnAsI (5 files) + v29 (HEAD); http_fetch prod exec URL → 200, lists resendTreePlantedNotification action ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && echo "=== git main head ===" && git log --oneline ; cd /opt/truesight_autopilot/context/tokenomics && echo "=== update 1UrBg files to main ===" && git checkout origin/main -- google_app_script; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== 1Ur; …(+2 more)
 
