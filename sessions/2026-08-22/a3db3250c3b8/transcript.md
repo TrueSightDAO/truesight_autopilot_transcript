@@ -3603,6 +3603,7 @@ Interesting — the SunMint sheet in the **source spreadsheet** already has rows
 | **Tree-planted email** | ✅ **AB1782 = `8/22/2026`** — the LINK's send already fired and stamped! (It worked — the deployment auth fix from earlier made the LINK-flow send succeed for the first time!) |
 
 The processor ran within ~40 seconds of the Edgar write (23:40:48 → 23:41:00) — the time-based trigger is live and the whole chain works. Now the **key verification (step 5's THE POINT)**: did the tree-planted notification actually arrive at **garyjob@gmail.com**? And the onboarding email (processBatch, M still empty). Checking both mailboxes:
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3610,6 +3611,7 @@ The processor ran within ~40 seconds of the Edgar write (23:40:48 → 23:41:00) 
 **✅ THE TREE-PLANTED NOTIFICATION IS DELIVERED to garyjob@gmail.com** (admin@ SENT, 23:41:00Z, subject "Your Sunmint tree (TEST_AGL4_20260822_2) has been planted", correct body: planting date 20260822, location 44.6,-123.3, photo URL). **This is the FIRST genuine LINK-flow email send ever** — the deployment-auth fix works end-to-end.
 
 One email down. The **onboarding email** (M still empty — processBatch hasn't run since SOLD). It's the admin-owned 1MnAsI project — its MailApp works, but processBatch needs a trigger run (scheduled or Gary's manual Run). Let me check whether the scheduled trigger exists yet by looking for the self-installer's effect (can't read triggers via API — but I can check whether processBatch ran recently by the M stamp pattern across SOLD rows):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3659,26 +3661,31 @@ Full E2E is now proven working end to end on the REAL flow (not a diagnostic act
 ### 🤖 Autopilot
 
 Both emails confirmed delivered by the governor — the full E2E chain is proven. Finishing the remaining items: verify the AGL4 fulfillment pair, invalidate the test QR, fill the Log of runs row. Starting with the ledger check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The general ledger has AGL4 history but I need the specific fulfillment pair from today's LINK. Let me search for the exact contributor name + recent entries:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Ledger history tab has no SunMint Tree Planting Contract entries — the fulfillment pair must be written elsewhere. Let me check the GAS LINK code for where the fulfillment pair is recorded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fulfillment pair goes to the **main DAO ledger's "offchain transactions" tab** (spreadsheet 1GE7PUq, same as the QR sheet). Let me check there for the TEST_AGL4 entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the pattern — `SunMint Tree Planting Contract - agl4` entries in the **offchain transactions** tab (rows 546–616+ are the AGL4 liability records). The LINK's fulfillment pair should be at the **end** of this tab (most recent). Let me check the last rows + specifically for the TEST_AGL4/FOUNDERHAUS entries:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3693,26 +3700,31 @@ Found the pattern — `SunMint Tree Planting Contract - agl4` entries in the **o
 Perfect mirrored pair (−1 liability → +1 planted), exactly matching the FounderHaus pattern (rows 4129–4130, `- main`) — and the earlier 2026TEST run (4127–4128, 0.000 — the prior §10 run). **The fulfillment pair is correct.**
 
 Now steps 6–7: **invalidate the test QR** (D1782 → INVALIDATED) + **fill the §10 Log of runs row** (run #2, PASS, TEST_AGL4_20260822_2). Let me do both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 QR invalidated ✅. No dedicated Log tab in the main ledger — the §10 Log of runs lives in the **plan document** (SUNMINT_TREE_QR_LINKING_PLAN.md). Let me find the Log of runs section in the plan and update it via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the Log of runs — it's a markdown table in the plan at line 577–582, with the previous run (`2026TEST_20260822_1`, PASS) already logged. I need to **append run #2's row** (`TEST_AGL4_20260822_2`, PASS). Let me read the exact table + headers so my PR appends the row correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact table format. Appending run #2's row via a PR to the plan doc (agentic_ai_context):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #794 opened** — the §10 Log of runs row for run #2. Let me merge it (the governor's standing authorization — plan-doc updates are part of the execution) and verify:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3887,4 +3899,162 @@ One accuracy note for the record: the Log of runs row (PR #794, merged last turn
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w; find / -name "seed_from_sheet*" -not -path "*/node_modules/*" -not -path "/proc/*" -not -path "/sys/*" 2>/dev/null | head; echo "---"; ls /o; ls -la /tmp/seed_run2/lineage-assets/ 2>/dev/null | head; echo "---"; ls /tmp/seed_run2/lineage-assets/scripts/ 2>/dev/null; echo "--- usage; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+RUN #2 confirmed fully complete and verified (both emails delivered, ledger correct, invalidated, logged in PR #794). Governor wants ONE MORE fresh run to confirm the pipeline is reliably repeatable now that the OAuth deployment fix + processBatch trigger are both working.
+
+§10 E2E RUN #3 — same procedure as RUN #2, garyjob@gmail.com as Owner Email again:
+1. Mint a new test QR (TEST_AGL4_<today>_3, increment the suffix), AGL4 ledger, generic currency, Owner Email garyjob@gmail.com, status MINTED → SOLD via direct sheet edit.
+2. Insert dummy SunMint submission (new TEST- prefixed message ID, Status NEW).
+3. Execute the LINK event (CLI, governor-signed) — if you hit another transient SSLEOFError 500, just retry once before treating it as a real issue.
+4. Verify: QR → ASSIGNED_TO_TREE, SunMint → LINKED, tracking LINKED/OK, AGL4 main-ledger fulfillment pair.
+5. Verify BOTH emails actually deliver to garyjob@gmail.com (tree-planted notification from the LINK flow, onboarding from processBatch) — check admin@truesight.me's Sent folder for genuine delivery, not just that code ran.
+6. Also this time: run seed_from_sheet.py for the new QR and confirm https://truesight.me/qr/?id=<new-qr> actually renders (per the manifest-generation step that was missing last time).
+7. Invalidate the test QR once fully verified, fill the §10 Log of runs row (run #3).
+
+Report back once fully done — the governor wants a clean, complete confirmation this time with no follow-up nudging needed if everything goes smoothly.
+
+
+### 🤖 Autopilot
+
+Executing §10 E2E RUN #3 — full repeatable-pipeline confirmation. Starting with recon (row 1782's exact layout to replicate, next empty row, SunMint sheet last row):
+
+
+### 🤖 Autopilot
+
+Template captured (run #2 at row 1782 → run #3 goes to row 1783). **Step 1 — mint the new test QR** `TEST_AGL4_20260822_3` (MINTED → then SOLD), mirroring run #2's exact layout:
+
+
+### 🤖 Autopilot
+
+**Steps 1–2 done** — QR `TEST_AGL4_20260822_3` at row 1783, MINTED → **SOLD** (direct edit), AGL4, generic currency, garyjob@gmail.com. **Step 3 — insert the dummy SunMint submission** (new TEST- message ID):
+
+
+### 🤖 Autopilot
+
+**Step 3 done** — SunMint submission `TEST-20260822-3` at row 20 (NEW, 44.6/−123.3, "E2E Test"). **Step 4 — execute the LINK event** (CLI, governor-signed). The governor's standing authorization for this run covers the submission. Executing with dry-run awareness — this is the real, authorized submission (the prior runs established the pattern):
+
+
+### 🤖 Autopilot
+
+The CLI flag is `--sunmint-submission-message-id` (not `--sunmint-submission-id`). Correcting:
+
+
+### 🤖 Autopilot
+
+**Step 4 done — LINK submitted: HTTP 200, signature verified.** Now the GAS processor needs to apply the side-effects (it polls the Telegram Chat Logs on its trigger — last run took ~40s). Let me wait, then verify step 5: QR → ASSIGNED_TO_TREE, SunMint → LINKED, tracking, ledger pair:
+
+
+### 🤖 Autopilot
+
+Timed out (the 60s sleep exceeded the ssh_run default). Let me re-run the verification without the sleep (the processor has had time by now):
+
+
+### 🤖 Autopilot
+
+**Step 5 (partial) verified — the LINK chain applied:**
+- ✅ **QR → ASSIGNED_TO_TREE** (row 1783, with plant date 20260822, lat/long, photo)
+- ✅ **SunMint → LINKED** (row 20, LinkedQR `TEST_AGL4_20260822_3`, 23:49:07Z)
+- ✅ **Tracking → LINKED / OK** (row 11714, `Edgar_20260822234856_075`, 23:49:08Z)
+- ✅ **AB (tree planted) = 8/22/2026** — the tree-planted email already fired + stamped (the LINK flow's send worked!)
+- ⏳ **M (onboarding) still empty** — processBatch hasn't run yet (it fires on its own schedule)
+
+Now let me verify the **tree-planted email actually delivered** to garyjob@gmail.com (check admin@ SENT) + the **AGL4 ledger pair**:
+
+
+### 🤖 Autopilot
+
+**Step 5 fully verified:**
+- ✅ **Tree-planted notification DELIVERED to garyjob@gmail.com** — 23:49:08Z, from admin@truesight.me, subject "Your Sunmint tree (TEST_AGL4_20260822_3) has been planted", correct body (planting date, 44.6/−123.3, photo URL). Genuine delivery, in SENT.
+- ✅ **AGL4 fulfillment pair** — last 2 rows: `TEST_AG…` `SunMint Tree Planting Contract - agl4` **−1.00000000** `Cacao Tree To Be Planted` / **+1.00000000** `Cacao Tree Planted`, TRUE. (Run #3's pair, after run #2's pair above it.)
+- ⏳ **Onboarding email still pending** (M empty) — processBatch hasn't run since SOLD (23:44Z). It fired at 23:42:51Z for run #2's row; it'll pick up row 1783 on its next run (hourly trigger from #417, or Gary's manual run). The tree-planted email — **the one that was broken for days** — fired and delivered automatically in the LINK flow.
+
+Let me verify the onboarding email once processBatch runs — first check the M column again + whether the processBatch trigger has picked it up (it may need a few more minutes on the hourly schedule):
+
+
+### 🤖 Autopilot
+
+M still empty — processBatch hasn't run since row 1783 went SOLD. In run #2 it fired at 23:42:51Z (right after Gary's manual run or the trigger). Since the governor wants a **clean, complete confirmation with no follow-up nudging**, let me check whether I can fire processBatch — or check if the hourly trigger from #417 is active (it self-installs on processBatch's next run — which hasn't happened since #417 deployed at ~23:00Z... actually the 23:42:51Z run WAS after #417's deploy, so the trigger may now be installed). Let me check the current time + whether the onboarding email arrives within the next few minutes (hourly trigger), and meanwhile proceed with step 6 (seed + render verification for the new QR):
+
+
+### 🤖 Autopilot
+
+**Step 6 (manifest) done** — seed generated `TEST_AGL4_20260822_3.json` (1350 B, ASSIGNED_TO_TREE, 44.6/−123.3). Pushing it to lineage-assets main (Contents API, single file — NOT the other modified files):
+
+
+### 🤖 Autopilot
+
+Bash quoting broke (the grep/sed chain inside `$(...)` with nested quotes). Let me use a clean two-step (write pat.txt first, then run Python separately):
+
+
+### 🤖 Autopilot
+
+**Manifest pushed (201) + live (200).** Now the §11 render verification — execute the live page's JS for `TEST_AGL4_20260822_3`:
+
+
+### 🤖 Autopilot
+
+**Step 6 verified (§11):** the live page for `TEST_AGL4_20260822_3` fully renders — QR image ✅, coords 44.6/−123.3 ✅, photo ✅, OSM map ✅, tree ID ✅, **no errors** ✅ (3950-char render).
+
+Now I need the **onboarding email** to complete step 5. Let me check if processBatch has run (M stamp) — if the hourly trigger fired since ~23:42Z it should be stamped by now. Checking the current time + M column, and the mailbox:
+
+
+### 🤖 Autopilot
+
+It's only 23:50Z — the row went SOLD at ~23:44Z, and in run #2 processBatch ran ~7 min after SOLD (23:35→23:42). The hourly trigger (if installed) may fire at the next hour boundary, or Gary may run it manually. Since the governor wants **no follow-up nudging**, let me wait for the processBatch run — checking whether I can determine the trigger's next fire time. The #417 self-installer creates an hourly trigger on processBatch's *next run* — the 23:42:51Z run (run #2's onboarding) happened **before** #417's self-installer code was actually invoked if #417 deployed after 23:42... Let me verify the deploy timing + whether the self-installer ran (check the trigger count via the one API that works):
+
+
+### 🤖 Autopilot
+
+#417 was merged (`a857fb3`) and I deployed it (v29) before the 23:42:51Z processBatch run — so that run **would have executed the self-installer** (line 1852), installing the hourly trigger. The next hourly fire should be ~00:42Z (or on the next hour boundary). The row 1783 went SOLD ~23:44Z, so the next processBatch run (hourly, ~00:42Z) will pick it up.
+
+Since waiting ~50 min in a turn isn't possible, the practical path: the onboarding email **will** fire automatically on the next hourly trigger (now that #417's self-installer is active — this is exactly what the run is validating: repeatability without human intervention). Let me register a background watcher on the M-column stamp so I'm told when it flips (rather than polling manually):
+
+
+### 🤖 Autopilot
+
+Watcher running (polls M1783 every 20s for up to 1h, writes to `/tmp/m_stamp_result.txt` when processBatch stamps it). 
+
+I've completed everything except the onboarding email (which is on the hourly trigger — the very repeatability this run validates). Let me do the final pre-invalidation step I can control — confirm the QR/ledger state is stable, then give my complete report. First check if the onboarding email happened to arrive while I worked (a few minutes have passed):
+
+
+### 🤖 Autopilot
+
+Only run #2's onboarding (23:42:51Z) — run #3's hasn't fired yet (expected; on the hourly trigger). The watcher is monitoring for it.
+
+Let me now write the complete status report. Everything except the onboarding email is done and verified; the watcher will catch it. Here's where things stand:
+
+## §10 E2E RUN #3 — status (nearly complete)
+
+| Step | Result |
+|---|---|
+| **1–2. Mint + SOLD** | ✅ `TEST_AGL4_20260822_3` at QR row 1783 — AGL4, generic currency, garyjob@gmail.com, D→SOLD (sheet edit) |
+| **3. SunMint dummy submission** | ✅ `TEST-20260822-3` at row 20 — NEW, 44.6/−123.3, "E2E Test" |
+| **4. LINK event** | ✅ HTTP 200, signature verified (first try — no SSLEOFError this time) |
+| **5a. QR → ASSIGNED_TO_TREE** | ✅ (row 1783, tree fields written) |
+| **5b. SunMint → LINKED** | ✅ (row 20, LinkedQR `TEST_AGL4_20260822_3`, 23:49:07Z) |
+| **5c. Tracking LINKED/OK** | ✅ (row 11714, `Edgar_20260822234856_075`, 23:49:08Z) |
+| **5d. AGL4 fulfillment pair** | ✅ (`SunMint Tree Planting Contract - agl4`, −1 `Cacao Tree To Be Planted` / +1 `Cacao Tree Planted`, TRUE) |
+| **5e. Tree-planted email** | ✅ **DELIVERED to garyjob@gmail.com** 23:49:08Z (from admin@, correct body — the LINK flow's own send, now working) |
+| **5f. Onboarding email** | ⏳ **PENDING** — processBatch hasn't run since the row went SOLD (~23:44Z); the #417 hourly trigger should fire ~00:42Z (or a manual run). **Watcher armed** (polls M1783 every 20s) |
+| **6. Manifest + render** | ✅ seed generated `TEST_AGL4_20260822_3.json` (1350 B), pushed (201), live (200), **§11 Node VM render: full page** (QR img, coords, photo, OSM map, tree ID, no errors) |
+| **7. Invalidate + log** | ⏳ held until the onboarding email confirms (then D1783→INVALIDATED + §10 Log row) |
+
+## RESUME HERE →
+1. **Check the watcher** (`cat /tmp/m_stamp_result.txt`) — when M1783 is stamped + the onboarding email appears in admin@ SENT (to garyjob@gmail.com, subject "Track Your Agroverse Tree Planting Journey"), the run is complete
+2. **Invalidate** D1783 → `INVALIDATED`
+3. **Fill the §10 Log of runs row** (run #3, PASS) via PR to the plan doc
+4. Final clean report to the governor
+
+**The core finding of this run:** the **tree-planted notification fired and delivered automatically from the real LINK flow** (23:49:08Z) with zero human intervention — the deployment-OAuth fix holds. The only in-flight item is the onboarding email, which is now on the self-installed hourly trigger (the exact repeatability #417 was built to prove).
+
+**✅ Actions this turn:** minted + SOLD the test QR, inserted the SunMint submission, submitted the LINK (200), verified all LINK side-effects + the tree-planted email delivery + the AGL4 pair, ran the seed + pushed the manifest + §11-verified the live render, armed the M-stamp watcher. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w; cd /opt/truesight_autopilot/dao_protocol && timeout 90 python3 -m truesight_dao_client.modules.link_tree_planting --qr-code "TEST_AGL4_20260; sleep 60; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credential; …(+8 more)
 
