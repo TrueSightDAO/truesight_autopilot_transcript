@@ -1356,6 +1356,7 @@ Let me OCR the extracted embedded images — product bag photos often have brand
 ### 🤖 Autopilot
 
 Let me OCR all remaining embedded images to hunt for any product-bag content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1372,6 +1373,7 @@ I've now scanned **every slide and every embedded image** in the 14-page deck, a
 | **9** | Municipality of Manicoré | Photos of the **açaí factory** in Manicoré (leased w/ option to buy) — may show product bags in the facility |
 
 Before I cut the wrong page, let me do one final high-res check of the factory photos on p9 to see if any show product bags:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2735,4 +2737,259 @@ Just say which.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && ls -la 79e87418300e464ca04001dbd9e3b184.pdf && echo "--- sha256 ---" && sha256sum 79e87418300e464ca04001dbd9e3b184; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/tg_attachments/79e87418300e464ca04001dbd9e3b184.pdf") print("pages:", doc.page
+
+
+### 🧑 Governor
+
+Finalized deck. Record contribution time made
+
+[Attachment auto-processed: **518fa2e79ce64ae18b462e9982689ddb.pdf**]
+- Type: PDF (7 pages, 2866 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+LOCATION OF EBCF'S 10,000 
+M2 LAND FOR THE 
+INSTALLATION OF THE AGRO-
+INDUSTRIAL PARK
+PROJECTION OF THE FUTURE AGRO-INDUSTRIAL PARK OF EBCF
+
+--- Page 2 ---
+AÇAÍ FREEZE-DRYING – STAGE 1 AÇAÍ PROJECT
+
+--- Page 3 ---
+CACAO PRODUCTION · MANICORÉ
+Cocoa · Agroforestry cultivation (SAF) · EBCF priority #3 · Target market: chocolate / functional foods
+SUPPLY TRAJECTORY · MANICORÉ (t fruit / yr)
+Current (sub)registered supply
+300 · 500
+Potential supply (not registered)
+500 · 800
+Captureable w/ structured program
+700 · 1,000
+Projected 2030 · base scenario
+1,000 · 1,500
+Projected 2035 · maturity scenario
+1,500 · 2,500
+Sourcing model:  Agroforestry cultivation (SAF) · extractivism + managed SAF
+Ranked #3 in the Amazon Ingredients Matrix (EBCF priority list)
+INDUSTRIAL REVENUE · CACAO (USD)
+Stage 1 · Agro-industrial Park (initial)
+900 t fruit  ·  ~101 t  (nibs, butter, dried almond)
+@ USD 7 / kg  ·  USD 0.7 M / yr
+Stage 2 · Expansion (2035 maturity)
+2,000 t fruit  ·  ~225 t  (nibs, butter, dried almond)
+@ USD 7 / kg  ·  USD 1.6 M / yr
+ANVISA:  · approved
+FDA:  ·· export-ready
+Target market:  chocolate / functional foods · high added value
+LAND FOOTPRINT · WHERE THE CACAO & THE PARK SIT
+10,000 m²
+Agro-industrial Park land ? EBCF, Manicoré
+400 ha
+open area for SAF cacao plantation (option to
+buy / lease)
+20,000 ha
+EBCF properties in Manicoré
+~100,000 ha
+5 km extractive impact area · 80+ communities
+EBCF · Manicoré, Amazonas  ·  Source: Bioeconomy Program · Master Plan Manicoré (supply & revenue scenarios)
+
+--- Page 4 ---
+MUNICIPALITY OF MANICORÉ
+EBCF OFFICE IN MANICORÉ
+AÇAÍ FACTORY IN MANICORÉ 
+(LEASE WITH OPTION TO PURCHASE BY EBCF)
+LOCATION: EBCF OFFICE AND AÇAÍ
+FACTORY IN MANICORÉ
+
+--- Page 5 ---
+EBCF PROPERTIES IN MANICORÉ – 20,000 HA
+
+--- Page 6 ---
+5 KM RADIUS FOR EXTRACTIVE ACTIVITY 
+IMPACTED AREA: ̃100,000 HECTARES
+ID
+Nome
+1
+Cristo_Rei
+2
+Auxiliadora
+3
+Santa_Fe
+4
+Laranjal
+5
+Santa_Maria_do_Marmelos
+6
+Marmelos
+7
+Santa_Helena
+8
+Cucura
+9
+Nazare_do_Retiro
+10
+Santa_Maria_De_Belem
+11
+Boca_do_Capana
+12
+Santo_Antonio
+13
+Agua_Azul
+14
+Boa_Esperanca
+15
+Escondido
+16
+Sao_Pedro_dos_Cardosos
+17
+Pocao
+18
+Barro_Alto
+19
+Esperanca
+20
+Estirao
+21
+Igarapezinho
+22
+Boa_Nova
+23
+Remanso
+24
+Ribamar
+25
+Barreira_do_Matupiri
+26
+Verdum
+27
+Santa_Cruz
+28
+Elegancia
+29
+Sao_Pedro
+30
+Delicia
+31
+Pinduri
+32
+Samauma
+33
+Boca_do_Atininga
+34
+Recreio_Atininga
+35
+Curralinho
+36
+jenipapo_I
+37
+Jenipapo
+38
+Nova_Esperanca
+39
+Cachoeirinha
+40
+Nova_Aparecida
+41
+Sao_Joao
+42
+Macaco_Prego
+43
+Itapinima
+44
+Sao_Pedro_do_Urua
+45
+Vencedor
+46
+Nazare_do_Urua
+47
+Sao_Carlos
+48
+Recreio
+49
+Dois_Irmaos
+50
+Santa_Rosa
+51
+Bacabal
+52
+Sao_Francisco
+53
+Terra_Preta_Capananzinho
+54
+Barreira_do_Capananzinho
+55
+Liberdade
+56
+Dotinha
+57
+Gonzaga
+58
+Pau_Queimado
+59
+Santa_Marta
+60
+Barreira_do_Curuca
+80+ MAPPED EXTRACTIVE COMMUNITIES / 15 CURRENTLY SERVED BY EBCF (GREEN PIN)
+
+--- Page 7 ---
+OPEN AREA OF 400 HECTARES IN MANICORÉ FOR SAF (AGRO-FORESTRY SYSTEM) PLANTATION
+OPTION TO BUY OR LEASE BY EBCF
+```
+
+
+### 🤖 Autopilot
+
+Finalized deck received (7 pages) — let me verify it, check the contribution-event docs, and see how prior time contributions were recorded so I log this correctly:
+
+
+### 🤖 Autopilot
+
+Deck verified — **7 pages, finalized**: Park land → Açaí Freeze-Drying → **Cacao Production** → Municipality → 20,000 ha → Communities (~100,000 ha) → 400 ha SAF. (The Açaí graphic-only page is gone; this is the tight site-visit version.)
+
+Let me persist the finalized deck to the session transcript first:
+
+
+### 🤖 Autopilot
+
+Deck verified and persisted to transcript. Before submitting the contribution, let me check the recording conventions used in the DAO so I format it right:
+
+
+### 🤖 Autopilot
+
+No conventions found in context files. Let me check the tokenomics notes for the ledger schema and search past transcripts for how time contributions were recorded:
+
+
+### 🤖 Autopilot
+
+Let me find the contribution-recording section in the schema:
+
+
+### 🤖 Autopilot
+
+Let me look at the contribution-specific section of the schema:
+
+
+### 🤖 Autopilot
+
+The finalized 7-slide deck is verified, and I have the contribution docs ready. One thing before I submit — I need the **amount** from you:
+
+**CONTRIBUTION EVENT** (per Edgar's catalog) requires:
+- **Type**: Time (Minutes) — or USD if it's a cash contribution
+- **Amount**: the number
+- Contributor: Gary Teh (confirmed)
+- Optional: Description, TDG Issued
+
+**What I'd record** (once you confirm the amount):
+- **Type**: `Time (Minutes)`
+- **Description**: *"EBCF Manicoré due-diligence deck — extracted/condensed Bioeconomy Program slides into a site-inspection deck; added custom Cacao Production slide; iterative trimming (frozen-pulp slide, supply slide, benchmark/thank-you) to final 7-slide version"*
+
+**How many minutes do you want to log?** (e.g. 60, 90, 120…) — or if you'd rather log USD, tell me the amount. Also confirm whether TDG should be issued (and how much), or leave TDG at 0 for governor review.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && sha256sum 518fa2e79ce64ae18b462e9982689ddb.pdf && python3 << 'EOF' import fitz doc = fitz.open("518fa2e79ce64ae18b
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-22/4008a35ff7c9/transcript.md
 
