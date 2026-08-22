@@ -3364,3 +3364,80 @@ Select **`authorizeMailApp`** in the function dropdown at the top of the editor,
 
 Do both if needed: run `authorizeMailApp` in the editor **and** open the exec URL — then tell me and I'll re-invoke the resend and verify delivery in both mailboxes.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+when I call authorizeMailApp, I didn't see any errors or dialogue. When I execute 
+
+https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1
+
+I see this error message
+❌ Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: https://www.googleapis.com/auth/script.send_mail. For more information, see https://developers.google.com/apps-script/guides/support/troubleshooting#authorization-is
+
+
+### 🤖 Autopilot
+
+Let me check exactly what my `authorizeMailApp()` function does with errors — the "no error" could mean my own code swallowed the exception:
+
+
+### 🤖 Autopilot
+
+The function's try/catch returns a JSON error string instead of throwing — so "no dialogue" makes sense (it ran, caught the permission error, returned JSON to the log). But the deeper question is **why the deployment never gets the scope at all**. Let me check the project's `appsscript.json` — the manifest's declared `oauthScopes` are what a deployment gets authorized for, and if `script.send_mail` is missing there, no UI re-deploy will ever grant it:
+
+
+### 🤖 Autopilot
+
+Both manifests lack `oauthScopes` (GAS auto-adds scopes at auth time, so that's normal — not the cause). The real difference: the **1MnAsI (working) deployment was authorized in the browser at some point** (that's why its emails send), while the **1UrBg deployment never was**. Same manifest shape; the difference is purely the deployment-level OAuth grant.
+
+So the missing piece is exactly what I described: the **deployment authorization** hasn't been granted. When Gary opened the exec URL, he got the ❌ error instead of a prompt — which happens when the deployment is already "authorized" for the *trigger* scopes but the **MailApp scope wasn't requested at the original authorization** (the deployment was created before `sendTreePlantedNotificationEmail_`/`authorizeMailApp` existed, so `script.send_mail` was never in the consent).
+
+**The fix (one of these):**
+1. **Re-save the deployment to force re-authorization**: editor → **Deploy → Manage deployments → ✏️ Edit** the `AKfycbxMz8cAkJ-…` deployment → **Save** (even with no change) → this re-runs the authorization flow, which now includes `script.send_mail` (because the code uses MailApp) → **Allow**.
+2. If no prompt appears on save: **test deployment → new deployment → Web app → execute as: Me → access: Anyone → Deploy** — a *fresh* deployment creates a fresh authorization, then update the webhook/env to the new URL.
+3. **Alternative that avoids the deployment entirely**: since the **editor Run of `authorizeMailApp` didn't error either** (it returned the JSON error string, not a throw) — wait, that means even the **editor context lacks the scope**. Let me verify what the editor Run actually returned — if the editor also has no grant, the project has **never had MailApp authorized in any context**, and the cleanest fix is #2 (fresh deployment) or checking the editor's *authorization state.
+
+Let me first check whether the editor's authorization is actually absent (the function's JSON return hides it) — I'll re-run it via the API in the editor context:
+
+
+### 🤖 Autopilot
+
+The access token expired (401 — needs a refresh). Let me refresh it and retry the API call:
+
+
+### 🤖 Autopilot
+
+The Scripts API `:run` reaches the project but fails with a **storage NOT_FOUND** error (not an auth error) — this is the known GAS limitation: `:run` requires the script to be **deployed as an "API executable"**, and this project isn't. So the API can't execute `authorizeMailApp` in the editor context for me. That path is closed (same wall as before).
+
+Let me step back and give you the precise, minimal action — the editor Run not prompting means the project's **authorization state is already "granted" for an older scope set** that predates MailApp. The reliable fix is to **force a re-authorization**, which in the Apps Script UI happens when you **re-save the deployment** (or create a new one). Here's exactly what to do:
+
+## What to do in the editor (2 minutes, no code)
+
+**Step 1 — force re-authorization via the deployment:**
+1. Open the editor: **https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+2. Click **Deploy → Manage deployments**
+3. Find the deployment **`AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X`**
+4. Click the **✏️ (pencil/edit)** icon on it
+5. Click **Save** (you can change nothing — just Save)
+6. If it asks for authorization → **Review permissions → Allow** ← this is the key step
+7. Click **Done**
+
+**Step 2 — run `authorizeMailApp` in the editor** (after Step 1):
+1. In the function dropdown at the top, select **`authorizeMailApp`**
+2. Click **Run**
+3. The execution log should now show the JSON with `"status":"ok","quotaRemaining":…` (a number > 0)
+
+**Step 3 — tell me**, and I'll:
+1. Re-invoke the exec URL → expect the real success response (with quota)
+2. Verify actual delivery in both mailboxes (admin@ + garyjob@)
+3. Then run the fresh §10 E2E with `Owner Email = garyjob@gmail.com`
+
+**Why this works:** the deployment was created before MailApp was ever used, so its authorization never included `script.send_mail`. Re-saving the deployment re-runs the consent flow with the *current* code, which now requests `script.send_mail` — granting the deployment the permission. (The editor Run alone can't fix it because the editor's authorization is also an old scope set — that's why you saw no prompt and no error.)
+
+If Step 1's Save doesn't prompt, the alternative is **New deployment → Web app → execute as: Me → access: Anyone** → Deploy → authorize → then give me the new URL (I'll update the webhook).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4; cd /opt/truesight_autopilot/context/tokenomics && cat google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/appsscrip; cd /tmp && python3 - << 'PYEOF' import json, subprocess, urllib.request, urllib.error # Use the clasp token (garyjob) to call the Scripts AP; …(+1 more)
+
