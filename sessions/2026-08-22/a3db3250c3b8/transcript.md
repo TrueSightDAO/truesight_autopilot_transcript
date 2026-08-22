@@ -3473,21 +3473,25 @@ I have `build_payload`/`sign_payload`/`build_share_text`. Now build + sign the s
 ### 🤖 Autopilot
 
 Let me read the exact `build_payload`/`sign_payload` signatures so I sign correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything. Signing the synthetic LINK event and staging it into Telegram Chat Logs, then invoking the processor:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The helper wrapped the marker in double brackets and quoted the signature — that would break the handler's parser. I'll compose the share text manually in the exact real-RUN format (raw base64 signature, single-bracket marker) and stage it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Signed + staged (TCL row `E2ETEST_20260822064939_001`). Now invoke the anonymous processor URL (v15, fixed code) to process the LINK:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3643,4 +3647,193 @@ Pushed. Now verify live (pull-back to confirm the #406 AGL4 branch is in the liv
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && rm -f Version; cd /tmp && rm -rf verify406 && mkdir verify406 && cd verify406 && cp -r /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBg
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+REVISED TASK 3 — use AGL4 itself (not PP1/SEF1), so the test exercises the exact fixed code path end to end:
+
+1. Mint a NEW test QR code (new unique qr_code value, clearly test-labeled e.g. TEST_AGL4_<date>_1) in "Agroverse QR codes" (1GE7PUq):
+   • Ledger / Ledger Name: AGL4 / https://agroverse.shop/agl4
+   • Currency: "SunMint Tree Planting Pledge - QR Code" (the generic label — already used on some existing AGL4 rows, NOT the product-specific "Ceremonial Cacao..." style)
+   • Status: MINTED
+   • Owner Email: a clearly-fake test address (e.g. test+e2e@truesight.me)
+
+2. Simulate the SALE using the REAL production sales pipeline (dao_client CLI [SALES EVENT] submission, same path a real sale takes — NOT hand-inserted rows), Sale price = $0. Since this QR is AGL4-tied, this should exercise sales_update_main_dao_offchain_ledger.js's processTokenizedTransactions() and book the +1 "Cacao Tree To Be Planted" liability onto the MAIN ledger's "offchain transactions" tab — confirm this actually happens (that's the real point of using AGL4 instead of a clean ledger: it validates the whole real pipeline, not just the fix in isolation).
+
+3. Insert a dummy SunMint tree-planting submission row: clearly-marked test Telegram Message ID (prefix "TEST-"), Status NEW, dummy lat/long, submitted name "E2E Test".
+
+4. Execute the [TREE PLANTING LINK EVENT] against this pair (dao_client CLI, governor-signed) — with #406 now deployed, this should discharge the fulfillment pair onto the MAIN ledger's offchain tab too (not AGL4's own sub-ledger).
+
+5. Verify everything by re-reading: QR row → ASSIGNED_TO_TREE; SunMint row → LINKED; main ledger's "offchain transactions" tab shows BOTH the sale-time liability (+1) AND the fulfillment pair (-1/+1), correctly matching contributor "SunMint Tree Planting Contract - agl4" pattern. Post full verification into this thread.
+
+
+### 🤖 Autopilot
+
+Executing REVISED TASK 3 — the AGL4 synthetic E2E through the real pipeline. Multi-turn; I'll stage, run the real sales pipeline, run the LINK, then verify everything. Starting with parallel recon: QR sheet structure + AGL4 reference rows, the dao_client CLI path, and how the sales pipeline chains (TCL → QR Code Sales → main ledger).
+
+
+### 🤖 Autopilot
+
+Headers mapped (ledger=col3, status=col4, currency=col9, email=col12, price=col20). Existing AGL4 rows use "Oscar Farm" currency — need to find rows with the generic "SunMint Tree Planting Pledge - QR Code" label. And the edgar_client grep came back empty (wrong path — it's at `/opt/truesight_autopilot/truesight_dao_client/edgar_client.py` which worked earlier). Let me find the CLI + the generic currency label + the sales-event submission format:
+
+
+### 🤖 Autopilot
+
+Reference found: AGL4 + generic currency rows exist (e.g. row 1417 `20260413_FATIMA`, row 1448 `PLEDGE_20260430_…` — SOLD, currency "SunMint Tree Planting Pledge - QR Code", price 5). And the CLI entry points are in `pyproject.toml` — but no `truesight-dao-sale`/`submit` entry. The real RUN used a different mechanism. Let me check the dao_protocol server submit route + how the sales pipeline chains (who books the main-ledger liability — is it the GAS cron on TCL rows, or the Edgar submit itself?):
+
+
+### 🤖 Autopilot
+
+Pipeline mapped: `truesight-dao-report-sales` CLI → `[SALES EVENT]` → dispatch → sales GAS `doGet action=processTokenizedTransactions` → scans scored chatlogs → books liability on main ledger "offchain transactions". Let me confirm the report_sales format + what makes a chatlog row "scored" for the tokenizer:
+
+
+### 🤖 Autopilot
+
+Pipeline clarified: `truesight-dao-report-sales` → `[SALES EVENT]` → Edgar dispatch → TCL → (scoring) → `processTokenizedTransactions` scans the scored sheet (col G = ledger URL, col J empty) → books the 3-row block on main ledger. Let me confirm the dispatch routing for SALES EVENT + the tokenizer's source sheet + scoring step:
+
+
+### 🤖 Autopilot
+
+Pipeline mapped. Now let me check the report_sales CLI usage, the sales-parser trigger (who moves TCL→"QR Code Sales"), and whether the tokenizer webhook env is set:
+
+
+### 🤖 Autopilot
+
+Pipeline fully mapped. Now: check the manager name (col U) used on existing AGL4 SOLD rows (for the sale's "Sold by"/"Cash proceeds"), and find the 1wmgY processor's anonymous webhook URL:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Executing the REVISED TASK 3 pipeline. Step 1: **mint the test QR row** (write access to 1GE7PUq confirmed from the earlier revert), and check the sales parser's (1dsWec) doGet actions to know how to trigger the TCL→QR Code Sales step:
+
+
+### 🤖 Autopilot
+
+Test QR **minted** (row 1780, MINTED, AGL4, generic currency, `test+e2e@truesight.me`, price 0, manager Gary Teh). The sales parser has `doGet action=parseTelegramChatLogs` + `processSpecificRow`. Now the sale: submit `[SALES EVENT]` via the CLI (the real production path), then trigger the parser to move TCL→QR Code Sales, then trigger the tokenizer to book the main-ledger liability. Let me first get the tokenizer's anonymous URL + check what the sales parser writes to "QR Code Sales" (to know if I need `processSpecificRow`):
+
+
+### 🤖 Autopilot
+
+Pipeline + URLs all mapped. Now executing the **real sales submission** via the CLI (production path): `[SALES EVENT]` with Item = the test QR, Sales price = 0, Sold by / Cash proceeds = "Gary Teh", Owner email = fake. Then I'll trigger the parser + tokenizer. Let me submit the sale:
+
+
+### 🤖 Autopilot
+
+The QR validator requires the `2024OSCAR_20260121_32` format — my `TEST_AGL4_20260822_1` fails validation. The real sales pipeline validates the QR format. Let me mint a **format-compliant** test QR (e.g. `2026E2E_AGL4_20260822_1` — matching the pattern `YYYY<FARM>_<DATE>_<N>`), update the QR row, then re-submit the sale:
+
+
+### 🤖 Autopilot
+
+Let me read the actual validator regex to construct a compliant QR:
+
+
+### 🤖 Autopilot
+
+Pattern: `^\d{4}[A-Z]+_\d{8}_\d+$` — **`2026E2E_20260822_1`** should pass... but it failed earlier. Wait — the earlier failure was from `qr_code_format` being called with the **`--item`** value while the installed package (`~/.local/lib/python3.10/...`) has a **different/stricter regex**. Let me test the validator directly from the correct path + update the QR row to a passing format:
+
+
+### 🤖 Autopilot
+
+Interesting — `2026E2E_20260822_1` fails because **`E2E` contains a digit** (`[A-Z]+` only, no digits allowed in the farm segment). The regex is `^\d{4}[A-Z]+_\d{8}_\d+$` — farm must be **letters only**. A compliant test QR: **`2026TEST_20260822_1`** (or `2026E2E_...` fails; use `2026TEST_20260822_1`). Let me update the QR row to `2026TEST_20260822_1` and re-submit the sale:
+
+
+### 🤖 Autopilot
+
+QR now `2026TEST_20260822_1` (format-compliant). Re-submitting the sale via the production CLI path:
+
+
+### 🤖 Autopilot
+
+Dry-run looks perfect — the signed `[SALES EVENT]` payload builds correctly. Executing the real submission (this is the authorized synthetic test — no real money, $0 sale, fake email):
+
+
+### 🤖 Autopilot
+
+**Sale submitted — `signature_verification: success`** (HTTP 200). The `[SALES EVENT]` went through Edgar's real pipeline. Now I need to trigger the chain: the sales parser (1dsWec, `parseTelegramChatLogs`) moves the TCL row → "QR Code Sales", then the tokenizer (1wmgY, `processTokenizedTransactions`) books the liability. Let me check if the TCL row landed + trigger the parser:
+
+
+### 🤖 Autopilot
+
+The `[SALES EVENT]` row landed in TCL (update `Edgar_20260822065524_015`). Now trigger the **sales parser** (1dsWec `parseTelegramChatLogs`) to move it into "QR Code Sales", then the **tokenizer** (1wmgY `processTokenizedTransactions`) to book the liability. Invoking the parser via its anonymous @14 deployment (the one we fixed today):
+
+
+### 🤖 Autopilot
+
+Timeout (the parser scans all TCL rows — it takes a while). Let me retry with a longer timeout, and if it still times out, use `processSpecificRow` targeting the exact TCL row:
+
+
+### 🤖 Autopilot
+
+The full-scan parser times out over HTTP (GAS has a ~6-min execution limit but the HTTP response often doesn't wait). The run may still complete server-side. Let me check whether the TCL→"QR Code Sales" copy happened (checking the QR Code Sales tab for my test QR), and find my TCL row number for `processSpecificRow` if needed:
+
+
+### 🤖 Autopilot
+
+**Key finding:** The parser DID copy the sale to "QR Code Sales" row 624 — but with **QR Code value = EMPTY** and **Status = `IGNORED`** (the last col). The parser couldn't extract the QR code from the message. Why: the message says `- Item: 2026TEST_20260822_1` — the parser likely looks for a different label (e.g. `- QR Code:`), OR it looks up the QR in the QR sheet and `IGNORED` because... let me check the parser's extraction logic for the QR field:
+
+
+### 🤖 Autopilot
+
+The parser uses **Grok (LLM) to extract QR + price** from the message, and my synthetic message's structured parse failed ("`[SALES EVENT] present but QR or price missing after parse`" → IGNORED). The CLI's `--item` label puts the QR under `- Item:` — the parser's structured parser likely looks for `- QR Code:` specifically (the DApp's report_sales.html uses `- Item:` too, so Grok normally handles it — but here Grok returned nothing usable, maybe because the price is `0`).
+
+Let me check the structured parse logic (what field names it expects) and the Grok path — maybe I should re-submit with the QR under a label the parser extracts deterministically:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — here's the REVISED TASK 3 state.
+
+## ✅ Done & verified so far
+
+| Step | State |
+|---|---|
+| **Test QR minted** (row 1780): `2026TEST_20260822_1`, ledger `agroverse.shop/agl4`, currency "SunMint Tree Planting Pledge - QR Code", status MINTED, owner `test+e2e@truesight.me`, price 0, manager Gary Teh | ✅ |
+| **Real sales submission via CLI** — `[SALES EVENT]` → Edgar: `signature_verification: success` (HTTP 200) | ✅ |
+| **TCL row landed** (11684, `Edgar_20260822065524_015`) | ✅ |
+| **Parser moved it to "QR Code Sales"** row 624 | ✅ (partial — see blocker) |
+
+## 🔴 Blocker: parser marked the sale `IGNORED`
+
+The parser (1dsWec) copied the sale to "QR Code Sales" row 624, but with **QR Code value = EMPTY + Status = IGNORED**. Root cause (from code, line 503–524): the structured parser requires **BOTH** `- Item: <qr>` **AND** `- Sales price: <nonzero>` to accept a sale:
+
+```js
+const itemMatch = message.match(/- Item:\s*([^\n]+)/i);        // ✅ matched
+const priceMatch = message.match(/- Sales price:\s*\$?([0-9]+\.?[0-9]*)/i);  // price "0" → regex [0-9]+ matches "0" → 0
+...
+if (qrCode && salePrice) { ... }   // salePrice=0 → FALSY → FAILED
+```
+
+**`salePrice = 0` is falsy** → the `if (qrCode && salePrice)` gate fails → `parseMethod: 'FAILED'` → IGNORED. So the **$0 test sale is structurally unparseable** by the production parser (it can't distinguish "price 0" from "no price"). This is a real finding: **the production sales parser cannot process $0 pledge sales** (relevant since the plan mints $0/pledge QRs).
+
+## What this means for the test
+
+The sale did NOT reach the tokenizer (`processTokenizedTransactions` books from "QR Code Sales" rows with **empty col J** — my row has J=IGNORED, so it'll be skipped). So the **sale-time liability (+1 "Cacao Tree To Be Planted") was NOT booked** — the main-ledger half of the test hasn't happened yet.
+
+## Options to complete the E2E (next turn)
+
+1. **Use a nonzero price** (e.g. $5, matching real pledge rows like `PLEDGE_20260430_…` price=5): re-submit the sale with `--sales-price 5` → parser accepts → tokenizer books liability → then the LINK discharges it. Cleanest — mirrors real pledge sales exactly.
+2. **Force-process my existing row**: set QR Code Sales row 624's QR value + clear col J (status) manually, then invoke the tokenizer — but that hand-edits the real pipeline (less faithful).
+3. **Fix the parser** to accept `0` as a valid price (a real bug worth a PR — `if (qrCode && salePrice !== '')`): correct long-term, but heavier.
+
+**My recommendation: Option 1** — re-submit at $5 (still synthetic, fake email), which exercises the real pipeline faithfully end-to-end, then optionally file the $0-parser bug as a follow-up PR.
+
+## RESUME HERE →
+1. **Re-submit the sale at `--sales-price 5`** (same fake email/QR) → parser accepts → row 625 in QR Code Sales with QR + price 5 + empty J
+2. **Invoke tokenizer** (`1wmgY` anonymous @5 URL `AKfycbyVeNZdBngZodsyDzPQS1yUGYaaaDUd3DwbFx05KsOs9vwAtAFQoV1I5qf_B6IgMggWGA/exec?action=processTokenizedTransactions`) → books the 3-row block (incl. `+1 "Cacao Tree To Be Planted" / SunMint Tree Planting Contract - agl4`) on main ledger "offchain transactions" → **verify by re-reading**
+3. **Stage dummy SunMint row** (TEST- prefix, NEW) + **sign + submit `[TREE PLANTING LINK EVENT]`** (Sophia/sentinel) → invoke the tree-planting processor (anonymous URL, v15 fixed code) → **verify**: QR → ASSIGNED_TO_TREE, SunMint → LINKED, main ledger shows BOTH liability (+1) AND fulfillment pair (-1/+1) with `SunMint Tree Planting Contract - agl4`
+4. Post full verification; optionally file the $0-price parser bug as a PR
+
+**✅ Actions this turn (synthetic-only, no real data):** minted test QR 2026TEST_20260822_1 (row 1780); submitted real [SALES EVENT] via CLI (signature_verification success); verified TCL row 11684 + QR Code Sales row 624; **diagnosed the $0-price parser bug** (line 524 `if (qrCode && salePrice)` rejects 0). No money moved, no real customers touched.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×29 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; echo "=== dao_client CLI discovery ===" && find /opt/truesight_autopilot -maxdepth 3 -iname "*cli*" -o -iname "*dao_client*" 2>/dev/null | h; echo "=== CLI entry points ===" && grep -rn "console_scripts\|truesight-dao" /opt/truesight_autopilot/dao_protocol/setup.py /opt/truesight_a; …(+20 more)
 
