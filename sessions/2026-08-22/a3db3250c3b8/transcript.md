@@ -3242,7 +3242,18 @@ Let me find §10's E2E procedure + Log of runs directly (skipping ahead in the d
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I now have the full §10 procedure + Log of runs. Executing the task: first confirm real email delivery works for FounderHaus (re-invoke the resend, check both mailboxes), then run the fresh E2E. Starting with the resend + mailbox checks in parallel:
+[3 tool result(s) compacted: http_fetch, gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3522,4 +3533,63 @@ I'll stop here rather than burn rounds routing around the wall, per your instruc
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== cla; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error for f in ['/home/ubuntu/.clasprc.json', '/home/ubuntu/.clasprc-gar
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+not true 
+~/.clasprc-admin.json
+
+
+### 🤖 Autopilot
+
+You're right to push back — I labeled the admin token "unknown" because the id_token wouldn't decode and tokeninfo errored, and I shouldn't have concluded it was garyjob. Let me actually parse it properly:
+
+
+### 🤖 Autopilot
+
+You're absolutely right — I was wrong. **`~/.clasprc-admin.json` is `admin@truesight.me`** (freshly confirmed via tokeninfo after refresh: `email: admin@truesight.me`). My earlier "all three are garyjob" claim was wrong — the admin id_token didn't decode and tokeninfo errored on the stale token, and I concluded incorrectly instead of refreshing it first. My apologies for the sloppy diagnostic.
+
+**Now the interesting part:** the admin token's scopes include **`script.webapp.deploy` + `script.deployments`** — which is exactly the scope needed to redeploy a web app. So let me try deploying the 1UrBg project **with the admin credential** and see if (a) admin even has access to the 1UrBg project, and (b) whether that deployment binds an identity with the MailApp consent. Testing now:
+
+
+### 🤖 Autopilot
+
+**The admin credential deployed successfully to the same deployment ID (@28)!** This means admin@truesight.me has access to the 1UrBg project (contradicting my earlier "403 on 1UrBg" finding — that must have been a stale/expired token then). Now the key test — re-invoke the resend and see if the deployment now executes with admin's identity (which owns the working 1MnAsI onboarding project, so it likely has MailApp consent):
+
+
+### 🤖 Autopilot
+
+Still the same permission error after the admin redeploy (@28). This is informative: even deploying as admin@truesight.me (whose 1MnAsI project successfully sends mail) doesn't grant `script.send_mail` to this deployment. That confirms the mechanism definitively: **the deployment's authorization is bound to the interactive consent granted at deploy time in the browser — CLI deploys (any identity) bind the identity but never carry the interactive `script.send_mail` consent into the deployment's auth state.**
+
+This is the hard wall, now proven with both identities (garyjob @27 and admin @28). Both fail identically. I'll stop here per your instruction to converge and report honestly.
+
+## 🔴 HARD WALL — CONFIRMED with both identities (reporting honestly)
+
+**What I did (per your 3 steps):**
+1. **Identity check**: `~/.clasprc.json` → garyjob@agroverse.shop; `~/.clasprc-admin.json` → **admin@truesight.me** (you were right — my earlier "all three are garyjob" was wrong; I refreshed it and tokeninfo confirmed `email: admin@truesight.me`). Its scopes include `script.webapp.deploy` + `script.deployments`.
+2. **Fresh redeploys + retests**:
+   - As **garyjob** (`clasp deploy --deploymentId AKfycbxMz8cAkJ-…` → @27) → resend → ❌ same permission error
+   - As **admin@truesight.me** (→ @28) → resend → ❌ **same permission error** — even though admin's *other* project (1MnAsI) sends mail fine
+3. **Conclusion**: the deployment's executing identity binds via CLI, but **CLI deploys never carry the interactive `script.send_mail` consent** into the deployment's authorization state. Both identities fail identically → **this is a hard wall for any CLI/clasp path.** (Also corrects an earlier finding: admin *does* have access to 1UrBg — my earlier 403 was a stale-token artifact.)
+
+## The fix (human, in the editor — ~1 min)
+
+Gary, logged in as the desired deployer (or admin):
+1. Open **https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+2. **Deploy → Manage deployments** → ✏️ Edit the `AKfycbxMz8cAkJ-…` deployment → **Save**
+3. On the **authorization prompt → Review permissions → Allow** (this grants `script.send_mail` to the deployment, binding the interactive consent)
+4. Tell me → I re-invoke the resend → verify actual delivery → run the §10 E2E
+
+Everything remains staged and correct (@28 = #416 code live; onboarding already delivered to Paloma; AB1781 unstamped; E2E held on this single authorization gate).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== try clasp; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.parse, urllib.error, base64 rc = json.load(open('/home/ubuntu/.clasprc-admin.json')) print("=== top-level keys ===", list(rc.keys())) default = rc.get('to; …(+1 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.parse, urllib.error, base64 rc = json.load(open('/home/ubuntu/.clasprc-a; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== try
 
