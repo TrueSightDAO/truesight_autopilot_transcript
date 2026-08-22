@@ -10,85 +10,6 @@
 
 ### 🤖 Autopilot
 
-Governor's design change absorbed: **no synthetic [SALES EVENT] ever** — test QR goes MINTED→SOLD via a direct sheet write (Gary already did row 1780 → SOLD). #407 stays as a standalone production-bug fix, my call on timing. Let me read the revised §10 (PR #787) and verify the current state before continuing:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Also new (tokenomics #408, merged): "INVALIDATED" is now a documented status enum value in SCHEMA.md for Agroverse QR codes — used specifically to mark synthetic/test QR codes as permanently void once E2E verification is complete (excluded from all pickers/counts, but not deleted, so the audit trail stays intact). §10 step 6 now says: once you've verified everything, set the test QR's column D to INVALIDATED (not SOLD, not deleted, not left as ASSIGNED_TO_TREE).
-
-Please proceed: read the revised §10 (pull agentic_ai_context main first), and continue the E2E test from where you are — row 1780 (2026TEST_20260822_1) is already SOLD, so you can skip straight to step 3 (dummy SunMint submission) → step 4 (execute the link event) → step 5 (verify) → step 6 (invalidate). Post full verification into this thread when done.
-
-
-### 🤖 Autopilot
-
-Proceeding with the revised §10 E2E. First: pull agentic_ai_context main + read the revised §10, and check current state of row 1780 + the SunMint tab:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-go
-
-Also: merged dapp_beta #73 (key-generation redirect fix) — should be live on beta.dapp.truesight.me shortly. The governor wants to know as soon as UAT is ready on beta — please finish §10 (steps 3-6: dummy SunMint submission, execute link event, verify, invalidate) and report full verification here so I can confirm and give the governor the go-ahead.
-
-
-### 🤖 Autopilot
-
-Executing §10 steps 3–6. First: pull agentic_ai_context main (read revised §10) and check current state of row 1780 + SunMint tab in parallel:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Noticed your service restarted at 09:18:38 UTC mid-task — that's likely why you've been re-reading §10 and re-checking row 1780 across several turns without landing steps 3-6. You already confirmed multiple times: row 1780 (2026TEST_20260822_1) is SOLD, ledger AGL4, currency generic. No need to re-verify again — just execute now:
-
-1. Insert a dummy SunMint row in "SunMint Tree Planting" (1qbZZhf...): Telegram Message ID = "TEST-20260822-1", Status = NEW, Latitude = 44.5, Longitude = -123.2, Submitted Name = "E2E Test", Status date = today.
-2. Run: python -m truesight_dao_client.modules.link_tree_planting --qr-code "2026TEST_20260822_1" --sunmint-submission-message-id "TEST-20260822-1" --updated-by "<your governor identity name>" --submission-source "E2E test per SUNMINT_TREE_QR_LINKING_PLAN §10, 2026-08-22"
-3. Re-read: QR row (status → ASSIGNED_TO_TREE), SunMint row (Status → LINKED), main ledger "offchain transactions" tab (1GE7PUq...) for the fulfillment pair (contributor "SunMint Tree Planting Contract - agl4", -1/+1 "Cacao Tree To Be Planted"/"Cacao Tree Planted"), and the "Tree Planting Link" tracking tab.
-4. Set QR row 1780 column D to INVALIDATED.
-5. Post full verification (actual re-read values, not just "done") into this thread, and fill the §10 "Log of runs" row via a small PR.
-
-Just run these steps now — everything needed is already confirmed.
-
-
-### 🤖 Autopilot
-
-Executing now — steps 1–5, no more re-verification.
-
-**Step 1 — insert dummy SunMint row** (and in parallel, a CLI dry-run to confirm the payload builds):
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Step 1 done** — SunMint row 18 inserted (`TEST-20260822-1`, NEW, lat 44.5 / long -123.2, "E2E Test"). **Dry-run payload is perfect** — signed by Sophia Truesight, exact labels the GAS parser expects.
-
-**Step 2 — execute the link event (real submission, no --dry-run):**
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Step 2 done** — `[TREE PLANTING LINK EVENT]` submitted, `signature_verification: success` (HTTP 200). The event is now in Edgar's pipeline → TCL. Now I need to **invoke the tree-planting processor** (the anonymous deployment v15) to actually process the row — the same mechanism as the previous E2E:
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The processor ran but **rejected** my LINK event (0 linked, 1 rejected). Let me check the tracking tab for the rejection reason immediately:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 **Found it — the QR status is already INVALIDATED, not SOLD.** The tracking tab row 7/8 shows: `QR status is "INVALIDATED", expected SOLD`. 
 
 Wait — row 1780 was SOLD (you confirmed, I confirmed). But something set it to INVALIDATED... or the handler read a DIFFERENT row. The processor's QR lookup likely found row 1780 with D=INVALIDATED — meaning someone (or a step) already invalidated it, OR the row number shifted after my earlier inserts. Let me read row 1780's actual current D value + search for the QR code across the sheet:
@@ -3359,21 +3280,25 @@ I have everything needed. Design decision: rather than a **new secret-guarded ac
 This satisfies "guarded so it can't be reused generically" (state-guarded), is auditably visible in git, and avoids a hardcoded secret. The governor also asked to **clear the bogus AB1781 stamp first** — I'll do that after deploying, so the send stamps it fresh.
 
 Building the PR — a small addition to `process_qr_code_updates.js`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have all the constants (STATUS_COL_DEST=3/col D, DESTINATION_SHEET_URL + DESTINATION_SHEET_NAME for the QR sheet, TPL_* col constants, and `sendTreePlantedNotificationEmail_` in the same global scope). Let me check the DESTINATION_SHEET constants to reference the QR sheet correctly, then write the new guarded action:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything. Now writing the new guarded action in `process_qr_code_updates.js` — adding a third branch to doGet + the `resendTreePlantedNotification_` handler. The guard: status must be `ASSIGNED_TO_TREE` (only linked trees), it reads real stored values from the QR row, calls the existing `sendTreePlantedNotificationEmail_`, zero ledger writes:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ The empty-`writes` footgun struck a 5th time — the file on the branch is wiped. Fixing immediately: build the patched file (main + my new guarded action) and push it via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3564,4 +3489,170 @@ Exactly the governor's drafted change (which they deliberately reverted so I own
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/direct-mailapp-tree-planted-notification/google_app_script
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Also, separate question from the governor: why is there no cron/scheduled trigger for processBatch (the onboarding-email batch sender)? Checked myself: unlike its sibling functions in the SAME file's project (processDonationMintsFromTelegramChatLogs and processProgramRegistrationsFromTelegramChatLogs both have explicit ScriptApp.newTrigger(...) setup code), processBatch has ZERO trigger-setup code anywhere in the codebase. Please check the Apps Script editor's actual Triggers panel (Edit > Current project's triggers) for project 1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT to see if a trigger was set up manually outside of source control (possible — this is a documented valid pattern in the workspace, just invisible to us in git), or if it genuinely has none and every past send relied on someone manually clicking Run. If there's truly no trigger, that's worth fixing with a proper setupTrigger()-style function matching its sibling functions' convention, so onboarding emails don't depend on someone remembering to click a button.
+
+
+### 🤖 Autopilot
+
+Executing both threads: (1) the trigger investigation for processBatch, (2) then merge #416 (the email fix) as the authorized unit action. Starting with parallel recon — sibling trigger-setup conventions in the codebase + an API probe for UI-installed triggers on 1MnAsI:
+
+
+### 🤖 Autopilot
+
+The governor's finding is confirmed in source: `processBatch` has **zero** `ScriptApp.newTrigger` setup anywhere, while both sibling functions in the SAME project (`processDonationMintsFromTelegramChatLogs` line 813, `processProgramRegistrationsFromTelegramChatLogs` line 352) DO have trigger-setup code. Now the key question: is there a UI-installed trigger (invisible to git)? Probing the Apps Script triggers API with the working token:
+
+
+### 🤖 Autopilot
+
+The triggers API 404s with the HTML error page (not a JSON API error) — the token's Google account can't access this project's trigger list via the API (it's not the script owner with the right scope, or the Scripts API isn't enabled for this project). Same dead end as before.
+
+The **evidence-based answer** to the governor's question, though, is strong:
+1. **Source: zero `ScriptApp.newTrigger` for processBatch** (confirmed — only the two siblings have setup code)
+2. **The 09:42Z onboarding send DID happen** (Paloma's email, verified in Gmail sent) — so SOMETHING ran processBatch then. Either a UI-installed trigger or a manual Run.
+3. **`processBatch` re-throws at the end so GAS marks the trigger run as failed** (line 1843 comment) — the code *expects* a trigger context.
+4. The **16:42Z re-send** (after Gary cleared M) was a **manual Run** by Gary (governor confirmed "Gary ran processBatch manually").
+
+Since I can't read the UI triggers panel via API, the definitive check needs **one human glance** (Edit → Current project's triggers). But the governor also asked: *if there's truly no trigger, fix it with a proper `setupTrigger()`-style function matching the sibling convention.* Given the code comments EXPECT a trigger, the **safe, self-sufficient fix is to add the setupTrigger function for processBatch** (matching siblings) — it makes the schedule explicit in source and removes the "someone must remember to click" failure mode.
+
+Let me read the siblings' setup convention + processBatch's docs to build a matching `setupProcessBatchTrigger_`:
+
+
+### 🤖 Autopilot
+
+I have the sibling convention: an `ensureXHourlyTriggerInstalled_` function that checks existing triggers (by handler function name) and creates an hourly `.timeBased().everyHours(1)` trigger if absent. processBatch is documented to run as a trigger ("GAS marks the trigger run as failed") but has NO setup function — a genuine gap (the governor's finding confirmed).
+
+Now the answer to the governor's question + the fix. Since I've merged/opened a PR this turn? No — I haven't opened/merged a PR this turn yet (the search + API probes were recon). So I can open the trigger-setup PR now. Let me check who calls the siblings' ensure functions (to mirror the wiring — is it called from doGet/doPost or a separate one-time setup?):
+
+
+### 🤖 Autopilot
+
+I now have the complete pattern: the siblings install their hourly trigger **idempotently from within the processor itself** (line 616: the first scan calls `ensureDonationMintHourlyTriggerInstalled_`, which no-ops if the trigger already exists). processBatch lacks this entirely.
+
+**The answer to the governor's question:** no `ScriptApp.newTrigger` for processBatch anywhere in source — confirmed. The UI triggers panel can't be read via API with my token (404), so the definitive UI check needs one human glance, BUT the code comment at 1843 proves processBatch *expects* trigger context, and the 09:42Z send happened — so either a UI-installed trigger exists (invisible to git) or it was manual. Either way, the **self-healing fix** (matching the sibling convention) removes the dependency on remembering to click Run.
+
+Opening the PR — an `ensureProcessBatchHourlyTriggerInstalled_` (idempotent, sibling-matching) + a call from within `processBatch` itself (so the trigger self-installs on the next run, exactly like the siblings):
+
+
+### 🤖 Autopilot
+
+The second hunk's `"}\n"` anchor is too generic. Let me anchor the function insertion to the unique end-of-processBatch signature instead:
+
+
+### 🤖 Autopilot
+
+Now I have a unique anchor: the end of `processBatch` (the `throw new Error(...)` block + closing `}` before the `/**` comment of `sendProcessBatchAlert_`). Building the PR with a precise anchor + a scripted local build first (to avoid the empty-write footgun entirely — I'll verify the patched file before pushing):
+
+
+### 🤖 Autopilot
+
+Syntax error at the end of file — let me inspect the tail to find the issue:
+
+
+### 🤖 Autopilot
+
+The tail looks fine — the issue is elsewhere. The error "Unexpected end of input" at line 2255 with the file ending in a clean function suggests an **unbalanced brace earlier** (a `{` I introduced in hunk 1's template literal? No — hunk 1 is a comment + a call). Let me check my hunk 1 replacement — the original `function processBatch() {` had the body after it; my replacement kept `{`... wait, my hunk1 replaced `function processBatch() {` with the SAME opening line + new lines — the `{` is preserved. Hmm, let me diff-check the patched vs main around the anchors:
+
+
+### 🤖 Autopilot
+
+Found it: **408 open braces vs 406 close** — my hunk 2's insertion dropped a closing brace. Looking at my replacement: the original had `}\n}\n\n/**\n * Send a detailed...` (processBatch's close + the function's close), and my `ensure_fn` string ends with the doc comment `/**\n * Send a detailed failure report...` but **I removed the two closing braces** in the process. Let me look at the exact seam:
+
+
+### 🤖 Autopilot
+
+The seam shows the ensure function went in correctly (processBatch → ensure fn → alert doc → sendEmailForQRCode). The brace imbalance (408 vs 406) must be **pre-existing** in the file (unbalanced braces from string literals with braces inside — e.g. template strings / regex containing `{`/`}` that python's count naively counts). Let me verify by counting braces on the MAIN file:
+
+
+### 🤖 Autopilot
+
+Main is balanced (403/403) and syntax-OK. My patch added 5 opens and 3 closes net — so **I introduced a 2-brace deficit**. My hunk 2's `ensure_fn` replacement: the original `anchor2` ended with `}\n}\n\n/**\n * Send a detailed...` (2 closing braces: processBatch's + the `if (failures.length>0)` block's... actually let me recount. The anchor2 I matched was:
+
+```
+    throw new Error(...);
+  }
+}
+
+/**
+ * Send a detailed failure report...
+```
+
+That's **2 closing braces** (`}` for the if-block, `}` for processBatch). My `ensure_fn` replaced `}\n}\n\n/**` with `}` (end of the if block) + my ensure function (which has its own balanced braces) + `/**`. Wait — my ensure_fn STARTS with `/**` and I put the `}` (processBatch's close) INSIDE the replacement? Let me look at what I actually did: my replacement string was:
+
+```
+/** Hourly safety-net... */\nfunction ensure...() {...}\n\n/**\n * Send a detailed...
+```
+
+and it replaced `}\n}\n\n/**\n * Send a detailed` — so the two `}` were REMOVED and not re-added. That's the 2-brace deficit. The fix: re-add the processBatch closing brace. Let me check the seam again precisely:
+
+
+### 🤖 Autopilot
+
+Confirmed the bug: at line ~1957 the code jumps from `sendProcessBatchAlert_(failures, sentCount, stampedCount);` straight to the ensure-function doc comment — **the `throw new Error(...); }` and `}` (the if-block close + processBatch close) are GONE**. My anchor2 match included the `throw` block and both closing braces, and my replacement dropped them. Fixing the seam by re-inserting the missing block:
+
+
+### 🤖 Autopilot
+
+**Repaired** — 88,086 B, syntax OK, braces balanced (408/408), 4 refs to the ensure function (call in processBatch + definition + 2 comments). Now push this patched file to the PR branch via the Contents API (branch `fix/processbatch-hourly-trigger-self-installer` already exists from the failed git_push attempt — let me verify its state first):
+
+
+### 🤖 Autopilot
+
+The branch doesn't exist (the failed git_push_changes didn't create it — the error happened before push). Clean slate. Pushing the patched file + opening the PR via the Contents API:
+
+
+### 🤖 Autopilot
+
+The PR body's braces broke the f-string. Let me fix the script — write the PR body with plain string concatenation, not an f-string:
+
+
+### 🤖 Autopilot
+
+The branch creation failed with 422 "Reference update failed" — I created the ref from the **file blob sha** (3ed168ba = the file's content sha, not a commit sha). The git/refs endpoint needs a **commit** sha. Let me create the branch from the default branch's commit sha instead:
+
+
+### 🤖 Autopilot
+
+Branch created ✅ but the file PUT needs the file's sha for the branch (it's a NEW file on this branch — the API still wants a sha because the path exists on main? No — for a new branch, the file "exists" from main's perspective). I need to pass the file's sha from MAIN as the base. Let me get main's file sha and retry the PUT:
+
+
+### 🤖 Autopilot
+
+**PR #417 opened** (https://github.com/TrueSightDAO/tokenomics/pull/417, commit `4cfd4b6b`) — the processBatch hourly-trigger self-installer. Let me verify the branch file is complete and correct (syntax + all elements):
+
+
+### 🤖 Autopilot
+
+**PR #417 verified** — 88,139 B, syntax OK, all elements in place:
+- Call at the top of `processBatch` (line 1852, guarded try)
+- The `ensureProcessBatchHourlyTriggerInstalled_` function (line 1972) with `ScriptApp.newTrigger('processBatch').timeBased().everyHours(1).create()` (line 1979)
+- The original `throw new Error('processBatch encountered...')` block intact (line 1960)
+
+## ✅ PR #417 — processBatch hourly-trigger self-installer (the governor's trigger gap)
+
+**PR:** https://github.com/TrueSightDAO/tokenomics/pull/417 (commit `4cfd4b6b`)
+
+**Answer to the governor's question** (why no cron for processBatch):
+- **Confirmed in source**: `processBatch` has zero `ScriptApp.newTrigger` setup, while both siblings in the same project (`processDonationMintsFromTelegramChatLogs` line 813, `processProgramRegistrationsFromTelegramChatLogs` line 352) self-install hourly triggers from within the processor.
+- The UI triggers panel is **not readable via API** with my token (404), so whether a manual UI trigger exists today needs one human glance (Edit → Current project's triggers on 1MnAsI…). But the code comment (line 1843, "GAS marks the trigger run as failed") proves processBatch *expects* trigger context, and the 09:42Z send happened — so either a UI trigger exists or it was manual. Either way, onboarding emails depend on something outside source control.
+- **The fix** (matching the sibling convention exactly): `ensureProcessBatchHourlyTriggerInstalled_()` — idempotent (no-op if a processBatch trigger exists), creates `.timeBased().everyHours(1)`, called from within `processBatch()` itself so it self-installs on the next run. Re-runs no-op. Self-healing.
+
+**Process note:** the `git_push_changes` edits hunk failed twice (generic `}\n` anchor; then the push script had a brace imbalance bug I caught via `node --check` before pushing — good thing I built + verified the file locally first, the empty-write footgun's close cousin). Final state: branch created from main's commit, file pushed via Contents API, PR opened, verified (88,139 B, syntax OK).
+
+## RESUME HERE → (next units)
+1. **Merge #417** (on your review) → deploy the 1MnAsI project to GAS → after deploy, a single processBatch run installs the hourly trigger (verify via a second invocation no-op / execution log)
+2. **Merge #416** (the direct-MailApp resend fix) → deploy the 1UrBg project → update PROD deployment in place → invoke `?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → **read the ACTUAL error/success (with quota)** → verify delivery (HTML MIME part) → fix the real root cause (authorization vs quota)
+3. **Close #415** (superseded by #416) to avoid confusion
+4. Final report to the governor
+
+**✅ Actions this turn:** confirmed the trigger gap (source: zero newTrigger for processBatch vs siblings), probed the triggers API (404 — UI panel needs human glance), built + verified the self-installer locally (caught my own brace bug via node --check), opened PR #417 (verified 88,139 B, syntax OK, all elements). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && echo "=== newTrigger in 1MnAsI project folder ===" && grep -rn "ScriptApp.newTrigger\|setupTrigger\|createTrigger" /opt/truesight; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) tok = rc['token; cd /tmp && echo "=== sibling trigger setup: donation mints (813-830) ===" && sed -n '810,832p' /opt/truesight_autopilot/context/tokenomics/g; …(+14 more)
 
