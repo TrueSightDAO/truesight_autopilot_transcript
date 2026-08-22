@@ -10,33 +10,6 @@
 
 ### 🤖 Autopilot
 
-Executing PART 1/4 — the real FounderHaus Bougainvillea QR. This needs: (1) the QR row in the sheet, (2) the Shipment Ledger Listing entry for a new `truesight.me/sunmint/main` identity, (3) the code change generalizing `isAgl4` into an allow-list, (4) PR → merge → deploy carefully (production pin lesson). Starting with recon in parallel:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shipment Ledger Listing structure is clear (rows 1–19, latest BEC at row 19). Now I need the URL-mapping columns (L→AB) and the QR sheet header to place the new row correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full structure. Key facts:
-- **SLL columns**: L=12 Ledger URL, AB=28 Resolved URL, AC=29 Program. AGL4: L=`https://agroverse.shop/agl4`, AB=`1Uo5p3…` resolved URL, AC=`agroverse`. BEC: L=`https://truesight.me/sunmint/bec`, AB=`19CDo-…`, AC=`sunmint`.
-- **QR header**: col1 qr_code, col3 ledger, col4 status, col9 Currency, col12 Owner Email, col20 Price, col21 Manager Name, col22 Ledger Name, col27 Sold Date.
-
-Now: the new ledger identity per governor = `https://truesight.me/sunmint/main` (distinct from AGL4), booked on the main ledger. I'll:
-1. Add a **Shipment Ledger Listing row 20**: Ledger ID `MAIN` (or `SUNMINT-MAIN`), Ledger URL `https://truesight.me/sunmint/main`, Resolved URL = the main ledger `1GE7PUq…` (so `resolveManagedLedgerSpreadsheetUrl_` doesn't reject), Program `sunmint`, Status ACTIVE
-2. **QR row**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, ledger `https://truesight.me/sunmint/main`, currency generic, status SOLD, owner `paloma@founderhaus.club`
-3. **Code change**: generalize `isAgl4` boolean → allow-list set `TPL_MAIN_LEDGER_LEDGER_URLS = [agl4, sunmint/main]`
-
-Let me check the resolveManagedLedgerSpreadsheetUrl_ code (in process_qr_code_updates.js — my earlier grep found nothing; it may live in process_tree_planting_link.js) to know exactly how the URL is resolved:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Now I understand the full flow:
 - Line 476-477: `ledgerUrl` from QR col C; `transactionsUrl = resolveManagedLedgerSpreadsheetUrl_(ledgerUrl)` — resolves via SLL col L→AB. **If not found → REJECTED at line 480** ("Could not resolve managed ledger").
 - Line 525: `appendTreePlantingLedgerFulfillment_(transactionsUrl, message, contributorName, ledgerUrl)`.
@@ -3770,4 +3743,51 @@ That's the Apps Script project ID: `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eV
 5. Tell me when done — I'll re-invoke the production resend URL and verify actual delivery
 
 (For reference, the sibling onboarding project 1MnAsI… is at https://script.google.com/home/projects/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/edit — not needed for this step.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+who is the owner of this script?
+
+
+### 🤖 Autopilot
+
+Let me verify directly rather than rely on memory:
+
+
+### 🤖 Autopilot
+
+Let me fix the auth import and check the owner via the Drive API properly, plus read the clasp token identity:
+
+
+### 🤖 Autopilot
+
+The service account can't see the script file (404 — it has no access). Let me try the Apps Script API project-info endpoint with the clasp token to get the owner directly:
+
+
+### 🤖 Autopilot
+
+Confirmed directly from the Apps Script API — **the owner (creator) of the script is:**
+
+## 👤 `garyjob@agroverse.shop` (domain: `agroverse.shop`)
+
+**Script:** "Agroverse - QR CODE UPDATE EVENT"
+- **Script ID:** `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v`
+- **Created:** 2026-01-08
+- **Last updated:** 2026-08-22 18:11Z (our #416 deploy — v24)
+- **Creator (owner):** `garyjob@agroverse.shop` — confirmed via the Apps Script API (not the Drive API, which 404s for the SA)
+
+This matches the governor's earlier Drive API finding (script owned by garyjob@agroverse.shop).
+
+**Implication for the MailApp authorization fix:** the OAuth consent for `script.send_mail` must be granted by **Gary** — logged in as `garyjob@agroverse.shop` (the owner account) — by opening the editor URL and running any MailApp-using function once:
+
+**https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+
+(Run `resendTreePlantedNotification` from the function dropdown → Review permissions → Allow.) The default clasp token on this box is also `garyjob@agroverse.shop` — but the OAuth grant is a browser-side consent action I can't perform.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu && python3 - << 'PYEOF' import json, urllib.request, urllib.error # Try Drive API with the service account creds try: import; cd /home/ubuntu && python3 - << 'PYEOF' import json, urllib.request, urllib.error try: from google.oauth2 import service_account import goog; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) toks = rc.get('
 
