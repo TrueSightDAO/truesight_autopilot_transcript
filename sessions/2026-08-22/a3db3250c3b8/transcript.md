@@ -3102,6 +3102,7 @@ But process_tree_planting_link.js's appendTreePlantingLedgerFulfillment_ ALWAYS 
 ### 🤖 Autopilot
 
 Executing PART 1 — recon the sales-ledger project (`1wmgY…`) to map the AGL4 special-case + hunt for other main-ledger special-cases, and verify the sale-time entry on the main ledger. Starting with parallel recon:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3111,11 +3112,13 @@ Executing PART 1 — recon the sales-ledger project (`1wmgY…`) to map the AGL4
 - Project `1duQFf…` (`sales_update_managed_agl_ledgers.js:301`): `agroverseValue !== 'https://agroverse.shop/agl4'` → **skips agl4**, books everything else to its resolved sub-ledger
 
 So agl4 is unique. Let me read the main-ledger booker's exact row shape + the tree-planting handler's full append function to design the mirror fix:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PART 1 essentially confirmed by the code.** Only `agl4` is special-cased org-wide (project `1wmgY…` line 156 routes agl4 → main ledger; project `1duQFf…` line 301 explicitly skips agl4 → everything else books to its sub-ledger). Let me grab the exact main-ledger constants + verify row 3854 on the main ledger to complete PART 1:
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3132,6 +3135,7 @@ Meanwhile `appendTreePlantingLedgerFulfillment_` always writes to the QR's resol
 **Only agl4 is special-cased org-wide** (grep: `1wmgY…:156` agl4→main; `1duQFf…:301` skip-agl4; nothing else). So the fix should be **generalized for agl4 specifically** (it's the only main-ledger special case), and I'll add a code comment explaining that.
 
 **PART 1 complete.** Now PART 2 (fix design) — the fix must mirror the sale-time booker: for AGL4 QRs, the fulfillment pair belongs on the **main ledger's "offchain transactions"** tab with the same shape (`[date, message, contributor, -1, "Cacao Tree To Be Planted", "", TRUE]` + `[date, message, contributor, 1, "Cacao Tree Planted", "", TRUE]`), not the AGL4 sub-ledger. Let me read the tree-planting handler's call site + constants to wire this:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3307,4 +3311,78 @@ The tool needs explicit edits. Building the PR with precise hunks:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ && echo "=== extractAglContractName in 1duQFf (managed agl ledgers) ===" ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/tree-planting-agl4-main-ledger-fulfillment/google_app_scri
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+PART 4/4 — TASK 3: Simulate a full end-to-end test with SYNTHETIC data instead of real customer data (no real trees have been planted via this pipeline yet except the one real submission we just reverted the link for):
+• Generate a new test QR code tagged to the SEF1 ledger (truesight.me/sunmint/sef1) — same family as the many already-MINTED, unlinked SEF1 QR codes already in the sheet (e.g. 20250716_SEF_4 as a structural reference) — or BE/PPE if you judge one more appropriate. Set status MINTED, then simulate the sale step to SOLD with a clearly-fake test owner email (e.g. test+e2e@truesight.me) — the link handler requires exact status SOLD + non-empty Owner Email to proceed.
+• Insert a dummy SunMint tree-planting submission row: fake/clearly-marked Telegram Message ID (prefix "TEST-"), Status NEW, dummy lat/long, submitted name clearly marked as a test (e.g. "E2E Test").
+• Execute the [TREE PLANTING LINK EVENT] against this synthetic pair (dao_client CLI, governor-signed, same as the real RUN) to validate the full pipeline end-to-end on the FIXED code — confirm QR row, SunMint row, AND the ledger fulfillment (now landing correctly per Task 2) are all correct.
+• Report full verification (re-read every affected row) into this thread.
+
+This is a multi-turn effort — take the turns you need, keep posting progress into this thread as you go. Only the real customer-facing pieces are being reverted; everything else keeps the DAO's books clean and validates the fix safely before real data is touched again.
+
+
+### 🤖 Autopilot
+
+Executing PART 4/4 Task 3 — synthetic E2E on the fixed code. Multi-turn: this turn I'll stage the synthetic data + recon the SEF1 ledger path (no PR ops this turn, so I can use all rounds for prep). Starting with parallel recon: Shipment Ledger Listing for sef1, an existing SEF QR row as structural reference, and the dao_client/run mechanism.
+
+
+### 🤖 Autopilot
+
+SEF1 confirmed: `truesight.me/sunmint/sef1` → spreadsheet `1KDGSrveZWj635aEDMUyVagTA_y_TVjeQbqlQF-GQq5g`. Now let me check an existing SEF QR row (structural reference), the SEF1 ledger's tab structure, and find the dao_client CLI mechanism used for the real RUN:
+
+
+### 🤖 Autopilot
+
+SEF1 confirmed: `truesight.me/sunmint/sef1` → spreadsheet `1KDGSrveZWj635aEDMUyVagTA_y_TVjeQbqlQF-GQq5g` with a **Transactions** tab (same shape as the agl4 sub-ledger — the handler will book SEF1 there normally, NOT the main ledger, since sef1 isn't the AGL4 special case — good: this tests the *normal* path). Existing SEF QRs: `20250829_SEF_137…199` all MINTED with no email. I'll mint a NEW test QR (`20260821_E2ETEST_SEF_1`) tagged to sef1, set it SOLD with `test+e2e@truesight.me`, and insert a dummy SunMint row. Let me check the handler's exact required fields + the dao_client path first, then stage everything:
+
+
+### 🤖 Autopilot
+
+Executing PART 4/4. First: merge #406 (Task 2's "review → merge → deploy" flow — the E2E must run on the fixed code), and check the project folder + deployment state in parallel:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #406** (sha `62b57d3`) — the AGL4 main-ledger fulfillment fix is in.
+
+## What I did this turn (recon + merge for the synthetic E2E)
+
+**Recon (all read-only) — synthetic E2E staging groundwork:**
+
+1. **SEF1 ledger path confirmed:**
+   - `https://truesight.me/sunmint/sef1` → Shipment Ledger Listing row 15 → spreadsheet **`1KDGSrveZWj635aEDMUyVagTA_y_TVjeQbqlQF-GQq5g`** (tabs: Transactions, Balance, State, Entities, Pricing Tiers, Unit Costing Economics)
+   - **SEF1 is NOT the AGL4 special case** → the fixed handler books SEF1 fulfillment on its **own sub-ledger Transactions tab** (the normal path) — so this E2E validates the *normal* (non-AGL4) fulfillment path, while #406 validates the AGL4 branch by code review. Good coverage of both.
+   - Existing SEF QRs: `20250829_SEF_137…199` all `MINTED`, no email, manager "Sacred Earth Farms" — structural reference confirmed.
+
+2. **Handler requirements confirmed** (for the synthetic pair): LINK path requires QR status **SOLD** + non-empty **Owner Email** (col L); SunMint row status **NEW**; message must carry `[TREE PLANTING LINK EVENT]` + QR Code + SunMint Message ID + Updated by.
+
+3. **Deployments current:** 4 exist — @HEAD, @13, @12 (REJECT filter fix), @11 (anonymous cron, v10). The anonymous invocation URL for the E2E is @11 (`AKfycbwU4O8Uf6FqpNw73bI5ZuWecgmhZOb0L3LOEsAfGlgx_dVks-5nrNBZm2TO-S4fVYkm`), but it's pinned to **v10** (pre-#402) — needs a redeploy to the new version before the E2E.
+
+**Merge:** tokenomics **#406** — `appendTreePlantingLedgerFulfillment_` now takes `ledgerUrl`; AGL4 QRs discharge on the main DAO ledger's "offchain transactions" tab with contributor `SunMint Tree Planting Contract - agl4` (7-col shape); all other ledgers keep the resolved sub-ledger path. This is Task 2's fix — the E2E must run on it.
+
+## RESUME HERE → (synthetic E2E — next units)
+
+1. **Sync local → git main (#406)** + **clasp deploy** (pull-first) + **redeploy the anonymous @11 deployment to the new version** (it's pinned to v10)
+2. **Stage synthetic data:**
+   - New QR row: `20260821_E2ETEST_SEF_1`, ledger `https://truesight.me/sunmint/sef1`, status **MINTED** → then **SOLD**, owner email `test+e2e@truesight.me`
+   - Dummy SunMint row: Telegram Message ID `TEST-001`, Status **NEW**, dummy lat/long, submitted name "E2E Test"
+3. **Execute `[TREE PLANTING LINK EVENT]`** (dao_client, governor-signed, same as the real RUN) against the synthetic pair
+4. **Verify + report:** re-read QR row (ASSIGNED_TO_TREE + tree fields), SunMint row (LINKED + QR/At), **SEF1 sub-ledger Transactions** (the 2-row fulfillment pair), tracking tab (LINKED/OK)
+
+**✅ Actions this turn:** recon'd SEF1 ledger mapping + handler requirements + deployment state; merged #406. One PR merged — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') t; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; …(+1 more)
+• `merge pr` → ✅ PR #406 on tokenomics merged successfully (sha: 62b57d3cda639181c91d90144c5472fc9b84b328). Pull Request successfully merged
 
