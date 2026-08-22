@@ -1,0 +1,26 @@
+
+
+---
+
+## Attachment: f8fe18ef49834fb1b6119ef3ef83cb81.pdf
+
+| Field | Value |
+|-------|-------|
+| **Type** | PDF |
+| **Filename** | f8fe18ef49834fb1b6119ef3ef83cb81.pdf |
+| **Received** | 2026-08-22T14:22:06Z |
+
+### Extracted Text
+
+```
+EBCF Manicoré deck — TRIMMED to 8 slides (Benchmark & Thank You removed). New order: Park land → Açaí (×2) → Cacao → Municipality → 20,000 ha → Communities (~100,000 ha) → 400 ha SAF.
+
+Page 1: LOCATION OF EBCF'S 10,000 M2 LAND FOR THE INSTALLATION OF THE AGRO-INDUSTRIAL PARK (projection of future park)
+Page 2: AÇAÍ FREEZE-DRYING – STAGE 1 AÇAÍ PROJECT
+Page 3: (image-only slide, no text — 2nd Açaí slide of the ×2 block)
+Page 4: CACAO PRODUCTION · MANICORÉ — Cocoa agroforestry (SAF), EBCF priority #3, target: chocolate/functional foods. Supply trajectory (t fruit/yr): current (sub)registered 300-500; potential not registered 500-800; captureable w/ structured program 700-1,000; 2030 base 1,000-1,500; 2035 maturity 1,500-2,500. Industrial revenue: Stage 1 (900 t fruit, ~101 t nibs/butter/dried almond @ USD 7/kg = USD 0.7M/yr); Stage 2 2035 (2,000 t fruit, ~225 t @ USD 7/kg = USD 1.6M/yr). ANVISA approved, FDA export-ready. Land footprint: 10,000 m² park, 400 ha SAF cacao option, 20,000 ha EBCF properties, ~100,000 ha 5km extractive impact area.
+Page 5: MUNICIPALITY OF MANICORÉ — EBCF office + açaí factory (lease with option to purchase)
+Page 6: EBCF PROPERTIES IN MANICORÉ – 20,000 HA
+Page 7: 5 KM RADIUS FOR EXTRACTIVE ACTIVITY IMPACTED AREA ~100,000 HECTARES — 60 communities listed (Cristo_Rei, Auxiliadora, Santa_Fe, Laranjal, Santa_Maria_do_Marmelos, Marmelos, Santa_Helena, Cucura, Nazare_do_Retiro, Santa_Maria_De_Belem, Boca_do_Capana, Santo_Antonio, Agua_Azul, Boa_Esperanca, Escondido, Sao_Pedro_dos_Cardosos, Pocao, Barro_Alto, Esperanca, Estirao, Igarapezinho, Boa_Nova, Remanso, Ribamar, Barreira_do_Matupiri, Verdum, Santa_Cruz, Elegancia, Sao_Pedro, Delicia, Pinduri, Samauma, Boca_do_Atininga, Recreio_Atininga, Curralinho, jenipapo_I, Jenipapo, Nova_Esperanca, Cachoeirinha, Nova_Aparecida, Sao_Joao, Macaco_Prego, Itapinima, Sao_Pedro_do_Urua, Vencedor, Nazare_do_Urua, Sao_Carlos, Recreio, Dois_Irmaos, Santa_Rosa, Bacabal, Sao_Francisco, Terra_Preta_Capananzinho, Barreira_do_Capananzinho, Liberdade, Dotinha, Gonzaga, Pau_Queimado, Santa_Marta, Barreira_do_Curuca) — 80+ mapped extractive communities, 15 currently served by EBCF (green pin)
+Page 8: OPEN AREA OF 400 HECTARES IN MANICORÉ FOR SAF (AGRO-FORESTRY SYSTEM) PLANTATION — option to buy or lease by EBCF
+```
