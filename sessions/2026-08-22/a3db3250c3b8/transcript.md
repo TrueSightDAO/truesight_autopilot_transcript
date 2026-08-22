@@ -3405,6 +3405,7 @@ Beta main has the map (25,869 B, 1 embed); prod is behind (24,777 B, 0 embeds). 
 ### 🤖 Autopilot
 
 **Promoted** (commit `16be1ce6`). Now verify prod main + poll the live page (Pages rebuild), then the §11 execution test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3569,4 +3570,17 @@ Check if sunmint_prod needs the same fix (it currently uses a plain native file-
 
 Executing the sunmint camera-preview UX fix. First, recon: the current CSS in sunmint_beta/index.html, and whether sunmint_prod shares the same live-camera code:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go
+
+
+### 🤖 Autopilot
+
+Executing the sunmint camera-preview fix. Recon the CSS rule in sunmint_beta + check sunmint_prod's state in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
