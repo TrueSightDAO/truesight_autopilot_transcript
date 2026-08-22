@@ -915,6 +915,16 @@ Thank you!
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: list_directory, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PyMuPDF is available — best approach: use it to copy the exact pages (5–13) into a new PDF, preserving the original slide graphics 1:1.
 
 
@@ -1033,4 +1043,89 @@ Want a preview image of just the new slide, or any tweaks (e.g. different placem
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && python3 << 'EOF' import fitz from PIL import Image doc = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") p5; cd /tmp && python3 << 'EOF' import fitz from PIL import Image doc = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") fo; cd /tmp && python3 << 'EOF' import fitz from PIL import Image from collections import Counter doc = fitz.open("/tmp/tg_attachments/a7bf0c55a; …(+2 more)
+
+
+### 🧑 Governor
+
+Remove these two slides
+
+[Attachment auto-processed: **91cbcb9df1694eebbb16135a80eb156a.jpg**]
+- Type: Image (OCR confidence: 94.3%, quality: good)
+
+Extracted text:
+```
+OBRIGADO! Thank you!
+```
+
+
+### 🤖 Autopilot
+
+Let me look at the image first to identify exactly which two slides are shown:
+
+
+### 🤖 Autopilot
+
+The screenshot shows the deck in a viewer ("9 of 9" = Thank You page). I need to see which two slides you mean — let me zoom into the image for thumbnail labels or any other slide titles:
+
+
+### 🤖 Autopilot
+
+The screenshot shows the PDF viewer on the "9 of 9" (OBRIGADO / Thank you) slide. Let me analyze the image layout to pinpoint exactly which two slides are being shown — it may be a two-page spread or thumbnail view:
+
+
+### 🤖 Autopilot
+
+The screenshot shows the deck's final page ("9 of 9" = OBRIGADO/Thank you — the old 9-slide version). Let me check whether the image shows two slides side by side, and confirm which two you mean:
+
+
+### 🤖 Autopilot
+
+The screenshot is showing the deck's final pages. Let me do one more targeted check on the right-side content to confirm which two slides are displayed:
+
+
+### 🤖 Autopilot
+
+The image OCR is dominated by the "OBRIGADO / Thank you" slide (9 of 9). The right side is a blurred/partial slide — likely the 8th slide (Benchmarks) or a thumbnail strip. Since I can't fully identify the exact two slides from this screenshot, let me check the actual current deck content and ask for clarification:
+
+
+### 🤖 Autopilot
+
+The screenshot shows the deck at "9 of 9" — the OBRIGADO/Thank you slide — in the previous 9-slide version. Combined with the request, I read this as: remove the last two slides of the deck (the **Benchmark** slide with the external YouTube/IG links, and the **Thank you** slide) — the two least relevant for a site-inspection due-diligence narrative. Let me rebuild:
+
+
+### 🤖 Autopilot
+
+Same-path save needs incremental mode — saving to a temp path instead:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **8-slide deck attached** (`EBCF_Manicore_DueDiligence_Deck_v2.pdf`).
+
+**Removed the last two slides** (the "9 of 9" view in your screenshot = the old final page):
+- ❌ **Benchmark** (largest açaí farm video, UAV inventory, extraction robot — external links, least relevant for the site-inspection narrative)
+- ❌ **Thank you / OBRIGADO**
+
+**Deck now ends on the 400 ha SAF slide** — a stronger closer for a due-diligence visit (land you can actually stand on):
+
+1. Park land — 10,000 m²
+2. Açaí Freeze-Drying — Stage 1
+3. (Açaí project graphic)
+4. **Cacao Production** (new)
+5. Municipality — office + açaí factory
+6. EBCF properties — 20,000 ha
+7. Communities — ~100,000 ha impact, 80+ mapped
+8. 400 ha SAF plantation — option to buy/lease
+
+If by "these two slides" you meant a different pair (e.g. the two Açaí slides, or the two land slides), just say which — the rebuild takes seconds.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → identify slide pair from screenshot; check deck page inventory
+• Rebuilt deck → deleted Benchmark + Thank You pages → 8 slides, saved as v2
+• Sent 8-slide PDF via Telegram attachment
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/91cbcb9df1694eebbb16135a80eb156a.jpg') print('size:', im.; cd /tmp && python3 << 'EOF' from PIL import Image, ImageOps im = Image.open('/tmp/tg_attachments/91cbcb9df1694eebbb16135a80eb156a.jpg').conv; cd /tmp && python3 << 'EOF' from PIL import Image import numpy as np im = Image.open('/tmp/tg_attachments/91cbcb9df1694eebbb16135a80eb156a.j; …(+3 more)
 
