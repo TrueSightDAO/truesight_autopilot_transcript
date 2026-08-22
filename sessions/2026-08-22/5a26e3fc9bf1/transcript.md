@@ -1104,16 +1104,19 @@ The screenshot shows the PDF viewer on the "9 of 9" (OBRIGADO / Thank you) slide
 ### 🤖 Autopilot
 
 The screenshot shows the deck's final page ("9 of 9" = OBRIGADO/Thank you — the old 9-slide version). Let me check whether the image shows two slides side by side, and confirm which two you mean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot is showing the deck's final pages. Let me do one more targeted check on the right-side content to confirm which two slides are displayed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image OCR is dominated by the "OBRIGADO / Thank you" slide (9 of 9). The right side is a blurred/partial slide — likely the 8th slide (Benchmarks) or a thumbnail strip. Since I can't fully identify the exact two slides from this screenshot, let me check the actual current deck content and ask for clarification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1265,4 +1268,109 @@ If you want a **"Site Inspection — Due Diligence" title slide** up front or th
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 << 'EOF' import fitz src = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") # 13-page original cacao
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Using this deck but remove the slide on the bags they have for sale
+
+
+### 🤖 Autopilot
+
+Let me identify which slide shows the product bags — I'll render the full deck's pages and inspect them:
+
+
+### 🤖 Autopilot
+
+None of the text layers mention "bags" explicitly, so the bag slide is likely one of the image-only slides. Let me inspect the full-bleed graphics (pages 5–7 especially) at higher resolution:
+
+
+### 🤖 Autopilot
+
+No explicit "bags" text yet — the bag imagery is likely inside the full-bleed graphics. Let me OCR page 7 (the ingredients graphic) and page 5 thoroughly, and also scan every page for any text like "sacos"/"bags"/"embalagem"/"venda":
+
+
+### 🤖 Autopilot
+
+The keyword scan found no "bag/sale" text, and page 7 is the AMAZÔNIA ingredients graphic (Açaí/Castanha/Cupuaçu/Camu-camu icons — no bags). Let me visually inspect the remaining image slides — especially page 5 (park projection) and page 6 (açaí logistics) which may show product bags in photos — by cropping regions:
+
+
+### 🤖 Autopilot
+
+I haven't found an explicit "bags for sale" slide in the current 14-page deck — the pages I've inspected are:
+
+- **p5** — Park projection (10,000 m² land, industrial park rendering) — no bags
+- **p6** — Açaí freeze-drying Stage 1 (cold-chain logistics: pulps → Santa Catarina) — no bags
+- **p7** — AMAZÔNIA ingredients graphic (Açaí/Castanha/Cupuaçu/Camu-camu) — no bags
+- **p9** — Municipality map (office + açaí factory location) — no bags
+
+The current deck has no slide about product bags for sale — that content doesn't exist in the source PDF (the 13-page original was entirely about the bioeconomy program, supply, revenue, land, and community maps).
+
+Before I remove anything, let me double-check whether you might mean **page 6's "CADEIA DO FRIO / POLPAS CONGELADAS"** (frozen pulp cold-chain logistics — the closest thing to product/packaging imagery) or a **different deck entirely** (e.g. an Agroverse product/cacao-bag deck, which is a separate presentation). Let me check what other decks exist:
+
+
+### 🤖 Autopilot
+
+No other decks on the box — only the four files I generated from this one source PDF. The source has no bag/sale slide.
+
+Let me be precise about what you're seeing. The 14-slide deck's image pages (5–7, 9) contain **photos of products** — the açaí pulp bags/packaging shown in the cold-chain and factory slides could be what you mean. To pin it down, let me visually inspect those product photos:
+
+
+### 🤖 Autopilot
+
+No text layer mentions bags anywhere. Let me extract the embedded photos from every slide and check for product-bag imagery visually:
+
+
+### 🤖 Autopilot
+
+Let me OCR the extracted embedded images — product bag photos often have brand/label text:
+
+
+### 🤖 Autopilot
+
+Let me OCR all remaining embedded images to hunt for any product-bag content:
+
+
+### 🤖 Autopilot
+
+I've now scanned **every slide and every embedded image** in the 14-page deck, and I want to be straight with you before removing anything:
+
+**There is no slide about "bags for sale" anywhere in this deck.** The full deck is the complete original 13-slide Bioeconomy Program + the new cacao slide. None of the text layers (EN or PT) contain bag/sale/packaging-for-sale content — I searched for `bag / saco / sacola / embalag / venda / sale / pack` across all pages and found nothing.
+
+**The two slides that come closest** (they show product/packaging imagery — the only candidates):
+
+| # | Slide | Content |
+|---|-------|---------|
+| **6** | Açaí Freeze-Drying – Stage 1 | **"POLPAS CONGELADAS"** — cold-chain logistics of frozen açaí **pulp bags** (Amazonas → Santa Catarina, river + reefer containers) |
+| **9** | Municipality of Manicoré | Photos of the **açaí factory** in Manicoré (leased w/ option to buy) — may show product bags in the facility |
+
+Before I cut the wrong page, let me do one final high-res check of the factory photos on p9 to see if any show product bags:
+
+
+### 🤖 Autopilot
+
+I've now done an exhaustive search and I want to be straight with you: **there is no slide in this deck explicitly about "bags they have for sale."** I checked:
+
+- Text layer of all 14 pages — searched EN + PT (`bag / saco / sacola / embalag / venda / sale / pack`) → **zero hits**
+- All 37 embedded images, OCR'd individually → no bag/product-for-sale content
+- The four generated decks on the box → only this one source exists
+
+**The two slides that come closest to showing "product bags":**
+
+| # | Slide | What it shows |
+|---|-------|---------------|
+| **6** | Açaí Freeze-Drying — Stage 1 | **"POLPAS CONGELADAS"** (frozen pulp **bags**) — cold-chain logistics: Manicoré/Manaus → river transport → Imbituba port → Santa Catarina. This is literally the açaí **product they sell** |
+| **9** | Municipality of Manicoré | Factory photos (office + açaí factory, lease w/ option to buy) — may show bags/packaging in the facility |
+
+**Before I cut the wrong page, which one do you mean?**
+
+1. **Slide 6** (the frozen-pulp cold-chain slide — the açaí product bags)
+2. **Slide 9** (the factory photos — if it shows bags in the facility)
+3. Something else entirely (e.g. a different deck — the Agroverse cacao-bag deck from our other work?)
+
+If it's the **frozen pulp bags** — that's slide 6, and I'll remove it now. Just confirm and it's a 5-second rebuild.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && rm -rf deckpages && mkdir -p deckpages && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") for ; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") # render the image-heavy pages at higher DPI f; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") # scan all pages for bag/sale keywords in text; …(+7 more)
 
