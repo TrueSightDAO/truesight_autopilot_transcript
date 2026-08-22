@@ -2706,11 +2706,13 @@ OPTION TO BUY OR LEASE BY EBCF
 ### 🤖 Autopilot
 
 Let me inspect this file — verify it matches the 8-slide trimmed deck and check its provenance against the versions I generated:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SHA-256 `44bce9af…ec641` matches **exactly** my `/tmp/EBCF_Manicore_DueDiligence_Deck_v2.pdf` — this is the **8-slide version I generated and sent earlier** (the one with Benchmark & Thank-you removed, before the cacao insertion). Let me do the final structural verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3026,4 +3028,91 @@ TDG was left at 0 (governor review). Want me to attach the final PDF to the subm
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Can you generate a document listing the exact steps and details required for getting cação harvested fermented and sun dried for gourmet fine flavor based on our historical document as a PDF and share here
+
+
+### 🤖 Autopilot
+
+Let me find the historical document on cacao post-harvest processing in our DAO context first:
+
+
+### 🤖 Autopilot
+
+Only a tangential hit so far. Let me search the repos and context more broadly for the cacao post-harvest document:
+
+
+### 🤖 Autopilot
+
+Let me dig deeper — checking the most promising hit (bulk vs gourmet cacao) and searching for more post-harvest content:
+
+
+### 🤖 Autopilot
+
+Found a strong candidate — the bulk vs gourmet cacao post has the harvest/ferment/drying details. Let me read its full content plus check other origin docs:
+
+
+### 🤖 Autopilot
+
+The blog post has solid post-harvest detail. Let me read its tail and search for any more specific step-by-step SOP documents:
+
+
+### 🤖 Autopilot
+
+Let me check the origins post and search past transcripts for any cacao-processing document that may have been attached previously:
+
+
+### 🤖 Autopilot
+
+Good material found. Let me do a couple more targeted checks for any more detailed processing SOPs in our historical docs:
+
+
+### 🤖 Autopilot
+
+I have everything I need from our historical documents — the **bulk vs gourmet cacao** post (go_to_market) is the richest source for post-harvest steps, cross-referenced with the **Bahia & Amazon origins** post. Let me build the step-by-step PDF:
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it here:
+
+
+### 🤖 Autopilot
+
+PDF sent ✅ — **`Cacao_FineFlavor_SOP.pdf`** is now in this thread.
+
+**What's inside** (a step-by-step SOP for fine-flavor / gourmet cacao, compiled from our historical documents — the *Bulk vs Gourmet Cacao* post and the *Bahia & Amazon Origins* post in go_to_market):
+
+1. **Harvest** — hand-pick ripe pods; Criollo/Trinitario genetics; shade-grown agroforestry (cabruca in Bahia)
+2. **Pod opening & sorting** — hand-sort every bean; discard underripe/damaged/debris (the quality gate that keeps defects <2%)
+3. **Fermentation** — small wooden boxes or leaf-lined piles; **5–8 days**; turn every **24–48h**; hold **40–50°C**; pH 6.5→4.5; optional starter cultures
+4. **Sun drying** — on raised platforms; target uniformly purple-brown beans; <2% mold
+5. **Quality & market** — USD 7,800–12,000/MT fine-flavor premium; craft-chocolate payoff
+
+Plus a quick-reference table and the source list. Let me log it to the transcript for future recall:
+
+
+### 🤖 Autopilot
+
+All set, Gary. ✅
+
+**Summary:**
+- 📄 **`Cacao_FineFlavor_SOP.pdf`** delivered to this thread — the exact steps for harvesting, fermenting, and sun-drying cacao for gourmet fine-flavor quality, based on our historical documents (Agroverse's *Bulk vs Gourmet Cacao* and *Bahia & Amazon Origins* posts, plus farm taste profiles).
+- 🔖 Logged to the session transcript for cross-session recall.
+
+If you want it adapted for a specific farm (e.g. Paulo's Pará vs Oscar's Bahia), a one-page quick-sheet version, or a Portuguese translation for the field team, just say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `search context/code` ×6 → located historical cacao processing docs (bulk vs gourmet + origins posts)
+• `generate pdf` → 3-page SOP PDF
+• `send telegram attachment` → delivered to thread
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-22/4008a35ff7c9/transcript.md
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-22/4008a35ff7c9/transcript.md
 
