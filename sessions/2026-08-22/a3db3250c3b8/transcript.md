@@ -10,82 +10,6 @@
 
 ### 🤖 Autopilot
 
-Confirmed the parser bug precisely (line 524: `if (qrCode && salePrice)` — `salePrice=0` is falsy → $0 sales always IGNORED). This is a **real production bug** that blocks §10's mandated $0 test. This deserves its own fix PR (the parser should accept `salePrice === 0`), because §10 requires $0 as the standard test price.
-
-Let me check the parser's row-append + status logic more (what "IGNORED" writes, whether clearing the status lets the tokenizer pick it up) and the tokenizer's filter (col J empty), then decide: fix the parser (PR) vs. work around. First the tokenizer filter:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed: the tokenizer (line 155-157) requires **col G = agl4 AND col J EMPTY** — my row 624 has J = "IGNORED: ..." so it's skipped forever. The IGNORED status is sticky. So the §10 $0-sale path is **structurally blocked** by the parser's `salePrice` falsy bug — the parser marks it IGNORED and the tokenizer never sees it.
-
-This is a genuine blocker for §10. The right fix: **PR to the sales parser accepting `$0` as a valid price** (change `if (qrCode && salePrice)` → `if (qrCode && salePrice !== '')`, and ensure the parse succeeds with 0). This makes §10's mandated $0 test actually runnable. Let me open that fix — it's small, precise, and unblocks the whole procedure:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the exact bug: line 524 `if (qrCode && salePrice)` rejects `salePrice=0` (falsy). The fix: `if (qrCode && salePrice !== '')` — accepts 0 but still rejects a missing price (''). This unblocks §10's mandated $0 test. Opening the fix PR on tokenomics:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #407 opened** (tokenomics, commit `b306e6c`). Let me verify the branch edit applied correctly (no empty-write this time — I used an `edits` hunk):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The grep for the new gate failed on shell quoting (the `!` + quotes), and "old gate: 1" also matches the substring. Let me verify properly with python (bytes 54,240 — the file is intact, not empty):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verified — the branch has BOTH: the fixed gate at char 22543 (`parseSalesEvent`, `salePrice !== ''`) and the **original** `if (qrCode && salePrice)` at char 24284 — that second one is in the OTHER parser (`parseQrCodeEvent`, line ~583, the `[QR CODE EVENT]` path) which I intentionally did NOT change (a $0 QR-code event may legitimately stay gated). The file is intact (54,164 bytes), syntax OK.
-
-**PR #407 verified** — exactly one targeted edit, no collateral damage.
-
-## What I did this turn (§10 execution + the blocking bug found)
-
-1. **Read §10** (the new durable test procedure, agentic_ai_context #786 merged) — it's now the source of truth, superseding my earlier SEF1 staging
-2. **Reconciled prior state:** my earlier synthetic run linked on **SEF1** (SunMint row 17 LINKED to `20260821_E2ETEST_SEF_1`, tracking row 6) — that validated nothing about the AGL4 fix; the earlier $0 sale to `QR Code Sales` row 624 was **IGNORED**
-3. **Found the blocker to §10's mandated $0 sale:** `parseSalesEvent()` line 524 `if (qrCode && salePrice)` — `salePrice=0` is falsy → $0 sales parse as FAILED → written IGNORED → tokenizer (needs col J empty) skips forever. **A real production bug.**
-4. **Opened tokenomics #407** (`fix/sales-parser-zero-price`, commit `b306e6c`): `if (qrCode && salePrice !== '')` — accepts $0, still rejects missing price. Verified: exactly 1 targeted edit, file intact, syntax OK. (The `[QR CODE EVENT]` path's identical-looking gate at line 583 was deliberately left alone — it's a different event type.)
-5. Also verified: the `link_tree_planting` CLI module runs from the repo path (`PYTHONPATH=/opt/truesight_autopilot/dao_protocol`) — the §10 step-4 mechanism works.
-
-## RESUME HERE → (§10 execution continues)
-
-1. **Merge tokenomics #407** (on your review — it unblocks the entire §10 $0-sale procedure)
-2. **Deploy #407 to GAS** (`1dsWec…` project, pull-first per convention) + **redeploy the sales-parser anonymous deployment** to the new version
-3. **Re-run §10 cleanly:** mint `TEST_AGL4_20260822_1` per §10 naming → submit $0 `[SALES EVENT]` via CLI → parser accepts (with #407) → tokenizer books the `+1 Cacao Tree To Be Planted` liability on the main ledger → stage dummy SunMint `TEST-` row → CLI `[TREE PLANTING LINK EVENT]` → verify all rows (QR ASSIGNED_TO_TREE, SunMint LINKED, main-ledger liability + fulfillment pair with `SunMint Tree Planting Contract - agl4`, tracking LINKED/OK)
-4. **Fill the §10 "Log of runs" row** via a small agentic_ai_context PR (durable record)
-5. Cleanup/marking of the pre-§10 SEF1 test artifacts (confirm with governor before removing from real ledgers)
-
-**✅ Actions this turn:** read §10 (source of truth), reconciled prior synthetic state, diagnosed the $0-parser production bug blocking §10, opened tokenomics #407, verified the branch. One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×13 → cd /opt/truesight_autopilot/context/agentic_ai_context && git fetch origin main 2>&1 | tail -1 && git log --oneline -3 origin/main && echo "; cd /opt/truesight_autopilot/context/agentic_ai_context && git show origin/main:plans/SUNMINT_TREE_QR_LINKING_PLAN.md | sed -n '500,600p'; cd /opt/truesight_autopilot && echo "=== link_tree_planting module exists? ===" && find . -path ./node_modules -prune -o -name "*.py" -print; …(+10 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-Governor clarification — important design change, §10 has been revised (agentic_ai_context PR #787, merged):
-
-NEVER submit a real [SALES EVENT] for testing, even at $0. That pipeline feeds real sales-figures reporting and treasury accounting — a synthetic sale, even $0, must not touch it. This supersedes the earlier §10 step 2 (which asked you to submit a real $0 sale via the CLI) — that's exactly what surfaced the $0-parser bug, but the governor's call is to not use that pipeline for tests at all, not to fix-then-use-it.
-
-Gary already manually set the test QR (row 1780, 2026TEST_20260822_1) status to SOLD directly in the sheet — that IS the new step 2. Going forward: to move a test QR from MINTED to SOLD, just write "SOLD" into column D directly (plain sheet edit via gspread/Sheets API), never via a [SALES EVENT] submission.
-
-tokenomics #407 (the $0-price parser bug) is still real and worth keeping open/merging on its own merits as a production bug fix — it's just no longer a dependency of this test. Your call whether to pursue that as a separate follow-up PR now or later; not blocking.
-
-
-### 🤖 Autopilot
-
 Governor's design change absorbed: **no synthetic [SALES EVENT] ever** — test QR goes MINTED→SOLD via a direct sheet write (Gary already did row 1780 → SOLD). #407 stays as a standalone production-bug fix, my call on timing. Let me read the revised §10 (PR #787) and verify the current state before continuing:
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
@@ -3386,6 +3310,7 @@ Starting with recon — the function's signature + the 1UrBg project's doGet dis
 ### 🤖 Autopilot
 
 Now let me read the function body (269–295) and the call site (520–545) to capture exactly what values get passed (photoUrl, lat/long source) and the email shape:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3393,16 +3318,19 @@ Now let me read the function body (269–295) and the call site (520–545) to c
 Now I have the exact function shape. The call site reads values from the **SunMint row** (plantingDate/photo/lat/long); the QR row also has them (N/O/P/R). The function stamps col AB with `new Date()` on success, and emails plain-text (the lookupUrl `https://truesight.me/qr/?id=...` is a real URL that Gmail auto-links).
 
 Next: find how the 1UrBg project dispatches (is there a doGet?), so I can add a guarded isolated action:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `2>/dev/null` inside the loop broke bash parsing. Let me check the local project folder instead (it exists at the tokenomics checkout) — much simpler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Three `doGet` definitions across the folder — GAS only allows one, so the live file set must be a subset. Let me check `.clasp.json`/`.claspignore` (what actually gets pushed) and the doGet dispatches to design the guarded action correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3416,6 +3344,7 @@ Now I have the full picture of the 1UrBg project: `.claspignore` excludes `Code.
 4. Returns the result + does NOT touch the ledger
 
 Let me check the doGet + how the production deployment of 1UrBg is wired (the deployment URL I invoke), then build the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3573,4 +3502,66 @@ The governor's merged #413 version confirms bug #1 exactly: `resendTreePlantedNo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== resend function in pqu_413.js ===" && grep -n "resendTreePlantedNotification\|function resendTreePlanted" pqu_413.js | ; cd /tmp && echo "=== resend function location in ptpl_413.js ===" && grep -n "resendTreePlantedNotification" ptpl_413.js && echo "=== functi; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+What to do: fix resendTreePlantedNotification_ to call MailApp.sendEmail DIRECTLY (not through the swallowing sendTreePlantedNotificationEmail_ wrapper) so a real failure actually propagates to the doGet response instead of being hidden. Also call MailApp.getRemainingDailyQuota() before the send and include it in the response (rules out quota exhaustion vs a permission/authorization problem). I drafted this exact change and then deliberately reverted it without deploying — the governor asked me to diagnose only and have you own the actual fix. The diff is small: inline the subject/body construction (same content as sendTreePlantedNotificationEmail_) directly in resendTreePlantedNotification_, call MailApp.sendEmail with no try/catch around it (let the doGet handler's own try/catch catch and report it), and prepend the quota to the success message.
+
+Once you redeploy with real error surfacing, re-trigger (?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1 on the production URL) and read back the ACTUAL error this time — that tells us the true root cause (likely: MailApp authorization was never (re-)granted for this script after some change, needing someone to open the Apps Script editor and manually run any MailApp-using function once to trigger the OAuth consent screen — or genuine quota exhaustion, though agroverse.shop being a Workspace domain makes that less likely at this volume). Consider whether the SAME swallowed-exception bug affects sendTreePlantedNotificationEmail_'s original call site inside the LINK flow too (it does, by inspection) — worth hardening that too once the real cause is known, so future real LINK events don't silently fail to notify owners.
+
+
+### 🤖 Autopilot
+
+The governor's directive is precise: rewrite `resendTreePlantedNotification_` to call `MailApp.sendEmail` directly (no swallowing wrapper), add `MailApp.getRemainingDailyQuota()` to the response, and let the doGet try/catch surface real errors. This supersedes the #415 approach (which the governor deliberately reverted in favor of a direct call). Let me build the direct-call version — I'll keep #415's branch closed in favor of this cleaner approach. First, get the exact current resend function + the doGet handler to match the response shape:
+
+
+### 🤖 Autopilot
+
+The governor's directive is exact: inline the email content directly in `resendTreePlantedNotification_`, call `MailApp.sendEmail` with NO try/catch (the doGet handler's try/catch surfaces real errors), add `MailApp.getRemainingDailyQuota()` to the response, and stamp col AB only on genuine success. Note the doGet uses `qr_code` (underscore) — matching the governor's invocation example. Building the PR:
+
+
+### 🤖 Autopilot
+
+**PR #416 opened** (commit `ad00b39e`). Verifying the branch: syntax + the direct MailApp call + quota + no wrapper call left in the resend path:
+
+
+### 🤖 Autopilot
+
+**PR #416 verified** — 35,721 B, syntax OK, exactly per the governor's directive:
+- `MailApp.getRemainingDailyQuota()` before the send (line 319) ✅
+- Inline subject/body (identical content to the wrapper) ✅
+- **`MailApp.sendEmail` with NO try/catch** — real errors propagate to the doGet handler's catch (which returns `❌ Error: <actual message>`) ✅
+- Col AB stamped with `new Date()` **only on genuine success** ✅
+- Quota included in the success response ✅
+- Zero ledger writes (unchanged) ✅
+
+## ✅ PR #416 — direct MailApp send with real error surfacing
+
+**PR:** https://github.com/TrueSightDAO/tokenomics/pull/416 (commit `ad00b39e`)
+
+Exactly the governor's drafted change (which they deliberately reverted so I own it): `resendTreePlantedNotification_` now inlines the email content, calls `MailApp.sendEmail` directly with no swallowing try/catch, reports `getRemainingDailyQuota()` in the response, and stamps AB only on genuine success. The LINK-flow wrapper stays untouched (best-effort semantics preserved). This supersedes the #415 rethrowOnError approach — I'll note #415 should be closed to avoid confusion.
+
+## RESUME HERE → (step 4 execution)
+1. **Merge #416** (on your review) → deploy the 1UrBg project to GAS (pull-first per convention) → update the PROD deployment in place (the pin lesson; #413's deploy was @23)
+2. **Invoke** `https://script.google.com/macros/s/<prod-deployment>/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → **read the ACTUAL response**: either real success (with quota) or the genuine MailApp error — that reveals the true root cause (authorization never re-granted → needs a manual Run in the editor to trigger OAuth consent, vs quota exhaustion)
+3. **Verify delivery** (HTML MIME part in the mailbox), clear the bogus AB1781 stamp first
+4. **Harden the LINK-flow call site** (governor noted it swallows the same way — worth fixing once the real cause is known, so future real LINK events don't silently fail to notify owners)
+5. Final report to the governor
+
+**✅ Actions this turn:** read the current resend + doGet handler, built the direct-MailApp version per the governor's exact spec, opened PR #416 (1 edits hunk), verified the branch (syntax + all elements present). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read resendTreePlantedNotification_ (304-334) + doGet handler (128-150, qr_code param); opened PR #416 (direct MailApp.sendEmail, quota, AB-stamp-on-success, no wrapper); verified branch (35721 B, syntax OK, all elements present)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_planting_link.js" -o ptpl_main.js && sed -n '304,335p' ptpl_main.js && echo "=== doGet handler in pqu (main) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_qr_code_updates.js" -o pqu_main.js && sed -n '128,150p' pqu_main.js
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/direct-mailapp-tree-planted-notification/google_app_script
 
