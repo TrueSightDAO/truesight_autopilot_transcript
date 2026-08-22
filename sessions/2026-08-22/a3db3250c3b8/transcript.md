@@ -3611,6 +3611,7 @@ Re-submitted (signature_verification: success). Invoking the processor to proces
 ### 🤖 Autopilot
 
 Still **1 rejected** — but now the QR is SOLD. Let me check the new rejection reason (tracking tab):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3618,16 +3619,19 @@ Still **1 rejected** — but now the QR is SOLD. Let me check the new rejection 
 **The LINK worked on the first pass (row 9: LINKED / OK at 09:22:26Z)!** The row 10 rejection is a **duplicate invocation race** — the second invoke (I called the URL twice — once in the previous turn's attempt and once now, or the processor ran twice) found the QR already ASSIGNED_TO_TREE (because row 9 succeeded) → correctly rejected as a duplicate.
 
 So the link event **succeeded**. Now verify all rows (step 3): QR row → ASSIGNED_TO_TREE + tree fields, SunMint row → LINKED + QR/At, main ledger "offchain transactions" → the AGL4 fulfillment pair, and confirm the tracking row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The output was truncated — the QR row + SunMint row sections got cut off at the top. Let me read the artifact from the start to see the QR/SunMint verification:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact starts mid-output (the QR row + SunMint sections were printed BEFORE this and got truncated in the transfer). The offchain-transactions search only matched sale-time liability rows (the `SunMint Tree Planting Contract - agl4` +1 entries from 2026-06/07/08) — my filter `i > 3800` caught those but I need to check specifically for the NEW fulfillment rows for `2026TEST_20260822_1`. Let me query the offchain tab specifically for the test QR's fulfillment pair (date 20260822, message containing 2026TEST, and Cacao Tree Planted +1):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3790,4 +3794,124 @@ A **real AGL4 tree-planting link now discharges on the main DAO ledger** — the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /tmp && rm -rf verifyprod && mkdir verifyprod && cd verifyprod && cp -r /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1U
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+New REAL task (not a test) — merged #788 and #407 per governor. Now: a real tree was planted by Paloma Lecheta and FounderHaus volunteers (photo: a Bougainvillea). We already have the real SunMint submission for it: "SunMint Tree Planting" row 16, Telegram Message ID Edgar_20260821175134_006, Species=Bougainvillea, Status=NEW, photo present, but Submitted Name="Unknown" and lat/long blank — worth fixing those to reflect the real planting if you can find better values, not blocking.
+
+PART 1/4 — Issue a real QR code for this tree in "Agroverse QR codes" (1GE7PUq-...):
+• qr_code: a real, sensible ID (not TEST-prefixed) — something like FOUNDERHAUS_BOUGAINVILLEA_20260821_1.
+• Currency: "SunMint Tree Planting Pledge - QR Code" (the generic label).
+• status: SOLD — set directly via sheet write, do NOT run this through the real sales pipeline (same rule as the AGL4 test: no [SALES EVENT] submissions for anything that is not a genuine priced e-commerce sale).
+• Owner Email: paloma@founderhaus.club (confirmed via her calendar invites; her "Contributors contact information" row 273 already has this email in col D — no insert needed there).
+• Governor's ledger decision: this QR should book "just on the main ledger" — NOT tied to AGL4 or any existing sub-ledger (PP1/SEF1/BEC). This means you need to extend the #406 pattern: generalize the current isAgl4 boolean in appendTreePlantingLedgerFulfillment_ into a small set/allow-list of ledger URLs that route to the main ledger's "offchain transactions" tab, and register a new distinct ledger identity for this (e.g. https://truesight.me/sunmint/main, with a "Shipment Ledger Listing" entry so resolveManagedLedgerSpreadsheetUrl_ doesn't reject it up front — remember AGL4 still needs a Shipment Ledger Listing entry even though the resolved sub-ledger URL gets overridden inside appendTreePlantingLedgerFulfillment_). Use your judgment on the exact naming, just keep it clearly distinct from AGL4 for audit clarity. Normal PR → review → merge → deploy flow (this touches the same production project as #406, so deploy carefully — remember the @13-vs-@17 production-deployment-pin lesson from this session).
+
+
+### 🤖 Autopilot
+
+Executing PART 1/4 — the real FounderHaus Bougainvillea QR. This needs: (1) the QR row in the sheet, (2) the Shipment Ledger Listing entry for a new `truesight.me/sunmint/main` identity, (3) the code change generalizing `isAgl4` into an allow-list, (4) PR → merge → deploy carefully (production pin lesson). Starting with recon in parallel:
+
+
+### 🤖 Autopilot
+
+Shipment Ledger Listing structure is clear (rows 1–19, latest BEC at row 19). Now I need the URL-mapping columns (L→AB) and the QR sheet header to place the new row correctly:
+
+
+### 🤖 Autopilot
+
+I have the full structure. Key facts:
+- **SLL columns**: L=12 Ledger URL, AB=28 Resolved URL, AC=29 Program. AGL4: L=`https://agroverse.shop/agl4`, AB=`1Uo5p3…` resolved URL, AC=`agroverse`. BEC: L=`https://truesight.me/sunmint/bec`, AB=`19CDo-…`, AC=`sunmint`.
+- **QR header**: col1 qr_code, col3 ledger, col4 status, col9 Currency, col12 Owner Email, col20 Price, col21 Manager Name, col22 Ledger Name, col27 Sold Date.
+
+Now: the new ledger identity per governor = `https://truesight.me/sunmint/main` (distinct from AGL4), booked on the main ledger. I'll:
+1. Add a **Shipment Ledger Listing row 20**: Ledger ID `MAIN` (or `SUNMINT-MAIN`), Ledger URL `https://truesight.me/sunmint/main`, Resolved URL = the main ledger `1GE7PUq…` (so `resolveManagedLedgerSpreadsheetUrl_` doesn't reject), Program `sunmint`, Status ACTIVE
+2. **QR row**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, ledger `https://truesight.me/sunmint/main`, currency generic, status SOLD, owner `paloma@founderhaus.club`
+3. **Code change**: generalize `isAgl4` boolean → allow-list set `TPL_MAIN_LEDGER_LEDGER_URLS = [agl4, sunmint/main]`
+
+Let me check the resolveManagedLedgerSpreadsheetUrl_ code (in process_qr_code_updates.js — my earlier grep found nothing; it may live in process_tree_planting_link.js) to know exactly how the URL is resolved:
+
+
+### 🤖 Autopilot
+
+Now I understand the full flow:
+- Line 476-477: `ledgerUrl` from QR col C; `transactionsUrl = resolveManagedLedgerSpreadsheetUrl_(ledgerUrl)` — resolves via SLL col L→AB. **If not found → REJECTED at line 480** ("Could not resolve managed ledger").
+- Line 525: `appendTreePlantingLedgerFulfillment_(transactionsUrl, message, contributorName, ledgerUrl)`.
+
+So for the new `https://truesight.me/sunmint/main` ledger, the SLL entry must exist (so line 477 doesn't return '' → REJECTED at 480). Per the governor: register it with a Resolved URL (col AB) so resolution succeeds — and then `appendTreePlantingLedgerFulfillment_` overrides to the main ledger for allow-listed URLs.
+
+Let me read `resolveManagedLedgerSpreadsheetUrl_` (lines 166-195) fully to see exactly which columns it reads (does it use col AB Resolved URL, or does it construct?) — then I'll know what the SLL row needs:
+
+
+### 🤖 Autopilot
+
+Now I understand `resolveManagedLedgerSpreadsheetUrl_` fully: it matches SLL **column L (Ledger URL)** and returns **column AB (Resolved URL)**. So my new SLL row needs: col L = `https://truesight.me/sunmint/main`, col AB = a resolvable URL. Since this ledger books on the **main ledger itself**, I'll set col AB = the **main ledger spreadsheet URL** (`1GE7PUq…`) — that way resolution succeeds AND the code's allow-list override routes it correctly anyway (belt + suspenders).
+
+Now let me build everything:
+
+**1. SLL row 20** (Shipment Ledger Listing, 1GE7PUq):
+- A=MAIN, B=today, C=ACTIVE, L=`https://truesight.me/sunmint/main`, AB=`https://docs.google.com/spreadsheets/d/1GE7PUq-.../edit`, AC=sunmint, T=1 (trees)
+
+**2. QR row** (Agroverse QR codes): FOUNDERHAUS_BOUGAINVILLEA_20260821_1, ledger `https://truesight.me/sunmint/main`, status SOLD, currency generic, owner paloma@founderhaus.club
+
+**3. Code fix** — generalize the isAgl4 boolean into an allow-list:
+```js
+const TPL_MAIN_LEDGER_LEDGER_URLS = [
+  'https://agroverse.shop/agl4',
+  'https://truesight.me/sunmint/main',
+];
+```
+Then `const routesToMain = TPL_MAIN_LEDGER_LEDGER_URLS.includes((ledgerUrl||'').toString().trim())` and use `routesToMain` in place of `isAgl4`.
+
+Let me write the sheet rows first, then open the PR for the code change:
+
+
+### 🤖 Autopilot
+
+The `update` call has the wrong argument order (new gspread wants `values` first) and my value-count mismatch (I passed 29 values into A20:AC20 which is 29 columns — the error shows 29 items but the row needs to match). Let me fix the call — pass `range_name=` and `values=` explicitly, and make the QR row write separately:
+
+
+### 🤖 Autopilot
+
+Sheet rows staged:
+- **SLL row 20**: `MAIN` → `https://truesight.me/sunmint/main` → resolved `1GE7PUq…/edit`
+- **QR row 1781**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, SOLD, generic currency, paloma@founderhaus.club ✅
+
+Now the **code fix** — generalize `isAgl4` boolean → allow-list. Opening the PR:
+
+
+### 🤖 Autopilot
+
+**PR #409 opened** (tokenomics, commit `10b5b93`). Let me verify the branch (syntax + all 4 hunks + no leftover `isAgl4`):
+
+
+### 🤖 Autopilot
+
+**PR #409 verified clean:** `isAgl4` = 0 (fully replaced), `routesToMain` = 5, allow-list constant present (line 61) with `sunmint/main` included, node syntax OK, 32,293 bytes.
+
+## PART 1/4 — complete (staged + PR ready)
+
+**Sheet writes (done, verified):**
+- **SLL row 20**: `MAIN` → `https://truesight.me/sunmint/main` → resolved to main ledger `1GE7PUq…/edit` (so `resolveManagedLedgerSpreadsheetUrl_` succeeds), Program `sunmint`, ACTIVE ✅
+- **QR row 1781**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, ledger `https://truesight.me/sunmint/main`, **SOLD** (direct sheet write — no sales pipeline, per the rule), currency `SunMint Tree Planting Pledge - QR Code`, owner `paloma@founderhaus.club`, manager Gary Teh, sold date 20260821 ✅
+
+**Code fix (PR #409):**
+- Generalized the `isAgl4` boolean → `TPL_MAIN_LEDGER_LEDGER_URLS` allow-list `['https://agroverse.shop/agl4', 'https://truesight.me/sunmint/main']`
+- `routesToMain` replaces `isAgl4` everywhere (5 refs); AGL4 behavior unchanged
+- Verified: syntax OK, no `isAgl4` leftover, `sunmint/main` in the list
+
+**Also noted (not blocking):** SunMint row 16 (Edgar_20260821175134_006, Bougainvillea) — Submitted Name="Unknown" + lat/long blank. I'll fix those to reflect the real planting (Paloma Lecheta / FounderHaus) as part of the follow-up, not blocking the QR issuance.
+
+## RESUME HERE →
+1. **Merge tokenomics #409** (on your review) → deploy to GAS **carefully** (production deployment pin lesson: update the PROD deployment `AKfycbxMz8cAkJ-…` in place after push, don't just leave it at @17 with the old code)
+2. **Verify live** (production /exec + pull-verify `TPL_MAIN_LEDGER_LEDGER_URLS` present)
+3. **Fix SunMint row 16** (Submitted Name → Paloma Lecheta, lat/long from the real planting) — then the LINK event for the real Bougainvillea tree can proceed (PART 2+)
+
+**✅ Actions this turn:** staged SLL row 20 (MAIN ledger identity) + QR row 1781 (FounderHaus Bougainvillea), opened tokenomics #409 (allow-list generalization), verified branch (syntax + hunks). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && echo "=== appendTreePlantingLedgerFulfillment_ + constants (current main) ===" && curl -s "https://raw.githubusercontent.com/True; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; cd /tmp && echo "=== resolveManagedLedgerSpreadsheetUrl_ in ptpl.js ===" && grep -n "resolveManagedLedger\|Shipment Ledger Listing\|SLL\|get; …(+2 more)
 
