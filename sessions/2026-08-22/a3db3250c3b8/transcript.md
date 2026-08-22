@@ -3259,11 +3259,13 @@ I now have the full §10 procedure + Log of runs. Executing the task: first conf
 ### 🤖 Autopilot
 
 The resend **still fails** with the same MailApp permission error — so delivery for the FounderHaus tree-planted notification is **not yet confirmed**, and the editor grant didn't propagate to the deployment. Before reporting, let me check whether the governor's "resolved" fix lives somewhere else (new code path — e.g. in the admin-owned 1MnAsI project) and see the latest git state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The resend **still fails** with the same MailApp permission error — and the mailboxes confirm only the two onboarding emails (09:42Z, 16:42Z, admin-owned 1MnAsI project) were delivered; **the tree-planted notification has never arrived**. Let me probe once more and check whether the deployment's authorization state changed (the governor's fix may need propagation):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3326,6 +3328,7 @@ RESUME HERE → (once delivery is confirmed)
 ### 🤖 Autopilot
 
 Let me re-test the resend — the governor's fix may have landed since my last probe (deployment re-authorization can take effect immediately):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3592,4 +3595,76 @@ Everything remains staged and correct (@28 = #416 code live; onboarding already 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.parse, urllib.error, base64 rc = json.load(open('/home/ubuntu/.clasprc-a; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== try
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+deploy latest script with the manifest fix.
+
+
+### 🤖 Autopilot
+
+Checking for the latest manifest fix in git, then deploying:
+
+
+### 🤖 Autopilot
+
+Git main is still at #418 — no manifest fix merged yet. Let me check for an open PR with the manifest change:
+
+
+### 🤖 Autopilot
+
+No manifest-fix PR exists. The governor's "manifest fix" likely means: **add the explicit `oauthScopes` to appsscript.json** so the `script.send_mail` scope is declared in the manifest — this is what makes the consent screen *include* that scope when the deployment is next authorized in the browser (and documents it properly). Let me check if the governor made a local change on this box, then add the manifest oauthScopes fix:
+
+
+### 🤖 Autopilot
+
+No local manifest change either. The "manifest fix" the governor wants is the standard remedy for this exact OAuth gap: **declare the required `oauthScopes` in appsscript.json** so that when the deployment is next (re)authorized in the browser, `script.send_mail` is explicitly requested and granted. I'll add it — with the full scope set the script actually uses (MailApp + sheets/spreadsheets + Drive, per the code):
+
+
+### 🤖 Autopilot
+
+Manifest updated with the explicit `oauthScopes` (including `script.send_mail`). Now push this to git (PR) and deploy to GAS. First the PR via the raw API path (branch + commit + PR):
+
+
+### 🤖 Autopilot
+
+Branch pushed. Opening the PR:
+
+
+### 🤖 Autopilot
+
+**PR #419 opened.** Now the governor said "deploy latest script with the manifest fix" — that's an explicit deploy instruction. Merging #419, then deploying to GAS (pull-first per convention, push, version, update the deployment in place):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #419** (sha `b8856784`) — the manifest oauthScopes fix.
+
+## What I did this turn
+
+**Added the manifest fix the governor asked for:**
+1. **Confirmed** git main had no manifest fix yet (no open PR, no local change) — the "fix" needed to be created
+2. **Updated `appsscript.json`** (1UrBg project) to **explicitly declare `oauthScopes`** — including `https://www.googleapis.com/auth/script.send_mail` (plus the project's other real scopes: spreadsheets, script.external_request, drive). Declaring the scope in the manifest is what makes the browser consent screen request `script.send_mail` when the deployment is next (re)authorized — the missing piece for the MailApp authorization
+3. **Opened + merged #419** (branch `fix/manifest-oauth-scopes-mailapp`, commit `fcafa16` → merged `b8856784`): https://github.com/TrueSightDAO/tokenomics/pull/419
+
+## RESUME HERE → (deploy + the browser re-authorization)
+1. **Deploy to GAS**: pull 1UrBg project to git main → `clasp push` (now pushes the manifest too — clasp syncs appsscript.json) → save version → **update the PROD deployment in place** (@28 → @29)
+2. **The one human step (still required — CLI can't trigger the consent)**: Gary (or admin) opens the editor → **Deploy → Manage deployments → ✏️ Edit the `AKfycbxMz8cAkJ-…` deployment → Save** → **Review permissions → Allow** — the consent screen now *includes* `script.send_mail` (thanks to #419), binding it to the deployment
+3. **Re-invoke the resend** → expect genuine success (with quota) → **verify actual delivery** in both mailboxes → AB1781 gets a real stamp
+4. **Run the §10 E2E** (Owner Email = garyjob@gmail.com, test QR `TEST_AGL4_<today>_1`, dummy SunMint submission, governor-signed LINK) → verify QR ASSIGNED_TO_TREE / SunMint LINKED / AGL4 fulfillment pair / **BOTH emails actually arrive** → invalidate test QR + fill the Log of runs
+
+**✅ Actions this turn:** added the manifest oauthScopes fix (script.send_mail + project scopes), opened #419, merged it (sha `b8856784`). One PR opened + one merged — stopping per the one-PR-per-turn rule. Deploy + the browser re-auth + resend + E2E are the immediate next units.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q 2>&1 | tail -1; echo "=== recent commits ===" && git log --onelin; cd /tmp && echo "=== open tokenomics PRs ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls?state=open" | python3 -; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== loc; …(+3 more)
+• `merge pr` → ✅ PR #419 on tokenomics merged successfully (sha: b8856784723f64bdc2fc91d5946ca2f25052bba3). Pull Request successfully merged
 
