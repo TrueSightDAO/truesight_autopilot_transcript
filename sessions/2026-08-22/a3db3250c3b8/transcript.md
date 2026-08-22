@@ -8,93 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Now I understand the full flow:
-- Line 476-477: `ledgerUrl` from QR col C; `transactionsUrl = resolveManagedLedgerSpreadsheetUrl_(ledgerUrl)` — resolves via SLL col L→AB. **If not found → REJECTED at line 480** ("Could not resolve managed ledger").
-- Line 525: `appendTreePlantingLedgerFulfillment_(transactionsUrl, message, contributorName, ledgerUrl)`.
-
-So for the new `https://truesight.me/sunmint/main` ledger, the SLL entry must exist (so line 477 doesn't return '' → REJECTED at 480). Per the governor: register it with a Resolved URL (col AB) so resolution succeeds — and then `appendTreePlantingLedgerFulfillment_` overrides to the main ledger for allow-listed URLs.
-
-Let me read `resolveManagedLedgerSpreadsheetUrl_` (lines 166-195) fully to see exactly which columns it reads (does it use col AB Resolved URL, or does it construct?) — then I'll know what the SLL row needs:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I understand `resolveManagedLedgerSpreadsheetUrl_` fully: it matches SLL **column L (Ledger URL)** and returns **column AB (Resolved URL)**. So my new SLL row needs: col L = `https://truesight.me/sunmint/main`, col AB = a resolvable URL. Since this ledger books on the **main ledger itself**, I'll set col AB = the **main ledger spreadsheet URL** (`1GE7PUq…`) — that way resolution succeeds AND the code's allow-list override routes it correctly anyway (belt + suspenders).
-
-Now let me build everything:
-
-**1. SLL row 20** (Shipment Ledger Listing, 1GE7PUq):
-- A=MAIN, B=today, C=ACTIVE, L=`https://truesight.me/sunmint/main`, AB=`https://docs.google.com/spreadsheets/d/1GE7PUq-.../edit`, AC=sunmint, T=1 (trees)
-
-**2. QR row** (Agroverse QR codes): FOUNDERHAUS_BOUGAINVILLEA_20260821_1, ledger `https://truesight.me/sunmint/main`, status SOLD, currency generic, owner paloma@founderhaus.club
-
-**3. Code fix** — generalize the isAgl4 boolean into an allow-list:
-```js
-const TPL_MAIN_LEDGER_LEDGER_URLS = [
-  'https://agroverse.shop/agl4',
-  'https://truesight.me/sunmint/main',
-];
-```
-Then `const routesToMain = TPL_MAIN_LEDGER_LEDGER_URLS.includes((ledgerUrl||'').toString().trim())` and use `routesToMain` in place of `isAgl4`.
-
-Let me write the sheet rows first, then open the PR for the code change:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `update` call has the wrong argument order (new gspread wants `values` first) and my value-count mismatch (I passed 29 values into A20:AC20 which is 29 columns — the error shows 29 items but the row needs to match). Let me fix the call — pass `range_name=` and `values=` explicitly, and make the QR row write separately:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sheet rows staged:
-- **SLL row 20**: `MAIN` → `https://truesight.me/sunmint/main` → resolved `1GE7PUq…/edit`
-- **QR row 1781**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, SOLD, generic currency, paloma@founderhaus.club ✅
-
-Now the **code fix** — generalize `isAgl4` boolean → allow-list. Opening the PR:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #409 opened** (tokenomics, commit `10b5b93`). Let me verify the branch (syntax + all 4 hunks + no leftover `isAgl4`):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #409 verified clean:** `isAgl4` = 0 (fully replaced), `routesToMain` = 5, allow-list constant present (line 61) with `sunmint/main` included, node syntax OK, 32,293 bytes.
-
-## PART 1/4 — complete (staged + PR ready)
-
-**Sheet writes (done, verified):**
-- **SLL row 20**: `MAIN` → `https://truesight.me/sunmint/main` → resolved to main ledger `1GE7PUq…/edit` (so `resolveManagedLedgerSpreadsheetUrl_` succeeds), Program `sunmint`, ACTIVE ✅
-- **QR row 1781**: `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, ledger `https://truesight.me/sunmint/main`, **SOLD** (direct sheet write — no sales pipeline, per the rule), currency `SunMint Tree Planting Pledge - QR Code`, owner `paloma@founderhaus.club`, manager Gary Teh, sold date 20260821 ✅
-
-**Code fix (PR #409):**
-- Generalized the `isAgl4` boolean → `TPL_MAIN_LEDGER_LEDGER_URLS` allow-list `['https://agroverse.shop/agl4', 'https://truesight.me/sunmint/main']`
-- `routesToMain` replaces `isAgl4` everywhere (5 refs); AGL4 behavior unchanged
-- Verified: syntax OK, no `isAgl4` leftover, `sunmint/main` in the list
-
-**Also noted (not blocking):** SunMint row 16 (Edgar_20260821175134_006, Bougainvillea) — Submitted Name="Unknown" + lat/long blank. I'll fix those to reflect the real planting (Paloma Lecheta / FounderHaus) as part of the follow-up, not blocking the QR issuance.
-
-## RESUME HERE →
-1. **Merge tokenomics #409** (on your review) → deploy to GAS **carefully** (production deployment pin lesson: update the PROD deployment `AKfycbxMz8cAkJ-…` in place after push, don't just leave it at @17 with the old code)
-2. **Verify live** (production /exec + pull-verify `TPL_MAIN_LEDGER_LEDGER_URLS` present)
-3. **Fix SunMint row 16** (Submitted Name → Paloma Lecheta, lat/long from the real planting) — then the LINK event for the real Bougainvillea tree can proceed (PART 2+)
-
-**✅ Actions this turn:** staged SLL row 20 (MAIN ledger identity) + QR row 1781 (FounderHaus Bougainvillea), opened tokenomics #409 (allow-list generalization), verified branch (syntax + hunks). One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /tmp && echo "=== appendTreePlantingLedgerFulfillment_ + constants (current main) ===" && curl -s "https://raw.githubusercontent.com/True; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; cd /tmp && echo "=== resolveManagedLedgerSpreadsheetUrl_ in ptpl.js ===" && grep -n "resolveManagedLedger\|Shipment Ledger Listing\|SLL\|get; …(+2 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
@@ -3534,6 +3447,7 @@ Merge and deploy
 ### 🤖 Autopilot
 
 Merging both PRs, then deploying to their GAS projects. First the merges:
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3583,6 +3497,7 @@ Deploy for both
 ### 🤖 Autopilot
 
 Deploying both. First, check both project folders' state + git main sync:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3790,4 +3705,79 @@ This matches the governor's earlier Drive API finding (script owned by garyjob@a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /home/ubuntu && python3 - << 'PYEOF' import json, urllib.request, urllib.error # Try Drive API with the service account creds try: import; cd /home/ubuntu && python3 - << 'PYEOF' import json, urllib.request, urllib.error try: from google.oauth2 import service_account import goog; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) toks = rc.get('
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+deploy under owner admin@truesight.me
+
+
+### 🤖 Autopilot
+
+Let me investigate what's possible — check what credentials exist on the box (for admin@truesight.me vs garyjob), and confirm who owns the 1MnAsI project (which successfully sends as admin@truesight.me):
+
+
+### 🤖 Autopilot
+
+Excellent — key discovery: **there IS an admin@truesight.me clasp credential** (`.clasprc-admin.json`, 632 B) and **`.clasprc-gary.json`**. The two projects are owned by **different accounts**:
+- **1MnAsI (onboarding)** — creator: **admin@truesight.me** (this is why processBatch emails send as admin@truesight.me!)
+- **1UrBg (tree link)** — creator: **garyjob@agroverse.shop** (this is the one with the MailApp authorization problem)
+
+The governor's instruction "deploy under owner admin@truesight.me" — the insight being: the tree-planted notification emails should send **as admin@truesight.me** (consistent with the onboarding emails), which requires the 1UrBg script to be authorized/deployed under admin@truesight.me. Let me check what the admin clasprc is (which project it's for) and whether it can see/deploy 1UrBg:
+
+
+### 🤖 Autopilot
+
+The admin clasprc's id_token didn't parse in my quick script — let me decode it to confirm it's admin@truesight.me, and check whether that admin token can see/deploy the 1UrBg project (i.e., is admin a collaborator/owner-capable?):
+
+
+### 🤖 Autopilot
+
+The admin token's `id_token` didn't decode (empty output) and the access token is **expired/refreshing-needed** (401 on both projects). Let me refresh the admin token using its refresh_token (the standard OAuth refresh flow) and then retry:
+
+
+### 🤖 Autopilot
+
+Decisive result:
+- **admin@truesight.me token** (refreshed) CAN see **1MnAsI** (its own project — creator admin@truesight.me) ✅
+- admin@truesight.me **CANNOT see 1UrBg** (403 PERMISSION_DENIED) — admin is **not a collaborator** on the 1UrBg project (owned by garyjob@agroverse.shop)
+
+So "deploy under owner admin@truesight.me" for the 1UrBg project **isn't directly possible** — the deployment/authorization of 1UrBg is bound to its owner garyjob@agroverse.shop. The owner must grant OAuth consent as garyjob. Let me verify the id_token email to be complete, and check whether there's any path (can admin be added? is there a transfer? or should we instead consider the deeper design question — should the tree-planted notification run from the admin-owned 1MnAsI project instead?):
+
+
+### 🤖 Autopilot
+
+The admin id_token didn't decode (may be truncated or the claims shape differs), but the **API behavior is the proof**: the refreshed admin token reads 1MnAsI (its own) but gets **403 on 1UrBg** — so admin@truesight.me is definitively **not** a collaborator on 1UrBg.
+
+## What "deploy under admin@truesight.me" means & what's actually possible
+
+**The finding:**
+- **1MnAsI** (onboarding/processBatch) — **owned by admin@truesight.me** ✅ (this is why its emails come from admin@truesight.me, and why processBatch's sends work — its OAuth is granted)
+- **1UrBg** (tree-link processor + `sendTreePlantedNotificationEmail_`) — **owned by garyjob@agroverse.shop**; admin@truesight.me gets **403 PERMISSION_DENIED** on it → **admin cannot deploy or authorize 1UrBg** without being added as a collaborator or the script being transferred
+
+**So there are three realistic options for "the tree-planted notification sends as admin@truesight.me":**
+
+1. **Add admin@truesight.me as a collaborator on the 1UrBg project** (Share → add admin@truesight.me as Editor) — then the OAuth consent + deploys can be done with the admin credential. *Requires the owner (Gary as garyjob) to click Share in the editor UI.*
+
+2. **Transfer the 1UrBg project to admin@truesight.me** (editor → ⋮ → Transfer ownership) — makes admin the owner outright; then the admin clasp credential can deploy + authorize it. *Also a Gary-in-UI action.*
+
+3. **Move the tree-planted-notification send into the admin-owned 1MnAsI project** — architecturally cleaner long-term (all customer-facing emails from admin@truesight.me, one OAuth grant, one owner), but requires moving `sendTreePlantedNotificationEmail_` + wiring into 1MnAsI. *Bigger change; worth considering but not tonight.*
+
+**Note:** I've verified the admin clasp credential exists on this box (`.clasprc-admin.json`) and it works (refreshed token reads 1MnAsI). So once Gary grants access (option 1 or 2), **I can deploy 1UrBg under admin@truesight.me from this box** — the credential is ready.
+
+## RESUME HERE →
+1. **Gary decides + acts in the UI (one of):**
+   - **Option A (quickest):** open 1UrBg editor as garyjob → **Run** any MailApp function once → grant OAuth consent (fixes the authorization; email still sends from garyjob@agroverse.shop), **or**
+   - **Option B (aligns with "deploy under admin"):** in 1UrBg editor → **Share → add admin@truesight.me as Editor** (or Transfer ownership) → tell me → I deploy + invoke under the admin credential (already on the box, refreshed + verified)
+2. **Re-invoke** the resend URL → expect genuine success (with quota) → **verify actual delivery** (HTML MIME part in the mailbox) → AB1781 gets a real stamp
+3. **LINK-flow hardening** (governor noted the original call site swallows the same way — now that the root cause is known, fix it so future real LINK events don't silently fail to notify owners)
+4. Final report
+
+**✅ Actions this turn:** confirmed admin@truesight.me owns 1MnAsI (onboarding, working) vs garyjob@agroverse.shop owns 1UrBg (the broken one); refreshed the admin clasp credential on this box (works — reads 1MnAsI); confirmed admin gets **403 on 1UrBg** (not a collaborator → cannot deploy under admin until Gary shares/transfers); laid out the 3 options. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== clasp/cred files ===" && ls -la /home/ubuntu/.clasprc* /root/.clasprc* /home/ubuntu/creds/ 2>/dev/null; echo "=== env google creds; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) t = rc.get('tok; cd /tmp && python3 - << 'PYEOF' import json for f in ['/home/ubuntu/.clasprc.json', '/home/ubuntu/.clasprc-gary.json', '/home/ubuntu/.claspr; …(+3 more)
 
