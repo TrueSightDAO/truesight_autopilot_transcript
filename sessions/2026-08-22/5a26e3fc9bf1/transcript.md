@@ -1412,11 +1412,13 @@ If it's the **frozen pulp bags** — that's slide 6, and I'll remove it now. Jus
 ### 🤖 Autopilot
 
 Confirmed — removing **slide 6 (Açaí Freeze-Drying / "POLPAS CONGELADAS" — the frozen pulp cold-chain slide)** from the full deck. Rebuilding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deck rebuilt — 13 slides, frozen-pulp slide removed. Sending:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1463,11 +1465,13 @@ Note: slide 6 (the açaí project graphic with the AMAZÔNIA/Açaí/Castanha/Cup
 ### 🤖 Autopilot
 
 Removing slide 3 — *Preliminary Estimate of Potential Supply: Manicoré Region* (the supply-table slide). Rebuilding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deck rebuilt — 12 slides, supply-estimate slide removed. Sending:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2406,11 +2410,13 @@ Thank you!
 ### 🤖 Autopilot
 
 Let me inspect this file and compare it against the original source deck we've been working from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Identical hash — this is the **same file** as the original source deck. Let me still do a full inspection pass on it to confirm structure and page inventory:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2457,11 +2463,13 @@ What would you like me to do with this original file — rebuild from scratch wi
 ### 🤖 Autopilot
 
 Understood — taking the **original 13-page deck you just attached**, removing **slide 3** (*Preliminary Estimate of Potential Supply: Manicoré*), and returning the result as an attachment. Note this is a clean cut from the original source, so slide 6 (Açaí freeze-drying) stays in unless you say otherwise.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deck rebuilt — 12 slides, slide 3 removed. Sending as attachment:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2992,4 +3000,30 @@ The finalized 7-slide deck is verified, and I have the contribution docs ready. 
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && sha256sum 518fa2e79ce64ae18b462e9982689ddb.pdf && python3 << 'EOF' import fitz doc = fitz.open("518fa2e79ce64ae18b
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-22/4008a35ff7c9/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Probably 30 minutes time span between yourself and me. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — 30 minutes of joint time. Recording the contribution now:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **contribution recorded.**
+
+- **Type:** Time (Minutes)
+- **Amount:** 30
+- **Contributor:** Gary Teh
+- **Description:** EBCF Manicoré site-inspection deck — 30-min joint session (you + me): extracted/condensed the Bioeconomy Program into the final 7-slide due-diligence deck, including the custom Cacao Production slide and iterative trims.
+
+TDG was left at 0 (governor review). Want me to attach the final PDF to the submission as evidence, or is this good?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
