@@ -10,67 +10,6 @@
 
 ### 🤖 Autopilot
 
-You're right — the production deployment must carry #406, or a real AGL4 link still hits the bug. Updating the production deployment in place now:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Production deployment updated in place** — `AKfycbxMz8cAkJ-…` is now **@17** (was @13), carrying #406 + #408. Now the two verifications: curl the production /exec URL to confirm it serves current code, and pull-verify the deployed version has `TPL_AGL4_LEDGER_URL`:
-[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Both verifications pass:**
-
-1. **Production /exec URL** (`AKfycbxMz8cAkJ-…`) → **200 OK, `✅ Tree planting links processed: 0 linked, 0 rejected, 0 errors`** — serving current code, normal response (0/0/0 because there are no new pending rows — the test already linked).
-2. **Pull-verify of the deployed source**: `TPL_AGL4_LEDGER_URL` present (×2), and the `isAgl4` branch (lines 307–316) routes AGL4 → `TPL_MAIN_DAO_LEDGER_URL` / `TPL_MAIN_DAO_OFFCHAIN_TAB` — **the #406 fix is in the production deployment**.
-
-## ✅ UAT blocker cleared — production carries #406
-
-**What changed:** the production deployment `AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X` (the one dao_protocol's webhook actually calls) was pinned to **@13** (pre-#406). Updated **in place → @17** (`clasp deploy --deploymentId …`), the same in-place pattern used for PR-FIX1/FIX2.
-
-**Verified live:**
-- ✅ Production /exec → 200, normal processor response
-- ✅ Deployed source contains `TPL_AGL4_LEDGER_URL` (×2) + the `isAgl4` routing branch (lines 307–316: AGL4 → main DAO ledger / "offchain transactions" tab)
-
-A **real AGL4 tree-planting link now discharges on the main DAO ledger** — the original bug is fixed on the production URL, not just the test deployment.
-
-**Deployments now (clean state):**
-- `AKfycbxMz8cAkJ-…` **@17** — PROD (#406 + #408) ← the webhook target
-- `AKfycbxGzGp…` @16 — test deployment used for the §10 E2E
-- `AKfycbx130t…` @12 — REJECT scan-filter fix (#402)
-- @HEAD + @15
-
-## RESUME HERE → UAT ready
-1. **Merge agentic_ai_context #788** (Log of runs — durable record)
-2. **Merge tokenomics #407** ($0-price parser bug — real production bug, independent; your call on timing)
-3. **Governor UAT confirmation**: tree-planting pipeline (Mark Invalid ✅ + Link ✅ + AGL4 main-ledger fulfillment ✅) is **UAT-ready on beta** — dapp_beta #73 (key-gen redirect) is live on beta too. Ready for your go-ahead to Gary.
-
-**✅ Actions this turn:** updated the production deployment in place to @17 (carrying #406 + #408), verified live via /exec (200, normal) + pull-verify (TPL_AGL4_LEDGER_URL + isAgl4 branch present). No PRs opened/merged this turn.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== git; cd /tmp && rm -rf verifyprod && mkdir verifyprod && cd verifyprod && cp -r /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1U
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-New REAL task (not a test) — merged #788 and #407 per governor. Now: a real tree was planted by Paloma Lecheta and FounderHaus volunteers (photo: a Bougainvillea). We already have the real SunMint submission for it: "SunMint Tree Planting" row 16, Telegram Message ID Edgar_20260821175134_006, Species=Bougainvillea, Status=NEW, photo present, but Submitted Name="Unknown" and lat/long blank — worth fixing those to reflect the real planting if you can find better values, not blocking.
-
-PART 1/4 — Issue a real QR code for this tree in "Agroverse QR codes" (1GE7PUq-...):
-• qr_code: a real, sensible ID (not TEST-prefixed) — something like FOUNDERHAUS_BOUGAINVILLEA_20260821_1.
-• Currency: "SunMint Tree Planting Pledge - QR Code" (the generic label).
-• status: SOLD — set directly via sheet write, do NOT run this through the real sales pipeline (same rule as the AGL4 test: no [SALES EVENT] submissions for anything that is not a genuine priced e-commerce sale).
-• Owner Email: paloma@founderhaus.club (confirmed via her calendar invites; her "Contributors contact information" row 273 already has this email in col D — no insert needed there).
-• Governor's ledger decision: this QR should book "just on the main ledger" — NOT tied to AGL4 or any existing sub-ledger (PP1/SEF1/BEC). This means you need to extend the #406 pattern: generalize the current isAgl4 boolean in appendTreePlantingLedgerFulfillment_ into a small set/allow-list of ledger URLs that route to the main ledger's "offchain transactions" tab, and register a new distinct ledger identity for this (e.g. https://truesight.me/sunmint/main, with a "Shipment Ledger Listing" entry so resolveManagedLedgerSpreadsheetUrl_ doesn't reject it up front — remember AGL4 still needs a Shipment Ledger Listing entry even though the resolved sub-ledger URL gets overridden inside appendTreePlantingLedgerFulfillment_). Use your judgment on the exact naming, just keep it clearly distinct from AGL4 for audit clarity. Normal PR → review → merge → deploy flow (this touches the same production project as #406, so deploy carefully — remember the @13-vs-@17 production-deployment-pin lesson from this session).
-
-
-### 🤖 Autopilot
-
 Executing PART 1/4 — the real FounderHaus Bougainvillea QR. This needs: (1) the QR row in the sheet, (2) the Shipment Ledger Listing entry for a new `truesight.me/sunmint/main` identity, (3) the code change generalizing `isAgl4` into an allow-list, (4) PR → merge → deploy carefully (production pin lesson). Starting with recon in parallel:
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
@@ -3511,6 +3450,7 @@ Close out 415
 ### 🤖 Autopilot
 
 Closing #415 — it's superseded by #416 (the direct-MailApp approach). Using the GitHub API to close it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3548,6 +3488,7 @@ Explain 416 and 417
 ### 🤖 Autopilot
 
 Let me read both PRs precisely so I explain them accurately — the exact diffs and current state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3804,4 +3745,29 @@ Confirmed: **AB1781 still shows the stale `20260821`** — the send threw before
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+what is the editor URL?
+
+
+### 🤖 Autopilot
+
+The editor URL for the 1UrBg project (the tree-planting LINK processor with the MailApp authorization issue):
+
+**https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+
+That's the Apps Script project ID: `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` (from the folder `google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/` in the tokenomics repo).
+
+**What to do there (the one human action needed):**
+1. Open the link above (logged in as the script owner — `garyjob@agroverse.shop` per the Drive API check)
+2. In the editor, pick any function that uses MailApp from the function dropdown (e.g. **`resendTreePlantedNotification`**) and click **Run**
+3. A **consent/authorization screen** will appear — **Review permissions → Allow** (granting `script.send_mail` and the sheet/other scopes)
+4. The function may fail with a "QR not found" or similar (that's fine — the point is the OAuth grant) — or you can just let it complete
+5. Tell me when done — I'll re-invoke the production resend URL and verify actual delivery
+
+(For reference, the sibling onboarding project 1MnAsI… is at https://script.google.com/home/projects/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/edit — not needed for this step.)
 
