@@ -50,3 +50,21 @@ FINALIZED EBCF DECK (7 slides) — for Manicoré site-inspection due diligence.
 Source: Bioeconomy Program · Master Plan Manicoré (13-page original a7bf0c55…413.pdf, byte-identical 8af93233…).
 File: /tmp/tg_attachments/518fa2e79ce64ae18b462e9982689ddb.pdf (sha256 3532e4b5…7dc5d)
 ```
+
+
+---
+
+## Attachment: Cacao_FineFlavor_SOP.pdf
+
+| Field | Value |
+|-------|-------|
+| **Type** | PDF |
+| **Filename** | Cacao_FineFlavor_SOP.pdf |
+| **Received** | 2026-08-22T18:00:29Z |
+
+### Extracted Text
+
+```
+Generated SOP PDF: /tmp/Cacao_FineFlavor_SOP.pdf — "Fine-Flavor Cacao: Harvest → Ferment → Sun-Dry — Step-by-Step SOP" (7.9 KB, 3 pages). Compiled from historical DAO docs: go_to_market blog posts "Bulk vs Gourmet Cacao" (20260126_167165b7) and "Bahia & Amazon Origins" (20251020_8ce2eb53), plus farm_taste_profiles.md templates.
+Key specs: Criollo/Trinitario, shade agroforestry (cabruca); hand-harvest at peak ripeness; hand-sort all beans (discard underripe/damaged/debris); ferment 5–8 days in small wooden boxes/leaf-lined piles, turn every 24–48 h, 40–50 °C, pH 6.5→4.5, optional starter cultures; sun-dry on raised platforms → uniformly purple-brown, <2% mold; fine-flavor price USD 7,800–12,000/MT vs ~6,000 bulk. Sources: bulk_vs_gourmet_cacao.md, bahia_amazon_origins.md, farm_taste_profiles.md.
+```
