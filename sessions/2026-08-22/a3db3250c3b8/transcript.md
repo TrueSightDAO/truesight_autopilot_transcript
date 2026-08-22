@@ -8,25 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-PART 2/4 — landing_page / registry page: since this isn't a dedicated program (governor said "just on the main ledger"), use your judgment for a sensible truesight.me profile page URL — reusing the generic /sunmint-tree-planting-pledges/ pattern is fine if there's no better fit. Also: check with the governor before assuming a physical printable QR image needs generating (real QR PNG + GitHub location via the actual QR-generation pipeline) versus just a sheet record + registry page — the primary goal here is Paloma's onboarding email + a public profile page, not necessarily a physical code for her to scan, but confirm if unsure.
-
-
-### 🤖 Autopilot
-
-PART 2/4 — landing page URL + the QR-PNG question. Let me check the existing landing_page conventions in the QR sheet (especially sunmint-program rows) and any registry-page docs before setting the value:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The convention is clear: PP1/SEF1 use `https://www.truesight.me/sunmint-tree-planting-pledges/<ledger>` (e.g. `/pp1`, `/sef1`). My MAIN row has empty landing — I'll set it to `https://www.truesight.me/sunmint-tree-planting-pledges/main` per convention, and check whether that site path actually resolves (registry page exists?):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Two findings:
@@ -3503,26 +3484,31 @@ Deploying both. First, check both project folders' state + git main sync:
 ### 🤖 Autopilot
 
 Git main now has #416 + #417. Local folders are stale — updating the project files from git main, then pushing both projects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files verified from git main (the #416 direct send + quota at 334/349, the #417 ensure function at 1972). Both syntax OK. Now pushing both projects with clasp:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 1UrBg pushed + version 24 saved. Now update its PROD deployment in place (the pin lesson), then do the same for 1MnAsI:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **1UrBg PROD deployment updated: @23 → @24** (now serving #416's direct-MailApp code). Now the same for 1MnAsI (push, version, PROD deployment update):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 1MnAsI pushed (v29 saved). The deployments are all webhook/registerSingleQRCode actions — none obviously "the" onboarding/processBatch deployment (processBatch isn't URL-routable; it runs in editor/trigger context). So for 1MnAsI, the code update (v29 = HEAD) is what matters for processBatch; the deployments serve the web-app actions. Let me confirm which deployment the webhook actually calls (the one dao_protocol uses — should be @HEAD or the latest registerSingleQRCode) and update it in place so the deployed webhook serves v29 too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3532,6 +3518,7 @@ Both deployments are effectively live:
 - **1MnAsI → v29 = @HEAD** — processBatch runs in editor/trigger context (not URL-routable), and that context always executes HEAD = v29 with the #417 self-installer. The webhook deployments are untouched (they serve registerSingleQRCode, which #417 doesn't change).
 
 Quick sanity check that the 1UrBg PROD exec URL is serving without error:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3780,4 +3767,73 @@ The admin id_token didn't decode (may be truncated or the claims shape differs),
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "=== clasp/cred files ===" && ls -la /home/ubuntu/.clasprc* /root/.clasprc* /home/ubuntu/creds/ 2>/dev/null; echo "=== env google creds; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc.json')) t = rc.get('tok; cd /tmp && python3 - << 'PYEOF' import json for f in ['/home/ubuntu/.clasprc.json', '/home/ubuntu/.clasprc-gary.json', '/home/ubuntu/.claspr; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+and share the script with garyjob@agroverse.shop
+
+
+### 🤖 Autopilot
+
+Understood — the governor wants: **transfer the 1UrBg script's ownership to admin@truesight.me** (so it can be deployed under admin and emails send as admin@truesight.me), **and share it with garyjob@agroverse.shop** (so Gary keeps access after the transfer).
+
+That's a significant action — I'll state it plainly, then execute via the Drive API using the gary token (the current owner). First, check the gary token's scopes to see if the Drive API transfer is even possible from here:
+
+
+### 🤖 Autopilot
+
+The gary token may be expired. Let me refresh it and check scopes:
+
+
+### 🤖 Autopilot
+
+The gary token has **`drive.file`** (per-file access granted by the user, not `drive` full) — that's **insufficient to transfer ownership** of the 1UrBg project to another account. A Drive **ownership transfer** (adding a new owner via `permissions` with `role: owner` / `transferOwnership`) requires the **`https://www.googleapis.com/auth/drive`** (full Drive) scope — which this token does **not** have. Let me confirm that the transfer endpoint indeed fails (one honest probe), then report:
+
+
+### 🤖 Autopilot
+
+Confirmed — the API path is blocked as expected:
+- **`writer` permission add** → 403 "user has not granted the app write access to the file" (the `drive.file` scope only covers files the *app created*, and this OAuth client isn't the one that created 1UrBg — it's a different client from the original authoring flow)
+- **`transferOwnership`** → 403 (requires full `drive` scope, which the token lacks)
+
+So **sharing/transferring the 1UrBg script via API is not possible with the credentials on this box** — this is fundamentally a **UI action by the current owner** (Gary as garyjob@agroverse.shop) in the Apps Script editor or Google Drive:
+
+## What needs to happen (owner-only UI actions — I cannot do these)
+
+**For "deploy under admin@truesight.me" + "share with garyjob@agroverse.shop":**
+
+Option 1 — **Transfer ownership to admin, then share back with gary:**
+1. Gary opens **https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit** (as garyjob@agroverse.shop)
+2. **⋮ → Share → change "Restricted" to "Anyone with the link"** (or add admin@truesight.me directly as Editor)
+3. Then **⋮ → Transfer ownership** → enter `admin@truesight.me` → confirm
+4. (After transfer) the project is admin's; **share back with garyjob@agroverse.shop as Editor** so Gary keeps access
+5. Tell me when done → I deploy/invoke under the admin credential (already on the box, refreshed + verified)
+
+Option 2 — **Just share (no transfer):**
+1. Gary: 1UrBg editor → **⋮ → Share → add `admin@truesight.me` as Editor** (keep gary as owner)
+2. Admin (as collaborator/Editor) can then open the editor, run any MailApp function once → **grant OAuth consent** → emails then send as admin@truesight.me (MailApp in a shared script runs as the account that authorized it)
+3. Tell me when done → I re-invoke the resend URL
+
+**Key technical note for the governor:** for a **web-app deployment**, MailApp runs **as the script owner** (not the caller) — so to make the tree-planted emails send as admin@truesight.me, **admin must be the owner (transfer) OR admin must be the one who authorizes/runs** — the *share-as-editor + admin-authorizes* path (Option 2) also works because MailApp executes as the account that granted OAuth authorization in the deployment context. The cleanest is Option 1 (transfer ownership → admin owns → admin's OAuth → emails as admin@).
+
+**I've staged everything I can:** both clasp credentials on this box (`.clasprc-gary.json` = garyjob, `.clasprc-admin.json` = admin@truesight.me — refreshed, verified it reads 1MnAsI). The moment ownership/sharing is done in the UI, I can deploy 1UrBg under admin and invoke the resend.
+
+## RESUME HERE →
+1. **Gary: perform Option 1 (transfer to admin@truesight.me + share back with garyjob)** — or Option 2 (share admin as Editor) — in the 1UrBg editor UI (I cannot: API blocked by scope — proven above)
+2. **Tell me done** → I deploy 1UrBg under admin (clasp with `.clasprc-admin.json`), invoke the resend URL → expect genuine success (quota reported) → **verify actual delivery** (HTML MIME part in the admin mailbox) → AB1781 gets a real stamp
+3. **LINK-flow hardening** (the same swallowed exception in the original LINK call site — fix now that the root cause is known)
+4. Final report to the governor
+
+**✅ Actions this turn:** refreshed the gary token, enumerated its scopes (no full `drive` — only `drive.file`), **proved via API** that writer-add + transferOwnership are both 403 (token lacks the scope / app lacks file write grant), confirmed this must be an owner UI action, laid out the two UI options + the technical note about who MailApp runs as. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request # check gary token scopes via tokeninfo rc = json.load(open('/home/ubuntu/.clasprc-gary.json')) t = rc; cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc-gary.json')) t; cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc-gary.json')) t = rc.get('tokens', {}).get('default', {}) body = urllib.parse.urlencode({…(+0 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request # check gary token scopes via tokeninfo rc = json.load(open('/home; cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc-gary.json
 
