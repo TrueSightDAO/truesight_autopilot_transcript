@@ -3482,6 +3482,7 @@ The stamp is **col28 = `20260821`** — identical to col10 (QR creation date) an
 ### 🤖 Autopilot
 
 The code comment is revealing: `TPL_NOTIFICATION_SENT_COL = 27` (col AB) — the stamp was **moved off col X on 2026-08-20**. So the current code stamps **col 27 (AB)**, NOT col28 (X). The col28 `20260821` value is a **stale leftover from before that move** (or manual). Let me verify: what's in col27 (AB) now (the current code's stamp), the exact send+stamp logic at 520-545, and which account MailApp uses:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3651,4 +3652,142 @@ go
 
 Executing the next unit — promote #299 (map embed) to prod via the approved single-file path, then verify live per §11. First, check beta main has the map code and get prod's current state:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go
+
+
+### 🤖 Autopilot
+
+Executing — promote the #299 map feature to prod (approved single-file path), then verify live per §11. Recon first:
+
+
+### 🤖 Autopilot
+
+Beta main has the map (25,869 B, 1 embed); prod is behind (24,777 B, 0 embeds). Promoting prod's qr/index.html to beta main's bytes:
+
+
+### 🤖 Autopilot
+
+**Promoted** (commit `16be1ce6`). Now verify prod main + poll the live page (Pages rebuild), then the §11 execution test:
+
+
+### 🤖 Autopilot
+
+Prod main verified (25,814 B, 1 map embed, 2 signed_by, qrId fix present). Live page still on the old build (24,830 B, 0 embeds) — Pages rebuild lag. Polling until it rebuilds:
+
+
+### 🤖 Autopilot
+
+**Live page rebuilt** (25,869 B, 1 map embed). Now the definitive §11 verification — execute the live page's JS with a real manifest and confirm the map iframe actually renders:
+
+
+### 🤖 Autopilot
+
+Render len 7 = the 'LOADING' placeholder — the extracted script wasn't the main render IIFE (or the async chain didn't fire). Let me inspect the page's script structure and pick the right block:
+
+
+### 🤖 Autopilot
+
+Block 1 is the main script (14,990 chars). My harness grabbed the right block but the render didn't fire — let me check how the initial load is invoked (fetch → render chain, DOMContentLoaded, or immediate):
+
+
+### 🤖 Autopilot
+
+The flow is clear: `getQrId()` reads `location.search`, then `fetch(...).then(render)`. My harness stubbed `window.location.search` but the script may read `location` directly (not `window.location`) — and my `URLSearchParams` stub needs to be the global. The render didn't fire because `getQrId()` likely returned null (my stubs don't match how the script accesses `location`). Let me check `getQrId`'s exact implementation and fix the harness:
+
+
+### 🤖 Autopilot
+
+`getQrId()` uses `new URLSearchParams(window.location.search)` — my stub's `window` object had `location` but the `URLSearchParams` global class I defined... let me check: I did define `global.URLSearchParams`. The issue may be the eval context — `window.location.search` was `'?id=FOUNDERHAUS...'` which my stub class should parse. But render didn't fire. The `fetch` stub returns `Promise.resolve(...)` and `.then(render)` — in Node that should run within the 1500ms setTimeout. Unless the eval'd code has `var` hoisting issues or my `holder` reference got shadowed (the script does `root.innerHTML = html` where `root` = `document.getElementById('root')` — my stub returns `holder`). Let me debug directly with node:
+
+
+### 🤖 Autopilot
+
+Fetch fired with the right URL, eval OK, but render didn't write — RENDER LEN stays 7 ('LOADING'). Let me debug what render is doing (unhandled rejections / which element it writes):
+
+
+### 🤖 Autopilot
+
+**Found it — `render()` writes to `document.getElementById('qr-root')`, NOT `'root'`!** My harness stubbed `'root'` (which the old test used), so the render wrote to a throwaway element and `holder` (my `'root'` stub) stayed 'LOADING'. The real page has `<div id="qr-root">`. Fixing the harness to stub `'qr-root'`:
+
+
+### 🤖 Autopilot
+
+**§11 verification PASSED on the live page:**
+- ✅ **HAS_MAP: true** — the OSM iframe renders
+- ✅ HAS_PHOTO: true — the group photo renders
+- ✅ HAS_COORDS: true — coordinates render
+- ✅ HAS_SIG: true — signed-by renders
+- ✅ HAS_ERROR: false — **no ReferenceError / no "Could not load manifest"**
+
+The QR-image check shows false because the render uses a `qr_image_url` from the manifest — my test manifest has it, but the check needle (`lineage-assets/main/pngs/FOUNDERHAUS`) may differ from what the page emits (e.g. it wraps in a different URL). Let me confirm the QR image renders too (it's the one element the governor has repeatedly needed):
+
+
+### 🤖 Autopilot
+
+The map + photo + coords + sig all render, but the QR image `<img>` didn't appear in this render (only 1 img = the photo). Earlier §11 tests showed the QR image rendering — the difference is likely which manifest field drives it (`lineage.qr_image_url` vs top-level, or a different asset branch). Let me check the QR-image render code to confirm the live page handles it (the governor has repeatedly needed all three elements):
+
+
+### 🤖 Autopilot
+
+The QR image is rendered from **`manifest.qr_image_url`** (top-level), not `lineage.qr_image_url` — my test manifest put it under `lineage` only. So the code is correct; my test data was wrong. Let me re-run with the qr_image_url at the top level (matching the real manifest — which I verified has it) and confirm all elements render:
+
+
+### 🤖 Autopilot
+
+Python `re` import ordering error — fixing:
+
+
+### 🤖 Autopilot
+
+**FULL §11 VERIFICATION PASSED — the live page renders everything the governor required:**
+
+- **IMG COUNT: 2** — QR image ✅ + tree photo ✅
+- **IFRAME COUNT: 1** — the OSM map embed ✅ (bbox around the tree, marker at −27.44301, −48.49907)
+- **HAS_COORDS: true** ✅
+- **HAS_SIG: true** ✅
+- **HAS_ERROR: false** — no ReferenceError, no "Could not load manifest" ✅
+
+## ✅ Unit complete — map feature LIVE on prod
+
+**What was done this turn (promote + verify):**
+1. **Confirmed beta main** has the map (25,869 B, 1 embed) and **prod was behind** (24,777 B, 0 embeds)
+2. **Promoted qr/index.html to prod main** (single-file Contents API write, commit `16be1ce6`, CNAME untouched — the governor-approved path)
+3. **Verified prod main** (authoritative API): 25,814 B, 1 map embed, 2 signed_by, qrId fix present
+4. **Polled the live page** through the Pages rebuild (took ~5 polls/60s) → live now serves 25,869 B with the map
+5. **§11 execution test on the LIVE page** (Node VM + the real manifest shape):
+   - **QR image `<img>`** ✅ (lineage-assets png)
+   - **Tree photo `<img>`** ✅ (the FounderHaus group photo)
+   - **OSM map iframe** ✅ (`bbox=-48.50407,-27.44801,-48.49407,-27.43801&marker=-27.44301,-48.49907`)
+   - Coordinates + signed-by + sig ref ✅, **zero errors** ✅
+
+**The live landing page now shows:** QR code image, the FounderHaus group tree photo, an embedded OpenStreetMap with a marker at the tree's location, the coordinates/state/country, and the signed event record (Gary Teh / Edgar_20260822114540_033).
+
+## RESUME HERE → (next units)
+1. **Onboarding-email re-send to Paloma**: merge #410 (processBatch `&`-vs-`?` link fix) → deploy the 1MnAsI project → clear col M (row 1781) → invoke processBatch → **verify the SENT email body has a real clickable `<a href>` link** (the 09:42Z send had raw QR text)
+2. **Tree-planted notification email (second email) — confirmed NEVER SENT** (stale `20260821` stamp copied from planting date, not a `new Date()` stamp; zero records in both mailboxes): clear the bogus AB1781 stamp → invoke `sendTreePlantedNotificationEmail_` with the real values → verify actual delivery (search paloma@ in admin@ sent)
+3. Trigger diagnosis (why processBatch fired at 09:42Z) + final report to the governor
+
+**✅ Actions this turn:** promoted #299 to prod (commit `16be1ce6`), verified prod main + polled the live rebuild, §11-executed the live page JS — **all elements render (QR image, photo, map, coords, sig), zero errors**. No PRs opened/merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → beta main map check (25869 B, 1 embed); prod main (24777 B, 0 embeds) → promoted single-file (commit 16be1ce6); prod verify (25814 B, 1 embed, qrId fix); polled live Pages rebuild (24830→25869 B, 1 embed); **§11 Node VM execution of live page JS** → IMG COUNT 2 (QR + photo), IFRAME 1 (OSM map w/ correct bbox+marker), coords + sig present, no error (3405-char render)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → beta main post-#299 map code confirmed (25869 B, 1 embed); prod main behind (24777 B, 0 embeds); promoted qr/index.html via Contents API PUT (commit 16be1ce6); prod main verified (25814 B, 1 map embed, signed_by ×2, qrId fix ×2); live page still on old build (24830 B) → polled 5×15s → rebuilt (25869 B, 1 embed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → beta main post-#299 (map present 25869 B); prod current (24777 B, 0 map) → promoted via Contents API (commit 16be1ce6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed '; cd /tmp && PAT=$(cat /tmp/pat.txt 2>/dev/null || grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '; cd /tmp && PAT=$(cat /tmp/pat.txt) && echo "=== prod main verify (authoritative) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/; …(+5 more)
 
