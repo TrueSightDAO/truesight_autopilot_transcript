@@ -8,56 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-#409 is open, mergeable, 3 commits (allow-list + ledgerName-derived contributor). The LINK **must not run** until this is merged + deployed (production would otherwise hardcode `- agl4`). Merging it now per the authorized "review → merge → deploy" flow:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-✅ **Merged — tokenomics #409** (sha `d183155`) — the allow-list generalization + ledgerName-derived contributor.
-
-## What I did this turn
-
-**Caught a critical issue before running the LINK (the right call):**
-The #409 branch originally **hardcoded `'SunMint Tree Planting Contract - agl4'` for ALL main-ledger routes** — meaning the FounderHaus Bougainvillea QR would have booked with the *wrong contributor string* (agl4's, not main's), exactly what the governor said NOT to do. The sale-time booker (`sales_update_main_dao_offchain_ledger.js` line 199) also hardcodes agl4, so there was no dynamic derivation to copy — I added one.
-
-**The fix (added to #409 before merge):**
-- `appendTreePlantingLedgerFulfillment_` now derives the contributor from the ledger URL:
-  ```js
-  const ledgerName = (ledgerUrl || '').toString().trim().split('/').filter(Boolean).pop() || 'main';
-  [today, message, `SunMint Tree Planting Contract - ${ledgerName}`, -1, 'Cacao Tree To Be Planted', '', true]
-  [today, message, `SunMint Tree Planting Contract - ${ledgerName}`, 1, 'Cacao Tree Planted', '', true]
-  ```
-- agl4 → `SunMint Tree Planting Contract - agl4` (unchanged, backwards-compatible); main → `SunMint Tree Planting Contract - main`; any future allow-listed ledger gets the right name automatically.
-- Verified: branch tip (commit `fab8a90`) has `ledgerName` ×5, zero `- agl4` hardcodes, zero PLACEHOLDER, syntax OK.
-
-**⚠️ Process note (honest):** mid-way I made an error — I first uploaded `PLACEHOLDER` as the file content (would have wiped the file). I caught it immediately and restored the full patched file (commit `fab8a90`). Verified via the authoritative Contents API. The branch is correct.
-
-**Merge:** #409 merged (`d183155`) — but **NOT yet deployed**. This is why I did NOT run the LINK event this turn: the production GAS deployment still runs the #406-era code (hardcoded `- agl4`), so running the LINK now would book the wrong contributor. The deploy MUST happen first.
-
-## RESUME HERE → (PART 3/4 continues)
-
-1. **Deploy #409 to GAS** (pull-first per convention) → **update the PROD deployment in place** (`clasp deploy --deploymentId AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X`) — the @13→@17 lesson: don't leave prod pinned to old code — then verify live (pull-back shows `ledgerName` + `sunmint/main` in the allow-list)
-2. **Run the LINK event** (dao_client CLI, governor-signed): `--qr-code FOUNDERHAUS_BOUGAINVILLEA_20260821_1 --sunmint-submission-message-id Edgar_20260821175134_006` → invoke the production processor
-3. **Verify**: QR row 1781 → ASSIGNED_TO_TREE; SunMint row 16 → LINKED; main ledger "offchain transactions" → fulfillment pair with contributor **`SunMint Tree Planting Contract - main`** (NOT agl4)
-4. Also pending: merge truesight_me_beta #295 (MAIN pledge page) → promote to prod; the QR-PNG decision; SunMint row 16 Submitted Name/lat-long fix
-
-**✅ Actions this turn:** diagnosed the hardcoded-contributor bug in #409, fixed it (ledgerName derivation), verified the branch, merged #409. One PR merged — stopping per the one-PR-per-turn rule. LINK event deliberately NOT run (would have booked wrong contributor — deploying first).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/tree-planting-main-ledger-allowlist/google_app_scripts/1Ur; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n; cd /tmp && rm -rf ptpl409fix && mkdir ptpl409fix && cd ptpl409fix && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/; …(+3 more)
-• `upload file to github` → https://github.com/TrueSightDAO/tokenomics/blob/fix/tree-planting-main-ledger-allowlist/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_planting_link.js
-• `merge pr` → ✅ PR #409 on tokenomics merged successfully (sha: d1831555cbc1a1279ef9bcbc9177ee7922fd8ff7). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
@@ -3580,6 +3530,7 @@ The admin clasprc's id_token didn't parse in my quick script — let me decode i
 ### 🤖 Autopilot
 
 The admin token's `id_token` didn't decode (empty output) and the access token is **expired/refreshing-needed** (401 on both projects). Let me refresh the admin token using its refresh_token (the standard OAuth refresh flow) and then retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3589,6 +3540,7 @@ Decisive result:
 - admin@truesight.me **CANNOT see 1UrBg** (403 PERMISSION_DENIED) — admin is **not a collaborator** on the 1UrBg project (owned by garyjob@agroverse.shop)
 
 So "deploy under owner admin@truesight.me" for the 1UrBg project **isn't directly possible** — the deployment/authorization of 1UrBg is bound to its owner garyjob@agroverse.shop. The owner must grant OAuth consent as garyjob. Let me verify the id_token email to be complete, and check whether there's any path (can admin be added? is there a transfer? or should we instead consider the deeper design question — should the tree-planted notification run from the admin-owned 1MnAsI project instead?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3638,11 +3590,13 @@ and share the script with garyjob@agroverse.shop
 Understood — the governor wants: **transfer the 1UrBg script's ownership to admin@truesight.me** (so it can be deployed under admin and emails send as admin@truesight.me), **and share it with garyjob@agroverse.shop** (so Gary keeps access after the transfer).
 
 That's a significant action — I'll state it plainly, then execute via the Drive API using the gary token (the current owner). First, check the gary token's scopes to see if the Drive API transfer is even possible from here:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gary token may be expired. Let me refresh it and check scopes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3842,4 +3796,51 @@ That one grant is the fix — after it, the production resend action will genuin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && git checkout origin/main -- google_app_scripts/1Ur; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== sav; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploy ; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+how come when I run processTreePlantingLinkCron with row 1781 column AB empty, no email was sent out?
+
+
+### 🤖 Autopilot
+
+Good question — let me verify against the actual code rather than guess. Checking what `processTreePlantingLinkCron` is, how the LINK flow decides to send, and the exact stamp/send behavior:
+
+
+### 🤖 Autopilot
+
+`processTreePlantingLinkCron` at line 624 — let me read its full body + the LINK processor's send/stamp logic to answer precisely why no email fired when AB was empty:
+
+
+### 🤖 Autopilot
+
+Now I can answer precisely — the code explains it.
+
+## Why running `processTreePlantingLinkCron` sent no email
+
+**The cron doesn't re-send notifications — it only processes NEW link events.** Three reasons compound:
+
+**1. The processor reads the *source* sheet (Telegram Chat Logs), not the QR sheet.**
+`processTreePlantingLinkCron()` (line 624) just calls `processTreePlantingLinksFromTelegramChatLogs()`, which scans **SOURCE_SHEET** (`Telegram Chat Logs`) for rows that look like unprocessed `[TREE PLANTING LINK EVENT]` messages. Row 1781 in the **"Agroverse QR codes"** sheet isn't an input event — it's an output (the QR row the link *writes to*). Clearing AB on the QR row doesn't create a pending event in the source sheet, so the processor finds nothing new to do.
+
+**2. The already-processed LINK is deduped.**
+The tracking tab dedups by source row number (the code comment: "Idempotent: the processor's tracking tab dedup (by source row number) prevents double-processing"). The real LINK (`Edgar_20260822114540_033`, tracking `LINKED / OK`) was already consumed at 11:45Z. On every subsequent run — including your cron run — the processor skips it. It will never re-enter the LINK handler for that row, and **the notification send only happens inside the LINK handler** (line ~612: `if (ownerEmail) { sendTreePlantedNotificationEmail_(...) }`). No new link → no send → AB untouched.
+
+**3. Even if it did try to send, MailApp is still unauthorized.**
+`sendTreePlantedNotificationEmail_` (line 269) wraps `MailApp.sendEmail` in its own try/catch that logs and never rethrows — so the `script.send_mail` permission error ("You do not have permission to call MailApp…") is swallowed silently. That's the exact bug #416 surfaced in the resend path; the **LINK-flow call site still has the same swallowing behavior** (this is the "LINK-flow hardening" item from the governor's earlier note).
+
+**Bottom line:** the AB column is a *stamp* written only on a genuine send, not a *flag the cron polls*. The email is a side-effect of linking a *new* tree. To send it for row 1781, the correct paths are:
+- **`authorizeMailApp()`** (deployed, PROD @25) — run it once in the editor to grant `script.send_mail`, **then**
+- invoke the **resend action** `?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` (which #416 made to surface real errors + stamp AB on genuine success)
+
+The cron approach can't deliver this email by design — it processes new events, not retroactive sends for already-linked rows.
+
+**Worth fixing (propose):** harden the LINK-flow call site (`sendTreePlantedNotificationEmail_`) to rethrow/surface MailApp failures — so future real LINK events don't silently fail to notify owners, and add the notification to a visible retry/alert path (e.g. the existing `sendProcessBatchAlert_`-style alert). Want me to open that PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== processTreePlantingLinkCron full body (618-654) ===" && sed -n '618,654p' ptpl.js && echo "" && echo "=== LINK processo
 
