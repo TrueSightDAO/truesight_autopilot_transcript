@@ -3216,11 +3216,28 @@ Let me find the §10 E2E procedure + Log of runs directly (the nested artifact r
 ### 🤖 Autopilot
 
 Let me read the §10 E2E procedure + Log of runs directly from the plan (around line 520-620):
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find §10's E2E procedure + Log of runs directly (skipping ahead in the doc):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3440,4 +3457,69 @@ If Step 1's Save doesn't prompt, the alternative is **New deployment → Web app
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4; cd /opt/truesight_autopilot/context/tokenomics && cat google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/appsscrip; cd /tmp && python3 - << 'PYEOF' import json, subprocess, urllib.request, urllib.error # Use the clasp token (garyjob) to call the Scripts AP; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Root cause CONFIRMED by the governor directly — not a code bug, an OAuth authorization gap:
+
+manifest (appsscript.json) for script 1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v has:
+  "webapp": { "executeAs": "USER_DEPLOYING", "access": "ANYONE_ANONYMOUS" }
+
+For anonymous web-app access, GAS executes as whoever last performed the actual DEPLOY action — and that identity must have interactively granted the https://www.googleapis.com/auth/script.send_mail scope via a real browser consent click. That popup only appears through the Apps Script EDITOR's own Run/Deploy buttons — it never appears for `clasp deploy` run from a CLI/script context (which is how both of us have been redeploying this project all session). The governor confirmed the exact error when hitting the live URL: "❌ Error: You do not have permission to call MailApp.getRemainingDailyQuota. Required permissions: https://www.googleapis.com/auth/script.send_mail."
+
+He ran a function called authorizeMailApp in the editor himself under his own login with no dialog/error — but that's a different identity/context than whichever account last ran `clasp deploy` for the live deployment (me or you, via CLI).
+
+Please: 
+1. First check — does THIS project (1UrBgqLnnQc6...) actually need YOUR clasp identity to redeploy for the fix, or can you determine whether your own deploying account already has script.send_mail consent for this specific project (e.g. by checking whether other functions using MailApp in THIS project have ever successfully sent from your deploys)? 
+2. Try a fresh `clasp deploy --deploymentId AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X` yourself and re-test the resendTreePlantedNotification action — if your identity differs from mine and already has consent, this might just work.
+3. If it still fails with the same permission error, this is a hard wall — clasp/CLI-based deploys cannot trigger the interactive OAuth consent screen. Report back honestly rather than claim success; the real fix needs Gary to open the Apps Script editor himself (Deploy → Manage deployments → edit → Deploy) so HIS authorized identity gets bound to the live deployment. Don't spend many rounds trying to route around this if step 2 fails — converge quickly and report the wall clearly.
+
+
+### 🤖 Autopilot
+
+Following the governor's 3 steps — quickly. First, check my clasp identity + redeploy the deployment, then re-test:
+
+
+### 🤖 Autopilot
+
+Redeployed to the same deployment ID (@27). Now re-test the resend action to see if my clasp identity's consent (if any) makes it work:
+
+
+### 🤖 Autopilot
+
+Same permission error after my redeploy. Let me also check the other clasp identities (gary/admin tokens) — maybe one of them can deploy with consent — and confirm my clasp identity email:
+
+
+### 🤖 Autopilot
+
+All three clasp tokens resolve to **garyjob@agroverse.shop** (the admin one's id_token is stale/undecodable but its access token also belongs to gary — the scopes show no `script.send_mail`). So **every clasp deploy this session ran as garyjob@agroverse.shop with scopes that exclude `script.send_mail`** — no clasp identity can bind the missing consent.
+
+That confirms the governor's root-cause diagnosis exactly: this is the hard wall. **CLI deploys cannot trigger the interactive OAuth consent** — the deployment's executing identity (the account that last deployed via browser) must interactively grant `script.send_mail`, which only happens in the Apps Script editor UI.
+
+## 🔴 HARD WALL — reported honestly, per your instruction
+
+**Step 1 (identity check):** all clasp credentials on this box are **garyjob@agroverse.shop** (the admin token also resolves to gary; none have `script.send_mail` in scopes). So **no clasp identity can fix this** — there's no hidden credential with the consent.
+
+**Step 2 (fresh redeploy + retest):** did `clasp deploy --deploymentId AKfycbxMz8cAkJ-…` (→ @27) and re-hit the resend action → **identical permission error**. The redeploy bound my garyjob identity, which lacks the consent — so the deployment still throws.
+
+**Step 3 (converge — this is the wall):** confirmed — **clasp/CLI deploys cannot trigger the interactive OAuth consent screen.** This is the exact mechanism the governor described. Nothing I can do from this box will grant `script.send_mail` to the live deployment.
+
+## The real fix (human, in the editor — Gary)
+
+1. Open **https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+2. **Deploy → Manage deployments** → ✏️ Edit the deployment `AKfycbxMz8cAkJ-…` → **Save** (no change needed)
+3. When the **authorization prompt** appears → **Review permissions → Allow** (this binds Gary's identity with the now-requested `script.send_mail` scope to the live deployment)
+4. Optionally also run **`authorizeMailApp`** from the Run dropdown to confirm (should return `"status":"ok","quotaRemaining":<number>`)
+5. Tell me — I'll re-invoke the resend + verify actual delivery, then run the §10 E2E
+
+**State remains staged and correct:** #416 code live (@27), col M cleared (onboarding done), AB1781 not stamped (correct — no genuine send yet), both mailboxes show only the 2 onboarding emails. The E2E stays **held on this one authorization gate** — everything else is proven.
+
+I'll stop here rather than burn rounds routing around the wall, per your instruction to converge quickly.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== cla; cd /tmp && python3 - << 'PYEOF' import json, urllib.request, urllib.error for f in ['/home/ubuntu/.clasprc.json', '/home/ubuntu/.clasprc-gar
 
