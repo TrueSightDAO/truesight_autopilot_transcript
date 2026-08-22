@@ -3411,6 +3411,7 @@ The watcher isn't available here (topic-only tool) — I'll verify Pages rebuild
 Good — I now have the tracking data (update ID `Edgar_20260822114540_033` for the FounderHaus LINK, by Gary Teh at 11:45:52Z). The manifest's events don't carry the signature/txid yet, but the tracking tab does have the identifiers. The RSA-signature visibility item means: the provenance page should show the signed-event identifiers (update ID + signer) so the record is auditable.
 
 Let me check the QR page's event-render code and where the signature could be displayed, plus verify the Pages rebuild status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3550,4 +3551,80 @@ Governor: set QR row 1781's state/country columns — State = "Santa Catarina", 
 
 Executing — set State/Country on QR row 1781, then re-run the seed. First, check the current row 1781 values + the exact column indices for State/Country (to match the sheet's header mapping):
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+go — continue: finish State/Country on row 1781, merge #297 + promote qr/index.html to prod (same single-file path), then the email re-send + trigger diagnosis. Governor independently re-verified the page is rendering correctly now (manifest valid, prod has the photo fix) — the earlier "not showing" report was likely just before your promotion landed or a stale browser cache.
+
+
+### 🤖 Autopilot
+
+Executing — State/Country on row 1781, then seed, then #297 merge + prod promotion, then email. First: locate the State/Country columns (header + manifest mapping) and read current row 1781:
+
+
+### 🤖 Autopilot
+
+State = col6, Country = col7, both empty; lat/long confirmed at cols 15/16. Setting State/Country, then re-running the seed:
+
+
+### 🤖 Autopilot
+
+**State/Country set** (F1781=`Santa Catarina`, G1781=`Brazil`). Now re-run `seed_from_sheet.py` so the manifest picks up state/country (checking whether `lib/manifest.py` includes them — it may need them in the manifest shape; let me re-run the seed and inspect the regenerated manifest):
+
+
+### 🤖 Autopilot
+
+The seed wrote 1780 manifests into the local clone's fresh `qrs/` (the sparse checkout has no existing qrs, so it created all). I must NOT push that wholesale — I only need the ONE FounderHaus manifest, and I must confirm it preserved the `sig_ref`/`signed_by` enrichment (build_manifest is supposed to preserve non-seed events). Checking the regenerated file:
+
+
+### 🤖 Autopilot
+
+⚠️ **The seed regenerated the manifest and LOST my enrichment** — `signed_by`/`sig_ref` are gone from the planted event (seed event types get rebuilt from the sheet, not preserved). The governor's state/country change is in ✅, but I must **re-apply the signature enrichment** and push ONLY this one file (not the 1780-file wholesale). Fixing:
+
+
+### 🤖 Autopilot
+
+**Manifest updated** (commit `113e5102`) — now has `state: Santa Catarina`, `country: Brazil` (from the sheet) AND re-applied `signed_by`/`sig_ref` on the planted event. Let me verify the live manifest quickly, then merge #297 + promote to prod:
+
+
+### 🤖 Autopilot
+
+**Manifest verified live**: state `Santa Catarina`, country `Brazil`, planted event has `signed_by`/`sig_ref`. Now merge #297 + promote qr/index.html to prod (the governor's "go" authorizes it):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — truesight_me_beta #297** (sha `cb91601a`) — the RSA-signature visibility fix.
+
+## What I did this turn
+
+1. **State/Country on QR row 1781** (governor ask): `F1781 = Santa Catarina`, `G1781 = Brazil` (cols 6/7 per the sheet header — both were empty) ✅
+2. **Re-ran `seed_from_sheet.py`** — regenerated the manifest with `lineage.state: Santa Catarina` / `lineage.country: Brazil` ✅
+3. **⚠️ Caught a regression the seed caused**: `seed_from_sheet.py` rebuilds seed events from the sheet, **dropping my earlier `signed_by`/`sig_ref` enrichment** on the planted event. I **re-applied it** (signed_by Gary Teh, sig_ref `Edgar_20260822114540_033`) and pushed ONLY the one file (not the 1780-manifest wholesale the seed produced) — commit `113e5102` ✅
+4. **Verified live manifest (authoritative API)**: state `Santa Catarina`, country `Brazil`, planted event carries `signed_by` + `sig_ref` ✅
+5. **Merged truesight_me_beta #297** (commit `cb91601a`) — `renderEvents()` now displays `· signed by <signed_by>` + `ref <sig_ref>` on events when present (the RSA-signature visibility item, page side)
+
+**Note for the future (self-improvement):** the seed script's event rebuild means any manifest enrichment done outside the seed gets lost on the next seed run — worth a follow-up fix (preserve non-seed event fields in `build_manifest`), but not blocking.
+
+## RESUME HERE → (final items)
+
+1. **Promote qr/index.html to prod** (single-file Contents API write to `truesight_me_prod` main — the same path I used for the photo fix, CNAME untouched) → verify `https://truesight.me/qr/?id=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` renders the signature line (`signed by Gary Teh` + `ref Edgar_20260822114540_033`) alongside the QR image, inline tree photo, coordinates, state/country
+2. **Onboarding-email re-send to Paloma**: clear col M (row 1781) → invoke `processBatch()` (project 1MnAsI…, line 1846; tracking link = col-B + `?qr_code=`, which is now the correct `/qr/?id=` URL) → **verify the re-sent email body contains the real clickable link** (the 09:42Z send had raw QR text) → confirm delivery
+3. **Trigger diagnosis** (governor's original PART 4/4 ask): check the 1MnAsI project's installed triggers — why did processBatch fire at 09:42Z? (scheduled trigger vs manual) — so future onboarding emails are reliable
+4. Final report to the governor
+
+**✅ Actions this turn:** set State/Country (row 1781), re-ran seed + re-applied signature enrichment + pushed manifest (commit `113e5102`), verified live manifest, merged #297. One PR merged — stopping per the one-PR-per-turn rule. Prod promotion of qr/index.html + email re-send are the next units (fresh turn).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w; cd /tmp && rm -rf seed_run && mkdir seed_run && cd seed_run && echo "=== clone lineage-assets scripts ===" && git clone --depth 1 --filter=b; cd /tmp/seed_run/lineage-assets && echo "=== regenerated FounderHaus manifest ===" && cat qrs/FOUNDERHAUS_BOUGAINVILLEA_20260821_1.json 2>/d; …(+2 more)
+• `merge pr` → ✅ PR #297 on truesight_me_beta merged successfully (sha: cb91601a1ee28cbef8e9f9b424357531dd10b8d4). Pull Request successfully merged
 
