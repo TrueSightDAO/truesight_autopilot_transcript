@@ -10,110 +10,6 @@
 
 ### 🤖 Autopilot
 
-Two findings:
-1. **`/sunmint-tree-planting-pledges/sef1` resolves (200)** but `/main` is **404** — the registry page for `main` doesn't exist yet. The pages live somewhere (probably a truesight_me or truesight_me_beta repo path). I need to create the registry page for `main` (that's the "public profile page" the governor wants).
-2. The gspread update had a quoting issue (nested list) — let me fix the landing cell write properly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Landing cell set. The org code-search returned nothing (auth-limited). Let me find where the pledges pages live — check truesight_me_beta/truesight_me repos for the `sunmint-tree-planting-pledges` path, and read the existing `sef1` page as the template:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The pledges pages aren't in truesight_me(_beta) under obvious paths. The live site serves `/sunmint-tree-planting-pledges/sef1` (200) — let me find the actual repo serving truesight.me (the site origin) and look for the `sunmint-tree-planting-pledges` directory in the org repos, plus check redirects/sunmint:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the registry pages: **`truesight_me_beta`** has `sunmint-tree-planting-pledges/<ledger>/index.html` for agl0–agl14, pp1, sef1 (both at root and under `static/`). No `main` yet — that's the page I need to create. Let me read the `sef1` page as the template (it's the closest analog — a sunmint ledger registry page):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the sef1 page as template (12,185 bytes — title, og tags, h1, `data-trees-sold` widget, image, description). The page reads data from the QR sheet via `data-shipment-id`. Let me read the full body to replicate it accurately for `main`:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the template. Now let me read the full sef1 page body so I can adapt it for `main` (and check whether the live site serves from root or `static/`):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full template. Now building the `main` registry page (adapting sef1 → main: FounderHaus Bougainvillea, planted by Paloma Lecheta + FounderHaus volunteers, data-shipment-id="main", status ACTIVE, pledge date Aug 21 2026) — creating it in **both** root and `static/` paths (the existing pattern in truesight_me_beta):
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #295 opened** (truesight_me_beta, commit `1ee6952`). Let me verify the branch files landed correctly (sizes, key content):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #295 verified** — both page copies landed (8,932 bytes each, matching content): title "MAIN · Sunmint Tree-Planting Pledge", `data-shipment-id="main"` ×2 (live tree count widget), FounderHaus references ×8.
-
-## PART 2/4 — registry/landing page done (PR ready)
-
-**What I did:**
-1. **Checked the convention** — all existing sunmint pledges use `https://www.truesight.me/sunmint-tree-planting-pledges/<ledger>` (pp1, sef1, agl0–agl14). The live `/sef1` resolves (200); `/main` was 404.
-2. **Set the QR landing cell** (row 1781, col B) → `https://www.truesight.me/sunmint-tree-planting-pledges/main` ✅
-3. **Found the registry source**: `truesight_me_beta` (and prod) host the pages at `sunmint-tree-planting-pledges/<ledger>/index.html` (both root + `static/` paths).
-4. **Opened truesight_me_beta PR #295** (`feat/sunmint-main-pledge-page`, commit `1ee6952`): the **MAIN pledge registry page** — title "MAIN · Sunmint Tree-Planting Pledge", live `data-trees-sold` widget keyed `data-shipment-id="main"`, status ACTIVE, start Aug 21 2026, description naming Paloma Lecheta + FounderHaus volunteers + the Bougainvillea QR, back-link + shared nav/footer. Created in **both** root and `static/` paths (existing dual-path convention).
-5. **Verified**: both files 8,932 bytes, correct title + data-shipment-id + FounderHaus content.
-
-## ⚠️ The QR-PNG question (governor asked me to confirm, not assume)
-
-I have **not** generated a physical printable QR PNG. Per your instruction: the primary goal is **Paloma's onboarding email + a public profile page** — a physical QR code for her to scan may not be needed. **My recommendation:** skip the QR PNG for now (the sheet record + registry page + email cover the goal); if a physical code is wanted later, the QR-generation pipeline (per AGROVERSE_QR_CODE_BATCH_GENERATION.md) can produce it then. **Please confirm** whether you want the printable QR PNG generated or not.
-
-## RESUME HERE →
-1. **Merge truesight_me_beta #295** → promote to prod (`sync_beta_to_prod truesight_me_prod` after review) → verify `/sunmint-tree-planting-pledges/main` returns 200
-2. **Merge tokenomics #409** (allow-list) → deploy to GAS → **update the PROD deployment in place** (the @13→@17 lesson — after push, run `clasp deploy --deploymentId AKfycbxMz8cAkJ-…` to repoint prod to the new version)
-3. **Decide the QR-PNG question** (above)
-4. **Fix SunMint row 16** (Submitted Name "Unknown" → Paloma Lecheta, lat/long) then run the LINK event for the real Bougainvillea
-
-**✅ Actions this turn:** set the landing URL, found the registry-page source, opened truesight_me_beta #295 (MAIN pledge page, both paths), verified it. One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → landing-page convention scan (pp1/sef1/agl* pattern), set QR B1781 = https://www.truesight.me/sunmint-tree-planting-pledges/main, verified /sef1=200 /main=404, located registry in truesight_me_beta (root + static/), read sef1 template
-• `git push changes` → truesight_me_beta #295 (MAIN page ×2 paths, commit 1ee6952) + verified (8,932 B each, title + data-shipment-id="main" + FounderHaus)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') s; cd /tmp && echo "=== tree of truesight_me_beta (look for pledges) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_be; cd /tmp && echo "=== search all repos for pledges path via tree API (top likely repos) ===" && for repo in truesight_me truesight_me_beta tr; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-PART 3/4 — Link the QR to the real Bougainvillea submission: execute [TREE PLANTING LINK EVENT] (dao_client CLI, governor-signed) with qr-code = the new QR you minted, sunmint-submission-message-id = Edgar_20260821175134_006. Verify: QR row → ASSIGNED_TO_TREE, SunMint row 16 → LINKED, main ledger "offchain transactions" tab shows the fulfillment pair with your new ledger's special-case routing (not AGL4's contributor string — use a contributor name appropriate to this new ledger, e.g. "SunMint Tree Planting Contract - main" or similar, matching the pattern).
-
-
-### 🤖 Autopilot
-
-PART 3/4 — but first a critical check: the contributor string. The governor wants the new ledger's fulfillment to use `SunMint Tree Planting Contract - main` (not `- agl4`). #406/#409 hardcoded the AGL4 contributor — let me verify how the #409 branch derives it before running the LINK:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The #409 branch **hardcodes `- agl4` for ALL main-ledger routes** — that would write `SunMint Tree Planting Contract - agl4` for the FounderHaus QR, which the governor explicitly said NOT to do. I need to make the contributor **derived from the ledger URL** (last path segment → `main`), mirroring the sale-time booker. Let me check how the sale-time booker derives it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The sale-time booker **hardcodes** `'SunMint Tree Planting Contract - agl4'` too (line 199) — there's no dynamic derivation there either. So the pattern is: a fixed contributor per ledger. For the new MAIN ledger, the right contributor is `SunMint Tree Planting Contract - main`. 
 
 The cleanest fix: derive the ledger name from the URL (`https://truesight.me/sunmint/main` → `main`) so the contributor is `SunMint Tree Planting Contract - <ledgerName>` — keeping agl4 → `- agl4` and main → `- main` automatically, and any future allow-listed ledger gets the right name. Let me update the #409 branch with this derivation, then verify:
@@ -3563,6 +3459,7 @@ Go and invoke https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm
 ### 🤖 Autopilot
 
 Invoking the resend action on the production URL — the moment of truth for the MailApp diagnosis:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3579,6 +3476,7 @@ This is **the authorization problem** (the governor's hypothesis #1), not quota 
 **The fix (as the governor predicted):** someone with access to the 1UrBg project's editor needs to **open the Apps Script editor and manually run any function that uses MailApp once** — that triggers the OAuth consent screen, grants `script.send_mail`, and then the resend will genuinely work.
 
 I cannot do this myself (it requires a human browser session / the script owner's OAuth flow). Let me check if there's anything else I can verify meanwhile — the AB stamp state (should NOT have been stamped, since the send threw before the stamp):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3836,4 +3734,84 @@ Option 2 — **Just share (no transfer):**
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request # check gary token scopes via tokeninfo rc = json.load(open('/home; cd /tmp && python3 - << 'PYEOF' import json, urllib.parse, urllib.request, urllib.error rc = json.load(open('/home/ubuntu/.clasprc-gary.json
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+we need a function which could trigger the permission invoke dialogue in the editor. Deploy again with that. Make sure function is public
+
+
+### 🤖 Autopilot
+
+Adding a public `authorizeMailApp()` function to the 1UrBg project — running it in the editor will trigger the OAuth consent screen for `script.send_mail` (and the project's other scopes), so the MailApp authorization gets granted. First, get the current git-main file and verify the local project folder state:
+
+
+### 🤖 Autopilot
+
+Now let me add the `authorizeMailApp()` function to the synced project file, verify syntax, and check the current doGet handler to make the function properly callable:
+
+
+### 🤖 Autopilot
+
+Now adding the public `authorizeMailApp()` function — it calls `MailApp.getRemainingDailyQuota()` (which requires `script.send_mail`), so running it in the editor triggers the OAuth consent screen, and it returns the quota as proof. Appending to `process_tree_planting_link.js`:
+
+
+### 🤖 Autopilot
+
+Function added + syntax OK. Now let me open a PR for this change (the proper flow — the governor's standing authorization covers PR→merge), push it to git, and then deploy to GAS. First the PR:
+
+
+### 🤖 Autopilot
+
+`git_push_changes` needs content passed in the call — since the file is already modified locally, I'll use the raw GitHub API path (branch + Contents PUT + PR) which I've used successfully before. Reading the local file and pushing:
+
+
+### 🤖 Autopilot
+
+**PR #418 opened** (https://github.com/TrueSightDAO/tokenomics/pull/418). Now, per the governor's instruction "Deploy again with that" — they want it deployed to GAS. Let me merge #418 and deploy to the 1UrBg project + update the PROD deployment in place, then verify the function is live:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #418** (sha `985d4378`) — the public `authorizeMailApp()` function.
+
+## What I did this turn
+
+**Added the OAuth-consent trigger function** the governor asked for:
+
+1. **Added `authorizeMailApp()`** to `process_tree_planting_link.js` (1UrBg project) — a **public function** (no doGet/doPost routing needed) that calls `MailApp.getRemainingDailyQuota()` and returns the quota as JSON. **Running it once from the Apps Script editor** (function dropdown → `authorizeMailApp` → Run) triggers the **OAuth consent screen**; approving it grants `script.send_mail` — the missing authorization that's been silently blocking every tree-planted notification email. Syntax verified (`node --check` OK).
+2. **Opened + merged #418** (sha `985d4378`) via the raw GitHub API path (branch `feat/authorize-mailapp-function`, Contents PUT + PR — `git_push_changes` needed inline content I didn't pass).
+
+## RESUME HERE → (next unit — deploy + use it)
+
+1. **Deploy to GAS**: pull the 1UrBg project to main → `clasp push` → save version → **update the PROD deployment in place** (@24 → @25, the pin lesson) — so `authorizeMailApp` is live in the editor
+2. **Gary (as garyjob, the owner):** open the 1UrBg editor → Run dropdown → **`authorizeMailApp`** → Run → **approve the OAuth consent** (grants `script.send_mail`) → the returned JSON shows the quota
+3. **Re-invoke the resend**: `…/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → expect genuine success (with quota) → **verify actual delivery** (HTML MIME part in the mailbox) → AB1781 gets a real stamp
+4. **LINK-flow hardening** (the same swallowed exception in the original LINK call site — now that the root cause is known) + final report
+
+**✅ Actions this turn:** added `authorizeMailApp()` (public, quota-returning), opened #418, merged it (sha `985d4378`). One PR opened + one merged — stopping per the one-PR-per-turn rule. Deploy + Gary's one-click OAuth grant + the resend invocation are the immediate next unit.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → synced 1UrBg folder to git main; read appsscript.json (webapp executeAs USER_DEPLOYING, ANYONE_ANONYMOUS); appended authorizeMailApp() (line 715, quota-returning, syntax OK)
+• `ssh run` ×1 → raw API: branch created (201), Contents PUT (200), PR #418 opened (201)
+• `merge pr` → ✅ #418 merged (sha 985d4378)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && cd google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo; cat >> process_tree_planting_link.js << 'EOF' ... authorizeMailApp() ... EOF; node --check OK (line 715)
+• `ssh run` → raw API branch/commit/PR (201/200/201)
+• `merge pr` → ✅ PR #418 merged (sha: 985d4378d4a2bfeadb6e5f2fdedf8fb039dcb4fd)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main 2>&1 | tail -1 && cd google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu6; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== app; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cat >> proces; …(+1 more)
+• `merge pr` → ✅ PR #418 on tokenomics merged successfully (sha: 985d4378d4a2bfeadb6e5f2fdedf8fb039dcb4fd). Pull Request successfully merged
 
