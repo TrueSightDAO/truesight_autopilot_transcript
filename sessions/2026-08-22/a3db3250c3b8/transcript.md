@@ -3429,16 +3429,19 @@ The right move per the governor: **fix `processBatch`** (both bugs) → deploy �
 ### 🤖 Autopilot
 
 Fixed file built (86,648 bytes, link-construction fix applied, syntax OK). Now push it to the #410 branch (replacing the emptied file) via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch fixed (commit `ffc7f02a`). Verifying the branch file is the full corrected version:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The heredoc broke on bash substitution. Let me write the verification as a file instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3640,4 +3643,19 @@ The governor independently found the exact same bug I had just diagnosed and fix
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #298 on truesight_me_beta merged successfully (sha: 28ee6c1638293d987b8f0e4dbb7f149709ba589f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Process fix, applies beyond this task: documented the manifest-scope-bug as a postmortem in OPERATING_INSTRUCTIONS.md §11 (agentic_ai_context PR #789, open for review) — broadened it beyond its original registration-flow-scoped examples to any page with client-side rendering logic. Going forward: curl/grep (status code, byte count, string presence) only proves a file deployed — it does NOT prove the JS executes correctly. Before reporting ANY page-load verification as done, actually execute the JS (headless browser / Puppeteer per §11's existing methodology, or manually load the page and check the browser console) — a one-off ad-hoc script is fine for repos without existing test infra like truesight_me, no need to wire up a permanent suite every time. This applies to the current fix too — verify it this way before reporting done.
+
+
+### 🤖 Autopilot
+
+Understood — the §11 postmortem rule applies to this fix too: verify by **actually executing the JS**, not curl/grep. Executing now: promote #298's fix to prod, then verify BOTH beta and prod by executing the page's JS in a headless renderer (Node VM harness — which already caught this bug once, so it's the right tool).
+
+**Step 1 — promote to prod** (single-file Contents API write, CNAME untouched, the governor-approved path):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
