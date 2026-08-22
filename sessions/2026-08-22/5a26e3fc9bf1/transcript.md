@@ -1122,11 +1122,18 @@ The image OCR is dominated by the "OBRIGADO / Thank you" slide (9 of 9). The rig
 ### 🤖 Autopilot
 
 The screenshot shows the deck at "9 of 9" — the OBRIGADO/Thank you slide — in the previous 9-slide version. Combined with the request, I read this as: remove the last two slides of the deck (the **Benchmark** slide with the external YouTube/IG links, and the **Thank you** slide) — the two least relevant for a site-inspection due-diligence narrative. Let me rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same-path save needs incremental mode — saving to a temp path instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1176,27 +1183,37 @@ eEe7_ MUNICIP!
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Same format as the previous screenshot (1280×591, PDF viewer). OCR picked up "MUNICIP!" — let me zoom in to see the full view:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — this screenshot shows the deck at **"3 of 9"** in the *older 9-slide version* — displaying an **Açaí/Cupuaçu/Camu-camu comparison** slide, plus a "MUNICIPALITY OF MANICORÉ" slide visible. Let me identify what slide 3 actually is in the current 10/8-slide deck and clarify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR is sparse on this one. The screenshot shows the PDF viewer at **"3 of 9"** of a file named `EBCF_Manicore_DueDiligence_Deck.pdf`, with matrix-like content (Açaí / Castanha-do-Brasil / Cupuaçu / Camu-camu) and "MUNICIPALITY OF MANICORÉ" visible. Let me compare against my generated decks to see which page this actually is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR of my own rendered page 3 matches the screenshot content (AMAZ / ACAI / CASTANHA-DO-BRASIL / CUPUACU / CAMU-CAMU). Let me confirm with a direct visual comparison between the screenshot and my deck's page 3:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The similarity check confirms it: the screenshot's main content matches my deck's **page 3 at 99.6%**. Let me confirm whether the screenshot shows one slide or a two-page spread, and pull the readable details:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1373,4 +1390,55 @@ If it's the **frozen pulp bags** — that's slide 6, and I'll remove it now. Jus
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && rm -rf deckpages && mkdir -p deckpages && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") for ; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") # render the image-heavy pages at higher DPI f; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") # scan all pages for bag/sale keywords in text; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Frozen pulp bags to be removed
+
+
+### 🤖 Autopilot
+
+Confirmed — removing **slide 6 (Açaí Freeze-Drying / "POLPAS CONGELADAS" — the frozen pulp cold-chain slide)** from the full deck. Rebuilding:
+
+
+### 🤖 Autopilot
+
+Deck rebuilt — 13 slides, frozen-pulp slide removed. Sending:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **13-slide deck attached** (`EBCF_Bioeconomy_Full_Deck_v2.pdf`, 7.2 MB).
+
+**Removed:** Slide 6 — *Açaí Freeze-Drying – Stage 1* (the "POLPAS CONGELADAS" frozen pulp cold-chain slide — the açaí product bags they sell).
+
+**Remaining 13 slides:**
+
+| # | Slide |
+|---|-------|
+| 1 | Bioeconomy Program (title) |
+| 2 | Amazon Ingredients Matrix |
+| 3 | Preliminary Potential Supply — Manicoré |
+| 4 | Potential Revenue + Park CAPEX |
+| 5 | Location of 10,000 m² Park land |
+| 6 | Açaí project graphic (AMAZÔNIA ingredients) |
+| 7 | **Cacao Production · Manicoré** |
+| 8 | Municipality — office + açaí factory |
+| 9 | EBCF properties — 20,000 ha |
+| 10 | 5 km radius — ~100,000 ha, 80+ communities |
+| 11 | 400 ha SAF plantation |
+| 12 | Benchmark |
+| 13 | Thank you |
+
+Note: slide 6 (the açaí project graphic with the AMAZÔNIA/Açaí/Castanha/Cupuaçu/Camu-camu icons) still shows açaí as a crop/ingredient — that's not the pulp-bag content, so I kept it. If you want that one out too (or the whole açaí product angle trimmed), say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → rebuilt deck with slide 6 removed → 13 pages, saved as v2
+• `send_telegram_attachment` → delivered 13-slide PDF to the thread
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 << 'EOF' import fitz full = fitz.open("/tmp/EBCF_Bioeconomy_Full_Deck.pdf") print("before:", full.page_count, "pages") ou
 
