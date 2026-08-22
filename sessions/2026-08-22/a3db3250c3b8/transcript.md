@@ -3204,7 +3204,13 @@ Let me read the §10 E2E procedure + Log of runs in the resume tracker section (
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me find the §10 E2E procedure + Log of runs directly (the nested artifact reads are too deep):
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3323,4 +3329,38 @@ Open the deployment URL in a browser →
 4. Invalidate the test QR + fill the §10 Log of runs row
 
 **✅ Actions this turn:** re-invoked the resend (identical permission error — no propagation yet). No PRs opened/merged. Still holding the E2E on the delivery-confirmation gate.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+share two links with me
+
+the GAS exec URL and the editor URL where I need to call the method (remind me the name of the method) to trigger the permission dialogue
+
+
+### 🤖 Autopilot
+
+Here are the two links and the method name:
+
+## 1. GAS exec URL (the deployment to authorize)
+
+**https://script.google.com/macros/s/AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZPnv5M7V_9QHKywC3aKUeaR2tqELheq3e7X/exec?action=resendTreePlantedNotification&qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1**
+
+Opening this in a browser **while logged in as garyjob** (the deployer) should trigger the authorization prompt → **Review permissions → Allow**.
+
+## 2. Editor URL (to run the method directly)
+
+**https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+
+## 3. The method to call (run from the editor's Run dropdown)
+
+**`authorizeMailApp`**
+
+Select **`authorizeMailApp`** in the function dropdown at the top of the editor, click **Run**, and approve the consent screen. It calls `MailApp.getRemainingDailyQuota()` (which requires `script.send_mail`) and returns `{"status":"ok","quotaRemaining":…}` in the execution log — so you'll see proof it authorized.
+
+⚠️ **Important caveat** (why the editor grant alone didn't fix the web app): the exec URL and the editor Run have **separate authorizations**. The editor grant covers script execution in the editor; the **deployment** (`…/exec`) carries its own grant. For the resend action on the exec URL to send mail, the deployment itself must be authorized — which is what opening the **exec URL** (link #1) in a browser as the deployer accomplishes (it prompts for the deployment's authorization). If the exec URL doesn't prompt (just shows the ❌ error), the fallback is: editor → **Deploy → Manage deployments → ✏️ Edit** the `AKfycbxMz8cAkJ-…` deployment → **Save** → approve the dialog.
+
+Do both if needed: run `authorizeMailApp` in the editor **and** open the exec URL — then tell me and I'll re-invoke the resend and verify delivery in both mailboxes.
 
