@@ -963,3 +963,74 @@ Transcript persisted for cross-session recall. If you want a title slide ("Manic
 • `ssh run` ×5 → which pdftoppm pdfinfo img2pdf; python3 -c "import PIL; print('PIL', PIL.__version__)" 2>&1; python3 -c "import img2pdf; print('img2pdf ok'); command -v pdftoppm; echo "pdftoppm_rc=$?"; command -v pdfinfo; echo "pdfinfo_rc=$?"; command -v qpdf; command -v convert; python3 -c "impor; cd /tmp && python3 << 'EOF' import fitz doc = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") print("pages:", doc.page; …(+2 more)
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-22/a6f61499d648/transcript.md
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Also generate a new slide regarding just the cacao production 
+
+Also indicate the land size
+
+
+### 🤖 Autopilot
+
+Good idea — the source deck has cacao data spread across the matrix (slide 2), supply table (slide 3), and revenue model (slide 4). I'll compile it into one dedicated cacao slide with the land figures, styled to match the deck. First, let me check the deck's page size and color scheme:
+
+
+### 🤖 Autopilot
+
+16:9 pages (1440×810pt), white backgrounds. Let me grab the deck's accent colors from the title slide and açaí slide so the new slide matches the brand:
+
+
+### 🤖 Autopilot
+
+The deck uses a green accent (158,179,46 — bioeconomy green) and light blues. Let me sample a couple more slides to confirm the palette:
+
+
+### 🤖 Autopilot
+
+Palette confirmed — brand green (158,179,46), dark green (46,71,49), light green/blue accents. Now I'll build the dedicated cacao slide (16:9, matching style) with the supply trajectory, industrial revenue, and all the land figures:
+
+
+### 🤖 Autopilot
+
+Let me render it and visually verify the layout before sending:
+
+
+### 🤖 Autopilot
+
+Layout check reveals a collision in card B (chips overlap the Stage-2 revenue line) — fixing coordinates and rebuilding cleanly, then inserting the cacao slide into the deck right after the Açaí section:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **updated deck (10 slides) attached**, with the new **Cacao Production** slide in place.
+
+**What the new slide covers:**
+
+**Cacao supply trajectory — Manicoré (t fruit/yr)**
+| Stage | Volume |
+|---|---|
+| Current (sub)registered supply | 300 – 500 t |
+| Potential supply (not registered) | 500 – 800 t |
+| Captureable w/ structured program | 700 – 1,000 t |
+| Projected 2030 — base scenario | 1,000 – 1,500 t |
+| Projected 2035 — maturity scenario | 1,500 – 2,500 t |
+
+**Industrial revenue (USD)** — Stage 1: 900 t fruit → ~101 t nibs/butter/dried almond @ USD 7/kg → **USD 0.7 M/yr**; Stage 2 (2035): 2,000 t → ~225 t → **USD 1.6 M/yr**. ANVISA ✓ / FDA ✓✓ (export-ready), chocolate + functional foods market.
+
+**Land footprint** (as requested):
+- **10,000 m²** — Agro-industrial Park land (EBCF, Manicoré)
+- **400 ha** — open area for SAF cacao plantation (option to buy/lease)
+- **20,000 ha** — EBCF properties in Manicoré
+- **~100,000 ha** — 5 km extractive impact area, 80+ communities
+
+**Placement:** after the Açaí section (slides 5–7), before the Manicoré municipality slide — so the deck flows: Park land → Açaí → **Cacao** → Municipality → 20,000 ha → Communities → 400 ha SAF → Benchmarks → Thank you.
+
+Styled to match the deck: 16:9 (1440×810), bioeconomy green (158,179,46) + dark green headers, white cards. I checked a preview before sending and fixed a chip-overlap in the revenue card. All data pulled from the source deck's slides 2–4 (ingredients matrix, supply estimate, revenue model).
+
+Want a preview image of just the new slide, or any tweaks (e.g. different placement, USD vs R$, extra cacao detail)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && python3 << 'EOF' import fitz from PIL import Image doc = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") p5; cd /tmp && python3 << 'EOF' import fitz from PIL import Image doc = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") fo; cd /tmp && python3 << 'EOF' import fitz from PIL import Image from collections import Counter doc = fitz.open("/tmp/tg_attachments/a7bf0c55a; …(+2 more)
+
