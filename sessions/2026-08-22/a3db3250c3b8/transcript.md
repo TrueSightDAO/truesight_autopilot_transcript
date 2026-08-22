@@ -10,16 +10,6 @@
 
 ### 🤖 Autopilot
 
-**CONFIRMED BAD STATE**: The live pull (version 18 = what @19 PROD now serves) has **`sunmint/main`/`ledgerName` = 0** — **PROD is now on PRE-#409 code!** The push was refused ("Conflicting files found") but `clasp version` + `clasp deploy` still created v18/@19 from the un-pushed live state. This is the @13→@17 lesson biting again, worse: I moved PROD BACKWARD.
-
-Also a file chaos problem: the project folder now has BOTH `Version.gs` (Jun 17, 26KB Code.js era) and `Version.js` (new), plus `Code.js` (old, 25942 bytes) alongside the new files — the folder is polluted with stale files.
-
-**Root cause of the push refusal:** likely the local `process_tree_planting_link.js` I restored doesn't exactly match git main (I used `git show` → file, which may differ in whitespace/encoding from the real tracked blob), OR clasp's conflict detection compares against its own cached snapshot. Let me fix this properly — reset the project folder to EXACT git main content, verify the blob hash matches, then push cleanly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Project folder now matches git main exactly (Code.js/Version.gs are git-tracked deletions — expected, they're not in main's file set for this project). `process_tree_planting_link.js` has #409 markers ×5. Now push cleanly, save version, repoint PROD @19 → the NEW version (with #409):
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -3581,11 +3571,13 @@ Adding a public `authorizeMailApp()` function to the 1UrBg project — running i
 ### 🤖 Autopilot
 
 Now let me add the `authorizeMailApp()` function to the synced project file, verify syntax, and check the current doGet handler to make the function properly callable:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now adding the public `authorizeMailApp()` function — it calls `MailApp.getRemainingDailyQuota()` (which requires `script.send_mail`), so running it in the editor triggers the OAuth consent screen, and it returns the quota as proof. Appending to `process_tree_planting_link.js`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3803,4 +3795,31 @@ Either re-authorizes the *deployment* (not just the editor) for `script.send_mai
 ---
 
 If you want, I can also double-check the deployment's executing account before you do it (verify which email the deployment runs as) — say the word and I'll pull it.
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Fine then. I guess no more issue and then move on?
+
+
+### 🤖 Autopilot
+
+Almost — one thing is genuinely still open, and it's the reason we started this thread: **Paloma's tree-planted notification email has still not been delivered.** Everything else is done. Current state:
+
+**✅ Done & verified:**
+- QR linked to SunMint tree (ledger booked, tracking OK) — the core deliverable
+- Landing page live: QR image, group photo, OSM map, coordinates, state/country, signed-event record — all rendering
+- Onboarding email re-sent to Paloma with the correct clickable link (16:42Z — you verified it)
+- `authorizeMailApp()` deployed (PROD @25) — editor authorization granted
+- processBatch trigger self-installer (#417) deployed — will install the hourly trigger on its next run
+
+**⏳ Still open (small):**
+1. **The tree-planted notification** — the production *deployment* still carries stale authorization (`executeAs: USER_DEPLOYING`, and the API-path re-deploy skipped the consent). One browser click re-authorizes it: open the prod URL as the deployer (garyjob) → Review permissions → Allow → then I re-invoke the resend and verify delivery. Without it, Paloma never gets the "your tree has been planted" email, and *every future* tree LINK silently fails to notify owners the same way.
+2. **LINK-flow hardening** — the original LINK call site still swallows MailApp errors (the same bug #416 fixed in the resend path). Worth a small PR so future links don't silently miss notifications.
+
+If you'd rather move on now, that's your call — but I'd flag the email as **not delivered** in the final report rather than done. Want me to (a) wait for you to do the one-click re-auth then finish the send + verification, (b) just open the hardening PR now, or (c) park it all in the plan doc and close out?
 
