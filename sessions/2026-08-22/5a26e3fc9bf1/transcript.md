@@ -1017,11 +1017,23 @@ Palette confirmed — brand green (158,179,46), dark green (46,71,49), light gre
 ### 🤖 Autopilot
 
 Let me render it and visually verify the layout before sending:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Layout check reveals a collision in card B (chips overlap the Stage-2 revenue line) — fixing coordinates and rebuilding cleanly, then inserting the cacao slide into the deck right after the Açaí section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1074,16 +1086,19 @@ OBRIGADO! Thank you!
 ### 🤖 Autopilot
 
 Let me look at the image first to identify exactly which two slides are shown:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot shows the deck in a viewer ("9 of 9" = Thank You page). I need to see which two slides you mean — let me zoom into the image for thumbnail labels or any other slide titles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot shows the PDF viewer on the "9 of 9" (OBRIGADO / Thank you) slide. Let me analyze the image layout to pinpoint exactly which two slides are being shown — it may be a two-page spread or thumbnail view:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1203,4 +1218,51 @@ Just say the word.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/tg_attachments/8838ac5f0e394e34915800caeddb7335.jpg') print('size:', im.; cd /tmp && python3 << 'EOF' from PIL import Image, ImageOps, ImageEnhance im = Image.open('/tmp/tg_attachments/8838ac5f0e394e34915800caeddb7; cd /tmp && python3 << 'EOF' import fitz # The screenshot shows "3 of 9" — the ORIGINAL 9-slide deck (before cacao slide) # Wait: original 9-; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12991] Assemble the rest along with the cacao slide assembled
+
+
+### 🤖 Autopilot
+
+Understood — assemble the **complete** presentation: the front-matter slides we'd excluded (title, ingredients matrix, supply estimate, revenue model) plus the Manicoré section **and** the new cacao slide, all in the original narrative order.
+
+
+### 🤖 Autopilot
+
+Full 14-slide deck assembled. Sending it:
+
+
+### 🤖 Autopilot
+
+Done ✅ — **Full 14-slide deck attached** (`EBCF_Bioeconomy_Full_Deck.pdf`, 7.5 MB).
+
+**Complete assembly — original narrative order, cacao slide in place:**
+
+| # | Slide | Source |
+|---|-------|--------|
+| 1 | Bioeconomy Program (title) | orig 1 |
+| 2 | Amazon Ingredients Matrix | orig 2 |
+| 3 | Preliminary Potential Supply — Manicoré | orig 3 |
+| 4 | Potential Revenue + Agroindustrial Park CAPEX (Stage 1 & 2) | orig 4 |
+| 5 | Location of 10,000 m² Park land | orig 5 |
+| 6 | Açaí Freeze-Drying — Stage 1 | orig 6 |
+| 7 | Açaí project graphic | orig 7 |
+| 8 | **🆕 Cacao Production · Manicoré** | custom |
+| 9 | Municipality — office + açaí factory | orig 8 |
+| 10 | EBCF properties — 20,000 ha | orig 9 |
+| 11 | 5 km radius — ~100,000 ha, 80+ communities | orig 10 |
+| 12 | 400 ha SAF plantation | orig 11 |
+| 13 | Benchmark | orig 12 |
+| 14 | Thank you | orig 13 |
+
+Everything is copied 1:1 from the original (pixel-identical graphics), with the cacao slide inserted right after the Açaí section so the ingredients section (slides 1–4) → anchor projects (5–8) → land & community (9–12) → proof & close (13–14) flow stays coherent.
+
+If you want a **"Site Inspection — Due Diligence" title slide** up front or the Benchmark/Thank-you trimmed, just say so.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 << 'EOF' import fitz src = fitz.open("/tmp/tg_attachments/a7bf0c55a4aa4decbf4349290b4fc413.pdf") # 13-page original cacao
 
