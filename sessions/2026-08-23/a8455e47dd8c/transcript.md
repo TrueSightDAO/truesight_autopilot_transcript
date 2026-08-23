@@ -4197,11 +4197,13 @@ Let me get the output path from the end of the artifact.
 ### 🤖 Autopilot
 
 Let me just check the /tmp directory to find the generated PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The corrected PDF is at `/tmp/autopilot_pdf_8cucpyxq.pdf` (6597 bytes, 09:26). Sending it to the thread.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4235,6 +4237,7 @@ compliance setup) that enables the direct relationship — not a legal intermedi
 ### 🤖 Autopilot
 
 Understood — removing that line entirely. The DAO plays no role in the China lane. Regenerating.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4362,6 +4365,46 @@ Full briefing sent ✅ (message 13359) — now **4 pages** with two new sections
 9. Cooperative route (structural fallback) ✅
 
 Then the worst-case, legal picture, and summary as before. This is the complete picture for Elizabeth — issues, remedies, and the structural protection for the China lane.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] [Handoff context — this Telegram topic (thread 10) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think Coopercabruca direct route should only be presented as a backup after black king fails to get re-established. 
+
+So order should be the challenges with black king right now, the remedies we are seeking to bring black king back online 
+
+In worst case scenario orlantildes and Coopercabruca as the back up plan for China direct. But in the worst case scenario, Gary and the DAO is not involved. And since CEPOTX cacao beans flow is blocked then tree planting arrangement is also off the table
+
+
+### 🤖 Autopilot
+
+Understood — restructuring the document: Black King challenges first, remedies second, then the cooperative route framed as the worst-case backup (DAO not involved), plus the CEPOTX/tree-planting consequence.
+
+
+### 🤖 Autopilot
+
+Restructured per your direction ✅ (message 13363) — now **3 pages** with the corrected order:
+
+**New order:**
+1. **The Concern** — Oscar's beans, Bahia
+2. **The Black King Infrastructure Issues** (current state, 7 problems) — the challenges **first**
+3. **Remedies Currently Being Sought — Bringing Black King Back Online** (8-item table) — the fixes we're pursuing **second** (added "Objective" line: restore Black King to fully operational)
+4. **Oscar's Beans: Status Within the Current (Black King) Structure** — Oscar invited into cooperative as a bridge while BK is repaired
+5. **Worst Case Scenario** — restructured:
+   - Independent warehouse stock stranded (write-off)
+   - No NF-e via Black King
+   - **CEPOTX (Pará) flow blocked → tree-planting arrangement off the table** (added, per your note)
+   - **Backup: China ↔ Orlantildes/Coopercabruca direct** — framed clearly as the fallback, **DAO and Gary structurally not involved**
+6. **Summary table** — updated: primary path = Black King repair; backup = cooperative; CEPOTX consequence noted
+7. **Closing** — "Primary objective is to bring Black King back online… cooperative route presented as the backup, to be activated only if Black King fails to be re-established"
+
+Exactly the framing you asked for: **Black King first, cooperative only as worst-case backup, DAO out of the worst-case trade, and the CEPOTX/tree-planting consequence spelled out.**
 
 ———
 **✅ Done this turn — actions taken:**
