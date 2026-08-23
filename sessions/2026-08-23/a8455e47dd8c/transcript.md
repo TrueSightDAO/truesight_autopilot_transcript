@@ -4511,6 +4511,17 @@ Ready for Elizabeth.
 ### 🤖 Autopilot
 
 Adding that point — the China side can bypass the DAO as middleman immediately, without waiting for Black King to be resolved.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4683,4 +4694,32 @@ PDF sent ✅ (message 13673) — **"Omega Services Quotation — Adjusted (No Pa
 - **Net effect:** BRL 195 saving; plus a note that fumigation can also be challenged if the on-hand pallets are already IPPC-stamped
 
 Want me to also send this adjusted quotation to Graziela/Omega for confirmation, or just keep it for your negotiation?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Indicate clearly how much is for the freighting portion ignore the value of the payload since it is an internal transfer
+
+
+### 🤖 Autopilot
+
+Got it — a freight-only breakdown that explicitly excludes the payload value (internal transfer). Generating.
+
+
+### 🤖 Autopilot
+
+Freight-only PDF sent ✅ (message 13677) — **"Omega Services — Freight-Only Costs (Internal Transfer)"**
+
+**Explicitly excluded:** the commercial invoice value ($7,032.53 FOB) — noted as an **internal DAO transfer** (Black King → TrueTech/Kirsten), freight costs only.
+
+**The freight breakdown:**
+
+| Bucket | Amount |
+|--------|--------|
+| **A. Brazil side (BRL)** | ≈ **R$ 7,115.00** + 0.15% ad-valorem (road transport 6,615 + fumigation 500; pallets 0 — on hand) |
+| **B. Air freight & export (USD)** | ≈ **$ 1,721.50** (docs $95 + air freight ~$1,164 @ $3.40/kg ~342kg + Brazil airport $250 + US terminal $212.50) |
+| **C. US import & delivery (USD)** | ≈ **$ 508.58** (handling $125 + clearance $150 + FDA $100 + MPF min $33.58 + bond $100) + final-mile delivery TBD |
+| **Total USD (excl. BRL + delivery)** | ≈ **$ 2,230.08** |
+
+Clear scope note at the top stating the payload value is not part of the quotation. Ready to send to Omega/Graziela or keep for your records.
 
