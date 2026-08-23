@@ -1369,61 +1369,78 @@ PR9 edit applied. Sync + rebuild:
 ### 🤖 Autopilot
 
 APK builds (14.7 MB). Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #8 open. Merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR9 MERGED** (squash `aeecde4f`). Continuing → **PR10 (branding: app icon, splash screen, final app name/bundle ID)**. Let me pull the spec + current branding state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR10 scope: app icon, splash screen, final app name/bundle ID. The name (`Sunmint`) and bundle ID (`me.truesight.sunmint`) are already final; what's missing is **icon + splash assets**. Let me find existing TrueSight DAO / SunMint brand assets to use as the source:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR10 = branding: replace Capacitor's default icon/splash with TrueSight DAO branding (source: official logo in `.github` repo). Let me download the logo and check for Pillow to generate the required densities:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pillow 12.2.0 + logo downloaded (513×486 RGBA). Now generate all required Android icon densities + splash screens from the TrueSight DAO logo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All brand assets generated. Let me verify the app identity is final (name "Sunmint", bundle `me.truesight.sunmint` — already correct), update the splash background to match, then rebuild + commit. First check the adaptive icon foreground XML references and the styles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Identity confirmed final (app name `Sunmint`, bundle `me.truesight.sunmint`), splash theme points at the new branded `@drawable/splash`, adaptive icon uses the new foreground. APK rebuilds at 7.3 MB. Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #9 open. Merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR11 is the release-signing step — and the plan explicitly says the keystore is a credential that must follow `CREDENTIAL_HANDOFF_PROTOCOL.md` for custody. That file isn't at the context root. Let me locate it and check the current gradle signing config:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR11 = release signing. The plan pre-authorizes keystore generation but mandates `CREDENTIAL_HANDOFF_PROTOCOL.md` custody — and **that file doesn't exist** (0 search matches; no file found). That's a real gap I'll flag at the end. Let me do the signing work: generate the keystore (stored **outside** the repo, never committed), wire gradle via a gitignored `keystore.properties`, and build the signed release APK:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Keystore generated (credential at `/opt/android-keystore/`, 0600 perms, gitignored properties). Now wire gradle to read `keystore.properties` for release signing and build the signed APK:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1482,41 +1499,49 @@ Go for it
 ### 🤖 Autopilot
 
 "Go for it" — resuming from RESUME HERE → finish PR11 (verify signature, land the PR), then the Android UAT gate, then iOS kickoff. First, verify the signed APK signature (correct filename this time) and confirm the commit state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Signature VERIFIED** — Signer #1 cert `CN=SunMint, O=TrueSight DAO`, SHA-256 `eecb6b06…`, v1/v2 signed. Only `.gitignore` + `build.gradle` changed (keystore.properties correctly excluded). Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #10 open. Merge it (auto-advance covers PR11):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR11 MERGED** (squash `313a096d`) — the signed release APK is built and verified. Now the **Android UAT gate**: create a GitHub Release with the signed APK as a direct-download asset, then post the UAT instructions here. Let me fetch the testing notes from `sunmint_beta/README.md` and create the release:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the flows. Now create the GitHub Release with the signed APK as a direct-download asset (this is the UAT gate deliverable):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Release created. Now upload the signed APK as the release asset (direct-download link for UAT):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 APK asset uploaded with direct-download URL. Now post the **Android UAT gate** message in this thread — the always-stop (§5c). This is the moment to stop Android-specific work:
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT gate posted. Now per the governor's sequencing update: **PR3 (iOS) starts immediately** — and per your instruction, open a **new forum topic** for the iOS track with a kickoff post:
+[1 tool result(s) compacted: create_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1622,4 +1647,109 @@ Both threads are now current. Let me do the final state check — confirm all me
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /tmp/sunmint_mobile && echo "=== verify signed release APK ===" && /opt/android-sdk/build-tools/35.0.0/apksigner verify --print-certs and; cd /tmp/sunmint_mobile && git checkout -q -b pr11-release-signing && git add .gitignore android/app/build.gradle && git -c user.name="Sophia; cd /tmp/sunmint_mobile && TOKEN=$(/opt/truesight_autopilot/scripts/git-credential-sophia.sh get <<< $'protocol=https host=github.com ' 2>/de; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] [Handoff context — this Telegram topic (thread 13386) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Okay, kick start the thread for the iOS implementation in a new thread and then go ahead with the implementation for the iOS in the new thread. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it — kicking off the iOS thread (already created as "SunMint Mobile App - iOS", thread 13445) with a proper kickoff, then implementing iOS-track work there. Starting with the kickoff post + inspecting the iOS project assets in parallel:
+
+
+### 🤖 Autopilot
+
+The iOS thread kickoff is posted (msg 13457). The local working tree is stale — it's at the pre-PR3-merge commit (the `ios/` dir landed on `main` via PR #11's squash after my last reset). Let me sync and re-locate the brand logo:
+
+
+### 🤖 Autopilot
+
+Working tree synced (main = `8a4f3b5` PR3), iOS assets + deployment target 15.0 confirmed, and I found the TrueSight DAO logo source at `/tmp/aac_fix/assets/truesight_dao_logo_long.png`. Let me check the AppIcon spec and generate the iOS icon set (mirroring the Android PR10 branding):
+
+
+### 🤖 Autopilot
+
+Modern iOS AppIcon spec is simple — one universal 1024×1024 (no legacy sizes needed since Xcode 14). I'll use `truesight_icon.png` (530×530, already square RGB — perfect source), upscale to 1024×1024, and write it in. Also set the splash to the saffron brand background matching Android:
+
+
+### 🤖 Autopilot
+
+Splash set needs all 3 filenames (`-1`, `-2`, and bare). Let me populate the other two (same 2732×2732 art — scale variants reference the same universal art in Capacitor's default set) and update the AppIcon Contents.json if needed. Then commit:
+
+
+### 🤖 Autopilot
+
+All 4 brand assets staged (AppIcon + 3 splash variants). This is the **iOS branding** work — I'll add it to the iOS track as a focused PR (call it "iOS branding" — effectively PR3.1 in the iOS track). Commit, push, open PR:
+
+
+### 🤖 Autopilot
+
+PR #12 open (iOS branding). Merge it:
+
+
+### 🤖 Autopilot
+
+iOS branding merged (`a3eca247`). Now the next Mac-independent iOS deliverable: **PR13 (docs)** — `sunmint_mobile/README.md` with the build/release process for both platforms. Let me check the current README and write the full one:
+
+
+### 🤖 Autopilot
+
+README is a stub. Writing the full PR13 README (build/release for both platforms, keystore custody note, iOS Mac/Apple-account constraints, relationship to sunmint_beta/prod):
+
+
+### 🤖 Autopilot
+
+README written (3.2KB). Commit, push, open PR:
+
+
+### 🤖 Autopilot
+
+PR #13 open. Merge it:
+
+
+### 🤖 Autopilot
+
+PR13 (docs) merged (`b0cc230b`). Both Mac-independent iOS deliverables are done. Let me post the progress update to the iOS thread and wrap this turn:
+
+
+### 🤖 Autopilot
+
+Both threads updated. Here's the wrap-up.
+
+## What I did this turn
+
+**Kicked off the iOS thread** (as you asked): posted the kickoff to the existing "SunMint Mobile App - iOS" topic (thread 13445, msg 13457) — state of play, iOS constraints, and the Mac-independent work queue.
+
+**Implemented iOS-track work in the new thread — 2 PRs landed:**
+
+1. **iOS branding** (PR #12, merged `a3eca247`) — mirror of the Android PR10:
+   - **AppIcon**: TrueSight DAO icon → universal 1024×1024 (Xcode 14+ single-size spec)
+   - **Splash**: saffron `#E08232` background + centered DAO logo, all 3 scale variants (1x/2x/3x @ 2732×2732)
+
+2. **PR13 (docs)** (PR #13, merged `b0cc230b`):
+   - Full `sunmint_mobile/README.md`: architecture table (all 8 native integrations + web fallbacks), Android build/release (debug + signed release), iOS build (Mac-required), keystore custody note, testing cross-ref, repo layout
+
+**iOS thread updated** with the track state table (msg 13460).
+
+## Standing blockers (unchanged — governor actions)
+- **Mac** for the first iOS build (`xcodebuild`/simulator) — none in fleet; designate one
+- **Apple Developer account** for PR12 (TestFlight) — provisioning is governor-side
+- **Android UAT** — signed APK + SHA-256 posted in this thread; awaiting your device test
+- **Keystore custody** — plan cites `CREDENTIAL_HANDOFF_PROTOCOL.md` (doesn't exist); keystore currently local-only at `/opt/android-keystore/`; your call on custody
+
+## RESUME HERE → next (all Mac-independent iOS work is DONE)
+- When you designate a **Mac**: PR3 build verification + icon/splash render check + TestFlight prep (PR12) — I'll drive the build commands there
+- When you provision the **Apple Developer account**: PR12 (TestFlight distribution)
+- When you report **Android UAT** results: close the Android gate, file the DAO contribution for the whole Android track (plan §9)
+- Otherwise: **I'm parked** at the two external gates — nothing else can move without governor input
+
+**✅ This turn:** posted iOS kickoff (13457), iOS branding PR #12 merged `a3eca247`, PR13 docs PR #13 merged `b0cc230b`, posted iOS progress (13460).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp/sunmint_mobile && echo "=== ios assets ===" && find ios/App/App/Assets.xcassets -type f | head -20 && echo "=== AppIcon contents ===; cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== main now ===" && git l; cd /tmp/sunmint_mobile && echo "=== AppIcon spec ===" && cat ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json && echo "=== logo ; …(+7 more)
 
