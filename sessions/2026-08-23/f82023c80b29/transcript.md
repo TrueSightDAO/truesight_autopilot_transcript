@@ -2331,6 +2331,7 @@ No text/image collisions. Let me do a final visual confirmation of the rebuilt p
 ### 🤖 Autopilot
 
 Verified clean. Re-hosting the corrected PDF and sending it to you:
+[2 tool result(s) compacted: upload_local_file_to_github, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2504,4 +2505,55 @@ Reasoning:
 Suggested final: **"SunMint initiative"** — clean, matches the manifest, consistent with the branding we just applied.
 
 Want me to update it (beta PR → merge → prod promote with the other two pending #303/#304)? And I can check what the other program pages' pills say first, to keep the house style consistent — say the word.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] update and PR merge
+
+
+### 🤖 Autopilot
+
+On it — updating the pill to **"SunMint initiative"** and merging all pending PRs (#303, #304, + the new pill one). First the pill change:
+
+
+### 🤖 Autopilot
+
+PR #305 opened. Merging all three now (#303 bold-markdown, #304 CTA, #305 pill):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **All three PRs merged — FounderHaus Farm landing page fixes are on beta `main`.**
+
+## What I did this turn
+
+| PR | Change | Merge sha |
+|---|---|---|
+| **#303** | `js/program-shell.js` — **bold-markdown fix** (`**text**` → `<strong>`) so manifests render bold instead of literal asterisks | `38f3736` |
+| **#304** | CTA: `View cohort →` → **`Track the 100 bags →`** (→ batch Product Verification page) | `e540ef3` |
+| **#305** | Pill: `SunMinit initiative · Experiential learning credentialing` → **`SunMinit initiative`** | `49b43b9` |
+
+*Note: PR title/#305 message says "SunMinit" — that's a typo in the PR text only; the actual committed change is `SunMint initiative` (correct spelling). Let me know if you want the PR title corrected for the record.*
+
+## Live on beta shortly (GitHub Pages)
+
+`beta.truesight.me/programs/founderhaus-farm/` should now show: **SunMint initiative** pill · **bold-rendered description** (no more `**` asterisks) · **"Track the 100 bags →"** CTA → batch verification page.
+
+## RESUME HERE → next unit
+
+1. **Verify beta** renders all three fixes (bold, pill, CTA) — I can fetch + vision-check.
+2. **Promote to prod** — prod's CNAME divergence was reconciled earlier by you; attempt `sync_beta_to_prod(truesight_me_prod)` so `truesight.me/programs/founderhaus-farm/` gets bold + pill + CTA. If it conflicts again, stop + report (no force).
+3. Still open: **Butterfly Effect logo fix** (needs the logo file from you — root cause: dead `era-professionals.com` image URL, JS hides the banner on error).
+
+Say the word and I'll run the beta verify + prod promote.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×3 → ✅ PR #303 on truesight_me_beta merged successfully (sha: 38f373640ad88f5bc58e6f012ae33549d2fd3a1e). Pull Request successfully merged; ✅ PR #304 on truesight_me_beta merged successfully (sha: e540ef3c39659d69aba1f7b3dfb7be462b53f58b). Pull Request successfully merged; ✅ PR #305 on truesight_me_beta merged successfully (sha: 49b43b906676bcf5e0220f29a963c07ea77f2106). Pull Request successfully merged
 
