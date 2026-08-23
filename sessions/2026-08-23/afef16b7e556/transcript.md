@@ -5424,26 +5424,31 @@ The page didn't extract. Let me search for what this event is so I can title the
 ### 🤖 Autopilot
 
 The event page didn't extract via the web tool. Let me try fetching it directly to get the date/time.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's a JS-rendered SPA — the event details are in the JS bundle. Let me pull the bundle to find the event's date/time.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The bundle is huge (261KB+). Let me download it on the box and grep for the event ID to find its date/time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event ID isn't hardcoded in the bundle — it's fetched from an API at runtime. Let me look for the API endpoint pattern in the bundle.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's a Supabase app. The event details come from a Supabase function. Let me probe the Supabase REST API for the event row (it may be publicly readable).
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5682,4 +5687,57 @@ One note: I created the event fresh (the previous turn's event creation didn't c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /tmp/tg_attachments/ | tail -5; echo "---"; find /tmp/tg_attachments -iname "*.pdf" -newermt "2026-08-23" 2>/dev/null; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json, datetime from zoneinfo import ZoneInfo fr; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from zoneinfo import ZoneInfo from google.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] reauthorize the token
+
+
+### 🤖 Autopilot
+
+Re-authorizing the token to add `drive.file` (so calendar file attachments work natively). Let me check the config and generate the OAuth consent URL.
+
+
+### 🤖 Autopilot
+
+Let me check the client config for redirect URIs, then generate the re-auth consent URL with `drive.file` added.
+
+
+### 🤖 Autopilot
+
+Let me check the provisioning flow in the README — how the token gets minted — so I generate the right consent URL.
+
+
+### 🤖 Autopilot
+
+The provisioning flow is clear. Now let me check for the OAuth authorize script referenced (`gmail_oauth_authorize.py`) and generate the consent URL with `drive.file` added.
+
+
+### 🤖 Autopilot
+
+No authorize script on disk — I'll generate the consent URL directly. Re-authorization requires you (Gary) to complete the OAuth browser flow since it's your Google account. Let me build the consent URL with `drive.file` added.
+
+
+### 🤖 Autopilot
+
+Here's the **re-authorization consent link** — open it in a browser where you're logged into **garyjob@agroverse.shop**, approve, and paste back the code it gives you:
+
+**👉 https://accounts.google.com/o/oauth2/v2/auth?client_id=667737028020-2ihjpbnq119st9v9b9f4kh6vvkrc4hco.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob%3Aauto&response_type=code&access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.file**
+
+**What this grants (all three scopes):**
+- `gmail.modify` — existing Gmail access (unchanged)
+- `calendar.events` — existing calendar events (unchanged)
+- **`drive.file` — NEW:** lets me attach files natively to calendar events (the missing piece for attaching the ticket PDF in-calendar)
+
+**Steps:**
+1. Open the link while logged in as **garyjob@agroverse.shop**
+2. Click through the consent (it'll show "Truesight Autopilot" requesting access to Drive, Calendar, Gmail)
+3. Google shows you an **authorization code** — paste it here
+
+Then I'll exchange it for a fresh token with `drive.file`, deploy it, restart the services, and attach the Startup Summit ticket natively to the calendar event. 🎫
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && ls config/gmail/ 2>/dev/null; echo "---"; python3 - << 'PYEOF' import json d=json.load(open('/opt/truesight_a; cd /opt/truesight_autopilot && cat config/gmail/README.md 2>/dev/null | head -40; echo "==="; python3 - << 'PYEOF' import json d=json.load(o; cd /opt/truesight_autopilot && sed -n '40,110p' config/gmail/README.md; …(+2 more)
 
