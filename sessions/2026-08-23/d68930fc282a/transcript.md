@@ -492,26 +492,31 @@ I will rebuild + smoke-test on the iPhone 16 Pro Simulator here as soon as your 
 ### 🤖 Autopilot
 
 Understood — landing the fix now. But one correction with evidence before I push: my npm research (verified this session) shows the plugins have **no 8.5.0 releases** — `^8.5.0` doesn't resolve for app/filesystem/camera/geolocation/network. The fix direction that actually works is pinning the toolchain to **8.4.2** (already applied + validated locally last turn). Let me reconfirm the npm facts quickly, then verify Android still builds, then push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed with hard evidence: **no `@capacitor/*` plugin has an 8.5.0 release** (app=8.1.1, filesystem=8.1.3, camera=8.2.3, geolocation=8.2.2, network=8.0.1, sqlite=8.1.1, secure-storage=8.0.0 — all at `latest`). So "bump plugins to ^8.5.0" is impossible; the only working fix is the one you listed as option **(a) for secure-storage: pin Capacitor down to a version its Swift compiles against** — that's the 8.4.2 pin already applied locally. Now verifying Android still builds per your instruction, then pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Android verified: `cap sync android` clean + `assembleDebug` **RC=0**, fresh `app-debug.apk` (18.9MB, built 18:47 just now) — the 8.4.2 pin does **not** break Android. Now running the local test suite (hard rule), then pushing PR15.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass and the diff is clean (3 files, no stray changes). Pushing PR15 now — exact 8.4.2 pin + `@capacitor/ios` addition + regenerated SPM manifest.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool needs explicit content — it doesn't auto-pick-up the local working tree. Let me read the three changed files' current contents (local, post-fix) so I can pass them as writes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -647,4 +652,34 @@ Net: the version-mix root cause is fixed, verified, and on the remote — the mo
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/sunmint_mobile && echo ---VERSIONS---; node -e "for (const p of ['@capacitor/core','@capacitor/android','@capacitor/ios','@capacitor
 • `open fix pr` → tool_execution_error
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] I wonder if we can have a build for IOS pro 12 too?
+
+
+### 🤖 Autopilot
+
+Good question — short answer: **yes, and it's nearly free.** The build is the same; only the `-destination` flag changes. Let me confirm the app's minimum iOS version to be sure iPhone 12 Pro is in range.
+
+
+### 🤖 Autopilot
+
+**Short answer: yes — and your app already supports it out of the box.** I just checked the project config:
+
+- **Deployment target: iOS 15.0** (both the Xcode project and the Swift Package). The iPhone 12 Pro ships with iOS 14.1 and runs everything up to iOS 18.x, so it's **fully inside your supported range** — no code change needed.
+- The binary is universal **arm64**, so the same `.app` build runs on iPhone 12 Pro and iPhone 16 Pro alike.
+
+**Two ways to get an iPhone 12 Pro build:**
+1. **Simulator** — same command, just swap the destination: `xcodebuild … -destination 'platform=iOS Simulator,name=iPhone 12 Pro'`. One caveat: the Mac agent listed "iPhone 16 Pro **etc.**" as available runtimes — if the 12 Pro runtime isn't installed, it's a one-click download inside Xcode (Settings → Components), and then the build is identical.
+2. **Physical device** — build with `-sdk iphoneos -destination 'generic/platform=iOS'` and the resulting `.app` installs on a real iPhone 12 Pro. The only gate there is **code signing** — which is the same Apple Developer account ($99/yr) already blocking PR12/TestFlight.
+
+So: nothing about iPhone 12 Pro is a special case — it's the same build, different destination. If the Mac agent wants, they can even build for **both** destinations from one command (or produce a single arm64 device build that covers all Pro models). No PR needed for this — it's purely a build-flag choice on the Mac.
+
+If you want, I'll add a note to the plan's build section so the iOS build step explicitly lists the iPhone 12 Pro destination alongside the 16 Pro — say the word and I'll fold it into the next PR turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint_mobile && grep -r "IPHONEOS_DEPLOYMENT_TARGET" ios/App/App.xcodeproj/project.pbxproj | head -3; echo ---; grep -A1 "platform
 
