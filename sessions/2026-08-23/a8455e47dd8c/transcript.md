@@ -4243,6 +4243,12 @@ Understood — removing that line entirely. The DAO plays no role in the China l
 ### 🤖 Autopilot
 
 Let me confirm the output path and send it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4272,6 +4278,7 @@ but for China they would flow through the same cooperative-compliant model
 ### 🤖 Autopilot
 
 Removing that CEPOTX line and regenerating.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4405,6 +4412,37 @@ Restructured per your direction ✅ (message 13363) — now **3 pages** with the
 7. **Closing** — "Primary objective is to bring Black King back online… cooperative route presented as the backup, to be activated only if Black King fails to be re-established"
 
 Exactly the framing you asked for: **Black King first, cooperative only as worst-case backup, DAO out of the worst-case trade, and the CEPOTX/tree-planting consequence spelled out.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Also mention that in worst case scenario, we will shut down the USA and European DAO based distribution network since DAO has no more capital for stock inventory to channel cacao down the Coopercabruca to San Francisco route
+
+
+### 🤖 Autopilot
+
+Adding that point to the worst-case scenario and regenerating.
+
+
+### 🤖 Autopilot
+
+Done ✅ (message 13367) — **4 pages**, with the US/EU network wind-down now in the worst-case scenario.
+
+**New content added:**
+
+**Worst Case #4:** *"The USA and European DAO-based distribution networks will be shut down — the DAO has no more capital for stock inventory to channel cacao down the Coopercabruca → San Francisco route (nor to support the European side). The distribution network winds down."*
+
+**Updated bottom line:** exposure now includes the **wind-down of the USA and European DAO-based distribution networks** due to lack of capital for stock inventory, alongside the stranded warehouse inventory and the CEPOTX/tree-planting consequence.
+
+**Summary table row added:** *"What happens to the US/EU DAO distribution network? → Shut down — no DAO capital for stock inventory."*
+
+The full document now reads in your intended order: **Black King challenges → remedies → Oscar's status → worst case (warehouse stranded, CEPOTX blocked, US/EU network winds down, China-coop backup with DAO out of the trade) → summary.**
+
+Ready for Elizabeth.
 
 ———
 **✅ Done this turn — actions taken:**
