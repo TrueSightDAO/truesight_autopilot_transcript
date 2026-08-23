@@ -1508,51 +1508,61 @@ Just embed the QR code in the PDF and update the corresponding product image ass
 ### 🤖 Autopilot
 
 On it — embedding the QR image in the PDF and pointing the QR codes' product image in the sheet to the SunMint tree image. Let me first check what PDF/image tooling exists on the box and confirm which tree image the SunMint pledge uses.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me locate the cacao tea currency row in the sheet and find the SunMint tree image Gary means.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual cacao tea row in the Currencies tab (row numbers shifted — row 131 is USDC now).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the cacao tea row in the sheet data I just read.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the tea currency row. Now let me find the SunMint tree image (the one "we uploaded") and the QR sheet's product-image column.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good plan — two concrete actions: (1) embed the actual QR image into the PDF, (2) update the product image for this batch in the sheet. Let me first find the SunMint tree image you uploaded (the Aug 21 plantings) and the sheet-write credential path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet's QR tab has no image column — the product image lives in **Currencies col D**, and the QRs now point to the FounderHaus pledge row (col D currently empty). Before updating, let me confirm which image is the current "SunMinted tree" one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have what I need to act. The SunMint tree image currently in use is `agl4.avif` (the og:image on the sunmint-pledge page — also already the tea's product image). Now executing both: (1) build a PDF with the **actual QR image embedded** (reportlab, since generate_pdf can't embed images), (2) set the FounderHaus pledge currency's Product Image (col D) to that same SunMint tree image.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v5 built (QR image embedded via reportlab). Now the sheet update — setting the FounderHaus pledge currency's Product Image (col D) to the SunMint tree image (`agl4.avif`, the og:image the sunmint-pledge page currently uses), using the `agroverse_qr_code_manager` SA that owns Currencies writes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 oauth2client isn't installed — let me use the same gspread auth method the sheet tool uses (likely google.oauth2 service account):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1675,4 +1685,73 @@ The CT batch manifests have `asset_type: tree` (since the SKU is now the pledge)
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/la_refresh && python3 -c " import json d = json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print('TOP-LEVEL KEYS:', list(d.keys(; cd /tmp/la_refresh && python3 -c " import json d = json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print('asset_type:', d.get('asset_typ; cd /tmp/la_refresh && python3 <<'PY' import json, glob, os IMG = "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/2026082; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Also I wonder if we should have a program page for this listed here 
+
+https://truesight.me/programs.html
+
+By the way, I am noticing on this page https://truesight.me/programs.html the butterfly effects club logo is missing
+
+
+### 🤖 Autopilot
+
+Good idea — and good catch on the logo. Let me look at the programs page source and the Butterfly Effect Club references before proposing anything.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the programs page (the JS that loads logos) and the program-pages credentialing doc.
+
+
+### 🤖 Autopilot
+
+Let me see the logo-loading JS tail and check the butterfly-effect manifest + logo asset location.
+
+
+### 🤖 Autopilot
+
+The manifest fetch 301'd (repo renamed — `truesight_me` → likely `truesight_me_prod`). Let me check the right repo and the logo asset:
+
+
+### 🤖 Autopilot
+
+The logo mechanism is clear now: the page JS loads `co_brand.partner_logo_url` from each program's manifest, and **hides the whole banner on error**. The Butterfly Effect manifest points at `era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png` — an external URL that's clearly failing (hence your missing logo). Let me confirm it's dead and check whether we have a stable copy in `.github/assets/` (the spec's recommended hosting):
+
+
+### 🤖 Autopilot
+
+Found the root cause. Let me do one quick check for the Butterfly Effect logo asset anywhere in the org before I converge:
+
+
+### 🤖 Autopilot
+
+I've got the full picture now — here's where both asks stand, and what I need from you before touching anything.
+
+## 1. Butterfly Effect logo missing — root cause found ✅
+
+**It's not a page bug — it's a dead external image link:**
+
+- `programs.html` loads each card's logo from that program's `manifest.json` → `co_brand.partner_logo_url`
+- Butterfly Effect's manifest points at: `https://era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png`
+- **That URL returns 404** (verified just now — ERA Professionals must have removed/relocated it)
+- The page's JS deliberately **hides the whole logo banner when the image fails to load** — so the card just shows blank where the logo should be
+
+**Fix (per the spec in CREDENTIALING_PROGRAM_PAGES.md §6):** host the logo in our own repo (`TrueSightDAO/.github/assets/butterfly-effect-logo.png` — the spec even names this exact path as the recommended hosting, CDN-friendly + stable) and repoint the manifest to it. That makes it permanent, not dependent on ERA's WordPress. **I need the logo image from you** (or I can try pulling it from ERA's site/butterfly-effect-club repo if you point me at one) — I searched the whole org: **no butterfly logo asset exists anywhere** yet.
+
+## 2. Program page for the FounderHaus Farm Edition — yes, good idea
+
+The `programs.html` page is the DAO's partner-program surface (Tribo Mirim, Butterfly Effect, IVY, Grounding). The Farm Edition fits naturally as a new program card — it's a co-branded, QR-anchored partnership (FounderHaus × TrueSight DAO), and the pattern (manifest → landing page → credential/QR surfaces) matches exactly. I'd add:
+
+- `programs/founderhaus-farm/` — landing page + `manifest.json` (partner: FounderHaus; co-brand with the group photo; status `onboarding`)
+- A card on `programs.html` → "FounderHaus Farm" → links to the landing page + the Farm Edition PDF/QR
+- Co-brand assets: group photo + FounderHaus logo (I'd need the FounderHaus logo file too — or use the group photo as the banner image, which we already have)
+
+**Process note:** `programs.html` + manifests live in `truesight_me_prod` (production). Per our rules I'll make these changes in **`truesight_me_beta` first**, show you the live beta page, and only sync to prod after your explicit approval.
+
+**So, two things from you:**
+1. **Go-ahead** on adding the FounderHaus Farm program page (beta-first)? And should the banner be the **group photo** (we have it) or a **FounderHaus logo** (need the file)?
+2. **The Butterfly Effect logo file** — can you share it (or confirm I should grab it from ERA's site / butterfly-effect-club)?
 
