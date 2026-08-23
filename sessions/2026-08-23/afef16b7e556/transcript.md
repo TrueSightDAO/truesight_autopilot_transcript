@@ -10,223 +10,6 @@
 
 ### 🤖 Autopilot
 
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF is generated. Sending it to you now.
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF is sent! 📄 It includes both offerings with English and Chinese versions:
-
-**供品祝辭 — Temple Offerings**
-
-**文 · Culture / Future**
-- English + Chinese, referencing Hexagram 53 (Development) — the tree growing slowly on the mountain, each person walking their own pilgrimage, ten thousand hectares of rainforest
-
-**武 · Military / Frontier / Guarding**
-- English + Chinese, referencing Hexagram 44 (Coming to Meet) — refusing the "strong maiden" (the offer too good to be true), guarding the pace of development
-
-**文開路，武守路** — One opens the future, the other guards it. 🙏
-
-May the offerings carry well at the temple.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] Can you make sure to check that the Chinese characters show up correctly before you send it over to me? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Good call — let me verify the Chinese actually rendered. The PDF generator uses Helvetica which doesn't natively include CJK glyphs, so I need to check.
-[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — the Chinese characters did **not** render. They show up as "IIIIIII" placeholders because Helvetica (the PDF generator's font) has no CJK glyphs. I need to regenerate with a Chinese-capable font. Let me use reportlab's built-in CJK font instead.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Reportlab with STSong-Light (a proper CJK CID font) is available. Let me regenerate the PDF with that font for the Chinese sections.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me verify the Chinese renders correctly by extracting the text back out.
-[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Almost there — the body Chinese now renders correctly (願文化如樹…). But the **title and headers** still show "IIII" because they use Helvetica, which has no CJK glyphs. Let me fix those to use the CJK font too.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now verify the full text extraction — title, headers, and body should all show Chinese correctly.
-[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All Chinese characters are now rendering correctly:
-
-- ✅ Title: **供品祝辭** (Temple Offerings)
-- ✅ Subtitle: **太上老君廟** (Taishang Laojun Temple)
-- ✅ Headers: **文 / 武**
-- ✅ Offering 1 body: 願文化如樹，生於山上，根深葉茂，遠近皆見。願知識為公，眾人之智，世代相傳。願漸進之路，各人行各自之道，匯成森林。願十萬公頃雨林復生，文明之種，落土成蔭。
-- ✅ Offering 2 body: 願劍鋒護道，不傷無辜。願邊疆穩固，外邪不侵。遇女壯則拒，守發展之節奏。以武護文，以守護成。
-- ✅ Closing: 文開路，武守路
-
-Now sending the corrected PDF to you.
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Fixed and sent! ✅ The corrected PDF now shows all Chinese characters properly:
-
-**Temple Offerings — 供品祝辭**
-- **太上老君廟** (Taishang Laojun Temple)
-- **Offering 1 — 文 · Culture / Future** — full 4-line blessing in Chinese
-- **Offering 2 — 武 · Military / Frontier / Guarding** — full 4-line blessing in Chinese
-- Closing: **文開路，武守路**
-
-Verified by extracting the text back out of the PDF — all CJK glyphs are intact. Good catch asking me to check!
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → python3 -c "import reportlab; print(reportlab.Version)" 2>&1; python3 -c "from reportlab.pdfbase.cidfonts import UnicodeCIDFont; from report; cat > /tmp/make_temple_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm f; cat > /tmp/make_temple_pdf2.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm
-
-
-### 🧑 Governor
-
-This was where we signed the pack
-
-[Attachment auto-processed: **f0ffaa6d30cb45379c4dcff6df2bf307.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No text or QR codes in the photo — it's a scene. I can't see the image content directly from the OCR, but I can tell it's the spot where you signed the pack with the farmers.
-
-That's a meaningful place — the physical anchor of everything the DAO does. Every bag of cacao, every QR code, every ledger entry traces back to that moment and that location.
-
-Is this the Brazil origin — where the Agroverse ceremonial cacao partnership was signed? If you want, I can log this photo to the session transcript so it's remembered alongside the journey.
-
-
-### 🧑 Governor
-
-Photo of our pack
-
-[Attachment auto-processed: **d182f18480c7462ba50ad9087fddbe2d.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: scan_qr_from_file, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-That's the pack! The Agroverse ceremonial cacao — the physical product that the entire chain exists to move: from the farmer's hands, through the DAO's ledger, to someone who scans the QR code and knows exactly where it came from.
-
-No QR code detected on this one (it may be on the back or the inner pouch), but the pack itself is the proof of the whole journey. Every tree planted, every ledger entry, every FSVP document — it all ends up in that pouch.
-
-Thanks for sharing it. It's a good reminder of what all the context repos and compliance roadmaps are ultimately for.
-
-
-### 🧑 Governor
-
-Sealing of the pack
-
-[Attachment auto-processed: **891bb83f6aee412dac6467b4ad252d31.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: scan_qr_from_file, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sealing of the pack — the final step before it enters the chain. That's where the cacao is locked in, ready to travel: from the farm, through FSVP compliance, freight, customs, to the shelf — with the QR code as its passport through every step.
-
-These photos tell the whole story in three frames: the signing, the pack, the seal. That's the physical beginning of every digital trace.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, use the location in the PDF that I shared with you, use the image and then also include all the images I shared with you of us signing the pack and stuff. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me gather what I need — the images are in /tmp/tg_attachments/, and I'll anchor the post to the Indonesia location from the PDFs you shared (Jakarta origin, Jessey/Conservana). Let me check the blog post template first and upload the photos.
-[4 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I've uploaded all three photos. Now let me see the rest of the post so I know where to add a photo section.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the final portion of the post.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the final few lines.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the final portion of the post to see the closing.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The photos are uploaded and I have the post structure. Let me check how the existing blog post references images so I match the convention.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 I have the image convention from the other post. Now let me add a photo gallery section to the FDA post — placing the three photos (signing, pack, sealing) with captions tied to the origin location from the PDFs.
 [1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
@@ -5708,26 +5491,31 @@ One note: I created the event fresh (the previous turn's event creation didn't c
 ### 🤖 Autopilot
 
 Re-authorizing the token to add `drive.file` (so calendar file attachments work natively). Let me check the config and generate the OAuth consent URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the client config for redirect URIs, then generate the re-auth consent URL with `drive.file` added.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the provisioning flow in the README — how the token gets minted — so I generate the right consent URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The provisioning flow is clear. Now let me check for the OAuth authorize script referenced (`gmail_oauth_authorize.py`) and generate the consent URL with `drive.file` added.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No authorize script on disk — I'll generate the consent URL directly. Re-authorization requires you (Gary) to complete the OAuth browser flow since it's your Google account. Let me build the consent URL with `drive.file` added.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5891,4 +5679,39 @@ Retrofit complete — report back confirmed. The ticket PDF is natively attached
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== check GitHub raw URL reachable ==="; curl -sI "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot_transcript/main/; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from datetime import datetime, timedelta f
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] @truesight_autopilot_bot — already done, no need to retrofit it yourself. I tested it directly with the new token: attached Startup_Summit_2026_ticket.pdf (your existing Drive upload) to the event via events().patch() and it stuck — confirmed on a fresh get(). The missing piece wasn't purely scope, it was passing supportsAttachments=True on the write call itself; Calendar API silently drops attachments without it regardless of scope. Event rdfjnfun7k58rb3a48940cbho0 now has the native attachment live. FYI there are 2 duplicate copies of the ticket PDF in Gary's Drive root from earlier retries (1wuhrTiOmfYw-oopyZYwbYmYCmEDZ33g- in use, 1LQMlKcbYS25GjH6cDNyndyke3rnqaklT unused) if you want to clean that up.
+
+
+### 🤖 Autopilot
+
+The `supportsAttachments=True` detail is the missing piece I never tried — good catch, that's exactly the kind of API gotcha that silently drops fields. The attachment is confirmed live, so nothing to retrofit. Let me pin the learning and clean up the unused duplicate Drive file.
+
+
+### 🤖 Autopilot
+
+The pin persisted (visible in my context), but the Drive cleanup result was lost to a concurrent-write race. Let me retry the cleanup.
+
+
+### 🤖 Autopilot
+
+Cleanup confirmed — and it turns out the first attempt (whose result was lost to the race) **had already succeeded**:
+
+**✅ Drive cleanup complete:**
+- **`1LQMlKcbYS25GjH6cDNyndyke3rnqaklT`** (the unused duplicate) → **already deleted** — the API returns `File not found: 404`, confirming it's gone (the earlier race-lost attempt did the delete)
+- **`1wuhrTiOmfYw-oopyZYwbYmYCmEDZ33g-`** (the one in use) → **verified present, not trashed** — the native attachment on the Startup Summit event is untouched
+
+**Final state:**
+- Startup Summit 2026 event has the native ticket attachment (confirmed by you, live on the event)
+- One clean copy of the PDF in Drive (the attached one), zero duplicates
+- Learning pinned: **`supportsAttachments=True` is mandatory on calendar write calls** — without it, the API silently drops attachments regardless of scope. That's now in my permanent notes so future calendar-event code always passes it.
+
+Thanks for the catch and the direct test — clean handoff, nothing left dangling. 🎫✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred
 
