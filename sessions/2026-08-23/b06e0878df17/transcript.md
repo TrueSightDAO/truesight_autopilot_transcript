@@ -1673,61 +1673,73 @@ Okay, kick start the thread for the iOS implementation in a new thread and then 
 ### 🤖 Autopilot
 
 On it — kicking off the iOS thread (already created as "SunMint Mobile App - iOS", thread 13445) with a proper kickoff, then implementing iOS-track work there. Starting with the kickoff post + inspecting the iOS project assets in parallel:
+[2 tool result(s) compacted: post_to_telegram_topic, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The iOS thread kickoff is posted (msg 13457). The local working tree is stale — it's at the pre-PR3-merge commit (the `ios/` dir landed on `main` via PR #11's squash after my last reset). Let me sync and re-locate the brand logo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Working tree synced (main = `8a4f3b5` PR3), iOS assets + deployment target 15.0 confirmed, and I found the TrueSight DAO logo source at `/tmp/aac_fix/assets/truesight_dao_logo_long.png`. Let me check the AppIcon spec and generate the iOS icon set (mirroring the Android PR10 branding):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Modern iOS AppIcon spec is simple — one universal 1024×1024 (no legacy sizes needed since Xcode 14). I'll use `truesight_icon.png` (530×530, already square RGB — perfect source), upscale to 1024×1024, and write it in. Also set the splash to the saffron brand background matching Android:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Splash set needs all 3 filenames (`-1`, `-2`, and bare). Let me populate the other two (same 2732×2732 art — scale variants reference the same universal art in Capacitor's default set) and update the AppIcon Contents.json if needed. Then commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 brand assets staged (AppIcon + 3 splash variants). This is the **iOS branding** work — I'll add it to the iOS track as a focused PR (call it "iOS branding" — effectively PR3.1 in the iOS track). Commit, push, open PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #12 open (iOS branding). Merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 iOS branding merged (`a3eca247`). Now the next Mac-independent iOS deliverable: **PR13 (docs)** — `sunmint_mobile/README.md` with the build/release process for both platforms. Let me check the current README and write the full one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 README is a stub. Writing the full PR13 README (build/release for both platforms, keystore custody note, iOS Mac/Apple-account constraints, relationship to sunmint_beta/prod):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 README written (3.2KB). Commit, push, open PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #13 open. Merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR13 (docs) merged (`b0cc230b`). Both Mac-independent iOS deliverables are done. Let me post the progress update to the iOS thread and wrap this turn:
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1883,4 +1895,142 @@ Re-release notice posted. Also worth posting the fix acknowledgment in the iOS t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== package.json @capacito; cd /tmp/sunmint_mobile && npm install @capacitor/camera@^8 2>&1 | tail -2 && echo "=== package.json now ===" && grep -o '"@capacitor/[a-z-]*; cd /tmp/sunmint_mobile && npx cap sync android 2>&1 | tail -4 && echo "=== capacitor.plugins.json now ===" && cat android/app/src/main/asset; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] DeepSeek Local — follow-up bug on the camera fix (still broken in the UAT APK). I verified this against the installed @capacitor/camera enums.
+
+Bug: www/index.html capturePhoto() references two enum values as if they were Capacitor plugins:
+  line 912:  source: Capacitor.Plugins.CameraSource.Camera,
+  line 913:  resultType: Capacitor.Plugins.CameraResultType.Uri,
+`Capacitor.Plugins.CameraSource` and `Capacitor.Plugins.CameraResultType` are undefined (CameraSource/CameraResultType are @capacitor/camera TS enums, NOT registered plugins) → tapping "Take photo" throws "Cannot read properties of undefined (reading 'Camera')".
+
+Exact fix (2 lines, use the string enum values):
+  source: "CAMERA",
+  resultType: "uri",
+(Enum ground truth from @capacitor/camera definitions.js: CameraSource.Camera = "CAMERA", CameraResultType.Uri = "uri".)
+
+Please apply, rebuild the release APK, and re-release the same v0.1.0-android-uat URL. Verify the built APK's www/ still calls getPhoto with source:"CAMERA"/resultType:"uri" (grep the packed index.html). Report the new SHA-256 here.
+
+
+### 🤖 Autopilot
+
+DeepSeek Local's claim is specific and verifiable — let me check the actual file and the enum ground truth in the installed plugin before touching anything (Rule 11):
+
+
+### 🤖 Autopilot
+
+Confirmed at both ends: line 912–913 use `Capacitor.Plugins.CameraSource.Camera` / `Capacitor.Plugins.CameraResultType.Uri`, and the installed plugin's ground truth is `CameraSource.Camera = "CAMERA"` / `CameraResultType.Uri = "uri"` — those enum objects are **not** plugins on `Capacitor.Plugins`, so it throws at runtime. DeepSeek Local is right (my edit-loss re-apply introduced the wrong namespace).
+
+Applying the exact 2-line fix, and also scanning for any other `Capacitor.Plugins.<enum>` pattern in the same file:
+
+
+### 🤖 Autopilot
+
+The camera fix is applied. But my sweep just caught a **likely second instance of the same bug**: `Capacitor.Plugins.FilesystemDirectory` at lines 685/726/756 — `FilesystemDirectory` is an enum in `@capacitor/filesystem`, not a plugin. Same undefined-property throw would hit the offline queue on native. Let me verify against ground truth before touching it:
+
+
+### 🤖 Autopilot
+
+The filesystem grep returned nothing from `definitions.js` — let me locate the actual enum definition file (it may be in a different file or use a different pattern):
+
+
+### 🤖 Autopilot
+
+The full output got truncated — but the tail of that grep is decisive: `export const FilesystemDirectory = Directory;` in the **.d.ts** (types only). The runtime story is different — let me check whether the JS build actually exports `FilesystemDirectory` at runtime, because that determines whether `Capacitor.Plugins.FilesystemDirectory` works:
+
+
+### 🤖 Autopilot
+
+Two facts now: `index.js` exports `* from './definitions'` (so `FilesystemDirectory` IS available at runtime as a value — it's `Directory`, a string enum), and the `Capacitor.Plugins` proxy doesn't special-case anything. So `Capacitor.Plugins.FilesystemDirectory` — accessing a **property named `FilesystemDirectory` on the `Plugins` proxy** — would attempt to resolve an unregistered plugin named `FilesystemDirectory`, not the enum value. That's the same class of bug. Let me confirm what the Plugins proxy does when you access an unknown key (throws? returns undefined?) — checking the Capacitor runtime proxy implementation:
+
+
+### 🤖 Autopilot
+
+The dist path differs — let me find the actual core build layout:
+
+
+### 🤖 Autopilot
+
+Now I can see the exact runtime: `Capacitor.Plugins` is a plain object populated only by `registerPlugin()` calls — accessing `.FilesystemDirectory` (or `.CameraSource`/`.CameraResultType`) returns **undefined** (property was never set), confirming the bug class. But note `Capacitor.Plugins.FilesystemDirectory.Documents` would throw "Cannot read properties of undefined" only when the offline queue runs on native — same as the camera bug. DeepSeek Local's fix pattern should apply here too. Let me see the exact Filesystem plugin proxy usage to confirm it's genuinely the enum-as-plugin bug (not something the plugin exposes):
+
+
+### 🤖 Autopilot
+
+Confirmed — same bug class, 3 more instances: `Capacitor.Plugins.FilesystemDirectory.Documents` on lines 685/726/758 should be the string `"DOCUMENTS"` (the `Directory` enum value). If left, the offline queue would throw the same "Cannot read properties of undefined" the moment it writes a photo on native. I'll fold this into the same fix PR (it's the same root cause — enums referenced via the plugin proxy). Applying all fixes now, including the camera lines:
+
+
+### 🤖 Autopilot
+
+The camera fix was already applied by my earlier run this turn (hence 0 occurrences of the old strings — the assert bailed before reaching the filesystem fix). FilesystemDirectory still needs fixing. Re-running just that replacement:
+
+
+### 🤖 Autopilot
+
+All clean — the remaining `Capacitor.Plugins.X` references are all **real plugins** (SecureStorage, Geolocation, Filesystem, SQLite, Camera, Network, App). All enum-as-plugin patterns are gone (camera 2 sites + filesystem 3 sites). Now sync + rebuild release, then verify the packed www/ inside the APK:
+
+
+### 🤖 Autopilot
+
+**Verified in the built APK**: packed `index.html` contains `source: "CAMERA"`, `resultType: "uri"`, and all 3 `directory: "DOCUMENTS"` — exactly as DeepSeek Local specified. Now commit as one PR, push, merge:
+
+
+### 🤖 Autopilot
+
+PR #16 open. Merge it:
+
+
+### 🤖 Autopilot
+
+PR #16 merged (`5b44833d`). Now re-release the UAT asset — delete the current one, upload the rebuilt APK, report the new SHA-256:
+
+
+### 🤖 Autopilot
+
+Current asset id 526468112. Delete + upload the new build:
+
+
+### 🤖 Autopilot
+
+Re-release complete. Now post the fix + new SHA-256 to this thread:
+
+
+### 🤖 Autopilot
+
+Re-release notice posted (msg 13689). Wrap-up:
+
+## What I did this turn — enum-value fix (PR #16) + UAT re-release
+
+**Verified DeepSeek Local's bug at both ends** (Rule 11):
+- `www/index.html` lines 912–913: `Capacitor.Plugins.CameraSource.Camera` / `Capacitor.Plugins.CameraResultType.Uri` — confirmed present
+- Installed `@capacitor/camera` ground truth: `CameraSource.Camera = "CAMERA"`, `CameraResultType.Uri = "uri"` — and confirmed via the Capacitor core runtime (`Plugins` object only populated by `registerPlugin()`) that `Capacitor.Plugins.CameraSource` is **undefined** → the reported throw is real
+
+**Fixed (one PR, as requested):**
+- **PR #16** merged `5b44833d`: `source: "CAMERA"` + `resultType: "uri"` (DeepSeek Local's exact fix)
+
+**Plus same bug class, 3 more sites found by my sweep:** `Capacitor.Plugins.FilesystemDirectory.Documents` → `directory: "DOCUMENTS"` (lines 685/726/758 — the offline queue's photo write/read path; would have thrown identically on native). Verified `FilesystemDirectory = Directory` in the runtime exports and the plugin-proxy mechanics before touching it.
+
+**Rebuild + re-release:**
+- Release APK rebuilt (16.72 MB), **packed `index.html` verified inside the APK** — `source: "CAMERA"`, `resultType: "uri"`, 3× `directory: "DOCUMENTS"` all present
+- All remaining `Capacitor.Plugins.*` refs are genuine plugins (Camera, SQLite, Filesystem, Geolocation, Network, App, SecureStorage)
+- UAT asset replaced on the same v0.1.0-android-uat URL
+- **NEW SHA-256: `1b3d32ef7225aeba19566d43d3ed5aa96003e57957ba7934d6086df0f6fd3002`** — posted in thread (msg 13689)
+
+## RESUME HERE → next
+- **Gary:** re-download (uninstall old first — signature differs), test Take Photo + full submit flow → report back → I close the Android UAT gate + file the DAO contribution (plan §9)
+- **iOS:** parked at Mac + Apple Developer account gates
+- **Standing:** Android parked at UAT; no units movable without governor input
+
+**✅ This turn:** verified bug at 2 ends, PR #16 merged `5b44833d`, caught+fixed 3 same-class Filesystem sites, rebuilt + in-APK verified, UAT asset re-released, new SHA-256 `1b3d32ef…` posted.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== lines 900-925 ===" && sed -n '900,925p; cd /tmp/sunmint_mobile && python3 - << 'EOF'
+html = open('www/index.html').read()
+old = """          source: Capacitor.Plugins.CameraSource.Camera, // live capture only, no gal; cd /tmp/sunmint_mobile && echo "=== lines 680-690, 722-730, 752-760 ===" && sed -n '683,687p;724,728p;754,758p' www/index.html; …(+8 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== lines 900-925 ===" && ; cd /tmp/sunmint_mobile && python3 - << 'EOF' html = open('www/index.html').read() old = """ source: Capacitor.Plugins.CameraSource.Camera, /; cd /tmp/sunmint_mobile && echo "=== lines 680-690, 722-730, 752-760 ===" && sed -n '683,687p;724,728p;754,758p' www/index.html && echo "=== ; …(+10 more)
 
