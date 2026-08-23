@@ -2258,32 +2258,48 @@ The key didn't load — let me find the right env file:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Model names are outdated — let me check what the working grok_client uses:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The client uses `grok-4-1-fast-non-reasoning` — but the models list shows `grok-4.5` / `grok-4.6` available. Let me use the current vision-capable model to inspect the pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok at 110 dpi says the v7 PDF is clean — but let me check at higher resolution to be sure, since subtle overflow can hide at low DPI.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both vision passes (110 and 180 dpi) say the **PDF v7 is clean — no overflow**. So the overflowing words are likely on a **web page**, not the PDF. The most likely suspects given what changed: the **QR scan page** (the SKU cell now shows the long "FounderHaus Tree Planting Pledge - QR Code" string) or the **programs.html card** (long SunMint tagline). Let me check both:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The web pages have `word-break: break-word` on their long values, and Grok's vision pass on the PDF came back clean — but let me do an objective geometry check on the PDF itself (text blocks vs. table borders and margins) plus check for image distortion, since "overflow" is often really a squished QR/photo or a long URL bumping a cell edge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The geometry check found the real issue — **both embedded images are being force-distorted**. Let me confirm the natural dimensions of the source images vs. the boxes I forced:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2418,4 +2434,47 @@ The page you're looking at is **live on prod** (`truesight.me/...`) — so prod 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 | tail -2; echo "COMPILE_RC=$?"; python3 -m ruff check app sc
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Also I wonder if on this page https://truesight.me/programs/founderhaus-farm/index.html 
+
+View cohort → should be renamed to something more appropriate and then linked to
+
+
+https://truesight.me/physical-assets/serialized/?q=2024OSCAR_CT_20260820_
+
+
+### 🤖 Autopilot
+
+Let me check what that serialized-assets page shows so I can pick the right label, and look at the current CTA row on the landing page.
+
+
+### 🤖 Autopilot
+
+The serialized-assets page is **"Product Verification"** — a searchable directory of every QR-coded asset, filterable by batch. For FounderHaus Farm, that's exactly the right surface: it shows all 100 tea bags with their live status (MINTED → SOLD) and provenance. "View cohort →" (which points at the people roster) is indeed the wrong CTA there.
+
+Making the change in beta — renaming the CTA and pointing it at the batch verification page:
+
+
+### 🤖 Autopilot
+
+✅ **PR #304 opened — CTA fixed.**
+
+## What I found
+
+The `truesight.me/physical-assets/serialized/?q=2024OSCAR_CT_20260820_` page is the **"Product Verification"** directory — a searchable table of every QR-coded physical asset. Filtered to your batch it shows all 100 tea bags with QR ID, live status badge (MINTED → SOLD), and provenance links. That's exactly the right surface for the FounderHaus Farm program — the "cohort" that matters here is the **batch of bags**, not the people roster.
+
+## The change (PR #304)
+
+`programs/founderhaus-farm/index.html` (beta):
+- ❌ `View cohort →` (→ `members.html`, the people page)
+- ✅ **`Track the 100 bags →`** → `https://truesight.me/physical-assets/serialized/?q=2024OSCAR_CT_20260820_` (opens in new tab)
+
+**PR:** https://github.com/TrueSightDAO/truesight_me_beta/pull/304 (`d6a6e086`) — one small scoped change.
+
+**RESUME HERE →** pending your word to merge: #303 (bold-markdown fix) + #304 (CTA fix), then verify on beta and promote to prod (prod needs the manual reconcile/CNAME path — your earlier reconcile landed, so a fresh `sync_beta_to_prod` attempt may now work). Also still open: Butterfly Effect logo fix (needs logo file from you).
+
+Want me to merge #303 and #304 now, verify beta, then attempt the prod sync?
 
