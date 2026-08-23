@@ -1143,56 +1143,67 @@ PR #5 open. Merge:
 ### 🤖 Autopilot
 
 **PR6 MERGED** (squash `eba3e2d7`). Continuing auto-advance → **PR7 (native offline queue: SQLite + Filesystem)**. Let me pull PR7's spec + the current IndexedDB implementation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR7 is the biggest unit so far — SQLite + Filesystem replacing IndexedDB. Let me read the full current queue implementation to design the swap with identical function signatures (so all call sites stay untouched):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the queue functions (upload/flush/badge):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR7 is the offline-queue storage swap. Full picture: storage functions are `queueTreeReport` / `getPendingTreeReports` / `markTreeReportUploaded` (+ `flushTreeReportQueue` / `updatePendingBadge` / `uploadTreeReport` which call them). Plan: keep **identical function signatures** so all call sites stay untouched; native path → SQLite + Filesystem, web build keeps IndexedDB fallback (like camera/geo). Installing both plugins:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both plugins installed (`@capacitor-community/sqlite@8.1.1`, `@capacitor/filesystem@8.1.3`). Now the PR7 edit — replace the IndexedDB storage layer with native SQLite+Filesystem, keeping identical function signatures and the IndexedDB web fallback:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR7 edit applied cleanly (109 insertions, call sites untouched). Now `cap sync` + rebuild to verify the native plugins compile:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 APK builds with both plugins (14.7 MB — the SQLite native lib is sizeable). Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #6 open. Merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR7 MERGED** (squash `5cdd9c4a`). Continuing → **PR8 (native secure storage for the RSA keypair)**. Let me pull the spec + current localStorage keypair code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR8 scope clear: replace `localStorage` for the keypair with native secure storage (Android Keystore / iOS Keychain). The plan suggests `capacitor-secure-storage-plugin` (TBD at PR7/PR8). Let me read the full `ensureKeyPair` + `signText` block and pick the secure-storage plugin:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `@aparajita/capacitor-secure-storage@8.0.0` — explicitly "Capacitor 8+ plugin that provides secure storage for the iOS and Android" — is the right choice (we're on Capacitor 8.5.0). It uses Android Keystore / iOS Keychain. Installing it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1250,6 +1261,7 @@ Keep auto-advancing PR8 onward as already authorized.
 ### 🤖 Autopilot
 
 Two clear updates: (1) merge PR #804 (iOS parallel sequencing), (2) remember to open a new iOS topic when PR3 starts. Merging the governor's PR first, then continuing PR8:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1297,51 +1309,61 @@ Go
 ### 🤖 Autopilot
 
 "Go" — resuming from RESUME HERE → **PR8 (native secure storage for RSA keypair)**. First, verify the plugin's exact API surface so the edit uses real method names:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plugin exposes both `get/set` and localStorage-style `getItem/setItem` aliases. Let me check the import pattern (singleton vs. `SecureStoragePlugin`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plugin API confirmed: `Capacitor.Plugins.SecureStorage` (registered proxy) with localStorage-style `getItem`/`setItem` (string-based — perfect for the base64 keys), native Android Keystore / iOS Keychain, web fallback built in. Applying the PR8 edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit applied (the assertion that failed was just my wrong expected count — the write happened before it; `ensureKeyPair()` = definition + 2 call sites = 3, correct; remaining `localStorage.setItem` ×2 are the web fallback inside `secureStorageSet`). Now sync + rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 APK builds with the secure-storage plugin (14.7 MB). Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #7 open. Merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR8 MERGED** (squash `8d0489bb`). Continuing auto-advance → **PR9 (sync triggers: `@capacitor/network` + `@capacitor/app`)**. Let me pull the spec + current sync-wiring code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR9 spec confirmed: `@capacitor/network` connectivity listener + `@capacitor/app` foreground listener, both calling the existing `flushTreeReportQueue()`. Let me see the app-launch block (lines ~950-985) to place the native listeners correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the init block. Now install both plugins and apply the PR9 edit — add native `Network` + `App` listeners that call `flushTreeReportQueue()`, keep the `online` event as web fallback:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR9 edit applied. Sync + rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1448,4 +1470,156 @@ No code blockers; only the custody-protocol decision + Mac availability need gov
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /tmp/sunmint_mobile && echo "=== plugin dist files ===" && ls node_modules/@aparajita/capacitor-secure-storage/dist/esm/ && echo "=== JS ; cd /tmp/sunmint_mobile && echo "=== index.js ===" && cat node_modules/@aparajita/capacitor-secure-storage/dist/esm/index.js && echo "=== bas; cd /tmp/sunmint_mobile && python3 - << 'EOF' html = open('www/index.html').read() old_block = """ async function ensureKeyPair() { let publi; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] [Handoff context — this Telegram topic (thread 13386) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+"Go for it" — resuming from RESUME HERE → finish PR11 (verify signature, land the PR), then the Android UAT gate, then iOS kickoff. First, verify the signed APK signature (correct filename this time) and confirm the commit state:
+
+
+### 🤖 Autopilot
+
+**Signature VERIFIED** — Signer #1 cert `CN=SunMint, O=TrueSight DAO`, SHA-256 `eecb6b06…`, v1/v2 signed. Only `.gitignore` + `build.gradle` changed (keystore.properties correctly excluded). Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #10 open. Merge it (auto-advance covers PR11):
+
+
+### 🤖 Autopilot
+
+**PR11 MERGED** (squash `313a096d`) — the signed release APK is built and verified. Now the **Android UAT gate**: create a GitHub Release with the signed APK as a direct-download asset, then post the UAT instructions here. Let me fetch the testing notes from `sunmint_beta/README.md` and create the release:
+
+
+### 🤖 Autopilot
+
+I have the flows. Now create the GitHub Release with the signed APK as a direct-download asset (this is the UAT gate deliverable):
+
+
+### 🤖 Autopilot
+
+Release created. Now upload the signed APK as the release asset (direct-download link for UAT):
+
+
+### 🤖 Autopilot
+
+APK asset uploaded with direct-download URL. Now post the **Android UAT gate** message in this thread — the always-stop (§5c). This is the moment to stop Android-specific work:
+
+
+### 🤖 Autopilot
+
+UAT gate posted. Now per the governor's sequencing update: **PR3 (iOS) starts immediately** — and per your instruction, open a **new forum topic** for the iOS track with a kickoff post:
+
+
+### 🤖 Autopilot
+
+iOS topic created (thread 13445) with kickoff. Now start **PR3**: `npx cap add ios` (works on Linux — it scaffolds the native project; only the actual Xcode build needs a Mac), then Info.plist permissions. Let me run it:
+
+
+### 🤖 Autopilot
+
+`cap add ios` succeeded — iOS project scaffolded (App/, capacitor-cordova-ios-plugins/, debug.xcconfig, Info.plist). Now add the iOS permissions (camera, photo library, location) that PR3 requires — camera + location (matching the Android permissions), plus photo-library for photo handling:
+
+
+### 🤖 Autopilot
+
+Info.plist permissions added (camera, photo-library add/read, location), bundle ID `me.truesight.sunmint` confirmed. Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+The push failed — I forgot the `-b` branch checkout before committing (I was on `main` after the reset). The commit likely landed on `main` locally. Let me fix: create the feature branch at the right point, or reset. Let me check state:
+
+
+### 🤖 Autopilot
+
+The commit landed on local `main` (my mistake — missed the `-b` checkout). Fix: point a `pr3-ios-platform` branch at that commit, reset local main back to origin/main, push the branch:
+
+
+### 🤖 Autopilot
+
+Fixed — branch `pr3-ios-platform` pushed, **PR #11 open**, local main restored to `313a096`. Merge it:
+
+
+### 🤖 Autopilot
+
+**PR3 MERGED** (squash `8a4f3b56`) — iOS platform scaffolded, Info.plist permissions in. Per the plan, PR3's actual build needs a Mac (flagged). Now update the iOS topic + resume tracker with progress, then post status. Let me update the plan tracker (PR8–PR11 + PR3 done) and post to the iOS topic:
+
+
+### 🤖 Autopilot
+
+The grep between update and push printed nothing — let me verify the tracker rows actually updated before opening the PR:
+
+
+### 🤖 Autopilot
+
+The tracker regex **corrupted** PR1/PR2 rows (regex crossed row boundaries — inserted PR8/PR9 marks into wrong cells). I must NOT merge that. Let me restore the file and rewrite the tracker table cleanly with a precise whole-block replacement:
+
+
+### 🤖 Autopilot
+
+File restored clean. Now replace the whole tracker block precisely (lines 241-255) with correct marks — PR6-PR11 + PR3 done, Android UAT pending:
+
+
+### 🤖 Autopilot
+
+Tracker block is now clean and correct — all 11 rows properly marked, no corruption. Commit + push + PR + merge:
+
+
+### 🤖 Autopilot
+
+Tracker PR #806 open. Merge it:
+
+
+### 🤖 Autopilot
+
+Tracker PR #806 merged. Now post the PR3 status to the iOS topic (thread 13445):
+
+
+### 🤖 Autopilot
+
+Both threads are now current. Let me do the final state check — confirm all merged PRs on the repo and close this turn cleanly:
+
+
+### 🤖 Autopilot
+
+**All 11 PRs merged** — full picture confirmed. Here's the turn report.
+
+## What I did this turn
+
+**✅ PR11 (Android release signing) — MERGED** (squash `313a096d`, PR #10):
+- Release keystore generated at `/opt/android-keystore/sunmint-release.keystore` (RSA-2048, CN=SunMint O=TrueSight DAO) — **outside repo, dir 0700, password 0600, never committed**
+- `android/keystore.properties` created + gitignored; gradle `signingConfigs.release` wired to it
+- `assembleRelease` → **BUILD SUCCESSFUL** → `app-release.apk` (4.06 MB), signature **verified** (`apksigner` cert SHA-256 `eecb6b06…`)
+
+**✅ Android UAT gate posted (always-stop §5c):** signed APK as GitHub Release asset — **https://github.com/TrueSightDAO/sunmint_mobile/releases/download/v0.1.0-android-uat/sunmint-android-uat.apk** (SHA-256 `18f2d48c…`) + 5 test flows, posted in this thread (msg 13444). **Stopped Android-specific work per §5c.**
+
+**✅ iOS track started (per your sequencing update):**
+- **New forum topic created:** "SunMint Mobile App - iOS" (thread 13445) with kickoff — iOS logs won't interleave with this Android thread
+- **PR3 (iOS platform) — MERGED** (squash `8a4f3b56`, PR #11): `npx cap add ios` scaffold + Info.plist permissions (camera, photo-library read/add, location); bundle ID `me.truesight.sunmint`
+- iOS status posted to the iOS topic (msg 13448)
+
+**✅ Resume tracker updated + merged** (PR #806, squash `189ae970`): all 11 PR rows marked done with squashes; PR3 noted "build blocked — needs a Mac"; Android UAT row = gate posted; PR12 = needs Apple account.
+
+## ⚠️ Items needing the governor
+1. **Keystore custody** — plan cites `CREDENTIAL_HANDOFF_PROTOCOL.md`, which **doesn't exist**. Keystore currently local-only at `/opt/android-keystore/`. Need your call on custody (vault? backup? leave as-is?).
+2. **Android UAT** — install the APK from the link above and run the 5 flows; report back.
+3. **Mac for iOS build** — none accessible from this fleet; designate where PR3's `xcodebuild`/simulator runs.
+4. **Apple Developer account** for PR12 (TestFlight) — your action.
+
+## RESUME HERE → next (pick what unblocks)
+- **PR13 (docs)** — available now, needs no Mac/account; say go and I'll write `sunmint_mobile/README.md` (build/release for both platforms + sunmint_beta/prod relationship)
+- Or await governor: UAT results / keystore custody decision / Mac designation / Apple account → then continue iOS (PR12)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /tmp/sunmint_mobile && echo "=== verify signed release APK ===" && /opt/android-sdk/build-tools/35.0.0/apksigner verify --print-certs and; cd /tmp/sunmint_mobile && git checkout -q -b pr11-release-signing && git add .gitignore android/app/build.gradle && git -c user.name="Sophia; cd /tmp/sunmint_mobile && TOKEN=$(/opt/truesight_autopilot/scripts/git-credential-sophia.sh get <<< $'protocol=https host=github.com ' 2>/de; …(+13 more)
 
