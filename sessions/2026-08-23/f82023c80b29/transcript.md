@@ -1249,21 +1249,25 @@ That dry-run result is now explained — **`--dry-run` only counts whether the J
 ### 🤖 Autopilot
 
 The seed path reads the **new pledge currency correctly** from the sheet — so the earlier "unchanged" was just the dry-run's existence-check quirk (it never actually diffs content). Executing the real refresh now in the clean clone, then pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Seed executed — but note **updated=116, created=3** (more than just the 101 CT rows). The canonical repo has drifted on other rows too (like the `minted_by`/landing-page flips I saw earlier). I need to see the full scope before pushing — I won't push unintended changes to unrelated batches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 119 files changed, not just 101 — this confirms the caches have been **drifting from the sheet since July** (e.g. the CB batch shows real SOLD sales by Kirsten that the cache never picked up). All changes are legitimate sheet-truth alignment, but I'll keep this push **scoped to the 101 CT files** Gary asked for, and flag the rest as a separate cleanup. Committing + pushing just the CT batch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Now let me verify the public page reflects the change end-to-end:
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1305,36 +1309,43 @@ And your **UAT code** is live-ready to scan: `2024OSCAR_CT_20260820_1` → `http
 ### 🤖 Autopilot
 
 On it — refreshing the remaining stale caches (CB batch + test rows) with a scoped push. Let me review what's still pending in the clone first, so I only push legitimate sheet-truth alignment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 18 files remain — CB batch, a couple test rows, and a FounderHaus Bougainvillea entry (interesting — that's from today's planting). Let me review the actual diffs before pushing anything, so I only push legitimate sheet-truth alignment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look more carefully — the CB diff came back empty (suspicious) and the Bougainvillea diff reveals a **data-loss risk** (the seed would drop the `signed_by`/`sig_ref` signature). I need to check both before touching anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `_1` file isn't modified — the CB changes must be different indices. Let me list the actual modified CB files and review them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me review the CB, TEST, and untracked file diffs before deciding what to push — the Bougainvillea one already flagged a **signature-stripping risk** I must not propagate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear picture now. **13 files are legitimate sheet-truth sales alignment** (CB batch + 2024_20260710_16..21 — all show real SOLD statuses recorded in the sheet that the cache missed). But **one file must NOT go** (Bougainvillea — the re-seed would drop the `signed_by: Gary Teh` / `sig_ref: Edgar_…` signature from the planted-tree event = audit-data loss), and the TEST/untracked rows are noise I'll leave out. Committing the safe 13 and pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. 5 files remain uncommitted — let me verify the public pages now reflect the sales, and confirm exactly what's left:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1399,11 +1410,13 @@ Give it a click — if anything on the page looks off, tell me what you see and 
 ### 🤖 Autopilot
 
 Good asks — let me find the Stripe checkout for this batch and the SunMinted tree image before answering.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the checkout policy and the checkout script to understand how Stripe payment links are generated per QR code.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1471,4 +1484,103 @@ So if you want a shareable link for the PDF/FounderHaus, we need to **create a S
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/la_refresh && python3 -c " import json d=json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print(json.dumps({k:v for k,v in d.item
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] For this issue
+
+2. Stripe checkout link — here's the honest picture
+
+There is no static Stripe checkout page for this batch yet — and it doesn't auto-exist.
+
+Just embed the QR code in the PDF and update the corresponding product image associated with the QR codes in the google sheet. That might work
+
+
+### 🤖 Autopilot
+
+On it — embedding the QR image in the PDF and pointing the QR codes' product image in the sheet to the SunMint tree image. Let me first check what PDF/image tooling exists on the box and confirm which tree image the SunMint pledge uses.
+
+
+### 🤖 Autopilot
+
+Let me locate the cacao tea currency row in the sheet and find the SunMint tree image Gary means.
+
+
+### 🤖 Autopilot
+
+Let me find the actual cacao tea row in the Currencies tab (row numbers shifted — row 131 is USDC now).
+
+
+### 🤖 Autopilot
+
+Let me find the cacao tea row in the sheet data I just read.
+
+
+### 🤖 Autopilot
+
+Found the tea currency row. Now let me find the SunMint tree image (the one "we uploaded") and the QR sheet's product-image column.
+
+
+### 🤖 Autopilot
+
+Good plan — two concrete actions: (1) embed the actual QR image into the PDF, (2) update the product image for this batch in the sheet. Let me first find the SunMint tree image you uploaded (the Aug 21 plantings) and the sheet-write credential path.
+
+
+### 🤖 Autopilot
+
+The sheet's QR tab has no image column — the product image lives in **Currencies col D**, and the QRs now point to the FounderHaus pledge row (col D currently empty). Before updating, let me confirm which image is the current "SunMinted tree" one.
+
+
+### 🤖 Autopilot
+
+I have what I need to act. The SunMint tree image currently in use is `agl4.avif` (the og:image on the sunmint-pledge page — also already the tea's product image). Now executing both: (1) build a PDF with the **actual QR image embedded** (reportlab, since generate_pdf can't embed images), (2) set the FounderHaus pledge currency's Product Image (col D) to that same SunMint tree image.
+
+
+### 🤖 Autopilot
+
+PDF v5 built (QR image embedded via reportlab). Now the sheet update — setting the FounderHaus pledge currency's Product Image (col D) to the SunMint tree image (`agl4.avif`, the og:image the sunmint-pledge page currently uses), using the `agroverse_qr_code_manager` SA that owns Currencies writes:
+
+
+### 🤖 Autopilot
+
+oauth2client isn't installed — let me use the same gspread auth method the sheet tool uses (likely google.oauth2 service account):
+
+
+### 🤖 Autopilot
+
+Both done. Let me verify the sheet update propagated and send you the PDF with the embedded QR.
+
+
+### 🤖 Autopilot
+
+✅ **Done — both changes are in.**
+
+## 1. PDF v5 sent — QR image embedded
+
+**FounderHaus Farm Edition v5** is in this chat. New vs v4:
+- **Actual QR code image embedded** (sample from the batch, `2024OSCAR_CT_20260820_1`) — directly on the doc, scannable
+- Under it: the **public scan page link** (`truesight.me/qr/?id=...`) + **Edgar ledger check link**
+- Everything else retained: $5 USD/bag stated plainly, 100 bags → first 100 trees of FounderHaus farm, AGL4 ledger, how-it-works, already-underway note
+
+## 2. Product image updated in the sheet
+
+Verified live in `Currencies!D134`:
+
+| Field | Before | After |
+|---|---|---|
+| FounderHaus Tree Planting Pledge — Product Image (col D) | *(empty)* | **SunMint tree image** (`agl4.avif` — the image the sunmint-pledge page uses) |
+
+Since the 100 QRs now carry the FounderHaus pledge currency, and that currency row's Product Image is what surfaces downstream, **the QR codes now point at the SunMint tree image** — exactly your thought. When that image gets rendered in checkout/receipt contexts, it'll show the tree.
+
+## Notes
+
+- **Your instinct on the image was right** — the tree image is the stronger story for this batch (it's the pledge + impact), and it keeps the Farm Edition visually consistent with the SunMint pledge family.
+- The tea's own product image (the `agl4.avif` is also the tea's image — same asset) means the checkout/receipts show the tree hero while the tea provenance stays on the product page.
+
+**UAT check still open from earlier:** scan the PDF's embedded QR (or `https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1`) — page should show *FounderHaus Tree Planting Pledge* as SKU + Oscar's Farm provenance. Want me to also add the PDF v5 to a repo folder for versioning, or is this ready to share with Paloma?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → ls -la /tmp/ct_qr_1.png 2>/dev/null; echo "---LIBS---"; python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1 | head -1;; cd /tmp/la_refresh && grep -rn "Cacao Tea" qrs/2024OSCAR_CT_20260820_1.json | head; echo "---"; curl -s "https://api.github.com/repos/TrueSi; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images" | python3 -c "import json,sys; d=json.load(sys.stdin); [print(x[; …(+5 more)
 
