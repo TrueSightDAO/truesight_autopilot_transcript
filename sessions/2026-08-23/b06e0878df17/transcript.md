@@ -1547,71 +1547,85 @@ UAT gate posted. Now per the governor's sequencing update: **PR3 (iOS) starts im
 ### 🤖 Autopilot
 
 iOS topic created (thread 13445) with kickoff. Now start **PR3**: `npx cap add ios` (works on Linux — it scaffolds the native project; only the actual Xcode build needs a Mac), then Info.plist permissions. Let me run it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `cap add ios` succeeded — iOS project scaffolded (App/, capacitor-cordova-ios-plugins/, debug.xcconfig, Info.plist). Now add the iOS permissions (camera, photo library, location) that PR3 requires — camera + location (matching the Android permissions), plus photo-library for photo handling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Info.plist permissions added (camera, photo-library add/read, location), bundle ID `me.truesight.sunmint` confirmed. Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push failed — I forgot the `-b` branch checkout before committing (I was on `main` after the reset). The commit likely landed on `main` locally. Let me fix: create the feature branch at the right point, or reset. Let me check state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit landed on local `main` (my mistake — missed the `-b` checkout). Fix: point a `pr3-ios-platform` branch at that commit, reset local main back to origin/main, push the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixed — branch `pr3-ios-platform` pushed, **PR #11 open**, local main restored to `313a096`. Merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR3 MERGED** (squash `8a4f3b56`) — iOS platform scaffolded, Info.plist permissions in. Per the plan, PR3's actual build needs a Mac (flagged). Now update the iOS topic + resume tracker with progress, then post status. Let me update the plan tracker (PR8–PR11 + PR3 done) and post to the iOS topic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The grep between update and push printed nothing — let me verify the tracker rows actually updated before opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracker regex **corrupted** PR1/PR2 rows (regex crossed row boundaries — inserted PR8/PR9 marks into wrong cells). I must NOT merge that. Let me restore the file and rewrite the tracker table cleanly with a precise whole-block replacement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File restored clean. Now replace the whole tracker block precisely (lines 241-255) with correct marks — PR6-PR11 + PR3 done, Android UAT pending:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tracker block is now clean and correct — all 11 rows properly marked, no corruption. Commit + push + PR + merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tracker PR #806 open. Merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tracker PR #806 merged. Now post the PR3 status to the iOS topic (thread 13445):
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both threads are now current. Let me do the final state check — confirm all merged PRs on the repo and close this turn cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1752,4 +1766,121 @@ Both threads updated. Here's the wrap-up.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp/sunmint_mobile && echo "=== ios assets ===" && find ios/App/App/Assets.xcassets -type f | head -20 && echo "=== AppIcon contents ===; cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== main now ===" && git l; cd /tmp/sunmint_mobile && echo "=== AppIcon spec ===" && cat ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json && echo "=== logo ; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] DeepSeek Local here (new seat on Gary's Mac — @deepseek_tdg_local_bot). Handing you a bug in plans/SUNMINT_MOBILE_APP_PLAN.md (this thread).
+
+Root cause (verified): the Android APK is missing the @capacitor/camera native plugin.
+- sunmint_mobile/package.json has NO @capacitor/camera dependency.
+- The built APK's capacitor.plugins.json lists only 6 plugins (secure-storage, sqlite, app, filesystem, geolocation, network) — camera is absent.
+- So at runtime Capacitor.Plugins.Camera is undefined; www/index.html startTreeCamera() hits the guard and shows "Câmera não disponível neste navegador" + disables the Take Photo button. PR5 only edited the JS — it never added/registered the plugin.
+
+Fix (please do it as one PR, then rebuild + re-release the UAT APK):
+1. npm install @capacitor/camera@^8 (adds to package.json + lockfile)
+2. npx cap sync android (registers com.capacitorjs.plugins.camera.CameraPlugin in capacitor.plugins.json)
+3. Rebuild the Android APK and re-release the v0.1.0-android-uat asset so Gary can test the photo flow.
+
+Verify: capacitor.plugins.json lists @capacitor/camera after sync. I already reproduced the fix locally (npm install @capacitor/camera@^8.2.3 + cap sync → 7 plugins incl. camera); handing the repo change to you per Gary's instruction.
+
+
+### 🤖 Autopilot
+
+DeepSeek Local's diagnosis is verifiable — let me confirm it independently before touching anything (Rule 11: verify on the artifact itself, don't trust or argue the claim). Checking the repo's `package.json`, the native project's plugin manifest, and — decisively — the **built UAT APK's embedded plugin list**:
+
+
+### 🤖 Autopilot
+
+DeepSeek Local is **right, and I owe you a correction**: I verified the bug at all three levels — `package.json` has no `@capacitor/camera`, the repo's native manifest lists 6 plugins, and **the shipped UAT APK's embedded `capacitor.plugins.json` also lists 6 — no camera**. My earlier PR5 verification was wrong: the `git reset --hard origin/main` during the PR5 edit-loss recovery reverted `package.json` before the final sync/build, so the final APK was built without the camera plugin. The claim "cap sync picked up camera" was false for the shipped artifact.
+
+Applying the fix now — step 1: install the camera plugin into the repo:
+
+
+### 🤖 Autopilot
+
+`@capacitor/camera` now in package.json. Step 2: `cap sync android` to register the native plugin, then verify the manifest lists 7 plugins:
+
+
+### 🤖 Autopilot
+
+**7 plugins now — camera registered** (`com.capacitorjs.plugins.camera.CameraPlugin` via `@capacitor/camera`). Verify: ✅. Now the rebuild — debug first to confirm the camera plugin compiles, then the signed release:
+
+
+### 🤖 Autopilot
+
+Debug APK built with camera plugin embedded (7 plugins confirmed inside the APK). Now the signed release build (uses the keystore from PR11):
+
+
+### 🤖 Autopilot
+
+Release APK rebuilt (16.7 MB, camera plugin embedded, same SunMint signature `eecb6b06…`). Now commit the fix as one PR, then re-release the UAT asset:
+
+
+### 🤖 Autopilot
+
+Interesting — `capacitor.plugins.json` isn't modified because it's gitignored (generated by `cap sync`). But `android/app/capacitor.build.gradle` and `android/capacitor.settings.gradle` ARE modified (uncommitted — these are what register the native plugin module). Let me check whether those are gitignored too, and include them if they're tracked:
+
+
+### 🤖 Autopilot
+
+Confirmed: `capacitor.plugins.json` is gitignored (generated), but the two **tracked** gradle files (`capacitor.build.gradle` + `capacitor.settings.gradle`) are what register the native plugin module — they must be in the PR. Let me stage them, verify the diff, commit, and push:
+
+
+### 🤖 Autopilot
+
+The diff is clean and exactly right — `capacitor.build.gradle` now includes `implementation project(':capacitor-camera')` alongside the other 6 plugins. Commit, push, open PR:
+
+
+### 🤖 Autopilot
+
+PR #15 open. Merge it:
+
+
+### 🤖 Autopilot
+
+Fix merged (`5e17e1ca`). Now re-release the UAT asset — delete the old APK asset from the v0.1.0-android-uat release and upload the rebuilt one (with camera):
+
+
+### 🤖 Autopilot
+
+Release found (id 375250101), old APK asset (526360563, 4.06 MB) present. Delete the old asset, then upload the rebuilt one:
+
+
+### 🤖 Autopilot
+
+Old asset replaced (204), new APK uploaded (16.7 MB, same download URL), SHA-256 `d62d07e3…`. Now post the re-release notice to this thread so Gary knows to re-download:
+
+
+### 🤖 Autopilot
+
+Re-release notice posted. Also worth posting the fix acknowledgment in the iOS thread? No — the fix is Android-only; this Android thread is the right home. Wrap-up:
+
+## What I did this turn — camera plugin fix (PR #15) + UAT re-release
+
+**Verified DeepSeek Local's bug report independently at 3 levels** (Rule 11 — checked the artifacts, not just the claim):
+- `package.json` → **no `@capacitor/camera`** (confirmed)
+- Repo's `capacitor.plugins.json` → 6 plugins, no camera
+- **The shipped UAT APK's embedded `capacitor.plugins.json` → 6 plugins, no camera** ← decisive
+
+**Root cause (owning my error):** PR5 only edited `www/index.html` JS. The `git reset --hard origin/main` during the edit-loss recovery reverted `package.json` before the final sync/build, and I failed to re-verify the embedded plugin list in the shipped artifact. DeepSeek Local's diagnosis was correct.
+
+**Fix — one PR as requested:**
+- **PR #15** merged `5e17e1ca`: `@capacitor/camera@8.2.3` in package.json + lockfile; native module registered in `android/app/capacitor.build.gradle` + `android/capacitor.settings.gradle` (the two *tracked* files that actually register the plugin — `capacitor.plugins.json` itself is gitignored/generated)
+
+**Rebuild + re-release:**
+- Debug + signed release APKs rebuilt — **both embed `com.capacitorjs.plugins.camera.CameraPlugin`** (7 plugins, verified by unzipping the APK assets)
+- Old UAT asset deleted (204), new one uploaded to the same release URL — 16.7 MB, SHA-256 `d62d07e3…`, same SunMint signature
+- Re-release notice posted to this thread (msg 13666) with uninstall-first + photo-flow test instructions
+
+## RESUME HERE → next
+- **Gary:** re-download the UAT APK, test the photo flow, report back → then I close the Android UAT gate + file the DAO contribution (plan §9)
+- **iOS track:** still parked at the Mac + Apple Developer account gates (nothing Mac-independent remains)
+- **Standing:** Android parked at UAT; iOS parked at external gates; no other units movable without governor input
+
+**✅ This turn:** verified bug at 3 levels, PR #15 fix merged `5e17e1ca`, APKs rebuilt with camera (verified in-APK), UAT asset re-released + notice posted.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && echo "=== package.json @capacito; cd /tmp/sunmint_mobile && npm install @capacitor/camera@^8 2>&1 | tail -2 && echo "=== package.json now ===" && grep -o '"@capacitor/[a-z-]*; cd /tmp/sunmint_mobile && npx cap sync android 2>&1 | tail -4 && echo "=== capacitor.plugins.json now ===" && cat android/app/src/main/asset; …(+7 more)
 
