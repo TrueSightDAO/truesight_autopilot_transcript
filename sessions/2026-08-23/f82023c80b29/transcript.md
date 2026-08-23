@@ -1783,21 +1783,25 @@ https://founderhaus.club/assets/founder-haus-logo-DvbPMoUL.png
 ### 🤖 Autopilot
 
 Good — FounderHaus logo it is. Let me verify the logo URL is live and confirm the beta repo mirrors prod (so I can make the changes beta-first as required).
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logo verified live (200, image/png). Beta mirrors prod. Now let me grab the exact beta page content, mirror the program-landing pattern, and sample the logo's brand colors — all in parallel:
+[4 tool result(s) compacted: read_repo_file, read_repo_file, ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The FounderHaus logo is live (1920×1080, white bg, black + orange `#D48500` brand). Let me grab the members-page pattern and program-shell, and check whether a Butterfly Effect logo asset exists in `.github/assets` (it may be an image that code-search can't index):
+[3 tool result(s) compacted: read_repo_file, read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logo verified and the pattern is clear (landing + manifest + members via `program-shell.js`). Let me: (1) host the FounderHaus logo in `.github/assets` per the spec (stable URL), (2) run the mandatory local test suite before pushing, and (3) quickly check whether a Butterfly Effect logo asset exists in the assets listing:
+[3 tool result(s) compacted: upload_local_file_to_github, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1914,4 +1918,41 @@ The whole thing now reads as one coherent story: **SunMint (ReFi/tree-planting i
 **RESUME HERE →** next turn: merge PR #301, confirm it renders on beta (`beta.truesight.me/programs/founderhaus-farm/` shows the SunMint branding), then (still pending) your review before `sync_beta_to_prod` promotion, and the Butterfly Effect logo fix (needs the logo file from you).
 
 **Note:** I left PR #301 unmerged per the one-PR-per-turn rule — say the word and I'll merge + verify in the next turn.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] merge.
+
+
+### 🤖 Autopilot
+
+Merging PR #301:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #301 merged — SunMint branding is live on beta.**
+
+## What I did this turn
+
+| Step | Result |
+|---|---|
+| **Merged** | **https://github.com/TrueSightDAO/truesight_me_beta/pull/301** (`dcddbaf`), branch `founderhaus-farm-sunmint-branding` → `main` |
+
+## Now live on beta (GitHub Pages — give it a minute)
+
+- `beta.truesight.me/programs/founderhaus-farm/` → **"SunMint · One bag, one tree — FounderHaus Farm Edition"** tagline, description as the FounderHaus Farm Edition of the SunMint initiative, Initiative bullet, `program_initiative: "SunMint"` in the manifest
+- `beta.truesight.me/programs.html` → card reads **"FounderHaus · SunMint initiative · Regenerative farm · Santa Catarina, Brazil"**
+
+**RESUME HERE →** next unit: ① verify the beta page renders (manifest fetch + logo banner); ② your review of the beta program page, then on explicit approval `sync_beta_to_prod` (truesight_me_prod); ③ still pending: Butterfly Effect logo fix (needs the logo file from you — root cause is a dead `era-professionals.com` image URL); ④ optional: link the Farm Edition PDF on the landing page, backfill Juliana/Cristian emails, extend the 30-min cron to re-seed `qrs/*.json`.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #301 on truesight_me_beta merged successfully (sha: dcddbafbaeb3765c0c4ce06c60bf3c07942a16f9). Pull Request successfully merged
 
