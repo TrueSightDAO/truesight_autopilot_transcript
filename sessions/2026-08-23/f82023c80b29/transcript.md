@@ -3143,6 +3143,7 @@ One note: I also spotted while editing that **API.md / API_ENDPOINTS.md** docume
 ### 🤖 Autopilot
 
 Merging PR #421:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3192,36 +3193,43 @@ Want me to merge #422 now (next turn), then continue with the dapp_beta PR?
 ### 🤖 Autopilot
 
 Yes — that's the exact DApp surface that needs the new state. Let me find the status dropdown in `update_qr_code.html` (dapp_beta, since dapp.truesight.me is prod and we go beta-first):
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zero hits in dapp_beta — the DApp likely lives in a different repo. Let me search the org for `update_qr_code.html` and `ASSIGNED_TO_TREE`:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `update_qr_code.html` isn't surfacing in code search — let me check where the DApp pages actually live via the dapp notes:
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file exists in dapp_beta. Let me find the exact status dropdown options in the file to make the edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the dropdown (lines 369–375). Let me see the full option list to make the edit precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the dropdown at lines 366–376. Adding the new state after `SOLD` (matching the enum order in #421):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My replace was identical to the search — I forgot to insert the new option. Fixing the hunk:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3262,6 +3270,7 @@ That's the page behind **dapp.truesight.me/update_qr_code.html** — so once thi
 ### 🤖 Autopilot
 
 Merging both as you requested:
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3317,11 +3326,13 @@ Want me to proceed with the link_tree_planting.html badges next?
 ### 🤖 Autopilot
 
 Gary said **auto-advance until UAT** — I'll keep executing plan units without stopping for per-unit go's, and stop at the irreversible gates (prod promotion) to ask. Starting with the next unit: **link_tree_planting.html status badges**. Let me inspect the current candidate-list rendering:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the candidate list rendering section (the left list) to find where rows are built:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3423,4 +3434,89 @@ Auto-advance continues next turn at unit 1.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && rm -rf dappb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/dapp_beta.git dappb2 2>&1 | tail -1; cd dappb2 && ls link; cd /tmp/dappb2 && grep -n "list_sold_pending_tree\|soldPendingTree\|pendingTree\|renderQr\|appendChild\|innerHTML.*option\|candidates" link_; cd /tmp/dappb2 && sed -n '290,355p' link_tree_planting.html; echo "===SOLD_PENDING_TREE_URL==="; grep -n "SOLD_PENDING_TREE_URL\s*=" link_tr; …(+7 more)
 • `merge pr` → ✅ PR #9 on lineage-assets merged successfully (sha: 2a2821b4cd168540a99ccb9a5c2d2c3104173864). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] keep going
+
+
+### 🤖 Autopilot
+
+Continuing auto-advance — next unit: sync the merged fix to the live box copy, preserving the local `_normalize_photo_url` helper, then push the refreshed cache.
+
+
+### 🤖 Autopilot
+
+Repo main has the fix; the local copy is stale. Let me reconcile the full diff (local carries the `_normalize_photo_url` helper the repo lacks) and apply the filter change to the local copy:
+
+
+### 🤖 Autopilot
+
+The repo copy is actually **ahead** of local (repo has the `_normalize_photo_url` helper AND the new filter; local lacks both). The local cron copy is just stale. Let me check the cron entry, then sync local to repo main and verify:
+
+
+### 🤖 Autopilot
+
+Local synced + compiles. Now run the cache generator once to push a refreshed `sold_pending_tree.json` with the new filter (dry-run first to see counts, then --push):
+
+
+### 🤖 Autopilot
+
+Dry-run works (414 SOLD pending — expected, since no QR is in the new state yet; the filter is what matters). Pushing the caches so the deployed file matches the new generator:
+
+
+### 🤖 Autopilot
+
+Unit 1 complete (local synced + caches live with the new filter). Auto-advancing to unit 2: **link_tree_planting.html status badges** in dapp_beta.
+
+
+### 🤖 Autopilot
+
+The `\u2026` escaped form doesn't match the raw bytes. Let me check the actual file content:
+
+
+### 🤖 Autopilot
+
+The ellipsis is a literal UTF-8 `…` character (M-BM-^@M-& = U+2026), and the middots are literal `·`. Let me redo the PR with literal characters and drop the placeholder-edit (only the two key hunks):
+
+
+### 🤖 Autopilot
+
+PR #75 opened — merging (auto-advance) and continuing:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Two units done this turn (cache live + DApp badges merged).**
+
+## What I did this turn
+
+| Unit | Step | Result |
+|---|---|---|
+| 1 | Synced merged fix to the live cron copy | `/home/ubuntu/scripts/sync_pending_caches.py` ← repo main (incl. the `_normalize_photo_url` helper + new filter), backup saved, `py_compile` OK |
+| 1 | Refreshed caches live | `--push` → `sunmint_pending.json` (`835516b`) + `sold_pending_tree.json` (`2d85ed5`) on lineage-assets main — 414 SOLD pending (0 in the new state yet, as expected) |
+| 2 | **PR #75** (dapp_beta) | `link_tree_planting.html` `renderQrList()` now appends **`· [TREE_PLANTING_FUNDS_TRANSFERRED]`** badge on candidate rows whose status isn't SOLD; empty-state copy reworded |
+| 2 | **Merged** | `ee816b6` |
+
+So end-to-end now: a bag flipped to `TREE_PLANTING_FUNDS_TRANSFERRED` in the sheet → next 30-min cron picks it up in `sold_pending_tree.json` with its real status → the linking DApp shows it with the `[TREE_PLANTING_FUNDS_TRANSFERRED]` badge alongside SOLD bags. ✅
+
+## RESUME HERE → next units (auto-advance continues; stop only at UAT)
+
+1. **Plan-doc state list** — SUNMINT_TREE_QR_LINKING_PLAN.md updated for the new state (agentic_ai_context, PR).
+2. **`clasp push` deploy** — tokenomics #421 GAS changes to the two Apps Script projects (QR-codes mirror `1UrBg…` + agroverse shop `1Y8sJ…`) — **I'll flag before deploying** (deploy step).
+3. **dapp_beta → dapp_prod promotion** of #74 (dropdown) + #75 (badges) — needs the prod-promotion path; sync first, verify, then prod.
+4. **UAT** — flip a test QR to FUNDS_TRANSFERRED → appears in linking queue (badged) + still counts on agroverse.shop (**always-stop gate**).
+
+Auto-advance resumes next turn at unit 3 (plan-doc), pending the deploy flag for unit 4.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/la3 && git fetch -q origin && git checkout -q main && git pull -q origin main 2>&1 | tail -1; echo "===repo main build_sold_pending ; cd /tmp/la3 && echo "===FULL DIFF repo vs local==="; diff scripts/sync_pending_caches.py /home/ubuntu/scripts/sync_pending_caches.py; echo "; crontab -l 2>/dev/null | grep -i "sync_pending\|pending_caches"; echo "===backup + sync local to repo main==="; cp /home/ubuntu/scripts/sync; …(+3 more)
+• `merge pr` → ✅ PR #75 on dapp_beta merged successfully (sha: ee816b6170775d731be73c18b6d32192ebc17425). Pull Request successfully merged
 
