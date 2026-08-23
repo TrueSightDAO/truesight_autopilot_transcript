@@ -386,6 +386,11 @@ The state is unchanged after a fourth fresh check. Let me pin the decision so it
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: pin_note — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 ## Status: no-op, pinned for the session
 
 This is the 4th identical AUTO-ADVANCE trigger on thread 11973, and the answer is unchanged — I've re-verified against the **live** manifest (read from GitHub `main`, not the local mirror) and the handoff inbox:
@@ -640,4 +645,43 @@ Want any further tweaks — e.g. a cost/build-order section, a specific pilot lo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/make_barge_pdf2.py << 'EOF' #!/usr/bin/env python3 """Build the floating barge concept PDF v2 — with kelong-style aquaculture sec
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11973] Make sure the words do not overflow the boxes. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good catch — the table cells were plain strings, so long text could overflow the box widths in reportlab. Let me rebuild with all table cells wrapped in Paragraphs (proper text wrapping) and verify the layout.
+
+
+### 🤖 Autopilot
+
+Rebuilt with all table cells wrapped in Paragraphs — text will now wrap inside the boxes instead of overflowing. Let me verify the layout is clean before sending (checking for any overflow/warnings in the build output and confirming the table renders).
+
+
+### 🤖 Autopilot
+
+Layout verified — 4 pages, all table cells now wrap cleanly inside their boxes ("Waste feeds seaweed & oysters; closed loop" wraps to two lines within its cell, exactly as intended). Sending the fixed PDF.
+
+
+### 🤖 Autopilot
+
+Fixed PDF sent ✅ (message 13829).
+
+**What changed:**
+- All **table cells are now wrapped in Paragraph objects** — text wraps inside the box width instead of overflowing past the borders. Verified via PDF text extraction: long cells like "Waste feeds seaweed & oysters; closed loop" now wrap onto two lines *within* their cell, and the table renders across the full page width with padding on all sides.
+- Same content as v2 — just the layout fix. 4 pages total:
+  1. Title + header image + "Why this exists"
+  2. Surface systems (hull, solar→desal, hydroponics)
+  3. Kelong section + underwater image (seaweed, oysters, fish)
+  4. Key numbers table + ark-insurance angle
+
+Anything else you'd like adjusted — font size, image sizing, or another section?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat > /tmp/make_barge_pdf3.py << 'EOF' #!/usr/bin/env python3 """Build the floating barge concept PDF v3 — table cells wrapped in Paragraphs; python3 - << 'EOF' from pypdf import PdfReader r = PdfReader("/tmp/tg_attachments/Floating_Barge_Concept.pdf") print("pages:", len(r.pages))
 
