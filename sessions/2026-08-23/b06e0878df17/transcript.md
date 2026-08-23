@@ -1131,11 +1131,13 @@ All 3 refs are the comment + fallback branch (correct). Location permissions alr
 ### 🤖 Autopilot
 
 APK builds (7.8 MB). Commit, push, PR, merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #5 open. Merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1283,4 +1285,167 @@ No blockers. Standing auto-advance authorization unchanged.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #804 on agentic_ai_context merged successfully (sha: b811c076a48665656e4d23a198cc47a41d6766a7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] [Handoff context — this Telegram topic (thread 13386) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go
+
+
+### 🤖 Autopilot
+
+"Go" — resuming from RESUME HERE → **PR8 (native secure storage for RSA keypair)**. First, verify the plugin's exact API surface so the edit uses real method names:
+
+
+### 🤖 Autopilot
+
+The plugin exposes both `get/set` and localStorage-style `getItem/setItem` aliases. Let me check the import pattern (singleton vs. `SecureStoragePlugin`):
+
+
+### 🤖 Autopilot
+
+Plugin API confirmed: `Capacitor.Plugins.SecureStorage` (registered proxy) with localStorage-style `getItem`/`setItem` (string-based — perfect for the base64 keys), native Android Keystore / iOS Keychain, web fallback built in. Applying the PR8 edit:
+
+
+### 🤖 Autopilot
+
+Edit applied (the assertion that failed was just my wrong expected count — the write happened before it; `ensureKeyPair()` = definition + 2 call sites = 3, correct; remaining `localStorage.setItem` ×2 are the web fallback inside `secureStorageSet`). Now sync + rebuild:
+
+
+### 🤖 Autopilot
+
+APK builds with the secure-storage plugin (14.7 MB). Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #7 open. Merge:
+
+
+### 🤖 Autopilot
+
+**PR8 MERGED** (squash `8d0489bb`). Continuing auto-advance → **PR9 (sync triggers: `@capacitor/network` + `@capacitor/app`)**. Let me pull the spec + current sync-wiring code:
+
+
+### 🤖 Autopilot
+
+PR9 spec confirmed: `@capacitor/network` connectivity listener + `@capacitor/app` foreground listener, both calling the existing `flushTreeReportQueue()`. Let me see the app-launch block (lines ~950-985) to place the native listeners correctly:
+
+
+### 🤖 Autopilot
+
+I have the init block. Now install both plugins and apply the PR9 edit — add native `Network` + `App` listeners that call `flushTreeReportQueue()`, keep the `online` event as web fallback:
+
+
+### 🤖 Autopilot
+
+PR9 edit applied. Sync + rebuild:
+
+
+### 🤖 Autopilot
+
+APK builds (14.7 MB). Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #8 open. Merge:
+
+
+### 🤖 Autopilot
+
+**PR9 MERGED** (squash `aeecde4f`). Continuing → **PR10 (branding: app icon, splash screen, final app name/bundle ID)**. Let me pull the spec + current branding state:
+
+
+### 🤖 Autopilot
+
+PR10 scope: app icon, splash screen, final app name/bundle ID. The name (`Sunmint`) and bundle ID (`me.truesight.sunmint`) are already final; what's missing is **icon + splash assets**. Let me find existing TrueSight DAO / SunMint brand assets to use as the source:
+
+
+### 🤖 Autopilot
+
+PR10 = branding: replace Capacitor's default icon/splash with TrueSight DAO branding (source: official logo in `.github` repo). Let me download the logo and check for Pillow to generate the required densities:
+
+
+### 🤖 Autopilot
+
+Pillow 12.2.0 + logo downloaded (513×486 RGBA). Now generate all required Android icon densities + splash screens from the TrueSight DAO logo:
+
+
+### 🤖 Autopilot
+
+All brand assets generated. Let me verify the app identity is final (name "Sunmint", bundle `me.truesight.sunmint` — already correct), update the splash background to match, then rebuild + commit. First check the adaptive icon foreground XML references and the styles:
+
+
+### 🤖 Autopilot
+
+Identity confirmed final (app name `Sunmint`, bundle `me.truesight.sunmint`), splash theme points at the new branded `@drawable/splash`, adaptive icon uses the new foreground. APK rebuilds at 7.3 MB. Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #9 open. Merge:
+
+
+### 🤖 Autopilot
+
+PR11 is the release-signing step — and the plan explicitly says the keystore is a credential that must follow `CREDENTIAL_HANDOFF_PROTOCOL.md` for custody. That file isn't at the context root. Let me locate it and check the current gradle signing config:
+
+
+### 🤖 Autopilot
+
+PR11 = release signing. The plan pre-authorizes keystore generation but mandates `CREDENTIAL_HANDOFF_PROTOCOL.md` custody — and **that file doesn't exist** (0 search matches; no file found). That's a real gap I'll flag at the end. Let me do the signing work: generate the keystore (stored **outside** the repo, never committed), wire gradle via a gitignored `keystore.properties`, and build the signed release APK:
+
+
+### 🤖 Autopilot
+
+Keystore generated (credential at `/opt/android-keystore/`, 0600 perms, gitignored properties). Now wire gradle to read `keystore.properties` for release signing and build the signed APK:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — **PR8/PR9/PR10 landed; PR11 (release signing) mid-flight, nearly done.**
+
+## Progress this turn
+
+**✅ Merged (all squash):**
+| PR | # | SHA | What |
+|---|---|---|---|
+| **PR8** secure storage | #7 | `8d0489bb` | RSA keypair → `@aparajita/capacitor-secure-storage@8.0.0` (Android Keystore/iOS Keychain); `secureStorageGet/Set` helpers w/ localStorage web fallback; crypto.subtle untouched |
+| **PR9** sync triggers | #8 | `aeecde4f` | `@capacitor/network` (`networkStatusChange`→flush) + `@capacitor/app` (`appStateChange`/isActive→flush); online-event web fallback kept |
+| **PR10** branding | #9 | `602f21be` | Launcher icons (all 5 densities + adaptive fg), saffron-branded splash (port/land/all densities) from official TrueSight DAO logo; name `Sunmint`/bundle `me.truesight.sunmint` verified final |
+
+**🔄 PR11 (Android release signing) — in progress:**
+- ✅ Release keystore generated: `/opt/android-keystore/sunmint-release.keystore` (RSA-2048, 10000-day validity, CN=SunMint) — **stored outside the repo, dir 0700, password file 0600; never committed**
+- ✅ `android/keystore.properties` created + **gitignored** (confirmed in .gitignore)
+- ✅ Gradle `signingConfigs.release` wired (reads keystore.properties, applies to `buildTypes.release`)
+- ✅ **`assembleRelease` → BUILD SUCCESSFUL — `app-release.apk` (4.06 MB)** produced
+- ⏳ Signature verification: my apksigner call errored only because it looked for `app-release-unsigned.apk` first (none exists — the signed `app-release.apk` was produced directly). One command fixes it.
+
+**⚠️ Two flags for the governor:**
+1. **`CREDENTIAL_HANDOFF_PROTOCOL.md` does not exist** — the plan (PR11 row, §5a/§7) says "follow CREDENTIAL_HANDOFF_PROTOCOL.md for custody" but that file is nowhere in agentic_ai_context (0 search hits, no file on disk). Keystore custody is currently: local-only at `/opt/android-keystore/`. **I need the governor to either point me at the protocol, confirm this storage is acceptable, or specify handoff** before PR11 is fully closed.
+2. Per your sequencing update: **as soon as PR11 merges → start PR3 (iOS) immediately** and open a new forum topic ("SunMint Mobile App - iOS") with a kickoff post; PR3 still hard-blocked on a Mac (none in fleet — flag: **no macOS accessible from this box**, so I can write all iOS code/config but the `xcodebuild`/simulator run needs a Mac).
+
+## RESUME HERE → finish PR11, then iOS kickoff
+1. Verify signature: `apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk` (correct filename)
+2. Commit `android/app/build.gradle` + `.gitignore` change → push `pr11-release-signing` → open PR via REST → merge squash
+3. **Stop for credential custody decision** (flag #1 above) — then post **Android UAT gate**: signed APK direct-download link + instructions in this thread, and STOP advancing Android work (§5c always-stop)
+4. Then **PR3 iOS**: open new Telegram topic, kickoff post, write iOS code/config (cap add ios needs a Mac for build — flag clearly), noting PR12/TestFlight needs the Apple Developer account (governor action)
+
+No code blockers; only the custody-protocol decision + Mac availability need governor input.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → PR8 edit+sync+build+commit+push+PR#7+merge; PR9 spec+code+edit+sync+build+commit+push+PR#8+merge; PR10 spec+asset survey+Pillow logo download+brand asset generation (icons/splash all densities)+rebuild+commit+push+PR#9+merge; PR11 spec+gradle read+keystore generation (outside repo, gitignored props)+gradle signing wiring+assembleRelease (BUILD SUCCESSFUL, app-release.apk 4.06MB)+apksigner verify attempt (filename error only); `search_context` for CREDENTIAL_HANDOFF_PROTOCOL (0 hits).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /tmp/sunmint_mobile && echo "=== plugin dist files ===" && ls node_modules/@aparajita/capacitor-secure-storage/dist/esm/ && echo "=== JS ; cd /tmp/sunmint_mobile && echo "=== index.js ===" && cat node_modules/@aparajita/capacitor-secure-storage/dist/esm/index.js && echo "=== bas; cd /tmp/sunmint_mobile && python3 - << 'EOF' html = open('www/index.html').read() old_block = """ async function ensureKeyPair() { let publi; …(+18 more)
 
