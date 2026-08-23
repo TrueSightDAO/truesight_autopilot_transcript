@@ -4106,21 +4106,25 @@ Everything else (legal rep cost, accountant sourcing, trading company route, MAP
 ### 🤖 Autopilot
 
 That's a much more forward-looking concern — let me generate a focused update for Elizabeth on the **Brazil→China lane** and specifically **Oscar's beans**.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending to this thread.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify I sent the correct file — the new PDF's output path may differ from the one I attached.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to verify the actual output path of the China PDF — I may have sent the wrong file (the previous status update) to the thread.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4237,4 +4241,39 @@ The document now cleanly reflects: **China buyer ↔ Coopercabruca directly, DAO
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Remove this line 
+
+ CEPOTX (Pará) remains a separate, parallel track — they send beans to Matheus for processing today,
+but for China they would flow through the same cooperative-compliant model
+
+
+### 🤖 Autopilot
+
+Removing that CEPOTX line and regenerating.
+
+
+### 🤖 Autopilot
+
+Done ✅ (message 13351).
+
+**Removed:** the CEPOTX (Pará) parallel-track line — the doc now focuses purely on the Bahia/Oscar's-beans route via Orlantildes/Coopercabruca.
+
+The China-lane document now has the clean structure:
+1. The Concern (Oscar's beans, Bahia)
+2. Oscar's status (now cooperative member, linked with Orlantildes)
+3. China lane requirements (MAPA, GACC/CIFER, Phyto/CoO, NF-e)
+4. Why Oscar's beans are well-positioned
+5. Path forward (China ↔ Orlantildes/Coopercabruca direct; MAPA → CIFER)
+6. Legal picture (DAO not involved)
+7. Summary table
+
+Ready to send to Elizabeth.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
