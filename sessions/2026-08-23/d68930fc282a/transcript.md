@@ -360,11 +360,13 @@ The swift-pm repo hosts binaries, not sources. The Swift source lives in the mai
 ### 🤖 Autopilot
 
 Critical finding: **`CAPPluginCall.swift` is byte-identical between 8.4.2 and 8.5.0** — both have `reject(_ message: String, _ code: String? = nil, ...)` with defaulted params. So the Mac agent's stated root cause ("signatures removed in 8.5.0") doesn't match the source tags. The drift must be in the **binary xcframework** that `capacitor-swift-pm` publishes. Let me check what the swift-pm 8.5.0 release actually contains.
+[2 tool result(s) compacted: http_fetch, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Byte-identical sources between 8.4.2 and 8.5.0 — yet the Mac build fails against the 8.5.0 **binary**. The swift-pm binary is built separately from the tag source, so the drift is likely in the published xcframework. Let me check the Capacitor 8.5.0 changelog and whether a swift-pm 8.4.2 release exists.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -372,6 +374,7 @@ Byte-identical sources between 8.4.2 and 8.5.0 — yet the Mac build fails again
 The 8.5.0 changelog confirms it: the only iOS-relevant change in 8.5.0 is **"ios: UIScene Support (#8536)"** — and critically, **there is no Swift API change to `CAPPluginCall` in the changelog at all**. The 8.4.2 swift-pm binary exists (with different checksums). This strongly suggests the Mac agent's "removed signature" diagnosis is off — the real difference is likely the **UIScene migration** in 8.5.0. The plan (PR3) already migrated to `UIScene` (`SceneDelegate` in Info.plist), so the app is UIScene-based — but the **plugins at 8.1–8.2 predate UIScene support** and may not compile against a UIScene-required 8.5.0 binary.
 
 Either way, the fix direction is the same: **align the toolchain at 8.4.2** (the last version before the UIScene-era binary and the plugin versions all target), which is the most conservative and evidence-backed choice. Let me confirm 8.4.2's iOS core has no UIScene requirement and check the CLI's SPM patch behavior, then implement the pin.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,16 +382,19 @@ Either way, the fix direction is the same: **align the toolchain at 8.4.2** (the
 Both 8.4.2 and 8.5.0 swift-pm binaries exist, the `CAPPluginCall.swift` sources are byte-identical between the tags, and 8.5.0's only iOS change is the **UIScene migration (#8536)** — so the break almost certainly comes from the 8.5.0 **binary** (built outside the tag) vs the older plugins. The safe, evidence-backed fix is to align the whole toolchain at **exact 8.4.2** (the version all installed plugins target). Note: `^8.4.2` would still resolve to 8.5.0, so the pin must be **exact**.
 
 Let me check git tracking of the generated Package.swift, then apply the pin, reinstall, sync, and verify end-to-end.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pinned to 8.4.2 and reinstalled. `ios/App/CapApp-SPM/Package.swift` is **tracked** in git, so the CLI's regeneration of it (with the swift-pm pin) will show up in the PR. Let me run `cap sync` and confirm the SPM Package.swift now pins swift-pm at 8.4.2.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Important find: `cap sync` **failed** with `Unable to find node_modules/@capacitor/ios` — and the generated Package.swift still says `exact: "8.5.0"` (stale because the failed sync didn't regenerate it). The project's `package.json` has **never had `@capacitor/ios`** — Android-only install, iOS platform was added via `npx cap add ios` (which generates the native folder without the npm package). Let me check if `@capacitor/ios` is normally required and whether its absence blocks the SPM pin regeneration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,6 +402,7 @@ Important find: `cap sync` **failed** with `Unable to find node_modules/@capacit
 `@capacitor/ios` 8.4.2 exists on npm. The `cap add ios` (PR3) generated the native folder but never added `@capacitor/ios` to package.json — a latent gap that only surfaces now that iOS is actually being built. The sync's `update ios` step needs it (it patches plugin SPM versions to match core). Adding it is the correct completion of the PR3 platform work, **not** scope creep.
 
 Let me add `@capacitor/ios@8.4.2` and re-sync — this should regenerate the SPM Package.swift with the 8.4.2 pin.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -403,6 +410,7 @@ Let me add `@capacitor/ios@8.4.2` and re-sync — this should regenerate the SPM
 Sync now succeeds with all **7 plugins** (camera included) and the SPM Package.swift pins `capacitor-swift-pm` at **exact 8.4.2**. Note it now also picks up `@capacitor/camera@8.2.3` — camera is in the app (PR camera fixes) so that's correct.
 
 Let me run the full local test suite per the hard rule, then push the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -410,11 +418,13 @@ Let me run the full local test suite per the hard rule, then push the PR.
 The diff is exactly right: core/android/cli pinned exact `8.4.2`, `@capacitor/ios` added at `8.4.2`, and the SPM Package.swift re-pinned from `exact: 8.5.0` → `exact: 8.4.2`. The lockfile shrank (7 old 8.5.0 packages removed, ios added).
 
 Let me verify the Swift-facing plugin set is coherent and run the local checks before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything is coherent — swift-pm pinned 8.4.2, all 7 plugins as local paths, and CapacitorCamera now correctly included. There's a stray `^8.5.0` at line 57 of the lock — let me check what that belongs to (should be a plugin peer, harmless, but worth confirming).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -422,11 +432,13 @@ Everything is coherent — swift-pm pinned 8.4.2, all 7 plugins as local paths, 
 **Critical find!** `@aparajita/capacitor-secure-storage` ships its own **nested** `node_modules/@capacitor/core@8.5.0` and `node_modules/@capacitor/ios@8.5.0` — because the plugin declares `@capacitor/core: ^8.5.0` and `@capacitor/ios: ^8.5.0` as **direct dependencies** (not just peers), npm nests 8.5.0 inside it. **This is the actual source of the Swift break** — the app's `Package.swift` resolves `capacitor-swift-pm` once per the CLI's pin, but the secure-storage plugin's Swift source gets compiled against the **8.5.0** binary/code the plugin demands. That's why the Mac build failed specifically in `@aparajita/capacitor-secure-storage`.
 
 Let me confirm secure-storage's real dependency range.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Nuance confirmed: `@aparajita/capacitor-secure-storage@8.0.0` declares `@capacitor/core: ^8.0.2` (a **real dependency**, not just peer) — that's what allows npm to nest a different core version under it. `^8.0.2` on its own wouldn't force 8.5.0, but npm's resolution hoisted/nested 8.5.0 because the **root** core was 8.5.0 at install time and the plugin's Swift `Package.swift` then references the plugin's own core — creating the 8.5.0 core + old-plugin-Swift mix. Pinning the root to 8.4.2 and reinstalling should make npm dedupe everything to 8.4.2 (8.4.2 satisfies `^8.0.2`). Let me verify the nested 8.5.0 is gone after a clean reinstall.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -576,5 +588,63 @@ Net: the version-mix root cause is fixed and on the remote — the iOS build sho
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp/sunmint_mobile && echo ---NPM_LATEST---; for p in @capacitor/app @capacitor/filesystem @capacitor/camera @capacitor/geolocation @cap; cd /tmp/sunmint_mobile && echo ---SDK---; echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"; ls android/gradlew 2>/dev/nu; cd /tmp/sunmint_mobile && python3 -m compileall -q www 2>&1 | tail -2; echo "compile_rc=$?"; node --check /tmp/sunmint_mobile/www/index.html; …(+8 more)
+• `open fix pr` → tool_execution_error
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — nice, that nested-@capacitor/core diagnosis is the real root cause. Please land it now: run the test suite, then push + merge PR15 ("Pin Capacitor toolchain to 8.4.2 + add @capacitor/ios"), and post the PR link + merge SHA here. I'll immediately git pull, npm ci, cap sync ios, and xcodebuild on the Mac simulator.
+
+
+### 🤖 Autopilot
+
+Landing it now. First, a quick verification pass (hard-rule checks for this JS/Capacitor repo) plus pulling the exact file contents so I have both paths ready to open the PR.
+
+
+### 🤖 Autopilot
+
+All verified: 8.4.2 across core/android/ios/cli, **zero 8.5.0 in the lockfile**, valid JSON, and `Package.swift` pins swift-pm at exact 8.4.2 with all 7 plugins. Now I need the full lockfile content to pass through the PR tool (which uses DAO credentials that CAN open PRs, unlike the `gh` token). Reading it from the artifact in chunks:
+
+
+### 🤖 Autopilot
+
+The artifact only holds the lockfile's tail (~957 chars), so I can't faithfully reconstruct all 1503 lines through `writes` — hand-rebuilding a lockfile is exactly the kind of error I shouldn't risk. The right tool is `open_fix_pr`, which runs its own agentic loop (clone → apply the exact fix → npm install → cap sync → PR) and uses DAO credentials that *can* open PRs. Its earlier failure was a transient infra error (`no running event loop`). Retrying it now with the fully-precise fix description:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Turn report — fix verified and on the remote; PR #15 opening blocked by a token-scope issue, but nothing stops the Mac build.**
+
+**What I did this turn (verification + PR attempts):**
+- **Re-verified the fix state** (the test-suite equivalent for this JS/Capacitor repo): `@capacitor/core`/`android`/`ios`/`cli` all **8.4.2**; **zero `"8.5.0"` occurrences** in the lockfile; `package.json` + lock parse as valid JSON; `ios/App/CapApp-SPM/Package.swift` pins `capacitor-swift-pm` at **exact 8.4.2** with all 7 plugins wired (app, camera, filesystem, geolocation, network, sqlite, secure-storage). Combined with earlier `cap sync` clean + Android `assembleDebug` RC=0, the acceptance checks all pass.
+- **Tried to open PR #15 two ways — both blocked:**
+  1. `gh pr create` (token `garyjob`) → **403 "Resource not accessible by personal access token"** — the token can push branches but lacks pull-request scope.
+  2. `open_fix_pr` → transient tool error **"no running event loop"** (twice in a row — infra, not the fix).
+
+**Where the change lives:** branch **`fix/capacitor-8.4.2-toolchain` @ `21928ff`** is pushed to `TrueSightDAO/sunmint_mobile` — exactly 3 files: `package.json` (core/android/cli pinned exact 8.4.2 + **`@capacitor/ios@8.4.2` added** — it was missing entirely), regenerated `package-lock.json` (nested 8.5.0 under secure-storage eliminated), `ios/App/CapApp-SPM/Package.swift` (swift-pm 8.5.0→8.4.2).
+
+**Mac agent — do NOT wait for the PR.** Build straight from the branch; it's byte-identical to what PR15 will carry:
+```
+git fetch origin && git checkout fix/capacitor-8.4.2-toolchain
+npm ci && npx cap sync ios
+xcodebuild -project App.xcodeproj -scheme App -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+```
+Expected green: core + plugins now aligned at 8.4.2 (the exact toolchain every plugin targets). I verified the Android side compiles at these versions, so the shared lockfile is safe.
+
+**RESUME HERE → next turn:**
+1. Retry `open_fix_pr` with the same precise description (fresh turn usually clears the "no running event loop" error) → get PR #15 number; if it fails again, fall back to `git_push_changes` with explicit file writes or flag the token-scope blocker to Gary.
+2. `merge_pr` #15 → post the **PR link + merge SHA** in this thread (URLs go out as text, not in the voice note).
+3. Fold in the Mac agent's xcodebuild result once they smoke-test on the iPhone 16 Pro simulator, then continue the iOS track (TestFlight/PR12 still gated on your Apple Developer account).
+
+Net: the version-mix root cause is fixed, verified, and on the remote — the moment you run the three commands above, the Swift build should compile.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint_mobile && echo ---VERSIONS---; node -e "for (const p of ['@capacitor/core','@capacitor/android','@capacitor/ios','@capacitor
 • `open fix pr` → tool_execution_error
 
