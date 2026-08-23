@@ -525,3 +525,26 @@ Here's how to get a Gemini token for image generation:
 
 Want me to spin up a quick script on the autopilot box that calls the Gemini image API (once you have the key), so you can generate concept images of the plastic barge — solar panels, desalination unit, and hydroponic growing decks? I can have it ready so it just works when you paste in the key.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11973] Perhaps provide me with a prompt to generate a header image for this PDF for you about the generator. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's a strong header-image prompt you can paste straight into Gemini (Nano Banana), Midjourney, or DALL·E. I've designed it as a widescreen banner with negative space on the left for your PDF title text.
+
+**Main prompt (photorealistic concept render):**
+> "Cinematic photorealistic aerial view of a large modular floating barge built from recycled plastic composite panels, anchored in a calm turquoise lagoon at golden hour. One third of the deck covered with dark blue solar panels, a sleek white desalination unit with pipes in the center, and the remaining deck filled with lush green hydroponic vegetable crops under low glass greenhouses. Gentle waves lapping at the buoyant recycled-plastic hull, seagulls overhead, distant tropical coastline and mountains on the horizon. Warm sunlight, soft reflections on the water, ultra-detailed, 8k architectural visualization, wide 16:9 composition with calm open water and soft sky on the left third for text overlay."
+
+**Variant 2 (clean technical/blueprint style — great if you want a "design doc" feel):**
+> "Clean modern infographic illustration of a self-sufficient floating barge concept: modular recycled-plastic pontoons supporting three zones labeled with subtle arrows — solar panel array, seawater desalination unit, and hydroponic greenhouse rows. Isometric view, soft blue and white palette, minimal flat-design style with subtle grid lines, lots of negative space, professional engineering brochure aesthetic, 16:9."
+
+**Tips:**
+- For the **PDF header specifically**, use the first one but add "leave the left third as clean open sky and water" — it gives you room for the title without covering the subject.
+- If the image comes back too busy, add: *"simplify the background, more negative space"* or *"reduce to two colors of light and shadow."*
+- Gemini free tier (2.5 Flash Image) can do this, but Nano Banana will give the more photorealistic result — worth the paid tier if this is going in a polished doc.
+
+Want me to generate the actual image myself once you've got a key — I can run the prompt, save it, and drop it straight into a styled PDF header for you?
+
