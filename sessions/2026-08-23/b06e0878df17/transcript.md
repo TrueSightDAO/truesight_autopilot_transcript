@@ -458,41 +458,49 @@ Capacitor 8.5.0 installed. Now `cap init` + copy the byte-identical HTML:
 ### 🤖 Autopilot
 
 Byte-identical confirmed (sha256 `68c82f3e…` both). PR1 payload is ready with Capacitor 8.5.0. Now commit and push (the branch from the earlier attempt was deleted from remote; I'll re-create it):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push was rejected (non-fast-forward) — the old branch from the earlier attempt still exists on the remote. Since the old content is superseded (Capacitor 7 → 8), I'll force-push the corrected branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `--force-with-lease` rejected (stale local ref info). I need to fetch the remote ref first, then force-push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Force-push succeeded — remote branch `pr1-repo-scaffolding` now points at `7c1ee91` (Capacitor 8.5.0 version). Now the final step: **open the PR via REST** (the PAT that pushed should have REST `pulls` scope, unlike gh's GraphQL):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 REST returned "Validation Failed" — let me see the full error body to understand what field is invalid:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear diagnosis: **"The pr1-repo-scaffolding branch has no history in common with main"** — my local repo was `git init`-ed fresh (orphan history) with no relationship to the remote `main` (which has the README). GitHub requires PR branches to share history with base. The fix: rebase the branch onto `origin/main` (or recreate it from `main`), keeping only my files. Let me rebuild the branch on top of remote `main`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There was an untracked `README.md` conflict during the branch juggling, but the commit `052aa9e` was created on top of `origin/main` — which is what we want (shared history). Let me verify the branch state and force-push it cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checkout confusion left us on `pr1-scratch`, and the commit `052aa9e` with my 5 files exists there — but it's based on `origin/main`? Let me check the parent of that commit to confirm it shares history with main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -635,4 +643,173 @@ No PR opened/merged yet for PR2 — everything staged locally in `/tmp/sunmint_m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot/context/agentic_ai_context && git pull -q origin main 2>/dev/null; grep -n "PR2" plans/SUNMINT_MOBILE_APP_PLAN.m; cd /opt/truesight_autopilot/context/agentic_ai_context && sed -n '135,165p' plans/SUNMINT_MOBILE_APP_PLAN.md && echo "=====TRACKER=====" && ; cd /tmp/sunmint_mobile && git fetch -q origin && git checkout -q main && git reset -q --hard origin/main && git log --oneline -2 && echo "==; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] 1.
+
+
+### 🤖 Autopilot
+
+Path 1 approved — installing the Android toolchain. Starting with JDK 17 + Android cmdline-tools download:
+
+
+### 🤖 Autopilot
+
+JDK 17.0.19 installed, sdkmanager in place. Now accept licenses + install platform-tools, build-tools, and platform android-35:
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the install log to confirm completion:
+
+
+### 🤖 Autopilot
+
+Toolchain fully installed: JDK 17.0.19, platform-tools (adb), android-35 platform, build-tools 35.0.0. Now the first debug APK build — Gradle's first run downloads the distribution + deps, so I'll launch it in the background and poll:
+
+
+### 🤖 Autopilot
+
+Gradle is downloading the distribution + dependencies (first run — takes minutes). Let me poll the build log:
+
+
+### 🤖 Autopilot
+
+Build is running (Gradle 8.14.3 configuring). Let me wait and poll again — the download phase is the long pole:
+
+
+### 🤖 Autopilot
+
+BUILD FAILED — let me see the error:
+
+
+### 🤖 Autopilot
+
+Capacitor 8 needs **Java 21**, but I installed JDK 17. Quick fix — install JDK 21 and point JAVA_HOME at it:
+
+
+### 🤖 Autopilot
+
+JDK 21 installed, rebuild is progressing well past the compile failure (now at merge/package tasks). Let me poll for completion:
+
+
+### 🤖 Autopilot
+
+**BUILD SUCCESSFUL — `app-debug.apk` (4.1 MB) built!** PR2's core deliverable is done. (The "STILL RUNNING" is the `pgrep` matching my own shell's `gradle` pattern — the build itself reported SUCCESS and the APK exists.)
+
+Now commit the PR2 code (android/ scaffold + manifest permissions + local.properties exclusion) and push/PR via REST. Let me prepare the commit:
+
+
+### 🤖 Autopilot
+
+57 files staged (android/ scaffold + manifest + .gitignore). One anomaly: `README.md` shows as **Added** — let me verify I'm not clobbering the repo's README, then commit + push + open PR via REST:
+
+
+### 🤖 Autopilot
+
+The README mystery resolves cleanly: PR1's merge inadvertently dropped the 2-line README from the initial commit (my commit sequence only restored the 5 scaffold files); PR2 now restores it — same content, non-destructive, good. Commit `bf78533` is correct: android/ scaffold + manifest + .gitignore + README restored.
+
+Now push the branch and open PR via REST:
+
+
+### 🤖 Autopilot
+
+**PR #2 opened** → https://github.com/TrueSightDAO/sunmint_mobile/pull/2. Per auto-advance, verify mergeability then merge:
+
+
+### 🤖 Autopilot
+
+Mergeable, clean. Merging via squash:
+
+
+### 🤖 Autopilot
+
+**PR #2 MERGED** (squash `e11416ce`). PR2 complete: android/ platform + permissions + first debug APK built. 
+
+Per auto-advance → **PR3 is deferred (iOS needs a Mac)** so the next unit is **PR4 (RSA signing byte-compatibility — the highest-risk item §2)**. Let me read PR4's exact scope and the §2 crypto context:
+
+
+### 🤖 Autopilot
+
+PR4's scope is the **RSA signing byte-compatibility test** — §1.3: `RSASSA-PKCS1-v1_5`, 2048-bit, SHA-256, SPKI/PKCS8 base64, must produce signatures Edgar accepts. The key deliverable is a **byte-compatibility verification**: sign with native Android crypto (`java.security.KeyPairGenerator` + `SHA256withRSA`) and confirm it matches what `crypto.subtle` produces. Let me check what the web app currently generates and whether there's an existing verification harness:
+
+
+### 🤖 Autopilot
+
+PR4 needs the native crypto path verified against Edgar. Let me see how the web app signs + submits (the exact format PR4 must replicate) and whether a verification harness exists:
+
+
+### 🤖 Autopilot
+
+I have the exact web signing scheme: `RSASSA-PKCS1-v1_5`, 2048-bit, SHA-256, PKCS8 import, `sign` over `encoder.encode(text)` (UTF-8). PR4's core deliverable is proving Android native crypto (`KeyPairGenerator` + `SHA256withRSA`) produces **byte-identical signatures** — the highest-risk item. Let me write the verification: generate a keypair with native Java, sign a test payload, and compare against what `crypto.subtle` produces for the same key. First, check if node (for the web-side reference) and how to run a quick Java cross-check:
+
+
+### 🤖 Autopilot
+
+Native Java crypto works: SPKI 294 bytes / PKCS8 1216 bytes (standard 2048-bit RSA), signature 256 bytes (2048-bit modulus = 256-byte sig), self-verify true. Now the **critical byte-compatibility test**: import the SAME private key into both Java and Node's `crypto.subtle`, sign the same payload, and confirm identical signatures (this proves cross-implementation byte-compat):
+
+
+### 🤖 Autopilot
+
+Syntax error in my inline node — need `? :` not `if` as expression. Rerun with the fix:
+
+
+### 🤖 Autopilot
+
+**RESULT: BYTE-IDENTICAL** — the highest-risk item (§2) is de-risked: Java native crypto (`KeyPairGenerator` + `SHA256withRSA`) produces byte-identical signatures to Node's crypto.subtle for the same PKCS8 key and payload. RSASSA-PKCS1-v1_5/SHA-256 is deterministic — same key + same input = same signature across implementations.
+
+PR4's deliverable is proving this and adding it as a **verifiable test in the repo** (so it stays proven). Let me add a `scripts/rsa-compat-test.md` (or a checked-in test) documenting the scheme + the cross-check, then commit as PR4. Let me check the repo structure first:
+
+
+### 🤖 Autopilot
+
+Repo is in good shape. The PR4 deliverable should be a **checked-in, reproducible byte-compatibility test** — a Java test that generates a keypair, signs, and self-verifies, plus a Node cross-check. Let me add `scripts/rsa-compat-test/` with both the Java test and a runnable script that proves byte-identity, then commit as PR4. First the git state fix + files:
+
+
+### 🤖 Autopilot
+
+Now add the `cross-check.js` that proves byte-identity (the missing piece), run the full test end-to-end, then commit + PR:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — PR4's proof is done and verified; only the commit/PR/merge remains.
+
+## Progress this turn — PR2 merged, PR4 proof complete
+
+**✅ PR2 (Android platform) — MERGED** (squash `e11416ce`, PR #2):
+- Toolchain installed (governor path 1): **JDK 17→21** (Capacitor 8 needs Java 21), Android SDK cmdline-tools / platform-tools / build-tools 35.0.0 / platform android-35 at `/opt/android-sdk`
+- `npx cap add android` → full `android/` project; `AndroidManifest.xml` got **CAMERA + ACCESS_FINE/COARSE_LOCATION + INTERNET**
+- First debug APK built: **BUILD SUCCESSFUL → `app-debug.apk` (4.1 MB)** — PR2's core deliverable
+- 57 files, +1102/−6, merged clean
+
+**✅ PR4 (RSA byte-compatibility — the highest-risk item §2) — proof DONE, test files written:**
+- Native Android-equivalent crypto (`java.security.KeyPairGenerator` + `SHA256withRSA`) produces **BYTE-IDENTICAL** signatures to the web `crypto.subtle` scheme: `java_sig == node_sig : true`, `java_sig verifies : true`, **RESULT: BYTE-IDENTICAL**
+- Scheme confirmed from `sunmint_beta/index.html`: `RSASSA-PKCS1-v1_5`, 2048-bit, SHA-256, SPKI/PKCS8 base64, sign over UTF-8 payload bytes
+- Test files staged in `scripts/rsa-compat-test/`: `RsaCompatTest.java` (self-test), `RsaCrossCompat.java` (emits key+Java sig), `cross-check.js` (Node side asserts byte-identity), `README.md` (scheme + run instructions)
+- End-to-end run verified: `RESULT: BYTE-IDENTICAL`
+
+**Blocking:** nothing — only the mechanical PR4 commit/push/PR/merge + resume-tracker update remain.
+
+## RESUME HERE → PR4 commit (next turn)
+1. `cd /tmp/sunmint_mobile` (on branch `pr4-rsa-compat`, based on `origin/main`) → `git add scripts/rsa-compat-test/` → commit → push `pr4-rsa-compat` → open PR via REST (same pattern as PR1/2) → verify mergeable → merge squash
+2. Then **PR5** (`@capacitor/camera`, replace `getUserMedia`/canvas live-preview) — pull PR5's exact scope from the plan §3 table first
+3. Periodic: update resume tracker + file DAO contribution for PR1/PR2 (plan §9) — can batch at the Android UAT stop if preferred
+
+Standing authorization (auto-advance through PR2, PR4–PR11, one PR per turn, stop at Android UAT) is being followed. Ready to land PR4 and continue to PR5 next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → android toolchain install (JDK17→21, sdkmanager licenses/platform-tools/build-tools/platform-35), gradle assembleDebug ×2 (v1 failed: invalid source release 21 → JDK 21 → v2 BUILD SUCCESSFUL), PR2 commit/push/PR#2/merge, plan §2/§1.3 read, index.html crypto-scheme extraction, RsaCompatTest+RsaCrossCompat Java proofs, node cross-check (BYTE-IDENTICAL), scripts/rsa-compat-test files written + end-to-end run.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → sudo apt-get update -qq 2>&1 | tail -1; sudo apt-get install -y -qq openjdk-17-jdk unzip 2>&1 | tail -2; java -version 2>&1 | head -1; echo ; export ANDROID_HOME=/opt/android-sdk; export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64; yes | /opt/android-sdk/cmdline-tools/latest/bin/s; cd /tmp/sunmint_mobile/android && echo "sdk.dir=/opt/android-sdk" > local.properties && export ANDROID_HOME=/opt/android-sdk JAVA_HOME=/usr/; …(+18 more)
 
