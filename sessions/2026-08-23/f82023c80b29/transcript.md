@@ -1938,6 +1938,7 @@ The whole thing now reads as one coherent story: **SunMint (ReFi/tree-planting i
 ### 🤖 Autopilot
 
 Merging PR #301:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2107,4 +2108,51 @@ Let me send you the file itself as well:
 **Live link for sharing:** https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/FounderHaus_Farm_Edition.pdf
 
 That's the PDF now linked on the FounderHaus Farm program page (via PR #302, pending merge → beta → prod). Want me to merge #302 and verify the page renders it all?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] merge and then promot to prod
+
+
+### 🤖 Autopilot
+
+Merging PR #302, then attempting the prod promotion:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #302 merged — landing page now carries the full PDF detail.**
+
+## What I did this turn
+
+| Step | Result |
+|---|---|
+| **Merged** | **https://github.com/TrueSightDAO/truesight_me_beta/pull/302** (`7dbcf26`) — FounderHaus Farm landing page details |
+
+## Now on beta `main` (deploys to beta.truesight.me shortly)
+
+- `programs/founderhaus-farm/` landing page now shows:
+  - **Group photo** hero (founding grove, 21 Aug planting) + caption
+  - **Sample batch QR** image + live scan link + Edgar ledger check
+  - **"Download the collaboration brief (PDF)"** button → `.github/assets/FounderHaus_Farm_Edition.pdf`
+  - **Full economics** from the PDF (terms: $5 USD/bag, $500 batch, $1.50 pledge, 100 trees, AGL4) + **How it works** (4 steps) + **Already underway** — all in the manifest description
+  - og:image → group photo
+
+## RESUME HERE → next unit
+
+**Promote to prod** — Gary explicitly approved ("merge and then promote to prod"). The blocker from before still stands: `sync_beta_to_prod(truesight_me_prod)` hit a **merge conflict** (prod's intentional CNAME divergence + its own commits, e.g. PR #19 CNAME fix, PR #18 prior reconcile). Gary said he would resolve `truesight_me_prod`. So next turn: **attempt `sync_beta_to_prod` again** — if the conflict is resolved it'll merge cleanly; if not, report the still-diverged files so Gary can reconcile, then re-run.
+
+Still open after prod promotion:
+1. **Butterfly Effect logo fix** (needs the logo file from you — root cause: dead `era-professionals.com` image URL, JS hides banner on error)
+2. Optional: verify beta renders (#302), backfill Juliana/Cristian emails, extend 30-min cron to re-seed `qrs/*.json`
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #302 on truesight_me_beta merged successfully (sha: 7dbcf261066517f669779dea5cce8611e2f54798). Pull Request successfully merged
 
