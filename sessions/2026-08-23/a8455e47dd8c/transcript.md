@@ -4130,11 +4130,13 @@ I need to verify the actual output path of the China PDF — I may have sent the
 ### 🤖 Autopilot
 
 I need to check the actual output path of the China PDF — the artifact got truncated.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I sent the wrong file — the China PDF was saved to a different path (`/tmp/autopilot_pdf_45i2zgaa.pdf`). Sending the correct one now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4167,6 +4169,7 @@ Correct expression is structurally me and the DAO will not be involved since Chi
 ### 🤖 Autopilot
 
 Understood — let me regenerate the PDF with the corrected wording.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4272,6 +4275,40 @@ The China-lane document now has the clean structure:
 7. Summary table
 
 Ready to send to Elizabeth.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Mention this as the worst case scenario if we are not able to get the black king infrastructure back up
+
+
+### 🤖 Autopilot
+
+Good — adding a "Worst Case Scenario" section to the China-lane PDF, framed around what happens if Black King's infrastructure can't be restored.
+
+
+### 🤖 Autopilot
+
+Done ✅ (message 13355) — now **3 pages** with the worst-case section added.
+
+**New section: "Worst Case Scenario — If Black King's Infrastructure Cannot Be Restored"**
+
+Covers the 5 consequences if Black King's CNPJ can't be brought back to "Ativa":
+1. **Independent consolidated beans stranded** — warehouse inventory from independent farmers (Bahia + Pará) can't be exported → realistic write-off
+2. **No NF-e / no export via Black King** — nothing moves through that channel
+3. **China lane protected** — Oscar is inside Coopercabruca, so his beans still flow regardless of Black King's fate
+4. **CEPOTX (Pará) impact** — their beans processed via Matheus would need an alternative route
+5. **Trading-company bridge** — the only way to move independent warehouse stock ("por conta e ordem", fee + invoice in trading company's name)
+
+**Bottom line added:** the China lane for Oscar's beans does **not** depend on Black King — the exposure is limited to the **independent warehouse inventory**, which is a US-lane/SF-freight issue, not a China-lane issue.
+
+Summary table also updated with: *"Worst case if Black King can't be restored? → Oscar's China lane still proceeds; independent warehouse stock is stranded (write-off)."*
+
+Ready for Elizabeth.
 
 ———
 **✅ Done this turn — actions taken:**
