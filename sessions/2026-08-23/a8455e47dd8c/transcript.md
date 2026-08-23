@@ -4615,16 +4615,19 @@ The /tmp files were cleaned up. Let me pull the quotation from the SOP and the e
 ### 🤖 Autopilot
 
 The SOP has the pricing from the Omega thread. Let me also re-fetch the actual proposal PDF from Gmail (the /tmp copy was cleaned) so I can quote the exact figures.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the May 14 email that contained the commercial proposal — the body may summarize the pricing even without re-downloading the attachment.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The email body confirms the proposal was attached as a PDF (no inline pricing). The SOP contains the extracted figures — let me pull the cost summary section that was truncated.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4686,6 +4689,7 @@ Want me to re-send the original proposal PDF here, or draft a request to Graziel
 ### 🤖 Autopilot
 
 On it — I'll build the adjusted quotation PDF (excluding the BRL 195 pallet cost, since Matheus already has pallets in the warehouse).
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4825,4 +4829,35 @@ Done! ✅ Both parts complete:
 - Pointer to the consolidated doc + all canonical references
 
 Bionpact/Onaya will pick it up on her own cycle via `check_handoffs()` — no action needed from you. Want me to also merge PR #810 so the doc is on `main` (not just the branch)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] merge and then hand off
+
+
+### 🤖 Autopilot
+
+Merging PR #810, then sending the handoff with the merged-doc reference.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅
+
+**PR #810** — `docs: Brazil export lane — consolidated learnings` merged to `main` (sha: f50f2a3bbee28d77dab9efbe2941bc446b1a0544). The consolidated doc is now live at:
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/brazil/BRAZIL_EXPORT_LANE_LEARNINGS.md
+
+**Handoff status:** Already delivered to Bionpact/Onaya in the previous turn (`bionpact_from_sophia_20260823T200614Z.json` in `agent_handoffs`) — it references the doc via the PR; the doc is now on `main`, so the link resolves permanently.
+
+**RESUME HERE →** (optional follow-up) If you'd like, I can send a short *follow-up* handoff to Bionpact/Onaya noting the doc is now merged to `main` (so she references the canonical path rather than the PR branch). Otherwise the "merge and hand off" request is fully complete.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #810 on agentic_ai_context merged successfully (sha: f50f2a3bbee28d77dab9efbe2941bc446b1a0544). Pull Request successfully merged
 
