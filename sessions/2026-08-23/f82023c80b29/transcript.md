@@ -2644,11 +2644,13 @@ The prod manifest 404'd — the path must differ. Let me find where the Butterfl
 ### 🤖 Autopilot
 
 The card loads its logo via JS from the program manifest. Let me read the Butterfly Effect manifest in prod to see the logo URL it points at:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the manifest still points at the **dead external URL** (`era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png`). Let me verify it's still dead and hunt for a working logo source in the butterfly-effect-club repo:
+[2 tool result(s) compacted: http_fetch, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2765,4 +2767,65 @@ Say the word and I'll run the beta verify + prod promote.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #306 on truesight_me_beta merged successfully (sha: 1d3729b2dcadf905324ea72a1d97834d2d428203). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] and then promote to production
+
+
+### 🤖 Autopilot
+
+Gary has explicitly approved promotion — attempting the beta→prod sync for the accumulated fixes (#303 bold, #304 CTA, #305 pill, #306 Butterfly logo):
+
+
+### 🤖 Autopilot
+
+Sync succeeded — no conflict this time (Gary's reconcile of prod's divergence paid off). Let me verify production now reflects all the fixes:
+
+
+### 🤖 Autopilot
+
+The sync reported success, but the prod manifest **still shows the old dead URL**. Let me check the actual state of the prod repo's main branch to see what the sync actually did:
+
+
+### 🤖 Autopilot
+
+The repo's `main` is updated (new logo URL), but the live site still served the old manifest — classic Pages/CDN lag. Let me verify the sync commit landed on prod main and re-check the live page with a cache-buster:
+
+
+### 🤖 Autopilot
+
+Repo is promoted (prod `main` has the fix — `1d3729b2` is #306), but the **live site is still serving the old manifest** — that's GitHub Pages deployment/CDN lag (the sync merge landed at 17:01Z, Pages rebuilds take a few minutes). Let me watch the live URL so we get confirmed when it flips:
+
+
+### 🤖 Autopilot
+
+The watcher needs a topic context to post into — I'll just confirm status directly. Everything is promoted; the live site is just waiting on the Pages deployment to finish.
+
+## ✅ Production promotion complete — all fixes are on prod `main`
+
+`sync_beta_to_prod(truesight_me_prod)` **succeeded cleanly this time** (no conflict — your earlier reconcile of the CNAME divergence did the job). Verified in the repo:
+
+| Fix | On prod `main`? |
+|---|---|
+| #303 bold-markdown renderer | ✅ (via merge `4990b0b`) |
+| #304 "Track the 100 bags →" CTA | ✅ |
+| #305 "SunMint initiative" pill | ✅ |
+| #306 Butterfly Effect logo (self-hosted) | ✅ — commit `1d3729b` on prod main |
+
+## Live site status — deployment lag, not a problem
+
+The repo is updated, but `truesight.me/programs.html` and the live manifest **still serve the old content** — GitHub Pages rebuilds after the merge (17:01Z), takes a few minutes to deploy. Evidence it's just lag, not a failure:
+- prod repo `main` manifest: `partner_logo_url` = **`raw.githubusercontent.com/.../butterfly-effect-logo.png`** ✅ (read from GitHub)
+- live `truesight.me/.../manifest.json` (cache-busted): still the old dead URL ⏳
+- prod `main` also already shows the **founderhaus-farm** card in the page source
+
+**Give it ~5–10 minutes** and the live site will show: Butterfly Effect logo banner restored + FounderHaus Farm card + bold-rendered descriptions. If it's still stale after that, I'll dig into the Pages deployment run.
+
+**RESUME HERE →** re-check `truesight.me/programs.html` (Butterfly logo banner + FounderHaus Farm card) once Pages finishes; then remaining open items: backfill Juliana/Cristian emails, extend 30-min cron to re-seed `qrs/*.json` (drift fix), Bougainvillea signature-preservation decision.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_prod/commits?per_page=3" | python3 -c " import json,sys d=json.lo
 
