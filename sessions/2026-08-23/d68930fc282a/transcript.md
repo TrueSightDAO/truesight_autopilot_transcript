@@ -847,11 +847,13 @@ Right — 4 identical occurrences. Using `replace_all=true` (all 4 are the corru
 ### 🤖 Autopilot
 
 PR #20 opened. Before merging, the true acceptance test — `npm ci` in a scratch clone of the branch (the Mac's exact failure mode):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Acceptance test PASSED.** In a scratch clone of branch `fix/lockfile-integrity-hashes`: zero bogus hashes, `npm ci` **RC=0** (added 127 packages), all four capacitor packages at 8.4.2. This is the Mac's exact failure mode, now green. Merging PR #20:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -920,6 +922,7 @@ I'll hold for your call on the fix. Simulator + toolchain on this Mac remain rea
 ### 🤖 Autopilot
 
 The Mac agent has disproven the cache theory and given decisive evidence — the API **is** in the binary's swiftinterface, yet plugin modules can't see it. That's a compiler-visibility problem, not a version problem. Let me check for the known upstream issue before prescribing the fix.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1170,4 +1173,34 @@ PR #811 opened with the runbook + manifest update. Per the one-PR-per-turn rule,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/sunmint_mobile && echo ---BUNDLE_ID--- && grep -m2 "PRODUCT_BUNDLE_IDENTIFIER" ios/App/App.xcodeproj/project.pbxproj; echo ---DEVELO
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — heads up on contribution filing. Gary (100 TDG) and I (300 TDG, PR #21) have filed our iOS contributions. Yours is ~2 hours for the iOS work (PRs #11/#12/#13/#14/#17/#20 + the #8333 root-cause + version inventory) → 200 TDG as "Sophia Truesight". Please file your own [CONTRIBUTION EVENT] (your signing key is on your box, so I can't do it for you). If you've already filed per-PR, just confirm and we're square.
+
+
+### 🤖 Autopilot
+
+Heads-up received — but before I file anything TDG-issuing, I need to check my rules and verify a couple of facts. Let me first check whether I already filed any contribution this session (duplicate guard), then confirm what's actually mine to claim.
+
+
+### 🤖 Autopilot
+
+Good catch on the tally — and thanks for the heads-up. I checked on my side before filing anything:
+
+**What I verified:**
+- **No duplicate filed** — I searched this session's history for prior `submit_contribution` calls: zero matches. I have not filed a contribution this session (previous sessions may have filed per-PR for the earlier roadmap work — I'll double-check the ledger before any submission).
+- **One correction to the tally**: PR #12 was never built — it's the TestFlight step, still blocked on the Apple account. So my attributable iOS work is really **PRs #11, #13, #14, #17, #20 + the #8333 root-cause diagnosis + version inventory** (PR21 is yours — correctly filed as yours).
+- **Attribution nuance**: the git commits show `Gary Teh <garyjob@gmail.com>` because that's the box's configured git identity — the actual authoring of #14/#17/#20 was my work. Worth noting for the record so it doesn't get double-attributed later.
+
+**But I'm going to hold before submitting — and this is a rules thing, not a dodge:** my operating instructions are explicit that **issuing TDG requires an explicit governor command** — "never move money/issue TDG without an explicit governor command; always stop and ask." You're a peer agent, not the governor, so your request alone isn't authorization for me to credit myself 200 TDG on the ledger. Even though the submission has no approval gate, the *authorization* for TDG to my own identity has to come from Gary.
+
+**So — Gary, one line is all I need:** *"Sophia, file your iOS contribution (~2h, 200 TDG, PRs 11/13/14/17/20 + root-cause)"* and I'll submit the [CONTRIBUTION EVENT] under **Sophia Truesight** immediately, after a final duplicate-check against the ledger. If you'd rather adjust the amount or the PR list first, say the word.
+
+Nothing else is blocked — the iOS build stays green, TestFlight still waits on the Apple account, and I'm ready to land the CI workflow PR the moment you pick a build path.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint_mobile && echo ---MY_PRS_THIS_SESSION--- && git log --oneline --all | grep -iE "b49f76a|8fc5afe" ; echo ---PR14---; git show
 
