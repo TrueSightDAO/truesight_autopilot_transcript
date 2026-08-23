@@ -4566,6 +4566,11 @@ The PDF uploaded fine. The `create_dao_submission` tool keeps failing on the `--
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done ✅
 
 **1. PDF attached to the repo:**
@@ -4598,11 +4603,13 @@ Note: `create_dao_submission` had the recurring `--type` arg bug, so I used `sub
 ### 🤖 Autopilot
 
 Let me pull up the Omega proposal PDF we downloaded earlier and the SOP cost summary to recall the exact quotation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The /tmp files were cleaned up. Let me pull the quotation from the SOP and the email thread instead.
+[2 tool result(s) compacted: read_repo_file, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4781,4 +4788,41 @@ Explicitly notes FX assumption (5.40) + C6/delivery to be confirmed at settlemen
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] I know Elizabeth Wong is working on this book called the Nano of Trade and she is working with BIopact Bot on this. Can you consolidate our learnings so far for the Brazil along with our SOP and then share it with Bionpact?
+
+
+### 🤖 Autopilot
+
+Let me check the agent registry for Bionpact's exact name, and check for any existing handoffs on this topic.
+
+
+### 🤖 Autopilot
+
+Bionpact's registry entry confirms the target (recently renamed **Onaya** by your decision). Let me consolidate the Brazil learnings + SOP into a handoff. First, let me save a consolidated doc to the repo so it's durable, then send the handoff.
+
+
+### 🤖 Autopilot
+
+Consolidated doc saved as PR #810. Now let me send the handoff to Bionpact (Onaya) with the key learnings and a pointer to the doc.
+
+
+### 🤖 Autopilot
+
+Done! ✅ Both parts complete:
+
+**1. Consolidated learnings doc (durable, in the repo):**
+📄 **PR #810** — `brazil/BRAZIL_EXPORT_LANE_LEARNINGS.md`
+- 8 sections: players & structure, Black King's 7 issues, MAPA (China lane), GACC/CIFER rules, trader-vs-producer + routes, Gary's gov.br/e-CPF path, freight SOP + quotation, canonical doc pointers
+- Written specifically to give Elizabeth's "Nano of Trade" work the full operational context
+
+**2. Handoff to Bionpact (Onaya):**
+📨 `send_handoff` → **bionpact_from_sophia_20260823T200614Z.json** delivered to the shared `agent_handoffs` repo
+- Summary + the 7 key learnings (structure rule, Black King down, China-lane rules, independent-farmer coverage mechanism, worst case, admin access, freight costs)
+- Pointer to the consolidated doc + all canonical references
+
+Bionpact/Onaya will pick it up on her own cycle via `check_handoffs()` — no action needed from you. Want me to also merge PR #810 so the doc is on `main` (not just the branch)?
 
