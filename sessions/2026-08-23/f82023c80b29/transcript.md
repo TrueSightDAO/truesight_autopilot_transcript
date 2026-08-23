@@ -1231,11 +1231,13 @@ Want me to do both? (I'd open the PR on a branch, not the dirty local clone, and
 ### 🤖 Autopilot
 
 **Yes — exactly that.** Refresh the per-QR JSON caches (`lineage-assets/qrs/*.json`) from the sheet, push to GitHub, and the public landing page auto-loads the new pledge. That's the immediate fix. Let me do it cleanly — fresh clone (not the dirty one) so I don't push anything unintended:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh clone is clean and confirms the canonical JSON still has the old SKU. Now let me see the seed script's read+compare logic to understand why the dry-run said "unchanged" — that's the blocker to a clean refresh:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1360,4 +1362,30 @@ The sheet → `qrs/*.json` sync only happens when someone manually runs `seed_fr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/la_refresh && echo "===STILL MODIFIED (after CT commit)==="; git status --short | wc -l; git status --short | awk '{print $2}' | sed; cd /tmp/la_refresh && echo "===CB batch diff (representative)==="; git diff -- qrs/2024OSCAR_CB_20260620_1.json | grep -E "^[+-]" | grep -v ; cd /tmp/la_refresh && echo "===CB file status==="; git status --short qrs/2024OSCAR_CB_20260620_1.json; echo "===CB raw diff (head)==="; git; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] share with me a QR code page so taht I can see a founderhaus cacao tea page.
+
+
+### 🤖 Autopilot
+
+Here's the live public QR page for a FounderHaus cacao tea bag:
+
+**https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1**
+
+That's the page a customer sees when they scan the QR on the bag. It should now show:
+
+- **SKU:** FounderHaus Tree Planting Pledge - QR Code
+- **Farm:** Oscar's Farm · Bahia · Brazil · 2024 (tea provenance)
+- **Status:** MINTED
+
+And the live ledger check (Edgar):
+**https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_1**
+
+For a *physical* scan, the QR image is at:
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/2024OSCAR_CT_20260820_1.png**
+
+Give it a click — if anything on the page looks off, tell me what you see and I'll fix it.
 
