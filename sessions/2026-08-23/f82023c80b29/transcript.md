@@ -2656,31 +2656,37 @@ Found it — the manifest still points at the **dead external URL** (`era-profes
 ### 🤖 Autopilot
 
 Dead URL confirmed (404). Let me hunt for a usable Butterfly Effect logo in the butterfly-effect-club repo and other likely places:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No logo in butterfly-effect-club. Let me check the `.github/assets` folder (where I host the FounderHaus logo) and try the Wayback Machine for the original Butterfly logo:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wayback has no snapshot either. Let me grep the `.github` repo's full file tree for any butterfly-related asset, which is faster than paging the huge listing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No Butterfly logo anywhere in the org. Let me check ERA's live site for the butterfly-effect page — the logo may have moved to a different path — and look inside the butterfly-effect-club repo:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a Butterfly Effect logo in `butterfly-effect-club/cert_template/logo.png`! Let me grab it and verify it's the real logo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `butterfly-effect-club/cert_template/logo.png` is **300×300** — exactly matching the dead URL's filename (`Butterfly-logo-300x300.png`), with teal/black brand colors. This is almost certainly the right logo. Let me verify visually and check the beta manifest (for the beta-first fix):
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2828,4 +2834,69 @@ The repo is updated, but `truesight.me/programs.html` and the live manifest **st
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_prod/commits?per_page=3" | python3 -c " import json,sys d=json.lo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] I think for QR code states in https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=1250222719#gid=1250222719 
+
+"States"
+
+We should include a new state called TREE_PLANTING_FUNDS_TRANSFERRED or something and this should still count as tree financed on https://agroverse.shop/
+
+From my perspective there is a time lag between sold, to funds transferred to farmers to ASSIGNED_TO_TREE
+
+Thoughts?
+
+
+### 🤖 Autopilot
+
+Good design instinct — let me look at the current state machine before giving thoughts. First the States tab itself, then the docs that define how states flow and how agroverse.shop counts "tree financed."
+
+
+### 🤖 Autopilot
+
+The States tab Gary linked is the general initiative-states column; the QR-specific states live in the status dropdowns. Let me read the linking plan (which lists all QR states) and check how agroverse.shop counts trees financed:
+
+
+### 🤖 Autopilot
+
+Good idea — and the plan doc confirms your instinct is well-founded. Here's my thinking, grounded in the actual state machine:
+
+## Current lifecycle (from SUNMINT_TREE_QR_LINKING_PLAN.md)
+
+```
+SOLD ──────────────▶ ASSIGNED_TO_TREE
+ (sale booked,        (tree planted + verified,
+  "Cacao Tree To       QR flips via linking module,
+  Be Planted"          "Cacao Tree Planted" asset)
+  liability created)
+        ▲
+        └── [the gap you're pointing at]
+```
+
+Today **SOLD → ASSIGNED_TO_TREE is a single hop**, but in reality there are two distinct commitments in between: (1) we've sold the bag → pledge booked, and (2) **funds actually disbursed to the farmer/planter** → planting pending. There's no state that records (2), so you can't tell from the sheet whether a sold bag's funds have left the treasury yet or not.
+
+## My verdict: yes, add it — it's the right granularity
+
+- **It makes the pipeline legible.** "100 bags sold" vs "90 bags funded" vs "60 trees planted" becomes visible at a glance — that's real operational signal (and it surfaces *stuck* fund transfers, not just planted trees).
+- **It doesn't break the count** — *if* we update the counter. The agroverse.shop "trees" counter (`Code.js:166` + `agroverse_wix_site_updates.js:176`) counts `SOLD || ASSIGNED_TO_TREE`. Add the new state to that set and the count stays monotonic through all three states — no regression, exactly what you asked ("still counts as tree financed").
+- **Re-sale guard is unaffected** — dedup keys off the `QR Code Sales` sheet, independent of status. No risk there.
+
+## The change surface (if you say go)
+
+1. **Enum** — `process_qr_code_updates.js` (tokenomics GAS, ~line 499) + `dapp/update_qr_code.html` dropdown (~line 375): add the new state.
+2. **agroverse.shop counter** — `Code.js:166` + `agroverse_wix_site_updates.js:176`: `SOLD || TREE_PLANTING_FUNDS_TRANSFERRED || ASSIGNED_TO_TREE`.
+3. **Availability pickers** (tokenomics) — exclude it alongside `SOLD`/`ASSIGNED_TO_TREE` (a funded bag is committed).
+4. **States tab (the sheet you linked)** — document the new state for the record.
+5. **Plan doc** — update the roadmap's state list so the audit trail stays current.
+
+## Two design questions before I build
+
+1. **Naming** — `TREE_PLANTING_FUNDS_TRANSFERRED` is clear and self-documenting (I'd keep it); alternatives: `FUNDS_TRANSFERRED` (shorter) or `TREE_FUNDED`. Your call.
+2. **The writer** — who flips a QR to this state? Cheapest: the governor (or me) sets it via the DApp when the payment to the farmer is recorded. Better long-term: auto-wire it to the `[PAYMENT EVENT]` handler so funds-transfer *events* drive the state. I'd ship the manual/flag route first, then wire it.
+
+**One honest nuance:** the counter on agroverse.shop is literally labeled **"Trees planted"** but already counts `SOLD` — so it's really a *"trees financed"* counter wearing the wrong name. Your new state makes that tension visible; if you want, I can relabel it "trees financed" as part of this change.
+
+Want me to build it (beta-first PRs: tokenomics GAS + agroverse_shop_beta + plan-doc update), with `TREE_PLANTING_FUNDS_TRANSFERRED` as the name and the DApp/flag route as the first writer?
 
