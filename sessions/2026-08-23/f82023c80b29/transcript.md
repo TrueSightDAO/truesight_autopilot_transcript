@@ -2926,11 +2926,13 @@ Good catch — let me check what the linking DApp currently lists and whether th
 ### 🤖 Autopilot
 
 The search found only doc references, not the DApp page itself — let me find the actual `link_tree_planting.html` in the tokenomics repo and read the plan's DApp spec section:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's DApp spec section to see exactly what the linking page should list:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2974,6 +2976,7 @@ go ahead and fix all of them
 ### 🤖 Autopilot
 
 Go-signal received. Per the handoff directive, let me first check the manifest registry, then gather the exact code locations for all five changes before opening the first PR.
+[3 tool result(s) compacted: read_context_file, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2981,16 +2984,19 @@ Go-signal received. Per the handoff directive, let me first check the manifest r
 Go-signal received. The handoff manifest confirms this is the active SunMint tree-QR linking plan (thread 11596), and Gary's "fix all of them" authorizes the full change set. Per §5a (one PR per execution turn), I'll sequence: **this turn = tokenomics GAS PR** (the foundation — state enum, pickers, endpoint, counter, link validation), then dapp_beta, then docs.
 
 Let me read the exact code locations first:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff manifest confirms this is the active SunMint linking plan (thread 11596), and the go-signal authorizes the full change set. Per §5a (one PR per turn), I'll sequence: **this turn = the foundation PR** covering all GAS/code changes, then dapp_beta, then docs. Let me pull the exact snippets I need to edit from a local tokenomics checkout:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have all the exact locations. Now I'll make the GAS/code changes. Let me read the precise hunks I need to edit (enum at 536-545, link validation at 534, pickers, and the web service list function):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3114,4 +3120,53 @@ One note: I also spotted while editing that **API.md / API_ENDPOINTS.md** docume
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/tokenomics 2>/dev/null && grep -n "ASSIGNED_TO_TREE\|SOLD\|status" SCHEMA.md | head -40; cd /opt/truesight_autopilot/tokenomics 2>/dev/null && echo "===907 area==="; sed -n '900,916p' SCHEMA.md; echo "===States tab 1124-1160===";; cd /opt/truesight_autopilot/tokenomics 2>/dev/null && sed -n '907p' SCHEMA.md | cat -A | head -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] merge PR 421
+
+
+### 🤖 Autopilot
+
+Merging PR #421:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #421 merged — the TREE_PLANTING_FUNDS_TRANSFERRED backend is in.**
+
+## What I did this turn
+
+| Step | Result |
+|---|---|
+| **Merged** | **https://github.com/TrueSightDAO/tokenomics/pull/421** (`79671e8`) — branch `feat/tree-planting-funds-transferred-state` |
+
+## What's now in tokenomics `main`
+
+| File | Change |
+|---|---|
+| `process_qr_code_updates.js` | + `TREE_PLANTING_FUNDS_TRANSFERRED` in valid-status enum |
+| `qr_code_web_service.js` | `list_sold_pending_tree` includes SOLD **or** FUNDS_TRANSFERRED (each item returns `status` for badging); availability pickers exclude the new state |
+| `process_tree_planting_link.js` | LINK validation accepts SOLD **or** FUNDS_TRANSFERRED as valid pre-link status |
+| `Code.js` + `agroverse_wix_site_updates.js` | shop counter: `SOLD \|\| FUNDS_TRANSFERRED \|\| ASSIGNED_TO_TREE` — funded bags still count as tree-financed |
+
+## RESUME HERE → next units (fresh turns)
+
+1. **Merge PR #422** (SCHEMA.md docs — already open, per your "update SCHEMA.md" ask) — say the word.
+2. **dapp_beta PR** — `update_qr_code.html` status dropdown + `link_tree_planting.html` left list showing both states with status badges (the "linking dapp should include the list of QR codes in that new state" ask).
+3. **Docs pass** — SUNMINT_TREE_QR_LINKING_PLAN.md state list (+ optionally API.md/API_ENDPOINTS.md for `list_sold_pending_tree`).
+4. **`clasp push` deploy** — GAS changes to the two Apps Script projects (QR-codes mirror `1UrBg…` + agroverse shop `1Y8sJ…`) — I'll flag before deploying.
+5. **UAT** — flip a test QR to `TREE_PLANTING_FUNDS_TRANSFERRED` → confirm it appears in the linking queue + still counts on agroverse.shop.
+
+Want me to merge #422 now (next turn), then continue with the dapp_beta PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #421 on tokenomics merged successfully (sha: 79671e846d16bdad515728be660d60eebac92d27). Pull Request successfully merged
 
