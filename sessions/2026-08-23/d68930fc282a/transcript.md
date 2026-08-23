@@ -19,17 +19,65 @@ Go for it, start implementing the iOS app. [System note: the user sent this as a
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The artifact is returning nested content. Let me read the tail of the plan file directly to get the execution sections (§2–§6 and RESUME HERE).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan file is deeply nested in the artifact. Let me read it directly from the repo for a clean copy of the execution sections.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the execution sections (§3 onward) of the plan from the local checkout on the autopilot box, which avoids the nesting issue.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -110,4 +158,78 @@ Net: the iOS app implementation that *can* proceed from this box is done; what r
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → ls ~/agentic_ai_context 2>/dev/null || ls ~/TrueSightDAO 2>/dev/null || find / -maxdepth 4 -name "SUNMINT_MOBILE_APP_PLAN.md" 2>/dev/null | ; echo HOME=$HOME; ls -la $HOME 2>/dev/null | head -30; find / -maxdepth 5 -name "SUNMINT_MOBILE_APP_PLAN.md" 2>/dev/null | head; find /home/ubuntu -maxdepth 3 -iname "*sunmint*" 2>/dev/null; echo ---; find / -maxdepth 4 -iname "*sunmint_mobile*" -not -path "*/node_modu; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] [Handoff context — this Telegram topic (thread 13445) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it, get it done! [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Go — executing now. First, let me read the exact sections of `www/index.html` I need to edit (email section HTML + I18N blocks).
+
+
+### 🤖 Autopilot
+
+I have everything I need. Now let me check the App plugin's `appUrlOpen` listener shape and confirm the repo's PR/merge workflow, then build PR14.
+
+
+### 🤖 Autopilot
+
+Everything's mapped. Now building **PR14 — verification-link deep-link handling** (the plan's §1.2 acceptance criterion that's still missing): native `appUrlOpen`/`getLaunchUrl` listener + manual paste-link fallback + custom URL scheme `sunmint://` on both platforms.
+
+
+### 🤖 Autopilot
+
+Good — `git_push_changes` needs explicit hunks. Let me first apply the edits **locally** in `/tmp/sunmint_mobile`, validate them (syntax/XML/plist checks per the hard rule), and then push the identical hunks.
+
+
+### 🤖 Autopilot
+
+All edits applied locally. Now validating per the hard rule — JS syntax check, XML well-formedness, plist parse, and `cap sync` regeneration.
+
+
+### 🤖 Autopilot
+
+All checks pass. Now running `npx cap sync` (which validates the plugin wiring end-to-end) before pushing.
+
+
+### 🤖 Autopilot
+
+Sync clean. Now pushing PR14 with the exact same content that just passed validation.
+
+
+### 🤖 Autopilot
+
+PR14 opened. Per your standing authorization ("go for it, get it done"), merging it now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Done — PR14 merged ✅**
+
+**What I built (PR #14, merged sha `b49f76a`):** verification deep-link handling for the SunMint app — the one missing piece of the §1.2 acceptance checklist that wasn't blocked by a Mac or Apple account.
+
+- **`www/index.html`** — refactored verification into shared `extractVerificationParams()` + `submitVerification()`; wired `@capacitor/app` `getLaunchUrl()` (cold start) + `appUrlOpen` listener (warm start) so a `sunmint://…?vk=&em=` deep link fires `[EMAIL VERIFICATION EVENT]`; added a **paste-link fallback UI** so a farmer can paste the emailed https link (or bare `vk=…&em=…`) and verify — covers emailed links today with zero backend changes; PT/EN i18n keys for all of it.
+- **AndroidManifest.xml** — `sunmint://` VIEW/DEFAULT/BROWSABLE intent-filter.
+- **Info.plist** — `CFBundleURLTypes` with the `sunmint` scheme.
+
+**Validation before push (hard rule):** `node --check` on the extracted JS ✅, XML + plist parse ✅, `npx cap sync` clean with all 6 plugins ✅.
+
+**Deferred (documented in code):** https Universal/App Links need `assetlinks.json` / `apple-app-site-association` on the sunmint web host (not in my allow-list) — the paste fallback covers it meanwhile. TestFlight (PR12) still needs your Apple Developer account.
+
+**RESUME HERE → next unit:** (1) report PR14 contribution via `create_dao_submission` (per plan §9); (2) correct the stale `HANDOFF_MANIFEST.md` + plan resume tracker to the true state — PR1–PR14 merged, **stopped at the Android UAT gate** (APK `sunmint-android-uat.apk` + SHA-256 already posted in this thread for you to test), PR12 waiting on your Apple Developer account. I'll do those in the next turn — just say "go."
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/sunmint_mobile && sed -n '245,345p' www/index.html; cd /tmp/sunmint_mobile && node -e "const p=require('@capacitor/app/package.json'); console.log(p.version)"; echo ---; grep -rn "appUrlOpen" ; cd /tmp/sunmint_mobile && sed -n '45,75p' node_modules/@capacitor/app/README.md; echo ---EVENT---; sed -n '323,345p' node_modules/@capacitor; …(+3 more)
+• `merge pr` → ✅ PR #14 on sunmint_mobile merged successfully (sha: b49f76a475b8fdaa19820ff67581564de313d056). Pull Request successfully merged
 
