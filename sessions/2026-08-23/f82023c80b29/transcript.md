@@ -3002,16 +3002,19 @@ I have all the exact locations. Now I'll make the GAS/code changes. Let me read 
 ### 🤖 Autopilot
 
 Let me read the exact hunks I need to edit — the web service list function, the picker filters, and the link validation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full change surface. Let me grab the last few exact hunks (the status enum context, the DApp dropdown, and the shop counter repo) before editing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full change surface mapped. The checkout lives at `/opt/truesight_autopilot/tokenomics`. Running the mandatory local test suite before pushing, then opening the foundation PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3169,4 +3172,74 @@ Want me to merge #422 now (next turn), then continue with the dapp_beta PR?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #421 on tokenomics merged successfully (sha: 79671e846d16bdad515728be660d60eebac92d27). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] ALso I think we need to update https://dapp.truesight.me/update_qr_code.html with a new state isnt it?
+
+
+### 🤖 Autopilot
+
+Yes — that's the exact DApp surface that needs the new state. Let me find the status dropdown in `update_qr_code.html` (dapp_beta, since dapp.truesight.me is prod and we go beta-first):
+
+
+### 🤖 Autopilot
+
+Zero hits in dapp_beta — the DApp likely lives in a different repo. Let me search the org for `update_qr_code.html` and `ASSIGNED_TO_TREE`:
+
+
+### 🤖 Autopilot
+
+`update_qr_code.html` isn't surfacing in code search — let me check where the DApp pages actually live via the dapp notes:
+
+
+### 🤖 Autopilot
+
+The file exists in dapp_beta. Let me find the exact status dropdown options in the file to make the edit:
+
+
+### 🤖 Autopilot
+
+Found the dropdown (lines 369–375). Let me see the full option list to make the edit precisely:
+
+
+### 🤖 Autopilot
+
+Found it — the dropdown at lines 366–376. Adding the new state after `SOLD` (matching the enum order in #421):
+
+
+### 🤖 Autopilot
+
+My replace was identical to the search — I forgot to insert the new option. Fixing the hunk:
+
+
+### 🤖 Autopilot
+
+✅ **PR #74 opened — the update_qr_code.html dropdown now has the new state.**
+
+## PR #74 — https://github.com/TrueSightDAO/dapp_beta/pull/74
+
+`update_qr_code.html` → Status dropdown, inserted after `SOLD`:
+
+```
+…LOST, SOLD, TREE_PLANTING_FUNDS_TRANSFERRED, EXPENSED, ASSIGNED_TO_TREE, GIFT
+```
+
+That's the page behind **dapp.truesight.me/update_qr_code.html** — so once this is merged + promoted, governors can flip a sold QR to "funds transferred to farmer" right from the DApp, matching the backend that's already live (tokenomics #421, merged).
+
+## Where the whole initiative stands
+
+| PR | Surface | Status |
+|---|---|---|
+| #421 (tokenomics) | backend enum + queue + link + counter | ✅ merged |
+| #422 (tokenomics) | SCHEMA.md docs | open — await merge |
+| **#74 (dapp_beta)** | update_qr_code.html dropdown | open — await merge |
+| — | link_tree_planting.html badges (your earlier ask) | next unit |
+
+**RESUME HERE →** merge #422 + #74 (say the word), then next units: ① link_tree_planting.html left-list badges (backend already returns `status` per item); ② plan-doc state list (SUNMINT_TREE_QR_LINKING_PLAN.md); ③ `clasp push` the GAS changes (QR-codes mirror + agroverse shop) — flagged before deploy; ④ dapp_beta → dapp_prod promotion after your beta review; ⑤ UAT of the new state end-to-end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf dappb && git clone -q --depth 1 https://github.com/TrueSightDAO/dapp_beta.git dappb 2>&1 | tail -1; cd dappb && grep -n "A; cd /tmp/dappb && sed -n '362,380p' update_qr_code.html
 
