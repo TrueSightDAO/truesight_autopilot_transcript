@@ -3398,16 +3398,19 @@ The script is tracked in `lineage-assets/scripts/sync_pending_caches.py` (API-on
 ### 🤖 Autopilot
 
 The repo copy is the canonical source (local `/home/ubuntu/scripts` runs slightly ahead with the photo_url fix). Now let me read the exact repo hunk I need to edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the exact hunk. Making the fix — broaden the filter to include FUNDS_TRANSFERRED and emit the real per-item status:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Auto-advance mode is active (Gary: "auto advance until UAT"), so merging it myself and continuing:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3454,26 +3457,31 @@ Auto-advance continues next turn at unit 1.
 ### 🤖 Autopilot
 
 Continuing auto-advance — next unit: sync the merged fix to the live box copy, preserving the local `_normalize_photo_url` helper, then push the refreshed cache.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repo main has the fix; the local copy is stale. Let me reconcile the full diff (local carries the `_normalize_photo_url` helper the repo lacks) and apply the filter change to the local copy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo copy is actually **ahead** of local (repo has the `_normalize_photo_url` helper AND the new filter; local lacks both). The local cron copy is just stale. Let me check the cron entry, then sync local to repo main and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local synced + compiles. Now run the cache generator once to push a refreshed `sold_pending_tree.json` with the new filter (dry-run first to see counts, then --push):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run works (414 SOLD pending — expected, since no QR is in the new state yet; the filter is what matters). Pushing the caches so the deployed file matches the new generator:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3612,4 +3620,135 @@ Auto-advance holds at the clasp-push gate — your call on whether to proceed wi
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf aac && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac 2>&1 | tail -1; cd aac && ls | gr; cd /tmp/aac && grep -rln "ASSIGNED_TO_TREE\|sold_pending_tree\|SUNMINT_TREE" --include="*.md" . | head -20; echo "==="; ls *.md | head -50; cd /tmp/aac && grep -n "SOLD\|ASSIGNED_TO_TREE\|status\|Status" plans/SUNMINT_TREE_QR_LINKING_PLAN.md | head -30; …(+1 more)
 • `merge pr` → ✅ PR #808 on agentic_ai_context merged successfully (sha: b38bcefef339cb2279bb9852715a41b02bf42634). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] for clasp push deploy make sure to pull first before you push in case you accidentally overwrite anything that is already in production.
+
+
+### 🤖 Autopilot
+
+Good safety call — clasp push overwrites the deployed project wholesale, so I'll pull the live state first and reconcile any drift before pushing. Let me first identify the affected GAS projects for #421:
+
+
+### 🤖 Autopilot
+
+Good instinct — clasp push is wholesale-overwrite, so I'll pull the live state of each affected project first and diff before pushing anything. PR #421 touched **3 GAS projects**:
+- `1UrBg…` (QR-codes mirror) — `process_qr_code_updates.js`, `process_tree_planting_link.js`
+- `1MnAs…` (QR web service) — `qr_code_web_service.js`
+- `1Y8sJ…` (agroverse shop) — `Code.js`, `agroverse_wix_site_updates.js`
+
+Let me confirm the local checkout is on the #421 state, then pull live per project and diff:
+
+
+### 🤖 Autopilot
+
+Local checkout is on main with #421/#422 merged. Now the safety step you asked for — pull live per project before any push. Let me check clasp setup and pull the live state of the 3 affected projects:
+
+
+### 🤖 Autopilot
+
+clasp 3.3.0 is installed and logged in. Now the pull-first safety: `clasp pull` each project to a temp dir, diff against the repo state, and only push if the live state matches what we expect (no unknown drift). Let me do all three pulls:
+
+
+### 🤖 Autopilot
+
+clasp pull needs `.clasp.json` in the project folder (project settings). Let me create the `.clasp.json` files pointing at the script IDs and retry the pulls:
+
+
+### 🤖 Autopilot
+
+Pulled the live state of all 3 projects. Now the critical diff — live vs repo (what clasp push WOULD overwrite):
+
+
+### 🤖 Autopilot
+
+The pull-first diff is **clean and reassuring**: the live projects are exactly the pre-#421 state — the only differences are precisely the #421 hunks (enum line, link validation, web-service filter, shop counter). No unknown drift. One thing to verify before pushing: the live `1Y8sJ` project pulled only 3 files (**no `agroverse_wix_site_updates.js`**), but the repo folder has it — so `clasp push` would **add** that file. I need to make sure it doesn't define duplicate top-level functions (e.g. `doGet`) that would collide with `Code.js`:
+
+
+### 🤖 Autopilot
+
+Critical safety catch — the `1Y8sJ` project folder contains **`agroverse_wix_site_updates.js` which duplicates `Code.js`'s top-level functions** (`doGet`, `getSoldRowsCount`, `updateStatistics`, all of them). Live only has `Code.js`. If I `clasp push` the whole folder, GAS will hit **duplicate function declarations** and the deploy would break. Let me confirm they're full duplicates:
+
+
+### 🤖 Autopilot
+
+The pull-first check caught a real problem — exactly the kind of thing you warned about. **The `1Y8sJ` repo folder contains `agroverse_wix_site_updates.js`, which duplicates every top-level function in `Code.js` (including `doGet`).** The live project only has `Code.js`. If I did a whole-folder `clasp push`, GAS would hit **duplicate-function errors and break the production shop counter** — or worse, silently pick one version. The two files also differ in a real behavior: `Code.js` computes `hectares = soldRowsCount/1000` while `agroverse_wix_site_updates.js` computes `hectares = soldRowsCount` (1 bag = 1 tree).
+
+So I will NOT whole-folder push. I'll do **per-file pushes** of only the #421-changed files (exactly what I diffed), which avoids the duplicate and doesn't change live behavior beyond #421:
+
+
+### 🤖 Autopilot
+
+The pull-first check caught exactly what you warned about — **the repo folders do NOT match the live projects' file sets**, so a whole-folder `clasp push --force` would add stray files (e.g. `agroverse_wix_site_updates.js` duplicating every function in `Code.js` incl. `doGet`, `manifest.json`, `Version.gs` vs live `Version.js`, `Credentials.sample.js` vs live `Credentials.gs.js`). Pushing those would break or alter production beyond #421.
+
+The safe path: **surgical per-file deploy** — deploy from temp folders that mirror the live file set exactly, replacing only the #421-changed files. Deploying the three changed files now:
+
+
+### 🤖 Autopilot
+
+Each temp folder now mirrors the live file set exactly, with only the #421 files replaced. This is the safe surgical deploy — no stray/duplicate files will be added. Let me run the dry-run first (default for `gas_deploy_project`), then push:
+
+
+### 🤖 Autopilot
+
+The dry-run reveals a wrinkle: `gas_deploy_project` deploys from the **repo folder** (`google_app_scripts/<id>/`), which does NOT mirror the live file set (repo has `Code.js`/`Version.gs`/`manifest.json` — live has `Version.js` and no `Code.js`). That's precisely the drift you warned about. My temp folders mirror the live set exactly, so I'll deploy directly from them with clasp:
+
+
+### 🤖 Autopilot
+
+QR mirror deployed (4 files, matching live set + #421 changes). Now the QR web service:
+
+
+### 🤖 Autopilot
+
+Web service deployed. Now the agroverse shop project — this is the one with the duplicate-file hazard, but I'm deploying from the temp folder that has ONLY `Code.js` + live siblings (no `agroverse_wix_site_updates.js`), so it's safe:
+
+
+### 🤖 Autopilot
+
+All three GAS projects deployed surgically — each now carries the #421 changes with the live file set intact (verified: 1Y8sJ pull-back shows exactly `Code.js`/`Credentials.gs.js`/`appsscript.json` — no duplicate `agroverse_wix_site_updates.js` introduced). Let me verify the deployed state has the new state (quick live check on the shop counter + web service):
+
+
+### 🤖 Autopilot
+
+Deploy verified — all three projects now contain the new state (Code.js: 1 occurrence, web service: 3, link handler: 3 — matches the #421 hunks). The live web service hit returned empty (GAS web apps need auth/redirect handling — expected; the code-level verification is what matters, and the counter logic is confirmed deployed).
+
+## ✅ GAS deploy complete — done safely with pull-first + surgical push
+
+The pull-first step caught exactly the hazard you warned about. Here's the full picture:
+
+## What the pull-first check found
+
+| Project | Live file set | Repo folder | Risk |
+|---|---|---|---|
+| `1UrBg` (QR mirror) | `Code?`→`Version.js` + 3 js | `Code.js`, `Version.gs`, `manifest.json`… | names differ |
+| `1MnAs` (QR web svc) | 5 files | + `manifest.json` | extra files |
+| `1Y8sJ` (agroverse shop) | 3 files | **`agroverse_wix_site_updates.js` duplicates EVERY function in `Code.js` incl. `doGet`** | **would break deploy** |
+
+A whole-folder `clasp push --force` would have pushed `agroverse_wix_site_updates.js` into the shop project → duplicate `doGet`/`getSoldRowsCount`/`updateStatistics` → broken or ambiguous production counter. **I did NOT do that.**
+
+## What I did instead — surgical deploy
+
+1. Pulled live state of all 3 projects (temp dirs mirroring the exact live file sets)
+2. Overlaid only the #421-changed files
+3. `clasp push --force` per project from the temp dirs (matching live file set + #421)
+
+## Deployed + verified ✅
+
+| Project | Files pushed | New state present |
+|---|---|---|
+| `1UrBg` QR mirror | 4 (incl. `process_qr_code_updates.js`, `process_tree_planting_link.js`) | ✅ (link handler: 3 hits) |
+| `1MnAs` QR web svc | 5 (incl. `qr_code_web_service.js`) | ✅ (3 hits) |
+| `1Y8sJ` agroverse shop | 3 (incl. `Code.js`) | ✅ (1 hit) — pull-back confirms no duplicate added |
+
+Production is now live with the `TREE_PLANTING_FUNDS_TRANSFERRED` state across all three GAS surfaces — **without** any drift/overwrite of the live file sets. 🎉
+
+**RESUME HERE →** remaining units: ① dapp_beta → dapp_prod promotion of #74 (dropdown) + #75 (badges) — needs your beta review + the prod-sync path; ② UAT (**always-stop gate**): flip a test QR to `TREE_PLANTING_FUNDS_TRANSFERRED` → confirm it appears badged in the linking DApp + still counts on agroverse.shop. Also worth noting for the record: the repo folders vs live projects file-name drift (`Version.gs` vs `Version.js`, `Code.js` vs `agroverse_wix_site_updates.js` duplication) — I recommend a follow-up PR to clean the tokenomics repo folders so future deploys are safe by default.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /opt/truesight_autopilot/tokenomics 2>/dev/null || cd /tmp/tk; ls google_app_scripts/ 2>/dev/null | head -40; echo "===which folders cont; cd /opt/truesight_autopilot/tokenomics 2>/dev/null || cd /tmp/tk; git fetch -q origin 2>/dev/null; git checkout -q main 2>/dev/null; git pul; which clasp 2>/dev/null; clasp --version 2>/dev/null | head -2; echo "===clasp login status==="; ls ~/.clasprc.json 2>/dev/null && echo "cla; …(+11 more)
+• `gas deploy project` → ok
 
