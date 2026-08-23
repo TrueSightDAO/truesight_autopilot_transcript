@@ -3715,26 +3715,31 @@ The safe path: **surgical per-file deploy** — deploy from temp folders that mi
 ### 🤖 Autopilot
 
 Each temp folder now mirrors the live file set exactly, with only the #421 files replaced. This is the safe surgical deploy — no stray/duplicate files will be added. Let me run the dry-run first (default for `gas_deploy_project`), then push:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run reveals a wrinkle: `gas_deploy_project` deploys from the **repo folder** (`google_app_scripts/<id>/`), which does NOT mirror the live file set (repo has `Code.js`/`Version.gs`/`manifest.json` — live has `Version.js` and no `Code.js`). That's precisely the drift you warned about. My temp folders mirror the live set exactly, so I'll deploy directly from them with clasp:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 QR mirror deployed (4 files, matching live set + #421 changes). Now the QR web service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Web service deployed. Now the agroverse shop project — this is the one with the duplicate-file hazard, but I'm deploying from the temp folder that has ONLY `Code.js` + live siblings (no `agroverse_wix_site_updates.js`), so it's safe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three GAS projects deployed surgically — each now carries the #421 changes with the live file set intact (verified: 1Y8sJ pull-back shows exactly `Code.js`/`Credentials.gs.js`/`appsscript.json` — no duplicate `agroverse_wix_site_updates.js` introduced). Let me verify the deployed state has the new state (quick live check on the shop counter + web service):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3787,41 +3792,49 @@ Production is now live with the `TREE_PLANTING_FUNDS_TRANSFERRED` state across a
 ### 🤖 Autopilot
 
 Continuing auto-advance — next unit: **dapp_beta → dapp_prod promotion** (#74 dropdown + #75 badges). First let me confirm the beta deploy URL and that main carries the changes, then attempt the sync:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Beta main confirmed: CNAME `beta.dapp.truesight.me`, dropdown + badges present. Now attempt the prod sync:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sync succeeded — no conflict this time. Let me verify dapp_prod main now carries both changes and the live prod pages serve them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod main has the dropdown (1) but the badges grep shows 0 — let me verify what PR #75 actually shipped on beta vs prod (the earlier beta grep matched on `item.status`, not necessarily the literal state string):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now it's clear: the badge renders **`item.status`** dynamically (`(item.status && item.status !== 'SOLD') ? ' · [' + item.status + ']' : ''`) — the literal state string never appears in the HTML source, which is why the grep is 0 on both beta and prod. The badge logic IS present (line 316 on beta; the earlier `grep -c "TREE_PLANTING_FUNDS_TRANSFERRED\|item.status"` returned 1 from the `item.status` match). Let me confirm the badge line made it into prod and check the live prod page fetch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod **main has everything** (badge logic line 316 ✅, dropdown ✅), but the **live pages still serve old content** (grep 0) — this is GitHub Pages deployment lag again (the sync merge just landed; Pages needs a few minutes to rebuild). Repo state is the ground truth here and it's correct. Let me set a watcher to confirm the live pages flip, then report:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Watcher can't run here (topic context). I'll verify directly with a brief wait-and-retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Command timed out (the sleep + two curls exceeded 60s). Let me just re-check the live pages directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3885,41 +3898,49 @@ go for UAT on the FounderHaus tree planting (thread 12741) — proceed with flip
 ### 🤖 Autopilot
 
 Go received — running UAT end-to-end, then the cleanup PR. Let me start by finding a candidate QR from the live linking queue, confirming the sheet's status column, and inspecting the repo folders for the cleanup:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT first. Let me pick a test candidate and inspect its full record — `2024OSCAR_CC_20260620_1` is a SOLD row in the linking queue:
+[2 tool result(s) compacted: lookup_qr_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT candidate confirmed: `2024OSCAR_CC_20260620_1` — real SOLD cacao bag (Ceremonial Cacao, Kirsten/AGL4). Now let me find its row in the Agroverse QR sheet and confirm the status column, before flipping it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `agroverse_qr_code_manager` SA key exists. Let me locate the exact row of `2024OSCAR_CC_20260620_1` in the QR codes sheet (I'll use the same gspread path I used for the earlier writes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Minor API version issue (rows is a method call). Fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tabs list truncated before the QR tab — let me see the rest and find the QR codes tab:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — tab `Agroverse QR codes` (2006 rows × 29 cols). Let me locate the exact row of `2024OSCAR_CC_20260620_1` and its current status + headers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 1572 confirmed: `2024OSCAR_CC_20260620_1` — SOLD, owner `ewong@gogreatop.com`, no tree planted yet. This is the sanctioned UAT candidate (real sold bag, clean to restore after). Executing the flip — col 4 (status) → `TREE_PLANTING_FUNDS_TRANSFERRED`, preserving everything else:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3929,11 +3950,13 @@ Flip executed — row 1572 status is now `TREE_PLANTING_FUNDS_TRANSFERRED` (emai
 1. **Edgar lookup** — should show the new status
 2. **agroverse.shop count** — should still count it as tree-financed
 3. **Linking queue** — needs the cron to rebuild `sold_pending_tree.json`; let me run the generator now to avoid waiting 30 min
+[2 tool result(s) compacted: lookup_qr_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Edgar confirms the new state live** ✅. The cache generator needs credentials env — let me check the cron setup and run it properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4042,4 +4065,67 @@ The **regenerated `sold_pending_tree.json` still shows our QR as `SOLD`** even t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×25 → echo "=== candidate from sold_pending_tree.json ==="; curl -s --max-time 25 "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/m; echo "=== tokenomics repo folders (cleanup targets) ==="; cd /opt/truesight_autopilot/tokenomics 2>/dev/null || cd /tmp/tk; for d in google_; cd /tmp/la_refresh 2>/dev/null || cd /tmp/la3 2>/dev/null || cd /tmp; echo "=== find the CC_1 record in lineage-assets ==="; curl -s --max-t; …(+21 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] which URL should I be looking at for the UAT confirm?
+
+
+### 🤖 Autopilot
+
+The primary UAT confirmation URLs — what to look at and what a PASS looks like:
+
+## 1. The linking DApp queue (the badge) — **the main one**
+**https://dapp.truesight.me/link_tree_planting.html**
+
+- This is what we're ultimately testing. The candidate list should include `2024OSCAR_CC_20260620_1` with a **`[TREE_PLANTING_FUNDS_TRANSFERRED]` badge** after the QR id (vs plain for SOLD rows).
+- ⚠️ This page reads the cache (URL #2), so it only updates after the cron regenerates it.
+
+## 2. The underlying cache it reads (source of truth for #1)
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/sold_pending_tree.json**
+
+- Search for `CC_20260620_1` → its `"status"` should say `TREE_PLANTING_FUNDS_TRANSFERRED` (currently still shows `SOLD` — the block we're chasing).
+
+## 3. The index it's built from
+**https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index.json**
+
+- Search for `CC_20260620_1` → `"status": "TREE_PLANTING_FUNDS_TRANSFERRED"` (pushed, but raw CDN may be lagging).
+
+## 4. Edgar live lookup (already passing)
+**https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CC_20260620_1**
+
+- Shows `qr_status: TREE_PLANTING_FUNDS_TRANSFERRED` ✅ (reads the sheet live — this is the ground truth that the state exists).
+
+## 5. agroverse.shop counter (must NOT drop)
+**https://agroverse.shop/** — "Trees planted" counter should still show ~1000+ (unchanged from before the flip).
+
+Let me quickly check the current live state of the two caches so you know exactly where things stand right now:
+
+
+### 🤖 Autopilot
+
+**The mystery is solved** — and it's exactly as suspected:
+
+| Surface | Status for `CC_20260620_1` |
+|---|---|
+| GitHub API `qrs_index.json` (repo truth) | ✅ `TREE_PLANTING_FUNDS_TRANSFERRED` |
+| `raw.githubusercontent.com` `qrs_index.json` | ⏳ still old (CDN lag) |
+| `sold_pending_tree.json` (regenerated from raw) | ⏳ `SOLD` (built from the stale raw copy) |
+
+So **the repo is correct** — the cache generator reads `qrs_index.json` via `raw.githubusercontent.com`, and the raw CDN hasn't flipped to the new commit yet (GitHub raw caching can lag a few minutes after a push). The moment raw serves the new index, the next generator run produces the correct `sold_pending_tree.json`.
+
+**So the URLs to watch (in order):**
+
+1. **https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/qrs_index.json** — when this shows `"status": "TREE_PLANTING_FUNDS_TRANSFERRED"` for `CC_20260620_1`, the gate is open
+2. Then re-run the generator (or wait ≤30 min for cron) → **https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/sold_pending_tree.json** should show the new status
+3. Then **https://dapp.truesight.me/link_tree_planting.html** shows the `[TREE_PLANTING_FUNDS_TRANSFERRED]` badge — **final UAT PASS**
+4. Edgar check (already passing): **https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CC_20260620_1**
+5. agroverse.shop counter (must not drop): **https://agroverse.shop/**
+
+**RESUME HERE →** once raw qrs_index flips (1–5 min), re-run `sync_pending_caches.py --push`, confirm `sold_pending_tree.json` + the DApp badge show the new state, verify the shop count didn't drop, then **restore the test QR to SOLD** (sheet flip + per-QR/index revert) and open the tokenomics folder-cleanup PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== sold_pending_tree.json — our QR status now ==="; curl -s --max-time 25 "https://raw.githubusercontent.com/TrueSightDAO/lineage-ass
 
