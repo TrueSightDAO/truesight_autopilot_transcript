@@ -1821,6 +1821,7 @@ PR is up. Let me verify the beta page renders correctly (manifest fetch + landin
 ### 🤖 Autopilot
 
 The logo URL is live (200, 84KB PNG). The beta 404 is expected — the beta site serves `main`, and the PR isn't merged yet. Per your authorization on this plan (program page + FounderHaus logo), I'll merge the PR now so it deploys to beta for your review:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1870,6 +1871,7 @@ The logo URL is live (200, 84KB PNG). The beta 404 is expected — the beta site
 ### 🤖 Autopilot
 
 Good — tie it into the SunMint initiative explicitly. Let me pull the SunMint framing from context and check the current merged state of the page files before editing.
+[3 tool result(s) compacted: search_context, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2002,4 +2004,67 @@ The FounderHaus Farm program page + SunMint branding are **live on beta** (`beta
 **RESUME HERE →** after prod is reconciled, re-run `sync_beta_to_prod(truesight_me_prod)` and verify `truesight.me/programs.html` shows the FounderHaus Farm card + SunMint branding. Still pending: Butterfly Effect logo fix (needs the logo file from you).
 
 Which option do you want?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] I think on the program page for founderHaus Farm edition we should have relevant details we already have in the PDF. I will resolve the truesight_prod
+
+
+### 🤖 Autopilot
+
+Good call — let me see what the current FounderHaus Farm landing page already has, so I add the PDF's details without duplicating.
+
+
+### 🤖 Autopilot
+
+The landing page is manifest-driven — the description renders from `description_md`. The PDF's extra details (pricing table, pledge economics, how-it-works, group photo, PDF link) aren't on the page yet. Let me check how `program-shell.js` renders the description so I add details correctly.
+
+
+### 🤖 Autopilot
+
+The landing page is manifest-driven and the renderer supports headings/lists/links/paragraphs but **not images or tables** — so I'll (a) expand the manifest `description_md` with the PDF's economics + how-it-works, (b) add the group photo + embedded QR image as static media on the page, and (c) host the PDF and link it. Let me find the local PDF and the group photo first.
+
+
+### 🤖 Autopilot
+
+The landing page is manifest-driven and renders markdown (headings/lists/links — no tables/images), so I'll: (1) host the PDF + assets in `.github/assets`, (2) expand the manifest with the PDF's economics/how-it-works, (3) add the group photo + embedded QR + PDF link as static media on the landing page. Uploading the PDF first:
+
+
+### 🤖 Autopilot
+
+PDF hosted. Let me extract its text so the landing page carries the same details, and confirm the group photo URL.
+
+
+### 🤖 Autopilot
+
+All assets live (PDF 200, group photo 200). Now I'll enrich the landing page: expand the manifest with the PDF's full economics + how-it-works, and add the group photo + sample QR + PDF download link as static media on the page.
+
+
+### 🤖 Autopilot
+
+✅ **PR #302 opened — the FounderHaus Farm landing page now carries the full PDF detail.**
+
+## What's in PR #302 (https://github.com/TrueSightDAO/truesight_me_beta/pull/302)
+
+| Piece | Where |
+|---|---|
+| **Terms table** (bag, $5 USD/bag, $500 batch, batch ID, $1.50 pledge, 100 trees, AGL4, scan links) | `manifest.json` description |
+| **How it works** (4 steps: consignment → pledge → fulfilment → scan) | `manifest.json` description |
+| **Already underway** (21 Aug planting crew) | `manifest.json` description |
+| **Group photo** + caption (the founding grove) | `index.html` hero media |
+| **Sample QR image** + live scan link + Edgar check | `index.html` QR row |
+| **"Download the collaboration brief (PDF)"** button → hosted at `.github/assets/FounderHaus_Farm_Edition.pdf` | `index.html` |
+| og:image → the group photo (social share shows the grove) | `index.html` meta |
+
+## Also done this turn
+- **PDF v6 hosted** → `TrueSightDAO/.github/assets/FounderHaus_Farm_Edition.pdf` (verified 200 OK) — stable link for the page and for sharing with Paloma
+
+**Note:** the renderer (program-shell.js) supports headings/lists/links but not tables/images, so the economics render as bullet/numbered lists and the media are static HTML — looks clean, keeps the manifest-driven pattern.
+
+**RESUME HERE →** merge PR #302 (say the word), verify on beta, then when you've reconciled `truesight_me_prod`, re-run `sync_beta_to_prod` so all of this (program page + SunMint branding + landing details) reaches production. Still open: Butterfly Effect logo fix (needs the logo file from you).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -lat /tmp/*.pdf /tmp/*FounderHaus* /tmp/*founderhaus* /tmp/ct_qr_1.png 2>/dev/null | head -20; echo "---"; ls -lat /tmp/tg_attachments/ 2; curl -s -o /dev/null -w "%{http_code}" "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/20260822_130000_FOUNDERHAUS_GROUP
 
