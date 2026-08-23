@@ -4555,11 +4555,13 @@ This is the complete briefing for Elizabeth — ready to send.
 ### 🤖 Autopilot
 
 Uploading the PDF to the repo and logging the 1-hour contribution.
+[2 tool result(s) compacted: upload_local_file_to_github, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF uploaded fine. The `create_dao_submission` tool keeps failing on the `--type` arg — let me use `submit_contribution` instead (the PDF is already on GitHub, so I'll reference the URL in the description, which achieves the same documentation effect).
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4722,4 +4724,61 @@ Freight-only PDF sent ✅ (message 13677) — **"Omega Services — Freight-Only
 | **Total USD (excl. BRL + delivery)** | ≈ **$ 2,230.08** |
 
 Clear scope note at the top stating the payload value is not part of the quotation. Ready to send to Omega/Graziela or keep for your records.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] For each numeric line item indicate clearly what currency it is quoted in. And then finalized is everything converted to USD
+
+
+### 🤖 Autopilot
+
+Good point — adding currency labels per line and a final all-USD conversion. Let me regenerate.
+
+
+### 🤖 Autopilot
+
+Wrong path — the generator output went to a different temp file. Let me find the actual path.
+
+
+### 🤖 Autopilot
+
+The latest PDF (17:50, 6275 bytes — matches this generation) is `/tmp/autopilot_pdf_7fk09ion.pdf`. Sending it.
+
+
+### 🤖 Autopilot
+
+PDF sent ✅ (message 13681) — **"Omega Services — Freight-Only Costs (USD Final)"**
+
+**Every line item now labeled with its currency:**
+
+**A. Brazil side (BRL):**
+- A1 Road transport — **BRL** 6,615.00
+- A2 Ad-valorem 0.15% — **BRL** ~9.92
+- A3 Pallets — **BRL** 0.00 (on hand)
+- A4 Fumigation — **BRL** 500.00
+- **A subtotal — BRL ≈ 7,124.92**
+
+**B. Air freight & export (USD):**
+- B1 Export docs — **USD** 95.00
+- B2 Air freight — **USD** ≈1,164.00
+- B3 Brazil airport charges — **USD** 250.00
+- B4 US terminal — **USD** 212.50
+- **B subtotal — USD ≈ 1,721.50**
+
+**C. US import & delivery (USD):**
+- C1–C6 — **USD** 125 / 150 / 100 / 33.58 / 100 / TBD
+- **C subtotal — USD ≈ 508.58 + delivery**
+
+**💵 Final total, everything in USD (FX 5.40 assumed):**
+- Brazil side: R$ 7,124.92 → **≈ $1,319.43**
+- Air freight & export: **$1,721.50**
+- US import: **$508.58**
+- **GRAND TOTAL ≈ US$ 3,549.51** (excluding payload value — internal transfer, pallets, final-mile delivery)
+
+Explicitly notes FX assumption (5.40) + C6/delivery to be confirmed at settlement.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
 
