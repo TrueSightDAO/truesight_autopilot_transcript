@@ -789,6 +789,7 @@ Important correction surfacing — let me check what the actual cacao-tea batch 
 ### 🤖 Autopilot
 
 The batch codes reference in ADVISORY_SNAPSHOT — let me check what's actually recorded there about the cacao tea batch for FounderHaus.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -796,21 +797,30 @@ The batch codes reference in ADVISORY_SNAPSHOT — let me check what's actually 
 Excellent — that's the right instinct, and I just verified the batch is real: **`2024OSCAR_CT_20260820_1..100`** (rows 1678–1777, MINTED; `_3` VOID → replaced by `_101` — from ADVISORY_SNAPSHOT; the prefix lookup tool only searches previously-looked-up codes, which is why it came back empty). SKU `oscar-bahia-cacao-tea-50g`, origin Oscar Farm / Bahia / 2024.
 
 So the positioning is clear: this batch becomes the **FounderHaus Farm Edition** — the cacao is single-origin from Oscar's farm (Bahia), but the *trees* are the first 100 trees of the FounderHaus farm you're setting up. The farm literally begins with these trees. Regenerating the PDF with that framing:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v3 generated. Sending it to you:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Telegram rate-limited the send — retrying:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still rate-limited. Let me wait and retry once more.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -846,11 +856,13 @@ This is the strongest version yet — instead of "we finance trees somewhere," i
 ### 🤖 Autopilot
 
 Got it — dropping the pricing-rationale section, just clearly stating **$5 USD per bag for this 100-bag batch**. Regenerating:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v4 generated. Sending it:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -878,11 +890,13 @@ Want me to save this version to a repo folder for versioning, or draft the Whats
 ### 🤖 Autopilot
 
 Interesting design question — let me look at how the current 100 bags reference tree currency and how currencies are defined, before I give you a recommendation.
+[3 tool result(s) compacted: read_context_file, search_context, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual cacao tea batch rows (1678–1778) to see what Currency they currently carry:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -928,26 +942,31 @@ Yeah, go ahead and execute it. Once you're done, surface one of the QR codes so 
 ### 🤖 Autopilot
 
 On it — executing the pledge currency + QR update, then surfacing a code for UAT. First, let me check the handoff registry (per the go-signal note) and locate the sheet write path I used earlier.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff manifest shows this topic isn't a parked plan — this is a live task with your explicit "go." Executing now: (1) create the FounderHaus pledge currency, (2) re-point the 101 QR rows, (3) surface a QR for UAT. Let me first confirm the QR encoding conventions and locate the batch's QR images.
+[3 tool result(s) compacted: read_context_file, ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me locate the QR PNGs and the batch generation doc locally.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CT batch PNGs aren't in the local generator folder. Let me read the batch generation doc and find where the compiled images actually live.
+[2 tool result(s) compacted: read_local_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the QR record structure and find where the QR images/records actually live (the `/tmp/seed_run2/lineage-assets/qrs/` JSONs look like the per-QR records).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -955,36 +974,43 @@ Let me examine the QR record structure and find where the QR images/records actu
 The QR records live in `lineage-assets` (seeded from the sheet) and images at `lineage-assets/pngs/`. One important catch from the batch-generation doc: **column E (farm name) prints on the label as cacao provenance and must NOT be substituted** — so the FounderHaus Farm linkage belongs in the *Currencies* row's farm-name column (where the pledge's planting farm is recorded), not in the QR's E. I'll update column I (Currency) as approved and keep provenance intact, and explain the deviation.
 
 Let me find the sheet write mechanism:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact sheet-write mechanism I used earlier for the contributor insert (cypher_defense SA) and check the tools dir:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me inspect the google_sheets tool to see if it supports writes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm the Currencies append point and locate a QR PNG for the UAT surface:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Before writing, one important design correction from the batch-generation doc: **column E (farm name) prints on the label as the cacao's origin and must NOT be substituted** — so I will NOT change col E to "FounderHaus Farm" (that would mislabel the tea's Bahia provenance). Instead, the **FounderHaus Farm linkage lives in the new Currencies row** (col G = farm name), and the QR's col I (Currency) gets re-pointed to the pledge — which is the semantic change you approved. Let me verify the exact row layout first:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Rows **1678–1778** = the CT batch (101 rows: `_1`…`_100` + `_101` replacement; `_3` at row 1680 is VOID). Row 134 of Currencies is free for the new currency. Now let me verify the write path works (dry-run read + plan) before touching anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The write path is confirmed working. Now let me execute: (1) create the FounderHaus pledge currency row, (2) re-point col I for the 101 CT rows. I'll use the cacao-tea currency string as the model and mirror the BEC/SunMint pledge precedent:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1091,4 +1117,29 @@ Converging here — I'm at the per-turn tool limit, so here's a clean status + r
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×28 → ls /opt/truesight_autopilot/scripts 2>/dev/null | head -50; echo "---"; ls /opt/truesight_autopilot/config/google/ 2>/dev/null; echo "---"; ; ls -la /opt/truesight_autopilot/tokenomics/python_scripts/agroverse_qr_code_generator/package_qr_codes/ 2>/dev/null | grep -i "CT_20260820\|; cd /opt/truesight_autopilot/tokenomics/python_scripts/agroverse_qr_code_generator/package_qr_codes/ 2>/dev/null && ls | grep -i "OSCAR_CT" |; …(+23 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] So everything downstream will work properly right after it is change [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Short answer: **mostly yes — the source of truth is updated and everything that reads it live will work properly. But there's exactly one downstream surface that does NOT auto-update, and I want to be straight with you about it.**
+
+Here's the honest breakdown:
+
+**✅ Works right now (reads the sheet live):**
+- **Edgar lookups** — verified: `2024OSCAR_CT_20260820_1` already resolves to `FounderHaus Tree Planting Pledge - QR Code`, MINTED, manager Paloma
+- **Sales** — when a bag sells, the sale books against the QR's currency, and Edgar reads the sheet live, so it'll book the pledge at $1.50/tree → earmarked to FounderHaus Farm
+- **Tree-pledge fulfillment** — when the trees get planted, the pledge → planted flow keys off the currency, so it routes to FounderHaus Farm
+- **The 30-min sync cron** (`sold_pending_tree.json`) — picks up sales automatically every 30 minutes
+
+**⚠️ The one thing that does NOT auto-update:**
+- **The public QR landing page** (`truesight.me/qr/?id=...`) — it renders from a *cached* copy in `lineage-assets/qrs/*.json`, which still shows the old product SKU. The sheet doesn't push to it automatically — it needs a one-time re-seed + push to GitHub. Until I do that, someone scanning a bag's QR would see the old "Cacao Tea 50g" label instead of the FounderHaus pledge.
+
+So: **the ledger, the money, the trees — all correct and live. The visible QR page label — stale, needs my cache refresh.**
+
+Want me to finish that re-seed + push now so the public page matches? That's the last piece of the end-to-end UAT.
 
