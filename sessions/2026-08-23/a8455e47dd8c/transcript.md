@@ -4326,6 +4326,16 @@ Good — adding a "Worst Case Scenario" section to the China-lane PDF, framed ar
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done ✅ (message 13355) — now **3 pages** with the worst-case section added.
 
 **New section: "Worst Case Scenario — If Black King's Infrastructure Cannot Be Restored"**
@@ -4356,6 +4366,7 @@ Ready for Elizabeth.
 ### 🤖 Autopilot
 
 Adding a detailed Black King infrastructure section (issues + remedies) to the briefing.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4491,4 +4502,45 @@ This is the complete briefing for Elizabeth — ready to send.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Use this as an attachment and file contribution for 1 hour working on this
+
+
+### 🤖 Autopilot
+
+Uploading the PDF to the repo and logging the 1-hour contribution.
+
+
+### 🤖 Autopilot
+
+The PDF uploaded fine. The `create_dao_submission` tool keeps failing on the `--type` arg — let me use `submit_contribution` instead (the PDF is already on GitHub, so I'll reference the URL in the description, which achieves the same documentation effect).
+
+
+### 🤖 Autopilot
+
+Done ✅
+
+**1. PDF attached to the repo:**
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/exports/2026-08-23_brazil_china_lane_oscar_beans_briefing_elizabeth.pdf
+
+**2. Contribution logged (60 min):**
+- **Contributor:** Gary Teh · **Type:** Time (Minutes) · **Amount:** 60
+- **Description:** Full Brazil→China lane briefing for Elizabeth Wong — Black King issues (INAPTA, expired cert, missing CNAE, debts, RADAR misconception, accounting, legal-rep), 8 remedies, Oscar's cooperative status, China-lane bypass option, worst-case scenario (stranded stock, CEPOTX/tree-planting off, US/EU wind-down, China direct with Coopercabruca, DAO not involved)
+- **PDF linked** in the submission (uploaded to `agentic_ai_context/exports/2026-08-23_brazil_china_lane_oscar_beans_briefing_elizabeth.pdf`, sha 33509cd)
+
+Note: `create_dao_submission` had the recurring `--type` arg bug, so I used `submit_contribution` (with the PDF URL referenced in the description — same documentation effect since the file is on GitHub).
+
+———
+**✅ Done this turn — actions taken:**
+• `upload local file to github` → File uploaded to agentic_ai_context/exports/2026-08-23_brazil_china_lane_oscar_beans_briefing_elizabeth.pdf on branch 'main' (sha 33509cd)
+• `create dao submission` ×2 → Submission failed (--type arg bug)
+• `submit contribution` → Contribution submitted successfully
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
+• `submit contribution` → Contribution submitted successfully.
 
