@@ -327,6 +327,7 @@ Good question — this is the sharper version: has anyone closed the **full loop
 ### 🤖 Autopilot
 
 Let me verify the current status of the Manta (the closest thing to an at-sea conversion plant) — its build has slipped repeatedly, so I want to be accurate about whether it exists yet.
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -374,11 +375,13 @@ Want me to dig into the **economics** (cost per ton harvested vs. value of a rec
 ### 🤖 Autopilot
 
 This is the fourth identical trigger. Let me do one final freshness check against the live manifest and handoff inbox before responding — in case a plan row for this thread appeared since my last check.
+[2 tool result(s) compacted: read_repo_file, check_handoffs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The state is unchanged after a fourth fresh check. Let me pin the decision so it survives context trims.
+[1 tool result(s) compacted: pin_note — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -594,4 +597,47 @@ Want me to tweak anything — different image style (blueprint/technical vs phot
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import fpdf; print('fpdf', fpdf.__version__)" 2>&1; p; cat > /tmp/make_barge_pdf.py << 'EOF' #!/usr/bin/env python3 """Build the floating barge concept PDF with Gemini-generated header image."""
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11973] Also mention that beneath the floating plastic barge we have seawood cultivation, oyster cultivation and fish cultivation much like the Kelong concept in Malaysia and Singapore... Include an image for that too.
+
+
+### 🤖 Autopilot
+
+Good addition — that's exactly the integrated multi-trophic aquaculture (IMTA) layer, and the kelong reference is apt. Let me generate the underwater image, then rebuild the PDF with a new section.
+
+
+### 🤖 Autopilot
+
+Underwater image done. Now rebuilding the PDF with the new kelong/aquaculture section and image.
+
+
+### 🤖 Autopilot
+
+PDF rebuilt with the aquaculture section. Sending the updated version.
+
+
+### 🤖 Autopilot
+
+Updated PDF sent ✅ (message 13824).
+
+**What's new in v2:**
+- **New title** — "Food, Water & Ocean Farming at Sea" (covers both surface + beneath)
+- **New page 2: "Beneath the barge — kelong-style ocean farming"** with a **Gemini-generated underwater image** (sunbeams through the hull, seaweed ropes hanging, oyster baskets, fish cage)
+- **Three cultivation layers** described:
+  - **Seaweed** — hangs from the hull; zero input, absorbs nutrients, carbon sink, sells as food/feed/bioplastic feedstock
+  - **Oysters** — mesh baskets filter plankton, naturally cleaning the water; zero-feed protein
+  - **Fish** — submerged net cages; fish waste fertilizes the seaweed & oysters, which clean the water for the fish → closed multi-trophic loop
+- **Expanded "Key numbers" table** — now one row per layer (surface hydroponics, hull, seaweed, oysters, fish) with what each produces + its advantage
+- **Ark-insurance section updated** — now includes protein from the kelong layer, and the "one mooring, four harvests" line
+
+**The kelong framing is genuinely strong:** it converts the barge from a single-purpose platform into a full-ocean farm — the water column beneath becomes productive real estate with zero additional energy input, and the ecosystem gets *richer*, not poorer.
+
+Want any further tweaks — e.g. a cost/build-order section, a specific pilot location (Malaysia/Singapore waters given the kelong reference?), or a version aimed at investors?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat > /tmp/make_barge_pdf2.py << 'EOF' #!/usr/bin/env python3 """Build the floating barge concept PDF v2 — with kelong-style aquaculture sec
 
