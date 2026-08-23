@@ -10,86 +10,6 @@
 
 ### 🤖 Autopilot
 
-**Now it's crystal clear:**
-
-- **Prod main (repo) = FIXED**: 24,777 B, line 287 = `escapeHtml(qrId)` (no `manifest.qr_id`), the fix is committed (commit `a9cc3e7`)
-- **Live truesight.me = STILL BUGGY**: 24,840 B, line 287 = `escapeHtml(manifest.qr_id)` — **GitHub Pages hasn't rebuilt yet** (the earlier `escapeHtml(qrId)` ×1 grep on live was matching a different line — the `withQrParam` helper, not line 287)
-
-So the fix is **committed to prod main but not yet live** — Pages rebuild lag (typically 1–5 min, sometimes longer). The Node render **proved the live page is still broken right now** — this is exactly why the §11 methodology matters: curl/grep said "fix present" but executing the JS proved the live page still throws.
-
-Let me register a watcher on the live page to be told when Pages serves the fixed version (the authoritative check — execute the live bytes and confirm no ReferenceError):
-[1 tool result(s) compacted: watch_url — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Watcher unavailable outside a Telegram topic. Let me poll the live page for the fix with a bounded loop (checking the actual served bytes for line 287 = `qrId`):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**FIXED LIVE!** Poll 1 already shows: size 24,830 B, `qrId` fix present (×1), `manifest.qr_id` bug absent (×0). GitHub Pages rebuilt. Now the definitive §11 verification — **execute the live page's JS** and confirm the full render with no ReferenceError:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**✅ FULLY VERIFIED LIVE — the fix is deployed and the page renders correctly.**
-
-## The ReferenceError outage — FIXED, deployed, PROVEN live
-
-**Final state:**
-- **Prod main (repo)**: fixed (commit `a9cc3e7`, 24,777 B, line 287 = `escapeHtml(qrId)`)
-- **Live truesight.me**: **fixed** (24,830 B, `qrId` at line 287, zero `manifest.qr_id` — Pages rebuilt)
-- **Executed the live page's JS** (Node VM + real manifest) → **full render: QR image ✅, tree photo `<img>` ✅, coordinates ✅, sig ref ✅, NO ReferenceError** (2,890-char render)
-
-**What happened (the full story):**
-1. Governor diagnosed the bug: `renderLineageTree(lineage)` referenced `manifest.qr_id` — `manifest` out of scope (only `lineage` is the parameter). Affects **every tree-type QR with a seedling photo**, live on production. My #296 introduced it.
-2. I'd already fixed it in **#298** (merged last turn, `escapeHtml(qrId)` — `qrId` is the IIFE-scoped var, guaranteed in scope) and proven the fix in a Node VM render harness.
-3. This turn: **promoted to prod** (single-file Contents API write, commit `a9cc3e7`, CNAME untouched) → **verified prod main** by executing its JS (renders fully, no exception) → **polled the live page** → Pages rebuilt → **executed the LIVE page's JS** → full render confirmed.
-
-**The §11 lesson in action:** my curl/grep checks on the live page *initially* suggested "fix present" (the `escapeHtml(qrId)` grep matched a different line, and byte-count looked plausible) — but **executing the JS caught the truth**: the live page was still serving the buggy build until Pages rebuilt. The Node VM harness (the §11 methodology: actually execute, don't just curl) is what confirmed both the bug and the fix. This is now the standard for verifying this page.
-
-## RESUME HERE →
-1. **Paloma onboarding email re-send** (now unblocked — the page is confirmed fixed and renders): merge tokenomics **#410** (processBatch `&`-vs-`?` link fix — prevents a malformed `?id=X?qr_code=Y` URL) → deploy the 1MnAsI project to GAS → clear col M (row 1781) → invoke processBatch → **read the SENT email and verify the body has a real clickable `<a href>` link**
-2. **Trigger diagnosis** (governor's original PART 4/4 ask): why did processBatch fire at 09:42Z? (UI-installed trigger vs manual — `processBatch` isn't URL-routable and no `newTrigger` is in source)
-3. Final report to the governor
-
-**✅ Actions this turn:** promoted the fix to prod main (commit `a9cc3e7`), verified prod main by JS execution (full render, no ReferenceError), polled the live page through the Pages rebuild, **executed the live page's JS — full render confirmed (QR image, tree photo, coords, sig ref, no exception)**. No PRs opened/merged this turn.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → prod main check (was buggy — promotion hadn't landed); fetched beta main (24,777 B fixed) → promoted via Contents API (commit a9cc3e7); verified prod main by Node VM render (2890 chars, QR image + photo + coords + sig ref, no ReferenceError); polled live page → Pages rebuilt (24830 B, qrId fix, 0 manifest.qr_id); **executed live page JS → full render, no ReferenceError**
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '"'"'"' '); echo "=== beta main post-#298 ==="; …(+1 more)
-
-**URGENT-adjacent finding:** the §11 rule just saved us — the live page initially *looked* fixed via grep but was still serving the buggy build until Pages rebuilt. The Node VM execution is now the verification standard for this page.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×11 → cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed '; cd /tmp && grep -m1 '^TRUESIGHT_DAO_AUTOPILOT' /opt/truesight_autopilot/.env | sed 's/.*=//' | tr -d '"'"'"' ' > /tmp/pat.txt && wc -c /tmp/; cd /tmp && source /opt/truesight_autopilot/.env 2>/dev/null; PAT=$(cat /tmp/pat.txt); echo "=== prod main verify (authoritative API) ===" &&; …(+7 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-New photo request from the governor: replace the tree photo with a better one — the full FounderHaus group (5 people incl. Paloma and the governor) with muddy hands around the newly planted Bougainvillea, right after planting it. Staged on your box at /home/ubuntu/staged_files/founderhaus_group_planting.jpg (521KB JPEG, 900x1600).
-
-Please:
-1. Upload it to TrueSightDAO/sunmint images/ folder (same convention as the existing photo) via your normal PR flow.
-2. Update SunMint row 16 "Photo of Tree Planted" and QR row 1781 "Tree Seedling Photo URL" to the new raw.githubusercontent.com URL.
-3. Re-run seed_from_sheet.py to update the manifest's seedling_photo_url.
-4. Verify the live page shows the NEW photo — actually load it (per the §11 lesson, not just curl) and confirm.
-
-This is independent of the manifest-scope-bug fix — please do this after that fix is confirmed working, so we don't conflate two changes.
-
-
-### 🤖 Autopilot
-
 Executing the photo replacement. First: verify the staged file, check the sunmint repo's images folder convention, and read the current photo URLs in the sheet + manifest:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -3838,11 +3758,13 @@ The CLI flag is `--sunmint-submission-message-id` (not `--sunmint-submission-id`
 ### 🤖 Autopilot
 
 **Step 4 done — LINK submitted: HTTP 200, signature verified.** Now the GAS processor needs to apply the side-effects (it polls the Telegram Chat Logs on its trigger — last run took ~40s). Let me wait, then verify step 5: QR → ASSIGNED_TO_TREE, SunMint → LINKED, tracking, ledger pair:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Timed out (the 60s sleep exceeded the ssh_run default). Let me re-run the verification without the sleep (the processor has had time by now):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3855,6 +3777,7 @@ Timed out (the 60s sleep exceeded the ssh_run default). Let me re-run the verifi
 - ⏳ **M (onboarding) still empty** — processBatch hasn't run yet (it fires on its own schedule)
 
 Now let me verify the **tree-planted email actually delivered** to garyjob@gmail.com (check admin@ SENT) + the **AGL4 ledger pair**:
+[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3865,21 +3788,25 @@ Now let me verify the **tree-planted email actually delivered** to garyjob@gmail
 - ⏳ **Onboarding email still pending** (M empty) — processBatch hasn't run since SOLD (23:44Z). It fired at 23:42:51Z for run #2's row; it'll pick up row 1783 on its next run (hourly trigger from #417, or Gary's manual run). The tree-planted email — **the one that was broken for days** — fired and delivered automatically in the LINK flow.
 
 Let me verify the onboarding email once processBatch runs — first check the M column again + whether the processBatch trigger has picked it up (it may need a few more minutes on the hourly schedule):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 M still empty — processBatch hasn't run since row 1783 went SOLD. In run #2 it fired at 23:42:51Z (right after Gary's manual run or the trigger). Since the governor wants a **clean, complete confirmation with no follow-up nudging**, let me check whether I can fire processBatch — or check if the hourly trigger from #417 is active (it self-installs on processBatch's next run — which hasn't happened since #417 deployed at ~23:00Z... actually the 23:42:51Z run WAS after #417's deploy, so the trigger may now be installed). Let me check the current time + whether the onboarding email arrives within the next few minutes (hourly trigger), and meanwhile proceed with step 6 (seed + render verification for the new QR):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Step 6 (manifest) done** — seed generated `TEST_AGL4_20260822_3.json` (1350 B, ASSIGNED_TO_TREE, 44.6/−123.3). Pushing it to lineage-assets main (Contents API, single file — NOT the other modified files):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bash quoting broke (the grep/sed chain inside `$(...)` with nested quotes). Let me use a clean two-step (write pat.txt first, then run Python separately):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4045,4 +3972,62 @@ I have the exact table format. Appending run #3's row via a PR to the plan doc (
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → date -u; echo "--- M stamp ---"; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') w; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/plans/SUNMINT_TREE_QR_LINKING_PLAN.md" -o plan_ru
 • `merge pr` → ✅ PR #795 on agentic_ai_context merged successfully (sha: 128ce2b484e63bfcfec25c6ab0709f64f319a136). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+[AUTO-ADVANCE] Execute only the next unit (note above for the full rationale.) — the one the RESUME HERE marker in plans/SUNMINT_TREE_QR_LINKING_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Executing the next unit per the plan pointer. My last report flagged the one remaining concrete item: **LINK-flow hardening** (the original `sendTreePlantedNotificationEmail_` call site still swallows MailApp errors silently — the governor endorsed fixing it "so future real LINK events don't silently fail to notify owners"). Let me confirm the plan's marker + read the current function:
+
+
+### 🤖 Autopilot
+
+The hardening target is confirmed: line 595 (LINK call site) → line 291 catch swallows the error, leaving column AB blank — ambiguous (never-attempted vs failed). Let me read the LINK call-site context (around 580–620) to design the visible-failure hardening that doesn't roll back committed writes:
+
+
+### 🤖 Autopilot
+
+The hardening design is clear: make `sendTreePlantedNotificationEmail_` **return a success boolean** (keeping best-effort semantics — no rethrow, committed writes untouched) and have the LINK call site **record the mail failure visibly in the tracking outcome** (`LINKED / Email notification failed — see log` instead of a silent `LINKED / OK`). This is the exact hardening the governor flagged ("so future real LINK events don't silently fail to notify owners"). Building the PR with precise edits hunks:
+
+
+### 🤖 Autopilot
+
+**PR #420 opened** (commit `872f1a4`, 3 hunks). Now verify the branch file — syntax + all three hunks + the resend action's existing call (line 335, which ignores the return — must stay fine):
+
+
+### 🤖 Autopilot
+
+**PR #420 verified** — 37,200 B, syntax OK, all wiring correct:
+- `return true` at 288 (success), `return false` at 293 (swallowed-catch failure) — inside `sendTreePlantedNotificationEmail_`
+- LINK call site: `emailSent` captured (596–598), outcome logic (607–611) — `Email notification failed — see log` surfaces the failure
+- Resend action call ignores the return (fine — it does its own error surfacing)
+
+One thing to double-check: the resend action at line ~335 calls the function and **checks the return?** — it previously relied on the function's swallowed behavior. Let me confirm the resend action's behavior isn't broken by the new return semantics (it should be unaffected — it doesn't check the return; it has its own try/catch around MailApp from #416). Confirmed by the grep (lines 378/399/402 `return false` are the resend's own guards). **The resend path is untouched and correct.**
+
+✅ **Unit complete — PR #420: LINK-flow email-failure hardening.**
+
+## What was done this turn
+**The one remaining plan item** (from the governor's "worth hardening that too" note): the LINK flow's owner-notification call site now **surfaces mail failures instead of silently swallowing them**:
+1. `sendTreePlantedNotificationEmail_` returns `true` on success / `false` on failure (still best-effort — no rethrow, committed sheet/ledger writes untouched)
+2. The LINK call site captures the result and records the outcome: `LINKED / OK` → **`LINKED / Email notification failed — see log`** when the mail failed
+3. Log line added for the failure branch (existing catch already logs the message)
+
+**PR:** https://github.com/TrueSightDAO/tokenomics/pull/420 (commit `872f1a4`, 3 hunks, verified: syntax OK, return wiring, outcome logic, resend path unaffected)
+
+## RESUME HERE →
+1. **Merge #420** (on your review) → deploy the 1UrBg project (pull-first, push, version, PROD deployment in place — the pin lesson) → the next real LINK event will report email failures visibly in the tracking tab
+2. Optional remaining note: confirm the ~00:42Z hourly processBatch cadence is the desired onboarding frequency (product decision)
+3. Final summary to the governor — the SUNMINT_TREE_QR_LINKING_PLAN is otherwise fully executed (runs #1–#3 logged, all fixes live)
+
+**✅ Actions this turn:** read the LINK call site, built the hardening fix (3 edits hunks), opened PR #420, verified the branch (syntax + wiring + resend unaffected). One PR opened — stopping per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== LIN; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/link-flow-email-failure-visible/google_app_scripts/1UrBgqL
 
