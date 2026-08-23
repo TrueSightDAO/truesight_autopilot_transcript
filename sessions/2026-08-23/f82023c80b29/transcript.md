@@ -1243,6 +1243,7 @@ Fresh clone is clean and confirms the canonical JSON still has the old SKU. Now 
 ### 🤖 Autopilot
 
 That dry-run result is now explained — **`--dry-run` only counts whether the JSON file exists, it does NOT diff the content.** So "unchanged=1782" never actually proved the caches match the sheet. The real diff happens at `--execute`. Let me do a targeted check of what the sheet actually returns for a CT code via the seed path, then execute a scoped refresh:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1388,4 +1389,86 @@ For a *physical* scan, the QR image is at:
 **https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/main/pngs/2024OSCAR_CT_20260820_1.png**
 
 Give it a click — if anything on the page looks off, tell me what you see and I'll fix it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Include this link in the PDF. Also can you share with me a link to its stripe checkout page? I think for the stripe checkout image for this batch of QR code we should be using the image we are right now using for the SunMinted tree which we uploaded. Thoughts?
+
+
+### 🤖 Autopilot
+
+Good asks — let me find the Stripe checkout for this batch and the SunMinted tree image before answering.
+
+
+### 🤖 Autopilot
+
+Let me read the checkout policy and the checkout script to understand how Stripe payment links are generated per QR code.
+
+
+### 🤖 Autopilot
+
+The checkout is dynamic (GAS creates a Stripe session on the fly), so let me find how a specific QR/SKU gets its payment link — likely a `price_`/payment-link convention in the sheet or config.
+
+
+### 🤖 Autopilot
+
+Stripe checkout is created dynamically per-session, so let me check whether there's a payment-link/landing column in the Currencies sheet and find the SunMint tree image.
+
+
+### 🤖 Autopilot
+
+Let me check the cacao tea currency row (image + landing page) and find the SunMint tree image used for pledges.
+
+
+### 🤖 Autopilot
+
+Let me find the cacao tea currency row (131) and check the QR JSON for any payment/checkout link fields, plus locate the sunmint tree image.
+
+
+### 🤖 Autopilot
+
+The QR JSON shows the product's `current_landing_page` (agroverse.shop product page) but no direct Stripe link. Let me find the Stripe payment link convention and the SunMint tree image.
+
+
+### 🤖 Autopilot
+
+Let me find the actual Stripe checkout path for this product — checking the shop's checkout config and the product page.
+
+
+### 🤖 Autopilot
+
+Let me read the full product page to find the buy/checkout link, and check the shop config for how checkout URLs are formed.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the product page — the availability/buy section — and check the shop config for the checkout URL pattern.
+
+
+### 🤖 Autopilot
+
+I've hit my tool budget for this turn, so let me converge with findings + the one decision I need from you.
+
+## 1. QR link in the PDF — yes, I'll add it
+
+I'll regenerate the PDF with **https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1** (the live scan page) included as a feature line — I'll do that the moment we settle the Stripe piece below so we only regenerate once.
+
+## 2. Stripe checkout link — here's the honest picture
+
+**There is no static Stripe checkout page for this batch yet — and it doesn't auto-exist.** Our checkout is *dynamic*: the shop calls the GAS endpoint (`createCheckoutSession`) to spin up a one-time Stripe Checkout session per order. The tea product page has **no buy button** at all — it says "available in person at select venues," which is why there's no generated link.
+
+So if you want a shareable link for the PDF/FounderHaus, we need to **create a Stripe Payment Link** for this product — a `https://buy.stripe.com/...` URL that charges **$5** for one FounderHaus Farm Edition bag. That's a one-time setup in the Stripe dashboard (or via API): create the product + price at $5, toggle Payment Links on. I don't have Stripe dashboard/API access from this box, so either:
+- **(a)** you (or I, if you point me at the right creds) create it in Stripe and hand me the `buy.stripe.com/...` link — I'll drop it into the PDF, or
+- **(b)** the PDF links to the product page (`agroverse.shop/product-page/oscar-bahia-cacao-tea-50g`) as the "buy" destination for now.
+
+## 3. Your image thought — I agree, with one nuance
+
+**Yes, reuse the SunMint tree image as the Stripe checkout image for this batch.** The checkout is really selling *the tree pledge + the tea*, and the tree image carries the story — using it keeps the Farm Edition consistent with the SunMint pledge branding (same family, same impact). The current SunMint pledge image is the one on `agroverse.shop/sunmint-pledge` (og:image = the `agl4.avif` asset). If that's the image you mean, it's a two-second set on the Stripe product. My one nuance: the tea *is* a physical product, so the checkout could show the **tea image as primary + tree image as the pledge confirmation** — but if you want the tree image as the checkout hero, I'm fully on board; it's the stronger story.
+
+**So the one question: do you want to create the Stripe Payment Link (option a) — and can you give me the Stripe access or the link itself?** Once I have it (or you pick option b), I'll regenerate the PDF with the QR link + checkout link in one pass.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/la_refresh && python3 -c " import json d=json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print(json.dumps({k:v for k,v in d.item
 
