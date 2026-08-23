@@ -2387,6 +2387,7 @@ The page exists on the production domain now (so it got promoted somehow), but i
 ### 🤖 Autopilot
 
 Both shells have `renderInlineMarkdown` — but look at what it supports: `###` headings, `1.` lists, `-` lists, `[links](url)`, `code`, and paragraphs. **It does NOT support `**bold**`** — and our manifest description is full of `**bold**` markers (e.g. `**Initiative:**`, `**Batch:**`). Those asterisks render literally. Let me confirm the prod manifest carries them and check how the landing applies the description:
+[2 tool result(s) compacted: http_fetch, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2394,6 +2395,7 @@ Both shells have `renderInlineMarkdown` — but look at what it supports: `###` 
 Diagnosis confirmed. The page renders the manifest's `description_md` through `renderInlineMarkdown` in `program-shell.js` — and that renderer supports headings, lists, links, and code, **but NOT `**bold**`**. Our manifest description is full of `**bold**` markers (e.g. `**Initiative:**`, `**Batch:**`, `**Trees:**`), so the asterisks print literally — that's the "words assuming Markdown" you're seeing on `truesight.me/programs/founderhaus-farm/`.
 
 The fix: teach the renderer to handle `**bold**` (benefits every program page, not just this one). Running the local test suite first (hard rule), then opening the fix PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2401,11 +2403,13 @@ The fix: teach the renderer to handle `**bold**` (benefits every program page, n
 The 4 test failures are pre-existing/environmental (network-fallback + vault-rotation tests in the autopilot repo — unrelated to this change, which is a **JS file in truesight_me_beta**, not Python in this repo). The compile/ruff/format gates pass.
 
 Now opening the fix — adding `**bold**` support to the markdown renderer in `program-shell.js` (helps every program page):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened — but I noticed an important thing while investigating: **the page you're seeing (`truesight.me/programs/founderhaus-farm/`) is LIVE ON PROD**, meaning the earlier sync conflict must have been resolved and the beta changes promoted at some point (or Gary's reconcile landed). Let me confirm the current state so I know whether this fix needs the beta→prod path or whether prod is already tracking beta:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2608,4 +2612,103 @@ Built and verified — program page link added, zero markdown artifacts. Re-host
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && ls -lat fh_farm*.py fh_*.py 2>/dev/null | head -10; echo "---PDFS---"; ls -lat *.pdf 2>/dev/null | head -10; echo "---EXTRACT v8 ; cd /tmp && echo "===v8 build script (tail)==="; tail -60 fh_farm_v8_build.py; echo; echo "===hosted PDF text check==="; curl -s -o /tmp/host; cd /tmp && sed -e "s|Public scan page: <link href='https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1' color='#6a4a1a'>truesight.me/qr/?id=
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Butterfly effect missing the logo again here
+
+https://truesight.me/programs.html
+
+
+### 🤖 Autopilot
+
+Let me re-check the Butterfly Effect manifest and hunt for a logo source so I can actually fix it this time.
+
+
+### 🤖 Autopilot
+
+The prod manifest 404'd — the path must differ. Let me find where the Butterfly Effect program card + logo URL actually live in prod:
+
+
+### 🤖 Autopilot
+
+The card loads its logo via JS from the program manifest. Let me read the Butterfly Effect manifest in prod to see the logo URL it points at:
+
+
+### 🤖 Autopilot
+
+Found it — the manifest still points at the **dead external URL** (`era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png`). Let me verify it's still dead and hunt for a working logo source in the butterfly-effect-club repo:
+
+
+### 🤖 Autopilot
+
+Dead URL confirmed (404). Let me hunt for a usable Butterfly Effect logo in the butterfly-effect-club repo and other likely places:
+
+
+### 🤖 Autopilot
+
+No logo in butterfly-effect-club. Let me check the `.github/assets` folder (where I host the FounderHaus logo) and try the Wayback Machine for the original Butterfly logo:
+
+
+### 🤖 Autopilot
+
+Wayback has no snapshot either. Let me grep the `.github` repo's full file tree for any butterfly-related asset, which is faster than paging the huge listing:
+
+
+### 🤖 Autopilot
+
+No Butterfly logo anywhere in the org. Let me check ERA's live site for the butterfly-effect page — the logo may have moved to a different path — and look inside the butterfly-effect-club repo:
+
+
+### 🤖 Autopilot
+
+Found a Butterfly Effect logo in `butterfly-effect-club/cert_template/logo.png`! Let me grab it and verify it's the real logo:
+
+
+### 🤖 Autopilot
+
+Found it — `butterfly-effect-club/cert_template/logo.png` is **300×300** — exactly matching the dead URL's filename (`Butterfly-logo-300x300.png`), with teal/black brand colors. This is almost certainly the right logo. Let me verify visually and check the beta manifest (for the beta-first fix):
+
+
+### 🤖 Autopilot
+
+The vision call failed (key didn't load) — but the evidence is strong: 300×300 PNG (matching the dead file's name `Butterfly-logo-300x300.png`), living in the program's own certificate template, teal/black brand colors. Let me quickly confirm it's the right logo via vision with the key sourced properly, and host it:
+
+
+### 🤖 Autopilot
+
+Vision confirms it — **the correct Butterfly Effect logo** (stylized butterfly, teal-to-blue gradient, "BUTTERFLY EFFECT" text). I found it in the program's own certificate template. Now let me host it stably and re-point the manifest (beta-first):
+
+
+### 🤖 Autopilot
+
+Logo hosted and verified (200 OK). Now re-pointing the Butterfly Effect manifest to the stable URL (beta-first):
+
+
+### 🤖 Autopilot
+
+✅ **PR #306 opened — Butterfly Effect logo fix ready.**
+
+## Root cause (confirmed this time)
+
+The manifest pointed at `https://era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png` — **dead 404** (verified today, no Wayback snapshot either). The card JS hides the logo banner when the image fails → that's why the logo is missing on `programs.html`.
+
+## The fix
+
+| Step | Result |
+|---|---|
+| **Found the official logo** | `butterfly-effect-club/cert_template/logo.png` — 300×300 (same dimensions as the dead URL), vision-verified: **stylized teal-gradient butterfly + "BUTTERFLY EFFECT" wordmark** ✅ |
+| **Hosted it stably** | `TrueSightDAO/.github/assets/butterfly-effect-logo.png` (200 OK) — permanent, not dependent on ERA's WordPress |
+| **Repointed manifest** | `partner_logo_url` → the self-hosted asset (beta-first) |
+
+**PR:** https://github.com/TrueSightDAO/truesight_me_beta/pull/306 (`a73a17c`)
+
+This is the same permanent-fix pattern we used for the FounderHaus logo — self-hosted asset, stable raw URL, no external dependency.
+
+**RESUME HERE →** merge PR #306, verify `beta.truesight.me/programs.html` shows the Butterfly Effect logo banner, then promote to prod (the FounderHaus fixes #303/#304/#305 also still need prod promotion — Gary was reconciling `truesight_me_prod`; once resolved, sync both together). Say the word and I'll merge + verify.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/.github/git/trees/main?recursive=1" | python3 -c " import json,sys d=json.load; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/butterfly-effect-club/git/trees/main?recursive=1" | python3 -c " import json,s; cd /tmp && curl -s -o be_logo.png "https://raw.githubusercontent.com/TrueSightDAO/butterfly-effect-club/main/cert_template/logo.png" && ls -; …(+3 more)
 
