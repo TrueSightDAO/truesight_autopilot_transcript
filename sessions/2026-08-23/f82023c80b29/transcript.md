@@ -3020,11 +3020,13 @@ I have the full change surface mapped. The checkout lives at `/opt/truesight_aut
 ### 🤖 Autopilot
 
 Test gates pass (compile ✅, 746 passed/1 skipped; the ruff/format notices are pre-existing in untouched autopilot test files — my changes are in tokenomics GAS JS, not this repo). I have every hunk mapped. Opening the foundation PR — all tokenomics GAS changes (enum, pickers, list endpoint, link validation, shop counter) in one scoped PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Need to provide the actual edits. Constructing the full hunk set now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3061,31 +3063,37 @@ This closes the sold→funded→planted gap end-to-end on the backend: the sheet
 ### 🤖 Autopilot
 
 Good call — SCHEMA.md should carry the new state with the enum change, so I'll fold it into PR #421 (same unit, no new PR). Let me find the exact status-enum section in SCHEMA.md:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SCHEMA.md has the exact enum at line 907 plus the States-tab reference around 1124–1160. Let me read both sections precisely so I edit them correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both SCHEMA.md sections located (enum at line 907, States tab at U). Adding the SCHEMA.md updates to PR #421's branch:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search string didn't match — likely whitespace/quote drift. Let me get the exact bytes of the enum line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the line uses a UTF-8 **em-dash** (`—`), and my search used a plain hyphen. Retrying with the exact character:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still not matching — the em-dash may render differently in the JSON transport. Let me use a shorter, unique search anchor that avoids the em-dash entirely:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3242,4 +3250,59 @@ That's the page behind **dapp.truesight.me/update_qr_code.html** — so once thi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && rm -rf dappb && git clone -q --depth 1 https://github.com/TrueSightDAO/dapp_beta.git dappb 2>&1 | tail -1; cd dappb && grep -n "A; cd /tmp/dappb && sed -n '362,380p' update_qr_code.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] merge PR 74 422
+
+
+### 🤖 Autopilot
+
+Merging both as you requested:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Both merged — the TREE_PLANTING_FUNDS_TRANSFERRED state is now fully in place.**
+
+## What I did this turn
+
+| PR | Repo | Change | Merge sha |
+|---|---|---|---|
+| **#74** | dapp_beta | `update_qr_code.html` Status dropdown + `TREE_PLANTING_FUNDS_TRANSFERRED` (after SOLD) | `890be46` |
+| **#422** | tokenomics | SCHEMA.md — status enum (col D) + States tab (col U) updated | `e8b166f` |
+
+## Initiative status — all code surfaces done ✅
+
+| Surface | Status |
+|---|---|
+| Backend enum + queue + link + counter (tokenomics #421) | ✅ merged |
+| SCHEMA.md docs (#422) | ✅ merged |
+| update_qr_code.html dropdown (dapp_beta #74) | ✅ merged |
+
+The lifecycle is now fully expressible end-to-end: **SOLD → TREE_PLANTING_FUNDS_TRANSFERRED → ASSIGNED_TO_TREE**, with the shop counter counting funded bags as tree-financed, the linking queue surfacing them, and the DApp able to set the state.
+
+## RESUME HERE → next units (fresh turns)
+
+1. **link_tree_planting.html left-list badges** — show SOLD **and** FUNDS_TRANSFERRED candidates with status badges (backend #421 already returns `status` per item — this is the last UI piece of the linking-DApp ask).
+2. **Plan-doc state list** — SUNMINT_TREE_QR_LINKING_PLAN.md (agentic_ai_context) updated with the new state.
+3. **`clasp push` deploy** — GAS changes to the two Apps Script projects (QR-codes mirror `1UrBg…` + agroverse shop `1Y8sJ…`) — I'll flag before deploying.
+4. **dapp_beta → dapp_prod promotion** — after your beta review of the dropdown.
+5. **UAT** — flip a test QR to FUNDS_TRANSFERRED → confirm it appears in the linking queue + still counts on agroverse.shop.
+
+Want me to proceed with the link_tree_planting.html badges next?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #74 on dapp_beta merged successfully (sha: 890be46f7ad23cb469eb9e9092d7c09bd15399d2). Pull Request successfully merged; ✅ PR #422 on tokenomics merged successfully (sha: e8b166f963ae1d4cde2ae36d0f1919400eeec321). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #74 on dapp_beta merged successfully (sha: 890be46f7ad23cb469eb9e9092d7c09bd15399d2). Pull Request successfully merged; ✅ PR #422 on tokenomics merged successfully (sha: e8b166f963ae1d4cde2ae36d0f1919400eeec321). Pull Request successfully merged
 
