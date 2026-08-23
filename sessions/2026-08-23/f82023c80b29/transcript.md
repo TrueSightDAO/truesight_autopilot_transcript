@@ -2307,21 +2307,25 @@ The geometry check found the real issue — **both embedded images are being for
 **Found the actual overflow/distortion cause.** The group photo is **portrait** (900×1600, aspect 0.562) but I forced it into a **landscape** box (150×100mm, aspect 1.5) — ReportLab stretches it to fit, so the people look squished/stretched, which reads as "wrong/overflowing." The QR PNG (450×350) into a square box (34×34mm) is similarly distorted.
 
 Let me rebuild preserving each image's natural aspect ratio:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The inline comment broke the syntax. Let me fix that:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Aspects are now natural (photo 0.561, QR 1.290). Let me render the fixed pages to verify visually, and check the page-2 layout (the QR image is now lower on the page, need to confirm nothing collides):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No text/image collisions. Let me do a final visual confirmation of the rebuilt pages with Grok, then ship:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2477,4 +2481,27 @@ The `truesight.me/physical-assets/serialized/?q=2024OSCAR_CT_20260820_` page is 
 **RESUME HERE →** pending your word to merge: #303 (bold-markdown fix) + #304 (CTA fix), then verify on beta and promote to prod (prod needs the manual reconcile/CNAME path — your earlier reconcile landed, so a fresh `sync_beta_to_prod` attempt may now work). Also still open: Butterfly Effect logo fix (needs logo file from you).
 
 Want me to merge #303 and #304 now, verify beta, then attempt the prod sync?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] I wonder if the word should be Experiential learning credentialing
+or SunMint initiative or something... Thoughts?
+
+
+### 🤖 Autopilot
+
+My take: **"SunMint initiative" — and drop the "Experiential learning credentialing" half.**
+
+Reasoning:
+
+1. **The pill should say what the visitor is looking at.** "SunMint initiative" instantly communicates *what program family this is* (ReFi / tree-planting) — it matches the manifest's `program_initiative: "SunMint"` and the whole "one bag, one tree" story on the page.
+
+2. **"Experiential learning credentialing" is generic shell boilerplate** — it's the same pill on *every* program page (Tribo Mirim, Butterfly Effect, IVY). On a partner-facing page like FounderHaus Farm it reads as noise, not identity. The credentialing mechanism is already implicit (QR provenance, ledger, credentials) — the visitor doesn't need it spelled out as the first thing they see.
+
+3. **Two concepts in one pill is cluttered.** "SunMinit initiative · Experiential learning credentialing" tries to say both "what family" and "how it works" — pick one. The tagline right below already tells the story ("One bag, one tree — the first 100 trees of the FounderHaus farm"), so the pill should just anchor the family.
+
+Suggested final: **"SunMint initiative"** — clean, matches the manifest, consistent with the branding we just applied.
+
+Want me to update it (beta PR → merge → prod promote with the other two pending #303/#304)? And I can check what the other program pages' pills say first, to keep the house style consistent — say the word.
 
