@@ -4521,11 +4521,13 @@ Want me to pull the cost-summary/timeline tables or the Appendix A/B details fro
 ### 🤖 Autopilot
 
 Let me first enumerate exactly what documents exist, then share the relevant ones.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full exports list to make sure I capture all relevant docs.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4688,4 +4690,39 @@ Clean PDF sent to this thread 📄
 3. **Path forward** — China side works directly with the cooperative; DAO assets in Brazil flagged as stuck/possible write-off
 
 Structured into clean sections with headers and a professional tone — ready to forward to Elizabeth. Want any tweaks (e.g., different tone, more/less detail, branding)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Meanwhile that via black king Matheus has been our legal representative. This has enabled us to source from not just Bahia but other parts of Brazil like para where areas have no factory. Orlantildes and Coopercabruca only deals with beans from farmers in their cooperative in Bahia. And only those that are freshly harvested or still with. The ones in Matheus warehouse is considered independent
+
+
+### 🤖 Autopilot
+
+Good context — this is a crucial nuance for Elizabeth. Let me update the PDF to include it.
+
+
+### 🤖 Autopilot
+
+Updated PDF generated with the new context. Sending it to this thread.
+
+
+### 🤖 Autopilot
+
+Let me verify the correct output path — I need to make sure the v2 file was sent, not the old one.
+
+
+### 🤖 Autopilot
+
+Confirmed — the attachment sent is the **updated v2** (5.9KB vs 4.7KB for v1, and the path was overwritten by the new generation). So what you received includes all the new context:
+
+**New sections added to the PDF for Elizabeth:**
+
+1. **"Matheus / Black King: Our De Facto Legal Representative"** — how Black King's role enabled sourcing from **Pará and other regions with no factory**, and why the **current warehouse inventory is "independent"** (sourced outside any cooperative)
+
+2. **"The Cooperative Limitation (Critical Context)"** — Orlantildes/Coopercabruca only handle **cooperative-member farmers in Bahia**, and only **freshly harvested / still-with-the-farmer** beans. They do **not** take independent consolidated beans
+
+3. **Key implication spelled out:** the cooperative route **cannot absorb the existing warehouse inventory** — those beans are stranded if Black King's CNPJ can't be fixed, making the write-off the realistic outcome for that stock
+
+Everything else (legal rep cost, accountant sourcing, trading company route, MAPA readiness, CEPOTX flow, Oscar invitation) retained. Ready to send to Elizabeth.
 
