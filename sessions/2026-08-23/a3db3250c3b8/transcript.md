@@ -10,217 +10,6 @@
 
 ### 🤖 Autopilot
 
-Executing the photo replacement. First: verify the staged file, check the sunmint repo's images folder convention, and read the current photo URLs in the sheet + manifest:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-File confirmed (521KB, 900×1600 JPEG). Convention: `YYYYMMDDHHMMSS_MIIBIjANBgkqhkiG9w0B.jpg` (timestamp + the standard base64 key fragment). The current photo URL is the github.com/tree browse URL (`20260821145131_MIIBIjANBgkqhkiG9w0B.jpg`). I'll upload the new photo with a timestamp name following convention, then update both sheet rows + manifest. Uploading first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Photo uploaded** (`20260822_130000_FOUNDERHAUS_GROUP.jpg`, commit `7ccff970`). Now update SunMint row 16 col 9 (Photo of Tree Planted) and QR row 1781 col R (Tree Seedling Photo URL) to the raw.githubusercontent URL, then re-run the seed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both sheet cells updated. Now re-run `seed_from_sheet.py` to regenerate the manifest with the new `seedling_photo_url` (and remember to re-apply the `signed_by`/`sig_ref` enrichment that the seed drops):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now run the seed with `--execute` and the SA credentials, then verify the regenerated FounderHaus manifest has the new photo URL (and re-apply the signature enrichment if dropped):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Manifest regenerated: `seedling_photo_url` = the **new photo** ✅, state/country preserved ✅. As expected, the seed **dropped the `signed_by`/`sig_ref` enrichment** again (events show only minted/planted). Re-applying the enrichment, then pushing ONLY the FounderHaus manifest (the seed wrote 114 updated files — I must not push all of them):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Manifest pushed** (commit `bc5f1b81`) with the new photo URL + preserved signature enrichment. Now the final verification per §11 — **actually load the live page and confirm the NEW photo URL is in the served manifest and renders**. First check the live manifest served at the canonical URL, then execute the page's JS with the real manifest fetch:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Everything checks out at the data layer: manifest has the new photo URL + signature enrichment, and the photo is live (200, image/jpeg, 521,710 bytes — full file served). Now the §11 verification — **execute the live page's JS with the real manifest** and confirm the NEW photo URL appears in the rendered HTML:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**✅ FULLY VERIFIED — the new FounderHaus group photo is live and rendering.**
-
-## Photo replacement — COMPLETE (§11-verified)
-
-**All four steps done + verified:**
-
-1. **Uploaded** `20260822_130000_FOUNDERHAUS_GROUP.jpg` (521KB, 900×1600) to `sunmint/images/` (commit `7ccff970`) — follows the existing naming convention
-2. **Updated both sheet rows** to the raw URL:
-   - SunMint row 16 col 9 (Photo of Tree Planted) ✅
-   - QR row 1781 col R (Tree Seedling Photo URL) ✅
-3. **Re-ran seed_from_sheet.py** (114 updated, 1663 unchanged) → manifest `seedling_photo_url` = new photo ✅; re-applied the `signed_by`/`sig_ref` enrichment the seed drops (commit `bc5f1b81`, pushed ONLY the FounderHaus manifest, not the 114-file wholesale)
-4. **Verified by ACTUAL page execution** (the §11 standard):
-   - Live manifest (authoritative): new photo URL + signed_by/sig_ref present ✅
-   - New photo serves: 200 image/jpeg, 521,710 bytes ✅
-   - **Executed the live page's JS with the real manifest** → render shows: **NEW photo URL in the tree-photo `<img>` ✅, QR image ✅, coordinates ✅, sig ref ✅, NO ReferenceError** (3,955-char full render)
-
-**The page now displays** (for Paloma / FounderHaus / the governor):
-- QR code image
-- The **new FounderHaus group photo (5 people, muddy hands, around the Bougainvillea)** — inline, full size
-- Coordinates −27.44301 / −48.49907, state/country Santa Catarina/Brazil
-- Signed event record (Gary Teh / Edgar_20260822114540_033)
-
-## RESUME HERE →
-1. **Paloma onboarding email re-send** (still pending — the page is now fully fixed AND shows the great group photo, so the link she gets will be worth clicking): merge tokenomics **#410** (processBatch `&`-vs-`?` link fix) → deploy 1MnAsI project → clear col M (row 1781) → invoke processBatch → **read the SENT email and verify the body has a real clickable `<a href>` link**
-2. **Trigger diagnosis** (why did processBatch fire at 09:42Z — UI trigger vs manual)
-3. Final report to the governor
-
-**✅ Actions this turn:** uploaded the group photo (commit `7ccff970`), updated SunMint I16 + QR R1781, re-ran the seed + re-applied sig enrichment (manifest commit `bc5f1b81`), verified photo live (200/521KB) and **executed the live page JS → new photo renders with everything else, no errors**. No PRs opened/merged this turn (sunmint image + lineage-assets manifest = data-repo direct writes per convention).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → verified staged photo (521KB JPEG 900×1600); read current photo URLs (SunMint I9 col, QR R17) + sunmint images naming; uploaded photo (commit 7ccff970); updated SunMint I16 + QR R1781 to raw URL; re-ran seed (114 updated) + re-applied sig enrichment + pushed manifest only (bc5f1b81); verified manifest (new URL + sig refs) + photo reachable (200, 521710 B); **executed live page JS with real manifest → new photo renders, QR image + coords + sig ref all present, no ReferenceError (3955 chars)**
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → ls -la /home/ubuntu/staged_files/founderhaus_group_planting.jpg && file /home/ubuntu/staged_files/founderhaus_group_planting.jpg 2>/dev/null; cd /tmp && echo "=== upload new photo to sunmint images/ via Contents API (follows existing convention) ===" && source /opt/truesight_autopi; cd /home/ubuntu && python3 - << 'PYEOF' import gspread gc = gspread.service_account(filename='/home/ubuntu/creds/google_credentials.json') r; …(+5 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-New feature request from the governor (queue this AFTER the manifest-scope-bug fix + new photo are confirmed done — don't pile it into the same change): for tree-type QR pages where a tree is already assigned/planted (has real lat/long, not the placeholder case), embed a MAP on the page showing where the tree is, not just the coordinates as text.
-
-Suggest: OpenStreetMap embed via iframe (no API key/billing needed, public page friendly) using lineage.latitude/longitude, e.g.:
-<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=<lng-0.005>,<lat-0.005>,<lng+0.005>,<lat+0.005>&marker=<lat>,<lng>" ...></iframe>
-inside renderLineageTree(lineage) — only render it when both latitude and longitude are present (same guard as the existing coords text line). Google Maps embed is an alternative but needs an API key; OSM avoids that entirely for a page like this. Your call on exact implementation, just make sure it's guarded to tree QRs with real coordinates, doesn't break the cacao_bag layout, and — per the standing §11 lesson — actually load the page and confirm the map renders before reporting done, not just curl.
-
-
-### 🤖 Autopilot
-
-The prerequisite items are confirmed done (scope fix verified live, new photo verified rendering), so the map feature is unblocked. Executing: read the current `renderLineageTree` to find the exact coords guard, then add the OSM iframe.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full `renderLineageTree` (lines 269–310) to see the coords guard and the media/HTML construction so I add the map in the right place:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the exact structure. I'll add the OSM map iframe inside `renderLineageTree`, guarded by the same `(lineage.latitude && lineage.longitude)` condition, inserted after the media block. Building the PR with a proper `edits` hunk:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**PR #299 opened** (commit `9d5d90f7`). Now the critical §11 verification — **execute the page JS with a real manifest** and confirm the OSM iframe actually renders (not just curl):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Almost perfect — one check "failed": `bbox correct: false`. Let me verify the actual bbox the code produced vs my expected string (I may have computed the expected wrong — the code uses `lng-d, lat-d, lng+d, lat+d`; with lat=-27.44301, lng=-48.49907, d=0.005: `-48.50407,-27.44801,-48.49407,-27.43801` — that's what I expected. Let me see what actually rendered):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The bbox is **correct** — the actual rendered value is `bbox=-48.504070000000006,-27.44801,-48.49407,-27.438010000000002&marker=-27.44301,-48.49907` — my expected-string test was wrong (floating-point precision: `-48.49907 - 0.005 = -48.504070000000006`, not exactly `-48.50407`). The map embed is perfect: correct bbox around the tree, correct marker, both within the Jurerê Internacional area.
-
-## ✅ Map feature — built, §11-verified, PR ready
-
-**PR #299** (truesight_me_beta, commit `9d5d90f7`, one file `qr/index.html`):
-- **OSM embed iframe** inside `renderLineageTree(lineage)`: `bbox=<lng±0.005>,<lat±0.005>&marker=<lat>,<lng>` + a "Open larger map →" link
-- **Guarded** by `lineage.latitude && lineage.longitude` + `isNaN` checks (same guard as the coords text)
-- cacao_bag and other asset types untouched; placeholder/no-coords trees get no map
-
-**§11 verification (executed the JS, not curl):**
-- ✅ **With real coords** (FounderHaus manifest): full render — **OSM iframe present, marker `-27.44301,-48.49907`, bbox correct** (floating-point precision explains the earlier "false" — the math is right), larger-map link, QR image, tree photo, coords text, **no ReferenceError** (3,177 chars)
-- ✅ **Without coords** (guard test): no OSM iframe (1,531 chars) — the guard works
-
-## RESUME HERE →
-1. **Merge truesight_me_beta #299** (on your review) → promote `qr/index.html` to prod (single-file Contents API write, CNAME untouched — the approved path) → verify live page renders the map (Node VM execution of live bytes)
-2. Then the **Paloma onboarding email re-send** (still queued): merge #410 (processBatch link fix) → deploy 1MnAsI → clear col M → invoke processBatch → verify the SENT email has a real clickable link
-3. Trigger diagnosis + final report
-
-**✅ Actions this turn:** read the current `renderLineageTree` (coords guard at 270), added the OSM iframe (guarded, after media block), opened PR #299, §11-verified by executing the JS: map renders with real coords (marker + bbox correct), guard suppresses it without coords, no ReferenceError. One PR opened — stopping per the one-PR-per-turn rule.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → read renderLineageTree (lines 269-312); opened PR #299 (commit 9d5d90f7, 1 file, edits hunk); §11 Node VM verification: full render with map (marker/bbox correct — floating-point precision on the bbox string), guard test without coords (no map), no ReferenceError
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/qr/index.html" -o qr_map_base.html && wc -c qr_map; cd /tmp && sed -n '269,312p' qr_map_base.html; cd /tmp && echo "=== fetch PR branch file ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/feat/tree-map-em; …(+1 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
-
-go — merge #299, promote qr/index.html to prod (same single-file path), verify the map renders live (Node VM execution per §11), then proceed to the email work.
-
-Also, new finding: independently checked for the SECOND email (sendTreePlantedNotificationEmail_, subject "Your Sunmint tree (...) has been planted") — searched both admin@truesight.me and garyjob@agroverse.shop mailboxes, found ZERO record of it ever being sent to Paloma. But QR row 1781's "Tree Planted Notification Sent Date" column IS stamped — with "20260821", which predates today's actual link event (2026-08-22). Since the code stamps with new Date() at execution time, a genuine send today should show 20260822, not 20260821. This looks like either: (a) a stale/leftover stamp from before the real link ran (maybe copied from QR-creation-date, or an earlier failed test), not an actual send, or (b) MailApp.sendEmail is sending from some OTHER Google account entirely (the GAS script owner's account, which may not be either mailbox I can check) and it genuinely sent but I can't see it.
-
-Please investigate: check the actual column X value/history on row 1781 (was it stamped by today's LINK execution or is it stale?), determine which Google account MailApp.sendEmail actually sends from for this GAS project (check the script's associated Google account / execution log), and confirm whether Paloma genuinely received this second email or not. If it never sent, fix and re-send it (same email-verification standard — confirm actual delivery, not just that code ran without erroring).
-
-
-### 🤖 Autopilot
-
-Executing: investigate the second-email finding first (read-only), then merge #299 as the final action this turn (per the one-PR-per-turn flow). Starting with the column X stamp + the `sendTreePlantedNotificationEmail_` code path:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The stamp is **col28 = `20260821`** — identical to col10 (QR creation date) and col14 (Tree Planting Date), and it **predates today's actual LINK** (tracking `Edgar_20260822114540_033` at 11:45Z on 08-22). This smells like a stale copy (not a genuine today-send stamp, which would be `20260822`). Let me check the code that stamps col28 — `sendTreePlantedNotificationEmail_` — to see whether it's even invoked in the LINK path, what date it writes, and which account MailApp sends from:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The code comment is revealing: `TPL_NOTIFICATION_SENT_COL = 27` (col AB) — the stamp was **moved off col X on 2026-08-20**. So the current code stamps **col 27 (AB)**, NOT col28 (X). The col28 `20260821` value is a **stale leftover from before that move** (or manual). Let me verify: what's in col27 (AB) now (the current code's stamp), the exact send+stamp logic at 520-545, and which account MailApp uses:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the picture is much clearer:
-
-- **The current code's stamp column is col 27 (`TPL_NOTIFICATION_SENT_COL = 27` → header "Sold Date"??)** — wait, col27 header is "Sold Date" but the code comment says "Column AB (Tree Planted Notification Sent Date) — moved off column X (2026-08-20)". So the **code and the sheet are out of sync**: the code stamps col 27, but the sheet's col 27 header is "Sold Date" and col 28 is "Tree Planted Notification Sent Date". The live sheet has the stamp at **col28** (`20260821`).
-
-Hmm — the code says `TPL_NOTIFICATION_SENT_COL = 27` and the stamp is in col28 (`20260821`). If the code stamped col27 (0-indexed 26 → col27 "Sold Date")... but col27 is EMPTY. And col28 has `20260821` which **predates the link**. So the col28 stamp was NOT written by today's LINK run (today's run would have written col27 if it ran this code version, or col28-as-`new Date()` = `20260822`).
-
-Let me resolve the actual column constants in the deployed code + check the git history of the move (was it X→AB? is AB col27 or col28?), and look for what wrote `20260821` to col28:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The history clarifies it: commit `0bcc261b` (2026-08-20 19:41Z) "fix: move Sold Date + Tree Planted Notification to AA/AB (column collision)". But the constants say `TPL_NOTIFICATION_SENT_COL = 27` = **col AB** (A=0... AB=27? No — A=1, so AB=28). Let me nail the off-by-one: `TPL_NOTIFICATION_SENT_COL = 27` + 1 = 28 → **col 28 = AB** ("Tree Planted Notification Sent Date" ✅ matches!). And the code comment "Column AB (Tree Planted Notification Sent Date)". So **the code DOES stamp col28 (AB)** — and col28 = `20260821`.
-
-Wait — that means today's LINK **DID** stamp col28... with `20260821`?? But `new Date()` at execution (08-22 11:45Z) should produce `20260822`. Unless... the value `20260821` came from `sunmintRow[TPL_SUNMINT_STATUS_DATE_COL]` (planting date col G = `20260821`) — no, the send function uses `new Date()` for the stamp. Let me check what format `new Date()` writes — the sheet shows `20260821` (a plain number/string, not a Date object's default serial). If the sheet cell format renders a Date as `YYYYMMDD`... or the value was written by something else.
-
-Actually — let me check the **value type**: is col28 a Date object (formatted) or a string? And critically: **did `MailApp.sendEmail` actually run** — I need the execution log. Let me check the value type + whether the GAS execution log for today's LINK run shows "Sent tree-planted notification":
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 `AB1781` is a **string `'20260821'`** — but the code stamps `new Date()` (a Date object, not a string, and would render as the sheet's default date format, not `YYYYMMDD`). So **this value was NOT written by `sendTreePlantedNotificationEmail_`** (which uses `new Date()`). It matches `TPL_SUNMINT_STATUS_DATE_COL` (planting date `20260821`) — suspicious.
 
 There's a **second writer**: `process_tree_planting_telegram_logs.js` (project `1Jp8qN…`) — the OTHER tree-planting project. Let me check how IT stamps the notification column — that may be the source of the stale `20260821`:
@@ -3811,7 +3600,13 @@ Bash quoting broke (the grep/sed chain inside `$(...)` with nested quotes). Let 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Manifest pushed (201) + live (200).** Now the §11 render verification — execute the live page's JS for `TEST_AGL4_20260822_3`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3819,11 +3614,13 @@ Bash quoting broke (the grep/sed chain inside `$(...)` with nested quotes). Let 
 **Step 6 verified (§11):** the live page for `TEST_AGL4_20260822_3` fully renders — QR image ✅, coords 44.6/−123.3 ✅, photo ✅, OSM map ✅, tree ID ✅, **no errors** ✅ (3950-char render).
 
 Now I need the **onboarding email** to complete step 5. Let me check if processBatch has run (M stamp) — if the hourly trigger fired since ~23:42Z it should be stamped by now. Checking the current time + M column, and the mailbox:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's only 23:50Z — the row went SOLD at ~23:44Z, and in run #2 processBatch ran ~7 min after SOLD (23:35→23:42). The hourly trigger (if installed) may fire at the next hour boundary, or Gary may run it manually. Since the governor wants **no follow-up nudging**, let me wait for the processBatch run — checking whether I can determine the trigger's next fire time. The #417 self-installer creates an hourly trigger on processBatch's *next run* — the 23:42:51Z run (run #2's onboarding) happened **before** #417's self-installer code was actually invoked if #417 deployed after 23:42... Let me verify the deploy timing + whether the self-installer ran (check the trigger count via the one API that works):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3831,6 +3628,7 @@ It's only 23:50Z — the row went SOLD at ~23:44Z, and in run #2 processBatch ra
 #417 was merged (`a857fb3`) and I deployed it (v29) before the 23:42:51Z processBatch run — so that run **would have executed the self-installer** (line 1852), installing the hourly trigger. The next hourly fire should be ~00:42Z (or on the next hour boundary). The row 1783 went SOLD ~23:44Z, so the next processBatch run (hourly, ~00:42Z) will pick it up.
 
 Since waiting ~50 min in a turn isn't possible, the practical path: the onboarding email **will** fire automatically on the next hourly trigger (now that #417's self-installer is active — this is exactly what the run is validating: repeatability without human intervention). Let me register a background watcher on the M-column stamp so I'm told when it flips (rather than polling manually):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4030,4 +3828,45 @@ One thing to double-check: the resend action at line ~335 calls the function and
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git checkout origin/main -- google_app_scripts/1UrBgqLnnQc6PV4; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== LIN; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/fix/link-flow-email-failure-visible/google_app_scripts/1UrBgqL
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11596] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11596) is the active handoff for `plans/SUNMINT_TREE_QR_LINKING_PLAN.md`. Before responding, read it with read_context_file("plans/SUNMINT_TREE_QR_LINKING_PLAN.md") and resume from its RESUME HERE marker. Treat a short go-signal in this topic ("go for it", "go", "proceed", "ship it") as the governor's full authorization to execute that plan through its gates, reporting progress in this topic.]
+
+Resume
+
+
+### 🤖 Autopilot
+
+Resuming — the next unit is: merge #420 (LINK-flow email-failure hardening) → deploy the 1UrBg project. Starting with the merge:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **Merged — tokenomics #420** (sha `7b7fbf4`) — the LINK-flow email-failure hardening.
+
+## What I did this turn
+
+**Merged #420** — `sendTreePlantedNotificationEmail_` now returns `true`/`false` (best-effort preserved — no rethrow, committed writes untouched), and the LINK call site records the outcome visibly: `LINKED / OK` → **`LINKED / Email notification failed — see log`** when the owner email fails. Future real LINK events can no longer silently fail to notify owners (the exact hardening the governor flagged). Branch was verified last turn (syntax OK, return wiring, resend path unaffected).
+
+## RESUME HERE → (next unit)
+1. **Deploy #420 to GAS** (1UrBg project): pull-first per convention → `clasp push` → save version → **update the PROD deployment in place** (the pin lesson — currently @30) → verify the live project has the new return/outcome wiring
+2. (Optional) Confirm the ~00:42Z hourly processBatch cadence is the desired onboarding frequency (product decision)
+3. Final summary to the governor — the SUNMINT_TREE_QR_LINKING_PLAN is otherwise fully executed (runs #1–#3 logged, all fixes live + verified)
+
+**✅ Actions this turn:** merged #420 (sha `7b7fbf4`). One PR merged — stopping per the one-PR-per-turn rule. Deploy + verify is the immediate next unit.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #420 on tokenomics merged successfully (sha: 7b7fbf425a64d2a4a3d37de8b436465e8233610e). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #420 on tokenomics merged successfully (sha: 7b7fbf425a64d2a4a3d37de8b436465e8233610e). Pull Request successfully merged
 
