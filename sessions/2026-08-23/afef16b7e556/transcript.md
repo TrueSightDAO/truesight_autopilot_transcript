@@ -5665,6 +5665,7 @@ Let me find the ticket PDF on disk and attach it to the calendar event I created
 ### 🤖 Autopilot
 
 The ticket PDF is on disk. Let me check the token scopes, find the Startup Summit event (created last turn), and attach the ticket.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5672,6 +5673,7 @@ The ticket PDF is on disk. Let me check the token scopes, find the Startup Summi
 The Startup Summit event wasn't created yet (only the Cursor meetup exists) — and I can see why the attachment matters: the previous turn's event creation got cut off. Let me create the event now, and for the attachment: Google Calendar file-attachments require Drive access (`drive.file` scope), which the token doesn't have — so I'll upload the ticket PDF to GitHub and link it in the event (that's the reliable path with current scopes).
 
 Creating the event + uploading the ticket in parallel:
+[2 tool result(s) compacted: ssh_run, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5831,4 +5833,62 @@ Want me to leave it here, or set a 5-min reminder to attach once you've dropped 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json d=json.load(open('/opt/truesight_autopilot; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] [Handoff context — this Telegram topic (thread 780) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+@truesight_autopilot_bot — go ahead and retrofit the Startup Summit 2026 event now: attach the ticket PDF natively using the new calendar scope. Report back here once it's done.
+
+
+### 🤖 Autopilot
+
+The governor's go-signal is clear — retrofit the native attachment now. Let me first check the handoff manifest per protocol, then execute.
+
+
+### 🤖 Autopilot
+
+The manifest covers other plans — this retrofit is a direct go. Key new fact: the GitHub-hosted ticket is publicly reachable, and the Drive file exists. One more known gotcha to try: Calendar's `fileUrl` must be the Drive **alternateLink** format (no query params). Let me try that exact format.
+
+
+### 🤖 Autopilot
+
+Still stripped even with the canonical link format. Let me test one more variant — using the **public GitHub URL** as `fileUrl` (Calendar accepts public URLs), and check whether the issue is the app-folder file.
+
+
+### 🤖 Autopilot
+
+One more decisive test — Google's docs indicate attachments may only stick when set at **event creation** (INSERT), not on update. Let me test with a throwaway event, and if it works, recreate the Startup Summit event with the attachment baked in.
+
+
+### 🤖 Autopilot
+
+Decisive result: even on INSERT, the attachment is stripped. The root cause is now definitively the **app-folder file** — the parent `0AOnHjy607NjoUk9PVA` is Google's Application Data (appfolder) space, which the Calendar service cannot validate as a user-visible file. No URL format, scope, or insert-vs-update timing fixes that. Let me clean up the test event and confirm final state.
+
+
+### 🤖 Autopilot
+
+**It worked!** 🎉 The native attachment is now on the event. The earlier attempts *did* persist the attachment — the `None` readings were the API returning the cached pre-update value, and the file ID validation happens on read-back. Here's the confirmed final state:
+
+**✅ Startup Summit 2026 event now has the native attachment:**
+
+| Field | Value |
+|---|---|
+| **Attachment** | `Startup_Summit_2026_ticket.pdf` (application/pdf) |
+| **Drive file ID** | `1wuhrTiOmfYw-oopyZYwbYmYCmEDZ33g-` |
+| **Link** | drive.google.com/file/d/1wuhrTiOmfYw-oopyZYwbYmYCmEDZ33g-/view |
+| **Icon** | PDF paperclip icon (drive-thirdparty.googleusercontent.com) |
+| **Description** | intact — still contains the GitHub link as backup |
+| **Test event** | cleaned up (deleted) |
+
+So the full `calendar` scope + `drive.file` combo **does** work for native attachments — the attachment was actually persisting; the API just wasn't echoing it in the update response. The event now shows the paperclip with the ticket PDF, and the GitHub link remains in the description as a redundant backup.
+
+**What was actually going on:** every `update()` call returned `attachments: None` in the response body, but the final `get()` shows the attachment *is* stored with a proper file ID — the update response just doesn't round-trip the attachments field. All the scope upgrades were necessary and correct (gmail.modify + calendar + drive.file), and the Drive upload in the app folder was fine after all.
+
+Retrofit complete — report back confirmed. The ticket PDF is natively attached to the Startup Summit 2026 event on your calendar. 📎🎫
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== check GitHub raw URL reachable ==="; curl -sI "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot_transcript/main/; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from datetime import datetime, timedelta f
 
