@@ -4283,6 +4283,16 @@ Removing that CEPOTX line and regenerating.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Done ✅ (message 13351).
 
 **Removed:** the CEPOTX (Pará) parallel-track line — the doc now focuses purely on the Bahia/Oscar's-beans route via Orlantildes/Coopercabruca.
@@ -4311,6 +4321,7 @@ Ready to send to Elizabeth.
 ### 🤖 Autopilot
 
 Good — adding a "Worst Case Scenario" section to the China-lane PDF, framed around what happens if Black King's infrastructure can't be restored.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4443,6 +4454,39 @@ Done ✅ (message 13367) — **4 pages**, with the US/EU network wind-down now i
 The full document now reads in your intended order: **Black King challenges → remedies → Oscar's status → worst case (warehouse stranded, CEPOTX blocked, US/EU network winds down, China-coop backup with DAO out of the trade) → summary.**
 
 Ready for Elizabeth.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Also mention that China side could actually bypass the DAO as the middleman without waiting for the situation with black king to get resolved
+
+
+### 🤖 Autopilot
+
+Adding that point — the China side can bypass the DAO as middleman immediately, without waiting for Black King to be resolved.
+
+
+### 🤖 Autopilot
+
+Done ✅ (message 13371) — new section added: **"The China Lane Need Not Wait for Black King"** (appears after Oscar's status, before the worst-case section).
+
+**What it says:**
+- The China side can **bypass the DAO as the middleman without waiting** for Black King to be resolved
+- Oscar is already inside the cooperative structure (linked with Orlantildes); Coopercabruca is already getting its MAPA registration ready
+- The cooperative route has **zero dependency on Black King's CNPJ** — Coopercabruca holds its own CNPJ, IE, NF-e, and soon MAPA + GACC
+- China can proceed **directly with Orlantildes/Coopercabruca now** (Bahia member-farmer beans) while Black King's repair runs in parallel for the independent-farmer and Pará flows it uniquely serves
+- Structurally, in that direct route, **Gary Teh and the DAO are not involved** — the DAO is not a required middleman for the China lane
+
+**Also updated:**
+- Worst-case #5 now reads "The China lane still proceeds — because China can work directly with Orlantildes/Coopercabruca, it does not depend on Black King's restoration"
+- Bottom line updated to state the direct route can proceed **now, without waiting for Black King**
+- Summary table: added row *"Does the China lane have to wait? → ❌ No — China can bypass the DAO and deal directly with Coopercabruca now"*
+
+This is the complete briefing for Elizabeth — ready to send.
 
 ———
 **✅ Done this turn — actions taken:**
