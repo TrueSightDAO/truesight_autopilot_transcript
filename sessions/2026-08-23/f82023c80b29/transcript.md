@@ -2375,11 +2375,13 @@ Also still fixed from before: no literal `<b>` tags (real bold on "$5 USD per ba
 ### 🤖 Autopilot
 
 Let me look at the actual page and the rendering mechanism to see why markdown is showing literally.
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page exists on the production domain now (so it got promoted somehow), but it's rendering the manifest's markdown as literal text — which means the `program-shell.js` being loaded on that site is an older version that doesn't render markdown. Let me compare prod vs beta shell code:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2556,4 +2558,54 @@ Say the word and I'll run the beta verify + prod promote.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×3 → ✅ PR #303 on truesight_me_beta merged successfully (sha: 38f373640ad88f5bc58e6f012ae33549d2fd3a1e). Pull Request successfully merged; ✅ PR #304 on truesight_me_beta merged successfully (sha: e540ef3c39659d69aba1f7b3dfb7be462b53f58b). Pull Request successfully merged; ✅ PR #305 on truesight_me_beta merged successfully (sha: 49b43b906676bcf5e0220f29a963c07ea77f2106). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] generate for me an updated PDF which should link to the program page and also not have the weird markdown characters
+
+
+### 🤖 Autopilot
+
+Let me check the current PDF build script and content so I regenerate cleanly with the program-page link and zero markdown artifacts.
+
+
+### 🤖 Autopilot
+
+The v8 was uploaded as v7's file — let me inspect the latest build script and the current hosted PDF's text to see any leftover markdown chars:
+
+
+### 🤖 Autopilot
+
+The hosted PDF is already clean (no asterisk artifacts — `<b>` renders as real bold), but it's missing the **program page link**. Let me regenerate with that added — I'll add it to the scan section and the footer:
+
+
+### 🤖 Autopilot
+
+Built and verified — program page link added, zero markdown artifacts. Re-hosting to the stable link and sending to you:
+
+
+### 🤖 Autopilot
+
+✅ **Updated PDF sent to this chat and re-hosted.**
+
+## What changed (vs the previous version)
+
+| Item | Status |
+|---|---|
+| **Program page link** | ✅ Added — the "Scan a bag" section now lists: **Program page → `truesight.me/programs/founderhaus-farm/`** (plus the existing public scan page + Edgar ledger check) |
+| **Markdown artifacts** | ✅ Zero — verified via text extraction: no `**` / `*` asterisk characters anywhere; `$5 USD per bag` and `$500 USD` render as **real bold** (no literal `<b>` tags) |
+| Everything else | Unchanged — group photo hero (natural portrait), embedded sample QR, terms table, how-it-works, already-underway, 10,000-hectare footer |
+
+## Stable link (same as before, now updated)
+
+`https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/FounderHaus_Farm_Edition.pdf`
+
+**Note:** the program-page link points at the **prod** URL (`truesight.me/programs/founderhaus-farm/`), which is correct for a partner-facing doc — it's live on prod already, and the bold/pill/CTA fixes are pending promotion (beta merged, awaiting your reconcile-then-sync or direct prod PR). Once prod carries the fixes, the linked page will show the polished version.
+
+**RESUME HERE →** pending prod promotion of #303/#304/#305 (bold-markdown + CTA + pill) so the linked program page matches the PDF; then Butterfly Effect logo fix (needs logo file).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && ls -lat fh_farm*.py fh_*.py 2>/dev/null | head -10; echo "---PDFS---"; ls -lat *.pdf 2>/dev/null | head -10; echo "---EXTRACT v8 ; cd /tmp && echo "===v8 build script (tail)==="; tail -60 fh_farm_v8_build.py; echo; echo "===hosted PDF text check==="; curl -s -o /tmp/host; cd /tmp && sed -e "s|Public scan page: <link href='https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1' color='#6a4a1a'>truesight.me/qr/?id=
 
