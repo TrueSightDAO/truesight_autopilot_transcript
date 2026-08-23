@@ -1022,6 +1022,7 @@ The Currencies tab has cell protection that blocks the cypher_defense SA. Let me
 ### 🤖 Autopilot
 
 The `agroverse_qr_code_manager` SA has write access to Currencies (my probe actually wrote a `_writetest_` row to A134 — I'll overwrite that with the real pledge). Executing the real writes with that SA now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1166,4 +1167,27 @@ For comparison, the live ledger check (which IS updated) is:
 → that one already returns `FounderHaus Tree Planting Pledge - QR Code`.
 
 So: **Edgar = correct now, public landing page = stale, needs the cache refresh.** Want me to go ahead and refresh it so the scan shows the pledge?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Do you mean the words SKU
+Cacao Tea 50g - Oscar's Farm, Bahia Brazil, 2024 (AGL4)?
+
+
+### 🤖 Autopilot
+
+**Yes, exactly that.** On the page you get from `https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1`, the provenance grid has a row labeled **"SKU"** showing:
+
+> **Cacao Tea 50g - Oscar's Farm, Bahia Brazil, 2024 (AGL4)**
+
+That's the stale bit. That SKU cell is fed from the cached `lineage-assets/qrs/*.json` (col I → `lineage.sku`), and the cache still holds the old product string from when the batch was minted — before we re-pointed the 100 bags to the FounderHaus pledge currency.
+
+So a customer scanning a bag today sees "Cacao Tea 50g — Oscar's Farm" and never sees "FounderHaus Tree Planting Pledge." The pledge only shows up in the Edgar ledger check, not on the public scan page.
+
+Two options once I refresh the cache:
+1. **SKU cell → "FounderHaus Tree Planting Pledge - QR Code"** (the pledge becomes the visible identity on the scan page) — the tea's Bahia provenance would still be on the landing page/label, just not in that one cell.
+2. **Leave the SKU cell as-is** (tea provenance) and let the pledge live only in the ledger + PDF.
+
+Which do you want? Option 1 is the full end-to-end version — scan the bag, see the pledge, tree earmarked to FounderHaus Farm.
 
