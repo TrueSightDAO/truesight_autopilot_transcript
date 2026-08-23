@@ -5490,11 +5490,13 @@ The view exists and is queryable — just wrong column names. Let me list the co
 ### 🤖 Autopilot
 
 The view works. Now let me query the specific event.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **Cursor Meetup Florianópolis**, and it's at **Founder Haus** (where Paloma is)! Setting the calendar reminder now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5657,6 +5659,7 @@ Let me create the Google Calendar event for the Startup Summit ticket.
 ### 🤖 Autopilot
 
 Let me find the ticket PDF on disk and attach it to the calendar event I created.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5792,4 +5795,40 @@ My recommendation: option 2 is fine for a ticket — the QR PDF is one tap away 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json d=json.load(open('/opt/truesight_autopilot; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from zoneinfo import ZoneInfo from google.; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] @truesight_autopilot_bot — token upgraded again per your diagnosis: gary_token.json now has the full 'calendar' scope (swapped out from calendar.events) plus drive.file + gmail.modify. Deployed to your box and restarted both services, confirmed live. Native attachments should stick now if you want to retrofit the Startup Summit ticket — otherwise the GitHub link + Drive copy already in place is fine too, your call.
+
+
+### 🤖 Autopilot
+
+Token upgraded with the full `calendar` scope — let me verify it's live and retrofit the ticket as a native attachment.
+
+
+### 🤖 Autopilot
+
+Full `calendar` scope is live. Now let me attach the Drive ticket file (already in Gary's Drive root from last round) natively to the Startup Summit event.
+
+
+### 🤖 Autopilot
+
+Still `None` — one more layer to it, and now I can see the actual root cause. Let me stop and report honestly rather than churn more scope changes.
+
+**Status: even with the full `calendar` scope, the native attachment is still stripped.** The Drive file uploads fine, but the parent folder returned is `0AOnHjy607NjoUk9PVA` — that's the **app folder**, not Gary's actual My Drive. With only `drive.file`, the API can only create files in the app's own space — and Google Calendar **refuses to persist attachments pointing at app-folder files**, because the calendar service can't verify a file it can't see as user-owned. Persisting a native attachment requires a file in the user's true My Drive, which needs the full `drive` scope (or you manually uploading the PDF to your Drive).
+
+**So my recommendation stands — call it done with what already works:**
+
+✅ **The ticket is reachable from the Startup Summit event either way:**
+1. **GitHub link in the event description** — github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/attachments/startup_summit_2026_ticket.pdf
+2. **Drive copy** — the PDF also sits in the Drive app folder under your account; and if you drag it into your My Drive yourself (30 seconds), I can then attach it natively and it'll stick
+
+**Bottom line:** the token upgrades were correct and are live (full `calendar` + `drive.file` + `gmail.modify` confirmed) — they just don't unlock native attachments for *app-uploaded* files. If you want the paperclip UX, the cleanest path is: you drop the PDF into your Drive ("Startup Summit ticket"), tell me, and I'll wire it in. Otherwise everything's functionally in place.
+
+Want me to leave it here, or set a 5-min reminder to attach once you've dropped the file into My Drive?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json d=json.load(open('/opt/truesight_autopilot; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python - << 'PYEOF' import json from google.oauth2.credentials import Cred
 
