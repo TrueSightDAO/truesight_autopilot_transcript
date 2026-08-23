@@ -1028,6 +1028,7 @@ The `agroverse_qr_code_manager` SA has write access to Currencies (my probe actu
 ### 🤖 Autopilot
 
 Both writes succeeded. Now let me verify the end-to-end resolution — look up the QR code and check whether the lineage-assets JSON records (which the public QR resolution reads) need a re-seed to reflect the new currency:
+[2 tool result(s) compacted: lookup_qr_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1190,4 +1191,26 @@ Two options once I refresh the cache:
 2. **Leave the SKU cell as-is** (tea provenance) and let the pledge live only in the ledger + PDF.
 
 Which do you want? Option 1 is the full end-to-end version — scan the bag, see the pledge, tree earmarked to FounderHaus Farm.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Isnt this supposed to be auto loaded from the underlying JSON file?
+
+
+### 🤖 Autopilot
+
+Yes — you're exactly right, and that's the gap.
+
+**The page DOES auto-load from the JSON.** When you open `truesight.me/qr/?id=...`, the page itself fetches `lineage-assets/qrs/<id>.json` from GitHub raw and renders it client-side — nothing is hardcoded in the page. So the "auto-load" part works fine.
+
+**The problem is one layer up:** that JSON file is a *snapshot* that was generated from the Google Sheet at seed time (Aug 20 for this batch, `_seeded_at: 2026-08-20T10:26:09Z`). And **nothing re-generates it when the sheet changes.** The 30-minute cron on the box only refreshes the two pending-link caches (`sunmint_pending.json`, `sold_pending_tree.json`) — it does **not** touch the per-QR `qrs/*.json` records. So when we changed col I in the sheet to the FounderHaus pledge, the JSON on GitHub never updated, and the page keeps showing the old SKU.
+
+So the honest architecture answer: **the page auto-loads from the JSON, but the JSON is not auto-synced from the sheet — that's the missing link, and it's a real design gap.** The sheet is the source of truth, and the per-QR JSONs can drift silently whenever a QR row changes (currency re-pointing, price, status…).
+
+**Two fixes — I'd recommend both:**
+1. **Immediate:** re-seed the 101 CT JSONs from the sheet and push — the scan page matches the ledger today.
+2. **Permanent:** extend the sync script so the 30-min cron also refreshes `qrs/*.json` from the sheet (a small PR to `lineage-assets/scripts`) — then sheet changes propagate automatically and this never drifts again.
+
+Want me to do both? (I'd open the PR on a branch, not the dirty local clone, and the one-time re-seed as a clean push of just the CT batch.)
 
