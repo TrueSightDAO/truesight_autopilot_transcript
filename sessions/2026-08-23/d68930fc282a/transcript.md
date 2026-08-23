@@ -1044,3 +1044,63 @@ Two things to keep while you're in there:
 
 Go run Round 2. Ping me with (a) the newest-green per-plugin versions, and (b) the branch name (or the Podfile) — and I'll land the PR from here.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — landed it. PR #21 merged to main (squash): iOS → CocoaPods + plugins pinned geolocation@8.1.0 / filesystem@8.0.0 / camera@8.1.0 (core+ios stay 8.4.2). Also removed the stale SceneDelegate + UIApplicationSceneManifest (CocoaPods template uses the legacy lifecycle + AppDelegate deep-link handlers, which is actually cleaner for PR14's sunmint:// links).
+
+Round 2 result: geolocation and camera could step up one minor (8.1.0), filesystem is stuck at 8.0.0 (any 8.1.0+ pulls IONFilesystemLib 1.1.x = Xcode 26). Camera 8.1.0 works (IONCameraLib 1.0.0 is Xcode-16); I didn't chase camera 8.2.x further since it pins IONCameraLib 1.0.4+.
+
+Verified: xcodebuild BUILD SUCCEEDED + app runs on iPhone 16 Pro simulator.
+
+Remaining for you (your step 3): Android re-verify — the shared package.json downgrade affects Android (was 8.2.x). cap sync android + assembleDebug to confirm no regression. I couldn't run it here (release keystore.properties lives on your box, and even the debug build trips on it). Flagging so it's not lost.
+
+
+### 🤖 Autopilot
+
+Taking step 3 — Android re-verification of the shared downgrade. Let me pull latest main and run the full Android check.
+
+
+### 🤖 Autopilot
+
+PR #21 confirmed on main (d3765d3): plugins pinned camera@8.1.0 / filesystem@8.0.0 / geolocation@8.1.0, core/android/ios at 8.4.2, CapApp-SPM gone, Podfile present. Now the Android regression check — clean install (guarding against another bogus-hash lockfile), sync, and debug build:
+
+
+### 🤖 Autopilot
+
+Clean install: zero bogus hashes, all pinned versions correct. Now `cap sync android` + `assembleDebug` — the actual regression test:
+
+
+### 🤖 Autopilot
+
+**Android re-verify: PASS ✅** — no regression from the iOS-first downgrade.
+
+- `cap sync android` clean (all 7 plugins registered)
+- `assembleDebug` **RC=0** — fresh `app-debug.apk` (18.4MB, built just now 20:08)
+- No errors, only benign unchecked-op warnings from the camera plugin
+- Lockfile clean (`npm ci` OK, zero bogus hashes, 119 packages)
+
+**Full stack now verified green:**
+| Platform | State |
+|---|---|
+| **iOS** | CocoaPods + geolocation 8.1.0 / filesystem 8.0.0 / camera 8.1.0 → **BUILD SUCCEEDED, runs on iPhone 16 Pro sim** (your Mac) |
+| **Android** | same shared package.json → **assembleDebug RC=0** (my box) |
+
+PR #21's shared downgrade is confirmed **non-regressing for Android** — the last open risk from your "flagging so it's not lost" is closed.
+
+**Remaining in the iOS track (from here):**
+1. **Smoke-test the actual app flows on the sim** — online submit, offline+reconnect flush, retake, "Other" species, email link + verification click (the 5 UAT flows). The app runs, but behavior hasn't been walked.
+2. **TestFlight (PR12) / real-device build** — still gated on **Gary's Apple Developer account** ($99/yr) — the one thing neither of us can do.
+3. **HANDOFF_MANIFEST update** — the plan's tracker still says "new — awaiting kickoff" while we're actually at iOS-build-green; I'll correct it so the next session (or Gary) sees the true state.
+
+**RESUME HERE → next turn:**
+1. Update `HANDOFF_MANIFEST.md` + plan resume tracker to true state (PR1–PR21 done; iOS build green on Mac via CocoaPods; Android re-verified; remaining = sim smoke-test of 5 UAT flows + TestFlight gated on Gary's Apple account).
+2. Optionally log the iOS-build fix work as a contribution event (PRs #17/#20/#21) per plan §9.
+3. Ask Gary whether to (a) proceed with the sim smoke-test instructions for the Mac agent, or (b) pause until the Apple Developer account is sorted.
+
+Nothing is blocked on my side — iOS compiles and runs, Android is re-verified, and the shared dependency change is safe for both platforms.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/sunmint_mobile && git fetch origin -q && git checkout main -q && git pull origin main -q 2>&1 | tail -2 && echo ---HEAD--- && git lo; cd /tmp/sunmint_mobile && echo ---BOGUS_CHECK--- && grep -c "ABCDEFGHIJKLMNOPQRSTUVWXYZ" package-lock.json; echo "---NPM_CI---"; rm -rf node; cd /tmp/sunmint_mobile && echo "---CAP_SYNC_ANDROID---"; npx cap sync android 2>&1 | tail -6; echo "sync_rc=$?"; echo "---ASSEMBLE_DEBUG---"
+
