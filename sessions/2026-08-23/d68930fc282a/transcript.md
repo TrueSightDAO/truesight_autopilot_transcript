@@ -823,21 +823,25 @@ RESUME HERE → next turn:
 ### 🤖 Autopilot
 
 Resuming the lockfile fix. First, let me pull the correct integrity hashes for the 4 corrupted entries from my verified local lockfile, and confirm the merged lockfile's structure around them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the correct integrity hashes. Now let me see the exact context of the 4 corrupted entries in the **merged** lockfile so I can build precise surgical hunks.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can build exact surgical hunks. The 4 corrupted entries (android, cli, core, ios) all share the **identical** bogus integrity string, so one `replace_all` hunk fixes all 4 at once. The other 4 plugins (app, camera, filesystem, geolocation) already have valid hashes — untouched. Writing the fix via `git_push_changes`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — 4 identical occurrences. Using `replace_all=true` (all 4 are the corrupted @capacitor entries; the other plugins already have valid distinct hashes, so nothing valid is at risk):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1103,4 +1107,67 @@ Nothing is blocked on my side — iOS compiles and runs, Android is re-verified,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/sunmint_mobile && git fetch origin -q && git checkout main -q && git pull origin main -q 2>&1 | tail -2 && echo ---HEAD--- && git lo; cd /tmp/sunmint_mobile && echo ---BOGUS_CHECK--- && grep -c "ABCDEFGHIJKLMNOPQRSTUVWXYZ" package-lock.json; echo "---NPM_CI---"; rm -rf node; cd /tmp/sunmint_mobile && echo "---CAP_SYNC_ANDROID---"; npx cap sync android 2>&1 | tail -6; echo "sync_rc=$?"; echo "---ASSEMBLE_DEBUG---"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] [Handoff context — this Telegram topic (thread 13445) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+DeepSeek Local — iOS build is done and verified. Next step is TestFlight.
+
+State recap:
+- PR #21 merged: iOS → CocoaPods + plugins pinned (geolocation@8.1.0 / filesystem@8.0.0 / camera@8.1.0, core+ios 8.4.2). BUILD SUCCEEDED + runs on the iPhone 16 Pro simulator (geolocation resolves to a simulated location; camera is simulator-limited by design — works on a real device).
+- So the iOS code track is complete. What remains is distribution.
+
+Next step — figure out TestFlight:
+1. Hard prerequisite (governor action, not yours): provision the Apple Developer Program account ($99/yr). Blocked on Gary.
+2. Once the account exists: create the App Store Connect app record (bundle id me.truesight.sunmint), set up automatic signing, build for a physical device, upload the archive, and publish a public TestFlight link.
+3. Please prep the TestFlight runbook so we can execute the moment the account is provisioned — and flag anything that also needs Gary (e.g. app metadata, privacy labels, screenshots).
+
+Also still open on your side: the Android re-verify after the shared package.json downgrade (cap sync android + assembleDebug) — flagging again so it isn't lost.
+
+Can you take the TestFlight prep as the next unit?
+
+
+### 🤖 Autopilot
+
+Taking the TestFlight prep as the next unit. First, let me gather the full context — the plan's TestFlight section, the actual bundle ID/signing config in the repo, and PR12's status.
+
+
+### 🤖 Autopilot
+
+Context gathered: bundle ID `me.truesight.sunmint` (already set), no `DEVELOPMENT_TEAM` yet, PR12 (TestFlight) never created — blocked on Gary's Apple account, as expected. One critical thing to verify before writing the runbook: Apple's 2026 Xcode-submission requirement, because it may mean Gary's **Intel** Mac (Xcode 16.2) can't upload to TestFlight at all.
+
+
+### 🤖 Autopilot
+
+Confirmed the critical finding: **Apple's Xcode 26 mandate took effect 2026-04-28 — already in force** — and Xcode 26 dropped Intel Macs. So Gary's Intel Mac + Xcode 16.2 **cannot** produce a TestFlight-eligible archive, even with an Apple account. That's a hard blocker that changes the runbook's shape. Writing the runbook + updating the stale manifest now:
+
+
+### 🤖 Autopilot
+
+PR #811 opened with the runbook + manifest update. Per the one-PR-per-turn rule, I'll stop here and report.
+
+**TestFlight prep — done (runbook landed, PR #811).**
+
+**What I delivered this turn:**
+1. **Verified the repo state** — bundle ID `me.truesight.sunmint` already final (both pbxproj + capacitor config), `DEVELOPMENT_TEAM` empty (expected — no account yet), PR12 never created, iOS code track fully green.
+2. **Found a hard blocker you need to know about** (from Apple's official docs): **since 2026-04-28, all App Store Connect uploads must be built with Xcode 26+ — and Xcode 26 dropped Intel Macs.** So Gary's Intel Mac (Xcode 16.2) **cannot** produce a TestFlight-eligible archive, even once he buys the $99 Apple Developer account. This reshapes the whole path.
+3. **Wrote `TESTFLIGHT_RUNBOOK.md`** (agentic_ai_context, PR #811) covering: the mandate finding, **three paths** (recommended: GitHub Actions `macos-15` arm64 runner with Xcode 26 — no new hardware, full YAML workflow included inline; or an Apple-silicon Mac; or rented cloud Mac), the complete Gary-required list (Developer Program $99/yr, App Store Connect app record, ASC API key, app metadata, privacy labels for **photos + precise location**, 1024px icon, screenshots, export-compliance answer), and post-upload steps (public TestFlight link, internal testers, then the 5 real-device UAT flows).
+4. **Fixed the stale manifest** — the SunMint row now shows true state: **active — iOS build green, TestFlight blocked on Gary**, linked to this thread (13445), RESUME HERE = TestFlight execution.
+
+**Android re-verify (flagged twice):** already done last turn — `cap sync android` + `assembleDebug` **RC=0**, fresh APK, no regression from the downgrade. Closed.
+
+**What needs Gary (the actual gate):**
+- Apple Developer Program enrollment ($99/yr) + App Store Connect app record
+- An Apple-silicon build path (or OK the GitHub Actions runner — I'll land the workflow PR the moment he says yes)
+- App metadata + privacy labels + icon + screenshots
+
+**RESUME HERE → next turn:** when Gary confirms the account (or picks Path 1/2), land the `.github/workflows/testflight.yml` in `sunmint_mobile` and execute per the runbook. Meanwhile, the **5 simulator UAT flows can run today** on the Intel Mac — no account needed.
+
+**PR #811:** https://github.com/TrueSightDAO/agentic_ai_context/pull/811
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint_mobile && echo ---BUNDLE_ID--- && grep -m2 "PRODUCT_BUNDLE_IDENTIFIER" ios/App/App.xcodeproj/project.pbxproj; echo ---DEVELO
 
