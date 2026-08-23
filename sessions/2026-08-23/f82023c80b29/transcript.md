@@ -1809,11 +1809,13 @@ Logo verified and the pattern is clear (landing + manifest + members via `progra
 Logo uploaded and stable at `TrueSightDAO/.github/assets/founder-haus-logo.png`. Test suite green (compile/ruff/format pass on the autopilot repo — the ruff "1 error" and reformat notices are pre-existing in untouched test files, none in my code). No Butterfly logo asset exists in `.github/assets` — I'll flag that separately.
 
 Now building the FounderHaus Farm program page (beta-first) — manifest + landing + members + programs.html card, in one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR is up. Let me verify the beta page renders correctly (manifest fetch + landing shell) before reporting:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1955,4 +1957,49 @@ Merging PR #301:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #301 on truesight_me_beta merged successfully (sha: dcddbafbaeb3765c0c4ce06c60bf3c07942a16f9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] promote to production
+
+
+### 🤖 Autopilot
+
+Gary has explicitly approved promotion — syncing the beta changes (FounderHaus Farm program page + SunMint branding) to production:
+
+
+### 🤖 Autopilot
+
+Sync hit a conflict — per protocol I stop and report rather than force. Let me do a quick read-only diagnostic to tell you exactly what's diverged.
+
+
+### 🤖 Autopilot
+
+⚠️ **Sync stopped — conflict detected. I did NOT force it (per protocol: prod/beta CNAMEs intentionally differ; forcing would break the production domain).**
+
+## What happened
+
+`sync_beta_to_prod(truesight_me_prod)` → **merge conflict**. The two repos' histories have diverged — exactly the known, intentional divergence pattern:
+
+**Prod has its own commits that beta doesn't:**
+- PR #19 — *"Fix CNAME: restore truesight.me (was accidentally beta.truesight.me)"* (merged Aug 9) — the CNAME divergence is *deliberate*
+- PR #18 — *"Promote beta → prod: reconcile divergence (markdown renderer; keep CNAME + correct blog text)"* (Jun 8) — a prior manual reconciliation, same pattern
+- PR #20 — *"Add Farmer App link"* (Aug 11)
+
+So the merge-upstream can't cleanly apply the FounderHaus Farm changes on top of prod's divergent history.
+
+## What this means
+
+The FounderHaus Farm program page + SunMint branding are **live on beta** (`beta.truesight.me/...`) but **NOT on production** (`truesight.me/...`) yet. Production still has the old programs.html without the FounderHaus Farm card.
+
+## How to proceed (your call — a human must reconcile, I can't force)
+
+1. **Manual reconcile on prod** (the PR #18 precedent): a human merges beta's changes into `truesight_me_prod` while keeping prod's CNAME (`truesight.me`) intact — then I re-run `sync_beta_to_prod`.
+2. **You reconcile prod's side** (e.g. merge upstream / rebase prod onto beta keeping CNAME), then I re-run the sync.
+3. If you want, I can **prepare the exact reconcile diff** (the FounderHaus Farm files + programs.html card + manifest changes, excluding CNAME) as a reference for whoever does the prod-side merge — but per my rules I can't push/merge to `truesight_me_prod` myself.
+
+**RESUME HERE →** after prod is reconciled, re-run `sync_beta_to_prod(truesight_me_prod)` and verify `truesight.me/programs.html` shows the FounderHaus Farm card + SunMint branding. Still pending: Butterfly Effect logo fix (needs the logo file from you).
+
+Which option do you want?
 
