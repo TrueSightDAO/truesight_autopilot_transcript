@@ -1422,41 +1422,49 @@ Let me read the checkout policy and the checkout script to understand how Stripe
 ### 🤖 Autopilot
 
 The checkout is dynamic (GAS creates a Stripe session on the fly), so let me find how a specific QR/SKU gets its payment link — likely a `price_`/payment-link convention in the sheet or config.
+[3 tool result(s) compacted: search_code, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Stripe checkout is created dynamically per-session, so let me check whether there's a payment-link/landing column in the Currencies sheet and find the SunMint tree image.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the cacao tea currency row (image + landing page) and find the SunMint tree image used for pledges.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the cacao tea currency row (131) and check the QR JSON for any payment/checkout link fields, plus locate the sunmint tree image.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The QR JSON shows the product's `current_landing_page` (agroverse.shop product page) but no direct Stripe link. Let me find the Stripe payment link convention and the SunMint tree image.
+[3 tool result(s) compacted: search_code, search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual Stripe checkout path for this product — checking the shop's checkout config and the product page.
+[3 tool result(s) compacted: search_code, search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full product page to find the buy/checkout link, and check the shop config for how checkout URLs are formed.
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of the product page — the availability/buy section — and check the shop config for the checkout URL pattern.
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1583,4 +1591,88 @@ Since the 100 QRs now carry the FounderHaus pledge currency, and that currency r
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ls -la /tmp/ct_qr_1.png 2>/dev/null; echo "---LIBS---"; python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1 | head -1;; cd /tmp/la_refresh && grep -rn "Cacao Tea" qrs/2024OSCAR_CT_20260820_1.json | head; echo "---"; curl -s "https://api.github.com/repos/TrueSi; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images" | python3 -c "import json,sys; d=json.load(sys.stdin); [print(x[; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] I meant this image
+
+https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/20260822_130000_FOUNDERHAUS_GROUP.jpg
+
+Should show up when someone scans the QR code of a bag of cacao tea. 
+
+Also can we embed this image at the top of the PDF?
+
+
+### 🤖 Autopilot
+
+Good catch — that's the FounderHaus group photo (from the Aug 22 upload). Let me check how the scan page renders its image and what field drives it, so I wire it correctly.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the page body to see exactly which image fields render on scan.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the render logic (the cacao-vs-tree dispatch) to know exactly where an image can appear on scan.
+
+
+### 🤖 Autopilot
+
+Now I see the mechanism clearly. The CT manifest has `asset_type: tree` (because the SKU is now the pledge), so the scan page renders the **tree lineage view**, which supports a `lineage.seedling_photo_url` — that's the image slot that shows on scan. Setting it to the FounderHaus group photo makes the photo appear when someone scans the bag. Let me update all 101 CT JSONs and push:
+
+
+### 🤖 Autopilot
+
+All 101 updated. Pushing to GitHub:
+
+
+### 🤖 Autopilot
+
+Push was rejected — the remote moved (someone/something pushed since my last commit). Let me rebase and push again:
+
+
+### 🤖 Autopilot
+
+There are unstaged changes (the files I deliberately left out — CB/TEST/Bougainvillea). Let me stash, rebase, push, then restore:
+
+
+### 🤖 Autopilot
+
+Pushed successfully (the remote had auto-refreshed caches — the 30-min cron ran — so I rebased onto it and pushed). Now let me verify the public scan page pulls the new photo, and rebuild the PDF with the group photo at the top:
+
+
+### 🤖 Autopilot
+
+JSON verified live on GitHub — the scan page will now pull the FounderHaus group photo (via `seedling_photo_url`, rendered in the tree media section). Now rebuilding the PDF with the group photo as the hero at the top:
+
+
+### 🤖 Autopilot
+
+PDF v6 built with the group photo at the top. Sending it:
+
+
+### 🤖 Autopilot
+
+✅ **Both done — PDF v6 sent with the group photo as the hero at the top, and the scan page now shows the FounderHaus group photo.**
+
+## 1. Scan page → FounderHaus group photo ✅
+
+The CT batch manifests have `asset_type: tree` (since the SKU is now the pledge), and the QR page's tree view renders a **seedling photo** slot (`lineage.seedling_photo_url`). I set that field to your group photo for **all 101 CT JSONs** and pushed (rebased onto the cron's auto-refresh — clean merge):
+
+- **Verified live on GitHub:** `2024OSCAR_CT_20260820_1.json` now carries `seedling_photo_url: …/20260822_130000_FOUNDERHAUS_GROUP.jpg`
+- **On scan:** `truesight.me/qr/?id=2024OSCAR_CT_20260820_1` → shows the **FounderHaus group photo** under the provenance grid (tree media section) ✅
+
+## 2. PDF v6 — group photo at the top ✅
+
+- **Hero image:** the FounderHaus group photo, centered at the top (after the saffron band), with caption *"The founding grove — tree planting at the FounderHaus volunteer site, 21 August 2026. (L–R: Juliana Melo, Cristian Crispim, Gary Teh, Paloma)"*
+- Below it: title, "the farm begins with these trees" framing (now referencing the photo on scan), terms table ($5 USD/bag plain), embedded QR + links, how-it-works, already-underway
+
+**Quick check for you:** scan the PDF's embedded QR (or open the scan link) — you should now see the group photo on the page. One naming note: the page labels that slot "seedling photo," so the group photo will render under a seedling-style heading — functionally right, and if you'd rather it say "Planting crew" or similar on the page, that's a small change to the truesight.me QR page (would need the beta-first flow). Want that, or is this good to share with Paloma?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/la_refresh && python3 -c " import json d = json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print('TOP-LEVEL KEYS:', list(d.keys(; cd /tmp/la_refresh && python3 -c " import json d = json.load(open('qrs/2024OSCAR_CT_20260820_1.json')) print('asset_type:', d.get('asset_typ; cd /tmp/la_refresh && python3 <<'PY' import json, glob, os IMG = "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/2026082; …(+5 more)
 
