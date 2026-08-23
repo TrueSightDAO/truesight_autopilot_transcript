@@ -1016,6 +1016,7 @@ The write path is confirmed working. Now let me execute: (1) create the FounderH
 ### 🤖 Autopilot
 
 The Currencies tab has cell protection that blocks the cypher_defense SA. Let me check which SA can write there and inspect the protected ranges:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1142,4 +1143,27 @@ Here's the honest breakdown:
 So: **the ledger, the money, the trees — all correct and live. The visible QR page label — stale, needs my cache refresh.**
 
 Want me to finish that re-seed + push now so the public page matches? That's the last piece of the end-to-end UAT.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] share me a link so that I understand what you mean by the public QR landing page
+
+
+### 🤖 Autopilot
+
+Here's the actual public landing page for one of the bags:
+
+**https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1**
+
+That's the page someone sees when they scan the QR code on a bag of the cacao tea. It shows the provenance grid: **Farm → Oscar's Farm · State → Bahia · Country → Brazil · Harvest year → 2024 · SKU → Cacao Tea 50g… (AGL4)**.
+
+That "SKU" cell is driven by the cached copy in `lineage-assets/qrs/*.json` — which still shows the old product string, because the sheet doesn't auto-push to it. So if a customer scans the bag right now, they'd see "Cacao Tea 50g - Oscar's Farm" and **not** "FounderHaus Tree Planting Pledge" — the tree-pledge story isn't visible on that page yet.
+
+For comparison, the live ledger check (which IS updated) is:
+**https://edgar.truesight.me/agroverse/qr-code-check?qr_code=2024OSCAR_CT_20260820_1**
+
+→ that one already returns `FounderHaus Tree Planting Pledge - QR Code`.
+
+So: **Edgar = correct now, public landing page = stale, needs the cache refresh.** Want me to go ahead and refresh it so the scan shows the pledge?
 
