@@ -612,16 +612,19 @@ Net: the version-mix root cause is fixed and on the remote — the iOS build sho
 ### 🤖 Autopilot
 
 Landing it now. First, a quick verification pass (hard-rule checks for this JS/Capacitor repo) plus pulling the exact file contents so I have both paths ready to open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All verified: 8.4.2 across core/android/ios/cli, **zero 8.5.0 in the lockfile**, valid JSON, and `Package.swift` pins swift-pm at exact 8.4.2 with all 7 plugins. Now I need the full lockfile content to pass through the PR tool (which uses DAO credentials that CAN open PRs, unlike the `gh` token). Reading it from the artifact in chunks:
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact only holds the lockfile's tail (~957 chars), so I can't faithfully reconstruct all 1503 lines through `writes` — hand-rebuilding a lockfile is exactly the kind of error I shouldn't risk. The right tool is `open_fix_pr`, which runs its own agentic loop (clone → apply the exact fix → npm install → cap sync → PR) and uses DAO credentials that *can* open PRs. Its earlier failure was a transient infra error (`no running event loop`). Retrying it now with the fully-precise fix description:
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -670,6 +673,7 @@ Net: the version-mix root cause is fixed, verified, and on the remote — the mo
 ### 🤖 Autopilot
 
 Good question — short answer: **yes, and it's nearly free.** The build is the same; only the `-destination` flag changes. Let me confirm the app's minimum iOS version to be sure iPhone 12 Pro is in range.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -710,6 +714,7 @@ Holding here — this is your iOS track to decide. Ping me when you want me to r
 ### 🤖 Autopilot
 
 The Mac agent's report has two parts — a Swift API diagnosis and a lockfile defect claim. Both are checkable from here. Critical insight before I act: **identical failures at 8.5.0, 8.4.2, AND 8.2.0 is exactly the signature of a stale SPM binary cache** (SPM keeps using a previously-resolved `capacitor-swift-pm` xcframework regardless of the pin — and I already proved the 8.4.2/8.5.0 Swift *sources* are byte-identical, so a source-level API break between those can't exist). Plus, if Ionic's own plugins at `latest` couldn't compile against any 8.x core, the whole ecosystem would be broken. Let me verify all three claims with evidence — the merged lockfile, the plugin Swift sources, and the core's actual `reject`/`getString` signatures.
+[3 tool result(s) compacted: ssh_run, ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -886,4 +891,63 @@ Net: the corrupted-lockfile blocker is **fixed, tested, and merged**. The Mac re
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/sunmint_mobile && echo ---MY_LOCK_CAP_ENTRIES---; for p in '@capacitor/core' '@capacitor/android' '@capacitor/ios' '@capacitor/cli';; cd /tmp/sunmint_mobile && git show origin/main:package-lock.json | sed -n '55,160p'; rm -rf /tmp/locktest && git clone -q --depth 1 --branch fix/lockfile-integrity-hashes https://github.com/TrueSightDAO/sunmint_mobile.git /tm
 • `merge pr` → ✅ PR #20 on sunmint_mobile merged successfully (sha: 8fc5afe7c79922bc900356f35b134412322fd147). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — I ran your exact unblock (rm -rf ~/Library/Caches/org.swift.swiftpm + ~/Library/Developer/Xcode/DerivedData, then -resolvePackageDependencies with -clonedSourcePackagesDirPath /tmp/fresh-spm, then rebuild). STILL identical failure. Stale-SPM-cache hypothesis is disproven.
+
+Deeper evidence (from the freshly-resolved capacitor-swift-pm 8.4.2 binary):
+- The Capacitor.xcframework's swiftinterface DOES contain `@objc dynamic public func reject(_ message:_ code:_ error:_ data:)` and `resolve()`/`resolve(_ data:)` — inside `@objc extension Capacitor.CAPPluginCall` (lines ~843-857).
+- It also has BOTH getString overloads: 1-arg `getString(_ key:) -> String?` AND 2-arg `getString(_ key:_ defaultValue:) -> String`.
+- Yet the compiler still reports "CAPPluginCall has no member 'reject'" (app/secure-storage/filesystem) and "getString missing argument #2" (filesystem).
+
+So: the API is present in the binary, but the plugin modules can't see it. This smells like an @objc-extension / module-visibility problem (Swift extension members not resolving for external SPM plugin targets) on this Xcode 16.2 / Swift toolchain — not a missing API, not a version pin, not a cache. Likely upstream Capacitor 8 + Xcode 16 territory.
+
+Question for you: is there a known Capacitor 8 issue with Xcode 16 / @objc extension visibility, or a BUILD_LIBRARY_FOR_DISTRIBUTION / module-stability flag the app project is missing? The app's Package.swift uses the prebuilt capacitor-swift-pm xcframework (Capacitor.xcframework.zip), NOT the @capacitor/ios source — that's the compiled surface that's missing the members.
+
+I'll hold for your call on the fix. Simulator + toolchain on this Mac remain ready.
+
+
+### 🤖 Autopilot
+
+The Mac agent has disproven the cache theory and given decisive evidence — the API **is** in the binary's swiftinterface, yet plugin modules can't see it. That's a compiler-visibility problem, not a version problem. Let me check for the known upstream issue before prescribing the fix.
+
+
+### 🤖 Autopilot
+
+This is the answer — **a known upstream Capacitor 8 bug, exactly our symptoms**. Issue **#8333** ("Capacitor 8 Official Plugins fail to compile with SPM due to major API regressions") reproduces our exact errors: `no member 'reject'` + `Missing argument for parameter #2 in call` on `getString`, with the root cause being a swiftinterface guard `#if compiler(>=5.3) && $NonescapableTypes` — an experimental Swift feature (SE-0418) **off by default**, which strips those members from the prebuilt xcframework's visible API. That's precisely why the members exist in the interface but the compiler can't see them. Let me read the full issue thread for the maintainers' fix/workaround, and verify whether Capacitor 7 is clean of the guard.
+
+
+### 🤖 Autopilot
+
+Found it — **this is a known upstream Capacitor 8 bug, and it matches your evidence exactly.** No version pin, cache, or plugin issue is involved.
+
+**The bug (ionic-team/capacitor #8333 — "Capacitor 8 Official Plugins fail to compile with SPM due to major API regressions"):** the prebuilt `Capacitor.xcframework` swiftinterface wraps `CAPPluginCall.reject(...)`, `JSValueContainer.getString(_ key:)`, `CAPBridgeProtocol.viewController/webView`, etc. in:
+```swift
+#if compiler(>=5.3) && $NonescapableTypes
+  @objc dynamic public func reject(_ message:..., _ code:... = nil, ...)
+#endif
+```
+`$NonescapableTypes` (SE-0418) is an **experimental Swift feature that's off by default** — so when your plugins compile against the prebuilt framework, those members are stripped from the visible API: exactly your "API present in swiftinterface but 'no member'" paradox. The git-tag/npm source has no guard (verified: both 7.4.3 and 8.4.2 source show plain `func reject` at line 45) — only the **published binary** has it (built from a newer internal commit, which also explains the earlier "binary ≠ tag" oddity). This is why the failure is **identical across 8.5.0 / 8.4.2 / 8.2.0** — every published 8.x xcframework carries the guard.
+
+**Two more things that shape the fix:**
+- Discussion #8290's "fix" is **update Xcode to 26** — but Xcode 26 dropped Intel support, and this is Gary's **Intel** Mac. That path is closed.
+- So on Intel, SPM + Capacitor-8-prebuilt = cannot compile plugins using `reject`/1-arg `getString`. Full stop.
+
+**Your two real options — please test #1 first (2 minutes, no repo change):**
+```
+xcodebuild -project App.xcodeproj -scheme App -sdk iphonesimulator \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  OTHER_SWIFT_FLAGS="$(inherited) -enable-experimental-feature NonescapableTypes"
+```
+If the compiler accepts the flag and the members become visible (the `$NonescapableTypes` macro evaluates true → guard releases them), the build goes green. Tell me the result — if it works, I'll make it permanent via a `swiftSettings` patch on the plugin targets in `CapApp-SPM/Package.swift` (a PR you can just pull).
+
+**If the flag errors or doesn't propagate to SPM targets, fallback is option 2 — switch the iOS package manager from SPM to CocoaPods** (`npx cap add ios --packagemanager CocoaPods` re-add): CocoaPods compiles Capacitor **from source** (the podspec sources have no guard), so the stripped-interface problem disappears entirely. I can prep that PR from here while you test. A Capacitor 7 downgrade is the last resort (breaks the verified Android 8.x side).
+
+**Hold on the rebuild until you've run the flag test** — one command tells us which landing path to take. Ping me with the output and I'll land the matching repo change (PR) next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint_mobile && echo ---CAP7_REJECT_SOURCE---; curl -sL "https://raw.githubusercontent.com/ionic-team/capacitor/7.4.3/ios/Capacito
 
