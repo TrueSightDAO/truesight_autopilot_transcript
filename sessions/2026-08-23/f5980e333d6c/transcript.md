@@ -66,37 +66,59 @@ $10.60
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check how similar DeepSeek credit contributions were recorded previously, so the format matches.
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No prior DeepSeek-credit filing in context. Let me check the broader pattern for how USD/tooling contributions have been filed.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how previous USD contribution events were filed to match format and TDG handling.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a key instruction in OPERATING_INSTRUCTIONS.md about how to report contributions. Let me read that section.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to read the full section around line 290 of OPERATING_INSTRUCTIONS.md about reporting contributions via dao_client.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact section about reporting contributions via dao_client.
+[1 tool result(s) compacted: search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact OPERATING_INSTRUCTIONS.md section (around line 290) that describes reporting contributions.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -156,4 +178,48 @@ I haven't submitted yet — I ran out of tool rounds while locating the canonica
 
 ## RESUME HERE
 **Next turn:** ask Gary which submission path he wants (dao_client CLI on his Mac, or the autopilot's `submit_contribution` tool) → then submit **[CONTRIBUTION EVENT] — Type: USD, Amount: 10.60, Contributor(s): Gary Teh, Description: "DeepSeek API credit — USD $10.60 (VISA3752, paid 2026-08-23, receipt abdd6cbe…)"** with the receipt PDF attached → report the Edgar submission row/ID back here.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13775] [Handoff context — this Telegram topic (thread 13775) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it.
+
+
+### 🤖 Autopilot
+
+Go — submitting the contribution now. First verifying the exact event fields (per the EVENT DISAMBIGUATION rule), then submitting.
+
+
+### 🤖 Autopilot
+
+Event docs confirmed: **CONTRIBUTION EVENT**, required `Type` + `Amount`, key fields `Type`, `Amount`, `Contributor`. Submitting the signed contribution now.
+
+
+### 🤖 Autopilot
+
+✅ **Reported.** Contribution submitted to Edgar successfully.
+
+**What was submitted:**
+
+| Field | Value |
+|---|---|
+| Event | CONTRIBUTION EVENT |
+| Type | USD |
+| Amount | $10.60 |
+| Contributor(s) | Gary Teh |
+| Description | DeepSeek API credit top-up for DAO AI tooling — $10.00 + $0.60 VAT (China 6%), paid 2026-08-23 via VISA3752, receipt `abdd6cbea818466b992498e4a515611c` (payment `8acb79ce-7175-4aec-aa30-9db2ac9df951`), billed to TrueTech Inc, Laguna Beach CA |
+
+**Notes:**
+- Classified as **[CONTRIBUTION EVENT]** (USD, out-of-pocket operating expense), not CAPITAL INJECTION — that's reserved for external investors wiring into AGL contracts.
+- Filed under your exact ledger name **"Gary Teh"** so Edgar accepts it.
+- The receipt PDF was already auto-extracted at upload; content is captured in the session transcript.
+- If this is meant to earn TDG, the award happens downstream in the contribution scoring flow — nothing more needed from you.
+
+Anything else on this — e.g. want me to also file the same amount as an operating-expense note in OPEN_FOLLOWUPS or a ledger note?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
