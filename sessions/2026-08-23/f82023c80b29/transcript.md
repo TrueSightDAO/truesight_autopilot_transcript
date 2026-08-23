@@ -2799,16 +2799,19 @@ Sync succeeded — no conflict this time (Gary's reconcile of prod's divergence 
 ### 🤖 Autopilot
 
 The sync reported success, but the prod manifest **still shows the old dead URL**. Let me check the actual state of the prod repo's main branch to see what the sync actually did:
+[2 tool result(s) compacted: read_repo_file, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo's `main` is updated (new logo URL), but the live site still served the old manifest — classic Pages/CDN lag. Let me verify the sync commit landed on prod main and re-check the live page with a cache-buster:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repo is promoted (prod `main` has the fix — `1d3729b2` is #306), but the **live site is still serving the old manifest** — that's GitHub Pages deployment/CDN lag (the sync merge landed at 17:01Z, Pages rebuilds take a few minutes). Let me watch the live URL so we get confirmed when it flips:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2858,11 +2861,13 @@ Thoughts?
 ### 🤖 Autopilot
 
 Good design instinct — let me look at the current state machine before giving thoughts. First the States tab itself, then the docs that define how states flow and how agroverse.shop counts "tree financed."
+[3 tool result(s) compacted: read_google_sheet, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The States tab Gary linked is the general initiative-states column; the QR-specific states live in the status dropdowns. Let me read the linking plan (which lists all QR states) and check how agroverse.shop counts trees financed:
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2915,6 +2920,7 @@ Want me to build it (beta-first PRs: tokenomics GAS + agroverse_shop_beta + plan
 ### 🤖 Autopilot
 
 Good catch — let me check what the linking DApp currently lists and whether the plan doc specifies its filter.
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3036,4 +3042,76 @@ This closes the sold→funded→planted gap end-to-end on the backend: the sheet
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/tokenomics 2>/dev/null || cd /tmp && git clone -q https://github.com/TrueSightDAO/tokenomics.git tk 2>/dev/null ; cd /opt/truesight_autopilot/tokenomics 2>/dev/null || cd /tmp/tk; echo "===WEB SERVICE list_sold_pending_tree handler (260-330)==="; sed -n ; cd /tmp/tk 2>/dev/null || cd /opt/truesight_autopilot/tokenomics; echo "===ENUM CONTEXT 525-560==="; sed -n '525,560p' google_app_scripts/1U; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] make sure to update SCHEMA.md when you are done too
+
+
+### 🤖 Autopilot
+
+Good call — SCHEMA.md should carry the new state with the enum change, so I'll fold it into PR #421 (same unit, no new PR). Let me find the exact status-enum section in SCHEMA.md:
+
+
+### 🤖 Autopilot
+
+SCHEMA.md has the exact enum at line 907 plus the States-tab reference around 1124–1160. Let me read both sections precisely so I edit them correctly:
+
+
+### 🤖 Autopilot
+
+Both SCHEMA.md sections located (enum at line 907, States tab at U). Adding the SCHEMA.md updates to PR #421's branch:
+
+
+### 🤖 Autopilot
+
+The search string didn't match — likely whitespace/quote drift. Let me get the exact bytes of the enum line:
+
+
+### 🤖 Autopilot
+
+Found it — the line uses a UTF-8 **em-dash** (`—`), and my search used a plain hyphen. Retrying with the exact character:
+
+
+### 🤖 Autopilot
+
+Still not matching — the em-dash may render differently in the JSON transport. Let me use a shorter, unique search anchor that avoids the em-dash entirely:
+
+
+### 🤖 Autopilot
+
+Push rejected — the tool's fresh clone doesn't have the feature branch from the earlier push (non-fast-forward). Let me retry once; if it still fails, I'll do SCHEMA.md as its own small follow-up PR:
+
+
+### 🤖 Autopilot
+
+The tool can't append to an existing feature branch (its fresh clone can't fast-forward the branch I pushed earlier). SCHEMA.md gets its own clean PR instead:
+
+
+### 🤖 Autopilot
+
+✅ **SCHEMA.md updated — PR #422 opened** (companion docs PR, since the tool can't append to the existing #421 branch).
+
+## PR #422 — https://github.com/TrueSightDAO/tokenomics/pull/422
+
+| Location | Change |
+|---|---|
+| **Status enum (col D)** | `…LOST, SOLD, **TREE_PLANTING_FUNDS_TRANSFERRED**, EXPENSED, ASSIGNED_TO_TREE, GIFT` — with treated-as-sold semantics (public tree count, linking queue, availability pickers) |
+| **States tab (col U)** | "QR code status values" → notes the new state *(sold → funds to farmer → ASSIGNED_TO_TREE)* |
+
+## Where things stand
+
+| PR | Content | Status |
+|---|---|---|
+| **#421** | GAS changes (enum, list endpoint, pickers, link validation, shop counter) | open — await merge |
+| **#422** | SCHEMA.md (this, per your ask) | open — await merge |
+
+**RESUME HERE →** merge #421 + #422 (say the word), then next units: ① dapp_beta PR (update_qr_code.html dropdown + link_tree_planting.html left list with status badges); ② plan-doc state list (SUNMINT_TREE_QR_LINKING_PLAN.md); ③ `clasp push` the GAS changes to the two Apps Script projects (QR-codes mirror `1UrBg…` + agroverse shop `1Y8sJ…`) — I'll flag before deploying; ④ UAT of the new state.
+
+One note: I also spotted while editing that **API.md / API_ENDPOINTS.md** document `list_sold_pending_tree` — I'll update those in the docs pass if you want the endpoint docs to mention the new state too (say the word).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/tokenomics 2>/dev/null && grep -n "ASSIGNED_TO_TREE\|SOLD\|status" SCHEMA.md | head -40; cd /opt/truesight_autopilot/tokenomics 2>/dev/null && echo "===907 area==="; sed -n '900,916p' SCHEMA.md; echo "===States tab 1124-1160===";; cd /opt/truesight_autopilot/tokenomics 2>/dev/null && sed -n '907p' SCHEMA.md | cat -A | head -5
 
