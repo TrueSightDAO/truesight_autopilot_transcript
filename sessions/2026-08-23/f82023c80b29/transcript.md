@@ -1877,31 +1877,37 @@ Good — tie it into the SunMint initiative explicitly. Let me pull the SunMint 
 ### 🤖 Autopilot
 
 Let me check how SunMint is branded elsewhere on the site so the wording matches.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the sunmint landing page and how it's referenced in the site nav.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the current FounderHaus card in programs.html (the earlier read truncated before it):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear — I'll make this explicitly the **SunMint initiative · FounderHaus Farm Edition**. Updating the manifest (initiative field + tagline/description) and the programs.html card in one focused PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One hunk had a typo'd search string — the whole edit was rejected (no partial apply). Let me redo it with only the correct hunks:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Forgot `repo` — redoing:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2067,4 +2073,38 @@ All assets live (PDF 200, group photo 200). Now I'll enrich the landing page: ex
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -lat /tmp/*.pdf /tmp/*FounderHaus* /tmp/*founderhaus* /tmp/ct_qr_1.png 2>/dev/null | head -20; echo "---"; ls -lat /tmp/tg_attachments/ 2; curl -s -o /dev/null -w "%{http_code}" "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/20260822_130000_FOUNDERHAUS_GROUP
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] what is the updated PDF?
+
+
+### 🤖 Autopilot
+
+The updated PDF is the **FounderHaus Farm Edition collaboration brief (v6)** — "One Bag, One Tree — FounderHaus Farm Edition" — the one I just hosted at `.github/assets/FounderHaus_Farm_Edition.pdf` and linked from the landing page.
+
+Here's exactly what it contains (2 pages):
+
+| Section | Content |
+|---|---|
+| **Hero** | Group photo (the founding grove, 21 Aug planting) + caption |
+| **Framing** | "The farm begins with these trees" — 100 bags, each with a ledger-registered QR, cacao from Oscar's Farm Bahia 2024, every bag finances one tree |
+| **Terms of this batch** | Cacao Tea 50g · **$5 USD per bag** · $500 batch value · batch `2024OSCAR_CT_20260820_1..100` · $1.50/tree pledge · 100 trees → founding grove · AGL4 ledger |
+| **Scan section** | **Embedded sample QR** (from the batch) + public scan link + Edgar ledger check link |
+| **How it works** | 4 steps: consignment → pledge booked → trees planted → customer scans |
+| **Already underway** | 21 Aug planting crew (Gary, Paloma, Juliana, Cristian) |
+
+**Live link:** https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/FounderHaus_Farm_Edition.pdf
+
+Let me send you the file itself as well:
+
+
+### 🤖 Autopilot
+
+✅ **PDF v6 sent to this chat** — "One Bag, One Tree — FounderHaus Farm Edition" (2 pages, group photo hero, embedded sample QR, $5 USD/bag terms, how-it-works, already-underway).
+
+**Live link for sharing:** https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/FounderHaus_Farm_Edition.pdf
+
+That's the PDF now linked on the FounderHaus Farm program page (via PR #302, pending merge → beta → prod). Want me to merge #302 and verify the page renders it all?
 
