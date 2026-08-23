@@ -1034,6 +1034,7 @@ Both writes succeeded. Now let me verify the end-to-end resolution — look up t
 ### 🤖 Autopilot
 
 The Edgar lookup already reflects the new currency (reads the sheet live). The lineage-assets JSON cache (`/tmp/seed_run2`) is a **stale local seed copy** — the canonical public cache lives in `TrueSightDAO/lineage-assets`. Let me check whether the public `sold_pending_tree.json` / per-QR JSONs are the public resolution surface and need a refresh, and verify the UAT QR image:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1213,4 +1214,75 @@ So the honest architecture answer: **the page auto-loads from the JSON, but the 
 2. **Permanent:** extend the sync script so the 30-min cron also refreshes `qrs/*.json` from the sheet (a small PR to `lineage-assets/scripts`) — then sheet changes propagate automatically and this never drifts again.
 
 Want me to do both? (I'd open the PR on a branch, not the dirty local clone, and the one-time re-seed as a clean push of just the CT batch.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] so basically refresh the QR code JSON caches?
+
+
+### 🤖 Autopilot
+
+**Yes — exactly that.** Refresh the per-QR JSON caches (`lineage-assets/qrs/*.json`) from the sheet, push to GitHub, and the public landing page auto-loads the new pledge. That's the immediate fix. Let me do it cleanly — fresh clone (not the dirty one) so I don't push anything unintended:
+
+
+### 🤖 Autopilot
+
+Fresh clone is clean and confirms the canonical JSON still has the old SKU. Now let me see the seed script's read+compare logic to understand why the dry-run said "unchanged" — that's the blocker to a clean refresh:
+
+
+### 🤖 Autopilot
+
+That dry-run result is now explained — **`--dry-run` only counts whether the JSON file exists, it does NOT diff the content.** So "unchanged=1782" never actually proved the caches match the sheet. The real diff happens at `--execute`. Let me do a targeted check of what the sheet actually returns for a CT code via the seed path, then execute a scoped refresh:
+
+
+### 🤖 Autopilot
+
+The seed path reads the **new pledge currency correctly** from the sheet — so the earlier "unchanged" was just the dry-run's existence-check quirk (it never actually diffs content). Executing the real refresh now in the clean clone, then pushing:
+
+
+### 🤖 Autopilot
+
+Seed executed — but note **updated=116, created=3** (more than just the 101 CT rows). The canonical repo has drifted on other rows too (like the `minted_by`/landing-page flips I saw earlier). I need to see the full scope before pushing — I won't push unintended changes to unrelated batches:
+
+
+### 🤖 Autopilot
+
+119 files changed, not just 101 — this confirms the caches have been **drifting from the sheet since July** (e.g. the CB batch shows real SOLD sales by Kirsten that the cache never picked up). All changes are legitimate sheet-truth alignment, but I'll keep this push **scoped to the 101 CT files** Gary asked for, and flag the rest as a separate cleanup. Committing + pushing just the CT batch:
+
+
+### 🤖 Autopilot
+
+Pushed. Now let me verify the public page reflects the change end-to-end:
+
+
+### 🤖 Autopilot
+
+✅ **Done — the QR JSON caches are refreshed and pushed. And yes, the public page auto-loads from them, so it now shows the pledge.**
+
+## Verified end-to-end
+
+| Surface | Before | Now |
+|---|---|---|
+| `lineage-assets/qrs/2024OSCAR_CT_20260820_1.json` (GitHub) | `Cacao Tea 50g - Oscar's Farm…` | ✅ **`FounderHaus Tree Planting Pledge - QR Code`** |
+| Public page `truesight.me/qr/?id=2024OSCAR_CT_20260820_1` | stale SKU | ✅ auto-loads the refreshed JSON → shows the pledge (page 200 OK) |
+| Edgar live lookup | ✅ was already correct | ✅ unchanged |
+
+The page fetches `lineage-assets/qrs/*.json` client-side — so refreshing the JSON and pushing to GitHub was exactly the right lever. All **101 CT files** (`_1`…`_100` + `_101`) updated; farm/provenance untouched (Oscar's Farm, Bahia stays).
+
+## Two things I found worth flagging
+
+1. **The caches had been drifting since July.** The seed run showed **119 files** out of sync with the sheet — e.g. the `2024OSCAR_CB_…` batch (cacao beans) shows real **SOLD sales by Kirsten** in the sheet that the public cache never picked up, plus `minted_by`/landing-page differences. **I scoped my push to ONLY the 101 CT files** so nothing unintended went out. But those other ~18 files (CB batch, test rows) are still stale on the public page.
+
+2. **Root cause = design gap:** the sheet never auto-syncs to the per-QR JSONs (the 30-min cron only refreshes `sunmint_pending` / `sold_pending_tree`). That's why this silently drifted.
+
+**Recommended follow-ups** (want me to do either/both?)
+- **A:** Refresh the remaining stale caches (CB batch + tests) so the public pages match the sheet — one more scoped push.
+- **B:** Open a PR to add `qrs/*.json` re-seeding to the 30-min cron, so this never drifts again.
+
+And your **UAT code** is live-ready to scan: `2024OSCAR_CT_20260820_1` → `https://truesight.me/qr/?id=2024OSCAR_CT_20260820_1`
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && rm -rf la_refresh && git clone -q https://github.com/TrueSightDAO/lineage-assets.git la_refresh 2>&1 | tail -2; cd la_refresh && ; sed -n '80,200p' /tmp/seed_run2/lineage-assets/scripts/seed_from_sheet.py; sed -n '45,85p' /tmp/seed_run2/lineage-assets/scripts/seed_from_sheet.py; echo "===MAIN LOOP==="; grep -n "def main\|sheet\|get_all\|values\; …(+4 more)
 
