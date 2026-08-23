@@ -4371,6 +4371,16 @@ Adding a detailed Black King infrastructure section (issues + remedies) to the b
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Full briefing sent ✅ (message 13359) — now **4 pages** with two new sections layered in:
 
 **New Section: "The Black King Infrastructure Issues (in detail)"** — 7 concurrent problems:
@@ -4414,6 +4424,12 @@ In worst case scenario orlantildes and Coopercabruca as the back up plan for Chi
 ### 🤖 Autopilot
 
 Understood — restructuring the document: Black King challenges first, remedies second, then the cooperative route framed as the worst-case backup (DAO not involved), plus the CEPOTX/tree-planting consequence.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4543,4 +4559,85 @@ Note: `create_dao_submission` had the recurring `--type` arg bug, so I used `sub
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Can you recall the current quotation provided by Omega services for delivering this payload?
+
+
+### 🤖 Autopilot
+
+Let me pull up the Omega proposal PDF we downloaded earlier and the SOP cost summary to recall the exact quotation.
+
+
+### 🤖 Autopilot
+
+The /tmp files were cleaned up. Let me pull the quotation from the SOP and the email thread instead.
+
+
+### 🤖 Autopilot
+
+The SOP has the pricing from the Omega thread. Let me also re-fetch the actual proposal PDF from Gmail (the /tmp copy was cleaned) so I can quote the exact figures.
+
+
+### 🤖 Autopilot
+
+Let me read the May 14 email that contained the commercial proposal — the body may summarize the pricing even without re-downloading the attachment.
+
+
+### 🤖 Autopilot
+
+The email body confirms the proposal was attached as a PDF (no inline pricing). The SOP contains the extracted figures — let me pull the cost summary section that was truncated.
+
+
+### 🤖 Autopilot
+
+Here's the recalled quotation from Omega Services for the current payload (Ilhéus → San Francisco):
+
+## 📋 Omega Services Quotation (from May 2026 proposal + thread)
+
+**Brazil side (inland + airport, BRL):**
+
+| Item | Amount |
+|------|--------|
+| Road transport (Ilhéus → Salvador) | **BRL 6,615.00 + 0.15% ad-valorem** (with palletization in Salvador) |
+| Alt: without palletization in Salvador | BRL 7,290.00 + 0.15% ad-valorem |
+| Palletization (3 pallets) | BRL 195.00 |
+| Fumigation (3 pallets) | BRL 500.00 |
+| **Subtotal (Brazil inland + pallets)** | **BRL 7,310.00 + 0.15% ad-valorem** |
+
+**Air freight + export side (USD):**
+
+| Item | Amount |
+|------|--------|
+| Export documentation | **$95.00** |
+| Air freight (tiered per kg) | **$3.50/kg (200kg) → $3.20/kg (1000kg)** |
+| Brazil airport charges | **$0.30/kg** (min $250) |
+| US airline terminal fee | **$212.50** |
+
+**US import side (USD):**
+
+| Item | Amount |
+|------|--------|
+| US import handling | $125.00 |
+| US customs clearance | $150.00 |
+| FDA processing (if req.) | $100.00 |
+| MPF (0.3464% of cargo value) | $33.58–$651.50 |
+| Bond (single-entry) | max($100, $6/$1,000 value) |
+
+**Cost basis context for THIS payload:**
+- Invoice value: **$7,032.53 FOB** (INV-2026-0611-001)
+- Net weight ~307.3 kg / gross ~342.3 kg (so air freight at the 300kg tier ≈ **$3.40/kg** → ~$1,040–1,165 depending on chargeable weight; Brazil charges ~$250 min)
+- **Not included:** duty (if any), customs exam (~$2), final-mile delivery to Kirsten's warehouse
+
+**Two caveats worth flagging:**
+1. The **airline revalidation was still pending** as of the SOP (Graziela said "shortly" on June 5 but hadn't delivered) — rates may have moved since May/June 2026
+2. The proposal PDF itself (`MATHEUS - PROPOSTA DE EXPORTAÇÃO.pdf`, 1.0 MB) was the source — I have the extracted figures in the SOP; the raw PDF was re-shared to this thread earlier (May 14 attachment)
+
+Want me to re-send the original proposal PDF here, or draft a request to Graziela/Omega for a current revalidation of these rates?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/omega_pdf/ 2>/dev/null; echo "==="; cd /tmp/omega_pdf 2>/dev/null && python3 -c " import fitz, glob for f in sorted(glob.glob('*; cd /tmp && cat > fetch_omega_proposal.py << 'PYEOF' import os, base64, json, glob # find gmail token dirs used by autopilot hits = [] for ba
 
