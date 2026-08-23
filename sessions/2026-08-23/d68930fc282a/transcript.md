@@ -734,6 +734,7 @@ Two concrete claims to verify. Let me check what actually got merged to main (th
 ### 🤖 Autopilot
 
 **The 8.4.2 source tag has no `CAPPluginCall.swift` at that path** — but there's a local copy at `node_modules/@capacitor/ios/Capacitor/Capacitor/CAPPluginCall.swift` (8.4.2, from the npm package — wait, that's the npm `@capacitor/ios`, which may be a binary shim). Let me check its actual signatures, and find the true source path on the tag.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -756,6 +757,7 @@ So `call.reject("Unable to get App Info")` and `call.getString("directory", "DOC
 2. **Mac SPM cache** → clear it before rebuilding: `xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath` pointed at a **fresh** dir, or delete `~/Library/Developer/Xcode/DerivedData` + `Package.resolved` (it's untracked) so SPM re-resolves 8.4.2 from scratch.
 
 Let me land the lockfile fix first — the one thing I can do from this box. Preparing the corrected lockfile PR via the DAO PR tool:
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1005,4 +1007,40 @@ Go run Round 1 — ping me with the green versions and I'll land the PR. Nothing
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → for p in @capacitor/geolocation @capacitor/filesystem @capacitor/camera; do echo "== $p =="; npm view "$p" versions --json 2>/dev/null | pyt
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — Round 1 is GREEN. Full fix confirmed, app runs on the simulator.
+
+Combo that compiles + runs (verified on iPhone 16 Pro simulator, process alive, no crash):
+- iOS package manager: **CocoaPods** (NOT SPM — SPM's prebuilt Capacitor binary still strips reject via $NonescapableTypes regardless of plugin version; CocoaPods compiles Capacitor from source).
+- Plugins: geolocation@8.0.0, filesystem@8.0.0, camera@8.0.0 (core stays 8.4.2, @capacitor/ios 8.4.2).
+- ION binaries at these versions: IONGeolocationLib 2.0.0, IONFilesystemLib 1.0.1, camera@8.0.0 has NO IONCameraLib (removed). So these are Xcode-16-compatible.
+
+So the repo change is TWO things, not just a downgrade:
+1. Switch iOS from SPM → CocoaPods (`npx cap add ios --packagemanager CocoaPods`): removes CapApp-SPM/, adds Podfile + App.xcworkspace. This is what actually fixes the reject/getString issue (source vs binary).
+2. Pin geolocation/filesystem/camera to 8.0.0 in package.json (fixes the Xcode-26 ION binaries).
+
+Ready to land. Want me to run Round 2 (step each plugin up one minor to find the newest compatible — e.g. does filesystem@8.1.x / geolocation@8.1.0 still compile?) before you pin, or land 8.0.0 as-is? I can do Round 2 in ~5 min here and report the per-plugin newest-green.
+
+
+### 🤖 Autopilot
+
+Round 2 — **yes, run it, but time-box it.** It's 5 minutes and strictly better if it turns up newer-green versions (bug fixes in geolocation/camera matter for farmers in the field). But the rule is: **any friction at all → stop and land 8.0.0.** We have a green build that runs on the simulator; don't gold-plate it.
+
+One important mechanic I need to flag before you start, so there's no surprise at landing time:
+
+**I can't run the SPM→CocoaPods conversion from this box.** CocoaPods is macOS-only (`pod install` needs Xcode) — this is a Linux autopilot. So the `ios/` structural change (removed `CapApp-SPM/`, added `Podfile` + workspace) **has to come from your Mac clone**, which is exactly where you already have it working. Cleanest split:
+
+1. **You (after Round 2):** commit the full verified state in your clone — `package.json` pins (geolocation/filesystem/camera at newest-green), regenerated `package-lock.json`, the converted `ios/` (Podfile + workspace, `CapApp-SPM/` removed) — on a branch like `fix/ios-cocoapods-8.0.0` and **push it to origin**. Tell me the branch name.
+2. **Me:** verify from here — `npm ci` clean (no placeholder-hash regression), `cap sync android` + `assembleDebug` still green (the shared package.json downgrade must not break the working Android side), diff sanity — then open + merge the PR and post the link + SHA.
+
+If you can't push from the Mac, fallback: paste me the `Podfile` contents + the list of changed/removed files, and I'll reconstruct it via my PR tooling (I can regenerate the lockfile here myself — npm works fine on Linux; only `pod install` doesn't).
+
+Two things to keep while you're in there:
+- **Keep `@capacitor/core` and `@capacitor/ios` at 8.4.2** — the Podfile pins the Capacitor pod to the `@capacitor/ios` version, and 8.0.0 plugins compile against 8.4.2 source (you already proved it runs).
+- **Commit the `Podfile.lock`** if it's generated — standard practice for CocoaPods projects, gives reproducible builds.
+
+Go run Round 2. Ping me with (a) the newest-green per-plugin versions, and (b) the branch name (or the Podfile) — and I'll land the PR from here.
 
