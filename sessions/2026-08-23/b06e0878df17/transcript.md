@@ -922,6 +922,7 @@ Camera block replaced. Now: register the plugin in `capacitor.config.json` (if n
 ### 🤖 Autopilot
 
 `cap sync` picked up `@capacitor/camera@8.2.3` into the Android project. Now rebuild the debug APK to verify the plugin compiles and the app still builds:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1044,4 +1045,169 @@ State unchanged on the execution side, parked exactly where I left it:
 - **Next pending step:** re-apply the 5-row tracker update + RESUME-HERE→PR6 line to `plans/SUNMINT_MOBILE_APP_PLAN.md` on the ready branch `tracker-sunmint-pr6` (my earlier edit was clobbered by the detached-HEAD reset), then commit → push → PR → merge → start **PR6 (native geolocation)** per auto-advance.
 
 Just say "go" (or "resume") and I'll land the tracker PR and pick up PR6.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13386] [Handoff context — this Telegram topic (thread 13386) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go / resume — you're still under the standing auto-advance authorization (auto-advance through PR2, PR4-PR11, one PR per turn, no per-PR check-in needed, stop only at Android UAT). Re-apply the tracker edit, land that PR, then keep going straight into PR6. No need to pause and ask each time unless you hit a real blocker or the UAT gate itself.
+
+
+### 🤖 Autopilot
+
+Resuming under standing auto-advance. Step 1: read the current tracker table + PR6 spec in one pass:
+
+
+### 🤖 Autopilot
+
+Tracker still shows the original RESUME→PR2 (my edit never landed — confirmed). Now let me find PR6's exact scope in the PR breakdown (§5a):
+
+
+### 🤖 Autopilot
+
+PR6 scope confirmed: `@capacitor/geolocation` replaces `navigator.geolocation`, same optional/non-blocking behavior, blank lat/long + "(location not available)" fallback, 8s timeout, never blocks submission.
+
+**Step 1 — land the tracker PR** (re-apply the edit on the ready branch, push, PR, merge):
+
+
+### 🤖 Autopilot
+
+Tracker PR #802 open. Merge it:
+
+
+### 🤖 Autopilot
+
+Tracker PR #802 merged. **Now PR6 — native geolocation.** Let me pull the current geolocation code from the web app to see exactly what to replace:
+
+
+### 🤖 Autopilot
+
+Now let me see where `requestLocation` is called and how `locationNote` is applied, plus install the plugin in parallel:
+
+
+### 🤖 Autopilot
+
+`@capacitor/geolocation@8.2.2` installed. Let me see lines 800-830 (the `locationNote` usage + `requestLocation()` call site) to write the exact replacement:
+
+
+### 🤖 Autopilot
+
+I have everything needed. Now write the PR6 edit — replace `navigator.geolocation` with `@capacitor/geolocation` (same 8s timeout, same blank fallback, same non-blocking):
+
+
+### 🤖 Autopilot
+
+3 `navigator.geolocation` refs — let me verify they're all in the browser-fallback branch:
+
+
+### 🤖 Autopilot
+
+All 3 refs are the comment + fallback branch (correct). Location permissions already in the manifest from PR2. Now `cap sync` + rebuild to verify, then commit/PR/merge:
+
+
+### 🤖 Autopilot
+
+APK builds (7.8 MB). Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #5 open. Merge:
+
+
+### 🤖 Autopilot
+
+**PR6 MERGED** (squash `eba3e2d7`). Continuing auto-advance → **PR7 (native offline queue: SQLite + Filesystem)**. Let me pull PR7's spec + the current IndexedDB implementation:
+
+
+### 🤖 Autopilot
+
+PR7 is the biggest unit so far — SQLite + Filesystem replacing IndexedDB. Let me read the full current queue implementation to design the swap with identical function signatures (so all call sites stay untouched):
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the queue functions (upload/flush/badge):
+
+
+### 🤖 Autopilot
+
+PR7 is the offline-queue storage swap. Full picture: storage functions are `queueTreeReport` / `getPendingTreeReports` / `markTreeReportUploaded` (+ `flushTreeReportQueue` / `updatePendingBadge` / `uploadTreeReport` which call them). Plan: keep **identical function signatures** so all call sites stay untouched; native path → SQLite + Filesystem, web build keeps IndexedDB fallback (like camera/geo). Installing both plugins:
+
+
+### 🤖 Autopilot
+
+Both plugins installed (`@capacitor-community/sqlite@8.1.1`, `@capacitor/filesystem@8.1.3`). Now the PR7 edit — replace the IndexedDB storage layer with native SQLite+Filesystem, keeping identical function signatures and the IndexedDB web fallback:
+
+
+### 🤖 Autopilot
+
+PR7 edit applied cleanly (109 insertions, call sites untouched). Now `cap sync` + rebuild to verify the native plugins compile:
+
+
+### 🤖 Autopilot
+
+APK builds with both plugins (14.7 MB — the SQLite native lib is sizeable). Commit, push, PR, merge:
+
+
+### 🤖 Autopilot
+
+PR #6 open. Merge:
+
+
+### 🤖 Autopilot
+
+**PR7 MERGED** (squash `5cdd9c4a`). Continuing → **PR8 (native secure storage for the RSA keypair)**. Let me pull the spec + current localStorage keypair code:
+
+
+### 🤖 Autopilot
+
+PR8 scope clear: replace `localStorage` for the keypair with native secure storage (Android Keystore / iOS Keychain). The plan suggests `capacitor-secure-storage-plugin` (TBD at PR7/PR8). Let me read the full `ensureKeyPair` + `signText` block and pick the secure-storage plugin:
+
+
+### 🤖 Autopilot
+
+`@aparajita/capacitor-secure-storage@8.0.0` — explicitly "Capacitor 8+ plugin that provides secure storage for the iOS and Android" — is the right choice (we're on Capacitor 8.5.0). It uses Android Keystore / iOS Keychain. Installing it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — PR6/PR7 merged; PR8 mid-flight, no blockers, one clean call left to land it.
+
+## Progress this turn
+
+**✅ PR6 (native geolocation) — MERGED** (squash `eba3e2d7`, PR #5): `@capacitor/geolocation@8.2.2` replaces `navigator.geolocation`; 8s timeout/maxAge 60s, blank lat/long + "(location not available)" fallback, browser fallback retained, never blocks. APK builds 7.8 MB.
+
+**✅ PR7 (native offline queue) — MERGED** (squash `5cdd9c4a`, PR #6): `@capacitor-community/sqlite@8.1.1` + `@capacitor/filesystem@8.1.3` replace IndexedDB — identical function signatures (`queueTreeReport`/`getPendingTreeReports`/`markTreeReportUploaded`), zero call-site churn, IndexedDB web fallback kept, photo blobs → Documents/reports/. APK builds 14.7 MB.
+
+**✅ Tracker PR #802 merged** (resume tracker now points to PR6; rows updated for PR1/2/4/5).
+
+**🔄 PR8 (secure storage for RSA keypair) — in progress:**
+- Spec confirmed (§0.6): `localStorage` → native secure storage (Android Keystore / iOS Keychain), same crypto scheme/export format, no protocol change
+- Plugin chosen: **`@aparajita/capacitor-secure-storage@8.0.0`** — explicitly "Capacitor 8+ … secure storage for iOS and Android"; installed cleanly
+- Current `ensureKeyPair()`/`signText()` block read; the edit is ready to write (replace `localStorage.getItem/setItem` with `SecureStorage.get/set`, keep `crypto.subtle` generation/export/import/sign untouched, fall back to localStorage on web)
+
+**Blocking:** none — only the mechanical write/sync/build/commit/PR/merge sequence remains.
+
+## RESUME HERE → PR8 (next turn, ~6 calls)
+1. **Write the edit** to `www/index.html`: in `ensureKeyPair()`, gate on native (`Capacitor.Plugins.SecureStorage` + platform ≠ web): `SecureStorage.get('publicKey')`/`get('privateKey')` instead of `localStorage.getItem`, `SecureStorage.set(...)` instead of `setItem`, with a try/catch fallback to `localStorage`. Same for any `localStorage` key reads elsewhere. Keep `crypto.subtle` keygen/export/sign byte-identical (PR4 already proved compatibility).
+2. `cap sync android` → `./gradlew assembleDebug` → confirm BUILD SUCCESSFUL (secure-storage plugin adds native deps)
+3. Commit → push `pr8-secure-storage` → open PR via REST → merge squash
+4. Continue auto-advance → **PR9 (sync triggers: `@capacitor/network` + `@capacitor/app`)** — then PR10 (branding), PR11 (release signing — **stop before this: keystore is a credential**, follow `CREDENTIAL_HANDOFF_PROTOCOL.md`, and UAT gate follows)
+
+**Standing:** auto-advance PR6–PR11, one PR per turn, stop only at Android UAT gate (post direct-download APK link + STOP). No blockers anywhere.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → tracker PR #802 apply/push/open/merge; PR6 spec read, geolocation code extracted, `@capacitor/geolocation@8.2.2` install, edit applied (native + browser fallback), sync+build (7.8MB APK), commit/push/PR#5/merge; PR7 spec + IndexedDB code read, `@capacitor/filesystem@8.1.3` + `@capacitor-community/sqlite@8.1.1` install, 109-line storage-layer swap applied, sync+build (14.7MB APK), commit/push/PR#6/merge; PR8 spec read, `ensureKeyPair`/`signText` block extracted, plugin survey (chose @aparajita 8.0.0, Capacitor 8+), install.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /opt/truesight_autopilot/context/agentic_ai_context && sed -n '218,245p' plans/SUNMINT_MOBILE_APP_PLAN.md && echo "=====PR6 SECTION====="; cd /opt/truesight_autopilot/context/agentic_ai_context && grep -n -A6 "PR6" plans/SUNMINT_MOBILE_APP_PLAN.md | grep -v "^\s*$" | sed -n '1,4; cd /opt/truesight_autopilot/context/agentic_ai_context && git checkout -q tracker-sunmint-pr6 2>/dev/null || git switch -q -C tracker-sunmin; …(+19 more)
 
