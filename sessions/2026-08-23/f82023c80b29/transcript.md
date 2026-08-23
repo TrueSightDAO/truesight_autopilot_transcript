@@ -2460,6 +2460,7 @@ https://truesight.me/physical-assets/serialized/?q=2024OSCAR_CT_20260820_
 ### 🤖 Autopilot
 
 Let me check what that serialized-assets page shows so I can pick the right label, and look at the current CTA row on the landing page.
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2467,6 +2468,7 @@ Let me check what that serialized-assets page shows so I can pick the right labe
 The serialized-assets page is **"Product Verification"** — a searchable directory of every QR-coded asset, filterable by batch. For FounderHaus Farm, that's exactly the right surface: it shows all 100 tea bags with their live status (MINTED → SOLD) and provenance. "View cohort →" (which points at the people roster) is indeed the wrong CTA there.
 
 Making the change in beta — renaming the CTA and pointing it at the batch verification page:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2521,11 +2523,13 @@ Want me to update it (beta PR → merge → prod promote with the other two pend
 ### 🤖 Autopilot
 
 On it — updating the pill to **"SunMint initiative"** and merging all pending PRs (#303, #304, + the new pill one). First the pill change:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #305 opened. Merging all three now (#303 bold-markdown, #304 CTA, #305 pill):
+[3 tool result(s) compacted: merge_pr, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2572,21 +2576,25 @@ Say the word and I'll run the beta verify + prod promote.
 ### 🤖 Autopilot
 
 Let me check the current PDF build script and content so I regenerate cleanly with the program-page link and zero markdown artifacts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v8 was uploaded as v7's file — let me inspect the latest build script and the current hosted PDF's text to see any leftover markdown chars:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hosted PDF is already clean (no asterisk artifacts — `<b>` renders as real bold), but it's missing the **program page link**. Let me regenerate with that added — I'll add it to the scan section and the footer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Built and verified — program page link added, zero markdown artifacts. Re-hosting to the stable link and sending to you:
+[2 tool result(s) compacted: upload_local_file_to_github, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2624,11 +2632,13 @@ https://truesight.me/programs.html
 ### 🤖 Autopilot
 
 Let me re-check the Butterfly Effect manifest and hunt for a logo source so I can actually fix it this time.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod manifest 404'd — the path must differ. Let me find where the Butterfly Effect program card + logo URL actually live in prod:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2711,4 +2721,48 @@ This is the same permanent-fix pattern we used for the FounderHaus logo — self
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/.github/git/trees/main?recursive=1" | python3 -c " import json,sys d=json.load; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/butterfly-effect-club/git/trees/main?recursive=1" | python3 -c " import json,s; cd /tmp && curl -s -o be_logo.png "https://raw.githubusercontent.com/TrueSightDAO/butterfly-effect-club/main/cert_template/logo.png" && ls -; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] merge 306
+
+
+### 🤖 Autopilot
+
+Merging PR #306:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #306 merged — Butterfly Effect logo fix is on beta `main`.**
+
+## What I did this turn
+
+| Step | Result |
+|---|---|
+| **Merged** | **https://github.com/TrueSightDAO/truesight_me_beta/pull/306** (`1d3729b`) — `fix/butterfly-effect-logo-url` |
+
+The merged change re-points the Butterfly Effect manifest's `co_brand.partner_logo_url` from the dead `era-professionals.com/.../Butterfly-logo-300x300.png` (404) to the self-hosted stable asset `TrueSightDAO/.github/assets/butterfly-effect-logo.png` (200 OK) — the official logo I found in `butterfly-effect-club/cert_template/logo.png` (300×300, vision-verified: teal-gradient butterfly + "BUTTERFLY EFFECT" wordmark).
+
+## Live on beta shortly (GitHub Pages)
+
+`beta.truesight.me/programs.html` → Butterfly Effect card should now show its logo banner (the JS no longer hits a 404, so the banner renders instead of hiding).
+
+## RESUME HERE → next unit
+
+1. **Verify beta** — fetch `beta.truesight.me/programs.html`, confirm the Butterfly Effect logo banner renders (logo URL resolves to the self-hosted asset).
+2. **Promote to prod** — pending items all still need `truesight_me_prod`: #303 (bold-markdown), #304 (CTA), #305 (SunMint pill), #306 (Butterfly logo). Gary was reconciling prod's CNAME divergence — once resolved, attempt `sync_beta_to_prod(truesight_me_prod)` (or a prod-side mirror PR keeping the CNAME fix); if it conflicts, stop + report, no force.
+3. Still open: backfill Juliana/Cristian emails (contributor onboarding), extend 30-min cron to re-seed `qrs/*.json` (drift fix), Bougainvillea signature-preservation decision.
+
+Say the word and I'll run the beta verify + prod promote.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #306 on truesight_me_beta merged successfully (sha: 1d3729b2dcadf905324ea72a1d97834d2d428203). Pull Request successfully merged
 
