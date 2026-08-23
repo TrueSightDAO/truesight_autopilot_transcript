@@ -4533,16 +4533,19 @@ Let me see the full exports list to make sure I capture all relevant docs.
 ### 🤖 Autopilot
 
 Let me download the related guide PDFs from the repo so I can share the complete doc set.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me share the existing shipment documents as attachments.
+[4 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment, send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One hit rate limit — retrying the 4th attachment.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4725,4 +4728,56 @@ Confirmed — the attachment sent is the **updated v2** (5.9KB vs 4.7KB for v1, 
 3. **Key implication spelled out:** the cooperative route **cannot absorb the existing warehouse inventory** — those beans are stranded if Black King's CNPJ can't be fixed, making the write-off the realistic outcome for that stock
 
 Everything else (legal rep cost, accountant sourcing, trading company route, MAPA readiness, CEPOTX flow, Oscar invitation) retained. Ready to send to Elizabeth.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Elizabeth’s concern is less about this freight from Brazil to San Francisco but the upcoming freights from Brazil to China and specifically for beans from Oscar’s farm which is in Bahia
+
+
+### 🤖 Autopilot
+
+That's a much more forward-looking concern — let me generate a focused update for Elizabeth on the **Brazil→China lane** and specifically **Oscar's beans**.
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending to this thread.
+
+
+### 🤖 Autopilot
+
+Let me verify I sent the correct file — the new PDF's output path may differ from the one I attached.
+
+
+### 🤖 Autopilot
+
+I need to verify the actual output path of the China PDF — I may have sent the wrong file (the previous status update) to the thread.
+
+
+### 🤖 Autopilot
+
+I need to check the actual output path of the China PDF — the artifact got truncated.
+
+
+### 🤖 Autopilot
+
+I sent the wrong file — the China PDF was saved to a different path (`/tmp/autopilot_pdf_45i2zgaa.pdf`). Sending the correct one now.
+
+
+### 🤖 Autopilot
+
+Correct PDF sent ✅ — the one now in the thread (message 13339) is the right file:
+
+**📄 `Brazil → China Lane — Oscar's Farm Beans`** (2 pages, for Elizabeth Wong):
+
+1. **The concern** — Elizabeth's focus: upcoming Brazil→China freights, specifically **Oscar's farm beans (Bahia)**
+2. **Oscar's status** — in Bahia (Coopercabruca's region), now **invited into the cooperative and linked with Orlantildes** ✅
+3. **China lane requirements** — MAPA registration (Coopercabruca getting ready), GACC/CIFER (one per CNPJ), phytosanitary/CoO, export NF-e
+4. **Why Oscar's beans are well-positioned** — cooperative membership covers them, MAPA-ready facility covers them, no dependency on Black King's CNPJ
+5. **Path forward** — China works directly with Orlantildes/Coopercabruca; I brief on China specs; MAPA → CIFER (3–6 months); CEPOTX parallel track
+6. **Legal picture** — cooperative is producer AND exporter; registration stack sits with one healthy entity
+7. **Summary table** — answers: Can Oscar's beans go to China? ✅ Yes, via Coopercabruca
+
+Apologies for the earlier mix-up — the previous attachment was the Brazil→SF status update; the correct China-lane PDF is the one just sent.
 
