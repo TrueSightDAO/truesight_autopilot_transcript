@@ -1660,16 +1660,19 @@ There are unstaged changes (the files I deliberately left out — CB/TEST/Bougai
 ### 🤖 Autopilot
 
 Pushed successfully (the remote had auto-refreshed caches — the 30-min cron ran — so I rebased onto it and pushed). Now let me verify the public scan page pulls the new photo, and rebuild the PDF with the group photo at the top:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JSON verified live on GitHub — the scan page will now pull the FounderHaus group photo (via `seedling_photo_url`, rendered in the tree media section). Now rebuilding the PDF with the group photo as the hero at the top:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v6 built with the group photo at the top. Sending it:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1707,31 +1710,37 @@ By the way, I am noticing on this page https://truesight.me/programs.html the bu
 ### 🤖 Autopilot
 
 Good idea — and good catch on the logo. Let me look at the programs page source and the Butterfly Effect Club references before proposing anything.
+[3 tool result(s) compacted: http_fetch, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of the programs page (the JS that loads logos) and the program-pages credentialing doc.
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the logo-loading JS tail and check the butterfly-effect manifest + logo asset location.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest fetch 301'd (repo renamed — `truesight_me` → likely `truesight_me_prod`). Let me check the right repo and the logo asset:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The logo mechanism is clear now: the page JS loads `co_brand.partner_logo_url` from each program's manifest, and **hides the whole banner on error**. The Butterfly Effect manifest points at `era-professionals.com/wp-content/uploads/2024/12/Butterfly-logo-300x300.png` — an external URL that's clearly failing (hence your missing logo). Let me confirm it's dead and check whether we have a stable copy in `.github/assets/` (the spec's recommended hosting):
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the root cause. Let me do one quick check for the Butterfly Effect logo asset anywhere in the org before I converge:
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1845,4 +1854,64 @@ The logo URL is live (200, 84KB PNG). The beta 404 is expected — the beta site
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s -o founder_haus_logo.png "https://founderhaus.club/assets/founder-haus-logo-DvbPMoUL.png" && python3 -c " from PIL import; curl -s "https://api.github.com/repos/TrueSightDAO/.github/contents/assets" | grep -io '"[^"]*butterfly[^"]*"' | head -20; echo "---grep don; cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 | tail -3; echo "COMPILE_RC=$?"; python3 -m ruff check app sc
 • `merge pr` → ✅ PR #300 on truesight_me_beta merged successfully (sha: d5c150bad82239844c00dda8c83d05f14ed4497a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Indicate that this is part of our SunMint initiative - FounderHaus Farm Edition
+
+
+### 🤖 Autopilot
+
+Good — tie it into the SunMint initiative explicitly. Let me pull the SunMint framing from context and check the current merged state of the page files before editing.
+
+
+### 🤖 Autopilot
+
+Let me check how SunMint is branded elsewhere on the site so the wording matches.
+
+
+### 🤖 Autopilot
+
+Let me check the sunmint landing page and how it's referenced in the site nav.
+
+
+### 🤖 Autopilot
+
+Let me see the current FounderHaus card in programs.html (the earlier read truncated before it):
+
+
+### 🤖 Autopilot
+
+Clear — I'll make this explicitly the **SunMint initiative · FounderHaus Farm Edition**. Updating the manifest (initiative field + tagline/description) and the programs.html card in one focused PR:
+
+
+### 🤖 Autopilot
+
+One hunk had a typo'd search string — the whole edit was rejected (no partial apply). Let me redo it with only the correct hunks:
+
+
+### 🤖 Autopilot
+
+Forgot `repo` — redoing:
+
+
+### 🤖 Autopilot
+
+✅ **PR #301 opened — FounderHaus Farm is now explicitly branded as the SunMint initiative.**
+
+## What changed (per your ask)
+
+| File | Change |
+|---|---|
+| `manifest.json` | + `program_initiative: "SunMint"` · tagline → **"SunMint · One bag, one tree — FounderHaus Farm Edition"** · description opens *"the **FounderHaus Farm Edition** of the **SunMint** regenerative-farm initiative"* · new bullet: **Initiative: SunMint — the DAO's regenerative-finance (ReFi) / tree-planting program** |
+| `programs.html` | Card partner line → **"FounderHaus · SunMint initiative · Regenerative farm · Santa Catarina, Brazil"** · tagline leads with **"SunMint · One bag, one tree — FounderHaus Farm Edition"** |
+
+**PR:** https://github.com/TrueSightDAO/truesight_me_beta/pull/301 (branch `founderhaus-farm-sunmint-branding`)
+
+The whole thing now reads as one coherent story: **SunMint (ReFi/tree-planting initiative) → FounderHaus Farm Edition → 100 bags → first 100 trees**, matching how the ledger already books it (the `FounderHaus Tree Planting Pledge` on the SunMint AGL4 ledger).
+
+**RESUME HERE →** next turn: merge PR #301, confirm it renders on beta (`beta.truesight.me/programs/founderhaus-farm/` shows the SunMint branding), then (still pending) your review before `sync_beta_to_prod` promotion, and the Butterfly Effect logo fix (needs the logo file from you).
+
+**Note:** I left PR #301 unmerged per the one-PR-per-turn rule — say the word and I'll merge + verify in the next turn.
 
