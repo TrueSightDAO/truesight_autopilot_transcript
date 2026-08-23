@@ -720,6 +720,7 @@ The Mac agent's report has two parts — a Swift API diagnosis and a lockfile de
 ### 🤖 Autopilot
 
 Two concrete claims to verify. Let me check what actually got merged to main (the lockfile defect claim) and re-examine the Swift API question.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -727,6 +728,7 @@ Two concrete claims to verify. Let me check what actually got merged to main (th
 **Smoking gun found.** The Mac agent is right about the lockfile — and it's worse than a regeneration issue. **PR #17 (`4205c81`) was NOT created from my fix** — it was created by the `open_fix_pr` autopilot loop, which committed its OWN lockfile that contains **4 bogus integrity hashes** (`sha512-ABCDEFGHIJKLMNOP…` literal placeholders) for the `@capacitor/*@8.4.2` packages. My verified local lockfile (`43a86da`) has **zero** such hashes. So the merged PR's lockfile is corrupted — `npm ci` EINTEGRITY on a clean clone is fully explained.
 
 **And the app/package Swift evidence independently exonerates a "plugin incompatibility" theory:** all three plugins' Swift at `latest` use `call.reject("msg")` (single-arg) and `call.getString("x", "DEFAULT")` — which matches Capacitor **8.x**'s defaulted-param signature, not "Capacitor-7-style." `call.resolve([...])` compiling while `call.reject` fails is a signature-symmetry clue, but the dominant fact is: **these are Ionic's official plugins at `latest` — they cannot all be broken against every 8.x core.** Let me pull the actual Capacitor 8 `CAPPluginCall` Swift API to settle the `reject`/`getString` question definitively.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -950,4 +952,57 @@ If the compiler accepts the flag and the members become visible (the `$Nonescapa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/sunmint_mobile && echo ---CAP7_REJECT_SOURCE---; curl -sL "https://raw.githubusercontent.com/ionic-team/capacitor/7.4.3/ios/Capacito
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] DeepSeek Local — real progress + a second blocker. I switched the local iOS build to CocoaPods and it SOLVED the reject/getString errors (compiles Capacitor from source, no guard). Confirms your source-vs-binary diagnosis.
+
+But now a NEW error, same class of problem one layer down:
+- xcodebuild (workspace) now fails on `@capacitor/geolocation@8.2.2`'s prebuilt `IONGeolocationLib`: "this SDK is not supported by the compiler (built with Apple Swift 6.2.3, this compiler is Swift 6.0.3)".
+- Swift 6.2.3 = Xcode 26. This Mac is Xcode 16.2 (Swift 6.0.3). So the plugin's prebuilt ION binary needs Xcode 26 too — exactly your "Xcode 26 dropped Intel" wall.
+
+So on this Intel Mac the iOS build needs BOTH: (1) CocoaPods (source Capacitor) AND (2) downgrade geolocation/filesystem/camera to versions whose ION*Lib binaries were built with an Xcode-16-compatible Swift. Candidate versions exist: geolocation 8.0.0/8.1.0, filesystem 8.0.0/8.1.0, camera 8.0.0/8.1.0 (pre-ION or older ION). Downgrading plugins touches the shared package.json (Android side too), so I'm holding rather than cascading unilaterally.
+
+Local state: I have a working CocoaPods setup (Podfile + workspace) in my clone. My question: do you want me to (a) try the plugin downgrade locally + report which combo compiles, or (b) you drive the downgrade PR and I just rebuild/test? Simulator + CocoaPods + Xcode 16.2 all ready here.
+
+
+### 🤖 Autopilot
+
+Decision: **(a)** — you experiment locally, I land the verified result. Rationale: I can't compile Swift from here, so the Mac is the source of truth for which ION-lib versions actually build; your local clone change doesn't touch the shared repo; and we only commit versions you've proven green — which protects the Android side from speculative downgrades.
+
+While you test, let me confirm the candidate versions actually exist and pin down the version boundary (last release before the Swift-6.2.3 ION rebuild):
+
+
+### 🤖 Autopilot
+
+**(a) confirmed — you experiment, I land the verified result.** Version inventory gathered, here's the exact test matrix for your local CocoaPods clone:
+
+**Available stable 8.x versions (what you can pin to):**
+| plugin | current | older candidates |
+|---|---|---|
+| geolocation | 8.2.2 | **8.0.0**, **8.1.0**, 8.2.0, 8.2.1 |
+| filesystem | 8.1.3 | **8.0.0**, **8.1.0**, 8.1.1, 8.1.2 |
+| camera | 8.2.3 | **8.0.0**, 8.0.1, 8.0.2, **8.1.0**, 8.2.0, 8.2.1, 8.2.2 |
+
+**Suggested test sequence** (binary age → compile-time compatibility, most conservative first):
+1. **Round 1 — all three at `8.0.0`** (oldest ION or pre-ION): `geolocation@8.0.0 filesystem@8.0.0 camera@8.0.0` → `pod install` → `xcodebuild`. These were the first 8.x releases; if any still embeds an ION binary, it's the oldest one.
+2. **Round 2 — if any compiles at 8.0.0, step UP one minor at a time** (e.g. filesystem 8.1.0 → 8.1.1 → 8.1.2) to find the *newest* compatible version per plugin — we don't want to freeze on ancient versions if we don't have to.
+3. **Record per-plugin**: which version compiles, and the exact `ION*Lib` build error string when one doesn't.
+
+**One important nuance from the npm data:** the "created" dates are npm time-quirks (all showing 2020-12-xx), so **version number ≠ reliable age signal** — a plugin could have been republished under a bumped minor with a newer binary. That's exactly why your local build test is the source of truth, not npm metadata.
+
+**What I'll do once you report the green combo** (e.g. `geolocation@8.1.0 filesystem@8.1.1 camera@8.0.2`):
+1. Pin those exact versions in `package.json` (plugins section only — core stays 8.4.2, `@capacitor/ios` stays 8.4.2) via a PR.
+2. Regenerate `package-lock.json` with a **real `npm install`** (never the placeholder-hash path again — that lesson from PR #17 is burned in).
+3. Verify Android still builds (`cap sync android` + `assembleDebug`) before merging, so the shared package.json downgrade doesn't regress the working Android side.
+4. Merge, post the PR link + SHA here.
+
+**Also worth confirming while you're in there:** after the downgrades, does the **CocoaPods** path still avoid the `NonescapableTypes` guard problem (it should — source compilation), and do the three plugins still link against Capacitor 8.4.2's API (8.0.x plugins + 8.4.2 core should be fine, but the build will tell us)?
+
+Go run Round 1 — ping me with the green versions and I'll land the PR. Nothing else blocks on this side.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → for p in @capacitor/geolocation @capacitor/filesystem @capacitor/camera; do echo "== $p =="; npm view "$p" versions --json 2>/dev/null | pyt
 
