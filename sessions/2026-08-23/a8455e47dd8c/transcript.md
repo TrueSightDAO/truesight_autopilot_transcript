@@ -4174,12 +4174,24 @@ Understood — let me regenerate the PDF with the corrected wording.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me check the output path for this latest PDF.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the output path from the end of the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4309,6 +4321,47 @@ Covers the 5 consequences if Black King's CNPJ can't be brought back to "Ativa":
 Summary table also updated with: *"Worst case if Black King can't be restored? → Oscar's China lane still proceeds; independent warehouse stock is stranded (write-off)."*
 
 Ready for Elizabeth.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Now layer in the details of the issues we are having with black king infrastructure and what are the remedies we are seeking right now
+
+
+### 🤖 Autopilot
+
+Adding a detailed Black King infrastructure section (issues + remedies) to the briefing.
+
+
+### 🤖 Autopilot
+
+Full briefing sent ✅ (message 13359) — now **4 pages** with two new sections layered in:
+
+**New Section: "The Black King Infrastructure Issues (in detail)"** — 7 concurrent problems:
+1. CNPJ **INAPTA** (omission of declarations, 2026-06-08)
+2. **e-CNPJ certificate expired** (early June)
+3. **Missing commerce CNAE** (blocks IE + NF-e)
+4. **Outstanding federal tax debts** (amounts being confirmed)
+5. **RADAR misconception** clarified (Ativa → RADAR, not reverse)
+6. **Unprofessional accounting** ("as a favor", declarations lapsed)
+7. **Local legal-representative requirement**
+
+**New Section: "Remedies Currently Being Sought"** — 9-item table:
+1. New export-savvy accountant (Vini sourcing, ~$1–2k/yr) 🔄
+2. File missed declarations → exit Inapta ⬜
+3. Renew e-CNPJ certificate ⬜
+4. Add commerce CNAE → IE → NF-e ⬜
+5. Settle/negotiate debts (parcelamento/transação up to 65–70%) 🔄
+6. Trading-company bridge (cost check) 🔄
+7. Gary's gov.br + e-CPF (Ouro) + Procuração Eletrônica 🔄
+8. Ltda transformation option (decision doc with Vini) 📋
+9. Cooperative route (structural fallback) ✅
+
+Then the worst-case, legal picture, and summary as before. This is the complete picture for Elizabeth — issues, remedies, and the structural protection for the China lane.
 
 ———
 **✅ Done this turn — actions taken:**
