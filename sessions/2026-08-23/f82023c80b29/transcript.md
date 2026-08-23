@@ -2692,16 +2692,19 @@ Found it — `butterfly-effect-club/cert_template/logo.png` is **300×300** — 
 ### 🤖 Autopilot
 
 The vision call failed (key didn't load) — but the evidence is strong: 300×300 PNG (matching the dead file's name `Butterfly-logo-300x300.png`), living in the program's own certificate template, teal/black brand colors. Let me quickly confirm it's the right logo via vision with the key sourced properly, and host it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Vision confirms it — **the correct Butterfly Effect logo** (stylized butterfly, teal-to-blue gradient, "BUTTERFLY EFFECT" text). I found it in the program's own certificate template. Now let me host it stably and re-point the manifest (beta-first):
+[2 tool result(s) compacted: upload_local_file_to_github, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logo hosted and verified (200 OK). Now re-pointing the Butterfly Effect manifest to the stable URL (beta-first):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2899,4 +2902,55 @@ Today **SOLD → ASSIGNED_TO_TREE is a single hop**, but in reality there are tw
 **One honest nuance:** the counter on agroverse.shop is literally labeled **"Trees planted"** but already counts `SOLD` — so it's really a *"trees financed"* counter wearing the wrong name. Your new state makes that tension visible; if you want, I can relabel it "trees financed" as part of this change.
 
 Want me to build it (beta-first PRs: tokenomics GAS + agroverse_shop_beta + plan-doc update), with `TREE_PLANTING_FUNDS_TRANSFERRED` as the name and the DApp/flag route as the first writer?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Also the linking dapp should also include the list of QR codes in that new state isnt it?
+
+
+### 🤖 Autopilot
+
+Good catch — let me check what the linking DApp currently lists and whether the plan doc specifies its filter.
+
+
+### 🤖 Autopilot
+
+The search found only doc references, not the DApp page itself — let me find the actual `link_tree_planting.html` in the tokenomics repo and read the plan's DApp spec section:
+
+
+### 🤖 Autopilot
+
+Let me read the plan's DApp spec section to see exactly what the linking page should list:
+
+
+### 🤖 Autopilot
+
+**Yes — absolutely, and it's a natural extension of the same change.** Here's how it fits:
+
+## The linking DApp today
+
+The left list (candidate QRs to link to a planting event) is fed by the **PR3(a) endpoint** — `list_sold_pending_tree=true` — which filters **`status = SOLD`** (Owner Email non-empty, Tree Planting Date empty, sorted by sold date desc). So today the linking queue = "sold, waiting for a tree."
+
+## With the new state, the queue should be "sold **or funded**, waiting for a tree"
+
+The new `TREE_PLANTING_FUNDS_TRANSFERRED` QRs are the *most* link-ready candidates — funds have left, farmer paid, tree should come next. So yes:
+
+| Surface | Change |
+|---|---|
+| **PR3(a) endpoint** (`list_sold_pending_tree=true`) | Include rows where status ∈ {`SOLD`, `TREE_PLANTING_FUNDS_TRANSFERRED`} — same other filters (email non-empty, col N empty, sort by col W) |
+| **`link_tree_planting.html` left list** | Shows both states, each row with a **status badge** (SOLD vs TREE_PLANTING_FUNDS_TRANSFERRED) so you can tell "just sold" from "funded, awaiting planting" at a glance — and optionally a "Funded" section header |
+| **Validation in the link handler** (PR4) | Accept both states as valid pre-link statuses (`status ∈ {SOLD, TREE_PLANTING_FUNDS_TRANSFERRED}`), not just `SOLD` |
+
+That closes the loop end-to-end: **sell → fund (state flips) → tree planted → link (state flips to ASSIGNED_TO_TREE)** — and at every step the right queue in the DApp shows exactly the right candidates.
+
+## So the full change set for this initiative
+
+1. **State machine**: add `TREE_PLANTING_FUNDS_TRANSFERRED` (enum + dropdown + pickers)
+2. **agroverse.shop counter**: count it as tree-financed (`SOLD || FUNDS_TRANSFERRED || ASSIGNED_TO_TREE`)
+3. **Linking endpoint + DApp**: include the new state in the candidate list (this ask)
+4. **Link handler**: accept it as a valid pre-link status
+5. **States tab + plan doc**: document it
+
+One thing I'd confirm before building: should `list_sold_pending_tree` keep its name (now slightly misleading) or get renamed to something like `list_pending_tree`? I'd keep the endpoint name for backward-compat and just broaden the filter — say the word and I'll start with the plan-doc update + tokenomics enum PR (beta-first).
 
