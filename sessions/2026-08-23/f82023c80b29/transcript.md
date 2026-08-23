@@ -3974,11 +3974,13 @@ Generator works (414 sold-pending). It needs GITHUB_TOKEN for the push — let m
 ### 🤖 Autopilot
 
 Caches pushed. Now the critical verification — does `sold_pending_tree.json` now contain our QR with the new status, and does the linking DApp badge it? Plus the agroverse.shop count check:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cache still shows our QR as **SOLD** — but Edgar reads the sheet live and shows the new state. So the cache generator is reading a different source (likely the seeded per-QR JSONs, not the live sheet). Let me check the script's actual source:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3986,31 +3988,37 @@ The cache still shows our QR as **SOLD** — but Edgar reads the sheet live and 
 The script reads **`qrs_index.json`** (a per-QR index on lineage-assets), not the live sheet — and that index is seeded from the sheet, so it still says SOLD for our QR. That's the drift we already knew about: **the per-QR JSON cache (`qrs/*.json`) doesn't auto-sync from the sheet**. The 30-min cron regenerates the *aggregate* caches from `qrs_index.json` — which itself is stale.
 
 So to complete UAT I need to refresh the per-QR JSON for our test code from the sheet (same as the CT refresh earlier). Let me check how `qrs_index.json` is built and refresh our one record:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `qrs_index.json` (1776 entries) carries `status: SOLD` for our QR — it's built by `seed_from_sheet.py` (which I ran for the CT batch earlier). To complete UAT I need to refresh the per-QR JSON **and** the index for our one test code. Let me re-seed just that record from the sheet — checking the seed script's scoping options first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The seed script has no per-QR scope (only `--limit`), so a full execute would rewrite all 1776 files — I don't want to re-push everything for one test row. Cleaner approach: **targeted single-record refresh** — update the per-QR JSON + the index entry for `2024OSCAR_CC_20260620_1` directly from the live sheet data. Let me get the sheet's current row state and patch both files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet state confirmed: `TREE_PLANTING_FUNDS_TRANSFERRED`, no tree planted date. Now the targeted patch of the per-QR JSON + index — updating only our test record (matching the seed script's format), then pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both stale (SOLD). Let me patch both to the new status — the per-QR JSON (status + a `funds_transferred` event, matching the seed's event style) and the index entry — then push to lineage-assets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched (our per-QR + index entry). The other dirty files are the ones I deliberately left earlier (Bougainvillea sig-protected, TEST rows, untracked tests). Let me commit **only** the two UAT files (per-QR + index) and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4221,4 +4229,42 @@ print('hits:', json.dumps(hits, ensure_ascii=False))
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== sold_pending_tree.json now (our QR) ==="; curl -s --max-time 25 "https://raw.githubusercontent.com/TrueSightDAO/lineage-assets/mai; cd /tmp && rm -rf tkc && git clone -q --depth 1 https://github.com/TrueSightDAO/tokenomics.git tkc 2>&1 | tail -1; echo "=== GAS project fol; cd /tmp && python3 <<'PY' import gspread from google.oauth2 import service_account key_path = '/opt/truesight_autopilot/config/google/agrove; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Sophia — please file your own [CONTRIBUTION EVENT] for the FounderHaus tree planting work (thread 12741): ~3 hrs (180 min, 300 TDG) as 'Sophia Truesight', covering the QR state #421/#422, dapp #74/#75, GAS deploy, dapp_prod promotion, UAT, and cleanup PR #423. Gary + Deep Seek time is already reported.
+
+
+### 🤖 Autopilot
+
+On it — filing my own contribution event. Let me verify the exact CONTRIBUTION EVENT format first:
+
+
+### 🤖 Autopilot
+
+Format confirmed. Submitting my contribution event now — 180 min, 300 TDG, covering the full initiative:
+
+
+### 🤖 Autopilot
+
+✅ **Contribution filed.**
+
+**[CONTRIBUTION EVENT] submitted successfully via Edgar:**
+
+| Field | Value |
+|---|---|
+| **Contributor(s)** | Sophia Truesight |
+| **Type** | Time (Minutes) |
+| **Amount** | 180 min (~3 hrs) |
+| **TDG Issued** | 300 |
+| **Scope** | FounderHaus tree-planting / `TREE_PLANTING_FUNDS_TRANSFERRED` initiative (thread 12741) |
+
+**Covered units:** tokenomics #421 + #422 · dapp_beta #74 + #75 · lineage-assets #9 + live cron sync · surgical pull-first GAS deploy (3 Apps Script projects) · dapp_beta→dapp_prod promotion · end-to-end UAT (flip → badged in linking queue → shop count intact → restored) · cleanup PR #423.
+
+Gary's and DeepSeek's time is already reported separately per your note — this is just my own 180 min / 300 TDG. All done. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
