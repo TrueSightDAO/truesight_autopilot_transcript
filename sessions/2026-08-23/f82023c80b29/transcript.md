@@ -1982,6 +1982,7 @@ Gary has explicitly approved promotion — syncing the beta changes (FounderHaus
 ### 🤖 Autopilot
 
 Sync hit a conflict — per protocol I stop and report rather than force. Let me do a quick read-only diagnostic to tell you exactly what's diverged.
+[2 tool result(s) compacted: list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2022,21 +2023,25 @@ Which option do you want?
 ### 🤖 Autopilot
 
 Good call — let me see what the current FounderHaus Farm landing page already has, so I add the PDF's details without duplicating.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The landing page is manifest-driven — the description renders from `description_md`. The PDF's extra details (pricing table, pledge economics, how-it-works, group photo, PDF link) aren't on the page yet. Let me check how `program-shell.js` renders the description so I add details correctly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The landing page is manifest-driven and the renderer supports headings/lists/links/paragraphs but **not images or tables** — so I'll (a) expand the manifest `description_md` with the PDF's economics + how-it-works, (b) add the group photo + embedded QR image as static media on the page, and (c) host the PDF and link it. Let me find the local PDF and the group photo first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The landing page is manifest-driven and renders markdown (headings/lists/links — no tables/images), so I'll: (1) host the PDF + assets in `.github/assets`, (2) expand the manifest with the PDF's economics/how-it-works, (3) add the group photo + embedded QR + PDF link as static media on the landing page. Uploading the PDF first:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2212,4 +2217,114 @@ The landing page was never affected (the manifest uses `**` markdown, which the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && ls fh_*.py fh*.py 2>/dev/null; echo "---"; grep -rl "fh_farm_edition_v6\|FOUNDERHAUS_GROUP" /tmp/*.py 2>/dev/null | head; echo "-; cd /tmp && cat > fh_farm_v6_fix.py <<'PY' from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm from reportlab.lib.color; cd /tmp && python3 - <<'PY' # Patch: rebuild v7 with terms-table cells as Paragraph objects so <b> renders as bold import re src = open('fh_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=12741] Also words overflowing out of box
+
+
+### 🤖 Autopilot
+
+Let me actually see what's overflowing — I'll render the PDF pages to images and inspect them visually with Grok vision before fixing.
+
+
+### 🤖 Autopilot
+
+Let me analyze both rendered pages with Grok vision to pinpoint the overflow:
+
+
+### 🤖 Autopilot
+
+The key didn't load — let me find the right env file:
+
+
+### 🤖 Autopilot
+
+Model names are outdated — let me check what the working grok_client uses:
+
+
+### 🤖 Autopilot
+
+The client uses `grok-4-1-fast-non-reasoning` — but the models list shows `grok-4.5` / `grok-4.6` available. Let me use the current vision-capable model to inspect the pages:
+
+
+### 🤖 Autopilot
+
+Grok at 110 dpi says the v7 PDF is clean — but let me check at higher resolution to be sure, since subtle overflow can hide at low DPI.
+
+
+### 🤖 Autopilot
+
+Both vision passes (110 and 180 dpi) say the **PDF v7 is clean — no overflow**. So the overflowing words are likely on a **web page**, not the PDF. The most likely suspects given what changed: the **QR scan page** (the SKU cell now shows the long "FounderHaus Tree Planting Pledge - QR Code" string) or the **programs.html card** (long SunMint tagline). Let me check both:
+
+
+### 🤖 Autopilot
+
+The web pages have `word-break: break-word` on their long values, and Grok's vision pass on the PDF came back clean — but let me do an objective geometry check on the PDF itself (text blocks vs. table borders and margins) plus check for image distortion, since "overflow" is often really a squished QR/photo or a long URL bumping a cell edge.
+
+
+### 🤖 Autopilot
+
+The geometry check found the real issue — **both embedded images are being force-distorted**. Let me confirm the natural dimensions of the source images vs. the boxes I forced:
+
+
+### 🤖 Autopilot
+
+**Found the actual overflow/distortion cause.** The group photo is **portrait** (900×1600, aspect 0.562) but I forced it into a **landscape** box (150×100mm, aspect 1.5) — ReportLab stretches it to fit, so the people look squished/stretched, which reads as "wrong/overflowing." The QR PNG (450×350) into a square box (34×34mm) is similarly distorted.
+
+Let me rebuild preserving each image's natural aspect ratio:
+
+
+### 🤖 Autopilot
+
+The inline comment broke the syntax. Let me fix that:
+
+
+### 🤖 Autopilot
+
+Aspects are now natural (photo 0.561, QR 1.290). Let me render the fixed pages to verify visually, and check the page-2 layout (the QR image is now lower on the page, need to confirm nothing collides):
+
+
+### 🤖 Autopilot
+
+No text/image collisions. Let me do a final visual confirmation of the rebuilt pages with Grok, then ship:
+
+
+### 🤖 Autopilot
+
+Verified clean. Re-hosting the corrected PDF and sending it to you:
+
+
+### 🤖 Autopilot
+
+✅ **Fixed — the "overflow" was image distortion, now corrected.**
+
+## Root cause
+
+The words weren't overflowing — the **images were being stretched into wrong-shaped boxes**, which made the layout look broken:
+
+| Image | Natural size | What I forced | Result |
+|---|---|---|---|
+| Group photo | **portrait** 900×1600 (0.56) | landscape 150×100mm (1.5) | ❌ people squished flat |
+| QR code | 450×350 (1.29) | square 34×34mm (1.0) | ❌ slightly distorted |
+
+ReportLab stretches images to whatever box you give it — my boxes didn't match the images' real proportions.
+
+## The fix (v8)
+
+- **Group photo** → 92×164mm (portrait, **natural 0.561**) — people/tree/building now look right
+- **QR code** → 40×31mm (**natural 1.29**) — square-ish, clean, scannable
+- Verified: no text/image collisions (geometry check) + Grok vision confirms *"group photo looks natural in portrait… no overflow, collisions, or cut-off text"*
+
+**v8 PDF sent to this chat** and re-hosted at the same stable link:
+`https://raw.githubusercontent.com/TrueSightDAO/.github/main/assets/FounderHaus_Farm_Edition.pdf`
+
+Also still fixed from before: no literal `<b>` tags (real bold on "$5 USD per bag").
+
+**RESUME HERE →** the prod promotion is still pending Gary's reconcile of `truesight_me_prod` (sync conflicts on the intentional CNAME divergence) — once resolved, re-run `sync_beta_to_prod` and verify prod shows the FounderHaus Farm program page + updated PDF. Butterfly Effect logo fix still open (needs logo file).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && python3 -c " import fitz d = fitz.open('fh_farm_edition_v7.pdf') for i, page in enumerate(d): pix = page.get_pixmap(dpi=110) pix.; cd /opt/truesight_autopilot && source .env 2>/dev/null; python3 - <<'PY' import base64, os, httpx, json key = os.environ.get("GROK_API_KEY",; cd /opt/truesight_autopilot && ls -la .env* 2>/dev/null; grep -l "GROK_API_KEY" .env* app/../*.env* 2>/dev/null; echo "---"; grep -c "GROK_A; …(+11 more)
 
