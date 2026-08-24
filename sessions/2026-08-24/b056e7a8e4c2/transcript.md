@@ -824,6 +824,7 @@ The audit tab says **Amount 10 / OK** but the offchain inventory leg was written
 ### 🤖 Autopilot
 
 Let me check the clasp mirror directory for the deployed asset-receipt-ingest script.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -879,11 +880,13 @@ wa.me/+14423405782?s=e
 ### 🤖 Autopilot
 
 That's the WhatsApp contact — let me check if this number is already recorded in the DAO context (Jerri's contact?) and tie it to the quotation follow-up.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check if this number appears anywhere in DAO records (context, transcripts, code).
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -920,26 +923,36 @@ Evidence that Elizabeth Wong bought 20 for OUR DAO.
 ### 🤖 Autopilot
 
 Let me examine the evidence image first — trying OCR and QR scan on it.
+[2 tool result(s) compacted: ocr_image, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No text detected and no QR. The image might contain Chinese text (the quote is from a Chinese factory) — let me try OCR with Chinese language support and inspect the image file.
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR came back empty on both English and Chinese — the image is likely a transfer/payment screenshot (mostly graphical, little text, or stylized). Let me preprocess (upscale + contrast) and retry OCR to extract any detail.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still no text. Let me analyze the image content — dominant colors/regions can tell me if this is a photo of the molds, a payment screenshot, or something else.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image reads as warm amber/olive tones — consistent with a photo of the polycarbonate molds themselves rather than a text document. Let me make one more OCR attempt with different page-segmentation modes before I conclude on the image content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1068,4 +1081,80 @@ All three submissions went through and the ledger legs landed. Here's the verifi
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×3 → Contribution submitted successfully.
 • `ssh run` → python3 -c " import gspread, os # use the same SA the tool uses — check for a helper " 2>&1 | head -5
+
+
+### 🧑 Governor
+
+Use this as visual evidence to transfer 10 units from Elizabeth Wong to Kirsten
+
+[Attachment auto-processed: **4f36aa4227ee4d8dbe40c4163b925887.jpg**]
+- Type: Image (OCR confidence: 76.7%, quality: good)
+
+Extracted text:
+```
+10:56 all > {AA a) Kirsten Ritschel ((K) Q, Saturday Big box from Henderson , NV with things just arrived! Edited 4:14PM Kirsten Ritschel yl iA © Big box from Henderson , NV with , things just arrived! ao GO vd
+```
+
+
+### 🤖 Autopilot
+
+Gary's directive is clear — formalize the Elizabeth → Kirsten transfer of 10 molds using the Henderson-box arrival photo as evidence. Let me first confirm the exact current ledger state for the MHC mold rows and upload the evidence photo in parallel.
+
+
+### 🤖 Autopilot
+
+The evidence photo is uploaded. Now let me get the exact current state of the MHC mold rows — I need to see where Elizabeth's balance stands before submitting the transfer.
+
+
+### 🤖 Autopilot
+
+The evidence photo is uploaded (`.github/assets/2026-08-24_mhc_cl082_henderson_box_arrival_kirsten.jpg`). But the current ledger shows something I need to reconcile before submitting: the MHC rows read **Gary Teh 10 / Kirsten Ritschel 10**, and **no Elizabeth Wong row** exists. Let me verify the full state and the audit trail so I don't double-count the transfer.
+
+
+### 🤖 Autopilot
+
+The current ledger shows **Gary Teh 10 + Kirsten Ritschel 10** — and I don't see an Elizabeth Wong row. Before I submit anything (risk of double-booking Kirsten to 20), let me verify the full sheet and the audit trail of my earlier submissions.
+
+
+### 🤖 Autopilot
+
+I need to stop before submitting — the ledger already tells a different story than the transfer you're asking for, and blindly submitting would **double-book Kirsten**. Here's the verified state:
+
+## Current ledger (`offchain asset location`, MHC-CL082 rows)
+
+| Location | Qty | Unit cost | Total |
+|---|---|---|---|
+| **Elizabeth Wong** | — *(row gone, netted to 0)* | $1.27 | — |
+| **Gary Teh** | 10 | $1.27 | $12.70 |
+| **Kirsten Ritschel** | 10 | $1.27 | $12.70 |
+| **Σ** | **20** ✅ | | $25.40 |
+
+The 20 total matches Liz's purchase exactly. **The end state you're describing — Liz 0, Kirsten 10 — is already on the ledger.**
+
+## The audit trail (`offchain transactions`, 8/24/2026)
+
+| # | Entry | Effect |
+|---|---|---|
+| 1 | Receipt (Henderson photo) | Kirsten **+10** |
+| 2 | Receipt (molds photo, Liz bought 20) | Elizabeth **+20** |
+| 3 | Transfer leg (Liz→Gary, qty 10) | Elizabeth **−20** ⚠️ |
+| 4 | Transfer leg (Liz→Gary, qty 10) | Gary **+10** |
+
+**The problem:** entry #3 wrote **−20** instead of −10 (pipeline quirk), which consumed Elizabeth's whole balance — that's why her row is gone and Gary's 10 sits where her remaining 10 should be. Her "10 left" and your "10 to Kirsten" are the **same 10 units** — the ones that physically traveled China → Henderson NV → Kirsten (your photo).
+
+## Why I'm not submitting the transfer
+
+If I now file "Elizabeth → Kirsten, 10":
+- Elizabeth goes **−10** (she has 0)
+- Kirsten goes **10 → 20** ❌ (she physically received one Henderson box = 10)
+
+Total would read 30 ≠ 20. That's a double-count of Kirsten's batch. This falls under the duplicate-guard — the requested transfer has effectively already landed.
+
+## Pick how you want to close it
+
+1. **Leave balances as-is** (they're already correct: Liz 0 · Gary 10 · Kirsten 10) — I add an OPEN_FOLLOWUPS note documenting the audit-trail quirk and attach the Henderson photo as evidence of the Kirsten leg. *(Recommended — zero further ledger risk.)*
+2. **If Gary's 10 should NOT exist** (i.e., all 10 went to Kirsten, none to you): I file a corrective movement — Gary **−10**, Elizabeth back to **+10** → so it reads Liz 10 · Kirsten 10 · Gary 0, then a clean Elizabeth → Kirsten 10 lands you at **Liz 0 · Kirsten 20**… but that only makes sense if a second box of 10 arrived (did it?).
+3. **If you have the actual invoice price**, I'll fix the USD contribution for Liz (currently placeholder **$200.00**; at $1.27/unit it should be **$25.40**) and update the Currencies row.
+
+Which is it — **1, 2, or 3**? And can you confirm: did Kirsten receive **10** molds total, or **20**?
 
