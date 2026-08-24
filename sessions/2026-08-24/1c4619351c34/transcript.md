@@ -322,16 +322,19 @@ The file confirms the exact precedent — `sell_off_middle_bollinger_over_period
 The plan confirms:
 - **PR1**: add `chartjs_spike_norm_values` wrapper in helper (mirroring `chartjs_spike_upper_bollinger`), and in macro_indicator mirror `spike_upper_bollinger_over_period` using `plot_bollinger_middle` → `spike_bollinger_middle_over_period`. Swap both view calls to `chartjs_spike_norm_values`. Update the spec stubs.
 - Let me read the rest of the plan (PR1 exact spec + PR2 section + deploy) so the implementation matches precisely.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the exact PR1 spec from the plan. Let me read the exact current code of the two files I'll edit (helper + view) so my search/replace hunks are precise.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact view and helper. I still need the exact `chartjs_spike_sma_values` / `chartjs_spike_upper_bollinger` wrapper code in the helper (around line 287) to craft exact edits. Let me read that section of the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -630,6 +633,7 @@ Actually — one more thing to verify: does `spec/models/` directory exist? If n
 Also, will the new model spec run green given `require 'spec_helper'` vs `rails_helper`? Existing request spec uses `require 'spec_helper'`. Rails 6 + rspec-rails 5: spec_helper typically requires rails_helper? Let me check spec/spec_helper.rb quickly... that's another tool call. The existing request spec uses `require 'spec_helper'` and creates AR records, so spec_helper must load Rails. My model spec mirrors that. Should be fine.
 
 Let me proceed: search_code for dead-code documentation, then push.I have exact code for all four files. Let me do the final dead-code check (plan step 4) before pushing — confirm all callers of the old methods.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -637,26 +641,31 @@ Let me proceed: search_code for dead-code documentation, then push.I have exact 
 Dead-code check confirms: after PR1, `chartjs_spike_sma_values` / `spike_sma_over_period` remain only as definitions in macro_indicator.rb + daily_trades_helper.rb (plus doc references) — no other live callers. I'll note as dead code, not delete (per plan).
 
 Now, per the local-test-before-push hard rule, I'll apply the identical PR1 edits on the seni_ror checkout **first**, run the suite there, and only then push. Applying the exact hunks (mirroring what git_push_changes will do):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All hunks applied cleanly (new spec file is untracked so not in diff --stat, but written). Now run the suite on the local checkout — full large_spikes + the new model spec.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **8 examples, 0 failures** — the 6 existing request specs + 2 new model specs all green on the local checkout. Let me do one broader sanity run, then revert the local checkout (it's the prod box — must not leave uncommitted changes sitting there).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Model specs green. Now revert the local checkout to pristine (it's the prod box — must not leave uncommitted changes), then push the exact same change set via `git_push_changes` to open PR1.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout reverted (only pre-existing untracked log files remain, untouched). Now push the identical change set to GitHub to open PR1.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -849,4 +858,163 @@ Nothing pending on my side — the merge and deploy are both done and verified.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /home/ubuntu/sentiment_importer && git fetch origin && git checkout master && git pull --ff-only origin master 2>&1 | tail -3 && echo "==; cd /home/ubuntu/sentiment_importer && ./deploy.sh --skip-migrate 2>&1 | tail -30; cd /home/ubuntu/sentiment_importer && head -60 deploy.sh; echo "=== SSH CONFIG ==="; cat ~/.ssh/config 2>/dev/null | head -40; echo "=== /et; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] [Handoff context — this Telegram topic (thread 13953) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue
+
+
+### 🤖 Autopilot
+
+Gary says continue — moving to PR2 (visual polish per plan §3.2). Let me pull the exact PR2 spec from the plan (now on main).
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the plan for the exact PR2 spec.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the PR2 spec.
+
+
+### 🤖 Autopilot
+
+Let me get the final chunk of PR2 section (verdict block elevation + deploy/UAT steps).
+
+
+### 🤖 Autopilot
+
+Let me get the final chunk of the plan — the verdict elevation detail and the UAT/deploy steps.
+
+
+### 🤖 Autopilot
+
+The artifact nesting is recursive — let me grab the plan tail directly from raw.githubusercontent to get the verdict-block elevation detail.
+
+
+### 🤖 Autopilot
+
+The raw fetch got me most of it — let me read the tail of the artifact for the PR2 detail (verdict block elevation + remaining steps).
+
+
+### 🤖 Autopilot
+
+I have the full PR2 spec. Now let me read the current state of the view + CSS on master (post-PR1) so I can implement PR2 precisely.
+
+
+### 🤖 Autopilot
+
+Default branch is `master`. Let me read the view and its CSS from master.
+
+
+### 🤖 Autopilot
+
+Let me read the view tail (scales config where the lead-in trim would go) and the controller.
+
+
+### 🤖 Autopilot
+
+I have the view and controller. Let me read the current spec to see what's already covered (so PR2's spec additions extend rather than duplicate).
+
+
+### 🤖 Autopilot
+
+I have the full picture. Let me read the view tail (the scales/ticks block) so my lead-in-trim hunk is exact.
+
+
+### 🤖 Autopilot
+
+I have everything: the PR2 spec from the plan, current view/CSS/controller/spec on master (post-PR1). Now implementing PR2 per plan §3.2 — test-first on the seni_ror checkout, then revert and push.
+
+All four tweaks, each discrete and revertible:
+1. **Lead-in trim** — compute the first non-zero participation index, slice labels + all 3 series to render from there (auto-scales x-range; header verdict still uses full-series `.last`, so stays correct). Guarded with `is_a?(Array)` so the stubbed-`{}` spec paths don't crash.
+2. **Over-extended shading** `0.10` → `0.06` (v2.9.3 `fill:'end'` kept)
+3. **Norm line** `borderWidth: 2` → `1.5`
+4. **Verdict block elevation** — larger font (16px), padding, `strong` metrics 18px, subtle shadow; mobile-resized
+
+Plus spec coverage per plan §3.2.5: 3 regime cases (Risk-on / Narrow / Over-extended), trim behavior, shading + thin-line assertions.
+
+
+### 🤖 Autopilot
+
+The command was too long and got truncated. Let me split the edits — first write the view-edit script to a file on seni_ror.
+
+
+### 🤖 Autopilot
+
+View script written. Now the spec script:
+
+
+### 🤖 Autopilot
+
+Both scripts written. Now run them against the seni_ror checkout (test-first on the prod box copy, then run the suite, then revert and push the identical change).
+
+
+### 🤖 Autopilot
+
+Both files edited cleanly on the local checkout. Now run the full large_spikes + model specs.
+
+
+### 🤖 Autopilot
+
+**12 examples, 0 failures** — all PR2 tests green (6 original request + 2 model + 4 new legibility/trim tests). The redis-deprecation warnings are pre-existing noise, not failures.
+
+Now revert the local checkout (prod box must stay pristine) and push the identical change set via `git_push_changes`.
+
+
+### 🤖 Autopilot
+
+Checkout reverted to pristine. Now push the identical change set via `git_push_changes` to open PR2. Let me apply the same edits via the tool (which handles the PR machinery).
+
+
+### 🤖 Autopilot
+
+The tool needs the actual hunks passed in — let me supply the same exact search/replace edits I validated on the local checkout.
+
+
+### 🤖 Autopilot
+
+The call lost the top-level params. Let me retry with them explicitly included.
+
+
+### 🤖 Autopilot
+
+PR2 is open. Per the one-PR-per-turn rule, I stop here — the merge gate runs on your next signal.
+
+## What I did this turn
+
+**✅ PR2 opened — `/large_spikes` gauge visual legibility simplification**
+🔗 https://github.com/TrueSightDAO/sentiment_importer/pull/1128 (branch `fix/spike-gauge-legibility-polish`, base `master`, sha `8c9e0c0`)
+
+**The 4 discrete, individually revertible tweaks** (per plan §3.2):
+1. **Trim dead flat-zero lead-in** — chart now auto-scales x-range to start at the first non-zero participation reading (render-slice of labels + all 3 series; underlying data window `@the_period` unchanged; header verdict still reads full-series `.last`). Chose render-slice over shortening `@the_period` per plan's preferred approach — keeps data window honest.
+2. **Lighten Over-extended shading** — `rgba(249, 115, 22, 0.10)` → `0.06` (kept v2.9.3 `fill:'end'`, no v3/v4 objects).
+3. **Thin Norm line** — `borderWidth: 2` → `1.5`.
+4. **Elevate verdict block** — `.breakout-now` font 14→16px, padding up, metric strong 18px, subtle shadow, mobile rule.
+
+**Testing (test-first on seni_ror checkout, then reverted pristine):**
+- `bundle exec rspec spec/requests/large_spikes_spec.rb spec/models/macro_indicator_spec.rb` → **12 examples, 0 failures** (6 original + 2 PR1 model + 4 new PR2: softened shading/thin line, all 3 regime verdicts, lead-in trim).
+- Same hunks pushed via `git_push_changes` — 7 edits applied, PR opened.
+
+**Not in scope (flagged, not done):** dead code from PR1 (`spike_sma_over_period` / `chartjs_spike_sma_values`) — noted in PR body for human decision.
+
+## RESUME HERE → PR2 merge + deploy
+1. **Post readiness** — PR2 is ready, tested, in-scope. Per the pre-authorized arc, on your **`go`** I merge #1128 (`merge_pr`), then deploy `./deploy.sh --skip-migrate` on seni_ror, verify live, and hand to you for UAT on perch.truesight.me `/large_spikes`.
+2. Standing rule honored: sentiment_importer is own-repo — I don't self-merge without your explicit go for PR2 (a human on the thread may also merge directly per the plan's envelope).
+3. After UAT: close the arc (update plan resume tracker if desired).
+
+Nothing else pending — PR2 is parked at the merge gate awaiting your signal.
+
+———
+**✅ Done this turn — actions taken:**
+• read plan ×5 (PR2 spec §3.2) · read view/controller/spec on master ×4 · wrote + ran view & spec patch scripts on seni_ror (12/12 green) · reverted checkout · git_push_changes → PR #1128
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cat > /tmp/pr2_view.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8') as f: s = f.read() for i, (old, new); cat > /tmp/pr2_spec.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8') as f: s = f.read() for i, (old, new); cd /home/ubuntu/sentiment_importer && python3 /tmp/pr2_view.py && python3 /tmp/pr2_spec.py && echo "=== git diff stat ===" && git diff --sta; …(+2 more)
 
