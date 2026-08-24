@@ -1809,6 +1809,7 @@ Client-side timeout again (GAS processing runs past the fetch window — we saw 
 ### 🤖 Autopilot
 
 Now check the tail of the Inventory Movement tab for the test row (searching for the e2e marker):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1988,4 +1989,80 @@ Good question — let me give you an honest accounting. Most of it is *measured*
 | **Total active** | **~4.5–6 h** |
 
 Want me to log this as a CONTRIBUTION EVENT (e.g., my ~4h of diagnostic/remediation work as minutes, plus a note in OPEN_FOLLOWUPS.md about the webhook-pinning lesson)? I can do that if you approve the amounts.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] file raw execution for you and me direct time
+
+
+### 🤖 Autopilot
+
+Filing both. First the canonical CONTRIBUTION EVENT format, then two submissions (my raw execution ~60 min, your direct time ~60 min — midpoint of the 0.75–1.5h estimate):
+
+
+### 🤖 Autopilot
+
+Format confirmed. Submitting both contribution events — my raw execution time (~60 min) and Gary's direct time (~60 min, midpoint of estimate):
+
+
+### 🤖 Autopilot
+
+Both failed — let me check the exact attribute keys the Edgar API expects (the docs said `Contributor(s)`, not `Contributor`):
+
+
+### 🤖 Autopilot
+
+Let me look at how the tool formats submissions — reading the tool implementation that maps attributes → Edgar payload:
+
+
+### 🤖 Autopilot
+
+Let me check the local autopilot codebase for the submit implementation:
+
+
+### 🤖 Autopilot
+
+Let me read the actual `submit_contribution` call site to see the exact attribute keys it sends:
+
+
+### 🤖 Autopilot
+
+Let me search the file for the exact submit_contribution call to see the attribute key names:
+
+
+### 🤖 Autopilot
+
+The tool passes attributes through to `edgar.submit_contribution(event_name, attributes, description=...)`. The docs' canonical labels say `Contributor(s)` and `TDG Issued` — the failure may be because I used `TDG Issued: "0"` (should it be omitted?) or `Contributor` vs `Contributor(s)`. Let me check the EdgarLogger implementation for the exact expected keys:
+
+
+### 🤖 Autopilot
+
+Found it — the canonical key is **`Contributors`** (plural), and the format uses `"Type"`, `"Amount"`, `"Description"`, `"Contributors"`, optionally `"PR URL"` (no `TDG Issued`, no `Contributor`). The reference `log_contribution` uses exactly `truesight-autopilot` as the contributor. Let me re-submit both with the correct keys:
+
+
+### 🤖 Autopilot
+
+Both contributions filed successfully. ✅
+
+## Filed
+
+| Contributor | Type | Amount | What |
+|---|---|---|---|
+| **Sophia Truesight** | Time (Minutes) | **60 min** | Raw machine execution — ~200 tool ops (SSH diagnostics, sheet reads, 3× GAS deploys, webhook fires, key registration/verification, PRs #424/#425/#312) |
+| **Gary Teh** | Time (Minutes) | **60 min** | Direct time — 17 thread messages (voice), checking the sheet, reviewing diagnosis, directing fixes, approving merges |
+
+Both submitted as **CONTRIBUTION EVENT**s with the canonical field format (`Type`, `Amount`, `Description`, `Contributors` — the first attempt failed because I used `Contributor`/`TDG Issued`, which aren't in the event's accepted keys; corrected to `Contributors`).
+
+**Notes:**
+- I filed **raw execution** (~60 min) for myself and **direct time** (~60 min, midpoint of the 0.75–1.5h estimate) for you, exactly as you asked — no TDG awarded (amounts are informational; TDG issuance is a separate decision).
+- Both will appear in the Recent Contributions ledger / dapp once Edgar processes them.
+- The descriptions embed the incident root-cause summary so the ledger is self-documenting.
+
+Want me to also file the **diagnostic/analysis** portion separately (the ~3–4h of engagement beyond raw execution), or keep this to just the two entries you asked for?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×4 → Failed to submit contribution.; Contribution submitted successfully.
+• `ssh run` ×4 → cd /opt/truesight_autopilot && grep -rn "submit_contribution\|def submit" app/ scripts/ --include='*.py' 2>/dev/null | grep -iE 'contributio; cd /opt/truesight_autopilot && sed -n '2060,2100p' app/main.py; cd /opt/truesight_autopilot && grep -n "def submit_contribution\|Contributor\|TDG\|required" app/edgar_logger.py | head -30; …(+1 more)
 
