@@ -65,3 +65,27 @@ The latest instruction on record is **53% you / 47% Liz**, and the $530 / 5,300-
 
 Want me to draft a reply to Jeffrey confirming the 53/47 split and asking where to return the signed docs (or flag anything for Liz)?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13846] Which are the documents that need my signature??
+
+
+### 🤖 Autopilot
+
+Based on the email thread (Jeffrey's 24 Aug package lists 5 docs "to be signed and scanned back"), here's who needs to sign what — inferred from the thread because the email reader can't open the actual attachments:
+
+| # | Document | Gary's signature? | Why |
+|---|----------|-------------------|-----|
+| 1 | **Engagement letter** (Prima) | ✅ Yes | Signed by the company's directors — you're being appointed director |
+| 2 | **DR — appoint new director & secretary, accept resignations, change registered office** | ✅ Yes | Appoints **you** as director; the resolution is signed by shareholders (you + Liz) |
+| 3 | **DR — open OCBC bank account** | ✅ Yes | You're the account signatory — you confirmed "Singly is ok" (22 Aug) |
+| 4 | **DR — approve transfer of shares** | ✅ Yes | You're the **buyer** of Liz's 5,300 shares (SGD 530) |
+| 5 | **E-stamping form** | ✅ Yes | Share transfer instrument — signed by transferor (Liz) **and** transferee (you) |
+
+**Bottom line: all 5 need your signature** — you're on every document either as incoming director, bank signatory, or share transferee. Liz also signs #1, #2, #4, and #5 (she's co-director/shareholder, transferor, and the one resigning her shareholding).
+
+One caveat: I'm working from the thread text, not the attached PDFs themselves — if you forward me the attachments (or upload the PDFs here), I can scan the actual documents and confirm exactly which signature blocks have your name vs Liz's.
+
+Want me to draft a reply to Jeffrey confirming you'll sign all 5 and asking him to confirm the 53/47 ownership split on the share-transfer DR before you sign?
+
