@@ -116,36 +116,43 @@ The status function is now clear. The 2026-08-20 submission's signature key (`..
 ### 🤖 Autopilot
 
 The authorization logic is clear now. Let me verify the key question: is the digital signature used in the 2026-08-20 submission (`...yrjcz4Y9...`) actually registered in the Contributors Digital Signatures sheet? And what do columns S/T say on the Telegram Chat Logs row for this submission?
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The status logic is now fully clear. The key question: does the submitted signature (`...yrjcz4Y9...`) resolve to a registered ACTIVE contributor — and what do the Telegram row's S/T (Is Governor / Is Sentinel) columns say? Let me check the full signature list and the actual Telegram Chat Logs row for this submission.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full signature list for the submitted key, and check the transcript session referenced in the submission.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript confirms this session (2026-08-20, thread 11684 — Gary's label-printer research). Now let me verify the two decisive data points: (1) is the submission's digital signature (`...yrjcz4Y9...`) registered in the Contributors Digital Signatures sheet, and (2) what do the Telegram Chat Logs row's Is-Governor / Is-Sentinel columns (S/T) say for this Edgar submission.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've confirmed the submission and the authorization function. Now I need two decisive facts: (1) what the Telegram Chat Logs row shows in columns S/T (Is Governor / Is Sentinel) for this Edgar submission, and (2) whether the submitted signature key is registered in Contributors Digital Signatures. Let me check the signing docs and find the exact Telegram row.
+[2 tool result(s) compacted: read_context_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The status function is clear. Now I need to find (1) how the Telegram Chat Logs row for this Edgar submission looks (cols S/T), and (2) whether the submission's signature key (`...yrjcz4Y9...` — the autopilot's key, since it says "generated using truesight_autopilot") actually resolves in the Contributors Digital Signatures sheet. Let me read the main processing body of the GAS script and check the autopilot's registered key locally.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The key finding so far: the submitted signature is the **autopilot's own key** (my `PUBLIC_KEY` from `.env` — the diff mismatch is only the leading/trailing quote chars from the env file). Now let me check whether that key is registered in the Contributors Digital Signatures sheet, and how Edgar populates the Is-Governor / Is-Sentinel columns.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -282,4 +289,95 @@ One more thing I'll verify next turn: the full body of the status function (it w
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 - <<'EOF' import os, json, subprocess gac = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS','') print
 • `merge pr` → ✅ PR #424 on tokenomics merged successfully (sha: 8d6938874fa6a4f3dad55428b67207867165f6f3). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] So, I guess you need to register yourself as an administrator, but come be the case right because you already, the other transactions by you all came true, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question — let me verify that precisely, because it determines whether registration is even the fix. Checking three things in parallel: (1) whether the current signing key appears anywhere in the signature sheet I pulled, (2) the full status function logic, and (3) how the autopilot's own registration flow is meant to work.
+
+
+### 🤖 Autopilot
+
+Good challenge — and I found something in my earlier notes that contradicts my own conclusion, so let me verify properly before answering. Three checks in parallel: the full signature-key column, whether earlier PROCESSED movements were actually signed by *me* or by *you*, and the Inventory tab's column layout.
+
+
+### 🤖 Autopilot
+
+Let me verify the key claim in your question — did my earlier autopilot-signed transactions actually get PROCESSED, or were the successful ones signed by you? Checking the Inventory Movement tab around that era.
+
+
+### 🤖 Autopilot
+
+The rows I'm seeing are all signed by **David Campbell** (`54jNZdN4...`) — registered keys, PROCESSED. That's the key pattern. Let me check the tail of that artifact for the actual 2026-08-20 autopilot-signed rows (around row 673) to confirm whether *any* of my autopilot-signed movements were ever PROCESSED.
+
+
+### 🤖 Autopilot
+
+You're right to push on that — and the check I just ran shows there's **no contradiction**. Here's the key finding:
+
+- The movements that went through as **PROCESSED** (e.g. your 2026-07-10 batch to Kirsten) were signed with key `…ArMTOvEf…` — that's **your** registered ACTIVE key in the `Contributors Digital Signatures` sheet. Same for David Campbell's rows (`…54jNZdN4…`, also registered ACTIVE).
+- Those were **human keys**. Mine (the autopilot's) was never in that sheet as an ACTIVE signer whose name is in `TRUSTED_AGENTS` — so every submission signed by my key falls through to `unauthorized`.
+
+So yes: **I need to register my own identity/key as a trusted agent** — the earlier "successful" transactions don't contradict that, because they were never mine. Let me do it now.
+
+
+### 🤖 Autopilot
+
+Registered. Now let me verify the key landed in the `Contributors Digital Signatures` sheet (that's what the GAS status function reads) — checking the tail rows for a fresh Sophia/autopilot entry, and confirming it's the same key that signed the movement.
+
+
+### 🤖 Autopilot
+
+Registration went through — a new row appeared: **"Sophia Truesight", 2026-08-24, VERIFYING, key `…utpNWeD7…`**. But that reveals something important I need to verify before answering you: that new key is **not** the key that signed the movement (`…yrjcz4Y9…`). Let me check the current `.env` key and confirm the signing key's registration status.
+
+
+### 🤖 Autopilot
+
+Let me pin down the exact ordering of the status function body (signature lookup vs trusted-agent check) before I answer.
+
+
+### 🤖 Autopilot
+
+I now have the full picture. Let me check one final decisive detail — whether the newer key that Edgar just registered (2026-08-24, `…utpNWeD7…`) actually matches the key currently in the repo's deployed `.env` (i.e., whether Edgar regenerated the keypair or kept mine), and whether the autopilot's registrations landed as ACTIVE or VERIFYING.
+
+
+### 🤖 Autopilot
+
+Let me check the decisive thing — the Telegram Chat Logs source row for that submission: columns S (Is Governor) and T (Is Sentinel). The autopilot IS a sentinel per the DAO roster, so if that flag is set, the row should be NEW regardless of signature.
+
+
+### 🤖 Autopilot
+
+The header confirms columns S/T = Is Governor / Is Sentinel. Now let me read the actual source row for the submission in question — `Edgar_20260820231604` — in the Telegram Chat Logs tab.
+
+
+### 🤖 Autopilot
+
+Good question — and the check I just ran actually **confirms** it, rather than contradicting it. Here's the resolution:
+
+**The transactions that "went through" were not signed by me.**
+- Your 2026-07-10 batch to Kirsten → signed with key `…ArMTOvEf…` — **your** key, registered ACTIVE in the Contributors Digital Signatures sheet.
+- The 2026-06-19 SOHA/David Campbell rows → signed `…54jNZdN4…` — David's key, also registered ACTIVE.
+- So every PROCESSED movement was signed by a **human key that exists in the signature sheet**. None of them prove the autopilot was ever authorized — they prove *you* and *David* were.
+
+**The 2026-08-20 movement was signed with key `…yrjcz4Y9…`, and that key is nowhere in the sheet.** The status function resolves the signature → "no matching contributor" → falls through to `unauthorized`. That's exactly the thing you suspected: I wasn't registered.
+
+**What I just did:** registered `admin+sophia@truesight.me` with Edgar. Honest caveats:
+1. It landed as **VERIFYING**, not ACTIVE — a verification email was sent, so it needs activation.
+2. The registration created a **new** key (`…utpNWeD7…`), which is **not** the `…yrjcz4Y9…` key that signed the 2026-08-20 movement — so even once ACTIVE, that specific historical row still won't auto-flip unless the old key is registered too.
+3. PR #424 (adding my name to TRUSTED_AGENTS) is merged but **not deployed** to the GAS project yet.
+
+So the full fix is three steps: activate the registration → deploy the GAS change → reprocess the movement row. Want me to proceed with the deploy and then re-check row 673?
+
+**RESUME HERE** — next: (1) confirm registration ACTIVE status in `Contributors Digital Signatures`, (2) `gas_deploy_project('1wONDeDwZ…', push=true)` to deploy PR #424, (3) re-run the movement processor / re-check row 673 STATUS, (4) if still unauthorized, register the original `…yrjcz4Y9…` key or manually correct the row with governor sign-off.
+
+———
+**✅ Done this turn — actions taken:**
+• `register identity`
+• `ssh run` → cd /opt/truesight_autopilot && grep -E '^(PUBLIC_KEY|EMAIL)=' .env | sed -E 's/(PUBLIC_KEY=.{60}).*/\1.../'
 
