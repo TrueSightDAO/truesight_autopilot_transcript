@@ -805,16 +805,19 @@ Row 164 is **ACTIVE** — registration complete. Now re-submitting the **same IN
 ### 🤖 Autopilot
 
 Submitted. Let me verify it landed — checking the Telegram Chat Logs for the new row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Telegram Chat Logs is on the other spreadsheet (the one from the original link). Let me check it there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The new submission should now appear on the Inventory Movement tab (gid 83682662) via the GAS webhook. Let me check the tail of that tab for the new row's STATUS.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -941,4 +944,31 @@ Your idea avoids the key-rotation mess entirely — it just needs one ledger row
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && timeout 120 python3 - <<'EOF' import os, glob, gspread, datetime SID = "1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8; grep -rniE 'processMovementTelegramLogs|inventory.?movement.*webhook|inventory_processing' /home/ubuntu/sentiment_importer/config /home/ubun
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Share your public key with me
+
+
+### 🤖 Autopilot
+
+Public key — yes, that's not a secret (it's the verification key, the same one embedded in the submissions as "My Digital Signature"). Let me pull the exact current value from `.env` (public only — I won't touch the private key).
+
+
+### 🤖 Autopilot
+
+Here's my current public key (from `/opt/truesight_autopilot/.env`, the one registered **ACTIVE** in the Contributors Digital Signatures ledger on 2026-08-24):
+
+```
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAutpNWeD7oBIPwH2aZeCnc5zOVUlI3I4wgPcpmGpxJPV3zUg7lQmy+IZ0V8iaWSLgCmmBLcR0Oc3j+vEKuLIZKcTzOLYj04gQHnRmKte4PNz5bSFuGq/F0/wJhCu/dAEZOMN6HWczHq1hZtCEBUr/LAQDTuVRMUVrgWhQP4QxEbyZ9mF1ilREcR66jiLZ075E2RXnlqHDxqjmlxi95GhY4iVn4gvbjDp2YFq3kKwLlDkZKtR3Y8AkusY9ZPXlcKhGjVLCneb/SxmjIXdeLO/0FPGuxCdMbTMwwrBiwERtmYCXo3+a9fWIMEF1vksict6NjI5S57K4FE7dqdFPHwmlQwIDAQAB
+```
+
+**Note for your ledger-entry plan:** this is the **new/current** key (`…utpNWeD7…`). It's the one already registered **ACTIVE**. The rows 673/675 were signed with the **old** key (`…yrjcz4Y9…`, prefix `…yrjcz4Y9…`) — so if you add a ledger entry, the useful one to add is the **old key mapped to Sophia / ACTIVE** (that's what makes those rows verify). Alternatively, if you'd rather keep just one key: I can re-sign the movement with this current ACTIVE key (fresh submission — the webhook is now located, so it would process immediately).
+
+Which do you prefer — add the old key to the ledger, or re-submit with the current one?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && grep -E '^(PUBLIC_KEY|EMAIL)=' .env | sed 's/^PUBLIC_KEY=/PUBLIC_KEY=/'
 
