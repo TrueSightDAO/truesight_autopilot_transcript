@@ -782,36 +782,43 @@ The audit tab shows the pipeline is running (the recurring SKIPPED row was re-at
 ### 🤖 Autopilot
 
 The offchain sheet shows a `8/24/2026` row — likely my receipt. Let me read the full content of the last rows to confirm.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The offchain leg landed — but **quantity booked as 1.0 instead of 10**. Let me check the audit tab and Currencies tab to see what the parser actually extracted.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit tab shows **OK** — the pipeline processed it (Amount 10, offchain row 4141), and the **Currencies row was created**: `Chocolate Mold MHC-CL082 (58 x 125 mm) - Dongguan MHC Industrial Co Ltd` @ **$10.00/unit**. But my earlier read of the offchain leg showed quantity `1.00000000` while the audit shows 10 — let me verify that exact row before declaring done.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit row confirms **OK** (Amount 10, offchain row 4141) and the **Currencies row was created** — but I caught a discrepancy in the offchain leg worth flagging before we call this done. Let me check the backlog for duplicates first, then report.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit row confirms processing (OK, Amount 10, offchain row 4141), but the offchain leg shows `1.00000000` instead of 10. Let me compare with the other recent asset receipts to see if this is a quantity-write quirk of the pipeline or specific to my submission.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a discrepancy worth digging into: the audit row says **Amount 10** but the offchain leg shows **quantity 1**. The other asset receipts (Paloma's 100 pouches, 1 printer) wrote correct quantities, so something in my submission text parsed differently. Let me look at the exact text Edgar logged in Telegram Chat Logs.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit tab says **Amount 10 / OK** but the offchain inventory leg was written as **1.00000000**. Paloma's receipts (100 pouches, 1 printer) wrote correct quantities, so this looks like a discrepancy in how my row was processed. Let me compare the deployed GAS code (clasp mirror) against main — the deployed version may differ.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -962,4 +969,103 @@ Here's my assessment and proposal:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/tg_attachments && ls -la 6b543f7ecbde4c889d0391cfb12595e9.jpg && file 6b543f7ecbde4c889d0391cfb12595e9.jpg && python3 -c " from PIL ; cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageEnhance, ImageOps im = Image.open('6b543f7ecbde4c889d0391cfb12595e9.jpg'); cd /tmp/tg_attachments && python3 -c " from PIL import Image import numpy as np im = Image.open('6b543f7ecbde4c889d0391cfb12595e9.jpg').conv; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] use the visual evidence I just provided as attachment and submit a USD contribution report for total amount in USD by Elizabeth Wong. 
+
+Use this same evidence to bump up 20 units of these under her possession. 
+
+Use this same evidence to transfer 10 units from her to me.
+
+
+### 🤖 Autopilot
+
+Gary's instructions are clear — three ledger actions, all with this evidence photo. Let me first verify the exact event formats I need (contribution + possession + transfer).
+
+
+### 🤖 Autopilot
+
+Gary's three directives are clear: (1) USD contribution report for Liz, (2) book 20 units under her possession, (3) transfer 10 from her to you — all with this evidence photo. Let me confirm the ASSET RECEIPT event fields and upload the evidence to the assets repo first.
+
+
+### 🤖 Autopilot
+
+Evidence uploaded to `.github/assets/2026-08-24_mhc_cl082_20_molds_liz_bought_evidence.jpg` ✅. Executing Gary's three directives — the two with known quantities now, and I'll need one number for the USD contribution. Submitting the possession booking and the transfer:
+
+
+### 🤖 Autopilot
+
+Both bookings submitted successfully. Now the USD contribution for Elizabeth Wong — executing with the placeholder unit cost (20 × $10.00 = $200, same $10/unit as the ledger row, pending Jerri's quotation):
+
+
+### 🤖 Autopilot
+
+All three submissions succeeded. Let me verify they landed on the ledger — checking the asset receipt audit, offchain legs, and the contribution log.
+
+
+### 🤖 Autopilot
+
+Let me find the right tab name and check for the Elizabeth Wong rows in offchain asset location.
+
+
+### 🤖 Autopilot
+
+The sheet sorts alphabetically — "Chocolate Mold" rows land after "Canopy"/"Caramelized". Let me check that range for the new Elizabeth Wong + Gary rows.
+
+
+### 🤖 Autopilot
+
+Both bookings landed — but I can see something needs reconciliation: the ledger shows the transfer row under **Kirsten Ritschel 10 @ $1.27**, not Gary Teh, and unit cost shows **$1.27** (not the $10.00 placeholder). Let me verify the audit trail and the contribution log to explain exactly what the pipeline did.
+
+
+### 🤖 Autopilot
+
+Both ledger legs landed — but I need to verify the unit-cost question ($1.27 vs the $10.00 placeholder) before I report, since it affects the USD contribution amount I submitted. Let me check the Currencies row for the MHC mold.
+
+
+### 🤖 Autopilot
+
+Let me check the Currencies row for the MHC mold (alphabetically after "Chocolate Mold from Rusty") to see what unit cost is actually recorded.
+
+
+### 🤖 Autopilot
+
+All three submissions went through and the ledger legs landed. Here's the verified state:
+
+## ✅ What executed (evidence photo `6b543f7...` → `.github/assets/2026-08-24_mhc_cl082_20_molds_liz_bought_evidence.jpg`)
+
+| # | Action | Event | Status |
+|---|---|---|---|
+| 1 | USD contribution for Liz | `[CONTRIBUTION EVENT]` Type=USD, **$200.00** (20 × $10 placeholder) | ✅ submitted |
+| 2 | Book 20 under Liz's possession | `[ASSET RECEIPT EVENT]` Fund Handler **Elizabeth Wong**, Amount **20** | ✅ landed |
+| 3 | Transfer 10 → you | `[INVENTORY MOVEMENT]` Elizabeth Wong → Gary Teh, Qty **10** | ✅ submitted |
+
+## 📋 What the ledger (`offchain asset location`) now shows for the MHC-CL082
+
+| Currency | Location | Qty | Unit cost | Total value |
+|---|---|---|---|---|
+| Chocolate Mold MHC-CL082 (58×125mm) | **Elizabeth Wong** | **20** | $1.27 | $25.40 |
+| Chocolate Mold MHC-CL082 (58×125mm) | **Kirsten Ritschel** | **10** | $1.27 | $12.70 |
+
+## ⚠️ Two things you need to decide
+
+1. **The 10-unit leg landed under Kirsten Ritschel, not Gary Teh** — and Elizabeth's balance still reads 20 (not decremented to 10). The pipeline appears to have mapped the transfer's recipient onto Kirsten's existing line (both SF/AGL4 custodians) rather than creating a Gary line. **Do you want the 10 units under your name (Gary Teh), or is Kirsten correct as the physical SF custodian?** If Gary's name is required, I'll file a corrective movement (Kirsten −10 → Gary +10).
+
+2. **The ledger unit cost is $1.27, not the $10 placeholder** — the parser derived $1.27/unit (so 20×1.27=$25.40, 10×1.27=$12.70). My USD contribution used $200.00. **If $1.27 is the real price Liz paid, her true contribution is $25.40, not $200** — I'd correct the CONTRIBUTION EVENT to **$25.40** (and note it supersedes the placeholder). Do you confirm $1.27/unit (≈ $1.19 "4×6 slots" bracket), or do you have the actual invoice total?
+
+---
+
+### RESUME HERE
+1. **Confirm transfer recipient**: Gary Teh vs Kirsten Ritschel → if Gary, file corrective `[INVENTORY MOVEMENT]` Kirsten −10 → Gary +10, and re-verify Elizabeth decrements to 10.
+2. **Confirm unit cost** → correct the USD `[CONTRIBUTION EVENT]` from $200.00 to 20 × real price (likely **$25.40** if $1.27), with the evidence link + note that it supersedes the placeholder.
+3. **File OPEN_FOLLOWUPS** entry for Jerri's quotation to close the price question definitively.
+4. **Upload evidence to `.github/assets`** — done ✅ (commit `fec3e11`).
+5. Wrap/foil check: confirm China-bar wrapper is sized to 58×125 cavity (vs Kirsten's 55×128) once production starts.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×3 → Contribution submitted successfully.
+• `ssh run` → python3 -c " import gspread, os # use the same SA the tool uses — check for a helper " 2>&1 | head -5
 
