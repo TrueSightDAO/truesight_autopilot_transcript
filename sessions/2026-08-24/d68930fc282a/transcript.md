@@ -982,6 +982,7 @@ Local state: I have a working CocoaPods setup (Podfile + workspace) in my clone.
 Decision: **(a)** — you experiment locally, I land the verified result. Rationale: I can't compile Swift from here, so the Mac is the source of truth for which ION-lib versions actually build; your local clone change doesn't touch the shared repo; and we only commit versions you've proven green — which protects the Android side from speculative downgrades.
 
 While you test, let me confirm the candidate versions actually exist and pin down the version boundary (last release before the Swift-6.2.3 ION rebuild):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1067,6 +1068,7 @@ Remaining for you (your step 3): Android re-verify — the shared package.json d
 ### 🤖 Autopilot
 
 Taking step 3 — Android re-verification of the shared downgrade. Let me pull latest main and run the full Android check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1281,4 +1283,337 @@ For completeness, the full TrueTech Inc identifier set (in case you're filling o
 Note: this is the DAO's **US import entity** — it's separate from the Brazilian supplier DUNS numbers (Black King `628340898`, CEPOTX `903842053`, Coopercabruca `946690515`).
 
 If you're using this for the Apple Developer enrollment, note that Apple's enrollment for a **company** account would use this DUNS for their org verification (D‑U‑N‑S lookup) — it should come back valid. Want me to dig anything else up — e.g. the original DUNS jpeg from the repo, or check what name/address Apple should match against?
+
+
+### 🧑 Governor
+
+Apple Test flight enrollment details. Save somewhere as well as take note of the serial number associated with this.
+
+[Attachment auto-processed: **bae8eb7a71a1434cb5b2a92c17d4b851.pdf**]
+- Type: PDF (2 pages, 3558 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Your enrollment is being processed.
+Enrollment ID: M9V8VJWK26
+Once we verify your authority to sign legal agreements, we’ll email you with
+instructions on how to complete your enrollment.
+Legal Entity Type
+Your Organization
+I develop apps as
+The information on this account will be used for
+verification and legal agreements, so please make
+sure your information is correct. To edit your
+account information, contact us.
+Legal Entity Name
+D-U-N-S® Number
+Address
+City / Town
+State / Province
+Zip / Postal Code
+Region
+Website
+Phone Number
+Company / Organization
+TrueTech Inc
+119035208
+3041 Taraval St
+San Francisco
+California
+94116-2106
+US
+https://truesight.me
++1 (442) 340-5782
+Apple Developer Program Enrollment
+Explore Get Started
+Overview
+Learn
+Apple Developer Program
+Stay Updated
+Latest News
+Hello Developer
+Explore Platforms
+Apple Platforms
+iOS
+iPadOS
+macOS
+tvOS
+visionOS
+watchOS
+App Store
+Featured
+Design
+Distribution
+Games
+Accessories
+Web
+Home
+CarPlay
+Explore Technologies
+Overview
+Xcode
+Swift
+SwiftUI
+Featured
+Accessibility
+AI & Machine Learning
+App Intents
+Apple Intelligence
+Games
+Security
+Xcode Cloud
+Explore Community
+Overview
+Meet with Apple events
+Community events
+Developer Forums
+Open Source
+Featured
+WWDC
+Swift Student Challenge
+Developer Stories
+App Store Awards
+Apple Design Awards
+Apple Developer Centers
+Explore Documentation
+Documentation Library
+Technology Overviews
+Sample Code
+Human Interface Guidelines
+Videos
+Release Notes
+Featured Updates
+iOS
+iPadOS
+macOS
+watchOS
+visionOS
+tvOS
+Xcode
+Explore Downloads
+All Downloads
+Operating Systems
+Applications
+Design Resources
+Featured
+Xcode
+TestFlight
+Fonts
+SF Symbols
+Icon Composer
+Explore Support
+Overview
+Help Guides
+Developer Forums
+Feedback Assistant
+Contact Us
+Featured
+Account Help
+App Review Guidelines
+App Store Connect Help
+Upcoming Requirements
+Agreements and Guidelines
+System Status
+Quick Links
+Events
+News
+Forums
+Sample Code
+Videos
+Get Started
+Platforms
+Technologies
+Community
+Documentation
+Downloads
+Support
+Ask Apple Developer
+8/24/26, 6:40 AM
+Enroll - Apple Developer
+https://developer.apple.com/enroll/organization/details/confirm
+1/2
+
+--- Page 2 ---
+Reference to Verify Your Signature
+Authority
+Your Work Email
+garyjob@truesight.me
+Platforms
+iOS
+iPadOS
+macOS
+tvOS
+visionOS
+watchOS
+App Store
+Tools
+Swift
+SwiftUI
+Swift Playground
+TestFlight
+Xcode
+Xcode Cloud
+Icon Composer
+SF Symbols
+Technologies
+Accessibility
+Accessories
+AI & Machine Learning
+Apple Intelligence
+Audio & Video
+Augmented Reality
+Business
+Design
+Distribution
+Education
+Games
+Health & Fitness
+In-App Purchase
+Localization
+Maps & Location
+Security
+Safari & Web
+Resources
+Documentation
+Downloads
+Sample Code
+Videos
+Documentation Archive
+Support
+Help Guides & Articles
+Contact Us
+Forums
+Feedback & Bug Reporting
+System Status
+Account
+Apple Developer
+App Store Connect
+Certificates, IDs, & Profiles
+Feedback Assistant
+Programs
+Apple Developer Program
+Apple Developer Enterprise Program
+App Store Small Business Program
+MFi Program
+Mini Apps Partner Program
+News Partner Program
+Video Partner Program
+Security Bounty Program
+Security Research Device Program
+Events
+Meet with Apple
+Apple Developer Centers
+App Store Awards
+Apple Design Awards
+Apple Developer Academies
+WWDC
+Read the latest news.
+ Get the Apple Developer app.
+ Follow us on bilibili, LinkedIn, WeChat, and YouTube.
+Light
+Dark
+Auto
+Developer
+Enroll
+
+Copyright © 2026 Apple Inc. All rights reserved.
+Terms of Use
+ Privacy Policy
+ Agreements and Guidelines
+8/24/26, 6:40 AM
+Enroll - Apple Developer
+https://developer.apple.com/enroll/organization/details/confirm
+2/2
+```
+
+
+### 🤖 Autopilot
+
+Saving the enrollment record now — appending it to the TestFlight runbook (PR #811's branch) and updating the handoff manifest, then landing it.
+
+
+### 🤖 Autopilot
+
+The edit target didn't match — the branch may already hold slightly different text (PR #811's version). Let me check the exact current content of the runbook on the branch.
+
+
+### 🤖 Autopilot
+
+The exact-match edit failed on the runbook's status line (likely a dash codepoint difference). Rather than fight exact matches, I'll rewrite the runbook as a full write (I have its complete content) plus the manifest hunks, in one push:
+
+
+### 🤖 Autopilot
+
+Push rejected — the remote branch has moved (PR #811 likely merged to main already). Let me check the PR state and what main now holds before re-basing.
+
+
+### 🤖 Autopilot
+
+PR #811 is still open and the runbook isn't on main yet (404) — the push rejection is a stale-clone race on the feature branch. Rather than a second PR, I'll rebase my enrollment additions onto the branch's current remote head via the local clone. Let me inspect the remote branch state first.
+
+
+### 🤖 Autopilot
+
+Remote branch head is exactly my original commit `6ddae7e` (PR #811 still open) — the push rejection was just the tool's stale re-clone. Cleanest path: build the enrollment additions on top of the branch head in my fresh clone and fast-forward push to the **existing** PR #811 (keeps one PR). Doing the edits with a Python script (no exact-match fragility):
+
+
+### 🤖 Autopilot
+
+The runbook updated, but the manifest row-status string didn't match (main's copy differs from what I recalled). Let me check the manifest's actual SunMint row on the branch and fix the two hunks precisely.
+
+
+### 🤖 Autopilot
+
+No SunMint row in the manifest on the branch — because the earlier `diff --stat main...branch` showed **82 deletions** in the manifest: PR #811's original commit *removed* the SunMint row (my earlier write overwrote the manifest with only a single-row skeleton). That's wrong — I need to restore the full manifest and add the enrollment update. Let me restore the manifest from main and re-apply the row update properly.
+
+
+### 🤖 Autopilot
+
+Now I see the real situation: **the manifest on main still says "new — awaiting kickoff"** — my PR #811's manifest "update" never actually took the stale row out (it replaced the whole file with a skeleton, deleting the row instead of updating it, and that's the 82-line deletion). So the actual fix is: restore the full manifest and now do the *real* update (stale → active + enrollment). My replacement strings were written against the *intended* (updated) text, not main's actual stale text. Let me fix both hunks against the **actual** main text.
+
+
+### 🤖 Autopilot
+
+Both files updated cleanly now: runbook +24 lines (enrollment record), manifest now a **real** 2-line diff against main (stale→active status cell + resume tracker with both dates). The `MM` status means the manifest has both staged (from checkout) and unstaged (my edit) changes — let me stage everything, commit, and fast-forward push to the existing PR #811.
+
+
+### 🤖 Autopilot
+
+Pushed to PR #811 (`6ddae7e..5cd055a`). Let me verify the PR now shows both commits and the manifest diff is sane, then this is a clean stop (no new PR opened this turn — just an update to an existing one; but per discipline I'll converge here and report).
+
+
+### 🤖 Autopilot
+
+**Saved ✅ — enrollment record is in the runbook, PR #811 updated (now carries both commits: `6ddae7e` runbook + `5cd055a` enrollment record).**
+
+**What I recorded (from your PDF, `bae8eb7a71a1434cb5b2a92c17d4b851.pdf`):**
+
+**The serial/reference number you asked me to note: `M9V8VJWK26`** — that's the Apple **Enrollment ID**, the reference Apple will use when they verify your authority to sign the legal agreements. Have it handy for that call/email.
+
+| Field | Value |
+|---|---|
+| **Enrollment ID** | **M9V8VJWK26** |
+| Status | Being processed — Apple verifies signature authority, then emails completion instructions |
+| Legal entity | TrueTech Inc (Organization) |
+| D-U-N-S | 119035208 |
+| Address | 3041 Taraval St, San Francisco, CA 94116-2106 |
+| Website / Phone | truesight.me / +1 (442) 340-5782 |
+| Work email (signature authority) | garyjob@truesight.me |
+| Platforms | iOS, iPadOS, macOS, tvOS, visionOS, watchOS, App Store |
+
+**Where it's saved:**
+- **`agentic_ai_context/TESTFLIGHT_RUNBOOK.md`** — new "Apple Developer Program — enrollment record (2026-08-24)" section with the full table + next steps
+- **`agentic_ai_context/handoffs/HANDOFF_MANIFEST.md`** — SunMint row updated: **stale "new — awaiting kickoff" → active** (this also fixed my earlier PR #811 mistake where the manifest had been overwritten with a skeleton — the full manifest is restored with a real 2-line diff)
+- **PR #811** (open): https://github.com/TrueSightDAO/agentic_ai_context/pull/811 — runbook + enrollment record, ready to merge
+
+**One correction to the record I noticed:** my earlier draft had a typo (`M9V8VJWK28`) — the committed version uses the correct **`M9V8VJWK26`** throughout.
+
+**Next steps once Apple emails you:** complete the enrollment → I land the `testflight.yml` workflow (macos-15 runner) → App Store Connect app record + API key → archive + upload → public TestFlight link. The runbook has all of it.
+
+Do you want me to merge PR #811 now, or hold it for your review first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf aac_fix && git clone -q https://github.com/TrueSightDAO/agentic_ai_context.git aac_fix && cd aac_fix && git fetch -q origi; cd /tmp/aac_fix && git checkout -q -B docs/testflight-runbook origin/docs/testflight-runbook && python3 - <<'EOF' import io # --- TESTFLIGHT; cd /tmp/aac_fix && echo ---SUNMINT_ROW--- && grep -n "SunMint Mobile App" handoffs/HANDOFF_MANIFEST.md | head -3; grep -n "iOS build green\|; …(+3 more)
 
