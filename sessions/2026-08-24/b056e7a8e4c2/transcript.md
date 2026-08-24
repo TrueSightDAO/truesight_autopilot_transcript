@@ -196,41 +196,49 @@ The event brief is illuminating — the **Cacao Explorer Gift Set contains a cho
 ### 🤖 Autopilot
 
 The transcript hit is unrelated (cacao mold/fungus). Let me read the rest of the Aora plan — the mold procurement section with the Dongguan quote was past the truncation point.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mold procurement detail is in the Aora plan itself. Let me read the specific section of the plan with a targeted range to avoid the recursion issue. I'll use the raw GitHub URL instead.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the plan body from this artifact to get the mold procurement section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of this artifact to see the mold procurement section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact keeps nesting JSON. Let me read it cleanly with explicit offsets.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the later portion of the Aora plan where Workstream 3 (Go Partnership / mold quantity) lives.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the plan body where Workstream 3 (mold procurement quantity) should be.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full plan now — the mold quantity was the open item (blocked on Liz's demand forecast). Let me check for any purchase/invoice record of 10 molds — email and ledger.
+[3 tool result(s) compacted: gmail_search, gmail_search, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -348,4 +356,86 @@ I'd like to:
 2. **Log an OPEN_FOLLOWUPS entry** — track receipt of the invoice + mold custody confirmation until it's on the ledger.
 
 Want me to open that PR?
+
+
+### 🧑 Governor
+
+This is evidence that the 10 chocolate mold with Liz is now in Kirsten possession. How would you account for this on our ledger?
+
+[Attachment auto-processed: **06b326eaf90e4a1aa5305ab49c787e19.jpg**]
+- Type: Image (OCR confidence: 78.2%, quality: good)
+
+Extracted text:
+```
+10:56 oll > ee nV a) reams Lrealy| ( te Saturday Big box from Henderson , NV with things just arrived! Edited 4:14PM Kirsten Ritschel ry 4 © Big box from Henderson , NV with > things just arrived! ao emai)
+```
+
+
+### 🤖 Autopilot
+
+Let me look at how the ledger handles asset custody before recommending the accounting treatment — checking the event docs, lineage-assets conventions, and the ledger's asset tabs.
+
+
+### 🤖 Autopilot
+
+The photo is evidence of custody — Kirsten's post says the big box from Henderson, NV arrived. Let me check how the DAO accounts for physical asset custody before I propose the ledger treatment.
+
+
+### 🤖 Autopilot
+
+The photo confirms arrival — but let me check how molds are currently held on the ledger (custody rows) before proposing the accounting. Checking `offchain asset location` for any existing mold lines.
+
+
+### 🤖 Autopilot
+
+The molds would be further down the sheet (alphabetically after "Chocolate..."). Let me check the mold rows and the balance tab.
+
+
+### 🤖 Autopilot
+
+The mold rows would be in the A60–A100 gap. Let me check that range.
+
+
+### 🤖 Autopilot
+
+The photo verifies arrival — Kirsten's post shows the big box from Henderson, NV landing (the China → Henderson NV forwarder → SF leg of the 10 molds). Now, how the ledger should account for it.
+
+## Current ledger state for molds
+
+| Currency line | Holder | Qty | Unit cost |
+|---|---|---|---|
+| Chocolate Mold - 4 X 6 slots | Val Lapidus | 26 | $1.19 |
+| Chocolate Mold from Rusty | Kirsten Ritschel | 50 | $10.00 |
+| **MHC-CL082 (new)** | **— not booked —** | — | — |
+
+So the 10 new molds were **never on the ledger** — only in the Aora plan as "procurement in progress." This is a **first-time booking**, not a transfer of a tracked line. Two layers needed:
+
+## Recommended accounting treatment
+
+**1. Signed audit event — INVENTORY MOVEMENT** (the transfer into custody):
+- Manager Name: **Elizabeth Wong** (custodian in China)
+- Recipient Name: **Kirsten Ritschel**
+- Inventory Item: **Chocolate Mold MHC-CL082 (58 × 125 mm)**
+- Quantity: **10**
+- Destination Inventory File Location: **Main Ledger — offchain asset location**
+- Attached Filename: the Henderson-box photo (evidence)
+
+**2. Main Ledger booking** — new currency line, following the existing mold pattern:
+- **Currency**: `Chocolate Mold MHC-CL082 (58 x 125 mm) - Dongguan MHC Industrial (per unit)`
+- **Location**: Kirsten Ritschel · **Amount**: 10
+- **Unit cost**: needs the **quotation/invoice price from Jerri** — I don't have it in context (plan only says "quotation received"). Total = 10 × unit cost.
+- Also add to the **Currencies** catalog tab.
+
+**3. Follow-up filed** — obtain the invoice for unit cost; confirm foil/wrapper sizing is to the new 58×125 cavity (not Kirsten's 55×128) before China bar production.
+
+## What I need from you to execute
+
+- **Unit cost** for the 10 molds (from Jerri's quotation / invoice) — or I book qty 10 with cost **TBD** (there's precedent: "Cacao Husk Bag (weight unknown)" carries qty with blank cost).
+- Confirmation of the **currency naming** above (or your preferred name).
+
+Say the word and I'll:
+1. Submit the INVENTORY MOVEMENT with the photo as evidence, and
+2. Draft the ledger line + Currencies entry for your review (I can't write the sheet directly — it'd go through the standard ingest path or your manual entry).
+
+How do you want to proceed — and do you have the quoted unit price?
 
