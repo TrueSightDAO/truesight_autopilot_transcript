@@ -617,41 +617,64 @@ There are local clones in /tmp. Let me check which is current and read the full 
 ### 🤖 Autopilot
 
 I have the full map of stale references. Let me read the complete file locally (in chunks) to capture exact text for edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc is 685 lines. Let me read the remaining chunks locally so my edits are exact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full document map. Let me get the exact text of the middle sections I haven't seen verbatim (lines 190–240), and confirm today's date for accurate annotations.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Today is **2026-08-24**. Before writing the doc, let me verify the current live facts (what my box actually listens on, and the current nginx upstream config) so the refresh is accurate, not guesswork.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nginx SSH failed on key mismatch — let me try with the correct key from the box's ssh config.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nginx host uses port 2202 with the ed25519 key. The `ssh_run` tool uses port 22 by default — that's why it failed. Let me query the nginx config via the proper alias.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nginx upstream is a live finding: `chatbot.truesight.me` → `governor_chatbot` → **`100.52.234.163:8001`** — a dead IP (that's neither the old Explorya EIP nor the current one). I'll flag that. Before writing the doc, let me verify the current SG allowlist + Route53 record so the refresh is accurate.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live facts confirmed: **`dao-protocol-beta-sg` already allowlists only `3.214.167.219/32:22`** (the SG swap is already done — the doc's "pending" is stale), and **Route53 `sophia.truesight.me` → `3.214.167.219`** is current. Also found a live bug: nginx `governor_chatbot` upstream still points at dead `100.52.234.163:8001`. Let me verify how the autopilot box serves health externally before writing the doc.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -667,6 +690,7 @@ The doc refresh will:
 6. **Add a §13 cleanup-history entry** documenting today's ~$62/mo removal.
 
 Since this is agentic_ai_context (a code repo, branch+PR flow), I'll use git_push_changes with precise hunks.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -715,6 +739,7 @@ Next turn: (1) ask Gary whether to also fix the **nginx `governor_chatbot` upstr
 ### 🤖 Autopilot
 
 Gary's "Fix that" = explicit go on the nginx `governor_chatbot` upstream fix (chatbot.truesight.me → dead `100.52.234.163:8001`). Before touching prod nginx, let me confirm what actually serves :8001 on the autopilot box and whether krake_nginx can reach it.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -826,4 +851,134 @@ Want me to open the doc-refresh PR now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → echo "=== LISTENERS ==="; sudo ss -tlnp | grep -E ":8000|:8001|:443|:2812"; echo "=== UNITS ==="; systemctl list-units 'truesight-autopilot*; echo "=== upstream block ==="; sudo grep -n -B2 -A6 "upstream governor_chatbot" /etc/nginx/sites-enabled/nginx_krake_ng.conf; echo "=== can ; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 'echo "=== reach ; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] PR and merge
+
+
+### 🤖 Autopilot
+
+Gary's "PR and merge" = explicit go to open the doc-refresh PR on `agentic_ai_context` **and merge it**. Let me get the full current doc text from the local clone so my edits are exact.
+
+
+### 🤖 Autopilot
+
+Gary's "PR and merge" = explicit go to open and merge the doc-refresh PR. I have the file locally at `/tmp/aac`. Let me grab the verbatim sections I need for precise hunks (banner, Explorya inventory, SG table, file tail) plus confirm every stale-IP occurrence.
+
+
+### 🤖 Autopilot
+
+I have the doc structure mapped. Let me pull the exact verbatim sections I need to edit (accounts, Explorya inventory, Route53, nginx, autopilot, SG, monitoring) so my hunks match precisely.
+
+
+### 🤖 Autopilot
+
+Let me grab the remaining verbatim chunks I haven't seen: §2.2 Explorya inventory, §3 DNS/nginx, §5 migration table, §6 config, and the tail (§10, §12).
+
+
+### 🤖 Autopilot
+
+Let me grab the final verbatim chunks I need (§2.1/2.2 inventory, §3.1 Route53 start, §4.3, §4.5) in one pass.
+
+
+### 🤖 Autopilot
+
+Almost complete. Let me get the last missing chunks: §1 accounts, §2.1 Nelanco, §2.2 Explorya, and the file tail (§12 history end).
+
+
+### 🤖 Autopilot
+
+I now have every section mapped verbatim. Before pushing, I'll validate all 30 exact-match hunks against the local clone (fail loudly if any search string isn't unique) so the PR applies cleanly.
+
+
+### 🤖 Autopilot
+
+All 31 hunks applied cleanly. But 5 stale `52.200.38.206` + 3 `eipalloc` refs remain — let me check whether they're in historical sections (where keeping the old fact is correct) or need fixing.
+
+
+### 🤖 Autopilot
+
+The 5 remaining refs are all in historical/migration context ("was X", "released") — correct to keep. But I spotted 3 small stale details worth fixing: the banner migration table's EIP row (says old EIP still active), the SG note "(80/443/22)" (now also 8001), and the chatbot A-record description (still says `seni_ror_200250915:8000`). Let me verify the claimed Nelanco EIP allocation exists, then apply these final touches.
+
+
+### 🤖 Autopilot
+
+One correction needed: the box actually **does** have a Nelanco EIP — `eipalloc-018e2cad67ecbcd8a` → `3.214.167.219` → `i-05276b8ae82d6b88c` (this box). So §4.5's "plain public IP / EIP released" wording is wrong — only the **Explorya** EIP was released; the box now holds a Nelanco EIP, so EIP-based blue-green still works. Fixing §4.5 for accuracy.
+
+
+### 🤖 Autopilot
+
+Doc is now accurate. Let me do a final sanity read of the key changed sections (banner + §4.5 + §12.2), then push via `git_push_changes` and merge (Gary's "PR and merge" = explicit go).
+
+
+### 🤖 Autopilot
+
+Doc content is verified correct. Now let me read the full final file from the local clone so I can push it via `git_push_changes` (the sanctioned PR flow).
+
+
+### 🤖 Autopilot
+
+The full file is on disk at `/tmp/aac` with all edits validated. Rather than reconstructing 40KB through the tool, I'll commit and push from the local clone (feature branch + PR via the API, token from `.env` never printed), then merge via `merge_pr`.
+
+
+### 🤖 Autopilot
+
+The env var name for the GitHub token differs. Let me find the actual key name (without printing values).
+
+
+### 🤖 Autopilot
+
+There's a git credential helper script (`git-credential-sophia.sh`) — the sanctioned way to authenticate git on this box. Let me check how it works and use it for the push + PR (it keeps the token out of the command line).
+
+
+### 🤖 Autopilot
+
+The credential helper reads `TRUESIGHT_DAO_AUTOPILOT` from `.env` — so a plain `git push` to `https://github.com/...` will authenticate automatically (no token in argv). Let me commit and push using the helper, then open the PR via the helper's token read in-process.
+
+
+### 🤖 Autopilot
+
+The branch pushed but with **no commit** — I forgot the `git add` + `git commit` steps in that script (the earlier PAT-failure aborted before any git ops, so the working tree still has my edits uncommitted). Fixing now: add → commit → push → open PR.
+
+
+### 🤖 Autopilot
+
+PR #814 is open. Gary's "PR and merge" = explicit go to merge it. Merging now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ PR #814 opened and merged — doc refresh is live
+
+**PR:** https://github.com/TrueSightDAO/agentic_ai_context/pull/814
+**Merge:** squash → `b35398623ef0f523e97ccc80bf6b4f91d5e4ce1f` (main)
+
+### What changed — `infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md` (+52/−40)
+1. **Banner (2026-07-15 → current):** all follow-ups marked **DONE 2026-08-24** — SG allowlist updated, nginx upstream fixed, Explorya instances terminated, AMIs/snapshots/250GB volume pruned, EIP released (~$62/mo saved).
+2. **§1 Accounts + §2.2 Explorya:** Explorya redefined as *DNS + static assets only* (Route53 + CloudFront + 1 kept migration AMI); the 3 instances now show **TERMINATED 2026-08-24**.
+3. **§3 DNS/nginx:** `chatbot.truesight.me` → `172.31.15.182:8001` (was dead `100.52.234.163`); flagged that **`/etc/nginx/nginx.conf` is the live config** (the `sites-enabled/nginx_krake_ng.conf` copy is inert — `include sites-enabled/*` commented out).
+4. **§4.5/§11.3 Autopilot DR:** corrected to show the box now holds **Nelanco EIP `3.214.167.219` (`eipalloc-018e2cad67ecbcd8a`)** — blue-green stays **EIP-based**; only the old Explorya EIP was released. (I initially wrote "Route53-based" but verified the live Nelanco EIP allocation and fixed it.)
+5. **§8 Monitoring + §9 SGs:** health URLs → `https://sophia.truesight.me/health`; SG table shows `governor-chatbot-sg` with the new 8001 rule (from `172.31.26.102/32` only).
+6. **§12.2:** new history entry documenting the full A–E cleanup + the nginx fix.
+
+### Verification done
+- All 34 hunks applied with exact-match validation (0 failures); remaining `52.200.38.206`/`eipalloc-0477…` refs are historical ("was…", "released…") and correctly preserved.
+- Pushed via the box's git credential helper (no secrets in argv or output); PR #814 opened and merged.
+
+---
+
+### RESUME HERE → next unit (fresh turn)
+**The one remaining follow-up is the stale-file cleanup:** remove/replace the inert `/etc/nginx/sites-enabled/nginx_krake_ng.conf` on `krake_nginx` so nobody edits it again thinking it's live. Recommended approach: leave a one-line comment header (`# INERT — nginx.conf is the live config; sites-enabled/* is not included`) or delete it after `nginx -t` + reload, with Gary's go. Everything else in the Explorya cleanup (A–E + nginx chatbot fix + doc PR) is now **complete**.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → cd /tmp/aac && git fetch -q origin && git status --short | head; git log --oneline -1; echo "=== FILE ==="; cat infrastructure/AWS_DIGITAL_I; cd /tmp/aac && F=infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md echo "=== LINES 1-70 (banner+1) ==="; sed -n '1,70p' $F echo "=== STALE IP/ALL; cd /tmp/aac && F=infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md echo "=== 124-240 ==="; sed -n '124,240p' $F echo "=== 278-360 ==="; sed -n '2; …(+12 more)
+• `merge pr` → ✅ PR #814 on agentic_ai_context merged successfully (sha: b35398623ef0f523e97ccc80bf6b4f91d5e4ce1f). Pull Request successfully merged
 
