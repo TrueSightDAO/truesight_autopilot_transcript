@@ -1245,3 +1245,40 @@ Here's the TestFlight path, end to end — from where we are today to a public l
 
 The full runbook with the exact YAML is in `TESTFLIGHT_RUNBOOK.md` (PR #811). The moment you've enrolled the account and picked a build path, I'll land the workflow and we're moving. Want me to do anything else on it now?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13445] What is our TrueTEch Inc DUNS number. I believe we have it somewhere in our fda_fsvp repo
+
+
+### 🤖 Autopilot
+
+Let me search for it — first in the context repo, then org-wide, then specifically in anything matching fda_fsvp.
+
+
+### 🤖 Autopilot
+
+Found it — in the `fda_fsvp` repo as you remembered, and cross-confirmed in the Brazil freight checklist. Let me pull the authoritative entity record to give you the full profile:
+
+
+### 🤖 Autopilot
+
+**TrueTech Inc DUNS number: `119035208`**
+
+Confirmed from the authoritative source — `fda_fsvp/truetech_inc.entity.json` (which is itself derived from the committed PDF `truetech_inc DUNS number.jpeg`), and cross-confirmed in the Brazil freight preflight checklist (`BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md`, line 433: "TrueTech Inc | FDA FFR 12202640780, DUNS 119035208, FSVP small-importer program").
+
+For completeness, the full TrueTech Inc identifier set (in case you're filling out forms):
+| Identifier | Value |
+|---|---|
+| **DUNS** | **119035208** |
+| EIN | 88-3411514 |
+| CBP Importer of Record # | 88-341151400 |
+| FDA FFR # | 12202640780 (VALID, expires 2026-12-31) |
+| Legal name / form | TRUETECH INC — Delaware C Corp (registered 2022) |
+| Officer | Zhiwen (Gary) Teh, President — garyjob@truesight.me |
+| Addresses | 8 The Green, Ste A, Dover, DE 19901 (registered) · 1968 South Coast Hwy #4616, Laguna Beach, CA 92651 (2025) |
+
+Note: this is the DAO's **US import entity** — it's separate from the Brazilian supplier DUNS numbers (Black King `628340898`, CEPOTX `903842053`, Coopercabruca `946690515`).
+
+If you're using this for the Apple Developer enrollment, note that Apple's enrollment for a **company** account would use this DUNS for their org verification (D‑U‑N‑S lookup) — it should come back valid. Want me to dig anything else up — e.g. the original DUNS jpeg from the repo, or check what name/address Apple should match against?
+
