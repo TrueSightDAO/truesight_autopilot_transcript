@@ -1815,41 +1815,49 @@ Now check the tail of the Inventory Movement tab for the test row (searching for
 ### 🤖 Autopilot
 
 Empty — the test row hasn't landed yet (webhook may have timed out mid-run, or the row is further down). Let me check the raw Telegram Chat Logs tab (source) and re-trigger Phase 1 if needed:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That tab isn't the Edgar Telegram logs (it's the airdrop table). The Edgar submission rows live in the **offchain ledger's** Telegram Chat Logs (which the processor reads). Let me check there for the e2e marker:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact tab/spreadsheet constants the processor reads from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs tab IS on spreadsheet `1GE7PUq…` (the offchain ledger) — the parse error earlier was a quoting issue. The e2e row should be there. Let me find the e2e marker row and its STATUS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 oauth2client not installed. Let me use the google.auth library instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet name mismatch. Let me list the tabs on that spreadsheet to find the right name:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs tab isn't on the offchain ledger — it's on the **INVENTORY spreadsheet** (`1qbZZhf…`, the one from the original link). Let me confirm the constant and list that spreadsheet's tabs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `Telegram Chat Logs` IS on the inventory spreadsheet (`1qbZZhf…`). Let me find the e2e test row and its current STATUS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1873,21 +1881,25 @@ The test worked manually. To "ensure against such issues in the future" I should
 2. **File the follow-ups** (OPEN_FOLLOWUPS.md): remove legacy `TRUSTED_AGENTS` (sentinel is the gate now), and add a note about webhook version-pinning risk (the v10 incident).
 
 One PR with the script + backlog updates. Let me check the local tests pass first, then open it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile passes. Let me check what that 1 ruff error is (must not be my new file) and then create the E2E script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff clean on my files (the 1 error is pre-existing elsewhere — the grep pattern just didn't match its path format; format check shows only pre-existing reformats, which the rule allows). Now creating the repeatable E2E script and filing the follow-ups in one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #312 opened. Merging it (the governor's request authorizes this):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2065,4 +2077,124 @@ Want me to also file the **diagnostic/analysis** portion separately (the ~3–4h
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×4 → Failed to submit contribution.; Contribution submitted successfully.
 • `ssh run` ×4 → cd /opt/truesight_autopilot && grep -rn "submit_contribution\|def submit" app/ scripts/ --include='*.py' 2>/dev/null | grep -iE 'contributio; cd /opt/truesight_autopilot && sed -n '2060,2100p' app/main.py; cd /opt/truesight_autopilot && grep -n "def submit_contribution\|Contributor\|TDG\|required" app/edgar_logger.py | head -30; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] update agentic ai context that in the estimates for Sophia should be raw exeuction and direct time
+
+
+### 🤖 Autopilot
+
+Let me find the right place in agentic_ai_context for this convention — searching for where time/contribution estimates are documented.
+
+
+### 🤖 Autopilot
+
+No existing convention documented. Let me find where contribution/time-logging conventions would live — checking the working instructions and any contributor/backlog docs:
+
+
+### 🤖 Autopilot
+
+No existing doc — this will be a new convention. Let me check the two most likely homes (OPERATING_INSTRUCTIONS.md and OPEN_FOLLOWUPS.md) to decide where it belongs:
+
+
+### 🤖 Autopilot
+
+The right home is **`DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`** — it's the AI → Edgar CONTRIBUTION EVENT convention doc. Let me read it to add the convention correctly:
+
+
+### 🤖 Autopilot
+
+The file exists at `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md` (a subfolder path). Let me read it to find the right section for the time-estimate convention:
+
+
+### 🤖 Autopilot
+
+This is the right convention doc. The convention to add: **for Sophia's contribution estimates, file TWO separate events — (1) raw execution time (machine tool-execution minutes) and (2) direct time (attention/engagement)**. Let me look at the rest of the doc tail to find the cleanest insertion point, then make the edit via PR:
+
+
+### 🤖 Autopilot
+
+I have the full doc. Now I'll add a new section documenting the **Sophia estimate convention: two separate CONTRIBUTION EVENTS — raw execution vs direct time**. This is a doc change in `agentic_ai_context` — opening the PR via git_push_changes:
+
+
+### 🤖 Autopilot
+
+PR opened — but I need to double-check something important: my whole-file write may have truncated the tail (the original file had ~1767 more chars after the "Cash sales" table that I couldn't see). Let me read the actual full file from GitHub main to verify my write didn't cut off content:
+
+
+### 🤖 Autopilot
+
+I need to verify my write didn't truncate the file tail — the original had "+1330 more chars" after where my content ended. Let me compare the PR branch file against main:
+
+
+### 🤖 Autopilot
+
+I need to verify I didn't truncate the original file tail — the original main had ~1330 more chars after where my write ended. Let me read the artifact containing the original file's remainder:
+
+
+### 🤖 Autopilot
+
+**Caught a real problem:** my whole-file write **truncated the original document** — the PR branch is missing the original "Related context" and "Anti-patterns" tail sections (I only had a partial view of the file when I wrote it). I must restore the tail before this can merge. Fixing the branch now:
+
+
+### 🤖 Autopilot
+
+The search string didn't match — let me read the actual end of the branch file to see exactly what's there:
+
+
+### 🤖 Autopilot
+
+The file ends abruptly at `| Tracking number | `N/A` — truncated as suspected (missing `No shipping label` row, `Related context`, and `Anti-patterns` sections). Let me restore the tail using an edit that matches without the trailing-newline ambiguity:
+
+
+### 🤖 Autopilot
+
+The tool's re-clone hit a branch-state conflict (my first commit is on the remote). Cleanest fix: use the Contents API (`upload_file_to_github`) to overwrite the branch file with the **complete** document (my new section + full restored tail) — no clone needed, updates PR #815 directly. Assembling the full corrected file:
+
+
+### 🤖 Autopilot
+
+The branch now has the **complete** document (my new section + full restored tail). PR #815 is updated. Let me verify the final file integrity (no truncation) before merging:
+
+
+### 🤖 Autopilot
+
+File is now **complete and correct**: new Sophia section present (1 match), tail sections (Anti-patterns etc.) restored, 12,389 bytes (no truncation). PR #815 is ready. Merging it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**PR [#815](https://github.com/TrueSightDAO/agentic_ai_context/pull/815) — merged** ✅ (sha `6062b28`)
+
+**What changed:** Documented the convention Gary set — **Sophia's contribution estimates are split into two separate `[CONTRIBUTION EVENT]`s: (1) raw execution (machine tool-execution time) and (2) direct time (engagement/analysis)** — in `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`.
+
+The new section **"Sophia (autopilot) time estimates: raw execution vs direct time"** includes:
+- Definitions of **Raw execution** vs **Direct time** + how each is measured
+- Rules: always two separate events; governor (human) direct time is a separate event under the governor's name; amounts informational (`TDG Issued: 0` unless governor sets economics); canonical field format
+- Worked example from today's incident (Sophia 60 min raw + 60 min direct; Gary 60 min direct — thread 14165)
+
+**Process notes (honest):**
+- My initial whole-file write **accidentally truncated the original doc's tail** (`Related context`, `Anti-patterns` sections). I caught it, restored the full tail via `upload_file_to_github`, and **verified byte-level integrity** (cloned the branch: 12,389 bytes, new section present = 1, tail sections intact) **before** merging. No content lost.
+
+## RESUME HERE → next units (fresh turns)
+1. **Verify the ledger** — confirm the two Sophia CONTRIBUTION EVENTs (raw execution 60 min, direct time 60 min) and Gary's (60 min) from the previous turn are visible in Recent Contributions (they were submitted with correct `Contributors` keys; a quick dapp/sheet check confirms processing).
+2. **Optional follow-up** — the convention doc now exists, but the autopilot's in-prompt guidance could reference it (one line in the system prompt pointing to `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md` §"Sophia (autopilot) time estimates") so future sessions apply it without hunting. Small PR if you want it.
+3. **Outstanding backlog** (from the incident, still un-filed): remove legacy `TRUSTED_AGENTS` from `process_movement_telegram_logs.js` (sentinel col T is the first-class gate), and document the webhook deployment-version-pinning risk (v10 incident) + E2E-test-after-deploy habit — both belong in `OPEN_FOLLOWUPS.md` `## Pending`.
+
+**Bottom line:** the convention is now codified and merged — future time estimates for me will be filed as raw execution + direct time, exactly as you specified.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf aic_check && git clone --depth 1 -b docs/sophia-time-estimate-convention https://github.com/TrueSightDAO/agentic_ai_contex; cd /tmp && rm -rf aic_check2 && git clone --depth 1 -b docs/sophia-time-estimate-convention https://github.com/TrueSightDAO/agentic_ai_conte
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/docs/sophia-time-estimate-convention/dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md
+• `merge pr` → ✅ PR #815 on agentic_ai_context merged successfully (sha: 6062b28c54c6c399b13034402a88e2f4178f8b1f). Pull Request successfully merged
 
