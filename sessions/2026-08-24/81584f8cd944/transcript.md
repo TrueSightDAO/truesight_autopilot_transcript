@@ -1091,6 +1091,22 @@ Only 12 rows per day — this is likely a small watchlist subset. Let me see whi
 ### 🤖 Autopilot
 
 Found it — the recent 12 rows/day are just **US Treasury yield series** (macro data), not stocks. The actual stock coverage may be elsewhere. Let me find where the real equity signals live — the companies table has `sell_off_index` and there may be a larger scan. Let me look at what the /large_spikes and /large_dips dashboards actually query.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1145,26 +1161,31 @@ Want me to continue with that pull, or would you rather screenshot the dashboard
 ### 🤖 Autopilot
 
 Let me pull the recent large_dip signals from the DB — date-bounded to avoid the timeout, excluding the treasury series.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The query returned a big batch — mostly `sell_now` flags. Let me read the full output.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The output is truncated — let me read the rest to see the full picture including any `first_dip`/`large_dip` flags.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 60 rows are from **2026-08-07** — a single day with a flood of flags. Let me check the date distribution of these signals to understand what happened that day.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty output — let me simplify the query.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1309,4 +1330,81 @@ Next turn: **say "go" and I'll (a) start Sidekiq on seni_ror, (b) confirm the si
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /home/ubuntu/sentiment_importer && PGPASSWORD='Explore123!' timeout 60 psql -h 44.193.55.205 -U prod -d sentiment -c "SELECT dt.date_publ; echo "=== cron ==="; crontab -l 2>/dev/null | grep -iv "^#" | grep -i "import\|trade\|sentiment\|polygon\|daily" | head -20; echo "=== recen; cd /home/ubuntu/sentiment_importer && echo "=== import/error lines in last 30 days ===" && grep -iE "error|fail|exception|timeout|limit|poly; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] Is it because EODHD stopped importing or because background sidekiq worker not running?
+
+
+### 🤖 Autopilot
+
+Good question — let me verify which one it is precisely, because the evidence points to the worker, but I want to confirm the data source is alive.
+
+
+### 🤖 Autopilot
+
+Let me resolve the one remaining puzzle — the treasury GOV rows ARE updating daily even though their importer is also a Sidekiq worker. That tells me something else is alive.
+
+
+### 🤖 Autopilot
+
+One quick check to resolve the apparent paradox (GOV rows look fresh through Aug 21 even though Sidekiq is down):
+
+
+### 🤖 Autopilot
+
+The GOV rows are being written daily at ~21:01 UTC, which proves *some* scheduler is alive — but the EODHD equity job shows no runs at all in the log. There's a second worker box in the fleet (`seni_sk` = Sidekiq worker). Let me check whether the sentiment_importer's Sidekiq actually lives there — that's the decisive check.
+
+
+### 🤖 Autopilot
+
+The GOV rows prove the scheduler is partially alive. Let me run one decisive check — query the sidekiq-cron job registry in Redis to see whether the EODHD job is even registered:
+
+
+### 🤖 Autopilot
+
+No `bundle` on the login shell path — need rbenv. Let me use the full rbenv path.
+
+
+### 🤖 Autopilot
+
+The runner is misbehaving. Let me check the sidekiq-cron job registry directly in Redis — that's where the scheduled jobs live.
+
+
+### 🤖 Autopilot
+
+I've hit a good diagnostic point — here's the precise answer to your question.
+
+## Answer: It's the EODHD equity import that stopped. Whether it's "worker down" vs "EODHD failing" is the one thing I couldn't fully disambiguate — here's the evidence chain:
+
+| Evidence | What it shows |
+|---|---|
+| **Equity rows in DB** | Full market (~10,400/day) through **Fri Aug 7** → **zero equity rows after**. Data source side: silent. |
+| **EODHD job in schedule.yml** | `eodhd_price_refresher_utc` at **21:00 UTC weekdays** (Sidekiq cron). Sidekiq cron jobs only fire if a Sidekiq process is alive. |
+| **Sidekiq process on seni_ror** | `ps aux` → **only `rails s` (PID 398581)**. No sidekiq process. |
+| **Log evidence** | Zero `[EodhdPriceRefresher] STARTED` lines since Aug 7 — only **manual CMG reimports today**, and note the end date: `Reimporting CMG … to **2026-08-07**` — the stale "last trading date" cache is *reinforcing* the Aug 7 cutoff. |
+| **GOV treasury rows** | STILL written daily (~21:01 UTC, Aug 10→19). This is the twist: something is alive writing treasury data — via a **different path** (yield-curve importer, likely triggered on-demand through the Rails server when dashboards load, not the dead equity job). |
+
+## So, precisely:
+
+**Not "EODHD the vendor stopped."** The importer *code* and *API key* are configured; there's no error suggesting EODHD cut us off. (And I can't rule out an API/subscription expiry without a live test.)
+
+**It's the background worker that stopped.** The `EodhdPriceRefresher` that was scheduled to run at 21:00 UTC every weekday **isn't running** — no Sidekiq process on seni_ror to fire it, and no STARTED lines in the log. The treasury GOV rows keep updating through a separate on-demand path, which is why the dashboard still looks "fresh" date-wise but has no equity signals — **the equity side of the pipeline went dark on Aug 7 (Fri) and never came back.**
+
+One honest caveat: I couldn't SSH to `seni_sk` (permission denied) to rule out a sidekiq process there, and `bundle exec rails runner` wouldn't execute on this box (rbenv path issues) so I couldn't inspect the sidekiq-cron registry in Redis directly. So the *exact* failure (worker never started / job unregistered / unique-lock stuck) needs the one live test.
+
+## The decisive test (needs your go — it's a write to the trading DB):
+
+Run **one manual `EodhdPriceRefresher` for `latest`** and watch the log:
+- **If equity rows appear for Aug 10–21** → worker scheduling was the fault; fix = restart Sidekiq + register crons.
+- **If it returns empty/errors** → EODHD API key or subscription is the fault; fix = credential/plan, not the worker.
+
+## RESUME HERE
+
+Next turn: **say "go" and I'll run the manual EodhdPriceRefresher (latest), confirm which of the two faults it is, then either restart Sidekiq + re-register the sidekiq-cron jobs or flag the EODHD credential — and file the watchdog-gap + hardcoded-API-key findings in OPEN_FOLLOWUPS.md.** I will not run the refresh without your explicit go since it writes to the trading platform DB.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → echo "=== sidekiq systemd units (all states) ==="; systemctl list-unit-files 2>/dev/null | grep -iE "sidekiq|clock|worker|sentiment" | head ; cd /home/ubuntu/sentiment_importer && echo "=== what runs yield_curve importer (treasury GOV rows) ==="; grep -rn "yield_curve_xml_importer\; echo "=== full crontab ==="; crontab -l 2>/dev/null | grep -v "^#" | head -20; echo "=== systemd timers ==="; systemctl list-timers --all 2>; …(+8 more)
 
