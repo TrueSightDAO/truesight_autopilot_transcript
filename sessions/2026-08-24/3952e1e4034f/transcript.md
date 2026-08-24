@@ -281,12 +281,24 @@ Let me read the rest of the JS — the `.paste-area` wiring, `triggerFileSelect`
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I need to see the exact `.paste-area` binding + `triggerFileSelect` and the `#fileInput` change handler in the DOMContentLoaded block. Let me pull the remaining chunk of the file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the complete picture. The click handler IS wired (`paste-area` → `triggerFileSelect` → `#fileInput.click()`), and there's drag/drop + paste. But visually the element is a plain `<div class="paste-area">` that looks like muted hint text — Gary expects a **button** he can click. Let me check the `.paste-area` CSS to confirm it's not styled as a button.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -294,21 +306,25 @@ Now I have the complete picture. The click handler IS wired (`paste-area` → `t
 I've confirmed the diagnosis: the upload area is a plain, **unstyled** `<div id="paste-area">` — the click handler *is* wired (`paste-area` → `triggerFileSelect` → hidden `#fileInput.click()`), but it **renders as muted hint text**, not as a clickable button. Gary's right — it should *look* and *behave* like a button.
 
 The fix: make it a real `<button type="button">` (keyboard-accessible, Enter/Space activate it) styled as a dashed dropzone button, plus a regression test proving a click opens the native file picker. Let me apply the edits in the local clone and install test deps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits applied cleanly and test deps are present (chromium cached). Now run the full local test suite per the hard rule before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All green: 30/30 unit, 7/7 integration (new test **(f)** proves the upload area is a real `<button>` that opens the native file picker via filechooser event). Now pushing the PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #77 is open. Per the standing rule (go on a plan authorizes self-merge once ready) and since all tests are green, I'll merge it now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -462,4 +478,73 @@ PR #78 open, tests green — merging per standing rule (go on plan authorizes se
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/dapp_beta_clone && git fetch origin --quiet && git checkout main --quiet && git pull origin main --quiet 2>&1 | tail -1; git log -1 ; cd /tmp/dapp_beta_clone && git status --short | head; echo "=== reset to clean main ==="; git reset --hard origin/main --quiet && git log -1; cd /tmp/dapp_beta_clone && sed -n '1,60p' tests/report-asset-receipt.spec.ts; echo "=== test (c) ==="; grep -n "test('(c)\|setInputFiles\|fi; …(+2 more)
 • `merge pr` → ✅ PR #78 on dapp_beta merged successfully (sha: 709986ef3d86f5b56a8da7f10f07755a96cfcd28). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14229] Also I am thinking if https://beta.dapp.truesight.me/report_asset_receipt.html does support asset receipt to specific ledgers??
+
+
+### 🤖 Autopilot
+
+Good question — let me check how the form's destination/ledger selection actually works before answering.
+
+
+### 🤖 Autopilot
+
+Let me look at the actual submit logic and the event definition to answer the ledger question precisely.
+
+
+### 🤖 Autopilot
+
+Let me check how the DAO handles ledgers and whether the ASSET RECEIPT event supports a ledger destination.
+
+
+### 🤖 Autopilot
+
+Let me look at the asset receipt pipeline docs and the dao_client implementation to see if a destination ledger is supported.
+
+
+### 🤖 Autopilot
+
+Let me read the asset-receipt pipeline section and the dao_client implementation to answer precisely.
+
+
+### 🤖 Autopilot
+
+The dao_client path moved — let me check the repo structure and the ledger docs.
+
+
+### 🤖 Autopilot
+
+I now have enough to answer Gary's question accurately. Let me quickly verify the key detail — the `report_asset_receipt.html` form has no ledger/destination selector field (only auto-computed `assetReceiptLocation` from REPO_BASE_URL).
+
+From the code I've read:
+- The form's fields are: Currency, Amount, Description, Fund Handler, file upload → and it computes `Destination Contribution File Location` **automatically** as `${REPO_BASE_URL}${cachedAssetReceiptFileName}` (a GitHub raw URL in the `.github` repo). There is **no UI to pick a specific ledger** (like the `destination-inventory-file-location` that INVENTORY MOVEMENT has).
+- Per `DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`, the ASSET RECEIPT EVENT's canonical fields are: Currency, Amount, Description, Fund Handler, Attached Filename, Destination Contribution File Location — and the ingest writes to a **fixed** set: Currencies sheet + offchain transactions (positive inventory leg) + Asset Receipts audit tab. The "ledger" the receipt lands in is the offchain ledger, not a user-selectable one.
+
+Let me verify the event catalog + confirm the ingest target to be precise. Actually I already have lookup_event_docs confirming the canonical labels. Let me check the GAS ingest target from the docs I've already seen: it writes Currencies row, offchain transactions positive inventory leg, Asset Receipts tab — that's the fixed destination. No ledger-selection field exists in the event schema (no `destination-inventory-file-location` in the ASSET RECEIPT labels).
+
+I can answer now.
+
+**Answer to Gary: No — `report_asset_receipt.html` does NOT support routing to specific ledgers.** Here's the precise picture:
+
+| Aspect | Current behavior |
+|---|---|
+| **Ledger selection UI** | **None.** The form has Currency / Amount / Description / Fund Handler + file upload. There is no field to choose a destination ledger (unlike `INVENTORY MOVEMENT`, which has `destination-inventory-file-location`). |
+| **Destination Contribution File Location** | Auto-computed, not user-chosen: `${REPO_BASE_URL}${cachedAssetReceiptFileName}` — the receipt file is uploaded to the DAO `.github` assets repo and the URL is baked into the event text. |
+| **Where the ledger entry lands** | Fixed pipeline (Edgar → `asset-receipt-ingest` GAS): creates/updates a **Currencies** row, adds a **positive inventory leg** to the **offchain transactions** sheet (Fund Handler credited), and appends an audit row to the **Asset Receipts** tab. No option to point it at a different ledger. |
+| **Event schema** | Canonical labels: `Currency, Amount, Description, Fund Handler, Attached Filename, Destination Contribution File Location` — confirmed live from the Edgar catalog. No ledger-name field. |
+
+**So:** if you want to record an asset receipt *into a specific ledger* (e.g. a per-partner or per-program ledger), today's form can't do it — the receipt always lands in the main offchain ledger. That capability **does** exist for `INVENTORY MOVEMENT` (the `destination-inventory-file-location` field), which is the event meant for routing a bag/item to a named ledger/holder.
+
+If you'd like, I can:
+1. **Add a "Destination Ledger" field** to the asset-receipt form + event (would need Edgar/GAS ingest support to actually route there — bigger change, cross-repo), or
+2. Just confirm with you which ledger you had in mind, and we use **INVENTORY MOVEMENT** for that routing today.
+
+Which do you want?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/dapp_beta_clone && git reset --hard origin/main --quiet 2>&1 | tail -1; git log -1 --oneline; echo "=== destination / ledger / inven; cd /tmp/dapp_beta_clone && sed -n '520,600p' report_asset_receipt.html
 
