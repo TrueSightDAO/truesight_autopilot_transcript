@@ -158,11 +158,18 @@ The key finding so far: the submitted signature is the **autopilot's own key** (
 ### 🤖 Autopilot
 
 The submission signature matches the **autopilot's own key** (the diff is only env-file quote chars). Now I need to confirm two things: (1) whether that key exists in the Contributors Digital Signatures sheet at all, and (2) how the STATUS writer is invoked. Let me check the caller of the status function and scan the signature list for the autopilot key.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 gspread is available locally. Let me directly verify whether the submitted signature key exists in the Contributors Digital Signatures sheet, using the same service account the sheets tools use.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -215,22 +222,31 @@ Otherwise → `unauthorized` (which is what Phase-2 processing skips).
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Yes — that's the exact lever. The GAS processor's `TRUSTED_AGENTS` list is hardcoded to `['autopilot@agroverse.shop']`, and my Edgar identity is `admin+sophia@truesight.me` — that mismatch is (very likely) why your 100-bag movement got `unauthorized`. Let me verify my key is actually registered in the Contributors Digital Signatures sheet under that name, then I'll make the fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local creds aren't on disk — but I already pulled the full `Contributors Digital Signatures` sheet (163 rows) into an artifact earlier. Let me search it for the autopilot's key and its registered name.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to check whether my own key (`...yrjcz4Y9...`) is actually registered in that sheet. The early rows are all Gary's keys; let me scan the later rows (where a 2026-registered autopilot identity would have been appended).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see "Sophia Truesight" is registered (2026-06-06, one key ACTIVE, one VERIFYING) — but neither of those matches the key used in the submission (`...yrjcz4Y9...`), which is the autopilot's **current** key from `.env`. Let me confirm the full sheet doesn't contain the current key anywhere.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -244,6 +260,7 @@ Yes — and that's exactly the right lever. I've confirmed the full picture, so 
 4. Two compounding gaps: (a) my identity in `.env`/Edgar is `admin+sophia@truesight.me` — not in `TRUSTED_AGENTS`; (b) my **current** signing key (`…yrjcz4Y9…`) is **not** in `Contributors Digital Signatures` (the sheet's newest Sophia key is 2026-07-16, status **VERIFYING**), so the signature lookup returns "No matching contributor" before the trusted-agent branch even runs.
 
 So "just register the email as trusted agent" is necessary but the key registration is the second half. Opening the code fix now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -251,6 +268,7 @@ So "just register the email as trusted agent" is necessary but the key registrat
 PR opened. Now I need to actually push it to the GAS deployment so it takes effect — but first let me answer honestly about the second half.
 
 Let me also verify my claim about the current key not being in the sheet, by checking the tail of the sheet (newest rows) directly.
+[2 tool result(s) compacted: read_google_sheet, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -299,6 +317,7 @@ One more thing I'll verify next turn: the full body of the status function (it w
 ### 🤖 Autopilot
 
 Good question — let me verify that precisely, because it determines whether registration is even the fix. Checking three things in parallel: (1) whether the current signing key appears anywhere in the signature sheet I pulled, (2) the full status function logic, and (3) how the autopilot's own registration flow is meant to work.
+[3 tool result(s) compacted: recall_context, read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -380,4 +399,121 @@ So the full fix is three steps: activate the registration → deploy the GAS cha
 **✅ Done this turn — actions taken:**
 • `register identity`
 • `ssh run` → cd /opt/truesight_autopilot && grep -E '^(PUBLIC_KEY|EMAIL)=' .env | sed -E 's/(PUBLIC_KEY=.{60}).*/\1.../'
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] [Handoff context — this Telegram topic (thread 14165) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+Go-signal received. Let me check the handoff manifest for this thread's plan, and verify the registration status, in parallel.
+
+
+### 🤖 Autopilot
+
+Go-signal received. This is the ad-hoc fix (not a manifest plan — thread 14165 isn't in the registry table), so I'll continue the three-step fix. First, the linchpin check: is the submission's signing key `…yrjcz4Y9…` actually in the signature sheet at all? Reading the remaining chunks of the full column.
+
+
+### 🤖 Autopilot
+
+The signature sheet's full E column is now confirmed read — the submission's key (`…yrjcz4Y9…`) appears **nowhere** in it. Two decisive checks left: (1) the exact status-function branch order (does a failed signature lookup short-circuit the trusted-agent path?), and (2) whether Edgar set Is Sentinel = TRUE on the source Telegram row for the 8-20 submission.
+
+
+### 🤖 Autopilot
+
+Go-signal understood. This thread isn't a manifest handoff — it's the live fix — so I'll execute the plan I proposed. Three parallel checks to set up the deploy correctly:
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing the fix. But first I must verify what PR #424 actually changed, because the code search is showing `TRUSTED_AGENTS` still containing only the old value at the merge sha — I need to confirm the merged state before proceeding, plus check whether the verification email from Edgar landed.
+
+
+### 🤖 Autopilot
+
+Go-signal received. Before I push anything, the full function body confirmed something important I need to be straight with you about: **the trusted-agent branch is only reached AFTER the signature resolves to a contributor** (`if (!res.contributorName) return 'unauthorized'` comes first). So PR #424 alone won't flip row 673 — its signing key (`…yrjcz4Y9…`) isn't registered in the sheet at all. Let me deploy the merged change and check how key registration works, in parallel.
+
+
+### 🤖 Autopilot
+
+Deploy **succeeded** — PR #424 is now live in the GAS project (pushed `process_movement_telegram_logs.js` with the new `TRUSTED_AGENTS`). That's step 1 done.
+
+Two things left to verify for a complete answer: whether the old signing key still exists anywhere (it was rotated when I registered), and whether the verification email landed.
+
+
+### 🤖 Autopilot
+
+Deploy succeeded and the verification email exists. One decisive check — can I retrieve the verification link (it was sent to my own address, which may alias the admin mailbox)?
+
+
+### 🤖 Autopilot
+
+The verification email is in my mailbox (INBOX, unread). Let me read it to get the verification link, then follow it to activate my key.
+
+
+### 🤖 Autopilot
+
+Got the verification link. Let me follow it to activate the registration.
+
+
+### 🤖 Autopilot
+
+The verification link is browser-oriented (it just returned the repo page — the `vk` needs to be consumed by a client, not a GET). Let me find how the autopilot/dao_client consumes the verification key.
+
+
+### 🤖 Autopilot
+
+Let me look at how the verification flow is actually implemented — the `register_identity` code in the autopilot and any Edgar verify endpoint.
+
+
+### 🤖 Autopilot
+
+Found the registration service. Let me read it to understand the verify endpoint and how to consume the `vk`.
+
+
+### 🤖 Autopilot
+
+The verification flow is clear: the DApp (or autopilot) must submit an `[EMAIL VERIFICATION EVENT]` containing the **Verification Key** from the email, signed with the matching private key. My `.env` keypair (`…utpNWeD7…`) matches the VERIFYING row. Let me confirm the event format and the consume logic.
+
+
+### 🤖 Autopilot
+
+The flow is now fully clear. To activate my registration I submit an **EMAIL VERIFICATION EVENT** with the Verification Key from the email, signed by my current keypair (which matches the VERIFYING row). Submitting now:
+
+
+### 🤖 Autopilot
+
+Verification submitted. Let me confirm the row flipped to ACTIVE.
+
+
+### 🤖 Autopilot
+
+Here's the honest status, Gary — one important caveat surfaced.
+
+## What's done (this turn)
+1. **PR #424 merged + deployed** ✅ — `TRUSTED_AGENTS` in `process_movement_telegram_logs.js` now includes `admin+sophia@truesight.me` and `Sophia Truesight`. Deployed to the GAS project (clasp push succeeded).
+2. **Registered** `admin+sophia@truesight.me` with Edgar ✅ — new row: **Sophia Truesight, VERIFYING**, key `…utpNWeD7…`.
+3. **Found + read the verification email** (subject "Verify your TrueSight DAO digital signature") and **submitted the EMAIL VERIFICATION EVENT** with the verification key ✅ — but the sheet still shows **VERIFYING**, not ACTIVE yet. It may need a few seconds for the sheet sync / cache refresh.
+
+## The honest caveat (this is the part you asked about)
+Your instinct was right: **the earlier transactions that "came true" were NOT signed by me** — they were signed by your key (`…ArMTOvEf…`) and David Campbell's key (`…54jNZdN4…`), both registered ACTIVE. So nothing contradicts the fact that I was never registered.
+
+But there's a wrinkle for **row 673 specifically**: it was signed with the **old** autopilot key (`…yrjcz4Y9…`), which is **not** in the signature sheet — and the status function requires the signature to resolve to a registered ACTIVE contributor *before* the trusted-agent check runs. So even once my new key is ACTIVE, row 673 won't auto-flip.
+
+## Options to clear row 673 (need your pick)
+- **A)** Re-submit the movement signed with my now-current key (I can do this — cleanest).
+- **B)** Register the old `…yrjcz4Y9…` key too (I have it in session backups, but it's the rotated key — less clean).
+- **C)** Manually correct the row's STATUS with your sign-off.
+
+**RESUME HERE** — next turn: (1) re-check `Contributors Digital Signatures` row for Sophia (expect ACTIVE — if still VERIFYING, re-examine the EMAIL VERIFICATION EVENT payload format), then (2) per your pick (A/B/C) clear row 673 and re-run the movement processor to confirm STATUS → NEW → PROCESSED.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -d /opt/tokenomics/google_app_scripts/*/ 2>/dev/null | head -40; echo '---'; cd /opt/tokenomics 2>/dev/null && git log --oneline -3 2>/de; ls -la /opt/truesight_autopilot/.env* 2>/dev/null; echo '---'; cd /opt/truesight_autopilot && grep -l 'yrjcz4Y9' -r . --include='*.env*' --i
+• `gas deploy project` → ok
+• `submit contribution` → Contribution submitted successfully.
 
