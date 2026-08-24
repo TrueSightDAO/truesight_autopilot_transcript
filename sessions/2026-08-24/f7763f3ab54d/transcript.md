@@ -70,6 +70,11 @@ Nothing urgent on my plate that needs you this second. What are you thinking abo
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_tool_result, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gary sent a terse "Draft WhatsApp message" — I need to figure out *which* WhatsApp message. Let me pull the current backlog and event state to find what needs drafting.
 
 
@@ -198,4 +203,42 @@ Notes:
 - I included the **regularização** question because the Inapto flag is exactly Black King's blocker (settle pending invoices → status clears) — worth confirming their process handles that.
 - Also worth asking in-person vs remote, since the Ilhéus unit's WhatsApp number is a remote RS prefix.
 - Drafting only — you hit send. Want any tweaks (tone, add urgency, mention it's for export)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14012] Estimate time spent following up on this matter separately for you and me
+
+
+### 🤖 Autopilot
+
+Let me ground the estimate in what's actually traceable — checking transcript records for prior work on this matter.
+
+
+### 🤖 Autopilot
+
+Let me check the contribution ledger for any recorded time on this work before estimating.
+
+
+### 🤖 Autopilot
+
+Honest answer first: I don't have a time-tracking ledger for this specific matter — no contribution events or transcripts record minutes on the e-CPF/PJ-e follow-up specifically. So below is an **estimate with clear assumptions**, split by who did what.
+
+**What's traceable (context files + this session):**
+
+| Who | Activity (visible in context) | Est. time |
+|---|---|---|
+| **Sophia** | Built the pre-flight checklist (`BRAZIL_TO_SF_FREIGHT_PREFLIGHT_CHECKLIST.md`), the bilingual 10-page self-service NF-e enablement PDF, TRACK_MAP entries, follow-up filings (Graziela, Matheus, PODream), and repeated pings | ~4–6 hrs cumulative (Jun–Aug) |
+| **Sophia** | This session: backlog scan, transcript searches, web-extract of Plátano Digital, 2 WhatsApp drafts + PT variants | ~15–20 min |
+| **Gary** | Typing the asks, picking recipient, reviewing drafts — *visible* time today | ~5–10 min |
+| **Gary** | Offline: calls/WhatsApp with Matheus, Paloma, Layon (counsel call Jun 22), Graziela emails, tracking down the Inapto status, source documents | **Not visible to me** — likely several hours across Jun–Aug, but I can't verify |
+
+**Total estimate on "this matter" (e-CPF/PJ-e + the NF-e blocker it serves):**
+- **Me:** ~4.5–6 hrs (mostly the enablement artifacts + scheduling/pings)
+- **You:** ~3–6 hrs (mostly offline coordination — genuinely a guess; you'd know better)
+
+**Caveats:**
+- Only the *file artifacts* are evidence-backed. Your actual phone/WhatsApp/call time is invisible to me.
+- If you want, I can **log my portion as a [CONTRIBUTION EVENT]** to Edgar (e.g. ~300–360 min for the cumulative work, or just today's ~20 min) so it's on the ledger — say the word and I'll submit with a dry-run first.
+- Going forward I can timestamp each follow-up action so future estimates are real numbers, not estimates. Want me to add that as a small note in OPEN_FOLLOWUPS.md?
 
