@@ -65,46 +65,55 @@ Let me look at the agroverse-inventory repo structure and find where the mold re
 ### 🤖 Autopilot
 
 The inventory records likely live in a sheet, not the repo. Let me check the agroverse-inventory repo structure and the QR codes repo.
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mold entries live in the Main Ledger as currencies. Let me check the Main Ledger for the chocolate mold records and who holds them.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mold rows are alphabetized further down. Let me find them.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the open backlog and look at ledger records for the mold. First, let me find the exact rows for the mold currencies in the Currencies tab.
+[2 tool result(s) compacted: read_context_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mold rows should be after "Ceremonial" entries. Let me look further down.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Currencies tab defines the mold as a currency (unit cost only) — "Chocolate Mold - 4 X 6 slots" ($1.19) and "Chocolate Mold from Rusty" ($10). That doesn't tell us custody. Let me check the ledger transactions and treasury cache for mold movements.
+[3 tool result(s) compacted: search_code, search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the store inventory snapshot and the ledger tabs for the mold.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The store snapshot doesn't track molds — they're capital equipment, not sellable SKUs. Let me check the Main Ledger tab and recent context updates for any mold custody records.
+[3 tool result(s) compacted: read_google_sheet, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search CONTEXT_UPDATES and org-wide for recent mold records, especially around Liz/China (Aora context).
+[3 tool result(s) compacted: search_code, search_code, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -141,31 +150,47 @@ If the "new mold with Liz" is something you discussed recently (a Telegram excha
 ### 🤖 Autopilot
 
 10 units — let me check if the plan or spec mentions a quantity of 10 molds.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary says there are 10 units of the new mold with Liz. Let me read the Aora plan fully to cross-check the mold quantity details.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the plan, especially the mold procurement section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pagination is recursive — let me search directly for the mold procurement section within the plan file.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santos spec mentions "Mold count" as an open item but nothing about 10 units with Liz. Let me check the Aora event brief and the rest of the plan for the mold procurement specifics (Dongguan MHC-CL082, quantities).
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event brief is illuminating — the **Cacao Explorer Gift Set contains a chocolate mold** (§6), and the pilot audience is **10–15 seed families** (§9). That aligns with "10 units." Let me check for any recent procurement record of 10 molds.
+[3 tool result(s) compacted: search_context, search_transcript, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -246,4 +271,81 @@ I can't verify 10 units of the new chocolate mold with Liz — **no DAO record e
 2. If you want it **recorded on the ledger** as DAO property loaned to Liz (like the Cabrellon mold is DAO property), tell me the model/price and I'll file the appropriate record.
 
 Which way do you want to go?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] Their dimensions are 58mm x 125mm
+(vs what Kirsten had 55 x 128)
+
+
+### 🤖 Autopilot
+
+58×125 vs Kirsten's 55×128 — those are bar/cavity dimensions, which gives me something concrete to match against the spec docs. Let me search for these numbers.
+
+
+### 🤖 Autopilot
+
+No hits on either dimension. Let me check what dimensions ARE recorded for the Cabrellon/Kirsten mold, so I can compare what the spec says vs. what you're reporting.
+
+
+### 🤖 Autopilot
+
+The spec only records the mold **tray** dimensions (27.5×17.5cm), not the cavity/bar dimensions. Let me read the Santos spec to see if bar dimensions are recorded anywhere.
+
+
+### 🤖 Autopilot
+
+Gary, this is helpful — now we have concrete cavity dimensions to match. The DAO spec records only the **tray** size (27.5×17.5cm, 4×50g cavities), never the cavity dims, so these numbers aren't in any DAO doc. Let me check whether the Dongguan MHC-CL082 (the alternative mold Jerri quoted) is a real product with those cavity dimensions.
+
+
+### 🤖 Autopilot
+
+Confirmed — the **MHC-CL082 is a real product: polycarbonate mold, 58mm × 125mm per cavity** — exactly the dimensions you gave. Let me pull the Alibaba listing for details (price, MOQ, cavities) to cross-check the quantity story.
+
+
+### 🤖 Autopilot
+
+The dimensions verify it precisely. Let me do one final check for any order/purchase record of the model number in email, then summarize.
+
+
+### 🤖 Autopilot
+
+Verified — that dimension is the fingerprint. Here's the match:
+
+## The 58×125mm mold = MHC-CL082 (Dongguan MHC Industrial Co., Ltd.)
+
+| Attribute | Value |
+|---|---|
+| **Product** | MHC-CL082 polycarbonate chocolate mold (Alibaba listing for Dongguan MHC Industrial, Guangdong) |
+| **Cavity dims** | **58mm × 125mm** — exactly what you gave ✅ |
+| **Material** | Food-grade polycarbonate, non-stick, heat-resistant |
+| **Source** | Dongguan factory — the one Jerri found per AORA plan decision #6: *"Jerri also found a Dongguan factory with MHC-CL082 model in stock (closest match to Cabrellon dimensions) — quotation received"* |
+
+So this **is** the alternative mold from the Aora plan — and your 10 units tells me the procurement that was pending in June has now actually happened. That's new information not in the ledger.
+
+## Comparison vs Kirsten's mold (Cabrellon)
+
+| | New mold (w/ Liz) | Kirsten's (SF) |
+|---|---|---|
+| Model | **MHC-CL082** (Dongguan) | Cabrellon Italian |
+| Cavity | **58 × 125 mm** | **55 × 128 mm** |
+| Cavities/bar format | 50g-class, 4-cav tray (27.5×17.5cm tray spec applies to Cabrellon) | 4 × 50g |
+| Shape | Slightly **wider & shorter** bar | Slightly narrower & longer |
+
+⚠️ **One flag:** the bar shape from the new mold will be marginally different (58×125 vs 55×128) — so the **generic wrapper foil for the China bars must be sized to the new mold**, not Kirsten's. Worth confirming with Jerri/Liz which foil she has.
+
+## Still not in any DAO system
+
+- ❌ No purchase order / invoice for the 10 units in email (admin or gary)
+- ❌ No ledger or inventory entry (molds aren't tracked as SKUs; only cost entries exist)
+- ✅ The **quotation** is documented in the plan (received via Jerri, June 10)
+
+## Proposed next step
+
+I'd like to:
+1. **Update AORA_EXPERIENCE_PLAN.md** — record decision: *mold procured = 10 × MHC-CL082, 58×125mm cavities, custody: Liz (Go/Nucleus, China); foil must be sized to new mold* — so the plan reflects reality.
+2. **Log an OPEN_FOLLOWUPS entry** — track receipt of the invoice + mold custody confirmation until it's on the ledger.
+
+Want me to open that PR?
 
