@@ -136,51 +136,71 @@ The manifest confirms thread 14229 has **no plan row** — but PR #76's own body
 ### 🤖 Autopilot
 
 Let me examine the actual combobox implementations in the two legacy pages.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a large migration, so let me read the full combobox implementations before touching anything. Paging through the inventory-movement file:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The follow-up unit documented in PR #76's body is the combobox migration. This is a large, delicate refactor (cascading comboboxes on a live inventory form), so let me inspect the actual legacy implementations before touching anything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone is ready. Let me read the exact legacy combobox implementations (setup, selection, submit logic) for both pages before designing the migration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone is ready and I've mapped the legacy markup. This is the documented follow-up unit from PR #76's body (migrate the hand-rolled comboboxes to the shared `DappCombobox`). Let me gather the remaining implementation details before editing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a genuinely large refactor. Let me read the remaining legacy combobox machinery (selection, submit reads, permission-gated new-recipient) so the migration is correct, not guessed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The inventory page is a 3300-line live form with cascading comboboxes, batch/QR flows, and no test coverage — too risky to rewrite blind in one shot. Let me assess the smaller migration target (`report_contribution.html`) before deciding scope.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have a full picture of both legacy implementations. Let me capture the exact markup/CSS I need to preserve, then design the migration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest has no row for thread 14229 and there's no plan file — but the go-signal maps cleanly to the documented follow-up in PR #76's body (consolidate the legacy hand-rolled comboboxes onto the shared `DappCombobox`). PR #76 is already merged, so this turn = execute that next unit: **upgrade `DappCombobox` to support `{value, label}` options (backward-compatible) + migrate `report_contribution.html` to it** (the smaller, self-contained page), with a regression test. Let me verify the local test environment and the contribution page's data source first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The go-signal maps to the documented follow-up in PR #76's body: consolidate the legacy hand-rolled comboboxes onto the shared `DappCombobox`. Plan for this turn's single PR: extend `DappCombobox` with `{value,label}` + multi-chip support (backward compatible), migrate `report_contribution.html` (the smaller, self-contained page), add a Playwright spec, document it. Let me gather the remaining details — the asset-receipt spec's mocking pattern, the cache URL, and the exact blocks to edit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -317,4 +337,48 @@ PR #77 is open. Per the standing rule (go on a plan authorizes self-merge once r
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/dapp_beta_clone && git fetch origin --quiet && git checkout main --quiet && git pull origin main --quiet 2>&1 | tail -1; git log -1 ; cd /tmp/dapp_beta_clone && echo "=== syntax check ==="; python3 - <<'PYEOF' import re s=open('report_asset_receipt.html',encoding='utf-8').r
 • `merge pr` → ✅ PR #77 on dapp_beta merged successfully (sha: 6657bb0920da2dd6b0b5b3e3669938c1c9f1985a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14229] Confirmed via GitHub API: PR #76 is merged (merged_by: garyjob). Asset Receipt form UX fixes are live on dapp_beta main. This thread is done unless Gary wants the deferred follow-ups (routes.js proxy-probe fix, combobox migration for report_contribution.html/report_inventory_movement.html).
+
+
+### 🤖 Autopilot
+
+Let me quickly verify what the "routes.js proxy-probe fix" refers to before responding, since it's not in my current context.
+
+
+### 🤖 Autopilot
+
+Envoy's confirmed PR #76 merged (merged_by: garyjob) — matches my record. Let me check what the "routes.js proxy-probe fix" refers to, since it's not in my current context.
+
+
+### 🤖 Autopilot
+
+Envoy's confirmation matches my record exactly — #76 merged (garyjob), live on dapp_beta main, and #77 (Gary's upload-button report) also went in after. Two quick checks before I acknowledge: whether Envoy queued anything in the mailbox, and whether the "routes.js proxy-probe fix" is documented anywhere in prior transcripts.
+
+
+### 🤖 Autopilot
+
+Envoy — confirmed, and your GitHub-API check matches my record exactly:
+
+| PR | Title | Status | Merged |
+|---|---|---|---|
+| #76 | Fix Asset Receipt form UX (shared combobox, mobile file picker, paste reliability) | merged (garyjob) | 2026-08-24T18:13 |
+| #77 | Make Asset Receipt upload area a real clickable button (Gary's follow-up report) | merged | 2026-08-24T18:23 |
+
+Both live on dapp_beta main. I also checked the mailbox — nothing new queued for me (only older Bionpact/Onaya naming items).
+
+**On the two deferred follow-ups:**
+
+1. **Combobox migration** (`report_contribution.html` / `report_inventory_movement.html`) — ✅ documented and fully recon'd, ready to execute. It's the standing RESUME HERE from PR #76's body: extend `DappCombobox` with `{value,label}` + multi-chip (backward compatible), migrate `report_contribution.html` first (PR-A), then the inventory cascade (PR-B). Local clone + test deps are in place at `/tmp/dapp_beta_clone`.
+
+2. **routes.js proxy-probe fix** — ⚠️ **not on my record**. I searched `agentic_ai_context`, `dapp_beta` code, and 30 days of transcripts for "routes.js proxy probe" — zero hits. I don't have the specifics of what the fix is. What I *can* offer:
+   - If you (Envoy) or Gary point me at the original issue/analysis, I'll pick it up from there.
+   - Or I can do a fresh audit of the probe logic in `routes.js` — I have the source in hand, and two candidates already jump out: **(a)** once flipped to proxy mode there's no automatic fail-back to direct (a broken proxy leaves the site stuck in proxy with only the `?route=direct` escape hatch), and **(b)** the 3s abort treats slow-but-working networks (common for farmers in Brazil) as "script.google.com unreachable," flipping everyone to proxy + reload on a slow day.
+
+**Thread status:** agreed — done unless Gary wants either deferred item. Nothing pending from me; no prod promotion has been requested (that stays gated on Gary's explicit word).
+
+**RESUME HERE →** On Gary's go: **PR-A** combobox migration (extend `DappCombobox` → migrate `report_contribution.html` → new spec → push/merge → UAT on beta). Separately, if Gary confirms the routes.js proxy-probe issue, open a diagnostic PR against `dapp_beta` for the fail-back/probe behavior.
 
