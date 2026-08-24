@@ -745,16 +745,19 @@ Gary's "Fix that" = explicit go on the nginx `governor_chatbot` upstream fix (ch
 ### 🤖 Autopilot
 
 krake_nginx's direct ssh_run uses port 22 (wrong — the host listens on 2202 with the ed25519 key). I'll run nginx-side commands via nested SSH from the autopilot box (which worked earlier), and check the autopilot SG inbound rules in parallel.
+[2 tool result(s) compacted: aws_query, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 krake_nginx can't reach `3.214.167.219:8001` right now (empty response) — and the autopilot box's SG is `governor-chatbot-sg` (`sg-0d3b6c10480d83248`), which opens **8000 but NOT 8001**. The API actually listens on **8001** (verified via ss + curl). So the full fix is: (1) point the nginx upstream at the current box `3.214.167.219:8001`, and (2) open inbound 8001 to the nginx host only. Let me first confirm no running instance owns the dead `100.52.234.163` and that `3.214.167.219` is this box.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: `3.214.167.219` = `i-05276b8ae82d6b88c` = this autopilot box (sophia-nelanco, running); `100.52.234.163` = **no instance** (dead IP). The box's SG `governor-chatbot-sg` opens 8000/443/22 but **not 8001** — and the API listens on 8001. So the fix needs both: SG inbound 8001 for nginx, and the nginx upstream swap. Both hosts share VPC `vpc-d59748af` → best to use the **private IP** `172.31.15.182:8001` (no public-internet hop). Let me verify nginx→private-IP reachability first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,36 +765,43 @@ Confirmed: `3.214.167.219` = `i-05276b8ae82d6b88c` = this autopilot box (sophia-
 Both private and public reachability to `:8001` from nginx fail (empty) — because SG `governor-chatbot-sg` blocks 8001 inbound entirely (only 8000/443/22 open). The SG change must come first. Since this is a **write** to a prod SG, I'll state exactly what changes and why, then apply it (Gary's "Fix that" covers this — it's the minimal set to make the chatbot work).
 
 **SG change:** `governor-chatbot-sg` (`sg-0d3b6c10480d83248`, nelanco) — add inbound TCP **8001** from `172.31.26.102/32` (krake_nginx private IP), keep everything else. This restores the chatbot path without opening 8001 to the internet.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `->` in the description is invalid (only alphanumerics and `. _-:/()#,@[]+=&;{}!$*` allowed). Retrying with a valid description.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SG rule added ✅ (`sgr-0525f1b3fab567330`, 8001 from krake_nginx only). Now verify nginx can reach the box on 8001, then edit the nginx upstream (backup + `sed` swap `100.52.234.163` → `172.31.15.182`, `nginx -t`, reload).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Private IP works (health `ok`), public doesn't — confirming the **private path** is correct (no internet hop, SG-limited to nginx). Now the nginx upstream swap: backup, sed replace, test, reload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Upstream swapped + `nginx -t` passed, but `systemctl reload nginx` failed (no systemd unit — it's probably run under a different init). Let me reload via `nginx -s reload` directly and verify the chatbot endpoint end-to-end.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reload succeeded (nginx master alive, rc=0), but `chatbot.truesight.me/health` still returns HTTP 000 from **inside nginx** — likely a TLS/SNI issue when curling the public name from the box itself, or the reload didn't re-read. Let me test from the autopilot box (external vantage) and check nginx error log + confirm the loaded config.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. The error log's **last upstream error still references `100.52.234.163`** (timed out at 11:17:08), and `nginx -T` shows no `governor_chatbot` block — meaning **the reload didn't actually pick up the edited file**. The `nginx -s reload` signal fired but the running master (`15163`, started May04) may not have re-read, or the `sites-enabled` symlink resolves to a different file than the one I edited. Let me inspect which config file is actually loaded and confirm the on-disk edit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -799,6 +809,7 @@ Found it. The error log's **last upstream error still references `100.52.234.163
 **Root cause found.** `/etc/nginx/nginx.conf` line 40 shows `#include /etc/nginx/sites-enabled/*;` is **commented out** — so the `governor_chatbot` block I edited in `sites-enabled/nginx_krake_ng.conf` was **never loaded** by the running nginx (master `15163` started May 4). The actual serving config is loaded from elsewhere. `nginx -T` output was empty for my grep because that file isn't included. The error log still showing `100.52.234.163` confirms the live config differs from what I edited.
 
 Let me find the real included config file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -806,11 +817,13 @@ Let me find the real included config file.
 **Now it's fully clear.** The **real live config is `/etc/nginx/nginx.conf`** (which contains the `governor_chatbot` upstream at line 66 pointing to `100.52.234.163`), and `sites-enabled/nginx_krake_ng.conf` is a **stale, non-included copy** (`#include sites-enabled/*` is commented out — my earlier edit there had zero effect, which is why the chatbot still 504'd).
 
 The fix: edit the **actual** `/etc/nginx/nginx.conf` (backup → swap upstream → `nginx -t` → reload), then verify. Let me do that now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Fixed and verified — `chatbot.truesight.me` now returns HTTP 200 with a healthy payload.** Let me do a final external verification from the autopilot box (true public vantage) and confirm the error log stopped showing timeouts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -861,26 +874,31 @@ Want me to open the doc-refresh PR now?
 ### 🤖 Autopilot
 
 Gary's "PR and merge" = explicit go to open the doc-refresh PR on `agentic_ai_context` **and merge it**. Let me get the full current doc text from the local clone so my edits are exact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's "PR and merge" = explicit go to open and merge the doc-refresh PR. I have the file locally at `/tmp/aac`. Let me grab the verbatim sections I need for precise hunks (banner, Explorya inventory, SG table, file tail) plus confirm every stale-IP occurrence.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the doc structure mapped. Let me pull the exact verbatim sections I need to edit (accounts, Explorya inventory, Route53, nginx, autopilot, SG, monitoring) so my hunks match precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab the remaining verbatim chunks I haven't seen: §2.2 Explorya inventory, §3 DNS/nginx, §5 migration table, §6 config, and the tail (§10, §12).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab the final verbatim chunks I need (§2.1/2.2 inventory, §3.1 Route53 start, §4.3, §4.5) in one pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -981,4 +999,65 @@ PR #814 is open. Gary's "PR and merge" = explicit go to merge it. Merging now.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /tmp/aac && git fetch -q origin && git status --short | head; git log --oneline -1; echo "=== FILE ==="; cat infrastructure/AWS_DIGITAL_I; cd /tmp/aac && F=infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md echo "=== LINES 1-70 (banner+1) ==="; sed -n '1,70p' $F echo "=== STALE IP/ALL; cd /tmp/aac && F=infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md echo "=== 124-240 ==="; sed -n '124,240p' $F echo "=== 278-360 ==="; sed -n '2; …(+12 more)
 • `merge pr` → ✅ PR #814 on agentic_ai_context merged successfully (sha: b35398623ef0f523e97ccc80bf6b4f91d5e4ce1f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] Go for your proposal
+
+
+### 🤖 Autopilot
+
+Gary's "Go for your proposal" = green light on the krake_nginx stale-file cleanup. My proposal: mark `/etc/nginx/sites-enabled/nginx_krake_ng.conf` as inert (non-destructive comment header + backup) so nobody edits it expecting changes to apply — the live config is `/etc/nginx/nginx.conf`. Executing now, one action at a time.
+
+**Step 1 — inspect the stale file + confirm live config state on krake_nginx:**
+
+
+### 🤖 Autopilot
+
+Both files now show the same upstream (my earlier edit touched both — but the sites-enabled copy is still inert since `include sites-enabled/*` is commented out). Let me diff the two files to see how much of a duplicate the inert copy is, then apply my proposal: backup + mark inert + verify nginx still fine.
+
+
+### 🤖 Autopilot
+
+Important discovery in the diff: the inert `sites-enabled` copy contains an **SSL server block for `perch.truesight.me` that the live `nginx.conf` does NOT have** — meaning if that domain is still in use, the live config isn't serving it (worth flagging). My proposal stands (mark the copy inert — non-destructive). Applying now: backup → add inert-marker header → `nginx -t` → reload → re-verify chatbot → also check perch DNS.
+
+
+### 🤖 Autopilot
+
+The backup succeeded (`nginx_krake_ng.conf.bak.20260824`, 8227 bytes) but the `sed -i` heredoc-style quoting broke in the nested-ssh wrapper (mismatched quotes on the multi-line insertion). Let me redo the marker prepend with a robust approach — write the marker to a temp file on the remote, then `cat` it in front (avoids all quoting issues).
+
+
+### 🤖 Autopilot
+
+All done and verified. One noteworthy discovery along the way: `perch.truesight.me` resolves to `54.211.179.126` (the seni_ror box) — and the **live nginx.conf does NOT contain the perch SSL block** that the inert copy has. So perch.truesight.me currently resolves but **likely has no TLS listener** (or the seni_ror box serves it directly). That's worth a follow-up check but out of scope for this cleanup — I'll flag it, not chase it.
+
+## ✅ Stale-file cleanup complete — summary
+
+### What I did on `krake_nginx` (live, non-destructive)
+1. **Backup:** `/etc/nginx/sites-enabled/nginx_krake_ng.conf.bak.20260824` (8227 bytes, original preserved).
+2. **Marked inert:** prepended an 8-line `# INERT FILE — NOT LOADED BY NGINX` header explaining that `nginx.conf` has `#include sites-enabled/*` commented out, the live config is `/etc/nginx/nginx.conf`, and pointing to the backup. (First attempt via nested quoting broke; redid it with a temp-file `cat` approach — clean.)
+3. **Verified:** `nginx -t` syntax OK → `nginx -s reload` rc=0 → **`chatbot.truesight.me` → HTTP 200 in 0.037s** (unchanged, healthy).
+
+### End state
+| File | Status |
+|---|---|
+| `/etc/nginx/nginx.conf` | **LIVE** — `governor_chatbot → 172.31.15.182:8001` (fixed earlier) |
+| `/etc/nginx/sites-enabled/nginx_krake_ng.conf` | **inert** — header-marked, backed up, never loaded |
+| `…/nginx_krake_ng.conf.bak.20260824` | original copy, preserved |
+
+Anyone (human or agent) touching that file now sees immediately it has no effect — no more "edited it, nothing changed" confusion.
+
+### ⚠️ Flagged for later (not acted on — needs your call)
+- **`perch.truesight.me`** → `54.211.179.126` in DNS, but the **live nginx.conf has no perch SSL server block** (only the inert copy does). If perch is still used, its HTTPS is likely broken/missing — worth a dedicated check. Say the word and I'll investigate.
+
+That completes the full Explorya cleanup chain: **A–E resource cleanup → nginx chatbot fix → doc PR #814 (merged) → stale-file marking**. All of it verified.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → nested ssh krake_nginx: head -25 sites-enabled copy; grep governor_chatbot both files; include directives; nginx -t; diff nginx.conf vs copy (37 lines; perch SSL block only in copy); backup cp -a; sed -i marker (quoting broke); retry via temp-file cat prepend; nginx -t; nginx -s reload; curl chatbot health = 200/0.037s; getent perch.truesight.me = 54.211.179.126
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' echo "=== sites; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' echo "=== diff ; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' set -e F=/etc/n; …(+1 more)
 
