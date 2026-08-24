@@ -835,11 +835,13 @@ Still in the July rows. Let me read the very end of the artifact where the newes
 ### 🤖 Autopilot
 
 The original row (673) still shows `unauthorized` as expected (old key). Let me read the very end of the artifact for my new submission.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My new submission hasn't appeared in that range yet (range ended at row 674). Let me check the rows right after — my new submission should be there (or still processing via the GAS webhook).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -847,26 +849,36 @@ My new submission hasn't appeared in that range yet (range ended at row 674). Le
 Row 675 is the smoking gun: my re-submission was signed with the **OLD key** (`…yrjcz4Y9…` — identical signature to row 673), not the new ACTIVE key (`…utpNWeD7…`). The `submit_contribution` tool runs in the long-lived bot process whose cached `settings` still hold the old keypair from before `register_identity` rewrote `.env`. So it's still `unauthorized` for the same reason.
 
 Fix: submit via a **fresh process** that reads the current `.env` (new ACTIVE key). Doing that now, and in parallel confirming the deployed TRUSTED_AGENTS logic:
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Submitted with the NEW ACTIVE key** (verified `HAS_NEW_KEY: True` in the fresh process) and Edgar returned `signature_verification: success`. The GAS webhook should process it. Let me check the new row's STATUS now.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New row not there yet — the GAS webhook may still be processing, or it goes via Telegram Chat Logs first. Let me check both the Telegram Chat Logs tail and give the Inventory Movement tab another look.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fresh submission needs a moment for the Edgar→GAS webhook→sheet append. Let me re-check the Inventory Movement tail.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 675 is my **first** re-submission (the one that used the stale OLD key from the bot process). My **fresh-key** submission hasn't been appended yet — the GAS processor runs on cron/webhook. Let me trigger the inventory-movement processing webhook manually and find the config URL for it.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -920,6 +932,7 @@ Row 675 is my **first** re-submission (the one that used the stale OLD key from 
 ### 🤖 Autopilot
 
 That's actually the most direct fix — the GAS processor resolves signatures against the **Contributors Digital Signatures ledger** (the sheet), so if my *signing* public key (`…yrjcz4Y9…`, the one that signed rows 673/675) is in that ledger as an ACTIVE row for Sophia, then the trusted-agent + `Approved By: Gary Teh` branch authorizes them — no re-submission needed, and the original row flips too. Doing it now via gspread, and hunting the processor webhook in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -956,6 +969,7 @@ Your idea avoids the key-rotation mess entirely — it just needs one ledger row
 ### 🤖 Autopilot
 
 Public key — yes, that's not a secret (it's the verification key, the same one embedded in the submissions as "My Digital Signature"). Let me pull the exact current value from `.env` (public only — I won't touch the private key).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -985,6 +999,7 @@ Find out why
 ### 🤖 Autopilot
 
 The user's hypothesis is a cache staleness issue — the GAS processor likely resolves signatures from a **cached contributors JSON**, not live from the sheet. Let me find that cache and how it's refreshed.
+[3 tool result(s) compacted: search_code, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1083,4 +1098,24 @@ Gary's hypothesis deserves a precise test. Two checks in parallel: (1) search al
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt && ls -d tokenomics 2>/dev/null; ls /opt/tokenomics/google_app_scripts/ 2>/dev/null | head; echo '---'; find /opt/tokenomics -name '
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] What is the old key?
+
+
+### 🤖 Autopilot
+
+The old key is the public key that signed the original 20-August movement (row 673) and the stale re-submission (row 675). It's the autopilot's signing key from before I rotated it on 24-August. Full public key:
+
+```
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyrjcz4Y9pI9wXFCr7DifXpMM8KSj7bRhQa3j7ndLZQwSiKKhYTaJ/NLAdygvDKAsDlP5oob98xdPfkFNi8XVZ1hzDSZqraeG9Zg763xh94rIHHRxxkqUt8PkroGuAXehKGQNM8X6SSZc9B/1ubSnZwt27BslentuLm/Qaxe1SgdFpJDpP9QJKa4j5FirNK3FN3KdByx/8zu2sVtrQFQgF3BqiDOXv/m740zHxpltQ8Pbw7JcqDFlVk93bq51gLjE9rQrEUrC1K2uHMozww3+Ud7DwMQvnnnteyTSdVnSufJROyH28aiANivsvPjlm+fweuwFpkPuHttUWsb6EfdMsQIDAQAB
+```
+
+Starts with `…yrjcz4Y9…` (that's the fingerprint you saw me reference all session). It is **not** on the Contributors Digital Signatures sheet — I searched all 164 rows and org-wide, zero hits — which is exactly why rows 673/675 stay `unauthorized`.
+
+Two practical notes:
+- This key was the `.env` PUBLIC_KEY before `register_identity` rotated it; the current key is the new ACTIVE one (`…utpNWeD7…`).
+- If you want those two historical rows to verify, the cleanest path is to add this old key to the sheet as `Sophia Truesight / ACTIVE` (one ledger row — no re-submission needed), then fire the processing webhook. Want me to do that?
 
