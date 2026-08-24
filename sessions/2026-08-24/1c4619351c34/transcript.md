@@ -928,11 +928,13 @@ I have the full PR2 spec. Now let me read the current state of the view + CSS on
 ### 🤖 Autopilot
 
 Default branch is `master`. Let me read the view and its CSS from master.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the view tail (scales config where the lead-in trim would go) and the controller.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1078,4 +1080,60 @@ Nothing else pending — merge done, deploy armed for the next turn.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #1128 on sentiment_importer merged successfully (sha: a943eda54702c7abe4f8e17c09fd97ad46862f6f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Deploy
+
+
+### 🤖 Autopilot
+
+Gary's explicit deploy go — pulling `a943eda` and running `./deploy.sh --skip-migrate` on the prod box.
+
+
+### 🤖 Autopilot
+
+Master is at `a943eda5` (PR2 merge), working tree clean. Running the deploy with `--skip-migrate` (no schema change).
+
+
+### 🤖 Autopilot
+
+Bundle install completed — but the tail only shows the bundle step. The deploy script has more steps (asset precompile + restarts). Let me confirm the full result: check both hosts are at `a943eda5` and services are active.
+
+
+### 🤖 Autopilot
+
+Both hosts at `a943eda5`, seni_ror service active, 2 sidekiq processes running (systemd unit name differs — the processes are up). Quick smoke test to confirm the app is serving and the new markup is live.
+
+
+### 🤖 Autopilot
+
+Deploy is live and healthy. Confirming the state:
+
+## ✅ PR2 deployed to production — ready for UAT
+
+**Both hosts at `a943eda5`** (PR2 merge), services active:
+- **seni_ror** (Rails app, 54.211.179.126) — service `active`, production log shows live SQL activity (gauge data path — `daily_trades` queries running), HTTPS `/large_spikes` → HTTP 302 (auth wall, expected — request reached Rails and was handled)
+- **seni_sk_nelanco** (Sidekiq 5.2.5, `sentiment_importer`) — at `a943eda5`, 2 worker processes running
+- Deploy: `./deploy.sh --skip-migrate` (no schema change — correct flag), bundle install clean
+
+**What's now live on perch.truesight.me `/large_spikes`:**
+1. **Norm line** now tracks the 30-day Bollinger band's center (PR1 — moves with regime changes instead of the old flat 180-day SMA)
+2. **Lead-in trimmed** — chart starts at the first real (non-zero) participation reading, no dead flat-zero stretch
+3. **Over-extended shading softened** — 0.10 → 0.06, reads as a boundary marker not a dominant zone
+4. **Norm line thinned** — 1.5px, secondary to the green participation series
+5. **Verdict block elevated** — bigger, bolder "Today X% · Norm Y% · Risk-on/Narrow/Over-extended" sentence
+
+**Gary — please UAT the live page.** Expected visual: a clean gauge where the Norm line sits where the orange band's center is, the chart doesn't waste the left half on zeros, and the verdict sentence at the top is the first thing you read.
+
+## RESUME HERE → after UAT
+- **If good** → arc complete (PR1 + PR2 both live). I'll close out the handoff thread / update the plan resume tracker per the plan's wrap-up steps.
+- **If any tweak lands wrong** → each of the 4 changes is individually revertible; tell me which and I'll revert just that one (fresh PR + deploy, same flow).
+
+Nothing pending on my side — deploy verified, parked at your UAT.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/sentiment_importer && git fetch origin && git checkout master && git pull --ff-only origin master 2>&1 | tail -3 && echo "==; cd /home/ubuntu/sentiment_importer && ./deploy.sh --skip-migrate 2>&1 | tail -30; cd /home/ubuntu/sentiment_importer && echo "seni_ror HEAD: $(git rev-parse --short HEAD)"; echo "=== services ==="; systemctl is-active seni; …(+1 more)
 
