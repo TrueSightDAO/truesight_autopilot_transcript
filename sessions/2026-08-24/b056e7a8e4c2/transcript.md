@@ -388,21 +388,25 @@ Let me look at how the ledger handles asset custody before recommending the acco
 ### 🤖 Autopilot
 
 The photo is evidence of custody — Kirsten's post says the big box from Henderson, NV arrived. Let me check how the DAO accounts for physical asset custody before I propose the ledger treatment.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The photo confirms arrival — but let me check how molds are currently held on the ledger (custody rows) before proposing the accounting. Checking `offchain asset location` for any existing mold lines.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The molds would be further down the sheet (alphabetically after "Chocolate..."). Let me check the mold rows and the balance tab.
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mold rows would be in the A60–A100 gap. Let me check that range.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -457,11 +461,13 @@ How do you want to proceed — and do you have the quoted unit price?
 ### 🤖 Autopilot
 
 Let me check what's recorded in Elizabeth Wong's possession across the ledger and context.
+[3 tool result(s) compacted: search_context, search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the remaining rows and the QR codes sheet for Elizabeth Wong as a holder.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -578,4 +584,61 @@ Before we book anything, we need to answer: **who actually paid for the 10 molds
 - **If the DAO paid** (e.g. Gary reimbursed Jerri off-ledger) → then we book a **purchase** (expense → asset line) + the custody move to Kirsten, and we need the invoice amount.
 
 Do you know who funded the purchase? That decides whether the ledger entry is a DAO asset booking or just a custody/follow-up note.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] how much were each?
+
+
+### 🤖 Autopilot
+
+Let me check for the quotation price — email and context for Jerri's mold quote.
+
+
+### 🤖 Autopilot
+
+Let me check the full email results and the Alibaba listing price for the MHC-CL082.
+
+
+### 🤖 Autopilot
+
+The Alibaba listing shows the mold's tiered pricing. Let me pull the actual listing to get the small-quantity price (10 units is a tiny order).
+
+
+### 🤖 Autopilot
+
+Straight answer: **I don't have a recorded price** — and here's the full picture:
+
+## 1. No price exists anywhere in DAO systems
+
+| Surface | Finding |
+|---|---|
+| **AORA_EXPERIENCE_PLAN.md** | Says only *"quotation received from Jerri"* — **the quoted amount was never written down** |
+| **offchain transactions ledger** | No purchase line, no payment |
+| **Gmail** (admin + gary) | No invoice/quote email for the molds (only unrelated hits) |
+| **Context / transcripts** | Nothing with a number |
+
+So Jerri's quotation itself — the actual price — was **never recorded in any DAO artifact**. That's a documentation gap.
+
+## 2. Market reference from the public Alibaba listing (Dongguan MHC Industrial)
+
+For the **MHC-CL082 / same product family**, the listing shows tiered wholesale pricing:
+
+| Quantity | Unit price (public listing) |
+|---|---|
+| 500–999 pcs | ~**$1.75** |
+| 1,000+ pcs | ~**$1.60** |
+| **10 pcs (your order)** | Not published — small orders carry a per-unit premium, typically **~$2–4/pc** plus freight |
+
+That's a *market* reference, not Jerri's quote. Polycarbonate molds in this class from this factory run roughly **$1.60–$4/pc** depending on volume.
+
+## 3. What I need from you to close this out
+
+To book the 10 molds on the ledger properly I need the **actual number from Jerri's quotation** (or the invoice if it exists outside DAO email — WhatsApp/Feishu?). Do you have it? If not, I can:
+
+1. **Log an OPEN_FOLLOWUPS item** — *"Obtain Jerri's MHC-CL082 quotation (10 pcs) — price never recorded; needed for asset booking + reimbursement check"*, and
+2. Book the molds as **qty 10, cost TBD** (precedent exists: "Cacao Husk Bag (weight unknown)" is on the ledger with qty but blank cost).
+
+If the molds were bought with **Liz's/Jerri's personal funds**, the ledger treatment is simpler — a custody note, no cost needed. Do you know who paid?
 
