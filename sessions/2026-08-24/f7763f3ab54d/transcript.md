@@ -76,11 +76,13 @@ Nothing urgent on my plate that needs you this second. What are you thinking abo
 ### 🤖 Autopilot
 
 Gary sent a terse "Draft WhatsApp message" — I need to figure out *which* WhatsApp message. Let me pull the current backlog and event state to find what needs drafting.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's messages are terse ("Thoughts", then "Draft WhatsApp message") — I want to pin down which message before drafting. Let me scan the recent state for the likely candidates.
+[2 tool result(s) compacted: read_tool_result, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -241,4 +243,25 @@ Honest answer first: I don't have a time-tracking ledger for this specific matte
 - Only the *file artifacts* are evidence-backed. Your actual phone/WhatsApp/call time is invisible to me.
 - If you want, I can **log my portion as a [CONTRIBUTION EVENT]** to Edgar (e.g. ~300–360 min for the cumulative work, or just today's ~20 min) so it's on the ledger — say the word and I'll submit with a dry-run first.
 - Going forward I can timestamp each follow-up action so future estimates are real numbers, not estimates. Want me to add that as a small note in OPEN_FOLLOWUPS.md?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14012] 20 minutes for yourself and 10 minutes for myself. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Done — both logged on the ledger:
+
+| Contributor | Minutes | Event |
+|---|---|---|
+| **Sophia Truesight** | 20 | e-CPF/PJ-e research + PT-BR WhatsApp drafts (Plátano Digital) |
+| **Gary Teh** | 10 | Reviewing drafts, follow-up direction on the NF-e/Inapta matter |
+
+Both submitted as CONTRIBUTION EVENTs (no TDG issued). Anything else on this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
