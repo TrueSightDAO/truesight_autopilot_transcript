@@ -978,11 +978,13 @@ View script written. Now the spec script:
 ### 🤖 Autopilot
 
 Both scripts written. Now run them against the seni_ror checkout (test-first on the prod box copy, then run the suite, then revert and push the identical change).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files edited cleanly on the local checkout. Now run the full large_spikes + model specs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1174,4 +1176,85 @@ The header verdict block at the top (`Today X% · Norm Y% · Risk-on/Narrow/Over
 So the one correction to your phrasing: the orange line is the **ceiling** (over-extended), not a lower bound — the "participate" zone is green **between** grey (below = narrow) and orange (above = over-extended). The sweet spot is green above grey but below orange, ideally with the green line **rising**.
 
 Want me to add a mini legend/annotation to the chart itself making this zone logic explicit (e.g. a "sweet spot" band or a one-line caption)? That'd be a small, revertible PR3 — your call.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Shouldn’t we instead have the fill in be done below the grey line instead of the green line? Since I will end up miss reading and confusing it
+
+
+### 🤖 Autopilot
+
+Good instinct — and honestly the better design. Right now the green gradient fill hugs the **green** line, which reads as "how big the green area is" and doesn't tell you anything about the **grey Norm reference**. Your proposal — shade the area **below the grey Norm line** — turns the grey line into an anchored "typical zone" floor: green poking **above** the grey band = broad leadership, green **inside/below** it = narrow. That's exactly the visual the legend describes, so it stops being misreadable.
+
+Let me verify the exact current code + check nothing else references the green gradient, then implement as PR3.
+
+
+### 🤖 Autopilot
+
+Agreed — your read of the design problem is exactly right. Right now the green fill says "how big is the green line's area," which tells you nothing about the grey Norm. Shading **below the grey Norm line** anchors the "typical zone" as a floor, and then the read becomes: *green poking above the grey zone = broad leadership; green below it = narrow.* That directly matches the legend and kills the misread.
+
+Let me verify the exact current spec assertions + the y-axis config before implementing (so the fill change doesn't break an existing assertion), then I'll build it as a reviewable PR3.
+
+
+### 🤖 Autopilot
+
+Your read is right, and it's genuinely the better design. Right now the green gradient fills *below the green line* — so the eye reads "how much green area is under the green line," which says nothing about the grey Norm. What you want is a **zone gauge**: shade the area *below the grey Norm line* (the "below-typical / narrow" zone), keep the sweet spot unshaded between grey and orange, and keep the light orange over-extended zone above. Then the read is: green poking above the grey zone = broad leadership; green inside it = narrow. Unmisreadable.
+
+Let me implement it as PR3 — test-first on the seni_ror checkout:
+
+
+### 🤖 Autopilot
+
+Before running tests, one correctness check on Chart.js v2 fill semantics: for a non-first dataset, `fill: true` can mean "fill to the previous dataset" (a delta between green and grey — wrong) rather than "fill to the axis". I'll use the explicitly-documented `fill: 'origin'` for the grey zone, and while I'm here, the orange band's `fill: 'end'` fills *downward* (below the orange line — covering the sweet spot). Semantically the over-extended zone is **above** the orange line, so that should be `fill: 'start'`. Both are unambiguous documented modes. Applying the second edit pass:
+
+
+### 🤖 Autopilot
+
+The view diff is exactly right: green fill removed, grey Norm now carries the below-typical zone (`fill: 'origin'`, slate 0.10), orange over-extended now fills **upward** (`fill: 'start'` = genuinely above the ceiling). Now update the spec to match (the old `fill: 'end'` assertion is now wrong) and add coverage for the new zone fills:
+
+
+### 🤖 Autopilot
+
+**13 examples, 0 failures** — all green including the new zone-fill assertions. Now revert the checkout (prod box must stay pristine) and push the identical change as PR3.
+
+
+### 🤖 Autopilot
+
+Checkout pristine. Pushing the identical change set via `git_push_changes` as PR3:
+
+
+### 🤖 Autopilot
+
+PR3 is open. Per the one-PR-per-turn rule I stop here — merge + deploy await your signal.
+
+## What I did this turn
+
+You asked the right question — **"shouldn't the fill be below the grey line instead of the green line?"** — and yes, it should. The old green fill under the green line said nothing about the grey Norm and invited exactly the misread you predicted. So I built **PR3** to fix it.
+
+**✅ PR #1129 opened — shade the below-Norm zone so the gauge can't be misread**
+🔗 https://github.com/TrueSightDAO/sentiment_importer/pull/1129 (branch `fix/spike-gauge-zone-fill-above-norm`, base `master`, sha `0b5cdf0`)
+
+**What changed** (all in `_spike_chart.html.erb` dataset config + spec):
+| Zone | Before | After |
+|---|---|---|
+| Below grey Norm | (green fill under green line — confusing) | **slate 0.10 fill under the grey Norm line** = "narrow/below-typical" zone |
+| Between Norm & orange | — | **unshaded = sweet spot** (green poking above grey = broad leadership) |
+| Above orange ceiling | orange `fill:'end'` (was filling *downward*, covering the sweet spot) | orange **`fill:'start'`** = genuinely above the ceiling |
+
+- Green line is now **just a line** (`fill: false`, gradient removed) — no fill to misread
+- Grey Norm uses **`fill: 'origin'`** explicitly (in v2, `fill: true` on a non-first dataset fills *between* datasets = wrong delta)
+- Header verdict logic unchanged — it already matched these zones
+- **Testing:** 13 examples, 0 failures (1 spec updated, 1 added) on the seni_ror checkout, then reverted pristine
+- Single-file, trivially revertible; the slate 0.10 opacity is the only knob to tune
+
+## RESUME HERE → PR3 merge + deploy
+1. On your **`go`** → merge #1129, then deploy `./deploy.sh --skip-migrate` on seni_ror, verify live, hand to you for UAT on perch.truesight.me `/large_spikes`.
+2. If the zone shading reads wrong live (too heavy/light), the opacity values are one-line tweaks.
+
+Parked at the merge gate — nothing else pending.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_view.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8'; cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_view2.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8; cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_spec.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8'; …(+1 more)
 
