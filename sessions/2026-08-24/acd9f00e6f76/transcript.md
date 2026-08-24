@@ -1011,46 +1011,55 @@ There's a **`contributors-cache`** repo — that's the "JSON cache" the user mea
 ### 🤖 Autopilot
 
 There's a **`contributors-cache`** repo — that's almost certainly the JSON cache Gary means. Let me inspect it, plus the local GAS copy of the processor to see how it consumes the cache.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `contributors-cache` repo is **empty** — interesting. And there's no local tokenomics clone. Let me find where the GAS processor actually reads the contributors data from (CacheService? GitHub fetch? embedded JSON?).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the GAS script ID is `1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR` (I had it truncated earlier). Let me read Code.js to find the contributors-fetch/cache logic.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deployed `Code.js` is the smoking gun candidate. Let me verify two things: where the PR #424 change actually landed (this file still shows the OLD `TRUSTED_AGENTS`), and whether the sheet now contains the keys in question.
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The picture is crystallizing. The GAS status function reads the **sheet live** (no cache in that path), and the sheet now shows my new key ACTIVE at row 164 — but the failing rows (673/675) were signed with the **old** key, which is genuinely absent. And there's a `contributors-cache` repo that's **empty**. Let me pin down the two remaining unknowns: what the merged processor actually contains, and whether *any* component uses a JSON cache.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merged processor **does** contain the new `TRUSTED_AGENTS` (good — PR #424 content is in). Now the decisive questions for your cache hypothesis: (1) is the signing key actually in the sheet right now, (2) does the processor use a cache anywhere or write STATUS only once, and (3) who consumes `contributors-cache`. Checking all three:
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the full sheet artifact for the old signing key (`yrjcz4Y9`) to confirm whether it's actually in the ledger or not.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's hypothesis deserves a direct test: if the key IS somewhere as cached JSON, a search will find it. Let me search org-wide for the exact old signing key and check the `verify_public_signatures` / DApp-side verifier in parallel.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's hypothesis deserves a precise test. Two checks in parallel: (1) search all my pulled artifacts (including the full 164-row sheet dump) for the old signing key `yrjcz4Y9` — is it actually on the sheet anywhere; (2) find where the "unauthorized" STATUS gets written for "Edgar Direct" rows (GAS webhook vs Rails), since that determines whether a stale JSON cache could even matter.
+[2 tool result(s) compacted: recall_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1131,21 +1140,25 @@ Also why is the trusted agents hard coded… why are we not referencing is_senti
 ### 🤖 Autopilot
 
 Two good points — let me check both. (1) The Python `dao_protocol` is now the DAO API, so the Rails webhook path I was hunting is stale. (2) If `Is Sentinel = TRUE` (col T) were set on the source Telegram row, the GAS status function returns `NEW` immediately — the hardcoded `TRUSTED_AGENTS` list would be irrelevant. Let me look at how dao_protocol handles this and what the Telegram rows actually contain.
+[3 tool result(s) compacted: search_code, search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs header confirms: col S = **Is Governor**, col T = **Is Sentinel**. And `dao_protocol` has zero hits for "is_sentinel" or "inventory movement" — so the Python API doesn't handle this path at all. Let me look at what dao_protocol actually is, and find who SETS the Is Sentinel column.
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the key files. There's a `SENTINEL_ROLE_IMPLEMENTATION_PLAN.md` and a `DaoMembersCache.js` (the real "JSON cache"!). Let me read both, plus check what dao_protocol actually is.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — this reframes everything. The **Sentinel role was already implemented** (2026-06-18): `Contributors contact information` col W `Is Sentinel` → `dao_members_cache_publisher.gs` → `dao_members.json` in **treasury-cache** (roles: `["member","sentinel"]`). And dao_protocol PR #124 (Edgar col S/T stamping) was deployed. So the hardcoded `TRUSTED_AGENTS` in the GAS processor is legacy — the right check is col T `Is Sentinel = TRUE`. Let me verify the live cache and the actual Telegram Chat Logs row for these movements.
+[2 tool result(s) compacted: read_repo_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1227,4 +1240,95 @@ Bottom line: **you're right on both counts** — dao_controller.rb is dead code,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /home/ubuntu 2>/dev/null | head -30; echo '---'; find /home /opt /srv -maxdepth 3 -iname '*dao*' -type d 2>/dev/null | head -20; echo
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Perform check
+
+
+### 🤖 Autopilot
+
+Performing the check. Three parallel probes: the `Contributors contact information` tab (Is Sentinel col), the webhook listener that stamps col S/T, and the main Code.js.
+
+
+### 🤖 Autopilot
+
+Two findings so far: (1) the sheet read failed because `Contributors contact information` lives on the **OFFCHAIN spreadsheet** (`1GE7PUq…`), not the one I queried — the GAS code confirms it opens `OFFCHAIN_SPREADSHEET_ID` for that tab; (2) critical: this **`Code.js` in the same GAS project folder still has the OLD hardcoded `TRUSTED_AGENTS = ['autopilot@agroverse.shop']`** — my PR #424 only edited `process_movement_telegram_logs.js`, and both files define their own copy. Let me check what's actually deployed locally, and read the right spreadsheet.
+
+
+### 🤖 Autopilot
+
+Two critical findings from the check so far:
+
+1. **`Contributors contact information`** lives on the **offchain spreadsheet** (`1GE7PUq…`) — headers confirm **col W (index 22) = `Is Sentinel`**, col R (index 17) = `Digital Signature`.
+2. **Big red flag:** the deployed GAS code at the merge sha (`8d69388`) still shows **`TRUSTED_AGENTS = ['autopilot@agroverse.shop']`** — the OLD hardcoded list. My PR #424 apparently did **not** change this file's list. Need to reconcile.
+
+Checking both: the Sophia/autopilot row's Is Sentinel flag in that sheet, and who stamps the Telegram Chat Logs `is_sentinel` column (S/T writer).
+
+
+### 🤖 Autopilot
+
+Let me find who actually stamps Telegram Chat Logs cols S/T. The Rails model may show the historical writer, and I need to find the Python equivalent.
+
+
+### 🤖 Autopilot
+
+Key discovery: the Rails writer appends **19 columns (A–S)** — `governor_authority` → column S, and **no column T (is_sentinel) is ever written**. So column T is always empty for rows from that writer — matching what we see. Let me check the Sentinel implementation plan (the design doc for who stamps S/T) and find the Sophia row's Is Sentinel flag.
+
+
+### 🤖 Autopilot
+
+The Sentinel plan says row 399 (`truesight-autopilot`) got `Is Sentinel = TRUE` on 2026-06-18, and PR #124 deployed Edgar's col S/T stamping. But the deployed GAS code at the current sha still shows the **old** `TRUSTED_AGENTS = ['autopilot@agroverse.shop']` in *both* files. Two final checks: the tail of the contact sheet (to find the `truesight-autopilot` row's Is Sentinel value) and PR #424's actual state.
+
+
+### 🤖 Autopilot
+
+One decisive check — where did `admin+sophia@truesight.me` actually land in the merged code (PR #424)? The file I just read still shows the OLD list.
+
+
+### 🤖 Autopilot
+
+## Check complete — here's the definitive picture
+
+**Your question is exactly right: we ARE using `is_sentinel`, and the hardcoded `TRUSTED_AGENTS` is legacy dead weight.** The GAS movement processor checks **`Is Sentinel` (col T) first** — before any signature/TRUSTED_AGENTS logic:
+
+```js
+if (isTelegramGovernorYes_(telegramRow)) return 'NEW';   // col S
+if (isTelegramSentinelTrue_(telegramRow)) return 'NEW';  // col T  ← the real gate
+// …then signature → TRUSTED_AGENTS fallback (legacy)
+```
+
+**But the check revealed the actual defect — and it's worse than a cache:**
+
+1. **`TRUSTED_AGENTS` is now correct** in `process_movement_telegram_logs.js` (PR #424: `['autopilot@agroverse.shop', 'admin+sophia@truesight.me', 'Sophia Truesight']` — confirmed via code search at the merged sha). My earlier read was of `Code.js` — a **different, duplicate copy** in the same GAS project folder that was **never updated**. (That duplicate is exactly the "stale" artifact — but it's in the repo, not a JSON cache.)
+
+2. **The Sentinel flag exists but the join breaks for row 673.** The plan (SENTINEL_ROLE_IMPLEMENTATION_PLAN.md, marked COMPLETE) says: `Is Sentinel = TRUE` sits on row 399 of `Contributors contact information` under the name **`truesight-autopilot`** (email `admin@truesight.me`). But:
+   - My **new** Edgar identity is **`Sophia Truesight`** / **`admin+sophia@truesight.me`** — a *different* row (the sheet only has a bare `"Sophia"` row with no sentinel flag).
+   - The Telegram Chat Logs row for the 8-20 submission has **no col T value** — the Rails writer (`telegram_raw_log.rb`) appends only **A–S** (governor_authority → col S), **never writes col T at all**. So `is_sentinel` is empty on every Edgar-direct row.
+
+3. **So even the "correct" fix path has a hole:** the Rails-era writer never stamps col T; whether the Python Edgar stamps it for *new* submissions is exactly what needs verification on the **live `edgar.truesight.me`** (dao_protocol PR #124 claims it does).
+
+## RESUME HERE → next turn (verification + real fix)
+
+1. **Verify on live Edgar** (Python/FastAPI): check whether *new* submissions get col T stamped — SSH `edgar` host or `http_fetch https://edgar.truesight.me/…` for the stamping code; confirm PR #124's deploy actually writes col T.
+2. **The name-join fix (the actual resolution):** the Sentinel flag lives on `truesight-autopilot`, but my identity is `Sophia Truesight`. Either (a) add `Is Sentinel = TRUE` to the `Sophia Truesight` row in `Contributors contact information` (col W), or (b) make Edgar resolve the sentinel from the **signing key → contributor name → contact row** instead of the literal sender name. Option (a) is a 1-cell sheet edit and matches the plan's design.
+3. **Then re-process:** fire the inventory webhook (or wait for cron) → row 673 + fresh rows should flip `unauthorized → NEW`.
+4. **Cleanup (2 small PRs):** delete the duplicated/legacy `TRUSTED_AGENTS` block from `Code.js` (the un-updated duplicate), and file a follow-up to remove `TRUSTED_AGENTS` from the processor entirely now that sentinel is the gate.
+
+**Bottom line:** you're right — `is_sentinel = TRUE` is the design, and it's already first in the gate. The reason it doesn't save row 673 is a **name mismatch**: the sentinel flag is on `truesight-autopilot`, while the signing identity is `Sophia Truesight` — plus the writer never stamps col T for that row. Not a JSON cache problem; a join + stamping gap.
+
+———
+**✅ Done this turn — actions taken:**
+• `read_google_sheet` → `Contributors contact information` full tab (headers confirm col W = Is Sentinel; row "Sophia" has no sentinel flag)
+• `read_repo_file` ×3 → `telegram_webhook_listener.js` (doGet/doPost, review processing), `Code.js` (duplicate TRUSTED_AGENTS — stale), `process_movement_telegram_logs.js` (sentinel-first gate confirmed, PR #424 list present)
+• `read_context_file` → `SENTINEL_ROLE_IMPLEMENTATION_PLAN.md` (row 399 truesight-autopilot TRUE; PR #124 deployed col S/T; PR 3 deferred)
+• `read_repo_file` → `telegram_raw_log.rb` (Rails writer appends **A–S only — never col T**)
+• `search_code` ×4 → `admin+sophia@truesight.me` present in processor only; `governor_authority`/`sentinel` writers located
+• `ssh run` → no local tokenomics checkout (GAS files only in GitHub)
+• `list_prs` → PR #424 merged 2026-08-24T14:37:22Z
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt 2>/dev/null && ls -d tokenomics 2>/dev/null; echo '--- local GAS folder ---'; ls -la /opt/tokenomics/google_app_scripts/1wONDeDwZ_fX
 
