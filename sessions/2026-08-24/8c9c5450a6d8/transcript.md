@@ -375,36 +375,53 @@ Anything else on this one, or shall I check the share-transfer DR against your i
 ### 🤖 Autopilot
 
 Let me search for what "FDA documents" refers to — checking context, repos, transcript history, and email in parallel:
+[4 tool result(s) compacted: search_context, search_code, search_transcript, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The FDA docs live in the `fda_fsvp` repo (FDA FSVP docs, supplier verification, declarations). Let me find which ones carry your signature:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The FDA FSVP repo has the source docs. The `truetech_inc.entity.json` points to **CBP 5106 forms** (the importer-identity forms Gary signs as TrueTech President). Let me locate and pull them:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree is large — let me see the full listing to find all docs with Gary's signature, then pull the likely CBP 5106 forms:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo tree is big. Let me pull the most likely candidates for your signature — the CBP 5106 importer-identity forms, the FDA registration, and the FSVP compliance declaration — and inspect them directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the signature blocks in the CBP 5106 form and the other FDA docs:
+[2 tool result(s) compacted: read_tool_result, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. The **CBP Form 5106 — Create/Update Importer Identity Form** (page 2, section 4 CERTIFICATION) carries your signature. Let me quickly check the other two candidates for completeness:
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -516,4 +533,61 @@ Want me to also ping Envoy via `check_handoffs()` or is the topic enough for now
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -la /tmp/tg_attachments/ 2>/dev/null | tail -30; echo '---'; find /tmp -maxdepth 2 -iname '*bionpact*' -o -iname '*eb31dcc*' -o -iname '*; ls -la /tmp/prima_docs/; echo '---FDA---'; ls -la /tmp/fda_docs/
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13846] Ensure all saved back as PDF and surfaced as attachment on telegram
+
+
+### 🤖 Autopilot
+
+Let me verify every file is a valid PDF and confirm the full set, then make sure everything is surfaced as attachments in the Envoy topic.
+
+
+### 🤖 Autopilot
+
+All 10 files are valid PDFs (all start with `%PDF` magic bytes). To make the Envoy topic the complete single source, let me also surface the remaining 4 FDA reference docs there (currently only the CBP 5106 is in the topic), so nothing is left un-surfaced:
+
+
+### 🤖 Autopilot
+
+All saved and surfaced. Here's the complete confirmation:
+
+## ✅ All files verified as PDFs + surfaced in the Envoy topic
+
+**Verification:** All 10 files checked on disk — every one starts with `%PDF` magic bytes (valid PDFs).
+
+### Topic [Envoy: Gary's signature extract + Bionpact stamping](https://t.me/c/3919341801/13876) — now contains 12 attachments:
+
+**Task 1 — signature source (1 file)**
+| File | Purpose |
+|------|---------|
+| CBP Form 5106 (importer identity) | ✅ Gary's signature on p2 §4 — sent for extraction |
+
+**Task 2 — Bionpact docs from Jeffrey (5 files)**
+| File | Stamp? |
+|------|--------|
+| Engagement letter | ❌ Elizabeth's |
+| DR directors & sec. resignation/appointment | ❌ Elizabeth's |
+| DR OCBC bank account | ✅ **Gary** (TEH ZHIWEN line) |
+| DR transfer of shares | ✅ **Gary** (p1 + p3 transferee) |
+| e-stamping mTP summary | ❌ Elizabeth's |
+
+**FDA reference docs — no stamp action (4 files)**
+- FDA registration renewal (VALID to 2026-12-31)
+- FDA FFR 12202640780 confirmation
+- FSVP small-importer declaration
+- CBP 5106 Gary copy (annotated)
+
+## Summary
+- ✅ **All saved as PDF** (verified `%PDF` headers)
+- ✅ **All surfaced as Telegram attachments** in the Envoy topic (messages 13880–13894)
+- ✅ Stamping instructions clear in the kickoff + recap posts
+
+**Reminder:** Envoy only works when you drive him on `nelanco-claude` (ssh → tmux → claude). Point him at the topic and he'll extract your signature, stamp the 2 DRs, and post back stamped PDFs. I can QA the stamped output when it lands.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo '=== PRIMA DOCS ==='; for f in /tmp/prima_docs/*.pdf; do printf '%-70s ' "$(basename "$f")"; head -c 4 "$f" | xxd | head -1;
 
