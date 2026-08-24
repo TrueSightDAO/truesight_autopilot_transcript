@@ -535,3 +535,158 @@ That's the whole plan executed. Want me to kick off the doc PR (#1) now, or park
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 - <<'PY' import boto3 env = {} for line in open('.env'): line = line.strip() if not line or line.star
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] [Handoff context — this Telegram topic (thread 13954) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Kick off
+
+
+### 🤖 Autopilot
+
+Kicking off follow-up #1 — the doc refresh. Let me read the current `AWS_DIGITAL_INFRASTRUCTURE.md` first to see exactly what's stale.
+
+
+### 🤖 Autopilot
+
+The doc lives at `infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md` and is heavily stale (16 references to the old EIP, the stopped box row, etc.). Let me read the full file to make precise edits.
+
+
+### 🤖 Autopilot
+
+The doc is long (~35KB). Let me read the full artifact to see all the stale sections I need to update.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the doc to see all sections that need updating.
+
+
+### 🤖 Autopilot
+
+The doc is ~44KB and paging through artifacts is getting nested. Let me pull the full file directly from the repo to make precise edits.
+
+
+### 🤖 Autopilot
+
+Let me page through the full document to map every section that needs updating.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining sections (5–8) of the doc to complete my map of what needs updating.
+
+
+### 🤖 Autopilot
+
+Let me read the final portion (sections 5–8) to complete my map.
+
+
+### 🤖 Autopilot
+
+The nested artifacts are inefficient. Let me check if agentic_ai_context is already cloned on the box so I can read/edit the file locally.
+
+
+### 🤖 Autopilot
+
+There are local clones in /tmp. Let me check which is current and read the full file locally so I have complete content for precise edits.
+
+
+### 🤖 Autopilot
+
+/tmp/aac is the freshest (PR #805 merged). Let me read the full doc locally, then make precise edits. First, let me view the whole file in sections to map every stale reference.
+
+
+### 🤖 Autopilot
+
+I have the full map of stale references. Let me read the complete file locally (in chunks) to capture exact text for edits.
+
+
+### 🤖 Autopilot
+
+The doc is 685 lines. Let me read the remaining chunks locally so my edits are exact.
+
+
+### 🤖 Autopilot
+
+I have the full document map. Let me get the exact text of the middle sections I haven't seen verbatim (lines 190–240), and confirm today's date for accurate annotations.
+
+
+### 🤖 Autopilot
+
+Today is **2026-08-24**. Before writing the doc, let me verify the current live facts (what my box actually listens on, and the current nginx upstream config) so the refresh is accurate, not guesswork.
+
+
+### 🤖 Autopilot
+
+The nginx SSH failed on key mismatch — let me try with the correct key from the box's ssh config.
+
+
+### 🤖 Autopilot
+
+The nginx host uses port 2202 with the ed25519 key. The `ssh_run` tool uses port 22 by default — that's why it failed. Let me query the nginx config via the proper alias.
+
+
+### 🤖 Autopilot
+
+The nginx upstream is a live finding: `chatbot.truesight.me` → `governor_chatbot` → **`100.52.234.163:8001`** — a dead IP (that's neither the old Explorya EIP nor the current one). I'll flag that. Before writing the doc, let me verify the current SG allowlist + Route53 record so the refresh is accurate.
+
+
+### 🤖 Autopilot
+
+Live facts confirmed: **`dao-protocol-beta-sg` already allowlists only `3.214.167.219/32:22`** (the SG swap is already done — the doc's "pending" is stale), and **Route53 `sophia.truesight.me` → `3.214.167.219`** is current. Also found a live bug: nginx `governor_chatbot` upstream still points at dead `100.52.234.163:8001`. Let me verify how the autopilot box serves health externally before writing the doc.
+
+
+### 🤖 Autopilot
+
+Confirmed: the autopilot box serves HTTPS on 443 (nginx → :8001 health returns `ok`), and there's no custom `/etc/nginx/sites-enabled` on the box itself — the krake_nginx upstream list is the authoritative routing source. I now have everything verified. Let me make the doc edits via a PR on `agentic_ai_context`.
+
+The doc refresh will:
+1. **Update the banner** — record the 2026-08-24 Explorya cleanup + EIP release, mark SG-swap/terminate/AMI-prune follow-ups **done**.
+2. **§1 AWS Accounts + §2.2 Explorya inventory** — Explorya now holds only Route53 + CloudFront + the kept migration AMI; mark the 3 instances **terminated 2026-08-24**.
+3. **§3 DNS diagram + nginx table** — replace dead `52.200.38.206:8000` with `sophia.truesight.me → 3.214.167.219`, flag the live `governor_chatbot → 100.52.234.163` nginx bug.
+4. **§4.3/4.5** — update the service map to the new EIP, note EIP release + AMI retarget.
+5. **§7.1 bastion + §8 monitoring + §9 SG + §11.3** — dead-IP references → current EIP; SG table reflects reality; monitoring URLs fixed.
+6. **Add a §13 cleanup-history entry** documenting today's ~$62/mo removal.
+
+Since this is agentic_ai_context (a code repo, branch+PR flow), I'll use git_push_changes with precise hunks.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — I'm at the tool-round limit. Here's exactly where things stand; the next turn can pick up cleanly.
+
+## State of follow-up #1 (doc refresh) — verified, not yet written
+
+**Goal:** Update `agentic_ai_context/infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md` (685 lines) to reflect the 2026-08-24 Explorya cleanup.
+
+### ✅ Done this turn (all verified, no changes made to any repo)
+1. **Local clone ready:** `/tmp/aac` on the autopilot box is fresh (`42d82f8`, main, clean) — the PR can be built from there or via `git_push_changes` hunks.
+2. **Full doc mapped** — every stale reference located (16 × `52.200.38.206`/`eipalloc-04772e4a20f10c1c4`, §1 accounts table, §2.2 Explorya instance table, §3 DNS diagram + nginx table, §4.3/4.5, §7.1 bastion text, §8 monitoring URLs, §9 SG table, §11.3 autopilot deploy table).
+3. **Live facts verified (today = 2026-08-24):**
+   - Explorya now holds only: Route53 `truesight.me` zone + CloudFront distros + migration AMI `ami-0b05acc998af71d0f` + its snapshot. All 3 instances **terminated**, EIP **released**, volumes/snapshots/AMIs **pruned** (per the A→E cleanup just executed).
+   - Route53 `sophia.truesight.me` → `3.214.167.219` ✅ (current)
+   - **`dao-protocol-beta-sg` already allows only `3.214.167.219/32:22`** — the doc's "pending SG swap" is **already done**, so that follow-up line must be marked resolved, not re-proposed.
+   - Autopilot box serves health on `:8001` (ok, dry_run false) behind nginx HTTPS `:443`; Monit `:2812` listening.
+4. **🚨 New live bug found (not in the doc):** nginx on `krake_nginx` still has `upstream governor_chatbot { server 100.52.234.163:8001 }` → **`chatbot.truesight.me` currently proxies to a dead IP**. The doc flags this as "should be updated to `52.200.38.206`" — but that EIP is now released too, so the correct target is **`3.214.167.219:8001`** (the Nelanco box). This is a **production nginx change** — I will **not** touch it without your explicit go; it's a separate, higher-priority fix than the doc.
+
+### 📋 Planned doc-edit hunks (ready to apply next turn)
+- Banner: add 2026-08-24 entry (cleanup done, EIP released, SG swap done, AMI backup retargeted); change "Pending follow-ups" → resolved.
+- §1 + §2.2: Explorya = Route53 + CloudFront + 1 kept migration AMI; instances marked **terminated 2026-08-24**.
+- §3 + nginx table: `sophia.truesight.me → 3.214.167.219`; annotate the `governor_chatbot → 100.52.234.163` live bug.
+- §4.3/4.5, §7.1, §8, §9, §11.3: dead IPs → current EIP; SG table reflects verified state.
+- Add §13 cleanup-history entry (~$62/mo ≈ $745/yr removed).
+
+### ⏭️ RESUME HERE
+Next turn: (1) ask Gary whether to also fix the **nginx `governor_chatbot` upstream → `3.214.167.219:8001`** (prod change, needs his go), then (2) open the **agentic_ai_context doc-refresh PR** via `git_push_changes(repo="agentic_ai_context", branch="docs/explorya-cleanup-2026-08-24", …)` with the hunks above, run the 4 local checks (compileall/ruff/format/pytest) first, push, and report the PR URL. No destructive AWS actions remain pending — everything approved (A–E) is already executed and verified.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → ls -d /opt/truesight_autopilot/agentic_ai_context 2>/dev/null && echo FOUND; ls /opt/truesight_autopilot/agentic_ai_context/infrastructure/A; for d in /tmp/aac /tmp/aac_check /tmp/aac_fix; do echo "== $d =="; git -C $d remote -v 2>/dev/null | head -1; git -C $d log --oneline -1 2>/; cd /tmp/aac && wc -l infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md && grep -n "52\.200\.38\.206\|eipalloc-04772e4a20f10c1c4\|i-02c699d3d7efbd; …(+12 more)
+
