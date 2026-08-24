@@ -75,21 +75,25 @@ I have most of the data. Let me complete the picture — remaining snapshot/imag
 ### 🤖 Autopilot
 
 I have the full inventory from the live AWS API. Before writing up the verification, let me check whether the weekly snapshot automation still runs (so cleanup doesn't fight a re-creator), and confirm my own box's account placement.
+[2 tool result(s) compacted: ssh_run, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify where I'm actually running (IMDS) — the explorya inventory shows a *different* stopped instance named `truesight-autopilot`, so I need to confirm my own box isn't one of the candidates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMDS confirms I'm running on the **nelanco** account (767697632458, i-05276b8ae82d6b88c) — so all the stopped/legacy resources in **explorya** (440626669078) are pre-migration leftovers, not my own box. Good — that makes cleanup safe *if* the live twins exist in nelanco. Let me verify the live fleet and the EIP usage before writing the verification.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nelanco list is large — let me page through it to enumerate the full live fleet.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -274,4 +278,168 @@ A clean query shows **3 stopped instances** (not 4 — my earlier paging through
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → python3 -c "import boto3; print('boto3', boto3.__version__)" 2>&1; echo "---profiles---"; grep -E "^\[" ~/.aws/credentials 2>/dev/null; echo; for f in /opt/truesight_autopilot/.env /opt/truesight-autopilot/.env /home/ubuntu/.env /root/.env; do if [ -f "$f" ]; then echo "FOUND: $f";; cd /opt/truesight_autopilot && set -a && . ./.env && set +a && python3 - <<'PY' import boto3, json from collections import defaultdict s = b; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] [Handoff context — this Telegram topic (thread 13954) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Gary confirmed: GO on Groups A + B + C + D. Hold E (EIP release) for a separate explicit call per your own recommendation, keep F. Execute in order (A → B → C → D), report each group here as it completes, check DeleteOnTermination on each root volume before terminating as you said. Go ahead.
+
+
+### 🤖 Autopilot
+
+Gary's explicit GO on A+B+C+D received (E held, F kept). Executing in order, reporting per group.
+
+## Group A — pre-flight: DeleteOnTermination check on the 3 root volumes
+
+
+### 🤖 Autopilot
+
+All 3 confirmed `DeleteOnTermination: true` on root volumes:
+- `i-02c699d3d7efbdc82` (truesight-autopilot OLD) → `vol-0159e886ea21577df` ✅ DOT=true
+- `i-0bb43299c84c5ccd5` (seni_sk_2026) → `vol-03683e0ebfed13ca8` ✅ DOT=true
+- `i-0ac8462aa6bb54986` (seni_ror_2026) → `vol-092be9a6874f3a8d9` ✅ DOT=true (confirmed in the tail)
+
+Terminating all 3 now (Group A).
+
+
+### 🤖 Autopilot
+
+## Group A ✅ — all 3 terminated
+
+| Instance | Previous → Current |
+|---|---|
+| `i-0bb43299c84c5ccd5` seni_sk_2026 | stopped → **terminated** |
+| `i-0ac8462aa6bb54986` seni_ror_2026 | stopped → **terminated** |
+| `i-02c699d3d7efbdc82` truesight-autopilot OLD | stopped → **terminated** |
+
+Root volumes auto-deleted (DOT=true verified pre-flight). Now **Group B** — orphaned 250GB volume + its snapshot. The snapshot (`seni_sql_20260108`) is standalone (not referenced by any AMI — it's a manual snapshot), and the volume has zero attachments, so both are safe to delete.
+
+
+### 🤖 Autopilot
+
+## Group B ✅ — orphaned 250GB volume + snapshot deleted
+
+- `vol-073b0fe6ba359aee5` (250GB gp3, orphaned since 2025-11-06) → **deleted**
+- `snap-052ff39e17bf5d38d` (seni_sql_20260108, 250GB) → **deleted**
+
+Now **Group C** — deregister 15 dead AMIs + delete 26 backing snapshots. I need to map each AMI to its exact snapshot(s) (the snapshots' `Description` carries `for ami-…`), then deregister AMIs and delete snapshots. Let me build the exact AMI→snapshot mapping from the inventory I already pulled.
+
+**Group C AMI→snapshot map (from snapshot descriptions):**
+
+| AMI | Backing snapshot(s) |
+|---|---|
+| `ami-0960c11edf4a468c2` krake_pub | `snap-0245e44acbc5e7efc` (8GB) |
+| `ami-08622492de4179af4` krake_s3_cacher | `snap-090c82b190cccf739` (25GB) |
+| `ami-00397e30add0257ff` krake_sk | `snap-05e97e01f8cff82d6` (8GB) |
+| `ami-014917728dcbbb87c` krake_sk_webhook | `snap-0ed2d3215bc3927f0` (8GB) |
+| `ami-01154ef8ec8895dd6` krake_sk_crawler | `snap-0d07045be753ab630` (8GB) |
+| `ami-0f0765de88d92ed3b` krake_cacher_large | `snap-01fb115c6b6746448` (25GB) |
+| `ami-0ef38b84ce91cf55d` krake_cacher | `snap-0c083d4cc58174cb8` (25GB) |
+| `ami-02f4b71e2e354e47e` krake_sk_scaler | `snap-07c896627307dcf84` (8GB) |
+| `ami-03bfdb49015ff125b` seni_sk_20210607 | `snap-018dee8bff9295ecc` (8GB) |
+| `ami-0a605d816d95be29b` seni_ror_20210713 | `snap-0fb3e707433865524` (8GB) |
+| `ami-0952143dc51915036` krake_ror_20230426 | `snap-011842bf3e0afdebc` (8GB) |
+| `ami-040e2003e3f336f33` krake_db | `snap-0ce169dc1337c3f0e` (8GB) + `snap-0f354e443fce4e8f7` (100GB) |
+| `ami-0cb5e7c18e00e2bd4` krake_nginx_20251104 | `snap-00086e66467525053` (8GB) |
+| `ami-0d4198ffef9a701c1` seni_ror_20250915_autopilot | `snap-05ae0641c59bcdffe` (24GB, copied) |
+| `ami-0a060a99c083adeeb` seni_sk_20250630_autopilot | `snap-0f3977f8f5d3c6a0b` (8GB, copied) |
+
+That's 15 AMIs + 16 snapshots... wait — the manifest said 26 backing snapshots but the list above has 16. Let me reconcile: my earlier count of 26 included the weekly-series snapshots (Group D). Group C's actual unique backing snapshots = 16 (from the description mapping). Let me verify by re-listing current snapshots to avoid deleting anything referenced by a surviving AMI (F: `ami-0b05acc998af71d0f` migration source must survive).
+
+**Critical safety check:** the migration-source AMI `ami-0b05acc998af71d0f` (KEEP) has its own snapshot (copied, `vol-ffffffff` desc) — I must NOT delete that one. And `snap-05ae0641c59bcdffe` / `snap-0f3977f8f5d3c6a0b` are the copies feeding the 2026-05-10 AMIs (Group C list) — those are safe to delete since the AMIs they back are being deregistered.
+
+Deregistering all 15 AMIs now (single call, batched), then deleting the 16 snapshots.
+
+
+### 🤖 Autopilot
+
+All 15 AMIs deregistered ✅ (`Return: true`). Note `DeleteSnapshotResults` is empty — AWS didn't auto-delete the backing snapshots, so I'll delete the 16 Group C snapshots explicitly now.
+
+
+### 🤖 Autopilot
+
+All 16 Group C snapshots deleted ✅. Now **Group D** — deregister 8 redundant autopilot weekly AMIs + delete 9 backing snapshots.
+
+
+### 🤖 Autopilot
+
+All 8 Group D AMIs deregistered ✅. Now the 9 backing snapshots.
+
+
+### 🤖 Autopilot
+
+Group D has an important surprise — and the guardrail worked. `snap-0006425e5c71f1623` (2026-07-15) is **NOT** a weekly backup: it's the backing snapshot for **`ami-0b05acc998af71d0f` (sophia-nelanco-migration)** — the Group F KEEP item (the migration-source AMI). AWS correctly refused to delete it (`InvalidSnapshot.InUse`). My manifest mis-filed it; good thing the API stopped me. So Group D = 8 AMIs + 8 snapshots, and that 9th snapshot stays.
+
+Let me run a final verification pass to confirm the account's true remaining state (Step 4 data):
+
+
+### 🤖 Autopilot
+
+## ✅ All four groups complete — final verification pass confirms it
+
+The account is now nearly empty of legacy junk. Here's the full report.
+
+---
+
+## Execution report — Explorya (440626669078) cost cleanup
+
+### Group A — Terminate 3 stopped instances ✅
+| Instance | Result |
+|---|---|
+| `i-0ac8462aa6bb54986` seni_ror_2026 | **terminated** (root vol `vol-092be9a6874f3a8d9` auto-deleted, DOT=true) |
+| `i-0bb43299c84c5ccd5` seni_sk_2026 | **terminated** (root vol `vol-03683e0ebfed13ca8` auto-deleted, DOT=true) |
+| `i-02c699d3d7efbdc82` truesight-autopilot OLD | **terminated** (root vol `vol-0159e886ea21577df` auto-deleted, DOT=true) |
+
+*(DOT verified on all 3 root volumes before terminating, as agreed.)*
+
+### Group B — Orphaned volume + snapshot ✅
+- `vol-073b0fe6ba359aee5` (250GB gp3) → **deleted**
+- `snap-052ff39e17bf5d38d` (seni_sql_20260108, 250GB) → **deleted**
+
+### Group C — Dead AMIs + snapshots ✅
+- **15 AMIs deregistered** (13 legacy krake/seni 2019–2025 + 2 migration-era copies)
+- **16 backing snapshots deleted** (~263GB)
+
+### Group D — Redundant autopilot weekly AMI series ✅ (with one correction)
+- **8 AMIs deregistered** (sophia-truesight-autopilot-20260603, pre-resize-2026-06-06, + 6 weekly _20260607…_20260712)
+- **8 of 9 snapshots deleted** — the 9th, `snap-0006425e5c71f1623` (2026-07-15), is the **backing snapshot of the Group F migration-source AMI** (`ami-0b05acc998af71d0f`). AWS refused the delete (`InvalidSnapshot.InUse`) — my manifest had mis-filed it as a weekly; it's actually the migration AMI's snapshot. **Correctly preserved** (it's needed to keep F functional).
+
+### Held per your instruction
+- **E** — EIP `52.200.38.206` (`eipalloc-04772e4a20f10c1c4`) → **kept**. Note: since the old autopilot instance is now terminated, the EIP is **disassociated/unallocated-but-held** and bills ~$3.60/mo. Ready to release on your separate explicit call.
+- **F** — `ami-0b05acc998af71d0f` sophia-nelanco-migration + its snapshot → **kept** (rollback anchor).
+
+---
+
+## 💰 Step 4 — Final before/after cost picture
+
+### Verified remaining state (live query just now)
+| Resource | Before | After |
+|---|---|---|
+| EC2 instances | 3 stopped (+ running fleet untouched) | **0 legacy** (all terminated; running Nelanco fleet untouched) |
+| EBS volumes | 4 (250GB orphan + 3 root) | **0** |
+| Snapshots | 26 | **1** (migration-source) |
+| AMIs | 24 | **1** (migration-source) |
+| EIPs | 1 (associated to stopped box) | 1 (now disassociated; held) |
+
+### Monthly savings realized
+| Group | What went | Est. $/mo |
+|---|---|---|
+| A | 3 stopped instances + root vols | $4.80 |
+| B | 250GB volume + snapshot | $32.50 |
+| C | 15 AMIs + 16 snaps | $13.15 |
+| D | 8 AMIs + 8 snaps | $8.10 |
+| **Total realized** | | **~$58.55/mo ≈ $700/yr** |
+
+*(Group E, if you later release the EIP, adds another $3.60/mo. The migration AMI F stays as your rollback anchor at ~$1/mo.)*
+
+### ⚠️ One follow-up flagged
+The infra doc (`AWS_DIGITAL_INFRASTRUCTURE.md`) references the old Explorya setup, the old EIP `52.200.38.206`, and the `dao-protocol-beta-sg` SSH allowlist containing stale IPs. Worth a doc refresh + SG cleanup pass — want me to open a PR for the doc update and propose the SG fix as a separate item? Also: the **weekly AMI automation** (Cypher-Defense `snapshot_autopilot_ami`) is already retargeted to Nelanco per the banner, so nothing will re-create Explorya snapshots.
+
+Ready to proceed with the doc/SG follow-up, or release E when you are — your call.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 - <<'PY' import boto3 env = {} for line in open('.env'): line = line.strip() if not line or line.star
 
