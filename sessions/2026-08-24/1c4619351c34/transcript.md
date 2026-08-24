@@ -940,11 +940,13 @@ Let me read the view tail (scales config where the lead-in trim would go) and th
 ### 🤖 Autopilot
 
 I have the view and controller. Let me read the current spec to see what's already covered (so PR2's spec additions extend rather than duplicate).
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Let me read the view tail (the scales/ticks block) so my lead-in-trim hunk is exact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -958,16 +960,19 @@ All four tweaks, each discrete and revertible:
 4. **Verdict block elevation** — larger font (16px), padding, `strong` metrics 18px, subtle shadow; mobile-resized
 
 Plus spec coverage per plan §3.2.5: 3 regime cases (Risk-on / Narrow / Over-extended), trim behavior, shading + thin-line assertions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The command was too long and got truncated. Let me split the edits — first write the view-edit script to a file on seni_ror.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 View script written. Now the spec script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1136,4 +1141,37 @@ Nothing pending on my side — deploy verified, parked at your UAT.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/sentiment_importer && git fetch origin && git checkout master && git pull --ff-only origin master 2>&1 | tail -3 && echo "==; cd /home/ubuntu/sentiment_importer && ./deploy.sh --skip-migrate 2>&1 | tail -30; cd /home/ubuntu/sentiment_importer && echo "seni_ror HEAD: $(git rev-parse --short HEAD)"; echo "=== services ==="; systemctl is-active seni; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Am I right to understand if green line is between read line and grey line participate… or how should I be interpreting the chart
+
+
+### 🤖 Autopilot
+
+Good question — let me ground the answer in the actual live code rather than memory.
+
+
+### 🤖 Autopilot
+
+Yes — your reading is essentially right, with one nuance on which line is which. From the live code (just re-read from master), here's the chart key:
+
+## The three lines
+| Line | What it is |
+|---|---|
+| 🟢 **Green (solid, filled)** | **Breakout Participation** — the actual reading: % of stocks joining breakouts right now |
+| ⚪ **Grey (dashed)** | **Norm** — typical breadth (rolling 30-day average, i.e. the Bollinger band's center) |
+| 🟠 **Orange (dashed + light shaded zone)** | **Over-extended** — the upper Bollinger band: the "euphoric" ceiling |
+
+## How to read it
+- **Green between grey and orange** → ✅ **Risk-on — broad leadership.** Participation is *above* typical but not yet stretched. This is the sweet spot — **take the breakout cards below.** *(This is the zone you described, and yes, it's the "participate" zone.)*
+- **Green below the grey Norm** → **Narrow — stand aside.** Participation below typical = thin leadership, breakouts whipsaw. Size down or pass.
+- **Green at/above the orange line (inside the shaded zone)** → **Over-extended — stop initiating.** Euphoric / late-cycle. Tighten stops — explicitly *not* a buy signal.
+
+The header verdict block at the top (`Today X% · Norm Y% · Risk-on/Narrow/Over-extended`) is the same logic in one sentence — it's the fast answer; the chart is the confirmation over time.
+
+So the one correction to your phrasing: the orange line is the **ceiling** (over-extended), not a lower bound — the "participate" zone is green **between** grey (below = narrow) and orange (above = over-extended). The sweet spot is green above grey but below orange, ideally with the green line **rising**.
+
+Want me to add a mini legend/annotation to the chart itself making this zone logic explicit (e.g. a "sweet spot" band or a one-line caption)? That'd be a small, revertible PR3 — your call.
 
