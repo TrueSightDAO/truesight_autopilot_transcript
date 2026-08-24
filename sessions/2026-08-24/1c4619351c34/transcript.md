@@ -992,21 +992,25 @@ Both files edited cleanly on the local checkout. Now run the full large_spikes +
 **12 examples, 0 failures** — all PR2 tests green (6 original request + 2 model + 4 new legibility/trim tests). The redis-deprecation warnings are pre-existing noise, not failures.
 
 Now revert the local checkout (prod box must stay pristine) and push the identical change set via `git_push_changes`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout reverted to pristine. Now push the identical change set via `git_push_changes` to open PR2. Let me apply the same edits via the tool (which handles the PR machinery).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool needs the actual hunks passed in — let me supply the same exact search/replace edits I validated on the local checkout.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The call lost the top-level params. Let me retry with them explicitly included.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1054,6 +1058,7 @@ Nothing else pending — PR2 is parked at the merge gate awaiting your signal.
 ### 🤖 Autopilot
 
 Gary's "keep going" — proceeding with PR2 merge + deploy (pre-authorized arc).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1097,6 +1102,7 @@ Nothing else pending — merge done, deploy armed for the next turn.
 ### 🤖 Autopilot
 
 Gary's explicit deploy go — pulling `a943eda` and running `./deploy.sh --skip-migrate` on the prod box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1257,4 +1263,45 @@ Parked at the merge gate — nothing else pending.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_view.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8'; cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_view2.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8; cd /home/ubuntu/sentiment_importer && cat > /tmp/pr3_spec.py <<'PYEOF' import io def apply(path, pairs): with io.open(path, encoding='utf-8'; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Perfect, merge and redeploy it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR3 and redeploying now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**✅ PR #1129 merged** — shade the below-Norm zone so the gauge can't be misread
+🔗 https://github.com/TrueSightDAO/sentiment_importer/pull/1129 → merged to `master` as **sha `92d7d42`** (squash)
+
+**What was in it** (tested 13/13 green before push):
+1. **Green participation line** — gradient + fill removed (`fill: false`); now just a line with point highlight
+2. **Grey Norm line** — now carries the below-typical zone fill (`rgba(100,116,139,0.10)`, `fill: 'origin'`)
+3. **Orange over-extended** — `fill: 'end'` → `fill: 'start'` (zone now genuinely *above* the ceiling, not covering the sweet spot)
+4. Sweet spot between grey and orange is now unshaded
+5. Spec updated + 1 new assertion (13 examples, 0 failures)
+
+## RESUME HERE → Deploy PR3
+1. **Deploy** on the prod box (seni_ror, `/home/ubuntu/sentiment_importer`): `git pull` (should land `92d7d42` on master) then `./deploy.sh --skip-migrate` — no schema change, flag correct.
+2. **Verify** both hosts at `92d7d42`, services active, `/large_spikes` serving.
+3. **Post here** → Gary does final UAT on perch.truesight.me `/large_spikes`. Expected: the grey band under Norm reads as "narrow territory," orange shading sits *above* the ceiling, sweet spot unshaded, green line clean.
+
+Nothing else pending — merge done, deploy armed for the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #1129 on sentiment_importer merged successfully (sha: 92d7d422b6fc02aec5ae7d62e4d5bdb6a5010557). Pull Request successfully merged
 
