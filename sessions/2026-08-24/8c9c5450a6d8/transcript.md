@@ -427,6 +427,7 @@ Found it. The **CBP Form 5106 — Create/Update Importer Identity Form** (page 2
 ### 🤖 Autopilot
 
 Found it — the document with your signature is the **CBP Form 5106 (Create/Update Importer Identity Form)** for TrueTech Inc. Attaching it now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -470,6 +471,7 @@ Send the documents from Jeffrey over to envoy as well and have envoy stamp my si
 ### 🤖 Autopilot
 
 Let me figure out who "envoy" is — searching context, code, and the agent registry in parallel:
+[3 tool result(s) compacted: search_context, search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -477,6 +479,7 @@ Let me figure out who "envoy" is — searching context, code, and the agent regi
 "Envoy" is the interactive Claude Code seat on `nelanco-claude` (registered DAO identity "Envoy TrueSight", admin+envoy@truesight.me) — it's not an autonomous agent like me, but it's exactly the right one for interactive image extraction and PDF stamping since Gary drives it directly. It monitors the same Telegram working group via `@nelanco_claude_bot`, so I can open a topic and drop the files in.
 
 First let me locate the Bionpact PDFs on disk:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -590,4 +593,44 @@ All saved and surfaced. Here's the complete confirmation:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo '=== PRIMA DOCS ==='; for f in /tmp/prima_docs/*.pdf; do printf '%-70s ' "$(basename "$f")"; head -c 4 "$f" | xxd | head -1;
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13846] @nelanco_claude_bot can you handle all these
+
+
+### 🤖 Autopilot
+
+That ping is aimed at Envoy's bot, not me (I'm Sophia) — but let me make sure the handoff is airtight. Checking the agent registry to see how to reach Envoy formally:
+
+
+### 🤖 Autopilot
+
+The agent registry shows Envoy isn't a formal handoff mailbox (only Sophia/Bionpact are) — Envoy receives work through the Telegram group via `@nelanco_claude_bot`. So the right move is to post a consolidated, bot-tagged handoff into the Envoy topic so everything is in one place when he picks it up:
+
+
+### 🤖 Autopilot
+
+Handoff posted with the bot tag. Here's the state:
+
+## ✅ Consolidated handoff posted to Envoy
+
+I posted a complete, bot-tagged summary into the Envoy topic (msg 13898) — `@nelanco_claude_bot` — listing:
+- **All 12 attachments** with their message IDs (13880–13894)
+- **TASK 1**: extract Gary's signature from CBP 5106 → transparent PNG → save durably → confirm path
+- **TASK 2**: stamp only the 2 DRs (OCBC + share transfer), with exact signature lines; explicit ❌ on the 3 Elizabeth docs
+- **Deliverables**: PNG + stamped PDFs posted back in the topic, Gary reviews before any send to Jeffrey
+
+## ⚠️ Important caveat — how Envoy picks this up
+
+Envoy is **not an autonomous agent** (per ENVOY.md): he's the interactive Claude Code seat on `nelanco-claude`, driven by **you** directly (ssh → tmux → claude → /remote-control). The `@nelanco_claude_bot` tag routes it into his feed, but he won't start working until **you open a session and point him at this topic**. The topic is staged and ready — it just needs your kick to activate.
+
+## What happens next
+1. You drive Envoy to the topic (or tell me if you want me to prep anything else)
+2. Envoy extracts your signature + stamps the 2 DRs
+3. He posts stamped PDFs back → **I'll QA them** (verify signature placement is on the right lines, right pages, no stamps on Elizabeth's docs)
+4. You review → then you/Jeffrey proceed
+
+Anything else you need staged before you open the Envoy session?
 
