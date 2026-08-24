@@ -473,11 +473,13 @@ Let me check the remaining rows and the QR codes sheet for Elizabeth Wong as a h
 ### 🤖 Autopilot
 
 The offchain asset location sheet has **no row for Elizabeth Wong** — she's not a ledger manager there. Her possession is recorded differently. Let me pull the QR sales record and check the QR sheet for her 37 bars.
+[2 tool result(s) compacted: read_context_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the specific QR codes Elizabeth purchased (the 37 bars) and the offchain transactions for her purchase.
+[2 tool result(s) compacted: lookup_qr_batch, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -527,6 +529,7 @@ Want me to submit the INVENTORY MOVEMENT with the photo now? And do you have Jer
 ### 🤖 Autopilot
 
 Let me search across all transaction surfaces for MHC-CL082.
+[4 tool result(s) compacted: search_context, search_code, gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -641,4 +644,31 @@ To book the 10 molds on the ledger properly I need the **actual number from Jerr
 2. Book the molds as **qty 10, cost TBD** (precedent exists: "Cacao Husk Bag (weight unknown)" is on the ledger with qty but blank cost).
 
 If the molds were bought with **Liz's/Jerri's personal funds**, the ledger treatment is simpler — a custody note, no cost needed. Do you know who paid?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] Find the URL of the donguan chocolate mold
+
+
+### 🤖 Autopilot
+
+Found it — this is the Dongguan MHC Industrial Co., Ltd. listing that carries the **MHC-CL082** model:
+
+## 📎 Alibaba listing URL
+
+**https://www.alibaba.com/product-detail/MHC-Wholesale-Chocolate-Mold-Food-Grade_60818753008.html**
+
+- **Seller:** Dongguan MHC Industrial Co., Ltd. (Guangdong, China)
+- **Models offered on this listing:** MHC-CL082, MHC-CL105, MHC-CL119, MHC-CL167, MHC-CL144, MHC-CL114, MHC-CL066, MHC-CL161, MHC-CL098, MHC-CL308, MHC-CL166
+- **Material:** Food-grade polycarbonate (non-stick, non-toxic, heat-resistant)
+- **Lead time:** 10 days (1–100 pcs)
+- **Origin:** Guangdong, China
+
+**Related (same factory, different listing, tiered pricing shown):**
+https://www.alibaba.com/product-detail/MHC-Handmade-3D-Special-Polycarbonate-Chocolate_1600075596414.html — ~$1.75/pc (500–999 qty) / $1.60 (1,000+)
+
+---
+
+⚠️ One caveat: Alibaba listings re-verify/re-price constantly and the exact MHC-CL082 unit price for a 10-piece order isn't published on the page (small-quantity pricing is quoted via chat/trade manager). The listing URL is the one Jerri would have sent — if you want, I can web_extract the live page again to capture current pricing, or you can have Jerri confirm which listing/quote she used.
 
