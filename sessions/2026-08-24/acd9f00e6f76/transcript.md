@@ -1212,6 +1212,7 @@ No hits in dao_client either. Let me search org-wide for who stamps Telegram Cha
 ### 🤖 Autopilot
 
 The only code referencing `TELEGRAM_SENTINEL_COL`/`TELEGRAM_GOVERNOR_COL` (the readers) is the GAS project. The **writer** (who stamps col S/T) was said to be dao_protocol PR #124. Since dao_protocol → dao_client, let me find the stamping code there.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1258,11 +1259,13 @@ Bottom line: **you're right on both counts** — dao_controller.rb is dead code,
 ### 🤖 Autopilot
 
 Performing the check. Three parallel probes: the `Contributors contact information` tab (Is Sentinel col), the webhook listener that stamps col S/T, and the main Code.js.
+[3 tool result(s) compacted: read_google_sheet, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two findings so far: (1) the sheet read failed because `Contributors contact information` lives on the **OFFCHAIN spreadsheet** (`1GE7PUq…`), not the one I queried — the GAS code confirms it opens `OFFCHAIN_SPREADSHEET_ID` for that tab; (2) critical: this **`Code.js` in the same GAS project folder still has the OLD hardcoded `TRUSTED_AGENTS = ['autopilot@agroverse.shop']`** — my PR #424 only edited `process_movement_telegram_logs.js`, and both files define their own copy. Let me check what's actually deployed locally, and read the right spreadsheet.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1273,16 +1276,19 @@ Two critical findings from the check so far:
 2. **Big red flag:** the deployed GAS code at the merge sha (`8d69388`) still shows **`TRUSTED_AGENTS = ['autopilot@agroverse.shop']`** — the OLD hardcoded list. My PR #424 apparently did **not** change this file's list. Need to reconcile.
 
 Checking both: the Sophia/autopilot row's Is Sentinel flag in that sheet, and who stamps the Telegram Chat Logs `is_sentinel` column (S/T writer).
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find who actually stamps Telegram Chat Logs cols S/T. The Rails model may show the historical writer, and I need to find the Python equivalent.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: the Rails writer appends **19 columns (A–S)** — `governor_authority` → column S, and **no column T (is_sentinel) is ever written**. So column T is always empty for rows from that writer — matching what we see. Let me check the Sentinel implementation plan (the design doc for who stamps S/T) and find the Sophia row's Is Sentinel flag.
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1433,4 +1439,38 @@ Cleanup PR opened. Merging it (the governor's "skip to 4" authorizes this cleanu
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 | tail -3; echo "COMPILE_RC=$?"; python3 -m ruff check app sc; find /home /opt /srv /root -maxdepth 4 -type d -name 'tokenomics' 2>/dev/null | head -5; echo '---'; for d in $(find /home /opt /srv /root -; echo '=== .clasp.json (/home/ubuntu/tokenomics) ==='; cat /home/ubuntu/tokenomics/google_app_scripts/1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PC; …(+3 more)
 • `merge pr` → ✅ PR #425 on tokenomics merged successfully (sha: d120f70bb6768905644c3131e7298ceef479e1d7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Which is your signature on in the Google sheet tab? Let me change the name associated with that Public key of yours
+
+
+### 🤖 Autopilot
+
+Let me pull the exact current row from the sheet so I can point you at the precise cell.
+
+
+### 🤖 Autopilot
+
+Here's exactly where my signatures sit in the **Contributors Digital Signatures** tab (spreadsheet `1GE7PUq…`, offchain ledger):
+
+**My current (active) key — Row 164:**
+- Name: **`Sophia Truesight`**
+- Email: `admin+sophia@truesight.me`
+- Registered: 2026-08-24 14:42, verified ACTIVE 2026-08-24 15:22
+- Key: starts `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAutpNWeD7…` (ends `…FPHwmlQwIDAQAB`)
+
+**My older autopilot keys — also on the tab (mine):**
+- **Row ~160:** name `truesight-autopilot` / `admin@truesight.me`, key `…xv/EBTe1…`, ACTIVE 2026-08-20
+- **Row ~163:** name `truesight-autopilot` / `admin@truesight.me`, key `…m90FI1F…`, ACTIVE 2026-08-20
+
+**Important caveat:** the key that actually **signed the disputed movement** (row 673, the `…yrjcz4Y9…` key) is **NOT on this sheet at all** — it was the pre-rotation autopilot key. So there's no existing row whose name you can change to cover *that* signature; it would need to be added as a new row first.
+
+**So the rename that would actually matter depends on your goal:**
+- If you want my **current** key (row 164, `…utpNWeD7…`) to pick up the **sentinel** privilege → rename row 164 from `Sophia Truesight` to **`truesight-autopilot`** (that's the contact-info name that carries `Is Sentinel = TRUE` on row 399). Note: then the `TRUSTED_AGENTS` match by "Sophia Truesight" wouldn't apply — but the sentinel branch wouldn't need it.
+- If you want **identity consistency** → rename rows 160/163 from `truesight-autopilot` → `Sophia Truesight`.
+- If you want the **old `…yrjcz4Y9…` signing key** authorized → tell me and I'll add it as a row (name `Sophia Truesight` / `admin+sophia@truesight.me`, ACTIVE), then those historical rows can process.
+
+Which name are you planning to set? I'll confirm the row + cell (column A) for you to edit — or I can make the change via a governed update if you prefer.
 
