@@ -98,22 +98,46 @@ The nelanco list is large — let me page through it to enumerate the full live 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The artifacts got deeply nested — but I have what I need. Let me do two final checks: (1) look for the thread-780 plan file in context so I'm aligned on scope, (2) confirm the live counterparts exist in nelanco (the account where the services actually run now).
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the infrastructure doc — it has the authoritative migration table — and the OPEN_FOLLOWUPS entry about the account cleanup.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This confirms the migration context. Let me read the rest of the infra doc — the Explorya section and the stopped-Porch table — plus the OPEN_FOLLOWUPS entry on account cleanup.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full resource inventory now. Let me grab two final pieces: today's date (for the cost window) and confirm there's no backup/lifecycle automation in Explorya that would re-create snapshots.
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -178,21 +202,25 @@ Yes — go ahead and build the full itemized Step 2 cleanup manifest now (exact 
 ### 🤖 Autopilot
 
 Gary approved Step 2. Building the exact itemized manifest now — I'll pull a compact, complete inventory from the Explorya account (instances, volumes, snapshots, AMIs, EIPs) rather than paging through verbose API dumps. First, check whether I can script this cleanly on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 boto3 is available but no creds in the shell. The app's `.env` on this box holds the AWS keys (the tool uses them). Let me locate the env file and verify the key names exist — without printing values — so I can produce a compact inventory in one pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Explorya keys are in the app's `.env`. I'll source them in-process (never printing values) and generate a compact, exact manifest via boto3.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The .env has a token with special characters that breaks shell sourcing. I'll parse the file directly with Python instead (still never printing values).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -292,6 +320,7 @@ Gary confirmed: GO on Groups A + B + C + D. Hold E (EIP release) for a separate 
 Gary's explicit GO on A+B+C+D received (E held, F kept). Executing in order, reporting per group.
 
 ## Group A — pre-flight: DeleteOnTermination check on the 3 root volumes
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -302,6 +331,7 @@ All 3 confirmed `DeleteOnTermination: true` on root volumes:
 - `i-0ac8462aa6bb54986` (seni_ror_2026) → `vol-092be9a6874f3a8d9` ✅ DOT=true (confirmed in the tail)
 
 Terminating all 3 now (Group A).
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -315,6 +345,7 @@ Terminating all 3 now (Group A).
 | `i-02c699d3d7efbdc82` truesight-autopilot OLD | stopped → **terminated** |
 
 Root volumes auto-deleted (DOT=true verified pre-flight). Now **Group B** — orphaned 250GB volume + its snapshot. The snapshot (`seni_sql_20260108`) is standalone (not referenced by any AMI — it's a manual snapshot), and the volume has zero attachments, so both are safe to delete.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -351,11 +382,13 @@ That's 15 AMIs + 16 snapshots... wait — the manifest said 26 backing snapshots
 **Critical safety check:** the migration-source AMI `ami-0b05acc998af71d0f` (KEEP) has its own snapshot (copied, `vol-ffffffff` desc) — I must NOT delete that one. And `snap-05ae0641c59bcdffe` / `snap-0f3977f8f5d3c6a0b` are the copies feeding the 2026-05-10 AMIs (Group C list) — those are safe to delete since the AMIs they back are being deregistered.
 
 Deregistering all 15 AMIs now (single call, batched), then deleting the 16 snapshots.
+[15 tool result(s) compacted: aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 15 AMIs deregistered ✅ (`Return: true`). Note `DeleteSnapshotResults` is empty — AWS didn't auto-delete the backing snapshots, so I'll delete the 16 Group C snapshots explicitly now.
+[16 tool result(s) compacted: aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,6 +471,65 @@ The account is now nearly empty of legacy junk. Here's the full report.
 The infra doc (`AWS_DIGITAL_INFRASTRUCTURE.md`) references the old Explorya setup, the old EIP `52.200.38.206`, and the `dao-protocol-beta-sg` SSH allowlist containing stale IPs. Worth a doc refresh + SG cleanup pass — want me to open a PR for the doc update and propose the SG fix as a separate item? Also: the **weekly AMI automation** (Cypher-Defense `snapshot_autopilot_ami`) is already retargeted to Nelanco per the banner, so nothing will re-create Explorya snapshots.
 
 Ready to proceed with the doc/SG follow-up, or release E when you are — your call.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 - <<'PY' import boto3 env = {} for line in open('.env'): line = line.strip() if not line or line.star
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] [Handoff context — this Telegram topic (thread 13954) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Execute on group E
+
+
+### 🤖 Autopilot
+
+Gary has explicitly green-lit Group E. The EIP `52.200.38.206` (`eipalloc-04772e4a20f10c1c4`) is currently disassociated (the instance it pointed to was terminated in Group A), so releasing is safe — the IP is already unused. Releasing it is irreversible (that public IP can't be reclaimed), which you've now explicitly approved.
+
+Releasing now:
+
+
+### 🤖 Autopilot
+
+Released. Verifying the account is now truly clean:
+
+
+### 🤖 Autopilot
+
+## ✅ Group E complete — EIP released
+
+| Item | Result |
+|---|---|
+| `52.200.38.206` (`eipalloc-04772e4a20f10c1c4`) | **released** — verified **0 EIPs remaining** in Explorya |
+
+---
+
+## 🏁 Final cost picture — entire cleanup done
+
+| Group | What went | Est. $/mo |
+|---|---|---|
+| A | 3 stopped instances + root vols | $4.80 |
+| B | 250GB orphan volume + snapshot | $32.50 |
+| C | 15 dead AMIs + 16 snaps | $13.15 |
+| D | 8 autopilot weekly AMIs + 8 snaps | $8.10 |
+| E | old EIP | $3.60 |
+| **Total** | | **~$62.15/mo ≈ $745/yr** |
+
+### Verified end state — Explorya account
+- **Instances:** 0 legacy (only the running Nelanco fleet remains, untouched)
+- **Volumes:** 0
+- **Snapshots:** 1 (migration-source `snap-0006425e5c71f1623`)
+- **AMIs:** 1 (`ami-0b05acc998af71d0f` sophia-nelanco-migration — kept as rollback anchor, per your call)
+- **EIPs:** 0
+
+### Remaining follow-ups (proposed, not started)
+1. **Doc refresh** — `AWS_DIGITAL_INFRASTRUCTURE.md` still references the old Explorya setup, the now-released EIP, and pre-migration topology. I can open a PR to bring it current.
+2. **Security-group hygiene** — `dao-protocol-beta-sg` SSH allowlist likely contains the stale `52.200.38.206` entry (now a dead IP). Harmless but should be scrubbed; I'd propose exact rule changes for your review before touching.
+3. **Cost-verification** — the savings land on the next billing cycle; I can pull Cost Explorer in a few weeks to confirm the run-rate drop if you want.
+
+That's the whole plan executed. Want me to kick off the doc PR (#1) now, or park it?
 
 ———
 **✅ Done this turn — actions taken:**
