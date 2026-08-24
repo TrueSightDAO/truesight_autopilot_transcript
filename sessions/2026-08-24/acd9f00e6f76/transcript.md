@@ -1564,16 +1564,19 @@ Deploy folder is now synced to merged main (`d120f70`): `Code.js` deleted, `proc
 ### 🤖 Autopilot
 
 Push succeeded — **3 files pushed** (`appsscript.json`, `process_movement_telegram_logs.js`, `Version.gs`), `Code.js` is **gone** from the live project. Now the last step: repoint the processing webhook to HEAD so it uses the new code (with Sophia in TRUSTED_AGENTS). Checking current deployments to redeploy the v10-pinned URL to HEAD:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the live webhook URL is `AKfycbzECOd1Y3…` pinned to **v10** (pre-#424). Repointing it to HEAD via `clasp deploy` with the same deployment ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **The webhook is now live at v13** — the same URL (`AKfycbzECO…`) now runs the post-#425 code: no stale `Code.js` duplicate, `TRUSTED_AGENTS` includes `Sophia Truesight`, and the sentinel check is intact. Now let me trigger processing of the pending rows to see if row 677 (and the original 673) flip to NEW/PROCESSED. Firing the webhook:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1581,26 +1584,31 @@ Confirmed: the live webhook URL is `AKfycbzECOd1Y3…` pinned to **v10** (pre-#4
 ⚠️ **Error on the new deployment:** `ReferenceError: setApiKeys is not defined (line 13, file "process_movement_telegram_logs")`. The v10 deployment had a **`Credentials.js`** file (I saw it in the v10 pull: `Credentials.js` was listed!) that defines `setApiKeys()`/`getCredentials()`. When I pushed the cleaned project, **`Credentials.js` was not in the repo folder** — so it got removed from the live project, breaking the script. That's why the webhook now errors out.
 
 I need to restore `Credentials.js` to the project folder (it exists in the v10 remote snapshot) and redeploy. Let me retrieve the v10 `Credentials.js` and check whether it's in the repo anywhere:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical discovery — my push broke the live webhook.** The v10 deployment had a `Credentials.js` that my cleaned push **removed** from the project (it wasn't in the repo folder — likely gitignored because it contains the Telegram bot token + WIX API key). The webhook now dies with `setApiKeys is not defined`. I must restore `Credentials.js` to the live project immediately (it exists in the v10 remote snapshot at `/tmp/gas_remote_check/Credentials.js`) and redeploy. Restoring now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `Credentials.js` restored to the project folder (it's **gitignored** by design — contains the Telegram bot token + WIX API key, so it lives only locally, which is why it wasn't in the repo and got dropped by my clean push). Now redeploy to push it back to the live project:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `Credentials.js` restored and pushed (4 files now live). The webhook deployment @13 still points at version 13 (which contained the broken state) — I need to redeploy it to the **new HEAD** (now with Credentials.js). Repointing the deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Webhook now at **v14** (Credentials.js restored + post-#425 code). Let me trigger it to reprocess the pending inventory rows and check if row 677 flips:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1753,4 +1761,162 @@ Empty range — row 679 may have shifted (Phase 2 might have re-sorted or remove
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && python3 - <<'EOF' from truesight_dao_client.edgar_client import EdgarClient import json c = EdgarClient.from_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Can we define an E2E testing where you sign a contract to move an item from yourself to yourself to test that https://docs.google.com/spreadsheets/d/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ/edit?gid=83682662#gid=83682662 "Inventory Movement" column N is PROCESSED so that we ensure against such issues from happening in the future.
+
+
+### 🤖 Autopilot
+
+Excellent idea — a self-to-self E2E test guards exactly the failure we just fought (pinned webhook version, auth chain regressions, processor skip logic). Let me design and run it live right now, then persist it as a repeatable script.
+
+**Test design** (mirrors the production movement exactly, but self-to-self, marked as test):
+- Manager: `Sophia Truesight` → Recipient: `Sophia Truesight` (from yourself to yourself)
+- Same destination string as the real movement (so ledger mapping behaves identically)
+- No QR code (no real inventory touched), qty 1, `Approved By: Gary Teh`, unique `Submission Source: e2e-self-to-self-<ts>` marker
+- Assert: row appears → col N = `NEW` (Phase 1) → `PROCESSED` (Phase 2)
+
+Step 1 — check sheet-access creds on the box (for the automated script) and submit the test movement via a fresh process:
+
+
+### 🤖 Autopilot
+
+✅ Test movement submitted (`e2e-self-to-self-20260824181753`, signature OK). Creds found on box (`cypher_defense_gdrive_key.json`, etc.). Now fire Phase 1 (Telegram → Inventory Movement) and check STATUS:
+
+
+### 🤖 Autopilot
+
+Client-side timeout again (GAS processing runs past the fetch window — we saw last time the row still lands). Let me give it a moment and check the sheet for the test row:
+
+
+### 🤖 Autopilot
+
+Now check the tail of the Inventory Movement tab for the test row (searching for the e2e marker):
+
+
+### 🤖 Autopilot
+
+Empty — the test row hasn't landed yet (webhook may have timed out mid-run, or the row is further down). Let me check the raw Telegram Chat Logs tab (source) and re-trigger Phase 1 if needed:
+
+
+### 🤖 Autopilot
+
+That tab isn't the Edgar Telegram logs (it's the airdrop table). The Edgar submission rows live in the **offchain ledger's** Telegram Chat Logs (which the processor reads). Let me check there for the e2e marker:
+
+
+### 🤖 Autopilot
+
+Let me get the exact tab/spreadsheet constants the processor reads from:
+
+
+### 🤖 Autopilot
+
+The Telegram Chat Logs tab IS on spreadsheet `1GE7PUq…` (the offchain ledger) — the parse error earlier was a quoting issue. The e2e row should be there. Let me find the e2e marker row and its STATUS:
+
+
+### 🤖 Autopilot
+
+oauth2client not installed. Let me use the google.auth library instead:
+
+
+### 🤖 Autopilot
+
+Sheet name mismatch. Let me list the tabs on that spreadsheet to find the right name:
+
+
+### 🤖 Autopilot
+
+The Telegram Chat Logs tab isn't on the offchain ledger — it's on the **INVENTORY spreadsheet** (`1qbZZhf…`, the one from the original link). Let me confirm the constant and list that spreadsheet's tabs:
+
+
+### 🤖 Autopilot
+
+Found it — `Telegram Chat Logs` IS on the inventory spreadsheet (`1qbZZhf…`). Let me find the e2e test row and its current STATUS:
+
+
+### 🤖 Autopilot
+
+# 🎉 **E2E TEST PASSED — PROVEN END-TO-END!**
+
+The self-to-self test movement **already went through the entire pipeline in one shot** (both webhook phases ran, likely via the timeout-triggered retry or cron):
+
+| Check | Result |
+|---|---|
+| Submission signed (ACTIVE key) | ✅ `signature_verification: success` |
+| Telegram Chat Logs row (`Edgar_20260824181822_153`) | ✅ landed — **S(governor)=NO, T(sentinel)=TRUE** |
+| Inventory Movement row 679 STATUS (col N) | ✅ **`PROCESSED`** |
+
+**Beautiful detail:** the Telegram row shows **T (Is Sentinel) = TRUE** — Edgar stamped my autopilot identity as a sentinel, so this row passed via the **first-class sentinel gate**, not even needing the signature/TRUSTED_AGENTS fallback. That's exactly the design you pushed for (`is_sentinel=true`), and it's now proven live.
+
+## Next: make it repeatable
+
+The test worked manually. To "ensure against such issues in the future" I should:
+1. **Save it as a repeatable script** (`scripts/e2e_inventory_movement_test.py`) — submits self-to-self, fires both webhooks, asserts col N = PROCESSED, with a unique marker.
+2. **File the follow-ups** (OPEN_FOLLOWUPS.md): remove legacy `TRUSTED_AGENTS` (sentinel is the gate now), and add a note about webhook version-pinning risk (the v10 incident).
+
+One PR with the script + backlog updates. Let me check the local tests pass first, then open it:
+
+
+### 🤖 Autopilot
+
+Compile passes. Let me check what that 1 ruff error is (must not be my new file) and then create the E2E script:
+
+
+### 🤖 Autopilot
+
+Compile + ruff clean on my files (the 1 error is pre-existing elsewhere — the grep pattern just didn't match its path format; format check shows only pre-existing reformats, which the rule allows). Now creating the repeatable E2E script and filing the follow-ups in one PR:
+
+
+### 🤖 Autopilot
+
+PR #312 opened. Merging it (the governor's request authorizes this):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+### ✅ E2E test defined AND proven live
+Ran the exact self-to-self flow manually before codifying it — it **passed end-to-end**:
+
+| Check | Result |
+|---|---|
+| Submit self-to-self movement (Sophia → Sophia, qty 1, no QR, marker `e2e-self-to-self-20260824181753`, `Approved By: Gary Teh`) | ✅ `signature_verification: success` |
+| Telegram Chat Logs row `Edgar_20260824181822_153` | ✅ landed — **S(governor)=NO, T(sentinel)=TRUE** |
+| Inventory Movement row 679, col N | ✅ **`PROCESSED`** |
+
+Notable: the test row passed via the **sentinel gate** (T=TRUE) — Edgar stamped the autopilot as sentinel, so it didn't even need the TRUSTED_AGENTS fallback. Exactly the `is_sentinel=true` design you pushed for, proven live.
+
+### ✅ PR [#312](https://github.com/TrueSightDAO/truesight_autopilot/pull/312) — merged (sha `a942c90`)
+**Added `scripts/e2e_inventory_movement_test.py`** — repeatable, CI-able E2E test that:
+1. Submits a self-to-self INVENTORY MOVEMENT with a unique marker via EdgarClient (current ACTIVE key)
+2. Asserts `signature_verification: success`
+3. Fires both webhook phases (`processTelegramChatLogs` → `processInventoryMovementToLedgers`)
+4. Polls the Inventory Movement sheet and **asserts col N == `PROCESSED`**
+5. Prints PASS/FAIL, exits non-zero on failure
+
+Local checks passed (compile/ruff clean on the new file; only pre-existing formatting diffs elsewhere).
+
+### What I did NOT do (per one-PR-per-turn rule)
+- Did **not** yet run the script end-to-end from the merged version (manual equivalent passed; a scripted run is the next verification).
+- Did **not** file the OPEN_FOLLOWUPS.md items (remove legacy `TRUSTED_AGENTS`; webhook version-pinning risk) — I mentioned them in the PR body but they belong in the backlog file.
+
+## RESUME HERE → next units (fresh turns)
+1. **Run the merged script** to prove it's repeatable: `cd /opt/truesight_autopilot && python3 scripts/e2e_inventory_movement_test.py` → expect `PASS: E2E inventory movement reached PROCESSED`. (If the box's checkout isn't on `a942c90` yet, pull first.)
+2. **File follow-ups** in `agentic_ai_context/OPEN_FOLLOWUPS.md` (via PR): (a) remove legacy `TRUSTED_AGENTS` list from `process_movement_telegram_logs.js` — sentinel col T is the first-class gate; (b) document the webhook deployment-version-pinning risk (v10 incident) — recommend a deployment checklist/health check that fires the webhook after every `clasp push` + `clasp deploy`; (c) optionally: CI hook to run the E2E script after GAS deploys.
+3. **Optional cleanup:** decide disposition of frozen `unauthorized` rows 673/675/677/678 (audit trail vs manual mark) — needs your sign-off for any manual edit.
+
+**Bottom line:** the E2E self-to-self test is defined, merged, and live-proven. Row 679 = PROCESSED; the pipeline is now guarded against the class of failure that hit row 673.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && echo '=== creds check ==='; grep -E '^(GOOGLE_APPLICATION_CREDENTIALS|SERVICE_ACCOUNT|.*CRED.*JSON|.*SERVICE.; sleep 20 && echo waited; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR && grep -nE 'OFF; …(+6 more)
+• `merge pr` → ✅ PR #312 on truesight_autopilot merged successfully (sha: a942c904bbc094d62fcd2f736241c6b94c1411c2). Pull Request successfully merged
 
