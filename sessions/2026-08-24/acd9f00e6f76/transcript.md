@@ -1614,26 +1614,31 @@ Webhook now at **v14** (Credentials.js restored + post-#425 code). Let me trigge
 ### 🤖 Autopilot
 
 Progress: the ReferenceError is gone (Credentials.js restored), but now: **`Script function not found: doPost`** — meaning the `doPost` entry point lived in the **deleted `Code.js`**, not in `process_movement_telegram_logs.js`. I need to verify and restore it. Let me check what's in the current file and where `doPost` exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Neither file has `doPost` — only `doGet`. So the webhook isn't meant to be POSTed; processing likely runs via a **time-driven trigger** calling the main function (and `doGet` is the webhook-verification entry). Let me check `doGet` and find the main processing function name:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now it's clear — the webhook uses **GET** with `?action=processTelegramChatLogs` (that's the correct entry; my POST to `/exec` was wrong). Firing the correct action to process the pending rows (this runs Phase 1: Telegram → Inventory Movement STATUS, then Phase 2 → ledgers):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **`✅ Inventory movements processed from Telegram Chat Logs`** — the webhook ran successfully (v14). Now let me check the Inventory Movement tab to see if the rows flipped from `unauthorized`:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook ran but all rows still show `unauthorized` — including my fresh ACTIVE-key row 677. Two possibilities: the processor skips already-existing rows (so old STATUS persists), or the status computation still fails. Let me check the new row 678's status (truncated) and read the processor's Phase-1 logic:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1697,21 +1702,25 @@ The existing `unauthorized` rows **cannot** flip by reprocessing — the process
 ### 🤖 Autopilot
 
 Go-signal received. Executing: fresh submission → webhook → verify. First, the canonical field format for the INVENTORY MOVEMENT event:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Format confirmed. Now submitting via a fresh process (current ACTIVE key `…utpNWeD7…`), matching the original payload exactly plus the `Approved By` line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **Submitted — HTTP 200, `signature_verification: success`** with the ACTIVE key. Now firing the v14 webhook to process the new Telegram Chat Logs row into Inventory Movement:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Webhook timed out on the client side (GAS redirects + long processing) — that's not necessarily a failure. Let me check the Inventory Movement tab directly for the new row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1719,16 +1728,19 @@ Webhook timed out on the client side (GAS redirects + long processing) — that'
 🎉 **BREAKTHROUGH!** Row **679** (`Edgar_20260824181346_151`, my fresh v14 submission signed with the ACTIVE key) now shows **STATUS = `NEW`** — the webhook processed it despite the client-side timeout!
 
 The full auth chain worked: ACTIVE key → signature resolves → Sophia Truesight in TRUSTED_AGENTS → `Approved By: Gary Teh` → **NEW**. Now firing Phase 2 to push it to PROCESSED:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **`✅ Inventory Movement processed to Ledgers`** — Phase 2 ran. Let me verify row 679's final STATUS:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty range — row 679 may have shifted (Phase 2 might have re-sorted or removed it). Let me look at the tail rows to find the final state:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1779,16 +1791,19 @@ Excellent idea — a self-to-self E2E test guards exactly the failure we just fo
 - Assert: row appears → col N = `NEW` (Phase 1) → `PROCESSED` (Phase 2)
 
 Step 1 — check sheet-access creds on the box (for the automated script) and submit the test movement via a fresh process:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ Test movement submitted (`e2e-self-to-self-20260824181753`, signature OK). Creds found on box (`cypher_defense_gdrive_key.json`, etc.). Now fire Phase 1 (Telegram → Inventory Movement) and check STATUS:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Client-side timeout again (GAS processing runs past the fetch window — we saw last time the row still lands). Let me give it a moment and check the sheet for the test row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1919,4 +1934,58 @@ Local checks passed (compile/ruff clean on the new file; only pre-existing forma
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot && echo '=== creds check ==='; grep -E '^(GOOGLE_APPLICATION_CREDENTIALS|SERVICE_ACCOUNT|.*CRED.*JSON|.*SERVICE.; sleep 20 && echo waited; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR && grep -nE 'OFF; …(+6 more)
 • `merge pr` → ✅ PR #312 on truesight_autopilot merged successfully (sha: a942c904bbc094d62fcd2f736241c6b94c1411c2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] figure out how much time was spent on this error for yourself and me
+
+
+### 🤖 Autopilot
+
+Good question — let me give you an honest accounting. Most of it is *measured* (timestamps from the ledger rows, PR merge times, tool-operation counts), the human-time parts are *estimated* with a clear method.
+
+## Timeline of the error (measured anchors)
+
+| When (UTC) | Event |
+|---|---|
+| 2026-08-20 23:16 | Original movement submitted (`Edgar_20260820231604_105`) — signed with the **unregistered old key** (rows 673 landed `unauthorized`) |
+| 2026-08-20 → 08-24 | Error sat unnoticed (sheet only checked when someone looked) |
+| 08-24 ~14:30–14:37 | Thread opens, diagnosis begins; PR #424 merged 14:37:22Z |
+| 08-24 14:42 | `admin+sophia@truesight.me` registered (row 164, VERIFYING) |
+| 08-24 15:22:52 | Key verified → **ACTIVE** |
+| 08-24 15:25 / 17:44 | Re-submissions 677/678 land — still `unauthorized` (pre-v14 webhook + no-rescan rule) |
+| 08-24 18:13–18:18 | Fresh submission 679 + E2E test → **PROCESSED** ✅ |
+
+**Wall clock:** error introduced 08-20 23:16, resolved 08-24 18:18 → **~4 days outstanding**, of which **~4h of active work** (14:30–18:30 on 08-24).
+
+## Gary's time (estimated)
+
+- **17 messages** in this thread (mostly voice, 1–3 min each incl. checking the sheet — you said "I already checked" at least once): **~40–70 min**
+- **08-20 session** (original label movement — the *work*, not the error): ~20–40 min, but I'm not counting that against the error
+- Plus whatever time you spent **noticing** the unauthorized row between 08-20 and 08-24 (unknowable — likely just the moment you opened the sheet)
+- **Estimated total: ~0.75–1.5 hours** of your direct attention
+
+## My time (measured + estimated)
+
+- **~200 tool operations** across **17 assistant turns** (SSH, sheet reads, GAS deploys, webhook fires, PRs, Gmail, searches)
+- Raw machine execution: ~**40–60 min** (including 3 GAS deploys at ~30–60s each, several 30–90s webhook timeouts, big sheet pulls)
+- Full engagement (incl. analysis, re-reads, diagnostic cycling): **~3.5–4.5 hours** equivalent
+- **The expensive part was diagnosis** — I burned the majority of cycles chasing signature/key issues before the real root cause surfaced: the **webhook pinned to deployment v10** (pre-#424) + the processor's **never-rescan-existing-rows** rule. Two wrong turns in particular: treating it as a key-registration problem, and treating it as a cache problem.
+
+## What the cost bought
+
+- 3 PRs (#424 trusted-agents, #425 Code.js duplicate removal, #312 E2E test), 1 key registration, webhook repointed v10→v14, `Credentials.js` restored after my own push broke it (that mishap cost ~30 min of the total)
+- A **repeatable E2E test** that will catch this class of failure automatically next time — so the 3.5–4.5h is largely a one-time cost
+
+## Bottom line
+
+| | Time |
+|---|---|
+| **Wall clock** | ~4 days (08-20 → 08-24) |
+| **Your direct time** | ~0.75–1.5 h (est.) |
+| **My engagement** | ~3.5–4.5 h (est.; ~1h raw execution) |
+| **Total active** | **~4.5–6 h** |
+
+Want me to log this as a CONTRIBUTION EVENT (e.g., my ~4h of diagnostic/remediation work as minutes, plus a note in OPEN_FOLLOWUPS.md about the webhook-pinning lesson)? I can do that if you approve the amounts.
 
