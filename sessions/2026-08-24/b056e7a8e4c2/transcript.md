@@ -672,3 +672,169 @@ https://www.alibaba.com/product-detail/MHC-Handmade-3D-Special-Polycarbonate-Cho
 
 ⚠️ One caveat: Alibaba listings re-verify/re-price constantly and the exact MHC-CL082 unit price for a 10-piece order isn't published on the page (small-quantity pricing is quoted via chat/trade manager). The listing URL is the one Jerri would have sent — if you want, I can web_extract the live page again to capture current pricing, or you can have Jerri confirm which listing/quote she used.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] Can you create a currency entry for this item on our ledger. Dimension of a chocolate bar created using such a mold is 58mm x 125mm
+
+
+### 🤖 Autopilot
+
+Let me check how new currencies get added to the ledger — the event docs, runbooks, and any precedent.
+
+
+### 🤖 Autopilot
+
+Creating a ledger currency entry is a real change — let me confirm the exact mechanics first: the Currencies tab structure, how a new asset currency gets booked (the receipt path), and the schema for the dimension field.
+
+
+### 🤖 Autopilot
+
+Let me check how the existing mold currencies are catalogued and how new physical-asset currencies get created.
+
+
+### 🤖 Autopilot
+
+The event catalog confirms **ASSET RECEIPT EVENT** is the right vehicle ("Record receipt of a physical DAO asset"), but before submitting anything I need to know what it does downstream — whether it actually writes the Currencies row. Let me check the DApp page convention and GAS processing for asset receipts.
+
+
+### 🤖 Autopilot
+
+This is the key question — whether the pipeline creates a **new** Currencies row or requires the currency to pre-exist. Let me read the asset-receipt-ingest GAS code and the workflow doc.
+
+
+### 🤖 Autopilot
+
+The mechanism is clear — the **ASSET RECEIPT EVENT → GAS pipeline is exactly the canonical path to create a Currencies row** (it writes the Currencies tab row, the offchain inventory leg, and the audit entry). Before submitting, let me read the rest of the GAS code to confirm how unit cost is derived and what the description format should be.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the GAS code — specifically the `parseLandedCostFromDescription_` fallback so I know exactly how unit cost gets set.
+
+
+### 🤖 Autopilot
+
+Let me get the very end of the GAS file — the `parseLandedCostFromDescription_` implementation is what determines the unit cost fallback.
+
+
+### 🤖 Autopilot
+
+I still need the `parseLandedCostFromDescription_` implementation — that determines how unit cost is set. Let me fetch the raw file tail directly.
+
+
+### 🤖 Autopilot
+
+Let me get the tail of the raw file for `parseLandedCostFromDescription_`.
+
+
+### 🤖 Autopilot
+
+The canonical path is confirmed — **ASSET RECEIPT EVENT → Edgar → GAS `asset-receipt-ingest`** is exactly the pipeline that creates a new Currencies row (plus the offchain inventory leg and audit entry). Before submitting, let me prep the evidence photo and get today's date for the naming convention.
+
+
+### 🤖 Autopilot
+
+Let me locate the Henderson-box evidence photo on disk so I can attach it as the receipt evidence.
+
+
+### 🤖 Autopilot
+
+The evidence photo is on disk (`06b326eaf90e4a1aa5305ab49c787e19.jpg`), and I've confirmed the canonical path: **ASSET RECEIPT EVENT → Edgar → GAS `asset-receipt-ingest`** is the pipeline that creates a new Currencies row (col A name, col B unit cost), books a positive offchain inventory leg, and logs to the Asset Receipts audit tab. Since MHC-CL082 has **no** existing currency line, ASSET RECEIPT (not INVENTORY MOVEMENT) is the correct vehicle — it's a first-time booking to Kirsten as current custodian.
+
+One line before I submit: I'm filing a signed `[ASSET RECEIPT EVENT]` for **10 × Chocolate Mold MHC-CL082 (58×125mm), Fund Handler Kirsten Ritschel**, with unit cost placeholder $10.00 (matching the existing "Chocolate Mold from Rusty" $10/unit precedent) since Jerri's quotation amount was never recorded — correctable when the invoice surfaces.
+
+
+### 🤖 Autopilot
+
+Submitted. Now let me verify the downstream GAS pipeline picked it up and created the Currencies row — checking the Asset Receipts audit tab and the Currencies tab.
+
+
+### 🤖 Autopilot
+
+The audit tab shows the pipeline is running (the recurring SKIPPED row was re-attempted at 14:10). My new row should appear after processing. Let me check the Currencies tab where the "Chocolate Mold" entries sort (C section) and the offchain leg.
+
+
+### 🤖 Autopilot
+
+The offchain sheet shows a `8/24/2026` row — likely my receipt. Let me read the full content of the last rows to confirm.
+
+
+### 🤖 Autopilot
+
+The offchain leg landed — but **quantity booked as 1.0 instead of 10**. Let me check the audit tab and Currencies tab to see what the parser actually extracted.
+
+
+### 🤖 Autopilot
+
+The audit tab shows **OK** — the pipeline processed it (Amount 10, offchain row 4141), and the **Currencies row was created**: `Chocolate Mold MHC-CL082 (58 x 125 mm) - Dongguan MHC Industrial Co Ltd` @ **$10.00/unit**. But my earlier read of the offchain leg showed quantity `1.00000000` while the audit shows 10 — let me verify that exact row before declaring done.
+
+
+### 🤖 Autopilot
+
+The audit row confirms **OK** (Amount 10, offchain row 4141) and the **Currencies row was created** — but I caught a discrepancy in the offchain leg worth flagging before we call this done. Let me check the backlog for duplicates first, then report.
+
+
+### 🤖 Autopilot
+
+The audit row confirms processing (OK, Amount 10, offchain row 4141), but the offchain leg shows `1.00000000` instead of 10. Let me compare with the other recent asset receipts to see if this is a quantity-write quirk of the pipeline or specific to my submission.
+
+
+### 🤖 Autopilot
+
+Found a discrepancy worth digging into: the audit row says **Amount 10** but the offchain leg shows **quantity 1**. The other asset receipts (Paloma's 100 pouches, 1 printer) wrote correct quantities, so something in my submission text parsed differently. Let me look at the exact text Edgar logged in Telegram Chat Logs.
+
+
+### 🤖 Autopilot
+
+The audit tab says **Amount 10 / OK** but the offchain inventory leg was written as **1.00000000**. Paloma's receipts (100 pouches, 1 printer) wrote correct quantities, so this looks like a discrepancy in how my row was processed. Let me compare the deployed GAS code (clasp mirror) against main — the deployed version may differ.
+
+
+### 🤖 Autopilot
+
+Let me check the clasp mirror directory for the deployed asset-receipt-ingest script.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Status: currency entry created ✅ (with one discrepancy to resolve)
+
+### What got done
+I submitted a signed **`[ASSET RECEIPT EVENT]`** for the MHC-CL082 mold and the pipeline processed it end-to-end:
+
+| Surface | Result |
+|---|---|
+| **Currencies tab** (Main Ledger) | ✅ New row: **`Chocolate Mold MHC-CL082 (58 x 125 mm) - Dongguan MHC Industrial Co Ltd`** @ **$10.00/unit** — sits right next to "Chocolate Mold - 4 X 6 slots" ($1.19) and "Chocolate Mold from Rusty" ($10) |
+| **Asset Receipts audit tab** | ✅ `Edgar_20260824141011_127` → Amount **10**, Fund Handler **Kirsten Ritschel**, offchain row **4141**, Status **OK** |
+| **offchain transactions** | ⚠️ Row 4141 written, but column D shows **`1.00000000` instead of 10** |
+
+The 58×125mm cavity dimension is captured in both the currency name and the receipt description.
+
+### The discrepancy (blocking a clean close)
+- Audit tab says **Amount 10**; the inventory leg wrote **quantity 1**. 
+- Paloma's receipts the same pipeline ran on 08-22 wrote correct quantities (100 pouches, 1 printer) — so it's specific to this row, and there was a recent commit `acbcdb0` (2026-08-22) *"Fix asset receipt ingest: Amount maps to Quantity"* that I haven't confirmed was deployed to the live GAS web app.
+- Unit cost $10.00 was set via the description's landed-cost parser (`$10.00/unit` text) — **placeholder** matching the "Chocolate Mold from Rusty" precedent, since Jerri's actual quotation was never recorded anywhere.
+
+### Also still open
+1. **No paired USD cash leg** — I deliberately did NOT book one: we still don't know who paid for the 10 molds (Liz/Jerri personal funds vs DAO). The receipt booked custody (Kirsten), which is correct either way; the cash leg only applies if the DAO funded it.
+2. **Evidence photo** — the Henderson-box jpg (`06b326eaf90e4a1aa5305ab49c787e19.jpg`) is cited in the description by filename but was **not uploaded** to `.github/assets` as an attachment — the tool call had no attachment field.
+
+---
+
+### RESUME HERE
+1. **Fix quantity**: verify deployed `asset_receipt_ingest` GAS vs main (commit `acbcdb0`, 2026-08-22) — if deployed code is stale, re-deploy via `gas_deploy_project`; then correct offchain row 4141 qty **1 → 10** (or file a corrective INVENTORY MOVEMENT).
+2. **Upload evidence photo** to `TrueSightDAO/.github/assets/20260824_mhc_cl082_molds_henderson_box.jpg` and link it in the offchain description.
+3. **Obtain Jerri's quotation** (WhatsApp/Feishu — not in DAO email) → update Currencies unit cost from $10 placeholder to real landed cost; if DAO funded, also file the paired `[CONTRIBUTION EVENT]` USD leg.
+4. **File OPEN_FOLLOWUPS entry** for #3 so it doesn't rot (I checked — no existing entry).
+5. Confirm with Kirsten the wrapper/foil for China bars is sized to the new 58×125 cavity (vs her 55×128).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → date +%Y%m%d && ls -la /tmp/tg_attachments/ | tail -20; ls -la /tmp/tg_attachments/ | grep -iE "06b326|cb2991|\.jpg|\.jpeg|\.png" | head -20; echo "---"; find /tmp/tg_attachments -name "*.jpg" -ne
+• `submit contribution` → Contribution submitted successfully.
+
