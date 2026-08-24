@@ -464,51 +464,66 @@ Go-signal received. Before I push anything, the full function body confirmed som
 Deploy **succeeded** — PR #424 is now live in the GAS project (pushed `process_movement_telegram_logs.js` with the new `TRUSTED_AGENTS`). That's step 1 done.
 
 Two things left to verify for a complete answer: whether the old signing key still exists anywhere (it was rotated when I registered), and whether the verification email landed.
+[2 tool result(s) compacted: ssh_run, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy succeeded and the verification email exists. One decisive check — can I retrieve the verification link (it was sent to my own address, which may alias the admin mailbox)?
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The verification email is in my mailbox (INBOX, unread). Let me read it to get the verification link, then follow it to activate my key.
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the verification link. Let me follow it to activate the registration.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The verification link is browser-oriented (it just returned the repo page — the `vk` needs to be consumed by a client, not a GET). Let me find how the autopilot/dao_client consumes the verification key.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at how the verification flow is actually implemented — the `register_identity` code in the autopilot and any Edgar verify endpoint.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the registration service. Let me read it to understand the verify endpoint and how to consume the `vk`.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The verification flow is clear: the DApp (or autopilot) must submit an `[EMAIL VERIFICATION EVENT]` containing the **Verification Key** from the email, signed with the matching private key. My `.env` keypair (`…utpNWeD7…`) matches the VERIFYING row. Let me confirm the event format and the consume logic.
+[2 tool result(s) compacted: lookup_event_docs, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The flow is now fully clear. To activate my registration I submit an **EMAIL VERIFICATION EVENT** with the Verification Key from the email, signed by my current keypair (which matches the VERIFYING row). Submitting now:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verification submitted. Let me confirm the row flipped to ACTIVE.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -547,56 +562,67 @@ But there's a wrinkle for **row 673 specifically**: it was signed with the **old
 ### 🤖 Autopilot
 
 Let me first verify my registration is now ACTIVE, and pull the canonical INVENTORY MOVEMENT field format in parallel.
+[2 tool result(s) compacted: read_google_sheet, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still VERIFYING — the verification didn't take. Let me check what key the submit actually signed with, and read the consume logic to see why it failed.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current key IS `utpNWeD7` and the VERIFYING row matches it, so the submission should have matched. Let me read the consume logic to find why it didn't activate.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the consume logic — the key binding check and outcomes.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to see the actual `consume_verification!` implementation at the end of the file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The consume logic is clear: vk lookup in column G → pubkey match → ACTIVE. It's still VERIFYING, so the submission likely didn't route or the vk/pubkey didn't match. Let me check the sheet's G/H columns for the Sophia row and Edgar's processing log in parallel.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet confirms row 164 is still **VERIFYING** with vk `8CObUge...` present in col G and col H (consumed) empty — so my EMAIL VERIFICATION EVENT didn't get processed/consumed. Let me check how the autopilot is *supposed* to complete verification (there may be a dedicated command) and whether Edgar logged the submission.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No dedicated verification script on the box, and dao_protocol SSH key access failed (that's fine — Edgar processes events on the Rails side, not dao_protocol). The submit_contribution DID return "submitted successfully" — but the EMAIL VERIFICATION EVENT format may differ from what the Rails service expects. Let me check how the DApp submits it and what Edgar's event catalog expects.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `email_verification_from_edgar.js` GAS file is the exact reference. Let me read it to see the canonical EMAIL VERIFICATION EVENT payload format.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS file is just the email webhook — the event processing is in Rails. Let me check how the autopilot's `submit_contribution` actually formats/sends events, to see whether the EMAIL VERIFICATION EVENT was sent in the canonical format.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's an `app/identity_binding.py` in the autopilot. Let me read it — this is likely the proper programmatic verification path.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -684,4 +710,161 @@ Let me read the `submit_contribution` handler body — the part after signature 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot && grep -E '^(PUBLIC_KEY|PRIVATE|EMAIL)=' .env | sed -E 's/(=.).{40}/\1.../'; echo '---'; python3 -c " import re; sudo tail -200 /var/log/rails/production.log 2>/dev/null | grep -iE 'EMAIL VERIFICATION|consume_verification|EMAIL_REGISTERED' | tail -30; e; cd /opt/truesight_autopilot && ls bin/ scripts/ 2>/dev/null | head -40; echo '---'; grep -rl 'EMAIL VERIFICATION\|verification_key\|verify_i; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Keep going
+
+
+### 🤖 Autopilot
+
+Continuing the fix. Let me (1) find the Rails log on `seni_ror` to see the verification outcome, and (2) re-fetch the verification email to get the full verification key for a clean re-submit with the raw JSON response visible.
+
+
+### 🤖 Autopilot
+
+Found the Rails log. Let me grep it for the verification processing outcome, and read the full verification email (to get the complete vk for a clean re-submit).
+
+
+### 🤖 Autopilot
+
+The Rails log grep returned **nothing** — my earlier EMAIL VERIFICATION EVENT never reached the processing stage. I have the full vk now (`8CObUge2h1fdI_JA5b0dJHT6vXebaxLPmwP8Wczr8So`). Let me read the registration service to see exactly what event format it consumes.
+
+
+### 🤖 Autopilot
+
+The Rails log grep came up empty — so my earlier verification event never reached `process_verification`. Rather than guess, let me re-submit the EMAIL VERIFICATION EVENT **directly** with the full verification key and capture Edgar's raw JSON response this time. That removes all ambiguity.
+
+
+### 🤖 Autopilot
+
+The POST went through but the response read timed out at 30s — Edgar is likely processing synchronously (sheet write + cache refresh) and just slow. The event may well have landed. Let me check the sheet for the ACTIVE flip, and retry with a longer timeout to get the definitive response.
+
+
+### 🤖 Autopilot
+
+Wrong spreadsheet — that's the main Ledger history. Let me recall which spreadsheet ID holds the Contributors Digital Signatures sheet.
+
+
+### 🤖 Autopilot
+
+The Contributors Digital Signatures tab is on the same workbook but a different tab. Let me read the correct tab's tail rows to check the ACTIVE flip.
+
+
+### 🤖 Autopilot
+
+**Row 164 is now ACTIVE!** 🎉 The timed-out POST actually landed — Edgar processed it while my client timed out waiting for the response. `Sophia Truesight / admin+sophia@truesight.me`, status **ACTIVE**, verified 2026-08-24 15:22:52, key `…utpNWeD7…` (my current `.env` key), vk consumed (col H filled).
+
+Now the step you asked for: re-submit the **same INVENTORY MOVEMENT** signed with the now-ACTIVE key. Let me pull the canonical field format first.
+
+
+### 🤖 Autopilot
+
+Row 164 is **ACTIVE** — registration complete. Now re-submitting the **same INVENTORY MOVEMENT** signed with the now-ACTIVE key (including the `Approved By` line so the trusted-agent branch in the GAS processor fires):
+
+
+### 🤖 Autopilot
+
+Submitted. Let me verify it landed — checking the Telegram Chat Logs for the new row.
+
+
+### 🤖 Autopilot
+
+Telegram Chat Logs is on the other spreadsheet (the one from the original link). Let me check it there.
+
+
+### 🤖 Autopilot
+
+The new submission should now appear on the Inventory Movement tab (gid 83682662) via the GAS webhook. Let me check the tail of that tab for the new row's STATUS.
+
+
+### 🤖 Autopilot
+
+I need to see the tail rows (673+) to find the new submission's STATUS. Let me read the artifact from the end.
+
+
+### 🤖 Autopilot
+
+Still in the July rows. Let me read the very end of the artifact where the newest rows (673+) should be.
+
+
+### 🤖 Autopilot
+
+The original row (673) still shows `unauthorized` as expected (old key). Let me read the very end of the artifact for my new submission.
+
+
+### 🤖 Autopilot
+
+My new submission hasn't appeared in that range yet (range ended at row 674). Let me check the rows right after — my new submission should be there (or still processing via the GAS webhook).
+
+
+### 🤖 Autopilot
+
+Row 675 is the smoking gun: my re-submission was signed with the **OLD key** (`…yrjcz4Y9…` — identical signature to row 673), not the new ACTIVE key (`…utpNWeD7…`). The `submit_contribution` tool runs in the long-lived bot process whose cached `settings` still hold the old keypair from before `register_identity` rewrote `.env`. So it's still `unauthorized` for the same reason.
+
+Fix: submit via a **fresh process** that reads the current `.env` (new ACTIVE key). Doing that now, and in parallel confirming the deployed TRUSTED_AGENTS logic:
+
+
+### 🤖 Autopilot
+
+**Submitted with the NEW ACTIVE key** (verified `HAS_NEW_KEY: True` in the fresh process) and Edgar returned `signature_verification: success`. The GAS webhook should process it. Let me check the new row's STATUS now.
+
+
+### 🤖 Autopilot
+
+New row not there yet — the GAS webhook may still be processing, or it goes via Telegram Chat Logs first. Let me check both the Telegram Chat Logs tail and give the Inventory Movement tab another look.
+
+
+### 🤖 Autopilot
+
+The fresh submission needs a moment for the Edgar→GAS webhook→sheet append. Let me re-check the Inventory Movement tail.
+
+
+### 🤖 Autopilot
+
+Row 675 is my **first** re-submission (the one that used the stale OLD key from the bot process). My **fresh-key** submission hasn't been appended yet — the GAS processor runs on cron/webhook. Let me trigger the inventory-movement processing webhook manually and find the config URL for it.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Status — big progress, one step left
+
+**✅ Registration: DONE.** Row 164 `Sophia Truesight / admin+sophia@truesight.me` is **ACTIVE** (verified 2026-08-24 15:22:52, key `…utpNWeD7…`).
+
+**✅ Re-submission with the ACTIVE key: SUBMITTED.** A fresh process read the current `.env` (`HAS_NEW_KEY: True`) and Edgar returned **`signature_verification: success`**. That's the critical gate — the signature is now verifiable against an ACTIVE registered key.
+
+**⚠️ What's still blocking:** the fresh-key row hasn't appeared in the Inventory Movement sheet yet. What IS there:
+- Row 673 (original, old key `…yrjcz4Y9…`) → `unauthorized` (expected — will never flip).
+- Row 675 (`Edgar_20260824152351_145`) → **`unauthorized`** — this was my FIRST re-submit, which used the **stale OLD key** from the long-lived bot process (before `register_identity` rewrote `.env`). Same old key, so same outcome.
+- The **fresh-key** submission (from the `ssh` one-liner, `…utpNWeD7…`, signature_verification: success) has **not yet been appended** — the GAS `processMovementTelegramLogs` processor runs on cron/webhook, and I couldn't locate its webhook URL to fire it manually (2 searches for `inventory_processing_webhook_url` / `processMovementTelegramLogs` came up empty in the code search — it's likely in `config/application.rb` on `seni_ror` or as a GAS property, not in a searchable repo).
+
+## RESUME HERE → next turn (should close it out)
+
+1. **Find the GAS trigger** — grep `seni_ror` `/home/ubuntu/sentiment_importer/config/application.rb` for `inventory` webhook URLs (e.g. `processMovementTelegramLogs` script URL), or check the GAS project properties. Fire the webhook so the fresh-key row gets processed.
+2. **Verify the fresh-key row lands** in Inventory Movement (expect row ~676, status **NEW** → **PROCESSED** once the signature resolves to the ACTIVE `…utpNWeD7…` key + `Approved By: Gary Teh` trusted-agent branch).
+3. **If it lands as `unauthorized` anyway**: re-read `process_movement_telegram_logs.js` from the deployed GAS (the GitHub path 404'd — it's likely under a different folder, e.g. `1wONDeDwZ…/process_movement_telegram_logs.js` vs a `Code.js`; verify `TRUSTED_AGENTS` actually contains `admin+sophia@truesight.me` / `Sophia Truesight` and that my GAS deploy actually pushed it).
+4. **Cleanup**: row 675 is a duplicate (stale-key) — optionally mark it or leave as audit trail; row 673 stays `unauthorized` as the historical record. The canonical processed row will be the fresh-key one.
+5. **Also worth flagging to you**: the `submit_contribution` tool inside the running bot uses a **stale cached keypair** — that's why it signed with the old key even after registration. That's a real bug worth a small PR (reload keys from `.env` per submission or restart the process). I'll file it in OPEN_FOLLOWUPS.md next turn.
+
+**Bottom line:** you're one webhook-trigger away from row 673's replacement being PROCESSED. The authorization chain is now correctly configured (ACTIVE key + trusted agent + Approved By line) — it just needs the GAS processor to see the fresh-key submission.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh seni_ror` → found `/home/ubuntu/sentiment_importer/log/production.log` (grep for verification outcome came up empty → event likely processed elsewhere/silently)
+• `gmail read` → full verification email with vk `8CObUge…` confirmed
+• `read_repo_file` ×2 → `dao_email_registration_service.rb` (full consume logic: `activated` / `already_consumed` / `pubkey_mismatch` / `not_found`) + `dao_controller.rb` dispatch
+• `ssh autopilot` ×2 → direct EdgarClient submit (timeout on read → but landed) + fresh-process submit with **new ACTIVE key** → `signature_verification: success`
+• `read_google_sheet` ×5 → confirmed row 164 ACTIVE; row 673 unauthorized; row 675 (stale-key dup) unauthorized; Telegram Chat Logs checked
+• `search_code` ×2 → webhook URL not in searchable repos (needs `seni_ror config/application.rb` grep next)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → sudo find /home /opt /var/www -maxdepth 5 -name 'production.log' 2>/dev/null | head -5; echo '---'; sudo find / -maxdepth 6 -path /proc -pru; sudo grep -nE 'EMAIL VERIFICATION|consume_verification|process_verification|verify_i|Verification|vk_|EMAIL_REGISTERED' /home/ubuntu/sentime; cd /opt/truesight_autopilot && python3 - <<'EOF' from truesight_dao_client.edgar_client import EdgarClient c = EdgarClient.from_env() attrs ; …(+1 more)
+• `submit contribution` → Contribution submitted successfully.
 
