@@ -904,26 +904,31 @@ Let me grab the final verbatim chunks I need (§2.1/2.2 inventory, §3.1 Route53
 ### 🤖 Autopilot
 
 Almost complete. Let me get the last missing chunks: §1 accounts, §2.1 Nelanco, §2.2 Explorya, and the file tail (§12 history end).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have every section mapped verbatim. Before pushing, I'll validate all 30 exact-match hunks against the local clone (fail loudly if any search string isn't unique) so the PR applies cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 31 hunks applied cleanly. But 5 stale `52.200.38.206` + 3 `eipalloc` refs remain — let me check whether they're in historical sections (where keeping the old fact is correct) or need fixing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 5 remaining refs are all in historical/migration context ("was X", "released") — correct to keep. But I spotted 3 small stale details worth fixing: the banner migration table's EIP row (says old EIP still active), the SG note "(80/443/22)" (now also 8001), and the chatbot A-record description (still says `seni_ror_200250915:8000`). Let me verify the claimed Nelanco EIP allocation exists, then apply these final touches.
+[2 tool result(s) compacted: aws_query, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One correction needed: the box actually **does** have a Nelanco EIP — `eipalloc-018e2cad67ecbcd8a` → `3.214.167.219` → `i-05276b8ae82d6b88c` (this box). So §4.5's "plain public IP / EIP released" wording is wrong — only the **Explorya** EIP was released; the box now holds a Nelanco EIP, so EIP-based blue-green still works. Fixing §4.5 for accuracy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1060,4 +1065,55 @@ That completes the full Explorya cleanup chain: **A–E resource cleanup → ngi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' echo "=== sites; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' echo "=== diff ; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' set -e F=/etc/n; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] Why don’t you dig around and verify for yourself
+
+
+### 🤖 Autopilot
+
+Good call — let me actually verify perch.truesight.me myself instead of just flagging it. Three independent vantages: external probe, live nginx config on krake_nginx, and what's listening on the seni_ror box.
+
+
+### 🤖 Autopilot
+
+External vantage gives the real answer. Let me nail it down cleanly with the fleet tool (no nested-ssh quoting mess) — check seni_ror's own nginx for the perch block + what the 401 actually is.
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture — but the "no server blocks" output from my grep on the second command is suspicious (perch.conf exists in sites-available but maybe isn't symlinked into sites-enabled). Let me confirm how seni_ror's nginx is wired.
+
+
+### 🤖 Autopilot
+
+Verification complete — the picture is now fully clear, and it's good news: **perch.truesight.me is NOT broken; it's intentionally protected.** Here's the evidence:
+
+## 🔍 perch.truesight.me — verified working (intentionally authenticated)
+
+### What I confirmed from 3 vantages
+| Check | Result | Meaning |
+|---|---|---|
+| `https://perch.truesight.me/` (external) | **HTTP 401** | TLS fine (Let's Encrypt cert valid, verify ok) — but auth-protected |
+| HTTP→HTTPS redirect | **301** → HTTPS | Standard, healthy |
+| `perch.truesight.me` A record | `54.211.179.126` | Points at **seni_ror** (`i-063dc4a3be90bd630`) — the live Rails host |
+| **seni_ror nginx** (the actual serving host) | `perch.conf` **enabled + loaded** (`sites-enabled/perch.conf` symlink, `nginx -T` confirms it's live) | Serves `perch.truesight.me` on 443 → proxies to `127.0.0.1:3002` |
+| seni_ror listeners | nginx on :80/:443; Rails expected on `:3002` | Matches perch.conf's `proxy_pass http://127.0.0.1:3002` |
+| 401 with `-u x:y` | still 401 | Not basic-auth; it's the **Rails app's own auth** (session/login required) |
+
+### The resolution of my earlier "flag"
+I initially worried the **live nginx.conf on krake_nginx** lacked the perch block — **true, but irrelevant**: perch isn't routed through krake_nginx at all. It's served **directly by seni_ror's own nginx** (`sites-enabled/perch.conf`, which IS included there — unlike the krake box where `sites-enabled/*` is commented out). The copy on krake_nginx's `sites-enabled/` was a **leftover duplicate** that never served traffic. So:
+- **perch.truesight.me** → seni_ror nginx → Rails `:3002` → 401 (app login). ✅ Working as designed.
+- **The inert krake_nginx copy** → now header-marked + backed up. ✅ Clean.
+
+### Bottom line
+The 401 is the **Rails trading dashboard's authentication**, not an outage. Everything I marked inert/cleaned is consistent with the live routing. **No further action needed** — and the earlier flag is withdrawn with evidence.
+
+That closes out the entire cleanup chain (A–E → nginx chatbot fix → doc PR #814 merged → stale-file marking → perch verification). All verified from live infrastructure, nothing left dangling.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== perch HTTP (external) ==="; curl -s -o /dev/null -w "%{http_code} " -m 8 http://perch.truesight.me/ 2>&1 || echo "fail" echo "=== ; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 ' echo "=== perch; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 'ssh -o ConnectTi; …(+2 more)
 
