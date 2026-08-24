@@ -295,6 +295,7 @@ No Sidekiq::Testing stub in the suite and test env points at localhost:6379. Cle
 ### 🤖 Autopilot
 
 Redis is up (PONG). Re-run the baseline suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -717,4 +718,49 @@ Next steps on your signal:
 3. Then PR2 (visual polish per plan §3.2 — discrete revertible tweaks)
 
 No open questions, nothing blocking on my side.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Gary: Go. Merge PR1 (#1127) and deploy (./deploy.sh --skip-migrate). Post here once deployed and I'll do UAT verification against the live page.
+
+
+### 🤖 Autopilot
+
+Gary's explicit `go` — merging PR1 and deploying.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged — stopping here per the one-PR-per-turn rule; deploy runs in the next turn (your `go` for it is already in hand).
+
+## What I did this turn
+
+**✅ PR #1127 merged** — `Fix /large_spikes Norm to share the Bollinger band's window (PR1)`
+🔗 https://github.com/TrueSightDAO/sentiment_importer/pull/1127 → merged to `master` as **sha `1283d82`** (squash)
+
+**What was in it** (per plan §3.1, tested 8/8 green on seni_ror before push):
+- `macro_indicator.rb` — added `spike_bollinger_middle_over_period` (mirror of the upper-bollinger method, but `plot_bollinger_middle` → 30-day band center)
+- `daily_trades_helper.rb` — added `chartjs_spike_norm_values` wrapper
+- `_spike_chart.html.erb` — Norm header value + dataset 1 now use `chartjs_spike_norm_values` (was the 180-day `chartjs_spike_sma_values`)
+- `large_spikes_spec.rb` — 3 stub sites updated to new method names
+- `spec/models/macro_indicator_spec.rb` (new) — asserts same-lookback + no fallback to old SMA path
+
+## RESUME HERE → Deploy PR1 + UAT
+
+1. **Deploy** on the prod box (seni_ror, `/home/ubuntu/sentiment_importer`): `git pull` (should pick up `1283d82` on master) then `./deploy.sh --skip-migrate` — no schema change in this PR, so `--skip-migrate` is correct.
+2. **Verify** the deploy completed (script output, app boots).
+3. **Post here** confirming it's live on perch.truesight.me `/large_spikes` → Gary does UAT against the live page.
+4. **After UAT sign-off** → PR2 (visual polish per plan §3.2) in a fresh turn: trim dead flat-zero lead-in, lighten over-extended shading (0.10 → 0.06), thin Norm line (2 → 1.5), elevate verdict block — each as discrete revertible tweaks, tested the same way before push.
+
+Nothing else pending — the merge is done, deploy is armed and ready for the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #1127 on sentiment_importer merged successfully (sha: 1283d82fb74f2f954351715640379c8dc6a306ef). Pull Request successfully merged
 
