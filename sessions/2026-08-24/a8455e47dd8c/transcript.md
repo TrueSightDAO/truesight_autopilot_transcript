@@ -4722,6 +4722,7 @@ Want me to also send this adjusted quotation to Graziela/Omega for confirmation,
 ### 🤖 Autopilot
 
 Got it — a freight-only breakdown that explicitly excludes the payload value (internal transfer). Generating.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4902,4 +4903,48 @@ The buyer only unloads the goods at destination. Risk transfers to the buyer at 
 - **Practical trap with DDP:** the seller must handle import clearance in the destination country — which often requires a local entity/agent there (VAT registration, customs broker). For China, that means working with a licensed Chinese customs broker. It's the seller carrying the most risk — payment and compliance issues at destination can strand the goods on your account.
 
 Want me to add a DDP vs FOB comparison to the freight SOP (or the China-lane guide) so we have it on file for future quotes?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] When priorly shipping via correios to San Francisco what incoterm did it fall under??
+
+
+### 🤖 Autopilot
+
+Let me check our records for any Correios shipment history to San Francisco.
+
+
+### 🤖 Autopilot
+
+The records confirm Correios (Brazil Post, `CP…BR` tracking) was used for small parcels from Ilhéus → US. Let me check the ledger doc for how those shipments were treated.
+
+
+### 🤖 Autopilot
+
+Good question — and the honest answer has two layers:
+
+**1. What our records show:**
+The Correios shipments (tracking `CP…BR` in the ledger `Currency` strings) were **small postal parcels from Ilhéus → US** — typically retail/sample pouches (e.g., "8 Ounce Nibs CP340992735BR"). They were **never assigned an Incoterm** in any document — because **Incoterms don't formally apply to postal shipments.**
+
+**2. The technical reality — why no Incoterm:**
+
+- **Incoterms govern commercial freight contracts** (with AWB, bill of lading, RADAR/DU-E, customs brokers). Correios is **international mail** — it moves under the **Universal Postal Union** regime with a simple CN22/CN23 customs declaration, no export NF-e, no DU-E, no RADAR.
+- So strictly: those parcels sat **outside the Incoterm system entirely**.
+
+**3. The practical equivalent (if you had to label it):**
+
+| Feature | Correios parcel | Closest Incoterm |
+|---|---|---|
+| Seller pays postage up front | ✅ | **DDP-style** (seller bears transport cost) |
+| Door-to-door delivery by destination post | ✅ | DDP / DAP |
+| Import duty collected at destination | ❌ for <$800 (US de minimis) — delivered free | **DDP** (no duty event) |
+| Risk transfers to buyer | At delivery/doorstep | DDP |
+| Export clearance | Sender declares (CN22), no broker | (simplified) |
+
+So for small parcels under the **US $800 de minimis** threshold, Correios shipments are **effectively DDP** — the seller pays shipping, no duty is collected, and the parcel lands at the buyer's door with no action from them. That's why they worked so well for samples/retail: **zero freight bureaucracy** vs. the full RADAR/NF-e/DU-E stack the pallet shipment needs.
+
+**Key contrast worth noting:** the current **pallet shipment** is the opposite — commercial air freight, FOB Salvador, with the full export stack. The Correios route was the "sample lane"; the Omega lane is the "commercial lane."
+
+Want me to add a short "Correios = informal/DDP-equivalent sample lane, not Incoterm-governed" note to the freight SOP so the distinction is documented?
 
