@@ -89,3 +89,25 @@ One caveat: I'm working from the thread text, not the attached PDFs themselves �
 
 Want me to draft a reply to Jeffrey confirming you'll sign all 5 and asking him to confirm the 53/47 ownership split on the share-transfer DR before you sign?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13846] Survive the documents
+
+
+### 🤖 Autopilot
+
+I think you mean "**review** the documents" (autocorrect got you 😄) — the 5 attachments from Jeffrey's email.
+
+Quick heads-up on my capability: my Gmail tooling can search/read/send email, but it **can't download attachments** out of the mailbox. So I can't pull the 5 PDFs from the email thread myself.
+
+**Easiest path — send them to me here:**
+1. Open Jeffrey's email (subject: **FW: BIONPACT PTE. LTD.**, Mon 24 Aug, 13:55)
+2. Forward the 5 attachments to this chat (or download + upload them as files)
+3. I'll extract the text from each one and confirm:
+   - Exactly which signature blocks carry your name vs Liz's
+   - Whether the ownership split (53/47) and the $530 / 1,000 share-transfer math match what was agreed
+   - Any blanks that need filling (addresses, dates, IDs) before you sign
+
+If you meant something else by "survive" — e.g. you want a quick checklist of what each doc commits you to — just say so and I'll put that together from the thread text alone.
+
