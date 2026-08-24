@@ -244,11 +244,13 @@ I have the full plan now — the mold quantity was the open item (blocked on Liz
 ### 🤖 Autopilot
 
 The gmail hits are mostly junk (newsletters matching "mold" in marketing copy). Let me check the go_to_market chocolate spec and the aora repo for any mold-quantity record.
+[3 tool result(s) compacted: read_repo_file, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do a couple of final targeted checks — handoffs from Bionpact (Liz is the ops contact) and transcript mentions of Liz.
+[2 tool result(s) compacted: check_handoffs, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -290,11 +292,13 @@ Which way do you want to go?
 ### 🤖 Autopilot
 
 58×125 vs Kirsten's 55×128 — those are bar/cavity dimensions, which gives me something concrete to match against the spec docs. Let me search for these numbers.
+[3 tool result(s) compacted: search_context, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No hits on either dimension. Let me check what dimensions ARE recorded for the Cabrellon/Kirsten mold, so I can compare what the spec says vs. what you're reporting.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,4 +442,68 @@ Say the word and I'll:
 2. Draft the ledger line + Currencies entry for your review (I can't write the sheet directly — it'd go through the standard ingest path or your manual entry).
 
 How do you want to proceed — and do you have the quoted unit price?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] See what is in Elizabeth Wong possession
+
+
+### 🤖 Autopilot
+
+Let me check what's recorded in Elizabeth Wong's possession across the ledger and context.
+
+
+### 🤖 Autopilot
+
+Let me check the remaining rows and the QR codes sheet for Elizabeth Wong as a holder.
+
+
+### 🤖 Autopilot
+
+The offchain asset location sheet has **no row for Elizabeth Wong** — she's not a ledger manager there. Her possession is recorded differently. Let me pull the QR sales record and check the QR sheet for her 37 bars.
+
+
+### 🤖 Autopilot
+
+Let me check the specific QR codes Elizabeth purchased (the 37 bars) and the offchain transactions for her purchase.
+
+
+### 🤖 Autopilot
+
+Here's what the records show is in **Elizabeth Wong's (Liz's) possession** — and it's a thin list, because she's tracked differently from inventory holders:
+
+## 1. 37 × 81% dark chocolate bars (April 2026 purchase) — **recorded SOLD to her**
+
+| Cohort | Qty | QR range | Status | Owner email |
+|---|---|---|---|---|
+| Oscar Fazenda 2024 | 20 | `2024OSR_81PB_20260412_3` → `_23` (minus `_1`,`_2`,`_11`) | **SOLD** | ewong@gogreatop.com |
+| Santa Anna Fazenda 2023 | 17 | `2023SA_81PB_20260412_1`, `_5` → `_20` (minus `_2`,`_3`,`_4`) | **SOLD** | ewong@gogreatop.com |
+
+- Verified live via QR lookup — all 37 show `qr_status: SOLD`, owner email hers.
+- Per `notes/claude_serialized_qr_sales_2026-04-29.md` §6: *ledger assignment ≠ physical possession* — the bars are tracked under Kirsten's AGL4 ledger; **ownership** is hers, **physical custody** may still be SF-side. Worth confirming where the 37 bars physically are.
+
+## 2. 10 × Chocolate Mold MHC-CL082 (58×125mm) — **was in her custody (China), now shipped to Kirsten**
+
+- Plan/context (Aora, June 2026): molds procured via Jerri from Dongguan MHC Industrial — **in Liz's custody in China**.
+- Your photo evidence: big box from Henderson, NV (China → Henderson NV forwarder → SF) just arrived with Kirsten — so the 10 molds are now **physically with Kirsten**, per her Saturday post.
+- ⚠️ **Not booked on the ledger anywhere** — no line in `offchain asset location`, no Currencies entry, no INVENTORY MOVEMENT. This is the gap.
+
+## 3. Everything else — **nothing**
+
+- ❌ No row for Elizabeth Wong in `offchain asset location` (not a manager/holder there)
+- ❌ No USD / currency balances, no inventory lines
+- ℹ️ Aora plan: she's committed to **100 bars total** (37 bought + **63 outstanding** to be produced by Kirsten once freight arrives) — the 63 are a **commitment**, not yet in her possession
+
+## So — to answer you directly
+
+**Liz's possession per the ledger = 37 SOLD bars (owned) + 10 molds (custody, now physically with Kirsten).** The molds were never booked, which is why "verify the mold with Liz" kept coming up empty — it only existed in plan text.
+
+## Suggested accounting (for your go)
+
+1. **INVENTORY MOVEMENT** (audit trail): Manager **Elizabeth Wong** → Recipient **Kirsten Ritschel**, Item **Chocolate Mold MHC-CL082 (58×125mm)**, Qty **10**, destination `offchain asset location`, attaching the Henderson-box photo as evidence.
+2. **Main Ledger booking**: new line `Chocolate Mold MHC-CL082 (58 x 125 mm) - Dongguan MHC Industrial (per unit)` — Location **Kirsten Ritschel**, Amount **10**, Unit cost = from Jerri's quotation (still need the number).
+3. **Currencies tab** entry + **OPEN_FOLLOWUPS** note (get invoice; confirm wrapper foil sized to 58×125, not Kirsten's 55×128).
+
+Want me to submit the INVENTORY MOVEMENT with the photo now? And do you have Jerri's quoted unit price to book the cost?
 
