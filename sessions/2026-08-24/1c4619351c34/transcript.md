@@ -1384,3 +1384,38 @@ Total: **~1.5 hours of real work** — your estimate is spot on.
 
 Want me to log that as a contribution event to the DAO ledger — 90 minutes, your name — so it's tracked on-chain? Just say go and I'll submit it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] [Handoff context — this Telegram topic (thread 13953) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yes, go ahead and log it [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Logging it now — checking the event format first.
+
+
+### 🤖 Autopilot
+
+Submitting the contribution event for Gary's time on the /large_spikes gauge arc.
+
+
+### 🤖 Autopilot
+
+Done — logged ✅
+
+**[CONTRIBUTION EVENT] submitted to the DAO ledger**
+- **Contributor:** Gary Teh
+- **Amount:** 90 minutes
+- **Type:** Time (Minutes)
+- **Description:** The full /large_spikes gauge arc — PRs #1127 (Norm window fix), #1128 (legibility polish), #1129 (zone-fill redesign), all merged and deployed
+- **TDG Issued:** 0 (I left it at 0 — the DAO's TDG award logic determines that; flag it if you'd like it set differently)
+
+It's on the ledger now. That closes out the whole arc — anything else you'd like me to pick up?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
