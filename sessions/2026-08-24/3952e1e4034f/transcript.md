@@ -203,6 +203,11 @@ The go-signal maps to the documented follow-up in PR #76's body: consolidate the
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
@@ -259,16 +264,19 @@ Click to select or paste (Ctrl+V) a file or image
 ### 🤖 Autopilot
 
 Gary's report: the upload area on `report_asset_receipt.html` renders as a text hint ("Click to select or paste (Ctrl+V) a file or image") but isn't a clickable button that opens the file picker. Let me inspect the current post-merge code to see exactly how the dropzone is wired.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the upload-area markup and the file-handling JS in the current post-merge file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the JS — the `.paste-area` wiring, `triggerFileSelect`, `handleFile`, and the DOMContentLoaded bindings.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -381,4 +389,77 @@ Both live on dapp_beta main. I also checked the mailbox — nothing new queued f
 **Thread status:** agreed — done unless Gary wants either deferred item. Nothing pending from me; no prod promotion has been requested (that stays gated on Gary's explicit word).
 
 **RESUME HERE →** On Gary's go: **PR-A** combobox migration (extend `DappCombobox` → migrate `report_contribution.html` → new spec → push/merge → UAT on beta). Separately, if Gary confirms the routes.js proxy-probe issue, open a diagnostic PR against `dapp_beta` for the fail-back/probe behavior.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14229] uploaded-file-preview should not overflow outside of box.
+
+
+### 🤖 Autopilot
+
+Gary's reporting another UX bug on the Asset Receipt form: the `uploaded-file-preview` image overflows its box. Let me inspect the current markup and CSS for that element.
+
+
+### 🤖 Autopilot
+
+The local clone has stale local edits (pull aborted). Let me read the current main version directly to see the preview img and any CSS that constrains it.
+
+
+### 🤖 Autopilot
+
+The bug is clear: `<img id="uploaded-file-preview">` has **no size constraints** — just `display:none` toggled to `block` on selection, so a large photo renders at natural size and blows out of the `.container` (max-width 600px) box. Let me check the existing spec's file-selection test so I can add a proper regression test.
+
+
+### 🤖 Autopilot
+
+Root cause confirmed: `<img id="uploaded-file-preview">` has **no CSS constraints** — just inline `display:none` toggled to `block` on selection, so large photos render at natural size and blow out of the `.container`. Fix: constrain the img (max-width 100%, max-height, object-fit contain) + add regression test (g). Applying locally and testing first.
+
+
+### 🤖 Autopilot
+
+All green: 30/30 unit, **8/8 integration** including new test (g). (The "MISMATCH" lines are my crude parser not handling void `<img>` elements — Playwright parsed the real page fine, evidenced by all 8 tests passing against it.) Pushing the PR now.
+
+
+### 🤖 Autopilot
+
+PR #78 open, tests green — merging per standing rule (go on plan authorizes self-merge once ready).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**What I did this turn — fixed the overflowing image preview:**
+
+**The report:** On `report_asset_receipt.html`, after attaching a proof-of-purchase image, `uploaded-file-preview` overflows outside its box.
+
+**Root cause:** `<img id="uploaded-file-preview">` had **no CSS constraints** — only inline `display:none` toggled to `block` in `handleFile()`. A large photo rendered at natural size and blew out of the `.container` (max-width 600px).
+
+**Fix (PR #78, merged — CSS only, zero JS change):**
+- `#uploaded-file-preview`: `max-width: 100%` (never wider than the container), `max-height: 320px`, `object-fit: contain` (preserves aspect ratio), `box-sizing: border-box`, subtle 1px border + centered margin so it reads as a neat preview card.
+- **New integration test (g):** selects a PNG via the hidden `#fileInput`, asserts the preview is visible, computed `max-width` is not `none`, `object-fit` is `contain`, and the rendered img box width ≤ container width + 1.
+
+**Test results (run locally before push):** 30/30 unit tests, **8/8 integration tests** pass.
+
+**PRs this turn:**
+- https://github.com/TrueSightDAO/dapp_beta/pull/78 (merged, sha `709986e`)
+
+**Live on dapp_beta now** — Gary can UAT at `https://dapp.truesight.me/report_asset_receipt.html`: attach a large photo and it should now scale to fit inside the card, never overflowing. Promotion to `dapp_prod` still requires Gary's explicit approval.
+
+**RESUME HERE →** After Gary UATs the preview fix on beta and gives the word, run `sync_beta_to_prod(dapp_prod)`. Standing queued work (on Gary's go): **PR-A** combobox migration (`DappCombobox` `{value,label}` + multi-chip → migrate `report_contribution.html` → new spec), then **PR-B** inventory-movement cascade migration — recon complete at `/tmp/dapp_beta_clone`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → clone reset to clean main (6657bb0), confirmed bare `<img>` markup + no CSS constraint; read spec patterns; applied CSS + test (g); ran unit (30/30) + integration (8/8) suites
+• `git_push_changes` → PR #78 opened (sha `345f4f0`)
+• `merge pr` → ✅ PR #78 on dapp_beta merged successfully (sha: 709986ef3d86f5b56a8da7f10f07755a96cfcd28)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/dapp_beta_clone && git fetch origin --quiet && git checkout main --quiet && git pull origin main --quiet 2>&1 | tail -1; git log -1 ; cd /tmp/dapp_beta_clone && git status --short | head; echo "=== reset to clean main ==="; git reset --hard origin/main --quiet && git log -1; cd /tmp/dapp_beta_clone && sed -n '1,60p' tests/report-asset-receipt.spec.ts; echo "=== test (c) ==="; grep -n "test('(c)\|setInputFiles\|fi; …(+2 more)
+• `merge pr` → ✅ PR #78 on dapp_beta merged successfully (sha: 709986ef3d86f5b56a8da7f10f07755a96cfcd28). Pull Request successfully merged
 
