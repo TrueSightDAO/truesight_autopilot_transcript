@@ -1300,6 +1300,7 @@ The Sentinel plan says row 399 (`truesight-autopilot`) got `Is Sentinel = TRUE` 
 ### 🤖 Autopilot
 
 One decisive check — where did `admin+sophia@truesight.me` actually land in the merged code (PR #424)? The file I just read still shows the OLD list.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1356,6 +1357,7 @@ if (isTelegramSentinelTrue_(telegramRow)) return 'NEW';  // col T  ← the real 
 ### 🤖 Autopilot
 
 Understood — skipping to step 4 (cleanup). Let me verify the current state of the two GAS files and the backlog file first, plus run the local test suite (required before any push).
+[4 tool result(s) compacted: read_repo_file, read_repo_file, ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1367,26 +1369,31 @@ Two key observations from the check before I execute the cleanup:
 2. Local tests: compile/ruff/format pass (format check lists pre-existing reformats — acceptable), pytest 4 failures are pre-existing (vault/events_catalog tests, unrelated to this change).
 
 Let me verify the deployed GAS project state (which file is live, via the local clasp checkout that `gas_deploy_project` uses):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files sit in the same GAS project folder — `Code.js` (75,414 bytes) and `process_movement_telegram_logs.js` (75,405 bytes), near-identical sizes, both with the same header. If both get pushed to the same Apps Script project, the two top-level `const TRUSTED_AGENTS` declarations would collide. I need the facts before deleting — checking `.clasp.json` (target project), what's actually deployed (`clasp status`), and Code.js's git history:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout and git history raise the key question: **is `Code.js` actually deployed alongside the processor?** Both files live in the same clasp root (`rootDir: ""` → everything in the folder gets pushed). If both are deployed, the duplicate top-level `const TRUSTED_AGENTS` would be a load error — so the facts matter. Let me get the deployed state directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `clasp status` shows both `Code.js` and `process_movement_telegram_logs.js` are tracked in the local project folder — and the **local** copies (both stale, Jun 23) carry the **OLD** `TRUSTED_AGENTS` at line 113. But the GitHub repo at the merged sha has the NEW list in the processor and the OLD list in `Code.js`. Before I delete anything, I need ground truth on what's actually **deployed remotely** (a duplicate top-level `const` would break the GAS project load). Pulling the live remote project into a scratch dir:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ground truth established. The **remote deployed project has BOTH files**, and the deploy tool pushes from `/opt/truesight_autopilot/context/tokenomics` (which contains both). The remote `Code.js` (75,414 B, OLD `TRUSTED_AGENTS`) is a stale duplicate of the processor (75,454 B, PR #424 list) — that's the legacy artifact Gary wants cleaned. Let me confirm it's a pure duplicate before deleting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1398,11 +1405,13 @@ Ground truth established — this is exactly the stale duplicate to remove:
 - Git history shows `Code.js` was the original, superseded when `process_movement_telegram_logs.js` took over (PR #424 only updated the processor).
 
 Executing the cleanup — deleting the stale `Code.js` duplicate:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cleanup PR opened. Merging it (the governor's "skip to 4" authorizes this cleanup):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1450,6 +1459,7 @@ Cleanup PR opened. Merging it (the governor's "skip to 4" authorizes this cleanu
 ### 🤖 Autopilot
 
 Let me pull the exact current row from the sheet so I can point you at the precise cell.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1488,31 +1498,37 @@ So nothing wrong with your keys. Try submitting that transaction again
 ### 🤖 Autopilot
 
 Understood — key is clean, name is `Sophia Truesight` (row 164, ACTIVE). Re-submitting the transaction now, but I'll do it via a **fresh process** that reads the current `.env` (the long-lived bot process still caches the old keypair, which is what produced the stale-key row 675 earlier). First, let me re-check the exact submit format EdgarClient expects so the payload (incl. the `Approved By` line) renders correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Format confirmed. Submitting the same INVENTORY MOVEMENT via a fresh process (reads current `.env` → ACTIVE `…utpNWeD7…` key), with the full attributes incl. the `Approved By` line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **Submitted — HTTP 200, `signature_verification: success`** (fresh process, ACTIVE key `…utpNWeD7…`). Now let me check whether the new row landed and what STATUS the GAS processor assigned it.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The read returned rows 670–676 — I can see row 673 (`Edgar_20260820231604_105`, the original) still `unauthorized`, and the Elizabeth Wong row at 674/675 area. My **new** submission needs to be appended at the tail (row ~677+). Let me read the very end of the tab to see if it landed and what STATUS it got.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission landed — **row 677** (`Edgar_20260824152518_147`), signed with the ACTIVE key `…utpNWeD7…` — but STATUS is still **`unauthorized`**. So the key + name are NOT the problem; something in the GAS authorization chain is rejecting it. Let me trace exactly why by reading the full status function's decision logic from the deployed file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission landed (row 677, ACTIVE key, `signature_verification: success`) but STATUS is still **unauthorized** — so the key/name are fine; the GAS processor is the problem. I can see the full decision chain now: governor col S → sentinel col T → signature→name → governor-by-name → manager-match → **trusted-agent + Approved By**. With "Sophia Truesight" in TRUSTED_AGENTS and "Gary Teh" approved, it *should* return NEW. One very likely culprit: **the webhook deployment URL runs an older pinned version** — `clasp push` updates head, but the deployment may still point at a pre-#424 version. Checking the live deployments:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1520,6 +1536,7 @@ The submission landed (row 677, ACTIVE key, `signature_verification: success`) b
 **Found the smoking gun.** The webhook we've been firing — `AKfycbzECOd1Y3mH7L0zU8hOC4AxQctYICX0Ws8j2-Md1dWg0k3GFGQx_4Cf7n-CM0usmSJ1` — is pinned to **version 10** ("agentic auth path"), NOT @HEAD. My `clasp push` earlier updated the **head** files, but the deployment URL still runs **v10**, which predates PR #424's TRUSTED_AGENTS update. So even with the correct ACTIVE key + "Sophia Truesight" in the list at HEAD, the v10 deployment doesn't know her.
 
 Two options: (1) redeploy the webhook to HEAD, or (2) check whether v10's list already has the name. Let me verify what v10 actually contains before touching deployments — reading the deployed v10 vs HEAD source.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1527,6 +1544,7 @@ Two options: (1) redeploy the webhook to HEAD, or (2) check whether v10's list a
 Important correction: the `clasp version` command **created version 12** (a new snapshot of HEAD — which still includes the stale `Code.js` since I haven't pushed the deletion). That means the **HEAD deployment (`AKfycbxD1…`) now points at v12** and contains BOTH the stale `Code.js` (old TRUSTED_AGENTS) and the processor (new list).
 
 But the critical fact stands: the **webhook URL in use is `AKfycbzECOd1Y3…` pinned to v10**, which predates PR #424. **However** — the row 677 was processed by *some* deployment and got `unauthorized`. I need to know which one. The processor code in use at v10 vs HEAD determines the outcome. Let me check the actual v10 source to see its TRUSTED_AGENTS, then decide whether to redeploy the webhook to HEAD (which has the fix).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1534,11 +1552,13 @@ But the critical fact stands: the **webhook URL in use is `AKfycbzECOd1Y3…` pi
 Found it. **The webhook URL that processes these rows is pinned to deployment v10** — an OLD version whose `Code.js` has `TRUSTED_AGENTS = ['autopilot@agroverse.shop']` and **no sentinel check at all**. My earlier `clasp push` updated HEAD, but the live webhook (`AKfycbzECO…`) still runs v10, so it doesn't know "Sophia Truesight" — hence row 677 = `unauthorized` despite the correct ACTIVE key.
 
 The fix: deploy the cleaned project (post-#425, Code.js removed) and **repoint the webhook deployment to HEAD**. Executing now — first sync the deploy folder to merged main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy folder is now synced to merged main (`d120f70`): `Code.js` deleted, `process_movement_telegram_logs.js` has the PR #424 list. Now push this clean state to the GAS project HEAD, then redeploy the webhook URL to HEAD:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1659,4 +1679,78 @@ The existing `unauthorized` rows **cannot** flip by reprocessing — the process
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /opt/truesight_autopilot && python3 - <<'EOF' import inspect from truesight_dao_client.edgar_client import EdgarClient src = inspect.gets; cd /opt/truesight_autopilot && python3 - <<'EOF' import json from truesight_dao_client.edgar_client import EdgarClient c = EdgarClient.from_; cd /tmp/gas_remote_check && timeout 60 clasp deployments 2>&1 | head -30; echo "RC=$?"; …(+10 more)
 • `gas deploy project` ×2 → ok
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] give it a shot.
+
+
+### 🤖 Autopilot
+
+Go-signal received. Executing: fresh submission → webhook → verify. First, the canonical field format for the INVENTORY MOVEMENT event:
+
+
+### 🤖 Autopilot
+
+Format confirmed. Now submitting via a fresh process (current ACTIVE key `…utpNWeD7…`), matching the original payload exactly plus the `Approved By` line:
+
+
+### 🤖 Autopilot
+
+✅ **Submitted — HTTP 200, `signature_verification: success`** with the ACTIVE key. Now firing the v14 webhook to process the new Telegram Chat Logs row into Inventory Movement:
+
+
+### 🤖 Autopilot
+
+Webhook timed out on the client side (GAS redirects + long processing) — that's not necessarily a failure. Let me check the Inventory Movement tab directly for the new row:
+
+
+### 🤖 Autopilot
+
+🎉 **BREAKTHROUGH!** Row **679** (`Edgar_20260824181346_151`, my fresh v14 submission signed with the ACTIVE key) now shows **STATUS = `NEW`** — the webhook processed it despite the client-side timeout!
+
+The full auth chain worked: ACTIVE key → signature resolves → Sophia Truesight in TRUSTED_AGENTS → `Approved By: Gary Teh` → **NEW**. Now firing Phase 2 to push it to PROCESSED:
+
+
+### 🤖 Autopilot
+
+✅ **`✅ Inventory Movement processed to Ledgers`** — Phase 2 ran. Let me verify row 679's final STATUS:
+
+
+### 🤖 Autopilot
+
+Empty range — row 679 may have shifted (Phase 2 might have re-sorted or removed it). Let me look at the tail rows to find the final state:
+
+
+### 🤖 Autopilot
+
+# ✅ **DONE — Row 679 is `PROCESSED`!**
+
+| Row | Update ID | Signature key | STATUS |
+|---|---|---|---|
+| 673 | `Edgar_20260820231604_105` (original) | old `…yrjcz4Y9…` | `unauthorized` (historic, never registered) |
+| 675 | `Edgar_20260824152351_145` | old `…yrjcz4Y9…` | `unauthorized` (stale-key dup) |
+| 677 | `Edgar_20260824152518_147` | ACTIVE `…utpNWeD7…` | `unauthorized` (inserted pre-v14) |
+| 678 | `Edgar_20260824174417_149` | ACTIVE | `unauthorized` (inserted pre-v14) |
+| **679** | `Edgar_20260824181346_151` | **ACTIVE `…utpNWeD7…`** | **🟢 `PROCESSED`** |
+
+## What actually fixed it (the full root cause chain)
+
+1. **Registration** — `admin+sophia@truesight.me` verified **ACTIVE** (row 164).
+2. **PR #424** — added `Sophia Truesight` to `TRUSTED_AGENTS` (merged).
+3. **PR #425** — deleted the stale `Code.js` duplicate (merged).
+4. **The real culprit** — the live webhook `AKfycbzECO…` was **pinned to deployment v10** (pre-#424 code). All my pushes updated HEAD but the webhook still ran old code. **Repointed to v14** (post-#425, Credentials.js restored).
+5. **Processor design** — rows already in the sheet are **never re-scanned** (`existingUpdateIds.includes(updateId)` → skip). So only a **fresh** submission could pass. The v14 submission (`Edgar_20260824181346_151`) cleared Phase 1 (`NEW`) → Phase 2 (`PROCESSED`).
+
+## Notes for the record
+- The `unauthorized` rows (673/675/677/678) are now permanent audit-trail artifacts — the processor won't revisit them. If you want them cleaned/marked, that's a manual edit with your sign-off.
+- Your `create_signature.html` submissions (677/678) were signed with the ACTIVE key but inserted pre-v14, so they're frozen too.
+- This was an "agentic auth path" fix — the sentinel col T path (`is_sentinel=true`) remains as the first-class gate going forward; worth the follow-up PR to drop the legacy TRUSTED_AGENTS list entirely (I'll file it in OPEN_FOLLOWUPS.md).
+
+**The 100× Cacao Tea 50g QR labels movement (Gary Teh → Paloma) is now fully PROCESSED in the ledger.** ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 - <<'EOF' from truesight_dao_client.edgar_client import EdgarClient import json c = EdgarClient.from_
 
