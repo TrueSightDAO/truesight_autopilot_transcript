@@ -1044,36 +1044,48 @@ I have the DB connection details. Let me query the recent signals directly (read
 ### 🤖 Autopilot
 
 The schema is clear. Now let me pull the **recent** signals from both dashboards — the large spikes (breakouts) and large dips (selloffs) — from the last few days.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The column is `stock_symbol`. Let me re-run with the correct column names.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No signals in the last 7 days. Let me check the data freshness and what the most recent signals actually are.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full-table query timed out. Let me be more targeted — check the latest date first, then query efficiently with the index.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Data goes to 2026-08-21 — today. But no large_spike/large_dip signals in the last 7 days. Let me check the signal columns more broadly — maybe the signals use different flags, and look at the most recent flagged rows of any kind.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hmm — no spike/dip flags at all in the last week. Let me check whether the daily_trades rows exist for recent days, and look at what the recent data actually contains.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only 12 rows per day — this is likely a small watchlist subset. Let me see which companies are being tracked daily and whether the flags ever fire for them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1205,4 +1217,96 @@ Next turn (fresh tool budget): (a) query the dashboard's live large_dip list the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /home/ubuntu/sentiment_importer && PGPASSWORD='Explore123!' timeout 40 psql -h 44.193.55.205 -U prod -d sentiment -c "SELECT c.stock_symb; cd /home/ubuntu/sentiment_importer && PGPASSWORD='Explore123!' timeout 40 psql -h 44.193.55.205 -U prod -d sentiment -c "SELECT dt.date_publ; cd /home/ubuntu/sentiment_importer && PGPASSWORD='Explore123!' timeout 45 psql -h 44.193.55.205 -U prod -d sentiment -c "SELECT dt.date_publ; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] Also how come I am only seeing https://perch.truesight.me/large_dips till August 7th and not beyond??
+
+
+### 🤖 Autopilot
+
+Let me diagnose why /large_dips shows data only through Aug 7. I'll check the data pipeline freshness on the DB and the importer.
+
+
+### 🤖 Autopilot
+
+**Found the root cause.** The data tells the story clearly:
+
+## Why /large_dips stops at Aug 7
+
+| Date range | Rows/day | Equity rows | 
+|---|---|---|
+| **Jul 27 – Aug 7** | ~10,400–10,700 | **~10,360–10,680** (full market) |
+| **Aug 10 – Aug 21** | **12** | **0** — only treasury (GOV) rows |
+
+**The equity data import died after Friday Aug 7.** Since Aug 10 (Monday), only the 17 treasury yield series are updating — **zero stock data** is being ingested. The /large_dips dashboard can't show anything past Aug 7 because there's no equity data past Aug 7 to compute signals from. The GOV rows aren't in the signal universe, so the dashboard shows its last valid day (Aug 7) and stops.
+
+Let me confirm the importer failure in the logs.
+
+
+### 🤖 Autopilot
+
+The log shows the smoking gun: **`[EodhdPriceRefresher] Reimporting CMG from 2015-09-01 to 2026-08-07`** — the equity refresher's end date is **2026-08-07**, exactly the cutoff you're seeing. Let me pin down why.
+
+
+### 🤖 Autopilot
+
+The schedule.yml shows jobs at 14:30, 17:00, 19:30, 21:00 UTC weekdays. Let me look at the full schedule and the actual refresh worker for equities.
+
+
+### 🤖 Autopilot
+
+The schedule has `eodhd_price_refresher_utc` at 21:00 UTC weekdays. The equity data stopped Aug 7 — let me check whether the job actually ran after that and what happened.
+
+
+### 🤖 Autopilot
+
+The log shows no scheduled EODHD runs at all — only manual CMG reimports today. Let me check whether the Sidekiq cron jobs are actually registered/running, and what the last GOV-row importer is.
+
+
+### 🤖 Autopilot
+
+One more diagnostic to pin down whether the scheduled refresher is even running:
+
+
+### 🤖 Autopilot
+
+## Root Cause Found: Sidekiq Is Down
+
+I traced the exact reason the dashboards stop at Aug 7:
+
+### The evidence chain
+
+| Check | Result |
+|---|---|
+| **Equity data in DB** | Full market (~10,400 rows/day) through **Fri Aug 7** → then only 12 GOV treasury rows/day after |
+| **Scheduled job** | `eodhd_price_refresher_utc` — Sidekiq cron, **21:00 UTC weekdays** ("EOD price finalization + index refresh") |
+| **Process check** | `ps aux` shows **only the Rails server** (`rails s`) — **NO Sidekiq process is running** |
+| **Sidekiq cron** | The `schedule.yml` jobs (incl. the EOD equity refresher) only fire if a Sidekiq process is alive. None is. |
+| **Log evidence** | Only *manual* reimports today (e.g. `[EodhdPriceRefresher] Reimporting CMG … to 2026-08-07` — note the end date) — no scheduled bulk runs |
+
+### What happened
+
+- **Aug 7 (Friday)** was the last day the scheduled equity EOD import ran successfully.
+- **Sidekiq stopped running sometime after that** (Aug 7 → Aug 10 gap is the tell — Aug 10 was the first weekday with zero equity rows).
+- **Without Sidekiq, the daily 21:00 UTC `EodhdPriceRefresher` never fires**, so no new equity prices get ingested → `/large_dips` and `/large_spikes` have no new data to compute signals on → they show the last valid trading day (Aug 7) and stop.
+- The **treasury GOV rows keep updating** because the yield-curve importer (`yield_curve_xml_importer.rb`) runs through a separate path that's still alive — that's why you see fresh dates but no equity signals.
+
+### The fix (proposed, not yet done)
+
+1. **Restart Sidekiq on seni_ror** (start the worker so the sidekiq-cron jobs register again). Low-risk service recovery — but it's your trading platform, so I want your go first.
+2. **Verify the cron jobs are registered** (`Sidekiq::Cron::Job.list` should show the 4 intraday snapshots + EOD refresher).
+3. **Backfill the gap** — trigger `EodhdPriceRefresher` manually for Aug 10–21 (or run the bulk API for `latest`, which should catch up on ~2 weeks of missed EOD data in one shot).
+4. **Optionally add a watchdog** — a cron/systemd check that alerts if Sidekiq is down (this is exactly the kind of gap that should go in OPEN_FOLLOWUPS.md as a tooling gap).
+
+**One more thing I noticed (not exposing the value):** the EODHD API key is hardcoded in `config/application.rb` (line 66). Worth moving to the vault/env — happy to file that as a follow-up.
+
+## RESUME HERE
+
+Next turn: **say "go" and I'll (a) start Sidekiq on seni_ror, (b) confirm the sidekiq-cron jobs are registered, (c) run one manual EodhdPriceRefresher for `latest` to backfill Aug 10–21, and (d) verify /large_dips now shows 2026-08-21.** Then I'll file the watchdog gap + API-key move in OPEN_FOLLOWUPS.md.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /home/ubuntu/sentiment_importer && PGPASSWORD='Explore123!' timeout 60 psql -h 44.193.55.205 -U prod -d sentiment -c "SELECT dt.date_publ; echo "=== cron ==="; crontab -l 2>/dev/null | grep -iv "^#" | grep -i "import\|trade\|sentiment\|polygon\|daily" | head -20; echo "=== recen; cd /home/ubuntu/sentiment_importer && echo "=== import/error lines in last 30 days ===" && grep -iE "error|fail|exception|timeout|limit|poly; …(+10 more)
 
