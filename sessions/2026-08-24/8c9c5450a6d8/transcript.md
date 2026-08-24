@@ -149,6 +149,7 @@ Let me check for Gmail API credentials on this box that could fetch the attachme
 ### 🤖 Autopilot
 
 The local google creds are just the market-research service account — not the Gmail OAuth. Let me check how the Gmail tooling is implemented to see if attachments can be pulled at all.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -339,4 +340,80 @@ Inspected the attachment — this is **Doc 3: the OCBC bank account Director's R
 **This is 1 of 2 docs needing your signature** (the other is the share-transfer DR). Docs 1, 2, 5 are Elizabeth's.
 
 Anything else on this one, or shall I check the share-transfer DR against your instructions too (e.g. confirm the 53/47 split shows up correctly)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13846] Find one of the FDA documents that have my signature on it
+
+
+### 🤖 Autopilot
+
+Let me search for what "FDA documents" refers to — checking context, repos, transcript history, and email in parallel:
+
+
+### 🤖 Autopilot
+
+The FDA docs live in the `fda_fsvp` repo (FDA FSVP docs, supplier verification, declarations). Let me find which ones carry your signature:
+
+
+### 🤖 Autopilot
+
+The FDA FSVP repo has the source docs. The `truetech_inc.entity.json` points to **CBP 5106 forms** (the importer-identity forms Gary signs as TrueTech President). Let me locate and pull them:
+
+
+### 🤖 Autopilot
+
+The tree is large — let me see the full listing to find all docs with Gary's signature, then pull the likely CBP 5106 forms:
+
+
+### 🤖 Autopilot
+
+The repo tree is big. Let me pull the most likely candidates for your signature — the CBP 5106 importer-identity forms, the FDA registration, and the FSVP compliance declaration — and inspect them directly:
+
+
+### 🤖 Autopilot
+
+Let me check the signature blocks in the CBP 5106 form and the other FDA docs:
+
+
+### 🤖 Autopilot
+
+Found it. The **CBP Form 5106 — Create/Update Importer Identity Form** (page 2, section 4 CERTIFICATION) carries your signature. Let me quickly check the other two candidates for completeness:
+
+
+### 🤖 Autopilot
+
+Found it — the document with your signature is the **CBP Form 5106 (Create/Update Importer Identity Form)** for TrueTech Inc. Attaching it now:
+
+
+### 🤖 Autopilot
+
+Here's what I found in the **FDA FSVP repo** (`fda_fsvp`) — the FDA/CBP documents carrying your signature:
+
+## ✅ The one with your signature — **CBP Form 5106** (attached above)
+
+**`CBP 5106 form - IMPORTER IDENTITY.pdf`** (in `regulations reference documents/`)
+
+- **Section 4 — CERTIFICATION** (page 2): signed **"Zhiwen Teh, President"** — date "17th August 2023"
+- Section 3J lists you as **President** (Teh, Zhiwen; phone 415 300 0019; garyjob@truesight.me); Val Lapidus as Secretary/Treasurer
+- TrueTech Inc (EIN 88-3411514), importer number 88-341151400, "Notification of identification number", no bond
+- ⚠️ The printed date reads "17th Augustu 202" (typo in the fill) — if you ever need a clean copy for an audit, that's the one field worth re-doing
+
+## 📄 Related FDA/CBP docs in the repo (no signature — just confirmations/declarations)
+
+| Doc | What it is |
+|-----|-----------|
+| `20230817 - Gary CBP 5106 registration number.pdf` | Email chain w/ Magic Custom Brokers confirming importer # **88-341151400** on file (no bond) — no signature |
+| `20230827 - small importer fsvp compliance declaration.pdf` | FSVP small-importer declaration signed by **Zhiwen Teh, President** (typed name, 27 Aug 2023) — text-only, no signature image |
+| `20231010 - FDA FFR Number 12202640780.pdf` | FDA facility registration confirmation (no signature) |
+| `20250101_fda_registration.pdf` | FDA registration renewal (VALID to 2026-12-31) (no signature) |
+
+**Bottom line:** the actual **signed** FDA-adjacent document is the **CBP 5106 Importer Identity form** — that's the one with your handwritten signature as President of TrueTech Inc. The FSVP small-importer declaration carries your typed name/title but no signature line.
+
+Want me to also surface the **Power of Attorney to Magic Custom Brokers** (referenced in the 2023 email thread — likely also signed by you)? It's in that same email chain but may not be committed to the repo.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && mkdir -p fda_docs && cd fda_docs && \ B="https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main" && \ curl -sfL -o "cbp5106
 
