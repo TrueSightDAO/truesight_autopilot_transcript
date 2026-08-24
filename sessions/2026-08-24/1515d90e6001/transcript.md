@@ -964,16 +964,19 @@ There's a git credential helper script (`git-credential-sophia.sh`) — the sanc
 ### 🤖 Autopilot
 
 The credential helper reads `TRUESIGHT_DAO_AUTOPILOT` from `.env` — so a plain `git push` to `https://github.com/...` will authenticate automatically (no token in argv). Let me commit and push using the helper, then open the PR via the helper's token read in-process.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch pushed but with **no commit** — I forgot the `git add` + `git commit` steps in that script (the earlier PAT-failure aborted before any git ops, so the working tree still has my edits uncommitted). Fixing now: add → commit → push → open PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #814 is open. Gary's "PR and merge" = explicit go to merge it. Merging now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1021,6 +1024,7 @@ PR #814 is open. Gary's "PR and merge" = explicit go to merge it. Merging now.
 Gary's "Go for your proposal" = green light on the krake_nginx stale-file cleanup. My proposal: mark `/etc/nginx/sites-enabled/nginx_krake_ng.conf` as inert (non-destructive comment header + backup) so nobody edits it expecting changes to apply — the live config is `/etc/nginx/nginx.conf`. Executing now, one action at a time.
 
 **Step 1 — inspect the stale file + confirm live config state on krake_nginx:**
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1143,4 +1147,35 @@ So the whole nginx diagnosis + fix happened in roughly the **11:15–11:20 windo
 - **Me (Sophia): ~45–60 minutes of actual execution time.** Most of it wasn't the AWS deletions — those were fast. It was the nginx fix, which had two false starts: I first edited the wrong config file (the sites-enabled copy that isn't actually loaded), then the reload didn't pick up the change, which cost a few extra round-trips to root-cause. The Explorya cleanup A through E, the doc refresh PR, and the perch verification were each fairly quick once the diagnosis was done.
 
 The honest headline: **the expensive part was the nginx diagnosis, not the cleanup** — and the cleanup itself was mostly machine time, not human time. If you want precise numbers, I can pull exact timestamps from the API/command logs, but that's the shape of it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] Report dial contribution for both UME. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+"Report contribution for both you and me" — got it, you want the cleanup logged to the DAO ledger for both of us. Let me pull the exact event format first, and check any existing convention for how governor+autopilot contributions get recorded.
+
+
+### 🤖 Autopilot
+
+The instructions are specific: contribution events go through the **dao_client CLI** (not submit_contribution), and there's a dedicated convention doc. Let me read both before filing.
+
+
+### 🤖 Autopilot
+
+Let me read the convention doc — it's the authoritative reference for how to file AI + Gary contributions.
+
+
+### 🤖 Autopilot
+
+The convention is clear. Let me read the exact OPERATING_INSTRUCTIONS section on how to invoke dao_client (host + creds) so I file this correctly.
+
+
+### 🤖 Autopilot
+
+That paged the wrong region of the file. Let me read the specific §6 section of OPERATING_INSTRUCTIONS (the contribution-reporting rules) around line 290.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
