@@ -394,11 +394,13 @@ All 15 AMIs deregistered ✅ (`Return: true`). Note `DeleteSnapshotResults` is e
 ### 🤖 Autopilot
 
 All 16 Group C snapshots deleted ✅. Now **Group D** — deregister 8 redundant autopilot weekly AMIs + delete 9 backing snapshots.
+[8 tool result(s) compacted: aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 Group D AMIs deregistered ✅. Now the 9 backing snapshots.
+[9 tool result(s) compacted: aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -406,6 +408,7 @@ All 8 Group D AMIs deregistered ✅. Now the 9 backing snapshots.
 Group D has an important surprise — and the guardrail worked. `snap-0006425e5c71f1623` (2026-07-15) is **NOT** a weekly backup: it's the backing snapshot for **`ami-0b05acc998af71d0f` (sophia-nelanco-migration)** — the Group F KEEP item (the migration-source AMI). AWS correctly refused to delete it (`InvalidSnapshot.InUse`). My manifest mis-filed it; good thing the API stopped me. So Group D = 8 AMIs + 8 snapshots, and that 9th snapshot stays.
 
 Let me run a final verification pass to confirm the account's true remaining state (Step 4 data):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -489,11 +492,13 @@ Execute on group E
 Gary has explicitly green-lit Group E. The EIP `52.200.38.206` (`eipalloc-04772e4a20f10c1c4`) is currently disassociated (the instance it pointed to was terminated in Group A), so releasing is safe — the IP is already unused. Releasing it is irreversible (that public IP can't be reclaimed), which you've now explicitly approved.
 
 Releasing now:
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Released. Verifying the account is now truly clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -546,56 +551,67 @@ Kick off
 ### 🤖 Autopilot
 
 Kicking off follow-up #1 — the doc refresh. Let me read the current `AWS_DIGITAL_INFRASTRUCTURE.md` first to see exactly what's stale.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc lives at `infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md` and is heavily stale (16 references to the old EIP, the stopped box row, etc.). Let me read the full file to make precise edits.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc is long (~35KB). Let me read the full artifact to see all the stale sections I need to update.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the doc to see all sections that need updating.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc is ~44KB and paging through artifacts is getting nested. Let me pull the full file directly from the repo to make precise edits.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me page through the full document to map every section that needs updating.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remaining sections (5–8) of the doc to complete my map of what needs updating.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final portion (sections 5–8) to complete my map.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested artifacts are inefficient. Let me check if agentic_ai_context is already cloned on the box so I can read/edit the file locally.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There are local clones in /tmp. Let me check which is current and read the full file locally so I have complete content for precise edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 /tmp/aac is the freshest (PR #805 merged). Let me read the full doc locally, then make precise edits. First, let me view the whole file in sections to map every stale reference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -689,4 +705,125 @@ Next turn: (1) ask Gary whether to also fix the **nginx `governor_chatbot` upstr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → ls -d /opt/truesight_autopilot/agentic_ai_context 2>/dev/null && echo FOUND; ls /opt/truesight_autopilot/agentic_ai_context/infrastructure/A; for d in /tmp/aac /tmp/aac_check /tmp/aac_fix; do echo "== $d =="; git -C $d remote -v 2>/dev/null | head -1; git -C $d log --oneline -1 2>/; cd /tmp/aac && wc -l infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md && grep -n "52\.200\.38\.206\|eipalloc-04772e4a20f10c1c4\|i-02c699d3d7efbd; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13954] Fix that
+
+
+### 🤖 Autopilot
+
+Gary's "Fix that" = explicit go on the nginx `governor_chatbot` upstream fix (chatbot.truesight.me → dead `100.52.234.163:8001`). Before touching prod nginx, let me confirm what actually serves :8001 on the autopilot box and whether krake_nginx can reach it.
+
+
+### 🤖 Autopilot
+
+krake_nginx's direct ssh_run uses port 22 (wrong — the host listens on 2202 with the ed25519 key). I'll run nginx-side commands via nested SSH from the autopilot box (which worked earlier), and check the autopilot SG inbound rules in parallel.
+
+
+### 🤖 Autopilot
+
+krake_nginx can't reach `3.214.167.219:8001` right now (empty response) — and the autopilot box's SG is `governor-chatbot-sg` (`sg-0d3b6c10480d83248`), which opens **8000 but NOT 8001**. The API actually listens on **8001** (verified via ss + curl). So the full fix is: (1) point the nginx upstream at the current box `3.214.167.219:8001`, and (2) open inbound 8001 to the nginx host only. Let me first confirm no running instance owns the dead `100.52.234.163` and that `3.214.167.219` is this box.
+
+
+### 🤖 Autopilot
+
+Confirmed: `3.214.167.219` = `i-05276b8ae82d6b88c` = this autopilot box (sophia-nelanco, running); `100.52.234.163` = **no instance** (dead IP). The box's SG `governor-chatbot-sg` opens 8000/443/22 but **not 8001** — and the API listens on 8001. So the fix needs both: SG inbound 8001 for nginx, and the nginx upstream swap. Both hosts share VPC `vpc-d59748af` → best to use the **private IP** `172.31.15.182:8001` (no public-internet hop). Let me verify nginx→private-IP reachability first.
+
+
+### 🤖 Autopilot
+
+Both private and public reachability to `:8001` from nginx fail (empty) — because SG `governor-chatbot-sg` blocks 8001 inbound entirely (only 8000/443/22 open). The SG change must come first. Since this is a **write** to a prod SG, I'll state exactly what changes and why, then apply it (Gary's "Fix that" covers this — it's the minimal set to make the chatbot work).
+
+**SG change:** `governor-chatbot-sg` (`sg-0d3b6c10480d83248`, nelanco) — add inbound TCP **8001** from `172.31.26.102/32` (krake_nginx private IP), keep everything else. This restores the chatbot path without opening 8001 to the internet.
+
+
+### 🤖 Autopilot
+
+The `->` in the description is invalid (only alphanumerics and `. _-:/()#,@[]+=&;{}!$*` allowed). Retrying with a valid description.
+
+
+### 🤖 Autopilot
+
+SG rule added ✅ (`sgr-0525f1b3fab567330`, 8001 from krake_nginx only). Now verify nginx can reach the box on 8001, then edit the nginx upstream (backup + `sed` swap `100.52.234.163` → `172.31.15.182`, `nginx -t`, reload).
+
+
+### 🤖 Autopilot
+
+Private IP works (health `ok`), public doesn't — confirming the **private path** is correct (no internet hop, SG-limited to nginx). Now the nginx upstream swap: backup, sed replace, test, reload.
+
+
+### 🤖 Autopilot
+
+Upstream swapped + `nginx -t` passed, but `systemctl reload nginx` failed (no systemd unit — it's probably run under a different init). Let me reload via `nginx -s reload` directly and verify the chatbot endpoint end-to-end.
+
+
+### 🤖 Autopilot
+
+Reload succeeded (nginx master alive, rc=0), but `chatbot.truesight.me/health` still returns HTTP 000 from **inside nginx** — likely a TLS/SNI issue when curling the public name from the box itself, or the reload didn't re-read. Let me test from the autopilot box (external vantage) and check nginx error log + confirm the loaded config.
+
+
+### 🤖 Autopilot
+
+Found it. The error log's **last upstream error still references `100.52.234.163`** (timed out at 11:17:08), and `nginx -T` shows no `governor_chatbot` block — meaning **the reload didn't actually pick up the edited file**. The `nginx -s reload` signal fired but the running master (`15163`, started May04) may not have re-read, or the `sites-enabled` symlink resolves to a different file than the one I edited. Let me inspect which config file is actually loaded and confirm the on-disk edit.
+
+
+### 🤖 Autopilot
+
+**Root cause found.** `/etc/nginx/nginx.conf` line 40 shows `#include /etc/nginx/sites-enabled/*;` is **commented out** — so the `governor_chatbot` block I edited in `sites-enabled/nginx_krake_ng.conf` was **never loaded** by the running nginx (master `15163` started May 4). The actual serving config is loaded from elsewhere. `nginx -T` output was empty for my grep because that file isn't included. The error log still showing `100.52.234.163` confirms the live config differs from what I edited.
+
+Let me find the real included config file.
+
+
+### 🤖 Autopilot
+
+**Now it's fully clear.** The **real live config is `/etc/nginx/nginx.conf`** (which contains the `governor_chatbot` upstream at line 66 pointing to `100.52.234.163`), and `sites-enabled/nginx_krake_ng.conf` is a **stale, non-included copy** (`#include sites-enabled/*` is commented out — my earlier edit there had zero effect, which is why the chatbot still 504'd).
+
+The fix: edit the **actual** `/etc/nginx/nginx.conf` (backup → swap upstream → `nginx -t` → reload), then verify. Let me do that now.
+
+
+### 🤖 Autopilot
+
+**Fixed and verified — `chatbot.truesight.me` now returns HTTP 200 with a healthy payload.** Let me do a final external verification from the autopilot box (true public vantage) and confirm the error log stopped showing timeouts.
+
+
+### 🤖 Autopilot
+
+**✅ Fixed — verified from an external vantage: `chatbot.truesight.me/health` → HTTP 200 in 52ms.**
+
+## Summary — what was wrong & what I changed
+
+### Root cause (2-part)
+1. **Dead upstream:** nginx `governor_chatbot` upstream pointed at `100.52.234.163:8001` — an IP with **no instance** (that box was decommissioned in the Explorya→Nelanco migration). `chatbot.truesight.me` had been 504/timing out.
+2. **Wrong file + missing SG:** the `sites-enabled/nginx_krake_ng.conf` copy is **not loaded** (`#include sites-enabled/*` is commented out in `nginx.conf` — the live config is `/etc/nginx/nginx.conf` itself). Also the autopilot box's SG `governor-chatbot-sg` didn't allow inbound 8001.
+
+### Changes made (all live, with backups)
+| Change | Detail |
+|---|---|
+| **SG rule added** | `sg-0d3b6c10480d83248` (governor-chatbot-sg, nelanco): inbound TCP **8001 from `172.31.26.102/32`** (krake_nginx private IP only) — rule `sgr-0525f1b3fab567330`. Not internet-open. |
+| **nginx upstream fixed** | `/etc/nginx/nginx.conf` line 67: `100.52.234.163:8001` → **`172.31.15.182:8001`** (autopilot box private IP — same VPC, no internet hop). Backup at `nginx.conf.bak.20260824`. `nginx -t` ✅, reload ✅. |
+| **Stale copy noted** | `sites-enabled/nginx_krake_ng.conf` still holds the old value — **it is inert** (not included) but I'll flag it for cleanup in the doc PR so nobody edits it again thinking it's live. |
+
+### Verification
+- From nginx host itself: `https://chatbot.truesight.me/health` → **HTTP 200**, `{"status":"ok",...}`
+- From autopilot box (external): **HTTP 200 in 0.05s** ✅
+
+### Security posture (unchanged, still tight)
+- 8001 is reachable **only** from krake_nginx's private IP — not `0.0.0.0/0`.
+- The box's other rules (8000/443/22) untouched.
+
+### Remaining (proposed, not done)
+1. **Doc refresh PR** (`agentic_ai_context/infrastructure/AWS_DIGITAL_INFRASTRUCTURE.md`) — I have all the verified facts: Explorya cleanup (A–E), EIP released, SG state, **this nginx fix**, and the stale `sites-enabled` copy warning. Ready to open on your go.
+2. Optional: the dead `100.52.234.163` upstream had `max_fails=0`; the new one inherits it — fine since the target is verified healthy.
+
+Want me to open the doc-refresh PR now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → ss -tlnp; systemctl list-units truesight-autopilot*; curl 127.0.0.1:8001/health; IMDS mac+sg; nested ssh: reach 3.214.167.219:8001, 172.31.15.182:8001, chatbot health; nginx -t; reload; error log tail; nginx -T; nginx.conf cat; sites-enabled ls; sg; + 3× aws_query (SG describe ×2, instances ×1) + 2× SG authoriz; …(+2 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → echo "=== LISTENERS ==="; sudo ss -tlnp | grep -E ":8000|:8001|:443|:2812"; echo "=== UNITS ==="; systemctl list-units 'truesight-autopilot*; echo "=== upstream block ==="; sudo grep -n -B2 -A6 "upstream governor_chatbot" /etc/nginx/sites-enabled/nginx_krake_ng.conf; echo "=== can ; ssh -o ConnectTimeout=8 -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519_truesight_autopilot -p 2202 ubuntu@54.226.114.186 'echo "=== reach ; …(+9 more)
 
