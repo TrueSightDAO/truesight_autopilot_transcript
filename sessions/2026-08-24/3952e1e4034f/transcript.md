@@ -371,16 +371,19 @@ PR #77 is open. Per the standing rule (go on a plan authorizes self-merge once r
 ### 🤖 Autopilot
 
 Let me quickly verify what the "routes.js proxy-probe fix" refers to before responding, since it's not in my current context.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Envoy's confirmed PR #76 merged (merged_by: garyjob) — matches my record. Let me check what the "routes.js proxy-probe fix" refers to, since it's not in my current context.
+[2 tool result(s) compacted: read_repo_file, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Envoy's confirmation matches my record exactly — #76 merged (garyjob), live on dapp_beta main, and #77 (Gary's upload-button report) also went in after. Two quick checks before I acknowledge: whether Envoy queued anything in the mailbox, and whether the "routes.js proxy-probe fix" is documented anywhere in prior transcripts.
+[2 tool result(s) compacted: check_handoffs, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -415,21 +418,30 @@ Both live on dapp_beta main. I also checked the mailbox — nothing new queued f
 ### 🤖 Autopilot
 
 Gary's reporting another UX bug on the Asset Receipt form: the `uploaded-file-preview` image overflows its box. Let me inspect the current markup and CSS for that element.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local clone has stale local edits (pull aborted). Let me read the current main version directly to see the preview img and any CSS that constrains it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The bug is clear: `<img id="uploaded-file-preview">` has **no size constraints** — just `display:none` toggled to `block` on selection, so a large photo renders at natural size and blows out of the `.container` (max-width 600px) box. Let me check the existing spec's file-selection test so I can add a proper regression test.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause confirmed: `<img id="uploaded-file-preview">` has **no CSS constraints** — just inline `display:none` toggled to `block` on selection, so large photos render at natural size and blow out of the `.container`. Fix: constrain the img (max-width 100%, max-height, object-fit contain) + add regression test (g). Applying locally and testing first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -547,4 +559,97 @@ Which do you want?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/dapp_beta_clone && git reset --hard origin/main --quiet 2>&1 | tail -1; git log -1 --oneline; echo "=== destination / ledger / inven; cd /tmp/dapp_beta_clone && sed -n '520,600p' report_asset_receipt.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14229] I noticed when https://docs.google.com/spreadsheets/d/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ/edit?gid=77510441#gid=77510441 "Asset Receipts" column D record is transferred to https://docs.google.com/spreadsheets/d/1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU/edit?gid=995916231#gid=995916231 "offchain transactions" column D,amount is not transferred properly... instead it is indicated as 1.
+
+Check for the error.
+
+
+### 🤖 Autopilot
+
+Gary's reporting a data-transfer bug: Asset Receipts col D (amount) lands in offchain transactions col D as **1** instead of the actual amount. Let me investigate — first the two sheets' actual rows and the ingest code.
+
+
+### 🤖 Autopilot
+
+The Asset Receipts sheet shows the receipts (Pouch 100, Mold 10/20, Labels 100, Printer 1) with Offchain Row pointers (4131, 4132, 4141, 4142, 4149). I need to see what actually landed in those offchain rows, plus the ingest code. Let me pull both.
+
+
+### 🤖 Autopilot
+
+Let me read the asset_receipt_ingest GAS code — that's where the amount gets written to offchain transactions.
+
+
+### 🤖 Autopilot
+
+Found the ingest code. Let me read the rest — the offchain row write (column D amount) and the parsing functions.
+
+
+### 🤖 Autopilot
+
+Let me read the exact offchain rows that the Asset Receipts audit tab points to (4131, 4132, 4141, 4142, 4149).
+
+
+### 🤖 Autopilot
+
+The pouch (100) and printer (1) rows look correct. The bug is likely in the mold rows (4141, 4142) and labels (4149). Let me read just the Amount/Currency columns for those rows — the description column is huge (full signed payload), so I'll skip it.
+
+
+### 🤖 Autopilot
+
+Rows 4141 (mold 10) and 4142 (mold 20) look correct, and the pouch (4131→100) + printer (4132→1) are right. The labels asset receipt points to offchain row **4149** — the tail was truncated. Let me read that exact row.
+
+
+### 🤖 Autopilot
+
+The offchain rows I've checked so far (pouch 4131=100, printer 4132=1, mold 4141=10, 4142=20, labels 4149=100) all match the audit tab. Let me check the remaining suspects: the Bialetti rows (3208/3209), the Currencies sheet (unit-cost fallback), and the full audit tab with statuses.
+
+
+### 🤖 Autopilot
+
+All recent asset-receipt rows transfer correctly (pouch 4131=100 ✓, printer 4132=1 ✓, molds 4141=10 / 4142=20 ✓, labels 4149=100 ✓). The only unverified pointers are the Bialetti rows 3208/3209 (audit amount = 1). Let me check the raw source payloads in Telegram Chat Logs to see what amounts were actually submitted, and verify rows 3208/3209.
+
+
+### 🤖 Autopilot
+
+All OK rows I've checked transfer correctly so far (pouch 100✓, printer 1✓, molds 10/20✓, labels 100✓). Gary's seeing a "1" somewhere — likely a newer row at the bottom of the sheet, or a raw payload mismatch. Let me check the very end of the offchain sheet and the raw Telegram payloads.
+
+
+### 🤖 Autopilot
+
+I checked every row end-to-end (Asset Receipts audit → offchain transactions col D). **The transfer itself is working correctly — every OK row's Amount lands in offchain col D exactly.** Here's the full verification:
+
+| Asset Receipt (audit Amount) | Offchain Row | Offchain col D | Match? |
+|---|---|---|---|
+| Bialetti Moka Express — **1** | 3208 | 1.00000000 | ✓ |
+| Bialetti Moka Express — **1** | 3209 | 1.00000000 | ✓ |
+| Stand-Up Pouch Kraft 10x15cm — **100** | 4131 | 100.00000000 | ✓ |
+| Bluetooth Label Printer — **1** | 4132 | 1.00000000 | ✓ |
+| Chocolate Mold MHC-CL082 — **10** | 4141 | 10.00000000 | ✓ |
+| Chocolate Mold MHC-CL082 — **20** | 4142 | 20.00000000 | ✓ |
+| Cacao Tea 50g QR labels — **100** | 4149 | 100.00000000 | ✓ |
+
+**So why do some rows show "1"?** Because of what the ingest **deliberately** writes to offchain col D — a *quantity*, not a monetary value. From `tokenomics/google_app_scripts/asset_receipt_ingest/Code.gs`:
+
+> *"Event 'Amount' is the QUANTITY of units received (e.g. 100 pouches, 1 printer), NOT a USD price. Write it as quantity; derive unit cost from the paired [CONTRIBUTION EVENT]."*
+
+So:
+- **Pouch (100)** → col D = 100 ✓ (100 units)
+- **Printer (1)** → col D = **1** — because 1 printer was received. Its **value ($58.07)** is stored in the **Currencies** sheet (col B: `Bluetooth Label Printer w/20 Label Rolls - Brazil` = 58.07).
+- **Bialetti (1)** → col D = **1** — 1 unit received. Its value (**$116.91**) lives in Currencies col B.
+
+In other words: the "1" is the **unit count**, and the money value is kept on the **Currencies** sheet as the per-unit landed cost. That's by design, not a corrupted transfer.
+
+**Two things worth flagging, though:**
+
+1. **Possible mismatch in expectations** — if you expect offchain col D to carry the **purchase value** (e.g. $58.07 for the printer, $116.91 for the Bialetti) instead of the unit count, that's a deliberate design change to `asset_receipt_ingest` (tokenomics repo), not a bug fix. I can make that change if you want it — but it would change the meaning of col D for every future receipt (and the paired-contribution unit-cost derivation depends on quantity semantics).
+
+2. **Data hygiene noise** — the update ID `Edgar_20260507024609_005` (Amount "150", missing Currency/Fund Handler) is being re-logged as `SKIPPED: missing fields` on **every ingest run** (4 times so far: 05-07, 08-22 ×2, 08-24 ×2). It's harmless to the ledger but pollutes the audit tab.
+
+**To pinpoint:** could you tell me **which row** you saw the "1" on? If it's the printer or Bialetti — that's the quantity-by-design behavior above. If it's a different row, I'll dig into the raw Telegram payload for that update ID and trace exactly what happened.
+
+Want me to (a) switch offchain col D to carry monetary value instead of quantity, or (b) leave the semantics as-is and just add a cleanup for the repeated SKIPPED rows?
 
