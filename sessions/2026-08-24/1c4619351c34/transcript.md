@@ -1108,16 +1108,19 @@ Gary's explicit deploy go — pulling `a943eda` and running `./deploy.sh --skip-
 ### 🤖 Autopilot
 
 Master is at `a943eda5` (PR2 merge), working tree clean. Running the deploy with `--skip-migrate` (no schema change).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bundle install completed — but the tail only shows the bundle step. The deploy script has more steps (asset precompile + restarts). Let me confirm the full result: check both hosts are at `a943eda5` and services are active.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both hosts at `a943eda5`, seni_ror service active, 2 sidekiq processes running (systemd unit name differs — the processes are up). Quick smoke test to confirm the app is serving and the new markup is live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1304,4 +1307,58 @@ Nothing else pending — merge done, deploy armed for the next turn.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #1129 on sentiment_importer merged successfully (sha: 92d7d422b6fc02aec5ae7d62e4d5bdb6a5010557). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13953] Hey, deploy it and then once you're done, can you do a time estimate of how much time you spend fixing this as well as how much time you spend fixing this? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Deploying PR3 now.
+
+
+### 🤖 Autopilot
+
+Master at `92d7d422`, tree clean. Running the deploy.
+
+
+### 🤖 Autopilot
+
+Bundle complete — now verifying both hosts are at the new sha and services are active.
+
+
+### 🤖 Autopilot
+
+**✅ PR3 deployed to production — live on perch.truesight.me `/large_spikes`**
+- seni_ror: at `92d7d42`, service active
+- Sidekiq host: at `92d7d42`, 2 workers running
+- Smoke: HTTP 401 (auth wall, expected — app is serving)
+
+**What's live now:** grey band under the Norm line = narrow territory, orange shading sits *above* the ceiling, sweet spot unshaded, green line clean. Ready for your UAT.
+
+---
+
+**Time estimate for the whole arc** (I'll break it down):
+
+| Piece | Time |
+|---|---|
+| **PR1** — Norm window fix (root-cause verify + implement + specs) | ~1.5 hrs |
+| **Test infra setup** on seni_ror (missing test DB + prod role + Redis — the real time sink) | ~1 hr |
+| **PR2** — legibility polish (4 tweaks + 4 specs) | ~1 hr |
+| **PR3** — zone-fill redesign (your feedback → implement + specs) | ~45 min |
+| **3 deploys** + verification (incl. one SSH-config fix on the first deploy) | ~1 hr |
+| **Total** | **~5 hours elapsed** |
+
+Notes for honesty:
+- That's **wall-clock** time including bundle installs, spec runs, and waiting; actual engaged work is closer to **~3 hours**.
+- PR1 + the test-infra provisioning was over half of it — the code fixes themselves were quick once the pattern was established.
+- PR2 and PR3 were cheap because the test harness and deploy path were already working by then.
+
+Want me to log this as a [CONTRIBUTION EVENT] to the DAO ledger so the time is tracked on-chain? I can submit it with your name and the ~5-hour figure (or an exact number you prefer) — just say go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu/sentiment_importer && git fetch origin && git checkout master && git pull --ff-only origin master 2>&1 | tail -3 && echo "==; cd /home/ubuntu/sentiment_importer && ./deploy.sh --skip-migrate 2>&1 | tail -25; cd /home/ubuntu/sentiment_importer && echo "seni_ror HEAD: $(git rev-parse --short HEAD)" && echo "=== seni_ror svc ===" && systemctl is-act
 
