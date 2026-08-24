@@ -535,31 +535,37 @@ Let me search across all transaction surfaces for MHC-CL082.
 ### 🤖 Autopilot
 
 Let me do two final checks — transcripts and the offchain transactions sheet for any mold purchase.
+[2 tool result(s) compacted: search_transcript, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me scan the full offchain transactions tab for any mold purchase line to be complete.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of the transactions artifact — recent transactions (2026) sit at the bottom of the sheet.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the transactions sheet (2026 entries at the bottom).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact paging is recursive. Let me directly read the bottom rows of the transactions tab — the 2026 entries sit there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The existing mold transaction (Val's 26 × "Chocolate Mold - 4 X 6 slots", Feb 2025) is the only mold purchase visible so far. Let me confirm the very end of the ledger — the 2026 entries.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -597,16 +603,19 @@ Do you know who funded the purchase? That decides whether the ledger entry is a 
 ### 🤖 Autopilot
 
 Let me check for the quotation price — email and context for Jerri's mold quote.
+[3 tool result(s) compacted: gmail_search, gmail_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the full email results and the Alibaba listing price for the MHC-CL082.
+[2 tool result(s) compacted: read_tool_result, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Alibaba listing shows the mold's tiered pricing. Let me pull the actual listing to get the small-quantity price (10 units is a tiny order).
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -681,61 +690,73 @@ https://www.alibaba.com/product-detail/MHC-Handmade-3D-Special-Polycarbonate-Cho
 ### 🤖 Autopilot
 
 Let me check how new currencies get added to the ledger — the event docs, runbooks, and any precedent.
+[3 tool result(s) compacted: lookup_event_docs, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Creating a ledger currency entry is a real change — let me confirm the exact mechanics first: the Currencies tab structure, how a new asset currency gets booked (the receipt path), and the schema for the dimension field.
+[3 tool result(s) compacted: lookup_event_docs, read_google_sheet, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the existing mold currencies are catalogued and how new physical-asset currencies get created.
+[3 tool result(s) compacted: read_repo_file, search_context, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event catalog confirms **ASSET RECEIPT EVENT** is the right vehicle ("Record receipt of a physical DAO asset"), but before submitting anything I need to know what it does downstream — whether it actually writes the Currencies row. Let me check the DApp page convention and GAS processing for asset receipts.
+[3 tool result(s) compacted: search_context, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the key question — whether the pipeline creates a **new** Currencies row or requires the currency to pre-exist. Let me read the asset-receipt-ingest GAS code and the workflow doc.
+[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mechanism is clear — the **ASSET RECEIPT EVENT → GAS pipeline is exactly the canonical path to create a Currencies row** (it writes the Currencies tab row, the offchain inventory leg, and the audit entry). Before submitting, let me read the rest of the GAS code to confirm how unit cost is derived and what the description format should be.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the GAS code — specifically the `parseLandedCostFromDescription_` fallback so I know exactly how unit cost gets set.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the very end of the GAS file — the `parseLandedCostFromDescription_` implementation is what determines the unit cost fallback.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I still need the `parseLandedCostFromDescription_` implementation — that determines how unit cost is set. Let me fetch the raw file tail directly.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the tail of the raw file for `parseLandedCostFromDescription_`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The canonical path is confirmed — **ASSET RECEIPT EVENT → Edgar → GAS `asset-receipt-ingest`** is exactly the pipeline that creates a new Currencies row (plus the offchain inventory leg and audit entry). Before submitting, let me prep the evidence photo and get today's date for the naming convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me locate the Henderson-box evidence photo on disk so I can attach it as the receipt evidence.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -837,4 +858,41 @@ The 58×125mm cavity dimension is captured in both the currency name and the rec
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → date +%Y%m%d && ls -la /tmp/tg_attachments/ | tail -20; ls -la /tmp/tg_attachments/ | grep -iE "06b326|cb2991|\.jpg|\.jpeg|\.png" | head -20; echo "---"; find /tmp/tg_attachments -name "*.jpg" -ne
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] ‎Sent from ‎WhatsApp
+wa.me/+14423405782?s=e
+
+
+### 🤖 Autopilot
+
+That's the WhatsApp contact — let me check if this number is already recorded in the DAO context (Jerri's contact?) and tie it to the quotation follow-up.
+
+
+### 🤖 Autopilot
+
+Let me check if this number appears anywhere in DAO records (context, transcripts, code).
+
+
+### 🤖 Autopilot
+
+That WhatsApp contact (`wa.me/+14423405782`) is **not in any DAO record** — I checked:
+
+| Surface | Result |
+|---|---|
+| `search_context` (Jerri / wa.me / phone) | ❌ Number not found anywhere |
+| `search_transcript` (90d) | ❌ No match |
+| Context files | `+1442...` appears nowhere — the only wa.me references are the credentialing platform's design docs, unrelated |
+
+**Who it likely is:** Given the thread's context, this is almost certainly **Jerri** (Liz's China team lead — the person who sourced the Dongguan MHC-CL082 molds and **holds the quotation we still need**), or possibly the Dongguan MHC Industrial rep directly. The `+1 442` area code is a US/California number (often a WhatsApp-forwarded/VoIP line for China-based contacts), which fits Jerri operating between US and China.
+
+**Why this matters right now:** We still don't have the actual unit price for the 10 molds — the ledger entry was booked with a **$10.00/unit placeholder** (matching the "Chocolate Mold from Rusty" precedent) pending Jerri's quotation. This contact is the missing link to close that.
+
+**Proposed next step:** If you confirm this is Jerri's WhatsApp, I'll:
+1. **File an OPEN_FOLLOWUPS entry** — *"Get Jerri's MHC-CL082 quotation (10 pcs) via WhatsApp +14423405782 — needed to replace the $10/unit placeholder on the Currencies row booked 2026-08-24 (offchain row 4141)"* — so it's tracked cross-session and can't rot, and
+2. Optionally save the contact reference in the Aora context (TRACK_MAP.md has a "China Logistics Coordinator: Jerri / Ling" row that could carry the number).
+
+Can you confirm this is Jerri? Or is it the Dongguan factory's rep? Once you confirm, I'll file the follow-up and we can chase the quotation.
 
