@@ -41,47 +41,76 @@ Figure out why and respond to me
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_google_sheet, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The link's gid (`83682662`) is a different tab than the "Telegram Chat Logs" tab I read (gid 0). Let me find what tab that is and how column N gets populated.
+[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gid `83682662` is the **"Inventory Movement"** tab, and column N is **STATUS**. Let me read the actual row 673 there.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The output was truncated before reaching row 673. Let me read that exact row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 673 confirmed: **STATUS (col N) = `unauthorized`**. Now let me find the code that writes that status to find *why*.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The processor for inventory movements is `process_movement_telegram_logs.js`. Let me read it plus the related Code.js to see how STATUS gets set to `unauthorized`.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The files are large. Let me read the full function body from the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full `inventoryMovementStatusFromTelegramRow_` function from the beginning of the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The authorization logic is now clear. The status function checks, in order: Telegram column S (Governor=YES) → column T (Sentinel=TRUE) → digital-signature lookup → governor by name → manager-name match → trusted-agent+governor-approved. If none pass → `unauthorized`. Now let me check what the actual row data looked like for this submission — the Telegram Chat Logs row, the Contributors Digital Signatures sheet, and the Governors sheet.
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The status function is now clear. The 2026-08-20 submission's signature key (`...yrjcz4Y9...`) is **different** from the key Gary used on the 2026-07-10 submissions (`...ArMTOvEf...`). Let me verify against the registered signature keys and the Governors sheet.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -170,4 +199,87 @@ Otherwise → `unauthorized` (which is what Phase-2 processing skips).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot 2>/dev/null && grep -E '^(PUBLIC_KEY|EMAIL)=' .env | sed 's/\(PUBLIC_KEY=.\{30\}\).*/\1...[REDACTED]/' ; echo "-; cd /opt/truesight_autopilot && python3 -c " import re # Search the .env for google creds keys (names only) for line in open('.env'): k=line.; cd /opt/truesight_autopilot && python3 - <<'EOF' import re for line in open('.env'): k=line.split('=')[0] if any(s in k.upper() for s in ['G; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Can you just register the email address of yours as a trusted agent? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — that's the exact lever. The GAS processor's `TRUSTED_AGENTS` list is hardcoded to `['autopilot@agroverse.shop']`, and my Edgar identity is `admin+sophia@truesight.me` — that mismatch is (very likely) why your 100-bag movement got `unauthorized`. Let me verify my key is actually registered in the Contributors Digital Signatures sheet under that name, then I'll make the fix.
+
+
+### 🤖 Autopilot
+
+The local creds aren't on disk — but I already pulled the full `Contributors Digital Signatures` sheet (163 rows) into an artifact earlier. Let me search it for the autopilot's key and its registered name.
+
+
+### 🤖 Autopilot
+
+I need to check whether my own key (`...yrjcz4Y9...`) is actually registered in that sheet. The early rows are all Gary's keys; let me scan the later rows (where a 2026-registered autopilot identity would have been appended).
+
+
+### 🤖 Autopilot
+
+I can see "Sophia Truesight" is registered (2026-06-06, one key ACTIVE, one VERIFYING) — but neither of those matches the key used in the submission (`...yrjcz4Y9...`), which is the autopilot's **current** key from `.env`. Let me confirm the full sheet doesn't contain the current key anywhere.
+
+
+### 🤖 Autopilot
+
+Yes — and that's exactly the right lever. I've confirmed the full picture, so let me make the code change now (the governor's request is the instruction).
+
+**What I found (verified):**
+1. The authorization gate is `TRUSTED_AGENTS` in `tokenomics/google_app_scripts/1wONDeDwZ…/process_movement_telegram_logs.js` — currently hardcoded to `['autopilot@agroverse.shop']` only.
+2. The GAS `inventoryMovementStatusFromTelegramRow_` chain: governor/Sentinel column → signature lookup in `Contributors Digital Signatures` → trusted-agent + `- Approved By: <governor>` → else `unauthorized`.
+3. Your 2026-08-20 submission's `- Approved By: Gary Teh` **is** a valid governor line — so the trusted-agent branch is the one that should have authorized it, but it failed the `isTrustedAgent_` check.
+4. Two compounding gaps: (a) my identity in `.env`/Edgar is `admin+sophia@truesight.me` — not in `TRUSTED_AGENTS`; (b) my **current** signing key (`…yrjcz4Y9…`) is **not** in `Contributors Digital Signatures` (the sheet's newest Sophia key is 2026-07-16, status **VERIFYING**), so the signature lookup returns "No matching contributor" before the trusted-agent branch even runs.
+
+So "just register the email as trusted agent" is necessary but the key registration is the second half. Opening the code fix now:
+
+
+### 🤖 Autopilot
+
+PR opened. Now I need to actually push it to the GAS deployment so it takes effect — but first let me answer honestly about the second half.
+
+Let me also verify my claim about the current key not being in the sheet, by checking the tail of the sheet (newest rows) directly.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Done — here's where things landed.
+
+## What I did this turn
+
+**Root cause (confirmed to the extent possible):** Row 673's STATUS=unauthorized comes from the GAS scanner `inventoryMovementStatusFromTelegramRow_()` in `tokenomics/…/process_movement_telegram_logs.js`. It authorizes a movement only if the signer resolves to an ACTIVE contributor in the `Contributors Digital Signatures` sheet, and that contributor is a governor, the warehouse manager, or a **trusted agent** with an `- Approved By: <governor>` line. Your 100-bag movement had the right `Approved By: Gary Teh`, but it failed earlier in the chain.
+
+**Fix applied (as you asked):** PR **[#424](https://github.com/TrueSightDAO/tokenomics/pull/424)** — added `admin+sophia@truesight.me` and `Sophia Truesight` to `TRUSTED_AGENTS` in the movement processor. **Merged** (sha `8d69388`).
+
+## Honest caveat — the email list is probably NOT the real blocker
+
+While verifying, I found something more important:
+
+- The movement was signed with key `…yrjcz4Y9…` — which **matches the current `.env` key on this box**.
+- But the `Contributors Digital Signatures` sheet's `truesight-autopilot` entries (2026-08-19/20, all ACTIVE) all have **different** keys (`z8Rx2jTX`, `q1qhWS4`, `s6+euqM`, `zrkPdif`, `tjrsY2Vk`, `wYTp0no`, `vM6NOL5`, `xv/EBTe1`, `m90FI1F`…). None match the signing key.
+- Since `findContributorNameByDigitalSignature_` returns "No matching contributor" when the key isn't in the sheet, it fails **before** the trusted-agent branch — so the email list change alone won't flip the status. The sheet's rows are also under the name **`truesight-autopilot`**, which my PR doesn't cover either.
+
+## RESUME HERE → next steps (fresh turn)
+
+1. **Definitively search the full sheet** for `yrjcz4Y9` (my reads covered the tail rows + most chunks, but not 100% of rows 60–149) — confirm the signing key is genuinely absent.
+2. **If absent:** register the current key (e.g. via `register_identity`) so the signature resolves to an ACTIVE contributor, and add **`truesight-autopilot`** to `TRUSTED_AGENTS` (small follow-up PR).
+3. **Deploy** the merged GAS change: `gas_deploy_project(script_id='1wONDeDwZ…', push=true)` — the code change is inert until pushed.
+4. **Re-trigger/reprocess** the movement row (or confirm the scanner picks it up) → expect STATUS to go `unauthorized → NEW → PROCESSED`.
+
+One more thing I'll verify next turn: the full body of the status function (it was truncated) to confirm the trusted-agent branch really requires the signature to resolve first — so the fix is targeted, not guesswork.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && python3 - <<'EOF' import os, json, subprocess gac = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS','') print
+• `merge pr` → ✅ PR #424 on tokenomics merged successfully (sha: 8d6938874fa6a4f3dad55428b67207867165f6f3). Pull Request successfully merged
 
