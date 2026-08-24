@@ -29,16 +29,19 @@ Please confirm after: query daily_trades for CMG around 2024-06-26 and verify th
 I'll take this step by step: (1) confirm the fix utility exists and matches the described behavior, (2) verify the split cliff in the prod data myself before touching anything, (3) run the reimport on seni_ror, (4) verify continuity + indicators after.
 
 Starting with the code and host layout:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo file isn't on the `main` ref (or branch differs), but I found the deployed file on seni_ror itself. Reading it there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The utility exists and matches the description. Let me see the rest of the method (the re-save + indicator recalculation part) to confirm it does the callback re-save:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -46,31 +49,42 @@ The utility exists and matches the description. Let me see the rest of the metho
 Utility confirmed — the method fetches EODHD individual EOD data, uses `adjusted_close`, proportionally adjusts high/low, upserts on `(company_id, date_published)`, then re-saves every row to recalculate indicators via `before_save` callbacks.
 
 Before running anything mutating, let me capture the **before** state from prod (read-only) so I can verify the fix objectively after:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runner errored during boot — I only see the tail of the backtrace. Let me capture the actual error head:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Just a benign binstub warning, not the real failure. Let me see what actually follows (the exception):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod runner needs `SECRET_KEY_BASE` — the live service gets it from somewhere (systemd env / wrapper). Let me find how the running app is launched:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the service has `SECRET_KEY_BASE` set in its systemd unit. I'll source it in-process (without printing the value — rule 3) and capture the **before** state of CMG data around the split:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No rows returned for that window — odd. Let me debug the date filtering directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -206,4 +220,59 @@ Next turn: (1) run one read-only query for raw rows inside the 1080-day window (
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → ls -d /srv/* /home/*/* 2>/dev/null | head -30; echo '---'; sudo find / -maxdepth 6 -name 'eod_hd_price_refresher.rb' 2>/dev/null | head -5; cd /home/ubuntu/sentiment_importer && git branch --show-current 2>/dev/null; git log --oneline -1 2>/dev/null; echo '---'; sed -n '300,420p'; cd /home/ubuntu/sentiment_importer && sed -n '420,500p' app/workers/eod_hd_price_refresher.rb; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=13903] Clear out those dates and then fix again
+
+
+### 🤖 Autopilot
+
+Got it — clear out the leftover artifact rows (weekends/holidays/dupes EODHD never returned), then re-run the fix so indicators get recalculated over the clean series. Let me first inspect the refresher's fetch internals (so I can cross-reference EODHD's real trading-date list) and find the API key var name (names only, no values):
+
+
+### 🤖 Autopilot
+
+API key comes from Rails config (`config.eod_hd_api_key`) — no env var needed, and the refresher already proved it works. Now executing Gary's directive: **delete the artifact rows (close > 300, the raw 50× rows), then re-run the fix** so indicators recalculate over the clean series. One combined script — delete first, then reimport:
+
+
+### 🤖 Autopilot
+
+Deleted 655 artifact rows, zero remaining >300, reimport re-ran (EODHD upserted its 2749 trading days + recalc'd indicators). Now the verification pass — boundary continuity, no spikes in the chart window, indicator sanity, and row counts:
+
+
+### 🤖 Autopilot
+
+## ✅ CMG fully clean — cliff gone, artifacts removed, indicators sane
+
+### What was done (seni_ror, prod)
+1. **Deleted 655 artifact rows** (`close > 300` — raw 50× weekend/holiday/duplicate rows EODHD never returns). `REMAINING>300=0`.
+2. **Re-ran the fix** — `EodhdPriceRefresher.reimport_company_historical_data("CMG")` re-fetched 2749 adjusted trading days, upserted, recalculated all indicators over the now-clean series.
+
+### Verified results
+| check | before | after |
+|---|---|---|
+| total rows | 3,521 | **2,866** (655 removed) |
+| weekend rows | 700 | **104** |
+| max close (whole table) | ~3,428 (Juneteenth raw) | **68.55** (real adj. max) |
+| rows >300 in 1080-day chart window | present | **0** |
+| 2024-06-19 (Juneteenth), 2020-03-14/15 | raw 50× rows | **gone** (no rows) |
+| nil sma_30 | 0 | **0** |
+
+**Boundary** — continuous, no cliff:
+- 6/25 **65.66** → 6/26 **65.86** → 6/27 **62.41** → 6/28 **62.65** (normal daily moves)
+- RSI ~45–62 (sane), MACD smooth (-1282 → -1254 → -1227 → -1200, monotone, no cliff dive)
+
+**Chart window (2023-08-24 → 2026-08-07, the 1080 lookback):** 858 rows, max close **$68.55**, zero rows >$200 — the long-lookback perch chart will now render a clean, continuous series with no spikes and no cliff.
+
+### Notes
+- The **104 remaining weekend rows** are the pre-existing data-model convention (SQL upsert `ON CONFLICT (company_id, date_published)` requires the datetime unique index, and the refresher carries them as last-known close). All are adjusted-scale values (none >300), so they're harmless for the chart; flagging only for transparency.
+- I deleted rows directly in prod per your explicit directive (this was beyond the single-utility scope, so no code PR needed for the cleanup itself).
+
+**Perch is fixed** — `/companies/CMG/2026-08-07/1080` should now show a continuous adjusted series end-to-end. Worth a hard-refresh (Ctrl+Shift+R) to bust any cached chart payload.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu/sentiment_importer && grep -nE 'def |EODHD|eodhd|api_key|API_KEY|Net::HTTP|HTTParty|RestClient|URI|base_url|url' app/workers; cd /home/ubuntu/sentiment_importer && export SECRET_KEY_BASE=$(sudo systemctl show seni_ror.service -p Environment | tr ' ' ' ' | sed -n 's/
 
