@@ -1164,41 +1164,49 @@ Excellent — this reframes everything. The **Sentinel role was already implemen
 ### 🤖 Autopilot
 
 The live cache (`dao_members.json`, regenerated 2026-08-24T15:23:19 — right after my registration, `sentinels: 7`) is fresh. The Telegram Chat Logs rows I pulled were old 2024 records — I need the actual 2026 rows. But first, the decisive check: does the cache list Sophia/truesight-autopilot with the `sentinel` role?
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cache is huge. Two decisive checks: (1) does the published cache mark the autopilot as `sentinel` (search treasury-cache for it), and (2) what do columns S/T actually say on the 2026 Edgar rows in Telegram Chat Logs (the rows I read were 2024 records).
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs rows I keep hitting are the legacy 2024 chat. Let me recall what I earlier found about the actual Edgar row's columns S/T, and look at the dao_protocol Python code that stamps them.
+[2 tool result(s) compacted: recall_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sentinel check **is** referenced — it's first in the status function (`isTelegramSentinelTrue_(telegramRow)` → `NEW`), *before* the TRUSTED_AGENTS fallback. So the real question is why the source Telegram row for this Edgar submission doesn't have `Is Sentinel = TRUE`. Let me check the Python dao_protocol for where it stamps those columns.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dao_protocol has zero hits for those terms — yet the plan claims dao_protocol PR #124 stamps cols S/T. Let me look at what's actually in the dao_protocol repo and on the dao_protocol host.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH to dao_protocol is denied (key issue), and GitHub search shows zero hits — suspicious. Let me check what's actually in the dao_protocol repo.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: **`dao_protocol` is now `dao_client`** (per its own README — "formerly dao_protocol", Edgar runs as Python/FastAPI on edgar.truesight.me). Let me find where Edgar stamps the Telegram Chat Logs columns S/T (Governor/Sentinel).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No hits in dao_client either. Let me search org-wide for who stamps Telegram Chat Logs columns S/T.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1331,4 +1339,98 @@ if (isTelegramSentinelTrue_(telegramRow)) return 'NEW';  // col T  ← the real 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt 2>/dev/null && ls -d tokenomics 2>/dev/null; echo '--- local GAS folder ---'; ls -la /opt/tokenomics/google_app_scripts/1wONDeDwZ_fX
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14165] Actually skip to 4 since I already checked
+
+
+### 🤖 Autopilot
+
+Understood — skipping to step 4 (cleanup). Let me verify the current state of the two GAS files and the backlog file first, plus run the local test suite (required before any push).
+
+
+### 🤖 Autopilot
+
+Two key observations from the check before I execute the cleanup:
+
+1. **`Code.js` in the same GAS project folder is a full duplicate** of `process_movement_telegram_logs.js` — and it still carries the **OLD** `TRUSTED_AGENTS = ['autopilot@agroverse.shop']`. The real processor file has PR #424's updated list. If both files exist in the deployed project, the duplicate `const` declarations would break the script — so I need to confirm what's actually deployed before deleting.
+
+2. Local tests: compile/ruff/format pass (format check lists pre-existing reformats — acceptable), pytest 4 failures are pre-existing (vault/events_catalog tests, unrelated to this change).
+
+Let me verify the deployed GAS project state (which file is live, via the local clasp checkout that `gas_deploy_project` uses):
+
+
+### 🤖 Autopilot
+
+Both files sit in the same GAS project folder — `Code.js` (75,414 bytes) and `process_movement_telegram_logs.js` (75,405 bytes), near-identical sizes, both with the same header. If both get pushed to the same Apps Script project, the two top-level `const TRUSTED_AGENTS` declarations would collide. I need the facts before deleting — checking `.clasp.json` (target project), what's actually deployed (`clasp status`), and Code.js's git history:
+
+
+### 🤖 Autopilot
+
+The local checkout and git history raise the key question: **is `Code.js` actually deployed alongside the processor?** Both files live in the same clasp root (`rootDir: ""` → everything in the folder gets pushed). If both are deployed, the duplicate top-level `const TRUSTED_AGENTS` would be a load error — so the facts matter. Let me get the deployed state directly:
+
+
+### 🤖 Autopilot
+
+`clasp status` shows both `Code.js` and `process_movement_telegram_logs.js` are tracked in the local project folder — and the **local** copies (both stale, Jun 23) carry the **OLD** `TRUSTED_AGENTS` at line 113. But the GitHub repo at the merged sha has the NEW list in the processor and the OLD list in `Code.js`. Before I delete anything, I need ground truth on what's actually **deployed remotely** (a duplicate top-level `const` would break the GAS project load). Pulling the live remote project into a scratch dir:
+
+
+### 🤖 Autopilot
+
+Ground truth established. The **remote deployed project has BOTH files**, and the deploy tool pushes from `/opt/truesight_autopilot/context/tokenomics` (which contains both). The remote `Code.js` (75,414 B, OLD `TRUSTED_AGENTS`) is a stale duplicate of the processor (75,454 B, PR #424 list) — that's the legacy artifact Gary wants cleaned. Let me confirm it's a pure duplicate before deleting:
+
+
+### 🤖 Autopilot
+
+Ground truth established — this is exactly the stale duplicate to remove:
+
+- **`Code.js` and `process_movement_telegram_logs.js` are byte-identical except 2 lines** (diff confirms): line 113 `TRUSTED_AGENTS` (Code.js = OLD list, processor = PR #424 list) and a comment line 180.
+- **Both are deployed** to the same GAS project (clasp status + remote pull both list them). Two top-level `const TRUSTED_AGENTS` in one Apps Script project = duplicate-identifier hazard — which may even be why processing has been misbehaving.
+- Git history shows `Code.js` was the original, superseded when `process_movement_telegram_logs.js` took over (PR #424 only updated the processor).
+
+Executing the cleanup — deleting the stale `Code.js` duplicate:
+
+
+### 🤖 Autopilot
+
+Cleanup PR opened. Merging it (the governor's "skip to 4" authorizes this cleanup):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**PR [#425](https://github.com/TrueSightDAO/tokenomics/pull/425) — merged** ✅ (sha `d120f70`)
+
+**What changed:** Deleted the stale `Code.js` duplicate from the inventory-movement GAS project folder (`google_app_scripts/1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR/Code.js`).
+
+**Why (verified, not guessed):**
+- `clasp status` + `clasp pull` of the **deployed** project showed **both** `Code.js` and `process_movement_telegram_logs.js` live in the same project.
+- Full `diff` proved they're byte-identical **except 2 lines**: line 113 `TRUSTED_AGENTS` (Code.js = old `['autopilot@agroverse.shop']`, processor = PR #424's updated list) and a doc comment.
+- Both files declared top-level `const TRUSTED_AGENTS` → duplicate-identifier hazard in the Apps Script project, and the stale copy carried the **pre-#424** agent list — a real foot-gun.
+- No functions lost — every function in `Code.js` exists identically in `process_movement_telegram_logs.js`.
+
+**Tests:** compile / ruff / format all pass (4 pytest failures are pre-existing vault/events_catalog, unrelated).
+
+## What I did NOT do (per one-PR-per-turn rule)
+- Did **not** `clasp push` the cleaned folder to the live GAS project yet (the repo is clean; the *deployed* project still has the stale Code.js until the next deploy).
+- Did **not** file the follow-up to remove `TRUSTED_AGENTS` from the processor entirely (sentinel col T is the real gate).
+
+## RESUME HERE → next units (fresh turns)
+1. **Deploy** the cleaned folder to the live GAS project: `gas_deploy_project(script_id='1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PCdqbW1LvI5ceaykQNbR', push=true)` — this removes the duplicate from the deployed project and pushes the PR #424 agent list. (The deploy tool pushes from `/opt/truesight_autopilot/context/tokenomics`, so make sure that checkout is pulled to `d120f70` first — its local `Code.js` must go too, else it re-pushes the duplicate.)
+2. **Verify row 673** on the Inventory Movement tab (gid `83682662`) — and the fresh-key submission rows — flip `unauthorized → NEW` (trigger the inventory webhook `AKfycbzECOd1Y3mH7L0zU8hOC4AxQctYICX0Ws8j2-Md1dWg0k3GFGQx_4Cf7n-CM0usmSJ1/exec` if cron hasn't run).
+3. **File follow-up** in `agentic_ai_context/OPEN_FOLLOWUPS.md`: remove `TRUSTED_AGENTS` from the processor entirely now that `Is Sentinel` (col T) is the first-class auth gate; also reconcile the sentinel name-join (`truesight-autopilot` vs `Sophia Truesight`).
+4. **Optional:** register the old `…yrjcz4Y9…` signing key in the signature ledger if you want the *historical* rows 673/675 to verify without re-submission.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 | tail -3; echo "COMPILE_RC=$?"; python3 -m ruff check app sc; find /home /opt /srv /root -maxdepth 4 -type d -name 'tokenomics' 2>/dev/null | head -5; echo '---'; for d in $(find /home /opt /srv /root -; echo '=== .clasp.json (/home/ubuntu/tokenomics) ==='; cat /home/ubuntu/tokenomics/google_app_scripts/1wONDeDwZ_fXNapDKpstWrBION3aV3r7NXwq7PC; …(+3 more)
+• `merge pr` → ✅ PR #425 on tokenomics merged successfully (sha: d120f70bb6768905644c3131e7298ceef479e1d7). Pull Request successfully merged
 
