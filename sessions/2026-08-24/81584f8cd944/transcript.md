@@ -1292,11 +1292,13 @@ The schedule has `eodhd_price_refresher_utc` at 21:00 UTC weekdays. The equity d
 ### 🤖 Autopilot
 
 The log shows no scheduled EODHD runs at all — only manual CMG reimports today. Let me check whether the Sidekiq cron jobs are actually registered/running, and what the last GOV-row importer is.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more diagnostic to pin down whether the scheduled refresher is even running:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1348,36 +1350,48 @@ Next turn: **say "go" and I'll (a) start Sidekiq on seni_ror, (b) confirm the si
 ### 🤖 Autopilot
 
 Good question — let me verify which one it is precisely, because the evidence points to the worker, but I want to confirm the data source is alive.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me resolve the one remaining puzzle — the treasury GOV rows ARE updating daily even though their importer is also a Sidekiq worker. That tells me something else is alive.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One quick check to resolve the apparent paradox (GOV rows look fresh through Aug 21 even though Sidekiq is down):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GOV rows are being written daily at ~21:01 UTC, which proves *some* scheduler is alive — but the EODHD equity job shows no runs at all in the log. There's a second worker box in the fleet (`seni_sk` = Sidekiq worker). Let me check whether the sentiment_importer's Sidekiq actually lives there — that's the decisive check.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GOV rows prove the scheduler is partially alive. Let me run one decisive check — query the sidekiq-cron job registry in Redis to see whether the EODHD job is even registered:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `bundle` on the login shell path — need rbenv. Let me use the full rbenv path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runner is misbehaving. Let me check the sidekiq-cron job registry directly in Redis — that's where the scheduled jobs live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1425,51 +1439,61 @@ Next turn: **say "go" and I'll run the manual EodhdPriceRefresher (latest), conf
 ### 🤖 Autopilot
 
 Gary gave the go — executing now. Let me first read the deploy/config to start Sidekiq the *correct* way, and check the refresher's argument handling.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the architecture: the deploy script says sentiment_importer's Sidekiq lives on **`seni_sk_nelanco` (100.53.89.222, systemd unit `seni_sk`)** — a *different* host than my `seni_sk` alias (34.234.193.80, which is the old explorya IP and gave permission denied). Let me check the SSH config and reach the real worker host.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact SSH config for seni_sk_nelanco and check whether the autopilot can reach it directly with the right key.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidekiq IS running on seni_sk (active since July 5, "0 of 8 busy"). So the worker is alive — the issue is elsewhere. Let me check the sidekiq cron job registration and the sidekiq log on the real worker host.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `seni_sk` label in ssh_run resolves to the old explorya IP — I need to go direct via the pem key from autopilot. Let me run the diagnostics that way.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty — let me check the log file location and the cron job registry directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The logs rotated (sidekiq.log.1 is 195MB, current log is empty since Jul 6 rotation). Let me grep the rotated log for the EODHD refresher runs around the Aug 7 cutoff.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty — the grep pattern may not match. Let me search more broadly in the rotated log.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key finding:** Sidekiq on seni_sk is **alive** (up since Jul 5), but the rotated sidekiq log shows the last `EodhdPriceRefresher` cron run was **Jul 8** — yet equity data flowed through **Aug 7**. And today's manual runs fetched only up to the stale cached date `2026-08-07`. Let me check the cron registry in Redis and the cached trading date — those pin down whether the cron job is even registered.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **MAJOR FINDING: "No space left on device"** — the seni_sk box is **out of disk space**. That's very likely the root cause: the EODHD refresher can't write to its log (or the app's log), so the scheduled runs fail silently. Let me confirm disk usage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1605,4 +1629,92 @@ Sidekiq is healthy and the cron is registered, so even if I stop here, **tonight
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×26 → cat /home/ubuntu/sentiment_importer/deploy.sh 2>/dev/null | head -80; echo "=== sidekiq.yml ==="; cat /home/ubuntu/sentiment_importer/config/sidekiq.yml 2>/dev/null; echo "=== eodhd refresher head ==="; sed -n ; echo "=== ssh config on autopilot ==="; grep -A4 -iE "seni_sk|seni_ror|seni_sql|nelanco" ~/.ssh/config 2>/dev/null | head -40; echo "=== key; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] or because the EC2 instances ran out of storage
+
+
+### 🤖 Autopilot
+
+Yes — that's exactly what it was. Let me just re-verify the current state to confirm the fix is holding.
+
+
+### 🤖 Autopilot
+
+Disk is healthy (2.1GB free), Sidekiq active. The column name was wrong — let me get the right one and check if equity data resumed.
+
+
+### 🤖 Autopilot
+
+Data still shows only 12 rows for 08-21 (the treasury rows) — so the equity backfill hasn't landed yet (tonight's 21:00 UTC run hasn't fired; it's ~10:00 UTC now). Let me enqueue the backfill manually. First, let me check the job's `perform` signature so I push the right payload.
+
+
+### 🤖 Autopilot
+
+The class is `EodhdPriceRefresher` with `perform(date_string = nil, async = true)`. Let me enqueue the backfill job directly, bypassing the broken binstub:
+
+
+### 🤖 Autopilot
+
+Let me see the actual error at the top of that trace (it's cut off) — and check what the underlying boot failure is.
+
+
+### 🤖 Autopilot
+
+The boot failure is `Missing secret_key_base` — my SSH shell doesn't have the env that the systemd unit provides. Simplest robust path: **push the job straight into Redis** (the running worker already has the app loaded with the right env). The queue is `algo_trader` on Redis 54.234.59.188:6379:
+
+
+### 🤖 Autopilot
+
+`redis-cli` isn't installed on seni_sk, but the app ships the `redis` gem. Let me push the job via a Ruby one-liner:
+
+
+### 🤖 Autopilot
+
+**Job pushed to Redis successfully (LPUSH => 1).** The running Sidekiq worker on seni_sk will pick it up within seconds. Let me verify it's being processed — watch the sidekiq log for the STARTED/COMPLETED lines.
+
+
+### 🤖 Autopilot
+
+The job ran and is now triggering `LargeDipIndexRefresher` and `LargeSpikeIndexRefresher` for 2026-08-24 — the pipeline is alive again. Let me verify equity data is landing in the DB.
+
+
+### 🤖 Autopilot
+
+**Confirmed — equity data is back.** Here's the final state:
+
+## Yes — you were right, it was the EC2 storage, and it's now FIXED
+
+### The exact chain of events
+1. **seni_sk** (the Sidekiq worker EC2, 7.6G root volume) **filled up 100%** — its own logs did it: `production.log.1` (1.6GB) + `sidekiq.log.1` (187MB) + `/var/lib/snapd` + node_modules + yarn cache.
+2. Every scheduled `EodhdPriceRefresher` run (21:00 UTC weekdays) **failed silently** since **Fri Aug 7** — the box couldn't write a single byte ("No space left on device").
+3. No equity prices → no signals → `/large_dips` stuck at Aug 7. Treasury GOV rows kept updating because they write to the **remote** DB — which is why the date column looked fresh but equity was frozen.
+
+### Fix executed (this session)
+| Step | Status |
+|---|---|
+| Truncated the 2 giant log files + cleaned caches | 0 → **2.1GB free** ✅ |
+| Restarted `seni_sk` service | **active** since 10:06:18 UTC ✅ |
+| All 27 sidekiq-cron jobs re-registered (incl. `eodhd_price_refresher_utc`) | ✅ |
+| Enqueued `EodhdPriceRefresher` manually (bypassed broken binstub via direct Redis LPUSH) | `LPUSH => 1` ✅ |
+| Worker picked it up → auto-triggered **LargeDip + LargeSpike refreshers for 2026-08-24** | ✅ |
+| **Equity rows for 08-21: 12 → 11,296** (full market restored) | ✅ |
+
+### Evidence in the DB
+```
+2026-08-21 | 11,296   ← full market back (was 12)
+2026-08-20 |    12    ← pre-fix gap
+```
+
+### Remaining (small) items
+- **08-20 gap**: the EODHD *last-day* API only returned 08-21 (the last completed trading day). The Aug 10–20 historical gap would need a date-specific refresh — but the dashboard will now show **08-21 as current**, and tonight's 21:00 UTC run keeps it moving forward.
+- **Watchdogs to file** (OPEN_FOLLOWUPS.md, per protocol): disk-usage alert for seni_sk, logrotate so `production.log.1` can't refill the volume, and fix the `bin/rails` binstub that blocked `rails runner`.
+
+Want me to file those three follow-ups in OPEN_FOLLOWUPS.md now, or verify the dashboard on your side first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → timeout 60 ssh -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@100.53.89.222 "echo '=== disk now ==='; df -h / | tail -1; echo '=== sidekiq status; timeout 60 ssh -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@100.53.89.222 "PGPASSWORD='Explore123!' timeout 30 psql -h 44.193.55.205 -U prod -d; timeout 60 ssh -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@100.53.89.222 "cd /home/ubuntu/sentiment_importer && echo '=== perform signature ==; …(+4 more)
 
