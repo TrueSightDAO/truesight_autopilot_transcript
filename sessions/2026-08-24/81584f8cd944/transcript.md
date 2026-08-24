@@ -2584,56 +2584,67 @@ Purged 3 stale retries, re-enqueued 08-14 + 08-19 on the fixed worker. Let me mo
 ### 🤖 Autopilot
 
 08-19 is being processed. Let me verify the two remaining S3 files (08-14, 08-19) now exist.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still processing — these each take several minutes (heavy per-stock computation). Let me wait and re-verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sync script (6050) is still crunching through dates (08-19 appearing repeatedly as it re-processes). It's making progress but slow. Let me check the S3 files again after this pass completes.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check where the S3 upload happens in the refresher code to know when to expect the files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key insight:** The spike S3 files are named `LARGE_SPIKES/production/<date>_<lookback>` (with a lookback suffix, per `daily_trades_helper.rb:149`), but I was checking `LARGE_SPIKES/production/<date>` (no suffix) — which is why 08-10/11/12/13/17/18/20 "worked" (those are the ETF-helper path `etf_helper.rb:396`, no suffix) but 08-14/19 didn't yet. The 08-14/19 files may be named with `_<lookback>` suffixes. Let me check the correct naming.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still not present. Let me check the refresher's actual upload step and whether it ran to completion for those dates — checking the log for COMPLETED lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The refresher has been processing dates across the board (multiple passes from both my sync script 6050 and the Sidekiq retries), but **no COMPLETED lines yet** — the compute is heavy (per-stock stats over 11k symbols × 7 lookbacks each). The process is still alive. Let me wait longer and verify the S3 output files for the remaining dates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 0 COMPLETED and no fresh log lines — the sync script (6050) may be stuck on a heavy query (price_stddev rolling stats) and the Sidekiq retries are waiting on unique-lock contention. Let me check the actual DB state — whether the spike flags are marked for those dates — since that's the ground truth that feeds the dashboard.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The DB query times out (the heavy compute is still hammering). Let me check the sync script's own log — Ruby should have flushed output by now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retries dropped 6 → 4 (the re-enqueued 08-14/08-19 were consumed) and 24 workers are busy — the compute is running. The spike refresher is genuinely heavy (symbols cache alone took 370s). Let me register a background watcher on the S3 file so I can report back when 08-14/08-19 land, and check the two remaining spike dates one more time.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me set up background watchers on the two remaining spike files so completion notifies this topic automatically, then I'll converge.
+[2 tool result(s) compacted: watch_url, watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2685,6 +2696,7 @@ Go
 ### 🤖 Autopilot
 
 Continuing from RESUME HERE. Let me verify the two remaining spike files (08-14, 08-19) and the COMPLETED lines.
+[3 tool result(s) compacted: http_fetch, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2793,4 +2805,86 @@ Next turn:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → timeout 50 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@172.31.90.25 "sudo grep -E 'LargeSpikeIndexRefresher' /home/ub; timeout 55 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@172.31.90.25 "echo '=== script 6050 state ==='; ps -p 6050 -o ; timeout 55 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@172.31.90.25 "echo '=== spike retry payloads ==='; cd /home/ub; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=8273] Any reason why this page keeps taking so long to load 
+
+Is the cron caching not running??
+
+ https://perch.truesight.me/
+
+
+### 🤖 Autopilot
+
+Good question — the backfill I've been running is hammering the same DB the dashboard reads, plus we should verify the cache cron. Let me investigate in parallel.
+
+
+### 🤖 Autopilot
+
+Found it. The page itself returns 200 fast at the HTTP layer, but **the DB behind the dashboard cards is under heavy load — 17 active queries, and the top 3 have been running 1+ HOURS** (01:19:31, 01:17:06, 01:06:44 — all `with index_company_ids as (...)` = the spike/dip index computation). Let me identify what's running those and check the caching cron.
+
+
+### 🤖 Autopilot
+
+**Found the culprit — and it's my backfill that's causing the slowness.**
+
+The HTTP page returns instantly (200), but the **dashboard cards query the DB** — and the DB is saturated:
+
+- **17 active queries**, the top 4 running **1h+ each** (01:19, 01:17, 01:06, 01:05)
+- All are `with index_company_ids as (...)` — the spike/dip index computation
+- They're coming from **BOTH** 34.239.124.82 (my backfill box's sync script) **AND** 100.53.89.222 (prod worker) — **duplicating the same heavy compute concurrently**
+
+And the caching cron **IS running** — `cache_refresher | 0,15,30,45 * * * *` is enabled (every 15 min). The slowness isn't a dead cache cron — it's the DB being hammered by my backfill duplicating the index refreshes between two workers.
+
+Let me stop the duplicate compute immediately — kill my sync script on the backfill box and let prod's worker finish the remaining dates alone.
+
+
+### 🤖 Autopilot
+
+Sync script killed — duplicate compute stopped. The queue is empty (no pending spike/dip jobs). The long-running queries (1h+) will finish on their own or the workers will move on. Let me verify the DB load drops and check what's still queued.
+
+
+### 🤖 Autopilot
+
+Now I can give you a precise answer. Let me do one final check to see if the long queries are progressing.
+
+
+### 🤖 Autopilot
+
+**08-14 just landed** (both base + `_7` lookback). Progress is real: 08-10 through 08-18 are now complete, with 08-17/08-18 even showing `_30` and `_90` lookbacks. Remaining: **08-19 and 08-20**.
+
+Now the answer to your question:
+
+## Why perch.truesight.me loads slowly
+
+**It's my backfill that's doing it — sorry!** Here's the exact mechanism:
+
+### Root cause
+The page **itself returns 200 instantly** (the HTML shell is fast — I fetched it in <1s). The slowness is the **dashboard cards** — they query the DB for the spike/dip indexes, and the DB is **saturated**:
+
+| Symptom | Value |
+|---|---|
+| Active DB queries | **15–17 concurrent** |
+| Oldest query runtime | **1h 20m+** (4 queries running 1h+) |
+| Query type | All `with index_company_ids as (...)` = spike/dip index recompute |
+| Who's running them | **Both** my backfill box (34.239.124.82) **AND** prod worker (100.53.89.222) — **duplicating the same heavy compute** |
+
+### Is the cron caching running?
+**Yes — it's fine.** `cache_refresher` (every 15 min) is enabled and running. The slowness is NOT a dead cache cron — it's the **DB being hammered by duplicate index refreshes** between the two workers.
+
+### What I did
+- **Killed my sync script (PID 6050/6052)** on the backfill box — stopped the duplicate compute.
+- The remaining long queries (1h+) will finish and drain on their own.
+- Progress continues: **08-14 spike just completed** (08-10 → 08-18 done), leaving **08-19 + 08-20**.
+
+### What you should see
+Once the 1h+ queries drain (~10-30 min), the dashboard cards will respond fast again. The cache cron will keep refreshing every 15 min as designed.
+
+**Bottom line: not a cron issue — my backfill's duplicate compute was saturating the DB your dashboard reads. I've stopped the duplicate; it'll recover shortly.** The backfill itself is 7/9 done (08-19, 08-20 remaining, being processed by prod's worker now).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → timeout 55 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@100.53.89.222 "echo '=== DB load (active queries) ==='; PGPASS; timeout 55 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@100.53.89.222 "echo '=== query owners (pid/app/started) ==='; ; timeout 55 ssh -i ~/.ssh/NELANCO_aws_20201122.pem -o ConnectTimeout=15 ubuntu@172.31.90.25 "echo '=== killing sync script (dup compute) ==='; …(+2 more)
 
