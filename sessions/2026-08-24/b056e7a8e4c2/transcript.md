@@ -304,21 +304,25 @@ No hits on either dimension. Let me check what dimensions ARE recorded for the C
 ### 🤖 Autopilot
 
 The spec only records the mold **tray** dimensions (27.5×17.5cm), not the cavity/bar dimensions. Let me read the Santos spec to see if bar dimensions are recorded anywhere.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary, this is helpful — now we have concrete cavity dimensions to match. The DAO spec records only the **tray** size (27.5×17.5cm, 4×50g cavities), never the cavity dims, so these numbers aren't in any DAO doc. Let me check whether the Dongguan MHC-CL082 (the alternative mold Jerri quoted) is a real product with those cavity dimensions.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the **MHC-CL082 is a real product: polycarbonate mold, 58mm × 125mm per cavity** — exactly the dimensions you gave. Let me pull the Alibaba listing for details (price, MOQ, cavities) to cross-check the quantity story.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dimensions verify it precisely. Let me do one final check for any order/purchase record of the model number in email, then summarize.
+[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -378,6 +382,7 @@ Extracted text:
 ### 🤖 Autopilot
 
 Let me look at how the ledger handles asset custody before recommending the accounting treatment — checking the event docs, lineage-assets conventions, and the ledger's asset tabs.
+[3 tool result(s) compacted: lookup_event_docs, list_directory, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -506,4 +511,71 @@ Here's what the records show is in **Elizabeth Wong's (Liz's) possession** — a
 3. **Currencies tab** entry + **OPEN_FOLLOWUPS** note (get invoice; confirm wrapper foil sized to 58×125, not Kirsten's 55×128).
 
 Want me to submit the INVENTORY MOVEMENT with the photo now? And do you have Jerri's quoted unit price to book the cost?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14110] was there any transaction ever associated with MHC-CL082?
+
+
+### 🤖 Autopilot
+
+Let me search across all transaction surfaces for MHC-CL082.
+
+
+### 🤖 Autopilot
+
+Let me do two final checks — transcripts and the offchain transactions sheet for any mold purchase.
+
+
+### 🤖 Autopilot
+
+Let me scan the full offchain transactions tab for any mold purchase line to be complete.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the transactions artifact — recent transactions (2026) sit at the bottom of the sheet.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the transactions sheet (2026 entries at the bottom).
+
+
+### 🤖 Autopilot
+
+The artifact paging is recursive. Let me directly read the bottom rows of the transactions tab — the 2026 entries sit there.
+
+
+### 🤖 Autopilot
+
+The existing mold transaction (Val's 26 × "Chocolate Mold - 4 X 6 slots", Feb 2025) is the only mold purchase visible so far. Let me confirm the very end of the ledger — the 2026 entries.
+
+
+### 🤖 Autopilot
+
+**No.** There is **zero** transaction history associated with MHC-CL082 anywhere in the DAO systems. I checked every surface:
+
+| Surface checked | Result |
+|---|---|
+| **Main Ledger — `offchain transactions`** (full tab, ~390 rows) | ❌ No MHC-CL082 line. The **only** mold transaction ever recorded: `20250228 — "Receipt of chocolate mold" — 26 × "Chocolate Mold - 4 X 6 slots" → Val Lapidus` |
+| **`offchain asset location`** | ❌ No MHC line. Only the two legacy mold rows (Val: 26× $1.19; Kirsten: 50× "Chocolate Mold from Rusty" $10) |
+| **Currencies tab** | ❌ No MHC-CL082 entry |
+| **Gmail** (admin + gary) | ❌ 0 messages matching MHC-CL082 / MHC CL082 |
+| **Org-wide code search** | ❌ Only hit = the plan doc itself |
+| **Transcripts (90d)** | ❌ Nothing |
+| **QR ledger** | ❌ N/A (molds aren't QR-coded) |
+
+The **only** place MHC-CL082 appears anywhere: **AORA_EXPERIENCE_PLAN.md** (June 2026) — twice, both as plan text: *"Jerri also found a Dongguan factory with MHC-CL082 model in stock … quotation received."* That's it. A quotation was received — **no PO, no payment, no shipment, no custody entry ever followed it on the ledger.**
+
+## What this implies for the accounting question
+
+This is the important part: **the 10 molds were never bought through the DAO.** No money moved on the ledger, no invoice is in DAO email. So the "evidence" (Kirsten's Henderson-box photo + your dimension match) is the *first recorded trace* of these molds existing as physical objects — and it's external to the ledger.
+
+Before we book anything, we need to answer: **who actually paid for the 10 molds?**
+- **If Liz/Jerri paid personally** → they are **not DAO assets**. They're Liz's equipment, shipped to Kirsten for the Aora production. The right treatment is a **loaned-equipment note** (like the Cabrellon mold is "DAO property loaned per cycle" — except here ownership would be Liz's, not DAO's), or nothing on the ledger at all.
+- **If the DAO paid** (e.g. Gary reimbursed Jerri off-ledger) → then we book a **purchase** (expense → asset line) + the custody move to Kirsten, and we need the invoice amount.
+
+Do you know who funded the purchase? That decides whether the ledger entry is a DAO asset booking or just a custody/follow-up note.
 
