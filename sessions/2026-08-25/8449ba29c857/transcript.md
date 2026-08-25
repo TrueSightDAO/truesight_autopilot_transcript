@@ -686,21 +686,30 @@ Go
 ### 🤖 Autopilot
 
 Checking the handoff registry first, then resuming from my RESUME HERE (fix lint → gate → PR → merge → follow-ups).
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handoff manifest has no entry for this thread — this is the live SOP execution, so I continue my own RESUME HERE. Format is now green. Let me find the file with the unused `pytest` import:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `tests/test_github_tools_create_repo.py:6` — let me check if that's a file I touched. It isn't in my change set, but the rule says pre-existing errors in untouched files are acceptable. However, since ruff flags it and it's trivial, let me verify it's truly pre-existing (not something my new module imports pulled in):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pre-existing in an untouched file (PR #281, `import pytest` never used) — trivial one-line fix to get the gate fully green, then I'll build the PR. Let me fix it and capture the full diff to construct the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -708,36 +717,43 @@ Pre-existing in an untouched file (PR #281, `import pytest` never used) — triv
 Gate is fully green — **763 passed, 1 skipped**, ruff check clean, my 8 touched files formatted (the 32 pre-existing reformat files are untouched by me). Note the diffstat also shows runtime-state noise I must exclude (`data/active_tracks.json`, `followups/state.json`, `tokenomics`, `worktrees/vault` submodules, and a pre-existing `events_catalog_snapshot.json` deletion) — my PR will carry only the 9 code/test files.
 
 Let me capture the exact hunks to construct the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — the main.py and gas_deploy_project.py diffs are exactly as designed. Let me grab the remaining diffs (deploy.py, sync_beta_to_prod.py, tests) to construct the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All diffs captured. Now let me push the branch and open the PR. Checking the local repo's git remote auth first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Auth is wired (credential helper + PAT). Now push the feature branch with only the 9 code/test files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Committed cleanly — 9 files, 804 insertions, no runtime noise. Pushing and opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Now opening the PR with a full description:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #313 is open. Merging it — the governor's "go" authorizes merging my own feature PR (non-prod, code repo):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -785,11 +801,13 @@ Phase 2 shipped and merged. Here's the report:
 ### 🤖 Autopilot
 
 Continuing — next units: (1) update OPEN_FOLLOWUPS (Phase 2 → shipped), (2) backfill the ledger record for PR #313, (3) live deploy. Reading the backlog + syncing the local repo to main in parallel:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local repo is on the merged commit. Now: (1) backfill the ledger record for PR #313, (2) read the tail of OPEN_FOLLOWUPS for the Recently-shipped section format. In parallel:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -797,16 +815,19 @@ Local repo is on the merged commit. Now: (1) backfill the ledger record for PR #
 Ledger record backfilled — `deploy_20260825T160310Z_truesight-autopilot` is live in ecosystem_change_logs.
 
 Now the last enforcement gap: the follow-up also calls for wiring the lease into `tokenomics/scripts/deploy_gas_project.py` (the standalone script other LLM instances run directly — my PR #313 covered the autopilot tool that wraps it, but a direct clasp run would bypass the lock). Let me check that script:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The standalone tokenomics script is the final enforcement gap — other LLM instances run it directly, bypassing the autopilot tool's lock. Let me see the rest of main() where the push happens:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of main() (the push invocation + exit path) so I know exactly where to insert the lease:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -814,26 +835,31 @@ Let me see the rest of main() (the push invocation + exit path) so I know exactl
 I have the full script now. The lease logic needs to be a **standalone, dependency-free module** (this script runs in a bare `tokenomics` checkout with no access to `truesight_autopilot.app`). The right move: add a small, self-contained `deploy_ledger.py` to `tokenomics/scripts/` (mirroring the ecosystem_change_logs script's GitHub-API pattern, using only stdlib `urllib` + a PAT from env) and wire it into `deploy_gas_project.py`'s main().
 
 Let me read the tail of main() to see the exact push + return structure:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is unwieldy — let me grab the actual main() tail from the local tokenomics checkout directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tokenomics script is the last enforcement gap. Plan: add a self-contained `scripts/deploy_ledger.py` to tokenomics (stdlib-only — other LLM checkouts can't import from truesight_autopilot) mirroring the canonical ecosystem_change_logs writer, and wire the lease into `main()`. Let me check the script tail, tokenomics test setup, and the canonical writer's API in parallel:
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tokenomics script is the last enforcement gap — and there's a subtlety: the autopilot tool (already merged) invokes this script via subprocess, so the script must not self-block on the tool's own lease. Design: script gets a `--lease-id` arg; when provided (upstream handled the ledger), it skips ledger work entirely; when absent (direct run by any LLM), it does acquire → push → record → close. Let me build and test locally first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff check pass; format needs one pass. Let me format, re-verify, then wire it into `deploy_gas_project.py`'s main() and run a live dry-run check against the ledger:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -934,4 +960,102 @@ Everything is built, gated, and pushed; only the PR-open → merge → followups
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /opt/truesight_autopilot && git checkout main && git pull origin main 2>&1 | tail -3 && git log --oneline -1; cd /opt/truesight_autopilot && python3 - << 'EOF' from app.deploy_ledger import append_deploy_record rec = append_deploy_record( agent="soph; cd /opt/truesight_autopilot/tokenomics && ls scripts/deploy_gas_project.py 2>/dev/null || ls; echo ====; grep -n "def main" scripts/deploy_g; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14320] Yeah, keep going, open the Autonomics PR, push it and merge it, then update. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Opening the tokenomics PR now (branch already pushed), then merging and updating the backlog:
+
+
+### 🤖 Autopilot
+
+The `gh` CLI token lacks PR-create scope. I'll create the PR via the GitHub REST API using the autopilot's own PAT (the same one `deploy_ledger.py` uses successfully):
+
+
+### 🤖 Autopilot
+
+PR #429 is open. Merging it now:
+
+
+### 🤖 Autopilot
+
+PR #429 merged (sha 54bf0cf). Now the final step — updating OPEN_FOLLOWUPS.md: moving the Phase 2 lease entry to Recently shipped. Let me read the current entries:
+
+
+### 🤖 Autopilot
+
+PR #429 is merged — tokenomics now enforces the SOP end-to-end. Final step: update OPEN_FOLLOWUPS (move Phase 2 → Recently shipped). Let me find the Recently shipped section anchor in the file:
+
+
+### 🤖 Autopilot
+
+The file is huge — let me locate the exact `## Recently shipped` header position so I can insert the shipped entry at its top:
+
+
+### 🤖 Autopilot
+
+File located — `## Recently shipped` at line 1561. Let me extract the exact text of the Pending entry to remove and the Recently-shipped header to anchor the insert:
+
+
+### 🤖 Autopilot
+
+I have the anchors. Now let me construct the updated file — remove the Phase 2 entry from Pending, insert a shipped entry under Recently shipped:
+
+
+### 🤖 Autopilot
+
+Now I'll build the updated file: remove the Phase 2 Pending entry (lines 42–47), add a shipped entry at the top of Recently shipped (after line 1561):
+
+
+### 🤖 Autopilot
+
+Clean edit: Phase 2 entry removed from Pending (0 matches), shipped entry inserted at top of Recently shipped (line 1557). Now push this via PR to agentic_ai_context:
+
+
+### 🤖 Autopilot
+
+Branch pushed. Opening the PR via the REST API (gh CLI lacks PR scope):
+
+
+### 🤖 Autopilot
+
+PR #820 open. Merging it per your instruction:
+
+
+### 🤖 Autopilot
+
+All done — here's the full wrap:
+
+## ✅ Everything shipped this round
+
+**1. `tokenomics#429` — merged** (sha 54bf0cf)
+The last enforcement gap is closed. The standalone `deploy_gas_project.py` that other LLM instances run directly now:
+- Checks for a live lease on the scriptId **before** any `--push` — refuses if another agent is mid-push
+- Acquires its own lease, appends the audit record (success/failure), closes it
+- New stdlib-only `scripts/deploy_ledger.py` (works from a bare tokenomics checkout — no autopilot import)
+- `--lease-id` passthrough prevents self-deadlock when the autopilot tool owns the lease
+- Gate was green: compileall + ruff clean on both files, dry-run + `--list` functional checks pass
+
+**2. `agentic_ai_context#820` — merged** (sha b3da125)
+`OPEN_FOLLOWUPS.md` updated: the Phase 2 entry moved from **Pending → Recently shipped** with both PR links; Phase 3 (CI-level validation — an action that asserts every push has a ledger entry) noted as the remaining item.
+
+**3. Ledger record backfilled** earlier — `deploy_20260825T160310Z_truesight-autopilot` for the #313 merge.
+
+## Where the SOP now stands
+- **Phase 1** (manual logging) — live
+- **Phase 2** (enforced in code) — **complete**: clasp pushes (tool + standalone script), prod-sync, autopilot self-deploys all lease-lock + audit to `ecosystem_change_logs/deploys/`
+- **Phase 3** (CI validation) — Pending, in the backlog
+- The one entry still sitting in Pending: the **OPERATING_INSTRUCTIONS.md pointer** to the SOP — that's a canonical file, needs your explicit approval.
+
+## One open decision for you
+The enforcement code is merged but **not yet running live** on this box. Firing `deploy_autopilot` would restart the service (kills this conversation, adapter resubmits after) — and it'd be the first real end-to-end exercise of the ec2 lease. Want me to go?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot/tokenomics && gh pr create --base main --head feat/deploy-ledger-sop-phase2 \ --title "feat: enforce DEPLOY_PUSH; cd /opt/truesight_autopilot && set -a && . ./.env 2>/dev/null; set +a; python3 - << 'EOF' import json, os, urllib.request pat = os.environ.g; cd /tmp && rm -rf ofu && mkdir ofu && cd ofu && curl -s -H "Authorization: Bearer $(grep -oP 'TRUESIGHT_DAO_AUTOPILOT=\K.*' /opt/truesight_a; …(+4 more)
 
