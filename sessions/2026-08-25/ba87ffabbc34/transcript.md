@@ -1433,6 +1433,7 @@ Let me check the PR diff via the GitHub API directly.
 ### 🤖 Autopilot
 
 Diff verified clean — 3 precise edits (+3/−3). Merging PR #307 to complete the unit (beta repo — prod promotion still awaits your explicit approval).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1486,6 +1487,7 @@ Onaya is **not a registered agent instance** in `agentic_ai_context/agents/` (on
 ### 🤖 Autopilot
 
 Great brief, Gary — two parts: (1) dig into the *actual measurement methodology* of phone-based tree growth monitoring, and (2) audit our existing SunMint DApp and propose the monitoring module we should build. Starting with both in parallel.
+[3 tool result(s) compacted: web_search, web_search, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1625,4 +1627,75 @@ Yes — and the era is already proving it. Here's my honest take.
 **And the mission tie-back:** 10,000 hectares of Amazon restoration *cannot* be done by a central survey team — it can only be done by thousands of communities of farmers, each with a phone, each an owner. The community model isn't just more relevant to this era — it's the only path that makes the mission possible at all.
 
 Want me to fold this into the whitepaper section — "community-first MRV, this era's proof"?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yeah, please vote this game into the white paper section and then, like, uh, generate an update on the consolidated PDF of what we have done so far, for some hint, uh, shared with, uh, Onaya. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it, Gary — three deliverables: (1) fold the community-first MRV framing into the whitepaper, (2) build the consolidated progress PDF, (3) share it with Onaya. Let me read the current whitepaper state first to target the edit precisely.
+
+
+### 🤖 Autopilot
+
+Let me read the full whitepaper body to find the exact sections to edit — particularly §6 (Project Activities), §7 (Traceability/Digital Verification), and §12 (Scaling) where the community-first MRV framing belongs.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining sections (§7 Traceability, §12 Scaling) to place the community-first MRV section precisely.
+
+
+### 🤖 Autopilot
+
+I have the full picture of the whitepaper structure. Now executing all three deliverables — whitepaper edit first (community-first MRV section under §7), then the consolidated PDF + Onaya handoff.
+
+
+### 🤖 Autopilot
+
+PR #308 opened. Now building the consolidated progress PDF and preparing the Onaya handoff.
+
+
+### 🤖 Autopilot
+
+PDF built (9.9 KB, 3 pages). Sending it to you and sharing with Onaya now.
+
+
+### 🤖 Autopilot
+
+All three deliverables done ✅
+
+## 1. Whitepaper — Community-First MRV section
+**PR [#308](https://github.com/TrueSightDAO/truesight_me_beta/pull/308)** opened on `truesight_me_beta` — "SunMint PDD §7: Community-First MRV — a decentralized sensing network." Adds:
+- **Farmer-as-node**: phone = sensor, self-sovereign signature, on-chain attestation (Greenstand/TREEO model)
+- **Layered verification**: phone → satellite (NOR) → drone calibration (PODream) → VVB
+- **Value-to-community**: ACORN ~80% to producers, Plan Vivo ≥60% requirement
+- **This era's precedents**: Plan Vivo participatory monitoring, ACORN, Greenstand, Open Forest Protocol, bean-to-bar movement
+- **Mission tie-back**: 10,000 ha can't be centrally surveyed — decentralization *is* the scaling mechanism
+- TOC updated with the new anchor
+
+*Beta-first — prod promotion still awaits your review + go.*
+
+## 2. Consolidated progress PDF
+📄 **`sunmint_consolidated_progress.pdf`** (3 pages) sent to this thread — the full picture:
+- Certification route decision (Plan Vivo pilot / Verra VM0047 scale)
+- Andean Cacao precedent + 13 phone-MRV precedents
+- The MRV stack (NOR + PODream + DApp + VVB)
+- The decentralized-model rationale
+- **Staged financing plan** (Stage 0–3 with sources)
+- Terra RFP opportunity + readiness gaps
+- Deliverables ledger + next steps
+
+## 3. Shared with Onaya
+✅ Handoff written: `handoffs/onaya_from_sophia_20260825T154056Z.json` — full context (certification route, precedents, MRV stack, financing stages, report locations, next actions).
+
+⚠️ **Same flag as before:** Onaya isn't a *registered agent instance* (only `sophia` and `bionpact` exist in the registry). The file is written and reviewable, but she won't auto-pick it up unless she's a live instance. Want me to also mirror the summary to **Bionpact** (registered) so it's guaranteed to be picked up?
+
+## RESUME HERE → next units (awaiting your go)
+1. **Merge PR #308** (or review the beta page first) + promote to prod via `sync_beta_to_prod`
+2. **Build `monitor_tree_growth.html`** — the farmer phone-monitoring module (calibration-card photo + DBH + allometric CO₂e + signed on-chain event + growth history)
+3. **Mirror the progress summary to Bionpact** if you want guaranteed pickup
 
