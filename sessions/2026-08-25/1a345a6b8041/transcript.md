@@ -93,21 +93,25 @@ Let me scan further down the ledger and check the rest of the artifact for any C
 ### 🤖 Autopilot
 
 The ledger is large. Let me check whether 2026 entries (the Chives chocolate-bar move era) live in this tab or the AGL8 ledger, and search mail for a Chives shipping receipt.
+[3 tool result(s) compacted: read_google_sheet, search_context, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledger extends past row 1600 into 2026. Let me scan the remainder for Chives/chocolate-bar entries and check for any expense event.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check where expense events land by reading the processing script, and search for any Chives/chocolate mentions.
+[3 tool result(s) compacted: search_code, search_context, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the already-pulled ledger data and the raw Telegram logs for "Chives".
+[2 tool result(s) compacted: recall_context, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -273,4 +277,75 @@ Your message asked me to *inspect* the file — recording the expense is the nex
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` ×2 → Script exited 2: usage: append_to_transcript.py [-h] --session-id SESSION_ID --content CONTENT --filename FILENAME --type {PDF,Image,Word} [; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-25/50b78ff41d77/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14326] Can you Help submit this as a expense report paid from the usd balance under my management via Edgar
+
+
+### 🤖 Autopilot
+
+Let me verify the submission format and check the USD balance under your management before submitting.
+
+
+### 🤖 Autopilot
+
+Let me check the exact submission format and how the receipt gets attached.
+
+
+### 🤖 Autopilot
+
+Explicit instruction received — submitting now. First, let me confirm Gary's USD balance under management and stash the receipt as proof, in parallel:
+
+
+### 🤖 Autopilot
+
+Receipt is uploaded as proof. Let me verify Gary's USD balance under management:
+
+
+### 🤖 Autopilot
+
+Gary's USD balance under management is **$4,769.61** — comfortably covers the $9.37. Receipt is uploaded as proof to `.github/assets/`. Submitting the expense now:
+
+
+### 🤖 Autopilot
+
+Submitted successfully. Let me verify it landed in the ledger pipeline:
+
+
+### 🤖 Autopilot
+
+Submission accepted by Edgar. Let me check whether it's flowed into the processing pipeline yet:
+
+
+### 🤖 Autopilot
+
+✅ **Done — expense submitted and accepted by Edgar.**
+
+## Summary
+| Item | Detail |
+|---|---|
+| **Event** | `[DAO Inventory Expense Event]` |
+| **DAO Member Name** | Gary Teh |
+| **Target Ledger** | `offchain` |
+| **Inventory Type** | USPS Ground Advantage Cubic shipping label (tracking 9234690324992842452216) |
+| **Inventory Quantity** | **9.37** (USD) |
+| **Description** | Pirate Ship shipping label — chocolate bars to Chives Root, Leavenworth WA |
+| **Receipt** | Uploaded → `https://github.com/TrueSightDAO/.github/blob/main/assets/20260812_usps_chives_root_shipping_9.37.pdf` |
+| **Submission Source** | `pirate_ship_receipt` |
+
+## Status
+- **Edgar accepted the submission** (no duplicate-guard rejection — it's a new event).
+- **Source of funds**: Deducted from **your offchain USD balance** (confirmed under your management: **$4,769.61** before this expense, so you're at **~$4,760.24** after).
+- **Processing**: The GAS webhook (`parseAndProcessTelegramLogs`) picks up the event from the Telegram Chat Logs and posts the deduction to the `offchain transactions` ledger tab. The receipt PDF is already attached to the event for the audit trail.
+
+## Note
+The `Telegram Chat Logs` sheet reads I did just now show the raw chat stream (this is where Edgar's events land as they process); the new row may take a minute to appear since the background dispatcher runs on a schedule. If it hasn't posted within ~5 minutes, I can trigger the GAS processing webhook manually — just say the word.
+
+Want me to set a watcher to confirm the ledger row appears, or trigger the processing now?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
