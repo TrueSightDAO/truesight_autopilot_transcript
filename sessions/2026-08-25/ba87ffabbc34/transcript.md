@@ -1379,31 +1379,37 @@ Let me check the agent registry for Onaya and read the rest of the whitepaper to
 ### 🤖 Autopilot
 
 Let me find Onaya in the agent registry and see the rest of the whitepaper.
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agents registry lives in `agentic_ai_context/agents/*.json` — let me find Onaya there and check the whitepaper's §8 tail.
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onaya appears only in the Brazil export-lane learnings as a collaborator (with Bionpact + Elizabeth Wong). Let me check the agents registry and that doc to understand who Onaya is and how to reach her.
+[2 tool result(s) compacted: read_context_file, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the agent registry for Onaya and make the whitepaper edit in parallel.
+[2 tool result(s) compacted: http_fetch, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agents registry only lists `bionpact.json` and `sophia.json` — no Onaya instance registered. Let me open the whitepaper PR with the edits and search org-wide for Onaya in parallel.
+[2 tool result(s) compacted: git_push_changes, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying the PR with the repo field, and attempting the handoff to Onaya.
+[2 tool result(s) compacted: git_push_changes, send_handoff — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1565,4 +1571,30 @@ My proposal (beta-first, one PR, following the existing page conventions):
 ---
 
 **Next step (needs your go):** I open a **draft PR in `dapp_beta`** implementing `monitor_tree_growth.html` (calibration-card photo + DBH + species allometric CO₂e + signed on-chain event + history view). It'll be a real page you can test on the beta site. Want me to proceed?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] So this ends up becoming a very decentralized model, isn't it? Via the sum in implementation. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — and that's exactly the right frame, Gary. This turns SunMint into a **DePIN + ReFi model** — decentralized physical infrastructure for reforestation. Let me break down why it's genuinely decentralized, layer by layer:
+
+**1. Data collection is decentralized.** Every farmer with a phone becomes a sensor node. TREEO-style calibration-card measurement means we don't need a central survey team — thousands of farmers measuring their own trees IS the data grid. You cannot send survey teams to 10,000 hectares; you can arm 10,000 farmers with phones. That's the only way the mission scales.
+
+**2. Identity and attestation are decentralized.** Each farmer holds their own RSA keypair in their own browser — self-sovereign identity. Every measurement is signed by the farmer's key like an oracle node attestation, landing on-chain as a tamper-evident event. No central authority controls the record.
+
+**3. Verification is multi-layered, not single-trusted.** Farmer phone data → cross-checked by satellite (NOR Space) → calibrated by drones (PODream) → audited by the VVB at credit time. Decentralized sensing, trusted verification only where credits are issued. That hybrid — trustless data, trusted credits — is what makes it bankable.
+
+**4. Value distribution is decentralized.** The ACORN model: 80% of credit revenue to farmers. Plan Vivo requires 60%+ to communities. The people who do the work keep the money — which is also what makes trees actually survive, because payment-per-verified-capture aligns incentives with survival, not just planting.
+
+**5. The ledger is decentralized.** Every event hits our chain as a signed record — the TrueChain audit trail — and the DAO itself is decentralized governance on top.
+
+And here's the beautiful part: **the decentralization isn't just ideology — it's what makes the mission economically possible.** Centralized MRV is too expensive for smallholder projects; farmer-phone MRV makes them viable. So the decentralized model is the *mechanism* by which we restore 10,000 hectares — it's the mission in operation, not just in theory.
+
+One honest nuance: fully decentralized sensing still needs the satellite and VVB layers to stay *credible* to buyers — so it's a spectrum, not a binary. But directionally: the farmer is the node, the DAO is the network, and the rainforest is the outcome.
+
+Want me to add this "decentralized MRV network" framing into the SunMint whitepaper — one short section on how the monitoring model is DePIN-by-design? It would strengthen the pitch to NOR, PODream, and Terra alike.
 
