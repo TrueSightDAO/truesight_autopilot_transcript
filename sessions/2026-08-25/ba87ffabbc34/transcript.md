@@ -2346,56 +2346,67 @@ Let me try two quick targeted checks for the actual tree QR code.
 ### 🤖 Autopilot
 
 Let me check the actual ledger sheet — the QR codes tab — to find the tree QR directly.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet output is large. Let me search it for the tree-related QR codes (ASSIGNED_TO_TREE status or tree currencies).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the tree-related currencies in the inventory to pinpoint the funded tree QR.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the tree QR codes directly — reading just the key columns to spot tree rows.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is large — let me search the QR codes repo for the actual planted-tree QR and check the transcript for the tree-link event.
+[2 tool result(s) compacted: search_code, list_matching_qr_codes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The definitive record is the `SunMint Tree Planting` tab. Let me read it directly.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the SunMint Tree Planting tab to find the row with a linked QR code (column R) — the funded tree.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Tree Planting Link tracking tab — that's where linked tree QR codes are recorded.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. The **first real (non-test) tree linked to a sold QR code** is **`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`** — linked 2026-08-22 by Gary Teh (row 11693), with its SunMint planting submission (`Edgar_20260821175134_006`). Let me confirm its landing-page URL so the link is right.
+[1 tool result(s) compacted: lookup_qr_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the first real funded tree is **`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`** (SunMint Tree Planting Pledge, status **ASSIGNED_TO_TREE**, owner paloma@founderhaus.club, ledger `truesight.me/sunmint/main`, linked 2026-08-22 by Gary). Now let me read the current whitepaper to make precise edits.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the whitepaper body to capture the exact sections I need to edit.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2531,4 +2542,52 @@ Which unit next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" | python3 -c "import sys; d=sy; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" -o /tmp/wp.html && python3 - <; cd /tmp && python3 - <<'EOF' d = open('/tmp/wp.html', encoding='utf-8').read() # EDIT 1: Plan Vivo-first certification decision old1 = 'Subm; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Hey, merge PR and promote the PROC and then share with me the PDF that's been updated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR #310, then promoting to prod.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #310 merged. Stopping here per the one-PR-per-turn rule — here's the report.
+
+## ✅ What I did this turn
+
+**Merged PR [#310](https://github.com/TrueSightDAO/truesight_me_beta/pull/310)** on `truesight_me_beta` — "SunMint PDD: Plan Vivo-first decision, free satellite APIs, PM002 equations, grants, milestones, First Tree proof" — **merged** (sha `ca6593e`).
+
+The whitepaper now contains (live on beta):
+- **§6** — Plan Vivo-first certification decision (PV Climate CCP-Eligible under ICVCM, PVCs >€30/t median 2025, ACORN/CommuniTree precedents, Verra only on demand for scale)
+- **§6 Monitoring** — free satellite APIs named (Copernicus CDSE, Planetary Computer, USGS EarthExplorer), drones deferred to post-pilot calibration
+- **§8** — PM002 accounting chain (Eq 1 ΔBGB=ΔAGB×R, R=0.32; Eqs 6.1/6.2 with 0.47 carbon fraction, 44/12, AR=10%, RB=20%)
+- **§12** — grants map, milestones M0–M8, and the **First Tree proof** (QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → ASSIGNED_TO_TREE, paloma@founderhaus.club, ledger truesight.me/sunmint/main)
+
+## ⏸️ Not yet done (next units — awaiting this turn's boundary)
+
+Per the one-PR-per-turn rule I stopped after the merge. Your instruction was a 3-part chain; parts 2–3 are queued:
+
+1. **Promote to prod** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` (you explicitly approved promotion in your message ✅ — I'll run it as the very next action)
+2. **Share the updated PDF** — regenerate/send the v7 PDF (it already reflects all merged content; I'll re-confirm it matches the now-live whitepaper and send the final copy + repo link)
+
+## 📌 RESUME HERE → next unit
+Promote `truesight_me_prod` via `sync_beta_to_prod` → verify the canonical `truesight.me/sunmint/whitepaper/` page shows the Plan Vivo-first content → send you the updated PDF + link. (If the sync reports a conflict, I stop and report — never force.)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #310 on truesight_me_beta merged successfully (sha: ca6593e83086a4a3c9ab384956dc9336bce9fb96). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #310 on truesight_me_beta merged successfully (sha: ca6593e83086a4a3c9ab384956dc9336bce9fb96). Pull Request successfully merged
 
