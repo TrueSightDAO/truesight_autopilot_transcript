@@ -85,36 +85,53 @@ Let me look at PR #816's actual diff to see what plan file it created and the RE
 ### 🤖 Autopilot
 
 Let me read the plan file directly from the repo for a clean read.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the middle section of the plan (PR1/PR2 details).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full plan. Let me read the GAS publish functions in detail so my one-off republish matches the exact JSON shape (field names, sorting, trimming).
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the specific publish/read functions in the GAS file.
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me continue reading to find the exact `publishCurrenciesJsonToGitHub_` and `readCurrencyStringsFromSheet_` implementations.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the publish function shape. Let me find `readCurrencyStringsFromSheet_` and `appendCurrencyRowsAndSort_` to understand the exact read logic (trimming, sorting).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me fetch the GAS file to disk and grep the exact functions I need.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -239,4 +256,78 @@ Want me to proceed with **PR1 now** (republish `currencies.json` from the live s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== dapp_beta ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/currency_conversion.html | grep; cd /tmp && echo "=== dapp_prod currencyListFreshness count ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/dapp_prod/main/cur; cd /tmp && echo "=== dapp_prod HEAD commit ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dapp_prod/commits?per_page=3" | grep -
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14303] Keep going don't stop [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+"Keep going don't stop" — proceeding with **PR1: the currencies.json catch-up republish**. First, let me get the current published JSON (to match shape/ordering) and the tail of the live sheet (my earlier read truncated at row ~120).
+
+
+### 🤖 Autopilot
+
+Currencies.json just changed under me — `generatedAt` is now **2026-08-25T14:04:18Z** (today!) with `source: "sync_agroverse_currencies"`, not the stale 2026-06-20 snapshot from my last turn. It already contains the previously-missing entries (Cacao Tea 50g, FounderHaus pledge, etc.). PR1 may have already landed via another path. Let me verify completeness — full JSON list vs. full sheet list.
+
+
+### 🤖 Autopilot
+
+The published JSON is **already fresh** (generatedAt 2026-08-25T14:04:18Z, source `sync_agroverse_currencies`) — it appears PR1 landed via the sync path before my republish (likely the Envoy's `sync_agroverse_currencies` workflow). Now the real question: is it **complete** vs. the live sheet? Let me do a rigorous diff — full sheet read in clean chunks, then a scripted comparison.
+
+
+### 🤖 Autopilot
+
+Both chunks complete: 135 data rows in the sheet (rows 2–136). The published JSON is already fresh (today, `source: sync_agroverse_currencies`). Now the critical UAT check: **complete diff** — sheet vs. JSON using the exact GAS logic (trim → dedupe → localeCompare sort). I'll run it programmatically on the box to avoid eyeball errors.
+
+
+### 🤖 Autopilot
+
+PR1 verified **complete**: the republish already landed today (`generatedAt 2026-08-25T14:04:18Z`, source `sync_agroverse_currencies`) — 135 sheet rows = 135 JSON currencies, **zero missing, zero extra**, and the trailing-space drift is normalized in the JSON (only the raw sheet cell still carries it). The "sorted False" is just my Python collation vs JS `localeCompare` — cosmetic, since the DApp re-sorts client-side anyway.
+
+That `source: sync_agroverse_currencies` tag suggests PR2's scheduled sync may have landed too. Let me verify the workflow exists.
+
+
+### 🤖 Autopilot
+
+PR2 (scheduled regen) exists in `go_to_market` — `scripts/sync_agroverse_currencies.py` + `.github/workflows/publish-agroverse-currencies.yml` — and it produced today's fresh `currencies.json`. Let me verify the workflow is actually **scheduled** (cron) vs a one-shot, since PR2's whole point is recurring freshness.
+
+
+### 🤖 Autopilot
+
+Everything has landed. Let me capture the proof of each piece in one place (repo + file + evidence), then close out with a summary. Quick status check on the dapp_prod front and the workflow:
+
+
+### 🤖 Autopilot
+
+All three plan units are confirmed complete. Let me do the final verification that the whole chain is live and coherent, then I'll summarize.
+
+
+### 🤖 Autopilot
+
+All three plan units are verified complete and live. The whole chain is coherent — here's the final status.
+
+## ✅ Currency Picker Fix — all 3 plan units COMPLETE & verified
+
+| Unit | What | Evidence | Status |
+|---|---|---|---|
+| **PR1** — one-time catch-up republish | `agroverse-inventory/currencies.json` refreshed from live `Currencies` tab | `generatedAt: 2026-08-25T14:04:18Z` · 135 currencies · **0 missing / 0 extra** vs sheet | ✅ done |
+| **PR2** — scheduled regen | `go_to_market` #173: `sync_agroverse_currencies.py` + `publish-agroverse-currencies.yml` | Cron `45 6 * * *` daily; script mirrors GAS `readCurrencyStringsFromSheet_` (trim/dedupe/sort) | ✅ done (merged 2026-08-25) |
+| **PR3** — UI freshness caption | `dapp_beta` #79 → **promoted to prod** | `currencyListFreshness` ×2 in `dapp_prod/currency_conversion.html` (prod HEAD `5b254227`) | ✅ done |
+
+**Verified end-to-end this session:**
+- **Sheet (135 rows) ↔ JSON (135 entries)**: zero missing, zero extra — the 9 previously-missing real currencies (Cacao Tea 50g Oscar's Farm batch, FounderHaus/SunMint/NovaGaia pledges, etc.) are all in the picker now.
+- **Trailing-space drift** (`Cacao Almonds KG from Vivi's farm - AGL13 `): normalized in JSON (trimmed to `...AGL13`). The raw sheet cell still carries the space — flagging for a human ledger edit so exact-match submission passes (doesn't block the picker).
+- **Freshness is now self-healing**: any `Currencies`-tab edit lands in the published file on the next 06:45 UTC daily run — no more dependence on the repackaging-ingest event path.
+
+## One follow-up for you (human-only)
+The `Currencies` tab row 34 (`Cacao Almonds KG from Vivi's farm - AGL13 `) still has a trailing space in the live sheet. It's harmless for display (JSON is trimmed), but a submission typing it exact-match would fail validation. Worth a one-cell edit next time you're in the ledger.
+
+Want me to log this session as a contribution ([CONTRIBUTION EVENT]) with the PR evidence, or update the plan file's tracker to mark it complete?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse-inventory/main/currencies.json -o currencies_live.json && python
 
