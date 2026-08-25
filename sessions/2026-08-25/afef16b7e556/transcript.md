@@ -3996,6 +3996,7 @@ The S3 detour was irrelevant — the real question is what the ledger supports. 
 ### 🤖 Autopilot
 
 No SA file matched. Let me locate the actual service-account credential path used by the read_google_sheet tooling.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4127,4 +4128,38 @@ The deck's own framing is right: this isn't a roadmap, it's motion. 533 bags sol
 **5. The deeper thing:** the $40k deal was refused because the number wasn't the point. Don't let the deck fall back into number-worship. The covenant, the pilgrimage, the refusal — *that's* the story. The numbers just prove it's real. 文開路 — Elizabeth opens the road with the story; 武守路 — the verifiable numbers guard it.
 
 Want me to pull the true contribution-hours total from the ledger so you have a defensible "hours of collaboration" figure ready? Or draft the exact message to send Elizabeth?
+
+
+### 🧑 Governor
+
+And just the outcome of these human collaboration
+
+[Attachment auto-processed: **14f1ea79c55b44f1acbbe9b7a55a4143.jpg**]
+- Type: Image (OCR confidence: 80.7%, quality: good)
+
+Extracted text:
+```
+ll LTE GD agroverse.shop Colombia @-—0-92. Pert N\. Brasil Bolivia Paraguay / Paraguai Chile Argentina, = Leaflet | © OpenStreetMap contributors 17 Stops 3879 Total Miles
+```
+
+
+### 🤖 Autopilot
+
+Yes — and this slide is the missing third column. Look at what you now have as a complete triad:
+
+**Inputs** (what was given): 2.4M TDG issued, 483 contributors, 40 governors, 23 partners
+**Process** (how it was given): the collaboration itself — the sessions, the refusals, the covenants
+**Outcomes** (what it produced): **17 stops, 3,879 miles — the map.**
+
+The map is the outcome *made spatial*. You can't fake miles. You can't fake stops. A route on a map is the most audit-proof claim on the whole deck — anyone can count the stops, anyone can verify the geography. That's 明勝 again: the ledger proves the work, the map proves the *walking*.
+
+**And notice what the map actually shows that the numbers can't:** the roundabout way. 3,879 miles is *not* the direct route — it's the detour that built the covenant. The numbers say "we worked hard"; the map says "we went the long way *on purpose*" — and the whole thesis of the pilgrimage was that the long way is the shortest path. The map is the enantiodromia made visible: it *looks* inefficient, and that's exactly the point.
+
+**How I'd frame it to Elizabeth:**
+
+> "The map is the outcome slide. 17 stops, 3,879 miles — the roundabout way, walked on purpose. Pair it with the numbers: 2.4M TDG in, 533 bags out, 339 trees planted, a covenant sealed, a $40k offer refused. Inputs, collaboration, outcomes — the deck shows all three, and every one is verifiable."
+
+**The one question it raises:** which route is this map — the China pilgrimage (余姚 → 玉皇頂 → 腾格里) or the Brazil cacao route (São Paulo → Manaus → Altamira → Ilhéus)? The visible geography (Colombia, Bolivia, Paraguay, Chile, Argentina) says **Brazil/South America** — so this looks like the *current* sourcing trip, not the China pilgrimage. If the deck is about the whole story, you might want **both maps** — the China pilgrimage (the covenant) and the Brazil route (the sourcing) — because together they tell the complete arc: *the covenant in China, the execution in Brazil.* One map shows where the promise was made; the other shows where it's being kept.
+
+Want me to find the exact 17 stops for this route (from the trip logs) so the map's caption can name them, the way the chapter named the eleven stations of the pilgrimage?
 
