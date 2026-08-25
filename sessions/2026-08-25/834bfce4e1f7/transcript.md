@@ -255,16 +255,19 @@ The deploy aborted partway — it staged both hosts (including `seni_sk_nelanco`
 ### 🤖 Autopilot
 
 Both hosts reachable. The full script may have choked on the SSH-keepalive wrapper or precompile. The critical piece — restarting the Rails app — I can do directly and safely. Executing the restart now (this is the actual deploy step).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rails restarted — new PID 903050, started Aug 25 15:10:24. Now verifying it's actually serving the PR3 code (lead-in trim + shading) and the app is healthy on the port.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rails 6.0.0 booted clean (new PID 903050, WEBrick on 3002). The `SIGTERM` FATAL was just the old process shutting down on restart — normal. The 400 was my port-probe hitting WEBrick with an empty line — harmless. Now the real UAT check: fetch `/large_spikes` with auth and confirm it renders the new code (lead-in trim, `fill:'start'` shading).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -405,4 +408,63 @@ PR4 merged. Per the one-PR-per-turn rule I'm pausing here — the deploy runs in
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #1130 on sentiment_importer merged successfully (sha: 5e2203232d1431a1bc55f645e2baa05fc479256e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] [Handoff context — this Telegram topic (thread 14313) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Now go ahead and deploy. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] Done??
+
+
+### 🤖 Autopilot
+
+Deploying now — pulling PR4 onto the box first.
+
+
+### 🤖 Autopilot
+
+HEAD = `5e220323` (PR4). Now restarting the Rails service — let me confirm the unit name and restart.
+
+
+### 🤖 Autopilot
+
+Service confirmed: `seni_ror.service`, PID 904266 (started 15:57:56). To load PR4's code I need a restart regardless of when the current process began. Restarting now:
+
+
+### 🤖 Autopilot
+
+The pgrep caught my own command string, and the port grep came up empty — likely Rails was still booting (eager_load takes >8s). Checking the real process + boot log:
+
+
+### 🤖 Autopilot
+
+Rails is up — new PID 904568, WEBrick listening on port 3002, clean boot. Now the Sidekiq worker, matching the earlier deploy pattern:
+
+
+### 🤖 Autopilot
+
+Deploy complete. ✅
+
+**What's live now on perch.truesight.me (all four PRs):**
+- **PR1** — Norm reads the same 30-day Bollinger window (no more stuck-near-0)
+- **PR2/PR3** — lead-in trimmed (chart starts at first real reading, no dead month), below-Norm zone shaded gray
+- **PR4** — the one you just approved: orange over-extended zone now shades **above** the upper Bollinger band (not flooding below it), and the legend reads "Daily breakout participation" / "Over-extended zone — stop chasing"
+
+**Deploy verified:**
+- seni_ror Rails: new PID 904568, WEBrick on 3002, clean boot (Rails 6.0.0)
+- seni_sk_nelanco Sidekiq: restarted, active
+- Git HEAD on box = `5e220323` (PR4 merge)
+
+**Your UAT (reload the page):** the orange should now be a *thin top band* above the dashed orange line, and the green line — at today's 12.33% — should sit well below it, in the clear band between gray and orange. Legend: "Daily breakout participation."
+
+If it renders right, this arc is done. Want me to close out the plan tracker + HANDOFF_MANIFEST (all 4 PRs merged+deployed) via an agentic_ai_context PR, and flag the recurring deploy-gap (nothing auto-deploys on merge) in OPEN_FOLLOWUPS?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/sentiment_importer && git fetch origin master 2>&1 | tail -2 && git checkout master 2>&1 | tail -1 && git pull origin master; cd /home/ubuntu/sentiment_importer && (systemctl list-units --type=service --no-pager 2>/dev/null | grep -iE 'seni|sentiment|perch|puma|rail; sudo systemctl restart seni_ror && sleep 8 && echo '=== status ===' && systemctl is-active seni_ror && echo '=== new pid ===' && ps -o pid,l; …(+2 more)
 
