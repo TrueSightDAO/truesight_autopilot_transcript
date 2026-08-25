@@ -2512,11 +2512,13 @@ The file is ready locally with all 4 edits. Now pushing via PR using exact liter
 ### 🤖 Autopilot
 
 PR #310 is open with all 4 whitepaper edits applied. Now generating the companion PDF (v7) with the same content — Plan Vivo-first, grants, milestones, and the First Tree proof.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v7 generated. Sending it to you and uploading to the repo.
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2740,4 +2742,62 @@ The guard is doing its job — a deploy lease (held by me, from the earlier whit
 **One thing to flag:** this is the second time `sync_beta_to_prod` has misbehaved (tooling bug first, then lease guard). If you want, next turn I can also file a small fix PR in `truesight_autopilot` for the `delete() ... json` bug — it's a genuine tooling defect worth logging (self-improvement loop, one small PR).
 
 Say "go" (or just prompt me again after ~30 min) and I'll retry the promotion and verify the live page.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Hey, if you got how much time you spent on this researching for today, look at the time stamps in your transcription and then come back to me. I mean, you and me time spent. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull the transcript timestamps to compute the time spent today.
+
+
+### 🤖 Autopilot
+
+The session folder for this thread is `ba87ffabbc34` (present again today under 2026-08-25). Let me pull the transcript file and its timestamps.
+
+
+### 🤖 Autopilot
+
+The transcript file is 165KB — large. Let me fetch it and extract the timestamps to compute time spent.
+
+
+### 🤖 Autopilot
+
+The transcript's only timestamp is the deploy lease. Let me inspect the actual message format in the file to find the real timestamps.
+
+
+### 🤖 Autopilot
+
+The transcript doesn't record per-message timestamps — but the transcript repo's commit history does. Let me check when this session's file was created and updated.
+
+
+### 🤖 Autopilot
+
+Let me extract the commit timestamps from the transcript history to compute the session span.
+
+
+### 🤖 Autopilot
+
+Here's the time accounting for today, Gary — straight from the transcript repo's commit timestamps (session `ba87ffabbc34`):
+
+## Time spent today (2026-08-25)
+
+- **Session window:** 15:18:00 UTC → 16:13:51 UTC
+- **Total wall-clock: ~56 minutes** of "you and me" time — first message to the latest write
+- **21 transcript write-events** in that window (every message batch we exchanged gets committed)
+
+The rhythm of the work in that 56 minutes, from the commit spacing:
+- **Big research blocks** (the longest gaps — up to ~6 min each): the phone-MRV deep dive, the grant research, and the PDF builds
+- **Rapid-fire delivery stretches** (gaps as short as 22–26 seconds): the PR merges, the PDF sends, the whitepaper edits — that's the "ship it" pace
+
+**One honest caveat:** these are wall-clock spans between transcript commits — they include the research/tool execution time, not just our typing. And the session is still live (the deploy lease at 16:13:31Z is from a minute ago), so we're at roughly **~1 hour and counting** for today.
+
+If you want, I can also pull the same numbers for the earlier days of this thread (the 08-16 and 08-18 sessions) to get the full multi-day total — just say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot_transcript/main/sessions/2026-08-25/ba87ffabbc34/tra; cd /tmp && head -60 t.md; echo '===='; grep -nE '2026-08-2[0-9]' t.md | head -30; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/commits?path=sessions/2026-08-25/ba87ffabbc34/transcript.m
 
