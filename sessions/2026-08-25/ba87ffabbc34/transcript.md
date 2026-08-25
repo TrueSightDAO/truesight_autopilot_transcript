@@ -3392,21 +3392,25 @@ Let me look at the app structure and an existing script pattern (like ocr_image.
 ### 🤖 Autopilot
 
 P2 now — the Python analysis worker. Writing it locally, testing, then pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile OK; CLI guard works as designed (requires video/photo). Testing the PM002 math directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PM002 math correct. Fixing the lint issues (unused imports) and formatting before push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass. Pushing P2 now.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3454,11 +3458,13 @@ Correction from Gary on sequencing — do NOT run P1a/P1b/P2 in parallel. Order:
 ### 🤖 Autopilot
 
 Acknowledged, Gary — sequencing correction accepted: **P1a first (finish fully) → then P1b → then mobile work, and clarify the "mobile apps" vs P2 question before starting step 3.** Let me check the plan doc to answer that question authoritatively, and confirm P1a's state.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest confirms a **separate SunMint Mobile App plan** exists. Let me read it to answer the P2-vs-mobile question precisely.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3655,4 +3661,114 @@ The spec had scoped the **backend leg** as **P4 (2 d)** — which violates the c
 2. **Ledger implication for each measurement:** should each monitoring measurement **book a ledger entry** (like planting/linking do), or is the **per-tree JSON history + tracking sheet** the record until credit issuance?
 
 Once you confirm those two, P1a is complete end-to-end and I proceed to P1b/P2/P3 with the full attribution chain in place.
+
+
+### 🧑 Governor
+
+Researched Gary's video-storage architecture question directly (config.py, GITHUB_AGENTIC_AI_SSH policy references, SUNMINT_TREE_QR_LINKING_PLAN.md, live GitHub API checks) rather than guessing:
+
+ANSWER: reuse TrueSightDAO/sunmint. It is already in truesight_autopilot/app/config.py's api_only_repos list, explicitly commented as a "blob / asset store (Contents-API uploads)" -- i.e. it is ALREADY the established repo for exactly the pattern Gary described (PAT/Contents-API upload only, never git clone/push, meant to grow with binary blobs over time). It is already used this way for tree-planting photos today (images/ folder; SUNMINT_TREE_QR_LINKING_PLAN.md documents column O "GitHub Commit URL" = photo mirrored to TrueSightDAO/sunmint images/). Checked live: repo is currently 2.7MB, default branch main, zero existing GitHub Actions workflows -- clean slate, no conflicts.
+
+RECOMMENDED DESIGN:
+1. Add a videos/ folder in TrueSightDAO/sunmint (parallel to the existing images/), uploaded via the same upload_file_to_github Contents-API tool (app/tools/upload_file_to_github.py) already used elsewhere in this codebase.
+2. Add one GitHub Actions workflow in that repo, on: push with paths: [videos/**], that kicks off the PM002/OpenCV Python analysis the moment a video lands -- Contents-API PUTs are real git commits, they DO fire normal push events/webhooks, so this works without inventing a new trigger mechanism.
+3. That Action commits the analysis result back into the same repo (e.g. videos/<id>/analysis.json, or similar, referencing the video) -- this gives Gary exactly the "publicly auditable via GitHub Actions" property he described, using the Actions run log + the resulting commit as the audit trail.
+4. REAL CONSTRAINT to design around: GitHub's Contents API (used by upload_file_to_github) hard-caps at 25MB per file (see _MAX_UPLOAD_BYTES in that tool). Confirm whether typical tree-monitoring video sizes fit under that, or the pipeline needs client-side compression/trimming before upload, or extend to the Git Data API (larger blob limit, ~100MB) if 25MB is too small for real footage.
+5. This is complementary to (not a substitute for) the earlier RSA-signed-event question -- design both together. The signed event (whatever you land on, e.g. [TREE GROWTH MONITORING EVENT]) should carry/reference the resulting GitHub Commit URL from this pipeline, the exact same pattern the existing SunMint tree-planting flow already uses (its "Photo of Tree Planted" + "GitHub Commit URL" columns).
+
+Confirm this design (or flag anything that does not fit reality on your end) before starting P1a's build, alongside the still-open RSA-event question from my last message.
+
+
+### 🤖 Autopilot
+
+Solid research, Envoy/Gary. Before I confirm, let me verify the facts against reality on my end — config.py, the sunmint repo state, and the upload tool's cap.
+
+
+### 🤖 Autopilot
+
+Repo state confirmed (public, 2.7MB, `images/` only at root, no workflows visible — clean slate). Now verifying the config.py `api_only_repos` entry and the 25MB upload cap.
+
+
+### 🤖 Autopilot
+
+Search index missed them — let me pull the exact files directly.
+
+
+### 🤖 Autopilot
+
+All facts verified against the code and the live repo — **your design fits reality**. Here's the confirmation with three reality-checks.
+
+## ✅ Verified (matches your research exactly)
+
+| Claim | Verified |
+|---|---|
+| `sunmint` in `api_only_repos` as blob/asset store | ✅ `config.py`: listed under *"# blob / asset stores (Contents-API uploads)"* with `.github`, `qr_codes`, `store_interaction_attachments` |
+| Repo is the established tree-photo store | ✅ public, 2.7 MB, description *"all the photos submitted for our DAO's tree planting efforts"*; **`images/` is the only folder** at root; default branch `main` |
+| Zero workflows — clean slate | ✅ no `.github/` anywhere at root |
+| 25 MB Contents-API cap | ✅ `_MAX_UPLOAD_BYTES = 25 * 1024 * 1024` in `upload_file_to_github.py`, with explicit error path |
+
+## ✅ Design confirmed — with 3 reality-checks to fold in
+
+**1. Who PUTs the video into `videos/`?** The farmer's browser POSTs the signed multipart (video attached) to **Edgar**, not directly to GitHub. So the `sunmint/videos/<submission_id>.mp4` upload happens **server-side** — same mirroring mechanism that already puts planting photos into `images/` (the flow documented in `SUNMINT_TREE_QR_LINKING_PLAN.md` column O). **Confirm:** the mirror step lives in the GAS handler (alongside `process_tree_planting_telegram_logs.gs`), which then fires the Contents-API PUT → which triggers the workflow. This keeps the client untouched (no PAT on farmer phones — critical).
+
+**2. The 25 MB cap is live but comfortable** — with a guard: a 20s 720p walk-around is ~5–20 MB (fits), but a longer recording at high bitrate blows past it. So the client should **cap recording at ~20s / 480p and reject uploads > 20 MB** with a "re-record" prompt. (If you later want longer footage: Git Data API blob limit is ~100 MB — a P4+ option, not needed for v1.)
+
+**3. Workflow mechanics** — `on: push paths: [videos/**]` fires on Contents-API PUTs (they're real commits, as you said). The workflow must declare **`permissions: contents: write`** explicitly (GITHUB_TOKEN default is read-only) so it can commit `videos/<submission_id>/analysis.json` back. Per-video-id output paths = no race between concurrent uploads. Public repo = **free Actions minutes**, and the run log + result commit is exactly the public audit trail you want.
+
+## How it threads through the signed event (the complete chain)
+
+```
+Farmer app: RSA-signs [TREE GROWTH MONITORING EVENT] (tree_id, DBH, gps, captured_at)
+  → POST multipart (video) to Edgar
+GAS handler: validate sig → PUT video → sunmint/videos/<id>.mp4
+  → workflow fires: PM002 analysis → commits videos/<id>/analysis.json
+GAS handler: reads analysis.json → append measurement row (dedup by Telegram msg ID)
+  → write per-tree JSON history → log to Telegram Chat Logs
+Event record carries BOTH GitHub Commit URLs (video + analysis.json) —
+  same pattern as planting's "Photo + Commit URL" columns
+```
+
+This resolves the earlier RSA-event gap in the same stroke: the signed event is the attribution anchor, and the GitHub URLs it carries are the auditable evidence — **no retrofit needed**.
+
+## The two decisions still open (from my last message — need your word to build)
+
+1. **Backend leg moves INTO P1a scope** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate → mirror video → read analysis → row+history+Telegram log), sequential PRs. Agree?
+2. **Ledger implication per measurement** — book a ledger entry per measurement (like planting/linking), or is per-tree JSON history + tracking sheet the record until credit issuance?
+
+Confirm those two + the GAS-mirror step (#1 above) and I start building the P1a backend leg.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Answer to Gary's video-storage architecture question: reuse TrueSightDAO/sunmint. It is ALREADY configured in truesight_autopilot's api_only_repos list, explicitly documented as a 'blob / asset store (Contents-API uploads)' -- meaning it is already the DAO's established never-git-clone-never-push, PAT-Contents-API-only repo, and it is already used this exact way for tree-planting photos (images/ folder, column O = GitHub Commit URL). Currently only 2.7MB, no existing GitHub Actions workflows -- clean slate. Recommend: add a videos/ folder there (parallel to images/), one GitHub Action (on: push, paths: [videos/**]) that kicks off the PM002/OpenCV Python analysis the moment a video lands (Contents-API PUTs are real commits, they do fire push events), and have that Action commit the analysis result back into the same repo (e.g. videos/<id>/analysis.json) referencing the video -- giving Gary exactly the public GitHub-Actions-log auditability he described. One real constraint to design around: GitHub's Contents API (used by the existing upload_file_to_github tool) hard-caps at 25MB per file -- confirm typical monitoring-video sizes fit that, or the pipeline needs client-side compression/trimming before upload, or you extend to the Git Data API (higher blob limit) if needed. This is a separate concern from the earlier RSA-signed-event question -- design both together: the signed event (e.g. [TREE GROWTH MONITORING EVENT]) should carry/reference the resulting GitHub Commit URL, same pattern as the existing planting-photo column.
+
+
+### 🤖 Autopilot
+
+Confirmed — I already verified every claim against the actual code last turn, and your design holds up 100%. Quick re-confirmation so we're locked:
+
+## Verified facts (already checked against source)
+
+- ✅ `sunmint` is in `api_only_repos` under *"blob / asset stores (Contents-API uploads)"* — PAT/Contents-API only, never git clone/push
+- ✅ Already used for tree-planting photos today (`images/` folder; column O "GitHub Commit URL" pattern in SUNMINT_TREE_QR_LINKING_PLAN.md)
+- ✅ Live repo: public, 2.7 MB, only `images/` at root, **no workflows** — clean slate
+- ✅ `_MAX_UPLOAD_BYTES = 25 * 1024 * 1024` confirmed in `upload_file_to_github.py`
+
+## The design (agreed, fully consistent with reality)
+
+1. **`videos/` folder** in `TrueSightDAO/sunmint`, parallel to `images/` — mirrored server-side by the GAS handler (farmer's browser POSTs to Edgar; **no PAT ever touches farmer phones**)
+2. **One GitHub Action** — `on: push`, `paths: [videos/**]`, `permissions: contents: write` — runs the PM002/OpenCV analysis the moment a video lands (Contents-API PUTs are real commits → real push events)
+3. **Action commits `videos/<submission_id>/analysis.json`** back into the repo — the run log + result commit = the public audit trail
+4. **25 MB cap is handled:** client caps recording at ~20s / 480p and rejects uploads > 20 MB ("re-record" prompt); Git Data API (~100 MB blobs) is the P4+ extension if we ever need longer footage
+5. **Signed event carries the GitHub Commit URLs** — `[TREE GROWTH MONITORING EVENT]` (client RSA-2048 → Edgar) with the video URL + analysis URL in the payload, exactly like planting's photo + commit-URL columns
+
+This fully resolves the earlier RSA-event gap in the same design — **no retrofit**.
+
+## What I still need from you to start building (2 decisions + 1 confirm)
+
+1. **Backend leg INTO P1a scope** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate sig → mirror video to `sunmint/videos/` → read `analysis.json` → append measurement row with dedup → per-tree JSON history → Telegram Chat Logs), sequential PRs. **Agree?**
+2. **Ledger implication per measurement** — book a ledger entry per measurement (like planting/linking), or is per-tree JSON history + tracking sheet the record until credit issuance?
+3. **Confirm the GAS-mirror step** (video PUT from the handler, not the client) matches your intent.
+
+Say "confirmed — build it" (with your answers to 1 & 2) and I start the P1a backend leg immediately.
 
