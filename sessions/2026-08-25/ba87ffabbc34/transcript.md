@@ -2824,11 +2824,13 @@ If you want, I can also pull the same numbers for the earlier days of this threa
 ### 🤖 Autopilot
 
 Let me pull the full multi-day picture for this thread's session to split your time vs my time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me split the message blocks in today's transcript to estimate your time vs my time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2870,11 +2872,13 @@ If you want it exact, I can add per-message timestamps to the transcript recordi
 ### 🤖 Autopilot
 
 Let me verify the contribution event format first, then submit both reports.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitting both contribution reports now — Gary's time and my time, separately.
+[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2907,6 +2911,7 @@ Anything else on the SunMint execution, or shall I leave the prod promotion (sti
 ### 🤖 Autopilot
 
 Let me quickly check how the current DApp handles uploaded photos, so I ground the video answer in our real architecture.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2968,6 +2973,7 @@ Draw a spec with the video capture for the, yeah, and then also the Python Analy
 ### 🤖 Autopilot
 
 Building the full spec — implementation plan, roadmap, and checklist — then PDF + handoff to Bionpact. Let me write the spec document first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3091,4 +3097,73 @@ Say "go P1a / P1b / P2" (or all) and I'll start the first PR.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/report_tree_planting.html" -o rtp.html && grep -nE 'crypto; cd /tmp/sunmint && python3 - << 'EOF' import re p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # 1) Update Module A ; cd /tmp/sunmint && grep -n "3.1 Page" monitor_tree_growth_spec.md; echo '---'; sed -n '/### 3.1/,/### 3.2/p' monitor_tree_growth_spec.md; ec; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Which means that when user brings up the monitor module, it should detect near by trees ordered from closest to furthest and then allow the farmer to pick from the drop down and then start the monitoring video recording
+
+
+### 🤖 Autopilot
+
+Great UX refinement, Gary — nearby-tree detection via GPS proximity (Haversine sort, closest → furthest) feeding a dropdown, then recording. Let me fold that into the spec (v1.2) and regenerate the PDF.
+
+
+### 🤖 Autopilot
+
+One of the exact-match strings drifted (the P1 roadmap row from the v1.1 edit). Let me check the actual current text.
+
+
+### 🤖 Autopilot
+
+The request contract is real JSON (my replacement assumed a simpler block). Fixing the remaining edits with exact strings.
+
+
+### 🤖 Autopilot
+
+Spec v1.2 updated with the nearby-tree GPS flow. Regenerating the PDF and delivering.
+
+
+### 🤖 Autopilot
+
+PDF v1.2 generated. Sending and uploading.
+
+
+### 🤖 Autopilot
+
+Done ✅ — spec v1.2 is out with the nearby-tree UX flow.
+
+## What's new in v1.2
+
+**§3.1.1 Nearby Tree Selection (UX flow):**
+1. Open monitor module → app reads device GPS
+2. Pulls farmer's registered trees (each with lat/lng from planting event)
+3. **Ranks closest → furthest** (Haversine distance)
+4. Farmer picks from dropdown → **Start Monitoring Video** button enables
+5. **Distance badges per tree** ("12 m", "48 m", "203 m") so the farmer can literally walk to the nearest tree
+
+**§3.1.2 Haversine formula** included (client-side JS, pure function, no backend round-trip)
+
+**Fallbacks handled:** GPS unavailable → "All trees" (alphabetical / last-measured first); offline → last-known GPS + cached registry; manual tree-ID search.
+
+**Data contract updated** — the signed request now carries `nearby_trees: [{tree_id, distance_m}]` context at capture time (useful audit evidence for the VVB: proves the farmer measured *that* tree at *that* spot).
+
+**Roadmap/checklist updated** — P1 now 4–5 d, with the Haversine dropdown as an explicit checklist item.
+
+**Delivered:**
+- 📄 PDF v1.2 sent to thread (msg 14553) — 6 pages
+- 📎 Uploaded: `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_monitor_tree_growth_spec_v1.pdf` (sha `84d3042`)
+
+This completes the spec for the monitor module — the full loop is now: **open app → GPS → nearest trees dropdown → pick → record walk-around with calibration card → signed upload → Python analysis (DBH → allometric → PM002 CO₂) → on-chain event → growth history.**
+
+## 📌 RESUME HERE → next build units
+- **P1a:** `monitor_tree_growth.html` in `dapp_beta` (PR, incl. Haversine dropdown) — needs your go
+- **P1b:** `sunmint/monitor-tree-growth/index.html` in `truesight_me_beta` (PR) — needs your go
+- **P2:** Python worker MVP (OpenCV + PM002) in `truesight_autopilot` — needs your go
+
+Say "go P1a / P1b / P2" (or all) and I'll start the first PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/sunmint && python3 - << 'EOF' p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # 1) Bump version d = d.replace; cd /tmp/sunmint && grep -n "P1 — Browser" monitor_tree_growth_spec.md; echo '---contract---'; sed -n '/### 3.2 Data contract/,/### 3.3/p' mo; cd /tmp/sunmint && python3 - << 'EOF' p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # Version bump d = d.replace('*
 
