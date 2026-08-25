@@ -807,21 +807,25 @@ Same error — the safe.directory I set went to `/root/.gitconfig` but the unit'
 ### 🤖 Autopilot
 
 `git as root` now works (the `*` safe.directory took effect). The earlier failures were from the safe.directory not being applied in the root shell systemd uses. Let me restart sidekiq:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still failing — checking the log to see the current failure point:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The safe.directory isn't being picked up in systemd's context. Let me check how seni_ror's unit handles the user (to mirror it) and find sidekiq's actual first error line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the root cause is fully clear. **`seni_ror.service` has `User=ubuntu` — `seni_sk.service` has NO `User=` line**, so its whole chain runs as root. And the `chown -R root ./` ExecStartPre was there to support that. The clean fix: mirror seni_ror — set `User=ubuntu`, drop the chown line, and make the tree ubuntu-owned. Applying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -829,21 +833,25 @@ Now the root cause is fully clear. **`seni_ror.service` has `User=ubuntu` — `s
 **Sidekiq is UP.** The root cause was a systemd unit bug: `seni_sk.service` ran everything as **root** (no `User=`), so its `chown -R root ./` re-rooted the whole app tree on every restart, which then broke Rails' log/pid writes and git's ownership checks — a self-inflicted permission whack-a-mole. Fixed by mirroring `seni_ror.service`: `User=ubuntu` + removed the chown + one-time ownership reset.
 
 Final verification that both services + the new chart code are live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidekiq was up a moment ago (PID 907220, booting at 97% CPU) but now shows **failed** — it died after boot. Checking the crash reason:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidekiq booted fully (all cron jobs registered) then exited code=1 a moment later — need the actual exit reason. Let me get the journal lines right before the failure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The trace points to `config/environment.rb:5` — need the actual exception line just above this stack. Let me see the few lines before it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -889,11 +897,13 @@ Sidekiq down = background jobs paused (cron reports, spike/notifier workers, cac
 ### 🤖 Autopilot
 
 On it — capturing the actual exception that kills Sidekiq at boot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the real error: **`Missing secret_key_base for 'production' environment`**. Sidekiq boots as root→ubuntu context change, and the secret env isn't in its environment. Let me check how `seni_ror` gets its secret (it boots fine) vs `seni_sk`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1025,4 +1035,44 @@ Note: `SECRET_KEY_BASE` stays in the repo unit files (pre-existing practice — 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /home/ubuntu/sentiment_importer && echo '=== repo deploy dirs ===' && ls -d deploy config/deploy script scripts ops 2>/dev/null ; echo '=; cd /home/ubuntu/sentiment_importer && echo '=== repo canonical seni_sk.service ===' && cat config/systemd/seni_sk.service && echo '=== LIVE ; cd /home/ubuntu/sentiment_importer && sed -n '40,150p' deploy.sh; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] Hey, merge it, and then how much time do you think you and me spend separately on fixing this chart? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR #1132 now, then I'll give you the time breakdown.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**✅ Merged:** PR #1132 (drift-proof systemd units) — sha `656feb89`, on `sentiment_importer` master. Next real deploy will auto-install the canonical units, so the sidekiq-style drift can't recur.
+
+**RESUME HERE →** optional next unit: close out the arc — update the plan tracker + HANDOFF_MANIFEST (PR1–PR6 all merged; chart deployed; sidekiq fixed), add the secrets-manager hardening entry to OPEN_FOLLOWUPS, and optionally re-run `./deploy.sh --skip-migrate` once to prove the new install_unit path works end-to-end on the live box. No code left pending.
+
+---
+
+**Now your question — time spent on the chart, me vs you.** Honest estimate:
+
+**Me (Sophia): roughly 4–5 hours of real work** on the chart arc itself:
+- ~1.5h: PR1 diagnosis (the Norm stuck-near-0 bug — reading the Bollinger math, confirming the 30-day window)
+- ~1.5h: PR2/PR3 legibility work (lead-in trim, zone shading) + the discovery that **the real problem wasn't code — it was a 7.5-week deploy gap** (merged Aug 24, process still running July 5 code). That's where a big chunk of time went: verifying the serving topology, restarting, re-verifying.
+- ~1h: PR4 + PR5 (your two design catches — fill direction, legend) — these were genuinely fast once you'd spotted the issues; your instincts saved me from re-deriving them
+- Plus ~2–3h of ops overhead that *shouldn't* have been needed: the sidekiq unit drift saga (permission whack-a-mole → secret_key_base) — that's not chart work, that's the "no auto-deploy + drifted units" tax. It's now fixed for good by PR #1132.
+
+**You (Gary): roughly 45–75 minutes** — and that's not flattery, it's structural: your time was almost entirely *discrimination* — a screenshot to confirm PR1 live, "the shading is below the line, it's wrong," "the legend is confusing," "the clear area should be green" — five or six sharp observations, each maybe 2–5 minutes, that re-directed the work. You never wrote code or ran anything; you did the high-value part.
+
+**The uncomfortable takeaway:** the *code* was ~1–2h of the total. The rest was making it visible — deploy gap + broken units. PR #1132 removes most of that tax going forward. If you want, I can log this in the plan tracker so the next chart iteration starts from "deploy works, units canonical" instead of re-discovering it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #1132 on sentiment_importer merged successfully (sha: 656feb89afdc4b9d067e09ab6c4b7621efca0191). Pull Request successfully merged
 
