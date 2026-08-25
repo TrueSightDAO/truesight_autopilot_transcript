@@ -911,11 +911,13 @@ Found it — the real error: **`Missing secret_key_base for 'production' environ
 **Root cause found.** `seni_ror.service` carries `Environment="SECRET_KEY_BASE=…"` (+ RAILS_ENV, EDGAR_FULL_HOST) in its unit — but `seni_sk.service` has **no Environment lines at all**. Sidekiq boots without the secret → `Missing secret_key_base for 'production'`. (The `# source .profile` lines in the unit are commented out, so no fallback.)
 
 Clean fix: mirror seni_ror — copy its Environment lines into seni_sk's unit. Doing it with grep/sed on the box so the secret never round-trips through chat:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Sidekiq is UP and processing — "Starting processing, hit Ctrl-C to stop" with all queues loaded (project_collaboration, algo_trader, reporting, tsd, png_charter, backtesting, etc., concurrency 8).** The secret_key_base fix worked. Let me confirm stability (didn't die 10s later like last time) and do a final all-green check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1075,4 +1077,41 @@ Merging PR #1132 now, then I'll give you the time breakdown.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #1132 on sentiment_importer merged successfully (sha: 656feb89afdc4b9d067e09ab6c4b7621efca0191). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] Okay, then lock the contribution of yours and mine separately. Yeah. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Locking in the contribution records — let me check the event schema and how contributors are registered first.
+
+
+### 🤖 Autopilot
+
+Schema confirmed — CONTRIBUTION EVENT with Type/Amount/Contributor. Locking both records now: mine (chart arc + deploy/ops) and yours (design direction), separately.
+
+
+### 🤖 Autopilot
+
+Both contribution records are locked in. ✅
+
+| Contributor | Type | Amount | Description |
+|---|---|---|---|
+| **Sophia Truesight** | Time | **360 min (6h)** | Chart arc PR1–PR6 (Norm fix, lead-in trim, shading, fill-direction, green GO band, systemd drift-proofing) + ops: deploy-gap diagnosis, service restarts, seni_sk unit fix |
+| **Gary Teh** | Time | **60 min (1h)** | Design direction & QA: confirmed PR1 live, flagged fill-direction bug, flagged legend ambiguity, proposed green-GO-band recolor, approved all merge/deploy gates |
+
+Both submitted as CONTRIBUTION EVENTs via Edgar — **separate records, separate contributors**, as you asked. (TDG Issued = 0, so no token movement — that stays governor-gated if you want to award TDG later.)
+
+Notes:
+- The 6h/1h split matches what I estimated: your time was the high-leverage discrimination, mine was the execution + the ops tax (deploy gap + unit drift) that's now fixed for good.
+- If you want TDG attached to either, or a different minute count, just say — I can file a correction.
+
+The chart arc is complete: PR1–PR6 all merged, chart live with the traffic-light gauge, workers green, units drift-proof. Anything else on this arc, or shall I close out the plan tracker?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
