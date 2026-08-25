@@ -2458,31 +2458,37 @@ Stopping here per the turn limit — I've completed the critical research and ha
 ### 🤖 Autopilot
 
 Continuing the execution — first, let me get the exact §7–12 text I still need for the edits.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the last section of the whitepaper text (§8 tail, §9–12) for exact anchors.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab the exact tail of the whitepaper (§8–12) for precise edit anchors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have every anchor. Executing the full whitepaper PR now — Plan Vivo-first decision, free satellite APIs, PM002 equation chain, grants map, milestones, and the First Tree callout.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The escape-sequence mismatch — the file has literal em-dashes. Let me fetch the exact bytes and patch precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file uses literal UTF-8 characters (— and ≥), not escape sequences. Let me apply the edits locally with exact literals, then push the full file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2643,4 +2649,53 @@ Want me to proceed with merge → PDF v8 → prod promotion in the next turn?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" -o /tmp/wp2.html && python3 -
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead and merge the PR as well as consolidate the PDF, promote the prop once you're done. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Executing the full chain — merge PR #311, consolidate PDF v8, then promote to prod.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #311 merged and PDF v8 generated. Stopping per the one-PR-per-turn rule — here's the report.
+
+## ✅ What I did this turn
+
+**1. Merged PR [#311](https://github.com/TrueSightDAO/truesight_me_beta/pull/311)** — "SunMint PDD §12: cacao-sales flywheel funds the carbon-certification pipeline" — **merged** (sha `bbd6276`).
+
+The whitepaper now carries the cacao-sales self-funding flywheel (§12): a share of cacao/chocolate sales is reserved for the carbon-certification pipeline (PDD dev, VVB validation, monitoring) alongside the planting share — **the more chocolate sold, the more credits can be issued.**
+
+**2. Generated PDF v8** — `sunmint_consolidated_progress_v8.pdf` (9,229 bytes, 3 pages) — includes the cacao-sales flywheel in §5 (grants + flywheel), updated milestones (M2 now references PRs #294–#311), and the "Promoted to production 2026-08-25" footer line ready for the promotion step.
+
+## ⏸️ Not yet done (queued for next turn)
+
+Per the one-PR-per-turn rule I stopped after the merge. Remaining steps in your chain:
+1. **Send PDF v8** to this thread (generated, not yet delivered)
+2. **Upload PDF v8** to the repo (`truesight_me_beta/sunmint/reports/`)
+3. **Promote to prod** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` (you explicitly approved promotion in your message ✅)
+
+## 📌 RESUME HERE → next unit
+Deliver PDF v8 (send + upload) → `sync_beta_to_prod(prod_repo="truesight_me_prod")` → verify the canonical `truesight.me/sunmint/whitepaper/` page shows the merged Plan Vivo-first + cacao-flywheel content. If the sync reports a conflict, I stop and report — never force.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #311 on truesight_me_beta merged successfully (sha: bbd6276d462b74f2f0122d71ef22bf802119697d). Pull Request successfully merged
+• `generate_pdf` → PDF v8 generated (9,229 bytes, 3 pages)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #311 on truesight_me_beta merged successfully (sha: bbd6276d462b74f2f0122d71ef22bf802119697d). Pull Request successfully merged
 
