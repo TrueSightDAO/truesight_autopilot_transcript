@@ -2106,6 +2106,7 @@ Want me to **merge PR #309** next, or draft the **Stage 0 (~$5–10k) DAO capita
 ### 🤖 Autopilot
 
 Great observation — let me check if we have any gamification notes on the app's design loop.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2263,4 +2264,149 @@ Here's what the data shows:
 **My recommendation:** make **Plan Vivo the permanent home for smallholder plots** — it's cheaper, faster, community-aligned, pays better per tonne, and it's CCP-eligible. Keep **Verra in the back pocket only for the future scale phase** — the Amazon 10,000-hectare program, where institutional offtake volumes need VCS liquidity. That's a two-registry portfolio, not a switch: **Plan Vivo for the farmers, Verra only when a buyer demands it.**
 
 And here's the kicker — the whitepaper already says pilot = Plan Vivo, scale = Verra. So the plan already matches reality. Want me to update the PDF with this market data and the "Plan Vivo-first, Verra-on-demand" recommendation?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yeah, can you update a PDF as well as the white paper and then in their clearly state also the funding sources in terms of grants and then in both of them clearly indicate the milestones that will be executed in a thing against. I think it's great that now we have like one tree already funded. Can you point to that one tree that's already planted in the white paper as well as the PDF as well as the link through that URL of the QR code file so that people when they look at that PDF they know it's already real and the execution has started. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find the one tree already planted/funded — the QR code and its URL — so I can point to it in both documents.
+
+
+### 🤖 Autopilot
+
+Let me search the repos and transcripts for the planted tree and its QR code.
+
+
+### 🤖 Autopilot
+
+The plan doc `SUNMINT_TREE_QR_LINKING_PLAN.md` looks most relevant. Let me read it and the ERA cohort plan to find the actual first-tree QR code and its URL.
+
+
+### 🤖 Autopilot
+
+Let me find the specific first tree — checking for the actual planted tree QR code and its URL.
+
+
+### 🤖 Autopilot
+
+Let me check the actual ledger/QR records for a planted tree — the agroverse-inventory repo and the QR codes repo.
+
+
+### 🤖 Autopilot
+
+Let me find the actual first funded tree — checking the sunmint photos repo and lineage-assets for the tree's QR code and URL.
+
+
+### 🤖 Autopilot
+
+Let me find the actual tree QR code — checking lineage-assets (per-asset provenance for trees) and the transcript for the tree-planting QR.
+
+
+### 🤖 Autopilot
+
+Let me find the actual tree QR by checking the QR landing page pattern and searching for the tree-planting QR link in the repo.
+
+
+### 🤖 Autopilot
+
+Let me try two quick targeted checks for the actual tree QR code.
+
+
+### 🤖 Autopilot
+
+Let me check the actual ledger sheet — the QR codes tab — to find the tree QR directly.
+
+
+### 🤖 Autopilot
+
+The sheet output is large. Let me search it for the tree-related QR codes (ASSIGNED_TO_TREE status or tree currencies).
+
+
+### 🤖 Autopilot
+
+Let me check the tree-related currencies in the inventory to pinpoint the funded tree QR.
+
+
+### 🤖 Autopilot
+
+Let me find the tree QR codes directly — reading just the key columns to spot tree rows.
+
+
+### 🤖 Autopilot
+
+The sheet is large — let me search the QR codes repo for the actual planted-tree QR and check the transcript for the tree-link event.
+
+
+### 🤖 Autopilot
+
+The definitive record is the `SunMint Tree Planting` tab. Let me read it directly.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the SunMint Tree Planting tab to find the row with a linked QR code (column R) — the funded tree.
+
+
+### 🤖 Autopilot
+
+Let me check the Tree Planting Link tracking tab — that's where linked tree QR codes are recorded.
+
+
+### 🤖 Autopilot
+
+Found it. The **first real (non-test) tree linked to a sold QR code** is **`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`** — linked 2026-08-22 by Gary Teh (row 11693), with its SunMint planting submission (`Edgar_20260821175134_006`). Let me confirm its landing-page URL so the link is right.
+
+
+### 🤖 Autopilot
+
+Found it — the first real funded tree is **`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`** (SunMint Tree Planting Pledge, status **ASSIGNED_TO_TREE**, owner paloma@founderhaus.club, ledger `truesight.me/sunmint/main`, linked 2026-08-22 by Gary). Now let me read the current whitepaper to make precise edits.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the whitepaper body to capture the exact sections I need to edit.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining sections (7–12) to capture exact edit points.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Stopping here per the turn limit — I've completed the critical research and have everything needed to make the edits. Here's the state.
+
+## ✅ What I found this turn (the hard evidence)
+
+**The first funded tree — confirmed real and on-ledger:**
+- **QR code:** `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`
+- **Currency:** `SunMint Tree Planting Pledge - QR Code` · **Status:** `ASSIGNED_TO_TREE`
+- **Owner:** paloma@founderhaus.club · **Manager:** Gary Teh · **Ledger:** `https://truesight.me/sunmint/main`
+- **Linked:** 2026-08-22 by Gary (row 11693 in `Tree Planting Link` tracking tab — first real non-test link; earlier rows were E2E/test or rejected)
+- **Landing/QR page:** the QR encodes `https://edgar.truesight.me/agroverse/qr-code-check?qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → resolves to `truesight.me/sunmint/main`
+
+**Whitepaper current state captured** (full §6 Monitoring & Evaluation, §7 Community-First MRV, §8 GHG, §12 Scaling text in hand — all the exact edit anchors located).
+
+## 📌 RESUME HERE → what's next (the actual edits, one turn)
+
+1. **Whitepaper PR** (`truesight_me_beta/sunmint/whitepaper/index.html`):
+   - §6 Carbon Credit Development: add **Plan Vivo-first decision** with market data (PV Climate **CCP-Eligible under ICVCM**; PVCs **>€30/t median 2025**, above VCU; ACORN/CommuniTree precedent) — Verra only "on demand" for scale
+   - §6 Monitoring & Evaluation: keep lean stack, **name the free satellite APIs** (Copernicus CDSE, Planetary Computer, USGS)
+   - §8 GHG: add **PM002 equation chain** (already drafted) + **free-satellite baseline** note
+   - §12 Scaling: add **grants funding map** (Cocoa Horizons, Cocoa Life, Cargill, Fundo Vale, GCF+IICA, Gitcoin, CFC, FCF, iNovaland R$8.8M) + **milestones executed vs planned** (M0 ✓ mobile app shipped 2026-08-23 · M1 ✓ first tree linked 2026-08-22 · M2 ✓ whitepaper VM0047 correction · M3–M8 pending: grants, PDD, monitor module, VVB, Terra RFP)
+   - New: **"First Tree — Execution Has Started"** callout with the QR code + landing URL
+2. **PDF v7**: same content consolidated into the progress report (regenerate `sunmint_consolidated_progress_v7.pdf`, upload to repo)
+
+⚠️ Note: I have NOT yet made the PR or PDF — the research consumed the turn budget. Next turn starts directly with the two edits. Also still pending: PR #309 (lean stack whitepaper) is open and unmerged — I'll fold its content into the new PR or merge separately.
+
+**One thing I need from you:** confirm the **QR landing URL format** to print in the PDF — I'll use `https://edgar.truesight.me/agroverse/qr-code-check?qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` (the production scan pattern) unless you want the `truesight.me/sunmint/main` ledger URL shown instead.
 
