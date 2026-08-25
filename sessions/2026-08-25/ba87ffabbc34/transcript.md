@@ -1075,21 +1075,25 @@ Found the actual RFP submission form (Jotform). Let me extract the full question
 ### 🤖 Autopilot
 
 Good progress. I have the RFP structure and the form's section headers. Now let me fill the remaining gaps: Brazil's FCPF/UNREDD status (a preference criterion), the detailed form questions, and the chocolate-industry funding angle.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more verification pass — Brazil's FCPF/UNREDD status (a Terra preference criterion) and the exact Jotform questions so the RFP draft maps 1:1.
+[2 tool result(s) compacted: web_search, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need — the full RFP eligibility, the Jotform structure (7 sections), the Andean Cacao precedent details, VM0047 requirements, Brazil's FCPF/UNREDD status, and the chocolate-industry funding landscape. Now let me build the RFP response draft as a PDF you can review.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1129,11 +1133,13 @@ Which way do you want to lean?
 ### 🤖 Autopilot
 
 Building the capital plan into the RFP draft — itemized, staged, with timing and funding sources.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending the updated PDF now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1177,11 +1183,13 @@ All figures are planning estimates marked for refinement once we get the NOR quo
 ### 🤖 Autopilot
 
 Building v3 — per-stage capital source detail added to each stage.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sending v3 now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1234,6 +1242,7 @@ Want me to (a) draft the **Jotform submission text** ready to paste in, or (b) p
 ### 🤖 Autopilot
 
 Consolidating the comparison and handing it to Bionpact now.
+[1 tool result(s) compacted: send_handoff — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1263,6 +1272,7 @@ Handoff sent to Bionpact ✅
 ### 🤖 Autopilot
 
 Gary, this is a great research question — the "phone-camera tree monitoring for carbon credits" precedent question. Let me do a thorough deep dive across the web, academic literature, and carbon-standard sources. Starting with the first batch of searches.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1339,4 +1349,112 @@ Want me to (a) upload both files to the DAO repo for the record, (b) hand a summ
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/sunmint_phone_camera_tree_monitoring_research.md << 'EOF' # Smartphone Camera Monitoring of Tree Growth for Carbon Credit Program
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yeah, can you extend the sum in white paper with this precedence? So essentially, I guess it's such as the case that we'll be using the Vivo Registry, isn't it? Can you convey this over to Onaya in the pot so that she knows? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me first find who Onaya is in our agent registry, and pull the current whitepaper to plan the edit.
+
+
+### 🤖 Autopilot
+
+Let me check the agent registry for Onaya and read the rest of the whitepaper to plan the edit.
+
+
+### 🤖 Autopilot
+
+Let me find Onaya in the agent registry and see the rest of the whitepaper.
+
+
+### 🤖 Autopilot
+
+The agents registry lives in `agentic_ai_context/agents/*.json` — let me find Onaya there and check the whitepaper's §8 tail.
+
+
+### 🤖 Autopilot
+
+Onaya appears only in the Brazil export-lane learnings as a collaborator (with Bionpact + Elizabeth Wong). Let me check the agents registry and that doc to understand who Onaya is and how to reach her.
+
+
+### 🤖 Autopilot
+
+Let me check the agent registry for Onaya and make the whitepaper edit in parallel.
+
+
+### 🤖 Autopilot
+
+The agents registry only lists `bionpact.json` and `sophia.json` — no Onaya instance registered. Let me open the whitepaper PR with the edits and search org-wide for Onaya in parallel.
+
+
+### 🤖 Autopilot
+
+Retrying the PR with the repo field, and attempting the handoff to Onaya.
+
+
+### 🤖 Autopilot
+
+Both succeeded — PR #307 opened, and the Onaya handoff is queued. Let me verify the diff is clean before merging.
+
+
+### 🤖 Autopilot
+
+Let me fix the diff check — fetch the branch ref properly first.
+
+
+### 🤖 Autopilot
+
+Let me check the PR diff via the GitHub API directly.
+
+
+### 🤖 Autopilot
+
+Diff verified clean — 3 precise edits (+3/−3). Merging PR #307 to complete the unit (beta repo — prod promotion still awaits your explicit approval).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Both actions landed. Here's the turn report.
+
+## ✅ What I did this turn
+
+**1. Extended the SunMint whitepaper with the phone-camera MRV precedent + Plan Vivo pilot route**
+- **PR [#307](https://github.com/TrueSightDAO/truesight_me_beta/pull/307)** on `truesight_me_beta` — **merged** (sha `6c981bf`). Diff verified clean: 3 precise edits (+3/−3):
+  - **§6 Carbon Credit Development** — named the two-route certification: **pilot → Plan Vivo (PVCs)** (the ACORN/CommuniTree standard for cacao/coffee agroforestry: participatory monitoring, lower validation costs, ≥60% revenue to communities); **scale → Verra VM0047 + CCB** for corporate offtake
+  - **§6 Monitoring & Evaluation** — added farmer **smartphone tree-growth monitoring** (DBH/height/species via app + calibration card, per the ACORN/CommuniTree/TREEO model) cross-checked by satellite
+  - **§8 GHG estimation** — added the phone-MRV precedent paragraph (ACORN, CommuniTree, TREEO 1M+ trees @94–95%, Greenstand 500k+ trees, peer-reviewed R²≥0.95) + the Verra dMRV nuance
+
+**2. Answered the registry question — yes, Plan Vivo for the pilot.** The "Vivo registry" is Plan Vivo (PVCs). It's the standard the strongest cacao/coffee agroforestry precedents (ACORN, CommuniTree) actually certify under — faster, cheaper, community-aligned, and a perfect fit for our farmer-app model. Verra VM0047 remains the scale path for the Terra RFP.
+
+**3. Conveyed it to Onaya** via the handoff protocol — `handoffs/onaya_from_sophia_20260825T153516Z.json` written to the mailbox (full context: Plan Vivo decision, the 13-precedent research, PDF/MD report locations, NOR/PODream relationship).
+
+## ⚠️ One flag for you
+Onaya is **not a registered agent instance** in `agentic_ai_context/agents/` (only `sophia.json` and `bionpact.json` exist — Onaya appears only as a collaborator name in `BRAZIL_EXPORT_LANE_LEARNINGS.md`). The handoff file was written successfully, but if Onaya isn't a live instance, she won't auto-pick it up. Want me to route it to **Bionpact** instead (who is registered), or leave the file for Onaya's human-side review?
+
+## 📌 RESUME HERE → next units (awaiting your go)
+1. **Promote whitepaper to prod** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` after you review the beta page (canonical `truesight.me/sunmint/whitepaper/` is NOT yet updated)
+2. **Re-route the Onaya handoff to Bionpact** if you prefer (or confirm Onaya is a registered instance I should ping)
+3. **Decide the Plan Vivo vs Verra decision memo** — or move straight to drafting the **Jotform submission text** for Terra's RFP
+
+———
+**✅ Done this turn — actions taken:**
+• `git_push_changes` → PR #307 on truesight_me_beta (3 edits, +3/−3)
+• `send_handoff` → onaya_from_sophia_20260825T153516Z.json (success)
+• `ssh run` ×2 → diff verification
+• `http_fetch` ×2 → agents registry listing + PR #307 files diff
+• `merge pr` → ✅ PR #307 merged (sha 6c981bfe84158034926ab7ae5d9ccd99330f83c3)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf tm_check && git clone --depth 1 --filter=blob:none --sparse https://github.com/TrueSightDAO/truesight_me_beta.git tm_check
+• `merge pr` → ✅ PR #307 on truesight_me_beta merged successfully (sha: 6c981bfe84158034926ab7ae5d9ccd99330f83c3). Pull Request successfully merged
 
