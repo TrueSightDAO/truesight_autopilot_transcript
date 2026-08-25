@@ -117,26 +117,31 @@ Let me search the already-pulled ledger data and the raw Telegram logs for "Chiv
 ### 🤖 Autopilot
 
 Let me check the end of the ledger and scan the 2026 region for any Chives shipping expense entry.
+[2 tool result(s) compacted: read_google_sheet, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full advisory snapshot (recent activity digest) and scan the Telegram Chat Logs spreadsheet for any expense entry mentioning Chives.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the expense-processing script to see exactly which sheet/tab records these events, and check for a Chives record there.
+[2 tool result(s) compacted: read_repo_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the advisory snapshot's event stream and scan the 2026 region of the ledger for any Chives/chocolate shipping entry.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have enough to give a definitive answer. Let me do one more focused sweep of the 2026 rows (the Chives chocolate-bar move is from Aug 2026) for any Chives-related expense event, checking the row band 1920–end.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -207,6 +212,7 @@ Your Privacy Choices
 ### 🤖 Autopilot
 
 I'll inspect the receipt, persist it to the transcript, and confirm the canonical event type for recording it.
+[2 tool result(s) compacted: append_to_transcript, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -344,6 +350,38 @@ Submission accepted by Edgar. Let me check whether it's flowed into the processi
 The `Telegram Chat Logs` sheet reads I did just now show the raw chat stream (this is where Edgar's events land as they process); the new row may take a minute to appear since the background dispatcher runs on a schedule. If it hasn't posted within ~5 minutes, I can trigger the GAS processing webhook manually — just say the word.
 
 Want me to set a watcher to confirm the ledger row appears, or trigger the processing now?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14326] Hey, can you fall like a 5 minute contribution report by me for checking whether this expense has been filed? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check the canonical format for a contribution event, then file it.
+
+
+### 🤖 Autopilot
+
+Canonical format confirmed. Filing your 5-minute contribution now:
+
+
+### 🤖 Autopilot
+
+✅ Done — filed.
+
+**5-minute contribution report submitted:**
+- **Type**: Time (Minutes)
+- **Amount**: 5
+- **Contributor**: Gary Teh
+- **Description**: Checked whether the Chives Root USPS shipping expense ($9.37, tracking 9234690324992842452216) was on the ledger — confirmed it wasn't, then filed it as a DAO Inventory Expense Event against the offchain ledger.
+
+It's been accepted by Edgar and will earn TDG on the normal schedule. 🎙️
 
 ———
 **✅ Done this turn — actions taken:**
