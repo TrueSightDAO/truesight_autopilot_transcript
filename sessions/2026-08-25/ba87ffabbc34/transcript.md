@@ -2494,16 +2494,19 @@ The file uses literal UTF-8 characters (— and ≥), not escape sequences. Let 
 ### 🤖 Autopilot
 
 All 4 edits applied locally. Now pushing the full updated file as a PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now pushing the updated file via PR. Let me read the local file content to pass it.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is ready locally with all 4 edits. Now pushing via PR using exact literal UTF-8 strings (the file uses real — and ≥ characters):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2698,4 +2701,43 @@ Deliver PDF v8 (send + upload) → `sync_beta_to_prod(prod_repo="truesight_me_pr
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #311 on truesight_me_beta merged successfully (sha: bbd6276d462b74f2f0122d71ef22bf802119697d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yeah, send the pdfva to the strat and then upload to the repo and then promote the prompt. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Executing all three: send PDF v8, upload to repo, and promote to prod.
+
+
+### 🤖 Autopilot
+
+PDF sent + uploaded ✅. The prod promotion hit an internal tool error (`delete() got an unexpected keyword argument 'json'` — a tooling bug, not a sync conflict). Let me retry the promotion.
+
+
+### 🤖 Autopilot
+
+Delivered everything except the prod promotion — which is blocked by a deploy lease (not a conflict).
+
+## ✅ What I did this turn
+
+**1. PDF v8 sent to the thread** ✅ (message 14495)
+**2. PDF v8 uploaded to the repo** ✅
+`github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_consolidated_progress_v8.pdf` (sha `def2927`)
+
+**3. Promote to prod — BLOCKED (temporarily), not a conflict:**
+- First attempt: internal tool bug (`delete() got an unexpected keyword argument 'json'`) — a tooling defect, retried
+- Retry: **blocked by a live deploy lease** (DEPLOY_PUSH_SOP): `L-20260825-02`, agent `sophia`, started `2026-08-25T16:13:31Z`, **TTL 30 min**
+
+The guard is doing its job — a deploy lease (held by me, from the earlier whitepaper deploy window) is still open. Per the SOP I will **not force it**; the lease auto-closes ~30 min after 16:13:31Z, after which the sync can run cleanly.
+
+## 📌 RESUME HERE → next unit
+**Retry the promotion after the lease expires** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` (I'll run it as the very next action; it should clear once TTL lapses). Then verify the canonical `truesight.me/sunmint/whitepaper/` page shows the merged Plan Vivo-first + cacao-flywheel content.
+
+**One thing to flag:** this is the second time `sync_beta_to_prod` has misbehaved (tooling bug first, then lease guard). If you want, next turn I can also file a small fix PR in `truesight_autopilot` for the `delete() ... json` bug — it's a genuine tooling defect worth logging (self-improvement loop, one small PR).
+
+Say "go" (or just prompt me again after ~30 min) and I'll retry the promotion and verify the live page.
 
