@@ -1137,6 +1137,7 @@ Deploy tool says we're already running the merged commit — no restart needed. 
 ### 🤖 Autopilot
 
 The deploy tool's check is git-commit-based and thinks we're current — but the process evidence says otherwise: **the service processes started at 15:57, before #313's code landed on disk (module file dated 16:34)**. So the running service is actually stale pre-#313 code. A real restart is needed. Let me confirm the unit and restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1144,21 +1145,25 @@ The deploy tool's check is git-commit-based and thinks we're current — but the
 Confirmed: the service processes started **15:57** — before #313's code landed on disk (16:34). The running box is pre-#313; the deploy tool's commit-check missed it. A real restart is needed, which Gary approved. Per the SOP: acquire the ec2 lease → restart → verify → close lease + record.
 
 Since the currently-running code can't self-record, I'll do the lease + record manually:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pre-check is **clear** (no live lease — good). The acquire_lease signature differs from my recollection. Let me check the actual signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The signature is `acquire_lease(target_type, target_id, action)` — agent comes from `_AGENT` (module constant, sophia by default). Acquiring the lease and restarting now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lease `L-20260825-02` acquired (this is now the **first real live lease in the ledger** — history in the making). Now restarting the service. **This will sever this conversation** — the adapter resubmits after boot, per the note:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1304,4 +1309,37 @@ One caveat: journal spans the whole adapter, not per-thread, so ±15% on my side
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → curl -s -H "Authorization: Bearer $(grep -oP 'TRUESIGHT_DAO_AUTOPILOT=\K.*' /opt/truesight_autopilot/.env)" "https://api.github.com/repos/Tr; journalctl -u truesight-autopilot-telegram --since "2026-08-25 14:00" --until "2026-08-25 17:00" --no-pager 2>/dev/null | grep -iE "thread 1; journalctl -u truesight-autopilot-telegram --since "2026-08-25 14:00" --until "2026-08-25 17:00" --no-pager 2>/dev/null | grep -E "Sent voic; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14320] Great, can you follow the contribution report? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Logging the contribution now — checking the event format first:
+
+
+### 🤖 Autopilot
+
+Submitting the contribution — 3h agent + 35min governor, as one logged event:
+
+
+### 🤖 Autopilot
+
+✅ **Contribution logged.**
+
+- **Event:** CONTRIBUTION EVENT
+- **Type:** Time (Minutes) · **Amount:** 215 min total (~3h agent + ~35min you)
+- **Contributor:** Sophia Truesight + Gary Teh
+- **Description:** The full DEPLOY_PUSH_SOP buildout — Phase 1 (SOP doc `agentic_ai_context#818`, ledger scaffold), Phase 2 (enforcement: `truesight_autopilot#313`, `tokenomics#429`), backlog update `#820`, live-verified on ec2 (lease `L-20260825-02`, record `deploy_20260825T163751Z_autopilot`), all with evidence links.
+
+It's on the ledger now — TDG Issued left at 0 (that's a governor decision, not mine). If you want TDG for either of us, just say how much and I'll adjust or add a follow-up entry.
+
+That wraps the whole DEPLOY_PUSH_SOP job — Phase 1 + Phase 2 shipped, tested, live, and now recorded. The only open thread is Phase 3 (CI-level validation) sitting in OPEN_FOLLOWUPS whenever you want it. Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
