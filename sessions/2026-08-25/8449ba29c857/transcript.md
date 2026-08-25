@@ -379,46 +379,70 @@ Good — I have the deploy flow. Now let me find where the deploy marker is read
 ### 🤖 Autopilot
 
 Let me read the canonical deploy script in tokenomics and the startup marker consumers, plus the existing tests:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Let me see the rest of the deploy script main() to know exactly where the push result is known, and check the test conventions:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture of the deploy flows. Now I need to see how the autopilot authenticates GitHub writes (for the lease module) and how tokenomics scripts get a PAT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the content upload helper in github_tools.py to reuse for the lease module:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need. Let me check how the upload/commit works via httpx (the content API helper) so the lease module matches house style:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture now. Phase 2 = a shared lease/ledger module wired into all three deploy surfaces. Let me build `app/deploy_ledger.py` locally first, then wire it in.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me run ruff and the full local test gate on the module before wiring it in.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Module is clean. Now wire it into the three tools. Starting with `gas_deploy_project.py` — add the lease check before push and the ledger record after:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now `sync_beta_to_prod.py` — lease check + record around the sync:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -472,51 +496,61 @@ The groundwork is solid and validated — the only code blocker is that one miss
 ### 🤖 Autopilot
 
 Resuming Phase 2 — step 1: fix the missing `logger` in sync_beta_to_prod.py. Let me check its header and the deploy.py flow in parallel.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixing the missing logger in sync_beta_to_prod.py:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 sync_beta_to_prod.py is green. Now wiring `deploy.py` (autopilot self-deploy). Let me see the main deploy flow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of the deploy_autopilot flow to find the restart point:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the tail of deploy_autopilot where the restart fires:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me stop reading artifacts and directly locate the restart + final-return lines in deploy.py:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find where `_write_deploy_marker` is called so I can thread the lease through it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 deploy.py is a two-phase re-exec — I'll thread the lease via an env var into the deploy marker so the new process closes it. Let me view the phase-transition section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full deploy.py structure. Let me grab the exact snippets I need to patch (phase env var, `_post_pull_steps` restart block, remote-path return):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll wire deploy.py with the lease lifecycle (acquire in phase one, thread through phase two, record+close in the new process via the marker; remote path records directly):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -627,4 +661,101 @@ Converging — big progress this turn. Status:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → sed -n '1,30p' /opt/truesight_autopilot/app/tools/sync_beta_to_prod.py; echo ====; grep -n "def \|logger\|import " /opt/truesight_autopilot/; cd /opt/truesight_autopilot && python3 - << 'EOF' from pathlib import Path p = Path("app/tools/sync_beta_to_prod.py") s = p.read_text() s = ; cd /opt/truesight_autopilot && grep -n "def deploy_autopilot\|def _run\|def main\|def _do_deploy\|restart\|systemctl" app/tools/deploy.py | ; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14320] [Handoff context — this Telegram topic (thread 14320) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go
+
+
+### 🤖 Autopilot
+
+Checking the handoff registry first, then resuming from my RESUME HERE (fix lint → gate → PR → merge → follow-ups).
+
+
+### 🤖 Autopilot
+
+Handoff manifest has no entry for this thread — this is the live SOP execution, so I continue my own RESUME HERE. Format is now green. Let me find the file with the unused `pytest` import:
+
+
+### 🤖 Autopilot
+
+`tests/test_github_tools_create_repo.py:6` — let me check if that's a file I touched. It isn't in my change set, but the rule says pre-existing errors in untouched files are acceptable. However, since ruff flags it and it's trivial, let me verify it's truly pre-existing (not something my new module imports pulled in):
+
+
+### 🤖 Autopilot
+
+Pre-existing in an untouched file (PR #281, `import pytest` never used) — trivial one-line fix to get the gate fully green, then I'll build the PR. Let me fix it and capture the full diff to construct the PR:
+
+
+### 🤖 Autopilot
+
+Gate is fully green — **763 passed, 1 skipped**, ruff check clean, my 8 touched files formatted (the 32 pre-existing reformat files are untouched by me). Note the diffstat also shows runtime-state noise I must exclude (`data/active_tracks.json`, `followups/state.json`, `tokenomics`, `worktrees/vault` submodules, and a pre-existing `events_catalog_snapshot.json` deletion) — my PR will carry only the 9 code/test files.
+
+Let me capture the exact hunks to construct the PR:
+
+
+### 🤖 Autopilot
+
+Excellent — the main.py and gas_deploy_project.py diffs are exactly as designed. Let me grab the remaining diffs (deploy.py, sync_beta_to_prod.py, tests) to construct the PR:
+
+
+### 🤖 Autopilot
+
+All diffs captured. Now let me push the branch and open the PR. Checking the local repo's git remote auth first:
+
+
+### 🤖 Autopilot
+
+Auth is wired (credential helper + PAT). Now push the feature branch with only the 9 code/test files:
+
+
+### 🤖 Autopilot
+
+Committed cleanly — 9 files, 804 insertions, no runtime noise. Pushing and opening the PR:
+
+
+### 🤖 Autopilot
+
+Branch pushed. Now opening the PR with a full description:
+
+
+### 🤖 Autopilot
+
+PR #313 is open. Merging it — the governor's "go" authorizes merging my own feature PR (non-prod, code repo):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Phase 2 shipped and merged. Here's the report:
+
+## ✅ PR #313 merged — truesight_autopilot (sha 887dc8d)
+
+**`feat: enforce DEPLOY_PUSH_SOP deploy ledger across gas/prod-sync/autopilot deploys`** — 9 files, +804/−6. The lock is now enforced in code, not just documented:
+
+- **`app/deploy_ledger.py`** (new) — shared lease + audit module: `check_lease` (clear/blocked/error, 30-min TTL, fail-open on read errors), `acquire_lease`, `close_lease`, `append_deploy_record` (validates agent identity, requires evidence URL on success, rebuilds the feed manifest). All writes via GitHub Contents API.
+- **`gas_deploy_project.py`** — blocks any `--push` on a clasp scriptId with a live lease; acquires → pushes → records → closes. Result JSON gains `deploy_ledger`.
+- **`sync_beta_to_prod.py`** — lease on the prod repo before merge-upstream; records success/conflict/error; added the missing `logger`.
+- **`deploy.py` + `main.py`** — lease on ec2/autopilot threaded through the two-phase re-exec; fresh boot closes it and appends the success record.
+- **Tests** — 10 new ledger tests; gas-tool tests now hermetic (they were hitting the real API — which is how a stale test lease got written and then **blocked a duplicate push, proving the lock works**); nginx-restart mock updated; stray `pytest` import removed.
+
+**Gate was fully green before the push**: compileall ✅, ruff check ✅, ruff format ✅, **763 passed / 1 skipped** ✅.
+
+## Remaining (next units)
+1. **Update `OPEN_FOLLOWUPS.md`** — move the Phase 2 items from `## Pending` to Recently shipped, note Phase 3 (CI-level validation) stays pending → small `agentic_ai_context` PR.
+2. **Live deploy decision** — the new enforcement is merged but not yet running on this box. Firing `deploy_autopilot` restarts the service (severs this conversation; adapter resubmits after). It'll also be the first real end-to-end exercise of the ec2 lease itself. **I'll wait for your explicit go on that.**
+
+**RESUME HERE →** next turn: file the OPEN_FOLLOWUPS update PR (agentic_ai_context), then ask you for the go on the live deploy. Also worth noting: this PR itself was pushed without a lease record since the module went live in the same commit — Phase 1's `append_deploy_record.py` script already has the record for this push if you want me to backfill it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -B4 "unused import" | head -12; echo ====; python3 -m ruf; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -E "^[A-Za-z_/.]*\.py:|unused import" | head -6; echo ===; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -E "\.py:[0-9]+" | head -8; …(+8 more)
+• `merge pr` → ✅ PR #313 on truesight_autopilot merged successfully (sha: 887dc8d97c09d659f99ff445b5f83a25d59677a4). Pull Request successfully merged
 
