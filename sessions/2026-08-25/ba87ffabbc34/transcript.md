@@ -3470,6 +3470,7 @@ The manifest confirms a **separate SunMint Mobile App plan** exists. Let me read
 ### 🤖 Autopilot
 
 Now I have the authoritative answer to the clarification. Merging P1a to finish it fully (per your "go" + sequencing correction):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3771,4 +3772,92 @@ This fully resolves the earlier RSA-event gap in the same design — **no retrof
 3. **Confirm the GAS-mirror step** (video PUT from the handler, not the client) matches your intent.
 
 Say "confirmed — build it" (with your answers to 1 & 2) and I start the P1a backend leg immediately.
+
+
+### 🧑 Governor
+
+Design change from Gary: switch monitoring capture from VIDEO to a single PHOTO of the measurement around the tree (with the calibration/reference object in frame for scale), matching how TREEO (certified dMRV tool, Global Tree C-Sink standard) does it -- still photo + photogrammetry/allometry, not video. This also resolves the file-size concern outright: a photo comfortably fits well under GitHub's 25MB Contents API limit, no special duration/bitrate capping logic needed at all.
+
+Update P1a/P1b scope accordingly:
+- Capture UI takes a single photo, not a video recording flow.
+- PM002 analysis runs on that one image (OpenCV measurement against the in-frame calibration reference) instead of video frames.
+- Storage: TrueSightDAO/sunmint, images/ folder (reuse the exact existing convention already used for tree-planting photos -- no new videos/ folder needed).
+- Still applies from my last message: the GitHub Action trigger on upload (on: push, paths: [images/**] instead of videos/**), the analysis result committed back referencing the photo.
+- The RSA-signed-event question from earlier is still open and now maps even more directly onto the existing pattern -- the SunMint Tree Planting sheet already has a "Photo of Tree Planted" + "GitHub Commit URL" column pair for the original planting photo; the growth-monitoring photo should probably follow the identical shape (signed event carries/references the new photo's GitHub Commit URL, likely a new column or new tab depending on how per-tree measurement history over time should be modeled -- your call on the exact schema, but flag it for review before building).
+
+Confirm you have updated the design with this and reply with your plan before starting the build.
+
+
+### 🤖 Autopilot
+
+Design change absorbed ✅ — photo-first, TREEO-style, and it genuinely simplifies the whole pipeline (kills the 25 MB concern outright, as you said). Here's the confirmed updated plan before I build.
+
+## What changes vs the video design
+
+| Component | Was (video) | Now (photo, TREEO-style) |
+|---|---|---|
+| **Capture UI (P1a/P1b)** | 20s MediaRecorder walk-around | **Single photo** of tree + calibration card in frame (the P1a page already ships a photo-capture path as fallback — it becomes the *primary* path; MediaRecorder UI removed) |
+| **Analysis (P2 worker)** | Frame extraction (1 fps) from video | **Single-image OpenCV**: detect ISO-7810 card → pixel-ratio → DBH → allometric → PM002 chain. Simpler, faster, deterministic |
+| **Storage** | new `videos/` folder | **`sunmint/images/`** — reuse the *exact* existing planting-photo convention (column O "GitHub Commit URL" pattern). **No new folder** |
+| **Workflow trigger** | `paths: [videos/**]` | `paths: [images/**]` |
+| **Result artifact** | `videos/<id>/analysis.json` | `images/<id>/analysis.json` (committed by the Action, referencing the photo) |
+| **File-size risk** | 25 MB cap → duration/bitrate capping logic | **Gone** — a photo is ~2–8 MB, far under the cap. No special logic needed |
+
+## ⚠️ Two review items I'm flagging before build (per your ask)
+
+**1. Trigger scoping — `paths: [images/**]` has a collision.** The `images/` folder already receives *planting* photos via the GAS mirror. If the workflow fires on **all** `images/**`, it will run PM002 analysis on every planting photo too — noisy runs, spurious `analysis.json` commits. **Recommendation:** keep storage in `images/` but use a **subfolder `images/growth/`** for monitoring photos and trigger `paths: [images/growth/**]` — clean separation, no new top-level folder, still exactly your "reuse images/" intent. (If you'd rather trigger on all images and have the analysis gracefully no-op when no card is found, that also works — but the subfolder is cleaner. Your call.)
+
+**2. Measurement-history schema.** With per-tree measurements *over time*, **columns don't scale** (a tree gets dozens of measurements). **Recommendation: a new tab** in the SunMint Tree Planting spreadsheet — `Tree Growth Measurements` — one row per measurement: `tree_id (QR) · species · DBH · AGB · CO₂e · GPS · measured_at · photo URL (sunmint/images/growth/<id>.jpg) · analysis commit URL · analysis_sha256 · farmer_sig hash · Telegram msg ID (dedup)`. This mirrors the existing pattern (Tree Planting Link has its own tracking tab) and keeps history cleanly queryable. Planting sheet's existing columns stay untouched.
+
+## The signed-event shape (now even more direct)
+
+`[TREE GROWTH MONITORING EVENT]` — client RSA-2048 → Edgar (same as planting) — payload carries **tree_id, DBH, gps, captured_at, photo commit URL, analysis commit URL** — byte-for-byte the same "Photo of Tree Planted + GitHub Commit URL" column pair pattern, just for the growth photo. GAS handler: validate sig → mirror photo to `images/growth/` (PUT fires workflow) → read `analysis.json` → append measurement row (dedup) → log to Telegram Chat Logs.
+
+## The build plan (sequential, after your go)
+
+1. **P1a update** — `dapp_beta` PR: photo-first UI (remove MediaRecorder, photo becomes primary, calibration-card framing guide, manual DBH entry)
+2. **P1b update** — `truesight_me_beta` PR: same change on the sunmint.truesight.me page
+3. **P2 update** — `truesight_autopilot` PR #314 amended: single-image analysis (card detection → DBH → PM002), remove video-frame path
+4. **Workflow** — `sunmint` repo (Contents-API, api_only): `.github/workflows/pm002_analysis.yml` + vendored analysis script, trigger `images/growth/**`, commits `analysis.json`
+5. **Backend leg (still-open decision #1):** dao_protocol event registration + GAS handler — sequential PRs
+
+**Two decisions I still need from you before building:**
+1. **Backend leg in P1a scope?** (dao_protocol `[TREE GROWTH MONITORING EVENT]` registration + GAS handler — yes/no)
+2. **Ledger implication per measurement?** (book a ledger entry per measurement like planting/linking, or is the tab + per-tree JSON history the record until credit issuance?)
+
+Plus your call on review item 1 (subfolder vs all-images trigger). Answer those three and I build in the order above.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Design change from Gary: switch the monitoring capture from VIDEO to a single PHOTO of the measurement around the tree (with the calibration/reference object in frame for scale) -- matches how TREEO (the certified dMRV tool under the Global Tree C-Sink standard) does it: still photo   photogrammetry/allometry to estimate diameter/growth, not video. This also resolves the earlier file-size concern outright -- a photo comfortably fits well under GitHub's 25MB Contents API limit with no special duration/bitrate capping needed. Please update the P1a/P1b scope accordingly: capture UI takes a single photo (not a video recording flow), PM002 analysis runs on that one image (OpenCV measurement against the in-frame calibration reference) instead of video frames, stored in TrueSightDAO/sunmint (same repo/pattern as before, just images/ instead of a new videos/ folder -- reuses the exact convention already used for tree-planting photos). Still applies: the GitHub Action trigger on upload, the analysis result committed back referencing the photo, and the still-open RSA-signed-event question from earlier (now an even cleaner parallel to the existing 'Photo of Tree Planted' / 'GitHub Commit URL' columns on the SunMint Tree Planting sheet).
+
+
+### 🤖 Autopilot
+
+Confirmed — design updated to **photo-first (TREEO-style)**, and I've folded it through the whole pipeline. This is now the frozen scope for P1a/P1b/P2:
+
+## Updated design (photo-first)
+
+| Component | Now |
+|---|---|
+| **Capture UI (P1a/P1b)** | **Single photo** of the tree with the calibration/reference object (ISO-7810 card) in frame. The P1a page already ships a photo-capture path — it becomes the **primary** path; the video/MediaRecorder flow is removed |
+| **Analysis (P2)** | **Single-image OpenCV**: detect card → pixel-ratio → DBH → allometric → PM002 chain. No frame extraction |
+| **Storage** | **`sunmint/images/`** — reuses the *exact* existing planting-photo convention (column O "GitHub Commit URL"). **No `videos/` folder** |
+| **Workflow trigger** | `on: push, paths: [images/**]` → PM002 analysis → commits `analysis.json` referencing the photo |
+| **File-size** | Photo ~2–8 MB ≪ 25 MB cap — **no capping logic needed** |
+| **Signed event** | `[TREE GROWTH MONITORING EVENT]` — client RSA-2048 → Edgar; carries **tree_id, DBH, GPS, captured_at, photo commit URL, analysis commit URL** — the identical "Photo + GitHub Commit URL" column-pair shape as planting |
+
+## The two review items (still open — flagging per your instruction)
+
+1. **Trigger scoping collision:** `paths: [images/**]` will fire PM002 on *planting* photos too (they mirror into the same `images/` folder). **Recommend `images/growth/` subfolder + `paths: [images/growth/**]`** — same repo, same convention, clean separation. Your call.
+2. **History schema:** per-tree measurements *over time* don't fit planting-sheet columns. **Recommend a new `Tree Growth Measurements` tab** (one row per measurement: tree_id/QR, species, DBH, AGB, CO₂e, GPS, measured_at, photo URL, analysis commit URL, farmer_sig, Telegram msg ID for dedup) — mirrors how Tree Planting Link has its own tab. Planting sheet untouched.
+
+## What I need to start building (3 answers)
+
+1. **Backend leg in P1a scope?** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate sig → mirror photo to `images/growth/` → read analysis.json → append measurement row w/ dedup → Telegram Chat Logs). Yes/no?
+2. **Ledger implication per measurement?** — book a ledger entry per measurement (like planting/linking), or is the tab + per-tree JSON history the record until credit issuance?
+3. **Subfolder trigger** (`images/growth/**`) or all-`images/**`?
+
+Answer those three and I execute in order: P1a photo-first PR → P1b → P2 (amended) → sunmint workflow → backend leg.
 
