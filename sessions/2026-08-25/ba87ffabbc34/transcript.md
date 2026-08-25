@@ -3861,3 +3861,44 @@ Confirmed — design updated to **photo-first (TREEO-style)**, and I've folded i
 
 Answer those three and I execute in order: P1a photo-first PR → P1b → P2 (amended) → sunmint workflow → backend leg.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Small addendum to the photo-not-video decision: Gary said 'photos' (plural) of the measurement -- don't lock the design to strictly one photo. Consider whether the capture flow should allow/require more than one shot (e.g. a close-up of the calibration reference against the trunk/measurement point, plus a wider context shot of the tree) for more robust verification, similar in spirit to how other verification apps use multiple angles. Use your judgment on whether 1 or 2  photos per submission makes sense given PM002's actual measurement approach -- just don't hard-code the schema/storage to a single-photo assumption if a second photo would meaningfully improve verification.
+
+
+### 🤖 Autopilot
+
+Good addendum — and my judgment is: **2 photos per submission, and the schema should support N photos, not a hard single-photo field.**
+
+## Why 2 photos (grounded in PM002's actual approach)
+
+PM002's measurement chain is DBH-based: the close-up **card-against-trunk-at-breast-height** photo is what produces the diameter → allometric biomass → CO₂e. That's the *measurement evidence*. But a single shot leaves two things unverifiable:
+- **Tree identity** — "is this actually the tree at that GPS point with that species?" A trunk close-up alone can't answer it.
+- **Plot/context** — species confirmation (cacao vs mahogany changes the allometric equation), canopy state, the fact the tree is alive.
+
+A second, wider shot of the **full tree + surroundings** closes both gaps. It also mirrors how verification apps work (multiple angles), and it's nearly free: a photo is ~2–8 MB, two still sit far under the 25 MB cap.
+
+## Updated design (schema stays plural-aware)
+
+| Piece | Now |
+|---|---|
+| **Capture flow (P1a/P1b)** | Two-step: **(1) close-up** — calibration card against trunk at breast height (framing guide); **(2) context** — full tree + surroundings. Both captured in one flow, one submission |
+| **Storage** | `sunmint/images/growth/<submission_id>/01_closeup.jpg` + `02_context.jpg` — a **per-submission folder**, not a single flat file (no single-photo assumption) |
+| **Workflow trigger** | `paths: [images/growth/**]` — fires on the folder's arrival; runs card-detection on `01_closeup.jpg`, stores context URL + species hint as verification metadata in `analysis.json` |
+| **Analysis** | PM002 chain on the close-up (card → pixel-ratio → DBH → allometric → CO₂e); context photo logged for identity/species verification |
+| **Signed event payload** | `photo_urls: [closeup, context]` (array) + `analysis_commit_url` — plural, not a single `photo_url` |
+| **Sheet schema** | New `Tree Growth Measurements` tab: `tree_id · species · DBH · AGB · CO₂e · GPS · measured_at · Close-up URL · Context URL · analysis commit URL · analysis_sha256 · farmer_sig · Telegram msg ID (dedup)` — two explicit photo columns mirroring the planting sheet's "Photo + Commit URL" pair |
+
+## Unchanged
+
+Everything else from the frozen design: signed `[TREE GROWTH MONITORING EVENT]` (client RSA-2048 → Edgar), GAS mirror step, analysis committed back, no capping logic, `images/` convention reuse.
+
+## Still need your 3 answers before building (unchanged from before)
+
+1. **Backend leg in P1a scope?** (dao_protocol event registration + GAS handler — yes/no)
+2. **Ledger implication per measurement?** (book a ledger entry per measurement, or is the tab + per-tree JSON history the record until credit issuance?)
+3. **Subfolder trigger confirmed?** (`images/growth/**` — my recommendation, given the two-photo folder structure)
+
+Answer those and I execute: P1a photo-first (2-photo) PR → P1b → P2 (single-image, close-up-driven) → sunmint workflow → backend leg.
+
