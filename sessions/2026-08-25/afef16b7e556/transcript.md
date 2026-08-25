@@ -4014,16 +4014,19 @@ The ledger is accessible via the agroverse_qr_code_manager SA. The deck's "483 c
 ### 🤖 Autopilot
 
 Headers are multi-row. Let me read the actual header rows and sample data from the Contribution submission tab (the record of hours worked), plus the Recent Contributions tab.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the schema. The Contribution submission tab has a **"Governance tokens to"** column (TDG granted per contribution) — the column G. Let me sum the total TDG issued from the ledger-history-equivalent, and also directly check the deck's claim. The honest total-hours claim needs the ledger's total TDG issued (2,424,067 TDG ≈ hours if 1 TDG = 1 hour). Let me confirm the TDG↔hour mapping from the tokenomics context, then sum the Contribution submission column.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Contribution submission tab is only the *recent* form submissions (185 rows, 30,858 TDG) — not the full ledger. The authoritative total is the **Ledger history** tab (12,000+ rows, all contributions since 2022) and the **voting weight** tab (2.42M TDG). Let me check the Ledger history structure and the actual total TDG issued for hours, plus how the deck got "483 contributors".
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4237,6 +4240,31 @@ Found it — **BitAngels Magic Island Demo Day** at Founder Haus, Florianópolis
 - **Calendar link:** google.com/calendar/event?eid=NjNpZmlmaGhhamQ1ZGNzNDc2Mm40OGpmcm8gZ2FyeWpvYkBhZ3JvdmVyc2Uuc2hvcA
 
 **Context:** This slots right into your Startup Summit week — Aug 26 (Startup Summit day 1), Aug 28 (this + the Cursor meetup orbit). Founder Haus again — the Paloma connection keeps surfacing. Also worth noting: BitAngels is investor-network heavy; if you're ever pitching TrueSight DAO or the cacao lane, the apply-to-pitch link is in the description (deadline Aug 26).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json, datetime from zoneinfo import ZoneInfo from google.oauth2.credenti
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, is that a reminder for me to open a bank account with OCBC Bank on the 1st of September on my Google Calendar? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check your calendar for that event.
+
+
+### 🤖 Autopilot
+
+Checked your calendar for **Sep 1** — there's **no OCBC Bank appointment** on it. The only event that day is:
+
+- **Sep 1, 4:30 PM (BRT)** — "Follow up with Miss Anne's Marypop" (16:30 São Paulo time = Sep 2, 3:30 AM Singapore time)
+
+So no — nothing about opening an OCBC Bank account. Either it was never added, or it's on a different calendar. Want me to:
+1. **Add it now** — e.g. "OCBC Bank — open corporate account" on Sep 1 with a reminder, or
+2. Search more broadly (past/future) for anything OCBC-related?
 
 ———
 **✅ Done this turn — actions taken:**
