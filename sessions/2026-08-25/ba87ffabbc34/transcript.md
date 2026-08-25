@@ -3368,21 +3368,25 @@ Pre-existing failures confirmed on clean main (untouched by me — my change add
 ### 🤖 Autopilot
 
 P1a PR is up: **dapp_beta#80**. Now P1b — the sunmint.truesight.me mirror. Let me check the truesight_me page conventions and a sunmint page structure.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 P1a is up (dapp_beta#80). Now P1b — the sunmint.truesight.me mirror, following truesight_me conventions (GA4 gtag, nav/footer JS, self-contained JS since routes.js isn't on that site).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both P1 pages are open (dapp_beta#80, truesight_me_beta#312). Now P2 — the Python analysis worker. Let me check the truesight_autopilot repo structure first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the app structure and an existing script pattern (like ocr_image.py) to match conventions for the worker.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3554,4 +3558,101 @@ Both pages are identical in behavior (RSA-2048 signing, GPS, GeoJSON nearest-tre
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #312 on truesight_me_beta merged successfully (sha: 96387109817a29a677a44f813f753b42dbf1d8d0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+Gary (via Envoy) raised a design gap before P1a goes further: the monitoring-video pipeline you described (upload -> Python PM002 analysis -> on-chain event -> per-tree JSON measurement history) never names a signed RSA event for the video submission step itself. I checked the sibling SUNMINT_TREE_QR_LINKING_PLAN.md for precedent: every tree-related state change in this ecosystem goes through a dedicated signed event -- [TREE PLANTING EVENT] for the farmers original submission (client-side RSA-signed, POSTed to Edgar), and a purpose-built [TREE PLANTING LINK EVENT] created specifically for that feature (same pattern: signed, dispatched via dao_protocol, GAS-processed, logged to Telegram Chat Logs for attribution/audit, with a dedup tracking tab). That is the established convention for anything that mutates a trees on-chain/ledger record in this DAO.
+
+Please clarify before continuing P1a: is the growth-monitoring video submission designed to introduce an equivalent new signed event (e.g. [TREE GROWTH MONITORING EVENT] or similar -- client signs with their registered key, POSTs to Edgar, dispatched, GAS handler writes the per-tree JSON history + any ledger implications), or is "on-chain event" referring to something else (a direct unsigned GAS write, an actual TrueChain blockchain transaction, or genuinely not yet designed)? If it is a gap, treat this as a required addition to the P1a scope -- not a retrofit-later item -- since building the upload/analysis pipeline without attribution now would need rework once the signed-event requirement is added. Report back your answer before proceeding further with P1a.
+
+
+### 🤖 Autopilot
+
+Good catch — let me verify what's actually in the merged P1a page and the spec before answering, so I report factually rather than from memory.
+
+
+### 🤖 Autopilot
+
+Verified against the merged code and spec — here's the factual answer.
+
+## The design: YES — a signed `[TREE GROWTH MONITORING EVENT]` is the mechanism, and the client side is already built
+
+**Confirmed in the merged P1a page** (`dapp_beta/main/monitor_tree_growth.html`, 603 lines):
+
+- **Event name:** `[TREE GROWTH MONITORING EVENT]` (only tree event in the page — verified)
+- **Client signing:** RSA-2048 keypair, `RSASSA-PKCS1-v1_5`/SHA-256, SPKI/PKCS8 export — identical to `[TREE PLANTING EVENT]` and the QR-link precedent
+- **Submission:** signed payload POSTed via multipart FormData to **`edgar.truesight.me/dao/submit_contribution`** (same `EDGAR_SUBMIT` endpoint as tree planting) — **the video/photo ride along as attachments in that same signed POST**, so the video submission step *is* the signed event, not a separate unsigned upload
+- Forensic block shows the verbatim signed payload + Edgar response (attribution/audit on the client side)
+
+**Spec v1.3 §5 defines the event payload:** `tree_id, dbh, agb, co2e, gps, captured_at, analysis_sha256, farmer_sig, worker_sig` — reusing `[TREE PLANTING EVENT]` for the initial planting record.
+
+## The gap (you're right — and it's the backend leg, currently mis-scoped)
+
+What is **NOT** built, and is exactly the "purpose-built handler" piece your precedent requires:
+
+| Piece (per QR-link precedent) | Status |
+|---|---|
+| Client signs + POSTs event | ✅ **DONE** (P1a, merged) |
+| **dao_protocol event-type registration** for `[TREE GROWTH MONITORING EVENT]` | ❌ specced as **P4** (2 d) |
+| **GAS handler** consuming it (analogous to `process_tree_planting_link.gs`) | ❌ not built — specced under P4 |
+| **Per-tree JSON measurement history write** | ❌ not built (also depends on P3 index/build) |
+| **Ledger implications** (per-measurement record) | ❌ not built |
+| **Telegram Chat Logs attribution + dedup tracking tab** | ❌ not built |
+
+So the spec currently frames the signed-event backend as **P4 = retrofit-later**, which violates the convention you're enforcing.
+
+## My answer + proposed correction
+
+**The video submission is a client-signed `[TREE GROWTH MONITORING EVENT]` to Edgar — not an unsigned GAS write, not a TrueChain tx, not undesignated.** But the **backend leg (registration + GAS handler + per-tree history + attribution/dedup) is a genuine gap**, and per your direction I'm treating it as **REQUIRED IN P1a SCOPE**, not retrofit:
+
+**Expanded P1a (3 PRs, sequential):**
+1. ✅ Client page — done, merged
+2. **dao_protocol:** register `[TREE GROWTH MONITORING EVENT]` event type (labels/required fields, mirroring how `[TREE PLANTING LINK EVENT]` was added — tokenomics #396 precedent)
+3. **GAS handler:** `process_tree_growth_monitoring.gs` — on receipt: validate signature → append measurement row (tree_id, DBH, CO₂e, GPS, video URL, hashes) to the SunMint tracking sheet (new tab, dedup by Telegram msg ID) → write per-tree JSON history → book ledger if applicable → log to Telegram Chat Logs
+
+I will **not proceed further on P1a** (no more monitor work, no P2/P3) until you confirm this expanded scope — specifically: (a) agree the signed-event backend moves into P1a, and (b) confirm the **ledger implication**: should each measurement book a ledger entry (like planting/linking), or is the per-tree JSON history + tracking sheet the record until credit issuance?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/monitor_tree_growth.html" -o mtg.html && wc -l mtg.html &&; cd /tmp/sunmint 2>/dev/null && grep -nE "TREE GROWTH|EVENT|signed|attribution|dedup|GAS|dao_protocol|Telegram" monitor_tree_growth_spec.md 2
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Before P1a goes further — Gary noticed the monitoring-video pipeline (upload -> PM002 analysis -> on-chain event -> per-tree JSON history) never names a signed RSA event for the video submission itself. Compare to the sibling SunMint feature (SUNMINT_TREE_QR_LINKING_PLAN.md): every tree state change there goes through a dedicated signed event ([TREE PLANTING EVENT] for the farmer's original submission, a purpose-built [TREE PLANTING LINK EVENT] created specifically for that feature) -- signed client-side, POSTed to Edgar, dispatched, GAS-processed, logged to Telegram Chat Logs for attribution. Is the growth-monitoring video submission designed to follow that same pattern (e.g. a new [TREE GROWTH MONITORING EVENT] or similar), or is 'on-chain event' something else entirely (a direct GAS write, an actual TrueChain transaction, unspecified)? Please clarify/confirm the exact event design for this step before P1a's build goes further -- this needs to be right from the start, not retrofitted.
+
+
+### 🤖 Autopilot
+
+Confirmed — and I verified this against the actual merged code last turn, so this is factual, not from memory.
+
+## The exact event design (verified)
+
+**The video submission IS a client-side RSA-signed event, following the exact `[TREE PLANTING LINK EVENT]` pattern:**
+
+| Design element | Verified state |
+|---|---|
+| **Event name** | `[TREE GROWTH MONITORING EVENT]` — the only tree event in the merged page |
+| **Client signing** | RSA-2048, `RSASSA-PKCS1-v1_5`/SHA-256, SPKI/PKCS8 — byte-identical scheme to `[TREE PLANTING EVENT]` / `[TREE PLANTING LINK EVENT]` |
+| **Submission path** | Signed payload POSTed via multipart FormData to `edgar.truesight.me/dao/submit_contribution` — the video/photo ride as **attachments in that same signed POST** (no separate unsigned upload) |
+| **Client audit trail** | Forensic block renders the verbatim signed payload + Edgar response (attribution on the client) |
+| **Event payload** (spec §5) | `tree_id, dbh, agb, co2e, gps, captured_at, analysis_sha256, farmer_sig, worker_sig` |
+
+So it is **NOT** a direct unsigned GAS write, **NOT** a TrueChain transaction, **NOT** unspecified. It is the established signed-event convention.
+
+## The real gap (where "retrofit" was hiding)
+
+The spec had scoped the **backend leg** as **P4 (2 d)** — which violates the convention. That leg is exactly the "purpose-built handler" half of the QR-link precedent and is **missing**:
+
+1. **dao_protocol / Edgar event-type registration** for `[TREE GROWTH MONITORING EVENT]` (like `[TREE PLANTING LINK EVENT]` was added — tokenomics #396 precedent)
+2. **GAS handler** (`process_tree_growth_monitoring.gs`): validate sig → append measurement row (tree_id, DBH, CO₂e, GPS, video URL, hashes) to a tracking tab **with dedup by Telegram msg ID** → write per-tree JSON history → **log to Telegram Chat Logs** for attribution
+3. Ledger implications if any
+
+## What I need from you (2 decisions, then I build)
+
+1. **Agree the backend leg moves INTO P1a scope** (client page [done] + dao_protocol event registration + GAS handler, sequential PRs) — not retrofit-later?
+2. **Ledger implication for each measurement:** should each monitoring measurement **book a ledger entry** (like planting/linking do), or is the **per-tree JSON history + tracking sheet** the record until credit issuance?
+
+Once you confirm those two, P1a is complete end-to-end and I proceed to P1b/P2/P3 with the full attribution chain in place.
 
