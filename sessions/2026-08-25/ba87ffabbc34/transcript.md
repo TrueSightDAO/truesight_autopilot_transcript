@@ -1992,11 +1992,13 @@ On it, Gary — three parts: (1) update the whitepaper with the lean stack, (2) 
 ### 🤖 Autopilot
 
 The AM-001 PDF is a binary — let me download it directly and extract the actual equations, plus grab the IPCC carbon formula details.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying with the host parameter:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2113,4 +2115,50 @@ Yes — and honestly that's the *best* possible framing, Gary. You've just descr
 **One honest design note**: if it's a game, it should feel like one. The walk-around should be quick (5–10 trees, 10 minutes, offline-capable), and the app should reward the cadence — survival checks, growth milestones, "your trees sequestered X this month" — so the farm-build feeling is *intentional*, not accidental. That's exactly the kind of retention mechanic that makes Greenstand's growers come back to re-photograph trees.
 
 So yes — **a live farm-build game that pays real money for real trees.** That's not a bug, that's the entire product thesis. Want me to add a short "game loop" note to the monitor module spec (the reward-cadence design), so the devs build it that way from the start?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Which is the, is there an API or something that makes the free chair available for the satellite? Indicate that clearly in the PDF too. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question — let me verify the current free satellite access APIs and licensing before adding it to the PDF.
+
+
+### 🤖 Autopilot
+
+Confirmed — the free satellite access is real, with clear commercial-use terms. Let me add this clearly to the PDF (v5).
+
+
+### 🤖 Autopilot
+
+PDF v5 built. Sending it to you and updating the repo copy.
+
+
+### 🤖 Autopilot
+
+**PDF v5 sent + uploaded** ✅ — `sunmint_consolidated_progress_v5.pdf` is in the thread and in the repo.
+
+## Yes — there ARE free APIs. Section 5 makes it explicit:
+
+| API | Resolution | Revisit | Baseline depth | License |
+|---|---|---|---|---|
+| **Copernicus Data Space Ecosystem** (ESA Sentinel-2) | 10 m | 5-day | 2015→ | **Free, commercial use OK** (OData + STAC APIs) |
+| **Microsoft Planetary Computer** (Sentinel-2 + Landsat + HLS) | 10–30 m | 5–16-day | 1984→ | **Free for commercial use** (STAC API + Python SDK) |
+| **USGS EarthExplorer / NASA Earthdata** (Landsat) | 30 m | 16-day | **1972→** | Public domain — free, any use |
+
+**The key confirmations:**
+1. **Copernicus**: "free, full and open data policy — commercial use explicitly allowed, just credit Copernicus" (official forum answer)
+2. **Planetary Computer**: free public STAC catalog, commercial use permitted (Pro is the paid tier for *your own* private data)
+3. **Landsat via USGS**: public domain — the deepest archive (1972→) for proving the **non-forest ≥10-yr baseline** VM0047 requires
+
+**What this means for the plan:** the satellite baseline and annual monitoring can be built on **free APIs + a GIS analyst (2–4 wks labor)**, not a NOR Space subscription. That's why Stage 0 stays at **$5–10k** — the "satellite cost" is now a labor line, not a software line. NOR Space remains purely optional optimization for later.
+
+The PDF also keeps everything from v4: the **PM002 formula** (Eq 1, 6.1, 6.2 with 0.47 carbon fraction, 44/12, 10% achievement reserve, 20% risk buffer), the lean stack decision, and the explicit **resource gaps**.
+
+**Repo:** `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_consolidated_progress_v5.pdf`
+
+Want me to also update the **whitepaper's satellite bullet** (PR #309) to name these free APIs explicitly? It's still open and unmerged.
 
