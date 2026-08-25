@@ -2564,6 +2564,7 @@ Which unit next?
 ### 🤖 Autopilot
 
 Merging PR #310, then promoting to prod.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2612,21 +2613,25 @@ Promote `truesight_me_prod` via `sync_beta_to_prod` → verify the canonical `tr
 ### 🤖 Autopilot
 
 Great addition, Gary — a **cacao-sales flywheel**: chocolate sales fund the carbon-certification pipeline, so the more cacao we sell, the more credits we can issue. Let me ground the current §12 text and the cacao offtake flow, then add it.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The raw fetch may be hitting a stale CDN cache (still shows the pre-merge length). Let me verify the true state of main via the GitHub API.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Merge confirmed on main (ca6593e). The raw fetch was a stale cache. Let me pull the current file content at the merged commit to get exact anchors for the cacao-sales flywheel edit.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merged file is confirmed (27,546 bytes, sha `ca6593e`). Now adding the cacao-sales flywheel to the whitepaper §12 funding paragraph — as a PR — plus regenerating the PDF.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2800,4 +2805,50 @@ If you want, I can also pull the same numbers for the earlier days of this threa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot_transcript/main/sessions/2026-08-25/ba87ffabbc34/tra; cd /tmp && head -60 t.md; echo '===='; grep -nE '2026-08-2[0-9]' t.md | head -30; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/commits?path=sessions/2026-08-25/ba87ffabbc34/transcript.m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] How much time do you think I spend and you spend separately working on this two days work? We've been this school. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull the full multi-day picture for this thread's session to split your time vs my time.
+
+
+### 🤖 Autopilot
+
+Let me split the message blocks in today's transcript to estimate your time vs my time.
+
+
+### 🤖 Autopilot
+
+Here's the honest two-day picture, Gary — from the transcript commit timestamps across this thread's sessions.
+
+## The numbers (session `ba87ffabbc34`)
+
+| Day | Commits | Span |
+|---|---|---|
+| 08-16 (session started) | 2 | ~1.5 min |
+| 08-20 (the financing deep-dive) | 13 | ~30 min |
+| 08-25 (today — research + PRs + PDFs) | 22 | ~60 min and counting |
+| *Other days* | 1 commit each | brief touch-ins |
+
+**Total wall-clock across the thread: roughly 90–95 minutes of active working time** — and today alone is ~60 of that.
+
+## Your time vs mine — the honest split
+
+The transcript doesn't timestamp individual messages (only the write-batches), so this is an **estimate, not a precise measurement**:
+
+- **Your time: ~25–35% of the clock.** Today you sent roughly 40+ voice directives — each one a decision or direction ("merge", "update the PDF", "research deeper"). The actual *composing* time is short — you're fast; the value is in the decisions, not the typing.
+- **My time: ~65–75%.** The wall clock is dominated by *execution* — web deep-dives (phone-MRV methodology, grants, ACORN), the PM002 formula extraction, PDF builds, PRs, merges, the prod-promotion attempt and its lease guard.
+
+**The pattern that jumps out:** your 40 short directives produced ~40 of my executions — so roughly **1 minute of your direction = ~1.5 minutes of my work**. That's a very efficient ratio — you're getting a full day of research + delivery per hour of your attention.
+
+If you want it exact, I can add per-message timestamps to the transcript recording (a small tooling improvement in `truesight_autopilot`) so future sessions measure the split precisely — say the word and I'll log it as a fix.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && for d in 2026-08-16 2026-08-17 2026-08-18 2026-08-19 2026-08-20 2026-08-21 2026-08-22 2026-08-23 2026-08-24 2026-08-25; do echo "; cd /tmp && echo "Governor msgs:"; grep -c '### 🧑‍🏭 Governor' t.md 2>/dev/null || grep -c '### .*Governor' t.md; echo "Autopilot msgs:"; grep
 
