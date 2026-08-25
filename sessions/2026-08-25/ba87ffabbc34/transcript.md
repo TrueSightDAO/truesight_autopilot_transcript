@@ -1757,16 +1757,19 @@ The Beer Hall is the DAO's community digest (WhatsApp posting retired Apr 2026; 
 ### 🤖 Autopilot
 
 `sunmint_mobile` is real and (per the README + UAT notes) implemented — Capacitor 8, native Android/iOS, offline-first, RSA-signed. Let me confirm the implementation state via commit history, then build the updated PDF with the mobile app section.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mobile app is real and shipped — `sunmint_mobile` has 21+ merged PRs (Capacitor 8, native Android/iOS, RSA-signed, offline-first, UAT'd 2026-08-23). The model *has* evolved: web app → native mobile app → and now phone-as-carbon-MRV-device. Let me rebuild the consolidated PDF with this, then make it shareable for the Beer Hall.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v2 is ready (12.2 KB, 4 pages). Now making it shareable — sending it to you and publishing it to a public repo so the Beer Hall digest picks it up.
+[3 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1966,4 +1969,111 @@ DEFERRED:  Drone/PODream (calibration sampling, 5–10% of plots)  ← post-pilo
 **Bottom line:** your instinct was right on drones (cut them — the light/expensive layer), and right to question satellite — but satellite at the *free* tier is still needed for baseline proof and integrity, and it costs basically nothing. The expensive premium layers (NOR AI, drone fleets) are the ones we can defer.
 
 Want me to update the **execution-gap analysis + financing plan** to reflect this leaner stack (drop NOR quote from Stage 0, swap in free baseline work; drop drone from the pilot budget)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] do the updates for this for the white bitcoin as well as the pdf and then in the pdf state very clearly the resource gap that we need. Also thus the econ methodology is the algorithm or formula like available somewhere dig deep and then once you find it if possible include it in the pdf as well. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it, Gary — three parts: (1) update the whitepaper with the lean stack, (2) update the PDF with clear resource gaps, (3) dig deep into the ACORN/AM-001 methodology and pull the actual formula into the PDF. Starting with the methodology hunt + current whitepaper state in parallel.
+
+
+### 🤖 Autopilot
+
+The AM-001 PDF is a binary — let me download it directly and extract the actual equations, plus grab the IPCC carbon formula details.
+
+
+### 🤖 Autopilot
+
+Retrying with the host parameter:
+
+
+### 🤖 Autopilot
+
+The URL returned a 109-byte JSON (likely a Cloudflare/signed-URL block). Let me see what it says and try alternate sources for the AM-001 methodology text.
+
+
+### 🤖 Autopilot
+
+Direct URL 404s. Let me try the other AM-001 copy and Plan Vivo's published ACORN methodology page.
+
+
+### 🤖 Autopilot
+
+Key breakthrough: ACORN's methodology is now **PM002** (Plan Vivo, active 29/09/2025) — the current, fully approved version. Let me fetch the PM002 details and ACORN's CRU calculation guide.
+
+
+### 🤖 Autopilot
+
+PM002 is the current approved ACORN methodology — and it's hosted on Plan Vivo's S3 (directly downloadable, no Cloudflare block). Let me grab it and extract the actual equations.
+
+
+### 🤖 Autopilot
+
+PM002 downloaded — 34 pages, 54K chars. Let me extract the actual equations and carbon-calculation formulas.
+
+
+### 🤖 Autopilot
+
+Found the core equations. Let me extract the actual equation texts (6.1, 6.2, 1–5) and the carbon fraction details to include verbatim in the PDF.
+
+
+### 🤖 Autopilot
+
+I now have the complete PM002 formula chain — this is the gold. Let me grab the current whitepaper §6 text to target the edit precisely.
+
+
+### 🤖 Autopilot
+
+I have everything: the PM002 formula chain (Equations 1, 6.1, 6.2 with carbon fraction 0.47, 44/12 conversion, all adjustment factors) and the current whitepaper text. Now executing both the whitepaper update (lean stack) and the v4 PDF with the methodology + resource gaps in parallel.
+
+
+### 🤖 Autopilot
+
+PDF v4 built ✅ (the git push failed only because I omitted the edit hunks — retrying with the actual whitepaper edits now).
+
+
+### 🤖 Autopilot
+
+Both landed — the whitepaper PR and the v4 PDF. Sending the PDF now.
+
+
+### 🤖 Autopilot
+
+All three parts done, Gary ✅
+
+## 1. Whitepaper updated (PR [#309](https://github.com/TrueSightDAO/truesight_me_beta/pull/309) — open, beta)
+- **Pilot route now names PM002** (Acorn's actual certified methodology, Plan Vivo, active 29/09/2025)
+- **Monitoring section rewritten**: farmer phone = PRIMARY layer (calibration-card DBH, offline, on-chain); free Sentinel/Landsat = baseline + leakage; NOR premium AI = optional only if VVB demands; **drones deferred** to post-pilot calibration
+- **§8 GHG estimation** now carries the PM002 accounting chain
+
+## 2. PDF v4 sent + uploaded ✅
+📄 **`sunmint_consolidated_progress_v4.pdf`** (5 pages) — in the thread + repo. Key additions:
+
+**THE FORMULA (found and verified from PM002 v1.0, public on planvivo.org):**
+```
+Eq 1:  ΔBGB_p = ΔAGB_p × R          (R = root:shoot, IPCC default 0.32)
+Eq 6.1/6.2:  PVCs = ((ΔAGB_p + ΔBGB_p) × 0.47) × 44/12
+              × (1−A_pre)(1−A_unc)(1−LD)(1−AR)(1−RB) − (E_proj − E_base)
+              AR = 10% achievement reserve, RB = 20% risk buffer
+```
+Plus the allometric step (DBH → species equation → AGB) — fully implementable in our mobile app.
+
+**Lean stack decision:** phone CORE · satellite FREE tier · NOR optional · drone deferred.
+
+## 3. Resource gaps — stated explicitly (the ask)
+- **People:** PDD/PM002 writer ($8–15k) · VVB (AENOR/Earthood — the actual PM002 reviewers, $10–20k) · enumerator training ($3–6k) · allometric equations for our 5 species ($5–10k)
+- **Data:** baseline proof (FREE satellite archive) · GIS boundaries · CAR tenure · FPIC records
+- **Tech:** `monitor_tree_growth` module (2–3 wks) · tree registry · allometric engine · satellite ingestion
+- **Money:** Stage 0 **dropped to $5–10k** (was $10–15k — NOR removed) · Stage 1 $35–60k · Stage 2 $150–250k
+- **The single biggest gap:** baseline data + PDD validation — nothing else moves until that's done
+
+Want me to **merge PR #309** next, or draft the **Stage 0 (~$5–10k) DAO capital proposal** now that the number's sharper?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -sL "https://assets.ctfassets.net/9vhdnop8eg9t/6G4vL5HIROheoissXrZIao/2b2a217eacf8065ec5efa7b559535899/AM-001_Methodology_fo; cat /tmp/am001.pdf; echo "---"; curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 S; cd /tmp && curl -sL -A "Mozilla/5.0" "https://assets.ctfassets.net/9vhdnop8eg9t/78AdYUc5zlsfkBvigihfKI/d7e1842859fe20266c40ef2df332603d/AM-0; …(+4 more)
 
