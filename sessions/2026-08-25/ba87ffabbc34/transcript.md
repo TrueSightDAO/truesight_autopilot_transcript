@@ -3283,3 +3283,59 @@ Agreed — the clean answer is: **a single GeoJSON index file, fetched once, fil
 
 Want me to update the spec (§3.1.3 "Tree Data Source") with this exact design — GeoJSON index, farm sharding rule, build-script note — so the devs build the nearby-tree dropdown against it from day one?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, like this technical approach, update the implementation plan and then also update the PDF of that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Updating the implementation plan with the GeoJSON tree-data-source design, then regenerating the PDF.
+
+
+### 🤖 Autopilot
+
+Spec v1.3 updated. Now regenerating the PDF with the GeoJSON design and delivering it.
+
+
+### 🤖 Autopilot
+
+PDF v1.3 generated (16.8 KB). Sending to you and uploading to the repo.
+
+
+### 🤖 Autopilot
+
+Done ✅ — implementation plan + PDF updated to v1.3 with the GeoJSON tree-data-source design.
+
+## What changed (v1.2 → v1.3)
+
+**New §3.1.3 "Tree Data Source — GeoJSON index (no database)":**
+- **One static index** — `sunmint/trees/index.geojson`, a GeoJSON FeatureCollection with only `{tree_id, lat, lng, species, last_measured}` (~50–80 bytes/tree; 1k trees ≈ 80 KB, 10k ≈ 800 KB)
+- **Fetch once, filter client-side** — `fetch('index.geojson')` → Haversine sort in JS → nearest-first dropdown. No server, no query params, **no database**
+- **Caching** — localStorage/service worker, 24–48h TTL; offline works from cache
+- **Scale rule** — shard by farm (`trees/by-farm/<farm_id>.geojson` + `trees/farms.json` map) when it grows; the DApp fetches only farm files within ~10 km of GPS
+- **Build rule** — machine-owned build script regenerates the GeoJSON from the Google Sheet + on-chain events (treasury-cache pattern); sheet stays authoritative, GeoJSON is a **derived, versioned cache** (git history = VVB provenance)
+- **Full tree records** — `sunmint/trees/<tree_id>.json` fetched only when a tree is selected; measurements append via the Python worker (§4.4)
+
+**Also updated:** Module A header bullet, P1 roadmap row (5–6 d), checklist (GeoJSON build item), risks (GeoJSON staleness TTL).
+
+**Delivered:**
+- 📄 PDF v1.3 sent to thread (msg 14563) — 6 pages
+- 📎 Uploaded: `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_monitor_tree_growth_spec_v1.pdf` (sha `360e8a1`)
+
+The full monitor-module design is now frozen: **GeoJSON index (no DB) → GPS nearest-tree dropdown → video capture with calibration card → signed upload → Python PM002 analysis → on-chain event → per-tree JSON measurement history.**
+
+## 📌 RESUME HERE → next build units
+- **P1a:** `monitor_tree_growth.html` in `dapp_beta` (PR, GeoJSON + Haversine dropdown + video) — needs your go
+- **P1b:** `sunmint/monitor-tree-growth/index.html` in `truesight_me_beta` (PR) — needs your go
+- **P2:** Python worker MVP (OpenCV + PM002) in `truesight_autopilot` — needs your go
+
+Say "go P1a / P1b / P2" (or all) and I'll start the first PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/sunmint && python3 - << 'EOF' p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # Bump version to 1.3 d = d.rep
+
