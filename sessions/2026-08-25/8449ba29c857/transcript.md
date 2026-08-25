@@ -556,31 +556,37 @@ Now I'll wire deploy.py with the lease lifecycle (acquire in phase one, thread t
 ### 🤖 Autopilot
 
 Minor fix — deploy.py only uses check_lease/acquire_lease directly; the record+close happen in main.py:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three tools are wired and green. Now let me install the ledger module into the repo, add tests, and run the full gate. First, copy the module in and write the test file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Module installed. Now the test file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the full local test gate — the hard rule before any push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 test failures + 1 ruff error. Let me see the actual gas-tool failure detail and identify the ruff issue:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Test failures are from my wiring hitting the real GitHub API in existing tests (they mock subprocess but not the ledger). Let me diagnose precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -591,16 +597,19 @@ Diagnosis is clear:
 3. ruff's "unused pytest" — need to identify which file.
 
 Let me fix the nginx test mock and inspect the gas tool's exact return:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 nginx tests fixed. ruff is clean now (no file matched). Let me fix the gas tool test failures — the ledger calls need mocking in the existing tests. Let me see how they fail now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the actual error dict the tool returns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -608,21 +617,25 @@ Let me see the actual error dict the tool returns:
 **Critical finding**: there's a LIVE lease `L-20260825-01` on `1Dj3-fake` held by agent `sophia` started `2026-08-25T15:47:16Z` — and the current date appears to be **2026-08-25** (TTL is 30 min). This is a **real lease from my own earlier test runs** (the module's `acquire_lease` hit the real API when I validated, since no test env mocked it). It's sitting open in `ecosystem_change_logs/deploys/leases/`.
 
 The lock is working exactly as designed — it blocked a duplicate push. But this is my own stale test lease that needs cleanup. Let me verify and clean it up, then make the tests hermetic (mock the ledger so they never hit the real API):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — it's a stale test lease my own pytest run wrote (the gas tests hit the real API because the ledger isn't mocked). The lock works; now I'll (1) clean up the stale lease and (2) make the gas tool tests hermetic by mocking the ledger:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Stale lease deleted. Now make the gas tool tests hermetic — add an autouse fixture mocking the ledger (so they never touch the real API):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All gas tool tests pass. Now the full gate again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -758,4 +771,167 @@ Phase 2 shipped and merged. Here's the report:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -B4 "unused import" | head -12; echo ====; python3 -m ruf; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -E "^[A-Za-z_/.]*\.py:|unused import" | head -6; echo ===; cd /opt/truesight_autopilot && python3 -m ruff check app scripts tests 2>&1 | grep -E "\.py:[0-9]+" | head -8; …(+8 more)
 • `merge pr` → ✅ PR #313 on truesight_autopilot merged successfully (sha: 887dc8d97c09d659f99ff445b5f83a25d59677a4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14320] Keep going, and then once done, all the way on your face. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=14320] Status??
+
+
+### 🤖 Autopilot
+
+Continuing — next units: (1) update OPEN_FOLLOWUPS (Phase 2 → shipped), (2) backfill the ledger record for PR #313, (3) live deploy. Reading the backlog + syncing the local repo to main in parallel:
+
+
+### 🤖 Autopilot
+
+Local repo is on the merged commit. Now: (1) backfill the ledger record for PR #313, (2) read the tail of OPEN_FOLLOWUPS for the Recently-shipped section format. In parallel:
+
+
+### 🤖 Autopilot
+
+Ledger record backfilled — `deploy_20260825T160310Z_truesight-autopilot` is live in ecosystem_change_logs.
+
+Now the last enforcement gap: the follow-up also calls for wiring the lease into `tokenomics/scripts/deploy_gas_project.py` (the standalone script other LLM instances run directly — my PR #313 covered the autopilot tool that wraps it, but a direct clasp run would bypass the lock). Let me check that script:
+
+
+### 🤖 Autopilot
+
+The standalone tokenomics script is the final enforcement gap — other LLM instances run it directly, bypassing the autopilot tool's lock. Let me see the rest of main() where the push happens:
+
+
+### 🤖 Autopilot
+
+Let me see the rest of main() (the push invocation + exit path) so I know exactly where to insert the lease:
+
+
+### 🤖 Autopilot
+
+I have the full script now. The lease logic needs to be a **standalone, dependency-free module** (this script runs in a bare `tokenomics` checkout with no access to `truesight_autopilot.app`). The right move: add a small, self-contained `deploy_ledger.py` to `tokenomics/scripts/` (mirroring the ecosystem_change_logs script's GitHub-API pattern, using only stdlib `urllib` + a PAT from env) and wire it into `deploy_gas_project.py`'s main().
+
+Let me read the tail of main() to see the exact push + return structure:
+
+
+### 🤖 Autopilot
+
+The artifact nesting is unwieldy — let me grab the actual main() tail from the local tokenomics checkout directly:
+
+
+### 🤖 Autopilot
+
+The tokenomics script is the last enforcement gap. Plan: add a self-contained `scripts/deploy_ledger.py` to tokenomics (stdlib-only — other LLM checkouts can't import from truesight_autopilot) mirroring the canonical ecosystem_change_logs writer, and wire the lease into `main()`. Let me check the script tail, tokenomics test setup, and the canonical writer's API in parallel:
+
+
+### 🤖 Autopilot
+
+The tokenomics script is the last enforcement gap — and there's a subtlety: the autopilot tool (already merged) invokes this script via subprocess, so the script must not self-block on the tool's own lease. Design: script gets a `--lease-id` arg; when provided (upstream handled the ledger), it skips ledger work entirely; when absent (direct run by any LLM), it does acquire → push → record → close. Let me build and test locally first:
+
+
+### 🤖 Autopilot
+
+Compile + ruff check pass; format needs one pass. Let me format, re-verify, then wire it into `deploy_gas_project.py`'s main() and run a live dry-run check against the ledger:
+
+
+### 🤖 Autopilot
+
+Module works — but the PAT env var name isn't resolving in my shell test. Let me check how the autopilot runtime exposes the PAT (it worked in `deploy_ledger.py`'s earlier backfill, which used `settings.github_pat`):
+
+
+### 🤖 Autopilot
+
+The PAT comes from env var `TRUESIGHT_DAO_AUTOPILOT` — but it's loaded via pydantic settings into `settings.github_pat`, not necessarily present in my shell's env. Let me verify where it's read from (a vault? a file?) so the tokenomics script can resolve it the same way, then test the live lease check with the real value:
+
+
+### 🤖 Autopilot
+
+The PAT isn't in systemd env or vault — it must be in the service's EnvironmentFile. Let me find it:
+
+
+### 🤖 Autopilot
+
+Found it — `/opt/truesight_autopilot/.env`. The tokenomics script's PAT resolution should also read that env file as a fallback (many LLM checkouts will run from this box). Let me test the live lease check using the .env value (without echoing the secret), then wire everything up:
+
+
+### 🤖 Autopilot
+
+**Critical design catch before I wire this**: the autopilot tool `gas_deploy_project.py` (already merged in #313) acquires a lease on (`clasp`, script_id) and THEN invokes `deploy_gas_project.py` as a subprocess. If the script also does a lease check, it will see the tool's own live lease and **block the tool's own push — a self-deadlock**. The script must accept `--lease-id` and skip ledger work when the upstream tool already owns the lease. Let me check exactly how the tool builds the subprocess command:
+
+
+### 🤖 Autopilot
+
+The self-guard design is settled: the script must not deadlock against the autopilot tool's own lease. Now I'll patch the local tokenomics checkout (add `--lease-id`, the lease/record block, and install the ledger module), then gate and PR:
+
+
+### 🤖 Autopilot
+
+Patched (7 SOP touchpoints). Now verify the patch is coherent — compile, then review the pushed region, then gate:
+
+
+### 🤖 Autopilot
+
+Compile OK; 3 ruff errors + 1 format need. Let me see the ruff errors and auto-fix:
+
+
+### 🤖 Autopilot
+
+Green — the `--fix` (unused-import / inline-import cleanups) + format resolved all 3. Now the full tokenomics gate, then a functional test of the ledger wiring (dry-run path, and a live lease-block simulation):
+
+
+### 🤖 Autopilot
+
+Script works functionally. The `scripts` dir has 3 pre-existing ruff errors + 6 reformat files — I need to confirm those are pre-existing (untouched by me) before pushing. Let me check what they are and whether they're in my files:
+
+
+### 🤖 Autopilot
+
+Confirmed — the 3 ruff errors are in `audit_orphan_clasp_mirrors.py` and `probe_gas_exec_urls.py`, **untouched pre-existing files**, so they're acceptable per the hard rule (my 2 files are clean). Now run the functional test: dry-run path (no clasp), and simulate the live-lease-block with a quick real API check. Then commit + PR:
+
+
+### 🤖 Autopilot
+
+Dry-run path is clean (no lease on dry-run — correct; the `--push` guard is in place). Now the PR — I'll commit the two files (script + ledger module) with a `--lease-id` self-guard, and push to tokenomics:
+
+
+### 🤖 Autopilot
+
+Committed (2 files, +483/−29; untracked `clasp_mirrors/`/`tk/` noise excluded). Pushing and opening the PR:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging at the tool-round limit — clean handoff state:
+
+## This turn's progress
+
+**1. ✅ Backfilled the ledger record for PR #313** — `deploy_20260825T160310Z_truesight-autopilot` is live in `ecosystem_change_logs/deploys/entries/` (agent=sophia, target=repo truesight_autopilot, evidence=PR #313 URL).
+
+**2. ✅ Closed the last enforcement gap — the standalone `tokenomics/scripts/deploy_gas_project.py`**
+This was the one surface my #313 didn't cover: other LLM instances run it directly, bypassing the autopilot tool's lock. Added:
+- **`scripts/deploy_ledger.py`** (new, stdlib-only, self-contained) — `check_lease` / `acquire_lease` / `close_lease` / `append_deploy_record` writing to `ecosystem_change_logs/deploys` via GitHub Contents API. PAT from `$DEPLOY_LEDGER_PAT` → `$GITHUB_TOKEN` → `$TRUESIGHT_DAO_AUTOPILOT`. Fail-open on PAT/network errors; **hard-block on a proven live lease** (30-min TTL). Live-tested: `check_lease` returns `clear` for both a clasp scriptId and ec2/autopilot.
+- **`deploy_gas_project.py`** — before any `--push` without `--lease-id`: blocks on another agent's live lease, acquires its own, appends success/failure record, closes lease. **`--lease-id` passthrough prevents self-deadlock** (the autopilot tool already owns the lease when it subprocess-calls this script — discovered this edge case by reading the tool's cmd-building code and designed around it).
+- Verified: compileall ✅, ruff clean on both files ✅, dry-run + `--list` functional checks ✅ (dry-run correctly takes no lease).
+
+**3. ⚠️ Committed + pushed, PR NOT YET OPENED**
+- Branch `feat/deploy-ledger-sop-phase2` pushed (commit `08c5eb2`, 2 files, +483/−29). The 3 ruff errors in `scripts/` are pre-existing in untouched files (`audit_orphan_clasp_mirrors.py`, `probe_gas_exec_urls.py`) — acceptable per the hard rule.
+
+## RESUME HERE → (next turn, small)
+1. **Open the tokenomics PR** from the pushed branch `feat/deploy-ledger-sop-phase2` (title: *"feat: enforce DEPLOY_PUSH_SOP lease+audit in deploy_gas_project.py (direct-run gap)"*, body already drafted in the commit).
+2. **Merge it** (my own non-prod feature PR — authorized).
+3. **Update `OPEN_FOLLOWUPS.md`** via agentic_ai_context PR: move the "Wire deploy-ledger lease pre-check…" entry (Phase 2) to `## Recently shipped` with both PR links (#313 + the tokenomics one); keep Phase 3 (CI validation) noted; the OPERATING_INSTRUCTIONS pointer entry stays Pending (needs Gary's explicit approval — it's a canonical file).
+4. **Ask Gary** about the live `deploy_autopilot` (restarts the service / severs this conversation) — that's his call, and it'll be the first real end-to-end ec2-lease exercise.
+
+Everything is built, gated, and pushed; only the PR-open → merge → followups-close-out remains.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /opt/truesight_autopilot && git checkout main && git pull origin main 2>&1 | tail -3 && git log --oneline -1; cd /opt/truesight_autopilot && python3 - << 'EOF' from app.deploy_ledger import append_deploy_record rec = append_deploy_record( agent="soph; cd /opt/truesight_autopilot/tokenomics && ls scripts/deploy_gas_project.py 2>/dev/null || ls; echo ====; grep -n "def main" scripts/deploy_g; …(+16 more)
 
