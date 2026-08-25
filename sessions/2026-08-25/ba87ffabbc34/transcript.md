@@ -2136,16 +2136,19 @@ So yes — **a live farm-build game that pays real money for real trees.** That'
 ### 🤖 Autopilot
 
 Good question — let me verify the current free satellite access APIs and licensing before adding it to the PDF.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the free satellite access is real, with clear commercial-use terms. Let me add this clearly to the PDF (v5).
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v5 built. Sending it to you and updating the repo copy.
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2182,21 +2185,25 @@ Want me to also update the **whitepaper's satellite bullet** (PR #309) to name t
 ### 🤖 Autopilot
 
 Let me research the actual grants that exist for each resource gap — programs already standing that SunMint can pick up.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good set. Let me get the Brazil-specific and open-application funds that map directly to our resource gaps.
+[3 tool result(s) compacted: web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — I have a strong grants landscape now. Building v6 with a clear **grants map** tied to each resource gap.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v6 built. Sending and uploading.
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2240,6 +2247,7 @@ PDF v6 built. Sending and uploading.
 ### 🤖 Autopilot
 
 Great strategic question, Gary — let me ground it with current market data on PVCs vs VCUs before I give you a clear answer.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2274,46 +2282,65 @@ And here's the kicker — the whitepaper already says pilot = Plan Vivo, scale =
 ### 🤖 Autopilot
 
 Let me find the one tree already planted/funded — the QR code and its URL — so I can point to it in both documents.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the repos and transcripts for the planted tree and its QR code.
+[2 tool result(s) compacted: search_code, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan doc `SUNMINT_TREE_QR_LINKING_PLAN.md` looks most relevant. Let me read it and the ERA cohort plan to find the actual first-tree QR code and its URL.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the specific first tree — checking for the actual planted tree QR code and its URL.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual ledger/QR records for a planted tree — the agroverse-inventory repo and the QR codes repo.
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual first funded tree — checking the sunmint photos repo and lineage-assets for the tree's QR code and URL.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual tree QR code — checking lineage-assets (per-asset provenance for trees) and the transcript for the tree-planting QR.
+[2 tool result(s) compacted: read_repo_file, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual tree QR by checking the QR landing page pattern and searching for the tree-planting QR link in the repo.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try two quick targeted checks for the actual tree QR code.
+[2 tool result(s) compacted: list_matching_qr_codes, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2409,4 +2436,99 @@ Stopping here per the turn limit — I've completed the critical research and ha
 ⚠️ Note: I have NOT yet made the PR or PDF — the research consumed the turn budget. Next turn starts directly with the two edits. Also still pending: PR #309 (lean stack whitepaper) is open and unmerged — I'll fold its content into the new PR or merge separately.
 
 **One thing I need from you:** confirm the **QR landing URL format** to print in the PDF — I'll use `https://edgar.truesight.me/agroverse/qr-code-check?qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` (the production scan pattern) unless you want the `truesight.me/sunmint/main` ledger URL shown instead.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yep, keep going. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Continuing the execution — first, let me get the exact §7–12 text I still need for the edits.
+
+
+### 🤖 Autopilot
+
+Let me get the last section of the whitepaper text (§8 tail, §9–12) for exact anchors.
+
+
+### 🤖 Autopilot
+
+Let me grab the exact tail of the whitepaper (§8–12) for precise edit anchors.
+
+
+### 🤖 Autopilot
+
+I have every anchor. Executing the full whitepaper PR now — Plan Vivo-first decision, free satellite APIs, PM002 equation chain, grants map, milestones, and the First Tree callout.
+
+
+### 🤖 Autopilot
+
+The escape-sequence mismatch — the file has literal em-dashes. Let me fetch the exact bytes and patch precisely.
+
+
+### 🤖 Autopilot
+
+The file uses literal UTF-8 characters (— and ≥), not escape sequences. Let me apply the edits locally with exact literals, then push the full file.
+
+
+### 🤖 Autopilot
+
+All 4 edits applied locally. Now pushing the full updated file as a PR.
+
+
+### 🤖 Autopilot
+
+Now pushing the updated file via PR. Let me read the local file content to pass it.
+
+
+### 🤖 Autopilot
+
+The file is ready locally with all 4 edits. Now pushing via PR using exact literal UTF-8 strings (the file uses real — and ≥ characters):
+
+
+### 🤖 Autopilot
+
+PR #310 is open with all 4 whitepaper edits applied. Now generating the companion PDF (v7) with the same content — Plan Vivo-first, grants, milestones, and the First Tree proof.
+
+
+### 🤖 Autopilot
+
+PDF v7 generated. Sending it to you and uploading to the repo.
+
+
+### 🤖 Autopilot
+
+Everything landed, Gary. Here's the turn report.
+
+## ✅ What I did this turn
+
+**1. Whitepaper updated — PR [#310](https://github.com/TrueSightDAO/truesight_me_beta/pull/310)** (open, `truesight_me_beta`, beta-first) — 4 edits, all applied & verified:
+- **§6 Certification decision** → **Plan Vivo FIRST** (PV Climate CCP-Eligible under ICVCM; PVCs >€30/t median 2025 above VCU; ACORN/CommuniTree precedents; Verra only on demand for scale) — two-registry portfolio
+- **§6 Monitoring** → free satellite APIs named (Copernicus CDSE, Planetary Computer, USGS EarthExplorer) + drones deferred to post-pilot calibration
+- **§8 GHG** → **PM002 accounting chain** (Eq 1: ΔBGB=ΔAGB×R, R=0.32; Eqs 6.1/6.2: PVCs = ((ΔAGB+ΔBGB)×0.47)×44/12 ×(1−A_pre)(1−A_unc)(1−LD)(1−AR)(1−RB) − (E_proj−E_base), AR=10%, RB=20%)
+- **§12** → grants funding map (Cocoa Horizons, Cocoa Life, Cargill, Fundo Vale, GCF+IICA, iNovaland R$8.8M, Gitcoin, CFC, FCF) + **milestones M0–M8** (M0 ✓ app shipped, M1 ✓ first tree linked, M2 ✓ methodology corrected) + **"Execution Has Started" First Tree callout**
+
+**2. PDF v7 generated + delivered + uploaded** ✅
+- 📄 `sunmint_consolidated_progress_v7.pdf` sent to this thread (msg 14464)
+- Uploaded: `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_consolidated_progress_v7.pdf`
+- Contains all of the above: Plan Vivo-first, free satellite APIs, PM002 equations, **resource gaps table with funding sources per gap**, grants map, milestones, and the **First Tree proof with QR + scan URL**
+
+**The First Tree proof (the centerpiece):**
+> QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` · SunMint Tree Planting Pledge · **ASSIGNED_TO_TREE** · owner paloma@founderhaus.club · manager Gary Teh · ledger `truesight.me/sunmint/main` · linked 2026-08-22 · scan URL: `edgar.truesight.me/agroverse/qr-code-check?qr_code=FOUNDERHAUS_BOUGAINVILLEA_20260821_1`
+
+**Not done this turn (per one-PR-per-turn rule):** I did **not** merge PR #310, and did **not** promote to prod.
+
+## 📌 RESUME HERE → next units
+1. **Merge PR #310** (your go) — then review the beta page at the truesight.me beta site
+2. **Promote to prod** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` after your review (canonical `truesight.me/sunmint/whitepaper/` still needs it)
+3. **Share with the DAO/Beer Hall** — post the v7 PDF + links into the Beer Hall digest (needs your explicit go)
+4. **Continue execution** — M3 (Stage 0 capital proposal / Gitcoin application), M4 (PDD draft + free-satellite baseline), M5 (monitor_tree_growth module)
+
+Which unit next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" | python3 -c "import sys; d=sy; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" -o /tmp/wp.html && python3 - <; cd /tmp && python3 - <<'EOF' d = open('/tmp/wp.html', encoding='utf-8').read() # EDIT 1: Plan Vivo-first certification decision old1 = 'Subm; …(+1 more)
 
