@@ -777,26 +777,31 @@ The `chown -R root ./` ExecStartPre is the recurring culprit — every restart i
 Found the root cause. The unit has `ExecStartPre=chown -R root ./` — every restart it roots the whole app tree, breaking the `ubuntu` user's ability to write `log/sidekiq.log` and `tmp/pids/`. My chown fixed it once, but each restart re-breaks it.
 
 The durable fix: change the chown to `ubuntu:ubuntu` (the user that actually runs the service), so the ExecStartPre doesn't break permissions. This is a legitimate ops fix on the box's systemd unit. Applying it and restarting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The unit is fixed (chown now `ubuntu:ubuntu`) but the service still fails — the ExecStartPre chain may be failing on a different step now. Let me check which ExecStartPre is failing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progress — now the chown succeeds but git fails: `fatal: detected dubious ownership` because the repo is now owned by `ubuntu` while git runs as root (ExecStartPre runs as root). Classic safe.directory issue. Fix: add the safe.directory exception for root:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still failing. Let me check where it's stuck now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same error — the safe.directory I set went to `/root/.gitconfig` but the unit's `git checkout` runs as a different context. The real issue: the `chown -R ubuntu:ubuntu` makes git-as-root distrust the repo. Better approach: run the git checkout as `ubuntu` too (add `User=ubuntu` to the service), or set safe.directory system-wide. Let me set it system-wide via git config on the repo itself, and check what user git runs as:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -928,4 +933,96 @@ One durable note: both unit fixes live in the box's systemd files — I'll file 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → sudo journalctl -u seni_sk --since '16:20:11' --no-pager 2>/dev/null | grep -viE 'Using |INFO: Cron' | head -50; echo '=== ror unit env ===' && systemctl cat seni_ror --no-pager 2>/dev/null | grep -iE 'Environment|EnvFile' ; echo '=== sk unit env ===' &; sudo cp /etc/systemd/system/seni_sk.service /tmp/seni_sk.service.bak && sudo grep '^Environment=' /etc/systemd/system/seni_ror.service > /tm; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] Yeah, please fire it in the open follow-ups, or maybe even like make it stricter, you know, put it somewhere in the configuration file or something. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me check the current OPEN_FOLLOWUPS format and whether the repo has a deploy/config home for the unit files.
+
+
+### 🤖 Autopilot
+
+The repo already has canonical unit files in `config/systemd/` — so the right home for the fix is the repo, not just the box. Let me diff the repo's version against what's actually running, and check whether deploy.sh installs them.
+
+
+### 🤖 Autopilot
+
+The repo already has canonical units in `config/systemd/` — and the box had **drifted** from them (someone had added `chown -R root ./` and dropped `User=`/`Environment=` on the box). The stricter fix: make the repo canonical and have `deploy.sh` **install the units from the repo** on every deploy, so the box can never drift again. Let me see the restart section of deploy.sh to place the install step precisely.
+
+
+### 🤖 Autopilot
+
+The repo already carries canonical units in `config/systemd/` — the box had drifted from them (the `chown -R root` hack and dropped env lines were never in the repo). The stricter fix you're describing is exactly right: make the repo canonical and have `deploy.sh` **install the units on every deploy** so drift can't recur. Let me check the repo's `seni_ror.service` (the rails side) before writing the PR.
+
+
+### 🤖 Autopilot
+
+I have the full picture. The repo's canonical units differ from what's live on the box in exactly the ways that broke sidekiq:
+- **repo `seni_sk.service`** has `User=ubuntu Group=ubuntu` + `SECRET_KEY_BASE` + `RAILS_ENV` — **live unit** lost `Group=`, gained a `chown -R root ./` hack, and lacked `EDGAR_FULL_HOST`.
+- **repo `seni_ror.service`** is the richer rails unit (puma, PORT, WEB_CONCURRENCY) — but the **live rails is running WEBrick** (PID 905930), meaning the live ror unit also drifted from the repo.
+
+The stricter fix you're asking for: make repo canonical + make `deploy.sh` **install the units from the repo on every deploy** so the box can never drift again. Since the secret already lives in the repo's canonical units, I'll move it to an env file the deploy installs (env is provisioned from the repo units at deploy time — no secret value in my PR).
+
+Let me write the deploy.sh install step. Key facts I need from the diff:
+- repo sk: `User=ubuntu Group=ubuntu`, `SECRET_KEY_BASE`, `RAILS_ENV` — needs `EDGAR_FULL_HOST` added
+- repo ror: puma-based; live is WEBrick — the repo unit is the target
+- deploy.sh stages both hosts, then restarts; the install step goes right before each restart
+
+
+### 🤖 Autopilot
+
+The repo already has canonical units in `config/systemd/` — the box had drifted from them (the `chown -R root` hack and dropped env lines were never in the repo). That's the "stricter" fix: make the repo units the source of truth and have `deploy.sh` install them on every deploy so drift can't recur. Let me grab the exact live `seni_ror.service` (to align the repo unit with what actually works) and check the puma config before writing the PR.
+
+
+### 🤖 Autopilot
+
+Gary wants the stricter fix — put the units in version control as source of truth. The repo already has `config/systemd/` units, but they had drifted from the box (the `chown -R root` hack and dropped env lines were never in the repo). The proper fix: **align the repo units to the verified-good live state, and make `deploy.sh` install them on every deploy** so drift can't recur. Opening the PR:
+
+
+### 🤖 Autopilot
+
+Now the deploy.sh install step — adding it as an edit (the unit files are already committed; this wires the enforcement):
+
+
+### 🤖 Autopilot
+
+The tool's fresh clone can't fast-forward the already-pushed branch. I'll do the deploy.sh edit + push from the box itself (it has the full repo and the branch). Applying the edit there:
+
+
+### 🤖 Autopilot
+
+PR #1132 is complete (both commits pushed: `61d5a5d9` units + `057ca44d` deploy.sh). Running the final gate — shellcheck-ish syntax check on the edited deploy.sh, then reporting for merge.
+
+
+### 🤖 Autopilot
+
+PR #1132 is ready — this is the stricter fix you asked for (config in version control, not just a follow-up note).
+
+**✅ PR #1132 open:** https://github.com/TrueSightDAO/sentiment_importer/pull/1132 — *"Drift-proof systemd units: deploy.sh installs config/systemd on every deploy"*
+
+**What it does — repo becomes the single source of truth:**
+1. **`config/systemd/seni_sk.service`** — aligned to the verified-good live state (adds `EDGAR_FULL_HOST`; the live box had silently drifted — lost `User=`/`Group=`/env, gained a `chown -R root ./` hack that was breaking everything).
+2. **`config/systemd/seni_ror.service`** — aligned to what actually runs on the box (`rails s -p 3002`, not the stale puma config).
+3. **`deploy.sh`** — new `install_unit` step: **every deploy now copies the canonical unit from the repo onto the box + `daemon-reload` before restarting**, so a hand-edit on the box gets overwritten at next deploy. Drift can't recur.
+
+**Verified:** `bash -n deploy.sh` OK, install_unit wired at both restart sites (ror + sk), diff is minimal (3 files, +16/−8), no app code touched.
+
+Note: `SECRET_KEY_BASE` stays in the repo unit files (pre-existing practice — `deploy.sh load_unit_env` reads it from there). Moving it to a secrets manager is a separate hardening item; I'll add that as a follow-up entry too.
+
+**Ready to merge on your word** — say go and I'll merge PR #1132. (No deploy needed for this one beyond the merge; the *next* real deploy will enforce the units automatically.)
+
+———
+**✅ Done this turn — actions taken:**
+• `read context` → OPEN_FOLLOWUPS.md (format + existing entries)
+• `ssh run` ×5 → repo deploy dirs; canonical seni_sk/ror units vs live diff; deploy.sh restart sections; live ror unit + puma; python3 edit deploy.sh + bash -n + commit + push; diff stat + grep install_unit
+• `git push` ×2 → PR #1132 (61d5a5d9 units + 057ca44d deploy.sh)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /home/ubuntu/sentiment_importer && echo '=== repo deploy dirs ===' && ls -d deploy config/deploy script scripts ops 2>/dev/null ; echo '=; cd /home/ubuntu/sentiment_importer && echo '=== repo canonical seni_sk.service ===' && cat config/systemd/seni_sk.service && echo '=== LIVE ; cd /home/ubuntu/sentiment_importer && sed -n '40,150p' deploy.sh; …(+5 more)
 
