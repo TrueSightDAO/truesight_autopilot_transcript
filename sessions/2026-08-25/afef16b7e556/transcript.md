@@ -4008,6 +4008,7 @@ The config lives in `config/google/`. Let me check the SA files and the tooling 
 ### 🤖 Autopilot
 
 The ledger is accessible via the agroverse_qr_code_manager SA. The deck's "483 contributors / 40 governors / 23 partners / 533 bags / 339 trees / $11.6k" all match the cache. Now the key check — is the **total contribution-hours** (TDG) number that Elizabeth should use the full 2.42M TDG, or the 24,240 that Gary proposed? Let me check the Contribution submission / Recent Contributions tabs for the actual hours total and how TDG maps to hours.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4204,4 +4205,40 @@ And the ordering is the subtle genius of it: **the road first, the meaning after
 The interior truth (reflection, connection) gains credibility only when it's anchored to the exterior receipts (trees, covenant, hectares). Alone it's poetry; with the receipts it's prophecy with proof.
 
 **And the deepest note:** "regenerative power of cacao" is the mission covenant in miniature — 1 bag = 1 tree, the rainforest returning. This slide is where the deck stops talking about the DAO and starts talking about *why the DAO exists at all*: the 10,000 hectares. It's the 義勝 corner — righteousness as architecture, not slogan. Elizabeth has instinctively put the mission line at the climax of the deck, after the evidence. That's exactly right. Let the numbers testify first; let the purpose speak last.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you put this event Google Calendar reminder
+
+https://luma.com/tc9gbuge
+
+
+### 🤖 Autopilot
+
+Let me check what this Luma event is first, then set the reminder.
+
+
+### 🤖 Autopilot
+
+Found it — **BitAngels Magic Island Demo Day** at Founder Haus, Florianópolis, Aug 28, 8-11am. This ties straight into the Startup Summit week orbit. Creating the calendar reminder now.
+
+
+### 🤖 Autopilot
+
+✅ **Calendar event created.**
+
+**BitAngels — Magic Island Demo Day**
+- **When:** Fri, **Aug 28, 2026 · 8:00–11:00 AM** (America/Sao_Paulo)
+- **Where:** Founder Haus, Jurerê Internacional, Florianópolis (address shared with approved guests)
+- **What:** The world's first blockchain/crypto angel network (BitAngels — Michael Terpin, David Johnston) brings its first LATAM Demo Day: welcome coffee 8:00, startup pitches 8:30–10:00, networking to 11:00
+- **Reminders:** popup 60 min + 10 min before
+- **Registration link + pitch link embedded** in the description
+- **Calendar link:** google.com/calendar/event?eid=NjNpZmlmaGhhamQ1ZGNzNDc2Mm40OGpmcm8gZ2FyeWpvYkBhZ3JvdmVyc2Uuc2hvcA
+
+**Context:** This slots right into your Startup Summit week — Aug 26 (Startup Summit day 1), Aug 28 (this + the Cursor meetup orbit). Founder Haus again — the Paloma connection keeps surfacing. Also worth noting: BitAngels is investor-network heavy; if you're ever pitching TrueSight DAO or the cacao lane, the apply-to-pitch link is in the description (deadline Aug 26).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json, datetime from zoneinfo import ZoneInfo from google.oauth2.credenti
 
