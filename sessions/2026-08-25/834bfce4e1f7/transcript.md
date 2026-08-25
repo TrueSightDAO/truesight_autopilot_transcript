@@ -594,21 +594,25 @@ Explicit go received: recolor → PR → merge → deploy. Let me first read the
 ### 🤖 Autopilot
 
 Explicit go: recolor → PR → merge → deploy. I have the full dataset config now. Plan: amend the open PR5 branch (it's unmerged and this is all one visual arc) with the traffic-light recolor — navy line, pale-green GO band between Norm and the over-extended line, green legend swatch — then test, merge, deploy. Pushing the edits now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One edit failed to match — the branch may not contain my earlier PR5 text edit. Let me verify what's actually on the branch right now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch DOES contain the PR5 text edit (commit `80c40866`) — the match failed only because my search string had a typo (missing the closing `</strong>`). The file is exactly as expected. Retrying the edit with the corrected search string — the earlier "error" was a no-op, nothing was applied:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hunks 1–4 are fine — the failure is only the legend-text edit (hunk 5). The tool is atomic (nothing applied). Let me get the exact bytes of that line so I match it precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -616,46 +620,55 @@ Hunks 1–4 are fine — the failure is only the legend-text edit (hunk 5). The 
 Found it — the em-dash is the **UTF-8 em-dash `\u2014` (342 200 224)**, not a literal `—` in my search string. That's why it didn't match. The line is: `<strong>Green line in the clear band</strong> (above the grey zone, below the orange) — <strong>GO for it.</strong> Healthy, non-overheated participation; take the breakout cards below.`
 
 Retrying with the literal em-dash character in the search string:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same error — even with the literal em-dash. The tool's search likely normalizes or the `\u2014` in my JSON got double-escaped. The file check shows the text IS there (`80c40866` commit). Rather than keep fighting the search, I'll switch to a **whole-file write** (I have the exact file from the branch; I'll edit the legend line locally and write the complete updated file). Let me fetch the full current file from the branch first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is 329 lines and saved locally. Let me apply the traffic-light edits with a Python script on the box (handles the em-dash reliably), then read back the result for the push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All edits applied cleanly. Now let me fetch the full edited file locally so I can push it as a whole-file write (this bypasses the em-dash search issue):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the edited file (saved to artifact). Let me read the full content to push it as a whole-file write:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is verified on the box (full 329 lines, all edits in place). Rather than fight the em-dash matching in `git_push_changes`, I'll commit + push from the box itself — the feature branch already has PR #1131 open, so pushing updates it. Running tests first (hard rule: test before push):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The spec tail got cut off (shows seed line but not the result count). Let me get the actual spec result and then commit + push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly right and tests pass (Syntax OK + 2/0). Committing and pushing to the branch (updates PR #1131):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed to PR #1131 (`f4c99a08`). Now merging per your go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -702,51 +715,61 @@ Okay, go ahead and deploy it. [System note: the user sent this as a VOICE messag
 ### 🤖 Autopilot
 
 Explicit go received — deploying PR5 now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HEAD = `7c3fe6a4` (PR5) and the new code is on disk. Restarting Rails:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Service is active and port 3002 is listening (new PID 905930) — but I saw a bundler error line in the tail. Let me verify the new process booted cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean boot — new PID 905930, WEBrick up on 3002 (the earlier "error" line was from the *old* process's shutdown). Now the Sidekiq worker, matching the deploy pattern:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sidekiq unit is `seni_sk.service` (not `seni_sk_nelanco`). Restarting the right one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidekiq failed to start — need to see why. Checking the unit's status and log:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidekiq failed to boot — I need the actual error message (the log tail shows the bundler stack but not the root cause). Let me run it directly to capture the real error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the real error is **`Permission denied @ rb_sysopen - log/sidekiq.log`**. The unit's `ExecStartPre=chown -R root ./` (seen in the unit file) chowns the whole app dir to root, so the `ubuntu` user can't write `log/sidekiq.log` anymore. That chown line is the culprit. Quick fix: chown the log dir back to ubuntu and restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The chown fixed the ownership (log now `ubuntu ubuntu`), but sidekiq still failed. Let me see the new error — could be the same chown root issue on another path, or a stale pid:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `chown -R root ./` ExecStartPre is the recurring culprit — every restart it re-roots the whole tree, breaking log/pid writes for the `ubuntu` user. My chown fixes it momentarily but the next restart re-breaks it. The proper fix: make the ExecStartPre `chown` target only what's needed, or drop it. That's a deploy-script fix — let me check the unit and apply a durable fix (chown to `ubuntu` instead of root):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -851,4 +874,58 @@ Sidekiq down = background jobs paused (cron reports, spike/notifier workers, cac
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /home/ubuntu/sentiment_importer && git checkout master 2>&1 | tail -1 && git pull origin master 2>&1 | tail -3 && echo '=== HEAD ===' && ; sudo systemctl restart seni_ror && sleep 10 && echo '=== status ===' && systemctl is-active seni_ror && echo '=== pid ===' && ps -o pid,lsta; echo '=== new process ===' && ps -o pid,lstart,cmd -p 905930 2>/dev/null && echo '=== recent boot log ===' && sudo journalctl -u seni_ror --; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14313] Fix it
+
+
+### 🤖 Autopilot
+
+On it — capturing the actual exception that kills Sidekiq at boot.
+
+
+### 🤖 Autopilot
+
+Found it — the real error: **`Missing secret_key_base for 'production' environment`**. Sidekiq boots as root→ubuntu context change, and the secret env isn't in its environment. Let me check how `seni_ror` gets its secret (it boots fine) vs `seni_sk`:
+
+
+### 🤖 Autopilot
+
+**Root cause found.** `seni_ror.service` carries `Environment="SECRET_KEY_BASE=…"` (+ RAILS_ENV, EDGAR_FULL_HOST) in its unit — but `seni_sk.service` has **no Environment lines at all**. Sidekiq boots without the secret → `Missing secret_key_base for 'production'`. (The `# source .profile` lines in the unit are commented out, so no fallback.)
+
+Clean fix: mirror seni_ror — copy its Environment lines into seni_sk's unit. Doing it with grep/sed on the box so the secret never round-trips through chat:
+
+
+### 🤖 Autopilot
+
+**Sidekiq is UP and processing — "Starting processing, hit Ctrl-C to stop" with all queues loaded (project_collaboration, algo_trader, reporting, tsd, png_charter, backtesting, etc., concurrency 8).** The secret_key_base fix worked. Let me confirm stability (didn't die 10s later like last time) and do a final all-green check:
+
+
+### 🤖 Autopilot
+
+**Both services green and stable.** ✅
+
+## Fixed — the Sidekiq failure
+
+**Root cause:** `seni_sk.service` was missing the `Environment=` lines (`SECRET_KEY_BASE`, `RAILS_ENV`, `EDGAR_FULL_HOST`) that `seni_ror.service` has. Sidekiq booted, registered all its cron jobs, then died during `Application.initialize!` with **`Missing secret_key_base for 'production'`**. Two pre-existing unit bugs, both fixed:
+1. **Missing env** → copied the 3 `Environment=` lines from `seni_ror` into `seni_sk` (secret redacted, never printed).
+2. **Permission whack-a-mole** (fixed earlier) → `User=ubuntu` + dropped the `chown -R root ./` + one-time ownership reset.
+
+**Verified live:**
+| Service | Status |
+|---|---|
+| `seni_ror` (Rails, perch.truesight.me) | ✅ active, port 3002, serving PR5 |
+| `seni_sk` (Sidekiq) | ✅ active, PID 907756, "Starting processing" — all queues (algo_trader, tsd, reporting, backtesting, etc.) |
+| Deployed code | ✅ `7c3fe6a4` (PR5 — green GO band + navy line) |
+| Stability | ✅ no fatal/error/exception in 20s post-boot |
+
+**Gary's chart** — reload perch.truesight.me: green GO band between grey (below-Norm) and orange (over-extended), navy line = today's reading. All workers processing again.
+
+One durable note: both unit fixes live in the box's systemd files — I'll file them in OPEN_FOLLOWUPS so a future `sentiment_importer` deploy doesn't re-hit the env/permission gap. Want me to also mirror the unit files into the repo (`config/deploy` or similar) so they're version-controlled? Otherwise this arc is complete — PR1–PR5 merged + deployed, worker recovered.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → sudo journalctl -u seni_sk --since '16:20:11' --no-pager 2>/dev/null | grep -viE 'Using |INFO: Cron' | head -50; echo '=== ror unit env ===' && systemctl cat seni_ror --no-pager 2>/dev/null | grep -iE 'Environment|EnvFile' ; echo '=== sk unit env ===' &; sudo cp /etc/systemd/system/seni_sk.service /tmp/seni_sk.service.bak && sudo grep '^Environment=' /etc/systemd/system/seni_ror.service > /tm; …(+1 more)
 
