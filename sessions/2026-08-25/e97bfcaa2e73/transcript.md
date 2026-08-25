@@ -19,27 +19,67 @@ Envoy here — kicked this off per Gary. Diagnosis (agentic_ai_context PR #816, 
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me read the full manifest to find the currency plan row and RESUME HERE state.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Envoy's message references PR #816 (merged 2026-08-25) — that's the diagnosis. Let me find the plan file it added, then inspect current state.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Envoy's diagnosis matches — `currencies.json` is stale since 2026-06-20. Let me find the plan file that PR #816 added and understand the reference pattern (store-inventory.json regen).
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the plan file that PR #816 created and look at the go_to_market sync script's scheduling (cron) setup.
+[3 tool result(s) compacted: search_code, search_code, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at PR #816's actual diff to see what plan file it created and the RESUME HERE state.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -115,4 +155,88 @@ Now let me gather the live data: read the current `Currencies` tab and check how
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse-inventory/main/gas/repackaging-currency-ingest/Code.gs -o curren; cd /tmp && sed -n '579,660p' currencies_code.gs
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14303] Promote to prod
+
+
+### 🤖 Autopilot
+
+"Promote to prod" — before I touch `sync_beta_to_prod`, let me verify there's actually a beta-side change from this plan to promote. PR3 (the `dapp_beta` UI caption) was never created in my last turn, so let me check the current state of the repo.
+
+
+### 🤖 Autopilot
+
+PR #79 (`feat: surface currencies.json freshness caption on currency_conversion.html`) is **merged in dapp_beta** (2026-08-25) — that's PR3 from the plan, already done in beta. "Promote to prod" = sync `dapp_beta → dapp_prod`. Let me verify the caption is in beta and confirm prod is behind before syncing.
+
+
+### 🤖 Autopilot
+
+Hmm — the caption text isn't found by that search in either repo. The search may only index default branches or the caption uses different wording. Let me check the PR #79 diff directly and look at the actual prod state.
+
+
+### 🤖 Autopilot
+
+The prod file also starts with the same header — I need to confirm whether the freshness caption actually made it into prod. Let me grep both raw files directly.
+
+
+### 🤖 Autopilot
+
+Confirmed: beta has the caption (2 refs), prod does not (0). "Promote to prod" = sync `dapp_beta → dapp_prod`. But the sync promotes **all** beta changes, not just PR #79 — let me check how far beta and prod have diverged before firing.
+
+
+### 🤖 Autopilot
+
+Clear picture now:
+
+- **`dapp_beta`** HEAD = `d5a6d667` — PR #79 (freshness caption), merged 2026-08-25, on top of #78.
+- **`dapp_prod`** HEAD = `7e580df5` — "Merge branch 'TrueSightDAO:main'" which brought in #78 on 2026-08-24, but **not** #79.
+
+So prod is exactly **one commit behind** beta: the only delta is PR #79 (`currencyListFreshness` caption — confirmed present in beta raw file, absent in prod raw file). Promoting `dapp_beta → dapp_prod` will land precisely that change, nothing else.
+
+Gary has explicitly said "Promote to prod" — that's the explicit approval gate. Firing the sync:
+
+
+### 🤖 Autopilot
+
+Sync succeeded. Verifying the caption is now live in prod:
+
+
+### 🤖 Autopilot
+
+The sync reported success, but the prod raw file still shows 0 — could be CDN cache or the merge didn't actually carry the change. Let me verify via the API (uncached) and check the new prod HEAD.
+
+
+### 🤖 Autopilot
+
+Confirmed — promotion succeeded:
+
+- **Prod HEAD** is now `5b254227` ("Merge branch 'TrueSightDAO:main' into main"), carrying PR #79.
+- **`currencyListFreshness` count in dapp_prod = 2** (the caption div + the JS renderer) — the change is live in the prod repo. The earlier `raw.githubusercontent.com` count of 0 was a **CDN cache lag**, not a failed merge.
+
+**Done — PR3 promoted to production.**
+
+## Summary
+
+| Item | Status |
+|---|---|
+| PR #79 (freshness caption, `dapp_beta`) | ✅ merged in beta (2026-08-25) |
+| `dapp_beta → dapp_prod` sync | ✅ `sync_beta_to_prod` — merge upstream succeeded |
+| Prod HEAD | `5b254227` (merge of #79 into main) |
+| Caption live in prod repo | ✅ `currencyListFreshness` × 2 in `currency_conversion.html` |
+| Live site | ⏳ GitHub Pages will pick it up on next deploy (repo change is in) |
+
+## Notes / remaining items on the plan
+
+1. **PR1 (currencies.json catch-up republish)** — still **not done**. That's the actual functional fix (9 missing currencies + trailing-space drift in the picker). PR3 only makes staleness *visible*; the missing currencies won't appear in the picker until `agroverse-inventory/currencies.json` is republished from the live sheet. **This is the next execution step** — I had it queued as "RESUME HERE → PR1" last turn (re-read sheet → reconstruct trimmed/deduped/sorted list exactly like `readCurrencyStringsFromSheet_` → Contents-API write to `agroverse-inventory/currencies.json`).
+2. **PR2 (scheduled regen workflow)** — not started; mirrors `publish-agroverse-inventory-snapshot.yml` in `go_to_market`.
+3. **Ledger note:** `Currencies` row 34 (`Cacao Almonds KG from Vivi's farm - AGL13 `) still has a trailing space in the live sheet — republish normalizes the JSON side, but the sheet cell itself would still fail exact-match on submission. Needs a human ledger edit to fully clear.
+
+Want me to proceed with **PR1 now** (republish `currencies.json` from the live sheet)? That's the step that actually makes the 9 missing currencies selectable on `currency_conversion.html`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== dapp_beta ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/currency_conversion.html | grep; cd /tmp && echo "=== dapp_prod currencyListFreshness count ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/dapp_prod/main/cur; cd /tmp && echo "=== dapp_prod HEAD commit ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dapp_prod/commits?per_page=3" | grep -
 
