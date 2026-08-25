@@ -2671,6 +2671,7 @@ Go ahead and merge the PR as well as consolidate the PDF, promote the prop once 
 ### 🤖 Autopilot
 
 Executing the full chain — merge PR #311, consolidate PDF v8, then promote to prod.
+[2 tool result(s) compacted: merge_pr, generate_pdf — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2851,4 +2852,41 @@ If you want it exact, I can add per-message timestamps to the transcript recordi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && for d in 2026-08-16 2026-08-17 2026-08-18 2026-08-19 2026-08-20 2026-08-21 2026-08-22 2026-08-23 2026-08-24 2026-08-25; do echo "; cd /tmp && echo "Governor msgs:"; grep -c '### 🧑‍🏭 Governor' t.md 2>/dev/null || grep -c '### .*Governor' t.md; echo "Autopilot msgs:"; grep
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Okay, then submit the contribution report of our time spent yours and mine separately based on what you estimated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the contribution event format first, then submit both reports.
+
+
+### 🤖 Autopilot
+
+Submitting both contribution reports now — Gary's time and my time, separately.
+
+
+### 🤖 Autopilot
+
+Both contribution reports submitted ✅
+
+## What I logged
+
+| Contributor | Amount | Type |
+|---|---|---|
+| **Gary Teh** | 30 min | Time (Minutes) — governor direction across the 2-day session (financing model, MRV stack decisions, Plan Vivo-first, cacao flywheel, RFP/grants direction) |
+| **Sophia Truesight** | 60 min | Time (Minutes) — research & execution (PM002 extraction, 13-precedent deep dive, NOR vs PODream, free satellite APIs, grants map, Terra RFP, 5 whitepaper PRs #294/#307–#311, PDFs v1–v8, first-tree proof) |
+
+Both submitted via `[CONTRIBUTION EVENT]` to Edgar with the required fields (Type, Amount, Contributor + Description) — the DAO ledger now has the two-day session on record, split between us.
+
+Note: per the Rubric these time contributions flow toward TDG awards on the standard schedule — no TDG was issued in the submission itself (that's the ledger's normal flow).
+
+Anything else on the SunMint execution, or shall I leave the prod promotion (still waiting on the deploy lease to clear) for when you next prompt?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
