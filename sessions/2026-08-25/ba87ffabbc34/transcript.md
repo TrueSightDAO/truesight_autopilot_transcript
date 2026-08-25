@@ -2412,6 +2412,7 @@ Let me read the rest of the whitepaper body to capture the exact sections I need
 ### 🤖 Autopilot
 
 Let me read the remaining sections (7–12) to capture exact edit points.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2590,4 +2591,56 @@ Promote `truesight_me_prod` via `sync_beta_to_prod` → verify the canonical `tr
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #310 on truesight_me_beta merged successfully (sha: ca6593e83086a4a3c9ab384956dc9336bce9fb96). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] I think we can also indicate that a part of the funds for getting all the paperwork done can be raised from the sale of the Kakao Kakao isn't it? Besides just like part of the funds being reserved for planting trees, so then more chocolate we sell, then well the more we have for getting all the carbon predices issued to the tree planting. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great addition, Gary — a **cacao-sales flywheel**: chocolate sales fund the carbon-certification pipeline, so the more cacao we sell, the more credits we can issue. Let me ground the current §12 text and the cacao offtake flow, then add it.
+
+
+### 🤖 Autopilot
+
+The raw fetch may be hitting a stale CDN cache (still shows the pre-merge length). Let me verify the true state of main via the GitHub API.
+
+
+### 🤖 Autopilot
+
+Merge confirmed on main (ca6593e). The raw fetch was a stale cache. Let me pull the current file content at the merged commit to get exact anchors for the cacao-sales flywheel edit.
+
+
+### 🤖 Autopilot
+
+The merged file is confirmed (27,546 bytes, sha `ca6593e`). Now adding the cacao-sales flywheel to the whitepaper §12 funding paragraph — as a PR — plus regenerating the PDF.
+
+
+### 🤖 Autopilot
+
+PR #311 opened — stopping here per the one-PR-per-turn rule.
+
+## ✅ What I did this turn
+
+**Opened PR [#311](https://github.com/TrueSightDAO/truesight_me_beta/pull/311)** on `truesight_me_beta` — "SunMint PDD §12: cacao-sales flywheel funds the carbon-certification pipeline" (sha `b5a6852`).
+
+**The addition (your idea, now in the whitepaper §12 Funding paragraph):**
+> A complementary self-funding flywheel: a share of **cacao/chocolate sales is reserved to fund the carbon-certification pipeline** (PDD development, VVB validation, monitoring) alongside the share reserved for planting trees — so **the more chocolate sold, the more credits can be issued**, closing the loop between product revenue and carbon infrastructure.
+
+This is a genuinely strong addition — it makes SunMint's certification costs **self-funding over time**, not permanently grant-dependent: grants get Stage 0–1 started, cacao sales build a recurring revenue loop that pays for ongoing PDD/validation/monitoring costs.
+
+**Also verified this turn:** PR #310's merge is confirmed on main (sha `ca6593e`, whitepaper 27,546 bytes — the Plan Vivo-first content, grants map, milestones, and First Tree proof are all live on beta).
+
+## 📌 RESUME HERE → next units
+1. **Merge PR #311** (your go)
+2. **Regenerate the consolidated PDF (v8)** with the cacao-sales flywheel added to the funding section — then send it + upload to the repo
+3. **Promote to prod** — `sync_beta_to_prod(prod_repo="truesight_me_prod")` (you earlier approved promotion of the merged content; I can run it once #311 is merged too, so prod carries the complete picture in one sync)
+
+Want me to proceed with merge → PDF v8 → prod promotion in the next turn?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html" -o /tmp/wp2.html && python3 -
 
