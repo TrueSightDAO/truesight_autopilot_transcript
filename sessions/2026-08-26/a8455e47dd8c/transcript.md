@@ -4185,6 +4185,12 @@ Let me find the specific cacao butter entry.
 ### 🤖 Autopilot
 
 The file is very large — let me grep for the exact cacao butter line.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4194,21 +4200,25 @@ Important finding — the **5 kg of cacao butter was already delivered by Orlant
 For pricing, cacao butter typically sits at a premium. Let me use a consistent basis with the cacao mass bar ($15.70/500g = $31.40/kg → round to **$31.40/kg**), which is a fair market rate for organic cacao butter. 5 kg × $31.40 = **$157.00**.
 
 Let me build the updated docs.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me generate the updated Packing List (Rev 2 with cacao butter) and send both to the thread.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The packing list has a formatting artifact ("38→37") — let me regenerate it cleanly before sending.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs generated. Let me send them to the thread.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4444,4 +4454,42 @@ Want me to draft that confirmation message to Orlantildes, and save the correcte
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/dd1a5ad869f4/transcript.md
 • `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] What about packing list document
+
+
+### 🤖 Autopilot
+
+Good catch — the Packing List I sent earlier was based on the old PL Rev 1 weights (net 347.31/gross 382.31), which don't match the operative invoice Rev 3 figures. Let me regenerate it consistent with the corrected invoice (net ~312.3 kg / gross ~347.3 kg incl. 5 kg butter).
+
+
+### 🤖 Autopilot
+
+Let me find the new file and send it.
+
+
+### 🤖 Autopilot
+
+Corrected Packing List sent ✅ (message 14679):
+
+**📄 Packing List Rev 2 (Corrected)** — now fully consistent with the corrected Invoice Rev 3:
+- **12 items** incl. cacao butter (item 12, HS 1804.00.00, 5 kg)
+- **616 units** total
+- **Net ≈ 312.3 kg / Gross ≈ 347.3 kg** (incl. 35 kg pallet)
+- Item quantities aligned with Rev 3 (37 mass bars, 169 ceremonial pouches)
+- All three docs now agree: Invoice Rev 3 ($7,093.28) ↔ Packing List Rev 2 ↔ Agent cargo-details Rev 2
+
+**Current consistent document set for this shipment:**
+1. Commercial Invoice Rev 3 — USD 7,093.28 ✅ (14673)
+2. Packing List Rev 2 — 616 units, ~312.3/347.3 kg ✅ (14679)
+3. Cargo Details for Agent Rev 2 — FOB $7,093.28 ✅ (14674)
+
+Want me to save this corrected set to the repo and log a contribution for the document-revision work?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
