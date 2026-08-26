@@ -3001,6 +3001,7 @@ Executing P3 — the GeoJSON index build. First, let me confirm the FounderHaus 
 ### 🤖 Autopilot
 
 Let me read the rest of the sheet rows to find the FounderHaus entry and check the Species/status columns.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3052,6 +3053,7 @@ Say "go P3 with option c" (or give me the coords) and I'll build it.
 ### 🤖 Autopilot
 
 Executing P3 — the GeoJSON tree index build. First let me verify the exact URL the monitor page fetches and check what credentials exist on the box for the build script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3212,4 +3214,37 @@ Say "go" and I'll verify the live page + vendor the script next.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #12 on sunmint_beta merged successfully (sha: a1fa876c4551094585946a96c4ab0a2e00ac908d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] I wonder if the python script schould be a standalone and triggered via github action??
+
+
+### 🤖 Autopilot
+
+Yes — that's the right instinct, and it's how I'd want this to live long-term. Here's the design I'd propose:
+
+## Recommended: standalone script + GitHub Action in `sunmint_beta`
+
+**The script stays standalone** (runs anywhere: local box, CI, future GAS cron) and **a workflow wraps it** so the index regenerates without anyone remembering to run it.
+
+**`sunmint_beta/.github/workflows/rebuild-tree-index.yml`:**
+- **Triggers (3):**
+  1. `repository_dispatch` (type `tree-index-rebuild`) — **the reactive path**: when the GAS handler processes a new planting/link event, it pings the API → index rebuilds within ~30s of a tree landing
+  2. `schedule` (daily) — **safety net** catches anything the dispatch missed
+  3. `workflow_dispatch` — manual run anytime
+- **Job:** checkout → `pip install gspread google-auth` → run `scripts/build_tree_geojson.py` with the sheet SA creds from **GitHub Secrets** → commit `trees/index.geojson` back to main (GITHUB_TOKEN, `contents: write`)
+- Public audit trail: every rebuild + its diff is visible in Actions logs + git history
+
+**Credential placement (the one real decision):** the script needs the service-account key (currently only on the autopilot box at `config/google/cypher_defense_gdrive_key.json`). Put the same JSON as a repo secret (`GOOGLE_SERVICE_ACCOUNT_JSON` — it's read-only scope on the sheet, so low risk). The autopilot keeps its local copy for testing/backfills.
+
+**What I'd build (one PR to sunmint_beta):**
+1. `scripts/build_tree_geojson.py` (vendored, standalone — reads sheet via env var `GOOGLE_SERVICE_ACCOUNT_JSON` or `--creds`, emits `trees/index.geojson`)
+2. `.github/workflows/rebuild-tree-index.yml` (3 triggers, commits back)
+3. Also set the `GOOGLE_SERVICE_ACCOUNT_JSON` repo secret (needs you or the Envoy to paste it — or I can add it via API if the PAT has secret-write scope; flagging since that's a credential touch)
+
+**Caveat worth flagging:** the immediate backfill (FounderHaus coords, whenever they arrive) and this PR's first index are still generated locally from the live sheet — the action takes over from there. And the reactive trigger needs one small addition later: the GAS handler POSTs `repository_dispatch` (uses the same `TGM_GITHUB_TOKEN` we're already planning to set).
+
+Want me to build it (script + workflow + secret setup), or would you rather have the GAS-dispatch leg designed into the same PR? Say "go" and I'll open it.
 
