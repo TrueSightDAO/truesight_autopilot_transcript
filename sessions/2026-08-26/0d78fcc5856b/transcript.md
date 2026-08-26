@@ -166,11 +166,13 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Let me inspect the attached image more thoroughly — checking the file, trying OCR with Portuguese, and scanning for QR codes.
+[3 tool result(s) compacted: list_directory, ocr_image, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Portuguese OCR language pack isn't installed on this box. Let me try English OCR and check the image properties.
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -351,4 +353,81 @@ Want me to:
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageOps import subprocess im = Image.open('d80d5cba78604b0abdbf5eda64888b72.j
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/e356bdd29e62/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14800] What is the url for the startup summit agent
+
+
+### 🤖 Autopilot
+
+No direct hit for a "startup summit agent" — let me check the agents registry and any event-related agent docs.
+
+
+### 🤖 Autopilot
+
+Let me check the agents registry for a startup-summit-specific agent instance.
+
+
+### 🤖 Autopilot
+
+The agents registry only lists `sophia` and `bionpact` — but DEPLOY_PUSH_SOP mentioned an `envoy` agent. Let me check that and the EVENTS.md for any Startup Summit references.
+
+
+### 🤖 Autopilot
+
+The agents registry only has `sophia` and `bionpact` — no dedicated "startup summit" agent. Let me check if there's a Startup Summit event folder in `go_to_market` and any handoffs.
+
+
+### 🤖 Autopilot
+
+Let me search the transcript and repos for any "startup summit agent" URL from earlier sessions.
+
+
+### 🤖 Autopilot
+
+No DAO-side match so far. Let me check whether it's an official AI assistant on the event's site.
+
+
+### 🤖 Autopilot
+
+Let me check for the "envoy" agent reference and the official Startup Summit site for any AI assistant.
+
+
+### 🤖 Autopilot
+
+Let me check the official site for any AI assistant/agent feature.
+
+
+### 🤖 Autopilot
+
+Let me do two final targeted checks — recent context updates and any summit-related agent mention in the DAO repos.
+
+
+### 🤖 Autopilot
+
+I searched my full context and the DAO org, and I **don't have a "Startup Summit agent" URL** in my context. Here's exactly what I checked:
+
+**Searched (all empty for this):**
+- `search_context("startup summit agent")`, `("summit")`, `("summit agent")` → 0 hits
+- `search_code("startup summit")` org-wide → only Expo West 2026 files (unrelated)
+- `search_code("startupsummit")` → 0 hits
+- `search_transcript("startup summit agent", 90 days)` → 0 hits
+- Agent registry `agents/*.json` → only **sophia** + **bionpact** exist (plus **Envoy** — but that's the interactive Claude Code seat on nelanco-claude, not a summit agent)
+- `check_handoffs()` → nothing summit-related
+- `EVENTS.md` + `go_to_market/events/index.json` → Startup Summit **not** in the Agroverse event registry
+
+**Web check:** I couldn't find any official "agent/assistant" URL for Startup Summit 2026 either. The event's official sites are:
+- **www.startupsummit.com.br** (official event site — Sebrae Startups × ACATE)
+- **week.startupsummit.com.br** (Startup Summit Week side events)
+- **cloud.divulga.sebraesc.com.br/startup-summit-online** (free online livestream registration)
+
+So three possibilities — which did you mean?
+
+1. **The event's own site** → it's `https://www.startupsummit.com.br`
+2. **An AI assistant for the event** (like a chatbot) → I couldn't find an official one; if you have a link or saw one mentioned, send it and I'll verify
+3. **A DAO-side agent dedicated to the summit** → doesn't exist yet; if you want, I can create an `agents/startup-summit.json` entry + an event folder in `go_to_market/events/` so this summit is tracked like SF Tech Fest / Dual Tech Summit (per the EVENTS.md playbook)
+
+Which one are you after?
 
