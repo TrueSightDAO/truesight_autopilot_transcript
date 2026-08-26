@@ -4773,6 +4773,7 @@ Wrong path — the generator output went to a different temp file. Let me find t
 ### 🤖 Autopilot
 
 The latest PDF (17:50, 6275 bytes — matches this generation) is `/tmp/autopilot_pdf_7fk09ion.pdf`. Sending it.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5004,4 +5005,41 @@ The question asks for the standard 6 data points a freight agent needs to arrang
 2. **The "who issues the NF-e" context above:** the screenshot's earlier message correctly captures the blocker — the shipment needs a company registered with **SISCOMEX/RADAR with the right CNAE** to issue the **Nota Fiscal de Exportação** (Black King can't right now). So the agent's cargo-details request is the first step toward an alternative issuer (trading company "por conta e ordem" or a cooperative).
 
 Want me to draft the reply email to the agent with these figures (and the corrected packing list attached), or generate a one-page cargo-details PDF for the agent?
+
+
+### 🧑 Governor
+
+Latest regarding black king
+
+[Attachment auto-processed: **d685fb7f7463410abbf3439b7f949ceb.jpg**]
+- Type: Image (OCR confidence: 68.9%, quality: good)
+
+Extracted text:
+```
+=CAC - Centro Virtual de Atenc: Cc KF Sewicos da Receita Federal = X + servicos.receitafederal.gov.br/servico/pendencias/#/analise-pendencias = Servicos da Rec a Pe Minhas bividas © Pender Minhas Dividas e Pendencias €@ Dados Cadastrais @ Resultado da Analise Nome Matheus Reis P ‘CNP (matriz) $0.042:585/0001-80 na Receit mostra fisc
+```
+
+
+### 🤖 Autopilot
+
+This is the **e-CAC "Minhas Dívidas e Pendências → Resultado da Análise"** screen for Black King (CNPJ 50.042.585/0001-80, matriz) — the master fiscal-situation report we've been trying to get. Good progress!
+
+**What this screen shows:**
+- **Dados Cadastrais** — the CNPJ's registered data (name: Matheus Reis P…, CNPJ matriz, status)
+- **Minhas Dívidas** — your federal debts (tributárias + não tributárias)
+- **Pendências** — missing declarations/obligations (DCTF, ECF, ECD, DAS, etc.)
+- **Resultado da Análise** — the overall verdict of the fiscal analysis
+
+**What to look for in the "Resultado da Análise":** it usually returns one of:
+- **"Com pendências"** → there are open items blocking (this is the INAPTA driver)
+- **"Sem pendências"** → fiscal situation clean (would mean Inapta can be lifted once declarations are filed)
+
+**To actually unlock Black King, I need the specifics from this screen:**
+1. What does the **"Resultado da Análise"** verdict say exactly?
+2. The **list of pendências** (which declarations/years are missing — DCTF? ECF? ECD? DAS?)
+3. The **debt amounts** if shown (each item with value + status: under RFB control vs Dívida Ativa)
+
+The OCR is partial — could you share a **fuller screenshot** (especially the list items with values)? Or tell me what the verdict says and I'll tell you the exact next step (which declarations to file first, in what order, and whether to go pay vs negotiate via REGULARIZE).
+
+**Key reminder:** the fix order remains — (1) file missed declarations → (2) CNPJ exits INAPTA → (3) renew e-CNPJ cert → (4) add commerce CNAE → (5) IE → (6) NF-e. This screen is step (1) made visible — great.
 
