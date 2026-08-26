@@ -3075,16 +3075,19 @@ I have everything I need. The page parses standard GeoJSON (`tree_id`, `species`
 - **Sheet data:** 23 rows, real trees with coords (Corvallis 5×, Brazil pair -27.438/-48.499, FounderHaus Bougainvillea **no coords**, E2E tests)
 
 Building the P3 script now — a Python build tool that reads the sheet (cypher_defense SA), generates `trees/index.geojson`, and writes both the beta + prod repos. Writing + testing locally first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Parser tests pass (drops E2E, handles coord-less FounderHaus). Now let me run the real script against the live sheet to generate the actual index, then decide the repo layout (the page fetches **prod URLs** — so the index must reach `sunmint.truesight.me/trees/` = sunmint_prod, plus beta for UAT).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script works against the live sheet: **18 real trees, 13 with coordinates** (5 Corvallis, Brazil pair, etc.), 5 without coords (incl. FounderHaus Bougainvillea + 3 Aug-23 Cacao-Criolla) — those correctly emit `geometry: null` (selectable via manual Tree ID, not distance-rankable). Let me grab the full generated file and commit it to sunmint_beta as the P3 deliverable.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3321,4 +3324,65 @@ Want me to build it that way — workflow + script + index all in `sunmint`, mir
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== treasury-cache repo tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/git/trees/main?recur; cd /tmp && echo "=== generate_review_cache.yml (first 80 lines) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/treasury-cac
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yes, actually viewed it that way. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Building it treasury-cache style — everything in the `sunmint` data repo. Let me first verify the build script on the box and the repo's current state.
+
+
+### 🤖 Autopilot
+
+The script exists and works; `sunmint` is a clean slate (16 paths, all `images/`). Let me see the script's `main()` to know how it reads creds (so the workflow can pass the secret properly), then build the three files.
+
+
+### 🤖 Autopilot
+
+The script is clean and self-contained (reads sheet via `--creds`, emits `trees/index.geojson`). Now building the treasury-cache-style setup in the `sunmint` data repo — three files, mirroring the `generate_review_cache.yml` pattern exactly:
+
+
+### 🤖 Autopilot
+
+Workflow + script are in the `sunmint` data repo. Now seeding the canonical index and pointing the page at it:
+
+
+### 🤖 Autopilot
+
+Canonical index seeded in `sunmint` repo. Now updating the monitor page to fetch from the canonical location and removing the now-redundant copy in sunmint_beta (single source of truth):
+
+
+### 🤖 Autopilot
+
+Done — the treasury-cache-pattern restructure is complete. Here's the report.
+
+## ✅ What I did this turn — canonical tree index (treasury-cache pattern)
+
+Followed the actual precedent (checked treasury-cache first): **the data repo owns data + generator + workflow together.**
+
+**In `TrueSightDAO/sunmint`** (the designated data/asset store — same role as treasury-cache):
+- **`.github/workflows/rebuild-tree-index.yml`** — daily 06:00 cron + `repository_dispatch` (reactive, for the GAS handler to ping) + manual; `permissions: contents: write`; commits back as Sophia Truesight (exact `generate_review_cache.yml` shape)
+- **`scripts/build_tree_geojson.py`** — vendored generator (reads the sheet via `GOOGLE_SERVICE_ACCOUNT_JSON` secret, emits `trees/index.geojson`)
+- **`trees/index.geojson`** — canonical index seeded (18 features, 13 coords)
+
+**In `sunmint_beta`** — **PR [#13](https://github.com/TrueSightDAO/sunmint_beta/pull/13)** (sha `32e17a0`): page now fetches the canonical raw URL **first**, and the redundant beta copy of the index is **deleted** (single source of truth, no drift).
+
+**Why this fits:** exactly how treasury-cache works — one repo holds the JSON data, the `scripts/` generator, and the `.github/workflows/` that refreshes it. Both sites (beta + prod) read the same canonical file from raw.githubusercontent (CORS-enabled), so there's no beta/prod duplication and no fork-sync freshness dependency. Secrets are the same pair treasury-cache uses: `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON`.
+
+## 📌 RESUME HERE → next units
+1. **Merge sunmint_beta#13** → verify the dropdown populates on `beta.sunmint.truesight.me/monitor-tree-growth/` (it fetches the canonical raw URL)
+2. **Set repo secrets** on `sunmint`: `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` (needs you/Envoy to paste, or I add via API if the PAT has secret-write scope) — then test the workflow once (manual dispatch)
+3. **FounderHaus coords** — still open: provide site lat/lng (backfill sheet → regenerate index) or leave in no-GPS bucket
+4. **GAS handler reactive ping** — the `repository_dispatch` trigger is wired; the GAS handler should POST it after a new planting/link (uses the `TGM_GITHUB_TOKEN` already planned)
+
+Want me to merge #13 and verify the live dropdown next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== build script exists? ===" && ls -la /tmp/p3/build_tree_geojson.py 2>/dev/null && head -40 /tmp/p3/build_tree_geojson.py; cd /tmp && echo "=== script main + creds handling ===" && sed -n '40,140p' /tmp/p3/build_tree_geojson.py
+• `upload file to github` ×3 → https://github.com/TrueSightDAO/sunmint/blob/main/.github/workflows/rebuild-tree-index.yml; https://github.com/TrueSightDAO/sunmint/blob/main/scripts/build_tree_geojson.py; https://github.com/TrueSightDAO/sunmint/blob/main/trees/index.geojson
 
