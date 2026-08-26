@@ -2712,21 +2712,25 @@ Proceeding to Unit 3 — the nav dropdown on the Plant Tree page (`sunmint_beta/
 ### 🤖 Autopilot
 
 Now I have the exact insertion points: after the lang-toggle div (line ~218) I'll add the nav dropdown, styled consistently, with i18n keys. Let me build the edit precisely — I'll insert the dropdown after the `</div>` closing the lang-toggle and before the logo container, plus add the i18n keys and nav function.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pt anchor didn't match — the actual file text differs slightly (possibly encoding of the á/ã characters from curl vs my heredoc). Let me check the actual intro line text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file uses double-quoted strings and different intro wording than I assumed. The first two edits (nav HTML + CSS) actually succeeded before the pt-intro assert failed — but since the script asserted before writing, nothing was saved. Let me redo with the correct anchors (double quotes, actual text).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 edits applied and validated (nav-dropdown: 4 occurrences, onNavChange: 2, braces 136/136, parens 327/327, both i18n blocks updated). Pushing the Plant Tree page update as the Unit 3 PR:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2972,4 +2976,116 @@ Say "go" and I'll run the beta-site verification.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×4 → ✅ PR #313 on truesight_me_beta merged successfully (sha: e6eccf74b0d87ec4bc1031545d711ff1288b4972). Pull Request successfully merged; ✅ PR #9 on sunmint_beta merged successfully (sha: 409db79a2851c832da7e15e61fb64ebb095208f2). Pull Request successfully merged; ✅ PR #10 on sunmint_beta merged successfully (sha: 9d1930e200e89f3dcc0219c5462e5a9b90b8b82a). Pull Request successfully merged; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] https://beta.sunmint.truesight.me/monitor-tree-growth/
+
+This page Missing the UI elements visible on 
+
+https://beta.sunmint.truesight.me/
+
+
+### 🤖 Autopilot
+
+Let me compare the live monitor page against the root page to identify exactly which UI elements are missing.
+
+
+### 🤖 Autopilot
+
+Both pages serve content, but the element comparison already shows a key gap: the **root page has a language toggle (`langPt`/`langEn`)** — the monitor page has **no lang toggle**. Let me check the full visual structure (logo, header, footer, any missing sections) to give a complete answer.
+
+
+### 🤖 Autopilot
+
+Diagnosis is clear. The monitor page is missing three UI elements that the root page has:
+
+1. **Language toggle** (Português/English buttons) — root has `langPt`/`langEn` buttons + `.lang-toggle` CSS + `setLang()` wiring; monitor has i18n keys but **no toggle UI and no way to switch language**
+2. **Logo header** — root shows the TrueSight DAO logo (120px, in a centered container); monitor has no logo at all
+3. **Android APK download CTA** ("Baixar APK (Android)") — root's footer has the sunmint_mobile UAT APK download button; monitor has no footer CTA
+
+Let me verify whether the monitor page's i18n actually works (does it default to pt and have the setLang function?) and check the git history to see if these were ever in my build.
+
+
+### 🤖 Autopilot
+
+The root page has `data-i18n` attributes AND a working `setLang()` toggle, but my monitor page has `data-i18n` attributes with **no language toggle UI, no `setLang()` function, and no i18n dictionary**. So the `data-i18n` attributes are just dead weight — the page is stuck in pt-only, and more importantly the **i18n framework itself is missing**. Let me confirm the monitor page's script section (does it have any `setLang`/I18N code at all?).
+
+
+### 🤖 Autopilot
+
+Good news — the i18n framework **is** fully present on the monitor page (I18N dict, `t()` helper, `setLang()`, `data-i18n` wiring, `applyLang`-style loop at line 256). What's missing is **the visible toggle UI** (the lang buttons + `.lang-toggle` CSS + header wiring). Let me confirm exactly how the root page wires the toggle vs the monitor page's setLang, then compare the logo + APK CTA presence one more time.
+
+
+### 🤖 Autopilot
+
+Complete diagnosis — I have everything needed. The monitor page's i18n *machinery* exists but the visible **toggle UI is missing**, plus the logo and APK footer CTA. Let me grab the exact root-page blocks to mirror (lang-toggle CSS + logo + APK footer + `downloadButton` i18n key) so the fix is a faithful port.
+
+
+### 🤖 Autopilot
+
+I have the full diagnosis. The monitor page is missing **3 UI elements** the root page has. Let me grab the monitor page's I18N dict and body anchors to build precise fix edits.
+
+
+### 🤖 Autopilot
+
+I have everything needed. The diagnosis: the monitor page is missing **3 UI elements** vs the root page — (1) the **language toggle buttons** (Português/English), (2) the **logo header** (with `Sunmint` title), (3) the **Android APK download CTA** footer. The i18n machinery exists (I18N dict + `setLang()` + `t()`), but there's no toggle UI to invoke it, no logo, and no APK CTA.
+
+Let me build the fix: add the lang-toggle HTML + CSS, the logo block, the APK footer CTA (with i18n keys), and wire the active-class toggle into the existing `setLang()`. I'll write the updated file locally, validate, then push.
+
+
+### 🤖 Autopilot
+
+The CSS anchor didn't match — the live file's CSS differs slightly from what I assumed. Let me check the actual CSS block.
+
+
+### 🤖 Autopilot
+
+Now I have the exact anchors. The nav-dropdown CSS is a compact one-liner (`.nav-dropdown { margin-bottom: 1rem; text-align: center; }`), not the multi-line block I assumed. Let me apply the three edits with correct anchors.
+
+
+### 🤖 Autopilot
+
+Edits applied and balanced. Now I need to wire the `setLang()` function to toggle the active class on the new buttons (the monitor page's `setLang` doesn't do the active-class toggle like the root does), and add the i18n keys for downloadHeading/downloadHint/downloadButton. Let me apply those JS edits.
+
+
+### 🤖 Autopilot
+
+The tag balance caught a real bug: my APK edit replaced the page's original `</script>` closing tag instead of inserting before it — the main script now swallows the HTML comment/div (would cause a JS SyntaxError). Fixing by restoring the closing tag right after the main JS and dropping the redundant script block.
+
+
+### 🤖 Autopilot
+
+All tags balanced now. Let me run a JS syntax check on the script section to be safe, then push the fix.
+
+
+### 🤖 Autopilot
+
+Everything validates: JS syntax OK, tags balanced, 37,567 bytes, all new UI elements present. Now pushing the fix to sunmint_beta.
+
+
+### 🤖 Autopilot
+
+Fix pushed. Here's the report.
+
+## ✅ What I did this turn — diagnosed + fixed the monitor page UI gap
+
+**Found the root cause:** the monitor page's i18n machinery (I18N dict, `setLang()`, `t()`) existed, but three root-page UI elements were missing:
+1. **Language toggle** — the Português/English buttons (without them the page was stuck pt-only; the toggle CSS + active-class wiring were also absent)
+2. **Logo header** — the TrueSight DAO logo block the root shows
+3. **Android APK download CTA** — the "Baixar APK (Android)" footer section
+
+**PR [sunmint_beta#11](https://github.com/TrueSightDAO/sunmint_beta/pull/11)** (sha `e35222e`) — 6 edits restoring full parity: lang-toggle CSS/HTML, logo header, pt/en `downloadHeading/Hint/Button` i18n keys, `setLang()` now toggles the active class + `document.documentElement.lang`, and the APK CTA footer.
+
+**Validated before push:** all tags balanced (script 1/1, div 10/10, etc.), main script passes `node --check` (JS syntax OK), 37.6 KB.
+
+## 📌 RESUME HERE → verify on beta after merge
+Once you merge **sunmint_beta#11**, I'll re-verify `beta.sunmint.truesight.me/monitor-tree-growth/` shows the language toggle, logo, and APK CTA — then confirm the dropdown works both directions and await your UAT sign-off for promotion (`sync_beta_to_prod(sunmint_prod)`).
+
+One flag for your review: the i18n **defaults to pt** (sunmint_beta convention, matches root) — the lang toggle is what switches to English, same as the Plant Tree page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp && echo "=== LIVE monitor page ===" && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/" -o live_monitor.html && wc -; cd /tmp && echo "=== MONITOR: header/logo/lang/footer markers ===" && grep -n -iE "logo|langPt|langEn|lang-toggle|footer|truesight\.me|githu; cd /tmp && echo "=== MONITOR: i18n + setLang presence ===" && grep -n -E "setLang|I18N|const lang|localStorage|currentLang|data-i18n" live_m; …(+10 more)
 
