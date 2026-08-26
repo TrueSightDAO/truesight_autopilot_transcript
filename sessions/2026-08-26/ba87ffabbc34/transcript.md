@@ -3093,16 +3093,19 @@ The script works against the live sheet: **18 real trees, 13 with coordinates** 
 ### 🤖 Autopilot
 
 The index is generated correctly (18 real trees, 13 with coords, FounderHaus + 4 others as `geometry: null`). Before pushing, let me verify the page's dropdown logic handles `geometry: null` trees gracefully (NaN sort risk), and confirm the URL strategy — the page currently fetches **prod URLs only**, which would break beta UAT.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the distance-assignment code (where `_dist` is computed) to confirm coord-less trees are handled safely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The logic is now fully clear. Line 689 only sets `_dist` when coords exist (coord-less trees keep `_dist` undefined), but line 391's sort uses `(a._dist || 0)` — which would sort coord-less trees to the **top** (as 0). And the page fetches **prod-only URLs**, so beta UAT would still 404. Fixing both + committing the index in one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3146,11 +3149,13 @@ Say "go" and I'll vendor the script (unit 3) next — or merge #12 first if you 
 ### 🤖 Autopilot
 
 Great thinking — the photo is the most likely source (phone cameras embed GPS in EXIF). The sheet's Lat/Lng cells are empty (I checked), and the RSA public key contains no coordinates — but the photo may. Let me download the FounderHaus image and extract its EXIF GPS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The photo has EXIF (`DateTimeOriginal: 2026-08-21 17:13:37` — matches the planting timestamp), but **no GPSInfo block** — the camera wasn't geotagged, or the app stripped it on upload. Let me double-check with a deeper EXIF scan (all tags, including MakerNote / any embedded XMP) to be thorough.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3385,4 +3390,51 @@ Want me to merge #13 and verify the live dropdown next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== build script exists? ===" && ls -la /tmp/p3/build_tree_geojson.py 2>/dev/null && head -40 /tmp/p3/build_tree_geojson.py; cd /tmp && echo "=== script main + creds handling ===" && sed -n '40,140p' /tmp/p3/build_tree_geojson.py
 • `upload file to github` ×3 → https://github.com/TrueSightDAO/sunmint/blob/main/.github/workflows/rebuild-tree-index.yml; https://github.com/TrueSightDAO/sunmint/blob/main/scripts/build_tree_geojson.py; https://github.com/TrueSightDAO/sunmint/blob/main/trees/index.geojson
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yep keep going [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Continuing — merging sunmint_beta#13, then verifying the live dropdown populates from the canonical index.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [sunmint_beta#13](https://github.com/TrueSightDAO/sunmint_beta/pull/13)** (sha `bd57459`) — the monitor page now fetches the **canonical index** from `raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson` first, and the redundant beta copy of the index was deleted. Single source of truth, treasury-cache pattern.
+
+**Current state of the tree-index pipeline (all live on main):**
+- `sunmint/trees/index.geojson` — canonical data (18 features, 13 coords)
+- `sunmint/scripts/build_tree_geojson.py` — generator (vendored)
+- `sunmint/.github/workflows/rebuild-tree-index.yml` — daily cron + repository_dispatch + manual
+- `sunmint_beta/monitor-tree-growth/index.html` — fetches canonical URL first
+
+## 📌 RESUME HERE → next units
+1. **Verify live** — check `beta.sunmint.truesight.me/monitor-tree-growth/` dropdown populates from the canonical index (needs GitHub Pages rebuild; can check the raw URL returns 200 now)
+2. **Set repo secrets on `sunmint`** — `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` (needs you/Envoy to provide, or I add via API if PAT has secret-write scope) → then test the workflow once via manual dispatch
+3. **FounderHaus coords** — still open: backfill from you, or leave in no-GPS bucket
+4. **GAS handler reactive ping** — wire `repository_dispatch` POST after new planting/link events (uses `TGM_GITHUB_TOKEN`)
+5. Eventually: **UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll verify the live dropdown + start the secret setup.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #13 on sunmint_beta merged successfully (sha: bd57459f455ca05fa08bdd1dab61b6793f51e24b). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #13 on sunmint_beta merged successfully (sha: bd57459f455ca05fa08bdd1dab61b6793f51e24b). Pull Request successfully merged
 
