@@ -3076,11 +3076,13 @@ The tag balance caught a real bug: my APK edit replaced the page's original `</s
 ### 🤖 Autopilot
 
 All tags balanced now. Let me run a JS syntax check on the script section to be safe, then push the fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything validates: JS syntax OK, tags balanced, 37,567 bytes, all new UI elements present. Now pushing the fix to sunmint_beta.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3312,4 +3314,91 @@ The original `[TREE PLANTING EVENT]` was submitted with **blank `- Latitude:` / 
 Build **P3 now** (script → `index.geojson` → verify dropdown populates with the geo-tagged trees), **and** include a sensible handling rule for coord-less trees (option c: list them after the ranked ones with a "no GPS" marker — so FounderHaus stays selectable, and once its coords are filled it auto-ranks). For the FounderHaus coords themselves, I need one answer from you: **can you provide the site's lat/lng (option a/b), or should I go with the "no GPS bucket" (option c) for now?**
 
 Say "go P3 with option c" (or give me the coords) and I'll build it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Build P3
+
+
+### 🤖 Autopilot
+
+Executing P3 — the GeoJSON tree index build. First let me verify the exact URL the monitor page fetches and check what credentials exist on the box for the build script.
+
+
+### 🤖 Autopilot
+
+The monitor page fetches `https://sunmint.truesight.me/trees/index.geojson` — that's **sunmint_prod**'s GitHub Pages URL, not the blob repo. So the index must live in the Pages-served repos (sunmint_beta for beta UAT, sunmint_prod on promotion). Let me find the service-account credentials the sheet tool uses (so the build script can read the same sheet).
+
+
+### 🤖 Autopilot
+
+SA creds found (`cypher_defense_gdrive_key.json`). One thing to check before building: the monitor page fetches **prod URLs** hardcoded (`sunmint.truesight.me/trees/index.geojson`), which would break beta UAT. Let me read the full fetch block to see how it resolves the index URL.
+
+
+### 🤖 Autopilot
+
+I have everything I need. The page parses standard GeoJSON (`tree_id`, `species`, `coordinates [lng, lat]`, `last_measured`) and handles coord-less trees via manual entry. Key facts:
+- **URLs fetched:** `sunmint.truesight.me/trees/index.geojson` (prod) + `truesight.me/sunmint/trees/index.geojson` (fallback) — **both prod URLs**, no beta URL
+- **Sheet data:** 23 rows, real trees with coords (Corvallis 5×, Brazil pair -27.438/-48.499, FounderHaus Bougainvillea **no coords**, E2E tests)
+
+Building the P3 script now — a Python build tool that reads the sheet (cypher_defense SA), generates `trees/index.geojson`, and writes both the beta + prod repos. Writing + testing locally first.
+
+
+### 🤖 Autopilot
+
+Parser tests pass (drops E2E, handles coord-less FounderHaus). Now let me run the real script against the live sheet to generate the actual index, then decide the repo layout (the page fetches **prod URLs** — so the index must reach `sunmint.truesight.me/trees/` = sunmint_prod, plus beta for UAT).
+
+
+### 🤖 Autopilot
+
+The script works against the live sheet: **18 real trees, 13 with coordinates** (5 Corvallis, Brazil pair, etc.), 5 without coords (incl. FounderHaus Bougainvillea + 3 Aug-23 Cacao-Criolla) — those correctly emit `geometry: null` (selectable via manual Tree ID, not distance-rankable). Let me grab the full generated file and commit it to sunmint_beta as the P3 deliverable.
+
+
+### 🤖 Autopilot
+
+The index is generated correctly (18 real trees, 13 with coords, FounderHaus + 4 others as `geometry: null`). Before pushing, let me verify the page's dropdown logic handles `geometry: null` trees gracefully (NaN sort risk), and confirm the URL strategy — the page currently fetches **prod URLs only**, which would break beta UAT.
+
+
+### 🤖 Autopilot
+
+Let me see the distance-assignment code (where `_dist` is computed) to confirm coord-less trees are handled safely.
+
+
+### 🤖 Autopilot
+
+The logic is now fully clear. Line 689 only sets `_dist` when coords exist (coord-less trees keep `_dist` undefined), but line 391's sort uses `(a._dist || 0)` — which would sort coord-less trees to the **top** (as 0). And the page fetches **prod-only URLs**, so beta UAT would still 404. Fixing both + committing the index in one PR:
+
+
+### 🤖 Autopilot
+
+P3 built and pushed. Here's the turn report.
+
+## ✅ What I did this turn — P3: GeoJSON tree index (the dropdown fix)
+
+**PR [sunmint_beta#12](https://github.com/TrueSightDAO/sunmint_beta/pull/12)** (sha `a8e6d40`) — three pieces:
+
+**1. `trees/index.geojson`** — generated from the authoritative `SunMint Tree Planting` sheet via a Python build script (reads the sheet with the cypher_defense SA, skips E2E/test rows):
+- **18 real trees, 13 with coordinates** (Corvallis 5×, Cacao Native cluster 4×, Shenzhen 1×, Brazil pair 2×, etc.)
+- **5 without coordinates** (`geometry: null`) — incl. **FounderHaus Bougainvillea** (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`) + 3 Aug-23 Cacao-Criolla — selectable via manual Tree ID, not distance-rankable until coords are backfilled
+
+**2. Monitor page URL fix** — `TREE_INDEX_URLS` now prepends relative `trees/index.geojson` (same-origin, works on beta + prod automatically) + beta fallback. Previously prod-URLs-only → beta UAT would have 404'd.
+
+**3. Sort fix** — `(a._dist || 0)` → `(a._dist ?? Infinity)`: coord-less trees now sort **last** (previously they'd sort to the **top** as "0m").
+
+**Verified:** parser unit-tested (E2E dropped, coord-less handled), generated against live sheet, page logic audited end-to-end.
+
+**Also noted (follow-up, not this PR):** the build script lives at `/tmp/p3/build_tree_geojson.py` — I'll vendor it into `truesight_autopilot/scripts/` as a re-runnable tool (and it's the natural seed for a future GAS cron that regenerates the index whenever the sheet changes).
+
+## 📌 RESUME HERE → next units
+1. **Merge sunmint_beta#12** → then verify `beta.sunmint.truesight.me/trees/index.geojson` serves (200) + the dropdown populates on the beta page
+2. **FounderHaus coords** — still need your call: provide site lat/lng (I'll backfill the sheet + regenerate), or leave in the "no GPS" bucket for now
+3. **Vendor the build script** → `truesight_autopilot/scripts/build_tree_geojson.py` (small PR)
+4. Then: UAT → promote via `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll vendor the script (unit 3) next — or merge #12 first if you want to see the dropdown live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && TS=$(date +%s) && echo "=== 1. What URL does the monitor page fetch for tree index? ===" && curl -s "https://raw.githubuserconten; cd /opt/truesight_autopilot && echo "=== find sheets tool + creds ===" && grep -rn "google.oauth2\|service_account\|credentials" app/tools/*; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon.html && echo "==; …(+4 more)
 
