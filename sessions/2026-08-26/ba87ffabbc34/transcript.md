@@ -3065,6 +3065,7 @@ The monitor page fetches `https://sunmint.truesight.me/trees/index.geojson` — 
 ### 🤖 Autopilot
 
 SA creds found (`cypher_defense_gdrive_key.json`). One thing to check before building: the monitor page fetches **prod URLs** hardcoded (`sunmint.truesight.me/trees/index.geojson`), which would break beta UAT. Let me read the full fetch block to see how it resolves the index URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3270,4 +3271,54 @@ Good pushback — and the deeper you go, the more I think you're right that **su
 **One cleanup:** I'd remove the index I merged into sunmint_beta (PR #12) so there's a single source of truth, and update the page's fetch order accordingly.
 
 Want me to build it that way — script + action in truesight_autopilot, canonical data in the `sunmint` repo?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yo, why don't you check where the github action scripts of, for example, the other treasury jason caches are stored. Yeah, check out the treasury cache as well as the other to like understand the logic before you come back to me on like which repository to place the github action python scripts. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me actually look at how the existing cache systems are built before recommending anything. Checking the treasury-cache and sibling cache repos for their workflow/script placement.
+
+
+### 🤖 Autopilot
+
+Now I can see the real pattern — treasury-cache contains **both** the data AND the automation in the same repo (`.github/workflows/` + a `gas/treasury-cache-publisher/` GAS project). Let me read one workflow to see exactly where the generation script lives (inline vs scripts/ folder).
+
+
+### 🤖 Autopilot
+
+Checked the actual cache repos — and the answer is now grounded in evidence, not my guess. Here's what the established pattern actually is:
+
+## The real convention (from treasury-cache)
+
+**The cache repo owns everything — data + automation together.** treasury-cache contains:
+- the **data** (`dao_members.json`, `buy-back-reserve.json`, `managed-ledgers/`, etc.)
+- the **workflows** (`.github/workflows/generate_review_cache.yml`, `update-buy-back-reserve-cache.yml`, `poke-lineage-cache.yml`)
+- the **generator script vendored right in it** (`scripts/generate_review_cache.py` — run as `python3 scripts/generate_review_cache.py` from the repo root)
+- even a **GAS publisher project** (`gas/treasury-cache-publisher/`)
+
+Secrets are `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` (the exact same SA key we use for the sheet). The workflow checks out, installs `gspread google-auth`, runs the script, commits back as "Sophia Truesight" — public audit trail in Actions.
+
+## So the correct home for the tree index automation
+
+**Not sunmint_beta (that's the app — has zero workflows, zero scripts, and shouldn't), and not truesight_autopilot (that's the box's code — the caches don't live there).**
+
+Following the treasury-cache precedent exactly: **everything goes in the `sunmint` data repo** —
+- `trees/index.geojson` (the data)
+- `scripts/build_tree_geojson.py` (the generator, vendored like `generate_review_cache.py`)
+- `.github/workflows/rebuild-tree-index.yml` (schedule + repository_dispatch + manual, same shape as the treasury workflows)
+- secrets: `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON`
+
+That makes `sunmint` a self-contained cache — one canonical index, both sites read it from raw.githubusercontent, no beta/prod duplication, no fork-sync dependency. Exactly how treasury-cache works.
+
+**One wrinkle to flag:** the `sunmint` repo is configured as **api_only** (Contents-API writes only — never clone/push from the autopilot box). But that's fine — treasury-cache is also api_only, yet it holds workflows + a GAS folder, because the *workflow itself* (running in GitHub Actions, not the box) does the clone/commit. So this fits the pattern perfectly: the autopilot writes the files via API, the Action maintains the data.
+
+Want me to build it that way — workflow + script + index all in `sunmint`, mirroring treasury-cache?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== treasury-cache repo tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/git/trees/main?recur; cd /tmp && echo "=== generate_review_cache.yml (first 80 lines) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/treasury-cac
 
