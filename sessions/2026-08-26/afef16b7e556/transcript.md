@@ -4044,11 +4044,13 @@ Let me check the tokenomics repo for the TDG-hour definition and also test what 
 ### 🤖 Autopilot
 
 Let me check the SCHEMA.md for the exact TDG definition (the "Governance tokens to" column description) — that tells us definitively whether TDG = hours.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SCHEMA.md is huge; let me grep it for the exact TDG definition and any "hours" equivalence — that settles whether "TDG = hours" is defensible.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4309,4 +4311,27 @@ Sent! ♾️ **The figure-8 graph** — Agroverse ⟷ SunMint regenerative circu
 - It's the **infinite game made visual** — 8, the infinity sign, the iteration that never ends, each turn through the center a small act of 文開路 (the sale opens the road) and 武守路 (the tree guards it).
 
 Good anchor point for the group message — it says *"one engine, two loops, both getting anchored"* in a single image. 🌳🍫♾️
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Use Google nano banana for the image generation
+
+
+### 🤖 Autopilot
+
+"Nano Banana" — that's the community codename for **Gemini 2.5 Flash Image**, which is exactly what the `generate_image` tool calls. Let me verify the tool's configuration to confirm, then regenerate the figure-8 with it.
+
+
+### 🤖 Autopilot
+
+Confirmed — the tool is hardcoded to `gemini-2.5-flash-image` (line 27 of `image_generation_tools.py`), which **is** "Nano Banana" (that's the community nickname for Gemini 2.5 Flash Image). So the figure-8 I just generated **was already made with Nano Banana**. Same model, same tool — nothing to change.
+
+For absolute certainty you can see it in the tool's own config: `app/tools/image_generation_tools.py:27: _MODEL = "gemini-2.5-flash-image"` — and the earlier handoff confirmed Gary's GEMINI_API_KEY drives it. So every image I generate uses Nano Banana by default.
+
+Want me to regenerate the figure-8 with a slightly different prompt (e.g. more detailed labels like "carbon credits → VCS verified" on the SunMint loop), or is the current one good as-is?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && grep -rn "flash-image\|nano\|banana\|gemini" app/ scripts/ --include="*.py" 2>/dev/null | grep -iE "image|mod
 
