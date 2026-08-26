@@ -10,287 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Well, do you think it's possible to implement the analysis of the video via in the DAPP itself? Or we need like some back end process, maybe like a Python script or a Google app script to handle the analysis of the uploaded video? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me quickly check how the current DApp handles uploaded photos, so I ground the video answer in our real architecture.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good news — I checked our actual DApp code, and the answer is clearer than you might expect. Here's the honest engineering picture.
-
-## What the DApp already does (report_tree_planting.html)
-- Live camera preview via `getUserMedia` → canvas snapshot → `FormData` POST → `edgar.truesight.me/dao/submit_contribution`
-- So the *capture and submit* plumbing already exists — a video is just a different capture mode.
-
-## Can the video analysis run in the DApp itself? — Partially, and here's the split
-
-**✅ Yes — in the browser (DApp-side):**
-- **Frame extraction**: capture video → draw frames to canvas at intervals (we already do canvas work)
-- **The PM002 measurement math**: once you have a calibration-card photo frame, the DBH estimation (pixel ratio → trig → allometric formula) is pure math — **runs fine in JavaScript, no backend needed**. This is the TREEO approach.
-- **On-device ML** (TensorFlow.js) could even do tree detection — but on a cheap farmer phone this gets slow and battery-heavy.
-
-**❌ No — needs a backend for:**
-1. **Heavy CV/ML** — tree segmentation, species ID, canopy analysis (YOLO/Detectron-style models) — too heavy for mobile browsers
-2. **Storage of large videos** — a 2-min video is 50–200 MB; the DApp is static GitHub Pages with no server to hold it
-3. **Signed, tamper-evident processing** — the analysis pipeline needs to be *reproducible* for a VVB audit (hash the video → process → sign the result). That's a server/worker job, not a browser job.
-4. **Scale** — thousands of farmers × videos = queued batch processing
-
-## The pragmatic architecture (what I'd recommend)
-
-```
-Farmer phone (SunMint app)          Backend (our box / GAS)
-├─ record video (calibration card)  ├─ [ingest] store + hash video
-├─ extract thumbnail + GPS + sig    ├─ [process] Python: OpenCV frames
-└─ POST signed metadata             │   → card detect → DBH → allometric
-                                    │   → CO₂ estimate → signed result
-                                    ├─ [emit] result → Edgar event on-chain
-                                    └─ [notify] farmer sees growth in app
-```
-
-**The right split:**
-- **Browser/app = capture + display + lightweight math** (fast, offline)
-- **Python script (on the autopilot box or a small worker) = the actual video analysis** — OpenCV frame extraction, card detection, DBH measurement, allometric CO₂ — **signed and reproducible** for the VVB
-- **Google Apps Script = optional glue** (it can't do CV well; better as the relay/notification layer), not the analysis engine
-
-**Why Python over GAS for the analysis itself:** GAS has no OpenCV/ML runtime — it's fine for sheets/email/light API calls, but video CV needs Python (OpenCV, scikit-image, maybe YOLO). The good news: **we already have a Python box** (this autopilot) and the pattern is proven — TREEO's whole edge is that the *math* is simple once you have the card in frame; the heavy ML is optional polish.
-
-**My recommendation:** build it **browser-capture + Python-analysis**. The DApp captures and signs; a Python worker (invoked by webhook when the video lands) does the analysis and returns the signed CO₂ result to the on-chain event. No Google Apps Script needed for the core — keep GAS out of the CV path.
-
-Want me to (a) draft the **monitor_tree_growth.html** spec with video capture + this backend contract, (b) scaffold the **Python analysis worker** (OpenCV card detection + PM002 math) as a PR in truesight_autopilot, or (c) both?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/report_tree_planting.html" -o rtp.html && wc -c rtp.html &
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Draw a spec with the video capture for the, yeah, and then also the Python Analysis worker. It's an implementation plan, road map, execution road map, and checklist. And then once done submitted to some early agent, the AI contacts, and then it's a face of PDF format of this. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Building the full spec — implementation plan, roadmap, and checklist — then PDF + handoff to Bionpact. Let me write the spec document first.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Spec written (7.9 KB). Now generating the PDF and preparing the Bionpact handoff in parallel.
-[2 tool result(s) compacted: generate_pdf, send_handoff — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Spec PDF generated (4 pages) and handoff to Bionpact delivered ✅. Now sending the PDF to you and uploading it to the repo.
-[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All delivered, Gary ✅
-
-## What I did this turn
-
-**1. Spec written** — `monitor_tree_growth_spec.md` (7.9 KB) — the full implementation plan:
-- **§2 Architecture** — farmer phone (video capture, GPS, RSA signature, offline-first) → Python worker (hash → OpenCV frames → card detection → DBH → allometric → PM002 carbon math → signed result → on-chain event)
-- **§3 Module A** — browser capture: `monitor_tree_growth.html` (video input, getUserMedia preview, guidance overlay, IndexedDB offline queue, signed POST) + full request/response JSON contracts
-- **§4 Module B** — Python worker: OpenCV stack, 7-step pipeline, PM002 equation chain, species allometric table (cacao/brazil nut/acai/mahogany/jatoba)
-- **§5 Events** — new **[TREE GROWTH MONITORING EVENT]** on-chain
-- **§6 Roadmap P0–P7** — each phase with deliverable, effort, owner, exit criteria
-- **§7 Checklist** — 14 executable checkboxes
-- **§8 Risks** — card detection, cacao allometrics, video size, VVB acceptance
-
-**2. PDF generated** — 📄 `sunmint_monitor_tree_growth_spec_v1.pdf` (4 pages) sent to this thread (msg 14544)
-
-**3. Uploaded to repo** — `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_monitor_tree_growth_spec_v1.pdf` (sha `f9a75fe`)
-
-**4. Handed to Bionpact** ✅ — `handoffs/bionpact_from_sophia_20260825T170959Z.json` — full spec context: the architecture, the PM002 chain, the P0–P7 roadmap, and the next build units (P1 browser capture, P2 worker MVP). She'll pick it up via `check_handoffs()`.
-
-## 📌 RESUME HERE → next build units
-- **P1 — Browser capture** (`monitor_tree_growth.html` in `dapp_beta`, video + offline queue + signed POST) — needs your go
-- **P2 — Python worker MVP** (OpenCV card detection + PM002 math in `truesight_autopilot`) — needs your go
-- The spec is the frozen contract — both builds proceed straight from it
-
-Say "go P1" / "go P2" (or both) and I'll start the first PR.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → mkdir -p /tmp/sunmint && cat > /tmp/sunmint/monitor_tree_growth_spec.md << 'EOF' # SunMint Tree-Growth Monitoring — Video Capture + Python A
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Also I think the monitor page should also be implemented in the Sunmint.truesight.me Dapp
-
-
-### 🤖 Autopilot
-
-Good addition — the monitor page should be in the SunMint app itself (sunmint.truesight.me), not just the main DApp. Let me check where the SunMint DApp lives and how its pages are structured.
-[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — the SunMint app (`sunmint.truesight.me`) is a separate set of pages under `truesight_me_beta/sunmint/` (farms-registry, trees-registry, whitepaper, etc.). Let me check the page pattern there so the monitor page fits it.
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The pattern is clear — SunMint app pages live at `sunmint/<page>/index.html`. Let me read the trees-registry page to match the pattern, then build the monitor page for the SunMint DApp.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The SunMint pages are simple HTML under `sunmint/<page>/index.html`. Let me grab the signing/crypto pattern from the existing DApp page so the new monitor page reuses the same conventions.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The pattern's confirmed — SunMint app pages live at `sunmint/<page>/index.html` (simple HTML, like `trees-registry`), and the DApp's crypto pattern (WebCrypto RSA keypair in localStorage → signed POST to Edgar) is what the monitor page reuses. Let me update the spec so Module A deploys to **both** DApp targets — `dapp.truesight.me` (main) and `sunmint.truesight.me` (SunMint app) — and regenerate the PDF.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The exact string didn't match — likely subtle character differences. Let me check the actual text in the file.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The header uses backticks — my search string didn't. Fixing the replacements to match the exact text.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Spec updated to v1.1 (both deployment targets). Now regenerating the PDF and sending/uploading.
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PDF v1.1 regenerated (dual deployment). Sending to you and uploading to the repo.
-[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done ✅ — the spec now covers the SunMint app too.
-
-## What I did this turn
-
-**Updated the spec to dual deployment** (v1.0 → v1.1):
-- **Main DApp:** `dapp_beta/monitor_tree_growth.html` → `dapp.truesight.me/monitor_tree_growth.html`
-- **SunMint app:** `truesight_me_beta/sunmint/monitor-tree-growth/index.html` → `sunmint.truesight.me/monitor-tree-growth/`
-- Same codebase/behavior in both (WebCrypto RSA-2048 keypair in localStorage + IndexedDB offline queue — the proven pattern from `report_tree_planting.html`)
-- Roadmap P1 updated (3–4 d, UAT on **both** beta sites), checklist now tracks both PRs
-
-**Delivered:**
-- 📄 **PDF v1.1** sent to this thread (msg 14548) — 5 pages
-- 📎 Uploaded: `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_monitor_tree_growth_spec_v1.pdf` (sha `202478b`)
-
-**Note:** I verified the SunMint app structure — pages live at `sunmint/<page>/index.html` (e.g. `trees-registry`), simple HTML with the standard footer/GA pattern — so the monitor page drops straight in following the same convention.
-
-## 📌 RESUME HERE → next build units
-- **P1a:** `monitor_tree_growth.html` in `dapp_beta` (PR) — needs your go
-- **P1b:** `sunmint/monitor-tree-growth/index.html` in `truesight_me_beta` (PR) — needs your go
-- **P2:** Python worker MVP (OpenCV + PM002) in `truesight_autopilot` — needs your go
-
-Say "go P1a / P1b / P2" (or all) and I'll start the first PR.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/report_tree_planting.html" -o rtp.html && grep -nE 'crypto; cd /tmp/sunmint && python3 - << 'EOF' import re p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # 1) Update Module A ; cd /tmp/sunmint && grep -n "3.1 Page" monitor_tree_growth_spec.md; echo '---'; sed -n '/### 3.1/,/### 3.2/p' monitor_tree_growth_spec.md; ec; …(+1 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Which means that when user brings up the monitor module, it should detect near by trees ordered from closest to furthest and then allow the farmer to pick from the drop down and then start the monitoring video recording
-
-
-### 🤖 Autopilot
-
-Great UX refinement, Gary — nearby-tree detection via GPS proximity (Haversine sort, closest → furthest) feeding a dropdown, then recording. Let me fold that into the spec (v1.2) and regenerate the PDF.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One of the exact-match strings drifted (the P1 roadmap row from the v1.1 edit). Let me check the actual current text.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The request contract is real JSON (my replacement assumed a simpler block). Fixing the remaining edits with exact strings.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Spec v1.2 updated with the nearby-tree GPS flow. Regenerating the PDF and delivering.
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PDF v1.2 generated. Sending and uploading.
-[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done ✅ — spec v1.2 is out with the nearby-tree UX flow.
-
-## What's new in v1.2
-
-**§3.1.1 Nearby Tree Selection (UX flow):**
-1. Open monitor module → app reads device GPS
-2. Pulls farmer's registered trees (each with lat/lng from planting event)
-3. **Ranks closest → furthest** (Haversine distance)
-4. Farmer picks from dropdown → **Start Monitoring Video** button enables
-5. **Distance badges per tree** ("12 m", "48 m", "203 m") so the farmer can literally walk to the nearest tree
-
-**§3.1.2 Haversine formula** included (client-side JS, pure function, no backend round-trip)
-
-**Fallbacks handled:** GPS unavailable → "All trees" (alphabetical / last-measured first); offline → last-known GPS + cached registry; manual tree-ID search.
-
-**Data contract updated** — the signed request now carries `nearby_trees: [{tree_id, distance_m}]` context at capture time (useful audit evidence for the VVB: proves the farmer measured *that* tree at *that* spot).
-
-**Roadmap/checklist updated** — P1 now 4–5 d, with the Haversine dropdown as an explicit checklist item.
-
-**Delivered:**
-- 📄 PDF v1.2 sent to thread (msg 14553) — 6 pages
-- 📎 Uploaded: `github.com/TrueSightDAO/truesight_me_beta/blob/main/sunmint/reports/sunmint_monitor_tree_growth_spec_v1.pdf` (sha `84d3042`)
-
-This completes the spec for the monitor module — the full loop is now: **open app → GPS → nearest trees dropdown → pick → record walk-around with calibration card → signed upload → Python analysis (DBH → allometric → PM002 CO₂) → on-chain event → growth history.**
-
-## 📌 RESUME HERE → next build units
-- **P1a:** `monitor_tree_growth.html` in `dapp_beta` (PR, incl. Haversine dropdown) — needs your go
-- **P1b:** `sunmint/monitor-tree-growth/index.html` in `truesight_me_beta` (PR) — needs your go
-- **P2:** Python worker MVP (OpenCV + PM002) in `truesight_autopilot` — needs your go
-
-Say "go P1a / P1b / P2" (or all) and I'll start the first PR.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp/sunmint && python3 - << 'EOF' p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # 1) Bump version d = d.replace; cd /tmp/sunmint && grep -n "P1 — Browser" monitor_tree_growth_spec.md; echo '---contract---'; sed -n '/### 3.2 Data contract/,/### 3.3/p' mo; cd /tmp/sunmint && python3 - << 'EOF' p = 'monitor_tree_growth_spec.md' d = open(p, encoding='utf-8').read() # Version bump d = d.replace('*
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11018] So I'm guessing all the trees should be kind of downloadable as a JSON object, I think, what are your thoughts, but you know the JSON cache file might end up getting too large, right? So perhaps like a folder where all the trees, each entry is its own JSON object. How is it currently recorded in our deployment environment? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
@@ -3126,11 +2845,13 @@ tee) wt LTE GD: f) beta.sunmint.truesightme Monitor Tree Measure your tree with 
 ### 🤖 Autopilot
 
 Let me check whether the fix actually reached the live page — PR #11 state, the file on main, and what the live site is serving.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the fix is built but **not live yet**. PR #11 is still **open (unmerged)**, so the live page is still serving the old version. Let me confirm the PR actually contains the logo edit so the diagnosis is airtight.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3189,6 +2910,7 @@ https://beta.sunmint.truesight.me/monitor-tree-growth/
 ### 🤖 Autopilot
 
 Let me investigate what the dropdown actually fetches and whether the FounderHaus tree exists in the data source.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3196,6 +2918,7 @@ Let me investigate what the dropdown actually fetches and whether the FounderHau
 Root cause found — **the tree index doesn't exist yet.** All four `index.geojson` URLs return 404, and the `sunmint` repo has only `images/` (16 paths, zero `trees/` entries). The dropdown has no data to surface — that's why FounderHaus' tree doesn't appear.
 
 This was the known **P3 gap** (GeoJSON index build was always a future unit — the spec said the dropdown "degrades to manual Tree ID entry until P3"). But let me verify where the FounderHaus tree data actually lives so I can propose the real fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3205,21 +2928,25 @@ Found it — there **is** a FounderHaus tree in the data. The `sunmint` repo has
 So the full picture: **the tree data exists (sheet) and the photo exists (repo), but the GeoJSON index that the dropdown reads has never been built** — that's the P3 unit that was always listed as future work. The dropdown has nothing to fetch, so it falls back to "Trees unavailable — enter Tree ID manually."
 
 Let me confirm the sheet actually has the FounderHaus row with coordinates, so I can report definitively.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet ID from my earlier note doesn't resolve — let me search for the actual tracking sheet and the FounderHaus row. Earlier I found the tree data in spreadsheet `1qbZZhf-...` (gid `176124122`). Let me check the actual ID from the trees-registry redirect and the linking plan.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real sheet ID is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (my earlier note truncated it). Let me read it to find the FounderHaus row and its coordinates.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default tab is "Telegram Chat Logs" — the tree data lives in the "SunMint Tree Planting" tab. Let me read the right tab.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3401,4 +3128,42 @@ Say "go" and I'll vendor the script (unit 3) next — or merge #12 first if you 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && TS=$(date +%s) && echo "=== 1. What URL does the monitor page fetch for tree index? ===" && curl -s "https://raw.githubuserconten; cd /opt/truesight_autopilot && echo "=== find sheets tool + creds ===" && grep -rn "google.oauth2\|service_account\|credentials" app/tools/*; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon.html && echo "==; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Can’t you find it from either the Google sheet records or extract it from the coordinates embedded within the photo or the RSA?
+
+
+### 🤖 Autopilot
+
+Great thinking — the photo is the most likely source (phone cameras embed GPS in EXIF). The sheet's Lat/Lng cells are empty (I checked), and the RSA public key contains no coordinates — but the photo may. Let me download the FounderHaus image and extract its EXIF GPS.
+
+
+### 🤖 Autopilot
+
+The photo has EXIF (`DateTimeOriginal: 2026-08-21 17:13:37` — matches the planting timestamp), but **no GPSInfo block** — the camera wasn't geotagged, or the app stripped it on upload. Let me double-check with a deeper EXIF scan (all tags, including MakerNote / any embedded XMP) to be thorough.
+
+
+### 🤖 Autopilot
+
+Definitive answer: **the photo has no GPS.** Full EXIF dump shows only timestamp data (DateTimeOriginal `2026-08-21 17:13:37`, OffsetTime **-03:00** — Brazil timezone, confirming it was taken in Florianópolis-area Brazil where Paloma's Aug-21 plantings happened). Zero occurrences of GPS/Geo/lat/lon markers anywhere in the file — not in EXIF, not in XMP, nothing.
+
+**And the RSA signature can't contain coordinates either** — it's the *farmer's public key* (an RSA-2048 modulus/exponent, base64) used to sign the event; it encodes no location by design.
+
+## What we DO have (the useful breadcrumb)
+
+The EXIF's **`OffsetTimeOriginal: -03:00`** confirms the photo was taken in **UTC-3** — consistent with the Aug-19 Cacao-Criolla pair that *does* have coordinates: **-27.43855176, -48.49968606** (Florianópolis, Santa Catarina, Brazil). The FounderHaus Bougainvillea was planted the same week, same region, by the same submitter (Paloma Lecheta). So FounderHaus is almost certainly **near that same site** — but I can't assert an exact lat/lng from that alone; it's inference, not data.
+
+## My recommendation
+
+Don't guess coordinates into the ledger. Two clean paths:
+1. **Best:** you (or Paloma) confirm the FounderHaus site's coordinates — even approximate ("~200 m from the Aug-19 trees") — and I backfill the sheet cell, then regenerate the index. One data point, authoritative.
+2. **Now (unblocking):** the P3 index already ships with FounderHaus in the **"no GPS" bucket** — it's selectable via manual Tree ID (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`), just not distance-ranked. So the dropdown works for the 13 geo-tagged trees immediately, and FounderHaus joins them the moment coords land.
+
+**Want me to proceed with option 2 (ship the index as-is, FounderHaus in the no-GPS bucket) and add a "planting site approx coords" note to the open P3 PR?** Or do you have coordinates to give me for a proper backfill first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== download FounderHaus photo ===" && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/2026082; cd /tmp && python3 - << 'PYEOF' import struct print("=== full EXIF dump ===") from PIL import Image from PIL.ExifTags import TAGS img = Imag
 
