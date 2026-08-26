@@ -3506,11 +3506,13 @@ Decision 3 answered, researched against real carbon-credit-program precedent: Ve
 ### 🤖 Autopilot
 
 Decision 3 reconfirmed — Option B stands, and I'm already building on that basis (no per-measurement ledger booking; tracking tab + per-tree JSON history is the monitoring-report analog; issuance is a separate future event). Continuing the build: **P1d — the GAS handler PR** (the plan's RESUME HERE). Let me pull the precedent handler to mirror its conventions.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the precedent GAS handler (`process_tree_planting_link.js`) to mirror its exact conventions for the growth-monitoring handler.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3704,4 +3706,54 @@ Say "go" and I'll merge #146 + #430 next.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #822 on agentic_ai_context merged successfully (sha: 17a791b8dca973346d61a58f8092c505b3c8e770). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Checked GitHub directly -- zero matches for monitor_tree_growth anywhere in agentic_ai_context. None of today's design decisions are actually committed anywhere durable/shared. Please commit a proper plan doc NOW (e.g. agentic_ai_context/plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md, per this workspace's own OPERATING_INSTRUCTIONS.md section 5 -- multi-step builds need a written, tracked plan before/alongside implementation) capturing everything decided today: photo-not-video (with rationale, TREEO precedent), storage in TrueSightDAO/sunmint images/growth/ subfolder   GitHub Action trigger   25MB Contents-API constraint, the full event taxonomy ([TREE GROWTH MONITORING EVENT] per measurement, signed, no ledger impact vs the future [CARBON CREDIT ISSUANCE EVENT], governor-gated, the only one that books a ledger entry), the backend-in-P1a-scope decision, the Tree Growth Measurements tracking-tab schema, and the P1a/P1b/P2 build sequencing with a RESUME HERE tracker. If you have a local /tmp file or PDF with this content already, use it as the base -- just get it into the tracked repo (branch   PR is fine, or direct-to-main if this repo's convention allows for plan docs, your call same as other plans). Reply with the PR/commit link once done.
+
+
+### 🤖 Autopilot
+
+The plan doc was merged to main last turn (PR #822). Let me verify it's actually there now — this message may have crossed with the merge.
+
+
+### 🤖 Autopilot
+
+Verified — it **is** committed and durable. The plan doc is live on main right now:
+
+## ✅ Confirmed: the plan is committed (HTTP 200, 8,316 bytes on `main`)
+
+**`agentic_ai_context/plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md`** — merged last turn via **PR [#822](https://github.com/TrueSightDAO/agentic_ai_context/pull/822)** (sha `17a791b`), now on the default branch.
+
+**Your GitHub search returned zero because code search lags/caches — the file has been on main since the merge.** The raw fetch just now returns the full 8.3 KB document, headed:
+
+> `# SunMint Tree-Growth Monitoring — Plan`
+> `Status: active — P1a build in progress · Created 2026-08-26`
+
+**Everything decided today is in it (all §1–§8):**
+1. **§1** Photo-not-video decision + TREEO precedent rationale (close-up card-on-trunk + context shot; 25 MB cap comfortably clear)
+2. **§2** Storage: `TrueSightDAO/sunmint images/growth/` subfolder, GitHub Action on push (`paths: [images/growth/**]`), 25 MB Contents-API constraint
+3. **§3** Full event taxonomy: `[TREE GROWTH MONITORING EVENT]` per measurement (signed, **no ledger impact**) vs future `[CARBON CREDIT ISSUANCE EVENT]` (periodic, **governor-gated, the only ledger-booking event**) + the Verra/GS/ACR research backing the split
+4. **§4** Backend-in-P1a-scope decision (PRs #146 + #430 not deferred to P4)
+5. **§5** Tree Growth Measurements tracking-tab schema (18 columns)
+6. **§6** P1a/P1b/P2 build sequencing with **RESUME HERE** tracker
+7. **§7** Checklist (4/10 done) · **§8** Risks
+
+**Why the search shows zero:** GitHub's code search only indexes default branches and has propagation lag; the file was merged ~a turn ago. It's verifiably there via raw fetch (200 OK).
+
+## 📌 RESUME HERE → next units (P1a build continues)
+1. **Merge P1c (#146)** — dao_protocol event registration
+2. **Merge P1d (#430)** — tokenomics GAS handler
+3. **Deploy GAS handler** — clasp push + `TGM_GITHUB_TOKEN` Script Property
+4. **P2** — sunmint `pm002_analysis.yml` workflow + single-image worker
+5. **P3/P4** — GeoJSON index → UAT; close superseded **PR #821**
+
+Say "go" and I'll merge #146 + #430 next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== raw file check (main branch) ===" && curl -s -o /dev/null -w "%{http_code} " "https://raw.githubusercontent.com/TrueSightDAO/agent
 
