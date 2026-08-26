@@ -1052,11 +1052,13 @@ Sector-level breakdown computed — clean story:
 - **Dip (macro-above) leaders:** Technology 476, Consumer Cyclical 203, Unknown 156 (CRWV/APLD/FIG/TQQQ/DOCN — synthetic/ETF symbols without sector), Industrials 121, Financial Services 94
 
 The "Unknown" bucket is mostly synthetic indices/ETFs (FIG, SQQQ, TQQQ, CRWV, DOCN, APLD, NET) — I'll flag that in the report. Now let me pull the sector time-series so I can render **sector charts** (spike and dip breadth per sector over time), then do the web deep dive. Let me generate sector event dates per sector for the charts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the sector daily data. Let me transfer the two sector JSON files to the autopilot box (scp works) and build the sector charts + deep-dive. Then I'll run the web research on why these sectors are displaying what they are.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1202,4 +1204,90 @@ Just say which and I'll pick it up.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #824 on agentic_ai_context merged successfully (sha: 9e5788bb9064d7dfebcadb02fa90f5daa5bf1436). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] Find out why INTU suddenly dropped during pre-market also see deep dive to figure out their fundamental performance these past year to see if anything degraded
+
+
+### 🤖 Autopilot
+
+On it — I'll check both our own Perch data for INTU's recent price action and the live news for the pre-market drop, then dig into fundamentals.
+
+
+### 🤖 Autopilot
+
+Found the cause via news — now let me pull INTU's own price history from Perch and their fundamentals. Fixing the SQL quoting:
+
+
+### 🤖 Autopilot
+
+The story is clear from news. Let me get INTU's price history from our own DB (fixing the schema — no `company_name` column, and I need the right price columns) to show the price action on our side:
+
+
+### 🤖 Autopilot
+
+The `%q()` literals are getting mangled in the shell layer. Let me use `exec_params` with `$1` placeholders throughout and avoid `%q` entirely:
+
+
+### 🤖 Autopilot
+
+Got the schema — `name` (not `company_name`), and `daily_trades` has `large_dip`/`large_spike` flags plus `sma_200`. Now let me pull INTU's price history + spike/dip flags + technicals from our DB:
+
+
+### 🤖 Autopilot
+
+I have everything — both the live news and our own Perch price data for INTU. Here's the full picture.
+
+## 1. Why INTU dropped pre-market (this morning, 8/26)
+
+**Cause: earnings after the close on 8/25 + weak FY2027 guidance.**
+- **FY2027 revenue guide:** $23.28–23.51B (+9–10%) — **below** the ~$23.72B analysts expected, and a clear deceleration from FY2026's **+14%** growth.
+- **TurboTax guidance cut:** only **2–3% growth** in FY27 vs **7%** in FY26 (push for customer/market-share growth weighing on near-term revenue).
+- **Mailchimp flat-to-down 1%** in FY27 — the acquired marketing platform keeps disappointing.
+- **"AI competition"** — management itself flagged pressure from general-purpose AI tools; the whole software sector is being de-rated on that fear (Datadog/HubSpot/AppLovin guidance misses hit peers too).
+- **Cuts/downgrades:** TD Cowen → Hold; Mizuho cut PT to $430 from $500; an ongoing securities class action over TurboTax disclosures from the May 2026 collapse.
+
+Result: **−13% after hours on 8/25 → −11.7% pre-market at ~$315.60** (from $357.46 close).
+
+## 2. What our own Perch data shows (context)
+
+INTU has been a **rollercoaster all 2026** and was actually on the **breakout cards recently**:
+- **June:** down to ~$255–260, RSI collapsed to **10–23** (deeply oversold), with `large_dip` flags on 6/3–6/8
+- **July–Aug:** strong recovery to $357 — **`large_spike` flags on 8/10, 8/11, 8/13, 8/19, 8/24** (it was one of the recent breakout cards)
+- **8/25 close:** RSI **86** — extremely overbought into earnings, so the drop is also a technical unwind
+- YTD the stock is down **>44%** (from ~$640 start / ~$813 52-wk high)
+
+## 3. Deep dive — has the business actually degraded?
+
+**Mixed — growth is genuinely decelerating, but the core franchises are fine:**
+
+| Metric | FY2026 actual | FY2027 guide | Verdict |
+|---|---|---|---|
+| Total revenue | +14% (~$21.4B) | +9–10% | ⚠️ Decelerating |
+| Adjusted EPS | $24.27 (beat) | — | ✅ Strong |
+| QuickBooks Online | +20–23% | — | ✅ Accelerating |
+| Consumer/Credit Karma | +14–16% | — | ✅ Solid |
+| TurboTax | +7% | +2–3% | ⚠️ Slowing |
+| Mailchimp | — | flat / −1% | 🔴 Degraded asset |
+
+**What's actually degraded:**
+- **Mailchimp** — the 2021 acquisition has under-delivered; it's the clearest fundamental deterioration, now being split out as its own segment
+- **TurboTax ARPU** — pressure from free-tier users; growth is now volume-driven at lower price
+- **Growth deceleration** — 14% → ~9.5% is a real step-down, and at a ~$252B market cap the multiple needs to compress
+
+**What's healthy:**
+- Q4 beat on both revenue ($4.35B vs $4.27B) and EPS ($4.03 vs $3.59)
+- QuickBooks Online +20–23% (pricing + customers + mix) — the core small-business franchise is strong
+- Credit Karma +16% (personal loans, auto insurance, cards)
+- Free cash flow margin ~29%, dividend **+15%** to $1.38/share, buybacks continue
+
+**Bottom line:** the pre-market drop is mostly **guidance-driven + AI-competition fear + sector software de-rating**, amplified by an overbought technical position (RSI 86). The fundamental story is **real deceleration (Mailchimp, TurboTax) but no collapse** — core QuickBooks/Consumer franchises still compounding. The market is re-rating a growth stock to a slower-growth multiple; Wall Street is split on whether the ~12% haircut is overdone (PEG still favorable per some, hence "oversold technicals" calls).
+
+Want me to add INTU to the report as a case study (it's a nice example of the tech-dip theme: one of our own breakout cards that gapped down on guidance), or check if it appeared in our spike/dip top lists?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/sentiment_importer && ruby -rpg -ryaml -rjson -e ' cfg = YAML.load_file("config/database.yml")["production"] conn = PG.conne; cd /home/ubuntu/sentiment_importer && ruby -rpg -ryaml -e ' cfg = YAML.load_file("config/database.yml")["production"] conn = PG.connect(host
 
