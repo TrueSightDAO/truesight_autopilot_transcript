@@ -3026,16 +3026,19 @@ The root page has `data-i18n` attributes AND a working `setLang()` toggle, but m
 ### 🤖 Autopilot
 
 Good news — the i18n framework **is** fully present on the monitor page (I18N dict, `t()` helper, `setLang()`, `data-i18n` wiring, `applyLang`-style loop at line 256). What's missing is **the visible toggle UI** (the lang buttons + `.lang-toggle` CSS + header wiring). Let me confirm exactly how the root page wires the toggle vs the monitor page's setLang, then compare the logo + APK CTA presence one more time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Complete diagnosis — I have everything needed. The monitor page's i18n *machinery* exists but the visible **toggle UI is missing**, plus the logo and APK footer CTA. Let me grab the exact root-page blocks to mirror (lang-toggle CSS + logo + APK footer + `downloadButton` i18n key) so the fix is a faithful port.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full diagnosis. The monitor page is missing **3 UI elements** the root page has. Let me grab the monitor page's I18N dict and body anchors to build precise fix edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3043,26 +3046,31 @@ I have the full diagnosis. The monitor page is missing **3 UI elements** the roo
 I have everything needed. The diagnosis: the monitor page is missing **3 UI elements** vs the root page — (1) the **language toggle buttons** (Português/English), (2) the **logo header** (with `Sunmint` title), (3) the **Android APK download CTA** footer. The i18n machinery exists (I18N dict + `setLang()` + `t()`), but there's no toggle UI to invoke it, no logo, and no APK CTA.
 
 Let me build the fix: add the lang-toggle HTML + CSS, the logo block, the APK footer CTA (with i18n keys), and wire the active-class toggle into the existing `setLang()`. I'll write the updated file locally, validate, then push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CSS anchor didn't match — the live file's CSS differs slightly from what I assumed. Let me check the actual CSS block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the exact anchors. The nav-dropdown CSS is a compact one-liner (`.nav-dropdown { margin-bottom: 1rem; text-align: center; }`), not the multi-line block I assumed. Let me apply the three edits with correct anchors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits applied and balanced. Now I need to wire the `setLang()` function to toggle the active class on the new buttons (the monitor page's `setLang` doesn't do the active-class toggle like the root does), and add the i18n keys for downloadHeading/downloadHint/downloadButton. Let me apply those JS edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tag balance caught a real bug: my APK edit replaced the page's original `</script>` closing tag instead of inserting before it — the main script now swallows the HTML comment/div (would cause a JS SyntaxError). Fixing by restoring the closing tag right after the main JS and dropping the redundant script block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3246,4 +3254,62 @@ That's exactly the **P3 unit** (GeoJSON index build script): a script (GAS or Py
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && TS=$(date +%s) && echo "=== 1. Does sunmint/trees/index.geojson exist? ===" && for u in "https://sunmint.truesight.me/trees/index; cd /tmp && TS=$(date +%s) && echo "=== 1. Search for FounderHaus in sunmint repo ===" && curl -s "https://api.github.com/search/code?q=repo:; cd /tmp && echo "=== trees-registry page: find the sheet URL it redirects to ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+Executing P3 — the GeoJSON index build. First, let me confirm the FounderHaus row in the sheet and see all tree rows with coordinates.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the sheet rows to find the FounderHaus entry and check the Species/status columns.
+
+
+### 🤖 Autopilot
+
+Found it — the FounderHaus tree **is** in the registry, and there are **two** reasons it's not in the dropdown. Here's the full diagnosis.
+
+## The FounderHaus tree exists — but has NO GPS coordinates
+
+From the `SunMint Tree Planting` sheet, row `Edgar_20260821175134_005`:
+
+| Field | Value |
+|---|---|
+| Species | Bougainvillea |
+| Photo | `sunmint/images/20260822_130000_FOUNDERHAUS_GROUP.jpg` |
+| Submitted by | Paloma Lecheta |
+| **Latitude / Longitude** | **EMPTY** (`\r` — blank) |
+| Status | **LINKED** |
+| Linked QR Code | `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` |
+| Linked At | 2026-08-22T11:45:51 |
+
+The original `[TREE PLANTING EVENT]` was submitted with **blank `- Latitude:` / `- Longitude:`** (the dapp didn't get a GPS fix that day — same for the Aug 21 Cacao - Criolla row `Edgar_20260821172545_003`).
+
+## The two reasons it's missing from the dropdown
+
+1. **The GeoJSON index doesn't exist** (the known P3 gap): the dropdown fetches `sunmint/trees/index.geojson` → 404 → falls back to "Trees unavailable — enter Tree ID manually." This affects **all** trees.
+2. **Even with the index built, FounderHaus has no coordinates**: the dropdown sorts by Haversine distance from your GPS. A tree with no lat/lng **can't be geo-placed** — it physically cannot appear in a distance-sorted list. It would only be reachable via the **manual Tree ID** entry (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`).
+
+## What needs to happen (two-part fix)
+
+**Part 1 — P3: build the GeoJSON index** (the plan's known unit): a script that reads the sheet → generates `sunmint/trees/index.geojson` (id, lat, lng, species, last_measured) → committed to the repo. This populates the dropdown for every tree **with** coordinates (the 5 July-2025 Corvallis trees + the Aug 19 Cacao - Criolla pair at -27.438/-48.499).
+
+**Part 2 — Data quality: backfill FounderHaus coordinates.** The tree is real, linked, and photo-documented — it just needs a GPS fix. Options:
+- **(a)** You (or Paloma) re-submit/confirm the location — the sheet's Latitude/Longitude cells get filled
+- **(b)** I geocode from the photo or the known FounderHaus site (if you can give me the site's coordinates)
+- **(c)** Dropdown shows it under a "Location unavailable" bucket (still selectable, just not distance-ranked)
+
+## My proposal
+
+Build **P3 now** (script → `index.geojson` → verify dropdown populates with the geo-tagged trees), **and** include a sensible handling rule for coord-less trees (option c: list them after the ranked ones with a "no GPS" marker — so FounderHaus stays selectable, and once its coords are filled it auto-ranks). For the FounderHaus coords themselves, I need one answer from you: **can you provide the site's lat/lng (option a/b), or should I go with the "no GPS bucket" (option c) for now?**
+
+Say "go P3 with option c" (or give me the coords) and I'll build it.
 
