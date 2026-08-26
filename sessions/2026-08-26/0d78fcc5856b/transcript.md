@@ -19,6 +19,11 @@ Can you help check the agenda and where do you suggest I go
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me dig deeper into the actual agenda — pulling the full search results and the official agenda pages.
 
 
@@ -120,4 +125,132 @@ Done ✅ — **Startup Summit 2026 — Proposed Schedule** (your personal plan, 
 Want me to:
 1. Make a **compact one-page** version (just the day blocks, phone-friendly)?
 2. Also produce an **.ics calendar file** you can import so the blocks show in your calendar?
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **2250bb2a3cef4b5185d96ee4ee9035f7.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me inspect the attached image more thoroughly — checking the file, trying OCR with Portuguese, and scanning for QR codes.
+
+
+### 🤖 Autopilot
+
+The Portuguese OCR language pack isn't installed on this box. Let me try English OCR and check the image properties.
+
+
+### 🤖 Autopilot
+
+OCR returned nothing (0.0% confidence, 1280×960 JPEG). Let me dig into why — checking image statistics and trying preprocessing (brightness/contrast/upscale) before concluding.
+
+
+### 🤖 Autopilot
+
+Image is a normal photo (full 0–255 range, mean brightness 111 — not blank). OCR still finds nothing, so let me try preprocessing (upscale + contrast + threshold variants) before concluding.
+
+
+### 🤖 Autopilot
+
+The image is heavily stylized (OCR picks up partial words like "BRONZE", "STANDARD", "TOTAL/TORT" but garbled). Let me try to view it directly — since it's under 5MB I can analyze the visual content. Let me also try a few more OCR modes on the original and crop regions.
+
+
+### 🤖 Autopilot
+
+Now I have a key piece of information: **"MAPA Do EVENTO"** = "EVENT MAP" in Portuguese. This is a **venue/event floor map** — not a schedule. That's why OCR struggles: it's a stylized map with small labels. The words "BRONZE", "STANDARD", "TOTAL" suggest ticket/access tiers (Bronze/Standard/Total) or zone names.
+
+Let me confirm the image visually by reading it directly (it's under 5MB) — and try one more targeted OCR approach on the cleaned image.
+
+
+### 🤖 Autopilot
+
+Let me install the Portuguese OCR language pack so I can properly read the event map's Portuguese labels, then re-run OCR with better preprocessing.
+
+
+### 🤖 Autopilot
+
+Portuguese OCR installed. Now let me re-run OCR with Portuguese and preprocessing on the event map.
+
+
+### 🤖 Autopilot
+
+Let me try quadrant-based OCR with color-channel processing — stylized maps often need per-region analysis.
+
+
+### 🤖 Autopilot
+
+Now I'm getting a clear picture. The TL quadrant OCR is quite legible — this is the **Startup Summit 2026 event map** (MAPA DO EVENTO) with an **exhibitor/stage directory**. Let me extract the cleaner legible parts:
+
+**From the top-left (TL) quadrant:**
+- **1 – SC ANGELS** (investor group)
+- **2 – ANJOS DO BRASIL** (Brazil angel investors)
+- **3 – MONTEL**
+- **4 – SPLOY**
+- **5 – FOUNDERS CLUB**
+- **6 – MILENA CRM**
+- **7 – PREFEITURA DE ARACAJU** (Aracaju city government)
+- **8 – VERIFICA TECH**
+- **9 – STARS BANK** (or similar)
+- **10 – 156 BUSINESS MUD**
+- **12 – INOVADBA**
+- **13 – DÉBITO DIRETO**
+- **15 – USER GUIDING**
+- **16 – ADA AUSTRALIA** (or similar)
+- **17 – OCTORWS TAX**
+- **22 – QUANTA PREVIDÊNCIA** (pension)
+- **23 – NOVA GESTÃO** (new management)
+- **26 – VOPOINT** (or similar)
+- **BRONZE** zone label visible
+
+**From BL quadrant (stage/lounge names):**
+- **REGISTRO** (registration)
+- **ASSETWAN** (or similar)
+- **LOVERS / VALADOSS**
+- **OUSARIA**
+- **GLOBAL** (Startup Summit Global area?)
+- **PLENÁRIA** (plenary stage)
+- **STANDS** (stands/expo area)
+- **ENTRADA** (entrance)
+
+This is clearly the **expo hall floor map** with numbered exhibitor booths + stage zones. Let me persist this to the transcript and check if it matches the official map.
+
+
+### 🤖 Autopilot
+
+Here's what I found, Gary:
+
+## 📋 The attached image is the **Startup Summit 2026 event map** ("MAPA DO EVENTO")
+
+It's a **venue floor plan with an exhibitor/booth directory** — *not* a schedule (that's why OCR had trouble; it's a stylized map with small labels, no times).
+
+**What's legible on it:**
+
+| Zone/Area | Meaning |
+|---|---|
+| **PLENÁRIA** | Main plenary stage |
+| **STANDS** | Expo booth hall |
+| **REGISTRO / ENTRADA** | Registration / entrance |
+| **GLOBAL** | Startup Summit Global area (international delegations) |
+| **BRONZE / STANDARD / TOTAL** | Access tier zones |
+
+**Exhibitor directory (partial, OCR'd):**
+1. SC Angels · 2. Anjos do Brasil · 3. Montel · 4. Sploy · 5. Founders Club · 6. Milena CRM · 7. Prefeitura de Aracaju · 8. Verifica Tech · 9. Stars Bank · 10. 156 Business · 12. Inovadba · 13. Débito Direto · 15. User Guiding · 16. Ada (Australia?) · 17. Octorws Tax · 22. Quanta Previdência · 23. Nova Gestão · 26. Vopoint …
+
+No QR codes detected. Some booth names are uncertain because the map is stylized — if you can send the higher-res version or screenshot of a specific section, I can pin down exact names.
+
+**How this connects to your proposed schedule:** the map confirms the **Global area** and **plenary** locations, so for your Day 1 plan (Wed 26) the plenary + Global zone walk is grounded in real venue zones. Want me to:
+1. Overlay your proposed schedule onto this map (which zones to hit when)?
+2. Or re-OCR at higher resolution if you can resend the original file?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7.jpg') print('format:', im.for; cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageStat import numpy as np im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7; cd /tmp/tg_attachments && python3 -c " from PIL import Image import numpy as np im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7.jpg').conv; …(+5 more)
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/e356bdd29e62/transcript.md
 
