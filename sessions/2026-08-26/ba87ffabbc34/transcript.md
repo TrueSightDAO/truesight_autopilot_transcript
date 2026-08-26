@@ -3059,6 +3059,7 @@ Executing P3 — the GeoJSON tree index build. First let me verify the exact URL
 ### 🤖 Autopilot
 
 The monitor page fetches `https://sunmint.truesight.me/trees/index.geojson` — that's **sunmint_prod**'s GitHub Pages URL, not the blob repo. So the index must live in the Pages-served repos (sunmint_beta for beta UAT, sunmint_prod on promotion). Let me find the service-account credentials the sheet tool uses (so the build script can read the same sheet).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3247,4 +3248,26 @@ Yes — that's the right instinct, and it's how I'd want this to live long-term.
 **Caveat worth flagging:** the immediate backfill (FounderHaus coords, whenever they arrive) and this PR's first index are still generated locally from the live sheet — the action takes over from there. And the reactive trigger needs one small addition later: the GAS handler POSTs `repository_dispatch` (uses the same `TGM_GITHUB_TOKEN` we're already planning to set).
 
 Want me to build it (script + workflow + secret setup), or would you rather have the GAS-dispatch leg designed into the same PR? Say "go" and I'll open it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Are you sure Sun Mint Beta is the right repository? Think more deeply about it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good pushback — and the deeper you go, the more I think you're right that **sunmint_beta is not the right home for the tooling**. Let me separate the three layers, because they have different right answers:
+
+**1. The page** — stays in sunmint_beta (that's the app; no change).
+
+**2. The script + GitHub Action** — this belongs in **`truesight_autopilot`**, not sunmint_beta. Reasons: it's the DAO's automation repo — `tree_growth_analysis.py` (the P2 worker), the OCR tools, and every other derived-cache builder already live there. The sheet-reading credentials already live on that box. sunmint_beta is a *web app repo* (a Pages site with three files) — stuffing CI + Python + bot-committed data into it conflates app hosting with automation infrastructure, which violates our own repo-class conventions.
+
+**3. The data itself (`trees/index.geojson`)** — this is the part I got wrong. The cleanest home is the **`sunmint` blob repo** — the designated "asset store" where `images/` already lives, machine-owned, Contents-API-only. That's exactly our treasury-cache / places-cache pattern: derived data lives in a data repo, not inside an app. And it kills the beta/prod duplication problem entirely: **one canonical index** that both sites read, no fork-sync dependency for freshness.
+
+**The flow becomes:** workflow in truesight_autopilot (schedule + repository_dispatch + manual) → runs the standalone script with the SA secret → uploads `trees/index.geojson` to the `sunmint` repo via Contents API → page fetches it from `raw.githubusercontent.com/.../sunmint/main/trees/index.geojson` (CORS-enabled) first. And the same PAT we're already setting for the photo-mirror (`TGM_GITHUB_TOKEN`) handles the index upload too — one credential, two jobs.
+
+**One cleanup:** I'd remove the index I merged into sunmint_beta (PR #12) so there's a single source of truth, and update the page's fetch order accordingly.
+
+Want me to build it that way — script + action in truesight_autopilot, canonical data in the `sunmint` repo?
 
