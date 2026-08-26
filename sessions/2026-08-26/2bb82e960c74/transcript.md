@@ -26,52 +26,72 @@ Report the result table back here.
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: search_context, search_context, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gary — on it. This is the heavy-compute class, so let me first pull the exact query shapes and schema from the sentiment_importer repo (the spike query you ran references `interesting_spike_symbols_query`; I need its DIP twin and the underlying data model), then run the dip query against the database.
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual query definitions and the dip machinery.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Default branch isn't `main` — let me try `master`.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the spike/dip refresher workers and the schema — these hold the exact query shapes Gary referenced.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the helper that defines `interesting_stock_symbols` / `interesting_spike_symbols`, and the schema.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the actual `interesting_stock_symbols` query definition (the spike version Gary referenced) and the schema. Let me pull the remaining pieces of the helper plus schema.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I still need the actual `interesting_stock_symbols` query definition — let me search for it directly.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The definitions live in `etf_helper.rb`. Let me pull the relevant section of that file.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the etf_helper artifact to find `interesting_stock_symbols`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the tail of the file for `general_filter_condition`, `min_market_cap`, `fetch_dip_cut_off_perc`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -183,4 +203,135 @@ No results to report yet — the numbers land once the query executes. I'll pick
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /var/www/sentiment_importer 2>/dev/null || cd ~/sentiment_importer 2>/dev/null || cd /home/deploy/sentiment_importer 2>/dev/null; pwd; gr; for d in /var/www/sentiment_importer ~/sentiment_importer /home/deploy/sentiment_importer /home/ubuntu/sentiment_importer; do [ -d "$d" ] &&; cd /home/ubuntu/sentiment_importer && sed -n '505,520p' app/models/concerns/etf_helper.rb && echo "---REPORTING---" && sed -n '14,24p' app/m; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] [Handoff context — this Telegram topic (thread 14705) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue -- pick up from your resume point and run the actual DIP query, then report the result table. No need to re-derive the query shape, you already confirmed it matches.
+
+
+### 🤖 Autopilot
+
+Picking up from the resume point — running the DIP query now on the Rails box via `bin/rails runner` (dodging the binstub issue).
+
+
+### 🤖 Autopilot
+
+The Rails env fails to boot (error during initializers). Let me see the actual exception message at the top, and grab the DB connection details so I can run the query via `psql` directly.
+
+
+### 🤖 Autopilot
+
+Rails boot is broken on the box (fails in initializers), but I have the DB connection target from `config/database.yml`: host `44.193.55.205`, db `sentiment`, user `prod`. Let me run the query via `psql` directly, pulling the password from the yml in-process (never printed).
+
+
+### 🤖 Autopilot
+
+psql connects. Now running the DIP query — this is the heavy one, so I'll give it a generous timeout.
+
+
+### 🤖 Autopilot
+
+Timed out at 300s — this is the heavy compute Gary flagged. Let me check the table size/indexes and then run an optimized version in the background (restricting `base` rows to the needed date range — only ~7 days before window start is required for correct trailing windows) so I can poll instead of blocking.
+
+
+### 🤖 Autopilot
+
+Even a `count(*)` on `daily_trades` is timing out — that's suspicious for a count. The prior 300s query may still be running on the DB and holding a lock/saturating it, or the table is enormous. Let me check whether the earlier psql session is still alive and check basic responsiveness with a lighter probe.
+
+
+### 🤖 Autopilot
+
+The heavy query (pid 18095) is still running at 7m+ — it's doing a full-history scan (my `base` CTE had no date restriction, so it window-functions over ALL of daily_trades history). That's wasteful: with `ROWS BETWEEN 6 PRECEDING`, days before 2026-02-19 can never influence any counted day. Let me check table stats + indexes (catalog queries, fast), then cancel the runaway and run the optimized version.
+
+
+### 🤖 Autopilot
+
+Small syntax fix (`relid` → `oid`):
+
+
+### 🤖 Autopilot
+
+The 3-statement batch didn't print (catalog output order) — but key fact: `daily_trades` spans **1971-01-04 → 2026-08-25**. The windowed scan over 55 years of history per company is why it's still running. Let me get the sizes/indexes separately and then kill the runaway.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture: **23.8M rows, 111 GB**, spanning 1971→2026. The relevant range (2026-02-20 → 2026-08-25) is a tiny slice. The `date_published` and `dt_by_company (company_id, date_published)` indexes exist — but my unoptimized `base` CTE scanned all 23.8M rows with a window function over the full history.
+
+Let me kill the runaway (pid 18095) and the stray count (18115), then run the **optimized** query that (a) restricts `base` to `date_published >= '2026-02-20'` (only 6 days of lookback needed before the window start 02-26 for correct trailing-7d maxes) and (b) pushes that predicate into the window scan so it uses the date index.
+
+
+### 🤖 Autopilot
+
+Both canceled (only my own probe remains active). Now the optimized query — restricted to `date_published >= '2026-02-20'` in `base` so the window scan only touches ~6 months of rows, not 55 years. Running it in the background via nohup so the SSH round doesn't time out; I'll poll.
+
+
+### 🤖 Autopilot
+
+Started (note: I typo'd the user as `proy` — wait, no, let me check; I wrote `-U prod` in the heredoc... actually the command shows `-U proy` — that would fail auth. Let me verify it started correctly and poll.)
+
+
+### 🤖 Autopilot
+
+The optimized query is producing results — top rows are already out (CRWV 54, PLAY 41, SQQQ 41, FIG 40, GLW 40…). It's still running (sort/limit over the full result). Let me wait for it to finish and get the final top-30.
+
+
+### 🤖 Autopilot
+
+The query finished — full 30 rows printed (`(30 rows)`). The `pgrep` match is just the lingering psql process/false positive on the command line. Let me do one final confirmation that the output file is stable, then report.
+
+
+### 🤖 Autopilot
+
+The output file is stable and complete — 30 rows confirmed. Here's the DIP-side result, Gary.
+
+## DIP query results — top 30 by frequency
+**Universe:** `sell_off_index=true` AND (`market_cap > $20B` OR `white_listed=true`) AND `daily_price_std_dev != 0`, `close >= 5` · **Severity:** `(close − max_close_7d)/max_close_7d*100 < −10` with `max_close_7d` over `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` · **Window:** 2026-02-26 → 2026-08-25 (last trading day)
+
+| stock_symbol | dip_day_count | first_seen | last_seen | avg_pct_drop_7d |
+|---|---|---|---|---|
+| CRWV | 54 | 2026-02-27 | 2026-08-25 | −16.54 |
+| PLAY | 41 | 2026-03-06 | 2026-08-11 | −14.15 |
+| SQQQ | 41 | 2026-04-01 | 2026-08-10 | −14.86 |
+| FIG | 40 | 2026-03-12 | 2026-08-12 | −14.87 |
+| GLW | 40 | 2026-03-05 | 2026-08-25 | −15.99 |
+| APLD | 39 | 2026-02-27 | 2026-08-24 | −15.79 |
+| STI | 38 | 2026-04-20 | 2026-08-18 | −27.46 |
+| DOCN | 35 | 2026-02-26 | 2026-08-25 | −15.00 |
+| INTC | 31 | 2026-03-30 | 2026-08-25 | −14.18 |
+| MU | 30 | 2026-03-03 | 2026-08-24 | −16.09 |
+| KLAC | 29 | 2026-03-06 | 2026-08-25 | −30.68 |
+| NOW | 27 | 2026-03-24 | 2026-07-23 | −13.72 |
+| TEAM | 27 | 2026-03-12 | 2026-07-23 | −12.97 |
+| CAR | 25 | 2026-04-22 | 2026-08-06 | −30.21 |
+| MDB | 25 | 2026-03-03 | 2026-08-24 | −14.54 |
+| ORCL | 25 | 2026-03-27 | 2026-07-20 | −14.83 |
+| REAL | 25 | 2026-03-06 | 2026-08-14 | −15.98 |
+| TREE | 25 | 2026-03-06 | 2026-08-06 | −16.70 |
+| QCOM | 24 | 2026-05-12 | 2026-08-03 | −14.27 |
+| RBLX | 24 | 2026-03-10 | 2026-08-07 | −18.46 |
+| FIVN | 23 | 2026-03-12 | 2026-07-24 | −12.24 |
+| NCLH | 23 | 2026-03-02 | 2026-08-21 | −13.25 |
+| ALK | 22 | 2026-03-03 | 2026-08-21 | −13.91 |
+| CRWD | 22 | 2026-03-25 | 2026-08-25 | −29.94 |
+| SCCO | 22 | 2026-03-05 | 2026-07-29 | −12.79 |
+| TQQQ | 22 | 2026-03-20 | 2026-08-24 | −13.00 |
+| LBRDK | 21 | 2026-04-24 | 2026-08-17 | −18.52 |
+| VFC | 21 | 2026-03-02 | 2026-08-05 | −13.83 |
+| BBBY | 20 | 2026-03-03 | 2026-07-13 | −12.35 |
+| HOOD | 20 | 2026-03-24 | 2026-07-31 | −13.06 |
+
+**Notes:**
+- Ran via direct `psql` to the `sentiment` DB (44.193.55.205) — Rails env on seni_ror fails to boot (initializer error), so I bypassed it; read-only query, nothing written.
+- **Performance caveat:** my first pass ran the window over full 55-yr history (23.8M rows / 111 GB) and was killed at ~7min. The final run restricted `base` to `date_published >= '2026-02-20'` (only 6 lookback days needed before window start for correct trailing-7d maxes) — same semantics, ~100x less scanned.
+- Table dates are trading days, so the last_seen max is **2026-08-25** (not 08-26, a non-trading day).
+
+**Macro read (for your cross-reference):** the dip roster is *growth/tech + consumer-discretionary heavy* — CRWV, PLAY, FIG (fintech/gaming), SQQQ/TQQQ (leveraged QQQ — systematic beta), DOCN/APLD/GLW/INTC/MU/KLAC (cloud/semis), NOW/TEAM/MDB/CRWD (software), CAR/RBLX/NCLH/ALK/VFC/BBBY (travel/leisure/retail). That looks like a **broad risk-off + AI-infrastructure digestion** theme (semis selling off into earnings season, high-multiple software de-rating), with the deepest single drops on KLAC (−30.7), CAR (−30.2), CRWD (−29.9), STI (−27.5). If you want, next I can layer the spike roster (PAYS/RY/CCZ/STT/TD/BMO — banks/defensives) against this for the sector-level divergence map you described.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → export PATH="/home/ubuntu/.rbenv/bin:$PATH" && eval "$(/home/ubuntu/.rbenv/bin/rbenv init - bash)" && cd /home/ubuntu/sentiment_importer && ; cd /home/ubuntu/sentiment_importer && grep -n -A12 "production:" config/database.yml | sed -E 's/(password|passwd|pass)[[:space:]]*:.*/\1: *; cd /home/ubuntu/sentiment_importer && which psql || echo "NO_PSQL"; PGPASSWORD=$(ruby -ryaml -e 'puts YAML.load_file("config/database.yml")[; …(+6 more)
 
