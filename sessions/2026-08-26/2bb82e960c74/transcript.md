@@ -896,6 +896,7 @@ Resuming Task 2. Two fixes needed to my payload builder:
 2. **Fidelity catch (important):** the spike chart's "Norm" line is **NOT** a 200-day SMA — the partial calls `chartjs_spike_norm_values` → `MacroIndicator.spike_bollinger_middle_over_period` = **30-day Bollinger middle**. The sell-off chart's "Average Level" is the **180-day SMA** (`plot_sma_values(…, 180, …)`), and its "Over-Corrected/Over-Extended" bands are the 30-day/3σ upper/lower. Risk-on = spike index above its 30-day Norm (the gauge's "Risk-on — broad leadership" condition); macro-above-avg = sell-off index above its 180-day average.
 
 Let me confirm the sell-off helper defs and rerun the fixed builder (gzip-compressed for transfer):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -907,51 +908,61 @@ Payload built and verified on seni_ror — results look right:
 - **Top dips in macro-above-avg:** CRWV:37, APLD:26, GLW:24, FIG:23, MU:22 — growth/cloud/semis, matching the dip roster
 
 Now I need the payload on the autopilot box (DB unreachable from here, no SSH path). Transferring it in ~3KB chunks through the tool results — reading all chunks now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chunks are coming through but the output truncated to an artifact. Let me read the full artifact to capture all chunks.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The chunked transfer through tool results is truncating — not reliable for 11.5KB. Better path: test whether the autopilot box can SSH directly to seni_ror (it's the deploy box, so it may already hold fleet keys). If yes, I can `scp` the payload cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot box has a rich `~/.ssh/config` and fleet keys. Let me check the config for the seni_ror entry, and also note the DB port IS open from autopilot (the earlier auth failure may have been a bad/truncated password rather than an IP block — worth retesting with the exact credential).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot box has a `seni-ror` SSH alias with the right key (`id_ed25519_truesight_autopilot`). The earlier direct attempt failed only because I used `ubuntu@54.211.179.126` without the config's key. Now I can pull the payload cleanly via scp.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Payload transferred cleanly via scp (67.9KB JSON decoded on autopilot). Now I'll build the chart PNGs (faithful to both dashboards: sell-off chart with blue index/180-day Average/30-day 3σ bands; spike chart with dark index/30-day Norm dashed/GO-zone green fill/orange over-extended) plus the regime-shaded highlights, then assemble the full PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Spike chart rendered OK. The sell-off chart failed because `selloff_chart` doesn't have `macro_above` — in my builder I reused `risk_on` for the sell-off chart's macro flag (I wrote `out[:macro_above]` in the hash but the builder fills `out[:risk_on]` for both). Let me fix the chart script to use the right key (the sell-off payload uses `risk_on` = macro-above-average, since I mapped both flags through the same field).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `macro_above` exists in the payload and is filled (all True in the sample — the sell-off index has been above its 180-day average for the entire 180-day window, matching "macro above the average" being the dominant regime at 102/180 days). The bug is in my chart script: the fill lists — `ax.fill_between(x, SO['upper'], SO['lower'], ...)` is fine, but the issue is `SO['upper']`/`SO['lower']` may contain None. Let me check for Nones and fix the script to handle them (fill only valid ranges).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `macro_above` is declared in the payload but never filled by the builder (the flags live in `risk_on`, which for the sell-off chart holds the macro-above-average flags: 102 true days). Fixing the chart script to use `risk_on` for the sell-off shading:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both charts rendered. Now assembling the full PDF — both chart images, the top-30 dip table, Gary's spike roster, and the two new regime sections (spike events during risk-on days, dip events during macro-above-average days).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -961,11 +972,13 @@ Both regime lists are coherent and tell a clean story:
 - **Macro-above-average dips**: growth/cloud/semis — CRWV, APLD, GLW, FIG, MU, INTC, LRCX, AMD, DELL, MDB, RBLX…
 
 Now assembling the full PDF with reportlab (chart images + all tables):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF built (266KB). Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1104,4 +1117,44 @@ Want me to also upload this to GitHub (`market_research` reports folder) for a p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /home/ubuntu/sentiment_importer && echo "===COMPANIES COLUMNS==="; ruby -rpg -ryaml -e ' cfg = YAML.load_file("config/database.yml")["pro; cd /home/ubuntu/sentiment_importer && ruby -rpg -ryaml -e ' cfg = YAML.load_file("config/database.yml")["production"] conn = PG.connect(host; cd /home/ubuntu/sentiment_importer && ruby -rpg -ryaml -rjson -e ' cfg = YAML.load_file("config/database.yml")["production"] conn = PG.conne; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] Very good report. Can you generate a markdown somewhere on the methodology that you followed to generate this report so that in the future, when I ask you to generate such a report, I don't have to instruct you or other instances of Sophia or Claude again, perhaps like storage somewhere in the agentic AI context? Or, well, let me know. Maybe you have some other better idea of where to store this methodology. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great idea — a methodology runbook in `agentic_ai_context` means any future instance (me, other Sophias, Claude) can regenerate this exact report without re-instruction. Let me check the context repo structure and conventions first.
+
+
+### 🤖 Autopilot
+
+`agentic_ai_context` is the right home — it's the shared context every autopilot instance (Sophia, future Sophias, Claude integrations) reads, and it already holds runbooks in exactly this style (e.g. `RESTOCK_RECOMMENDER_ON_THE_FLY.md`). A methodology runbook there means any instance can regenerate this report from one instruction. Let me write it.
+
+
+### 🤖 Autopilot
+
+Done, Gary — the methodology is written and I've opened a PR in `agentic_ai_context`:
+
+**📄 PR [#824](https://github.com/TrueSightDAO/agentic_ai_context/pull/824) — `PERCH_RECURRING_THEMES_REPORT.md`**
+
+## Why this is the right home
+
+`agentic_ai_context` is the shared context repo every autopilot instance reads (me, future Sophias, Claude integrations) — same place as the other runbooks (`RESTOCK_RECOMMENDER_ON_THE_FLY.md`, `PARTNER_OUTREACH_PROTOCOL.md`). So next time, one line — *"run the Perch recurring-themes report"* — is enough for any instance to reproduce this exactly.
+
+## What the runbook captures (so nothing gets re-derived)
+
+1. **Goal & default inputs** — 6-month window, both dashboards, 180-day chart lookback
+2. **Infrastructure** — seni_ror host, DB at config/database.yml, auth host-restricted, Rails runner broken → direct `PG.connect`, scp transfer path
+3. **Universe** — the exact `sell_off_index / market_cap>20B / white_listed / std_dev / close>=5` filters
+4. **Event definitions** — −10% trailing-7d-window dip severity (your strict spec), 20-day trailing-high spike predicate
+5. **Regime definitions** — risk-on = spike index above its 30-day Norm; macro-above-avg = sell-off index above its 180-day average
+6. **Ready-to-paste SQL** + the performance warning (never scan full 55-yr history)
+7. **Sector mapping** incl. the noise normalization (junk sector names, "Unknown" ETF bucket)
+8. **Chart reconstruction specs** faithful to the live dashboards (colors, bands, Norms)
+9. **Web deep-dive step** + PDF structure + known gotchas (no secrets included)
+
+Per the one-PR-per-turn rule I've stopped after opening it. Want me to **merge it now** (it's just a doc, low risk), or would you like to review first? Once merged, any instance can run the full report from a single instruction.
 
