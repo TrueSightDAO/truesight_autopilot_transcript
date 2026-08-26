@@ -25,21 +25,35 @@ Can you help check the agenda and where do you suggest I go
 ### 🤖 Autopilot
 
 Let me dig deeper into the actual agenda — pulling the full search results and the official agenda pages.
+[2 tool result(s) compacted: read_tool_result, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the rest of the main-stage agenda details from the Sebrae article.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the official agenda page and the full Sebrae article body for the keynote lineup.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full article content for the thematic track details — the agro/agtech part is directly relevant to Agroverse.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -78,7 +92,13 @@ Want me to dig into any specific track/speaker lineup, or draft a shortlist of w
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PDF generated — sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -105,6 +125,12 @@ Want me to also:
 ### 🤖 Autopilot
 
 Got it — a **proposed personal schedule** for you, not the event agenda. Let me build a day-by-day plan optimized for the mission (Agroverse cacao, agtech, marketplace scale, investor matchmaking) and render it as a PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -252,5 +278,77 @@ No QR codes detected. Some booth names are uncertain because the map is stylized
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7.jpg') print('format:', im.for; cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageStat import numpy as np im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7; cd /tmp/tg_attachments && python3 -c " from PIL import Image import numpy as np im = Image.open('2250bb2a3cef4b5185d96ee4ee9035f7.jpg').conv; …(+5 more)
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/e356bdd29e62/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **d80d5cba78604b0abdbf5eda64888b72.jpg**]
+- Type: Image (OCR confidence: 38.8%, quality: fair)
+
+Extracted text:
+```
+My Grrat-:78 Ezra oo PALCO Ero
+```
+
+
+### 🤖 Autopilot
+
+Another image — let me inspect it with Portuguese OCR and check for QR codes.
+
+
+### 🤖 Autopilot
+
+Excellent — this second image OCR'd much better (64.8% confidence). This is the **detailed floor plan** of the Startup Summit 2026. Let me persist it to the transcript.
+
+
+### 🤖 Autopilot
+
+This one OCR'd cleanly (64.8% confidence, "good" quality). It's the **full Startup Summit 2026 floor plan** — much more detailed than the first map.
+
+## 🗺️ Startup Summit 2026 — Complete Floor Plan (CentroSul)
+
+**Zones & booth directory:**
+
+**BRONZE zone** (main exhibitor hall — 24 booths):
+SC Angels · Anjos do Brasil · Montel · Spedy · Founders Club · Helena CRM · Prefeitura de Aracaju · Verifica Tech · Stars Bank · LSG Business Hub · Inovabra · Débito Direto · Iopoint · UserGuiding · Aba Austrian · Octopus Tax · SBT · Goto · Run2Biz · Abstartups · Quanta Previdência · Nuvme · Nova Gestão · Solo Network
+
+**STANDARD zone** (6): Registre-se · Assetway · PipeloVERS · FalaBoss · Ousaria · CRM Think
+
+**GLOBAL zone** — country pavilions (23):
+🌍 **LatAm:** Argentina · Bolívia · Paraguai · Panamá
+🇦🇫 **Africa:** África do Sul · Angola · Gana · Nigéria · Ruanda
+🇪🇺 **Europe:** Alemanha · Bélgica · Espanha · Estônia · Portugal · Reino Unido · Rússia
+🌏 **Asia/ME:** Israel · Japão · China
+➕ Founder Village
+
+**Stages:** Palco 03 · 04 · 05 · 06 · 07 (+ Plenária & Palco 10 from first map)
+**Amenities:** Executive Lounge · Cafeteria · Banheiros · Entrada/Saída
+
+No QR codes, no session times — it's the venue layout.
+
+## 🎯 Mission-relevant booths worth your time
+
+| Priority | Booth | Why |
+|---|---|---|
+| 🔴 **Must** | **Anjos do Brasil** (BRONZE) | National angel-investor network — directly relevant if fundraising |
+| 🔴 **Must** | **SC Angels** (BRONZE) | Santa Catarina's angel group — local, warm intro potential |
+| 🔴 **Must** | **Global zone pavilions** (Portugal, UK, Estonia, Japan) | Export/import conversations for cacao to international retail |
+| 🟠 High | **Founders Club** (BRONZE) | Founder community — peer network |
+| 🟠 High | **Inovabra** (BRONZE) | Bradesco's innovation hub — corporate partnership angle |
+| 🟡 Medium | **Quanta Previdência / Stars Bank** | Fintech/corporate — possible DAO treasury/payment partners |
+| 🟡 Medium | **Ousaria** (STANDARD) | Adjacent premium-brand play |
+
+This dovetails with the proposed schedule — the **GLOBAL zone walk** I had you do on Wed 26 maps to these pavilions, and **Anjos do Brasil / SC Angels** connect to the Thu 27 investor day.
+
+Want me to:
+1. **Add a "booth hit-list" page** to the proposed-schedule PDF (which booths, which day, talking points)?
+2. Keep the floor plan + booth list as a reference doc in `agentic_ai_context`?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageOps import subprocess im = Image.open('d80d5cba78604b0abdbf5eda64888b72.j
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/e356bdd29e62/transcript.md
 
