@@ -2736,6 +2736,7 @@ All 5 edits applied and validated (nav-dropdown: 4 occurrences, onNavChange: 2, 
 ### 🤖 Autopilot
 
 The file is ready with all 5 edits applied and validated. Pushing as the Unit 3 PR using precise edit hunks (the changes are small relative to the 37 KB file):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2780,6 +2781,7 @@ Verified truesight_me_beta#313 independently -- clean revert, -468 lines, only t
 ### 🤖 Autopilot
 
 Unit 2 is already built — PR sunmint_beta#9 has been open since earlier (and unit 3, the nav dropdown, is sunmint_beta#10). This message likely crossed with my progress. Let me verify the current state of all PRs so I report factually.
+[2 tool result(s) compacted: list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2820,6 +2822,7 @@ Nothing new opened this turn — just confirming state. Ready to proceed to UAT 
 ### 🤖 Autopilot
 
 Unit 2 is already built — PR sunmint_beta#9 has been open since earlier (this message crossed with my progress). Let me verify its contents are complete and intact so I can confirm rather than accidentally duplicate it.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2853,11 +2856,13 @@ Investigated the unit-4 blocker you flagged (sync_beta_to_prod does not support 
 ### 🤖 Autopilot
 
 Good catch — one-line config fix. Let me read the exact `prod_repos` block in config.py and add the sunmint entry, matching the existing pattern.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the exact block. Adding the one-line entry via a small PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2936,6 +2941,7 @@ Nothing new opened this turn — just confirming #316 is already in place.
 ### 🤖 Autopilot
 
 Merging all 4 PRs per your instruction — they're on independent repos, so I'll merge them all.
+[4 tool result(s) compacted: merge_pr, merge_pr, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3088,4 +3094,59 @@ One flag for your review: the i18n **defaults to pt** (sunmint_beta convention, 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp && echo "=== LIVE monitor page ===" && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/" -o live_monitor.html && wc -; cd /tmp && echo "=== MONITOR: header/logo/lang/footer markers ===" && grep -n -iE "logo|langPt|langEn|lang-toggle|footer|truesight\.me|githu; cd /tmp && echo "=== MONITOR: i18n + setLang presence ===" && grep -n -E "setLang|I18N|const lang|localStorage|currentLang|data-i18n" live_m; …(+10 more)
+
+
+### 🧑 Governor
+
+Still not seeing the logo on this page
+
+[Attachment auto-processed: **b41bf004d21140f389a576305905dafa.jpg**]
+- Type: Image (OCR confidence: 89.8%, quality: good)
+
+Extracted text:
+```
+tee) wt LTE GD: f) beta.sunmint.truesightme Monitor Tree Measure your tree with the calibration card and record growth. The analysis estimates carbon (PM002 method). Page: Monitor Tree ¢ Record tree measurement Select the tree, take a close-up photo with the calibration card against the trunk (1.3 m height), and a context photo of the whole tree. Nearby tree Trees unavailable — enter Tree ID mar © Manual Tree ID (e.g. FOUNDERHAUS_B(¢ DBH (cm) — diameter at breast height (1.3 m) Hold the calibration card against the trunk, in frame.
+```
+
+
+### 🤖 Autopilot
+
+Let me check whether the fix actually reached the live page — PR #11 state, the file on main, and what the live site is serving.
+
+
+### 🤖 Autopilot
+
+Found it — the fix is built but **not live yet**. PR #11 is still **open (unmerged)**, so the live page is still serving the old version. Let me confirm the PR actually contains the logo edit so the diagnosis is airtight.
+
+
+### 🤖 Autopilot
+
+Diagnosis confirmed and simple: **the fix is in the PR but the PR isn't merged, so it's not live yet.**
+
+## What's happening
+
+| Check | Result |
+|---|---|
+| PR [#11](https://github.com/TrueSightDAO/sunmint_beta/pull/11) state | **open, unmerged** |
+| PR #11 contains the logo/lang-toggle edits | ✅ YES (+55 lines: logo header, lang toggle, APK CTA, i18n keys) |
+| Live page serves the fix | ❌ **No** — still 35,312 bytes, `<img height="120px">` count = **0** |
+
+So the screenshot you're seeing is the **old version** — the logo you're looking for is in the PR, waiting to be merged. The live site (`beta.sunmint.truesight.me`) only updates after merge (GitHub Pages serves `main`).
+
+**The fix itself is correct and ready** — once merged you'll see: the TrueSight DAO logo (120px, centered) + "Monitorar Árvore" title, the Português/English toggle, and the APK download CTA.
+
+## What's needed now
+
+**Merge sunmint_beta#11** — your call (or say "merge" and I'll do it). It's the same repo/flow as the prior PRs; the change is fully validated (tags balanced, JS syntax OK, +55/-1).
+
+## 📌 RESUME HERE
+1. **Merge #11** → then I'll re-verify the live page shows the logo + lang toggle + APK CTA
+2. Confirm dropdown works both directions (Plant ↔ Monitor)
+3. Await UAT sign-off → `sync_beta_to_prod(sunmint_prod)` to promote to production
+
+Nothing is broken — the page just hasn't received the merged fix yet. Say the word and I'll merge it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TS=$(date +%s) && echo "=== PR #11 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/11?x=$TS" ; cd /tmp && TS=$(date +%s) && echo "=== PR #11 files + diff check for logo ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint
 
