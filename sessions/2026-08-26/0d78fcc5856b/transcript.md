@@ -394,37 +394,49 @@ Let me check the agents registry for a startup-summit-specific agent instance.
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_repo_file, read_repo_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The agents registry only lists `sophia` and `bionpact` — but DEPLOY_PUSH_SOP mentioned an `envoy` agent. Let me check that and the EVENTS.md for any Startup Summit references.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agents registry only has `sophia` and `bionpact` — no dedicated "startup summit" agent. Let me check if there's a Startup Summit event folder in `go_to_market` and any handoffs.
+[3 tool result(s) compacted: search_code, check_handoffs, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the transcript and repos for any "startup summit agent" URL from earlier sessions.
+[3 tool result(s) compacted: search_transcript, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No DAO-side match so far. Let me check whether it's an official AI assistant on the event's site.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for the "envoy" agent reference and the official Startup Summit site for any AI assistant.
+[2 tool result(s) compacted: search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the official site for any AI assistant/agent feature.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do two final targeted checks — recent context updates and any summit-related agent mention in the DAO repos.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -466,26 +478,31 @@ Talks and stuff during the summit. Dig into it and find me people and companies 
 ### 🤖 Autopilot
 
 Let me dig into the official site and find the full agenda.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The official site is JS-heavy and won't extract directly. Let me pull the main-stage program from the Sebrae online page and the Week agenda, plus search for the detailed track lineups.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the full ACATE speaker article and the complete Week agenda artifact.
+[2 tool result(s) compacted: web_extract, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remaining ACATE article detail and the full Week agenda.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the ND Mais article and pull the ACATE speaker article in full.
+[2 tool result(s) compacted: read_tool_result, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -593,4 +610,36 @@ Uri Levine (Waze co-founder) · **Luiza Trajano** (Magazine Luiza) w/ Claudia Ro
 Want me to:
 1. Regenerate the **proposed-schedule PDF** using these *actual official times* (AgTech 14h–18h Friday + main-stage picks)?
 2. Draft a **pre-event outreach list** (LinkedIn connection requests to Veros/Expocacer/Dext/FazendaCheia people) so you can book warm intros before you land?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14800] Generate me the pdf
+
+
+### 🤖 Autopilot
+
+Generating the PDF now with the real official agenda and your mission-mapped schedule.
+
+
+### 🤖 Autopilot
+
+PDF is complete (3 pages, 9.3 KB) at `/tmp/autopilot_pdf_7a0oqe1b.pdf`. Sending it to you now.
+
+
+### 🤖 Autopilot
+
+Done ✅ — **Startup Summit 2026 — Official Agenda & Personal Schedule** (3 pages) sent to the thread.
+
+**What's inside:**
+1. **Event structure** — gates 11h, talks 13h, close 19h, morning exclusives, Day-3 English plenary
+2. **Official track map** — Security/Varejo (26th), Health/Energy (27th), **AgTech/PeopleTech** (28th) with stage numbers
+3. **Confirmed main-stage speakers** — Trajano, Uri Levine, Nicolelis, Notion, Replit, KondZilla, etc.
+4. **Your core day (Fri 28/08 AgTech, Palco 3)** — full 14h–17h lineup incl. the 17h traceability panel (Veros + Expocacer) and 14h15 stablecoin/export-agro panel — the two highest-ROI sessions for Agroverse
+5. **Wed/Thu plans** — Trajano + Global-zone export scouting + investor evenings
+6. **People & companies to meet** table + practical notes (pre-registration, parking, side events)
+
+Want me to also:
+1. **Upload it to `agentic_ai_context`** under `reports/` so it's archived for the trip?
+2. Generate an **.ics calendar** of your day blocks so they sync into your phone?
 
