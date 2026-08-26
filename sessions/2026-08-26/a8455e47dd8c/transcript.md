@@ -5043,3 +5043,32 @@ The OCR is partial — could you share a **fuller screenshot** (especially the l
 
 **Key reminder:** the fix order remains — (1) file missed declarations → (2) CNPJ exits INAPTA → (3) renew e-CNPJ cert → (4) add commerce CNAE → (5) IE → (6) NF-e. This screen is step (1) made visible — great.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] It says Activa
+
+
+### 🤖 Autopilot
+
+Excellent — that's a big deal! 🎉
+
+**If the "Resultado da Análise" says the CNPJ is "Ativa" — the cadastral status is no longer the blocker.**
+
+**What this means:**
+1. The CNPJ 50.042.585/0001-80 is **back to "Ativa"** — the "Inapta" flag has been lifted (likely because Matheus/accountant filed the missed declarations, or the system re-evaluated). This was the #1 blocker.
+2. This is consistent with what Graziela said — she saw the RADAR working/Siscomex linked, suggesting the cadastral side was clearing.
+
+**What's still needed to issue the NF-e (the remaining stack):**
+- ✅ CNPJ Ativa (confirmed now)
+- ⬜ **e-CNPJ digital certificate renewed** (expired early June — needed to log into SEFAZ-BA and sign)
+- ⬜ **Commerce CNAE added** (46.23-1/04 comércio atacadista de cacau) → unlocks Inscrição Estadual
+- ⬜ **IE (Inscrição Estadual) issued** by SEFAZ-BA
+- ⬜ **NF-e credentialing** (credenciamento) + authorize emission
+
+**Practical next step:** Have Matheus (or the accountant) do the 4 remaining steps — the fastest order is: **renew e-CNPJ → add CNAE via DBE/alteration at Junta + RFB → get IE at SEFAZ-BA → credential NF-e**. Once the NF-e model 55 issues, the DU-E can be registered and the freight unlocks.
+
+**One caution:** "Ativa" on this screen may refer to the *situação cadastral* shown in Dados Cadastrais. Confirm there are **no pending declarations** in the "Pendências" tab too (an Ativa status with pending DCTF/ECF can still block NF-e at SEFAZ). But this is real, measurable progress.
+
+Want me to update the SOP's Phase 0 blocker list to reflect "CNPJ back to Ativa ✅, remaining: e-CNPJ renewal + CNAE + IE + NF-e credentialing," and draft the PT message to Matheus for the remaining 4 steps?
+
