@@ -3293,11 +3293,13 @@ This needs your full attention before any more Monitor Tree work continues.
 ### 🤖 Autopilot
 
 This is a critical correction — let me verify everything independently before reporting, starting with the CNAMEs and the sunmint_beta index.html.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: `sunmint.truesight.me` → **sunmint_prod**, `beta.sunmint.truesight.me` → **sunmint_beta**, and `truesight_me_beta` serves `beta.truesight.me` — a **different domain**. The Envoy is right. Now let me verify sunmint_beta's index.html (the actual Plant Tree page) and check my earlier P1b work's actual scope.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3307,16 +3309,24 @@ Confirmed independently — the Envoy's correction is **fully accurate**:
 - `sunmint_beta/index.html` (866 lines) **is the live Plant Tree page**: species dropdown (`Cacau - Criolla/Trinitario/Forestero`), photo capture ("Tirar foto"), email-link section
 
 Let me verify the email-link flow details, the nav structure, and what truesight_me (prod) serves for the sunmint path — to nail the corrected architecture and the revert question.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Independent verification complete — **the Envoy's correction is fully confirmed**. Let me do two more targeted checks (what sunmint.truesight.me serves live + sunmint_beta structure) before reporting the corrected plan.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All facts verified. Let me quickly check whether sunmint_beta/sunmint_prod are in the tool allowlist (critical for the corrected plan).
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3527,4 +3537,120 @@ All confirmed decisions (photo-first, event taxonomy, no per-measurement ledger,
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #315 on truesight_autopilot merged successfully (sha: d4f414712fe0914a95c4045b69adb6152efb5168). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+Confirmed truesight_autopilot#315 already merged (verified via GitHub API). Go ahead with the rest of your plan: (1) revert truesight_me_beta#312 -- agreed, dead code on the wrong domain, (2) build sunmint_beta/monitor-tree-growth/index.html (i18n, own Link-email flow reuse, RSA event, GeoJSON nearest-tree dropdown, close-up+context photo capture), (3) nav dropdown on both sunmint_beta pages, (4) prep for UAT on beta.sunmint.truesight.me. Continue through the full sequence one PR per turn as usual, no self-merge, report/ping at each step -- I am tracking this through to completion, not waiting for you to ask permission at each routine step.
+
+
+### 🤖 Autopilot
+
+Executing unit 1: revert truesight_me_beta#312. Let me verify the current state of the mis-scoped file first.
+
+
+### 🤖 Autopilot
+
+Confirmed: `sunmint/monitor-tree-growth/index.html` (24.6 KB) is on truesight_me_beta main (added by commit `96387109` = PR #312). Creating the revert PR that removes this dead code:
+
+
+### 🤖 Autopilot
+
+Revert PR opened. Stopping per the one-PR-per-turn rule — here's the step report.
+
+## ✅ Unit 1/4 done — Revert of mis-scoped P1b
+
+**PR [truesight_me_beta#313](https://github.com/TrueSightDAO/truesight_me_beta/pull/313)** (sha `527173a`) — deletes `sunmint/monitor-tree-growth/index.html` (24.6 KB, the dead code on the wrong domain from PR #312). Verified first: the file is on main (commit `96387109`); the report PDFs under `sunmint/reports/` are **not** touched (legitimate artifacts stay).
+
+**Tracking status (per your directive — one PR per turn, no self-merge, reporting each step):**
+- ✅ **1. Revert #312** — PR #313 open (this step)
+- ⏳ 2. Build `sunmint_beta/monitor-tree-growth/index.html` (i18n, own Link-email reuse, RSA event, GeoJSON nearest-tree dropdown, close-up+context capture) — next turn
+- ⏳ 3. Nav dropdown (Plant Tree / Monitor Tree) on both sunmint_beta pages
+- ⏳ 4. UAT prep on `beta.sunmint.truesight.me`
+
+## 📌 RESUME HERE → next unit
+**Unit 2 — Build `sunmint_beta/monitor-tree-growth/index.html`.** I'll pull `sunmint_beta/index.html` (the Plant Tree page) to match its shell/i18n/email flow exactly, port the monitor page (GeoJSON nearest-tree dropdown, close-up+context photo capture, RSA + `[TREE GROWTH MONITORING EVENT]`), and open the PR. (No merge — you merge at review; I ping at each step as instructed.)
+
+Ready for the next go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== verify monitor-tree-growth in truesight_me_beta main ==="; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/co
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Confirmed truesight_autopilot#315 already merged. Go ahead: revert truesight_me_beta#312 (agreed, dead code on the wrong domain), then build sunmint_beta/monitor-tree-growth/index.html as planned. Keep going through the full sequence (nav dropdown, UAT prep) -- I'm tracking this thread through to completion, ping me at each PR.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Status
+
+
+### 🤖 Autopilot
+
+Proceeding to Unit 2 — the sunmint_beta monitor page build (revert PR #313 is open and pending your merge, per your no-self-merge). Let me fetch the source pages to match the sunmint_beta shell exactly.
+
+
+### 🤖 Autopilot
+
+I have the sunmint_beta shell (866 lines, pt-first, container/optional-section styling, i18n). Now let me examine the key JS sections of sunmint_beta — the email-link flow, RSA/Edgar submission, i18n — and the dapp monitor page's JS to port correctly.
+
+
+### 🤖 Autopilot
+
+I now have the complete sunmint_beta pattern (i18n, email-link flow with `EMAIL REGISTERED EVENT` + click-to-verify, RSA keypair, offline queue, camera). Let me examine the dapp monitor page's JS structure to port its monitor-specific logic (GeoJSON nearest-tree dropdown, [TREE GROWTH MONITORING EVENT] payload, photo capture).
+
+
+### 🤖 Autopilot
+
+I have the monitor logic mapped. Important discovery: dapp_beta main still has the **video** version (startRecording/recordButton at lines 313/367) — the photo-first PR #81 was never merged. For the sunmint_beta port I'll build **photo-first** (Gary's confirmed decision). Let me grab the tail of the dapp monitor page (submit payload + photo capture) to port precisely.
+
+
+### 🤖 Autopilot
+
+I have both source pages fully mapped. Now let me grab the sunmint_beta API endpoints and submit pattern (the inlined Edgar endpoints since it doesn't use routes.js) to port correctly.
+
+
+### 🤖 Autopilot
+
+I have everything: the full sunmint_beta pattern (i18n, email-link, RSA, offline queue, camera) and the monitor logic (GeoJSON + Haversine + signed `[TREE GROWTH MONITORING EVENT]` + photo capture). Building the sunmint_beta monitor page now — photo-first, pt/en i18n, reusing sunmint_beta's own email flow, close-up + context capture, offline queue.
+
+
+### 🤖 Autopilot
+
+Page validates clean (34.2 KB, braces 160/160, parens 388/388, all tags balanced). Now pushing it to sunmint_beta as the monitor-tree-growth page:
+
+
+### 🤖 Autopilot
+
+Unit 2 done — PR opened. Here's the step report.
+
+## ✅ Unit 2/4 — Monitor Tree page built in the correct repo
+
+**PR [sunmint_beta#9](https://github.com/TrueSightDAO/sunmint_beta/pull/9)** (sha `ae649b8`) — `monitor-tree-growth/index.html` (34.2 KB) added to the SunMint app. This is the corrected home (sibling to Plant Tree at sunmint_beta/index.html, will be live at `sunmint.truesight.me/monitor-tree-growth/` after promotion).
+
+**Built to your confirmed design:**
+- **Photo-first** (TREEO-style): close-up with calibration card against trunk + context photo of whole tree — no video
+- **GeoJSON nearest-tree dropdown** (Haversine, closest→furthest, distance badges) + manual Tree ID fallback
+- **Signed `[TREE GROWTH MONITORING EVENT]`** — RSA-2048, payload: Tree ID, Species, DBH (cm), Lat/Lng, Measurement Time, Close-up/Context Photo URLs, Nearby Trees
+- **Reuses sunmint_beta's OWN email-link flow** (`EMAIL REGISTERED EVENT` + `?vk=&em=` click-to-verify) — no new mechanism
+- **pt/en i18n** (sunmint_beta's `data-i18n` pattern), offline queue, mobile-first, same container styling
+- **Nav dropdown** (Plant Tree / Monitor Tree) included on this page already
+- Photo URLs → `sunmint/images/growth/` · **no ledger booking** (decision 3 intact)
+- Validation: braces 160/160, parens 388/388, tags balanced
+
+## 📌 RESUME HERE → remaining units
+- ✅ 1. Revert mis-scoped truesight_me_beta#312 → **PR truesight_me_beta#313** (open)
+- ✅ 2. Build sunmint_beta monitor page → **PR sunmint_beta#9** (open, this step)
+- ⏳ 3. **Nav dropdown on the Plant Tree page too** (`sunmint_beta/index.html`) — so the dropdown works both directions
+- ⏳ 4. **UAT prep** on `beta.sunmint.truesight.me` (after merge; flag: `sync_beta_to_prod` doesn't support sunmint — will handle promotion separately)
+
+Next turn: Unit 3 — add the same Plant/Monitor dropdown to `sunmint_beta/index.html`. Ping at each PR as instructed — no self-merge.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html" -o sunmint_beta_index.html && curl -s "http; cd /tmp && echo "=== sunmint_beta: script sections ===" && grep -n "<script>\|</script>\|function \|const I18N\|data-i18n" sunmint_beta_inde; cd /tmp && echo "=== dapp monitor: functions ===" && grep -n "function \|const \|TREE GROWTH\|geojson\|GeoJSON\|haversine\|nearby\|closeup\|; …(+3 more)
 
