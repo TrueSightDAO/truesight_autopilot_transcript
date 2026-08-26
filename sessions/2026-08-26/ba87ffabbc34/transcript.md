@@ -3354,11 +3354,13 @@ The script exists and works; `sunmint` is a clean slate (16 paths, all `images/`
 ### 🤖 Autopilot
 
 The script is clean and self-contained (reads sheet via `--creds`, emits `trees/index.geojson`). Now building the treasury-cache-style setup in the `sunmint` data repo — three files, mirroring the `generate_review_cache.yml` pattern exactly:
+[2 tool result(s) compacted: upload_file_to_github, upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Workflow + script are in the `sunmint` data repo. Now seeding the canonical index and pointing the page at it:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3563,4 +3565,61 @@ Say "go" and I'll verify the live panel next.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #14 on sunmint_beta merged successfully (sha: b451a4f65602ff170b5333396dec4a34df381fd0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Also noticed the logo is still missing
+
+
+### 🤖 Autopilot
+
+The logo fix was PR #11 — and I suspect it's still sitting unmerged (the merges after it were #12, #13, #14). Let me verify.
+
+
+### 🤖 Autopilot
+
+Confirmed the root cause:
+
+- **PR [#11](https://github.com/TrueSightDAO/sunmint_beta/pull/11)** is still **open (unmerged)** — it's the one with the logo header (+ lang toggle + APK CTA), +55/−1 in `monitor-tree-growth/index.html`
+- **main has 3 "logo" matches** — but those are just the logo *references* in the JS/HTML strings (e.g. `sunmint` name, meta tags), **not the actual logo `<img>`** — the PR that adds the visible logo was never merged, so it never went live
+
+So the logo you're looking for is in PR #11, waiting on a merge — same as last time we hit this. Merging it now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged — the logo fix is finally live. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Diagnosed and merged [sunmint_beta#11](https://github.com/TrueSightDAO/sunmint_beta/pull/11)** (sha `cd0ec81`) — the UI parity fix that had been sitting unmerged since the earlier merge batch. It adds to `monitor-tree-growth/index.html` (+55/−1):
+- **Logo header** (the TrueSight DAO logo you were missing)
+- **Language toggle** (Português/English buttons)
+- **Android APK download CTA** footer
+
+The confusion earlier: main had 3 "logo" *string* matches (meta/JS references) but never the visible `<img>` — that only exists in PR #11, which was open, not merged. Now merged, so after GitHub Pages rebuilds, the logo + lang toggle + APK button appear on `beta.sunmint.truesight.me/monitor-tree-growth/`.
+
+## 📌 RESUME HERE → next units
+1. **Verify live** — logo + lang toggle + APK CTA render on the beta monitor page; also confirm the tree detail panel (from #14) works
+2. **Set repo secrets on `sunmint`** — `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` → test the rebuild workflow
+3. **FounderHaus coords** — still open (backfill or no-GPS bucket)
+4. Eventually: **UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll verify the live page rendering.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #11 state (open, not merged) + confirmed main's "logo" matches are strings, not the img
+• `merge pr` → ✅ PR #11 on sunmint_beta merged successfully (sha: cd0ec811f2bf73b6cf7edbccc1406fb400538387)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && TS=$(date +%s) && echo "=== PR #11 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/11?x=$TS" 
+• `merge pr` → ✅ PR #11 on sunmint_beta merged successfully (sha: cd0ec811f2bf73b6cf7edbccc1406fb400538387). Pull Request successfully merged
 
