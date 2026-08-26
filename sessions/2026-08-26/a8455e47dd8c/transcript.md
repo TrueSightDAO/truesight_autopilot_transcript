@@ -4821,6 +4821,7 @@ Explicitly notes FX assumption (5.40) + C6/delivery to be confirmed at settlemen
 ### 🤖 Autopilot
 
 Let me check the agent registry for Bionpact's exact name, and check for any existing handoffs on this topic.
+[2 tool result(s) compacted: check_handoffs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5071,4 +5072,36 @@ Excellent — that's a big deal! 🎉
 **One caution:** "Ativa" on this screen may refer to the *situação cadastral* shown in Dados Cadastrais. Confirm there are **no pending declarations** in the "Pendências" tab too (an Ativa status with pending DCTF/ECF can still block NF-e at SEFAZ). But this is real, measurable progress.
 
 Want me to update the SOP's Phase 0 blocker list to reflect "CNPJ back to Ativa ✅, remaining: e-CNPJ renewal + CNAE + IE + NF-e credentialing," and draft the PT message to Matheus for the remaining 4 steps?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Generate the PDF for the agent as you suggested
+
+
+### 🤖 Autopilot
+
+Generating the one-page cargo-details PDF for the agent.
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it to you in this thread.
+
+
+### 🤖 Autopilot
+
+PDF sent ✅ (message 14654) — **"Cargo Details — Cacao Shipment (Ilhéus → San Francisco)"**
+
+**Contains exactly the 6 data points the agent asked for:**
+1. **Port of export:** Salvador (SSA)
+2. **US port of entry:** San Francisco (SFO)
+3. **Incoterms:** FOB Salvador
+4. **Cargo value:** USD 7,032.53 (FOB, Rev 2)
+5. **Gross weight:** ≈342.3 kg
+6. **Volume:** ≈1.20 CBM (1 pallet 100×120×100cm)
+
+Plus shipment summary (HS codes, origin, packaging, ISPM#15), notes (Rev 2 weight basis, NF-e issuer status — CNPJ now Ativa, internal-transfer freight basis, FDA Prior Notice), and contacts.
+
+Ready to forward to the agent. Want me to also draft the accompanying email text (in English or Portuguese) to go with the PDF?
 
