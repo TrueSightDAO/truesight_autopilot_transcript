@@ -4767,6 +4767,7 @@ Good point — adding currency labels per line and a final all-USD conversion. L
 ### 🤖 Autopilot
 
 Wrong path — the generator output went to a different temp file. Let me find the actual path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4968,4 +4969,39 @@ Want me to add a short "Correios = informal/DDP-equivalent sample lane, not Inco
 ### 🤖 Autopilot
 
 I don't see a screenshot attached to this message — could you send it again? Once I have the question, I can answer it against the full cargo details I have on file (INV-2026-0611-001, ~342 kg gross, $7,032.53 FOB, 11 line items, cacao products from Bahia/Pará, Ilhéus → San Francisco).
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **688bbf8ba4984f3f8fda8ef70041a203.jpg**]
+- Type: Image (OCR confidence: 87.8%, quality: good)
+
+Extracted text:
+```
+11:01 al! 5G2 GD C22): Bo ver ae ice oe Brazilian governmen system in Brazil for exporting and it is called the nota fiscal exportagao. Matheus company was the one we have been issuing this document the past few shipments. We just need to find another company that can issue it Need a company that is registered with Brazilian siscomex, RADAR systems and have the right CNAE classification oT thank you 4 10:56PM tale Our U.S. partner has found an agent in Brazil. They can help arrange the shipment of this cargo. on oe Could you please provide the port of export in Brazil, the U.S. port of entry, Incoterms, cargo value, gross weight, and volume (CBM)? )) @©®
+```
+
+
+### 🤖 Autopilot
+
+The question asks for the standard 6 data points a freight agent needs to arrange the shipment. Here are the answers from our cargo records (INV-2026-0611-001 Rev 2 + PL-2026-0611-001):
+
+| Asked | Answer (from our docs) |
+|---|---|
+| **Port of export (Brazil)** | **Salvador, BA — Deputado Luís Eduardo Magalhães International Airport (SSA)** |
+| **U.S. port of entry** | **San Francisco, CA — San Francisco International Airport (SFO)** |
+| **Incoterms** | **FOB — Salvador, Brazil** (freight paid by buyer) |
+| **Cargo value** | **USD 7,032.53** (FOB, INV-2026-0611-001 Rev 2) |
+| **Gross weight** | **≈ 342.3 kg** (Rev 2 invoice, incl. pallet) — *see note* |
+| **Volume (CBM)** | **≈ 1.20 CBM** (1 pallet: 100 cm × 120 cm × 100 cm) |
+
+**Two notes to flag before sending:**
+
+1. **Weight discrepancy:** The Packing List (Rev 1) still shows the pre-revision figures (613 units, 340.08 kg net / 375.08 kg gross) — the invoice Rev 2 removed 1 Cacao Mass Bar + 1 Ceremonial Pouch (611 units, ~307.3 kg net / ~342.3 kg gross). **The Rev 2 figures are operative** — best to re-issue the packing list to match before the agent books, so the AWB and docs agree.
+
+2. **The "who issues the NF-e" context above:** the screenshot's earlier message correctly captures the blocker — the shipment needs a company registered with **SISCOMEX/RADAR with the right CNAE** to issue the **Nota Fiscal de Exportação** (Black King can't right now). So the agent's cargo-details request is the first step toward an alternative issuer (trading company "por conta e ordem" or a cooperative).
+
+Want me to draft the reply email to the agent with these figures (and the corrected packing list attached), or generate a one-page cargo-details PDF for the agent?
 
