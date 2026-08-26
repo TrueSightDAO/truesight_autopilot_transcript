@@ -268,31 +268,37 @@ Rails boot is broken on the box (fails in initializers), but I have the DB conne
 ### 🤖 Autopilot
 
 psql connects. Now running the DIP query — this is the heavy one, so I'll give it a generous timeout.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Timed out at 300s — this is the heavy compute Gary flagged. Let me check the table size/indexes and then run an optimized version in the background (restricting `base` rows to the needed date range — only ~7 days before window start is required for correct trailing windows) so I can poll instead of blocking.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Even a `count(*)` on `daily_trades` is timing out — that's suspicious for a count. The prior 300s query may still be running on the DB and holding a lock/saturating it, or the table is enormous. Let me check whether the earlier psql session is still alive and check basic responsiveness with a lighter probe.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The heavy query (pid 18095) is still running at 7m+ — it's doing a full-history scan (my `base` CTE had no date restriction, so it window-functions over ALL of daily_trades history). That's wasteful: with `ROWS BETWEEN 6 PRECEDING`, days before 2026-02-19 can never influence any counted day. Let me check table stats + indexes (catalog queries, fast), then cancel the runaway and run the optimized version.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Small syntax fix (`relid` → `oid`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 3-statement batch didn't print (catalog output order) — but key fact: `daily_trades` spans **1971-01-04 → 2026-08-25**. The windowed scan over 55 years of history per company is why it's still running. Let me get the sizes/indexes separately and then kill the runaway.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -300,26 +306,31 @@ The 3-statement batch didn't print (catalog output order) — but key fact: `dai
 Now I have the full picture: **23.8M rows, 111 GB**, spanning 1971→2026. The relevant range (2026-02-20 → 2026-08-25) is a tiny slice. The `date_published` and `dt_by_company (company_id, date_published)` indexes exist — but my unoptimized `base` CTE scanned all 23.8M rows with a window function over the full history.
 
 Let me kill the runaway (pid 18095) and the stray count (18115), then run the **optimized** query that (a) restricts `base` to `date_published >= '2026-02-20'` (only 6 days of lookback needed before the window start 02-26 for correct trailing-7d maxes) and (b) pushes that predicate into the window scan so it uses the date index.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both canceled (only my own probe remains active). Now the optimized query — restricted to `date_published >= '2026-02-20'` in `base` so the window scan only touches ~6 months of rows, not 55 years. Running it in the background via nohup so the SSH round doesn't time out; I'll poll.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Started (note: I typo'd the user as `proy` — wait, no, let me check; I wrote `-U prod` in the heredoc... actually the command shows `-U proy` — that would fail auth. Let me verify it started correctly and poll.)
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The optimized query is producing results — top rows are already out (CRWV 54, PLAY 41, SQQQ 41, FIG 40, GLW 40…). It's still running (sort/limit over the full result). Let me wait for it to finish and get the final top-30.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The query finished — full 30 rows printed (`(30 rows)`). The `pgrep` match is just the lingering psql process/false positive on the command line. Let me do one final confirmation that the output file is stable, then report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -382,11 +393,13 @@ The output file is stable and complete — 30 rows confirmed. Here's the DIP-sid
 ### 🤖 Autopilot
 
 Generating the PDF report now — I'll include the DIP results (the run I just did), the query spec, the macro read, and your spike-side roster in an appendix for the cross-reference.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending it to you now.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -418,16 +431,19 @@ In your pdf include both charts the sell off charts and the large spike chart th
 ### 🤖 Autopilot
 
 Gary — expanding the report to cover both regimes. First I need to find the exact definitions: the "risk on zone", the sell-off chart, the large-spike chart, and how "macro above average" is computed. Let me search the codebase.
+[3 tool result(s) compacted: search_context, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a bigger investigation — I need the exact definitions of the "risk on zone" (regime gauge), the sell-off chart, the spike chart, and "macro above average". Let me read the key files in parallel.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — sentiment_importer's default branch is `master`, not `main`. Re-reading with the correct ref:
+[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,11 +454,13 @@ Good — I now have the mechanics. Two dashboards, two regime definitions from t
 - **Sell-off chart** (on `/large_dips`): sell-off index + SMA ("Average Level") + Bollinger bands. **"Macro above the average" = sell-off index above its SMA (Norm)** — i.e., stress/breadth-above-normal periods.
 
 Now let me grab the exact config symbols + SMA/Bollinger window definitions, and check what chart tooling the autopilot box has for rendering the two charts into the PDF.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 reportlab is available; matplotlib/pandas are not. The helpers live in `CompaniesHelper` (MacroIndicator extends it). Let me find the SMA/Bollinger definitions and check for headless-browser tooling to capture the live charts as rendered on the dashboards.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -450,21 +468,25 @@ reportlab is available; matplotlib/pandas are not. The helpers live in `Companie
 Excellent — the autopilot box has **chromium** (headless capable), **weasyprint**, and reportlab. Best approach: capture the two **live dashboard charts** as PNGs via headless Chromium screenshots of `perch.truesight.me/large_spikes` and `/large_dips`, then embed those actual chart images in the PDF (exactly what Gary asked: "both charts the sell off charts and the large spike chart that are currently on display on the two dashboards").
 
 Let me check if the dashboards are reachable (auth?) and pull the SMA period config (`DEFAULT_PERIOD`, `sma_period`).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dashboards are behind login (401) — so I'll faithfully **reconstruct both charts from the DB** using the exact same series the live Chart.js renders (index ×100, SMA-Norm, Bollinger bands). Let me grab the exact chart helper + flag semantics to replicate them precisely.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the chart construction logic. Now let me find the constants (`BOLLINGER_LOOKBACK_PERIOD`, `STD_DEV_MULTIPLE`) and the large spike/dip marking predicates (to define what counts), then check the current data freshness on the index companies.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index data is fresh through 2026-08-25. Now the last config values (`bollinger_period_days`, `std_dev_exit_threshold_multiple`) and the exact large-spike/dip predicates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -478,6 +500,7 @@ Now I have every definition:
 - **Risk-on zone** = spike participation above Norm (per regime gauge spec); **macro-above-average** = sell-off index above its Norm
 
 Now let me check the old `_sell_off_chart` partial (to replicate the sell-off chart faithfully), the spec for the spike chart (already read), and what's on disk for the actual views.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -606,4 +629,85 @@ Pick up at step 1 next turn — one ruby script on seni_ror, then the payload tr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → cd /home/ubuntu/sentiment_importer && echo "===CONFIG SYMBOLS===" && grep -nE "market_spike_symbol|market_sell_off_symbol|spike_cut_off|larg; python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import matplotlib; print('matplotlib', matplotlib.__v; cd /home/ubuntu/sentiment_importer && grep -rn "def plot_sma_values\|def plot_bollinger_upper\|def plot_bollinger_middle\|def plot_bollinger; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] I wonder if we should also have the chart currently displayed here
+
+https://perch.truesight.me/large_spikes
+
+Also displayed here
+
+https://perch.truesight.me/
+
+
+### 🤖 Autopilot
+
+Gary — good question. Let me check how the two pages are currently structured in the app (routes, controllers, views) and whether the spike chart can drop onto the root page cleanly.
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the routes (the `/large_spikes` and `/large_dips` routes live past line 60) and the root redirect target.
+
+
+### 🤖 Autopilot
+
+The root page comment says it shows "market overview landing page with sell off charts and treasury yield curve". Let me confirm exactly what the root renders today vs `/large_spikes`.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The root page (`/`, `static_pages#smart_rediect` → `landing_page`) currently shows **only the sell-off chart + treasury yield curve**, NOT the spike chart. The spike chart lives only on `/large_spikes` (`daily_trades#large_spikes` → `_spike_chart.html.erb`).
+
+Let me check the `landing_page` view to see exactly what's displayed there now, so I can advise precisely on adding the spike chart.
+
+
+### 🤖 Autopilot
+
+Let me check what the spike chart partial needs (instance variables) and what the `large_spikes` action loads — that determines the implementation effort.
+
+
+### 🤖 Autopilot
+
+Good question — I checked the routes, controllers, and views. Here's the current state:
+
+## Current dashboard layout
+
+| Page | URL | What it displays |
+|---|---|---|
+| Landing page | `perch.truesight.me/` | **Sell-off chart** (`US Stock Market Correction Level`) + treasury yield curve + market snapshot cards |
+| Breakout dashboard | `perch.truesight.me/large_spikes` | **Spike chart** (`Market Breakout Participation`) + large-spike breakout cards |
+
+The root page (`static_pages#smart_rediect` → `landing_page.html.erb`) currently shows **only the sell-off chart + yield curve**. The spike chart lives exclusively on `/large_spikes` (`daily_trades#large_spikes` → `_spike_chart.html.erb`).
+
+## Feasibility — yes, it's a small, clean change
+
+The spike chart partial is **self-contained**. It only needs three things:
+1. `@current_date` — already set on the landing page ✅
+2. `@the_period` (default 90) — already set ✅
+3. `@spike_index` — **NOT set** on the landing page ❌ (only the `/large_spikes` action sets it: `Company.fetch_sym(config.market_spike_symbol)`)
+
+So the change is ~2 lines + 1 render block:
+- `static_pages_controller#smart_rediect`: add `@spike_index = Company.fetch_sym(SentimentImporter::Application.config.market_spike_symbol)`
+- `landing_page.html.erb`: add a chart section rendering `daily_trades/spike_chart` beside the sell-off section (the `chartjs_spike_*` helper methods it calls are already in `CompaniesHelper`, used by the spikes page)
+
+This is a **code change to `sentiment_importer`** — which I can do via `open_fix_pr(sentiment_importer, ...)` and merge once you give the go.
+
+## My recommendation
+
+**Yes — worth doing.** Rationale:
+- The two charts are regime complements: sell-off = stress/correction breadth, spike = breakout/participation breadth. Showing both on one page gives the full "where are we in the cycle" view at a glance (matches the risk-on / macro-above-average cross-analysis we're already building into the PDF).
+- Low risk: the partial is already battle-tested on `/large_spikes`; this just mounts it on another page.
+
+Also worth noting — this dovetails with the PDF work in flight: the expanded report will embed **both charts** (reconstructed from the DB), so if you want, I can:
+1. **Open the PR** to add the spike chart to the landing page (on your "go")
+2. **Finish the PDF** (spike events during risk-on zone + dip events during macro-above-avg periods + both charts) per the resume point
+
+Want me to go ahead with the PR now, or finish the PDF first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/sentiment_importer && echo "===ROUTES===" && cat config/routes.rb | head -60; echo "===CONTROLLERS==="; ls app/controllers/;; cd /home/ubuntu/sentiment_importer && sed -n '60,140p' config/routes.rb; echo "===ROOT REDIRECT==="; grep -n "smart_rediect" -A15 app/contro; cd /home/ubuntu/sentiment_importer && sed -n '7,40p' app/controllers/static_pages_controller.rb; echo "===LARGE_SPIKES ROUTE==="; grep -n "l; …(+2 more)
 
