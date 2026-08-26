@@ -2995,6 +2995,7 @@ Go for it
 ### 🤖 Autopilot
 
 Executing P3 — the GeoJSON index build. First, let me confirm the FounderHaus row in the sheet and see all tree rows with coordinates.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3166,4 +3167,49 @@ Don't guess coordinates into the ledger. Two clean paths:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== download FounderHaus photo ===" && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/2026082; cd /tmp && python3 - << 'PYEOF' import struct print("=== full EXIF dump ===") from PIL import Image from PIL.ExifTags import TAGS img = Imag
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Merge PR12
+
+
+### 🤖 Autopilot
+
+Merging sunmint_beta#12 (the P3 GeoJSON index + dropdown fixes).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+P3 merged. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [sunmint_beta#12](https://github.com/TrueSightDAO/sunmint_beta/pull/12)** (sha `a1fa876`) — the P3 GeoJSON tree index + dropdown fixes. Now live on `sunmint_beta/main`:
+- **`trees/index.geojson`** — 18 real trees from the authoritative sheet (E2E excluded), 13 with coordinates, 5 in the "no GPS" bucket (`geometry: null`, incl. FounderHaus `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`)
+- **Monitor page URL fix** — relative `trees/index.geojson` + beta fallback (previously prod-only → beta would 404)
+- **Sort fix** — coord-less trees sort last (were sorting to the top as "0m")
+
+**Immediate effect once GitHub Pages rebuilds:** the nearby-tree dropdown on `beta.sunmint.truesight.me/monitor-tree-growth/` should now populate with the 13 geo-tagged trees, sorted by distance — FounderHaus remains selectable via manual Tree ID until its coordinates are backfilled.
+
+## 📌 RESUME HERE → next units
+1. **Verify live** — check `beta.sunmint.truesight.me/trees/index.geojson` serves (200) + dropdown populates on the beta page
+2. **Vendor the build script** — `truesight_autopilot/scripts/build_tree_geojson.py` (re-runnable; seed for a future GAS cron) — small PR
+3. **FounderHaus coords** — still open: your call to provide site lat/lng (backfill sheet → regenerate) or leave in the no-GPS bucket
+4. **UAT** → promote via `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll verify the live page + vendor the script next.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #12 on sunmint_beta merged successfully (sha: a1fa876c4551094585946a96c4ab0a2e00ac908d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #12 on sunmint_beta merged successfully (sha: a1fa876c4551094585946a96c4ab0a2e00ac908d). Pull Request successfully merged
 
