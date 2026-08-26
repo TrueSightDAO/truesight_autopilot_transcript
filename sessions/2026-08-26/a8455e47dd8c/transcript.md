@@ -4448,6 +4448,11 @@ Let me find the two new output files and send them.
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both corrected documents sent ✅ (messages 14673–14674):
 
 **📄 Commercial Invoice Rev 3 (Corrected):**
@@ -4607,4 +4612,37 @@ Here's the clear breakdown — and the news is **very good for our China lane**:
 Both are **free/subsidized** — no downside to engaging. The natural next steps: (a) have Matheus/Vini contact **SEBRAE-BA** for the CNPJ regularization (free), and (b) introduce **Orlantildes/Coopercabruca to APEX-Brasil's "Cooperar para Exportar"** for the China push.
 
 Want me to (1) draft the intro email to SEBRAE-BA for Black King's regularization, and/or (2) draft the intro to APEX-Brasil for Coopercabruca's China export program?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Generate a PDF write up of these two agencies
+
+
+### 🤖 Autopilot
+
+Generating the PDF write-up on SEBRAE and APEX-Brasil.
+
+
+### 🤖 Autopilot
+
+PDF generated. Let me find the output path and send it.
+
+
+### 🤖 Autopilot
+
+PDF sent ✅ (message 14861) — **"SEBRAE vs APEX-Brasil — Support for TrueSight DAO"** (3 pages):
+
+**Contents:**
+1. **At-a-glance table** — the two agencies side by side (roles, history, focus, cost, beneficiaries)
+2. **What each agency does** — SEBRAE (formalization/regularization, CNAE, NF-e, INAPTA recovery) vs APEX (market access, buyers, missions, fairs, China office)
+3. **How each helps our DAO** — SEBRAE → fix Black King (free regularization); APEX → accelerate China lane via Coopercabruca ("Cooperar para Exportar", 450 coops by 2026)
+4. **Strategic bottom line** + 3 suggested next actions
+5. Sources (ApexBrasil, SEBRAE, USDA FAS)
+
+Ready to share or forward. Want me to also save it to the repo and/or draft the SEBRAE-BA intro email for Matheus/Vini?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
 
