@@ -4068,6 +4068,7 @@ Let me read the Initiatives Scoring Rubric definition to see the TDG award formu
 ### 🤖 Autopilot
 
 Let me read the actual rubric values from the sheet to see the TDG-per-contribution formula — this tells us if TDG tracks hours.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4377,4 +4378,63 @@ Sent! ♾️ **The triple-loop graph** — Agroverse ⟷ SunMint ⟷ Community.
 3. **The figure-8 was the transaction; the triquetra is the society.** Two loops describe an economy; three loops describe a community that regenerates itself. The third circle is where "regenerative" stops being a supply-chain adjective and becomes an actual place that thrives.
 
 This is the full model to share in the group — the anchoring of Agroverse, the shift to SunMint/carbon, and the community loop that holds both together. 🌳🍫🏡
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Can you help submit an outreach to this organization via this form
+
+https://www.sosma.org.br/contato
+
+It is regarding collaboration for the 100 trees we are planning to plant for the bags of cacao tea to be sold in FounderHaus
+
+
+### 🤖 Autopilot
+
+Let me look at the SOS Mata Atlântica contact form to see how it works and what fields are needed.
+
+
+### 🤖 Autopilot
+
+The extracted page shows contact info but no visible form fields — the form likely loads dynamically or posts to an API. Let me inspect the raw HTML for the form structure, and check the outreach protocol in parallel.
+
+
+### 🤖 Autopilot
+
+The form structure is clear — `POST /form/contact` with fields: name, cpf, city, email, subject, phone, message, plus CSRF `_token` and a `terms` checkbox. Before submitting, let me check the outreach protocol (the file has a different name) and get the right contact details + message from you. Let me find the protocol file.
+
+
+### 🤖 Autopilot
+
+I have the form structure. Before submitting, I need a few details from you — this is an external outreach (sending is irreversible, so I want the message right):
+
+**The form fields** (SOS Mata Atlântica `/form/contact`): Nome (name), CPF, Cidade (city), E-mail, Assunto (subject), Telefone (phone), Mensagem (message) + terms checkbox. All required.
+
+**What I need from you to fill it correctly:**
+
+1. **Who submits** — your name (Zhiwen Teh / Gary Teh?), which email (garyjob@agroverse.shop?), and phone
+2. **CPF field** — this is mandatory on their form. Do you have a CPF, or should I use the DAO's CNPJ (if one exists yet)? Note: the CNPJ for Black King isn't set up yet per earlier discussions — so if no CPF/CNPJ exists, I may need to check how strictly the field is validated
+3. **City** — Florianópolis? (Founder Haus is there)
+4. **Message content** — draft below (Portuguese + English), based on what you told me:
+
+**Draft message (PT):**
+> *Olá, equipe SOS Mata Atlântica!*
+>
+> *Somos a TrueSight DAO / Agroverse — uma organização que restaura a Mata Atlântica e a Amazônia através de economia regenerativa de cacau. Estamos planejando plantar **100 árvores nativas** como parte do lançamento de nossos chás de cacau, que serão vendidos no Founder Haus (Florianópolis). Cada saco de chá vendido = uma árvore plantada.*
+>
+> *Gostaríamos de explorar uma colaboração: orientação sobre espécies nativas da Mata Atlântica, áreas de plantio na região de Florianópolis, ou parceria em programa de restauração. Podemos conversar?*
+>
+> *Atenciosamente, [Nome] — TrueSight DAO / Agroverse*
+
+**And in English** for the subject line clarity: "Collaboration proposal: 100 native trees planted for cacao tea sales at Founder Haus"
+
+**Two flags before I submit:**
+1. **External form submission is irreversible** — I'll use a real-looking submission only with your sign-off on the details above
+2. The form posts to their Laravel backend with a CSRF token — I can do this via HTTP. If it needs a valid CPF, I'll tell you rather than fake one
+
+Can you confirm: name, email, phone, city, CPF-or-CNPJ, and approve the message (or edit it)? Once you say go, I'll submit.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -sL "https://www.sosma.org.br/contato" -o sosma_contato.html && wc -c sosma_contato.html && echo "=== form tags ===" && grep
 
