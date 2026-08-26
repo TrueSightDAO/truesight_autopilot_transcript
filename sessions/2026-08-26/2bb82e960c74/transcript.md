@@ -508,16 +508,19 @@ Now let me check the old `_sell_off_chart` partial (to replicate the sell-off ch
 I have the sell-off chart title and structure ("US Stock Market Correction Level"). I now have everything to faithfully rebuild both charts from the DB. Let me get the current chart series data for both indexes (last 180 days) — the actual plotted values — in one query, then build the PDF charts with reportlab (matplotlib isn't available, but I can draw line charts in reportlab directly, or install matplotlib).
 
 First, let me pull the series data and check the current date / whether the dashboard is at 180-day default:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Series data extracted (249 rows). Now let me pull the full 180-day chart window (not just the 6-month analysis window — the charts on display show 180 days) plus compute the Norm (200-day SMA) and Bollinger (30-day, 3σ) series server-side so the reconstructed charts match the dashboards exactly. I'll do the computation with a Python script that queries the DB directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Data's flowing. Let me grab the `bollinger_tuples` source (to know what `price_deviation` is for the synthetic index companies) and pull the full history needed to compute the 200-day Norm and 30-day/3σ Bollinger locally — plus the large spike/dip event lists for the regime cross-reference. Batching into one call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -536,16 +539,19 @@ Now, the plan for the expanded PDF:
 4. **Assemble the PDF** with both charts + both regime analyses + the existing top-30 tables
 
 Let me install matplotlib for proper chart rendering (it's the right tool), and pull the large spike/dip event lists. First, check python version + install matplotlib:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 matplotlib is installed. Now let me pull the large spike/dip event lists from the DB (qualified companies only, matching the universe) so I can cross-reference them against the regime windows. I need the raw events (stock_symbol, date, and the relevant magnitude metric) for both spikes and dips in the analysis window.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4,869 spike/dip events extracted. Now I have all the data on disk. Let me copy the three data files to the autopilot box (where matplotlib + reportlab live) and build the analysis + charts + PDF. First, copy the files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -710,4 +716,99 @@ Want me to go ahead with the PR now, or finish the PDF first?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /home/ubuntu/sentiment_importer && echo "===ROUTES===" && cat config/routes.rb | head -60; echo "===CONTROLLERS==="; ls app/controllers/;; cd /home/ubuntu/sentiment_importer && sed -n '60,140p' config/routes.rb; echo "===ROOT REDIRECT==="; grep -n "smart_rediect" -A15 app/contro; cd /home/ubuntu/sentiment_importer && sed -n '7,40p' app/controllers/static_pages_controller.rb; echo "===LARGE_SPIKES ROUTE==="; grep -n "l; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] Finish 1 and 2
+
+
+### 🤖 Autopilot
+
+Gary — executing both. Starting with Task 1 (PR to add the spike chart to the landing page) — pulling the exact file contents to craft precise edits.
+
+
+### 🤖 Autopilot
+
+The controller is clear — I'll add `@spike_index`. For the landing page, I need to see the exact section around the sell-off chart render (line 485) to place the spike chart. Let me pull that region from the artifact.
+
+
+### 🤖 Autopilot
+
+I have the landing page structure. Now let me check how the spike chart partial is mounted on the `/large_spikes` page (its own wrapper or bare) so I mount it identically on the landing page.
+
+
+### 🤖 Autopilot
+
+The spike chart partial is fully self-contained (own `<style>`, `<script>`, canvas ID `spikeChart`). Let me verify what the `chartjs_spike_*` helpers depend on, then open the PR.
+
+
+### 🤖 Autopilot
+
+The helpers call `MacroIndicator.spike_over_period` — not `@spike_index`. Let me check the remaining helpers and `MacroIndicator` to confirm whether `@spike_index` is needed at all on the landing page.
+
+
+### 🤖 Autopilot
+
+The helpers use `MacroIndicator` directly — no `@spike_index` dependency at all. Let me confirm `MacroIndicator.spike_over_period`'s data source to be certain the partial works on the landing page with just `@current_date` + `@the_period`.
+
+
+### 🤖 Autopilot
+
+Now I have everything: `MacroIndicator.spike_over_period` fetches the spike company itself (`Company.fetch_sym(config.market_spike_symbol)`), so the partial needs **no controller change** — only `@current_date` and `@the_period`, both already set on the landing page. Task 1 is a single render block in `landing_page.html.erb`.
+
+Let me open the PR for Task 1 and, in parallel, grab the exact SMA/Bollinger implementations so the PDF charts replicate the dashboards faithfully.
+
+
+### 🤖 Autopilot
+
+PR #1133 opened for Task 1 ✅. Now let me locate the SMA/Bollinger implementations (they're not in etf_helper — the grep was empty).
+
+
+### 🤖 Autopilot
+
+PR #1133 is open for the landing-page spike chart. Gary's "finish 1 and 2" authorizes merging it — doing that now, and in parallel grabbing the last constants I need for faithful chart replication (Bollinger period, stddev multiple, DEFAULT_PERIOD, and the `standard_deviation` definition).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Stopping per the one-PR-per-turn rule. Here's the status.
+
+## ✅ Task 1 — DONE: Spike chart on the landing page
+
+**PR [#1133](https://github.com/TrueSightDAO/sentiment_importer/pull/1133) — merged** (sha `0a15256c`)
+
+- **What changed:** `app/views/static_pages/landing_page.html.erb` — mounted the existing `daily_trades/spike_chart` partial ("Market Breakout Participation" gauge) in a new `<section id="breakout-chart">` directly below the sell-off correction chart.
+- **No controller change needed** — verified from the code that the partial fetches its own index (`MacroIndicator.spike_over_period` → `Company.fetch_sym(config.market_spike_symbol)`) and only depends on `@current_date` + `@the_period`, both already set by `static_pages#smart_rediect`.
+- **Live on:** `perch.truesight.me/` once the Rails deploy picks up `master` — the page now shows **both regime gauges** (correction breadth + breakout participation) at a glance.
+
+## 🔄 Task 2 — PDF report: in progress, all query-shape constants now confirmed
+
+Captured the exact replication parameters from `companies_helper.rb`:
+- `DEFAULT_PERIOD = 180` (chart window on display)
+- `STD_DEV_MULTIPLE` = `std_dev_exit_threshold_multiple` (config, 3.0)
+- `BOLLINGER_LOOKBACK_PERIOD` = `bollinger_period_days` (config, 30)
+- **SMA**: 200-day, trailing window *excluding* current value, rounded 2dp
+- **Bollinger**: 30-day SMA of closes ± `standard_deviation(price_deviation)` × 3, where `price_deviation` = close-to-close delta (confirmed the high-low → prev-close overwrite), `standard_deviation` defined in `config/initializers/enumerable.rb` (Array extension — will use population stddev to match)
+
+Data staged on seni_ror: `/tmp/index_hist.txt` (1,366 rows of both index series since 2025-01-01 — enough for the 200-day SMA), `/tmp/spike_dip_events.txt` (4,869 qualified spike/dip events in window).
+
+## RESUME HERE → Task 2 (PDF), next turn
+
+1. **On seni_ror:** write + run a ruby script (`pg` gem works there; DB auth only works from that host) that reads the two `/tmp` files, computes per-index: 200-day SMA, 30-day/3σ Bollinger (upper + middle + lower for sell-off; upper only for spike), regime flags (risk-on day = spike index > its SMA; macro-above-avg day = sell-off index > its SMA), and the two cross-references: **large-spike events on risk-on days** and **large-dip events on macro-above-avg days** (frequency by symbol, top ~20 + date spans). Emit `/tmp/perch_payload.json`.
+2. **Transfer:** `base64 -w0 /tmp/perch_payload.json` → decode on autopilot (DB is unreachable from autopilot — pg_hba only trusts seni_ror; verified no SSH path between boxes).
+3. **On autopilot:** matplotlib renders both chart PNGs faithful to the dashboards (180-day window, ×100 scale, Norm dashed grey, green GO band, orange over-extended band, blue/grey sell-off bands), with risk-on / macro-above-avg zones shaded.
+4. **Assemble + send:** expanded reportlab PDF = both chart images + top-30 dip table (already run) + your spike roster + the two new regime sections → `send_telegram_attachment` in this thread.
+
+**Also worth flagging (no action taken):** the merged landing-page change is on `master` only — a Rails deploy is needed to go live; say the word if you want me to check the deploy pipeline or if you'd prefer I hold it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /home/ubuntu/sentiment_importer && grep -rn "def chartjs_spike_values\|def chartjs_spike_norm_values\|def chartjs_spike_upper_bollinger\|; cd /home/ubuntu/sentiment_importer && sed -n '270,310p' app/helpers/daily_trades_helper.rb && echo "===MacroIndicator===" && grep -rn "def s; cd /home/ubuntu/sentiment_importer && grep -rn "class MacroIndicator\|module MacroIndicator" app/models/ && echo "===" && grep -rln "def sel; …(+9 more)
+• `merge pr` → ✅ PR #1133 on sentiment_importer merged successfully (sha: 0a15256c3c5cd50ba6b862c95cb124b15e309796). Pull Request successfully merged
 
