@@ -3020,6 +3020,7 @@ Let me verify whether the monitor page's i18n actually works (does it default to
 ### 🤖 Autopilot
 
 The root page has `data-i18n` attributes AND a working `setLang()` toggle, but my monitor page has `data-i18n` attributes with **no language toggle UI, no `setLang()` function, and no i18n dictionary**. So the `data-i18n` attributes are just dead weight — the page is stuck in pt-only, and more importantly the **i18n framework itself is missing**. Let me confirm the monitor page's script section (does it have any `setLang`/I18N code at all?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3166,4 +3167,83 @@ I couldn't make out the message clearly — the transcription came through garbl
 If it helps orient: the current pending item is just **merging sunmint_beta#11** — that's the PR that adds the logo, language toggle, and APK download button to the Monitor Tree page. It's built and validated but not merged yet, which is why the logo still isn't showing on the live beta site.
 
 Could you repeat that? Or just say "merge" and I'll merge #11 and re-verify the live page right away.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Why is the tree recently planted in FounderHaus not surfaced in the nearby trees dropdown??
+
+https://beta.sunmint.truesight.me/monitor-tree-growth/
+
+
+### 🤖 Autopilot
+
+Let me investigate what the dropdown actually fetches and whether the FounderHaus tree exists in the data source.
+
+
+### 🤖 Autopilot
+
+Root cause found — **the tree index doesn't exist yet.** All four `index.geojson` URLs return 404, and the `sunmint` repo has only `images/` (16 paths, zero `trees/` entries). The dropdown has no data to surface — that's why FounderHaus' tree doesn't appear.
+
+This was the known **P3 gap** (GeoJSON index build was always a future unit — the spec said the dropdown "degrades to manual Tree ID entry until P3"). But let me verify where the FounderHaus tree data actually lives so I can propose the real fix.
+
+
+### 🤖 Autopilot
+
+Found it — there **is** a FounderHaus tree in the data. The `sunmint` repo has `images/20260822_130000_FOUNDERHAUS_GROUP.jpg` — a FounderHaus tree-planting photo from Aug 22. But the code search returned nothing because **the tree registry data lives in a Google Sheet, not in GitHub code** (as established earlier: trees are rows in the `SunMint Tree Planting` tab of spreadsheet `1qbZZhf-...`, with lat/lng in columns K/L).
+
+So the full picture: **the tree data exists (sheet) and the photo exists (repo), but the GeoJSON index that the dropdown reads has never been built** — that's the P3 unit that was always listed as future work. The dropdown has nothing to fetch, so it falls back to "Trees unavailable — enter Tree ID manually."
+
+Let me confirm the sheet actually has the FounderHaus row with coordinates, so I can report definitively.
+
+
+### 🤖 Autopilot
+
+The sheet ID from my earlier note doesn't resolve — let me search for the actual tracking sheet and the FounderHaus row. Earlier I found the tree data in spreadsheet `1qbZZhf-...` (gid `176124122`). Let me check the actual ID from the trees-registry redirect and the linking plan.
+
+
+### 🤖 Autopilot
+
+The real sheet ID is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (my earlier note truncated it). Let me read it to find the FounderHaus row and its coordinates.
+
+
+### 🤖 Autopilot
+
+The default tab is "Telegram Chat Logs" — the tree data lives in the "SunMint Tree Planting" tab. Let me read the right tab.
+
+
+### 🤖 Autopilot
+
+Found it — the answer is definitive. Here's why the FounderHaus tree (and **every** tree) is missing from the dropdown:
+
+## The dropdown has no data source — the GeoJSON index was never built
+
+**The dropdown fetches `sunmint/trees/index.geojson`** (the P3 unit in the plan). I checked all four candidate URLs just now:
+
+| URL | Result |
+|---|---|
+| `sunmint.truesight.me/trees/index.geojson` | **404** |
+| `truesight.me/sunmint/trees/index.geojson` | **404** |
+| `beta.sunmint.truesight.me/trees/index.geojson` | **404** |
+| `raw.githubusercontent.com/.../sunmint/main/trees/index.geojson` | **404** |
+
+The `sunmint` repo has only `images/` (16 paths) — **no `trees/` folder at all**. So the page's `loadTreeIndex()` fetch fails → the dropdown shows **"Trees unavailable — enter Tree ID manually"** for everyone, FounderHaus included. This is the known **P3 gap** (the plan lists it as future work), not a bug in the dropdown logic itself.
+
+## The tree data DOES exist (just not in the form the dropdown reads)
+
+- ✅ **FounderHaus photo is in the repo**: `sunmint/images/20260822_130000_FOUNDERHAUS_GROUP.jpg`
+- ✅ **Tree planting records are in the sheet** (`SunMint Tree Planting` tab of spreadsheet `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`): rows with Latitude/Longitude (cols K/L), Photo URLs, Species — the data needed for the index
+- ❌ **What's missing**: the **build step** that converts sheet rows → `trees/index.geojson` (id, lat, lng, species, last_measured) and commits it to the `sunmint` repo
+
+## The fix — build P3 now
+
+That's exactly the **P3 unit** (GeoJSON index build script): a script (GAS or Python) that reads the `SunMint Tree Planting` sheet → generates `index.geojson` (FeatureCollection, ~50–80 bytes/tree) → commits to `TrueSightDAO/sunmint/trees/`. Once that file exists, the dropdown populates and the FounderHaus tree appears sorted by distance.
+
+**Note:** the FounderHaus row — I need to confirm it's in the sheet's rows (the tab currently shows 23 rows, mostly July 2025 with `Status: NEW`). The Aug 22 photo exists in the repo, which suggests a recent planting event that may or may not have been sheet-processed yet — worth confirming while we build P3.
+
+**Want me to proceed with P3?** Plan: (1) confirm FounderHaus row + coordinates in the sheet, (2) build the index-generation script (I'd put it in `truesight_autopilot/scripts/` as `build_tree_geojson.py`, reading the sheet via the existing SA), (3) generate + commit `sunmint/trees/index.geojson`, (4) re-verify the beta dropdown surfaces FounderHaus closest-first. Say "go P3" and I'll start.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && TS=$(date +%s) && echo "=== 1. Does sunmint/trees/index.geojson exist? ===" && for u in "https://sunmint.truesight.me/trees/index; cd /tmp && TS=$(date +%s) && echo "=== 1. Search for FounderHaus in sunmint repo ===" && curl -s "https://api.github.com/search/code?q=repo:; cd /tmp && echo "=== trees-registry page: find the sheet URL it redirects to ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO
 
