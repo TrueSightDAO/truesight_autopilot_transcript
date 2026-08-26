@@ -65,3 +65,29 @@ Other confirmed plenary names: **Uri Levine** (Waze co-founder, launching a book
 
 Want me to dig into any specific track/speaker lineup, or draft a shortlist of who to try to meet (agtech + investor profiles) so you can pre-book 1:1s?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14800] Generate a pdf for schedule
+
+
+### 🤖 Autopilot
+
+PDF generated — sending it to you now.
+
+
+### 🤖 Autopilot
+
+Done ✅ — **Startup Summit 2026 — Schedule** PDF sent to the thread.
+
+**What's in it (3 pages):**
+- **Header:** dates (26–28 Aug), venue (CentroSul), scale (10k people, 200+ speakers, 17 tracks)
+- **Day-by-day main event agenda:** Wed (Luiza Trajano, Sacani, US vs China panel, Uri Levine), Thu (HealthTech/EnergyTech + investor evenings), Fri (AgTech/PeopleTech + AI & governance)
+- **Full Startup Summit Week side events** (21–29 Aug) — all ~14 events with times/venues
+- **Mission-priority picks table** — Agroverse-relevant sessions ranked
+- **Practical notes** (separate side-event registration, tickets, hotels)
+
+Want me to also:
+1. Upload it to a repo (e.g. `agentic_ai_context` under a `reports/` folder) so it's archived?
+2. Make a condensed **one-page pocket version** (just your picks + times) for phone use?
+
