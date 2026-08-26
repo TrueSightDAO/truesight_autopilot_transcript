@@ -1024,21 +1024,25 @@ One note: the charts are reconstructed from the same data/series the dashboards 
 ### 🤖 Autopilot
 
 Good idea — sector breakdown + web-search deep dive will make the report much more useful. Let me start by pulling the sector mapping from the DB, then build sector charts and research the macro drivers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `sector_id` on companies and a `sectors` table. Let me pull the sector names and the sector per qualifying symbol, plus the event lists with their sectors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sector table has some noise (duplicates, blank names). The best mapping for the report will use these + manual normalization. Now let me pull, for each qualifying symbol, its sector name and the spike/dip event counts (risk-on and macro-above windows), so I can build sector-level charts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the sector mapping (524 qualified symbols; the "Unknown" 21 are mostly noise-name sectors — the report will normalize). Now let me build the sector-level event analysis: for each sector, spike-days during risk-on and dip-days during macro-above windows, then produce sector charts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1157,4 +1161,45 @@ Done, Gary — the methodology is written and I've opened a PR in `agentic_ai_co
 9. **Web deep-dive step** + PDF structure + known gotchas (no secrets included)
 
 Per the one-PR-per-turn rule I've stopped after opening it. Want me to **merge it now** (it's just a doc, low risk), or would you like to review first? Once merged, any instance can run the full report from a single instruction.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] Yeah, much the PR. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR #824 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅
+
+## What I did this turn
+
+**PR [#824](https://github.com/TrueSightDAO/agentic_ai_context/pull/824) — merged** (sha `9e5788bb`)
+
+- **What changed:** Added `PERCH_RECURRING_THEMES_REPORT.md` to `agentic_ai_context` — the full methodology runbook for the Perch recurring-themes report (universe filters, spike/dip event definitions, regime logic, SQL templates, sector normalization, chart reconstruction specs, web deep-dive step, PDF structure, infra/transfer path, performance gotchas).
+- **Why:** Any future instance (me, other Sophias, Claude) can now regenerate the exact report from a one-line instruction — no re-deriving query shapes or re-discovering the infrastructure quirks.
+- **No secrets included** — DB access is via `config/database.yml` on the host, read in-process.
+
+## RESUME HERE → next available units
+
+Nothing is queued behind this — the report work is complete (sector deep-dive PDF delivered, runbook merged). If you want to keep going on the Perch theme, natural next steps (pick any):
+1. **Upload the sector-report PDF** to a permanent home (e.g. `market_research` reports folder or your personal `garyjob/perch-market-analysis` backlog) for a stable link.
+2. **Add a "regime calendar"** page to the report (exact dates that were risk-on vs macro-above-average) — would need a runbook appendix update too.
+3. **Apply the landing-page spike-chart change to a fresh deploy check** — PR #1133 is merged on `sentiment_importer` master but not yet deployed to `perch.truesight.me/`.
+
+Just say which and I'll pick it up.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #824 on agentic_ai_context merged successfully (sha: 9e5788bb9064d7dfebcadb02fa90f5daa5bf1436). Pull Request successfully merged
 
