@@ -4224,11 +4224,13 @@ Both PDFs generated. Let me send them to the thread.
 ### 🤖 Autopilot
 
 The generate_pdf tool didn't write files to those paths — the actual output paths were given in the earlier result as the first generation. Let me check the /tmp directory for the actual files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found them — sending both documents now.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4261,6 +4263,7 @@ Both updated documents sent ✅ (messages 14660–14661):
 ### 🤖 Autopilot
 
 Updating the agent cargo-details PDF with the new figures (incl. cacao butter).
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4488,6 +4491,61 @@ Corrected Packing List sent ✅ (message 14679):
 3. Cargo Details for Agent Rev 2 — FOB $7,093.28 ✅ (14674)
 
 Want me to save this corrected set to the repo and log a contribution for the document-revision work?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=10] Make sure to include DUNS number of TrueTech Inc in commercial invoice and packing list moving forward 
+
+Regenerate both
+
+
+### 🤖 Autopilot
+
+Let me find TrueTech Inc's DUNS number in our records.
+
+
+### 🤖 Autopilot
+
+The TrueTech entity file in fda_fsvp should have the DUNS. Let me read it.
+
+
+### 🤖 Autopilot
+
+Found it — TrueTech Inc's **DUNS is 119035208**. Now regenerating both documents with it included.
+
+
+### 🤖 Autopilot
+
+Now the Packing List with DUNS.
+
+
+### 🤖 Autopilot
+
+Let me find both files and send them.
+
+
+### 🤖 Autopilot
+
+Both regenerated with the DUNS ✅ (messages 14767–14768):
+
+**📄 Commercial Invoice Rev 4:**
+- **+ DUNS 119035208** added to Buyer/Importer block (alongside EIN + CBP Importer Number)
+- Total USD 7,093.28 FOB · 616 units · ~312.3/347.3 kg
+- Revision note added
+
+**📄 Packing List Rev 3:**
+- **+ DUNS 119035208** added to Importer block
+- 12 items incl. cacao butter · 616 units · ~312.3 kg net / ~347.3 kg gross
+- Revision note added
+
+Both documents now carry TrueTech's full US identifier stack: **EIN 88-3411514 · CBP 88-341151400 · DUNS 119035208** — which is what US customs/entry needs.
+
+**Note:** I found the DUNS in `fda_fsvp/truetech_inc.entity.json` (119035208). Also worth flagging: that file lists TrueTech's CBP physical address as **3041 Taraval St, SF** (not 1423 Hayes St as on the docs) — the docs use the Hayes St address; if the agent needs the CBP-on-file address, flag it. Want me to keep 1423 Hayes St, or switch to the CBP address on future docs?
 
 ———
 **✅ Done this turn — actions taken:**
