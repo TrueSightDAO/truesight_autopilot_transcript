@@ -3189,6 +3189,7 @@ Don't guess coordinates into the ledger. Two clean paths:
 ### 🤖 Autopilot
 
 Merging sunmint_beta#12 (the P3 GeoJSON index + dropdown fixes).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3437,4 +3438,84 @@ Say "go" and I'll verify the live dropdown + start the secret setup.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #13 on sunmint_beta merged successfully (sha: bd57459f455ca05fa08bdd1dab61b6793f51e24b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+I think when a tree is selected, the corresponding image of the tree as well as detailed of the tree entered during its planting should be surfaced
+
+[Attachment auto-processed: **865ba60c022248e2a1698d9751d84093.jpg**]
+- Type: Image (OCR confidence: 87.6%, quality: good)
+
+Extracted text:
+```
+oH wat LTE GD: f) beta.sunmint.truesightme Monitor Tree ¢ Record tree measurement Select the tree, take a close-up photo with the calibration card against the trunk (1.3 m height), and a context photo of the whole tree. Nearby tree Edgar_20260819134722_487 — 1891 ¢ DBH (cm) — diameter at breast height (1.3 m) Hold the calibration card against the trunk, in frame. ex: 12.5 Close-up photo (card + trunk) Take close-up photo Context photo (whole tree) Take context photo lar eve Raat a toatatatd a
+```
+
+
+### 🤖 Autopilot
+
+Good idea — the canonical index already carries each tree's `photo_url`, `species`, `planted_at`, `status`, and `qr_code`, so the data is there to surface. Let me look at the current selection code in the monitor page to wire the panel correctly.
+
+
+### 🤖 Autopilot
+
+Let me read the tree-selection block (lines 365–410) and the `onTreeSelectChange` handler to wire the detail panel correctly.
+
+
+### 🤖 Autopilot
+
+The structure is clear. `loadTreeIndex()` drops `photo_url`, `status`, `qr_code`, `planted_at` — I need to keep those and render a detail panel on selection. Let me look at the HTML around the dropdown and the i18n dict to wire it precisely.
+
+
+### 🤖 Autopilot
+
+I have the full structure. Let me view the complete i18n dict (lines 151–235) to add the detail-panel keys in both languages, then apply the edits.
+
+
+### 🤖 Autopilot
+
+The picture is complete. Now I'll wire the detail panel: keep the extra fields in `loadTreeIndex()`, add the panel HTML, populate it on selection, and add i18n keys. Applying all edits in one PR:
+
+
+### 🤖 Autopilot
+
+The en dict's `selectTree` string differs slightly from what I assumed. Let me check the exact text in the en block.
+
+
+### 🤖 Autopilot
+
+The en string is "Select **a** tree from the list above or enter **a** Tree ID." — different from my search. Also I noticed the pt `selectTree` might differ ("a árvore" vs "uma árvore"). Let me re-apply the full PR with the corrected en anchor (and check the pt anchor too).
+
+
+### 🤖 Autopilot
+
+Done — PR opened. Here's the report.
+
+## ✅ What I did this turn — tree detail panel on selection
+
+**PR [sunmint_beta#14](https://github.com/TrueSightDAO/sunmint_beta/pull/14)** (sha `c883ef3`) — when a tree is selected in the nearby-tree dropdown (or entered manually), the monitor page now surfaces:
+
+- **The tree's planting photo** (from `photo_url` in the canonical index)
+- **Species** · **Planted-on date** (from `last_measured`) · **Status** · **QR Code** (e.g. `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`)
+
+**Changes (6 edits, all in `monitor-tree-growth/index.html`):**
+1. `loadTreeIndex()` now keeps `photo_url`/`status`/`qr_code` (was dropping them)
+2. New `#treeDetailPanel` — photo + 4 detail rows, hidden until selection
+3. `onTreeSelectChange()` → `renderTreeDetail(treeId)` fills the panel; manual-ID selection also works
+4. Graceful "No photo available" hint for coord-less trees
+5. i18n — 5 new keys (pt + en)
+6. Styling matching the app (`.tree-detail`, `.tree-detail-photo`)
+
+## 📌 RESUME HERE → next units
+1. **Merge sunmint_beta#14** → verify the panel renders on `beta.sunmint.truesight.me/monitor-tree-growth/` (photo + details for e.g. FounderHaus via manual ID, or the 13 geo-tagged trees via dropdown)
+2. **Set repo secrets** on `sunmint` (`GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON`) → test the rebuild workflow once
+3. **FounderHaus coords** — still open (backfill or no-GPS bucket)
+4. Eventually: UAT → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll merge #14 and verify the live panel.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon2.html && wc -l m; cd /tmp && echo "=== 360-420: loadTreeIndex + populate + onTreeSelectChange ===" && sed -n '360,420p' mon2.html && echo "=== 590-640: onTree; cd /tmp && echo "=== HTML 100-140 (dropdown area) ===" && sed -n '100,140p' mon2.html && echo "=== i18n dict location ===" && grep -n "const; …(+2 more)
 
