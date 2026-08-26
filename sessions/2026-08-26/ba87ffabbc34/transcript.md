@@ -3659,3 +3659,49 @@ Confirmed, Gary — this is exactly how it's built. The two layers are separated
 
 So: **attribution/audit unconditional on every measurement · ledger booking withheld until issuance.** Nothing conflates the two. Ready to continue when you are — next unit is merging #822 + #146 + #430, then deploying the GAS handler.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Final piece of the design, from Gary: carbon credit issuance should be its OWN distinct signed event type, separate from [TREE GROWTH MONITORING EVENT]. So the full taxonomy is: (1) [TREE GROWTH MONITORING EVENT] x N -- one per measurement, signed by the field submitter, no ledger impact, pure attribution/audit trail into the tracking tab   per-tree JSON history (as already confirmed). (2) A new [CARBON CREDIT ISSUANCE EVENT] (or similar name, your call) -- periodic, aggregates a batch of verified measurements for a tree/plot/project, and THIS is the one that books the actual DAO ledger/asset entry. Given its financial/governance weight (it is what actually mints value), this issuance event likely needs a governor-level signer gate, same pattern as other high-stakes events in this DAO (mirror whatever gating [CAPITAL INJECTION EVENT] or similar already uses) -- your call on the exact mechanism, but flag it if you land on something. This is out of scope for P1a itself (issuance is a future phase) -- just confirm you're capturing this as the eventual design so nothing needs retrofitting later, then continue with the P1a build as scoped.
+
+
+### 🤖 Autopilot
+
+Confirmed — the issuance-event design is already captured verbatim in the plan doc (PR #822 §3) and spec v1.4 §5.1, and it's noted as out of P1a scope. Since you said "continue with the P1a build," the immediate next step is landing that canonical record on main — merging PR #822 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #822 merged — the canonical plan is now on main. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Confirmed the issuance-event design is already captured** (it was folded into the plan doc and spec when Gary specified it):
+- **§3 of `plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md`** — the full taxonomy table: `[TREE GROWTH MONITORING EVENT]` × N (farmer-signed, no ledger impact, attribution only) vs `[CARBON CREDIT ISSUANCE EVENT]` (periodic, batch-aggregated, **the only ledger-booking event**, **governor-gated** mirroring `[CAPITAL INJECTION EVENT]` / `isGovernorByName_` pattern), explicitly **out of P1a scope** so nothing needs retrofitting
+- **Spec v1.4 §5.1** — same taxonomy, same out-of-scope note
+
+**Merged PR [#822](https://github.com/TrueSightDAO/agentic_ai_context/pull/822)** — `plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md` (sha `17a791b`) — **now on main**. This is the tracked, shared, durable record of the entire 2026-08-26 design (photo-not-video, storage, event taxonomy incl. the issuance piece, backend-in-P1a-scope, tracking-tab schema, sequencing) per OPERATING_INSTRUCTIONS.md §5. GitHub code search will now find it.
+
+The P1a build continues exactly as scoped — no ledger booking per measurement; issuance deferred to a future governor-gated phase.
+
+## 📌 RESUME HERE → next units (P1a build)
+1. **Merge P1c (#146)** — dao_protocol `[TREE GROWTH MONITORING EVENT]` registration (catalog + dispatch row)
+2. **Merge P1d (#430)** — tokenomics GAS handler `process_tree_growth_monitoring.gs`
+3. **Deploy GAS handler** — clasp push to `1UrBgq…` + set `TGM_GITHUB_TOKEN` Script Property
+4. **P2** — sunmint repo `pm002_analysis.yml` workflow (`paths: [images/growth/**]`) + single-image worker update
+5. **P3 / P4** — GeoJSON index build script → UAT both beta sites
+6. Close **PR #821** (superseded by merged #822)
+
+Say "go" and I'll merge #146 + #430 next.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #822 on agentic_ai_context merged successfully (sha: 17a791b8dca973346d61a58f8092c505b3c8e770). Pull Request successfully merged
+
