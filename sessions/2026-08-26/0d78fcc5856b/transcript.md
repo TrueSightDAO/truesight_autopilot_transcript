@@ -91,3 +91,33 @@ Want me to also:
 1. Upload it to a repo (e.g. `agentic_ai_context` under a `reports/` folder) so it's archived?
 2. Make a condensed **one-page pocket version** (just your picks + times) for phone use?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14800] I mean proposed schedule
+
+
+### 🤖 Autopilot
+
+Got it — a **proposed personal schedule** for you, not the event agenda. Let me build a day-by-day plan optimized for the mission (Agroverse cacao, agtech, marketplace scale, investor matchmaking) and render it as a PDF.
+
+
+### 🤖 Autopilot
+
+Done ✅ — **Startup Summit 2026 — Proposed Schedule** (your personal plan, 3 pages) sent to the thread.
+
+**How it's built:**
+- **Strategy line:** Wed = learn (marketplaces + internationalization) · Thu = investors · Fri = AgTech + premium food deals
+- **Tue 25 (optional):** Startup Investment Summit (Anjos do Brasil) + Negócios e Vinhos — if fundraising is live
+- **Wed 26:** Luiza Trajano plenary (marketplace scale), US vs China panel (internationalization), Expo/Global area, then **Happy Hour Founders & Angels** at night (highest-value evening)
+- **Thu 27:** morning 1:1s (convert Day-1 contacts), then pick **NFD | VC** or **Anjos & VCs** to go deep
+- **Fri 28 (CORE):** AgTech track morning + **Alquimia do Café** (premium coffee/cacao-adjacent) — split the day, since they run parallel
+- **Sat 29 (optional):** Investor Week closing BBQ/beach tennis — casual trust-building
+- **Do-not-miss top 5** + practical notes (book side events now, tickets, hotels, bring pitch-ready Agroverse material)
+
+⚠️ **One caveat printed in the doc:** main-stage *talk times* for Wed/Thu aren't fully published yet — I built the slots from the event structure + confirmed side-event times. Once the official agenda drops, I can re-order if Luiza or the panels land at different times.
+
+Want me to:
+1. Make a **compact one-page** version (just the day blocks, phone-friendly)?
+2. Also produce an **.ics calendar file** you can import so the blocks show in your calendar?
+
