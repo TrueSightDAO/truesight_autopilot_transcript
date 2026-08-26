@@ -178,16 +178,24 @@ The Portuguese OCR language pack isn't installed on this box. Let me try English
 ### 🤖 Autopilot
 
 OCR returned nothing (0.0% confidence, 1280×960 JPEG). Let me dig into why — checking image statistics and trying preprocessing (brightness/contrast/upscale) before concluding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Image is a normal photo (full 0–255 range, mean brightness 111 — not blank). OCR still finds nothing, so let me try preprocessing (upscale + contrast + threshold variants) before concluding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image is heavily stylized (OCR picks up partial words like "BRONZE", "STANDARD", "TOTAL/TORT" but garbled). Let me try to view it directly — since it's under 5MB I can analyze the visual content. Let me also try a few more OCR modes on the original and crop regions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -195,21 +203,25 @@ The image is heavily stylized (OCR picks up partial words like "BRONZE", "STANDA
 Now I have a key piece of information: **"MAPA Do EVENTO"** = "EVENT MAP" in Portuguese. This is a **venue/event floor map** — not a schedule. That's why OCR struggles: it's a stylized map with small labels. The words "BRONZE", "STANDARD", "TOTAL" suggest ticket/access tiers (Bronze/Standard/Total) or zone names.
 
 Let me confirm the image visually by reading it directly (it's under 5MB) — and try one more targeted OCR approach on the cleaned image.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me install the Portuguese OCR language pack so I can properly read the event map's Portuguese labels, then re-run OCR with better preprocessing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Portuguese OCR installed. Now let me re-run OCR with Portuguese and preprocessing on the event map.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try quadrant-based OCR with color-channel processing — stylized maps often need per-region analysis.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -248,6 +260,7 @@ Now I'm getting a clear picture. The TL quadrant OCR is quite legible — this i
 - **ENTRADA** (entrance)
 
 This is clearly the **expo hall floor map** with numbered exhibitor booths + stage zones. Let me persist this to the transcript and check if it matches the official map.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -299,11 +312,13 @@ My Grrat-:78 Ezra oo PALCO Ero
 ### 🤖 Autopilot
 
 Another image — let me inspect it with Portuguese OCR and check for QR codes.
+[3 tool result(s) compacted: ocr_image, scan_qr_from_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — this second image OCR'd much better (64.8% confidence). This is the **detailed floor plan** of the Startup Summit 2026. Let me persist it to the transcript.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -362,12 +377,19 @@ Want me to:
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 No direct hit for a "startup summit agent" — let me check the agents registry and any event-related agent docs.
+[2 tool result(s) compacted: search_context, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the agents registry for a startup-summit-specific agent instance.
+[2 tool result(s) compacted: search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -430,4 +452,145 @@ So three possibilities — which did you mean?
 3. **A DAO-side agent dedicated to the summit** → doesn't exist yet; if you want, I can create an `agents/startup-summit.json` entry + an event folder in `go_to_market/events/` so this summit is tracked like SF Tech Fest / Dual Tech Summit (per the EVENTS.md playbook)
 
 Which one are you after?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14800] Do they have an official agenda for this
+
+www.startupsummit.com.br
+
+Talks and stuff during the summit. Dig into it and find me people and companies I should consider meeting or talks I should attend
+
+
+### 🤖 Autopilot
+
+Let me dig into the official site and find the full agenda.
+
+
+### 🤖 Autopilot
+
+The official site is JS-heavy and won't extract directly. Let me pull the main-stage program from the Sebrae online page and the Week agenda, plus search for the detailed track lineups.
+
+
+### 🤖 Autopilot
+
+Let me pull the full ACATE speaker article and the complete Week agenda artifact.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining ACATE article detail and the full Week agenda.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the ND Mais article and pull the ACATE speaker article in full.
+
+
+### 🤖 Autopilot
+
+Let me read the full Anprotec article (it has the detailed speaker lineup) and the ND Mais tail.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining content from both articles to get the full speaker lists.
+
+
+### 🤖 Autopilot
+
+I have a solid picture of speakers and tracks. Let me try to get the actual official agenda page with talk times — the site is JS-heavy, so let me fetch the raw HTML and look for the program link.
+
+
+### 🤖 Autopilot
+
+Excellent — the ACATE Instagram reel gives me the **official stage/track mapping**. Let me get the full ACATE "inicia no próximo dia 26" article with the day-by-day main-stage details.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the Sebrae article for the day-by-day main-stage lineup.
+
+
+### 🤖 Autopilot
+
+I now have a strong official picture (ACATE is the co-organizer, so their announcements are authoritative). Let me do two final targeted searches — AgTech track speakers (your core interest) and the Global matchmaking program.
+
+
+### 🤖 Autopilot
+
+Let me pull the full track-by-track program — that pmaautomacao article has the detailed vertical-track lineups.
+
+
+### 🤖 Autopilot
+
+The Sebrae article is mostly boilerplate. Let me get the pmaautomacao article — it had the actual full track-by-track program.
+
+
+### 🤖 Autopilot
+
+Let me read the remaining tail of the PMA article for the PeopleTech track and closing.
+
+
+### 🤖 Autopilot
+
+Yes — they have an **official agenda**, and I dug into the primary sources (ACATE + Sebrae, the co-organizers) to reconstruct it. One honest caveat first: the **complete minute-by-minute program lives in the official app** (App Store / Google Play, login = registration email + ticket code) — the site's talk schedules are behind the JS app. But ACATE/Sebrae published the *official* stage maps, track schedules with times, and confirmed speaker lists, which I've assembled below.
+
+## 📅 Official event structure (confirmed by ACATE)
+
+| | |
+|---|---|
+| Doors open | **11h** (gates to general public) |
+| Talks start | **13h** |
+| End + Happy Hour | **19h** |
+| Morning | **Exclusive** — investors, international delegations, big companies, Prêmio Sebrae finalists & ACATE PRO members only |
+| Stages / tracks | 10 palcos, 17 trilhas, **283 confirmed speakers** |
+| 3rd day (28/08) plenary | **100% English** (with simultaneous translation) |
+
+## 🗺️ Official track map (ACATE Verticais de Negócios)
+
+| Day | Track – Stage | Times |
+|---|---|---|
+| **26/08** | Security Tech – Palco 3 · Varejo (Retail) – Palco 6 | 14h–18h |
+| **27/08** | HealthTech – Palco 3 · EnergyTech – Palco 5 | 14h–18h |
+| **28/08** | **AgTech – Palco 3** · PeopleTech – Palco 6 | 14h–18h |
+
+## 🎤 Confirmed main-stage names (plenária)
+
+Uri Levine (Waze co-founder) · **Luiza Trajano** (Magazine Luiza) w/ Claudia Rosa (Shark Tank/Rede Invest) · **Miguel Nicolelis** · **David Rosenberg** (Notion) · Neil Redding (futurist) · Sérgio Sacani (SpaceToday) · Konrad Dantas/KondZilla · Ana Paula Renault · Marcel Silva (Google Cloud VP AI LatAm) · Edson Rigonatti (Astella) — plus Day 3 international plenary: **"Vibe Coding for Startups"** (Gio Mangoni/Mogglia, Marcelo Echeverria/Replit, David Rosenberg/Notion).
+
+## ✅ Talks I'd put in YOUR schedule (mission-mapped to Agroverse)
+
+1. **AgTech track — Fri 28/08, Palco 3 — the core of your day.** Full lineup (official):
+   - **17h — "Agro transparente: tecnologia, dados e rastreabilidade na nova economia rural"** — Luis Roloff (Veros) + Farlla Vieira (Expocacer). *Traceability + data = literally the Agroverse QR-provenance playbook, and Expocacer is a premium-coffee export cooperative — the closest analog to cacao export. Highest-ROI session of the event for you.*
+   - **14h15 — "Da fazenda ao mundo: offshore, stablecoins e o novo agro global"** — Valder Zacarkim (FazendaCheia), Diego Coelho (Dext). *Export finance + tokenized agri — speaks to DAO tokenomics and international sales.*
+   - **16h05 — "Mapa do Agronegócio / Radar Agtech SC"** (Facisc) — *market-map intel.*
+2. **Wed 26/08 plenary:** Luiza Trajano's "Tecnologia com propósito" + Uri Levine — *marketplace-scale lessons = the end-market problem Agroverse cacao faces.*
+3. **Thu 27/08 plenary:** "IA em alto crescimento — o primeiro retrato real do Brasil" (Edson Rigonatti/Astella) — *investor-lens on the market.*
+4. **Fri 28/08 English plenary:** "Vibe Coding for Startups" (Rosenberg/Notion) — *only if you're not in AgTech at that moment; it's the same afternoon.*
+5. **Tue 25/08 (if you arrive early): Startup Investment Summit (Anjos do Brasil, CentroSul, 9–19h)** — *the investor-density day.*
+
+## 🤝 People & companies to target (with why)
+
+| Who | Org | Why |
+|---|---|---|
+| **Luis Roloff** | Veros | Rural traceability/data — direct partner conversation for Agroverse provenance |
+| **Farlla Vieira** | Expocacer | Coffee export cooperative — premium export channel, cacao-adjacent; possible parallel channel |
+| **Valder Zacarkim** | FazendaCheia / ACATE agro | Gatekeeper of the agro vertical + tokenized agri finance |
+| **Diego Coelho** | Dext | Stablecoin/agri export finance — DAO payments/tokenomics angle |
+| **Claudia Rosa** | Rede Invest / Shark Tank | Investor + media reach — Brazil visibility for Agroverse |
+| **Edson Rigonatti** | Astella | VC with real Brazilian AI market data |
+| **David Rosenberg / Neil Redding** | Notion / Redding Futures | Ecosystem + futures thinking (harder 1:1 — try Q&A) |
+| **Anjos do Brasil / SC Angels / Founders Club** | — | Investor groups (booths in Bronze zone + 26/08 Happy Hour Founders & Angels) |
+
+**International delegations confirmed:** Portugal, Germany, Spain, Austria, Belgium, Mexico, Canada, South Africa, Kenya, Russia, China (~30 countries total) — the **Global zone** (from your floor plan) is your export-partner hunting ground: EU pavilions for cacao retail, Kenya/Africa for commodity-chain learnings.
+
+## ⚡ Two quick notes
+- **Mornings are gated** — if you want the investor/delegation morning slots, confirm your ticket type gets you in (ACATE PRO / Sebrae finalist routes).
+- The **official app is the source of truth for exact talk times** — worth downloading now (App Store/Google Play) and favoriting the AgTech 28/08 sessions.
+
+Want me to:
+1. Regenerate the **proposed-schedule PDF** using these *actual official times* (AgTech 14h–18h Friday + main-stage picks)?
+2. Draft a **pre-event outreach list** (LinkedIn connection requests to Veros/Expocacer/Dext/FazendaCheia people) so you can book warm intros before you land?
 
