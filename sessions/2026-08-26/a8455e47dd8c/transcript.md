@@ -4179,6 +4179,7 @@ Let me read the exact cacao butter entry — lines ~285-310 of OPEN_FOLLOWUPS.md
 ### 🤖 Autopilot
 
 Let me find the specific cacao butter entry.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4301,4 +4302,146 @@ That was a gap on my part — I should have flagged it as **"price TBD pending c
 2. Or **Matheus** — what landed in the warehouse
 
 Want me to draft a quick message to Orlantildes asking for the cacao butter price (or a receipt), and hold the invoice total as provisional until it comes back?
+
+
+### 🧑 Governor
+
+Outdated pricing information from orlantildes whom we got the cacao butter from
+
+[Attachment auto-processed: **ae65b469919749189ab4a1b6b6abd961.docx**]
+- Type: Word document (20 paragraphs, 1 table)
+
+Extracted content:
+```
+PRODUCT PORTFOLIO 
+
+LARGE BULK
+
+Note:  
+
+1- The monthly production shown may vary due to demand
+
+All products, when applicable, have a certificate of origin and a phytosanitary certificate
+
+   3 - Chocolate is manufactured to order and the secondary package is the buyer’s responsibility.
+
+4-  Chocolate formulation is flexible to buyer’s needs without compromising the quality of the raw 
+
+material.
+
+    5-  Cocoa molasses is made from cocoa pulp, without any additive or chemical component and it’s a
+
+          great spread for toast, biscuits, cheese and roasts.
+
+ 6 - The cocoa batter block is the chocolate block itself weighing 2 kilograms, ready for
+
+       consumption. Ideal for toppings, bombons, etc.
+
+ 7 - Each batch of passion fruit oil is accompanied by a specific analysis report
+
+     8 - Consider that most products have off-season limitations that may impact delivery times.
+
+     9 - Organic chocolate has the IBD seal – USDA/NOP
+
+   10 - Bearing in mind the diversity of agricultural products cultivated in the region, consult us about any product 
+
+           of your interest that is not included in the list above, such as guarana, annatto, black pepper, cloves, baru 
+
+           nuts.
+
+Rua Adelino Silveira, 17, Alto Maron – Itabuna – Ba | CEP: 45603345 |  
+
+TEL: (73) 99138-8884 / 99978-8453 
+
+PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW
+ |  |  |  | 
+LARGE BULK | LARGE BULK | LARGE BULK | LARGE BULK | LARGE BULK
+ |  |  |  | 
+TYPES | PRODUCTS | PRICES (tons) | Monthly production(tons) | NCM
+Conventional Fine Cocoa | Dry almonds | 7,476.00 | 50 | 1801.00.00
+Conventional Fine Cocoa | Nibs (toasted almonds and peeled) | 10,046.00 | 40 | 1801.00.00
+Conventional Fine Cocoa | Cocoa paste | 11,775.00 | 40 | 1803.10.00
+Conventional Fine Cocoa | Block cocoa paste | 15,500.00 | 20 | 1806.20.00
+ |  |  |  | 
+Conventional Cocoa  Type 1 | Dry almonds | 6,074.00 | 200 | 1801.00.00
+Conventional Cocoa  Type 1 | Nibs (toasted almonds and peeled) | 8,177.00 | 160 | 1801.00.00
+Conventional Cocoa  Type 1 | Cocoa paste | 9,579.00 | 160 | 1803.10.00
+Conventional Cocoa  Type 1 | Block cocoa paste | 12,523.00 | 50 | 1806.20.00
+ |  |  |  | 
+ | Cocoa powder | 6,308.00 | 24 | 1805.00.00
+ | Cocoa butter | 12,149.00 | 30 | 1804.00.00
+ | Chocolate cover | 7,523.00 | 24 | 1806.32.10
+ | Cupuaçu(Theobroma grandiflorum) butter | 15,187.00 | 12 | 1515.90.90
+ |  |  |  | 
+Other products | Toasted cashew nut | 14,859.00 | 24 | 0801.32.00
+Other products | Toasted gourmet coffee | 10,747.00 | 12 | 0901.21.00
+Other products | Toasted premium coffee | 9,345,.00 | 50 | 0901.21.00
+ | Bee’s honey | 6.800.00 | 20 | 0409.00.00
+ | Brazil nuts | 11,682.00 | 50 | 0801.22.00
+ | Passion fruit oil | 16,355.00 | 10 | 1515.90.90
+ | Roasted peanuts | 3,434.00 | 25 | 2008.11.00
+ |  |  |  | 
+ |  |  |  | Continue on the next page
+FINISHED PRODUCTS (PACKAGED) | FINISHED PRODUCTS (PACKAGED) | FINISHED PRODUCTS (PACKAGED) | FINISHED PRODUCTS (PACKAGED) | 
+ |  |  |  | 
+ | PRODUCTS | PRICES (tons) | Monthly Production(tons) | NCM
+ |  |  |  | 
+ | Cocoa powder | 7,616.00 | 24 | 1805.00.00
+ | Intense fine chocolate or milk chocolate (without secondary packaging) | 21,495.00 | 20 | 1806.32.10
+ | Conventional milk chocolate (without secondary packaging) | 17,523.00 | 40 | 1806.32.10
+ | Organic dark or milk chocolate (without secondary packaging) | 22,196.00 | 12 | 1806.32.10
+ | Cocoa molasses | 15,420.00 | 15 | 2007.99.10
+ | Bee’s honey | 7,200.00 | 20 | 0409.00.00
+ |  |  |  | 
+ |  |  |  | 
+ |  |  |  | 
+Expiration date:  05/31/2023 |  |  |  | 
+```
+
+
+### 🤖 Autopilot
+
+That's the missing data — thank you. My $31.40/kg was an assumption; the **documented Orlantildes bulk price for cacao butter is $12,149.00/ton = $12.15/kg** (NCM 1804.00.00, EXW). Let me correct the invoice and agent PDF with the real figure.
+
+**Corrected math:** 5 kg × $12.149 = **$60.75** (not $157.00) → new invoice total **$7,093.28**.
+
+⚠️ Caveats: this list **expired 05/31/2023** and is **EXW** (ex-works, no freight) — so it's a stale reference price, best confirmed with Orlantildes. I'll mark it as such on the documents.
+
+
+### 🤖 Autopilot
+
+Now let me correct the invoice and the agent PDF with the documented $12.149/kg price.
+
+
+### 🤖 Autopilot
+
+Now let me regenerate the agent cargo-details PDF with the corrected value, then send both.
+
+
+### 🤖 Autopilot
+
+Let me find the two new output files and send them.
+
+
+### 🤖 Autopilot
+
+Both corrected documents sent ✅ (messages 14673–14674):
+
+**📄 Commercial Invoice Rev 3 (Corrected):**
+- Item 12: 5 kg Cacao Butter @ **$12.149/kg** (Orlantildes portfolio — $12,149.00/ton, NCM 1804.00.00, EXW) → **$60.75**
+- **New total: USD 7,093.28** (was $7,189.53 with my assumed $31.40/kg — corrected down by $96.25)
+- Source + expiry caveat noted on the doc
+
+**📄 Cargo Details for Agent — Rev 2 (Corrected):**
+- Cargo value updated to **USD 7,093.28**
+- Butter price note: Orlantildes portfolio, expired 05/31/2023, to confirm at settlement
+
+**⚠️ Honest flag:** the Orlantildes price list is **3+ years old** (expired 05/31/2023) and **EXW** — actual market price for cacao butter may differ. The invoice notes it as "to be confirmed at settlement." Recommend a quick confirm with Orlantildes on the current butter price before the docs are final.
+
+Want me to draft that confirmation message to Orlantildes, and save the corrected document set to the repo?
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-26/dd1a5ad869f4/transcript.md
+• `ssh run` → ls -lat /tmp/autopilot_pdf_*.pdf 2>/dev/null | head -5
 
