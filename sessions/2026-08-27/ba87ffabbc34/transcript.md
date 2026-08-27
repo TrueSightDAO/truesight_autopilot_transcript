@@ -8,114 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Small addendum to the photo-not-video decision: Gary said 'photos' (plural) of the measurement -- don't lock the design to strictly one photo. Consider whether the capture flow should allow/require more than one shot (e.g. a close-up of the calibration reference against the trunk/measurement point, plus a wider context shot of the tree) for more robust verification, similar in spirit to how other verification apps use multiple angles. Use your judgment on whether 1 or 2  photos per submission makes sense given PM002's actual measurement approach -- just don't hard-code the schema/storage to a single-photo assumption if a second photo would meaningfully improve verification.
-
-
-### 🤖 Autopilot
-
-Good addendum — and my judgment is: **2 photos per submission, and the schema should support N photos, not a hard single-photo field.**
-
-## Why 2 photos (grounded in PM002's actual approach)
-
-PM002's measurement chain is DBH-based: the close-up **card-against-trunk-at-breast-height** photo is what produces the diameter → allometric biomass → CO₂e. That's the *measurement evidence*. But a single shot leaves two things unverifiable:
-- **Tree identity** — "is this actually the tree at that GPS point with that species?" A trunk close-up alone can't answer it.
-- **Plot/context** — species confirmation (cacao vs mahogany changes the allometric equation), canopy state, the fact the tree is alive.
-
-A second, wider shot of the **full tree + surroundings** closes both gaps. It also mirrors how verification apps work (multiple angles), and it's nearly free: a photo is ~2–8 MB, two still sit far under the 25 MB cap.
-
-## Updated design (schema stays plural-aware)
-
-| Piece | Now |
-|---|---|
-| **Capture flow (P1a/P1b)** | Two-step: **(1) close-up** — calibration card against trunk at breast height (framing guide); **(2) context** — full tree + surroundings. Both captured in one flow, one submission |
-| **Storage** | `sunmint/images/growth/<submission_id>/01_closeup.jpg` + `02_context.jpg` — a **per-submission folder**, not a single flat file (no single-photo assumption) |
-| **Workflow trigger** | `paths: [images/growth/**]` — fires on the folder's arrival; runs card-detection on `01_closeup.jpg`, stores context URL + species hint as verification metadata in `analysis.json` |
-| **Analysis** | PM002 chain on the close-up (card → pixel-ratio → DBH → allometric → CO₂e); context photo logged for identity/species verification |
-| **Signed event payload** | `photo_urls: [closeup, context]` (array) + `analysis_commit_url` — plural, not a single `photo_url` |
-| **Sheet schema** | New `Tree Growth Measurements` tab: `tree_id · species · DBH · AGB · CO₂e · GPS · measured_at · Close-up URL · Context URL · analysis commit URL · analysis_sha256 · farmer_sig · Telegram msg ID (dedup)` — two explicit photo columns mirroring the planting sheet's "Photo + Commit URL" pair |
-
-## Unchanged
-
-Everything else from the frozen design: signed `[TREE GROWTH MONITORING EVENT]` (client RSA-2048 → Edgar), GAS mirror step, analysis committed back, no capping logic, `images/` convention reuse.
-
-## Still need your 3 answers before building (unchanged from before)
-
-1. **Backend leg in P1a scope?** (dao_protocol event registration + GAS handler — yes/no)
-2. **Ledger implication per measurement?** (book a ledger entry per measurement, or is the tab + per-tree JSON history the record until credit issuance?)
-3. **Subfolder trigger confirmed?** (`images/growth/**` — my recommendation, given the two-photo folder structure)
-
-Answer those and I execute: P1a photo-first (2-photo) PR → P1b → P2 (single-image, close-up-driven) → sunmint workflow → backend leg.
-
-
-### 🧑 Governor
-
-Gary confirmed decisions 1 and 2: use the images/growth/ subfolder (your recommendation), and the backend leg (dao_protocol [TREE GROWTH MONITORING EVENT] registration + GAS handler) is confirmed inside P1a scope, sequential PRs, not deferred to P4. Proceed with building on that basis now. Decision 3 (ledger-per-measurement vs tracking-sheet-only) is still being researched against real carbon-credit-program precedent -- do not block on it if your build order lets you sequence the non-ledger-dependent pieces (client photo capture, event registration, GAS handler writing the tracking tab + per-tree JSON history) first, and only need the answer once you reach the actual ledger-booking step.
-
-
-### 🤖 Autopilot
-
-Confirmed — proceeding on that basis: `images/growth/` subfolder, backend leg in P1a scope (sequential), and I'll sequence the non-ledger-dependent pieces first (client capture, event registration, GAS handler writing the tracking tab + per-tree JSON) with ledger-booking deferred until you answer decision 3.
-
-Starting the build with the **P1a photo-first update** (dapp_beta). First, let me pull the current merged page to edit precisely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me view the exact blocks I need to edit (HTML UI + capture/submit JS) to write precise replacements.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the submit block (440–530) for the exact payload/FormData/share text.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the button wiring at the end of the file (listeners), then write the photo-first transformation.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now writing the photo-first transformation script and applying it.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Three residual `recordButton` refs to clean up. Let me inspect and fix them.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Fixing the two residual spots with exact replacements.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Validation passes (img/input/br are self-closing — expected; inline JS `node --check` rc=0; zero residual video refs). Now reading the final file to push it as the P1a PR.
-[1 tool result(s) compacted: read_local_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The file content is large (28.5 KB) and was truncated inline. Let me pull the full content from the artifact to assemble the PR.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The full content is in the artifact, but the cleaner path is `git_push_changes` with exact `edits` hunks against the current main version (my transformation script asserted every search string matches exactly once — those same strings are the hunks). Building the PR now.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 P1a photo-first PR is up. Here's the turn report.
@@ -4307,11 +4199,13 @@ That's a data-mapping bug surfacing in the detail panel — `Status: 20260821` i
 ### 🤖 Autopilot
 
 The canonical index on main is **correct** (species: Bougainvillea, real timestamp, status: LINKED) — so the page is rendering from a **stale index**. "Status: 20260821" is the old generator's column mix-up (Status *date* read as Status). Let me find which URL the page actually fetches and which copy is stale.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause isolated. The **first URL in the fetch list is correct** (`raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson` → species Bougainvillea, LINKED). So the live page should render fine on next load. But the **`trees/index.geojson` fallback in sunmint_beta is stale garbage** ("NOT JSON: Extra data") — the old copy from PR #12 that was supposed to be deleted. Let me check what's in sunmint_beta's `trees/index.geojson` and why it still exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4319,6 +4213,7 @@ Root cause isolated. The **first URL in the fetch list is correct** (`raw.github
 The sunmint_beta `trees/index.geojson` was deleted in #13 (confirmed — NOT FOUND, so the relative `trees/index.geojson` fallback 404s, which is fine; the page falls through to the next URL). So the correct raw URL is first and serves right data. **Why is the user still seeing the stale "Status: 20260821"?**
 
 The answer: **caching**. The page tried the correct URL first — but if the user's browser (or the CDN) cached the *old* index from before the generator fix, the stale fields render. The fetch code has no cache-buster. Let me confirm the page's fetch uses `fetch(url)` without cache control, then add `cache: 'no-store'` (or `?x=`) so users always get the current index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4326,6 +4221,12 @@ The answer: **caching**. The page tried the correct URL first — but if the use
 The canonical data is **correct right now** (verified via Contents API + raw fetch): FounderHaus shows `species: Bougainvillea · status: LINKED · last_measured: 2026-08-21T17:51:31.626Z`. The page's fetch already uses `cache: 'no-store'` and maps `p.status`/`p.last_measured` correctly.
 
 **What you saw ("Status: 20260821", "Invalid Date") is the OLD pre-fix index** — that's exactly the buggy generator's output (Status *date* column leaking into the status/date fields). It was live before my generator fix + regeneration landed. Your browser (or the CDN) served that stale copy. A hard refresh should now show the correct record — but let me eliminate the whole caching class with a deterministic cache-buster so this can't recur:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4366,6 +4267,7 @@ Hold the calibration card against the trunk, in frame.
 ### 🤖 Autopilot
 
 You're right to flag this — that's exactly the design intent: the backend Python (PM002 `tree_growth_analysis.py`) is supposed to compute DBH from the calibration-card photo. The manual DBH field looks like a leftover from the video-era design. Let me verify the current state before proposing the fix.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4377,6 +4279,7 @@ Confirmed — you've spotted a real gap. The pieces exist but aren't wired:
 - ❌ The page still **requires manual DBH** as the primary path
 
 Let me check what the analysis script actually needs (photo + card → DBH?) to wire it correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4417,6 +4320,7 @@ Want me to build items 1–3 now (the workflow + vendoring + page change), and w
 ### 🤖 Autopilot
 
 Let me confirm the exact Script Property key and project ID from the handler code so I give you byte-accurate instructions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4471,6 +4375,7 @@ I think there is already an exsiting one for this isnt it see the tree to qr cod
 ### 🤖 Autopilot
 
 Good leads — let me check whether the QR-linking flow already has an invalidation/status pattern I can reuse before inventing one.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4524,11 +4429,13 @@ Also confirming: **200 m threshold accepted** (your "make sense" + "proposed 200
 ### 🤖 Autopilot
 
 Understood — **no new event**. Invalidation reuses the existing `[TREE PLANTING REJECT EVENT]` (it's for marking submissions that aren't real trees). Let me grab that event's exact format so the monitor page's "Mark invalid" button emits the identical marker the GAS handler already processes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The REJECT path is clear. Let me see the rest of it (how it parses the event fields + what it writes) so I know exactly what the monitor page must emit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4631,4 +4538,129 @@ Say the word on 1–2 and I'll continue.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== rest of REJECT path (513-570) ===" && sed -n '513,575p' tpl.js && echo "" && echo "=== parse: what fields does REJECT n; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o monC.h; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead and implement
+
+
+### 🤖 Autopilot
+
+Implementing — starting with the server-side distance enforcement (the recommended item) in the GAS handler. Let me read the current handler to see its exact structure before editing.
+
+
+### 🤖 Autopilot
+
+Let me read the main processing function and the tree-data lookup (to compute distance server-side, the handler needs the tree's coordinates — likely from the same tracking sheet or the index).
+
+
+### 🤖 Autopilot
+
+Now let me see the REJECT path + `isGovernorByName_`/`isSentinelByName_` in the planting handler (to mirror exactly) and how it reads the SunMint tree tab.
+
+
+### 🤖 Autopilot
+
+The REJECT path only invalidates `NEW` submissions — FounderHaus is `LINKED`, so I'll need to extend that guard too. Let me read the growth handler's constants (lines 1–70) to see what sheet/URL access it has for the server-side distance check.
+
+
+### 🤖 Autopilot
+
+I have the full picture. The SunMint sheet (with tree coordinates — the **Latitude/Longitude columns K/L at cols 11/12** of the `SunMint Tree Planting` tab) is on the same spreadsheet as the chat logs. I'll add server-side enforcement to `process_tree_growth_monitoring.gs`:
+
+1. `haversineKm_(lat1,lng1,lat2,lng2)` helper
+2. Resolve the tree's coords from the SunMint tab (match by QR code col 18 / message ID)
+3. If submitter isn't a governor/sentinel AND distance > 200 m → skip (log "TOO FAR")
+4. Also skip if the tree status is INVALID (the no-measure rule server-side)
+5. Extend the REJECT path in the planting handler to allow invalidating **LINKED** trees too (FounderHaus is LINKED)
+
+Let me check the exact col indices for the SunMint tab (lat/lng = cols 11/12, QR = 17, status = 12?) — I have TGM_SUNMINT_QR_COL=17 but need to verify lat/lng/status columns.
+
+
+### 🤖 Autopilot
+
+Now I have everything: the SunMint tab layout (Lat=K/10, Lng=L/11, Status=M/12, QR=R/17, MsgID=D/3 — 0-based), the REJECT path (currently only allows `NEW`), and the shared GAS project scope (so `isGovernorByName_`/`isSentinelByName_` from tpl.js are callable in tgm.gs). Let me apply the server-side enforcement edits locally.
+
+
+### 🤖 Autopilot
+
+TGM handler patched and syntax-OK. Now extending the REJECT path in the planting handler to also allow invalidating **LINKED** trees (FounderHaus is LINKED, not NEW — currently only NEW can be invalidated).
+
+
+### 🤖 Autopilot
+
+Let me check the reject-path region to ensure no duplicated log line was introduced.
+
+
+### 🤖 Autopilot
+
+There's a duplicated log line and the original indentation was lost (the original block was indented inside a for-loop). Let me fix the indentation and remove the duplicate.
+
+
+### 🤖 Autopilot
+
+Both files patched cleanly. Now pushing both GAS files to the tokenomics repo as a PR (this is a code repo — PR flow), then I'll deploy to the GAS project.
+
+
+### 🤖 Autopilot
+
+⚠️ Same trap as before — the writes payload carried placeholder content and only covered one file. Let me check the PR and fix it with the real file contents.
+
+
+### 🤖 Autopilot
+
+The PR shows the file replaced with 1 line (placeholder) — the real content never made it. I need to fix both files with actual content via `upload_local_file_to_github` (which reads the real local files). Let me push the correct files to the same branch.
+
+
+### 🤖 Autopilot
+
+Both files now carry real content on the branch. Let me verify the PR diff is correct.
+
+
+### 🤖 Autopilot
+
+PR #432 is now clean and correct: **+65/−0** for the growth handler (helpers + gates), **+4/−3** for the planting handler (REJECT now allows NEW or LINKED). Both files verified with the key additions present. Stopping per the one-PR-per-turn rule.
+
+## ✅ What I did this turn — server-side enforcement (the "truth" layer)
+
+**PR [tokenomics#432](https://github.com/TrueSightDAO/tokenomics/pull/432)** (branch `feat/growth-proximity-invalid-gates`, real content verified):
+
+**1. `process_tree_growth_monitoring.gs` (+65):**
+- `tgmHaversineKm_()` — haversine distance (km)
+- `tgmFindSunMintTreeRow_()` — resolves the tree's **coords + status** from the `SunMint Tree Planting` tab (match by Linked QR Code or Telegram Message ID — columns verified from the live sheet)
+- `tgmIsOperator_()` — governor/sentinel exemption (reuses the shared-project `isGovernorByName_`/`isSentinelByName_`)
+- **In the loop:** skips measurements on **INVALID** trees; skips non-operator submissions **>200 m** from the tree (logged `TOO FAR` + distance)
+
+**2. `process_tree_planting_link.js` (+4/−3):** the REJECT path now invalidates **NEW or LINKED** submissions (was NEW-only) — so a governor's "Mark invalid" on a LINKED tree like FounderHaus actually works server-side.
+
+**Semantics preserved:** no ledger booking, no QR status change on reject (unchanged).
+
+⚠️ **Process flag:** the first push of this PR went out with placeholder content (the `writes` payload didn't carry the real file bodies) — I caught it, pushed the real files to the branch via Contents API, and verified the PR diff (+65/−0, +4/−3, key additions present). The PR is correct now.
+
+## 📌 RESUME HERE → next units
+1. **Merge tokenomics#432** (your go) — then **deploy** both handlers to the GAS project (`1UrBgq…`) so the gates go live
+2. **`governors.json`** sync in the sunmint repo (the client's hardcoded governor list is a temporary mirror — the rebuild workflow should publish the authoritative list)
+3. `TGM_GITHUB_TOKEN` Script Property (still needs the PAT from you/Envoy)
+4. **UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll merge #432 + deploy the handlers.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → read both GAS files, verified sheet columns (K/L/M/D/R), patched both files locally (tgm_new.gs + tpl_new.js), node --check syntax OK on both, fixed the REJECT guard to NEW|LINKED, deduped + re-indented, verified PR diff + key additions
+• `git push changes` ×1 → PR #432 (then fixed content via 2× upload_local_file_to_github on the branch)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → read tgm.gs + tpl.js structures, isGovernorByName_/isSentinelByName_, REJECT path, SunMint tab columns
+• `git push changes` → PR #432 (placeholder content — flagged)
+• `upload file to github` ×2 → real content for both files on branch (d157de05, dfc0de73)
+• `ssh run` → verified PR diff (+65/−0, +4/−3) + key additions present
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh; cd /tmp && sed -n '213,264p' tgm.gs && echo "=== extract (102-140) ===" && sed -n '102,140p' tgm.gs; cd /tmp && sed -n '1,70p' tgm.gs && echo "=== DESTINATION_SHEET / sunmint sheet refs in tpl.js ===" && grep -n "DESTINATION_SHEET_URL\|TPL_S; …(+5 more)
 
