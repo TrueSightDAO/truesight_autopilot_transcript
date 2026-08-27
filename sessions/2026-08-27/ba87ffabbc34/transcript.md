@@ -4303,11 +4303,13 @@ Key finding — check #3 shows the live page **does** have `loadGovernors` (2 ma
 ### 🤖 Autopilot
 
 UAT checklist — mostly live, but 3 items need a closer look (`measureStatus: 0`, `MARK INVALID: 1`, `?tree=: 0`). The `?tree=` and `measureStatus` greps may be false negatives (my grep patterns don't match the actual code — e.g. `?tree=` in a URL string, and the status function may be named differently). Let me verify those three directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two findings — **the Mark-invalid button IS live** (`id="markInvalidBtn"` ✅), but **two features are NOT in the live page**: the **deep-link `?tree=` param** and the **measurement status (overdue icons)**. Both were committed in earlier PRs — let me check whether they're actually on main (they may have been lost in one of the full-file rewrites, which is a real risk given how many times I've pushed whole files).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4319,11 +4321,13 @@ Confirmed — **two features were lost in a full-file rewrite**:
 But `treeDetailPanel` (3) and `markInvalidBtn` (1) are present — so the tree-detail panel and mark-invalid survived. The deep-link (commit `11fdb4f9`) and the status icons (commit `63d6c8ba`) were likely overwritten when I did the full-file uploads (e.g. `0133b2c5` proximity/invalid build, or `7232541b` governor build, which were whole-file pushes).
 
 This is exactly the risk I flagged earlier with whole-file rewrites. Let me check the commit history to see which full-file push dropped them, then restore both features.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit SHAs in my history are abbreviated differently than the API needs (the ref lookups with truncated SHAs failed on content). Let me verify the feature history properly using the full SHAs from the commit log, to pinpoint exactly which push dropped deep-linking + status icons.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4335,36 +4339,43 @@ Now I can see the exact loss history:
 - **`8ff0e446` → `0133b2c5` → `7232541b`** continued on the base **without** both features
 
 So both were lost to **whole-file rewrites based on stale local copies** — exactly the risk I flagged. They need to be **re-applied** to the current page (which has proximity/invalid/governor/detail-panel). Let me re-apply both features to the current committed file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ref lookups with my truncated SHAs failed again (the 10-char SHAs need to be full 40-char, or the API needs the exact prefix). Let me get the full SHAs and fetch the original files properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full SHAs. Let me fetch the original feature files and extract the exact code blocks to re-apply.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both feature blocks are in the original commits. Now let me extract the full blocks (deep-link: `setTreeParam` + init restore; status: `measureStatus` + `MS_DUE_DAYS`/`MS_WARN_DAYS` constants + dropdown/detail wiring) and re-apply them to the current page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have both feature blocks fully extracted. Now I'll re-apply them to the current page (`monR.html`, 49,301 B — the latest with proximity/invalid/governor). I need to check the current page's structure (it has `renderTreeDetail` with the measure row? and `onTreeSelectChange`?) so the patches land cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current page has `loadTreeIndex` (481), `populateTreeDropdown` (506), `onTreeSelectChange` (526), `renderTreeDetail` (538) — but **no `setTreeParam`, no `measureStatus`, no `treeDetailMeasure`**. The page also doesn't have the i18n keys (`msOk`, `msDue`, `msOverdue`, `msNever`, `msDueOn`) or the `treeDetailMeasure` row. Let me check what the current `populateTreeDropdown`/`renderTreeDetail`/`onTreeSelectChange` look like so I can patch them precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the detail-panel HTML rows and i18n keys in the current page so my patches add the missing `treeDetailMeasure` row and `ms*` keys correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4517,4 +4528,76 @@ Say "go" for the post-rebuild verification.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$TS"; cd /tmp && echo "=== switchTab / startCamera / capturePhoto ===" && grep -n "function switchTab\|function startCamera\|function capturePhoto; cd /tmp && sed -n '560,640p' cam.html; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] As soon as user selects a tree the two tabs should become visible and the camera viewport active
+
+
+### 🤖 Autopilot
+
+Right — the camera tabs should only appear once a tree is selected (measurement is tree-specific), and the active tab's camera should auto-start then. Let me look at the current tab/panel visibility logic to wire this.
+
+
+### 🤖 Autopilot
+
+Now let me check where the photo-tabs/panels sit relative to the tree selection — and whether they're inside the detail panel or always visible. Let me see the surrounding HTML (what wraps the tabs) and the `onTreeSelectChange` function.
+
+
+### 🤖 Autopilot
+
+The tabs/panels are currently **always visible** — I'll wrap them in a hidden `#photoSection` that reveals + auto-starts the camera only when a tree is selected. Let me check what follows panel-context (to close the wrapper correctly) and the manual-input listener.
+
+
+### 🤖 Autopilot
+
+The plan is clear: wrap tabs+panels in a hidden `#photoSection`, reveal + auto-start the closeup camera only on tree selection (dropdown or manual ID), hide + stop on clear, and remove the onload auto-start (camera should wait for tree selection). Applying the edits:
+
+
+### 🤖 Autopilot
+
+All wired (photoSection:3, show/hide:3, onload auto-start removed). But `switchTab('closeup')` inside `showPhotoSection` has a problem: `switchTab` calls `stopCamera()` then checks the blob — if the tab already has a captured photo it shows the preview instead of the camera, which is correct behavior. But there's one issue: `switchTab('closeup')` when the closeup is already captured would show preview — but on a *new* tree selection the blobs should reset. Let me check whether blobs reset on tree change, and validate JS.
+
+
+### 🤖 Autopilot
+
+There's a real edge case: if the user captures a photo, switches to another tree, the **blobs persist** (only reset in retake). The photo section would show the *previous tree's* photo preview instead of the camera. I should reset blobs on tree change. Let me add a `resetCaptures()` call in `onTreeSelectChange` (both branches when a different tree is picked), and validate:
+
+
+### 🤖 Autopilot
+
+All validated (JS OK, 23/23 divs, resetCaptures wired). Pushing:
+
+
+### 🤖 Autopilot
+
+Shipped (`fbe3bab0`). Here's the report.
+
+## ✅ Tabs now appear only after tree selection, camera auto-activates
+
+**Committed to `sunmint_beta/main` (`fbe3bab0`):**
+
+1. **`#photoSection` wrapper** — the tab bar + both photo panels are now **hidden by default** (`display:none`); they only become visible once a tree is selected
+2. **On tree selection** (dropdown or manual Tree ID): `showPhotoSection()` reveals the tabs and **`switchTab('closeup')` auto-starts the close-up camera** — the live viewport is immediately active
+3. **On clearing selection**: `hidePhotoSection()` stops the camera + hides the section
+4. **`resetCaptures()` on tree change** — switching trees clears any previously captured photos so you never see the *previous tree's* preview; the fresh camera starts instead
+5. **Removed the onload auto-start** — camera waits for tree selection (per your flow), saving battery/permission prompts until actually needed
+
+**Validated:** JS syntax OK, 23/23 divs, all wiring present.
+
+## 📌 RESUME HERE
+1. **Verify live** after Pages rebuild: load page → no camera/tabs visible → select a tree → tabs appear + close-up camera viewport active immediately
+2. Remaining backlog: **full UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" for the post-rebuild verification.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → fetched committed file (51,367 B), mapped tab/panel HTML + onTreeSelectChange + listeners, wrapped tabs+panels in hidden #photoSection, wired show/hide + resetCaptures on tree change, removed onload auto-start, validated JS (node --check OK, 23/23 divs)
+• `upload file to github` ×1 → commit fbe3bab0afd8616fa6f9202ce205abdac2c4977d
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== HTML 150-200 (selection → tabs) ===" && sed -n '150,200p' cur.html && echo "=== onTreeSelectChange ===" && sed -n "$(gr; cd /tmp && echo "=== after panel-context (200-215) ===" && sed -n '200,216p' cur.html && echo "=== manual input listener ===" && grep -n -A4; …(+3 more)
 
