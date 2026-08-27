@@ -4197,11 +4197,13 @@ Let me read the main processing function and the tree-data lookup (to compute di
 ### 🤖 Autopilot
 
 Now let me see the REJECT path + `isGovernorByName_`/`isSentinelByName_` in the planting handler (to mirror exactly) and how it reads the SunMint tree tab.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The REJECT path only invalidates `NEW` submissions — FounderHaus is `LINKED`, so I'll need to extend that guard too. Let me read the growth handler's constants (lines 1–70) to see what sheet/URL access it has for the server-side distance check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4215,21 +4217,25 @@ I have the full picture. The SunMint sheet (with tree coordinates — the **Lati
 5. Extend the REJECT path in the planting handler to allow invalidating **LINKED** trees too (FounderHaus is LINKED)
 
 Let me check the exact col indices for the SunMint tab (lat/lng = cols 11/12, QR = 17, status = 12?) — I have TGM_SUNMINT_QR_COL=17 but need to verify lat/lng/status columns.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything: the SunMint tab layout (Lat=K/10, Lng=L/11, Status=M/12, QR=R/17, MsgID=D/3 — 0-based), the REJECT path (currently only allows `NEW`), and the shared GAS project scope (so `isGovernorByName_`/`isSentinelByName_` from tpl.js are callable in tgm.gs). Let me apply the server-side enforcement edits locally.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 TGM handler patched and syntax-OK. Now extending the REJECT path in the planting handler to also allow invalidating **LINKED** trees (FounderHaus is LINKED, not NEW — currently only NEW can be invalidated).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the reject-path region to ensure no duplicated log line was introduced.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4422,4 +4428,65 @@ Say "go" and I'll build the governors.json sync (or run the UAT pass first).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== current branch/head ===" && git branch --show-current && git log --oneline -1 &&; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cp process_tr; cd /tmp/gasdeploy && clasp push --force 2>&1 | tail -12 && echo "=== deployments ===" && clasp deployments 2>&1 | head -12; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Isnt there already an authoritative governor JSOn list somewhere?
+
+
+### 🤖 Autopilot
+
+Good question — let me check for an existing authoritative governor list before building anything new.
+
+
+### 🤖 Autopilot
+
+No `governors.json` and nothing in treasury-cache. Let me search more broadly — the Governors list must live somewhere (a sheet, a JSON in another repo, the GAS constants, or the dapp).
+
+
+### 🤖 Autopilot
+
+No `governors.json` exists, but there **are** authoritative consumers — a Rails model (`sentiment_importer/app/models/gdrive/governors.rb`) and `GovernorSheetPermissionSync.js` in GAS. The real source is the **Governors tab** of the main spreadsheet. Let me find its exact location and whether there's a public API endpoint exposing it.
+
+
+### 🤖 Autopilot
+
+**Yes — there IS an authoritative governor list**, and it's the **Governors tab** of the Main Ledger spreadsheet (`1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU`, gid `842148543`, col A rows 11+). That's the single source of truth every system already uses (Rails `governors.rb`, `GovernorSheetPermissionSync.js`, the GAS `isGovernorByName_`, and the page's hardcoded list all derive from it).
+
+So the right fix is NOT a new `governors.json` — it's to **consume the existing source**. Let me read the tab to confirm its current roster (so the client gate matches it exactly).
+
+
+### 🤖 Autopilot
+
+Confirmed — the authoritative roster is the **Governors tab** (rows 11+ after the "Governor" header): Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude — **exactly** the list I hardcoded in the monitor page (which I'd mirrored from this tab). So the client mirror is currently accurate.
+
+Now the question is the **sync mechanism** — the existing consumers read the sheet directly (GAS can; Rails can). A static page can't. Options: (a) publish a `governors.json` into the sunmint repo via the existing rebuild workflow (reads the sheet — the SAME SA), keeping the page as the only consumer that needs it; (b) reuse any existing public endpoint that exposes the roster. Let me check if such an endpoint already exists (the dapp/edgar API may serve it).
+
+
+### 🤖 Autopilot
+
+No public API endpoint exposes the roster — so the practical answer is **(a): publish `governors.json` from the authoritative Governors tab into the sunmint repo**, via the existing rebuild workflow (same SA, same treasury-cache pattern). The page then fetches it like the tree index, and the client gate stays in sync automatically whenever the roster changes — no hardcoded mirror to drift.
+
+I have everything needed. Here's the answer + plan.
+
+## ✅ Answer: yes — there's an authoritative list (no new source needed)
+
+**The Governors tab of the Main Ledger** (`1GE7PUq-…`, gid `842148543`, col A rows 11+) is the single source of truth. Every existing consumer already reads it: Rails `governors.rb`, `GovernorSheetPermissionSync.js` (GAS), the `isGovernorByName_` checks — and **my hardcoded page list mirrors it exactly** (verified: Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude).
+
+**No public JSON/API endpoint exists** (checked dao_protocol + dapp_beta — zero matches), so a static page can't read the sheet directly.
+
+## Plan — publish `governors.json` from the sheet (not a new source, just a mirror)
+
+1. **`build_tree_geojson.py`** (the existing generator in the sunmint repo) — add a function that reads the **Governors tab** (same Main Ledger the SA already can read) and writes **`trees/governors.json`** alongside `index.geojson`
+2. **Page** — fetch `governors.json` first; fall back to the hardcoded list only if the fetch fails (belt-and-braces)
+3. Runs on the **existing rebuild workflow** (daily cron + dispatch) → roster stays synced automatically, same pattern as the tree index
+
+No new infra, no new secret, no new repo — just an addition to the existing generator + a fetch in the page.
+
+**Want me to build it?** (Add governors.json to the generator + page fetch, then regenerate + verify.) Or if you'd rather keep the hardcoded mirror for now (it's accurate today) and note the sync as a follow-up, say so — the server-side gate (`isGovernorByName_`) is already authoritative regardless, so the client list is only UX.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1m8IZPs1vFN99cuu-39k
 
