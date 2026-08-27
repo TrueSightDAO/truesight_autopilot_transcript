@@ -4162,41 +4162,49 @@ Generator fixed and live on `sunmint` main. Now let me regenerate the index via 
 ### 🤖 Autopilot
 
 Workflow dispatched. While it regenerates, let me apply the distance km-switch fix to the monitor page (sunmint_beta) — the second part of the user's request.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search string didn't match — the file likely has different whitespace (the earlier snippet showed 8-space indent but the raw file may use different spacing or the `\u2014` literal differs). Let me check the exact text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `\u2014` in my search was the literal escape, not the actual em-dash character. Let me use the real em-dash (—) in the edit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both fixes are in. Now let me verify the regenerated index has the normalized raw URLs (from the workflow I dispatched earlier):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The index is **stale** — `generated_at` is still `2026-08-26T19:51:34Z` (yesterday's run) and 12 tree-UI URLs remain. My dispatched run (33071261567) must have failed or not committed. Let me check its conclusion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The run **failed** — but every step shows "completed" (the failure is in the final job-level check, likely because the "Commit and push changes" step exited non-zero on "nothing to commit" or a push failure, OR the build script errored but the step was marked completed oddly). Let me pull the actual job logs to see the real error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log endpoint needs different auth (the fine-grained PAT lacks `actions:read` on logs). Let me run the generator locally instead — that both validates the new normalize code and regenerates the index directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator I uploaded earlier expects `--creds` (not the env var) — my earlier upload was a different version than what the workflow has. Wait, no: the workflow uses `GOOGLE_SERVICE_ACCOUNT_JSON` env. The `--creds` arg is from a **different** generator version. Let me check what's actually in the sunmint repo vs my upload — did my upload overwrite it, and does the workflow pass `--creds`?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4204,11 +4212,13 @@ The generator I uploaded earlier expects `--creds` (not the env var) — my earl
 **Critical — my generator upload did NOT take effect.** The sunmint repo's `scripts/build_tree_geojson.py` is still the **original** version (`--creds` CLI arg, no `normalize_photo_url`). My upload reported "success" but the file on main is the old one — likely because the **workflow's auto-commit** (the "Update tree index" commit) or another race overwrote it, OR my upload went to a different branch. Let me verify what actually happened and re-apply cleanly.
 
 The bigger issue: **the workflow run that failed** — let me check whether my upload commit is in the repo history at all:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My upload **did** land: commit `e2572d9e18` "Normalize photo URLs to raw.githubusercontent" is on main (top commit). But the **content shows the OLD version** — contradiction! That means the file I uploaded (with `normalize_photo_url`) was *replaced by the workflow's auto-commit* or... wait, the workflow commit `c45a161206` is BELOW mine in history. Let me look at what e2572d9e18 actually contains — maybe the raw fetch is cached, or my upload content was the OLD one after all (I may have uploaded from a stale local copy):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4216,6 +4226,7 @@ My upload **did** land: commit `e2572d9e18` "Normalize photo URLs to raw.githubu
 **Now it's crystal clear — the raw.githubusercontent cache is lying.** Commit `e2572d9e18` (my upload) contains the NEW generator (env var, normalize_photo_url), but the cache-busted `main` fetch returns the OLD one (`--creds`). That's impossible for a real git state... unless **the workflow's auto-commit raced and pushed AFTER my upload**, rewriting main. But the commit list shows `e2572d9e` as the TOP commit.
 
 Wait — the top commit `e2572d9e` IS my upload. The cache-busted fetch of `main` should equal it. Unless... the auto-commit workflow **force-pushed or the failed run left main in a state where the workflow's checkout+commit reverted my file**. Let me check the actual tree at main via the Contents API (authoritative, no raw cache):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4357,4 +4368,47 @@ Say "go" and I'll merge #16 + verify the live page.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== PR #16 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/16" | python3 -c "import sys; cd /tmp && echo "=== PR #16 branch file: distText code ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/fix/dist; cd /tmp && sed -n '471,475p' mon16.html | cat -A | head -8 && echo "=== python repr ===" && python3 -c " lines = open('/tmp/mon16.html', enc; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] merge
+
+
+### 🤖 Autopilot
+
+Merging sunmint_beta#16 — the km switch + comma decimal fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [sunmint_beta#16](https://github.com/TrueSightDAO/sunmint_beta/pull/16)** (sha `3f9a3ee`) — distance display fix, now live on main:
+- **>1000 m → km:** `(dist/1000).toFixed(1) + ' km'` (previously everything was `m`)
+- **pt-BR comma convention:** `1,4 km` (comma decimal, per your note)
+
+## 📌 RESUME HERE → next units (verify + remaining backlog)
+1. **Verify live on `beta.sunmint.truesight.me/monitor-tree-growth/`** (after CDN refresh): photo loads on tree selection (index regenerated with all-raw URLs, commit `bcace4e`), distances show km + comma, detail panel + logo + layout from earlier PRs
+2. **FounderHaus coords backfill** — needs `cypher-defense@…` granted Editor on the tree sheet (`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`), or K16:L16 filled manually (`-27.4389516` / `-48.4997079`) → then re-run the rebuild workflow
+3. **Re-test the rebuild workflow** — the earlier failure was raw-CDN staleness; the generator on main is correct now
+4. **`TGM_GITHUB_TOKEN` Script Property** on the GAS project (for the photo-mirror step)
+5. **UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll verify the live page rendering.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #16 on sunmint_beta merged successfully (sha: 3f9a3ee21470318512517d779216890ba65d23a9). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #16 on sunmint_beta merged successfully (sha: 3f9a3ee21470318512517d779216890ba65d23a9). Pull Request successfully merged
 
