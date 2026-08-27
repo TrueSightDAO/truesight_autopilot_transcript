@@ -4130,11 +4130,18 @@ Good — this is a proximity + governance gate, which touches the measurement fl
 ### 🤖 Autopilot
 
 Let me look at the governor-check implementation and the current monitor page's GPS/submit flow to design the gate precisely.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the governor list source (the GAS constants) so the client-side gate can mirror the same authoritative list.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4179,16 +4186,19 @@ Hold the calibration card against the trunk, frame it, and take the photo.
 ### 🤖 Autopilot
 
 You're right — the camera viewport should sit above the instruction text so the agent sees the live feed first, then reads the framing hint. Let me check the current photo-section order and fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The markup confirms it — in both photo panels, the hint `<p>` (line 182/189) sits **above** the `<video>` viewport (183/190). I'll swap so the camera viewport renders above the instruction text. Applying the edit locally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Swapped and validated — camera viewport now renders above the hint in both panels (video count still 2/2, no duplicates). Uploading:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4337,4 +4347,58 @@ If the FounderHaus record still looks wrong after a hard refresh, tell me and I'
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && TS=$(date +%s) && echo "=== 1. Canonical index (Contents API, authoritative) — FounderHaus feature ===" && curl -s "https://api.g; cd /tmp && echo "=== detail panel render code ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree; cd /tmp && echo "=== TREE_INDEX_URLS in current page ===" && grep -n "TREE_INDEX_URLS\|index.geojson" monA.html | head -10 && echo "" && ech; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Isn't this supposed to be handled by the python script in the backend?
+
+DBH (cm) — diameter at breast height (1.3 m)
+Hold the calibration card against the trunk, in frame.
+
+
+### 🤖 Autopilot
+
+You're right to flag this — that's exactly the design intent: the backend Python (PM002 `tree_growth_analysis.py`) is supposed to compute DBH from the calibration-card photo. The manual DBH field looks like a leftover from the video-era design. Let me verify the current state before proposing the fix.
+
+
+### 🤖 Autopilot
+
+Confirmed — you've spotted a real gap. The pieces exist but aren't wired:
+
+- ✅ `tree_growth_analysis.py` (PM002, merged via #314) exists in truesight_autopilot
+- ❌ **No workflow runs it** — the sunmint repo only has `rebuild-tree-index.yml`; the planned `pm002_analysis.yml` (the piece that watches `images/growth/**` and computes DBH from the card photo) was **never built**
+- ❌ The page still **requires manual DBH** as the primary path
+
+Let me check what the analysis script actually needs (photo + card → DBH?) to wire it correctly:
+
+
+### 🤖 Autopilot
+
+Yes — exactly. Your instinct is right, and this is a genuine gap in the wiring. Here's the honest state:
+
+## The design vs. what's built
+
+**Designed (from the original P2 plan):** agent takes the close-up photo (card + trunk) → photo lands in `sunmint/images/growth/` → **backend Python runs PM002** → detects the calibration card, computes pixel→cm ratio, measures DBH at 1.3 m → estimates AGB/BGB/C/CO₂e → writes `analysis.json` → the measurement is recorded with a **computed DBH**.
+
+**What actually exists:**
+- ✅ `tree_growth_analysis.py` (the PM002 worker) — merged via #314, **correctly implements card-based DBH from photos** (ISO card 85.6×54 mm, allometric AGB per species, PM002/IPCC constants, `--json` output for the webhook path)
+- ❌ **The `pm002_analysis.yml` workflow was never built** — the sunmint repo only has `rebuild-tree-index.yml`. Nothing watches `images/growth/**` and runs the analysis
+- ❌ The page **still treats manual DBH as required** (a video-era leftover) — the backend-computed value never flows back
+- ❌ The photo-mirror leg needs `TGM_GITHUB_TOKEN` (still unset) — the photos can't actually reach `images/growth/` until that's set
+
+So the manual DBH field is sitting in front of a backend that was designed to compute it but was never connected. That's on me — the analysis worker shipped, but the workflow that runs it (and the page change to consume its output) didn't.
+
+## Proposed fix (the missing P2 wiring)
+
+1. **`sunmint/.github/workflows/pm002_analysis.yml`** — triggers on `paths: [images/growth/**]` (new photo = new measurement), runs the vendored `tree_growth_analysis.py --photo <file> --species <from index> --tree-id <from filename> --json`, commits `images/growth/<id>/analysis.json` (same treasury-cache pattern)
+2. **Vendor the analysis script** into the sunmint repo (self-contained, like `build_tree_geojson.py`)
+3. **Page:** DBH field becomes **optional/read-only auto-filled** — "DBH (auto-estimated from photo)" after analysis; manual entry kept only as a cross-check fallback (the script already supports `--dbh` as an override for VVB auditing)
+4. **Set `TGM_GITHUB_TOKEN`** so photos actually reach `images/growth/`
+
+Want me to build items 1–3 now (the workflow + vendoring + page change), and we sort the token (item 4) with the Envoy in parallel?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== 1. Does tree_growth_analysis.py exist in truesight_autopilot (merged #314)? ===" && curl -s "https://api.github.com/rep; cd /tmp && echo "=== 3. Page: is DBH required in submit? ===" && sed -n "$(grep -n 'function submitMonitoring' monA.html | cut -d: -f1),+30p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/contents/scripts/tree_growth_analysis.py?x=$(date +%s)" |
 
