@@ -4258,6 +4258,7 @@ The script asserted before writing (atomic — nothing changed; the anchor for e
 ### 🤖 Autopilot
 
 All edits applied and validated (JS syntax OK, 20/20 divs, setTreeParam wired in 5 places). Uploading:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4300,6 +4301,7 @@ QR Code: FOUNDERHAUS_BOUGAINVILLEA_20260821_1
 ### 🤖 Autopilot
 
 That's a data-mapping bug surfacing in the detail panel — `Status: 20260821` is the giveaway: the generator is reading the **"Status date"** column (YYYYMMDD) instead of the **"Status"** column, and species/date fields aren't resolving either. Let me check what's actually in the canonical index now vs what the live page is fetching (we've hit stale-CDN before), and the panel's render code.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4512,4 +4514,121 @@ Also confirming: **200 m threshold accepted** (your "make sense" + "proposed 200
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== 1. Search tokenomics GAS for INVALID/status patterns in tree/QR flows ===" && curl -s "https://raw.githubusercontent.co; cd /tmp && echo "=== 2. dapp_beta: tree planting page — any invalid/mark status? ===" && curl -s "https://raw.githubusercontent.com/TrueSigh
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] No new event. It should be [TREE PLANTING REJECT EVENT] since it is for marking submissions that are not trees.
+
+
+### 🤖 Autopilot
+
+Understood — **no new event**. Invalidation reuses the existing `[TREE PLANTING REJECT EVENT]` (it's for marking submissions that aren't real trees). Let me grab that event's exact format so the monitor page's "Mark invalid" button emits the identical marker the GAS handler already processes.
+
+
+### 🤖 Autopilot
+
+The REJECT path is clear. Let me see the rest of it (how it parses the event fields + what it writes) so I know exactly what the monitor page must emit.
+
+
+### 🤖 Autopilot
+
+The REJECT event format is fully mapped. The monitor page's "Mark invalid" must emit exactly what `extractTreePlantingLinkInfo_` parses: marker + QR Code + SunMint Submission Message ID + Updated by + Reason + signature. Let me check the Governors tab (to build the governor list for the client gate) and fetch the current page fresh.
+
+
+### 🤖 Autopilot
+
+Governors list confirmed (Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude). One more check — how the page stores the linked email (for the client-side governor gate), then I'll build.
+
+
+### 🤖 Autopilot
+
+I have everything needed. The key realization: **the GAS handler already processes `[TREE PLANTING REJECT EVENT]`** (the planting handler, line 488–513) — so I don't need new GAS code. The monitor page just needs to **emit the identical format** a governor would send, plus the client-side proximity gate and governor UI. Building now.
+
+
+### 🤖 Autopilot
+
+All the pieces are mapped. The page already resolves the **contributor name** via `checkSignatureRegistration` (returns `contributor_name`) — that's what the client-side governor gate will use. Now building all three features into the monitor page: (1) proximity gate at 200 m, (2) governor-only "Mark invalid" emitting `[TREE PLANTING REJECT EVENT]` in the exact GAS-parsed format, (3) i18n + UI. This is a substantial change — writing it carefully.
+
+
+### 🤖 Autopilot
+
+The i18n dict structure differs from my assumption. Let me look at the actual dict layout.
+
+
+### 🤖 Autopilot
+
+The i18n dict uses a different structure. Let me find the actual translations object.
+
+
+### 🤖 Autopilot
+
+`I18N = { pt: { … } en: { … } }`. Let me see the exact boundaries (pt close at line 278-280, en close at 341-343) and insert the new keys before each close.
+
+
+### 🤖 Autopilot
+
+Anchors confirmed: pt dict closes at `detailNoPhoto: '…'` then `},` (line 279-280); en dict closes at line 341 (`}`). Now applying the full feature build with correct anchors.
+
+
+### 🤖 Autopilot
+
+i18n keys added. Now the core logic — proximity gate (200 m), governor detection via the contributor name, and the "Mark invalid" emitter. Let me apply the JS.
+
+
+### 🤖 Autopilot
+
+Proximity gate in. Now the governor detection + "Mark invalid" button emitter (REJECT event format), plus the UI button in the detail panel.
+
+
+### 🤖 Autopilot
+
+Now the final wiring: show the invalid button only for governors + show the INVALID note for invalid trees, and call `loadContributorIdentity()` on init.
+
+
+### 🤖 Autopilot
+
+The validation snippet errored on a missing `import re` before extracting the JS — so `node --check` never actually ran (the `&&` chain stopped). Let me re-validate properly before shipping.
+
+
+### 🤖 Autopilot
+
+All validations pass (21/21 divs, 1 script tag, JS syntax OK, all 5 features present). Uploading to sunmint_beta main.
+
+
+### 🤖 Autopilot
+
+Shipped. Here's the full build report.
+
+## ✅ Proximity gate + governor-only invalidation (no new event)
+
+**Committed to `sunmint_beta/main` (`0133b2c5`) — monitor page:**
+
+**1. Proximity gate (200 m, confirmed):**
+- `PROXIMITY_LIMIT_M = 200` — if the selected tree's distance > 200 m, "Send measurement" is blocked with: *"You appear to be 2,4 km from this tree — measurements must be taken on-site (200 m)."*
+- Uses the existing Haversine distance (already computed for the dropdown); gate runs at submit
+
+**2. Governor-only "Mark invalid" (reuses `[TREE PLANTING REJECT EVENT]` — no new event, per your call):**
+- The monitor page now detects the governor: contributor name resolved from the RSA public key (`loadContributorIdentity()` → `isCurrentUserGovernor()` against the **Governors tab list** — Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude)
+- Only governors see the **"MARK INVALID"** button on the tree detail panel
+- Emits the exact format the GAS handler already parses: `[TREE PLANTING REJECT EVENT]` + QR Code + SunMint Submission Message ID + Updated by + Reason + RSA signature + Transaction ID (shareable to Telegram like the other events) → the existing `process_tree_planting_link.js` REJECT path marks it **INVALID** (status M on the SunMint sheet), no QR/ledger side effects
+- INVALID trees show a red note ("Tree marked INVALID — cannot be measured") and are blocked from measurement at submit
+
+**Validated:** 21/21 divs, 1 script tag, JS syntax OK, all 5 features present, i18n pt/en added.
+
+## Flags for you
+- **Server-side truth:** the client gate is UX; the authoritative governor check happens in the GAS REJECT path (`isGovernorByName_`/`isSentinelByName_`). The **distance re-check server-side** is NOT yet in the GAS handler — I can add it to `process_tree_growth_monitoring.gs` if you want the 200 m enforced server-side too (recommended for real anti-fraud).
+- **Governor list sync:** the client list is hardcoded mirroring the tab — the `governors.json` in the sunmint repo (from my earlier design) would be the cleaner sync path; say the word and I'll wire it.
+
+## 📌 Open
+1. Server-side distance enforcement in the GAS handler (recommended) — build?
+2. `governors.json` sync (or keep the hardcoded mirror for now)
+3. `TGM_GITHUB_TOKEN` — your/Envoy's side (instructions sent)
+4. UAT → `sync_beta_to_prod(sunmint_prod)`
+
+Say the word on 1–2 and I'll continue.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== rest of REJECT path (513-570) ===" && sed -n '513,575p' tpl.js && echo "" && echo "=== parse: what fields does REJECT n; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o monC.h; …(+11 more)
 
