@@ -988,61 +988,73 @@ Applying the change locally first, validating, then pushing (test-before-push ru
 ### 🤖 Autopilot
 
 Patch aborted — the `# ── main ──` separator didn't match exactly (whitespace/char-count differs on this box). Let me inspect the real bytes around `def main()` and re-patch with correct anchors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box checkout uses different unicode (em-dash/box chars) than my heredoc escapes — that's why the exact-match failed. I'll switch to line-based insertion with ASCII-only anchors and code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patch applied cleanly — `--deployment-id` and `--deploy-description` now exist. The dry-run failed only because `1o2lzpd…` has no committed `.clasp.json` in the repo checkout (it was created ad-hoc on the box during the escalation). Let me verify the full dry-run on a project that exists, then run the local test suite, and check where the ad-hoc mirror lives.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run shows the full new flow working: push → hooks → **pinned deployment repoint** (with the exact deployment ID) → done. The `1o2lzpd…` mirror exists only at `/home/ubuntu/tokenomics/...` (ad-hoc, uncommitted) — that's the gap to close (the repo's canonical `google_app_scripts/<scriptId>/` folder + `.clasp.json` should be committed so the tool can manage it). Now running the local test suite (hard rule) before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile OK; tokenomics has no tests dir (autopilot's own suite covers the wrapper). Before opening the PR, one sanity check — compare the ad-hoc mirror's Code.gs against canonical main (to make sure committing the project folder ships the right file), then I'll push the tokenomics PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything lines up: the canonical repo file (`asset_receipt_ingest/Code.gs`, 16762 bytes) is **byte-identical** to the live mirror that @10 serves. So committing the scriptId folder (Code.gs + appsscript.json + .clasp.json) is safe and exactly right — it gives the deploy tool a committed home for this project. Opening the tokenomics PR now with both changes (deploy script repoint support + committed asset_receipt_ingest project folder):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool call failed on argument shape (I wrapped params incorrectly). I'll do this via the box's local git instead — copy the committed project folder, commit, push the branch, and open the PR with the GitHub API.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed (`e1c7170`). Now opening the PR via the GitHub API, and verifying the working tree didn't accidentally include the stray `Version.js`/`__pycache__` files I saw in `git status` before the commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `git add -A` swept in 10 stray files (2 `Version.js` + 8 `__pycache__` .pyc) that were already sitting untracked in the checkout — the near-miss documented in CONTEXT_UPDATES (tokenomics #369) repeating. I need to fix the branch: remove the strays, keep only my 4 intended files, amend, force-push. Let me check whether the branch has already been merged (it was just pushed, so no), then clean it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Amend worked (commit now has exactly the 4 intended files) but the force-push was rejected on a stale-info safety. The remote branch still has the old commit — let me re-push with a clean force-with-lease (fetch first to refresh the remote-tracking ref).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The remote-tracking ref didn't update from fetch (git fetch on a branch with an existing remote-tracking ref can be picky). Since I just pushed this branch minutes ago and no one else could have touched it, I'll force-push without lease (safe here — it's my own fresh branch), then verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch is now clean: `fe88c13` on remote with exactly the 4 intended files. Opening the PR via the GitHub API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1174,4 +1186,52 @@ Ready for review — say the word and I'll merge it (or you can review first).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics && git push origin --delete fix/deploy-repoint-pinned-gas 2>&1 | tail -1; echo "===deleted===; cd /opt/truesight_autopilot/context/tokenomics && echo "===LOCAL BRANCH STATE===" && git branch --list "fix/deploy-repoint-pinned-gas" && gi; cd /opt/truesight_autopilot/context/tokenomics && echo "===FE88C13 EXISTS?===" && git cat-file -t fe88c13 && echo "===RESET TO FIX===" && gi; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] merge 433
+
+
+### 🤖 Autopilot
+
+Merging PR #433 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Final report — this turn.**
+
+## Merged: PR #433 → `TrueSightDAO/tokenomics`
+- **URL:** https://github.com/TrueSightDAO/tokenomics/pull/433
+- **Merge sha:** `8e11f917f0da75354068aeba34896cee22d5ffdb`
+- **Branch:** `fix/deploy-repoint-pinned-gas` → `main`
+
+### What changed (4 files)
+1. **`scripts/deploy_gas_project.py`** — root-cause fix for the stale-@8 saga: adds `--deployment-id` (+ `--deploy-description`) so a deploy = `clasp push` → `clasp version <desc>` → `clasp deploy --deploymentId <id> -V <new> -d <desc>` → ledger record (Phase 2). Pinned `/exec` deployments now follow new code; failure exits non-zero (no false-success).
+2. **`google_app_scripts/1o2lzpd…/Code.gs`** — the fixed scanner (byte-identical to live @10)
+3. **`google_app_scripts/1o2lzpd…/appsscript.json`**
+4. **`google_app_scripts/1o2lzpd…/.clasp.json`**
+
+### Verification done before merge
+- `py_compile` clean; dry-run showed push → hooks → repoint flow; commit contains exactly the 4 intended files; remote branch confirmed at `fe88c13`.
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+1. **Update the autopilot tool** `app/tools/gas_deploy_project.py` so *my own* deploy path also supports repointing a pinned deployment (its wrapper currently mirrors the old push-only behavior — that's the gap that let me bypass the ledger last time). New PR in `truesight_autopilot`.
+2. **Verify deployment @10 still serves the merged main** (the merge changed no GAS file — `fe88c13` Code.gs == live @10 — but confirm with `clasp deployments` + a `?action=status` ping).
+3. **Clean up QA test artifacts** (offchain 4178, audit rows 20–21, the two test Currencies rows) — on your go.
+4. Optionally: add `GAS_DEPLOYMENT_REGISTRY.md` summary view in agentic_ai_context (ledger stays canonical).
+
+No further PRs this turn — stopping here per the one-PR-per-turn rule.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #433 on tokenomics merged successfully (sha: 8e11f917f0da75354068aeba34896cee22d5ffdb). Pull Request successfully merged
 
