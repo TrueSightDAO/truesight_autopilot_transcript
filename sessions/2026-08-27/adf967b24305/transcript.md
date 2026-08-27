@@ -421,16 +421,19 @@ State is clean: main at `521d02b` (has #431+#427+#411), fix verified locally, mi
 ### 🤖 Autopilot
 
 Push succeeded. Now creating the new version and deploying it to the deployment ID Edgar calls.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `clasp deploy` reported "Deployed … @10" but the AFTER listing still shows @9 with the old description — exactly the silent-failure mode the governor warned about. Verifying before proceeding: re-running the listing and confirming what the live URL actually serves.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the first AFTER read was just clasp's eventual-consistency lag. **Confirmed: `AKfycbzcXBXYKmKiYg…` is now @10** ("Contributor(s) label normalization (#431)…"), versions list shows 10 = the fix. So the earlier read was stale-cache; now it's definitive. Let me verify the live URL serves @10 and confirm the fix is actually live.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -438,26 +441,31 @@ Good — the first AFTER read was just clasp's eventual-consistency lag. **Confi
 Deployment is confirmed live: **@10 serving** (the transient @9 read was clasp eventual-consistency lag; re-check shows @10 + versions list has "10 - fix: normalize 'Contributor(s)' label (#431)"). Status endpoint healthy: `asset_receipt_events_found: 4` (my test #1 receipt entered the window — the zombie's update_id is a CONTRIBUTION row, so the anchored filter correctly excludes it), `audit_last_row: 22`, no re-logs.
 
 Now the real proof — test #2 with a **fresh currency name** (the code only adds a Currencies row when the name doesn't exist, so I must use a new name to prove the fixed pairing produces 0.0581). First, verifying exact event labels for both submissions.
+[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Event docs confirm: CONTRIBUTION EVENT's canonical label is `Contributor(s)` (exactly what the fix normalizes), and ASSET RECEIPT EVENT requires Currency/Amount/Fund Handler. Now submitting test #2 — the paired contribution (USD, Sophia Truesight) first, then the fresh-name asset receipt.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Paired contribution submitted. Now the asset receipt with a **fresh currency name** so the Currencies row is newly created with the paired unit cost.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both test #2 events submitted. Now triggering the processing run against the live @10 deployment:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Processing succeeded — `processed:1`, and the new currency was added. Now the decisive check: reading the new Currencies row's unit cost (must be **0.0581**), the offchain leg (quantity **100**), and the audit row (OK, no zombie).
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -469,11 +477,13 @@ Processing succeeded — `processed:1`, and the new currency was added. Now the 
 - (Offchain 4178 + audit 20–21 are the earlier test-#1 artifacts; the test-#2 row 4179 has both values correct)
 
 Now confirming the zombie `Edgar_20260507024609_005` stays silent on a fresh scheduled run + verifying the final state end-to-end.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `processed:0` — idempotent, zombie stays dead on repeat runs. Final verification: confirm no new zombie rows appeared in the audit tab (checking the tail), and capture the definitive final deployment state.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -527,6 +537,7 @@ tokenomics main = `521d02b` (#431 merged) — **explicitly verified the merged f
 ### 🤖 Autopilot
 
 Let me check the current state of PR #431 — I believe it was already merged (sha `521d02b` is in main), but let me verify before doing anything.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -551,6 +562,7 @@ Nothing further to merge — #431 is in main and serving traffic. Anything else 
 ### 🤖 Autopilot
 
 Let me gather the evidence — logged contribution time in the ledger, PR timestamps, and session/transcript records.
+[2 tool result(s) compacted: read_google_sheet, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -636,4 +648,41 @@ Here's what I can reconstruct honestly — **no formal time log exists in the le
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/tokenomics && ls python_scripts/schema_validation/ 2>/dev/null && find . -name "gdrive_schema_credentials.json" 2>/dev/null ; cd /home/ubuntu/tokenomics/python_scripts/schema_validation && python3 -c " import json d = json.load(open('all_sheets_structure.json')) for; cd /home/ubuntu/tokenomics && echo "===TOKENOMICS FIX COMMITS===" && git log --format='%h | %an | %ad | %s' --date=iso --all --since='2026-0; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] Log contributions
+
+
+### 🤖 Autopilot
+
+`go` — logging contributions for this fix. First checking the canonical CONTRIBUTION EVENT fields, then submitting for both parties.
+
+
+### 🤖 Autopilot
+
+Event docs confirmed — `Type`, `Amount`, `Description`, `Contributor(s)`. Logging both contributions now (using the figures I proposed and you approved: Gary 60 min, Sophia 150 min):
+
+
+### 🤖 Autopilot
+
+Both contributions logged successfully:
+
+| Contributor | Type | Amount | What was logged |
+|---|---|---|---|
+| **Gary Teh** | Time (Minutes) | **60** | Detection (corrupted rows, pinned @8), escalation authoring, merges of #411/#427/#431 |
+| **Sophia Truesight** | Time (Minutes) | **150** | Authoring #411/#427/#431 + full escalation execution (clasp BEFORE/AFTER, @8→@9→@10 redeploy, 2 real test submissions proving quantity=100 & unit cost=0.0581, zombie-row confirmation) |
+
+Both are submitted to Edgar as [CONTRIBUTION EVENT]s with the PR references inline — no TDG issued (`TDG Issued: 0`), consistent with how these get scored.
+
+**Notes:**
+- Amounts are the figures I proposed and you approved by saying "Log contributions" — if you want different minute values, say the word and I'll adjust.
+- Each submission will land in the Telegram log → asset-receipt/contribution pipeline → get scored per the rubric. If you want them to flow straight into Ledger history with a rubric line, that's the normal scoring path (they'll appear in the Contribution submission tab for notarization).
+
+Anything else on this thread — e.g. clean up the QA test rows (offchain 4178, audit 20–21, the two test Currencies rows), or leave them?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
