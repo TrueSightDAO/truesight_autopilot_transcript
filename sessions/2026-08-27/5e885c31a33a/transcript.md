@@ -96,21 +96,25 @@ Service `truesight-dao-protocol.service` is running (started Aug 21). Disk is 99
 ### 🤖 Autopilot
 
 The dao_protocol service itself is running clean (no errors in journal — just scanner-bot noise). But the disk is 99% full, which can cause failures when the checkout flow writes payloads. Let me check the nginx proxy layer (which fronts edgar.truesight.me) and what's filling the disk.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Nginx on krake_nginx has no edgar logs at all — edgar may be served directly. Let me check DNS routing and the nginx site config, plus how the QR checkout flow reaches Edgar.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: **DNS for edgar.truesight.me resolves to 54.211.179.126** (the seni_ror host), NOT the dao_protocol box (98.93.94.86). Let me see the nginx routing config and what's listening on the seni_ror host.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the picture is getting clearer. DNS for edgar.truesight.me → 54.211.179.126 (seni_ror host), which serves it. Let me inspect that host's nginx config and access logs for the actual checkout errors, and check dao_protocol's POST handling today.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,4 +280,103 @@ Want me to proceed with (1) opening the fix PR now, and draft the retroactive sa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'KEY=$(sudo grep -r; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'echo "===SYSTEMD E; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'KEY=$(sudo grep -E
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] Really verify the actual amounts paid via stripe API calls 
+
+I think the amounts you reported were wrong
+
+
+### 🤖 Autopilot
+
+You're right to push on that — let me re-verify with the raw Stripe amount fields rather than my summarized output.
+
+
+### 🤖 Autopilot
+
+Two confirmed at raw level — both 500 USD. Let me verify all 7 plus pull the **balance transactions** (the definitive gross/fee/net record) to be thorough.
+
+
+### 🤖 Autopilot
+
+Verified at the raw API level — every field independently confirms **$500.00 USD per session**. Here are the receipts:
+
+## Raw Stripe verification (all 7 sessions)
+
+| QR code | Session created (UTC) | `amount_total` | `payment_intent.amount` / `received` | `charge.amount_captured` / `paid` | **Balance txn: gross / fee / net** |
+|---|---|---|---|---|---|
+| ...CT_20260820_92 | 2026-08-27 14:52Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_52 | 2026-08-27 15:35Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_56 | 2026-08-27 15:42Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_6 | 2026-08-27 16:05Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_41 | 2026-08-27 16:16Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_65 | 2026-08-27 16:20Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+| ...CT_20260820_31 | 2026-08-27 16:48Z | **500** usd | 500 / 500 / succeeded | 500 / True | **500 / −52 / 448** |
+
+**Totals: $3,500.00 gross · $364.00 Stripe fees · $3,136.00 net**
+
+Each amount is confirmed by **4 independent Stripe fields** per session (session `amount_total`, `payment_intent.amount` + `amount_received`, charge `amount_captured`, and the balance transaction gross) — they all agree, so this isn't a display/parsing artifact. The timestamps also line up 1:1 with the nginx 500s (14:52, 15:35, 15:43, 16:05, 16:16, 16:23, 16:49).
+
+## Notes worth your attention
+
+- **Fee is $52/session (10.4%)** — unusually high for US Stripe standard (would be ~$14.80 at 2.9%+30¢). This smells like international/FX pricing on Brazilian-issued cards. If you were expecting ~$14.80, *that* might be the "wrong" figure you saw — the **net** to the DAO is $448/session, not ~$485.
+- Balance transactions are **status `pending`** (normal — funds settle to the bank in a few days), which is why they show as not-yet-finalized.
+- Line item description confirms the product: **"FounderHaus Tree Planting Pledge - QR Code", qty 1, $5.00 → wait — `unit_amount: 500` = $5.00**… let me be precise: Stripe amounts are in **cents**, so `500` = **$5.00 USD**? **No** — for this account `500` in `amount_total` with `currency=usd` is **$5.00**. ⚠️
+
+Hold on — I need to double-check the cents interpretation. Stripe's `amount_total` is in the currency's **minor unit** (cents for USD), so `500` = **$5.00**, not $500. That's exactly the kind of 100× error you may have been pointing at. Let me re-verify what the ledger/code expects for this product price before I give you the definitive dollar figure.
+
+
+### 🤖 Autopilot
+
+You were right — my earlier figure was wrong by 100×. Here's the corrected, definitive answer.
+
+## Correction: the amounts are $5.00 per sale, not $500
+
+Stripe stores amounts in **minor units (cents)**. The raw API shows `amount_total: 500` with `currency: usd` → **$5.00 USD** per session. I misread 500 as $500. The governor's instinct was correct.
+
+The **balance transaction** (the authoritative financial record) confirms it:
+
+```
+balance_transaction:
+  amount: 500        → $5.00 gross
+  fee: 52            → $0.52 Stripe processing fees
+  net: 448           → $4.48 net to DAO
+  currency: usd
+  status: pending    (normal — settles in a few days)
+  fee_details: [Stripe processing fees, type: stripe_fee]
+```
+
+The price object also confirms: `unit_amount: 500 usd`, product `prod_V9NQXn2fxphHYk` — i.e. the checkout was created with a $5.00 price. (And it's consistent with the code path: `unit_amount = int(float(result["Price"])) * 100` → a ledger Price of `5.00` → 500 cents.)
+
+## Corrected totals (all 7 sessions, verified via API)
+
+| QR code | Customer (name / email) | Gross | Fee | Net |
+|---|---|---|---|---|
+| ..._92 | Rodrigo Almeida / rodrigo@sheerme.com | $5.00 | $0.52 | $4.48 |
+| ..._52 | Kelsei Louise Bueno Diniz / louise_keeeel@hotmail.com | $5.00 | $0.52 | $4.48 |
+| ..._56 | Anna Carolina Fittipaldi / carolfitti@hotmail.com | $5.00 | $0.52 | $4.48 |
+| ..._6 | Kristiany Kukert Zamai / kkzamai@gmail.com | $5.00 | $0.52 | $4.48 |
+| ..._41 | Joao Cruz / jg@spreadzz.com | $5.00 | $0.52 | $4.48 |
+| ..._65 | Diego Schiavenin / contato@diego.eti.br | $5.00 | $0.52 | $4.48 |
+| ..._31 | Layon Jorge Costa / layonjc@gmail.com | $5.00 | $0.52 | $4.48 |
+
+**Totals: $35.00 gross · $3.64 fees · $31.36 net** — all 7 paid and settled (pending), none recorded in the DAO ledger (QRs still MINTED).
+
+## Why the fee looked odd
+
+$0.52 on a $5.00 charge (10.4%) is the **international-card Stripe rate** (~3.9% + $0.30 ≈ $0.50, rounding to $0.52), consistent with Brazilian-issued cards. On a $500 charge that would've been ~$19.80 — so the 10.4% ratio was another tell that these are $5.00 charges.
+
+## Status of your original question
+
+Unchanged by the correction: **the emails exist on Stripe but are NOT linked in the DAO ledger** — none of the 7 sales were recorded (QRs still MINTED, no email/session_id in ledger). The amounts are just $5.00 each, not $500.
+
+Net exposure: **7 paid-but-unrecorded sales, $31.36 net** — small money, but 7 real customers who paid and saw an error page, with QR codes still showing as unsold.
+
+Want me to (1) open the `_reconcile` fix PR, and (2) draft the 7 retroactive [SALES EVENT] ledger submissions (with the correct $5.00 amounts) for your approval?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'KEY=$(sudo grep -E
 
