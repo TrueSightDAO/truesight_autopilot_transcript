@@ -4000,31 +4000,37 @@ The generator bug is visible: `c_time = idx(header, "planted", "date", "time")` 
 ### 🤖 Autopilot
 
 The generator's header matching is too loose — `"id"` matches "Telegram Update ID" and `"date"` matches "Status date". Let me see the rest of the generator (the feature-emission part) and the FounderHaus/LINKED rows to fix the mapping precisely.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the authoritative picture. The generator's `idx()` matching is too loose — `"date"` matches **"Status date"** (col 7, `20260821`) before **"Tree Planting Time"** (col 17, ISO timestamp), and `"id"` matches **"Telegram Update ID"** (col 1) first. Let me fix the mapping precisely and regenerate locally with the real creds to verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the deeper bug: `idx()` checks **all needles against each header**, so `"planted"` matched **"Photo of Tree Planted"** (col 9) before "Tree Planting Time" — that's why `last_measured` got the photo URL. Fixing with exact-then-prefix matching, needle-priority:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `planted_at` is still None even for FounderHaus (whose col 17 has a timestamp) — the column mapping still isn't resolving. Let me debug the header resolution directly against the live sheet:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The header mapping now resolves **perfectly** — but the local run's `planted_at` was still None because **`/tmp/builder.py` is the pre-patch version**. The debug shows: `c_time → 16` (Tree Planting Time) ✓, FounderHaus row 17 = `2026-08-21T17:51:31.626Z` ✓. Let me re-patch the local builder (the previous patch's `old_cols` had different whitespace — I applied the idx patch but the cols patch silently failed). Redoing both patches and re-running:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cols patch **did** apply (the check string I used was the old-style `"update id"` without "telegram"). The idx patch is applied, cols are applied — but the run still showed None because that run happened **before** these latest patches (the runs were sequential in the same command; the second run used the patched idx but the file got the cols patch in the same script... let me just re-run now and confirm):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4153,4 +4159,49 @@ The page is static; the authoritative gate lives server-side (GAS `isGovernorByN
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && echo "=== isGovernorByName_ impl in process_tree_planting_link.js ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO; cd /tmp && echo "=== monitor page: GPS capture + submit ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/mo; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] I think the camera view port needs to be showing above where it says
+
+Hold the calibration card against the trunk, frame it, and take the photo.
+
+
+### 🤖 Autopilot
+
+You're right — the camera viewport should sit above the instruction text so the agent sees the live feed first, then reads the framing hint. Let me check the current photo-section order and fix it.
+
+
+### 🤖 Autopilot
+
+The markup confirms it — in both photo panels, the hint `<p>` (line 182/189) sits **above** the `<video>` viewport (183/190). I'll swap so the camera viewport renders above the instruction text. Applying the edit locally:
+
+
+### 🤖 Autopilot
+
+Swapped and validated — camera viewport now renders above the hint in both panels (video count still 2/2, no duplicates). Uploading:
+
+
+### 🤖 Autopilot
+
+Done — shipped.
+
+## ✅ Camera viewport above the instruction
+
+**Committed to `sunmint_beta/main` (`55b7fcfb`)** — in **both** photo panels (Close-up and Context), the live camera viewport `<video>` now renders **above** the hint text ("Hold the calibration card against the trunk…"). The agent sees the live feed first, then the framing instruction.
+
+- Verified: video element now precedes the hint in both panels; no duplicate video tags (2/2); bytes 43,837
+- Will show on `beta.sunmint.truesight.me/monitor-tree-growth/` after the Pages rebuild (~1–2 min)
+
+## 📌 Open threads (unchanged)
+1. **Proximity gate + governor override + invalid-flag** — I laid out the design last message and am waiting on your two calls: (a) threshold = **200 m** OK? (b) invalid via **new signed event type** vs flag on the growth event?
+2. `TGM_GITHUB_TOKEN` Script Property (GAS photo-mirror)
+3. UAT → `sync_beta_to_prod(sunmint_prod)`
+
+Say the word on the proximity/governor design (or "proceed with 200 m + new event type") and I'll build it end-to-end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o mon8.h; cd /tmp && python3 << 'PYEOF' p = '/tmp/mon8.html' d = open(p, encoding='utf-8').read() orig = d # Swap: video viewport ABOVE the hint, in b
 
