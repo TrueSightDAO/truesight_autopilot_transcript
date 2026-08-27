@@ -580,6 +580,7 @@ Let me find the correct sheet/tab name for the ledger. I'll check the repo docs 
 ### 🤖 Autopilot
 
 Let me find the ledger's tab names — `get_all_sheets.py` in tokenomics lists them.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -718,4 +719,66 @@ Honest answer: **the three bugs we chased are fixed and verified live — but I 
 - Optionally: a follow-up PR to make unit-cost derivation fail loudly (SKIPPED) instead of silently falling back to `amount` when no pair is found — so a wrong value can never be written quietly again.
 
 Want me to do any of those?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] do you already have a place to check what is already deployed??
+
+
+### 🤖 Autopilot
+
+Good question — let me check whether we already have a canonical place that records deployed state (a deployment registry/doc), or whether "clasp deployments" on the box is the only source of truth.
+
+
+### 🤖 Autopilot
+
+There's a `gas_deploy_workflow.md` and `deploy_gas_project.py` in tokenomics — plus each GAS project folder has a `Version.gs`. Let me read those to see what "check what's deployed" tooling already exists.
+
+
+### 🤖 Autopilot
+
+The 404 tells me the asset-receipt folder path differs in the repo. Let me check what's actually in the repo for that scriptId and what `Version.gs` convention exists.
+
+
+### 🤖 Autopilot
+
+Let me find where this scriptId's source actually lives in the repo, and read the deployment-status doc in WORKSPACE_CONTEXT.
+
+
+### 🤖 Autopilot
+
+The deploy tooling is about *pushing*, not *tracking what's live*. But I spotted a `Version.gs` convention in the GAS folders — let me check what it records and whether asset_receipt_ingest has one.
+
+
+### 🤖 Autopilot
+
+Short answer: **there's a partial convention, but no single always-current registry — and asset_receipt_ingest specifically falls through the gap.** Here's the honest map of what exists:
+
+## What exists today
+
+**1. `clasp deployments` (the only authoritative source)** — live from Google, read-only:
+```
+AKfycbzcXBXYKmKiYg… @10 - fixed: Contributor(s) label normalization (#431)
+@HEAD / @3 / @2 / @5 …
+```
+This is what I used for the BEFORE(@8)/AFTER(@10) proof. It's accurate but **not persisted anywhere** — you have to run it from the box each time.
+
+**2. `Version.gs` deploy-audit convention** — ~40+ GAS projects in `tokenomics/google_app_scripts/<scriptId>/Version.gs` carry:
+- `CLASP_MIRROR_LAST_CLASP_PUSH_UTC` (last push timestamp)
+- `CLASP_MIRROR_CHANGELOG` (one line per change, PR-linked)
+- inspectable via `getClaspMirrorDeployInfo()` in the editor
+
+**⚠️ But it only records *push* time — not which *deployment version* is pinned.** That's exactly the blind spot that bit us: the code was pushed (#411/#427 merged), but the @8 deployment never got repointed.
+
+**3. `asset_receipt_ingest` has NO Version.gs** — it's not in the list, and its clasp mirror folder was created ad-hoc on the box during this escalation (not committed to the repo). So there is **zero persisted deploy metadata** for the exact project that just caused this mess.
+
+## What does NOT exist
+- No committed registry mapping `deployment ID → version → date → commit` that survives across sessions.
+- `deploy_gas_project.py` / `gas_deploy_workflow.md` only do `clasp push` + hooks — they never do `clasp version` / `clasp deploy -i`, so they can't report pin state.
+
+## Recommendation (closes the loop on the root cause)
+I can create a **`GAS_DEPLOYMENT_REGISTRY.md`** in agentic_ai_context that records, per scriptId: deployment ID, pinned version, push date, git commit, and notes — updated on every deploy. Plus backfill the current state (asset_receipt_ingest @10 = 521d02b) and add a `Version.gs` to the asset_receipt_ingest project so it's covered by the existing convention.
+
+Want me to set that up?
 
