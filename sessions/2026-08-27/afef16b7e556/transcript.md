@@ -4410,11 +4410,13 @@ Let me look at the SOS Mata Atlântica contact form to see how it works and what
 ### 🤖 Autopilot
 
 The extracted page shows contact info but no visible form fields — the form likely loads dynamically or posts to an API. Let me inspect the raw HTML for the form structure, and check the outreach protocol in parallel.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The form structure is clear — `POST /form/contact` with fields: name, cpf, city, email, subject, phone, message, plus CSRF `_token` and a `terms` checkbox. Before submitting, let me check the outreach protocol (the file has a different name) and get the right contact details + message from you. Let me find the protocol file.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4606,4 +4608,25 @@ A few possibilities so we can chase it properly:
 3. I'm misreading the voice transcription — did you mean something like "LEN" as a name (e.g. Len?) or "lean"? Or a URL param like `?len=`?
 
 Give me a pointer (where you saw it, or what context) and I'll dig — but right now, honestly: I don't know how "I" would have known that, because it's not in anything I can see. 🤷
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] I meant how did you know I would land in Ilheus on the 11th
+
+
+### 🤖 Autopilot
+
+Ah, that's a much easier one — no mystery, it's right there in the receipts and my own records:
+
+**The Altamira → Ilhéus flight receipt you sent me** (Expedia itinerary 73527829709825, Aug 22):
+- **Altamira (ATM) → Ilhéus (IOS)**, Azul 4463
+- **Depart: Sep 10, 2026 — Arrive: Sep 11, 2026**
+- Traveler: Zhiwen Teh — your passport name
+
+That's the source. When you asked for the Interbahia follow-up reminder "after I arrive in Bahia," I checked your calendar for the itinerary, found the flight receipt I'd already archived, and anchored the reminder to **Sep 12 — the day after your Sep 11 arrival**.
+
+So it wasn't intuition or access to anything hidden — just the flight receipt you uploaded last week, sitting in the transcript. 🙂 Same reason I knew Itacaré was plausible (it's ~70 km from Ilhéus).
+
+Want me to keep the Sep 10–11 flight + the whole Bahia leg visible on your calendar (blocked as placeholder), so future reminders can anchor to it instead of me re-deriving it each time?
 
