@@ -4241,26 +4241,31 @@ Let me check the reject-path region to ensure no duplicated log line was introdu
 ### 🤖 Autopilot
 
 There's a duplicated log line and the original indentation was lost (the original block was indented inside a for-loop). Let me fix the indentation and remove the duplicate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files patched cleanly. Now pushing both GAS files to the tokenomics repo as a PR (this is a code repo — PR flow), then I'll deploy to the GAS project.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ Same trap as before — the writes payload carried placeholder content and only covered one file. Let me check the PR and fix it with the real file contents.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR shows the file replaced with 1 line (placeholder) — the real content never made it. I need to fix both files with actual content via `upload_local_file_to_github` (which reads the real local files). Let me push the correct files to the same branch.
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files now carry real content on the branch. Let me verify the PR diff is correct.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4318,6 +4323,7 @@ go
 ### 🤖 Autopilot
 
 Merging #432, then deploying both handlers to the GAS project.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4489,4 +4495,72 @@ No new infra, no new secret, no new repo — just an addition to the existing ge
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1m8IZPs1vFN99cuu-39k
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Not true. See how the list of governors are loaded on this page
+
+https://truesight.me/members.html
+
+
+### 🤖 Autopilot
+
+Let me check how members.html loads the governor list — I clearly missed an existing endpoint.
+
+
+### 🤖 Autopilot
+
+There it is — line 195: `INDEX_URL = 'https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json'`. The authoritative governor list is published as a **JSON cache in the `lineage-credentials` repo**, and members.html fetches it and filters `m.is_governor`. Let me confirm the shape of that cache (so the monitor page can consume it identically).
+
+
+### 🤖 Autopilot
+
+**Found it — you're right, there IS an authoritative published JSON.** The `lineage-credentials` repo publishes `_cache/index.json` (490 members, regenerated ~10:40 UTC today), and each member has **`is_governor`** (plus `display_name`). members.html fetches exactly this and filters governors. This is the correct source — no new JSON to build, no sheet-reading needed.
+
+The monitor page should consume **this same endpoint** — filter `is_governor === true`, collect `display_name` (and ideally match by the linked email's contributor slug). I now have everything. Let me verify the governor names in the cache match the roster (sanity check) and then wire the page.
+
+
+### 🤖 Autopilot
+
+The cache has **exactly the same 10 governors** as the sheet (Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude) — so it's a faithful published mirror of the authoritative roster. This is the right source for the static page.
+
+Now wiring the monitor page to fetch this endpoint instead of relying on the hardcoded mirror: fetch → filter `is_governor` → collect display names → fall back to the hardcoded list only on fetch failure. Let me find the current governor-detection code in the page.
+
+
+### 🤖 Autopilot
+
+Found the exact code — line 795-796 has the hardcoded `GOVERNORS` array and `isCurrentUserGovernor()` at 810. I'll replace the hardcoded array with a fetched one from the lineage-credentials cache. Applying the edit (direct-to-main on sunmint_beta, the established fast-UAT pattern for this repo — flagging again as usual):
+
+
+### 🤖 Autopilot
+
+Edits applied and validated (JS OK, 21/21 divs, 1 script block, loader + init hook present). Uploading to sunmint_beta:
+
+
+### 🤖 Autopilot
+
+Done — shipped. And you were right, thank you for the pointer.
+
+## ✅ Governor list now loads from the authoritative cache
+
+**You were correct** — I missed that `truesight.me/members.html` already consumes a published governor JSON: **`lineage-credentials/main/_cache/index.json`** (the same cache that powers the Members page). It has 490 members with `is_governor` flags, regenerated today (10:40 UTC), and its 10 governors match the Governors tab roster exactly. No new source, no sheet-reading, no extra workflow needed.
+
+**Committed to `sunmint_beta/main` (`7232541b`):**
+- `loadGovernors()` fetches the lineage-credentials cache (`cache: 'no-store'`) → filters `is_governor === true` → collects `display_name` → sets `GOVERNORS`
+- The hardcoded list stays as a **fallback** only if the fetch fails (network/CDN)
+- Loader fires at init (alongside `checkSignatureRegistration`)
+- Validated: JS syntax OK, 21/21 divs, 1 script block
+
+**Effect:** the "Mark invalid" gate now tracks the **live roster** (rotations at equinoxes/solstices, new governors, etc.) automatically — no manual sync needed, and the client list can't drift from the sheet.
+
+## 📌 RESUME HERE
+1. **Verify on beta** — after Pages rebuild: governor gate uses the cache (check console log `[gov] loaded 10 governors`); Mark-invalid still shows for governors
+2. Remaining: **UAT full pass** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" when ready for the UAT pass, or if you spot anything else on the beta page first.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me/main/members.html?x=$TS" -o members.html &; cd /tmp && TS=$(date +%s) && echo "=== lineage-credentials _cache/index.json: head ===" && curl -s "https://raw.githubusercontent.com/TrueSi; cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json?x=$TS" | pyt; …(+2 more)
 
