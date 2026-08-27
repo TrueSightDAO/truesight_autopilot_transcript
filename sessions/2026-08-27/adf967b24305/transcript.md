@@ -409,11 +409,13 @@ go
 ### 🤖 Autopilot
 
 `go` received. Resuming the escalation sequence — the plan is exactly my RESUME HERE from the last turn. Let me start by syncing tokenomics main (now with merged #431), verifying the fix is in the checked-out file, and capturing the clasp deployment state BEFORE.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 State is clean: main at `521d02b` (has #431+#427+#411), fix verified locally, mirror dir ready, and **BEFORE = @9** on the deployment Edgar calls. Now pushing the #431-fixed file, creating a new version, and redeploying @9 → @10.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -539,4 +541,99 @@ And the merged fix is already **live and verified**:
 - Real test receipt → Currencies unit cost **0.0581** ✓, offchain quantity **100** ✓, zombie row silent ✓
 
 Nothing further to merge — #431 is in main and serving traffic. Anything else you'd like me to pick up? (Options: clean up the QA test rows 4178/audit/test-Currencies, or look at the still-open #428/#426/#364.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] figure out how much time was spent by you and me separately to fix this?
+
+
+### 🤖 Autopilot
+
+Let me gather the evidence — logged contribution time in the ledger, PR timestamps, and session/transcript records.
+
+
+### 🤖 Autopilot
+
+No transcript matches. Let me find the correct sheet name for the contributions ledger and search for how time is logged.
+
+
+### 🤖 Autopilot
+
+Let me find the correct sheet/tab name for the ledger. I'll check the repo docs and the ledger structure.
+
+
+### 🤖 Autopilot
+
+Let me find the ledger's tab names — `get_all_sheets.py` in tokenomics lists them.
+
+
+### 🤖 Autopilot
+
+The Main Ledger spreadsheet has tabs I haven't identified yet. Let me run the schema tool on the autopilot box to list all tabs, then query the contribution history for the fix period.
+
+
+### 🤖 Autopilot
+
+No credentials file locally, but `all_sheets_structure.json` already exists with the tab inventory. Let me read it.
+
+
+### 🤖 Autopilot
+
+The ledger structure is clear. The relevant tabs for logged contribution time are **"Contribution submission"** (timestamp + contributor + description) and **"Ledger history"** (contributor + contribution + status date). Let me query both for the fix window (2026-08-22 → 08-27) for Gary Teh and Sophia Truesight.
+
+
+### 🤖 Autopilot
+
+The ledgers are mostly old history. The best time evidence is the actual git commit timeline + this thread's activity. Let me pull the exact commit timestamps for the fix work (PRs #411, #427, #431) from the local clone, and check the recent contribution submissions for anything logged about this fix.
+
+
+### 🤖 Autopilot
+
+Let me look at the tail of both ledger reads to find any recent (2026) entries related to this fix.
+
+
+### 🤖 Autopilot
+
+The ledgers I've read only reach 2023. Let me pull the precise commit/PR timeline (which has exact timestamps for both of us) and check the newest rows of the contribution sheets for anything logged about this fix.
+
+
+### 🤖 Autopilot
+
+Let me do one final check — whether any contribution time was logged for this fix in the ledger (recent rows), then I'll give you the answer.
+
+
+### 🤖 Autopilot
+
+Here's what I can reconstruct honestly — **no formal time log exists in the ledger for this fix** (the Contribution submission tab's last entries are from Nov 2023; nothing was logged for this work). So I can't give you a ledger-verified minute count. What I *can* give you is the authoritative **commit-level timeline** (exact timestamps, per author) and a best-effort effort estimate from the session activity.
+
+## Author-attributed timeline (from git history)
+
+| When (UTC) | Who | What |
+|---|---|---|
+| 2026-08-22 16:38 | **Sophia** (autopilot) | `acbcdb0` — PR #411: Amount→Quantity, unit cost from paired USD contribution |
+| 2026-08-23 00:41 | **Gary** | Merged #411 |
+| 2026-08-24 18:58 | **Sophia** (autopilot) | `f70da7c` — PR #427: anchor event detection + idempotent SKIPPED/ERROR dedup |
+| 2026-08-25 23:29 (-0300) | **Gary** | Merged #427 |
+| 2026-08-27 12:18 | **Sophia** (autopilot) | `e0cf8bd` — PR #431: normalize `Contributor(s)` label (found live during escalation testing) |
+| 2026-08-27 12:18 | **Gary** | Merged #431 (immediately) |
+| 2026-08-27 | **Sophia** (autopilot) | Escalation execution: clasp BEFORE/AFTER proofs, @8→@9→@10 redeploys, 2 real test submissions, live verification, zombie confirmation |
+
+## Time spent — honest estimate
+
+**Sophia (autopilot):** the escalation spanned multiple turns with heavy tool activity — roughly:
+- ~30+ tool calls across the two escalation turns (diagnosis, clasp deploy sequences, sheet reads, test submissions, verification)
+- Wall-clock: hard to bound precisely, but the escalated execution turn alone ran through many long operations (clasp deploys, GAS processing runs). Realistic estimate: **~1.5–2.5 hours of active agent time** across Aug 22–27 (including the earlier #411/#427 authoring).
+
+**Gary:** the merge actions were quick, but the *detection* work — spotting the corrupted rows, checking clasp deployments yourself, writing the escalation — was real. Realistic estimate: **~30–60 minutes** spread across the week (plus the original bug report from Paloma's submissions).
+
+## Caveats
+- These are **estimates from timestamps and activity**, not metered time — I have no per-session clock in the ledger.
+- No TDG/contribution entry exists for this fix yet.
+
+**Want me to log it properly?** I can submit a [CONTRIBUTION EVENT] for you and/or the autopilot with your preferred minute amounts — just tell me what figures to use (e.g. you: 60 min, autopilot: 150 min) and I'll record both with PR #411/#427/#431 as evidence links.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/tokenomics && ls python_scripts/schema_validation/ 2>/dev/null && find . -name "gdrive_schema_credentials.json" 2>/dev/null ; cd /home/ubuntu/tokenomics/python_scripts/schema_validation && python3 -c " import json d = json.load(open('all_sheets_structure.json')) for; cd /home/ubuntu/tokenomics && echo "===TOKENOMICS FIX COMMITS===" && git log --format='%h | %an | %ad | %s' --date=iso --all --since='2026-0; …(+1 more)
 
