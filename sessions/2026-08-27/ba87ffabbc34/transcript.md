@@ -8,13 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Merge -- agentic_ai_context#821 (plan doc), dao_protocol#146 (event registration), tokenomics#430 (GAS handler), truesight_autopilot#314 (PM002 worker). All 4 verified clean/mergeable just now.
-
-
 ### 🤖 Autopilot
 
 These 4 were already merged last turn — let me verify their current state to confirm before reporting (in case this crossed with the earlier instruction).
@@ -4381,16 +4374,19 @@ Let me check the detail-panel HTML rows and i18n keys in the current page so my 
 ### 🤖 Autopilot
 
 I have everything needed to restore both lost features. Applying the patches to the current page — status icons (constants + function + i18n + HTML row + wiring) and deep-linking (setTreeParam + listeners + init restore):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 patches applied (setTreeParam:5, measureStatus:3, msOverdue:3, treeDetailMeasure:2). Now validating JS syntax + structure before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations pass (JS OK, 22/22 divs, both i18n dicts, all 4 emojis). Uploading the restored page:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4448,21 +4444,25 @@ User should be able to see the photo that is going to be taken.
 ### 🤖 Autopilot
 
 Let me look at the actual camera markup + CSS + start logic on the current committed page to find why the viewport isn't visible.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The videos have `style="display:none;"` inline. Let me check the `startCamera`/`capturePhoto`/tab-switch logic to see why the video never becomes visible.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see `startCamera` (566-593) — the key question is whether it sets `video.style.display` to make the viewport visible.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The bug is clear: `startCamera` creates a **detached** video element (id `closeupVideo`), but since the static HTML `<video id="closeupVideo">` already exists, the new one is never inserted — the stream attaches to the invisible detached element, and the static viewport stays `display:none`. Before patching, let me verify which version raw is serving (must be the restore commit, not a stale copy — that's the exact bug class I just fixed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4600,4 +4600,75 @@ Say "go" for the post-rebuild verification.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== HTML 150-200 (selection → tabs) ===" && sed -n '150,200p' cur.html && echo "=== onTreeSelectChange ===" && sed -n "$(gr; cd /tmp && echo "=== after panel-context (200-215) ===" && sed -n '200,216p' cur.html && echo "=== manual input listener ===" && grep -n -A4; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Once the two tabs have their photos populated the send measurment button should become active
+
+
+### 🤖 Autopilot
+
+Right — "Send measurement" should stay disabled until both photos are captured (close-up + context). Let me check the current submit-button state and capture flow, then wire enable/disable on both captures.
+
+
+### 🤖 Autopilot
+
+Now let me see the submit function (line 920 area) to understand the current validation and the disabled logic, plus the retake functions:
+
+
+### 🤖 Autopilot
+
+Now I'll wire the button state: disabled until **both** photos are captured. Adding `updateSubmitState()` + calling it on every capture/retake/reset/tree-change, starting the button disabled, and making context required in submit validation (aligning with the button).
+
+
+### 🤖 Autopilot
+
+Most edits applied (updateSubmitState:5, button starts disabled, validation requires context) — but the i18n `contextRequired` key only appears once (the pt/en anchors didn't match). The key is referenced in the validation but has no translation. Let me find the actual i18n structure for the context keys and add both translations.
+
+
+### 🤖 Autopilot
+
+Now I have the exact i18n anchors. Adding `contextRequired` to both dicts (after contextRecommended in each):
+
+
+### 🤖 Autopilot
+
+All validated (JS OK, 23/23 divs, contextRequired in both dicts). Pushing:
+
+
+### 🤖 Autopilot
+
+Shipped (`cb57defb`). Here's the report.
+
+## ✅ Send measurement now activates only after both photos
+
+**Committed to `sunmint_beta/main` (`cb57defb`):**
+
+- **Button starts disabled** (`disabled` attribute on the submit button)
+- **`updateSubmitState()`** — enables the button **only when both `closeupBlob` AND `contextBlob` are present**; called after every capture, retake, and tree-change reset
+- **Server-side-equivalent validation**: submit now also requires the context photo (`contextRequired` message — previously it was only "recommended")
+- **i18n**: `contextRequired` added in **both** pt and en
+- Flow: select tree → tabs appear → capture close-up → (button still disabled) → capture context → **Send measurement enables** ✓
+
+**Validated:** JS syntax OK, 23/23 divs, updateSubmitState wired in 5 places, both dicts have the key.
+
+## 📌 RESUME HERE
+1. **Verify live** after Pages rebuild: select tree → both tabs → capture both photos → Send measurement becomes active
+2. Remaining backlog: **full UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" for verification, or flag anything else on the page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → fetched committed file, mapped capturePhoto/submit/retake/reset flows, wired updateSubmitState (button starts disabled, enables on both blobs), added context-required validation + i18n keys (pt+en), validated JS (node --check OK, 23/23 divs)
+• `upload file to github` ×1 → commit cb57defbea5ac63eea9962c187e40d06541b618d
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== submit btn + capturePhoto + markTabDone ===" && grep -n "monitorSubmitBtn" cur2.html | head && echo "---" && sed -n "$(grep -n 'function capturePhoto' cur2.html | cut -d: -f1),+30p" cur2.html; …(+2 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== submit fn (915-960) ===" && sed -n '915,960p' cur2.html && echo "=== retakeCloseup + retakeContext ===" && sed -n "$(gr; cd /tmp && cp cur2.html submitstate.html && python3 << 'PYEOF' p = '/tmp/submitstate.html' d = open(p, encoding='utf-8').read() # 1) Button ; …(+2 more)
 
