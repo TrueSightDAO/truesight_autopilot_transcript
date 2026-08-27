@@ -3900,16 +3900,19 @@ That's the sheet the `build_tree_geojson.py` generator reads to produce `sunmint
 ### 🤖 Autopilot
 
 You're right — let me retry the secret write properly. My earlier 404 was likely an endpoint/format issue on my side (the read endpoints worked, so the token has Actions access). Let me redo the full sequence: fetch the public key, encrypt with libsodium, and PUT the secrets.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Public key fetched and pynacl is available. Now let me encrypt and PUT the two secrets. First, `GOOGLE_SERVICE_ACCOUNT_JSON` (the SA key file contents), then `GH_PAT_TOKEN` — for the PAT I'll use a fresh one. Let me check what's in the SA key file (for the JSON secret) and confirm the PAT value being used:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both pieces are in place: the SA key file exists (2,316 bytes) and the `TRUESIGHT_DAO_AUTOPILOT` token (fine-grained `github_pat_…`, 93 chars) is what the tools use. Per your note that this PAT **can write secrets**, let me now encrypt both secrets with libsodium and PUT them to the `sunmint` repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3917,16 +3920,19 @@ Both pieces are in place: the SA key file exists (2,316 bytes) and the `TRUESIGH
 Both secrets set successfully (**PUT 201**, verified in the list). My earlier 404 was indeed an endpoint/format issue — with the correct libsodium-encrypted PUT, the PAT works fine, exactly as you said.
 
 Now let me test the rebuild workflow once via manual dispatch to confirm the whole pipeline works end-to-end (secrets → script → sheet read → index regeneration → commit):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The workflow dispatched successfully (204) and a run is queued. Let me watch it to completion so I can report the result (it reads the sheet, regenerates the index, and commits back):
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The watcher needs a topic context — I'll poll directly instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3967,21 +3973,25 @@ Resume
 ### 🤖 Autopilot
 
 Resuming — checking the handoff manifest for the canonical plan, then continuing with the pending unit.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest artifact holds more rows — let me find the tree-growth-monitoring row (this thread, 11018) for its resume state.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest's tree-growth row isn't in what I've read — let me open the canonical plan doc directly for its RESUME HERE state.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan doc is **stale** — it still shows the original scoping (P1b = truesight_me_beta, P1c/P1d "open", GAS handler undeployed) but the thread has moved far past that: the sunmint.truesight.me hosting correction, the merges, the GAS deploy, and the P3 index are all done. Before continuing the build, the tracked plan must reflect reality (that's the whole point of the manifest — it was the gap Gary flagged earlier). Updating it now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4019,6 +4029,7 @@ Go for it
 ### 🤖 Autopilot
 
 Executing — merging the plan refresh (#825) and the layout fix (#15), then moving to the FounderHaus backfill.
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4068,21 +4079,25 @@ Also if is more than 1000m, should switch to kilometers in the dropdown
 ### 🤖 Autopilot
 
 Two issues — let me investigate both: the tree photo not loading on selection, and the distance unit switch. Let me look at the current code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full `renderTreeDetail` function and how the photo URL is built — the issue is likely the photo path resolution.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The code path is right (`photo: p.photo_url`) — so the likely culprit is the **index itself not carrying `photo_url`**. Let me check the actual generated GeoJSON and the distance formatting code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The index **does** carry `photo_url` — and there's a second bug visible: `tree_id` is `"469027268"` (a numeric Telegram/photo ID) rather than the QR-like id, and the photo URL points at Telegram's CDN (`AgACAgEAAxkB...`), which requires **auth** and will 403 in a browser `<img>`. Let me verify both hypotheses: whether the photo URLs are Telegram-authed (403) and why the dropdown shows numeric IDs instead of e.g. `FOUNDERHAUS_...`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4097,11 +4112,13 @@ Both bugs are now **diagnosed precisely**:
 **Bug 2 — distance formatting:** need to check the Haversine/dist formatting code for the >1000 m → km switch.
 
 Let me read the dropdown population + distance code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two clear findings so far. Let me check the specific trees from the user's screenshot (Edgar_20260819134722_487 and FounderHaus) for photo_url presence — that determines whether the photo bug is in the data or the code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4115,6 +4132,7 @@ https://github.com/TrueSightDAO/sunmint/tree/main/images/20260819104721_MIIBIjAN
 That's the **github.com web-UI tree URL**, not the raw content URL — `github.com/.../tree/main/...` returns an HTML page, and a browser `<img>` can't render it → **broken image** (silent 404 → blank). The `build_tree_geojson.py` generator needs to normalize `github.com/TrueSightDAO/sunmint/tree/main/` → `raw.githubusercontent.com/TrueSightDAO/sunmint/main/` (or `/blob/` → raw).
 
 Wait — let me double-check that specific URL's behavior and see the other photo_url shapes before writing the fix. The FounderHaus URL is already raw (`raw.githubusercontent...FOUNDERHAUS_GROUP.jpg` — good), but the Aug-19 one is the tree-UI URL. Let me confirm and also fix the distance format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4126,16 +4144,19 @@ Both bugs fully confirmed:
 **Bug 2:** distance is hardcoded `Math.round(tree._dist) + ' m'` — no km switch. Fix: `dist >= 1000 ? (dist/1000).toFixed(1) + ' km' : Math.round(dist) + ' m'`.
 
 Now building the fix — updating the generator script (sunmint repo) + the monitor page (sunmint_beta) in one PR. First the generator + page edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact generator spot. Now applying both fixes — normalizing the photo URL in the generator and adding the km switch in the page. Let me make the edits via a single PR (generator in `sunmint` + page in `sunmint_beta`), starting with the generator:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Generator fixed and live on `sunmint` main. Now let me regenerate the index via the workflow so the normalized photo URLs take effect immediately:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4251,4 +4272,89 @@ Say "go" and I'll merge #16 + verify the live page.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon3.html && wc -l m; cd /tmp && sed -n '489,560p' mon3.html && echo "=== loadTreeIndex (how photo_url is kept) ===" && grep -n -A25 "function loadTreeIndex" mon3; cd /tmp && echo "=== canonical index properties (first feature) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main; …(+15 more)
 • `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/scripts/build_tree_geojson.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Also when in kilometers use the 1,000,000 comma convention.
+
+
+### 🤖 Autopilot
+
+Good catch — pt-BR convention uses comma as decimal separator. Let me check the current state of the km code (whether #16 merged) and apply the comma formatting.
+
+
+### 🤖 Autopilot
+
+PR #16 is still open — the km code isn't on main yet. I'll update the PR's branch to add the comma convention before it merges. Let me check the exact code in the PR branch:
+
+
+### 🤖 Autopilot
+
+`currentLang` is available (line 316) — I'll make the km format lang-aware: **comma decimal for pt** (default), period for en. Updating PR #16's branch:
+
+
+### 🤖 Autopilot
+
+The em-dash encoding again — the file has a literal `—` character but my search uses the escaped `\u2014`. Let me use the actual em-dash character in the search string:
+
+
+### 🤖 Autopilot
+
+Let me get the exact bytes around the distText code to build a matching search string:
+
+
+### 🤖 Autopilot
+
+The file uses the literal `—` (U+2014) correctly. The issue is my search string's em-dash is being escaped by the tool transport. Let me use a different approach — a `python3` local edit applied via the file-read/write tools isn't available, so let me do the edit with a distinctive substring that avoids the em-dash entirely:
+
+
+### 🤖 Autopilot
+
+Still not matching — the tool likely reads the file fresh from the branch each time, and the em-dash line before it might be throwing off the context, OR the branch file differs. Let me check what the git tool sees by fetching the exact branch file bytes one more time with a checksum:
+
+
+### 🤖 Autopilot
+
+The contents API confirms line 473 is exactly `              ? (tree._dist / 1000).toFixed(1) + ' km'` — but my exact search string keeps failing. The tool may be trimming leading whitespace or the tool fetches `main` (where the km code doesn't exist yet since #16 is unmerged) rather than the branch. Let me try with a distinctive minimal search (the tool may need the `open_pr` on the same repo/branch to edit the PR's own branch):
+
+
+### 🤖 Autopilot
+
+The tool operates against `main`, not the open PR's branch — main doesn't have the km code yet (that's why it can't find `toFixed(1)`). The clean path: apply the comma change locally and push the full file to PR #16's branch directly.
+
+
+### 🤖 Autopilot
+
+Comma edit applied locally and the extracted JS passes `node --check` (the `.html` extension error from node is expected — the extracted `.js` is what matters, and it's OK). Now pushing the full updated file to PR #16's branch (`fix/distance-km-switch`):
+
+
+### 🤖 Autopilot
+
+Comma fix is now on PR #16's branch. Here's the update.
+
+## ✅ What I did this turn — pt-BR comma convention for km
+
+**PR [sunmint_beta#16](https://github.com/TrueSightDAO/sunmint_beta/pull/16)** — updated (new commit `b632c32` on the `fix/distance-km-switch` branch, full file push since the edits tool couldn't reach the open-PR branch):
+- km display now: `(tree._dist / 1000).toFixed(1).replace('.', ',') + ' km'` → **"1,4 km"** (pt-BR comma)
+- Sub-1000 m unchanged: **"1432 m"**
+- Verified: extracted JS passes `node --check`, edit applied exactly once
+
+PR #16 now contains **both** fixes: the km switch (from earlier) + the comma decimal. It's still **open, awaiting merge** — main doesn't have the km code yet.
+
+## 📌 RESUME HERE → next units
+1. **Merge sunmint_beta#16** (km switch + comma) — on your go
+2. **Verify live** — after merge + CDN refresh: (a) photo loads on tree selection (index regenerated with all-raw URLs, commit `bcace4e`), (b) distances >1000 m show "1,4 km" style, (c) detail panel, logo, layout from earlier PRs
+3. **Backlog:** FounderHaus coords backfill (needs SA Editor grant on tree sheet), `TGM_GITHUB_TOKEN` Script Property, re-test rebuild workflow, then UAT → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" and I'll merge #16 + verify the live page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → checked PR #16 state (open), branch file, exact bytes via Contents API, applied comma edit locally, validated JS syntax
+• `upload file to github` ×1 → commit b632c32 on fix/distance-km-switch branch
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && echo "=== PR #16 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/16" | python3 -c "import sys; cd /tmp && echo "=== PR #16 branch file: distText code ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/fix/dist; cd /tmp && sed -n '471,475p' mon16.html | cat -A | head -8 && echo "=== python repr ===" && python3 -c " lines = open('/tmp/mon16.html', enc; …(+2 more)
 
