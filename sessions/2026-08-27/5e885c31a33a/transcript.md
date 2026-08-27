@@ -1023,6 +1023,7 @@ The dao_protocol reconcile path sends **no email at all** — so the tree-tracki
 Found it. The email is: **"Your Sunmint tree (QR code) has been planted"** — sent by `process_tree_planting_link.js` when a SunMint tree planting is **linked** to a SOLD QR. It fires on `[TREE PLANTING LINK EVENT]` (governor-approved SunMint submission → QR becomes ASSIGNED_TO_TREE), **not** at sale time.
 
 So for the 7 reconciled sales: the emails **haven't been sent** because no tree-planting has been linked to those QRs yet. Let me check the current state — are any of the 7 QRs already linked/assigned, and does the flow need a manual link? Let me check the sheet state and whether these buyers' emails are in the QR rows (they are, we set them). Let me read the key body/sender block to understand what's needed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1161,4 +1162,52 @@ I'm available 24/7 on the autopilot server. You can reach me anytime — I'll pi
 That's entirely up to you — no limit from my side. Everything from this morning's incident is resolved (bug fixed + deployed, 7 sales reconciled, disk cleaned). The only outstanding item is confirming the tracking emails after ~17:42 UTC.
 
 Which one did you mean — or what exactly are you looking for today? I'll help with precision.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] I meant the first. Can you file a contribution report for yourself and me
+
+
+### 🤖 Autopilot
+
+I'll file contribution reports for both of us. Let me first check the correct event format for a CONTRIBUTION EVENT.
+
+
+### 🤖 Autopilot
+
+Let me check how previous contribution events were filed (typical minutes/TDG conventions) in the context.
+
+
+### 🤖 Autopilot
+
+There's a specific doc for this — `DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`. Let me read it for the exact contribution-filing convention.
+
+
+### 🤖 Autopilot
+
+Convention found (`DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`): Sophia's time is filed as **two separate events** (raw machine execution + direct time), and the governor's time as a **third event** under Gary Teh. Amounts are estimates, TDG 0. Submitting all three now.
+
+
+### 🤖 Autopilot
+
+✅ All three contribution events filed successfully:
+
+| # | Contributor | Type | Amount | Description |
+|---|---|---|---|---|
+| 1 | **Sophia Truesight** | Time (Minutes) | 90 | Raw machine execution — SSH/Stripe/sheet tooling, PR #147 + deploy, 7× reconciliations, disk cleanup |
+| 2 | **Sophia Truesight** | Time (Minutes) | 90 | Direct time (engagement/analysis) — root-cause, $500→$5.00 correction, fee accounting, fix design |
+| 3 | **Gary Teh** | Time (Minutes) | 60 | Gary Teh direct time — directing investigation, catching the amount error, approving fix/deploy/reconciliation |
+
+Following the convention from `DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md` (set 2026-08-24):
+- Sophia's time split into **raw machine execution** + **direct time** (two separate events, never merged)
+- Governor's time as a **separate event** under your own name
+- `TDG Issued: 0` for all (informational — you set real economics if you want to award TDG)
+- Evidence: PR #147 + commit `df83d74` cited
+
+If you'd like to adjust the minute estimates (e.g. you feel the direct-time figure should be different) or award TDG, just say so and I'll re-file.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×3 → Contribution submitted successfully.
 
