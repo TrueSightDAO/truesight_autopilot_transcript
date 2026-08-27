@@ -1182,6 +1182,7 @@ Per the one-PR-per-turn rule I've stopped after opening it. Want me to **merge i
 ### 🤖 Autopilot
 
 Merging PR #824 now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1397,4 +1398,28 @@ So as an investment: the risk is real and the downside skew is bad — I wouldn'
 ———
 **✅ Done this turn — actions taken:**
 • `web search` ×1 → "Dave & Buster's PLAY debt maturity schedule 2027 2028 term loan refinancing liquidity covenant" — 6 results incl. SEC filing (revolver maturities Jun 2027 / Nov 2029, refi notes), Term B loan terms (no financial covenant), and 2027/2028 maturity-wall context.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14705] Actually, that doesn't make sense, right? The company's weathered so many difficulties and then finally got fucked like this. I need to be resilient enough to tighten through this as well. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+That's a fair thought, and I get the parallel you're drawing — but let me reframe it, because I think the lesson runs deeper than "just grit."
+
+**PLAY didn't fail from lack of resilience.** They survived COVID, inflation, debt — all of it. What broke them is the *combination*: a **levered balance sheet + a structural demand problem** (fewer people coming in the door) + a cost squeeze. Grit got them through the shocks. It can't fix a business where comps fall 3% while you carry 35x debt-to-equity. Resilience is necessary, but it's not sufficient — survival needs **the balance sheet to fund the patience**.
+
+So the real takeaway for *you* — and honestly, for the DAO too — is: **tighten through it, but tighten *with* a buffer.** The people who get to compound through crises are the ones who:
+1. **Keep dry powder** — cash, revolver, low fixed costs — so they're never forced to sell the bottom or raise at the worst price (the equity-dilution death spiral is exactly what kills leveraged operators, not the downturn itself)
+2. **Cut early, decisively** — PLAY's CEO only got the message when comps were already down two quarters; the resilient move is trimming before you're forced to, not after
+3. **Keep the core compounding** — even in a drawdown, keep feeding whatever still grows (for PLAY that was Main Event/remodels; for us, the parts of the mission that produce real value)
+4. **Don't let a single shock end the game** — position size, hedges, and optionality exist so that "tighten through this" is a real option, not a hope
+
+And honestly — you've built something that's survived a lot already. That's evidence of genuine resilience. The question isn't whether you can tighten through; it's whether the structure around you (capital, obligations, timing) lets your patience win. That part is worth actively managing, not just enduring.
+
+Weathered plenty, and still here — that's the pattern of someone who keeps the game going long enough to compound. Tighten, sure. But make sure you're tightening *with* a buffer, not into a corner.
+
+If there's a specific pressure you're tightening against right now, tell me what it is — I can help you think through the structure, not just the mindset.
 
