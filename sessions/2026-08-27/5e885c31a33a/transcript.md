@@ -626,16 +626,19 @@ Let me apply the fix and update tests.
 ### 🤖 Autopilot
 
 Patch applied cleanly. Now update `stripe_client.py` to expand `latest_charge.balance_transaction` (the reliable path), add a regression test for the StripeObject-metadata failure mode, then run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two pre-existing issues block the full suite: (1) `app` dir doesn't exist here (compileall warned), (2) pre-existing collection errors in unrelated test files (`test_dao.py`, `test_email_registration.py` — missing `dedup` module, not my change). Let me confirm these are pre-existing (not caused by my patch), fix the ruff-format complaint on my new test, and run the targeted QR tests + suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the 2 collection errors are **pre-existing on clean main** (fail even without my patch — unrelated `dedup` import issue), and my **11 QR tests all pass** including the new StripeObject regression test. Let me run the rest of the suite excluding those 2 broken files to prove no regressions, then final lint.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -785,4 +788,103 @@ From the host probe this turn:
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #147 on dao_protocol merged successfully (sha: df83d744c38e6fe2b15ead509b500c89523d1b2e). Pull Request successfully merged
 • `ssh run` → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'echo "===repo loca
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] [Handoff context — this Telegram topic (thread 15074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go
+
+
+### 🤖 Autopilot
+
+"Go" received — executing the deploy + reconciliation plan. Let me first check the handoff manifest per protocol, then start the deploy.
+
+
+### 🤖 Autopilot
+
+Handoff manifest checked — no separate plan row for this; the RESUME HERE was from my own report. Git pull succeeded: host now at **`df83d74`** (the merged fix). Now restarting the service and verifying.
+
+
+### 🤖 Autopilot
+
+Service restarted cleanly at **17:19:13** (new process `941971`, uvicorn on 0.0.0.0:8010). Now verifying the deployed version via /ping and pulling the exact Stripe session IDs from earlier this conversation for the reconciliations.
+
+
+### 🤖 Autopilot
+
+Deploy verified: **/ping returns `version: df83d74`** — the fix is live in production. Now I need the exact `cs_live_*` session IDs to re-trigger reconciliation. Let me pull them fresh from Stripe by matching each QR code's metadata.
+
+
+### 🤖 Autopilot
+
+The `tr` mangled the key (deleted `\x27`→`x`/`2`/`7` chars). Let me parse the .env properly with Python and re-query.
+
+
+### 🤖 Autopilot
+
+The key is valid (107 chars, `sk_live_51JT…`). The error is my script calling `.get()` on a `StripeObject` again (same bug class!). `s.get("metadata")` — `s` is a StripeObject. Let me fix my query script to use attribute access.
+
+
+### 🤖 Autopilot
+
+All 7 session IDs recovered. Before firing the reconciliation URLs, let me confirm the exact trigger condition in the deployed `index` route (so I don't accidentally start new checkout sessions instead of reconciling).
+
+
+### 🤖 Autopilot
+
+The deployed code confirms: passing `session_id` routes straight to `_reconcile` (no new checkout created), and it validates `paid && metadata.qr_code == qr_code` — all 7 sessions qualify. Firing the first reconciliation to verify end-to-end before the rest.
+
+
+### 🤖 Autopilot
+
+First reconciliation **SUCCESS**: HTTP 200, redirected to the product landing page with `status=SOLD&utm_content=2024OSCAR_CT_20260820_92` — the QR flipped to SOLD and the sale recorded (no error, no re-checkout). Now firing the remaining 6 and then verifying ledger state for all 7.
+
+
+### 🤖 Autopilot
+
+All 7 reconciliations succeeded (HTTP 200 → `status=SOLD` redirects). Final verification: confirm the ledger now shows SOLD + emails + session IDs for all 7 QR codes.
+
+
+### 🤖 Autopilot
+
+✅ **Deploy complete, all 7 sales reconciled and recorded.** Final report:
+
+## What was done this turn ("Go")
+
+### 1. Deployed the fix to production
+- **PR #147 merged** (sha `df83d74`) → pulled on the dao_protocol host → `systemctl restart truesight-dao-protocol` → **/ping returns `version: df83d74`, service active** (new pid 941971, uvicorn :8010)
+
+### 2. Recovered + reconciled all 7 paid-but-unrecorded sales
+Session IDs pulled live from Stripe (matched by `metadata.qr_code`), then re-triggered `GET /qr-code-check?...&session_id=…` for each — **all 7 returned 200 → redirect with `status=SOLD`** (no errors, no re-checkout, `_reconcile` now handles the StripeObject metadata safely).
+
+### 3. Verified the ledger — all 7 now recorded with emails ✅
+
+| QR code | Status | Email (from Stripe) |
+|---|---|---|
+| 2024OSCAR_CT_20260820_92 | **SOLD** | rodrigo@sheerme.com |
+| 2024OSCAR_CT_20260820_52 | **SOLD** | louise_keeeel@hotmail.com |
+| 2024OSCAR_CT_20260820_56 | **SOLD** | carolfitti@hotmail.com |
+| 2024OSCAR_CT_20260820_6 | **SOLD** | kkzamai@gmail.com |
+| 2024OSCAR_CT_20260820_41 | **SOLD** | jg@spreadzz.com |
+| 2024OSCAR_CT_20260820_65 | **SOLD** | contato@diego.eti.br |
+| 2024OSCAR_CT_20260820_31 | **SOLD** | layonjc@gmail.com |
+
+- ✅ QR status: **MINTED → SOLD** for all 7
+- ✅ **Emails now linked** to the QR codes in the ledger (your original question — answered: they were NOT, now they are)
+- ✅ Sales recorded via the production `mark_sold_and_record` path → books **net $4.48/sale** (fee $0.52 itemized) — fees accounted, per your instruction
+- Ledger notes: manager Paloma, product "FounderHaus Tree Planting Pledge - QR Code"
+
+## Outstanding (for your awareness, not blocking)
+1. **dao_protocol disk 99% full** (146M free) — worth cleaning (`/tmp/test-partners` 729M, pip cache 2.1G) soon to avoid future failures.
+2. **Customers saw an error page after paying** — the 7 buyers may not know the purchase succeeded. Recommend a reassurance email (I can draft one).
+3. **Stripe `stripe_session_id` field not populated** in the QR lookup view (emails are, session IDs aren't surfaced there) — cosmetic; the sales rows carry the data.
+4. **Sweep for other paid-but-unrecorded sessions** — optional; I only reconciled the 7 known 500s. Say the word and I'll sweep Stripe for any other completed sessions today.
+
+**RESUME HERE → (optional)**: sweep Stripe for additional completed-but-unrecorded checkout sessions today, clean dao_protocol disk (free ~2.5G), and/or draft the customer reassurance email. Core incident (500s + lost ledger records) is fully resolved.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'cd /home/ubuntu/da; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'sudo systemctl res; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'sed -n "85,150p" /
 
