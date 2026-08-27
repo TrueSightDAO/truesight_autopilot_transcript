@@ -113,11 +113,13 @@ I have the core picture. Let me grab the FounderHaus Farm program page details a
 ### 🤖 Autopilot
 
 Let me grab the FounderHaus program page details and the ledger listing to be complete, then assemble the spec.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the FounderHaus Farm program page and the QR batch conventions doc, then I'll have everything for the spec.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,4 +251,45 @@ If you'd rather have me log it as a different amount (e.g. 2 hours if you think 
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15061] There is a dude called layon from tools of the common. Can you check my calendar. I think j ever had a meetup with him 
+
+Find his email address
+
+
+### 🤖 Autopilot
+
+Checking your mailboxes for Layon / Tools for the Commons — calendar invites usually show up in Gmail too.
+
+
+### 🤖 Autopilot
+
+Found it — let me pull the invite details to confirm.
+
+
+### 🤖 Autopilot
+
+Yes — you've had a meetup with him. Here's what I found:
+
+## ✅ You have met Layon before
+
+**Calendar invite: "True sight DAO + FounderDesk/DAZ"**
+- **When:** Monday, June 22, 2026 · 11:00–11:30 AM PDT
+- **Invited by:** Layon Costa (organizer)
+- **Guests:** Breno Marques Pereira, garyjob@agroverse.shop, Paloma (optional)
+- **Meet link:** Google Meet (eht-bdgp-tdh)
+
+**His email address:**
+> **layon@toolsforthecommons.com**
+
+Also on record from our context files (TRACK_MAP.md, BRAZIL_EXPORT_ENTITY_BRIEF.md): Layon Costa is listed as **counsel** (Tools for the Commons) for the Brazil export entity / Próspera DUNA structuring work — the June 22 call was the next milestone there. That matches his role perfectly: he's the legal/entity-structuring contact, not just the DAZ tech guy.
+
+**Bonus finds:**
+- **Carolina Horta** (carolina.horta@toolsforthecommons.com) — she's the TFTC account rep who's been emailing you about incorporating (KYC approved, digital zones, Zanzibar etc.)
+- **Also spotted:** an order from "layon jorge costa" — $5.00 on Agroverse shop on Aug 27 (probably a test purchase, given today's context)
+
+So when you reply to Layon for Monday's call, you're picking up where the June 22 conversation left off. Want me to draft the reply email to him?
 
