@@ -586,36 +586,48 @@ Let me find the ledger's tab names — `get_all_sheets.py` in tokenomics lists t
 ### 🤖 Autopilot
 
 The Main Ledger spreadsheet has tabs I haven't identified yet. Let me run the schema tool on the autopilot box to list all tabs, then query the contribution history for the fix period.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No credentials file locally, but `all_sheets_structure.json` already exists with the tab inventory. Let me read it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledger structure is clear. The relevant tabs for logged contribution time are **"Contribution submission"** (timestamp + contributor + description) and **"Ledger history"** (contributor + contribution + status date). Let me query both for the fix window (2026-08-22 → 08-27) for Gary Teh and Sophia Truesight.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledgers are mostly old history. The best time evidence is the actual git commit timeline + this thread's activity. Let me pull the exact commit timestamps for the fix work (PRs #411, #427, #431) from the local clone, and check the recent contribution submissions for anything logged about this fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the tail of both ledger reads to find any recent (2026) entries related to this fix.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledgers I've read only reach 2023. Let me pull the precise commit/PR timeline (which has exact timestamps for both of us) and check the newest rows of the contribution sheets for anything logged about this fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do one final check — whether any contribution time was logged for this fix in the ledger (recent rows), then I'll give you the answer.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -781,4 +793,111 @@ This is what I used for the BEFORE(@8)/AFTER(@10) proof. It's accurate but **not
 I can create a **`GAS_DEPLOYMENT_REGISTRY.md`** in agentic_ai_context that records, per scriptId: deployment ID, pinned version, push date, git commit, and notes — updated on every deploy. Plus backfill the current state (asset_receipt_ingest @10 = 521d02b) and add a `Version.gs` to the asset_receipt_ingest project so it's covered by the existing convention.
 
 Want me to set that up?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] Isnt there already such a registry? Pull the latest agentic ai context and check. Also perhaps check your own code
+
+
+### 🤖 Autopilot
+
+Fair challenge — let me pull the latest agentic_ai_context and grep for a deployment registry, and check my own autopilot code for anything that tracks deployment state.
+
+
+### 🤖 Autopilot
+
+The clone failed (dir exists but no `.git`). Let me fix that and check the OPERATING_INSTRUCTIONS hit for "deployment registry", plus grep my own autopilot code.
+
+
+### 🤖 Autopilot
+
+Clone succeeded (HEAD `3b46255`, latest). No `*registr*`/`*clasp*` file in agentic_ai_context matches a deployment registry — but let me grep the actual content (the search hit on OPERATING_INSTRUCTIONS could be a doc reference), and check my own autopilot code.
+
+
+### 🤖 Autopilot
+
+Found it — you're right, there **IS** a registry. **`DEPLOY_PUSH_SOP.md`** (`agentic_ai_context/sops/`) mandates an **append-only deploy ledger in `TrueSightDAO/ecosystem_change_logs/deploys/`** — one record per push, including `clasp`/`gas` deploys, with agent, target_id (scriptId), action, result, git-ref, evidence-url. Plus `CONTEXT_UPDATES.md` already documents the exact `clasp deploy --deploymentId <id>` pattern (keep `/exec` stable). My earlier search missed it because I searched for "deployment registry" as a *file*, not the ledger system.
+
+Let me verify the ledger actually exists and has my asset_receipt_ingest deploys logged in it:
+
+
+### 🤖 Autopilot
+
+The entries list 302'd (directory listing) and the search found **zero records for this scriptId** in ecosystem_change_logs — meaning the ledger exists as a system but my asset_receipt_ingest deploys were never logged (a gap I should own). Let me confirm the ledger's structure and check the local clone.
+
+
+### 🤖 Autopilot
+
+The registry exists — and you're right to push. **`DEPLOY_PUSH_SOP.md` + `ecosystem_change_logs/deploys/` is the canonical deploy ledger** (append-only `.md`/`.json` per deploy, schema: agent / target_type / target_id / action / git_ref / result / evidence_url). My earlier answer was wrong because I only searched agentic_ai_context *filenames* for "deployment registry" and never looked at the ecosystem_change_logs repo.
+
+**And the harder truth:** the ledger has entries through 2026-08-26 — but **grep for `1o2lzpd…` (asset_receipt_ingest) returns ZERO**. My @9 and @10 deploys from this escalation were **never logged** there. The registry existed; I didn't use it for exactly the operation you're asking about. That's on me.
+
+Let me check the append script so I can backfill properly (append-only, new entries):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture and the tool to backfill. **Answer to your question, corrected:**
+
+**Yes — the registry exists, I was wrong, and I owe you a correction:**
+- **`DEPLOY_PUSH_SOP.md`** (agentic_ai_context/sops/) is the binding SOP
+- **`TrueSightDAO/ecosystem_change_logs/deploys/`** is the actual ledger — append-only `.md`+`.json` records, feed index, leases, `append_deploy_record.py` (dry-run by default, `--write` commits)
+- It even has a schema field for exactly this: `target_type: clasp`, `target_id: <scriptId>`, `git_ref`, `evidence_url`
+- And `CONTEXT_UPDATES.md` already recorded the correct pattern (`clasp deploy --deploymentId <id>` to keep `/exec` stable)
+
+**The gap (mine):** the ledger's newest entries are 2026-08-26 and grep for `1o2lzpd…` (asset_receipt_ingest) returns **zero** — so **my @9 and @10 deploys from this escalation were never logged**. The registry existed; I deployed without logging. Exactly the failure mode the SOP exists to prevent.
+
+I'll backfill both deploys now as append-only records (per SOP §1, `target_type: clasp`):
+
+
+### 🤖 Autopilot
+
+Dry-run confirmed the record shape. Writing the @9 backfill (and the @10 one after):
+
+
+### 🤖 Autopilot
+
+@9 record written (feed rebuilt to 11 records). Now the @10 backfill:
+
+
+### 🤖 Autopilot
+
+Both backfills written (feed now 12 records). Committing to the repo so the ledger is durable:
+
+
+### 🤖 Autopilot
+
+Done — backfilled and pushed (`758e32c..4d9e11e` on main). Here's the corrected, complete answer:
+
+## Your question, answered straight
+**Yes, the registry already existed** — and I was wrong in my previous message. It's:
+
+| Piece | Location |
+|---|---|
+| SOP (binding procedure) | `agentic_ai_context/sops/DEPLOY_PUSH_SOP.md` |
+| **Ledger (the actual registry)** | **`TrueSightDAO/ecosystem_change_logs/deploys/`** — append-only `.md`+`.json` per deploy, feed index, leases |
+| Writer tool | `scripts/append_deploy_record.py` (dry-run default, `--write` commits) |
+| Schema covers GAS pins | `target_type: clasp`, `target_id: <scriptId>`, `git_ref`, `evidence_url` |
+| Prior art | `CONTEXT_UPDATES.md` already documented `clasp deploy --deploymentId <id>` for stable `/exec` |
+
+My earlier searches missed it because I only looked for "deployment registry" *filenames* in agentic_ai_context — the registry lives in a separate repo (ecosystem_change_logs) and is named "deploy ledger".
+
+## What I fixed just now (owning the gap)
+The ledger had entries through 2026-08-26, but **grep for `1o2lzpd…` = zero** — my own @9/@10 deploys were never logged. So:
+- ✅ Backfilled **@9** record (`deploy_20260827T123757Z…`) — 0d57fba, #411+#427
+- ✅ Backfilled **@10** record (`deploy_20260827T123801Z…`) — 521d02b, #431
+- ✅ Rebuilt feed (12 records), committed + pushed to `ecosystem_change_logs` main (`4d9e11e`)
+
+## Go-forward (so this never recurs)
+1. **I'll log every `clasp deploy` from now on** via `append_deploy_record.py --write` — it's the SOP, and I violated it this week.
+2. Optional hardening I can do (say the word):
+   - Wire the ledger write into `gas_deploy_project.py` (SOP Phase 2 — auto-log on push)
+   - Add a **`GAS_DEPLOYMENT_REGISTRY.md`** summary table in agentic_ai_context that mirrors the ledger for quick "what's deployed where" glance (ledger stays canonical; table is a view)
+
+Want me to do either of those?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd ~/agentic_ai_context 2>/dev/null || cd /home/ubuntu/agentic_ai_context 2>/dev/null || (git clone https://github.com/TrueSightDAO/agentic_; ls -la /home/ubuntu/agentic_ai_context 2>/dev/null | head; rm -rf /home/ubuntu/agentic_ai_context && git clone --depth 1 https://github.com/; cd /home/ubuntu/agentic_ai_context && echo "===GREP deployment===" && grep -rn -i "deployment" --include="*.md" . 2>/dev/null | grep -v ".gi; …(+4 more)
 
