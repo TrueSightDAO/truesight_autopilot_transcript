@@ -810,16 +810,19 @@ Want me to set that up?
 ### 🤖 Autopilot
 
 Fair challenge — let me pull the latest agentic_ai_context and grep for a deployment registry, and check my own autopilot code for anything that tracks deployment state.
+[3 tool result(s) compacted: ssh_run, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone failed (dir exists but no `.git`). Let me fix that and check the OPERATING_INSTRUCTIONS hit for "deployment registry", plus grep my own autopilot code.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone succeeded (HEAD `3b46255`, latest). No `*registr*`/`*clasp*` file in agentic_ai_context matches a deployment registry — but let me grep the actual content (the search hit on OPERATING_INSTRUCTIONS could be a doc reference), and check my own autopilot code.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -827,11 +830,13 @@ Clone succeeded (HEAD `3b46255`, latest). No `*registr*`/`*clasp*` file in agent
 Found it — you're right, there **IS** a registry. **`DEPLOY_PUSH_SOP.md`** (`agentic_ai_context/sops/`) mandates an **append-only deploy ledger in `TrueSightDAO/ecosystem_change_logs/deploys/`** — one record per push, including `clasp`/`gas` deploys, with agent, target_id (scriptId), action, result, git-ref, evidence-url. Plus `CONTEXT_UPDATES.md` already documents the exact `clasp deploy --deploymentId <id>` pattern (keep `/exec` stable). My earlier search missed it because I searched for "deployment registry" as a *file*, not the ledger system.
 
 Let me verify the ledger actually exists and has my asset_receipt_ingest deploys logged in it:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The entries list 302'd (directory listing) and the search found **zero records for this scriptId** in ecosystem_change_logs — meaning the ledger exists as a system but my asset_receipt_ingest deploys were never logged (a gap I should own). Let me confirm the ledger's structure and check the local clone.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -841,6 +846,7 @@ The registry exists — and you're right to push. **`DEPLOY_PUSH_SOP.md` + `ecos
 **And the harder truth:** the ledger has entries through 2026-08-26 — but **grep for `1o2lzpd…` (asset_receipt_ingest) returns ZERO**. My @9 and @10 deploys from this escalation were **never logged** there. The registry existed; I didn't use it for exactly the operation you're asking about. That's on me.
 
 Let me check the append script so I can backfill properly (append-only, new entries):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -856,21 +862,25 @@ Now I have the full picture and the tool to backfill. **Answer to your question,
 **The gap (mine):** the ledger's newest entries are 2026-08-26 and grep for `1o2lzpd…` (asset_receipt_ingest) returns **zero** — so **my @9 and @10 deploys from this escalation were never logged**. The registry existed; I deployed without logging. Exactly the failure mode the SOP exists to prevent.
 
 I'll backfill both deploys now as append-only records (per SOP §1, `target_type: clasp`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run confirmed the record shape. Writing the @9 backfill (and the @10 one after):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 @9 record written (feed rebuilt to 11 records). Now the @10 backfill:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both backfills written (feed now 12 records). Committing to the repo so the ledger is durable:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -919,31 +929,42 @@ go for it
 ### 🤖 Autopilot
 
 `go for it` received. First checking the handoff registry for this thread, then reading the deploy script to wire in the ledger logging.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest doesn't have a dedicated plan row for this thread (this is a live escalation topic, not a parked handoff), so "go for it" = the two hardening items I offered: (1) wire ledger auto-logging into `deploy_gas_project.py`, (2) add a `GAS_DEPLOYMENT_REGISTRY.md` summary view in agentic_ai_context. Let me read the rest of the deploy script first to see the full flow (the truncation cut off the ledger/lease section).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery — `deploy_gas_project.py` **already has DEPLOY_PUSH_SOP Phase 2 wiring** (lease acquire + ledger record via a sibling `deploy_ledger` module). The gap was that my escalation bypassed this tool and ran raw `clasp` commands. Let me read the tail to see the full ledger flow and check `deploy_ledger.py`.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo-side infrastructure already exists (Phase 2 wiring: `deploy_ledger.py` + lease/record flow in `deploy_gas_project.py`). The real question is whether **my own autopilot tool** logs to the ledger — the script says "when `--lease-id` is set, upstream owns the ledger and we skip." Let me check my own code as you suggested.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No hits in the indexed default branch. Let me check the deployed autopilot source on the box directly — the tool may live in a module (e.g. `tools/gas_deploy.py` or similar) and use a different name.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My own code **already has** the Phase 2 ledger integration (`app/tools/gas_deploy_project.py` + `app/deploy_ledger.py` + tests). The bug is in the **flow I chose**: I bypassed `gas_deploy_project` entirely and ran raw `clasp push` / `clasp deploy` via SSH — so the auto-ledger never fired. Let me confirm exactly what the tool does on push (does it log a record after push, or just acquire/close a lease?) and whether it handles the `clasp deploy -i` step.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -951,6 +972,7 @@ My own code **already has** the Phase 2 ledger integration (`app/tools/gas_deplo
 Now I have the complete picture. **The ledger wiring already exists in my own tool** (`gas_deploy_project` acquires a lease → runs the script → appends a deploy record → closes the lease). So item 1 is already done — which means the *real* gap is different and more important:
 
 **My tool only does `clasp push` — it never repoints the pinned deployment.** It would have reproduced this exact saga: push to HEAD, pinned @8 keeps serving stale code. The root-cause fix is to give the deploy pipeline a `--deployment-id` step (push → `clasp version` → `clasp deploy -i` → record the version). Let me read the tail of the tokenomics script where I'll add it, and check for tests.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1029,4 +1051,22 @@ The box's `gh`/PAT lacks create-PR scope for this repo — I have `git_push_chan
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /opt/truesight_autopilot 2>/dev/null || cd /home/ubuntu/truesight_autopilot 2>/dev/null; pwd; echo "===GREP gas_deploy==="; grep -rn "gas; ls /opt/truesight_autopilot/context/tokenomics/tests/ 2>/dev/null | head; echo "===TOKENOMICS PYTEST==="; ls /opt/truesight_autopilot/contex; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin -q && git reset --hard origin/main -q && python3 - <<'EOF' import re, pat; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] be explicit. Which repo?
+
+
+### 🤖 Autopilot
+
+**Repo: `TrueSightDAO/tokenomics`** (github.com/TrueSightDAO/tokenomics.git).
+
+The branch `fix/deploy-repoint-pinned-gas` is pushed there (verified on the remote: `fe88c13fd4… refs/heads/fix/deploy-repoint-pinned-gas`), containing exactly 4 files:
+1. `scripts/deploy_gas_project.py` — the `--deployment-id` repoint support
+2. `google_app_scripts/1o2lzpd…/Code.gs` — the fixed scanner (byte-identical to what @10 serves)
+3. `google_app_scripts/1o2lzpd…/appsscript.json`
+4. `google_app_scripts/1o2lzpd…/.clasp.json`
+
+The PR itself is **not yet opened** — my `gh pr create` on the box failed ("Resource not accessible by personal access token — createPullRequest"), so I was about to open it via my `git_push_changes` tool (which is authorized for tokenomics). Say the word and I'll open it now; or if you prefer, I can leave the branch and let you review it directly.
 
