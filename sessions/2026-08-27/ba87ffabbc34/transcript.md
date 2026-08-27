@@ -4034,6 +4034,7 @@ Workflow fixed (commit `cb2e2ea8`). Now let me re-dispatch the workflow to confi
 ### 🤖 Autopilot
 
 Dispatched (204). Let me poll to completion and verify it succeeds this time:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4211,4 +4212,54 @@ The current UI copy ("card + trunk") assumes the agent has one. Want me to:
 2. **flag the physical-card question** to the team — because if agents don't have cards yet, that's a supply/logistics item to solve before field rollout?
 
 Say the word and I'll update the copy + add the help hint.
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Also I think we should indicate how often the measurements need to be made. Can you research? 
+
+I think in the dropdown if the measurement for a tree was not recently made within the critieria, it should show some visual icons.
+
+
+### 🤖 Autopilot
+
+Good asks — let me research the monitoring cadence against real carbon-program requirements, and check what `last_measured` data we actually have in the index to power the overdue indicators.
+
+
+### 🤖 Autopilot
+
+Research done, and it surfaced a **data bug** you'll want to know about. Two parts:
+
+## 1. Monitoring cadence (what the carbon programs actually require)
+
+| Standard | Monitoring cadence |
+|---|---|
+| **CAR** | Annual monitoring report; verification within 1 year of each reporting period |
+| **ACR** | Continuous reporting, typically annual field measurement |
+| **Plan Vivo** | Annual reporting / 5-yr verification |
+| **Verra (VCS)** | Assessment every 5 years; continuous reporting with no gaps |
+| **Gold Standard** | 3–5 year audit cycles |
+| **2026 dMRV pilots** | Pushing toward much more frequent (even monthly) measurement + issuance |
+
+**Sensible design for SunMint** (smallholder cacao/agroforestry, dMRV-credible but realistic for field agents): **annual minimum** (≤12 months) — matches the mainstream programs — with a **recommended 6-monthly cadence for young trees (<3 yr)** where growth is fastest and the growth curve benefits most. That gives a defensible "measurement due" criterion: **overdue at >12 months since last measurement**.
+
+## 2. Data bug that blocks the overdue icons
+
+The current `index.geojson` has **`last_measured` set to the tree_id string** (e.g. `last_measured: "Edgar_20260821175134_005"`) and `planted_at: None` for **all 18 trees** — the generator is reading the wrong sheet columns. So the overdue indicator can't be computed until I fix the generator to pull real dates from the SunMint Tree Planting sheet.
+
+## 3. Proposed dropdown UI (once data is fixed)
+
+- 🟢 **Green** — measured within 12 months
+- 🟠 **Amber** — approaching due (9–12 months)
+- 🔴 **Red** — overdue (>12 months)
+- ⚪ **Gray** — planted but never measured (needs first measurement)
+- Plus a small "measurement due" tooltip/text and, on the tree detail panel, "last measured: 2026-08-21 · due: 2027-08-21"
+
+**Proposal:** fix the generator's date columns → regenerate the index → add the status icons to the dropdown + detail panel. Want me to go ahead?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
 
