@@ -4234,11 +4234,13 @@ So when I refresh the URL, that tree's record shows up
 ### 🤖 Autopilot
 
 Deep-linking is a good call — selected tree reflected in the URL, and a refresh restores that tree's record. Let me look at the init flow, manual-ID handling, and selection code to wire it cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the window.onload block and the manual-ID handling (how manual input participates in measurement) to wire deep-linking fully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4401,4 +4403,57 @@ Want me to build items 1–3 now (the workflow + vendoring + page change), and w
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== 1. Does tree_growth_analysis.py exist in truesight_autopilot (merged #314)? ===" && curl -s "https://api.github.com/rep; cd /tmp && echo "=== 3. Page: is DBH required in submit? ===" && sed -n "$(grep -n 'function submitMonitoring' monA.html | cut -d: -f1),+30p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/contents/scripts/tree_growth_analysis.py?x=$(date +%s)" |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] How  should go about getting the TGM_GITHUB_TOKEN and which repositories and what permissions and which GAS editor should I insert it into
+
+
+### 🤖 Autopilot
+
+Let me confirm the exact Script Property key and project ID from the handler code so I give you byte-accurate instructions.
+
+
+### 🤖 Autopilot
+
+Confirmed from the code. Here's exactly how to get and place the token.
+
+## What the handler needs (from the code)
+
+- **Property key:** `TGM_GITHUB_TOKEN` (read via `PropertiesService.getScriptProperties().getProperty('TGM_GITHUB_TOKEN')`)
+- **What it's used for:** the Contents-API PUT to `https://api.github.com/repos/TrueSightDAO/sunmint/contents/images/growth/<file>` on branch `main`, header `Authorization: token <PAT>`
+
+## How to get the token
+
+1. **Who:** anyone with access to the TrueSightDAO GitHub org settings (you, or the Envoy — same place the workflow secrets came from)
+2. **Create a new fine-grained PAT** (GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token)
+   - **Resource owner:** `TrueSightDAO`
+   - **Repository access:** **Only select repositories → `sunmint`** (the ONLY repo the handler writes to — least privilege)
+   - **Permissions:** 
+     - **Contents: Read and write** (this is the only permission actually needed — the mirror PUT + the analysis.json read-back)
+     - **Metadata: Read** (auto-required alongside Contents)
+   - **Expiration:** pick a sensible window (90 days / custom), and add a note `TGM_GITHUB_TOKEN — sunmint GAS mirror`
+3. **Copy the token value** (it starts `github_pat_…`)
+
+⚠️ **Don't paste the raw token in Telegram chat** — if you send it here, treat it as compromised and rotate it. Give it to me (or the Envoy) via a private channel, or better: you/Envoy paste it directly into the GAS editor yourself.
+
+## Where to insert it (the GAS project)
+
+- **Project (script ID):** `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` (the shared agroverse_qr_codes project — the one that already hosts `process_tree_growth_monitoring.gs`)
+- **GAS editor identity:** the account that owns/deploys that project — **`garyjob@agroverse.shop`** (that's the clasp identity on the box, confirmed at deploy)
+- **Steps:**
+  1. Open `https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` (logged in as `garyjob@agroverse.shop`)
+  2. Left sidebar → **Project Settings** (⚙️)
+  3. Scroll to **"Script properties"** → **Add script property**
+  4. **Property:** `TGM_GITHUB_TOKEN` · **Value:** paste the PAT
+  5. Save
+
+**Verification after:** run the `processTreeGrowthMonitoringFromTelegramChatLogs` function once (or trigger the cron), and check that a photo actually lands in `sunmint/images/growth/`. I can verify the code path end-to-end once it's set — just have the Envoy (or you) confirm when it's inserted.
+
+One flag: fine-grained PATs are per-repo — if you'd rather use the org-level `TRUESIGHT_DAO_AUTOPILOT` token we already use, that works too (it has sunmint access), but the scoped single-repo PAT is the cleaner least-privilege choice for a token living in GAS properties.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== handler: token property key + mirror function ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomic
 
