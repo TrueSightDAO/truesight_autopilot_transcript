@@ -811,16 +811,19 @@ Go
 ### 🤖 Autopilot
 
 "Go" received — executing the deploy + reconciliation plan. Let me first check the handoff manifest per protocol, then start the deploy.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handoff manifest checked — no separate plan row for this; the RESUME HERE was from my own report. Git pull succeeded: host now at **`df83d74`** (the merged fix). Now restarting the service and verifying.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Service restarted cleanly at **17:19:13** (new process `941971`, uvicorn on 0.0.0.0:8010). Now verifying the deployed version via /ping and pulling the exact Stripe session IDs from earlier this conversation for the reconciliations.
+[2 tool result(s) compacted: http_fetch, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -946,4 +949,155 @@ Freed ~2.9G: `/tmp/test-partners` (729M) removed, pip cache purged (278 files, 2
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'cd /home/ubuntu/da; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'echo "===DISK BEFO
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] I think rather than a reassurance page, just ensure the tree tracking email gets sent out??
+
+
+### 🤖 Autopilot
+
+Right — the tree tracking email is the real deliverable for those buyers. Let me find how that email is normally triggered after a QR sale.
+
+
+### 🤖 Autopilot
+
+The tree tracking email appears tied to a tokenomics GAS script. Let me look at how it's triggered and whether the reconciled sales will fire it.
+
+
+### 🤖 Autopilot
+
+The linking script sends the notification when a SunMint planting is linked — but let me find what email fires at *sale* time in the dao_protocol flow (the "tree tracking" email the buyers should have gotten).
+
+
+### 🤖 Autopilot
+
+Wrong path — let me find where `mark_sold_and_record` actually lives in the deployed tree.
+
+
+### 🤖 Autopilot
+
+`mark_sold_and_record` writes the sheets but sends **no email** — the tree-tracking email must be a separate step. Let me find what sends emails for SOLD QRs.
+
+
+### 🤖 Autopilot
+
+Two candidate email paths: `email_verification_from_edgar.js` (sends a verification/tracking email on SOLD) and the tree-planting-link flow (sends the notification when a SunMint planting is linked to a QR). Let me read the verification email script to confirm which one is the "tree tracking email" the governor means.
+
+
+### 🤖 Autopilot
+
+This is member-registration verification, not the tree tracking email. Let me search for the actual tree-tracking email concept and check the notification code in the linking script.
+
+
+### 🤖 Autopilot
+
+The dao_protocol reconcile path sends **no email at all** — so the tree-tracking email must come from the linking GAS flow. Let me read exactly what email that script sends and when.
+
+
+### 🤖 Autopilot
+
+Found it. The email is: **"Your Sunmint tree (QR code) has been planted"** — sent by `process_tree_planting_link.js` when a SunMint tree planting is **linked** to a SOLD QR. It fires on `[TREE PLANTING LINK EVENT]` (governor-approved SunMint submission → QR becomes ASSIGNED_TO_TREE), **not** at sale time.
+
+So for the 7 reconciled sales: the emails **haven't been sent** because no tree-planting has been linked to those QRs yet. Let me check the current state — are any of the 7 QRs already linked/assigned, and does the flow need a manual link? Let me check the sheet state and whether these buyers' emails are in the QR rows (they are, we set them). Let me read the key body/sender block to understand what's needed.
+
+
+### 🤖 Autopilot
+
+The linking flow sends the "has been planted" email. But Gary said "tree tracking email" — let me check `qr_code_web_service.js`'s `sendEmailForQRCode`, which may be the sale-time tracking email (a "track your tree here" confirmation with the lookup link).
+
+
+### 🤖 Autopilot
+
+This is the one — **`sendEmailForQRCode`** sends the **"tracking email"** with `{{TRACKING_LINK}}` (the buyer's QR lookup link) to the buyer's email, at **sale time**, and stamps column M so it only fires once. This is exactly what the 7 buyers should have received (but didn't, because the 500 crashed before the email step).
+
+Let me confirm the trigger/route — how does this get called in the reconcile path, and what's the Google Doc / column setup?
+
+
+### 🤖 Autopilot
+
+There's also a bulk `processUnsentTrackingEmails`-style function (around line 1855) that iterates all QR rows, sends tracking emails where email exists + no timestamp, and stamps them. That's the mechanism that would have caught these 7. Let me read that function and the doGet route that exposes it, so I know how to trigger it for just these 7 (or all unsent).
+
+
+### 🤖 Autopilot
+
+`processBatch()` is the tree-tracking email mechanism — an **hourly self-healing cron** that scans "Agroverse QR codes" for rows with an email (col L) but no send-timestamp (col M), sends the tracking email with the `{{TRACKING_LINK}}`, and stamps col M. Since the 7 QRs now have emails in col L, the cron should pick them up automatically. Let me verify the sheet state and read the email template doc.
+
+
+### 🤖 Autopilot
+
+The tree tracking email is "**Track Your Agroverse Tree Planting Journey**" — sent by the `processBatch()` hourly cron in the GAS project. It scans the QR sheet for rows with an email (col L) but **no send-stamp (col M)**, sends the tracking email, and stamps col M. Since we just wrote the buyer emails, let me verify the 7 rows now qualify (email present, col M empty) so the cron will fire for them.
+
+
+### 🤖 Autopilot
+
+The sheet read truncated. Let me locate the exact rows for the 7 CT-batch QR codes to confirm col L (email) and col M (stamp) state.
+
+
+### 🤖 Autopilot
+
+The sheet is huge — let me query the exact rows for the 7 CT QRs directly from the dao_protocol box (it has the QR-sales service-account key), checking col A (QR), col L (Owner Email), col M (Onboarding Email Sent Date).
+
+
+### 🤖 Autopilot
+
+All 7 rows confirmed: **SOLD, email present in col L, col M (Onboarding Email Sent Date) empty** — exactly the condition `processBatch()` targets. The hourly cron will send them the "Track Your Agroverse Tree Planting Journey" email with their QR tracking link automatically. But since these 7 are time-sensitive (buyers paid this morning), let me trigger `processBatch()` now rather than wait up to an hour. Let me find the webhook/exec URL that exposes it.
+
+
+### 🤖 Autopilot
+
+Let me check the doGet router to see if `processBatch` is HTTP-callable.
+
+
+### 🤖 Autopilot
+
+`processBatch()` is trigger-only (not HTTP-exposed) — it runs as the self-healing **hourly cron**. The 7 rows all qualify (SOLD + email in col L + empty col M), so the cron will send them within the hour. Let me confirm the cron is actually healthy by checking recent sends of this tracking email.
+
+
+### 🤖 Autopilot
+
+The cron is healthy — the tracking email fires hourly (sends visible at :42 past the hour, from `admin@truesight.me`). The 7 rows are queued. Let me get the current time to give you an accurate ETA for the next run.
+
+
+### 🤖 Autopilot
+
+Confirmed and queued. Here's the complete picture:
+
+## The tree tracking email — how it works & status for the 7 buyers
+
+**The email**: "**Track Your Agroverse Tree Planting Journey**" — the onboarding/tracking email with the buyer's personal `{{TRACKING_LINK}}` (their QR lookup page). Sent from `admin@truesight.me`.
+
+**The mechanism**: `processBatch()` in the GAS project (`qr_code_web_service.js`) — a **self-healing hourly cron** (fires at ~:42 past each hour, verified in the sent-mail timestamps). It scans the **Agroverse QR codes** sheet for rows where:
+- col L (Owner Email) has a valid email, AND
+- col M (Onboarding Email Sent Date) is **empty** (never sent)
+
+…then sends the tracking email and stamps col M. It's been running reliably (sends visible Aug 16–23 incl. a Paloma test + a "Now it works 🍫" reply).
+
+## The 7 buyers are queued — will send at the next cron run
+
+Verified row state for all 7 (from the live sheet via dao_protocol's QR-sales SA):
+
+| QR code | Status | Email (col L) | Col M (sent?) |
+|---|---|---|---|
+| …CT_20260820_92 | SOLD | rodrigo@sheerme.com | **empty → queued** |
+| …CT_20260820_52 | SOLD | louise_keeeel@hotmail.com | **empty → queued** |
+| …CT_20260820_56 | SOLD | carolfitti@hotmail.com | **empty → queued** |
+| …CT_20260820_6 | SOLD | kkzamai@gmail.com | **empty → queued** |
+| …CT_20260820_41 | SOLD | jg@spreadzz.com | **empty → queued** |
+| …CT_20260820_65 | SOLD | contato@diego.eti.br | **empty → queued** |
+| …CT_20260820_31 | SOLD | layonjc@gmail.com | **empty → queued** |
+
+**Current time: 17:26 UTC → next cron run ~17:42 UTC (~16 min from now).** All 7 will get their tracking emails then (grouped per email, one per QR, with their tracking link). No manual step needed — the cron handles it, and stamps col M to prevent duplicates.
+
+## What I verified / didn't do
+- ✅ Confirmed this is the *right* email mechanism (the sale-time reconcile doesn't send email; this cron is the tracking-email delivery path — same one all other SOLD QRs got)
+- ✅ Confirmed cron healthy + rows qualify (SOLD + email + no stamp)
+- ⚠️ Did **not** manually fire the cron (it's trigger-only, not HTTP-exposed) — the hourly run handles it
+
+**RESUME HERE →** after ~17:45 UTC, verify col M is stamped for the 7 QRs (or check the sent-mail) to confirm delivery. If any buyer's email bounces or col M stays empty, that's the follow-up. Say "verify" and I'll check.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'grep -rn "email" /; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'grep -rln "mark_so; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'sed -n "1,140p" /h; …(+5 more)
 
