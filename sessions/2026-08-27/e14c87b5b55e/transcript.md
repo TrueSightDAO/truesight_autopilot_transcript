@@ -30,32 +30,78 @@ Investigate the location of our open source GAS and the location of dao protocol
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: list_org_repos, read_context_file, read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: read_repo_file, search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Gary, I'm on it. Let me dig into the GAS (Google Apps Script) locations, the dao protocol (Edgar) API, and the Agroverse QR/treasury integration points before assembling the PDF tech spec.
+[4 tool result(s) compacted: read_repo_file, search_code, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[5 tool result(s) compacted: search_context, search_context, search_context, search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good progress. Let me pull the rest of the integration guide plus the QR batch generation doc, treasury mechanics, and the event docs for QR registration / asset receipts.
+[3 tool result(s) compacted: read_tool_result, read_context_file, lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[5 tool result(s) compacted: lookup_event_docs, lookup_event_docs, lookup_event_docs, lookup_event_docs, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good context building. Let me now pull the treasury/ledger mechanics, the GAS project inventory, the Founders Haus brief, and check what "DAZ" is (it's not in our context).
+[4 tool result(s) compacted: read_repo_file, read_context_file, read_context_file, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DAZ is the Tools for the Commons platform (Próspera ZEDE treasury/entity stack) — that matches Layon/Breno's context. Let me pull the GAS inventory README, the agroverse-inventory repo structure, and the DAZ platform details.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, web_extract, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, list_directory, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have a solid picture forming. Let me pull the last critical pieces: the dao_client module shapes, the FounderHaus QR batch, the Edgar events catalog, and the DAZ API surface.
+[4 tool result(s) compacted: list_matching_qr_codes, read_repo_file, http_fetch, web_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_client content now lives in dao_protocol (301 redirect). Let me pull the correct paths and the FounderHaus Farm Edition brief.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -132,4 +178,54 @@ Converging now — I've hit the per-turn tool budget. Here's where things stand.
 
 ## RESUME HERE
 Next turn: `send_telegram_attachment(file_path="/tmp/DAZ_Treasury_OnRamp_TechSpec.pdf", caption="DAZ Treasury On-Ramp tech spec — for the TFTC team")` to drop the PDF into this thread, and optionally `upload_file_to_github(repo=".github", path="assets/DAZ_Treasury_OnRamp_TechSpec.pdf", content_base64=<from generate_pdf artifact>)` so the team can link it. Then reply to Layon with a 2–3 line summary + the Monday-call alignment points (DAZ API endpoints, receipt format, reconciliation key = DAZ txn ref ↔ Edgar Request Transaction ID ↔ QR, ledger mapping, Paloma's wallet role).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15061] Keep going
+
+
+### 🤖 Autopilot
+
+Resuming — delivering the PDF both here and to GitHub, then I'll give you the summary for the TFTC team.
+
+
+### 🤖 Autopilot
+
+Both deliveries landed ✅
+
+**📄 PDF delivered**
+- **In this thread** (message above)
+- **GitHub (linkable):** `github.com/TrueSightDAO/.github/blob/main/assets/DAZ_Treasury_OnRamp_TechSpec.pdf`
+
+---
+
+## What the spec covers
+
+**1. System inventory (all open source, verified live)**
+- **GAS (Google Apps Scripts)** → `TrueSightDAO/tokenomics` → `google_app_scripts/` + `clasp_mirrors/<scriptId>/` (~50 projects: ledger processing, QR code web service, sales, asset receipts, repackaging, tree planting, treasury publisher)
+- **dao protocol (Edgar)** → `TrueSightDAO/dao_protocol` · live at `edgar.truesight.me` · event catalog at `GET /events-catalog` · Python client `truesight-dao-client`
+- **Agroverse** → `agroverse_shop_prod` (shop) · `agroverse-inventory` (store JSON) · `treasury-cache` (treasury snapshots) · `lineage-assets` (per-QR provenance)
+
+**2. Your receipt question — YES, receipts can be associated with on-ramp transactions.**
+The contract already supports it end-to-end: a signed event carries an `attachment` (the receipt PDF/image) that Edgar uploads to GitHub, and the payload carries the URL + `Request Transaction ID`. Recommended receipt fields per on-ramp: DAZ txn ID, date, amount, currency, source rail (PIX/Wise/stablecoin/Stripe), DAO event ID, QR code id. Optional hardening: hash into TrueChain (`SalesReceiptRegistry`) for immutability.
+
+**3. Requirements R1–R5**
+- R1 API surface & auth (DAZ endpoints, sandbox, auth model)
+- R2 Per-bag on-ramp: `[SALES EVENT]` per QR → DAZ deposit, with DAZ txn ref mirrored back
+- R3 Receipt association (above)
+- R4 Treasury/ledger mapping: recommend new `founderhaus` managed ledger → publishes into `treasury-cache`
+- R5 Tree fund: auto-sweep % per sale vs manual; Paloma gets fund-manager role on the DAZ wallet; QR flips to `ASSIGNED_TO_TREE` when planted
+
+**4. Six open questions for Monday's call** (DAZ API surface, on-ramp semantics, reconciliation key = DAZ txn ref ↔ Edgar Request Transaction ID ↔ QR, ledger mapping, tree-fund mechanics, cadence)
+
+---
+
+## Ready-to-forward message for Layon/Breno
+
+> Hi Layon, Breno — thanks, Monday works. We've put together a tech spec doc covering our open-source stack (Google Apps Scripts in `TrueSightDAO/tokenomics`, dao protocol "Edgar" at `edgar.truesight.me`, Agroverse QR + treasury repos) and the integration requirements for on-ramping the 100 FounderHaus Farm QR bags into our DAZ treasury — including receipt association per on-ramp transaction and the tree-fund flow for Paloma.
+> **Spec:** https://github.com/TrueSightDAO/.github/blob/main/assets/DAZ_Treasury_OnRamp_TechSpec.pdf
+> The 6 open questions on the last pages are the exact things we want to align on the call. What time Monday suits you?
+
+Want me to post that into the thread, or adjust anything first?
 
