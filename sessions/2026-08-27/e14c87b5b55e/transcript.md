@@ -142,11 +142,13 @@ Let me quickly verify the current treasury snapshot shape and the FounderHaus la
 ### 🤖 Autopilot
 
 I now have the full picture. Let me verify the exact repo for the Edgar server vs client before I commit the spec to paper (the README naming is slightly confusing), then build the PDF.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the complete picture — GAS locations, Edgar (dao protocol) contracts, Agroverse QR/treasury mechanics, the SunMint tree-funding flow, and the DAZ (Tools for the Commons) context. Let me assemble the tech-spec PDF.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -323,6 +325,41 @@ Done ✅
 Submitted as a `[CONTRIBUTOR ADD EVENT]` — success confirmed. He's now in the DAO registry alongside the other partners, so any future contributions or check-ins from him can be logged against his identity.
 
 Anything else you want logged — e.g. Breno (breno@toolsforthecommons.com) and Paloma (paloma@founderhaus.club) too? They're both already active in this thread.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+Layon spent 30 minutes helping us pack bags of cacao tea during the startup summit in Florianopolis and doing translation
+
+[Attachment auto-processed: **ae7ea4c2215344da8140630c2a410c97.jpg**]
+- Type: Image (OCR confidence: 77.9%, quality: good)
+
+Extracted text:
+```
+£185 Agroverse Dao Single-estate ceremonial cacad from praalan family farms, QR-traced from free to bar, Every bag plants trees and funds restoration of 10,000 hectares of Amazon rainforest, Come taste regenerative 7 a farming — and trace it yourself.
+```
+
+
+### 🤖 Autopilot
+
+Done ✅
+
+**Layon's contribution logged:**
+- **Contributor:** Layon Costa (layon@toolsforthecommons.com)
+- **Type:** Time (Minutes)
+- **Amount:** 30 minutes
+- **Description:** Helped pack bags of cacao tea during the Startup Summit in Florianopolis + translation support
+- **Evidence:** The cacao bag photo you attached (Agroverse DAO single-estate ceremonial cacao — QR-traced, plants trees, funds restoration of 10,000 ha Amazon rainforest)
+
+Submitted as a `[CONTRIBUTION EVENT]` — success confirmed. That's now on his contributor record (30 min + his onboarding as a contributor).
+
+The image OCR read the bag label — looks like the standard Agroverse DAO ceremonial cacao bag: "£185 Agroverse Dao Single-estate ceremonial cacao from Praalan family farms, QR-traced from tree to bar, every bag plants trees and funds restoration of 10,000 hectares of Amazon rainforest. Come taste regenerative farming — and trace it yourself."
+
+Want me to keep the TDG at 0 for this, or award Layon TDG for the time (since it was hands-on contribution work)?
 
 ———
 **✅ Done this turn — actions taken:**
