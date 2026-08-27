@@ -644,51 +644,61 @@ Confirmed: the 2 collection errors are **pre-existing on clean main** (fail even
 ### 🤖 Autopilot
 
 The 4 failures in `test_post_repackaging_cleanup.py` look pre-existing (CLI tests, unrelated to my change) — let me verify against clean main to be certain, and see the ruff errors (some may be pre-existing in those files).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 4 `post_repackaging_cleanup` failures are confirmed **pre-existing on clean main** (unrelated CLI tests). For ruff — I need to distinguish pre-existing errors in the file vs ones my patch introduced. Let me check which specific rules/lines are flagged and compare with clean main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me compare precisely: which of these ruff errors are pre-existing on clean main vs new from my patch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean main has **7 ruff errors** in these files (2× I001 import-sort + 5× BLE001 blind-except — all pre-existing, untouched areas). My patch adds **1 new BLE001** (the `_stripe_get` helper's `except Exception`) plus the same pre-existing import-sort issues. Per the rule, my *new* code must be clean — so I'll fix the `_stripe_get` helper to use a specific exception and auto-fix the pre-existing I001 import sorting (mechanical, safe, improves the files). Then final full check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean now: **0 new ruff errors** (the 5 remaining BLE001 are pre-existing, untouched lines), my files formatted, **11/11 QR tests pass**. Let me run the whole suite once more (minus the 3 pre-existing-broken files) to confirm no regression, then review the final diff and push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is noisy — `ruff format` reflowed the whole file (the repo doesn't enforce format, so that's churn I shouldn't introduce). Let me redo surgically: restore originals, apply only the logic changes, keep the new test clean.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Surgical diff is clean now (+75/−9). Let me verify the helper's exception handling is the narrowed version (my patch script may have the broad `except Exception`), then run the complete mandatory suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Helper exception is now narrowed. The remaining 7 ruff errors + format flags — let me confirm they're all pre-existing on clean main (the repo's original files were never ruff-format clean), so my patch adds zero new violations.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: **identical 7 ruff errors on clean main and patched** — my patch adds **zero** new lint/format violations (all 7 are pre-existing blind-excepts + import-sorts in untouched code). All tests pass. Now pushing the PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Let me verify the pushed PR's tests pass against the actual pushed commit (the tool applies edits to a fresh clone — I should re-run the suite against the pushed state to be safe, since the local box may differ from what got pushed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -743,6 +753,7 @@ The ledger writer (`mark_sold_and_record`) takes net/fee/total separately and bo
 ### 🤖 Autopilot
 
 Gary gave the explicit go — merging PR #147 and deploying. Let me merge and inspect the deploy setup in parallel.
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -887,4 +898,52 @@ Session IDs pulled live from Stripe (matched by `metadata.qr_code`), then re-tri
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'cd /home/ubuntu/da; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'sudo systemctl res; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'sed -n "85,150p" /
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] [Handoff context — this Telegram topic (thread 15074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go
+
+
+### 🤖 Autopilot
+
+"Go" — executing the follow-ups: sweep Stripe for any other paid-but-unrecorded sessions, and clean the dao_protocol disk. Running both investigations in parallel.
+
+
+### 🤖 Autopilot
+
+Both follow-ups complete. Quick final health check to confirm the service is still happy after the disk cleanup.
+
+
+### 🤖 Autopilot
+
+✅ **All follow-ups done — service healthy (ping 200, version `df83d74`).**
+
+## 1. Stripe sweep — NO other unrecorded sales
+Scanned **all complete checkout sessions in the last 14 days**: exactly **7** — the same 7 we already reconciled. No other paid-but-unrecorded sessions exist. (Each $5.00, all emails captured, all matched to `metadata.qr_code`.) The incident was fully contained to this morning's batch.
+
+## 2. Disk cleanup — 99% → 60% full
+| | Before | After |
+|---|---|---|
+| Used | 7.5G | 4.6G |
+| Free | **146M (99%)** | **3.1G (60%)** |
+
+Freed ~2.9G: `/tmp/test-partners` (729M) removed, pip cache purged (278 files, 2.1G), apt cache cleaned (132M). Service verified healthy post-cleanup.
+
+## 3. Remaining item (needs your call, not a command)
+**Customer reassurance email** — the 7 buyers paid and saw an error page; they may think the purchase failed. I can draft a short confirmation email ("your purchase went through, tree planting pledge confirmed, here's your QR link") — but sending requires your explicit approval.
+
+## Final state
+- ✅ Bug fixed (PR #147 merged + deployed, version `df83d74` live)
+- ✅ 7 sales reconciled, QRs SOLD, emails linked, fees ($0.52/sale) accounted — $31.36 net booked
+- ✅ No other unrecorded sessions (verified via full 14-day sweep)
+- ✅ Disk healthy (60% free)
+
+**RESUME HERE →** awaiting your decision on the customer reassurance email (draft on request). Everything else from the incident is closed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'cd /home/ubuntu/da; ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'echo "===DISK BEFO
 
