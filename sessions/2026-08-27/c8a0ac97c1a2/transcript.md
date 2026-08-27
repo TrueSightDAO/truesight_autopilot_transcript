@@ -25,6 +25,26 @@ Extracted text:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: scan_qr_from_file, search_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Here's what's in the file, Gary:
 
 **Pix Transfer Receipt — R$ 100,00** (screenshot from BCO RENDIMENTO S.A.)
@@ -61,6 +81,11 @@ I haven't submitted anything to the ledger — let me know how you'd like to cla
 [Telegram context: chat_id=-1003919341801, thread_id=15135] Convert amount to USD based on current exchange rate
 
 Report that contributor AGL15 contributed that USD amount as a contribution
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: web_search, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -125,4 +150,151 @@ Want me to also attach the receipt image to the submission, or submit the CAPITA
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15135] File expense report for this amount deducted from usd balance under my management under the AGL15 Ledger
+
+
+### 🤖 Autopilot
+
+Gary, before I file this expense, let me pull the AGL15 ledger context and the expense-reporting workflow so I deduct from the right place and use the correct event type.
+
+
+### 🤖 Autopilot
+
+Let me read the expense reporting plan — that's the canonical SOP for this.
+
+
+### 🤖 Autopilot
+
+Let me pull the exact expense event schema and confirm the receipt file is on disk.
+
+
+### 🤖 Autopilot
+
+The attachments dir is large — let me find the exact receipt file (cb7599774e99465cbeffc5ca2c634e0a.jpg).
+
+
+### 🤖 Autopilot
+
+Receipt file confirmed on disk. Now let me verify how the GAS expense parser handles `Target Ledger` values — the SOP says `offchain`, but you're explicitly directing the AGL15 ledger, so I want to confirm AGL15 is a valid target before submitting.
+
+
+### 🤖 Autopilot
+
+Let me check the actual expense processing GAS script to see what Target Ledger values are supported (the SOP says `offchain`, but you've explicitly directed AGL15 — I need to confirm that's a valid target).
+
+
+### 🤖 Autopilot
+
+Let me look at the expense processing GAS script to see how Target Ledger is handled — specifically whether AGL15 is a supported target.
+
+
+### 🤖 Autopilot
+
+Let me look at the expense processing script directly — the key question is what `Target Ledger` values the GAS parser accepts (SOP says `offchain`; governor says AGL15).
+
+
+### 🤖 Autopilot
+
+Let me find the actual expense processing script that parses `[DAO Inventory Expense Event]` payloads to see how `Target Ledger` is validated.
+
+
+### 🤖 Autopilot
+
+The file is large — let me search it for the Target Ledger handling logic.
+
+
+### 🤖 Autopilot
+
+Let me search the script for the target ledger routing logic specifically.
+
+
+### 🤖 Autopilot
+
+The read keeps restarting from the top. Let me grep the local tokenomics checkout on the box for the target-ledger routing logic.
+
+
+### 🤖 Autopilot
+
+The script routes to managed AGL ledgers when Target Ledger is set (not `offchain`). Let me read the resolution logic in full to confirm AGL15 works.
+
+
+### 🤖 Autopilot
+
+The GAS parser routes to managed AGL ledgers when `Target Ledger` is set to a registered ledger name (resolved via Shipment Ledger Listing). Let me confirm AGL15 is registered there and check its sheet structure before submitting.
+
+
+### 🤖 Autopilot
+
+The Shipment Ledger Listing excerpt shows AGL5/6/9 but not AGL15 — let me confirm AGL15 is registered and find its tab name.
+
+
+### 🤖 Autopilot
+
+AGL15 is registered in Shipment Ledger Listing. Let me get its ledger URL/sheet name so the routing resolves correctly.
+
+
+### 🤖 Autopilot
+
+AGL15 is at row 17 in the listing — let me read its full row for the ledger URL and sheet name.
+
+
+### 🤖 Autopilot
+
+AGL15 resolves to spreadsheet `1tXgDss-…` with gid 2133986329. Per the GAS code, managed ledgers use a **Transactions** tab — let me verify its structure and current balance.
+
+
+### 🤖 Autopilot
+
+AGL15's ledger structure is confirmed — this matches the exact pattern of prior expense rows (Target Ledger: AGL15, negative USD amounts under "Assets"). Now I'll file the expense. First the receipt upload (so it's preserved on GitHub), then the expense event itself:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+I'm at the turn limit — stopping tool calls and converging with a clean handoff.
+
+## Status summary
+
+**✅ Done this session:**
+1. **Receipt analyzed** — Pix transfer R$ 100,00 (27/08/2026, Zhiwen Teh → 99 TECNOLOGIA LTDA, E2E `E68900810202608271821h6c5KGUO8hA`, ref 567117381). Converted at **5.1630 BRL/USD → $19.37 USD**.
+2. **CONTRIBUTION EVENT submitted** — credited **AGL15** with **$19.37 USD** (Type: USD, per your instruction).
+3. **Verified AGL15 ledger mechanics** — AGL15 is registered in Shipment Ledger Listing (row 17 → `1tXgDss-…`, gid 2133986329, **Transactions** tab). The GAS parser (`tdg_expenses_processing.js` in tokenomics) routes `Target Ledger: AGL15` to that tab with **negative USD amounts, Type: Assets** — exact precedent rows exist (AAA roadside $116.50, tolls $61.36, expo parking $25 ×2).
+4. **Receipt uploaded** → `https://github.com/TrueSightDAO/.github/blob/main/assets/expense_20260827_gary_teh_pix_99_tecnologia.jpg`
+
+**⛔ Still pending (next turn):** the **[DAO Inventory Expense Event]** itself has **NOT yet been submitted** — the deduction hasn't landed in the AGL15 Transactions tab.
+
+---
+
+## RESUME HERE — submit the expense event
+
+Payload to submit via `submit_contribution(event_name="DAO Inventory Expense Event")` with fields exactly as the GAS parser expects (order-independent, but these canonical labels):
+
+```
+- DAO Member Name: Gary Teh
+- Target Ledger: AGL15
+- Latitude: NA
+- Longitude: NA
+- Inventory Type: USD
+- Inventory Quantity: 19.37
+- Description: Pix payment to 99 TECNOLOGIA LTDA (BTG Pactual) 27/08/2026 R$100,00 = USD 19.37 @ 5.1630 — mobility/operational expense under AGL15 (E2E E68900810202608271821h6c5KGUO8hA, ref 567117381)
+- Attached Filename: expense_20260827_gary_teh_pix_99_tecnologia.jpg
+- Destination Expense File Location: https://github.com/TrueSightDAO/.github/blob/main/assets/expense_20260827_gary_teh_pix_99_tecnologia.jpg
+- Submission Source: telegram
+```
+
+Then (2nd step, if not auto-fired): trigger GAS `parseAndProcessTelegramLogs` (deployment `AKfycbwYBlFigSSPJKkI-F2T3dSsdLnvvBi2SCGF1z2y1k95YzA5HBrJVyMo6InTA9Fud2bOEw`), then verify a `-19.37 USD / Assets` row appears in the AGL15 Transactions tab (spreadsheet `1tXgDss-AAdAFgBWVcW4ESRzRTodRmXyp7JxwBb0A-fE`).
+
+**Sequencing note:** the CONTRIBUTION (+$19.37, inbound credit) and this EXPENSE (−$19.37, outbound deduction) net to zero — consistent with "contributed then spent." If you intended only the deduction, I can flag the contribution for reversal; say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ls -la /tmp/tg_attachments/cb7599774e99465cbeffc5ca2c634e0a.jpg 2>/dev/null && file /tmp/tg_attachments/cb7599774e99465cbeffc5ca2c634e0a.jpg; cd /home/ubuntu && ls -d tokenomics 2>/dev/null; find / -maxdepth 4 -type d -name "tokenomics" 2>/dev/null | head -5; cd /home/ubuntu/tokenomics 2>/dev/null && grep -rn "targetLedger\|Target Ledger" google_app_scripts/19Wag9x-sjbLVgIsPh2vj90ZG7Rgq2iGaVOomAeA; …(+1 more)
 
