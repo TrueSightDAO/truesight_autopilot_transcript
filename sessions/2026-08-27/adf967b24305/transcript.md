@@ -280,56 +280,67 @@ Paired contribution submitted. Now the real asset receipt (100 units, Fund Handl
 ### 🤖 Autopilot
 
 Both test events submitted. Now triggering the GAS processing run (as Edgar's WebhookTriggerWorker would) and then verifying the ledger.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Processing succeeded — `processed:1`. `currencies_added:[]` is suspicious for a brand-new currency name, so let me verify the actual ledger state directly: audit row, offchain leg (quantity), and Currencies (unit cost).
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Processing confirmed: **offchain row 4178 has quantity `100.00000000`** ✓ and audit shows the new OK row. Two things to verify/finish: (a) the Currencies row unit cost (0.0581), (b) why the OK path double-appends the audit row (pre-existing quirk seen on Paloma's rows too). Checking both.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Offchain row 4178 shows **quantity `100.00000000`** ✓ and audit shows the OK row (twice — a pre-existing double-append race from concurrent webhook triggers, seen identically on Paloma's rows; ledger itself written once). Now the critical last check — the Currencies unit cost (expect 0.0581 = 5.81/100). Let me locate the row.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Currencies row for the QA test shows **unit cost = 100** — NOT the expected 0.0581. The offchain quantity leg (100 ✓) and anchored filter (zombie gone ✓) work, but the unit-cost derivation did **not** produce 0.0581. This needs honest diagnosis, not a happy report. Investigating: whether my paired contribution actually appeared in the log, whether the scanner's paired-cost lookup matched it, and what the code actually does.
+[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the likely root cause. The pairing function `parseContributionFields_` matches label `'contributors'` exactly — but Edgar's rendered text says **`Contributor(s)`** (with parens), so `f.contributor` stays null, pairing silently fails, and the code falls back to `amount` (100) as unit cost. Let me confirm the exact rendered label from the live log rows I just created.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: Edgar's rendered contribution rows say **`Contributor(s):`** (with parens), while `parseContributionFields_` matches label `contributors` exactly — so `f.contributor` never populates, pairing fails, and unit cost falls back to `amount` (100). This is a **real latent bug in #411's pairing logic** that my live test exposed. Since Currencies already has the correct `0.0581` rows and my test's unit cost is now wrong (100), I'll fix the code, redeploy, and use the paired-cost path to prove 0.0581 end-to-end. Fixing now.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #431 opened with the fix. Now — this is the destructive-ish cleanup step: I need to remove the wrong-100 Currencies row and the two wrong offchain/audit rows from my QA test so the redeploy+retest is clean. Let me first inspect the test rows I created (Currencies row 121, offchain 4178, audit rows 20–21) and confirm before touching.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit/offchain rows from test 1 are confirmed (offchain 4178 quantity=100 ✓ correct; only the Currencies unit cost=100 is wrong). The fix is in PR #431. Now: syntax-check the fix, then merge it (the escalation authorizes this fix), then redeploy and re-test with a fresh test pair.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Node 22 rejects the `.gs` extension for `--check`. Copying to `.js` first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Syntax OK, fix confirmed (line 328: `.replace(/[()]/g, '')`). Merging PR #431 (the escalation authorizes this fix — it's required to make the test pass), then redeploying.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -388,6 +399,11 @@ Deployment @9 **is live and serving the fixed code** (quantity ✓, zombie ✓).
 [Telegram context: chat_id=-1003919341801, thread_id=14278] [Handoff context — this Telegram topic (thread 14278) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
 go
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, check_handoffs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -499,4 +515,28 @@ tokenomics main = `521d02b` (#431 merged) — **explicitly verified the merged f
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/tokenomics && git fetch origin -q && git reset --hard origin/main -q && echo "===HEAD===" && git log --oneline -3 && echo "=; cd /home/ubuntu/tokenomics && cp google_app_scripts/asset_receipt_ingest/Code.gs google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2G; cd /home/ubuntu/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && echo "===NEW VERSION===" && clasp; …(+1 more)
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] Merge 431
+
+
+### 🤖 Autopilot
+
+Let me check the current state of PR #431 — I believe it was already merged (sha `521d02b` is in main), but let me verify before doing anything.
+
+
+### 🤖 Autopilot
+
+PR #431 is **already merged** — done earlier in this escalation.
+
+- **PR #431** `fix(asset-receipt-ingest): normalize 'Contributor(s)' label in paired-contribution unit cost`
+- **State:** closed / **merged 2026-08-27T12:18:51 UTC**, sha `521d02b` — now HEAD of tokenomics main (confirmed in the last deploy: `521d02b … (#431)` at the top of `git log`).
+
+And the merged fix is already **live and verified**:
+- Pushed to GAS → version 10 → deployment `AKfycbzcXBXYKmKiYg…` redeployed **@10** (the one Edgar calls)
+- Real test receipt → Currencies unit cost **0.0581** ✓, offchain quantity **100** ✓, zombie row silent ✓
+
+Nothing further to merge — #431 is in main and serving traffic. Anything else you'd like me to pick up? (Options: clean up the QA test rows 4178/audit/test-Currencies, or look at the still-open #428/#426/#364.)
 
