@@ -120,6 +120,7 @@ Now the picture is getting clearer. DNS for edgar.truesight.me → 54.211.179.12
 ### 🤖 Autopilot
 
 Found it. The seni_ror host (54.211.179.126, hostname ip-172-31-19-78) — which serves edgar.truesight.me via its own nginx — has **7× HTTP 500 and 2× HTTP 504 responses TODAY**. Let me see the full edgar.conf and the exact failing requests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -127,11 +128,18 @@ Found it. The seni_ror host (54.211.179.126, hostname ip-172-31-19-78) — which
 The smoking gun: **7× HTTP 500 today on `GET /agroverse/qr-code-check`** — exactly the checkout QR-code path customers hit this morning (all `2024OSCAR_CT_20260820_*` codes, with `cs_live_*` Stripe-style session ids). The 504s are just Googlebot noise on `/`.
 
 Let me find the server-side traceback in the dao_protocol journal and look at the endpoint code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nginx on the seni_ror host shows the real failures: **7× HTTP 500 today on `/agroverse/qr-code-check`** (the checkout QR path, all `2024OSCAR_CT_20260820_*` bags with `cs_live_*` Stripe sessions) plus 2× 504 on `/` from Googlebot. The 21-byte body is likely nginx/uvicorn plain-text. Now let me find the endpoint code and why it 500s.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,4 +387,50 @@ Want me to (1) open the `_reconcile` fix PR, and (2) draft the 7 retroactive [SA
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'KEY=$(sudo grep -E
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15074] I believe the QR code data can be found via the Stripe calls too
+
+
+### 🤖 Autopilot
+
+Right — the QR code rides in the Stripe session metadata, so everything needed for reconciliation is recoverable from Stripe alone. Let me pull the full metadata + customer details for all 7 sessions to confirm.
+
+
+### 🤖 Autopilot
+
+Confirmed — **everything needed for reconciliation lives on Stripe**, exactly as you said. Each checkout session carries the full dataset in its own fields:
+
+## Full data recovered from Stripe (all 7 sessions, read-only API)
+
+| QR code (from `metadata.qr_code`) | Email (from `customer_details.email`) | Customer name | Customer ID | Payment Intent | Amount (gross) |
+|---|---|---|---|---|---|
+| 2024OSCAR_CT_20260820_92 | rodrigo@sheerme.com | Rodrigo Almeida | cus_V9NQ1RRPuYe5ZO | pi_3U94fS… | $5.00 |
+| 2024OSCAR_CT_20260820_52 | louise_keeeel@hotmail.com | Kelsei Louise Bueno Diniz | cus_V9O7YfivJkYXap | pi_3U95LD… | $5.00 |
+| 2024OSCAR_CT_20260820_56 | carolfitti@hotmail.com | Anna Carolina Fittipaldi | cus_V9OExgscMdRJYD | pi_3U95SV… | $5.00 |
+| 2024OSCAR_CT_20260820_6 | kkzamai@gmail.com | Kristiany Kukert Zamai | cus_V9ObM1g4d9AVcy | pi_3U95oF… | $5.00 |
+| 2024OSCAR_CT_20260820_41 | jg@spreadzz.com | Joao Cruz | cus_V9OmzXZD6qxAOW | pi_3U95yy… | $5.00 |
+| 2024OSCAR_CT_20260820_65 | contato@diego.eti.br | Diego Schiavenin | cus_V9OsSBHUgkI2BX | pi_3U965D… | $5.00 |
+| 2024OSCAR_CT_20260820_31 | layonjc@gmail.com | Layon Jorge Costa | cus_V9PJicNUkh2MmH | pi_3U96Ue… | $5.00 |
+
+**Key finding:** the `metadata` object on every session carries **`{"product": "FounderHaus Tree Planting Pledge - QR Code", "qr_code": "2024OSCAR_CT_20260820_XX"}`** — i.e. the QR code is stamped onto the Stripe session at creation time (`_start_checkout` writes it via `product_data.metadata`). So the QR → email → amount → customer link is 100% recoverable from Stripe alone, independent of the ledger.
+
+## What this means
+
+1. **The retroactive reconciliation is fully possible** — for each session we have QR + email + name + amount + payment_intent, so the 7 [SALES EVENT] records can be built entirely from Stripe data. The bug didn't destroy anything; it just broke the *link-writing step*.
+2. **The ledger is still the gap** — QR lookups still show `MINTED`/no email, confirming the crash happened before `mark_sold_and_record()` ran. So these 7 are "paid on Stripe, unsold in ledger."
+
+## Proposed next steps (awaiting your go)
+
+- **(1) Fix PR** in `dao_protocol`: patch `_reconcile` (the `KeyError: 'get'` at line 133 — likely an unexpanded Stripe object or `.get()` on a `StripeObject`), add expand params so `payment_intent.charges.data[0].balance_transaction` + `customer_details` come back populated. Test → PR → report.
+- **(2) Retroactive ledger recording** — draft 7 [SALES EVENT] submissions with the Stripe-verified data above (QR, email, $5.00, session_id) for your approval before submitting.
+- **(3) Optional** — sweep Stripe for *any other* completed sessions today (not just the 7 that 500'd) to catch every paid-but-unrecorded sale.
+
+Which do you want me to proceed with?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -i ~/.ssh/id_ed25519_truesight_autopilot ubuntu@98.93.94.86 'KEY=$(sudo grep -E
 
