@@ -4036,6 +4036,7 @@ The cols patch **did** apply (the check string I used was the old-style `"update
 ### 🤖 Autopilot
 
 The mapping resolves correctly in the debug (c_time→16, FounderHaus row[16] has the timestamp), yet `planted_at` is still None. Let me trace the actual `load_trees` from the builder file directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4043,11 +4044,13 @@ The mapping resolves correctly in the debug (c_time→16, FounderHaus row[16] ha
 The builder **is correct** — FounderHaus now carries `planted_at: '2026-08-21T17:51:31.626Z'`. The earlier CLI runs returned None because `get_sheet()` uses `GOOGLE_SERVICE_ACCOUNT_JSON` from env — and my heredoc run exported it, but the earlier `/tmp/builder.py` runs were **before the cols patch saved**. Now it works. The `469027268` row has `planted_at: None` legitimately — those older rows have "Status date" (20250711) but no "Tree Planting Time" value (col 17 empty) — they predate the planting-time column.
 
 Now let me upload the fixed builder + regenerated index to the `sunmint` repo, then add the overdue-status UI to the monitor page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The builder is correct. Now uploading the fixed builder + regenerated index to the `sunmint` repo, then building the overdue-status UI in the monitor page:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4204,4 +4207,63 @@ Say the word on the proximity/governor design (or "proceed with 200 m + new even
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o mon8.h; cd /tmp && python3 << 'PYEOF' p = '/tmp/mon8.html' d = open(p, encoding='utf-8').read() orig = d # Swap: video viewport ABOVE the hint, in b
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] when I select a specific tree, the URL should reflect that https://beta.sunmint.truesight.me/monitor-tree-growth/
+
+So when I refresh the URL, that tree's record shows up
+
+
+### 🤖 Autopilot
+
+Deep-linking is a good call — selected tree reflected in the URL, and a refresh restores that tree's record. Let me look at the init flow, manual-ID handling, and selection code to wire it cleanly.
+
+
+### 🤖 Autopilot
+
+Let me see the window.onload block and the manual-ID handling (how manual input participates in measurement) to wire deep-linking fully.
+
+
+### 🤖 Autopilot
+
+The flow is clear. I'll wire deep-linking: `?tree=<id>` in the URL on selection, restored on load (matching by `tree_id` or `qr_code`). Applying the edits:
+
+
+### 🤖 Autopilot
+
+The script asserted before writing (atomic — nothing changed; the anchor for edit 3 overlapped edit 2's modification). Let me redo with the two overlapping edits combined into one replacement:
+
+
+### 🤖 Autopilot
+
+All edits applied and validated (JS syntax OK, 20/20 divs, setTreeParam wired in 5 places). Uploading:
+
+
+### 🤖 Autopilot
+
+Done — shipped.
+
+## ✅ Deep-linking for the selected tree
+
+**Committed to `sunmint_beta/main` (`11fdb4f9`):**
+
+- **Selecting a tree updates the URL** → `https://beta.sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487` (via `history.replaceState`, no reload)
+- **Manual Tree ID input also updates the URL** (typing `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → same param)
+- **On refresh/load, the `?tree=` param is restored**: matches by `tree_id` **or** `qr_code` → if it's in the dropdown it's re-selected and the detail panel renders; if not (e.g. a manual-only ID), the manual field is pre-filled and the record is reachable
+- Clearing the selection removes the param
+
+So sharing `?tree=<id>` or refreshing now lands on that tree's record. Validated: JS syntax OK, 20/20 divs.
+
+## 📌 Open threads
+1. **Proximity gate + governor override + invalid flag** — waiting on your two calls: threshold (proposed 200 m) + invalid mechanism (new signed event type vs flag)
+2. `TGM_GITHUB_TOKEN` Script Property (GAS photo-mirror)
+3. UAT → `sync_beta_to_prod(sunmint_prod)`
+
+Next up whenever you're ready: the proximity/governor build (or anything else you spot on the beta page).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o mon9.h; cd /tmp && echo "=== window.onload block ===" && sed -n '833,880p' mon9.html && echo "=== manual ID + getSelectedTreeId ===" && sed -n '745,; cd /tmp && python3 << 'PYEOF' p = '/tmp/mon9.html' d = open(p, encoding='utf-8').read() # --- 1. URL param helper + onTreeSelectChange updat
 
