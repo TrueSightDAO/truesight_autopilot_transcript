@@ -4630,3 +4630,31 @@ So it wasn't intuition or access to anything hidden — just the flight receipt 
 
 Want me to keep the Sep 10–11 flight + the whole Bahia leg visible on your calendar (blocked as placeholder), so future reminders can anchor to it instead of me re-deriving it each time?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Yeah, cool. That's a great idea. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Adding the flight + Bahia leg placeholder to your calendar now.
+
+
+### 🤖 Autopilot
+
+Done! ✅ Your calendar now has the full Bahia leg:
+
+**✈️ Flight — Altamira → Ilhéus (Azul 4463)**
+- Sep 10 (10:00) → Sep 11 (12:00), with the Expedia itinerary + traveler + cost in the description
+
+**🇧🇷 Bahia leg placeholder block — Sep 11 → 16**
+- Color-coded, with all the anchored items listed inside: Interbahia follow-up (Sep 12), Itacaré farm visit (Sep 13–14), and open items (cacao farms, processing, FDA compliance paperwork)
+- Link: google.com/calendar/event?eid=ZXByY3RzaWswaGRsZmhyNWlyOGJmaWxxZ2MgZ2FyeWpvYkBhZ3JvdmVyc2Uuc2hvcA
+
+Now everything anchors to the calendar — future reminders can reference the flight arrival and the leg block instead of me re-deriving from receipts each time. When you lock in the rest of the Bahia schedule (which farms, which days), tell me and I'll slot them in. 🇧🇷🍫
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json, datetime from zoneinfo import ZoneInfo from google.oauth2.credenti
+
