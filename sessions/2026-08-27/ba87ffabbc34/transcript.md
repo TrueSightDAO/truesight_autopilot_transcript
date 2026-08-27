@@ -4246,11 +4246,13 @@ Let me see the window.onload block and the manual-ID handling (how manual input 
 ### 🤖 Autopilot
 
 The flow is clear. I'll wire deep-linking: `?tree=<id>` in the URL on selection, restored on load (matching by `tree_id` or `qr_code`). Applying the edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script asserted before writing (atomic — nothing changed; the anchor for edit 3 overlapped edit 2's modification). Let me redo with the two overlapping edits combined into one replacement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4456,4 +4458,58 @@ One flag: fine-grained PATs are per-repo — if you'd rather use the org-level `
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== handler: token property key + mirror function ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomic
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] make sense: threshold (proposed 200 m)
+I think there is already an exsiting one for this isnt it see the tree to qr code linking dapp? invalid mechanism
+
+
+### 🤖 Autopilot
+
+Good leads — let me check whether the QR-linking flow already has an invalidation/status pattern I can reuse before inventing one.
+
+
+### 🤖 Autopilot
+
+You're right — the pattern already exists. Found it in the QR-linking flow:
+
+## The existing invalidation pattern (reuse this)
+
+**`[TREE PLANTING REJECT EVENT]`** — already implemented in `process_tree_planting_link.js`:
+- A **governor (or sentinel)** marks a NEW SunMint submission **INVALID** via `isGovernorByName_` / `isSentinelByName_` (line 477–489)
+- Explicitly: **no QR status change, no ledger booking, no owner email** — "an invalid submission must not..."
+- Outcomes recorded in the "Tree Planting Link" tracking tab (dedup key)
+
+So the DAO's established mechanism for "authorized operator marks a tree/submission invalid" is: **a dedicated signed REJECT event type, governor-gated, with no side effects beyond marking INVALID + tracking-tab log**. That's exactly the shape I proposed as option (a) — and it's **already the convention**, so I'll mirror it rather than invent.
+
+## My plan (mirroring the existing pattern)
+
+**Proximity gate (confirmed 200 m):**
+- Client: if selected tree's distance > **200 m** → "Send measurement" disabled + message ("You appear to be X km from this tree — measurements must be taken on-site"); GPS captured at submit; server re-checks
+- Server (GAS handler): re-compute haversine from submitted lat/lng vs tree coords → reject non-governor events beyond 200 m
+
+**Governor override + invalidation (mirroring `[TREE PLANTING REJECT EVENT]`):**
+- **New signed event: `[TREE GROWTH REJECT EVENT]`** (mirror of the planting REJECT) — governor/sentinel-gated, marks the tree `status: INVALID` in the tracking tab + index, **no ledger booking, no other side effects**
+- Governor detection: `isGovernorByName_`/`isSentinelByName_` server-side (already verbatim-copied in the GAS project — I saw the comment: "GAS clasp projects can't share code across mirrors, so this is a verbatim copy"); client shows the "Mark invalid" button only when the linked email/signature resolves to a governor (via `governors.json` in the sunmint repo, same rebuild pattern)
+- INVALID trees: grayed out in the dropdown, can't be measured (and the server rejects measurements on INVALID trees)
+
+**Build order** (when you give the go):
+1. `governors.json` generator + rebuild workflow addition (sunmint repo)
+2. Client: proximity gate (200 m) + governor-only "Mark invalid" button (i18n pt/en)
+3. GAS: `[TREE GROWTH REJECT EVENT]` handling — `isGovernorByName_`/`isSentinelByName_`, distance re-check, INVALID marking, tracking log (mirrors the planting REJECT path)
+4. Index: INVALID status → dropdown gray-out + no-measure rule
+
+**One decision for you:** should the new event be named **`[TREE GROWTH REJECT EVENT]`** (mirror) or **`[TREE INVALIDATION EVENT]`**? The planting one is "REJECT", so I'd mirror with "REJECT" for consistency — but "INVALIDATION" is more descriptive for a standing tree (vs a one-time submission). Your call, then I build.
+
+Also confirming: **200 m threshold accepted** (your "make sense" + "proposed 200 m"). 👍
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== 1. Search tokenomics GAS for INVALID/status patterns in tree/QR flows ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/token; cd /tmp && echo "=== 2. dapp_beta: tree planting page — any invalid/mark status? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/r
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== 1. Search tokenomics GAS for INVALID/status patterns in tree/QR flows ===" && curl -s "https://raw.githubusercontent.co; cd /tmp && echo "=== 2. dapp_beta: tree planting page — any invalid/mark status? ===" && curl -s "https://raw.githubusercontent.com/TrueSigh
 
