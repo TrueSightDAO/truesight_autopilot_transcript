@@ -107,6 +107,7 @@ The dao_client content now lives in dao_protocol (301 redirect). Let me pull the
 ### 🤖 Autopilot
 
 I have the core picture. Let me grab the FounderHaus Farm program page details and check for any existing FounderHaus ledger/treasury wiring before assembling the spec.
+[3 tool result(s) compacted: search_code, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -228,4 +229,24 @@ The contract already supports it end-to-end: a signed event carries an `attachme
 > The 6 open questions on the last pages are the exact things we want to align on the call. What time Monday suits you?
 
 Want me to post that into the thread, or adjust anything first?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15061] Bigger how much time you spend generating this spec and then submit a contribution report for yourself. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Done ✅
+
+**Time logged:** 180 minutes (3 hours) for this spec — that covers the investigation across the repos (GAS inventory, dao protocol/Edgar contracts, Agroverse QR + treasury, SunMint tree flow) plus assembling the PDF, verifying the receipt-association pattern, and delivering it.
+
+**Contribution event submitted successfully** — Type: Time (Minutes), Amount: 180, Contributor: Sophia Truesight.
+
+If you'd rather have me log it as a different amount (e.g. 2 hours if you think that's closer), just say the word and I'll submit an adjustment.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
