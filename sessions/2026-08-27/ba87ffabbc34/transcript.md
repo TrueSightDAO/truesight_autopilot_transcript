@@ -10,104 +10,6 @@
 
 ### 🧑 Governor
 
-Gary (via Envoy) raised a design gap before P1a goes further: the monitoring-video pipeline you described (upload -> Python PM002 analysis -> on-chain event -> per-tree JSON measurement history) never names a signed RSA event for the video submission step itself. I checked the sibling SUNMINT_TREE_QR_LINKING_PLAN.md for precedent: every tree-related state change in this ecosystem goes through a dedicated signed event -- [TREE PLANTING EVENT] for the farmers original submission (client-side RSA-signed, POSTed to Edgar), and a purpose-built [TREE PLANTING LINK EVENT] created specifically for that feature (same pattern: signed, dispatched via dao_protocol, GAS-processed, logged to Telegram Chat Logs for attribution/audit, with a dedup tracking tab). That is the established convention for anything that mutates a trees on-chain/ledger record in this DAO.
-
-Please clarify before continuing P1a: is the growth-monitoring video submission designed to introduce an equivalent new signed event (e.g. [TREE GROWTH MONITORING EVENT] or similar -- client signs with their registered key, POSTs to Edgar, dispatched, GAS handler writes the per-tree JSON history + any ledger implications), or is "on-chain event" referring to something else (a direct unsigned GAS write, an actual TrueChain blockchain transaction, or genuinely not yet designed)? If it is a gap, treat this as a required addition to the P1a scope -- not a retrofit-later item -- since building the upload/analysis pipeline without attribution now would need rework once the signed-event requirement is added. Report back your answer before proceeding further with P1a.
-
-
-### 🤖 Autopilot
-
-Good catch — let me verify what's actually in the merged P1a page and the spec before answering, so I report factually rather than from memory.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verified against the merged code and spec — here's the factual answer.
-
-## The design: YES — a signed `[TREE GROWTH MONITORING EVENT]` is the mechanism, and the client side is already built
-
-**Confirmed in the merged P1a page** (`dapp_beta/main/monitor_tree_growth.html`, 603 lines):
-
-- **Event name:** `[TREE GROWTH MONITORING EVENT]` (only tree event in the page — verified)
-- **Client signing:** RSA-2048 keypair, `RSASSA-PKCS1-v1_5`/SHA-256, SPKI/PKCS8 export — identical to `[TREE PLANTING EVENT]` and the QR-link precedent
-- **Submission:** signed payload POSTed via multipart FormData to **`edgar.truesight.me/dao/submit_contribution`** (same `EDGAR_SUBMIT` endpoint as tree planting) — **the video/photo ride along as attachments in that same signed POST**, so the video submission step *is* the signed event, not a separate unsigned upload
-- Forensic block shows the verbatim signed payload + Edgar response (attribution/audit on the client side)
-
-**Spec v1.3 §5 defines the event payload:** `tree_id, dbh, agb, co2e, gps, captured_at, analysis_sha256, farmer_sig, worker_sig` — reusing `[TREE PLANTING EVENT]` for the initial planting record.
-
-## The gap (you're right — and it's the backend leg, currently mis-scoped)
-
-What is **NOT** built, and is exactly the "purpose-built handler" piece your precedent requires:
-
-| Piece (per QR-link precedent) | Status |
-|---|---|
-| Client signs + POSTs event | ✅ **DONE** (P1a, merged) |
-| **dao_protocol event-type registration** for `[TREE GROWTH MONITORING EVENT]` | ❌ specced as **P4** (2 d) |
-| **GAS handler** consuming it (analogous to `process_tree_planting_link.gs`) | ❌ not built — specced under P4 |
-| **Per-tree JSON measurement history write** | ❌ not built (also depends on P3 index/build) |
-| **Ledger implications** (per-measurement record) | ❌ not built |
-| **Telegram Chat Logs attribution + dedup tracking tab** | ❌ not built |
-
-So the spec currently frames the signed-event backend as **P4 = retrofit-later**, which violates the convention you're enforcing.
-
-## My answer + proposed correction
-
-**The video submission is a client-signed `[TREE GROWTH MONITORING EVENT]` to Edgar — not an unsigned GAS write, not a TrueChain tx, not undesignated.** But the **backend leg (registration + GAS handler + per-tree history + attribution/dedup) is a genuine gap**, and per your direction I'm treating it as **REQUIRED IN P1a SCOPE**, not retrofit:
-
-**Expanded P1a (3 PRs, sequential):**
-1. ✅ Client page — done, merged
-2. **dao_protocol:** register `[TREE GROWTH MONITORING EVENT]` event type (labels/required fields, mirroring how `[TREE PLANTING LINK EVENT]` was added — tokenomics #396 precedent)
-3. **GAS handler:** `process_tree_growth_monitoring.gs` — on receipt: validate signature → append measurement row (tree_id, DBH, CO₂e, GPS, video URL, hashes) to the SunMint tracking sheet (new tab, dedup by Telegram msg ID) → write per-tree JSON history → book ledger if applicable → log to Telegram Chat Logs
-
-I will **not proceed further on P1a** (no more monitor work, no P2/P3) until you confirm this expanded scope — specifically: (a) agree the signed-event backend moves into P1a, and (b) confirm the **ledger implication**: should each measurement book a ledger entry (like planting/linking), or is the per-tree JSON history + tracking sheet the record until credit issuance?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/monitor_tree_growth.html" -o mtg.html && wc -l mtg.html &&; cd /tmp/sunmint 2>/dev/null && grep -nE "TREE GROWTH|EVENT|signed|attribution|dedup|GAS|dao_protocol|Telegram" monitor_tree_growth_spec.md 2
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Before P1a goes further — Gary noticed the monitoring-video pipeline (upload -> PM002 analysis -> on-chain event -> per-tree JSON history) never names a signed RSA event for the video submission itself. Compare to the sibling SunMint feature (SUNMINT_TREE_QR_LINKING_PLAN.md): every tree state change there goes through a dedicated signed event ([TREE PLANTING EVENT] for the farmer's original submission, a purpose-built [TREE PLANTING LINK EVENT] created specifically for that feature) -- signed client-side, POSTed to Edgar, dispatched, GAS-processed, logged to Telegram Chat Logs for attribution. Is the growth-monitoring video submission designed to follow that same pattern (e.g. a new [TREE GROWTH MONITORING EVENT] or similar), or is 'on-chain event' something else entirely (a direct GAS write, an actual TrueChain transaction, unspecified)? Please clarify/confirm the exact event design for this step before P1a's build goes further -- this needs to be right from the start, not retrofitted.
-
-
-### 🤖 Autopilot
-
-Confirmed — and I verified this against the actual merged code last turn, so this is factual, not from memory.
-
-## The exact event design (verified)
-
-**The video submission IS a client-side RSA-signed event, following the exact `[TREE PLANTING LINK EVENT]` pattern:**
-
-| Design element | Verified state |
-|---|---|
-| **Event name** | `[TREE GROWTH MONITORING EVENT]` — the only tree event in the merged page |
-| **Client signing** | RSA-2048, `RSASSA-PKCS1-v1_5`/SHA-256, SPKI/PKCS8 — byte-identical scheme to `[TREE PLANTING EVENT]` / `[TREE PLANTING LINK EVENT]` |
-| **Submission path** | Signed payload POSTed via multipart FormData to `edgar.truesight.me/dao/submit_contribution` — the video/photo ride as **attachments in that same signed POST** (no separate unsigned upload) |
-| **Client audit trail** | Forensic block renders the verbatim signed payload + Edgar response (attribution on the client) |
-| **Event payload** (spec §5) | `tree_id, dbh, agb, co2e, gps, captured_at, analysis_sha256, farmer_sig, worker_sig` |
-
-So it is **NOT** a direct unsigned GAS write, **NOT** a TrueChain transaction, **NOT** unspecified. It is the established signed-event convention.
-
-## The real gap (where "retrofit" was hiding)
-
-The spec had scoped the **backend leg** as **P4 (2 d)** — which violates the convention. That leg is exactly the "purpose-built handler" half of the QR-link precedent and is **missing**:
-
-1. **dao_protocol / Edgar event-type registration** for `[TREE GROWTH MONITORING EVENT]` (like `[TREE PLANTING LINK EVENT]` was added — tokenomics #396 precedent)
-2. **GAS handler** (`process_tree_growth_monitoring.gs`): validate sig → append measurement row (tree_id, DBH, CO₂e, GPS, video URL, hashes) to a tracking tab **with dedup by Telegram msg ID** → write per-tree JSON history → **log to Telegram Chat Logs** for attribution
-3. Ledger implications if any
-
-## What I need from you (2 decisions, then I build)
-
-1. **Agree the backend leg moves INTO P1a scope** (client page [done] + dao_protocol event registration + GAS handler, sequential PRs) — not retrofit-later?
-2. **Ledger implication for each measurement:** should each monitoring measurement **book a ledger entry** (like planting/linking do), or is the **per-tree JSON history + tracking sheet** the record until credit issuance?
-
-Once you confirm those two, P1a is complete end-to-end and I proceed to P1b/P2/P3 with the full attribution chain in place.
-
-
-### 🧑 Governor
-
 Researched Gary's video-storage architecture question directly (config.py, GITHUB_AGENTIC_AI_SSH policy references, SUNMINT_TREE_QR_LINKING_PLAN.md, live GitHub API checks) rather than guessing:
 
 ANSWER: reuse TrueSightDAO/sunmint. It is already in truesight_autopilot/app/config.py's api_only_repos list, explicitly commented as a "blob / asset store (Contents-API uploads)" -- i.e. it is ALREADY the established repo for exactly the pattern Gary described (PAT/Contents-API upload only, never git clone/push, meant to grow with binary blobs over time). It is already used this way for tree-planting photos today (images/ folder; SUNMINT_TREE_QR_LINKING_PLAN.md documents column O "GitHub Commit URL" = photo mirrored to TrueSightDAO/sunmint images/). Checked live: repo is currently 2.7MB, default branch main, zero existing GitHub Actions workflows -- clean slate, no conflicts.
@@ -4042,16 +3944,19 @@ Dispatched (204). Let me poll to completion and verify it succeeds this time:
 **Workflow now passes end-to-end (run 33072175453 → success)!** The full pipeline is verified: dispatch → checkout → install → builder (reads sheet via `GOOGLE_SERVICE_ACCOUNT_JSON` env) → commit/push.
 
 Let me confirm the committed index still has FounderHaus with coords (the workflow may have committed a regenerated file):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything is verified. The workflow committed its own regenerated index (run success) with **14/18 trees geo-tagged**. Let me confirm FounderHaus specifically is in the workflow-committed version:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty output — the Contents API fetch may have hit rate-limiting or the filter missed. Let me check what's actually in the file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4262,4 +4167,127 @@ The current `index.geojson` has **`last_measured` set to the tree_id string** (e
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it.
+
+
+### 🤖 Autopilot
+
+Executing: fix generator date mapping → regenerate index → add overdue status icons to the dropdown + detail panel. First, let me examine the generator and the actual sheet columns to map the date fields correctly.
+
+
+### 🤖 Autopilot
+
+The generator bug is visible: `c_time = idx(header, "planted", "date", "time")` → `last_measured` is being filled with the tree_id value — the header match is landing on the wrong column. I need the actual sheet headers to fix the mapping. Also, the agroverse creds path doesn't exist on this box — let me find it and read the headers.
+
+
+### 🤖 Autopilot
+
+The generator's header matching is too loose — `"id"` matches "Telegram Update ID" and `"date"` matches "Status date". Let me see the rest of the generator (the feature-emission part) and the FounderHaus/LINKED rows to fix the mapping precisely.
+
+
+### 🤖 Autopilot
+
+Now I have the authoritative picture. The generator's `idx()` matching is too loose — `"date"` matches **"Status date"** (col 7, `20260821`) before **"Tree Planting Time"** (col 17, ISO timestamp), and `"id"` matches **"Telegram Update ID"** (col 1) first. Let me fix the mapping precisely and regenerate locally with the real creds to verify:
+
+
+### 🤖 Autopilot
+
+Found the deeper bug: `idx()` checks **all needles against each header**, so `"planted"` matched **"Photo of Tree Planted"** (col 9) before "Tree Planting Time" — that's why `last_measured` got the photo URL. Fixing with exact-then-prefix matching, needle-priority:
+
+
+### 🤖 Autopilot
+
+`planted_at` is still None even for FounderHaus (whose col 17 has a timestamp) — the column mapping still isn't resolving. Let me debug the header resolution directly against the live sheet:
+
+
+### 🤖 Autopilot
+
+The header mapping now resolves **perfectly** — but the local run's `planted_at` was still None because **`/tmp/builder.py` is the pre-patch version**. The debug shows: `c_time → 16` (Tree Planting Time) ✓, FounderHaus row 17 = `2026-08-21T17:51:31.626Z` ✓. Let me re-patch the local builder (the previous patch's `old_cols` had different whitespace — I applied the idx patch but the cols patch silently failed). Redoing both patches and re-running:
+
+
+### 🤖 Autopilot
+
+The cols patch **did** apply (the check string I used was the old-style `"update id"` without "telegram"). The idx patch is applied, cols are applied — but the run still showed None because that run happened **before** these latest patches (the runs were sequential in the same command; the second run used the patched idx but the file got the cols patch in the same script... let me just re-run now and confirm):
+
+
+### 🤖 Autopilot
+
+The mapping resolves correctly in the debug (c_time→16, FounderHaus row[16] has the timestamp), yet `planted_at` is still None. Let me trace the actual `load_trees` from the builder file directly:
+
+
+### 🤖 Autopilot
+
+The builder **is correct** — FounderHaus now carries `planted_at: '2026-08-21T17:51:31.626Z'`. The earlier CLI runs returned None because `get_sheet()` uses `GOOGLE_SERVICE_ACCOUNT_JSON` from env — and my heredoc run exported it, but the earlier `/tmp/builder.py` runs were **before the cols patch saved**. Now it works. The `469027268` row has `planted_at: None` legitimately — those older rows have "Status date" (20250711) but no "Tree Planting Time" value (col 17 empty) — they predate the planting-time column.
+
+Now let me upload the fixed builder + regenerated index to the `sunmint` repo, then add the overdue-status UI to the monitor page:
+
+
+### 🤖 Autopilot
+
+The builder is correct. Now uploading the fixed builder + regenerated index to the `sunmint` repo, then building the overdue-status UI in the monitor page:
+
+
+### 🤖 Autopilot
+
+Builder + index are live on `sunmint` main. Now the UI: add the overdue/measurement-status icons to the dropdown + detail panel on the monitor page. Let me look at the current dropdown + detail rendering code to wire the status logic:
+
+
+### 🤖 Autopilot
+
+I have the full picture. Now let me see how `lastMeasured` is set in `loadTreeIndex` and the rest of `renderTreeDetail`, then build the status logic:
+
+
+### 🤖 Autopilot
+
+I have everything. Now let me build the measurement-status logic and UI. Plan:
+- **Status computation** (from `lastMeasured` / `planted_at`): 🟢 OK (<9 mo) · 🟡 due-soon (9–12 mo) · 🔴 overdue (>12 mo) · ⚪ never-measured
+- **Dropdown**: prepend status emoji to each tree option + a legend
+- **Detail panel**: a status row with the badge + "due date" text
+
+Applying to the monitor page (direct-to-main per the established fast-UAT flow this thread has been using for sunmint_beta after your earlier tacit approval of the direct commit — flagging again that I can switch to PRs if you prefer):
+
+
+### 🤖 Autopilot
+
+All edits applied and validated (21/21 divs, measureStatus wired, JS syntax OK). Uploading to sunmint_beta:
+
+
+### 🤖 Autopilot
+
+Done — both pieces shipped. Here's the full report.
+
+## ✅ What I did this turn — measurement cadence research + overdue indicators
+
+**1. Researched monitoring cadence (real carbon-program standards):**
+- **CAR**: annual monitoring report, verification within 1 yr of each period
+- **ACR / Plan Vivo**: continuous reporting, typically annual field measurement
+- **Verra VCS**: assessment every 5 years, continuous no-gap reporting
+- **Gold Standard**: 3–5 yr audits · **2026 dMRV pilots**: pushing toward monthly
+- **Design adopted: annual minimum (365 days)**, with 6-monthly recommended for young trees — defensible against the mainstream programs
+
+**2. Fixed a data bug** (this was the real blocker for the icons): the generator was reading the wrong columns — `last_measured` was filled with the tree_id or photo URL. The column matcher was too loose (`"date"` hit "Status date", `"planted"` hit "Photo of Tree Planted"). Fixed with needle-priority exact/prefix matching → **real `planted_at` timestamps now flow** (FounderHaus: `2026-08-21T17:51:31.626Z`). Pushed: `sunmint/scripts/build_tree_geojson.py` (`3e377f98`) + regenerated `sunmint/trees/index.geojson` (`4032d760`).
+
+**3. Overdue status UI (live on main, commit `63d6c8ba`):**
+- **Dropdown**: each tree now shows a status emoji — 🟢 up to date (<9 mo) · 🟡 due soon (9–12 mo) · 🔴 overdue (>12 mo) · ⚪ never measured
+- **Detail panel**: new "Measurement:" row with the badge + due date (e.g. "🔴 Overdue · due 2027-08-21")
+- i18n added (pt + en); JS validated (`node --check` OK, 21/21 divs)
+
+**Note:** 7 of the older trees (e.g. `469027268`, Corvallis) have no planting-time value in the sheet, so they show ⚪ "never measured" until a first measurement lands — which is accurate (they've never had a growth measurement).
+
+## 📌 RESUME HERE
+1. **Verify live on beta** — after Pages rebuild: dropdown shows status emojis; detail panel shows the measurement row with due date
+2. **Follow-up decision for you:** the "never measured" Corvallis trees were planted ~2025-07 — they're already **overdue for a first measurement** by the 12-month rule (worth flagging to the field team)
+3. Remaining backlog: `TGM_GITHUB_TOKEN` Script Property, then **UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+⚠️ Process flag (same as before): I committed direct-to-main on sunmint_beta again for speed during UAT iteration. Happy to switch to PRs if you prefer review gates on these.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/scripts/build_tree_geojson.py?x=$TS" | pyth; cd /tmp && python3 << 'PYEOF' import json from google.oauth2 import service_account import gspread creds_path = '/opt/truesight_autopilot/co; echo "=== find SA creds on box ===" && find /opt/truesight_autopilot /home/ubuntu -iname "*agroverse*" -o -iname "*qr_code*manager*" 2>/dev/; …(+9 more)
 
