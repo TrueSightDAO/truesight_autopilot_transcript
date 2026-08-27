@@ -10,124 +10,6 @@
 
 ### 🧑 Governor
 
-Correction from Gary on sequencing — do NOT run P1a/P1b/P2 in parallel. Order: (1) P1a — monitor_tree_growth.html in dapp_beta, finish fully first. (2) Once P1a is done, then P1b — sunmint/monitor-tree-growth/index.html in truesight_me_beta (this is the sunmint.truesight.me-facing piece). (3) Then the mobile app work after that. Before starting step 3, clarify for us: is "mobile apps" the same as P2 (Python worker MVP, OpenCV + PM002, in truesight_autopilot), or is there a separate mobile-specific build unit in the fuller SunMint plan (I recall partial context mentioning GPS nearest-tree dropdown, calibration, video — check the plan doc for anything explicitly mobile/native-app scoped) that has not been listed yet? Report back which it is before starting that unit. Continue with P1a now.
-
-
-### 🤖 Autopilot
-
-Acknowledged, Gary — sequencing correction accepted: **P1a first (finish fully) → then P1b → then mobile work, and clarify the "mobile apps" vs P2 question before starting step 3.** Let me check the plan doc to answer that question authoritatively, and confirm P1a's state.
-[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The manifest confirms a **separate SunMint Mobile App plan** exists. Let me read it to answer the P2-vs-mobile question precisely.
-[1 tool result(s) compacted: read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the authoritative answer to the clarification. Merging P1a to finish it fully (per your "go" + sequencing correction):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-P1a finished fully. Here's the turn report.
-
-## ✅ What I did this turn
-
-**Sequencing correction accepted and executed** — per your message:
-1. ✅ **P1a — finished fully:** **PR [#80](https://github.com/TrueSightDAO/dapp_beta/pull/80)** — `monitor_tree_growth.html` — **merged** (sha `d94f99f`). The monitor page is now **live on the dapp beta** (`dapp.truesight.me/monitor_tree_growth.html`). Contains: RSA-2048 signing, GPS, GeoJSON nearest-tree dropdown (Haversine, distance badges, manual-Tree-ID fallback), 20s video recording + auto photo, manual DBH, signed `[TREE GROWTH MONITORING EVENT]` POST with video/photo attachments, offline Web Share/clipboard fallback.
-2. **P1b NOT started this turn** (per one-PR-per-turn — queued for next).
-3. **Clarification answered before touching mobile work** (below).
-
-## The P2-vs-mobile clarification (asked before starting step 3)
-
-**They are different things. "Mobile apps" is NOT P2.** Three distinct units:
-
-| Unit | What it is | Repo | Status |
-|---|---|---|---|
-| **P1b** | SunMint mirror of the monitor page (`sunmint/monitor-tree-growth/index.html`) | `truesight_me_beta` | PR **#312** open |
-| **P2** | Python analysis worker (OpenCV + PM002) | `truesight_autopilot` | PR **#314** open |
-| **Mobile apps** | **Separate, explicitly mobile-scoped build** — `plans/SUNMINT_MOBILE_APP_PLAN.md` (Status: **new, awaiting kickoff**, repo `sunmint_mobile` already scaffolded). **It does NOT yet include the monitor module.** It's the Capacitor native wrapper (Android APK + iOS TestFlight) around the existing `sunmint_beta` web app — flows: link email + report tree planting (camera, GPS, offline queue, RSA). **The monitor/video/GPS-nearest-tree/dropdown functionality is NOT in this plan's scope** — that's the P1a/P1b web monitor pages + P2 worker. If we want the monitor module *inside* the native app, that's a **new extension unit** (e.g. "Mobile Monitor Integration") to add to `SUNMINT_MOBILE_APP_PLAN.md` — it would be a follow-on after the base app ships (PR0–PR13) and would reuse the P2 worker + P3 GeoJSON index.
-
-**Recommendation:** ship **P1b + P2** (both already PR'd) first, then **P3** (GeoJSON index build — activates the nearest-tree dropdown end-to-end), then decide whether to extend the native mobile app plan with the monitor module.
-
-## 📌 RESUME HERE → next unit (your call)
-1. **Merge P1b** (`truesight_me_beta#312`) + **merge P2** (`truesight_autopilot#314`) — two separate repos, can merge in sequence
-2. **P3** — GeoJSON index build script (the piece that makes the nearest-tree dropdown actually populate)
-3. **Extend `SUNMINT_MOBILE_APP_PLAN.md`** with a "Mobile Monitor Integration" unit if you want the monitor module in the native app
-
-Which first?
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #80 on dapp_beta merged successfully (sha: d94f99f278e2c18b80175953f4249f1e1e6f733b). Pull Request successfully merged
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Correction on sequencing: don't run P1a/P1b/P2 in parallel. Do P1a (dapp_beta) first. Once that's fully done, move to the sunmint.truesight.me piece (P1b, truesight_me_beta). Then do the mobile app work after that — confirm with me what's actually scoped as the mobile-app unit in the plan (is that P2's Python worker, or a separate mobile-specific unit not yet listed here?) before starting it.
-
-
-### 🤖 Autopilot
-
-P1a is fully done (merged last turn) — so per your sequencing, the next unit is **P1b** (the sunmint.truesight.me piece). Merging it now.
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-P1b merged. Here's the turn report.
-
-## ✅ What I did this turn
-
-**P1b — the sunmint.truesight.me monitor piece — merged:**
-**PR [#312](https://github.com/TrueSightDAO/truesight_me_beta/pull/312)** — `sunmint/monitor-tree-growth/index.html` — **merged** (sha `9638710`).
-
-This completes the second unit in your corrected sequencing (P1a → P1b):
-- ✅ **P1a** — `dapp_beta` monitor page (`monitor_tree_growth.html`) — **merged** (PR #80, last turn)
-- ✅ **P1b** — `truesight_me_beta` SunMint mirror (`sunmint/monitor-tree-growth/index.html`) — **merged** (this turn)
-
-Both pages are identical in behavior (RSA-2048 signing, GPS, GeoJSON nearest-tree dropdown with manual Tree ID fallback, 20s calibration-card video + auto photo, DBH entry, signed `[TREE GROWTH MONITORING EVENT]`, offline fallback). P1b follows truesight_me site conventions (GA4 gtag, shared nav/footer JS, self-contained endpoints since routes.js isn't on that site). Once the prod promotion happens, it's live at `sunmint.truesight.me/monitor-tree-growth/`.
-
-## 📌 RESUME HERE → next unit — the mobile-app clarification (your question, answered before starting)
-
-**The mobile-app unit is a SEPARATE, explicitly mobile-scoped build — it is NOT P2's Python worker.** Per `plans/SUNMINT_MOBILE_APP_PLAN.md` (Status: **new, awaiting kickoff**, repo `sunmint_mobile` already scaffolded, created 2026-08-23 by Claude at your request):
-
-- **Scope:** Capacitor native wrapper (Android signed APK + iOS TestFlight) around the existing `sunmint_beta` web app — flows: **link email + report tree planting** (native camera, GPS, offline SQLite queue, native secure RSA storage). Zero backend changes.
-- **It does NOT include the monitor module** — no video capture, no GPS nearest-tree dropdown, no DBH/PM002. Those live in P1a/P1b (web monitor pages, done) + P2 (Python worker, PR #314 open, still unmerged).
-- **Roadmap:** PR0–PR13 → UAT gate. RESUME HERE = **PR1** (repo scaffolding, copy existing web app unmodified).
-
-**So the remaining queued units are:**
-1. **P2** — `truesight_autopilot#314` (Python analysis worker — OpenCV + PM002 chain) — still open, unmerged
-2. **Mobile app** — `SUNMINT_MOBILE_APP_PLAN.md` PR1 — separate unit, awaiting kickoff
-3. **Optional new unit** — "Mobile Monitor Integration" (add the monitor module into the native app later, reusing P2 + P3 GeoJSON index) — not yet in any plan; needs your decision to add
-
-**Next turn options (pick one):** merge P2, kick off the mobile app plan (PR1), or extend the mobile plan with the monitor-integration unit. Which do you want first?
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #312 on truesight_me_beta merged successfully (sha: 96387109817a29a677a44f813f753b42dbf1d8d0). Pull Request successfully merged
-
-
-### 🧑 Governor
-
 Gary (via Envoy) raised a design gap before P1a goes further: the monitoring-video pipeline you described (upload -> Python PM002 analysis -> on-chain event -> per-tree JSON measurement history) never names a signed RSA event for the video submission step itself. I checked the sibling SUNMINT_TREE_QR_LINKING_PLAN.md for precedent: every tree-related state change in this ecosystem goes through a dedicated signed event -- [TREE PLANTING EVENT] for the farmers original submission (client-side RSA-signed, POSTed to Edgar), and a purpose-built [TREE PLANTING LINK EVENT] created specifically for that feature (same pattern: signed, dispatched via dao_protocol, GAS-processed, logged to Telegram Chat Logs for attribution/audit, with a dedup tracking tab). That is the established convention for anything that mutates a trees on-chain/ledger record in this DAO.
 
 Please clarify before continuing P1a: is the growth-monitoring video submission designed to introduce an equivalent new signed event (e.g. [TREE GROWTH MONITORING EVENT] or similar -- client signs with their registered key, POSTs to Edgar, dispatched, GAS handler writes the per-tree JSON history + any ledger implications), or is "on-chain event" referring to something else (a direct unsigned GAS write, an actual TrueChain blockchain transaction, or genuinely not yet designed)? If it is a gap, treat this as a required addition to the P1a scope -- not a retrofit-later item -- since building the upload/analysis pipeline without attribution now would need rework once the signed-event requirement is added. Report back your answer before proceeding further with P1a.
@@ -4087,36 +3969,43 @@ The `agroverse_qr_code_manager` SA is the one the GAS tree-planting handler uses
 **Backfill complete!** ✅ The `agroverse_qr_code_manager` SA had write access — FounderHaus Bougainvillea now has coordinates in the authoritative sheet (row 16: **-27.4389516, -48.4997079**).
 
 Now per your instruction ("3. trigger it once 4 is done") — item 4 was the `TGM_GITHUB_TOKEN` question, which I answered (it's for the GAS photo-mirror, not the rebuild workflow). Since the rebuild workflow doesn't depend on that token, I can trigger the rebuild now. Let me re-dispatch the workflow so the index regenerates with FounderHaus' coordinates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Workflow dispatched (204). Let me poll until it completes, then verify the regenerated index includes FounderHaus with coordinates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The workflow **failed** (conclusion: failure) yet `generated_at` is fresh (12:19 UTC today) — so it regenerated but FounderHaus still shows **no coords** (13/18 unchanged). Two things to check: what the run's failure was, and why the backfilled coords didn't land in the index.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The workflow's builder step failed in CI (but the index was regenerated by my earlier local run — `generated_at` is fresh from that). FounderHaus still shows `geometry: null` because the **backfill happened after** the last index generation. Let me get the CI failure's actual error, and regenerate the index locally now (the sheet has the coords):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The logs are a ZIP archive (gzip binary). Let me download it properly and extract the failing step's log to see the real error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the exact CI failure: the workflow invokes `python3 scripts/build_tree_geojson.py --creds /tmp/gcp-key.json --out .` but the **current script doesn't accept `--creds`** (usage shows only `[-h] [--out OUT]`) — a script/workflow version mismatch from my normalize_photo_url upload. Two fixes: regenerate the index locally now (backfill is in the sheet), and align the workflow/script. Let me check both versions and run the local regen:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CI failure is a **script/workflow mismatch**: the workflow passes `--creds /tmp/gcp-key.json`, but the script on main doesn't accept `--creds`. Let me see the actual script on main (Contents API), regenerate the index locally with the backfilled coords, and align the two:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4127,16 +4016,19 @@ Excellent — **the local regeneration worked perfectly:**
 - **14/18 trees now have coords** (was 13/18)
 
 **The CI mismatch is clear:** the workflow calls `--creds /tmp/gcp-key.json` but the script on main reads `GOOGLE_SERVICE_ACCOUNT_JSON` env (no `--creds` arg) — my normalize_photo_url upload replaced the script but the workflow still uses the old invocation. Two aligned fixes: (1) upload the regenerated index (with FounderHaus coords) to `sunmint`, (2) fix the workflow to pass the env var instead of `--creds`.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index regenerated with FounderHaus coords (commit `5bf06534`). Now fixing the workflow invocation to match the script (env var, not `--creds`):
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Workflow fixed (commit `cb2e2ea8`). Now let me re-dispatch the workflow to confirm the whole pipeline works end-to-end with the aligned script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4294,4 +4186,29 @@ Want me to redo this as a PR, or keep the direct commit and continue?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o mon4.h; cd /tmp && echo "=== camera JS 516-620 ===" && sed -n '516,620p' mon4.html && echo "=== capture functions ===" && grep -n "function capture\; cd /tmp && echo "=== init/onload hooks ===" && grep -n "DOMContentLoaded\|window.onload\|addEventListener('load'\|init()\|startCamera(" mon4; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] also what does Close-up photo (card + trunk) mean? I dont understand what the card refers to
+
+
+### 🤖 Autopilot
+
+The "card" is the **calibration card** — a small, known-size reference object placed against the trunk in the photo so the analysis can measure the tree.
+
+**Why it's needed:** the PM002 measurement works by **photogrammetry** — the photo shows the trunk at some scale, but the computer can't tell from the image alone whether it's looking at a 10 cm or 30 cm trunk. A credit-card-sized reference object with a **known physical size** (standard ISO-7810 card, 85.6 × 54 mm) lets the analysis compute the pixel-to-centimeter ratio, then measure the trunk diameter at breast height (1.3 m) accurately. This is exactly how TREEO and other certified dMRV tools do it — still photo + in-frame reference for scale.
+
+**In practice:** the field agent holds the card against the trunk at chest height, takes the close-up so both the card and the trunk are fully in frame, and the software does the math. It's the "yardstick in the photo" principle.
+
+**Important question this raises for you:** do the field agents actually **have** a physical calibration card yet? If not, the flow needs a decision:
+- **(a)** Issue printed cards (or a plastic card) to agents — simplest, matches the standard;
+- **(b)** Let the app display a card on-screen (phone-screen card in frame — some tools do this, though harder to calibrate);
+- **(c)** Accept any known-size object (e.g. a bank card) with the size entered manually.
+
+The current UI copy ("card + trunk") assumes the agent has one. Want me to:
+1. **Clarify the label** so it's obvious (e.g. "Close-up: calibration card against the trunk (1.3 m)") plus a small "what is this?" hint under it, and
+2. **flag the physical-card question** to the team — because if agents don't have cards yet, that's a supply/logistics item to solve before field rollout?
+
+Say the word and I'll update the copy + add the help hint.
 
