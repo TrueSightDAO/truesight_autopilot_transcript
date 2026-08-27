@@ -10,93 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Decision 3 answered, researched against real carbon-credit-program precedent: Verra, Gold Standard, ACR, and even the 2026 dMRV pilots all draw a hard line between monitoring data (accumulates over a crediting period as evidence) and the issuance ledger (a distinct, periodically-verified event that actually mints/issues credits with serial numbers). Even the most advanced dMRV systems pushing toward monthly issuance still keep issuance as a discrete verified event, never a transaction per individual sensor/photo reading. This confirms your Option B: do NOT book a ledger entry per growth measurement -- the Tree Growth Measurements tracking tab   per-tree JSON history is the correct analog to a monitoring report, and a real ledger entry should only happen at a future, separately-defined credit-issuance event, not per-photo. Proceed on that basis.
-
-
-### 🤖 Autopilot
-
-Decision 3 reconfirmed — Option B stands, and I'm already building on that basis (no per-measurement ledger booking; tracking tab + per-tree JSON history is the monitoring-report analog; issuance is a separate future event). Continuing the build: **P1d — the GAS handler PR** (the plan's RESUME HERE). Let me pull the precedent handler to mirror its conventions.
-[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the precedent GAS handler (`process_tree_planting_link.js`) to mirror its exact conventions for the growth-monitoring handler.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the rest of the handler — the processing flow, dedup, and tracking-tab write logic.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full handler pattern (constants, `isGovernorByName_`, `resolveContributorNameFromPublicSignature_`, `normalizeTreePlantingLinkMessage_`, `extractTreePlantingLinkInfo_`, `sendTreePlantedNotificationEmail_`, tracking-tab with `Tree Planting Link` headers, dedup by Telegram Message ID). I now have everything to write the growth-monitoring handler mirroring these conventions. Let me write it locally, test, then push.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Handler written (263 lines). Let me run the local test suite before pushing — syntax check on the .gs (it's JavaScript; `node --check` validates), plus the standard compile/ruff/pytest to confirm nothing else breaks.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`node --check` failed only because of the `.gs` extension (Node doesn't recognize it) — not a syntax error. Let me verify via `node --check` on a `.js` copy, which is the correct way to validate the syntax.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Syntax OK. Now let me also verify the shared-constants assumption — the handler references `SOURCE_SHEET_URL`, `SOURCE_SHEET_NAME`, `MESSAGE_COL`, `TELEGRAM_UPDATE_ID_COL`, `DESTINATION_SHEET_URL` from `process_qr_code_updates.js` / `process_tree_planting_link.js`. Let me confirm those exact names exist in the shared project.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All shared constants confirmed (`SOURCE_SHEET_URL`, `SOURCE_SHEET_NAME`, `MESSAGE_COL`=6, `TELEGRAM_UPDATE_ID_COL`=0, `DESTINATION_SHEET_URL`, `DESTINATION_SHEET_NAME`, `QR_CODE_COL`, `STATUS_COL_DEST`). My handler references exactly those. Syntax verified, braces/parens balanced, no top-level const collisions (all TGM_-prefixed + the marker const, which is new and unique). Pushing the GAS handler PR now.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-P1d PR is up. Stopping per the one-PR-per-turn rule — here's the turn report.
-
-## ✅ What I did this turn — P1d (GAS handler), the plan's RESUME HERE
-
-**PR [#430](https://github.com/TrueSightDAO/tokenomics/pull/430)** — `feat/tree-growth-monitoring-handler` (sha `072914c`) — `process_tree_growth_monitoring.gs` added to the shared agroverse_qr_codes GAS project (`1UrBgq…`).
-
-**What it does** (mirroring the `process_tree_planting_link.js` conventions exactly):
-- **Cron fallback scan** of Telegram Chat Logs for `[TREE GROWTH MONITORING EVENT]` markers (same pattern as `processTreePlantingLinksFromTelegramChatLogs`)
-- **Dedup by Telegram Message ID** against the auto-created `Tree Growth Measurements` tracking tab (18-column schema: tree_id, species, DBH, GPS, measured_at, close-up/context photo URLs, analysis commit URL, farmer signature, contributor, status, processed timestamp)
-- **Parses the signed event body** (Tree ID, Species, DBH, Lat/Lng, Measured At, both photo URLs, Analysis Commit URL, My Digital Signature)
-- **Resolves contributor name** from RSA public signature (Contributors Digital Signatures tab)
-- **GitHub mirror helper** (`mirrorPhotoToGithub_`) for the `sunmint/images/growth/` step — Contents-API PUT, TGM_GITHUB_TOKEN from Script Properties
-- **NO ledger booking** (decision 3 — monitoring data = monitoring-report record; only future issuance books the ledger)
-
-**Verified before push:** `node --check` syntax OK (via .js copy — .gs extension isn't a Node thing), braces 31/31 + parens 137/137 balanced, shared constants (`SOURCE_SHEET_URL`, `SOURCE_SHEET_NAME`, `MESSAGE_COL`=6, `TELEGRAM_UPDATE_ID_COL`=0, `DESTINATION_SHEET_URL`) confirmed present in Code.js/process_qr_code_updates.js of the same project, all new identifiers TGM_-prefixed (no top-level const collisions), **no second doGet** (protects the existing QR webhook).
-
-## 📌 RESUME HERE → next units (full P1a build)
-1. **Merge PR #430** (tokenomics) + **merge dao_protocol #146** + **merge agentic_ai_context #821** (plan doc) — on your go
-2. **Deploy the GAS handler** — `clasp push` to `1UrBgq…` + set `TGM_GITHUB_TOKEN` Script Property (needs the deploy step, `gas_deploy_project`)
-3. **sunmint repo workflow (P2)** — `.github/workflows/pm002_analysis.yml` (api_only, Contents-API; `paths: [images/growth/**]`; `permissions: contents: write`; commits `analysis.json`) + vendored analysis script
-4. **P2 worker update** — amend `truesight_autopilot#314` to single-image photo-first PM002
-5. **UAT on beta sites** (P4)
-
-Say "go" and I continue with merges + deploy + the sunmint workflow.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → mkdir -p /tmp/tgm && cat > /tmp/tgm/process_tree_growth_monitoring.gs << 'GSEOF' /** * File: google_app_scripts/agroverse_qr_codes/process_t; cd /tmp/tgm && echo "=== node --check ===" && node --check process_tree_growth_monitoring.gs && echo "NODE OK" ; echo "=== braces balance ==; cd /tmp/tgm && cp process_tree_growth_monitoring.gs _check.js && node --check _check.js && echo "NODE SYNTAX OK" && rm _check.js; …(+1 more)
-
-
-### 🧑 Governor
-
 Gary asked whether the entire SunMint growth-monitoring design from today is captured/committed to agentic_ai_context for future reference. I checked directly -- GitHub code search for "monitor_tree_growth" in agentic_ai_context returns ZERO results. Nothing from today (photo-not-video decision, storage location, event taxonomy, ledger/issuance separation) is committed anywhere durable or shared -- it only exists in this Telegram thread plus, per your own tool logs, what looks like a local /tmp/sunmint/monitor_tree_growth_spec.md file and a "PDF updated to v1.3" of unclear location. This violates this workspace's own standing rule (OPERATING_INSTRUCTIONS.md section 5 -- any multi-step build needs a written plan committed to a tracked file before/alongside implementation, with a RESUME HERE tracker).
 
 Please commit a proper plan doc now: agentic_ai_context/plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md (or wherever fits this repos convention). Capture everything decided today:
@@ -4370,26 +4283,31 @@ Say "go" and I'll deploy the handlers to GAS.
 ### 🤖 Autopilot
 
 Gary's set `TGM_GITHUB_TOKEN` — item 3 done. That clears the last blocker for the deploy. Executing the deploy now: sync the checkout to the merged commit, update the scratch deploy dir with the new handlers, and push to GAS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout is on main at the merged commit (`f51731c`), both files present with the new gates (4 matches for the growth gates, 2 for NEW-or-LINKED). Now updating the clean scratch deploy dir (`/tmp/gasdeploy`) with these merged files and pushing to GAS — the same approach that worked for the first deploy (avoids the `Version.gs` duplicate conflict).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Scratch dir is clean and both updated files are in place (tracked, no conflicts). Pushing to GAS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy succeeded — **"Pushed 5 files"** with both updated handlers, and the **@HEAD deployment** (`AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ`) serves the latest code, so the gates are live immediately. Let me verify the deployed code actually has the new gates (via the deployment's script content check — confirming the push took).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone pulled 5 files but the growth handler isn't found by that name — let me see what's actually there (clasp may name remote `.gs` files differently, or the grep failed on naming).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4563,4 +4481,168 @@ Say "go" when ready for the UAT pass, or if you spot anything else on the beta p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me/main/members.html?x=$TS" -o members.html &; cd /tmp && TS=$(date +%s) && echo "=== lineage-credentials _cache/index.json: head ===" && curl -s "https://raw.githubusercontent.com/TrueSi; cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lineage-credentials/main/_cache/index.json?x=$TS" | pyt; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Executing the UAT verification pass. First, let me confirm the live beta page serves the latest commit and the governor cache endpoint is reachable, then run through the full feature checklist.
+
+
+### 🤖 Autopilot
+
+Two issues to dig into: the live page doesn't have `loadGovernors` yet (0 matches — Pages build lag or CDN cache), and I need to confirm CORS headers on the raw.githubusercontent endpoints (browser fetch needs `access-control-allow-origin`). Let me check both.
+
+
+### 🤖 Autopilot
+
+CORS is fine (`access-control-allow-origin: *` on both endpoints), and `sunmint_beta/main` **is** at my governor commit `7232541b` — but the **live page (49,301 B) doesn't contain `loadGovernors`**, so GitHub Pages is serving a stale build. Let me verify the committed file actually has it (Contents API) and check the Pages deployment status.
+
+
+### 🤖 Autopilot
+
+Interesting — the **committed file @ `7232541b` has it** (50,160 B, `loadGovernors` ✅), but **raw.githubusercontent at main returns 0 matches** — meaning the CDN is serving stale content again (the same raw-CDN lag we hit before), OR there's a newer commit on main that reverted it. Let me check main's actual head vs my commit, and whether something came after it.
+
+
+### 🤖 Autopilot
+
+Main head **is** `7232541b` (my commit, 13:02:59Z) — the code is correct and committed. The raw-CDN and live-Pages are just serving stale content (this is the same raw.githubusercontent lag we've hit repeatedly — GitHub Pages on sunmint_beta may not be configured, or the Pages build lags). Let me verify whether Pages is even enabled for this repo and check the live domain's origin.
+
+
+### 🤖 Autopilot
+
+Key finding — check #3 shows the live page **does** have `loadGovernors` (2 matches on a fresh cache-busted fetch)! The earlier "0" was my **own CDN-cache** (I fetched the same URL repeatedly within the 600s `max-age`). The live page is current. The Pages API 404 is because sunmint_beta uses the **legacy Pages setup** (no modern API entry — the `server: GitHub.com` + `x-proxy-cache` headers confirm it's served via GitHub's Pages CDN, and `last-modified 13:03:39` = my commit time).
+
+**UAT check #1 PASSED: the live page has the governor loader.** Now let me do the remaining UAT verifications: CORS on the page (already `*` ✓), the governor cache endpoint (✓ 200 + ACAO `*`), the canonical index (✓ 200 + ACAO `*`), and confirm the dropdown's distance/status logic is present.
+
+
+### 🤖 Autopilot
+
+UAT checklist — mostly live, but 3 items need a closer look (`measureStatus: 0`, `MARK INVALID: 1`, `?tree=: 0`). The `?tree=` and `measureStatus` greps may be false negatives (my grep patterns don't match the actual code — e.g. `?tree=` in a URL string, and the status function may be named differently). Let me verify those three directly.
+
+
+### 🤖 Autopilot
+
+Two findings — **the Mark-invalid button IS live** (`id="markInvalidBtn"` ✅), but **two features are NOT in the live page**: the **deep-link `?tree=` param** and the **measurement status (overdue icons)**. Both were committed in earlier PRs — let me check whether they're actually on main (they may have been lost in one of the full-file rewrites, which is a real risk given how many times I've pushed whole files).
+
+
+### 🤖 Autopilot
+
+Confirmed — **two features were lost in a full-file rewrite**:
+- **Deep-linking (`?tree=`)**: `searchParams` appears 2× (probably unrelated), but `setTreeParam`/`getTreeParam` = 0 → **gone**
+- **Measurement status / overdue icons**: `measureStatus`, `overdue`, `dueDate` all = 0 → **gone**
+
+But `treeDetailPanel` (3) and `markInvalidBtn` (1) are present — so the tree-detail panel and mark-invalid survived. The deep-link (commit `11fdb4f9`) and the status icons (commit `63d6c8ba`) were likely overwritten when I did the full-file uploads (e.g. `0133b2c5` proximity/invalid build, or `7232541b` governor build, which were whole-file pushes).
+
+This is exactly the risk I flagged earlier with whole-file rewrites. Let me check the commit history to see which full-file push dropped them, then restore both features.
+
+
+### 🤖 Autopilot
+
+The commit SHAs in my history are abbreviated differently than the API needs (the ref lookups with truncated SHAs failed on content). Let me verify the feature history properly using the full SHAs from the commit log, to pinpoint exactly which push dropped deep-linking + status icons.
+
+
+### 🤖 Autopilot
+
+Now I can see the exact loss history:
+
+- **`63d6c8ba`** (status icons): `measureStatus:3, overdue:1` ✅ → but then **`55b7fcfb`** (camera viewport swap) → **`11fdb4f9`** (deep-link) rebuilt from the pre-status base → status icons LOST
+- **`11fdb4f9`** (deep-link): `setTreeParam:5` ✅ → then **`8ff0e446`** (cache-bust) rebuilt from pre-deep-link base → **deep-link LOST**
+- **`8ff0e446` → `0133b2c5` → `7232541b`** continued on the base **without** both features
+
+So both were lost to **whole-file rewrites based on stale local copies** — exactly the risk I flagged. They need to be **re-applied** to the current page (which has proximity/invalid/governor/detail-panel). Let me re-apply both features to the current committed file.
+
+
+### 🤖 Autopilot
+
+The ref lookups with my truncated SHAs failed again (the 10-char SHAs need to be full 40-char, or the API needs the exact prefix). Let me get the full SHAs and fetch the original files properly.
+
+
+### 🤖 Autopilot
+
+Now I have the full SHAs. Let me fetch the original feature files and extract the exact code blocks to re-apply.
+
+
+### 🤖 Autopilot
+
+Both feature blocks are in the original commits. Now let me extract the full blocks (deep-link: `setTreeParam` + init restore; status: `measureStatus` + `MS_DUE_DAYS`/`MS_WARN_DAYS` constants + dropdown/detail wiring) and re-apply them to the current page.
+
+
+### 🤖 Autopilot
+
+I have both feature blocks fully extracted. Now I'll re-apply them to the current page (`monR.html`, 49,301 B — the latest with proximity/invalid/governor). I need to check the current page's structure (it has `renderTreeDetail` with the measure row? and `onTreeSelectChange`?) so the patches land cleanly.
+
+
+### 🤖 Autopilot
+
+The current page has `loadTreeIndex` (481), `populateTreeDropdown` (506), `onTreeSelectChange` (526), `renderTreeDetail` (538) — but **no `setTreeParam`, no `measureStatus`, no `treeDetailMeasure`**. The page also doesn't have the i18n keys (`msOk`, `msDue`, `msOverdue`, `msNever`, `msDueOn`) or the `treeDetailMeasure` row. Let me check what the current `populateTreeDropdown`/`renderTreeDetail`/`onTreeSelectChange` look like so I can patch them precisely.
+
+
+### 🤖 Autopilot
+
+Let me check the detail-panel HTML rows and i18n keys in the current page so my patches add the missing `treeDetailMeasure` row and `ms*` keys correctly.
+
+
+### 🤖 Autopilot
+
+I have everything needed to restore both lost features. Applying the patches to the current page — status icons (constants + function + i18n + HTML row + wiring) and deep-linking (setTreeParam + listeners + init restore):
+
+
+### 🤖 Autopilot
+
+All 8 patches applied (setTreeParam:5, measureStatus:3, msOverdue:3, treeDetailMeasure:2). Now validating JS syntax + structure before pushing:
+
+
+### 🤖 Autopilot
+
+All validations pass (JS OK, 22/22 divs, both i18n dicts, all 4 emojis). Uploading the restored page:
+
+
+### 🤖 Autopilot
+
+Restored and pushed (`dd3622c5`). Here's the UAT findings + fix report.
+
+## ✅ UAT pass — found and fixed 2 lost features
+
+**UAT verification on the live beta page confirmed most features are live:** proximity gate (`PROXIMITY_LIMIT_M`), mark-invalid button (`markInvalidBtn`), detail panel (`treeDetailPanel`), tree index (cache-busted), km+comma distances, camera tabs (`switchTab`/`retake`), governor loader (`loadGovernors` — **confirmed live**, and the earlier "0" was my own CDN cache).
+
+**But the deep check found 2 features that were LOST in whole-file rewrites** (the exact risk I'd flagged):
+- **Deep-linking `?tree=`** (from `11fdb4f9`) — overwritten by the `8ff0e446` cache-bust push
+- **Measurement status icons** (from `63d6c8ba`) — overwritten by the `55b7fcfb` camera-viewport push
+
+**Fixed:** re-applied both features cleanly onto the current page (8 precise patches: `setTreeParam` + init restore + manual-input listener + emoji-prefixed dropdown options + `measureStatus`/`measureDueDate` + `MS_OK_DAYS`/`MS_DUE_DAYS` constants + detail-panel measure row + pt/en i18n keys). **Pushed as `dd3622c5`.**
+
+**Validated:** JS syntax OK, 22/22 divs, both dicts, all 4 status emojis, all patch markers present.
+
+## 📌 RESUME HERE
+1. **Verify live after Pages rebuild** — `?tree=FOUNDERHAUS_BOUGAINVILLEA_20260821_1` restores the tree on refresh; dropdown shows 🟢/🟡/🔴/⚪ status emojis; detail panel shows "Measurement:" with due date
+2. **Root-cause guard:** the losses came from whole-file uploads based on stale local copies — I should **stop whole-file pushes** on this page and use precise edits, or always re-fetch main right before pushing. Noting this as a process fix.
+3. Remaining: **full UAT** → `sync_beta_to_prod(sunmint_prod)`
+
+Say "go" for the post-rebuild verification, or continue with anything else you spot.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → UAT checklist on live page (found loadGovernors live after CDN refresh; missing deep-link + status icons); verified committed file via Contents API; traced loss history through commit log (status lost at 55b7fcfb, deep-link lost at 8ff0e446); fetched original feature blocks from commits 11fdb4f9 + 63d6c8ba; applied 8 precise patches; validated JS + structure
+• `upload file to github` → commit dd3622c5 (restored features)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → CDN/live page checks, CORS header checks (ACAO *), commit-history feature-presence audit (11 commits), original-block extraction, 8-patch restore, node --check + structure validation
+• `upload file to github` ×1 → dd3622c5
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → live page grep (loadGovernors 2, GOVERNORS_URL 2, PROXIMITY_LIMIT_M 2, markInvalidBtn 1, treeDetailPanel 3, TREE_INDEX_URLS 2, renderTreeDetail 2, toFixed(1).replace 2, retake 9, switchTab 3; measureStatus 0, ?tree= 0); Contents API committed-file audit; commit-history feature-presence table; original-block extraction; 8-patch restore; node --check OK; 22/22 divs
+• `upload file to github` ×1 → dd3622c580953cd0ddd8d81761f6f91c6e63f4e6
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /tmp && TS=$(date +%s) && echo "=== 1. live beta page: latest commit present? ===" && curl -s "https://beta.sunmint.truesight.me/monitor-; cd /tmp && TS=$(date +%s) && echo "=== A. full headers: lineage cache ===" && curl -s -D - -o /dev/null -H "Origin: https://beta.sunmint.tru; cd /tmp && TS=$(date +%s) && echo "=== 1. committed file @ 7232541 (Contents API, authoritative) ===" && curl -s "https://api.github.com/rep; …(+16 more)
 
