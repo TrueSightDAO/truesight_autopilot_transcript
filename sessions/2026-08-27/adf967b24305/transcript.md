@@ -101,36 +101,53 @@ The envoy's report hinges on two things: the exact filter in Edgar and which GAS
 ### 🤖 Autopilot
 
 The picture is coming together. Let me read the rest of the GAS Code.gs (especially `loadKnownIds_`), find PR #411, and locate the asset_receipt_ingest scriptId.
+[3 tool result(s) compacted: read_tool_result, search_code, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #427 (open) is exactly the fix for bug #1 — and PR #411 (merged) is the one the envoy says never served traffic. Let me read PR #427's diff and find the asset_receipt_ingest scriptId.
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nesting is deep. Let me read the rest of Code.gs via a targeted SSH-less approach — the GAS project README for the scriptId, and PR #427's actual diff.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me nail down the scriptId for `asset_receipt_ingest`, probe what the live deployment actually serves, and read PR #427's fix.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, http_fetch, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The status probe confirms the live @8 deployment is exactly what Edgar calls (`AKfycbzcXBXYKmKiYg…/exec`), showing `asset_receipt_events_found: 3`, `audit_last_row: 14` — consistent with the zombie SKIPPED rows re-logging. Now let me find the scriptId and verify which deployment ID the URL maps to, so we can confirm before redeploying.
+[2 tool result(s) compacted: search_code, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local box has a tokenomics checkout and clasp credentials. Let me find the asset_receipt_ingest scriptId and the deployment mapping.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `asset_receipt_ingest` folder exists with just `Code.gs`. Let me check the deploy tool's list and the clasp mirrors to map scriptId → deployment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -185,6 +202,7 @@ REQUIRED THIS TIME -- do not report done until you can show this exact sequence:
 ### 🤖 Autopilot
 
 Understood — hard escalation accepted. I will execute the exact sequence with evidence at each step, and if `clasp deploy` won't take, I'll diagnose the structural cause instead of reporting success. Starting with read-only state gathering (PR merge state, main-branch file content, local clasp setup, live ledger rows).
+[5 tool result(s) compacted: list_prs, read_repo_file, ssh_run, read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -194,6 +212,7 @@ Escalation received — executing the full evidence sequence. Key facts already 
 - **Zombie re-logged today at 21:27 ×2** (audit rows) and **offchain 4174/4175 show quantity=1** for Paloma's 100-unit stickers — old @8 behavior confirmed live.
 
 Now capturing the BEFORE state: full main Code.gs, full audit tab, and `clasp deployments` on the real scriptId.
+[3 tool result(s) compacted: read_tool_result, read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -205,11 +224,13 @@ Now capturing the BEFORE state: full main Code.gs, full audit tab, and `clasp de
 - tokenomics main = `0d57fba`, includes **#427** (`0d55b11`) and #411's code in the same `Code.gs` (anchored first-line filter + `quantity = amount` + `findPairedContributionUnitCost_` present in the main-branch file I just read).
 
 Now pulling the remote project state + verifying remote HEAD still has the old code (proving @8 is stale), and reading the rest of the fixed file + Currencies state.
+[3 tool result(s) compacted: read_tool_result, ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the crucial picture. Remote project HEAD (pulled `Code.js`, 15665 bytes — same size as the pre-#427 git file) vs. tokenomics main (which I confirmed contains both fixes). Let me diff them precisely to prove remote HEAD is stale, and inspect the fixed tail (`loadKnownIds_`, unit-cost derivation).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -217,6 +238,7 @@ Now I have the crucial picture. Remote project HEAD (pulled `Code.js`, 15665 byt
 Now the definitive proof is in hand — remote HEAD (Code.js) has **#411's code but NOT #427's anchored filter** (0× `firstNonEmptyLine`, `loadKnownIds_` still blocks only `'OK'`), while tokenomics main has both fixes in one 16,338-byte file. @8 is pinned at v8 = pre-#411 original → exactly why Paloma's rows corrupted.
 
 Executing the redeploy sequence now (push → version → `clasp deploy -i` → verify), plus checking the test-submission path in parallel.
+[3 tool result(s) compacted: lookup_event_docs, ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -228,26 +250,31 @@ Executing the redeploy sequence now (push → version → `clasp deploy -i` → 
 - **AFTER:** `clasp deployments` shows `AKfycbzcXBXYKmKiYg… @9 - fixed: anchored AR detection + idempotent SKIPPED/ERROR dedup (#411+#427)`
 
 Now step 4 — a REAL test submission. First: sanity-check @9 serves live, and find Paloma's paired USD contribution row so the fixture's fund-handler pairing produces the correct 0.0581.
+[2 tool result(s) compacted: http_fetch, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 @9 is confirmed live (status shows `asset_receipt_events_found: 3` — note the zombie row is no longer counted, since the anchored filter only matches first-line-tagged rows; audit still 20, offchain 4177). Now the two remaining proof steps: (1) a real processing run to prove the zombie doesn't re-log, and (2) read the unit-cost parse logic so my real test submission produces a deterministic 0.0581.
+[2 tool result(s) compacted: read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Processing run returned `{"status":"ok","processed":0}` — the zombie row did **not** re-log (previously every run appended new SKIPPED rows). Now let me read the unit-cost parse fallback (to make the test submission deterministic without a fake contribution event) and re-verify the audit tab is unchanged.
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Audit tab confirmed unchanged (still 20 rows, no new zombie) after the processing run — the anchored filter is holding. Now step 4: a REAL test submission. I'll use the paired-contribution path (which I've verified in code: `findPairedContributionUnitCost_` = |USD|/quantity when a same-fund-handler USD contribution precedes the receipt). Submitting the paired USD contribution first, then the receipt.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Paired contribution submitted. Now the real asset receipt (100 units, Fund Handler Sophia Truesight, currency name that does NOT already exist in Currencies — so it must be created with the paired cost).
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -354,4 +381,122 @@ Deployment @9 **is live and serving the fixed code** (quantity ✓, zombie ✓).
 • `ssh run` ×9 → cd /home/ubuntu/tokenomics && git fetch origin -q 2>&1 | tail -1; echo "===ORIGIN/MAIN==="; git log --oneline -4 origin/main; echo "===MIRRO; cd /home/ubuntu/tokenomics && SID=1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && MIRROR=google_app_scripts/$SID && mkdir -p $M; cd /home/ubuntu/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && echo "===CLASP DEPLOY HELP===" &&; …(+6 more)
 • `submit contribution` ×2 → Contribution submitted successfully.
 • `merge pr` → ✅ PR #431 on tokenomics merged successfully (sha: 521d02bf07fd5f671dab06a40efca1429bc0279c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] [Handoff context — this Telegram topic (thread 14278) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+`go` received. Resuming the escalation sequence — the plan is exactly my RESUME HERE from the last turn. Let me start by syncing tokenomics main (now with merged #431), verifying the fix is in the checked-out file, and capturing the clasp deployment state BEFORE.
+
+
+### 🤖 Autopilot
+
+State is clean: main at `521d02b` (has #431+#427+#411), fix verified locally, mirror dir ready, and **BEFORE = @9** on the deployment Edgar calls. Now pushing the #431-fixed file, creating a new version, and redeploying @9 → @10.
+
+
+### 🤖 Autopilot
+
+Push succeeded. Now creating the new version and deploying it to the deployment ID Edgar calls.
+
+
+### 🤖 Autopilot
+
+`clasp deploy` reported "Deployed … @10" but the AFTER listing still shows @9 with the old description — exactly the silent-failure mode the governor warned about. Verifying before proceeding: re-running the listing and confirming what the live URL actually serves.
+
+
+### 🤖 Autopilot
+
+Good — the first AFTER read was just clasp's eventual-consistency lag. **Confirmed: `AKfycbzcXBXYKmKiYg…` is now @10** ("Contributor(s) label normalization (#431)…"), versions list shows 10 = the fix. So the earlier read was stale-cache; now it's definitive. Let me verify the live URL serves @10 and confirm the fix is actually live.
+
+
+### 🤖 Autopilot
+
+Deployment is confirmed live: **@10 serving** (the transient @9 read was clasp eventual-consistency lag; re-check shows @10 + versions list has "10 - fix: normalize 'Contributor(s)' label (#431)"). Status endpoint healthy: `asset_receipt_events_found: 4` (my test #1 receipt entered the window — the zombie's update_id is a CONTRIBUTION row, so the anchored filter correctly excludes it), `audit_last_row: 22`, no re-logs.
+
+Now the real proof — test #2 with a **fresh currency name** (the code only adds a Currencies row when the name doesn't exist, so I must use a new name to prove the fixed pairing produces 0.0581). First, verifying exact event labels for both submissions.
+
+
+### 🤖 Autopilot
+
+Event docs confirm: CONTRIBUTION EVENT's canonical label is `Contributor(s)` (exactly what the fix normalizes), and ASSET RECEIPT EVENT requires Currency/Amount/Fund Handler. Now submitting test #2 — the paired contribution (USD, Sophia Truesight) first, then the fresh-name asset receipt.
+
+
+### 🤖 Autopilot
+
+Paired contribution submitted. Now the asset receipt with a **fresh currency name** so the Currencies row is newly created with the paired unit cost.
+
+
+### 🤖 Autopilot
+
+Both test #2 events submitted. Now triggering the processing run against the live @10 deployment:
+
+
+### 🤖 Autopilot
+
+Processing succeeded — `processed:1`, and the new currency was added. Now the decisive check: reading the new Currencies row's unit cost (must be **0.0581**), the offchain leg (quantity **100**), and the audit row (OK, no zombie).
+
+
+### 🤖 Autopilot
+
+**All four proof points are now green:**
+- **Currencies:** `QA Verification Sticker 4x3cm Round2 (Test 20260827b)` = **0.0581** ✓ (was 100 before the #431 fix)
+- **Offchain row 4179:** quantity **`100.00000000`** ✓
+- **Audit:** OK row for `Edgar_20260827122127_239` (4179) ✓ — and no zombie re-log
+- (Offchain 4178 + audit 20–21 are the earlier test-#1 artifacts; the test-#2 row 4179 has both values correct)
+
+Now confirming the zombie `Edgar_20260507024609_005` stays silent on a fresh scheduled run + verifying the final state end-to-end.
+
+
+### 🤖 Autopilot
+
+`processed:0` — idempotent, zombie stays dead on repeat runs. Final verification: confirm no new zombie rows appeared in the audit tab (checking the tail), and capture the definitive final deployment state.
+
+
+### 🤖 Autopilot
+
+**Escalation complete — all five required proof points are green.** Here is the full evidence sequence.
+
+## 1. `clasp deployments` BEFORE (this turn)
+```
+- AKfycbzcXBXYKmKiYg-tS2cqf60gWVm0ro17ndWVMnxNkc0dimaGUW3CYoi4b8nMZzVbENaw @9 - fixed: anchored AR detection + idempotent SKIPPED/ERROR dedup (#411+#427)
+```
+tokenomics main = `521d02b` (#431 merged) — **explicitly verified the merged file contains BOTH #411+#427 code AND the #431 fix** (`replace(/[()]/g,'')` at line 328; `firstNonEmptyLine` ×3) before any push.
+
+## 2. Redeploy — version 10
+- `clasp push --force` → "Pushed 2 files" (Code.gs 16,338 bytes)
+- `clasp version` → **Created version 10**
+- `clasp deploy -i AKfycbzcXBXYKmKiYg… -V 10` → **"Deployed AKfycbzcXBXYKmKiYg… @10"**
+
+## 3. `clasp deployments` AFTER
+- First re-read showed @9 (clasp eventual-consistency lag — the exact silent-failure the governor warned about); re-ran → **`@10 - fixed: Contributor(s) label normalization (#431) on top of #411+#427`** ✓. `clasp versions` confirms **10 = the #431 fix**. Live `?action=status` → 200, serving the fixed deployment.
+
+## 4. REAL test submission (not a status ping)
+- Submitted `[CONTRIBUTION EVENT]` USD **-5.81** (Sophia Truesight) + `[ASSET RECEIPT EVENT]` **100** units, currency `QA Verification Sticker 4x3cm Round2 (Test 20260827b)` (fresh name, so a Currencies row must be created from the paired cost).
+- Processed → `processed:1`, `currencies_added:[…Round2…]`.
+- **Result:**
+  - **Currencies** → `QA Verification Sticker 4x3cm Round2 (Test 20260827b)` = **0.0581** ✓ (5.81/100 — exactly right; before #431 it wrote 100)
+  - **Offchain row 4179** → quantity **`100.00000000`** ✓
+  - **Audit** → `Edgar_20260827122127_239 … 4179 … OK` ✓
+
+## 5. Zombie row does not reappear
+- Fresh processing run after deploy → `processed:0` (idempotent).
+- Audit tab: last zombie `Edgar_20260507024609_005` row is **2026-08-26T21:27:51** — **zero new SKIPPED rows since @9/@10 went live** (the anchored first-line filter excludes the CONTRIBUTION row that mentions the tag in prose). ✓
+
+## Honest notes
+- The transient @9 read after deploy was clasp's eventual consistency — verified to @10 on re-check, plus the live URL behavior (paired cost now works) proves @10 is what's serving.
+- Test #1 artifacts remain in the ledger (offchain **4178**, audit rows, Currencies `…(Test 20260827)` = 100) — clearly labeled test rows; I can clean them on your word (deleting ledger rows is destructive, so I didn't do it unprompted).
+- Pre-existing quirk: OK rows sometimes double-append to the audit tab (concurrent webhook triggers — Paloma's rows show it too); the offchain/Currencies legs write once. Separate cleanup item if you want it.
+
+**RESUME HERE →** cleanup of test rows 4178/audit/test-Currencies (awaiting your go), and optionally a follow-up PR to de-duplicate concurrent OK audit appends in the GAS scanner.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/tokenomics && git fetch origin -q && git reset --hard origin/main -q && echo "===HEAD===" && git log --oneline -3 && echo "=; cd /home/ubuntu/tokenomics && cp google_app_scripts/asset_receipt_ingest/Code.gs google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2G; cd /home/ubuntu/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && echo "===NEW VERSION===" && clasp; …(+1 more)
+• `submit contribution` ×2 → Contribution submitted successfully.
 
