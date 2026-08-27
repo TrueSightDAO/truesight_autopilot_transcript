@@ -10,207 +10,6 @@
 
 ### 🧑 Governor
 
-Researched Gary's video-storage architecture question directly (config.py, GITHUB_AGENTIC_AI_SSH policy references, SUNMINT_TREE_QR_LINKING_PLAN.md, live GitHub API checks) rather than guessing:
-
-ANSWER: reuse TrueSightDAO/sunmint. It is already in truesight_autopilot/app/config.py's api_only_repos list, explicitly commented as a "blob / asset store (Contents-API uploads)" -- i.e. it is ALREADY the established repo for exactly the pattern Gary described (PAT/Contents-API upload only, never git clone/push, meant to grow with binary blobs over time). It is already used this way for tree-planting photos today (images/ folder; SUNMINT_TREE_QR_LINKING_PLAN.md documents column O "GitHub Commit URL" = photo mirrored to TrueSightDAO/sunmint images/). Checked live: repo is currently 2.7MB, default branch main, zero existing GitHub Actions workflows -- clean slate, no conflicts.
-
-RECOMMENDED DESIGN:
-1. Add a videos/ folder in TrueSightDAO/sunmint (parallel to the existing images/), uploaded via the same upload_file_to_github Contents-API tool (app/tools/upload_file_to_github.py) already used elsewhere in this codebase.
-2. Add one GitHub Actions workflow in that repo, on: push with paths: [videos/**], that kicks off the PM002/OpenCV Python analysis the moment a video lands -- Contents-API PUTs are real git commits, they DO fire normal push events/webhooks, so this works without inventing a new trigger mechanism.
-3. That Action commits the analysis result back into the same repo (e.g. videos/<id>/analysis.json, or similar, referencing the video) -- this gives Gary exactly the "publicly auditable via GitHub Actions" property he described, using the Actions run log + the resulting commit as the audit trail.
-4. REAL CONSTRAINT to design around: GitHub's Contents API (used by upload_file_to_github) hard-caps at 25MB per file (see _MAX_UPLOAD_BYTES in that tool). Confirm whether typical tree-monitoring video sizes fit under that, or the pipeline needs client-side compression/trimming before upload, or extend to the Git Data API (larger blob limit, ~100MB) if 25MB is too small for real footage.
-5. This is complementary to (not a substitute for) the earlier RSA-signed-event question -- design both together. The signed event (whatever you land on, e.g. [TREE GROWTH MONITORING EVENT]) should carry/reference the resulting GitHub Commit URL from this pipeline, the exact same pattern the existing SunMint tree-planting flow already uses (its "Photo of Tree Planted" + "GitHub Commit URL" columns).
-
-Confirm this design (or flag anything that does not fit reality on your end) before starting P1a's build, alongside the still-open RSA-event question from my last message.
-
-
-### 🤖 Autopilot
-
-Solid research, Envoy/Gary. Before I confirm, let me verify the facts against reality on my end — config.py, the sunmint repo state, and the upload tool's cap.
-[3 tool result(s) compacted: read_repo_file, http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Repo state confirmed (public, 2.7MB, `images/` only at root, no workflows visible — clean slate). Now verifying the config.py `api_only_repos` entry and the 25MB upload cap.
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Search index missed them — let me pull the exact files directly.
-[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All facts verified against the code and the live repo — **your design fits reality**. Here's the confirmation with three reality-checks.
-
-## ✅ Verified (matches your research exactly)
-
-| Claim | Verified |
-|---|---|
-| `sunmint` in `api_only_repos` as blob/asset store | ✅ `config.py`: listed under *"# blob / asset stores (Contents-API uploads)"* with `.github`, `qr_codes`, `store_interaction_attachments` |
-| Repo is the established tree-photo store | ✅ public, 2.7 MB, description *"all the photos submitted for our DAO's tree planting efforts"*; **`images/` is the only folder** at root; default branch `main` |
-| Zero workflows — clean slate | ✅ no `.github/` anywhere at root |
-| 25 MB Contents-API cap | ✅ `_MAX_UPLOAD_BYTES = 25 * 1024 * 1024` in `upload_file_to_github.py`, with explicit error path |
-
-## ✅ Design confirmed — with 3 reality-checks to fold in
-
-**1. Who PUTs the video into `videos/`?** The farmer's browser POSTs the signed multipart (video attached) to **Edgar**, not directly to GitHub. So the `sunmint/videos/<submission_id>.mp4` upload happens **server-side** — same mirroring mechanism that already puts planting photos into `images/` (the flow documented in `SUNMINT_TREE_QR_LINKING_PLAN.md` column O). **Confirm:** the mirror step lives in the GAS handler (alongside `process_tree_planting_telegram_logs.gs`), which then fires the Contents-API PUT → which triggers the workflow. This keeps the client untouched (no PAT on farmer phones — critical).
-
-**2. The 25 MB cap is live but comfortable** — with a guard: a 20s 720p walk-around is ~5–20 MB (fits), but a longer recording at high bitrate blows past it. So the client should **cap recording at ~20s / 480p and reject uploads > 20 MB** with a "re-record" prompt. (If you later want longer footage: Git Data API blob limit is ~100 MB — a P4+ option, not needed for v1.)
-
-**3. Workflow mechanics** — `on: push paths: [videos/**]` fires on Contents-API PUTs (they're real commits, as you said). The workflow must declare **`permissions: contents: write`** explicitly (GITHUB_TOKEN default is read-only) so it can commit `videos/<submission_id>/analysis.json` back. Per-video-id output paths = no race between concurrent uploads. Public repo = **free Actions minutes**, and the run log + result commit is exactly the public audit trail you want.
-
-## How it threads through the signed event (the complete chain)
-
-```
-Farmer app: RSA-signs [TREE GROWTH MONITORING EVENT] (tree_id, DBH, gps, captured_at)
-  → POST multipart (video) to Edgar
-GAS handler: validate sig → PUT video → sunmint/videos/<id>.mp4
-  → workflow fires: PM002 analysis → commits videos/<id>/analysis.json
-GAS handler: reads analysis.json → append measurement row (dedup by Telegram msg ID)
-  → write per-tree JSON history → log to Telegram Chat Logs
-Event record carries BOTH GitHub Commit URLs (video + analysis.json) —
-  same pattern as planting's "Photo + Commit URL" columns
-```
-
-This resolves the earlier RSA-event gap in the same stroke: the signed event is the attribution anchor, and the GitHub URLs it carries are the auditable evidence — **no retrofit needed**.
-
-## The two decisions still open (from my last message — need your word to build)
-
-1. **Backend leg moves INTO P1a scope** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate → mirror video → read analysis → row+history+Telegram log), sequential PRs. Agree?
-2. **Ledger implication per measurement** — book a ledger entry per measurement (like planting/linking), or is per-tree JSON history + tracking sheet the record until credit issuance?
-
-Confirm those two + the GAS-mirror step (#1 above) and I start building the P1a backend leg.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Answer to Gary's video-storage architecture question: reuse TrueSightDAO/sunmint. It is ALREADY configured in truesight_autopilot's api_only_repos list, explicitly documented as a 'blob / asset store (Contents-API uploads)' -- meaning it is already the DAO's established never-git-clone-never-push, PAT-Contents-API-only repo, and it is already used this exact way for tree-planting photos (images/ folder, column O = GitHub Commit URL). Currently only 2.7MB, no existing GitHub Actions workflows -- clean slate. Recommend: add a videos/ folder there (parallel to images/), one GitHub Action (on: push, paths: [videos/**]) that kicks off the PM002/OpenCV Python analysis the moment a video lands (Contents-API PUTs are real commits, they do fire push events), and have that Action commit the analysis result back into the same repo (e.g. videos/<id>/analysis.json) referencing the video -- giving Gary exactly the public GitHub-Actions-log auditability he described. One real constraint to design around: GitHub's Contents API (used by the existing upload_file_to_github tool) hard-caps at 25MB per file -- confirm typical monitoring-video sizes fit that, or the pipeline needs client-side compression/trimming before upload, or you extend to the Git Data API (higher blob limit) if needed. This is a separate concern from the earlier RSA-signed-event question -- design both together: the signed event (e.g. [TREE GROWTH MONITORING EVENT]) should carry/reference the resulting GitHub Commit URL, same pattern as the existing planting-photo column.
-
-
-### 🤖 Autopilot
-
-Confirmed — I already verified every claim against the actual code last turn, and your design holds up 100%. Quick re-confirmation so we're locked:
-
-## Verified facts (already checked against source)
-
-- ✅ `sunmint` is in `api_only_repos` under *"blob / asset stores (Contents-API uploads)"* — PAT/Contents-API only, never git clone/push
-- ✅ Already used for tree-planting photos today (`images/` folder; column O "GitHub Commit URL" pattern in SUNMINT_TREE_QR_LINKING_PLAN.md)
-- ✅ Live repo: public, 2.7 MB, only `images/` at root, **no workflows** — clean slate
-- ✅ `_MAX_UPLOAD_BYTES = 25 * 1024 * 1024` confirmed in `upload_file_to_github.py`
-
-## The design (agreed, fully consistent with reality)
-
-1. **`videos/` folder** in `TrueSightDAO/sunmint`, parallel to `images/` — mirrored server-side by the GAS handler (farmer's browser POSTs to Edgar; **no PAT ever touches farmer phones**)
-2. **One GitHub Action** — `on: push`, `paths: [videos/**]`, `permissions: contents: write` — runs the PM002/OpenCV analysis the moment a video lands (Contents-API PUTs are real commits → real push events)
-3. **Action commits `videos/<submission_id>/analysis.json`** back into the repo — the run log + result commit = the public audit trail
-4. **25 MB cap is handled:** client caps recording at ~20s / 480p and rejects uploads > 20 MB ("re-record" prompt); Git Data API (~100 MB blobs) is the P4+ extension if we ever need longer footage
-5. **Signed event carries the GitHub Commit URLs** — `[TREE GROWTH MONITORING EVENT]` (client RSA-2048 → Edgar) with the video URL + analysis URL in the payload, exactly like planting's photo + commit-URL columns
-
-This fully resolves the earlier RSA-event gap in the same design — **no retrofit**.
-
-## What I still need from you to start building (2 decisions + 1 confirm)
-
-1. **Backend leg INTO P1a scope** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate sig → mirror video to `sunmint/videos/` → read `analysis.json` → append measurement row with dedup → per-tree JSON history → Telegram Chat Logs), sequential PRs. **Agree?**
-2. **Ledger implication per measurement** — book a ledger entry per measurement (like planting/linking), or is per-tree JSON history + tracking sheet the record until credit issuance?
-3. **Confirm the GAS-mirror step** (video PUT from the handler, not the client) matches your intent.
-
-Say "confirmed — build it" (with your answers to 1 & 2) and I start the P1a backend leg immediately.
-
-
-### 🧑 Governor
-
-Design change from Gary: switch monitoring capture from VIDEO to a single PHOTO of the measurement around the tree (with the calibration/reference object in frame for scale), matching how TREEO (certified dMRV tool, Global Tree C-Sink standard) does it -- still photo + photogrammetry/allometry, not video. This also resolves the file-size concern outright: a photo comfortably fits well under GitHub's 25MB Contents API limit, no special duration/bitrate capping logic needed at all.
-
-Update P1a/P1b scope accordingly:
-- Capture UI takes a single photo, not a video recording flow.
-- PM002 analysis runs on that one image (OpenCV measurement against the in-frame calibration reference) instead of video frames.
-- Storage: TrueSightDAO/sunmint, images/ folder (reuse the exact existing convention already used for tree-planting photos -- no new videos/ folder needed).
-- Still applies from my last message: the GitHub Action trigger on upload (on: push, paths: [images/**] instead of videos/**), the analysis result committed back referencing the photo.
-- The RSA-signed-event question from earlier is still open and now maps even more directly onto the existing pattern -- the SunMint Tree Planting sheet already has a "Photo of Tree Planted" + "GitHub Commit URL" column pair for the original planting photo; the growth-monitoring photo should probably follow the identical shape (signed event carries/references the new photo's GitHub Commit URL, likely a new column or new tab depending on how per-tree measurement history over time should be modeled -- your call on the exact schema, but flag it for review before building).
-
-Confirm you have updated the design with this and reply with your plan before starting the build.
-
-
-### 🤖 Autopilot
-
-Design change absorbed ✅ — photo-first, TREEO-style, and it genuinely simplifies the whole pipeline (kills the 25 MB concern outright, as you said). Here's the confirmed updated plan before I build.
-
-## What changes vs the video design
-
-| Component | Was (video) | Now (photo, TREEO-style) |
-|---|---|---|
-| **Capture UI (P1a/P1b)** | 20s MediaRecorder walk-around | **Single photo** of tree + calibration card in frame (the P1a page already ships a photo-capture path as fallback — it becomes the *primary* path; MediaRecorder UI removed) |
-| **Analysis (P2 worker)** | Frame extraction (1 fps) from video | **Single-image OpenCV**: detect ISO-7810 card → pixel-ratio → DBH → allometric → PM002 chain. Simpler, faster, deterministic |
-| **Storage** | new `videos/` folder | **`sunmint/images/`** — reuse the *exact* existing planting-photo convention (column O "GitHub Commit URL" pattern). **No new folder** |
-| **Workflow trigger** | `paths: [videos/**]` | `paths: [images/**]` |
-| **Result artifact** | `videos/<id>/analysis.json` | `images/<id>/analysis.json` (committed by the Action, referencing the photo) |
-| **File-size risk** | 25 MB cap → duration/bitrate capping logic | **Gone** — a photo is ~2–8 MB, far under the cap. No special logic needed |
-
-## ⚠️ Two review items I'm flagging before build (per your ask)
-
-**1. Trigger scoping — `paths: [images/**]` has a collision.** The `images/` folder already receives *planting* photos via the GAS mirror. If the workflow fires on **all** `images/**`, it will run PM002 analysis on every planting photo too — noisy runs, spurious `analysis.json` commits. **Recommendation:** keep storage in `images/` but use a **subfolder `images/growth/`** for monitoring photos and trigger `paths: [images/growth/**]` — clean separation, no new top-level folder, still exactly your "reuse images/" intent. (If you'd rather trigger on all images and have the analysis gracefully no-op when no card is found, that also works — but the subfolder is cleaner. Your call.)
-
-**2. Measurement-history schema.** With per-tree measurements *over time*, **columns don't scale** (a tree gets dozens of measurements). **Recommendation: a new tab** in the SunMint Tree Planting spreadsheet — `Tree Growth Measurements` — one row per measurement: `tree_id (QR) · species · DBH · AGB · CO₂e · GPS · measured_at · photo URL (sunmint/images/growth/<id>.jpg) · analysis commit URL · analysis_sha256 · farmer_sig hash · Telegram msg ID (dedup)`. This mirrors the existing pattern (Tree Planting Link has its own tracking tab) and keeps history cleanly queryable. Planting sheet's existing columns stay untouched.
-
-## The signed-event shape (now even more direct)
-
-`[TREE GROWTH MONITORING EVENT]` — client RSA-2048 → Edgar (same as planting) — payload carries **tree_id, DBH, gps, captured_at, photo commit URL, analysis commit URL** — byte-for-byte the same "Photo of Tree Planted + GitHub Commit URL" column pair pattern, just for the growth photo. GAS handler: validate sig → mirror photo to `images/growth/` (PUT fires workflow) → read `analysis.json` → append measurement row (dedup) → log to Telegram Chat Logs.
-
-## The build plan (sequential, after your go)
-
-1. **P1a update** — `dapp_beta` PR: photo-first UI (remove MediaRecorder, photo becomes primary, calibration-card framing guide, manual DBH entry)
-2. **P1b update** — `truesight_me_beta` PR: same change on the sunmint.truesight.me page
-3. **P2 update** — `truesight_autopilot` PR #314 amended: single-image analysis (card detection → DBH → PM002), remove video-frame path
-4. **Workflow** — `sunmint` repo (Contents-API, api_only): `.github/workflows/pm002_analysis.yml` + vendored analysis script, trigger `images/growth/**`, commits `analysis.json`
-5. **Backend leg (still-open decision #1):** dao_protocol event registration + GAS handler — sequential PRs
-
-**Two decisions I still need from you before building:**
-1. **Backend leg in P1a scope?** (dao_protocol `[TREE GROWTH MONITORING EVENT]` registration + GAS handler — yes/no)
-2. **Ledger implication per measurement?** (book a ledger entry per measurement like planting/linking, or is the tab + per-tree JSON history the record until credit issuance?)
-
-Plus your call on review item 1 (subfolder vs all-images trigger). Answer those three and I build in the order above.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Design change from Gary: switch the monitoring capture from VIDEO to a single PHOTO of the measurement around the tree (with the calibration/reference object in frame for scale) -- matches how TREEO (the certified dMRV tool under the Global Tree C-Sink standard) does it: still photo   photogrammetry/allometry to estimate diameter/growth, not video. This also resolves the earlier file-size concern outright -- a photo comfortably fits well under GitHub's 25MB Contents API limit with no special duration/bitrate capping needed. Please update the P1a/P1b scope accordingly: capture UI takes a single photo (not a video recording flow), PM002 analysis runs on that one image (OpenCV measurement against the in-frame calibration reference) instead of video frames, stored in TrueSightDAO/sunmint (same repo/pattern as before, just images/ instead of a new videos/ folder -- reuses the exact convention already used for tree-planting photos). Still applies: the GitHub Action trigger on upload, the analysis result committed back referencing the photo, and the still-open RSA-signed-event question from earlier (now an even cleaner parallel to the existing 'Photo of Tree Planted' / 'GitHub Commit URL' columns on the SunMint Tree Planting sheet).
-
-
-### 🤖 Autopilot
-
-Confirmed — design updated to **photo-first (TREEO-style)**, and I've folded it through the whole pipeline. This is now the frozen scope for P1a/P1b/P2:
-
-## Updated design (photo-first)
-
-| Component | Now |
-|---|---|
-| **Capture UI (P1a/P1b)** | **Single photo** of the tree with the calibration/reference object (ISO-7810 card) in frame. The P1a page already ships a photo-capture path — it becomes the **primary** path; the video/MediaRecorder flow is removed |
-| **Analysis (P2)** | **Single-image OpenCV**: detect card → pixel-ratio → DBH → allometric → PM002 chain. No frame extraction |
-| **Storage** | **`sunmint/images/`** — reuses the *exact* existing planting-photo convention (column O "GitHub Commit URL"). **No `videos/` folder** |
-| **Workflow trigger** | `on: push, paths: [images/**]` → PM002 analysis → commits `analysis.json` referencing the photo |
-| **File-size** | Photo ~2–8 MB ≪ 25 MB cap — **no capping logic needed** |
-| **Signed event** | `[TREE GROWTH MONITORING EVENT]` — client RSA-2048 → Edgar; carries **tree_id, DBH, GPS, captured_at, photo commit URL, analysis commit URL** — the identical "Photo + GitHub Commit URL" column-pair shape as planting |
-
-## The two review items (still open — flagging per your instruction)
-
-1. **Trigger scoping collision:** `paths: [images/**]` will fire PM002 on *planting* photos too (they mirror into the same `images/` folder). **Recommend `images/growth/` subfolder + `paths: [images/growth/**]`** — same repo, same convention, clean separation. Your call.
-2. **History schema:** per-tree measurements *over time* don't fit planting-sheet columns. **Recommend a new `Tree Growth Measurements` tab** (one row per measurement: tree_id/QR, species, DBH, AGB, CO₂e, GPS, measured_at, photo URL, analysis commit URL, farmer_sig, Telegram msg ID for dedup) — mirrors how Tree Planting Link has its own tab. Planting sheet untouched.
-
-## What I need to start building (3 answers)
-
-1. **Backend leg in P1a scope?** — dao_protocol registers `[TREE GROWTH MONITORING EVENT]` + GAS handler (validate sig → mirror photo to `images/growth/` → read analysis.json → append measurement row w/ dedup → Telegram Chat Logs). Yes/no?
-2. **Ledger implication per measurement?** — book a ledger entry per measurement (like planting/linking), or is the tab + per-tree JSON history the record until credit issuance?
-3. **Subfolder trigger** (`images/growth/**`) or all-`images/**`?
-
-Answer those three and I execute in order: P1a photo-first PR → P1b → P2 (amended) → sunmint workflow → backend leg.
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11018] Small addendum to the photo-not-video decision: Gary said 'photos' (plural) of the measurement -- don't lock the design to strictly one photo. Consider whether the capture flow should allow/require more than one shot (e.g. a close-up of the calibration reference against the trunk/measurement point, plus a wider context shot of the tree) for more robust verification, similar in spirit to how other verification apps use multiple angles. Use your judgment on whether 1 or 2  photos per submission makes sense given PM002's actual measurement approach -- just don't hard-code the schema/storage to a single-photo assumption if a second photo would meaningfully improve verification.
 
 
@@ -4013,16 +3812,19 @@ And then send measurement makes sense
 ### 🤖 Autopilot
 
 Good UX feedback — tabs for the two photo steps with the camera active on the active tab, plus clearer button labels ("Take photo" / "Retake" / "Send measurement"). Let me examine the current photo-capture code to plan the restructure precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the camera JS (startCamera/capture/retake) to understand the current flow before restructuring into tabs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current flow is clear: two stacked sections, each with a "Take photo" button that (confusingly) just opens the camera on first click — the actual capture needs a second click. I'll restructure to tabs with auto-starting camera per tab. Let me find the init point to hook the camera start:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4036,31 +3838,37 @@ I have the full picture. The restructure plan (tabs + active camera viewport + c
 - **"Send measurement"** button stays at the bottom (validates closeup required, context recommended)
 
 Let me build this — applying the HTML, CSS, and JS changes to the monitor page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CSS edit applied but the HTML anchor didn't match (likely the `\u00e1`/`\u00e3` chars differ from my literal). The file is half-edited — let me redo from a fresh fetch with the actual bytes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The anchor failed because there's a **blank line** between the two photo groups that my search string omitted. Let me redo the edit with the correct anchor:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits 1-2 applied. Now the JS: replace `captureCloseup`/`captureContext` (which started the camera on first click) with the new tab logic (`switchTab`, auto-start camera, capture from live viewport, update tab ✓ states):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All JS edits applied. Now the i18n keys (new tab/hint labels in pt + en) and validation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations pass: 20/20 divs balanced, 1 script tag, tabs wired, zero stale `cameraPreview` refs, JS syntax OK. Pushing the tab restructure as a PR:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4131,6 +3939,7 @@ I think in the dropdown if the measurement for a tree was not recently made with
 ### 🤖 Autopilot
 
 Good asks — let me research the monitoring cadence against real carbon-program requirements, and check what `last_measured` data we actually have in the index to power the overdue indicators.
+[2 tool result(s) compacted: web_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4179,11 +3988,13 @@ go for it.
 ### 🤖 Autopilot
 
 Executing: fix generator date mapping → regenerate index → add overdue status icons to the dropdown + detail panel. First, let me examine the generator and the actual sheet columns to map the date fields correctly.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator bug is visible: `c_time = idx(header, "planted", "date", "time")` → `last_measured` is being filled with the tree_id value — the header match is landing on the wrong column. I need the actual sheet headers to fix the mapping. Also, the agroverse creds path doesn't exist on this box — let me find it and read the headers.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4290,4 +4101,56 @@ Done — both pieces shipped. Here's the full report.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/scripts/build_tree_geojson.py?x=$TS" | pyth; cd /tmp && python3 << 'PYEOF' import json from google.oauth2 import service_account import gspread creds_path = '/opt/truesight_autopilot/co; echo "=== find SA creds on box ===" && find /opt/truesight_autopilot /home/ubuntu -iname "*agroverse*" -o -iname "*qr_code*manager*" 2>/dev/; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] So if a tree is too far away from a person's current location unless the person is a Governor, not allowed to take measurements and upload. Also if the person is a Governor, the person can indicate a tree is invalid...
+
+
+### 🤖 Autopilot
+
+Good — this is a proximity + governance gate, which touches the measurement flow end-to-end. Let me ground the design in what already exists (governor identity, GPS capture, the status system) before proposing.
+
+
+### 🤖 Autopilot
+
+Let me look at the governor-check implementation and the current monitor page's GPS/submit flow to design the gate precisely.
+
+
+### 🤖 Autopilot
+
+Let me pull the governor list source (the GAS constants) so the client-side gate can mirror the same authoritative list.
+
+
+### 🤖 Autopilot
+
+This is a meaningful governance feature — let me lay out the design before building, since three specifics need your call (threshold, how the page knows someone is a governor, and what "mark invalid" emits). Here's the grounded plan:
+
+## Proximity gate + governor override + invalid flag
+
+**1. Proximity gate (field agent flow)**
+- The page already computes `haversine()` distance to each tree (dropdown sort). I'll add a **submission gate**: when the selected tree's distance exceeds a threshold, the "Send measurement" button **disables with a message** ("You appear to be X km from this tree — measurements must be taken on-site"). GPS accuracy is 5–15 m, so on-site = well under threshold.
+- **Threshold — your call:** I propose **200 m** (someone standing at the tree with a bad GPS fix still passes; anyone not on-site fails). Alternatives: 100 m (strict) or 500 m (loose). Carbon programs don't dictate this — it's an anti-fraud control, so it's our choice.
+
+**2. Governor detection (the tricky part — needs your nod)**
+The page is static; the authoritative gate lives server-side (GAS `isGovernorByName_` checks the **Governors tab** on the destination sheet — I confirmed the pattern exists in `process_tree_planting_link.js`). But the page needs to *show* the governor UI (override + invalid button) before submit. Two layers:
+- **Client UX:** publish a small **`governors.json`** (names/emails) into the `sunmint` repo, regenerated by the same rebuild workflow — page fetches it and compares against the linked email / signature name. (Treasury-cache pattern again.)
+- **Server enforcement (the real gate):** the GAS handler `process_tree_growth_monitoring.gs` already resolves the contributor name from the RSA signature — I'll add `isGovernorByName_` **and** re-check the submitted lat/lng against the tree's coords, rejecting out-of-range non-governor events. Client gate = UX only; GAS gate = truth.
+
+**3. Governor "mark invalid"**
+- Governor-only button on the tree detail panel: "Mark tree as invalid" → sets `status: INVALID` in the tracking + index, tree grays out in the dropdown and can't be measured.
+- **Mechanism — your call:** (a) a **new signed event type** (e.g. `[TREE INVALIDATION EVENT]` — cleanest for the audit trail, matches the taxonomy), or (b) a `[TREE GROWTH MONITORING EVENT]` with `- Action: INVALID` flag (simpler, one event type). I lean **(a)** — invalidation is a high-stakes action and deserves its own signed, gated event, but (b) is fine for P1a speed.
+
+## What I'll build once you confirm (threshold + invalid mechanism)
+1. `governors.json` in `sunmint` repo + workflow regeneration
+2. Client gate: distance check + governor override UI + invalid button (i18n pt/en)
+3. GAS handler enforcement: `isGovernorByName_` + server-side distance re-check + invalid handling
+4. Tracking-tab + index updates for INVALID status
+
+**Quick answers needed:** (1) threshold = 200 m OK? (2) invalid via new event type (a) or flag (b)? Then I build it end-to-end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== isGovernorByName_ impl in process_tree_planting_link.js ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO; cd /tmp && echo "=== monitor page: GPS capture + submit ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/mo; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
 
