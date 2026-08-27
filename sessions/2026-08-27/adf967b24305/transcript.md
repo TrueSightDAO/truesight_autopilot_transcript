@@ -568,11 +568,13 @@ Let me gather the evidence — logged contribution time in the ledger, PR timest
 ### 🤖 Autopilot
 
 No transcript matches. Let me find the correct sheet name for the contributions ledger and search for how time is logged.
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the correct sheet/tab name for the ledger. I'll check the repo docs and the ledger structure.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -685,4 +687,35 @@ Anything else on this thread — e.g. clean up the QA test rows (offchain 4178, 
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] so moving forward we will no longer experience any issues with this?
+
+
+### 🤖 Autopilot
+
+Honest answer: **the three bugs we chased are fixed and verified live — but I can't promise "no issues ever," because one structural risk remains and a few loose ends are still open.** Here's the straight picture:
+
+## ✅ Fixed & verified (serving on deployment @10)
+| Bug | Fix | Proof |
+|---|---|---|
+| False-positive [ASSET RECEIPT EVENT] match → zombie SKIPPED row | #427 anchored first-line detection | zombie `Edgar_20260507024609_005` silent on repeat runs |
+| SKIPPED/ERROR rows never deduped | #427 idempotent dedup | audit unchanged, `processed:0` on re-run |
+| Pinned @8 never served HEAD | redeploy @9→@10 | clasp AFTER shows @10; live URL 200 |
+| Wrong unit cost (100 vs 0.0581) | #431 `Contributor(s)` label fix | real test → Currencies = 0.0581, quantity = 100 |
+
+## ⚠️ What could still bite — be aware
+1. **The deployment is still a *pinned* deployment.** This is the root cause of the whole saga. `clasp push` only updates HEAD; the live deployment serves whatever version was captured at `clasp deploy` time. If a future code change is merged and nobody runs `clasp deploy -i <id> -V <new>`, **the exact same silent-stale-serving failure can recur**. The bulletproof fix is to point Edgar's call at the `@HEAD` deployment (auto-follows every push) — I saw a `@HEAD` deployment exists in the clasp list.
+2. **Unit cost is order-dependent.** The 0.0581 path only works when a paired USD contribution (same fund handler) arrives **before** the receipt in the scan window. If Paloma submits a receipt with no preceding paired contribution, the code falls back to `amount` as unit cost → wrong again. The pairing is heuristic, not guaranteed.
+3. **Audit tab double-appends on concurrent webhook triggers** (pre-existing; seen on Paloma's rows too). Cosmetic — offchain + Currencies legs write once — but it's noise.
+4. **QA test artifacts are still in the ledger** — offchain 4178, audit rows 20–21, two test Currencies rows (one wrong at 100, one correct at 0.0581). They're clearly labeled test data but they're polluting the ledger.
+
+## My recommendation
+- **Highest value:** move Edgar's deployment to `@HEAD` (kills the structural risk permanently) — needs your go, it's a config change on the live deployment.
+- Clean up the QA test rows.
+- Optionally: a follow-up PR to make unit-cost derivation fail loudly (SKIPPED) instead of silently falling back to `amount` when no pair is found — so a wrong value can never be written quietly again.
+
+Want me to do any of those?
 
