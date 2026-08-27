@@ -125,11 +125,18 @@ Let me find the FounderHaus Farm program page and the QR batch conventions doc, 
 ### 🤖 Autopilot
 
 I have nearly everything. Let me quickly verify the FounderHaus Farm program page details and the treasury-cache ledger listing, then assemble the PDF.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me quickly verify the current treasury snapshot shape and the FounderHaus landing page existence, then build the spec.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -292,4 +299,32 @@ Also on record from our context files (TRACK_MAP.md, BRAZIL_EXPORT_ENTITY_BRIEF.
 - **Also spotted:** an order from "layon jorge costa" — $5.00 on Agroverse shop on Aug 27 (probably a test purchase, given today's context)
 
 So when you reply to Layon for Monday's call, you're picking up where the June 22 conversation left off. Want me to draft the reply email to him?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15061] Record his name and email address as a contributor of our dao
+
+
+### 🤖 Autopilot
+
+Recording Layon as a DAO contributor — checking the event contract first.
+
+
+### 🤖 Autopilot
+
+Done ✅
+
+**Layon Costa recorded as a DAO contributor:**
+- **Name:** Layon Costa
+- **Email:** layon@toolsforthecommons.com
+- **Role:** Counsel / Partner (Tools for the Commons — DAZ treasury on-ramp integration lead)
+
+Submitted as a `[CONTRIBUTOR ADD EVENT]` — success confirmed. He's now in the DAO registry alongside the other partners, so any future contributions or check-ins from him can be logged against his identity.
+
+Anything else you want logged — e.g. Breno (breno@toolsforthecommons.com) and Paloma (paloma@founderhaus.club) too? They're both already active in this thread.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
