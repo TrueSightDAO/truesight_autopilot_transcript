@@ -29,6 +29,11 @@ MEO) all > Co Contact info eer / Computer Scientist \ and Entrepreneur Weal <tes
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: lookup_event_docs, lookup_event_docs, list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got the event docs and the attachment. Quick status before I submit anything:
 
 **What I have:**
@@ -64,16 +69,19 @@ Extracted text:
 ### 🤖 Autopilot
 
 The screenshot confirms the intro: **Vicente** is the cousin — an **agroforestry engineer** — introduced by Yuri in the "Agronomy Network" group chat, and you shared the 10,000-hectare Amazon restoration pitch + Agroverse shop link with him. Let me check the contributor registry conventions before registering.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot gives me the name: **Vicente** (Yuri's cousin, agroforestry engineer). Now let me check whether Yuri is already in the ledger and how previous contributor registrations looked, before I submit.
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the contributors ledger for naming conventions and to confirm neither Yuri nor Vicente is already registered.
+[2 tool result(s) compacted: read_repo_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -196,4 +204,51 @@ Checked the full contributors registry — neither **Vincente** nor **Yuri** (@Y
 2. **Yuri** — he isn't registered either. Want me to register him too so his 15 min is attributable (his Telegram handle @YuriSVB is the natural identifier)? Or skip Yuri's registration and just log the time under his name?
 
 Say the word and I'll execute all three.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15344] Can you add directly to Google sheet Yuri as a contributor with telegram and WhatsApp details. Skip email address for now?
+
+
+### 🤖 Autopilot
+
+Let me check what write mechanisms exist for the Contributors sheet before I do anything — I want to see if there's a GAS path that captures Telegram/WhatsApp columns, since my direct toolset only has read access to Google Sheets.
+
+
+### 🤖 Autopilot
+
+Let me look at the member-registration GAS scripts and API docs to find a write path for the Contributors sheet.
+
+
+### 🤖 Autopilot
+
+The register script references a Telegram column (H) on the Contributors tab. Let me see the full header row of that tab and the rest of that script — plus check the sheets structure doc for exact columns.
+
+
+### 🤖 Autopilot
+
+The Contributors tab headers confirm: **A=Name, D=Email, F=Phone/WhatsApp, H=Telegram Handle**. My Google Sheets tool is read-only, so let me check whether there's an existing write endpoint (GAS web app or API) that can append a contributor row with Telegram + WhatsApp columns — and read the rest of the registration script.
+
+
+### 🤖 Autopilot
+
+Let me get the authoritative field spec for CONTRIBUTOR ADD EVENT before submitting, so I use the exact labels Edgar expects.
+
+
+### 🤖 Autopilot
+
+Before I do anything, I need to be transparent about a tooling constraint, because I don't want to claim I did something I can't:
+
+**My Google Sheets access is read-only.** I have no write capability to the Main Ledger spreadsheet (`1GE7PUq-...`) — no direct cell write, no GAS deploy from here that edits it, and the documented write path (CONTRIBUTOR ADD EVENT via Edgar → GAS handler) only populates **Name (A) + Email (D)** — it does **not** write Telegram (H) or WhatsApp (F) columns, and it requires an email.
+
+So there are three realistic paths, and I'd like your pick:
+
+1. **Submit CONTRIBUTOR ADD EVENT via Edgar with Yuri's Telegram handle as the "email" field** — this registers him in the ledger + Contributors sheet (Name + Email columns) with @YuriSVB as identifier. It goes through the canonical pipeline (dedup + cache refresh). **Telegram/WhatsApp columns stay empty** (the pipeline doesn't fill them).
+
+2. **You (or someone with sheet edit access) add the row manually** in the Main Ledger → "Contributors contact information" tab: Name=Yuri, Phone/WhatsApp=…, Telegram Handle=@YuriSVB, leave Email blank. This is the only path that actually fills columns F and H today.
+
+3. **I write a small GAS enhancement** (PR to tokenomics) so a future CONTRIBUTOR ADD EVENT also fills Telegram/WhatsApp — but that's a code change + deploy, not immediate.
+
+**My recommendation:** Do **both 1 and 2** — submit the Edgar event now (so he's formally in the ledger) and have someone add his Telegram/WhatsApp row in the sheet. Want me to go ahead with option 1 (submit the Edgar CONTRIBUTOR ADD EVENT with Telegram handle as identifier, no real email), and confirm who can do the sheet row in option 2?
 
