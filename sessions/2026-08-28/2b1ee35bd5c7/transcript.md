@@ -827,41 +827,54 @@ The commit SHA might not exist anymore or the repo tree is empty there. Let me c
 ### 🤖 Autopilot
 
 The sentiment_importer repo API returns nothing (likely private/needs auth). The search results pointed to docs — let me check the context docs that describe the email link domain, especially `onboarding_invitation_fix.md` and `RESEND_VERIFICATION_PLAN.md`.
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The verification email is sent by GAS `sendEmailVerification(email, vk, return_url)` — the domain in the link comes from `return_url`/server-side construction. Let me find that GAS code.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The email is sent by the Rails `dao_email_registration_service.rb` calling GAS `sendEmailVerification`. The link domain is built in the Rails service. Let me read the Rails service from the repo (via the search-indexed blob).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The email-link domain is built server-side (Rails service or GAS). Let me read the GAS mailer code and the Rails service at the indexed commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the GAS mailer to see how it builds the link (which domain it uses for the DApp link).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is only 120 lines? Let me check what's actually in it beyond the header.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That GAS file is just a doc stub (39 lines). The actual link-building is in the Rails service (`dao_email_registration_service.rb`), but sentiment_importer's contents API returns 404 (private or moved). The search indexed the file at commit `0a15256c`. Let me check how the Rails service builds the return_url — and where `EMAIL_VERIFICATION_GAS_WEBHOOK_URL`/default domain comes from.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo is public (git ls-remote works). Let me fetch the Rails service file via git to see the link construction.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1024,4 +1037,183 @@ Also worth deciding: whether the **dapp pages themselves** should canonicalize t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://dapp.truesight.me/create_signature.html" -o dapp_live.html && curl -s "https://truesightdao.github.io/dapp/creat; cd /tmp && echo "=== generation source / edgar base / email registration in live page ===" && grep -n -i "generationSource\|generated using\; cd /tmp && echo "=== live page 470-545 (URL + generationSource) ===" && sed -n '470,545p' dapp_live.html; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15420] [Handoff context — this Telegram topic (thread 15420) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it.
+
+
+### 🤖 Autopilot
+
+Gary gave the go. Let me check the handoff registry per directive, then confirm the live backend for the email flow and pull the full service file for the fix.
+
+
+### 🤖 Autopilot
+
+The manifest has no row for thread 15420 specifically — the "go" refers to my proposed canonicalization fix from the last turn. Let me confirm the live backend (Rails vs dao_protocol python cutover) and get the exact `trigger_verification_email` code before opening the PR.
+
+
+### 🤖 Autopilot
+
+Let me get the full `trigger_verification_email` body and the caller context (line 40–80) to see exactly where `return_url` originates.
+
+
+### 🤖 Autopilot
+
+I now have the exact Rails code. Before writing the fix I must confirm **which backend is live** (Rails `sentiment_importer` vs the python `dao_protocol` cutover) and the beta dapp host for the allow-list. Checking both in parallel:
+
+
+### 🤖 Autopilot
+
+**Backend confirmed:** `dao_protocol` (python) has zero `EMAIL REGISTERED EVENT` handling — **Rails `sentiment_importer` is the live email backend** (matches the Sent emails from garyjob@agroverse.shop). CNAMEs: dapp_prod=`dapp.truesight.me`, dapp_beta=`beta.dapp.truesight.me`.
+
+So the fix goes in the Rails service. Let me read the file head to place the helper + constants cleanly.
+
+
+### 🤖 Autopilot
+
+Rails is the live email backend (`dao_protocol` has zero EMAIL REGISTERED handling). Let me confirm the deployment/test details from the resend plan and double-check dao_protocol has no verification handling either.
+
+
+### 🤖 Autopilot
+
+Rails is confirmed as the **live** backend (dao_protocol python port has zero EMAIL REGISTERED/VERIFICATION handling), so the fix goes in `sentiment_importer`. Plan:
+
+1. **Rails fix** (this turn): canonicalize `return_url` in `trigger_verification_email` with a host allow-list (`dapp.truesight.me`, `beta.dapp.truesight.me`, `truesightdao.github.io`, localhost dev) → anything else falls back to `https://dapp.truesight.me/create_signature.html`. This kills the ivy-yoga / repo-URL / GH-Pages-as-primary cases at the single choke point.
+2. **GAS parity** (next turn): same allow-list in `buildSignatureVerificationUrl_` for defense-in-depth.
+
+Let me install Ruby locally for the hard rule (`ruby -c` syntax check), apply the edits in my sparse clone to validate, and check the repo's default branch.
+
+
+### 🤖 Autopilot
+
+Ruby is available for the syntax check, default branch is `master`. Now let me build the fix — I'll patch the local clone, validate with `ruby -c`, then push via `git_push_changes`.
+
+Let me write the patched service file locally first:
+
+
+### 🤖 Autopilot
+
+Patch applies cleanly and `ruby -c` passes. One issue to double-check: the helper defines `def self.canonical_verification_return_url` — the service uses `class << self`, so a `def self.` inside that block would create a nested singleton method (fine in Ruby, but let me verify the method is actually callable as `canonical_verification_return_url` from within `trigger_verification_email`, which is also in the same `class << self`). Let me test it quickly and also run the repo's tests if present.
+
+
+### 🤖 Autopilot
+
+Path issue — the require needs the absolute path. Let me run it from the repo dir.
+
+
+### 🤖 Autopilot
+
+httparty isn't installed locally (needs bundler). The full-service load fails, but the `ruby -c` syntax check passed and the helper logic is pure Ruby (URI only). Let me verify the helper in isolation by extracting just the method + constants (no httparty dependency), then run the full test suite the repo ships (if any).
+
+
+### 🤖 Autopilot
+
+Found a bug in my helper: `http://127.0.0.1:55473/verify` → `http://127.0.0.1/verify` — the **port gets dropped** by `URI` host handling. For localhost/127.0.0.1 (dev), the port must be preserved. Let me fix the helper to include the port when present.
+
+
+### 🤖 Autopilot
+
+All 8 cases pass, `ruby -c` clean. The helper is verified. Now let me check the actual patched file region once more and confirm the full file syntax, then push via `git_push_changes` to open the PR.
+
+
+### 🤖 Autopilot
+
+The patch is clean and verified. Now let me push via `git_push_changes` to open the PR on `sentiment_importer`.
+
+
+### 🤖 Autopilot
+
+`git_push_changes` needs explicit edits. Also, I caught a real bug in my patch: I wrote `def self.canonical_verification_return_url` at **top-level** (before the `class`), which defines it as a class method on `Object` — **not callable unqualified** from inside the service. `ruby -c` won't catch that. It must be a plain top-level `def` (private instance method on Object). Let me fix and verify with a real load test (stubbing httparty).
+
+
+### 🤖 Autopilot
+
+The `require 'httparty'` at the top of the file still fails (my stub module isn't registered as a loadable file). Let me create a fake `httparty.rb` on the load path instead.
+
+
+### 🤖 Autopilot
+
+`URI` isn't loaded in the stub environment — the real app loads it via Rails, but to be safe the file should `require 'uri'` explicitly (it's stdlib, harmless). Let me add that and re-run.
+
+
+### 🤖 Autopilot
+
+All 8 cases pass on the real loaded file, `ruby -c` clean. The patch is verified end-to-end. Now let me open the PR with `git_push_changes` — I'll provide the full patched file as a write (the file is 259 lines, well under limits).
+
+
+### 🤖 Autopilot
+
+I have the file. Rather than risk a whole-file push with truncated content, I'll use targeted edits — the two exact hunks I changed (add `require 'uri'` + helper block, swap the `return_url_final` line).
+
+
+### 🤖 Autopilot
+
+PR #1134 opened. Let me verify the branch file has both edits applied correctly before merging.
+
+
+### 🤖 Autopilot
+
+The Contents API may need a different call. Let me fetch via the raw URL for the branch instead.
+
+
+### 🤖 Autopilot
+
+Raw fetch returned only 14 bytes (likely "404: Not Found"). Let me check what it actually returned, then use the API with the proper auth path.
+
+
+### 🤖 Autopilot
+
+Both raw and API return 404 for that branch — odd. Let me check the PR itself to see its actual head branch.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — the PR is open and the fix is verified; the only open item is verifying the branch file fetched correctly.
+
+## What's done this turn ("Go for it")
+
+**Diagnosis confirmed (live backend):** Rails `sentiment_importer` is the live email backend for `[EMAIL REGISTERED EVENT]` (the python `dao_protocol` port has **zero** EMAIL REGISTERED/VERIFICATION handling — checked via code search). The wrong-domain emails happen because the verification link uses the **generation-source URL** from the signed payload (`generationSource: window.location.href.split('#')[0]` in `create_signature.html`), so registering from any non-canonical page bakes that wrong domain into the email.
+
+**Fix — PR [#1134](https://github.com/TrueSightDAO/sentiment_importer/pull/1134) on `sentiment_importer` (open, base `master`):**
+- New top-level `canonical_verification_return_url(return_url)` helper with a **host allow-list**: `dapp.truesight.me`, `beta.dapp.truesight.me`, `truesightdao.github.io`, `localhost`, `127.0.0.1`.
+- Allowed hosts keep scheme/port/path/query (dev localhost ports preserved); **anything else** (ivy-yoga, repo URLs, arbitrary hosts) falls back to canonical `https://dapp.truesight.me/create_signature.html`.
+- `trigger_verification_email` now uses the helper instead of `return_url.presence || 'https://truesightdao.github.io/dapp/create_signature.html'` (old default was itself non-canonical GH Pages).
+- Added `require 'uri'` (stdlib) for outside-Rails operation.
+
+**Verification passed:**
+- `ruby -c` → Syntax OK (local patched copy + full load test).
+- Real-load test (httparty stubbed): **8/8 PASS** — canonical dapp, GH Pages allowed, ivy-yoga→canonical, repo URL→canonical, `127.0.0.1:55473` port preserved, `localhost:3000` preserved, empty/nil→canonical.
+- The PR was opened by `git_push_changes` with 2 targeted edits, commit `ef4a4a7a`, both edits reported applied.
+
+## Still blocking / to verify next turn
+1. **Branch-file fetch returned 404** via raw + Contents API (`?ref=fix/canonical-verification-return-url`) — but the PR exists (#1134, open, created 18:55:44) and `git_push_changes` reported the commit + both edits applied. The 404 may be a transient GitHub caching/race or a fork-vs-org path quirk. **Verify the branch file authoritatively** (e.g. `git ls-remote` / `git fetch origin fix/canonical-verification-return-url` in the sparse clone, or re-hit the API after a moment) before merging — same raw-CDN-cache trap as the sunmint PRs.
+2. **Merge PR #1134** once the branch file is confirmed to contain the helper + `require 'uri'` + the swapped `return_url_final` line.
+3. **Deploy note:** this is server code on the live email backend — after merge it needs a **Rails deploy/restart on Edgar's host** to take effect (GitHub merge alone doesn't deploy sentiment_importer). That restart is a prod-touching action — **I should flag it and get Gary's explicit go before doing it** (deploy to prod = irreversible gate per my rules).
+4. **GAS parity (defense-in-depth):** add the same allow-list to `tokenomics/google_app_scripts/1m8IZ.../Code.js` `buildSignatureVerificationUrl_` + `clasp push` — next unit.
+5. Optional: canonicalize `generationSource` on the dapp pages themselves (frontend) — not needed if server-side lands; skip unless Gary wants it.
+
+## RESUME HERE →
+Verify branch file of PR #1134 (`sentiment_importer` `fix/canonical-verification-return-url`): `git fetch`/`ls-remote` the sparse clone at `/tmp/si_shallow` or re-hit the GitHub API for `app/services/dao_email_registration_service.rb@fix/canonical-verification-return-url`; confirm `require 'uri'`, `canonical_verification_return_url`, and `return_url_final = canonical_verification_return_url(return_url)` are present; then **merge PR #1134**. After merge, ask Gary for explicit go on the Rails restart on Edgar's host (prod-touching), then do the GAS parity PR (`buildSignatureVerificationUrl_` allow-list in `tokenomics`) + `clasp push`, then re-register a test email to confirm the link lands on `dapp.truesight.me`.
+
+———
+**✅ Done this turn — actions taken:**
+• `read_context_file` ×2 → HANDOFF_MANIFEST.md (no thread-15420 row — this was the standing fix), RESEND_VERIFICATION_PLAN.md (confirms Rails vs dao_protocol open question)
+• `search_code` ×3 → dao_protocol EMAIL REGISTERED (0 hits) + EMAIL VERIFICATION (0 hits) → **Rails is live**
+• `read_repo_file` ×2 → dapp_beta/dapp_prod CNAMEs (`beta.dapp.truesight.me` / `dapp.truesight.me`)
+• `ssh run` ×8 → installed ruby, read service caller+body, patched file (helper + allow-list + port fix + `require 'uri'`), `ruby -c` OK, real-load test 8/8 PASS, tried branch-file verification (404 — to recheck)
+• `git_push_changes` → opened PR #1134 (2 edits, commit `ef4a4a7a`)
+• `list_prs` → confirmed #1134 open
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /tmp/si_shallow && wc -l app/services/dao_email_registration_service.rb && echo "=== trigger_verification_email full (85-150) ===" && sed; cd /tmp/si_shallow && echo "=== trigger_verification_email (105-160) ===" && sed -n '105,160p' app/services/dao_email_registration_service.r; cd /tmp/si_shallow && echo "=== caller (35-85) ===" && sed -n '35,85p' app/services/dao_email_registration_service.rb && echo "=== trigger_v; …(+14 more)
 
