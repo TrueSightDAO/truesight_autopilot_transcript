@@ -1092,6 +1092,7 @@ https://agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/?product=FounderHa
 ### 🤖 Autopilot
 
 The governor wants the special-edition callout sharpened: **"special edition only available at FounderHaus in Florianópolis"** + a link to FounderHaus's profile page on agroverse.shop. Let me first check the current state (were #221/#223 merged?) and find FounderHaus's profile page on the shop.
+[2 tool result(s) compacted: list_prs, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1250,4 +1251,42 @@ Governor's go — merging the open PRs and checking video progress. I'll merge s
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #221 on agroverse_shop_beta merged successfully (sha: 18afb3f7ebc111415b01d61e049eefd5cadf9b1c). Pull Request successfully merged
 • `ssh run` → echo "=== video transcode status ===" ls -la /tmp/fh_videos/ 2>/dev/null for f in /tmp/fh_videos/*.status; do echo "--- $f"; cat "$f" 2>/dev
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Going. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged this turn
+
+**PR #223 — [agroverse_shop_beta](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/223)** — "Migrate cacao tea PDP gallery to media-gallery.js framework" (merged `4225601`)
+- **What:** The PDP gallery now renders via the **media-gallery.js framework** from a page-local `media.json` — 5 items (existing `agl4.avif` + the 4 FounderHaus planting-day photos), hero via `data-media-slot`, no-JS fallback kept.
+
+## Progress so far on the merge chain
+| PR | Repo | Status |
+|---|---|---|
+| #220 (hero image) | agroverse_shop_beta | ✅ merged |
+| #221 (special-edition banner) | agroverse_shop_beta | ✅ merged |
+| #223 (gallery framework) | agroverse_shop_beta | ✅ merged |
+| **#314 (program page gallery)** | truesight_me_beta | ⏳ **next** |
+
+## ⏸ RESUME HERE → next units:
+1. **Merge #314** (truesight_me_beta — program page planting-day gallery)
+2. **Upload 3 videos to YouTube** (transcodes already done: `tools_of_common` 20.6MB, `tree_planting` 2.2MB, `cacao_circle` 0.9MB) via `/opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py` → admin@truesight.me channel, convention titles
+3. **Embed videos**: `tools_of_common` → product page + program page; other 2 → program page only
+4. **PRs for embeds** → merge → `sync_beta_to_prod` both repos → verify live on agroverse.shop + truesight.me
+
+**Prod promotion still needs your explicit go** — say the word and I'll sync after the video embeds land.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #223 on agroverse_shop_beta merged successfully (sha: 4225601b93ead0cc44a00183a88596dde061d2fd). Pull Request successfully merged
 
