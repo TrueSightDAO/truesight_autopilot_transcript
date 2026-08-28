@@ -949,26 +949,31 @@ The upload scripts exist in the beta checkout (`upload_video_to_youtube.py`, `yo
 ### 🤖 Autopilot
 
 I have the standing convention. Now let me verify what's actually on the box (per diagnostic discipline): the `video_editor` credentials location, the `youtube_videos.json` title conventions, and the video files' metadata.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Title convention confirmed: `Title — description | Agroverse` (max 100 chars), uploaded to the admin@truesight.me (TrueSight DAO) channel. The credential files aren't on the box yet — but the governor says I have the ability. Let me check my actual skillset: the `truesight_autopilot` repo (my own skills/tools) and any `video_editor` repo in the org.
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `video_editor` repo in the org, no YouTube OAuth credential files on the box. Let me verify my actual upload capability — check the `truesight_autopilot` repo's tooling (skillsets) and the `credential_vault` (which may hold the YouTube OAuth creds) per diagnostic discipline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The credential_vault listing came back empty — let me check it properly (it's described as encrypted laptop-credential backups, which would be the natural home for the YouTube OAuth creds), and check the API credentials doc + tokenomics GAS projects for any YouTube uploader.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the credential_vault MANIFEST to see if YouTube OAuth creds are among the backed-up credentials, and inspect the clasprc token scopes directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -976,21 +981,25 @@ Let me read the credential_vault MANIFEST to see if YouTube OAuth creds are amon
 The MANIFEST confirms YouTube creds live at `${WORKSPACE}/video_editor/credentials/` — but that's the **laptop's** workspace (`~/Applications`), not on this EC2 box. And the clasprc-admin token's scopes list is empty (it's a clasp Apps Script token, not a YouTube upload token anyway).
 
 Per diagnostic discipline, let me directly verify: (1) whether the YouTube OAuth files exist on this box at all, and (2) whether the `admin@truesight.me` YouTube upload capability is truly absent here — rather than assuming from the laptop-centric docs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found them — the YouTube OAuth creds ARE on this box at `/opt/truesight_autopilot/config/youtube/` (my skillset includes it, as the governor said). Let me verify the token's validity/scopes and the channel it's bound to (without exposing secrets).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The YouTube OAuth credentials are present and valid on this box — token has both `youtube.upload` + `youtube.force-ssl` scopes with a refresh token, and there's an upload script. Let me read the local README for any conventions, and inspect the 3 videos (duration/resolution/audio) so I can title them properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 videos confirmed on the box, and my YouTube upload capability is real: OAuth token for the **admin@truesight.me** channel (scopes: `youtube.upload` + `youtube.force-ssl`) with a refresh token, plus the uploader script at `/opt/truesight_autopilot/config/youtube/`. Let me verify the venv + script work end-to-end, and check how the farm pages style framework-rendered YouTube embeds (for the product-page embed pattern).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1006,6 +1015,7 @@ Everything checks out — my upload capability is real and ready. Now let me def
 3. **PRs** to beta repos → merge → promote to prod
 
 First, the exact insertion points — let me check both pages' current state (the framework media.json on product page from #223, and the program page's gallery block).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1017,11 +1027,13 @@ My YouTube upload capability is confirmed and ready (OAuth token for admin@trues
 3. **Capture video IDs** for embeds
 
 Let me transcode first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcode hit the 60s SSH timeout (HEVC→H.264 on a t3.medium is slow). Let me run it in the background with nohup and poll, so I don't block on the SSH call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1187,4 +1199,55 @@ Want me to proceed with the merges + prod promotion now, and continue the video 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== agroverse_shop_beta full tree — look for founderhaus / pledge / partners / profile; TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') curl -s -H "Authorization: Bearer $TOK" -H "Accept: application/vnd.github+json" "https://ap; TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== partners/founderhaus/index.html (key parts) ===" curl -s "https://raw.githubuserco; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Merge the PRs. How is the progress of the 3 videos on YouTube
+
+
+### 🤖 Autopilot
+
+Governor's go — merging the open PRs and checking video progress. I'll merge sequentially (221 and 223 touch the same file, so no parallel merges there), and check the video transcodes in parallel.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged this turn
+
+**PR #221 — [agroverse_shop_beta](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/221)** — "Add FounderHaus Farm Edition special-edition callout to cacao tea PDP" (merged `18afb3f`)
+- **What:** The Special Edition banner on the Cacao Tea 50g PDP now reads *"special edition — only available at FounderHaus in Florianópolis, Brazil (Jurerê Internacional)"* with **FounderHaus linked to its Agroverse partner profile** (`agroverse.shop/partners/founderhaus`), plus the SunMint program details, Edition/Program/Tree-pledge detail rows, and schema.org props.
+
+## 🎬 Video progress (checked in parallel)
+
+**All 3 transcodes are DONE** — ready for upload:
+| Output | Status | Size |
+|---|---|---|
+| `founder_haus_tools_of_common.mp4` (H.264 1080p) | ✅ DONE_TOOLS | 20.6 MB |
+| `founder_haus_tree_planting.mp4` | ✅ DONE_TREE | 2.2 MB |
+| `founder_haus_video_cacao_circle.mp4` | ✅ DONE_CIRCLE | 0.9 MB |
+
+- No ffmpeg processes running (transcodes finished)
+- Upload script + OAuth creds present at `/opt/truesight_autopilot/config/youtube/` (admin@truesight.me channel, `youtube.upload` scope, refresh token)
+- **No uploads to YouTube yet** (upload log empty) — uploads are the next step
+
+## ⏸ RESUME HERE → next units:
+
+1. **Merge #223** (agroverse_shop_beta — gallery via media-gallery.js framework)
+2. **Merge #314** (truesight_me_beta — program page gallery)
+3. **Upload 3 videos to YouTube** via `upload_video_to_youtube.py` (convention titles `Title — description | Agroverse`, public, admin@truesight.me channel) → capture video IDs
+4. **Embed**: `tools_of_common` → product page + program page; `tree_planting` + `cacao_circle` → program page only (via media.json / media-gallery.js)
+5. **PRs** for embeds → merge → `sync_beta_to_prod` (agroverse_shop_prod + truesight_me_prod) → verify live
+
+**Remaining merges this cycle:** #223, #314 (the "merge the PRs" go covers these). Prod promotion still per the earlier "merge and deploy" go — I'll confirm before syncing prod.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #221 on agroverse_shop_beta merged successfully (sha: 18afb3f7ebc111415b01d61e049eefd5cadf9b1c). Pull Request successfully merged
+• `ssh run` → echo "=== video transcode status ===" ls -la /tmp/fh_videos/ 2>/dev/null for f in /tmp/fh_videos/*.status; do echo "--- $f"; cat "$f" 2>/dev
 
