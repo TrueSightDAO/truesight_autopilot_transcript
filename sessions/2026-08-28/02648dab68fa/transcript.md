@@ -318,11 +318,13 @@ The event docs confirm `CONTRIBUTION EVENT` needs Type + Amount (+ Contributor(s
 ### 🤖 Autopilot
 
 Let me check the rest of the contributor sheet for Gary Teh's row and confirm Natália's absence.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found **Gary Teh's row** in the contributor sheet (`garyjob@gmail.com` — registered ✅). Natália still isn't in it. Let me scan the remaining rows for Natália/Paloma/Layon, and submit Gary's 30-min SunMint DApp session (he's registered, so his tokenization can go through now).
+[2 tool result(s) compacted: read_tool_result, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -461,4 +463,66 @@ So a direct manual write must happen in the sheet UI by someone with editor acce
 Just get me her email (she's already been asked in the WhatsApp thread) → I submit the event → the pipeline adds the row itself, and she can later verify her identity in the DApp. This is the "clean" path.
 
 Want me to go with the manual-add route (you add the row, I tokenize right after), or are you waiting on her email?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15337] I manually added her to the Contact list.
+
+
+### 🤖 Autopilot
+
+Let me verify her row landed in the Contributors sheet, and re-confirm the CONTRIBUTION EVENT format in parallel.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the Contributors sheet to find Natália's row (the first read truncated around "M").
+
+
+### 🤖 Autopilot
+
+Let me check the tail of the earlier full read (artifact) and also scan further down the sheet in case she was appended at the very end.
+
+
+### 🤖 Autopilot
+
+I don't see her row yet in the ranges I pulled (sheet currently ends at Layon Costa, row ~420). Let me check the tail beyond that — she may have been appended after the last row I read.
+
+
+### 🤖 Autopilot
+
+✅ Found her row — **Natalia Duque Cesar** is in the Contributors sheet (row 424: Name=A, Phone/WhatsApp=+55 48 99613-7274, email blank). Now I'll tokenize her 30-minute SunMint DApp session — same terms as yours: 30 min → **50 TDG** (100 × 30/60).
+
+Submitting her `[CONTRIBUTION EVENT]` now:
+
+
+### 🤖 Autopilot
+
+🎉 **Done — Natália's contribution is tokenized.**
+
+## Summary of what happened
+
+| Step | Result |
+|---|---|
+| **You manually added** her to `Contributors contact information` | ✅ Verified — row 424: **Natalia Duque Cesar** / WhatsApp **+55 48 99613-7274** (no email, fine for now) |
+| **`[CONTRIBUTION EVENT]` submitted** | ✅ **Submitted successfully** — 30 min → **50 TDG**, Contributor: `Natalia Duque Cesar` |
+| Description recorded | "30 min session with Gary Teh — sharing how to utilize the SunMint DApp to tokenize the planting and monitoring of FounderHaus trees (planted 2026-08-21)" |
+
+## Full picture of last week's Founder Haus time (2026-08-21 → 28)
+- **Gary Teh** — 30 min SunMint DApp session → **50 TDG** ✅ (submitted earlier)
+- **Natalia Duque Cesar** — 30 min SunMint DApp session → **50 TDG** ✅ (just now)
+- **Layon Costa** — 30 min packing bags → **50 TDG** (registered 2026-08-27)
+- **Paloma** — USD −11.62 QR-sticker printing + 100-sticker asset receipts (USD-type, 2026-08-26)
+- **7 × FounderHaus Tree Planting Pledge** tokenizations ($4.48 each, 2026-08-27)
+
+## Two small open items (optional)
+1. **Tree QR promise** — the thread promised Natália the QR code of the planted tree (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, planted 2026-08-21). Want me to look up its current status so you can send it to her?
+2. **Email backfill** — when she provides her email, we can add it to column D of her row (nice-to-have for future DApp identity verification, not required for what we just did).
+
+Both are easy follow-ups — just say the word. Otherwise, this task is fully complete ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
