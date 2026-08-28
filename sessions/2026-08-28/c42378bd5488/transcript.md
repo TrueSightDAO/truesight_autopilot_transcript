@@ -1554,36 +1554,43 @@ Says "promote its action" — I read that as your go for the prod sync. I'll run
 ### 🤖 Autopilot
 
 Explicit go — syncing both beta repos to prod now.
+[2 tool result(s) compacted: sync_beta_to_prod, sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `sync_beta_to_prod` tool hit an internal bug (`delete() got an unexpected keyword argument 'json'` — a code error in the tool's own implementation, not a sync conflict). I'll do the sync directly via GitHub's merge-upstream API with curl, then file a fix for the tool. First, confirming the fork relationships:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fork relationships confirmed (prod ← beta). Now doing the merge-upstream sync via GitHub API for both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both prod branches report **"not behind upstream"** — meaning they're already up to date with beta main. Let me verify the HEAD SHAs match to confirm the sync is complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SHAs differ and merge-upstream says "not behind" — meaning prod is **not strictly behind** beta: prod likely has its own commits (e.g. the intentional CNAME divergence) that beta doesn't have. Let me compare the two branches to see exactly what's diverged before doing anything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The compare API 404'd (cross-repo compare needs `base:...head:...` format). Let me use the correct cross-repo compare syntax.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod is **strictly behind beta** (agroverse_shop_prod: 8 commits behind, truesight_me_prod: 2 commits behind — both `ahead_by: 0`, so a clean fast-forward), yet merge-upstream said "not behind" — and the `sync_beta_to_prod` tool itself crashed with an internal bug (`delete() got an unexpected keyword argument 'json'`). Let me retry the merge-upstream once and list exactly what's missing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1591,26 +1598,31 @@ Prod is **strictly behind beta** (agroverse_shop_prod: 8 commits behind, truesig
 The compare reveals the real picture: **beta has 0 commits that prod lacks** (ahead_by: 0) — prod already contains everything from beta, plus its own 8/2 prod-only commits (the intentional CNAME divergence). That's why merge-upstream says "not behind": **the sync already went through** (the earlier `sync_beta_to_prod` call likely completed the merge-upstream before its internal HTTP bug crashed).
 
 The decisive test is the live sites themselves. Verifying both:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both live pages return 200. The visible chunks were truncated — let me read the artifacts to confirm the special-edition banner and video embeds are actually live on both pages.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The **live truesight.me** program page confirms the gallery + "From the FounderHaus Farm" video grid with all 3 iframes — **#315 is live on prod**. Now confirming the agroverse.shop PDP (banner + video embed).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live **agroverse.shop PDP** confirms everything is live: hero image, `#media-gallery` (framework), **Special Edition banner** ("only available at FounderHaus in Florianópolis, Brazil" with partner link). The remaining chunk should confirm the video embed — let me check the tail.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live PDP confirms the banner, product details (Edition/Program rows), and traceability. The video embed section comes after — let me read the final chunk.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1653,11 +1665,13 @@ Everything else is **live and done** — no further action needed on the content
 ### 🤖 Autopilot
 
 "Ya" — taking that as the go to open the fix for the `sync_beta_to_prod` tool bug. Let me find the exact line first.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Search came up empty in truesight_autopilot — the tool may be implemented elsewhere. Let me search org-wide.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1766,4 +1780,39 @@ Everything content-wise (hero, banner, galleries, videos, prod sync) is **alread
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /opt/truesight_autopilot 2>/dev/null && grep -rn "merge-upstream\|sync_beta_to_prod\|def sync" --include="*.py" . 2>/dev/null | grep -v "; cd /opt/truesight_autopilot && grep -rn "merge-upstream\|sync_beta_to_prod" app/ scripts/ 2>/dev/null | head -20; cd /opt/truesight_autopilot echo "=== git status of the file ===" git log --oneline -5 -- app/tools/sync_beta_to_prod.py 2>/dev/null echo "-; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Fix it
+
+
+### 🤖 Autopilot
+
+On it — merging PR #318 and deploying the fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged this turn
+
+**PR #318 — [truesight_autopilot](https://github.com/TrueSightDAO/truesight_autopilot/pull/318)** — `fix(deploy_ledger): use httpx.request("DELETE", ...) for lease close` (merged `ea2d62d`)
+
+**What changed:** `app/deploy_ledger.py` — the lease-close step now uses `httpx.request("DELETE", url, json=...)` instead of the invalid `httpx.delete(url, json=...)`. This was the root cause of `sync_beta_to_prod` false-erroring after successful prod syncs.
+
+## ⏸ RESUME HERE → next unit:
+1. **Deploy the fix** — run `deploy_autopilot()` so the running autopilot process picks up `ea2d62d` (the running process on port 8001 was started Aug 26 and predates the fix)
+2. **Verify** — confirm the deployed code contains the `httpx.request("DELETE", ...)` line and the service restarted cleanly
+3. Optionally re-run `sync_beta_to_prod` end-to-end to confirm the tool now reports cleanly
+
+The fix is merged — deploy is the one remaining step to make it live.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #318 on truesight_autopilot merged successfully (sha: ea2d62d0da83fc05b816a496d55105a09907ee15). Pull Request successfully merged
 
