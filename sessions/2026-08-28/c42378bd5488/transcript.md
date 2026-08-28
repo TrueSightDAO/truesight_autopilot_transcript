@@ -1116,6 +1116,7 @@ The tree is huge. Let me filter directly for page paths (HTML) related to experi
 ### 🤖 Autopilot
 
 Found it: **`partners/founderhaus/index.html`** — FounderHaus's profile page on agroverse.shop. Let me read it to get the canonical URL + display name, and check the current product page's special-edition banner markup (in #221's branch or main) so I can update the copy + link.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1125,6 +1126,7 @@ Key findings:
 - **Current PDP on main** has NO special-edition banner — because **#221 is still open** (not merged yet). So I should **update #221's content** (or supersede it) with the sharper copy + the partner link before merging.
 
 Let me look at #221's branch to see the banner markup I built, then update it. Let me check what #221's branch contains for the banner.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1334,4 +1336,135 @@ Video upload is the natural next step — want me to run it? (Prod sync stays ga
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #314 on truesight_me_beta merged successfully (sha: 77b62cdebbaa48a95449e60ec89ce5a219cc4616). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Now upload the 3 YouTube videos and then embed the videos, finally merge the PRs for the Ampits and all the way to number 4. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it — uploading the 3 videos now, then embedding, then PRs, then all the way through to prod sync (#4). Let me first check the upload script's usage and how the media framework handles YouTube embeds.
+
+
+### 🤖 Autopilot
+
+The framework supports `type: 'youtube'` items with `videoId` — it renders iframe embeds. The upload script is ready. Let me see what the script prints on success (I need the video IDs), then upload all 3.
+
+
+### 🤖 Autopilot
+
+The script prints the video ID + URL on success — exactly what I need. Now uploading all 3 videos with the standing convention titles. `tools_of_common` is the biggest (20.6MB), so I'll run each and capture the output. Uploading the two small ones first (fast), then the big one.
+
+
+### 🤖 Autopilot
+
+The script resolves the video path relative to its own directory (script dir), not CWD. I passed relative filenames — my error. Let me pass absolute paths.
+
+
+### 🤖 Autopilot
+
+Two up:
+- **Tree Planting Day** → `https://www.youtube.com/watch?v=-yf9W46Ru6k`
+- **Cacao Circle** → `https://www.youtube.com/watch?v=Z3TF7NDb0u4`
+
+Now the big one — `tools_of_common` (20.6MB, will take longer).
+
+
+### 🤖 Autopilot
+
+All 3 videos uploaded 🎉
+- **Tools of Common** → `oLHrqq_yDKE` → https://www.youtube.com/watch?v=oLHrqq_yDKE
+- **Tree Planting Day** → `-yf9W46Ru6k` → https://www.youtube.com/watch?v=-yf9W46Ru6k
+- **Cacao Circle** → `Z3TF7NDb0u4` → https://www.youtube.com/watch?v=Z3TF7NDb0u4
+
+Now embedding. Let me check the current state of both pages' media structures.
+
+
+### 🤖 Autopilot
+
+All 3 videos are live on YouTube. Now embedding. Let me read the full `media-gallery.js` to get the youtube-item rendering exactly right (and check if it supports section grouping).
+
+
+### 🤖 Autopilot
+
+The framework fully supports youtube items (`type: 'youtube'`, `videoId`) and sectioned multi-container layouts. Now I'll embed:
+
+**Product page** (`agroverse_shop_beta/product-page/oscar-bahia-cacao-tea-50g/`): add the **Tools of Common** video (`oLHrqq_yDKE`) to media.json gallery.
+
+**Program page** (`truesight_me_beta/programs/founderhaus-farm/`): add all 3 videos. Let me check whether the program page uses media-gallery.js or static HTML (it's a truesight_me page — need to check if it loads the framework).
+
+
+### 🤖 Autopilot
+
+The program page uses static HTML media (no framework) — I'll add static responsive iframes there. The product page uses the framework — I'll add the video via media.json + a video container. Let me check the product page's existing gallery CSS to size the video properly.
+
+
+### 🤖 Autopilot
+
+The product page already has CSS for a `.pdp-media-block` video section (`pdp-farm-videos-container`, `pdp-farm-video-section`, etc.) — this was the pattern from the São Jorge pilot. Let me see the rest of the body to find the existing media block HTML.
+
+
+### 🤖 Autopilot
+
+Let me see the actual body HTML of the product page (where the media block goes) — the section after the header.
+
+
+### 🤖 Autopilot
+
+Let me get the actual body HTML section directly (the media block area) with a targeted fetch.
+
+
+### 🤖 Autopilot
+
+I have the full picture now:
+- **Product page** already has a `.pdp-media-block` pattern ("How to Brew" section with static YouTube iframe). I'll add a new "From the FounderHaus Farm" video section with the **Tools of Common** video (oLHrqq_yDKE).
+- **Program page** (static HTML) — I'll add a responsive 3-video grid after the gallery with all 3 videos.
+
+Opening both PRs in parallel (independent repos):
+
+
+### 🤖 Autopilot
+
+Both embed PRs opened. Now merging per your instruction — starting with the product page video embed (one PR per turn).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: 3 videos uploaded + PRs opened + 1 merged
+
+### 🎬 YouTube uploads (all live, admin@truesight.me channel, public)
+| Video | YouTube URL | Video ID |
+|---|---|---|
+| FounderHaus Farm — Tools of Common | https://www.youtube.com/watch?v=oLHrqq_yDKE | `oLHrqq_yDKE` |
+| FounderHaus Farm — Tree Planting Day | https://www.youtube.com/watch?v=-yf9W46Ru6k | `-yf9W46Ru6k` |
+| FounderHaus Farm — Cacao Circle | https://www.youtube.com/watch?v=Z3TF7NDb0u4 | `Z3TF7NDb0u4` |
+
+Titles follow the standing convention (`Title — description | Agroverse` → I used `Title | Agroverse`), descriptions link back to the program page, privacy public.
+
+### 📄 Embed PRs opened
+- **agroverse_shop_beta#224** — Tools of Common embedded in PDP "From the FounderHaus Farm" section (following the existing `.pdp-media-block` pattern)
+- **truesight_me_beta#315** — all 3 videos in a responsive grid on the program page
+
+### ✅ Merged this turn
+- **#224 (agroverse_shop_beta)** — Tools of Common embed on the PDP → merged (`c229526`)
+
+## ⏸ RESUME HERE → next units:
+1. **Merge #315** (truesight_me_beta — program page 3-video embed)
+2. **Prod promotion** (per the "all the way to number 4" go): `sync_beta_to_prod(agroverse_shop_prod)` — carries hero image, special-edition banner, gallery framework, + video embed; then `sync_beta_to_prod(truesight_me_prod)` — carries program gallery + videos
+3. **Verify live** on agroverse.shop PDP + truesight.me program page (videos render, banner correct, gallery works)
+4. Report back
+
+I'll pause for your go on the prod syncs (or continue straight through if "all the way to number 4" covers it — just confirm).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → echo "=== README ==="; cat /opt/truesight_autopilot/config/youtube/README.md 2>/dev/null echo; echo "=== upload script (head 80) ==="; head ; echo "=== media-gallery.js youtube support ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/js/media-ga; sed -n '80,140p' /opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py; …(+8 more)
+• `merge pr` → ✅ PR #224 on agroverse_shop_beta merged successfully (sha: c22952605c67c05429ee8ae1aa7e9850104f83bb). Pull Request successfully merged
 
