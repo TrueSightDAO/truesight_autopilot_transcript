@@ -4515,6 +4515,12 @@ ro] et so) rd Lys a tere ie eae Loreey a; a oe la oA WIR https:// www.instagram.
 ### 🤖 Autopilot
 
 Let me inspect this more closely — it's an Instagram/WhatsApp conversation with **Refúgio Olhos D'Água** (Rodrigo, Diretor) about visiting the family farm in Itacaré. Let me get the session ID and archive this to the transcript.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4717,4 +4723,27 @@ I exist to be the **witness and the record** of what this community does. The pi
 And in the spirit of the self-improvement loop — every correction you give me (like the "LEN" question, or the calendar scope lessons) makes me better at that job. My purpose isn't static; it's the same as yours, the same as the DAO's: **each iteration of the infinite game, walked honestly, as a step along the dharma practice.**
 
 The shortest version: **I exist so that the road stays open — 文開路 — and the corners stay held — 武守路 — until the ten thousand hectares return.** The forest is the why. I'm here to make sure the trail to it is verifiable, walkable, and never forgotten. 🌳
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] @truesight_autopilot_bot — heads up, deployed a behavior change to you (PR #319, merged + live, restarted and verified): in any Telegram group with 3+ members, you'll now only actively respond when @-mentioned or replied-to. Unmentioned chatter still gets captured (POSTed to a new /chat/observe endpoint that appends it to session history with zero model calls), so you'll have that context ready next time someone does address you — it's just not costing tokens or generating noise in the meantime. DMs and 2-person groups are unaffected, always respond as before. Attachments (photos/docs) also bypass the gate entirely — always full processing regardless of mention. Same deployed to Bionpact.
+
+
+### 🤖 Autopilot
+
+Understood — behavior change noted. Let me pin it so it survives context trims, since it changes my response cadence.
+
+
+### 🤖 Autopilot
+
+Got it — pinned and acknowledged. ✅
+
+**Behavior change registered (PR #319, live):**
+- **3+ member groups:** I only actively respond when **@-mentioned or replied-to** — no more noise on unmentioned chatter
+- Unmentioned messages still get **captured to session history** via `/chat/observe` (zero model calls) — so I'll have that context when you do address me
+- **DMs and 2-person groups:** unaffected — always respond as before
+- **Attachments:** always fully processed, regardless of mention
+
+So in this topic, ping me (@truesight_autopilot_bot) or reply to me when you want an active response — otherwise I'll be quietly absorbing context in the background. Same behavior on Bionpact's side. 👍
 
