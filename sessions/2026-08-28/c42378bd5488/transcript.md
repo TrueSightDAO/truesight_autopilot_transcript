@@ -701,11 +701,13 @@ Analysis persisted to the transcript.
 ### 🤖 Autopilot
 
 The governor wants the gallery images wired through "the new JS framework we inserted" rather than the static `<img>` tags I added in #222. Let me find what that framework is — checking the product page's scripts and recent repo changes.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor mentions "the new JS framework we inserted" — I need to identify what that is. Let me search the repo for JS components/frameworks and recent commits mentioning a framework.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -854,4 +856,194 @@ Merged the first of the four PRs. Per the one-PR-per-turn rule I'm stopping here
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #220 on agroverse_shop_beta merged successfully (sha: fe173c128201cf8357a8c1c2ab5e2ea66704ac6a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] there are 3 videos sitting in ~/founder_haus* For the one with founder_haus_tools_of_common.MOV upload to our youtube account based on our standing convention in agentic_ai_context and then embed in https://beta.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
+
+as well as https://truesight.me/programs/founderhaus-farm/index.html
+
+For the other 2 just in https://truesight.me/programs/founderhaus-farm/index.html
+
+You have the ability to upload youtrube videos check your skillsets
+
+
+### 🤖 Autopilot
+
+I'll start by (1) finding the videos on the box, (2) pulling the standing YouTube convention from agentic_ai_context, and (3) checking what YouTube upload capability exists.
+
+
+### 🤖 Autopilot
+
+Videos found (3 files). The standing convention is in `DOWNLOADS_MEDIA_TO_AGROVERSE.md` — let me read it fully, plus check the YouTube upload scripts and credentials.
+
+
+### 🤖 Autopilot
+
+The convention doc is at `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` — let me read it fully.
+
+
+### 🤖 Autopilot
+
+I have the standing convention (`sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`). Now let me verify the tooling on the box — the `agroverse_shop` checkout with the YouTube scripts, credentials, and ffmpeg/whisper availability.
+
+
+### 🤖 Autopilot
+
+The box doesn't have the `agroverse_shop` checkout or YouTube credentials locally. The convention says credentials live in `agentic_ai_api_credentials` (never committed). Let me check for that and the GAS/gcloud auth paths.
+
+
+### 🤖 Autopilot
+
+There's a `~/agentic_ai_context/credentials` dir and `~/creds/google_credentials.json`. Let me check what's in them (looking for YouTube OAuth client/token for admin@truesight.me).
+
+
+### 🤖 Autopilot
+
+Let me check the GOOGLE_API_CREDENTIALS.md doc — it should describe where YouTube OAuth credentials live and how uploads are authenticated.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of that credentials doc — it may have a YouTube-specific section.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the credentials doc and search for how YouTube OAuth is stored/used.
+
+
+### 🤖 Autopilot
+
+The docs say credentials live in `agroverse_shop/scripts/youtube_credentials.json` + `youtube_token.json` (never committed) and mention `agentic_ai_api_credentials`. Let me find the actual credential files and the upload scripts on the box / in repos.
+
+
+### 🤖 Autopilot
+
+The upload scripts exist in the beta checkout (`upload_video_to_youtube.py`, `youtube_batch_incoming.py`, `youtube_videos.json`), but the OAuth credential files aren't on the box yet. Let me read the standing upload convention doc and the upload script to see exactly what's needed, and check the existing `youtube_videos.json` title convention.
+
+
+### 🤖 Autopilot
+
+I have the standing convention. Now let me verify what's actually on the box (per diagnostic discipline): the `video_editor` credentials location, the `youtube_videos.json` title conventions, and the video files' metadata.
+
+
+### 🤖 Autopilot
+
+Title convention confirmed: `Title — description | Agroverse` (max 100 chars), uploaded to the admin@truesight.me (TrueSight DAO) channel. The credential files aren't on the box yet — but the governor says I have the ability. Let me check my actual skillset: the `truesight_autopilot` repo (my own skills/tools) and any `video_editor` repo in the org.
+
+
+### 🤖 Autopilot
+
+No `video_editor` repo in the org, no YouTube OAuth credential files on the box. Let me verify my actual upload capability — check the `truesight_autopilot` repo's tooling (skillsets) and the `credential_vault` (which may hold the YouTube OAuth creds) per diagnostic discipline.
+
+
+### 🤖 Autopilot
+
+The credential_vault listing came back empty — let me check it properly (it's described as encrypted laptop-credential backups, which would be the natural home for the YouTube OAuth creds), and check the API credentials doc + tokenomics GAS projects for any YouTube uploader.
+
+
+### 🤖 Autopilot
+
+Let me read the credential_vault MANIFEST to see if YouTube OAuth creds are among the backed-up credentials, and inspect the clasprc token scopes directly.
+
+
+### 🤖 Autopilot
+
+The MANIFEST confirms YouTube creds live at `${WORKSPACE}/video_editor/credentials/` — but that's the **laptop's** workspace (`~/Applications`), not on this EC2 box. And the clasprc-admin token's scopes list is empty (it's a clasp Apps Script token, not a YouTube upload token anyway).
+
+Per diagnostic discipline, let me directly verify: (1) whether the YouTube OAuth files exist on this box at all, and (2) whether the `admin@truesight.me` YouTube upload capability is truly absent here — rather than assuming from the laptop-centric docs.
+
+
+### 🤖 Autopilot
+
+Found them — the YouTube OAuth creds ARE on this box at `/opt/truesight_autopilot/config/youtube/` (my skillset includes it, as the governor said). Let me verify the token's validity/scopes and the channel it's bound to (without exposing secrets).
+
+
+### 🤖 Autopilot
+
+The YouTube OAuth credentials are present and valid on this box — token has both `youtube.upload` + `youtube.force-ssl` scopes with a refresh token, and there's an upload script. Let me read the local README for any conventions, and inspect the 3 videos (duration/resolution/audio) so I can title them properly.
+
+
+### 🤖 Autopilot
+
+All 3 videos confirmed on the box, and my YouTube upload capability is real: OAuth token for the **admin@truesight.me** channel (scopes: `youtube.upload` + `youtube.force-ssl`) with a refresh token, plus the uploader script at `/opt/truesight_autopilot/config/youtube/`. Let me verify the venv + script work end-to-end, and check how the farm pages style framework-rendered YouTube embeds (for the product-page embed pattern).
+
+
+### 🤖 Autopilot
+
+Everything checks out — my upload capability is real and ready. Now let me define the plan and get the exact insertion points for both pages.
+
+**Plan:**
+1. **Upload 3 videos to YouTube** (admin@truesight.me channel, public):
+   - `founder_haus_tools_of_common.MOV` → embed on **both** product page + program page
+   - `founder_haus_tree_planting.MP4` → program page only
+   - `founder_haus_video_cacao_circle.mov` → program page only
+2. **Embed** via the `media-gallery.js` framework (`media.json` gallery items of type `youtube`)
+3. **PRs** to beta repos → merge → promote to prod
+
+First, the exact insertion points — let me check both pages' current state (the framework media.json on product page from #223, and the program page's gallery block).
+
+
+### 🤖 Autopilot
+
+My YouTube upload capability is confirmed and ready (OAuth token for admin@truesight.me with upload+force-ssl scopes + uploader script). Now the workflow:
+
+1. **Transcode** the 3 videos to standard H.264 MP4 (the .MOV is HEVC — YouTube prefers H.264; the other two get clean faststart remuxes)
+2. **Upload all 3** to the admin@truesight.me channel (public, per the standing Shuar convention) with convention titles
+3. **Capture video IDs** for embeds
+
+Let me transcode first:
+
+
+### 🤖 Autopilot
+
+The transcode hit the 60s SSH timeout (HEVC→H.264 on a t3.medium is slow). Let me run it in the background with nohup and poll, so I don't block on the SSH call.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+I'm at the per-turn tool limit, so I'm landing a clean checkpoint here. The heavy work is running in the background on the box.
+
+## 📍 Checkpoint — FounderHaus videos: upload + embed
+
+### ✅ Confirmed this turn (all verified, not guessed)
+1. **Videos on the box** (`/home/ubuntu/founder_haus_*`), all 3 present:
+   | File | Duration | Codec / res | Size |
+   |---|---|---|---|
+   | `founder_haus_tools_of_common.MOV` | 21.7s | HEVC 1920×1080 | 23.8 MB |
+   | `founder_haus_tree_planting.MP4` | 10.5s | H.264 576×1024 | 2.2 MB |
+   | `founder_haus_video_cacao_circle.mov` | 4.2s | H.264 464×832 | 0.9 MB |
+2. **Standing convention** (`sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` + Shuar example + `youtube_videos.json`): upload to **admin@truesight.me** (TrueSight DAO) channel, title format `Title — description | Agroverse` (≤100 chars), public, description w/ site link, then embed via the **media-gallery.js framework** (media.json `type: youtube` items).
+3. **My upload capability is real** (as the governor said): `/opt/truesight_autopilot/config/youtube/` contains:
+   - `youtube_credentials.json` + `youtube_token.json` — OAuth for **admin@truesight.me**, scopes `youtube.upload` + `youtube.force-ssl`, **has refresh_token** ✅
+   - `upload_video_to_youtube.py` + venv with `googleapiclient` ✅
+   - (These were NOT on the box earlier in the session — they appeared at 10:40 today, so the setup is fresh.)
+
+### 🔄 In progress (background, nohup pid 212671)
+- Transcoding started in `/tmp/fh_videos/`:
+  - `tools_of_common` → H.264 MP4 faststart (HEVC transcode — slow on t3.medium, hence background)
+  - `tree_planting` + `cacao_circle` → faststart remux (H.264 already)
+- Status files: `/tmp/fh_videos/{tools,tree,circle}.status`
+
+### ⏳ Not yet done
+Uploads (3×), capture video IDs, PRs embedding them, merge + prod. I have NOT uploaded anything to YouTube yet — no external action taken.
+
+## ⏸ RESUME HERE (next turn):
+1. `cat /tmp/fh_videos/*.status` — confirm all 3 transcodes done
+2. **Upload 3 videos** via `/opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py` (public, `— … | Agroverse` titles; `tools_of_common` gets both-page embed, other 2 program-page-only) — capture returned video IDs
+3. **Embed** via media.json (product page: `agroverse_shop_beta/product-page/oscar-bahia-cacao-tea-50g/media.json` add youtube items; program page: `truesight_me_beta/programs/founderhaus-farm/index.html` add video block) → PRs
+4. Merge + `sync_beta_to_prod` both repos (agroverse_shop_prod + truesight_me_prod) — the **"merge and deploy" go** from the previous message still covers #221/#223/#314 merges and prod promotion; I'll fold this in and confirm before prod sync.
+
+**Blocking note:** none on my side — the only thing that could block is the YouTube OAuth token expiring between turns (refresh_token present, so auto-refresh should cover it).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → ls -la ~/founder_haus* 2>/dev/null; echo "---"; find ~ -maxdepth 3 -iname "*founder*" 2>/dev/null | head -30; echo "=== repo checkouts on box ==="; ls -d ~/agroverse* ~/*shop* ~/*tokenomics* 2>/dev/null; echo "---"; find /home/ubuntu -maxdepth 3 -nam; echo "=== agentic_ai_api_credentials ==="; ls -la ~/agentic_ai_api_credentials 2>/dev/null || find /home/ubuntu -maxdepth 2 -iname "*credent; …(+13 more)
 
