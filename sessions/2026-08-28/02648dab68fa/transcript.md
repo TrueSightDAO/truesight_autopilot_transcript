@@ -367,21 +367,30 @@ If you don't have her email, the WhatsApp thread already shows the ask is out ("
 ### 🤖 Autopilot
 
 Good question — let me verify what the actual validation boundary is (Edgar API vs the GAS sidecar) before answering, so I don't send you down a path that silently drops the event.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find where the CONTRIBUTOR ADD EVENT is actually validated in dao_protocol (the DAO API).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The default branch isn't `main` — let me read those files at the commit hash the search returned.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how Edgar itself validates CONTRIBUTOR ADD EVENT (the API layer, distinct from the GAS sidecar).
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -525,4 +534,132 @@ Both are easy follow-ups — just say the word. Otherwise, this task is fully co
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15337] generate a PDF document documenting her contributions till now including our discussion just now and last week with the RSA event signatures. Make sure to include the image attachments.
+
+
+### 🤖 Autopilot
+
+I'll gather what I need for the PDF: confirm the attachment images are on disk, and pull the event rows + RSA signatures from the ledger.
+
+
+### 🤖 Autopilot
+
+The first screenshot (`2ab2ebfd71fc4e46a77ece6a0ae5af4e.jpg`) is on disk. Let me confirm the second screenshot and find Natália's event rows (with the RSA signature) in the ledger tail.
+
+
+### 🤖 Autopilot
+
+The ledger rows I pulled are from Feb 2025 — I need the **tail** where this week's events landed (with the Edgar signature column P). Let me find Natália's event rows and confirm the 2nd screenshot is on disk.
+
+
+### 🤖 Autopilot
+
+The ledger tail I pulled is from 2025 — today's rows are at the very end. Let me locate them and confirm both screenshots are on disk in parallel.
+
+
+### 🤖 Autopilot
+
+Both screenshots are on disk (591×1280 each). Ledger has 11,835 rows max — let me read the tail to find this week's rows with the Edgar RSA signatures.
+
+
+### 🤖 Autopilot
+
+The tail is large (314 rows of recent events). Let me read the end of that artifact to find this week's rows (Gary's and Natália's SunMint sessions with their RSA signatures).
+
+
+### 🤖 Autopilot
+
+I'm running low on tool rounds — let me grab the exact last rows containing Gary's and Natália's SunMint events with their RSA signatures.
+
+
+### 🤖 Autopilot
+
+Let me read the end of that artifact to capture Gary's and Natália's SunMint session rows (the very last rows of the ledger).
+
+
+### 🤖 Autopilot
+
+Let me read the very end of the ledger artifact to capture the SunMint session rows (Gary + Natália) submitted today.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk to capture Natália's contribution row with its RSA signature.
+
+
+### 🤖 Autopilot
+
+I have Gary's full event row. Let me grab the final chunk with Natália's full row (RSA signature), and check PDF tooling on the box in parallel.
+
+
+### 🤖 Autopilot
+
+reportlab 4.5.1 is available — good. Let me grab Natália's exact ledger row (with her RSA signature) from the very tail of the sheet.
+
+
+### 🤖 Autopilot
+
+Let me grab Natália's exact row (with her RSA signature) — it should be a few rows above the tail.
+
+
+### 🤖 Autopilot
+
+I have most of the data. Let me read the tail of that artifact to capture Natália's full event row (031) with her RSA signature.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of that artifact to capture Natália's full event row with her RSA signature.
+
+
+### 🤖 Autopilot
+
+I have everything I need — Natália's full ledger record (with the RSA signature), Gary's matching record, both screenshot attachments on disk, and the discussion context. Now I'll build the PDF with reportlab (images embedded), then send it to you.
+
+
+### 🤖 Autopilot
+
+Minor fix — the `Preformatted` style alias doesn't exist in this reportlab version. Let me patch the script.
+
+
+### 🤖 Autopilot
+
+PDF generated (180 KB). Let me send it to you here in the conversation.
+
+
+### 🤖 Autopilot
+
+📄 **PDF delivered** — `Natalia_Duque_Cesar_Contribution_Record.pdf` is now attached in this thread (message 15400).
+
+## What's in the document
+
+| Section | Contents |
+|---|---|
+| **Header band** | TrueSight DAO · Agroverse · SunMint — branded saffron, with her name + generated date |
+| **1 · Contributor Profile** | Natália Duque Cesar · +55 48 99613-7274 · ledger row 424 · registered 2026-08-28 (manual add by Gary) |
+| **2 · Contribution Summary** | Tree planting (Fri 08-21) + 30-min SunMint DApp session → **30 min / 50 TDG** (TDG formula shown) |
+| **3 · Evidence screenshots** | Both WhatsApp images embedded (thread + contact info page) |
+| **4 · RSA-signed ledger record** | **Her** `[CONTRIBUTION EVENT]` — full event text + RSA signature + Request Transaction ID + verify link |
+| **5 · Related ledger record** | **Gary's** matching 30-min event (same session, RSA-signed) |
+| **6 · Governance discussion log** | The full thread: email-block → bypass question → manual add → tokenization |
+| **7 · Notes & next steps** | Pending email backfill · planted-tree QR promise (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`) |
+
+## Key facts baked into the PDF
+- **Her event**: `Edgar_20260828162139_031` — Type Time (Minutes), Amount 30, TDG 50, status **Pending** on 2026-08-28
+- **Signature identity**: both events signed with the autopilot RSA key (Sophia Truesight); verifiable at `https://dapp.truesight.me/verify_request.html`
+- **TDG math**: 100 TDG/hour → 30 min = 50 TDG
+
+## Open items (unchanged, now documented in §7)
+1. **Email backfill** — once she provides it, add to column D of her row
+2. **Planted-tree QR** — still owed to her per the WhatsApp promise
+
+Want me to also **upload the PDF to the repo** (e.g. `.github/assets/` or a `reports/` path) so it has a permanent URL, or is the Telegram copy enough?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ls -la /tmp/tg_attachments/ | grep -E '2ab2|92c7' ; echo '---' ; python3 -c "from PIL import Image; [print(p, Image.open(p).size) for p in [; python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import PIL; print('PIL ok')" 2>&1; cat > /tmp/make_natalia_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import A4 from reportlab.lib.units import mm ; …(+1 more)
 
