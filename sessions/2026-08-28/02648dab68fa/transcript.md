@@ -227,21 +227,30 @@ The second screenshot gives me **Natália Duque Cesar**, WhatsApp **+55 48 99613
 ### 🤖 Autopilot
 
 The contact info confirms: **Natália Duque Cesar**, WhatsApp **+55 48 99613-7274** (Florianópolis — FounderHaus HQ). The contributor sheet has a **Phone / WhatsApp** column (F), but the `CONTRIBUTOR ADD EVENT` docs list **Contributor Email as required**. Let me check how the event processor validates fields and whether there's precedent for phone-only registration.
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The contributor sheet has a **Phone / WhatsApp** column (F) and a **WhatsApp Chat Log ID** column (Q) — and precedent like `@vinibitencourt` with only a WhatsApp ID (no email). Let me check how the contributor-add processor validates the email requirement.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the handler to see how it parses name/email (whether email is strictly required).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the parser function to confirm whether email is strictly required.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,6 +258,7 @@ Let me read the parser function to confirm whether email is strictly required.
 The handler confirms the blocker: **`[CONTRIBUTOR ADD EVENT]` strictly requires a valid email** — `parseContributorAddEvent_` returns `parse_error` (and the row is skipped, not added) if the email line is missing or lacks `@`. So phone-only registration won't process.
 
 Let me pull the full last-week event stream from the snapshot to answer the Founder Haus time question.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -296,11 +306,13 @@ Als} all F GD ‘cs a Natalia Duque...
 ### 🤖 Autopilot
 
 Let me confirm the CONTRIBUTION EVENT format and double-check whether Natália's email has surfaced anywhere.
+[3 tool result(s) compacted: lookup_event_docs, search_context, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event docs confirm `CONTRIBUTION EVENT` needs Type + Amount (+ Contributor(s)). Let me verify Gary's own contributor record and scan the sheet for both names before submitting.
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -408,4 +420,45 @@ The reason email is baked in: it's the identity anchor for the **digital-signatu
 **Path B** if she replies soon — it's one message and everything (registration, TDG, future DApp verification) works. **Path A** if you want her contribution recorded *today* and don't want to wait — Gary adds the row manually, I immediately submit her 30 min → **50 TDG** (same as yours).
 
 Want me to go with **A** (you add the row, I tokenize right after), or hold for **B**? I can also prep a small PR to make the pipeline *optionally* accept phone-only registration if you want this to be a repeatable capability rather than a manual override — your call.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15337] Can you just manual add to Google sheet?
+
+
+### 🤖 Autopilot
+
+Let me check whether there's any write path I can actually use for the Contributors sheet from here (I know my sheet tooling is read-only, but let me verify if a GAS web-app append endpoint exists).
+
+
+### 🤖 Autopilot
+
+Let me check the ContributorAddHandler and its parent Code.js to see if there's a web-app endpoint I can call to append a contributor.
+
+
+### 🤖 Autopilot
+
+Short answer: **I can't — my Google Sheets access is read-only, so the manual add has to come from you (or anyone with editor rights).** Let me be precise about why and what the fastest path is.
+
+## Why I can't do it myself
+- My only sheet tool is `read_google_sheet` — there's **no write tool** in my toolbox for the Main Ledger (`Contributors contact information`, spreadsheet `1GE7PUq…`).
+- The automated append path (`processContributorAddsFromTelegramChatLogs` web app, script `1m8IZPs…`) only processes `[CONTRIBUTOR ADD EVENT]` rows from Telegram Chat Logs, and its parser hard-requires an email with `@` — phone-only rows get flagged `parse_error` and skipped. Plus it's gated behind Edgar's webhook secret, which I don't hold.
+
+So a direct manual write must happen in the sheet UI by someone with editor access — and as a governor, **that's you**.
+
+## Fastest path (2 minutes, unblocks everything)
+1. **You** open the Main Ledger → tab **`Contributors contact information`** → next empty row:
+   - **A** = `Natália Duque Cesar`
+   - **D** (email) = leave blank, or fill if you happen to know it
+   - **F** (Phone/WhatsApp) = `+55 48 99613-7274`
+   - Precedent is solid: rows like `@vinibitencourt`, `Ahbinav`, `Alexander Grau` exist phone-only, no email.
+2. Tell me when it's in, and I'll immediately submit her `[CONTRIBUTION EVENT]`: **30 min → 50 TDG** (matching yours), Contributor: `Natália Duque Cesar`.
+
+⚠️ One heads-up: when she eventually provides her email, a future `[CONTRIBUTOR ADD EVENT]` will be marked **`duplicate`** (name match) and skipped — which is fine; the row already exists, we'd just backfill D in place. No harm.
+
+## If you'd rather not hand-edit
+Just get me her email (she's already been asked in the WhatsApp thread) → I submit the event → the pipeline adds the row itself, and she can later verify her identity in the DApp. This is the "clean" path.
+
+Want me to go with the manual-add route (you add the row, I tokenize right after), or are you waiting on her email?
 
