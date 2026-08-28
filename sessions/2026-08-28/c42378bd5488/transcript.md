@@ -1098,16 +1098,19 @@ The governor wants the special-edition callout sharpened: **"special edition onl
 ### 🤖 Autopilot
 
 #220 merged; #221 and #223 still open (the "merge and deploy" got interrupted by the one-PR-per-turn rule after #220). Now let me find FounderHaus's profile page on the shop — `search_code` returned 0 (code search only indexes default branches, may be stale), so let me check the repo tree directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's an `experiences/founderhaus-venue.jpg` — so FounderHaus likely has an **experiences page**. Let me get the full tree output to find its exact path.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree is huge. Let me filter directly for page paths (HTML) related to experiences/founderhaus.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1289,4 +1292,46 @@ Governor's go — merging the open PRs and checking video progress. I'll merge s
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #223 on agroverse_shop_beta merged successfully (sha: 4225601b93ead0cc44a00183a88596dde061d2fd). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Keep going. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged this turn
+
+**PR #314 — [truesight_me_beta](https://github.com/TrueSightDAO/truesight_me_beta/pull/314)** — Program page planting-day gallery (merged `77b62cd`)
+- **What:** The FounderHaus Farm program page (`truesight.me/programs/founderhaus-farm/`) now shows a responsive 4-image gallery grid (the planting-day photos) inside the `.program-media` block.
+
+## All 4 PRs in the merge chain are now merged ✅
+| PR | Repo | Status |
+|---|---|---|
+| #220 (hero image) | agroverse_shop_beta | ✅ |
+| #221 (special-edition banner) | agroverse_shop_beta | ✅ |
+| #223 (gallery framework) | agroverse_shop_beta | ✅ |
+| #314 (program page gallery) | truesight_me_beta | ✅ |
+
+## ⏸ RESUME HERE → next units (per "keep going"):
+1. **Upload 3 videos to YouTube** — transcodes done (`tools_of_common` 20.6MB, `tree_planting` 2.2MB, `cacao_circle` 0.9MB) via `/opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py` → admin@truesight.me channel, convention titles (`Title — description | Agroverse`)
+2. **Embed videos**: `tools_of_common` → product page + program page; other 2 → program page only (media.json / media-gallery.js)
+3. **PRs for embeds** → merge
+4. **`sync_beta_to_prod`** both repos (agroverse_shop_prod + truesight_me_prod) → verify live — **prod promotion needs your explicit go**
+
+Video upload is the natural next step — want me to run it? (Prod sync stays gated on your go.)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #314 on truesight_me_beta merged successfully (sha: 77b62cdebbaa48a95449e60ec89ce5a219cc4616). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #314 on truesight_me_beta merged successfully (sha: 77b62cdebbaa48a95449e60ec89ce5a219cc4616). Pull Request successfully merged
 
