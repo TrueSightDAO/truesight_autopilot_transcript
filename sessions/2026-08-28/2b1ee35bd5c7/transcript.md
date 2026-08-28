@@ -526,46 +526,55 @@ The patch reveals something critical: it contains **only the #17 (camera) change
 Confirmed — the authoritative beta main (sha `d1077c9e`) **has both fixes** (56,615 bytes; `maybeShowInvalidZone` def + 2 calls, `loadContributorIdentity` call, `cameraErrorMessage` ×2). The earlier `/tmp/beta_main.html` was a stale raw-CDN copy from between the merges — good thing I checked.
 
 So the correct promotion file = authoritative beta main monitor page (`beta_main_auth.html`, which == what I built for PR #18). Let me verify it's byte-identical to my PR #18 fixed file, then open the promotion PR on `sunmint_prod`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything lines up. Promotion file = authoritative beta main = my PR #18 result (byte-identical, 56,615 bytes), and prod's CNAME (`sunmint.truesight.me`) stays untouched since I'm only replacing the monitor page file. Opening the promotion PR on `sunmint_prod` now.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search string didn't match — likely a whitespace/encoding difference between my hunk and the actual file bytes. Let me inspect the exact content around that anchor in prod's file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first hunk failed on a non-ASCII line — rather than fight encoding-sensitive search/replace hunks on a 56KB file, I'll switch to a whole-file write using the authoritative beta file I already verified on disk. Let me read it fully.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The i18n hunks contain non-ASCII chars (`ç` in "medição") that don't match in search/replace. I'll rebuild with ASCII-only anchors. Let me grab the exact context around each edit point first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The whole-file write is the robust path (the i18n edits carry non-ASCII that breaks search/replace). I'll read the full authoritative file from the artifact, then push it as a single write to `sunmint_prod` and verify bytes before merging. Reading the artifact in chunks:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The whole-file read is too heavy. Better plan: `git_push_changes` with **ASCII-only search anchors** (the earlier failure was the non-ASCII `ç` in my search string — the file's i18n lines contain UTF-8 that didn't byte-match). Let me verify all my ASCII anchors exist exactly once in the prod (pre-fix) file, and that `isMobileDevice` is already defined there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All anchors confirmed (2 ambiguous ones need bigger context). Let me verify the two multi-line anchors for the dropdown and onload edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All anchors verified. Now I'll open the promotion PR on `sunmint_prod` with ASCII-only search anchors — a direct 1:1 copy of the verified beta-main file (with fixes #17 + #18).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -729,4 +738,164 @@ Merged ✅ — here's the wrap-up.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?ref=main" | python3 -c " ; cd /tmp && echo "=== populateTreeDropdown (560-595) ===" && sed -n '560,595p' beta_now.html && echo "=== tree load + distance calc (1040-107; cd /tmp && echo "=== requestLocation + location handlers ===" && grep -n "requestLocation\|latitude\s*=\|longitude\s*=\|getCurrentPosition\|; …(+3 more)
 • `merge pr` → ✅ PR #19 on sunmint_beta merged successfully (sha: 69e0325dfce00780a8ae6cacd1c6058cb16649d9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15420] Link email is generating the link to the wrong domain from this page
+
+https://truesightdao.github.io/dapp/create_signature.html?em=garyjob%40gmail.com&vk=kcdEYgNE7QvdZnUWUVvojs77CRQQPxjcSL0Gb7D0tKg
+
+
+### 🤖 Autopilot
+
+Gary reports the create_signature page generating a link to the wrong domain. Let me find that page and the link-building logic.
+
+
+### 🤖 Autopilot
+
+The page is hosted at `truesightdao.github.io/dapp/` — likely `dapp_beta`/`dapp_prod`. Let me find which repo hosts `create_signature.html` and read the link-building logic.
+
+
+### 🤖 Autopilot
+
+Both repos have the file; live URL is `truesightdao.github.io/dapp/create_signature.html`. Let me find where the page builds the email link (with `em=`/`vk=` params) and which domain it hardcodes.
+
+
+### 🤖 Autopilot
+
+Let me look at the email registration link-building code around lines 420-560 — where the `em=`/`vk=` verification link gets generated.
+
+
+### 🤖 Autopilot
+
+Let me find where the email verification link (`em=`/`vk=`) gets built — searching for the link construction with the verify params.
+
+
+### 🤖 Autopilot
+
+The page reads `em`/`vk` and submits verification. The email with the link is sent server-side. Let me see the registration submit flow on the page, then find where the email link domain is built.
+
+
+### 🤖 Autopilot
+
+The frontend submits the EMAIL REGISTERED EVENT — the verification email link is built **server-side** (Rails). The "wrong domain" is baked into the email link. Let me find where the verification URL is constructed.
+
+
+### 🤖 Autopilot
+
+The raw fetch returned empty. Let me use the Contents API for that commit.
+
+
+### 🤖 Autopilot
+
+The file path may have changed on that commit. Let me list the repo tree at that commit to find the actual path.
+
+
+### 🤖 Autopilot
+
+The commit SHA might not exist anymore or the repo tree is empty there. Let me check the default branch and find the file on it.
+
+
+### 🤖 Autopilot
+
+The sentiment_importer repo API returns nothing (likely private/needs auth). The search results pointed to docs — let me check the context docs that describe the email link domain, especially `onboarding_invitation_fix.md` and `RESEND_VERIFICATION_PLAN.md`.
+
+
+### 🤖 Autopilot
+
+The verification email is sent by GAS `sendEmailVerification(email, vk, return_url)` — the domain in the link comes from `return_url`/server-side construction. Let me find that GAS code.
+
+
+### 🤖 Autopilot
+
+The email is sent by the Rails `dao_email_registration_service.rb` calling GAS `sendEmailVerification`. The link domain is built in the Rails service. Let me read the Rails service from the repo (via the search-indexed blob).
+
+
+### 🤖 Autopilot
+
+The email-link domain is built server-side (Rails service or GAS). Let me read the GAS mailer code and the Rails service at the indexed commit.
+
+
+### 🤖 Autopilot
+
+Let me read the GAS mailer to see how it builds the link (which domain it uses for the DApp link).
+
+
+### 🤖 Autopilot
+
+The file is only 120 lines? Let me check what's actually in it beyond the header.
+
+
+### 🤖 Autopilot
+
+That GAS file is just a doc stub (39 lines). The actual link-building is in the Rails service (`dao_email_registration_service.rb`), but sentiment_importer's contents API returns 404 (private or moved). The search indexed the file at commit `0a15256c`. Let me check how the Rails service builds the return_url — and where `EMAIL_VERIFICATION_GAS_WEBHOOK_URL`/default domain comes from.
+
+
+### 🤖 Autopilot
+
+The repo is public (git ls-remote works). Let me fetch the Rails service file via git to see the link construction.
+
+
+### 🤖 Autopilot
+
+Found the key line in the Rails service. Let me read `extract_generation_source_url` and how the email link is actually built, plus the GAS `sendEmailVerification` implementation.
+
+
+### 🤖 Autopilot
+
+Now let me read the actual GAS `sendEmailVerification` implementation (lines ~124–185) to see how the email link is assembled.
+
+
+### 🤖 Autopilot
+
+Now let me see `buildSignatureVerificationUrl_` — the actual link builder.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — here's the full chain and the near-certain root cause.
+
+## Email verification link — chain traced end-to-end
+
+**Where the link domain comes from:**
+
+1. **DApp page** (`dapp_beta`/`dapp_prod` `create_signature.html`) — when you register, it signs a payload with `generationSource: window.location.href.split('#')[0]` (line 535) and POSTs `[EMAIL REGISTERED EVENT]` to `https://edgar.truesight.me/dao/submit_contribution`.
+2. **Rails** `sentiment_importer/app/services/dao_email_registration_service.rb`:
+   - `extract_generation_source_url(text)` → regex `This submission was generated using\s+(\S+)` pulls that generation-source URL out of the signed payload.
+   - `trigger_verification_email` → `return_url_final = return_url.presence || 'https://truesightdao.github.io/dapp/create_signature.html'` → passes `return_url` to the GAS webhook.
+3. **GAS mailer** (`tokenomics/google_app_scripts/1m8IZ.../Code.js`, live script `1m8IZPs1vFN99cuu-39kbC-OGXggRVtJtXq5rfSB0M1sCQjMdolEUDuGU`):
+   - `handleEmailVerificationRequest_` → `buildSignatureVerificationUrl_(email, vk, returnUrl)` → `return base + ('?'|'&') + 'em=' + email + '&vk=' + vk` → sends that link in the email.
+
+**So the emailed link = the page the user was on when they registered** (generation source), NOT a fixed canonical domain. If the user registers from any non-canonical URL (oracle.truesight.me entry, a `?local_edgar=1` mirror, a `?edgar_base=` test URL, another domain mirroring the dapp), the email link inherits **that** domain — and on a domain that doesn't serve `create_signature.html`, the click lands on the wrong app or 404. That's the "wrong domain" Gary sees.
+
+**What's correct today:** default (`return_url` absent) = `https://truesightdao.github.io/dapp/create_signature.html` — the canonical GitHub Pages URL, which matches the live page Gary shared. The bug is the **generation-source override** blindly trusting whatever URL was in the payload.
+
+**Still to confirm (blocking the exact fix):** which wrong domain the email actually contained. The email went to garyjob@gmail.com — I can check the `gary` mailbox (if it's the same account) for the verification email and read the literal URL. That tells us precisely what domain got baked in.
+
+## RESUME HERE →
+1. **Read the actual email:** `gmail_search(account='gary', query='from:admin@truesight.me newer_than:30d "digital signature"')` → `gmail_read_message` → extract the literal link domain (it should be `truesightdao.github.io/...` or whatever wrong domain was used).
+2. **Fix (after confirming):** make the verification link always use the canonical DApp host regardless of generation source — sanitize `return_url` in one or both of:
+   - Rails `dao_email_registration_service.rb` `trigger_verification_email`: allow the generation source only if it's a known-good host (`truesightdao.github.io` + path `/dapp/create_signature.html`, plus localhost dev); else fall back to canonical.
+   - GAS `Code.js` `buildSignatureVerificationUrl_` (same allow-list logic server-side as defense-in-depth).
+   - Note: determine which service is LIVE for email registration (Rails `sentiment_importer` vs `dao_protocol` python port — the cutover was flagged in `RESEND_VERIFICATION_PLAN.md`); edit the live one + parity the other. Beta-first for dapp changes only — this is server/GAS, so it deploys from main.
+3. **Verify:** re-register a test email → check the received link is `https://truesightdao.github.io/dapp/create_signature.html?em=...&vk=...`.
+
+**Not yet determined:** which wrong domain appeared (need the email body), and which backend is live for this flow (Rails vs dao_protocol) — both are one quick check away.
+
+———
+**✅ Done this turn — actions taken:**
+• `search_code` ×3 → create_signature / sendEmailVerification / return_url
+• `read_repo_file` ×2 → dapp_beta + dapp_prod create_signature.html
+• `ssh run` ×10 → fetched + grepped dapp page (generationSource, EDGAR_BASE, email flows), cloned sentiment_importer sparse, read dao_email_registration_service.rb (extract_generation_source_url, trigger_verification_email), read GAS Code.js (handleEmailVerificationRequest_, buildSignatureVerificationUrl_)
+• `search_context` ×1 → RESEND_VERIFICATION_PLAN.md (baton doc)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/create_signature.html" -o dapp_beta_create_sig.html && wc ; cd /tmp && echo "=== lines 420-560 ===" && sed -n '420,560p' dapp_beta_create_sig.html; cd /tmp && echo "=== search link construction ===" && grep -n "vk\|verification\|verify_link\|verifyUrl\|signature_link\|create_signature\|d; …(+14 more)
 
