@@ -133,3 +133,67 @@ Updated contributor details:
 
 And still your call on: (a) 15 min each correct? (b) also log Yuri's intro effort (e.g. 5 min)?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15344] It is vincente 
+
+Also the time spent was between myself and Yuri
+
+
+### 🤖 Autopilot
+
+Understood — two corrections locked in:
+- Cousin's name is **Vincente** (agroforestry engineer)
+- The **15 minutes** was spent between **you and Yuri** (FounderHaus chat about the project) — so the contribution events go to Gary + Yuri, and Vincente gets registered as a contributor for the agroforestry connection.
+
+Let me check the contributor-registration convention (whether email is strictly enforced or a placeholder is used) before I submit.
+
+
+### 🤖 Autopilot
+
+Let me check how the CONTRIBUTOR ADD handler processes emails — whether a placeholder is acceptable or strictly required.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the handler to see how the event text is parsed (format expectations for name/email).
+
+
+### 🤖 Autopilot
+
+Let me see the parse function to understand the exact event text format expected.
+
+
+### 🤖 Autopilot
+
+Let me read the parse function portion of the handler to confirm the exact event text format.
+
+
+### 🤖 Autopilot
+
+Let me check the actual "Contributors contact information" tab to see if Yuri is already registered and how entries look.
+
+
+### 🤖 Autopilot
+
+Let me scan the rest of the contributors list to check for Yuri or Vincente entries.
+
+
+### 🤖 Autopilot
+
+Checked the full contributors registry — neither **Vincente** nor **Yuri** (@YuriSVB) is in the ledger yet. So here's the exact plan, with the one gap I need you to fill:
+
+**To submit (3 events):**
+1. **CONTRIBUTOR ADD EVENT** — Vincente (agroforestry engineer, Yuri's cousin)
+2. **CONTRIBUTION EVENT** — Gary Teh · Time (Minutes) · 15 min — FounderHaus intro call with Yuri re: Agroverse / 10,000-ha Amazon restoration
+3. **CONTRIBUTION EVENT** — Yuri · Time (Minutes) · 15 min — same call
+
+**Two quick questions before I hit submit:**
+
+1. **Vincente's email** — CONTRIBUTOR ADD EVENT lists it as required. Do you have it? If not, I can register him with just the name (the handler tolerates a blank email — many existing entries like "@vinibitencourt" have none) — your call.
+
+2. **Yuri** — he isn't registered either. Want me to register him too so his 15 min is attributable (his Telegram handle @YuriSVB is the natural identifier)? Or skip Yuri's registration and just log the time under his name?
+
+Say the word and I'll execute all three.
+
