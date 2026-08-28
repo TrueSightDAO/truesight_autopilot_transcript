@@ -1132,6 +1132,7 @@ Let me look at #221's branch to see the banner markup I built, then update it. L
 ### 🤖 Autopilot
 
 Branch is `feature/founderhaus-special-edition` (my guessed URLs were wrong). Let me read the banner from the right branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1141,26 +1142,31 @@ Now I have #221's full banner markup. The governor wants two changes:
 2. **Link to FounderHaus's profile page** on agroverse.shop: `https://www.agroverse.shop/partners/founderhaus`
 
 I'll update the banner on the #221 branch: add "only available at FounderHaus (Florianópolis)" + link the FounderHaus name to the partner profile page (keeping the program link for "Learn more"). Let me push the update to the branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The exact string didn't match — the em-dash in the actual file is likely a different Unicode char (the `—` in my grep output could be a literal UTF-8 em-dash, and my search string's `—` might not match byte-for-byte, or the file uses `&amp;` / different entity). Let me pull the exact bytes around line 145.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The em-dash is UTF-8. Let me do the edit on a local checkout of the branch with Python (more reliable than exact-string matching through the tool).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit applied to the local clone of the branch. Now let me commit + push, which will update PR #221.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed to #221's branch. Let me also update the "Learn more" CTA / product-detail Program row to point to the partner profile as the primary location, and confirm the final state of #221's diff. Actually — the governor's ask is specifically: indicate it's a **special edition only available at FounderHaus in Florianópolis** and **link to their profile page**. That's done in the banner paragraph. Let me verify the full updated banner renders well and confirm the PR is updated.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1215,6 +1221,7 @@ Want me to proceed with the merges + prod promotion now, and continue the video 
 ### 🤖 Autopilot
 
 Governor's go — merging the open PRs and checking video progress. I'll merge sequentially (221 and 223 touch the same file, so no parallel merges there), and check the video transcodes in parallel.
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1263,6 +1270,11 @@ Governor's go — merging the open PRs and checking video progress. I'll merge s
 [Telegram context: chat_id=-1003919341801, thread_id=15208] Going. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
 
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
@@ -1299,6 +1311,11 @@ Governor's go — merging the open PRs and checking video progress. I'll merge s
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=15208] Keep going. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1346,11 +1363,13 @@ Video upload is the natural next step — want me to run it? (Prod sync stays ga
 ### 🤖 Autopilot
 
 On it — uploading the 3 videos now, then embedding, then PRs, then all the way through to prod sync (#4). Let me first check the upload script's usage and how the media framework handles YouTube embeds.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The framework supports `type: 'youtube'` items with `videoId` — it renders iframe embeds. The upload script is ready. Let me see what the script prints on success (I need the video IDs), then upload all 3.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1467,4 +1486,49 @@ I'll pause for your go on the prod syncs (or continue straight through if "all t
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → echo "=== README ==="; cat /opt/truesight_autopilot/config/youtube/README.md 2>/dev/null echo; echo "=== upload script (head 80) ==="; head ; echo "=== media-gallery.js youtube support ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/js/media-ga; sed -n '80,140p' /opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py; …(+8 more)
 • `merge pr` → ✅ PR #224 on agroverse_shop_beta merged successfully (sha: c22952605c67c05429ee8ae1aa7e9850104f83bb). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Hey, merge the PR-315 and promote its action. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR #315 (program page video embed) now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged this turn
+
+**PR #315 — [truesight_me_beta](https://github.com/TrueSightDAO/truesight_me_beta/pull/315)** — "Embed FounderHaus Farm videos on program page" (merged `615e43d`)
+- **What:** The FounderHaus Farm program page (`truesight.me/programs/founderhaus-farm/`) now shows a responsive 3-video grid — **Tools of Common** (oLHrqq_yDKE), **Tree Planting Day** (-yf9W46Ru6k), **Cacao Circle** (Z3TF7NDb0u4) — using the same 16:9 inline-iframe pattern as the photo gallery.
+
+## All video PRs are now merged ✅
+| PR | Repo | What | Status |
+|---|---|---|---|
+| #224 | agroverse_shop_beta | Tools of Common on PDP | ✅ |
+| #315 | truesight_me_beta | 3 videos on program page | ✅ |
+
+## ⏸ RESUME HERE → next unit (the "promote its action" part):
+**Prod promotion** — sync both beta merges to prod:
+1. `sync_beta_to_prod(truesight_me_prod)` — carries #315 (program videos) + #314 (program gallery)
+2. `sync_beta_to_prod(agroverse_shop_prod)` — carries #220/#221/#223/#224 (hero, banner, gallery framework, PDP video)
+3. Verify live on truesight.me/programs/founderhaus-farm/ and agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/
+
+Says "promote its action" — I read that as your go for the prod sync. I'll run both syncs next turn and verify. (If you meant only the truesight_me side, tell me and I'll leave agroverse_shop_prod until you say.)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #315 on truesight_me_beta merged successfully (sha: 615e43d418a3e1452efa8f4433f9c6573d044ac8). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #315 on truesight_me_beta merged successfully (sha: 615e43d418a3e1452efa8f4433f9c6573d044ac8). Pull Request successfully merged
 
