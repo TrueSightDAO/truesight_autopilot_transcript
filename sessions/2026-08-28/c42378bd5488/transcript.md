@@ -249,21 +249,30 @@ Let me pull the live program page content directly (that's the source of truth t
 ### 🤖 Autopilot
 
 I now have the program page content. Let me read the remaining tail of the program page (the status section / JS-filled tagline source) so I capture the exact program details.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The program page loads key content (tagline/status) via JS. Let me get the full page tail + the JS/data that feeds it, so the facts I display on the product page are exact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The program page's tagline/description load from `./manifest.json` via `program-shell.js`. Let me fetch that manifest — it holds the canonical program facts.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need — the program page and its `manifest.json` give the canonical FounderHaus Farm facts. Now let me verify the exact strings in the current product page (main) so my edit hunks match cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -277,11 +286,13 @@ Now I have everything. Let me plan the changes:
 4. **Schema.org** — add program info
 
 Let me build this on a fresh branch from current main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cloned at current main (`a44b7ce`, after #219 — the hero-image PR #220 is separate, no conflict). Now let me apply the edits: badge above the H1, a "Special Edition — FounderHaus Farm" banner with the program facts from the manifest, new Product Details rows, and schema.org properties.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -408,4 +419,142 @@ Let me persist the analysis to the transcript per the attachment workflow, and c
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → ls -la /tmp/tg_attachments/ | tail -10; echo ---; find /tmp -name "256a7efe6fd342e4b7cf39b78215adbd*" 2>/dev/null; cd /tmp/tg_attachments && file 256a7efe6fd342e4b7cf39b78215adbd.jpg && python3 -c " from PIL import Image im = Image.open('256a7efe6fd342e4b; cd /tmp/tg_attachments && python3 - <<'PY' from PIL import Image im = Image.open('256a7efe6fd342e4b7cf39b78215adbd.jpg').convert('RGB') w,h ; …(+1 more)
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-28/8e58326b00e2/transcript.md
+
+
+### 🧑 Governor
+
+add these 4 images to the image gallery of both the program page as well as the product detail page
+
+[Attachment auto-processed: **8c8e48a792934ab5860f79ed94f88e0a.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+The governor says "these 4 images" but I only see one attachment in this message. Let me check the attachments folder — there may be 4 recently-uploaded files.
+
+
+### 🤖 Autopilot
+
+There are 4 new images uploaded in the last few minutes (all Aug 28 10:33):
+- `256a7efe…` (118 KB — the one I inspected)
+- `35de3cd8…` (139 KB)
+- `62c94998…` (158 KB)
+- `8c8e48a7…` (127 KB — shown as the attachment)
+
+The 5th (9718a51a) was the earlier hero image. So the 4 images are clear. Let me inspect all 4 dimensions and check the gallery structure on both pages (program page + product page).
+
+
+### 🤖 Autopilot
+
+All 4 images confirmed (3 landscape 1280×960, 1 portrait 960×1280). Now let me look at the gallery structures on both pages — the product page (local clone) and the program page (find it in the truesight_me repo).
+
+
+### 🤖 Autopilot
+
+Product page has a `.gallery` div at line 134. The program page search in truesight_me returned nothing — let me search org-wide and check the gallery block fully.
+
+
+### 🤖 Autopilot
+
+Search found nothing for "founderhaus-farm" — but earlier the program page existed at `truesight.me/programs/founderhaus-farm/index.html`. GitHub code search only indexes the default branch and can be stale. Let me find the program page by checking the repo tree and the live URL.
+
+
+### 🤖 Autopilot
+
+The program page lives in **truesight_me_beta** (and truesight_me_prod), and its media already references images from the **sunmint** repo. Let me check the sunmint repo structure and confirm write access to both target repos.
+
+
+### 🤖 Autopilot
+
+The program page lives in **truesight_me_beta** and already pulls FounderHaus media from the **sunmint** repo (`images/20260822_130000_FOUNDERHAUS_GROUP.jpg`). Let me read the full program page tail and its manifest, and check the product page gallery structure.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the program page body to understand its full media structure before adding the gallery.
+
+
+### 🤖 Autopilot
+
+Let me read the full program page source from the beta repo to get exact anchors, and confirm the product page clone state.
+
+
+### 🤖 Autopilot
+
+I have the full picture now:
+
+- **Program page** (`truesight_me_beta/programs/founderhaus-farm/index.html`) has a `.program-media` block — I'll add a gallery grid there. It already pulls media from the **sunmint** repo (`images/20260822_130000_FOUNDERHAUS_GROUP.jpg`) — so sunmint/images is the natural home for the 4 new photos.
+- **Product page** (`agroverse_shop_beta`) has a `.gallery` div — I'll add the 4 images there.
+
+Plan:
+1. Upload the 4 images to `sunmint/images/` (single-file writes — sanctioned for data repos)
+2. Edit the program page gallery (truesight_me_beta → PR)
+3. Edit the product page gallery (agroverse_shop_beta → PR)
+
+Let me check current PR state and upload the 4 images in parallel.
+
+
+### 🤖 Autopilot
+
+All 4 images uploaded to `sunmint/images/`:
+- `founderhaus-farm-gallery-1.jpg` → `256a7efe…` (landscape)
+- `founderhaus-farm-gallery-2.jpg` → `35de3cd8…` (landscape)
+- `founderhaus-farm-gallery-3.jpg` → `62c94998…` (portrait)
+- `founderhaus-farm-gallery-4.jpg` → `8c8e48a7…` (landscape)
+
+Now let me wire them into both pages via PRs.
+
+
+### 🤖 Autopilot
+
+Both PRs opened. Let me verify the PR diffs are clean (gallery only, correct image URLs).
+
+
+### 🤖 Autopilot
+
+Both PRs are clean — single-file diffs, all 4 gallery images referenced once each. Let me verify the raw image URLs resolve (200) so nothing 404s when the pages go live.
+
+
+### 🤖 Autopilot
+
+All 4 image URLs resolve (HTTP 200). Everything is done and verified.
+
+## ✅ Done — 4 gallery images added to both pages
+
+**Images uploaded** → `TrueSightDAO/sunmint/images/` (all HTTP 200):
+| File | Source | Orientation |
+|---|---|---|
+| `founderhaus-farm-gallery-1.jpg` | `256a7efe…` (the one I inspected) | landscape 1280×960 |
+| `founderhaus-farm-gallery-2.jpg` | `35de3cd8…` | landscape 1280×960 |
+| `founderhaus-farm-gallery-3.jpg` | `62c94998…` | portrait 960×1280 |
+| `founderhaus-farm-gallery-4.jpg` | `8c8e48a7…` | landscape 1280×960 |
+
+**PRs opened (beta, per workflow):**
+1. **[truesight_me_beta#314](https://github.com/TrueSightDAO/truesight_me_beta/pull/314)** — Program page: added a 4-image gallery grid (responsive `auto-fit minmax(240px)`, 220px cover-crop) inside the `.program-media` block, right after the existing founding-grove photo
+2. **[agroverse_shop_beta#222](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/222)** — Product page: added the 4 images to the existing `.gallery` div under the hero (joins the existing `agl4.avif`)
+
+**Verified:**
+- Both PRs are single-file, +4/+6 lines, all 4 gallery image refs present exactly once each
+- All 4 raw image URLs return HTTP 200
+- Alt texts are descriptive ("planting day — volunteers at work", "— in the grove", "— planting a tree", "— the founding grove")
+
+**Note on repo class:** `sunmint` is the machine-owned image store (like lineage-assets) — I uploaded directly to main there (Contents API, no PR) since it's a data repo. The page *edits* go through PRs (code repos). Both pages are on **beta** — after you review them, I can merge + promote to prod:
+- `truesight_me_beta#314` → prod via `sync_beta_to_prod(truesight_me_prod)`
+- `agroverse_shop_beta#222` → prod via `sync_beta_to_prod(agroverse_shop_prod)`
+
+Want me to **merge #314 and #222** now, and/or **promote to prod**? (Prod promotion needs your explicit go.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → ls -lat /tmp/tg_attachments/ | head -15; find /tmp/tg_attachments -newermt "2026-08-28 10:00"; file/dimensions of 4 images; repo tree searches; program page fetch + manifest + members; page block reads
+• `upload local file to github` ×4 → sunmint/images/founderhaus-farm-gallery-{1..4}.jpg
+• `git push changes` ×2 → truesight_me_beta#314, agroverse_shop_beta#222
+• `list prs` ×1, `ssh run` ×2 (PR file/diff verification + URL 200 checks)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → ls -lat /tmp/tg_attachments/ | head -15; echo "---"; find /tmp/tg_attachments -newermt "2026-08-28 10:00" -type f 2>/dev/null | sort; cd /tmp/tg_attachments && for f in 256a7efe6fd342e4b7cf39b78215adbd 35de3cd8aea74fad94edcdca8f6353a2 62c949980b3f464881d0e6e2354aaa8b 8c8e48; cd /tmp/avs_beta_work2 && echo "=== PRODUCT PAGE gallery/img refs ==="; grep -n "img\|gallery\|pdp-gallery\|avif\|jpg\|png" product-page/osc; …(+8 more)
 
