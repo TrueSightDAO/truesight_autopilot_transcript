@@ -1910,16 +1910,19 @@ Want me to proceed with deploy + prod sync + verify?
 ### 🤖 Autopilot
 
 On it — promoting truesight_me_beta (#316) to prod. The sync tool may still hit the known lease-close bug (fix #318 merged but not deployed), so I'll verify the actual sync result afterward regardless.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same known crash (fix merged, not deployed yet). Let me verify whether the merge-upstream actually succeeded before the crash, and if not, do it directly via the GitHub API.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The compare API result is contradictory (says "identical" but HEADs differ — the cross-repo head param likely wasn't honored). The decisive test is the actual file content in prod + the live page. Let me check both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2056,4 +2059,51 @@ Everything checks out — all assets referenced in media.json resolve HTTP 200. 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') for pair in "agroverse_shop_beta agroverse_shop_prod" "truesight_me_beta truesight_m; echo "=========== LIVE agroverse.shop PDP ===========" PDP=$(curl -s "https://agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/") echo ; echo "=== LIVE media.json on agroverse.shop ===" curl -s "https://agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/media.json" | python; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] change image on this page https://agroverse.shop/category/retail-packs/index.html https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg 
+
+To https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg
+
+
+### 🤖 Autopilot
+
+Both URLs in your message are **identical** — so I can't tell what you want to change *to*. Let me check what the retail-packs page currently shows so I can give you a concrete picture.
+
+
+### 🤖 Autopilot
+
+Both URLs you sent are **identical** — so let me verify what that URL actually serves right now, because that's the key fact.
+
+
+### 🤖 Autopilot
+
+Both URLs in your message are **byte-for-byte identical** — so before changing anything, here's the key fact:
+
+## What I found
+
+**The retail-packs page already uses exactly that URL**, and that URL **already serves the new image**:
+
+| Check | Result |
+|---|---|
+| Page's Cacao Tea card image | `https://raw.githubusercontent.com/.../cacao-tea-oscars-farm-50g-hero.jpg` (the URL you pasted) |
+| What that URL serves right now | **sha256 `c3dc8c1f…` = your new portrait attachment** (960×1280), ✅ verified |
+| Old square hero | was sha `1a4b86ae…` (1280×1280) — no longer served |
+
+So the retail-packs card is **already showing the new portrait image** — it went live automatically with the #220 hero swap (the card references the raw GitHub URL, which always points at beta main's current file). Nothing to change.
+
+## Likely what happened
+You probably meant to paste a **different "to" URL** (a new replacement image) but the same URL got copied twice.
+
+**Which do you want?**
+1. **A different image** for the retail-packs card → paste its URL (or attach the file) and I'll swap it
+2. **Change the card to use the local path** (`../../assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg`) instead of the raw GitHub URL → I can do that (cleaner, matches the other cards, no external dependency), then PR → merge → prod sync
+
+Which is it? (Or if you're happy with how it looks now, we're done — nothing to change.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== LIVE retail-packs page: all image refs ===" curl -s "https://agroverse.shop/category/retail-packs/index.html" | grep -oE '(src|hre; echo "=== current bytes served by the raw URL (beta main) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/m
 
