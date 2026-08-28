@@ -1960,21 +1960,25 @@ Merge succeeded locally — program page has the CTA, CNAME intact (truesight.me
 ### 🤖 Autopilot
 
 Pushed to prod cleanly — final diff is exactly **1 file, +1 line** (the program page CTA), prod's generated stats + CNAME untouched. Now verifying live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo is updated (HEAD `4532315`) but the live site hasn't picked it up yet. truesight.me has a CNAME → likely GitHub Pages, which builds asynchronously. Let me check the Pages deployment status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Pages build is **in progress** (status: building) for exactly our commit `4532315`. The site will pick up the CTA once the build finishes. Let me register a watcher to confirm when it goes live, and report.
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The watcher isn't available outside a topic, so I'll do a quick direct poll to see if the build lands.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2012,11 +2016,13 @@ The watcher isn't available outside a topic, so I'll do a quick direct poll to s
 ### 🤖 Autopilot
 
 The governor wants prod synced. Let me check the current state of both prod forks vs their betas (agroverse_shop may have new commits since the last sync).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both compare reports say "identical," but I don't fully trust the cross-repo compare syntax (it lied earlier). Let me verify ground truth — the live sites — and confirm each expected feature is actually live on prod.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2230,4 +2236,74 @@ Also still open (from earlier): **`deploy_autopilot()`** to make the `sync_beta_
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp echo "=== program page HTML (structure) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/programs; cd /tmp echo "=== lines 60-162 of the program page ===" sed -n '60,162p' fh_prog2.html; cd /tmp echo "=== full inline <style> block (lines 20-60) ===" sed -n '20,60p' fh_prog2.html echo echo "=== program-cta-row / program-page /
 • `merge pr` → ✅ PR #317 on truesight_me_beta merged successfully (sha: 1f19de74c9fd01c9741c715f50c73f80aef43e98). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Promote to prod
+
+
+### 🤖 Autopilot
+
+Explicit go — promoting the mobile-overflow fix (#317, `1f19de7`) to prod. Let me try the sync tool first.
+
+
+### 🤖 Autopilot
+
+Same known tool bug (fix merged in #318 but not yet deployed). Doing the sync directly via the GitHub merge-upstream API:
+
+
+### 🤖 Autopilot
+
+Same conflict as last time — prod has its own `[skip ci]` stats refresh commit (`99d8d69`), so merge-upstream won't fast-forward. Last time the ONLY conflicting file was `stats/current.json` (machine-generated cache). Let me confirm the same is true now, then do the safe local merge (keep prod's generated stats, take beta's page).
+
+
+### 🤖 Autopilot
+
+Confirmed — the **only** conflict is `stats/current.json`, a machine-generated cache differing purely by a timestamp (`22:35:39Z` prod vs `22:34:26Z` beta). The program page fix merges cleanly. Resolution: keep **prod's** generated stats (it's the fresher cache), take beta's everything else. Committing and pushing:
+
+
+### 🤖 Autopilot
+
+Pushed to prod (`99d8d69..b14f897`) — final diff exactly **1 file, +8/−4** (the QR-row mobile fix), prod's generated stats untouched. Now verifying the live site picks it up (GitHub Pages builds async):
+
+
+### 🤖 Autopilot
+
+The live page hasn't picked up the change yet (GitHub Pages build is async). Let me check the deployment status properly:
+
+
+### 🤖 Autopilot
+
+**LIVE** — the Pages build for our commit (`b14f897`) completed and the fix is now served in production. Let me do a final sanity check on the served page to confirm both the fix and the rest of the page are intact.
+
+
+### 🤖 Autopilot
+
+## ✅ Done — mobile overflow fix promoted to prod & verified live
+
+### What happened
+1. `sync_beta_to_prod` hit the known tool bug (`delete() got an unexpected keyword argument 'json'` — fix #318 merged but not deployed)
+2. Direct merge-upstream API: **"There are merge conflicts"** — diagnosed: the **only** conflict was `stats/current.json` (machine-generated cache, timestamp-only diff: prod `22:35:39Z` vs beta `22:34:26Z`)
+3. Safe resolution (non-force): local merge keeping **prod's** generated stats, taking beta's program page → final diff **1 file, +8/−4** → pushed `99d8d69..b14f897`
+4. Pages build ran for `b14f897` → fix went **live** (poll 4)
+
+### Verified on https://truesight.me/programs/founderhaus-farm/ ✅
+| Check | Result |
+|---|---|
+| QR-row fix (`overflow-wrap: anywhere`) | ✅ 2 |
+| Mobile media query (`max-width: 520px`) | ✅ 1 |
+| `flex-wrap` on QR row | ✅ 2 |
+| Buy Cacao Tea CTA | ✅ intact |
+| 3 video embeds | ✅ intact |
+| 4 gallery images | ✅ intact |
+
+**Result:** On mobile (<520px) the QR row now **stacks vertically, centers, and the long URL wraps** — no more overflow outside the box.
+
+### Still open (unchanged, your call):
+- **`deploy_autopilot()`** — the `sync_beta_to_prod` tool will keep crashing on lease-close until the running process picks up fix #318. One command and it's permanently fixed — want me to run it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== 1. merge-upstream: truesight_me_prod <- truesight_me_beta ===" curl -s -X ; cd /tmp rm -rf fh_sync_check && mkdir fh_sync_check && cd fh_sync_check git clone -q --depth 50 https://github.com/TrueSightDAO/truesight_me; cd /tmp/fh_sync_check # Resolve: keep PROD's version of stats/current.json (machine-generated cache), take beta's for everything else git ch; …(+3 more)
 
