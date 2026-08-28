@@ -1928,16 +1928,19 @@ The compare API result is contradictory (says "identical" but HEADs differ — t
 ### 🤖 Autopilot
 
 The sync did NOT go through this time — prod file lacks the CTA, live page shows 0. The crash happened before merge-upstream succeeded. Doing the sync directly via the GitHub API (merge-upstream):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Merge-upstream hit a **conflict** — prod can't fast-forward. Per the rules I must stop and report, never force. Let me diagnose the exact divergence first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Merge-upstream reports **"There are merge conflicts"** — this is the stop-and-report gate. Before reporting, let me pinpoint exactly which file conflicts (local test-merge, nothing pushed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2106,4 +2109,38 @@ Which is it? (Or if you're happy with how it looks now, we're done — nothing t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== LIVE retail-packs page: all image refs ===" curl -s "https://agroverse.shop/category/retail-packs/index.html" | grep -oE '(src|hre; echo "=== current bytes served by the raw URL (beta main) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] use this image https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg
+
+
+### 🤖 Autopilot
+
+Let me verify the current state precisely — the live page's exact reference and the source in beta — before concluding anything.
+
+
+### 🤖 Autopilot
+
+## Verified — the page is **already using that exact image**
+
+I checked all four layers:
+
+| Check | Result |
+|---|---|
+| **Live retail-packs** card src | `…/cacao-tea-oscars-farm-50g-hero.jpg` — **exactly your URL** ✅ |
+| **Beta source** card src | same URL ✅ |
+| **What that URL serves now** | **new portrait image** 960×1280, sha `c3dc8c1f` ✅ |
+| **Prod repo's copy** of that file | same new portrait image, sha `c3dc8c1f` ✅ |
+
+**Nothing to change** — the card is already pointing at that URL, and that URL already serves the new portrait photo. It's been live since the #220 hero swap (the card references the raw GitHub URL, so it picks up the file automatically).
+
+**If you're still seeing the old square image**, it's your browser/CDN cache. Do a hard refresh: **Ctrl+Shift+R** (Windows) / **Cmd+Shift+R** (Mac) on `https://agroverse.shop/category/retail-packs/index.html`.
+
+Want me to do anything else here — e.g. change the card to a **local asset path** (like the other product cards use) instead of the raw GitHub URL? That's the only improvement I'd suggest, and it's optional. Otherwise we're done — the image is correct.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== 1. LIVE retail-packs: every cacao-tea image reference ===" curl -s "https://agroverse.shop/category/retail-packs/index.html" | gre
 
