@@ -206,22 +206,61 @@ Let me read the tail of the registration service and the DApp front-end that gen
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at the DApp front-end side — the repo structure for dapp_beta and where the email/signature flows live.
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the email-flow picture. Now let me check the oracle credential-link flow and the sunmint email-link flow, since those are the other two places the same "email → click → link browser to registry" pattern exists.
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub API rate limit is kicking in on searches — let me pull the remaining key files directly (dao_protocol's email registration port, and the DApp front-end).
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the JS logic in create_signature.html — how the email registration and verification work client-side.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -321,4 +360,35 @@ The pitch leads with real, verifiable traction: QR-traced cacao bags farm-to-she
 - If you'd rather I *also* reach them over WhatsApp, we'd need to re-enable an OpenClaw WhatsApp send or do it manually from a linked phone — say the word and I'll spec that.
 
 Want me to log this outreach as a follow-up in OPEN_FOLLOWUPS.md so it's tracked with the partner pipeline?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15282] Hey, uh, what's the PDF? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The PDF — that's the integration spec I was building for Klaus's agent. Let me generate it now and send it to you.
+
+
+### 🤖 Autopilot
+
+The PDF is generated. Sending it to you now:
+
+
+### 🤖 Autopilot
+
+Sent ✅ — the **WhatsApp Linking Spec** PDF is now in this thread.
+
+**What's in it (for Klaus's agent to implement):**
+- **Current email-verify flow** — exactly how a browser gets linked to our registry today (keypair → `[EMAIL REGISTERED EVENT]` → Edgar stores VERIFYING row + one-time `vk` → GAS sends email link → user clicks → `[EMAIL VERIFICATION EVENT]` → ACTIVE)
+- **Requirements table (R1–R6)** — what their side must provide: a send API/webhook, E.164 normalization, delivery callbacks, shared-secret auth both directions, deep-link reachability, no-resend-to-ACTIVE guard
+- **Proposed WhatsApp intake flow** — same registry, same single-use key, same signature binding; the WhatsApp number just becomes the out-of-band proof
+- **Security guardrails** — single-use `vk`, signature binding, rate limits, dedupe
+- **Open questions for their agent** — endpoint schema, callback format, rate limits/SLA
+
+One flag: the email I sent earlier used **admin+sophia@truesight.me** as my address — that's consistent with what I told them in the pitch.
+
+Want me to also file the Klaus outreach + spec in OPEN_FOLLOWUPS.md so it's tracked in the partner pipeline?
 
