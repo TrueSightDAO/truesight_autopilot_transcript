@@ -157,6 +157,7 @@ Let me find the SunMint tree planting records for last Friday's tree and check f
 ### 🤖 Autopilot
 
 Let me check the SunMint Tree Planting sheet for last Friday's records and the exact tab name.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -214,11 +215,13 @@ Extracted text:
 ### 🤖 Autopilot
 
 The screenshot shows Natália's WhatsApp **contact info**: **Natália Duque Cesar**, phone **+55 48 99613-7274** (Florianópolis area code 48 — matches FounderHaus HQ). Let me search for that phone number and verify the contributor-add requirements.
+[3 tool result(s) compacted: search_context, search_code, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The second screenshot gives me **Natália Duque Cesar**, WhatsApp **+55 48 99613-7274** (Florianópolis — matches FounderHaus). Still no email visible. Let me check whether the contributor schema has a phone/WhatsApp field or strictly requires email.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -340,4 +343,69 @@ If you don't have her email, the WhatsApp thread already shows the ask is out ("
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15337] Can we just by-pass email requirement and register using their WhatsApp number
+
+
+### 🤖 Autopilot
+
+Good question — let me verify what the actual validation boundary is (Edgar API vs the GAS sidecar) before answering, so I don't send you down a path that silently drops the event.
+
+
+### 🤖 Autopilot
+
+Let me find where the CONTRIBUTOR ADD EVENT is actually validated in dao_protocol (the DAO API).
+
+
+### 🤖 Autopilot
+
+The default branch isn't `main` — let me read those files at the commit hash the search returned.
+
+
+### 🤖 Autopilot
+
+Let me see how Edgar itself validates CONTRIBUTOR ADD EVENT (the API layer, distinct from the GAS sidecar).
+
+
+### 🤖 Autopilot
+
+Let me check the protocol schema for CONTRIBUTOR ADD EVENT's required fields.
+
+
+### 🤖 Autopilot
+
+Let me verify one thing — whether the CONTRIBUTION EVENT processor itself requires the contributor to exist in the Contributors sheet (i.e., whether registration is a hard prerequisite for tokenization).
+
+
+### 🤖 Autopilot
+
+Straight answer: **No — not through the standard pipeline.** I verified this in the actual processor code, not just the docs.
+
+## Why the bypass doesn't work mechanically
+
+`ContributorAddHandler.js` (the GAS processor that turns a `[CONTRIBUTOR ADD EVENT]` row into a Contributors-sheet row) hard-requires:
+
+```js
+if (!email) return { error: 'Missing - Contributor Email: line.', ... };
+if (email.indexOf('@') < 0) return { error: 'Contributor Email does not contain "@".', ... };
+```
+
+A phone-only event (`- Contributor Email: +5548996137274`) hits `parse_error` → it lands in the **"New Contributor" dedup tab marked `parse_error`** and is **skipped** — it never reaches `Contributors contact information`. So I won't fire a submission I know will silently fail.
+
+The reason email is baked in: it's the identity anchor for the **digital-signature system** (`Contributors Digital Signatures` sheet + `dao_members.json` + email verification). No email → she can't verify a key → can't claim TDG from the DApp later.
+
+## What we CAN do (two real paths)
+
+| Path | How | Works for today? | Caveat |
+|---|---|---|---|
+| **A. Governor manual row** (true bypass) | Gary hand-adds her row to `Contributors contact information`: Name `Natália Duque Cesar`, Phone/WhatsApp `+55 48 99613-7274`. Precedent exists — `@vinibitencourt`, `Ahbinav`, `Alexander Grau` etc. are phone/WhatsApp-only rows. | ✅ Then I submit her `[CONTRIBUTION EVENT]` → **30 min → 50 TDG** | I have **read-only** sheet access — I can't write the row myself; Gary (or a human with edit rights) adds it. And she can't self-serve verify identity in the DApp until an email is added. |
+| **B. Get her email** (clean path) | She's already been asked in the WhatsApp thread ("Send me your email"). One reply → I register her + tokenize automatically. | ✅ Full pipeline | Just needs her reply. |
+
+## My recommendation
+**Path B** if she replies soon — it's one message and everything (registration, TDG, future DApp verification) works. **Path A** if you want her contribution recorded *today* and don't want to wait — Gary adds the row manually, I immediately submit her 30 min → **50 TDG** (same as yours).
+
+Want me to go with **A** (you add the row, I tokenize right after), or hold for **B**? I can also prep a small PR to make the pipeline *optionally* accept phone-only registration if you want this to be a repeatable capability rather than a manual override — your call.
 
