@@ -333,61 +333,78 @@ Now I have everything. The fix: (1) call `loadContributorIdentity()` in `window.
 ### 🤖 Autopilot
 
 PR #18 opened — but I need to verify I actually defined `maybeShowInvalidZone()` (I referenced it but must confirm the definition + `onTreeSelectChange()` wiring made it into the diff). Let me check the branch file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The function is **called but never defined** — that's a ReferenceError waiting to happen. I need to add the definition and wire it into the dropdown path too. Let me fix the branch before merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push was rejected because the branch already exists on the remote (from my first commit). I'll apply the fix locally, then push the corrected file directly onto the existing PR branch with the Contents API.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fixed file is ready locally with all 3 call sites (dropdown `631`, definition `929`, deep-link `1079`) and clean JS. Now push it onto the existing PR branch #18 via the Contents API.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I passed `content: "placeholder"` by mistake, which would have overwritten the file with the literal word "placeholder". Let me check the branch file state immediately.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the file is intact (56,407 bytes, proper HTML, not "placeholder"). The tool must have auto-read the local fixed file... no wait, it said `content: "placeholder"` and "updated" — but the branch now has the *correct* 56,407-byte file. Let me verify the three call sites are actually present on the branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch file still lacks the function definition — the "placeholder" upload was a mistake and I need to see exactly what state the branch is in. Let me diff against my fixed local file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch is missing the function definition and dropdown wiring — my "placeholder" upload didn't apply the correct content. The right tool is `upload_local_file_to_github`, which reads my fully-fixed local file and atomically replaces the branch file. Let me do that now.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now verify the branch file has all the pieces and parses clean.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch file is **still** 56,407 bytes and missing my changes — even after `upload_local_file_to_github` reported success with a new commit SHA. The upload is not taking effect. Let me check what the previous commit did vs. what the file actually contains, and verify the current branch head.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch HEAD shows my `upload_local_file_to_github` commit (b2eecf0f92), but raw content still looks stale. Raw GitHub can cache — let me verify against the authoritative Contents API before deciding the next move.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The authoritative Contents API confirms the branch file **is correct**: 56,615 bytes (matches my local fixed file), with the definition, dropdown call, and deep-link call all present. The earlier raw.githubusercontent curl was just serving a cached copy. The PR is in good shape. Let me merge PR #18.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -444,17 +461,25 @@ The button element, `markTreeInvalid()`, and the governor gate all existed and w
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: list_prs, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both #17 and #18 are already merged on `sunmint_beta` (auto-deployed to beta via GitHub Pages). "Merge and deploy" now = promote the fixes to production (`sunmint.truesight.me`, served by `sunmint_prod`). Let me check the prod repo state and how it's wired to beta.
+[3 tool result(s) compacted: list_prs, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `sunmint_prod` is a fork of `sunmint_beta` — beta main has the fixes (2 hits), prod main doesn't (0 hits). To deploy, I need to sync prod from beta. But first: the standard beta→prod sync rule is "never break the CNAME divergence." Let me check both repos' CNAME/pages config before merging anything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CNAMEs differ intentionally (beta → `beta.sunmint.truesight.me`, prod → `sunmint.truesight.me`), so a full fork-sync would clobber prod's domain config — the guardrail. Correct promotion = carry only the fixed page file over via a PR. Let me first see the full delta between beta and prod to know exactly what needs promoting.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -465,6 +490,7 @@ Clear picture:
 - Only `monitor-tree-growth/index.html` differs; `index.html` + `README.md` identical
 
 Deploy = promote the fixed monitor page to prod via a **file-carry PR** (fork-sync would clobber prod's CNAME). Since the prod page is exactly beta's `cb57defbea` parent, the fix is to bring prod's monitor page up to beta's current main. Let me confirm prod is a clean fork (no divergent commits on that path) and then open the promotion PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -474,21 +500,25 @@ The picture is complete:
 - Promotion needed: carry beta's fixed `monitor-tree-growth/index.html` (with #17 + #18) onto prod while **preserving prod's CNAME**
 
 I have the fully-fixed file locally (`/tmp/beta_main.html` = beta main monitor page). Let me read it so I can push it via a promotion PR on `sunmint_prod`.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have beta's fixed monitor page. Prod's current monitor page == beta's `cb57defbea` (verified: prod compare showed only CNAME modified vs that commit). So the exact hunks needed are the diff `cb57defbea → beta main`. Let me compute those hunks to apply as a clean promotion PR on `sunmint_prod`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod's current monitor page is byte-identical to beta's pre-fix commit (`cb57defbea`), so the diff `cb57defbea → beta main` is exactly what needs promoting. Let me extract those hunks to build a clean promotion PR on `sunmint_prod`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The patch reveals something critical: it contains **only the #17 (camera) changes** — no `maybeShowInvalidZone`, no `loadContributorIdentity()` call in `window.onload`. That means the `beta_main.html` I downloaded this turn may be a **stale raw-CDN copy from between the two merges**. Before promoting anything to prod, I must verify beta main authoritatively (this exact cache trap burned me on PR #18 earlier).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -594,4 +624,109 @@ Note: `upload_file_to_github` was NOT used this turn (my promotion PR never open
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && echo "=== beta main has fixes? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-gro; cd /tmp && echo "=== beta CNAME ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/CNAME" | head -5; echo "==; cd /tmp && for f in index.html monitor-tree-growth/index.html README.md; do curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15420] Also doesnt seem like distance is showing anymore in the dropdown https://beta.sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260821175134_005
+
+
+### 🤖 Autopilot
+
+Gary reports distance no longer showing in the dropdown. Let me look at how the dropdown options are built and where distance comes from.
+
+
+### 🤖 Autopilot
+
+Let me look at the dropdown population and distance display logic closely.
+
+
+### 🤖 Autopilot
+
+Distance depends on `latitude`/`longitude` being set **before** `populateTreeDropdown` runs. Let me check `requestLocation()` and whether the dropdown is re-populated when location arrives late (race condition).
+
+
+### 🤖 Autopilot
+
+**Found the race condition.** The flow in `window.onload`:
+
+1. `requestLocation()` — async, browser geolocation prompt (takes seconds)
+2. `await loadTreeIndex()` — fetches index.geojson
+3. `if (treeIndex && latitude && longitude)` — at this point `latitude` is still `null` (the geolocation callback hasn't fired yet) → falls into `else if (treeIndex)` → `populateTreeDropdown(treeIndex)` runs **without distances**
+4. When the geolocation callback finally fires, it only sets `latitude`/`longitude` — **it never re-populates the dropdown**
+
+So the dropdown shows tree IDs with **no distance**, exactly what Gary sees. The distance calc exists and works — it just never runs because location arrives after the dropdown is built, and nothing re-renders it.
+
+Let me confirm the geolocation callback doesn't re-populate anywhere.
+
+
+### 🤖 Autopilot
+
+**Race condition confirmed.** The flow:
+
+1. `window.onload` → `requestLocation()` (async — browser prompt takes seconds)
+2. `await loadTreeIndex()` (fetch, fast)
+3. `if (treeIndex && latitude && longitude)` — `latitude` is still `null` (callback hasn't fired) → falls to `else if` → `populateTreeDropdown()` runs **without distances**
+4. Geolocation callback (line 494) only sets `latitude`/`longitude` — **never re-populates the dropdown**
+
+So the dropdown is built before location arrives, and nothing rebuilds it with distances. Notably, my PR #18 added `await loadContributorIdentity()` *before* `requestLocation()` — which pushes the geolocation prompt later, worsening a pre-existing race. Let me grab the remaining context to write the fix.
+
+
+### 🤖 Autopilot
+
+Root cause identified — **race condition**: `requestLocation()` is async (geolocation prompt), but `window.onload` builds the dropdown the moment `loadTreeIndex()` resolves, at which point `latitude` is still `null`. So `populateTreeDropdown()` runs without distances, and the geolocation success callback (line 494) only sets the coords — it never re-populates the dropdown. My PR #18's added `await loadContributorIdentity()` actually made the race worse (delays `requestLocation()` further).
+
+**Fix:** a `refreshTreeDistances()` helper that recomputes `_dist` + re-populates, called both from the geolocation success callback and after tree load (with current selection preserved). Opening the PR on `sunmint_beta` (beta-first):
+
+
+### 🤖 Autopilot
+
+PR #19 opened. Per the hard rule, verify the branch file parses clean before merging.
+
+
+### 🤖 Autopilot
+
+All checks pass: 3 call sites present, single script block parses clean under Node. The fix is verified — merging PR #19.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — here's the wrap-up.
+
+## What I did this turn
+
+**Reported bug:** Tree dropdown on `beta.sunmint.truesight.me/monitor-tree-growth/` shows IDs but **no distance** ("— 1,2 km" / "— 340 m").
+
+**Root cause (race condition):**
+- `window.onload` calls `requestLocation()` (async — browser geolocation prompt takes seconds), then immediately `await loadTreeIndex()` and builds the dropdown.
+- At build time `latitude`/`longitude` are still `null`, so the distance branch never runs → dropdown populated **without distances**.
+- When geolocation later fires, the success callback (line 494) only set the coords — it **never re-populated the dropdown**.
+- Bonus: my earlier PR #18 (`await loadContributorIdentity()` before `requestLocation()`) made the race more likely to trigger.
+
+**Fix — PR [#19](https://github.com/TrueSightDAO/sunmint_beta/pull/19) (merged, sha `69e0325`):**
+1. New `refreshTreeDistances()` — recomputes `_dist` via `haversine` for all trees, re-populates the dropdown, and **preserves the current selection** (deep-link or user-picked) across the re-populate.
+2. Geolocation success callback now calls `refreshTreeDistances()` when coords arrive.
+3. `window.onload` also calls it after loading the index (covers location-resolves-first case).
+
+**Verification before merge:** branch file (57,291 B, sha `50566a0`) has all 3 call sites; the single script block passes `node --check` clean.
+
+## RESUME HERE →
+1. **Beta test:** hard-refresh `https://beta.sunmint.truesight.me/monitor-tree-growth/` (accept location permission) → dropdown should show distances (e.g. "— 1,2 km") and nearest-first order. Also confirm deep-link `?tree=Edgar_20260821175134_005` still selects the tree, and the MARK INVALID button still shows (governor).
+2. **Prod promotion** (next unit, when Gary confirms beta is good): promote to `sunmint.truesight.me` — since last time prod was already in sync with beta main after merge, first re-check prod's monitor page sha vs beta main (`d1077c9e` was pre-#19; prod needs `69e0325`'s file). If prod has drifted (it was byte-identical last turn but that was before #19), do the CNAME-safe file-carry PR on `sunmint_prod` — carry only `monitor-tree-growth/index.html`, leave `CNAME`/`index.html`/`README.md` untouched. Verify via Contents API (raw CDN can serve stale copies), then confirm live md5 matches beta.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → fetched beta main + branch files via Contents API, grepped `populateTreeDropdown`/`requestLocation`/geolocation callback, extracted + `node --check`'d the script block
+• `git_push_changes` → opened PR #19 `fix/monitor-dropdown-distance` on `sunmint_beta` (3 edits)
+• `merge pr` → ✅ PR #19 merged (sha `69e0325dfce00780a8ae6cacd1c6058cb16649d9`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?ref=main" | python3 -c " ; cd /tmp && echo "=== populateTreeDropdown (560-595) ===" && sed -n '560,595p' beta_now.html && echo "=== tree load + distance calc (1040-107; cd /tmp && echo "=== requestLocation + location handlers ===" && grep -n "requestLocation\|latitude\s*=\|longitude\s*=\|getCurrentPosition\|; …(+3 more)
+• `merge pr` → ✅ PR #19 on sunmint_beta merged successfully (sha: 69e0325dfce00780a8ae6cacd1c6058cb16649d9). Pull Request successfully merged
 
