@@ -713,6 +713,7 @@ The governor mentions "the new JS framework we inserted" — I need to identify 
 ### 🤖 Autopilot
 
 Found it — there's a `js/media-gallery.js` and a series of "media JSON externalization" PRs (PR0–PR7) that migrated pages to a shared media-gallery component. Let me read that component and see how pages consume it.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -720,6 +721,7 @@ Found it — there's a `js/media-gallery.js` and a series of "media JSON externa
 Now I understand the framework: **`media-gallery.js`** — it fetches a page-local `media.json` and renders items into `[data-media-gallery]` / `#media-gallery` slots. It was piloted on farm/shipment pages (PR0–PR7, Aug 20). The governor wants the product page to use this too.
 
 Let me look at an example of how a migrated page + its `media.json` look, plus the product page's current gallery markup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -731,11 +733,13 @@ Now I have the full picture. The "new JS framework" is **`media-gallery.js`** (t
 3. Add the `media-gallery.js` script include
 
 Let me check the existing farm/shipment media.json patterns that include captions/alt, and the product page's current full gallery + script area, then build the PR. Let me check oscar-bahia farm media.json (the pilot referenced from the product page) and the exact product page tail.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now understand the framework: **`media-gallery.js`** — it fetches a page-local `media.json` and fills `data-media-slot="hero"` imgs + `#media-gallery` / `[data-media-gallery]` containers. The product page (PDP) hasn't been migrated yet — that's the ask. Let me check the PDP's CSS for `.gallery`/`.farm-video` so the framework-rendered items are styled correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -748,26 +752,31 @@ The "new JS framework" is **`media-gallery.js`** — the media-JSON externalizat
 3. Supersede #222 (the static-img approach) — close it
 
 Let me build the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #223 opened. Let me verify the diff, validate the media.json, and confirm the framework-rendered elements will inherit the PDP `.gallery img` styling.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #223 is clean. Let me verify the `media-gallery.js` render actually produces imgs styled by the PDP `.gallery img` rule — the framework builds `<img class="farm-video">` inside `.farm-video-section` > `.farm-video-container` > `.farm-video`, so I need to confirm `.gallery img` (descendant selector) still hits them, and check whether `.farm-video` has its own sizing that overrides.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `.farm-video` CSS rules exist in the PDP's stylesheets, so `.gallery img` (descendant selector) fully styles the framework-rendered `<img class="farm-video">` (width 100%, height 220px, cover, radius). But there's one subtlety: `.gallery` uses `repeat(auto-fit, minmax(220px, 1fr))` — and `media-gallery.js` wraps each item in `.farm-video-section` divs, which are the grid *items*. I added `.gallery .farm-video-section { margin: 0; min-width: 0; }` to keep them flush. Let me confirm the CSS rule and gallery markup are correct in the PR, and verify the whole diff renders sensibly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #223 is clean and correct. One housekeeping item: **#222** (the static-`<img>` gallery approach from earlier) is now **superseded** by #223 (framework approach) — both touch the same `.gallery` block, so keeping both open risks a wrong merge. Let me close #222 with a pointer to #223.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -819,11 +828,13 @@ The "new JS framework" is **`media-gallery.js`** — the media-JSON externalizat
 ### 🤖 Autopilot
 
 Governor's go: merge + deploy. I'll merge the four beta PRs (in dependency order — #221 and #223 touch the same file, so I'll go one at a time and resolve any conflict), then promote both repos to prod. First, let me check the current PR states.
+[2 tool result(s) compacted: list_prs, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Governor's go to merge + deploy. I'll merge exactly the 4 PRs from this task (#220, #221, #223 on agroverse_shop_beta; #314 on truesight_me_beta) — leaving unrelated older open PRs untouched. Starting with the two repos' merges in sequence (221 and 223 both touch index.html, so I'll go one at a time):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -872,56 +883,67 @@ You have the ability to upload youtrube videos check your skillsets
 ### 🤖 Autopilot
 
 I'll start by (1) finding the videos on the box, (2) pulling the standing YouTube convention from agentic_ai_context, and (3) checking what YouTube upload capability exists.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Videos found (3 files). The standing convention is in `DOWNLOADS_MEDIA_TO_AGROVERSE.md` — let me read it fully, plus check the YouTube upload scripts and credentials.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The convention doc is at `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` — let me read it fully.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the standing convention (`sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`). Now let me verify the tooling on the box — the `agroverse_shop` checkout with the YouTube scripts, credentials, and ffmpeg/whisper availability.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box doesn't have the `agroverse_shop` checkout or YouTube credentials locally. The convention says credentials live in `agentic_ai_api_credentials` (never committed). Let me check for that and the GAS/gcloud auth paths.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `~/agentic_ai_context/credentials` dir and `~/creds/google_credentials.json`. Let me check what's in them (looking for YouTube OAuth client/token for admin@truesight.me).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the GOOGLE_API_CREDENTIALS.md doc — it should describe where YouTube OAuth credentials live and how uploads are authenticated.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of that credentials doc — it may have a YouTube-specific section.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the credentials doc and search for how YouTube OAuth is stored/used.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The docs say credentials live in `agroverse_shop/scripts/youtube_credentials.json` + `youtube_token.json` (never committed) and mention `agentic_ai_api_credentials`. Let me find the actual credential files and the upload scripts on the box / in repos.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The upload scripts exist in the beta checkout (`upload_video_to_youtube.py`, `youtube_batch_incoming.py`, `youtube_videos.json`), but the OAuth credential files aren't on the box yet. Let me read the standing upload convention doc and the upload script to see exactly what's needed, and check the existing `youtube_videos.json` title convention.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1046,4 +1068,123 @@ Uploads (3×), capture video IDs, PRs embedding them, merge + prod. I have NOT u
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → ls -la ~/founder_haus* 2>/dev/null; echo "---"; find ~ -maxdepth 3 -iname "*founder*" 2>/dev/null | head -30; echo "=== repo checkouts on box ==="; ls -d ~/agroverse* ~/*shop* ~/*tokenomics* 2>/dev/null; echo "---"; find /home/ubuntu -maxdepth 3 -nam; echo "=== agentic_ai_api_credentials ==="; ls -la ~/agentic_ai_api_credentials 2>/dev/null || find /home/ubuntu -maxdepth 2 -iname "*credent; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] I think should indicate this is a special edition only available at FounderHaus in Florianopolis and then link to their profile page on Agroverse.shop
+
+https://agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/?product=FounderHaus+Tree+Planting+Pledge+-+QR+Code&qr_code=2024OSCAR_CT_20260820_99&status=MINTED&utm_source=edgar&utm_medium=qr&utm_campaign=MINTED&utm_content=2024OSCAR_CT_20260820_99&utm_term=founderhaus_tree_planting_pledge_qr_code
+
+
+### 🤖 Autopilot
+
+The governor wants the special-edition callout sharpened: **"special edition only available at FounderHaus in Florianópolis"** + a link to FounderHaus's profile page on agroverse.shop. Let me first check the current state (were #221/#223 merged?) and find FounderHaus's profile page on the shop.
+
+
+### 🤖 Autopilot
+
+#220 merged; #221 and #223 still open (the "merge and deploy" got interrupted by the one-PR-per-turn rule after #220). Now let me find FounderHaus's profile page on the shop — `search_code` returned 0 (code search only indexes default branches, may be stale), so let me check the repo tree directly.
+
+
+### 🤖 Autopilot
+
+There's an `experiences/founderhaus-venue.jpg` — so FounderHaus likely has an **experiences page**. Let me get the full tree output to find its exact path.
+
+
+### 🤖 Autopilot
+
+The tree is huge. Let me filter directly for page paths (HTML) related to experiences/founderhaus.
+
+
+### 🤖 Autopilot
+
+Found it: **`partners/founderhaus/index.html`** — FounderHaus's profile page on agroverse.shop. Let me read it to get the canonical URL + display name, and check the current product page's special-edition banner markup (in #221's branch or main) so I can update the copy + link.
+
+
+### 🤖 Autopilot
+
+Key findings:
+- **FounderHaus profile page**: `https://www.agroverse.shop/partners/founderhaus` — "Founder Haus", innovation hub in **Florianópolis, Brazil** (Av. dos Merlins, 156 – Jurerê Internacional, Florianópolis - SC)
+- **Current PDP on main** has NO special-edition banner — because **#221 is still open** (not merged yet). So I should **update #221's content** (or supersede it) with the sharper copy + the partner link before merging.
+
+Let me look at #221's branch to see the banner markup I built, then update it. Let me check what #221's branch contains for the banner.
+
+
+### 🤖 Autopilot
+
+Branch is `feature/founderhaus-special-edition` (my guessed URLs were wrong). Let me read the banner from the right branch.
+
+
+### 🤖 Autopilot
+
+Now I have #221's full banner markup. The governor wants two changes:
+1. Sharpen the copy: **"special edition only available at FounderHaus in Florianópolis"**
+2. **Link to FounderHaus's profile page** on agroverse.shop: `https://www.agroverse.shop/partners/founderhaus`
+
+I'll update the banner on the #221 branch: add "only available at FounderHaus (Florianópolis)" + link the FounderHaus name to the partner profile page (keeping the program link for "Learn more"). Let me push the update to the branch.
+
+
+### 🤖 Autopilot
+
+The exact string didn't match — the em-dash in the actual file is likely a different Unicode char (the `—` in my grep output could be a literal UTF-8 em-dash, and my search string's `—` might not match byte-for-byte, or the file uses `&amp;` / different entity). Let me pull the exact bytes around line 145.
+
+
+### 🤖 Autopilot
+
+The em-dash is UTF-8. Let me do the edit on a local checkout of the branch with Python (more reliable than exact-string matching through the tool).
+
+
+### 🤖 Autopilot
+
+Edit applied to the local clone of the branch. Now let me commit + push, which will update PR #221.
+
+
+### 🤖 Autopilot
+
+Pushed to #221's branch. Let me also update the "Learn more" CTA / product-detail Program row to point to the partner profile as the primary location, and confirm the final state of #221's diff. Actually — the governor's ask is specifically: indicate it's a **special edition only available at FounderHaus in Florianópolis** and **link to their profile page**. That's done in the banner paragraph. Let me verify the full updated banner renders well and confirm the PR is updated.
+
+
+### 🤖 Autopilot
+
+The banner now reads exactly as the governor asked. The "Learn more" CTA still points to the program page (appropriate — that's where the program lives), and the FounderHaus name links to their **Agroverse partner profile**. The diff is clean (1 file, +21/−1).
+
+## ✅ Done — Special-edition copy sharpened + linked to FounderHaus profile
+
+**Updated PR #221 (agroverse_shop_beta)** — branch `feature/founderhaus-special-edition`, new commit `23b1f05`.
+
+### The banner now says:
+> **Special Edition** — **FounderHaus Farm Edition**
+> This is a **special edition** of the Cacao Tea 50g — **only available at [FounderHaus](https://www.agroverse.shop/partners/founderhaus) in Florianópolis, Brazil** (Jurerê Internacional). It is produced for the FounderHaus Farm program — a SunMint regenerative-farm partnership between FounderHaus and TrueSight DAO.
+
+### Changes made (1 file, +21/−1):
+1. **"Only available at FounderHaus in Florianópolis"** — sharpened copy, with **Jurerê Internacional** (the neighborhood from the partner page)
+2. **FounderHaus links to their Agroverse profile page**: `https://www.agroverse.shop/partners/founderhaus` (canonical `og:url` from the partner page — "Founder Haus | Agroverse Partners", Av. dos Merlins 156, Jurerê Internacional, Florianópolis - SC)
+3. Kept the **"Learn more about FounderHaus Farm →"** CTA → program page (that's the program's home)
+
+### Where things stand (this is all on **beta**):
+| PR | What | Status |
+|---|---|---|
+| #220 | Hero image swap | ✅ merged |
+| #221 | Special-edition callout (now with FounderHaus profile link) | ⏳ open — updated |
+| #223 | Gallery via media-gallery.js (supersedes #222) | ⏳ open |
+| truesight_me_beta#314 | Program page gallery | ⏳ open |
+
+### ⏸ RESUME HERE (next turn — "merge and deploy" still in flight):
+1. **Merge #221 + #223** (agroverse_shop_beta), **#314** (truesight_me_beta)
+2. **Promote to prod**: `sync_beta_to_prod(agroverse_shop_prod)` + `sync_beta_to_prod(truesight_me_prod)` — prod sync needs your explicit go (you said "merge and deploy" earlier, so I'll proceed unless you object)
+3. **FounderHaus videos** (from before): 3 transcodes running in background → upload 3 to admin@truesight.me YT channel → embed (product page + program page) → PRs
+4. Verify live on agroverse.shop + truesight.me
+
+Want me to proceed with the merges + prod promotion now, and continue the video upload+embed?
+
+———
+**✅ Done this turn — actions taken:**
+• `list prs` ×1, `search code` ×1 → #220 merged, #221/#223 open; founderhaus search 0
+• `ssh run` ×6 → repo tree scans for founderhaus/partners pages; read `partners/founderhaus/index.html` (og:url, location); read #221 banner (branch `feature/founderhaus-special-edition`); exact byte check of paragraph; local clone + Python replace; commit+push `23b1f05`; verify banner + diff
+• `git push changes` ×1 → attempted edit (string mismatch — switched to local-clone approach)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== agroverse_shop_beta full tree — look for founderhaus / pledge / partners / profile; TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') curl -s -H "Authorization: Bearer $TOK" -H "Accept: application/vnd.github+json" "https://ap; TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== partners/founderhaus/index.html (key parts) ===" curl -s "https://raw.githubuserco; …(+6 more)
 
