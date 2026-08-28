@@ -480,11 +480,13 @@ Product page has a `.gallery` div at line 134. The program page search in truesi
 ### 🤖 Autopilot
 
 Search found nothing for "founderhaus-farm" — but earlier the program page existed at `truesight.me/programs/founderhaus-farm/index.html`. GitHub code search only indexes the default branch and can be stale. Let me find the program page by checking the repo tree and the live URL.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The program page lives in **truesight_me_beta** (and truesight_me_prod), and its media already references images from the **sunmint** repo. Let me check the sunmint repo structure and confirm write access to both target repos.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -626,4 +628,52 @@ Analysis persisted to the transcript per the attachment workflow.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -la /tmp/tg_attachments/35de3cd8aea74fad94edcdca8f6353a2.jpg 2>/dev/null; echo "---"; cd /tmp/tg_attachments && file 35de3cd8aea74fad94ed; cd /tmp/tg_attachments echo "=== local sha256 ==="; sha256sum 35de3cd8aea74fad94edcdca8f6353a2.jpg echo "=== remote sha256 (github main) ===
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **62c949980b3f464881d0e6e2354aaa8b.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+The governor sent `62c94998…` — another of the 4 gallery images (this one's the **portrait**, uploaded as `founderhaus-farm-gallery-3.jpg`). Let me inspect it and verify byte-identity with what's live on GitHub.
+
+
+### 🤖 Autopilot
+
+## 🔍 Inspected `62c949980b3f464881d0e6e2354aaa8b.jpg`
+
+**File facts:**
+- **960×1280 portrait JPEG** (progressive, RGB, 157,513 bytes ≈ 154 KB), no EXIF, no text (OCR 0.0%)
+- **Visual profile:** avg brightness 134 (brighter than the others); top colors gray/black + a notable **light blue-cyan tone (192,224,224)** — suggests sky/water/light in frame. Consistent with a planting-day candid.
+
+**Same situation as the last one — it's already live:**
+This is byte-identical to what's on GitHub as **`sunmint/images/founderhaus-farm-gallery-3.jpg`**:
+
+| | sha256 |
+|---|---|
+| Your attachment | `4180dc0073d2…74c6` |
+| Live on GitHub (main) | `4180dc0073d2…74c6` ✅ identical |
+
+Wired into both pages (position 3, alt "planting a tree"):
+- Program page — truesight_me_beta#314
+- Product page — agroverse_shop_beta#222
+
+**Nothing to do** — already uploaded byte-for-byte and referenced on both pages (pending merge of #314/#222 + prod promotion). If you wanted a different crop or this is a different photo, tell me and I'll adjust.
+
+Analysis persisted to the transcript.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → ls/file/sha256/pixel-profile of 62c949980b3f464881d0e6e2354aaa8b.jpg + remote sha256/content-length compare vs sunmint main
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments ls -la 62c949980b3f464881d0e6e2354aaa8b.jpg echo "=== file ==="; file 62c949980b3f464881d0e6e2354aaa8b.jpg echo "===
 
