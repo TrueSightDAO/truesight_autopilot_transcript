@@ -18,22 +18,51 @@ can we replace
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: web_extract — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The page exists (it's the Cacao Tea 50g product page). But your message cut off right after "can we replace" — I don't yet know **what** you want to replace. Before you tell me, let me check where this page lives in the repo so I'm ready.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree listing is large. Let me search it for the cacao tea product page path.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree is huge to page through. The URL maps to a predictable path — let me read the product page file directly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page is at `product-page/oscar-bahia-cacao-tea-50g/index.html` in **agroverse_shop_beta** (this is the beta repo — the live agroverse.shop is the prod fork). Let me read the rest of it so I'm fully loaded.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -72,6 +101,7 @@ with the attached image?
 ### 🤖 Autopilot
 
 Got it — replace the hero image on the Cacao Tea 50g page with the attached image. Let me locate the attachment and confirm the current state of the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -160,4 +190,144 @@ Want me to **merge #220** and (after you review on beta) **promote to prod**? Or
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → ls -la /tmp/tg_attachments/ 2>/dev/null | tail -20; echo ---; find /tmp -name "9718a51ac5144b1686ad7f049a6f4628*" 2>/dev/null; cd /tmp/tg_attachments && file 9718a51ac5144b1686ad7f049a6f4628.jpg && python3 -c " from PIL import Image im = Image.open('9718a51ac5144b168; curl -sI "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg"; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] And on that page indicate that this is a special edition for the program below. 
+
+https://truesight.me/programs/founderhaus-farm/index.html
+
+Pull relevant information from the program page and display them on the product page.
+
+
+### 🤖 Autopilot
+
+I'll pull the program page content and re-read the current product page structure, then add the "special edition" indication.
+
+
+### 🤖 Autopilot
+
+The truesight_me path 301'd. Let me find where the founderhaus-farm program page actually lives.
+
+
+### 🤖 Autopilot
+
+The truesight_me path 301'd (repo structure may differ). Let me find the program page and finish reading the product page body.
+
+
+### 🤖 Autopilot
+
+Let me pull the live program page content directly (that's the source of truth the governor pointed at), and check the product page body from the local clone.
+
+
+### 🤖 Autopilot
+
+I now have the program page content. Let me read the remaining tail of the program page (the status section / JS-filled tagline source) so I capture the exact program details.
+
+
+### 🤖 Autopilot
+
+The program page loads key content (tagline/status) via JS. Let me get the full page tail + the JS/data that feeds it, so the facts I display on the product page are exact.
+
+
+### 🤖 Autopilot
+
+The program page's tagline/description load from `./manifest.json` via `program-shell.js`. Let me fetch that manifest — it holds the canonical program facts.
+
+
+### 🤖 Autopilot
+
+I have everything I need — the program page and its `manifest.json` give the canonical FounderHaus Farm facts. Now let me verify the exact strings in the current product page (main) so my edit hunks match cleanly.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me plan the changes:
+
+**Plan for the product page (agroverse_shop_beta):**
+1. **Badge** — add a "FounderHaus Farm Edition" special-edition badge near the H1
+2. **Banner/CTA box** — a "Special Edition — FounderHaus Farm" callout with the program's key facts pulled from the manifest (SunMint initiative, One bag one tree, 100 bags = 100 trees, QR batch 2024OSCAR_CT_20260820_1..100, US$5/bag, US$1.50 tree pledge, AGL4 ledger, Atlantic Forest biome Santa Catarina, planting date + team) + link to the program page
+3. **Product Details** — add rows: Edition, Program, Tree pledge
+4. **Schema.org** — add program info
+
+Let me build this on a fresh branch from current main.
+
+
+### 🤖 Autopilot
+
+Cloned at current main (`a44b7ce`, after #219 — the hero-image PR #220 is separate, no conflict). Now let me apply the edits: badge above the H1, a "Special Edition — FounderHaus Farm" banner with the program facts from the manifest, new Product Details rows, and schema.org properties.
+
+
+### 🤖 Autopilot
+
+Now let me apply the edits precisely with a Python script (banner insert + detail rows + schema.org props).
+
+
+### 🤖 Autopilot
+
+All edits applied cleanly. Let me validate the HTML structure (balanced tags around my insertions) and take a look at the final section.
+
+
+### 🤖 Autopilot
+
+One mismatch flagged — but that's at line 194, which is the **pre-existing** structure (`</section>` closing the traceability section is written as `</div></section>` in the original file). Let me confirm it's pre-existing, not something I introduced, by checking the original file.
+
+
+### 🤖 Autopilot
+
+Confirmed — the mismatch (`</div>` closing a `<section>`) is **pre-existing** in main and NOT introduced by my edit (same error at original line 174). Browsers handle this fine; I'll leave it untouched (out of scope — fixing it would be a separate change).
+
+Let me view the final rendered structure of my edits to double-check.
+
+
+### 🤖 Autopilot
+
+The page structure looks great. The banner sits right under the H1, product details has the new rows, schema.org is updated. Let me commit and push the branch, then open the PR (via the PAT that worked).
+
+
+### 🤖 Autopilot
+
+Branch pushed. Now open the PR with the working PAT.
+
+
+### 🤖 Autopilot
+
+**PR #221 opened.** Let me verify the PR diff is exactly the one file with my intended changes.
+
+
+### 🤖 Autopilot
+
+Everything checks out — clean single-file diff (+21/−1). The work is done and pushed to beta.
+
+## ✅ Done — "Special Edition" callout added to the Cacao Tea page
+
+**PR: [TrueSightDAO/agroverse_shop_beta#221](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/221)** — 1 file changed (+21/−1)
+
+### What I added (pulled from the program page + its `manifest.json`):
+1. **"Special Edition" badge + "FounderHaus Farm Edition" banner** right under the H1, containing:
+   - Program summary: *SunMint regenerative-farm partnership between FounderHaus and TrueSight DAO*
+   - **One bag, one tree** — 100 bags = first 100 trees of the FounderHaus farm; **US$1.50 Tree Planting Pledge** per bag (audited SunMint ledger)
+   - **Batch:** 100 bags · QR `2024OSCAR_CT_20260820_1..100` · **US$5/bag**
+   - **Ledger:** AGL4 (every sale + pledge verifiable)
+   - **Founding grove:** Atlantic Forest biome, Santa Catarina; planted 21 Aug 2026 (Gary Teh, Paloma, Juliana Melo, Cristian Crispim)
+   - **"Learn more about FounderHaus Farm →"** button linking to the program page
+2. **Product Details** — 3 new rows: **Edition**, **Program**, **Tree pledge**
+3. **Schema.org JSON-LD** — added `Edition` + `Program` properties (SEO)
+
+### Notes:
+- Uses the program page's brand colors (#D48500 / cream) to tie it visually to FounderHaus
+- The banner links to `https://truesight.me/programs/founderhaus-farm/`
+- Verified: HTML structure unchanged vs original (the pre-existing `</div></section>` quirk in the traceability block is untouched, out of scope)
+- This is on **beta** (agroverse.shop serves from `agroverse_shop_prod`)
+
+### Next steps (both PRs now on beta):
+- **#220** — hero image swap
+- **#221** — FounderHaus special edition callout
+
+Want me to **merge #220 and #221** and then **promote to prod** (with `sync_beta_to_prod`) so it goes live on agroverse.shop? I'll wait for your go on the merge + the explicit prod approval.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp/agroverse_shop_beta-main && sed -n '95,220p' product-page/oscar-bahia-cacao-tea-50g/index.html; cd /tmp && curl -s "https://truesight.me/programs/founderhaus-farm/index.html" -o fh.html && echo "=== tail (from program-status onward) ===; cd /tmp/agroverse_shop_beta-main && grep -n 'Cacao Tea 50g \u2014\|Cacao Tea 50g —' product-page/oscar-bahia-cacao-tea-50g/index.html | head; …(+9 more)
 
