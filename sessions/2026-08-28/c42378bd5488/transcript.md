@@ -504,6 +504,12 @@ Let me read the rest of the program page body to understand its full media struc
 ### 🤖 Autopilot
 
 Let me read the full program page source from the beta repo to get exact anchors, and confirm the product page clone state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -519,6 +525,7 @@ Plan:
 3. Edit the product page gallery (agroverse_shop_beta → PR)
 
 Let me check current PR state and upload the 4 images in parallel.
+[5 tool result(s) compacted: list_prs, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -530,16 +537,19 @@ All 4 images uploaded to `sunmint/images/`:
 - `founderhaus-farm-gallery-4.jpg` → `8c8e48a7…` (landscape)
 
 Now let me wire them into both pages via PRs.
+[2 tool result(s) compacted: git_push_changes, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs opened. Let me verify the PR diffs are clean (gallery only, correct image URLs).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs are clean — single-file diffs, all 4 gallery images referenced once each. Let me verify the raw image URLs resolve (200) so nothing 404s when the pages go live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -596,11 +606,13 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 The governor attached `35de3cd8…` — one of the 4 gallery images I already uploaded (it's `founderhaus-farm-gallery-2.jpg`). Let me inspect it fresh to give an accurate report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me also verify the copy that's live on GitHub matches the attached file (so I can tell the governor whether the gallery is showing this exact file).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -645,6 +657,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 The governor sent `62c94998…` — another of the 4 gallery images (this one's the **portrait**, uploaded as `founderhaus-farm-gallery-3.jpg`). Let me inspect it and verify byte-identity with what's live on GitHub.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -794,4 +807,51 @@ The "new JS framework" is **`media-gallery.js`** — the media-JSON externalizat
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/agroverse_shop_beta-main 2>/dev/null || cd /tmp echo "=== scripts referenced in product page ==="; grep -n "<script\|\.js" product-p; cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== recent commits on agroverse_shop_beta main ===" curl -s -H "Authorization:; cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== shipments/agl4 media.json (PR1 example) ===" curl -s -H "Authorization: Be; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] merge and deploy.
+
+
+### 🤖 Autopilot
+
+Governor's go: merge + deploy. I'll merge the four beta PRs (in dependency order — #221 and #223 touch the same file, so I'll go one at a time and resolve any conflict), then promote both repos to prod. First, let me check the current PR states.
+
+
+### 🤖 Autopilot
+
+Governor's go to merge + deploy. I'll merge exactly the 4 PRs from this task (#220, #221, #223 on agroverse_shop_beta; #314 on truesight_me_beta) — leaving unrelated older open PRs untouched. Starting with the two repos' merges in sequence (221 and 223 both touch index.html, so I'll go one at a time):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged the first of the four PRs. Per the one-PR-per-turn rule I'm stopping here — the remaining merges run next turn.
+
+## ✅ Merged this turn
+
+**PR #220 — [agroverse_shop_beta](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/220)** — "Replace cacao tea 50g hero image with new farm photo"
+- **What:** Binary swap of `assets/images/products/cacao-tea-oscars-farm-50g-hero.jpg` (1280×1280 square → 960×1280 portrait, byte-verified against your attachment)
+- **Merge:** squash, sha `fe173c1` → now on beta `main`
+
+## ⏸ RESUME HERE → next units (all part of the governor's "merge and deploy" go):
+
+1. **Merge #221** (agroverse_shop_beta — FounderHaus special-edition callout)
+2. **Merge #223** (agroverse_shop_beta — gallery via media-gallery.js framework; #222 already closed as superseded)
+3. **Merge #314** (truesight_me_beta — program page planting-day gallery)
+4. **Deploy to prod** (needs no further approval — covered by "merge and deploy" go):
+   - `sync_beta_to_prod(agroverse_shop_prod)` — carries #220 + #221 + #223
+   - `sync_beta_to_prod(truesight_me_prod)` — carries #314
+5. **Verify live** — check `https://agroverse.shop/product-page/oscar-bahia-cacao-tea-50g/` (hero, special-edition banner, gallery renders via media-gallery.js) and `https://truesight.me/programs/founderhaus-farm/` (gallery), then report
+
+**Note:** I'm only merging the 4 task PRs — the older unrelated open PRs (partner pages #138–#172, SunMint docs #309/#292, blog posts, etc.) are untouched and stay open.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #220 on agroverse_shop_beta merged successfully (sha: fe173c128201cf8357a8c1c2ab5e2ea66704ac6a). Pull Request successfully merged
 
