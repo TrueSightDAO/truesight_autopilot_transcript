@@ -47,3 +47,58 @@ Once you give me the cousin's name + email, I'll submit in this order:
 
 Also noting the chat was about the project (agritech angle — an agriculture engineer is very relevant to the 10,000-hectare Amazon cacao mission, worth capturing in the contribution description).
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **fb5161e601c94017912e2427cbe641f5.jpg**]
+- Type: Image (OCR confidence: 79.9%, quality: good)
+
+Extracted text:
+```
+1:09 ull > ‘<50) sx Agronomy Network — (qv Yuri, ~Vicente, You Yuri eae Vicente, this is Gary, founder whom | met in the event pean) Gary, this is Vicente, my cousin and a agro-forest a engineer Pe eean aN Thank you for introduction eae 12:25PM V7 & We are looking to restore 10,000 of Amazon rainforest peelal Vz & Agroverse | Ceremonial cacao from Brazil—where fine choc... ® agroverse.shop ae Oo ev
+```
+
+
+### 🤖 Autopilot
+
+The screenshot confirms the intro: **Vicente** is the cousin — an **agroforestry engineer** — introduced by Yuri in the "Agronomy Network" group chat, and you shared the 10,000-hectare Amazon restoration pitch + Agroverse shop link with him. Let me check the contributor registry conventions before registering.
+
+
+### 🤖 Autopilot
+
+The screenshot gives me the name: **Vicente** (Yuri's cousin, agroforestry engineer). Now let me check whether Yuri is already in the ledger and how previous contributor registrations looked, before I submit.
+
+
+### 🤖 Autopilot
+
+Let me check the contributors ledger for naming conventions and to confirm neither Yuri nor Vicente is already registered.
+
+
+### 🤖 Autopilot
+
+Both lookups came back empty. Let me check the main ledger's sheet tabs to see how contributors are tracked.
+
+
+### 🤖 Autopilot
+
+Here's where I am:
+
+**Confirmed from the screenshot:** Vicente (Yuri's cousin) is an **agroforestry engineer**, introduced in the Agronomy Network group, and you pitched the 10,000-hectare Amazon restoration + Agroverse ceremonial cacao. The attachment is the intro itself — good evidence to cite in the contribution description.
+
+**Ledger check:** I checked the contributors registry and searched the org/context — **Vicente is not registered yet**, and there's no prior "Yuri" entry in the ledger. Clean slate, no duplicate risk.
+
+**One thing I still need before submitting:**
+
+- **Vicente's email** — the CONTRIBUTOR ADD EVENT requires `Contributor Name` + `Contributor Email` (both mandatory per Edgar's event catalog). Do you have it? (If he doesn't want to share email, tell me — I can check whether Edgar accepts a placeholder, but per docs it's required.)
+
+**Plan once I have it** (3 submissions, in order):
+1. **CONTRIBUTOR ADD EVENT** — Vicente, Role: Agroforestry Engineer
+2. **CONTRIBUTION EVENT** — Gary Teh, Time (Minutes), 15 min — "Discovery call with Vicente (agroforestry engineer, introduced via Yuri from FounderHaus) about Agroverse / 10,000-hectare Amazon rainforest restoration"
+3. **CONTRIBUTION EVENT** — Vicente, Time (Minutes), 15 min — same call
+
+Two questions:
+- Confirm **15 min each** is right (not 15 total / a different duration)?
+- Want me to also log a small **CONTRIBUTION EVENT for Yuri** (e.g. 5 min) for the introduction + facilitation, or leave him out? He did the warm intro — your call.
+
