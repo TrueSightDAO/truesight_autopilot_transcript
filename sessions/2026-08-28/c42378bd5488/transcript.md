@@ -1677,16 +1677,19 @@ Search came up empty in truesight_autopilot — the tool may be implemented else
 ### 🤖 Autopilot
 
 The tool isn't in the indexed GitHub repos — it's likely in the running autopilot code on the box. Let me find it there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool implementation is in the autopilot app code on the box (not on GitHub's indexed default branch, since it's the deployed version). Let me search the `app` directory directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `app/tools/sync_beta_to_prod.py` in truesight_autopilot. Let me read the exact HTTP call that's crashing (around line 74-90).
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1815,4 +1818,68 @@ The fix is merged — deploy is the one remaining step to make it live.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #318 on truesight_autopilot merged successfully (sha: ea2d62d0da83fc05b816a496d55105a09907ee15). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Can we make sure the program page links to this 
+
+https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g
+
+
+### 🤖 Autopilot
+
+I'll check the current program page to find the right spot for the product link, then add it.
+
+
+### 🤖 Autopilot
+
+The program page is static HTML (no media.json). Let me read the rest to find the best spot for the product-page link.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the program page to see where the video grid and CTA rows sit.
+
+
+### 🤖 Autopilot
+
+Let me get the tail of the program page directly to find the CTA/video section anchors.
+
+
+### 🤖 Autopilot
+
+I have the full program page. The cleanest spot is the `.program-cta-row` at the bottom — I'll add a prominent "Buy the Cacao Tea 50g" CTA linking to the product page. Making the edit on `truesight_me_beta`:
+
+
+### 🤖 Autopilot
+
+PR #316 opened on truesight_me_beta with the product-page CTA. Per the merge authorization from earlier ("merge and deploy" + "Keep going" + "Going" pattern), I'll merge it and then promote to prod.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — program page now links to the product
+
+**PR #316 — [truesight_me_beta](https://github.com/TrueSightDAO/truesight_me_beta/pull/316)** — "Add product-page CTA to FounderHaus Farm program page" — **merged** (`bdd9618`)
+
+**What changed:** The FounderHaus Farm program page's CTA row now has a primary button **"Buy the Cacao Tea 50g →"** linking to `https://www.agroverse.shop/product-page/oscar-bahia-cacao-tea-50g` (added before the existing "Track the 100 bags →" CTA).
+
+## ⏸ RESUME HERE → next unit:
+1. **Promote to prod** — `sync_beta_to_prod(truesight_me_prod)` to push #316 live (now that the `deploy_ledger` httpx fix is merged + needs deploy, the sync should report cleanly)
+2. **Verify live** — `https://truesight.me/programs/founderhaus-farm/` shows the new "Buy the Cacao Tea 50g" CTA linking to agroverse.shop
+
+One flag: **PR #318 (the httpx fix) is merged but not yet deployed** — the running autopilot still has the old buggy code, so `sync_beta_to_prod` may still hit the `delete() got an unexpected keyword argument 'json'` crash on lease-close. I can either (a) run `deploy_autopilot` first, then sync cleanly, or (b) sync via the GitHub merge-upstream API directly (as I did last time — it worked, prod is confirmed synced). I'll go with (a) deploy-then-sync on your go.
+
+Want me to proceed with deploy + prod sync + verify?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/programs/founderhaus-farm/index.html" -o fh_prog.html
+• `merge pr` → ✅ PR #316 on truesight_me_beta merged successfully (sha: bdd961878798adef249fe5669becfe1a26b456de). Pull Request successfully merged
 
