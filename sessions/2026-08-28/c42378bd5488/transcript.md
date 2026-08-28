@@ -492,11 +492,13 @@ The program page lives in **truesight_me_beta** (and truesight_me_prod), and its
 ### 🤖 Autopilot
 
 The program page lives in **truesight_me_beta** and already pulls FounderHaus media from the **sunmint** repo (`images/20260822_130000_FOUNDERHAUS_GROUP.jpg`). Let me read the full program page tail and its manifest, and check the product page gallery structure.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the program page body to understand its full media structure before adding the gallery.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -676,4 +678,120 @@ Analysis persisted to the transcript.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments ls -la 62c949980b3f464881d0e6e2354aaa8b.jpg echo "=== file ==="; file 62c949980b3f464881d0e6e2354aaa8b.jpg echo "===
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] make sure to add the images I provided on the product detail page using the new JS framework we inserted
+
+
+### 🤖 Autopilot
+
+The governor wants the gallery images wired through "the new JS framework we inserted" rather than the static `<img>` tags I added in #222. Let me find what that framework is — checking the product page's scripts and recent repo changes.
+
+
+### 🤖 Autopilot
+
+The governor mentions "the new JS framework we inserted" — I need to identify what that is. Let me search the repo for JS components/frameworks and recent commits mentioning a framework.
+
+
+### 🤖 Autopilot
+
+Found it — there's a `js/media-gallery.js` and a series of "media JSON externalization" PRs (PR0–PR7) that migrated pages to a shared media-gallery component. Let me read that component and see how pages consume it.
+
+
+### 🤖 Autopilot
+
+Now I understand the framework: **`media-gallery.js`** — it fetches a page-local `media.json` and renders items into `[data-media-gallery]` / `#media-gallery` slots. It was piloted on farm/shipment pages (PR0–PR7, Aug 20). The governor wants the product page to use this too.
+
+Let me look at an example of how a migrated page + its `media.json` look, plus the product page's current gallery markup.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The "new JS framework" is **`media-gallery.js`** (the media JSON externalization pilot, PR0–PR7). The product page hasn't been migrated yet — it still uses static `<img>` in `.gallery`. I need to:
+
+1. Create `product-page/oscar-bahia-cacao-tea-50g/media.json` with hero + gallery (4 new images + existing agl4)
+2. Replace the static `.gallery` block with a `[data-media-gallery]` container
+3. Add the `media-gallery.js` script include
+
+Let me check the existing farm/shipment media.json patterns that include captions/alt, and the product page's current full gallery + script area, then build the PR. Let me check oscar-bahia farm media.json (the pilot referenced from the product page) and the exact product page tail.
+
+
+### 🤖 Autopilot
+
+I now understand the framework: **`media-gallery.js`** — it fetches a page-local `media.json` and fills `data-media-slot="hero"` imgs + `#media-gallery` / `[data-media-gallery]` containers. The product page (PDP) hasn't been migrated yet — that's the ask. Let me check the PDP's CSS for `.gallery`/`.farm-video` so the framework-rendered items are styled correctly.
+
+
+### 🤖 Autopilot
+
+The "new JS framework" is **`media-gallery.js`** — the media-JSON externalization component (PR0–PR7, Aug 20) that renders gallery items from a page-local `media.json` into `#media-gallery` / `[data-media-gallery]` slots. The product page hasn't been migrated yet — my earlier #222 used static `<img>` tags. Let me redo it the framework way:
+
+**Plan:**
+1. Add `product-page/oscar-bahia-cacao-tea-50g/media.json` — hero + gallery (agl4 + the 4 FounderHaus photos)
+2. Update `index.html`: hero gets `data-media-slot="hero"`, `.gallery` becomes `id="media-gallery"` (JS-rendered), add the `media-gallery.js` script include
+3. Supersede #222 (the static-img approach) — close it
+
+Let me build the PR:
+
+
+### 🤖 Autopilot
+
+PR #223 opened. Let me verify the diff, validate the media.json, and confirm the framework-rendered elements will inherit the PDP `.gallery img` styling.
+
+
+### 🤖 Autopilot
+
+PR #223 is clean. Let me verify the `media-gallery.js` render actually produces imgs styled by the PDP `.gallery img` rule — the framework builds `<img class="farm-video">` inside `.farm-video-section` > `.farm-video-container` > `.farm-video`, so I need to confirm `.gallery img` (descendant selector) still hits them, and check whether `.farm-video` has its own sizing that overrides.
+
+
+### 🤖 Autopilot
+
+No `.farm-video` CSS rules exist in the PDP's stylesheets, so `.gallery img` (descendant selector) fully styles the framework-rendered `<img class="farm-video">` (width 100%, height 220px, cover, radius). But there's one subtlety: `.gallery` uses `repeat(auto-fit, minmax(220px, 1fr))` — and `media-gallery.js` wraps each item in `.farm-video-section` divs, which are the grid *items*. I added `.gallery .farm-video-section { margin: 0; min-width: 0; }` to keep them flush. Let me confirm the CSS rule and gallery markup are correct in the PR, and verify the whole diff renders sensibly.
+
+
+### 🤖 Autopilot
+
+PR #223 is clean and correct. One housekeeping item: **#222** (the static-`<img>` gallery approach from earlier) is now **superseded** by #223 (framework approach) — both touch the same `.gallery` block, so keeping both open risks a wrong merge. Let me close #222 with a pointer to #223.
+
+
+### 🤖 Autopilot
+
+## ✅ Done — gallery now wired through the media-gallery.js framework
+
+**PR: [TrueSightDAO/agroverse_shop_beta#223](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/223)** — "Migrate cacao tea PDP gallery to media-gallery.js framework (media.json)"
+
+### What I did
+The "new JS framework" is **`media-gallery.js`** — the media-JSON externalization component from the Aug 20 pilot (PR0–PR7 on farm/shipment pages). It fetches a page-local `media.json` and renders the gallery client-side. The PDP hadn't been migrated yet, so I brought it in:
+
+1. **`media.json`** (new) — `schemaVersion: 1` with:
+   - `hero` → the cacao tea hero image (with fallback)
+   - `gallery` → 5 items: existing `agl4.avif` + the **4 FounderHaus planting-day photos** (`founderhaus-farm-gallery-1..4.jpg`), each with descriptive alt text
+2. **`index.html`**:
+   - Hero `<img>` got `data-media-slot="hero"` (framework fills it; static `src` kept as no-JS fallback)
+   - `.gallery` div → `<div class="gallery" id="media-gallery">` (single-container mode renders all non-sectioned gallery items)
+   - Added `.gallery .farm-video-section { margin:0; min-width:0 }` so framework-wrapped items sit flush in the PDP grid
+   - Added `<script src="../../js/media-gallery.js">` before `</body>`
+
+### Verified
+- media.json parses as valid JSON; PR diff is exactly 2 files (+40/−4)
+- No `.farm-video` CSS on the PDP's stylesheets → `.gallery img` (width 100%, height 220px, cover) styles the rendered images correctly
+- The framework gracefully no-ops if media.json is missing (never breaks the page)
+
+### Housekeeping
+- **#222 closed** (superseded) — it added the same photos via static `<img>` tags; #223 is the framework-correct version. Both can't merge.
+
+### Open state on beta now
+| PR | What | Status |
+|---|---|---|
+| #220 | Hero image swap | open |
+| #221 | FounderHaus special-edition callout | open |
+| #223 | Gallery via media-gallery.js (supersedes #222) | open |
+| truesight_me_beta#314 | Program page gallery | open |
+
+**Note:** #220 and #223 both touch the hero image area — #223 keeps the static src as fallback, so they coexist fine. Want me to **merge #220, #221, #223** (and #314) and **promote to prod** after your review? Prod sync needs your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp/agroverse_shop_beta-main 2>/dev/null || cd /tmp echo "=== scripts referenced in product page ==="; grep -n "<script\|\.js" product-p; cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== recent commits on agroverse_shop_beta main ===" curl -s -H "Authorization:; cd /tmp TOK=$(cat ~/CYPHER_DEFENCE_OPS_PAT | tr -d ' ') echo "=== shipments/agl4 media.json (PR1 example) ===" curl -s -H "Authorization: Be; …(+6 more)
 
