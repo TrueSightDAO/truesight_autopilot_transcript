@@ -298,16 +298,19 @@ Cloned at current main (`a44b7ce`, after #219 — the hero-image PR #220 is sepa
 ### 🤖 Autopilot
 
 Now let me apply the edits precisely with a Python script (banner insert + detail rows + schema.org props).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All edits applied cleanly. Let me validate the HTML structure (balanced tags around my insertions) and take a look at the final section.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One mismatch flagged — but that's at line 194, which is the **pre-existing** structure (`</section>` closing the traceability section is written as `</div></section>` in the original file). Let me confirm it's pre-existing, not something I introduced, by checking the original file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -315,21 +318,25 @@ One mismatch flagged — but that's at line 194, which is the **pre-existing** s
 Confirmed — the mismatch (`</div>` closing a `<section>`) is **pre-existing** in main and NOT introduced by my edit (same error at original line 174). Browsers handle this fine; I'll leave it untouched (out of scope — fixing it would be a separate change).
 
 Let me view the final rendered structure of my edits to double-check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page structure looks great. The banner sits right under the H1, product details has the new rows, schema.org is updated. Let me commit and push the branch, then open the PR (via the PAT that worked).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Now open the PR with the working PAT.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #221 opened.** Let me verify the PR diff is exactly the one file with my intended changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -380,22 +387,31 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The attachment is at `/tmp/tg_attachments/256a7efe6fd342e4b7cf39b78215adbd.jpg`. Let me inspect it — dimensions, format, and try to understand its content (it's a photo, no OCR text detected).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is a **1280×960 landscape JPEG** (progressive, ~photo). No text was auto-detected. Let me run OCR myself to double-check, and look at the image's visual characteristics.
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the file size and run one more visual-structure analysis, then persist it to the transcript per the attachment workflow.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me persist the analysis to the transcript per the attachment workflow, and check if I can view the image content via a vision-capable path (the auto-detection had no text, but it's clearly a photo).
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -434,6 +450,7 @@ add these 4 images to the image gallery of both the program page as well as the 
 ### 🤖 Autopilot
 
 The governor says "these 4 images" but I only see one attachment in this message. Let me check the attachments folder — there may be 4 recently-uploaded files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -445,16 +462,19 @@ There are 4 new images uploaded in the last few minutes (all Aug 28 10:33):
 - `8c8e48a7…` (127 KB — shown as the attachment)
 
 The 5th (9718a51a) was the earlier hero image. So the 4 images are clear. Let me inspect all 4 dimensions and check the gallery structure on both pages (program page + product page).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 images confirmed (3 landscape 1280×960, 1 portrait 960×1280). Now let me look at the gallery structures on both pages — the product page (local clone) and the program page (find it in the truesight_me repo).
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Product page has a `.gallery` div at line 134. The program page search in truesight_me returned nothing — let me search org-wide and check the gallery block fully.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -557,4 +577,53 @@ Want me to **merge #314 and #222** now, and/or **promote to prod**? (Prod promot
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → ls -lat /tmp/tg_attachments/ | head -15; echo "---"; find /tmp/tg_attachments -newermt "2026-08-28 10:00" -type f 2>/dev/null | sort; cd /tmp/tg_attachments && for f in 256a7efe6fd342e4b7cf39b78215adbd 35de3cd8aea74fad94edcdca8f6353a2 62c949980b3f464881d0e6e2354aaa8b 8c8e48; cd /tmp/avs_beta_work2 && echo "=== PRODUCT PAGE gallery/img refs ==="; grep -n "img\|gallery\|pdp-gallery\|avif\|jpg\|png" product-page/osc; …(+8 more)
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **35de3cd8aea74fad94edcdca8f6353a2.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+The governor attached `35de3cd8…` — one of the 4 gallery images I already uploaded (it's `founderhaus-farm-gallery-2.jpg`). Let me inspect it fresh to give an accurate report.
+
+
+### 🤖 Autopilot
+
+Let me also verify the copy that's live on GitHub matches the attached file (so I can tell the governor whether the gallery is showing this exact file).
+
+
+### 🤖 Autopilot
+
+## 🔍 Inspected `35de3cd8aea74fad94edcdca8f6353a2.jpg`
+
+**File facts:**
+- **1280×960 landscape JPEG** (progressive, RGB, 138,981 bytes ≈ 136 KB), no EXIF, no text (OCR 0.0%)
+- **Visual profile:** avg brightness 123 (mid-tone photo); top colors are neutral grays/blacks (192/128/96-gray, black) — a high-contrast outdoor scene with dark subject areas, consistent with a planting-day candid photo
+
+**Important context — this is one of the 4 you already had me add:**
+This is the exact file that's now live as **`sunmint/images/founderhaus-farm-gallery-2.jpg`** — I verified byte-for-byte:
+
+| | sha256 |
+|---|---|
+| Your attachment | `e7ace1474dcc…8624` |
+| Live on GitHub (main) | `e7ace1474dcc…8624` ✅ identical |
+
+It's wired into both pages:
+- **Program page** (truesight_me_beta#314) — gallery position 2, alt "in the grove"
+- **Product page** (agroverse_shop_beta#222) — gallery position 2
+
+**So: nothing to do** — the file is already uploaded, byte-identical, and referenced on both pages (pending merge of #314/#222 + prod promotion). If you're sending it again because you want a **different crop/position** or it's a **different photo than what I used**, let me know and I'll swap it.
+
+Analysis persisted to the transcript per the attachment workflow.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -la /tmp/tg_attachments/35de3cd8aea74fad94edcdca8f6353a2.jpg 2>/dev/null; echo "---"; cd /tmp/tg_attachments && file 35de3cd8aea74fad94ed; cd /tmp/tg_attachments echo "=== local sha256 ==="; sha256sum 35de3cd8aea74fad94edcdca8f6353a2.jpg echo "=== remote sha256 (github main) ===
 
