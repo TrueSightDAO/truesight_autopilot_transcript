@@ -394,27 +394,37 @@ The signing logic lives in the `truesight_dao_client` package. Let me find the a
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The key is stored via env (`PRIVATE_KEY`, base64 PEM) — set by `truesight-dao-auth`. Let me find where that env file lives and check the auth.py for identity details (email).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the .env path and confirm the registered identity (email) — without exposing the key itself.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The signing identity is set up in `/home/ubuntu/.env` (EMAIL + PRIVATE_KEY, base64 PEM — same identity that signs Edgar submissions). I'll write a script that builds the PDF with ReportLab, embeds Yuri's contact-card image, signs a canonical payload with the DAO RSA key, and renders the signature block — without ever printing the key.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how `load_private_key` in the client handles the stored key — the .env value's exact encoding matters.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The stored key is **base64-encoded DER**, not PEM. Fixing the loader:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -520,4 +530,97 @@ The document is otherwise identical — 2 pages, contact card embedded, signatur
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && python3 - <<'PY' import fitz d = fitz.open('/tmp/Yuri_Contribution_Record.pdf') for pno in range(d.page_count): page = d[pno] W =; cat > /tmp/make_yuri_pdf2.py <<'PYEOF' #!/usr/bin/env python3 """Yuri contribution-record PDF v2 — all table cells as wrapping Paragraphs (n; cd /tmp && python3 - <<'PY' import fitz, base64, json, re from cryptography.hazmat.primitives import hashes, serialization from cryptography
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15344] By the way, help make the contribution report for my time spent as well if not already done so
+
+
+### 🤖 Autopilot
+
+Let me recall the exact details of what was already submitted for your time, so the report matches the ledger.
+
+
+### 🤖 Autopilot
+
+Let me check the ledger and transcript for the contribution events that were submitted earlier.
+
+
+### 🤖 Autopilot
+
+Let me find the correct tab name for contribution tracking in the ledger.
+
+
+### 🤖 Autopilot
+
+Let me find the ledger structure doc to locate the contributions tab name.
+
+
+### 🤖 Autopilot
+
+The contribution events for both you and Yuri were already submitted earlier in this thread (both returned success). Now let me confirm the ledger row and find the right tab to double-check before building your report.
+
+
+### 🤖 Autopilot
+
+Both your and Yuri's CONTRIBUTION EVENTs were already submitted earlier in this thread (both returned success ✅) — so the ledger side is done. What's missing is the **PDF report for your time**, same as Yuri's. Let me pull your contact details from the ledger to populate it correctly.
+
+
+### 🤖 Autopilot
+
+The ledger history tab shows Gary's long track record, but I need his current contact row from the Contributors tab for the report. Let me pull it:
+
+
+### 🤖 Autopilot
+
+The default tab is Ledger history. Let me read the Contributors tab specifically for Gary's contact details:
+
+
+### 🤖 Autopilot
+
+Let me find Gary Teh's row in the Contributors tab:
+
+
+### 🤖 Autopilot
+
+Let me find Gary Teh's specific row (should be in the G section):
+
+
+### 🤖 Autopilot
+
+Found Gary's row: **Gary Teh · garyjob@gmail.com · +1 415 300 0019 · @garyjob · garyjob#4037** — and he's flagged `TRUE` as Sentinel/Governor. 
+
+Good news on the substance: **your 15-min CONTRIBUTION EVENT was already submitted** earlier in this thread (both yours and Yuri's returned success ✅) — so the ledger side is done; what's left is the PDF report for your time. I'll build it mirroring Yuri's (wrapping cells, RSA-signed), embedding the intro-chat screenshot as evidence:
+
+
+### 🤖 Autopilot
+
+PDF built (115 KB). Now verifying no overflow and that the signature verifies:
+
+
+### 🤖 Autopilot
+
+All checks pass. Sending your contribution report:
+
+
+### 🤖 Autopilot
+
+Sent ✅ — **Gary_Teh_Contribution_Record.pdf**
+
+**About your question ("if not already done so"):** Your 15-min CONTRIBUTION EVENT **was already submitted** earlier in this thread (both yours and Yuri's went through successfully at that time) — so the ledger side was done. What was missing was the PDF report, which is now delivered.
+
+**What's in the PDF:**
+- **Contributor table** — Gary Teh · @garyjob · +1 415 300 0019 · garyjob@gmail.com · garyjob#4037 · Role: Governor/Sentinel (TRUE)
+- **Contribution table** — CONTRIBUTION EVENT · Time (Minutes) · 15 · discovery chat with Yuri re: Agroverse / 10,000-ha Amazon restoration
+- **Evidence image** — the Agronomy Network intro screenshot (Yuri, Vincente, Gary) embedded
+- **RSA signature block** — Sophia Truesight identity, RSASSA-PKCS1-v1_5 (RSA-2048) + SHA-256, canonical JSON payload + base64 signature + public key PEM
+
+**Verified:** all text within page margins (no overflow) + **SIGNATURE VERIFY: OK** — same signing identity and format as Yuri's record, so the two documents cross-verify consistently.
+
+Want me to also upload both PDFs to a repo for permanent record (e.g. `agentic_ai_context/records/` or similar)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cat > /tmp/make_gary_pdf.py <<'PYEOF' #!/usr/bin/env python3 """Gary Teh contribution-record PDF — wrapping cells, embedded evidence image, ; cd /tmp && python3 - <<'PY' import fitz, base64, json, re from cryptography.hazmat.primitives import hashes, serialization from cryptography
 
