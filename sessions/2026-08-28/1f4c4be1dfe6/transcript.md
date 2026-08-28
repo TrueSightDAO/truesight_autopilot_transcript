@@ -126,31 +126,37 @@ BitAngels **Magic Island Demo Day** — Florianópolis, **Aug 28, 2026 (today)**
 ### 🤖 Autopilot
 
 Let me dig deeper — re-OCR the image with preprocessing, and grep the tokenomics chat data files for the four names.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me locate the attached image and search more broadly for the names.
+[3 tool result(s) compacted: ssh_run, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The photo is unreadable (a low-quality event photo — likely of people, no usable text). Let me verify the four names against deeper DAO records and the BitAngels event context.
+[4 tool result(s) compacted: search_code, search_code, search_code, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed the event: **BitAngels Magic Island Demo Day — Aug 28, 2026 (today), Florianópolis, hosted by Founder Haus** (5:00–9:00 AM GMT-3). Now let me verify names — Paloma and Nima Kaz have DAO records tying them to Founder Haus/Florianópolis. Let me check the event page for organizer names and search transcripts.
+[4 tool result(s) compacted: web_extract, search_transcript, search_transcript, check_handoffs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the event page for host/organizer names and look at the exact Nima Kaz ledger row context.
+[2 tool result(s) compacted: web_extract, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do a final round of name verification across more sources before submitting.
+[4 tool result(s) compacted: search_code, search_code, search_code, search_context — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -257,4 +263,100 @@ All four names verified. Submitting 4 × [CONTRIBUTION EVENT] (Time: 180 min eac
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×4 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15361] generate a pdf documenting their contributions and RSA signature as well as include the image attachments. Also report the same contribution amount for me.
+
+
+### 🤖 Autopilot
+
+Gary wants a PDF documenting the contributions + RSA signature + the image, plus a matching 180-min contribution for himself. Let me gather what I need in parallel: locate the image file, find how the RSA signature is recorded, and submit Gary's contribution.
+
+
+### 🤖 Autopilot
+
+Gary's 180-min contribution is submitted. The image is at `/tmp/tg_attachments/1a917b25ac084e92b3c1cd98fb8ab3a6.jpg`. Now let me find the RSA signing convention and key material on the box.
+
+
+### 🤖 Autopilot
+
+Found the signing guide. Let me read it to understand the RSA signing convention for the PDF.
+
+
+### 🤖 Autopilot
+
+I have the RSA signing convention. Now let me check the PDF tooling available and verify the image file, plus check for any other demo-day images in the transcript.
+
+
+### 🤖 Autopilot
+
+I have reportlab + PIL and the signing key. Let me check which images relate to today's demo day (to include the right ones) and inspect the .env key names safely.
+
+
+### 🤖 Autopilot
+
+The attachment image is confirmed at `/tmp/tg_attachments/1a917b25ac084e92b3c1cd98fb8ab3a6.jpg` (720×1280, the one auto-processed this conversation). There are other jpgs from the same minute — let me check which images were actually part of this thread.
+
+
+### 🤖 Autopilot
+
+The image from this conversation is `1a917b25ac084e92b3c1cd98fb8ab3a6.jpg` (720×1280, the event photo). I have reportlab + PIL + the signing key. Now I'll build the PDF: document all 5 contributions (incl. Gary's), sign the record with Sophia's RSA-2048 key (RSASSA-PKCS1-v1_5/SHA-256, the Edgar convention), embed the image, and verify the signature locally.
+
+
+### 🤖 Autopilot
+
+PDF built and RSA signature verified locally (RSASSA-PKCS1-v1_5/SHA-256, Sophia's Edgar-registered keypair). Now let me upload it for a durable record and send it into this chat, plus persist to the transcript.
+
+
+### 🤖 Autopilot
+
+PDF delivered to the chat and stored in the DAO repo. Let me persist the attachment/transcript note and confirm Gary's contribution row.
+
+
+### 🤖 Autopilot
+
+All done, Gary. Here's the full summary:
+
+## ✅ PDF generated, RSA-signed, delivered
+
+**📄 BitAngels_DemoDay_Contributions_2026-08-28.pdf** (99 KB, 2 pages)
+- Sent into this chat (message #15404)
+- Also stored permanently at `agentic_ai_context/contributions/BitAngels_DemoDay_Contributions_2026-08-28.pdf` on `main`
+
+**What's inside the PDF:**
+1. **Event summary** — BitAngels · Magic Island Demo Day, Founder Haus, Jurerê Internacional, Florianópolis, 2026-08-28, 8:00–11:00
+2. **Contributions table** — all 5 contributors, 180 min each:
+
+| # | Contributor | Type | Amount | Status |
+|---|---|---|---|---|
+| 1 | Paloma | Time (Minutes) | 180 | Submitted ✓ |
+| 2 | Nima Kaz | Time (Minutes) | 180 | Submitted ✓ |
+| 3 | Natalia Duque Cesar | Time (Minutes) | 180 | Submitted ✓ |
+| 4 | Cristian Crispim | Time (Minutes) | 180 | Submitted ✓ |
+| 5 | **Gary Teh** (you) | Time (Minutes) | 180 | Submitted ✓ |
+
+3. **Event photo embedded** — the image you attached (`1a917b25….jpg`)
+4. **RSA digital signature block** — the canonical record signed with Sophia Truesight autopilot's Edgar-registered RSA-2048 keypair using **RSASSA-PKCS1-v1_5 + SHA-256** (the exact scheme Edgar verifies), including:
+   - Signed content (the `[CONTRIBUTION RECORD]` block)
+   - My Digital Signature (public key, base64 SPKI)
+   - Request Transaction ID (base64 RSA signature)
+   - Local re-verification: **PASS** ✓ — verifiable at `dapp.truesight.me/verify_request.html`
+
+## ✅ Your contribution reported
+- **Gary Teh — 180 min** [CONTRIBUTION EVENT] submitted successfully, same amount as the other four (5 × 180 = **900 minutes / 15 hours** total).
+
+**Notes:**
+- The photo had no OCR-readable text, so the PDF simply embeds it as the event photo.
+- If Paloma, Nima, Natalia, or Cristian aren't yet registered with emails, a CONTRIBUTOR ADD EVENT (name + email) would complete their identity records — send emails if you'd like me to onboard them.
+
+———
+**Actions taken this turn:** submitted Gary's 180-min contribution ✓ · built RSA-2048-signed PDF with reportlab (signature verified locally) ✓ · embedded event photo ✓ · delivered via Telegram ✓ · uploaded to DAO repo ✓ · persisted transcript note ✓.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+• `ssh run` ×6 → echo "=== find keys ==="; ls -la ~/.ssh/ 2>/dev/null | head -20; find / -maxdepth 4 -iname "*rsa*" -o -iname "*private*key*" -o -iname "*edg; cd /home/ubuntu/dao_protocol_verify 2>/dev/null || cd /home/ubuntu/dao_protocol_fix; echo "=== edgar_client signing section ==="; grep -n "s; python3 -c "import reportlab; print('reportlab', reportlab.Version)" 2>&1; python3 -c "import PIL; print('PIL', PIL.__version__)" 2>&1; ls -; …(+3 more)
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-28/15dc17cdf255/transcript.md
 
