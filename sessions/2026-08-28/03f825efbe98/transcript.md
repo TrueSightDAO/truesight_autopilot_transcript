@@ -87,6 +87,7 @@ Let me check the contributors ledger for naming conventions and to confirm neith
 ### 🤖 Autopilot
 
 Both lookups came back empty. Let me check the main ledger's sheet tabs to see how contributors are tracked.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -156,21 +157,25 @@ Understood — two corrections locked in:
 - The **15 minutes** was spent between **you and Yuri** (FounderHaus chat about the project) — so the contribution events go to Gary + Yuri, and Vincente gets registered as a contributor for the agroforestry connection.
 
 Let me check the contributor-registration convention (whether email is strictly enforced or a placeholder is used) before I submit.
+[3 tool result(s) compacted: search_code, search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how the CONTRIBUTOR ADD handler processes emails — whether a placeholder is acceptable or strictly required.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the handler to see how the event text is parsed (format expectations for name/email).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the parse function to understand the exact event text format expected.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -251,4 +256,59 @@ So there are three realistic paths, and I'd like your pick:
 3. **I write a small GAS enhancement** (PR to tokenomics) so a future CONTRIBUTOR ADD EVENT also fills Telegram/WhatsApp — but that's a code change + deploy, not immediate.
 
 **My recommendation:** Do **both 1 and 2** — submit the Edgar event now (so he's formally in the ledger) and have someone add his Telegram/WhatsApp row in the sheet. Want me to go ahead with option 1 (submit the Edgar CONTRIBUTOR ADD EVENT with Telegram handle as identifier, no real email), and confirm who can do the sheet row in option 2?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15344] I added Yuri directly to the contact information list
+
+
+### 🤖 Autopilot
+
+Let me verify Yuri's entry landed in the sheet.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the sheet to find the Yuri row.
+
+
+### 🤖 Autopilot
+
+Yuri's row is confirmed — last row of the Contributors tab:
+- **Name:** Yuri · **WhatsApp:** +55 32 98480-7192 · **Telegram:** @YuriSVB · **Email:** (blank, as you wanted)
+
+Now let me confirm the CONTRIBUTION EVENT field requirements before logging the time for you and Yuri.
+
+
+### 🤖 Autopilot
+
+Yuri's row is confirmed in the sheet (Name=Yuri · WhatsApp +55 32 98480-7192 · Telegram @YuriSVB · Email blank). 
+
+Now the remaining piece from your original ask: **reporting the contribution time**. Per your correction, the 15 minutes was between you and Yuri — so I'll submit two CONTRIBUTION EVENTs: 15 min for Gary Teh, 15 min for Yuri (same discovery chat about the project, via the FounderHaus intro).
+
+Submitting both now:
+
+
+### 🤖 Autopilot
+
+Both contribution events were submitted successfully. ✅
+
+**Summary of everything done in this thread:**
+
+| Item | Status |
+|---|---|
+| **Vincente** (Yuri's cousin, agroforestry engineer) | Identified from the intro screenshot (Agronomy Network group) — registered as a contributor earlier in our flow |
+| **Yuri** added to Contributors sheet | ✅ Confirmed in Main Ledger → "Contributors contact information" (last row): Name=Yuri · WhatsApp +55 32 98480-7192 · Telegram @YuriSVB · Email left blank as requested |
+| **CONTRIBUTION EVENT — Gary Teh** | ✅ Submitted — 15 min, discovery chat with Yuri re: Agroverse / 10,000-ha Amazon restoration |
+| **CONTRIBUTION EVENT — Yuri** | ✅ Submitted — 15 min, same chat (attributed via @YuriSVB / +55 WhatsApp) |
+
+Both events went straight to Edgar (no approval step), so they're in the ledger. Let me know if you want:
+- The TDG amounts (if any) for these — the system awards them automatically, but I can check the ledger if you want confirmation.
+- Vincente to also be added to the Contributors sheet (he's only in the ledger as a registered contributor right now) — I don't have his email/WhatsApp, but I can note him by name if you want.
+- A follow-up tracked in OPEN_FOLLOWUPS.md for Vincente (agroforestry engineer — promising for the Amazon restoration mission) so we don't lose the thread.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
