@@ -204,41 +204,49 @@ go for it
 ### 🤖 Autopilot
 
 On it — investigating why the sunmint main page calls that Edgar URL and whether the endpoint exists. Let me pull context in parallel: check the handoff registry (since this thread may be an execution handoff), grep the sunmint code for the call, and search the org for that route.
+[3 tool result(s) compacted: read_context_file, ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff manifest is indexed (this thread maps to no active plan — the PR task is complete; the question at hand is the Edgar URL mystery). Let me dig: grep both sunmint repos, check dao_protocol for the route, and test the endpoint live.
+[3 tool result(s) compacted: ssh_run, search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the caller. The live endpoint returns **404 Not Found** — let me verify exactly which page(s) call it, and whether Edgar/dao_protocol ever had this route. Checking in parallel:
+[3 tool result(s) compacted: ssh_run, ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the picture is clear. Let me confirm the beta page has the same call, check the canonical response shape of the real endpoint (`/dao/check_digital_signature`) by calling it live with that same public key, and see how dapp_beta's `create_signature.html` uses it (the canonical pattern).
+[3 tool result(s) compacted: ssh_run, http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause is now crystal clear. Let me pull the two full `fetch` blocks from prod's monitor page to confirm the exact error-handling shape, then I'll report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the **live** prod page actually serves the old URL (not just the repo) — diagnostic discipline before concluding.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live page confirmed as the OLD code (`.camera-viewport` without the cap, matching prod repo). Let me finish with two checks: whether the live **root** page also calls it, and whether the manifest maps this thread (16178) to any active plan.
+[2 tool result(s) compacted: http_fetch, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The picture is complete. Two final confirmations — live beta page behavior and whether sunmint_prod has any open PR touching this:
+[2 tool result(s) compacted: http_fetch, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -307,26 +315,31 @@ go
 ### 🤖 Autopilot
 
 "Go" received. Executing the plan: verify how far prod lags beta, confirm the live deploy path, and prep the promotion. Beta-first — read-only investigation first, no prod writes.
+[4 tool result(s) compacted: ssh_run, ssh_run, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live pages are served by **GitHub Pages** (`server: GitHub.com`) — so prod serves `sunmint_prod/main` directly, and beta serves `sunmint_beta/main`. That means the fix is purely a **fork sync** (prod is behind). Let me confirm the live beta page already uses the good endpoint and measure the exact delta between the two repos.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod is served by **GitHub Pages** straight from `sunmint_prod/main` — confirmed. And the compare shows prod's tip (`0c01026` "promote monitor email-linking UX fix from beta", 2026-08-29 12:30Z) is the **merge base**, meaning beta `main` is strictly ahead of prod. Let me read the full compare to see exactly what's in the delta.
+[2 tool result(s) compacted: read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod is served by **GitHub Pages** from `sunmint_prod/main` — and the compare shows prod's tip (`0c01026`, Gary's 12:30Z promotion) is the **merge base**, meaning prod is strictly behind beta (no divergence). Beta main already has the `/dao/check_digital_signature` fix live. Let me enumerate the exact delta so I can present what a promotion would bring, and check the Pages build state.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The compare API gave an odd result (likely cross-repo resolution quirk). Let me settle it deterministically — diff the two local clones directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -431,4 +444,37 @@ One question before I execute anything: **prod currently lags beta significantly
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → echo "=== live PROD headers ==="; curl -sI https://sunmint.truesight.me/ | head -20; echo ""; echo "=== live BETA headers ==="; curl -sI htt; echo "=== nginx sunmint configs ==="; grep -rln "sunmint" /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null; echo ""; echo "=== vhost; echo "=== LIVE beta monitor: fetch URLs ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -oE "(EDGAR_BASE}/dao/[a; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] why not just straight up deploy to prod?
+
+
+### 🤖 Autopilot
+
+Fair question — and the honest answer is: **a "straight deploy to prod" is basically what I'm proposing; it's a single sanctioned fork-sync.** Nothing technical blocks it. Two reasons I didn't just do it:
+
+**1. It's a production deploy — that's an explicit-go gate.** The one thing I'll never do without your command is deploy to prod. You asked "why not" — that's a question, not a go. Say the word and I run it.
+
+**2. Sequencing — PR #29 (camera gestures) isn't in beta main yet.**
+- Beta main right now = everything through #28, **including** the `check_digital_signature` fix that kills the 404.
+- PR #29 (your four camera fixes) is **still open, unmerged**, awaiting your UAT of items 1 & 4.
+- So a sync **now** fixes the 404 + ships #26/#27/#28, but **not** the camera fixes → you'd need a **second** sync after UAT'ing #29 anyway.
+
+## What "deploy to prod now" actually means (verified delta)
+`sync_beta_to_prod(sunmint_prod)` = fork-sync prod from beta main. It would carry:
+- **#26** — `/dao/contributors` → `/dao/check_digital_signature` (kills the 404)
+- **#27** — governor/sentinel invalid-zone on manual tree selection (fixes the broken governor gate on prod I flagged)
+- **#28** — offline queue photo blobs as base64 (prod's current code corrupts queued photos to `{}` — a real data-loss bug live on prod)
+- Earlier beta items prod lacks
+- CNAME stays prod (`sunmint.truesight.me`) — sync won't clobber it; if it conflicts it stops and reports
+
+Risk call: all of the above are **low-risk prod bug-fixes** — none of them are the finicky camera-gesture behavior. The camera changes are the ones that deserved UAT first, and those aren't even in the sync yet.
+
+## So the decision is simple
+- **"Deploy now"** → I run `sync_beta_to_prod` immediately, 404 gone, prod catches up to beta main (minus #29). Then UAT #29 at leisure, merge, one more sync.
+- **"UAT #29 on beta first, then deploy once"** → you test items 1 & 4 on `beta.sunmint.truesight.me`, I merge #29, then one sync ships **everything** together.
+
+Either works; the second is fewer deploys, the first gets the 404 fixed sooner. Your call — I won't touch prod until you say which.
 
