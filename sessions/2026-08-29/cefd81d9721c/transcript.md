@@ -1514,56 +1514,67 @@ go
 ### 🤖 Autopilot
 
 Gary's go — deploying the doGet trigger and firing the catch-up. Manifest check + pulling merged #443 into the deploy checkout in parallel:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest checked — no row references this thread (ad-hoc GAS-fix execution, rows are emoji-reaction/sunmint/tree-QR/media-JSON/white-label). Deploy checkout is at #443 (`c74c3d4`) with the doGet present. **Deploying the project now** — this pushes the new `doGet` and I'll capture the web-app deployment URL:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy succeeded — guardrail passed, 4 files pushed (including the new doGet), ledger recorded (`deploy_20260829T142906Z`). Now trigger the catch-up via the web-app `/exec` path. The @HEAD deployment ID is `AKfycbzWHu3f3NVvLkUBi1aE2X-VtCYHNxVlYuwwLP6dWTA` — firing the GET with the action param:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `/exec` URL 404'd — those deployments have `entryPoints: None` (head deployments, **not** web-app deployments), so there's no `/exec` URL. I need to create a **web-app deployment** via the Apps Script API (with a WEB_APP entry point), then hit its `/exec` URL. Creating it now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The payload schema was wrong. The correct `deployments` create body is `{"versionNumber": N, "manifestConfig": {...}, "description": "..."}` — `entryPoints` is in the *response*, not the request. Fixing the payload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The field is `deploymentConfig` (not `manifestConfig`), with a nested `manifest.webApp` config. Correcting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API rejects my payload guesses — the correct path is the **manifest-driven** one: adding a `webapp` block to `appsscript.json` is what makes `clasp deploy` create a WEB_APP entry point (that's why the current deployments show `entryPoints: None`). This also keeps repo ↔ deployed config in sync. Let me check the current manifest, then PR the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — 5 sibling projects use the `webapp` manifest block (that's how they got WEB_APP deployments). Let me check one sibling's exact webapp manifest shape to copy it precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sibling convention is exact: `"webapp": {"executeAs": "USER_DEPLOYING", "access": "ANYONE_ANONYMOUS"}` — running as the deployer (garyjob, who has ledger access) and callable anonymously. Adding this to the recurring-tokenization manifest so `clasp deploy` creates a real WEB_APP deployment with an `/exec` URL:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#444** opened. Quick JSON validation, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JSON valid, guardrail clean. Merging #444:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1637,26 +1648,31 @@ go
 ### 🤖 Autopilot
 
 Gary's go — deploying the webapp manifest and creating the WEB_APP deployment. Pulling #444 first, then deploying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout at #444 head with the webapp manifest present. Deploying — this push carries the manifest, then I'll create the WEB_APP deployment:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy succeeded (manifest now live). The deploy tool only pushes — I need to create the WEB_APP deployment with `clasp deploy` (which now honors the webapp manifest block). Running it and capturing the new deployment ID/URL:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New WEB_APP deployment created: **`AKfycbzwij2AAQMhS1e4GcmRuMyF2EGEmH6rYmDrLCtQSYGyA4_2wz5M2oqHJDD_paCoJeOn`** @3. Firing the catch-up trigger at its `/exec` URL:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `/exec` call **timed out at 60s** — unlike the earlier 404, this means the web app **was reached** and `processRecurringTransactions` started executing (it does real work — reads sheets, writes ledger rows — which can exceed 60s). The ground truth is the ledger itself. Verifying whether rows landed:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1757,4 +1773,89 @@ The math is conclusive — but let me capture the actual appended ledger entries
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== ff-only pull ===" && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== cla; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== tok; …(+2 more)
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T143901Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" — executing my two recommendations: (1) undeploy the anonymous web-app deployment (security), (2) file the follow-up note in OPEN_FOLLOWUPS.md. Manifest compliance check + listing deployments in parallel:
+
+
+### 🤖 Autopilot
+
+Manifest checked — no row references this thread (ad-hoc execution). Deployments identified; the **@3 web-app trigger** (`AKfycbzwij2AAQMhS…CoJeOn`) is the anonymous one to remove. Executing both follow-ups: undeploy the web-app (leaves the doGet + monthly trigger intact) and read the current OPEN_FOLLOWUPS.md to append without duplicating:
+
+
+### 🤖 Autopilot
+
+The undeploy reported "Deleted" but the list still shows @3 — likely a stale session cache. Verifying with a fresh call, and I have the OPEN_FOLLOWUPS.md structure for the append:
+
+
+### 🤖 Autopilot
+
+**Undeploy confirmed** ✅ — the anonymous web-app `/exec` URL now returns **404** (trigger path dead; the doGet function + monthly trigger remain live). The listing showing @3 is just clasp's stale tombstone — the deployment version is gone, proven by the 404.
+
+Now filing the follow-up note in OPEN_FOLLOWUPS.md via PR:
+
+
+### 🤖 Autopilot
+
+PR **#839** opened with the follow-up note. Merging it to close out:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — Security + documentation close-out complete
+
+### What happened this turn (Gary's "go")
+
+**1. Security: undeployed the anonymous web-app trigger.**
+- Listed deployments → identified `@3` (`AKfycbzwij2AAQMhS…CoJeOn`, "web-app trigger for recurring tokenization catch-up") as the `ANYONE_ANONYMOUS` deployment I'd created to fire the catch-up.
+- Ran `clasp undeploy` → "Deleted deployment …" → verified by HTTP: the `/exec` URL now returns **404** (the 404 is the ground truth — the listing still shows a stale tombstone, but the deployment version is gone).
+- **Result:** nobody can anonymously re-trigger tokenizations anymore. The `doGet` function and the **monthly time-driven trigger remain intact** — the Sep cycle will still auto-fire.
+
+**2. Documentation: filed the incident quirk for cross-session recall.**
+- PR **#839** (agentic_ai_context) added a self-contained entry under `## Pending` in **OPEN_FOLLOWUPS.md** capturing: the compile-time SyntaxError root cause, the `:run` API `NOT_FOUND` container quirk (fails on every function, even in-memory), the **doGet + webapp-manifest workaround** that bypassed it via the `/exec` path, the successful August catch-up (+1,754.99 TDG), and the @3 undeploy — plus the guardrail pointer.
+- Merged: sha `eaab724` — 🔗 https://github.com/TrueSightDAO/agentic_ai_context/pull/839
+
+### Full incident close-out (all merged)
+| PR | Repo | What |
+|---|---|---|
+| #434 | tokenomics | Removed stale `Code.js` ×8 (incl. the failing recurring-tokenization project) |
+| #438 | tokenomics | `creds` renames ×3 + `Version.js` removal |
+| #439 | tokenomics | Cleaned 12 more folders (17 deletions + 3 renames) |
+| #440 | tokenomics | **Guardrail**: brace-depth-aware duplicate-global + same-basename + orphan pre-push checks |
+| #443 | tokenomics | Action-gated `doGet` web trigger |
+| #444 | tokenomics | `webapp` manifest block (WEB_APP deployment) |
+| #839 | agentic_ai_context | Follow-up doc: NOT_FOUND quirk + workaround |
+
+Deploys: 18 projects pushed clean; **August tokenizations paid** (+1,754.99 TDG, 12 rows @ 20260829); anonymous web-app undeployed; ledger verified.
+
+### RESUME HERE
+- **Nothing pending** from this incident — it is fully closed.
+- Optional next if you want it: re-verify the **Sep 20 tokenization** fires automatically via the monthly trigger (I can check the trigger config exists in the GAS project, read-only, whenever you like).
+- Otherwise this thread is done — happy to pick up the next item (e.g. the manifest-tracked plans: emoji-reaction GO, SunMint mobile, tree-QR UAT, media-JSON).
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md (no row for this thread)
+• `ssh run` ×2 → clasp deployments; undeploy @3; 404 confirm
+• `git push changes` → PR #839 (OPEN_FOLLOWUPS entry)
+• `merge pr` → ✅ PR #839 merged (sha eaab724)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== cur; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== und; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== fre
+• `merge pr` → ✅ PR #839 on agentic_ai_context merged successfully (sha: eaab724d7d979809f62ec7f4730f95f86b48a10d). Pull Request successfully merged
 
