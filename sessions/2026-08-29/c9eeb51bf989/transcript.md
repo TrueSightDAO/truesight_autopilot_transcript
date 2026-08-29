@@ -665,31 +665,37 @@ Two separate issues confirmed — one is the known unmerged fix, the other is a 
 ### 🤖 Autopilot
 
 Let me see where `loadTreeIndex()` fetches from (it's a dynamic URL):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check `TREE_INDEX_URLS` and whether your tree `Edgar_20260819134722_487` resolves through it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check if your tree exists in the index and whether the deep-link found it — this determines which code path you hit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the breakthrough — the null-crash isn't just cosmetic, it may be **killing the whole init sequence**. Let me verify whether the monitor page has the same crashing line, and where it sits relative to camera/deep-link init on both pages:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the causal chain for issue 1. For issue 2, I need to check the actual geojson entry for your tree (which code path the deep-link takes) and the `onTreeSelectChange`/`showPhotoSection` definitions:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the tree IS in the index and Edgar says your key is governor-registered. So the gate *should* pass. Let me trace the code that decides what's in `localStorage` and how the email-link flow stores the key — that's the missing piece.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -899,4 +905,52 @@ Say the word on either (or both) and I'll execute.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "=== live beta monitor: maybeShowInvalidZone + loadContributorIdentity + currentContributorIsGovernor ==="; curl -s https://beta.sunmin; echo "=== maybeShowInvalidZone + loadContributorIdentity + isGovernor (1000-1035) ==="; curl -s https://beta.sunmint.truesight.me/monitor-tr; echo "=== deep-link fallback tail (1190-1215) ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | sed -n '1190,1215p'; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] [Handoff context — this Telegram topic (thread 16178) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+"Go for it" received — executing both: **merge PR #29** into beta main, then **fix the deep-link fallback gap** (the `maybeShowInvalidZone()` one-liner). Beta only — prod promotion stays parked until you UAT.
+
+Merging #29 first:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #29 merged** — `sunmint_beta` main now carries the camera-gesture fixes.
+
+## What I did this turn
+- **Merged [sunmint_beta#29](https://github.com/TrueSightDAO/sunmint_beta/pull/29)** (squash, sha `dbaf77e`) — "fix: tree camera mobile gestures — lazy camera start, capped viewport, safe deep-link init"
+- This puts live on **beta** (after GitHub Pages rebuilds, ~1–5 min):
+  1. `index.html`: removed eager `startTreeCamera()` on page load → `capturePhoto()` starts the camera on first tap (gesture-safe)
+  2. `index.html`: deleted the crashing `emailLinkedLabel` line in `renderEmailSection()` → **the `Cannot set properties of null` error + aborted init (camera never started) are fixed**
+  3. `monitor-tree-growth/index.html`: `.camera-viewport` capped (`max-height:40vh; object-fit:cover`) — preview no longer fills mobile screen
+  4. `monitor-tree-growth/index.html`: real `isDeepLinkInit` threading — dropdown pick / manual ID starts camera immediately; `?tree=` deep-link init stays deferred
+
+**Not done (by design):**
+- ⏸️ Prod promotion — parked until you UAT items 1 & 4 on `beta.sunmint.truesight.me`
+- ⏸️ The **deep-link fallback gap** fix (one-line `maybeShowInvalidZone()` in the `?tree=` fallback branch) — this is the second agreed item, not started
+
+## RESUME HERE → next unit
+**Unit 2: open the deep-link fallback fix PR on `sunmint_beta`** — branch e.g. `fix/monitor-deeplink-invalid-zone`; in `monitor-tree-growth/index.html`, in `window.onload`'s `?tree=` **fallback** branch (where `treeIndex` has no match and `showPhotoSection()` is called), add `maybeShowInvalidZone();` right after `showPhotoSection();` so governors always see MARK INVALID even when the tree id isn't in the local index. (The match branch already calls it.) Small, focused, one PR. Then merge after your go, and UAT.
+
+## What you can do now
+1. Wait ~5 min for Pages rebuild, then **hard-refresh `beta.sunmint.truesight.me/`** — no more null error, camera starts on first tap.
+2. UAT items 1 & 4 (camera on tap; dropdown/deep-link gesture behavior) on beta.
+3. Then say **"deploy"** for the one `sync_beta_to_prod` that ships everything to prod (after the Unit-2 fix is in, or separately — your call).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #29 on sunmint_beta merged successfully (sha: dbaf77e401e4c2bb6205802bd804582353264280). Pull Request successfully merged
 
