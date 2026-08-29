@@ -309,11 +309,13 @@ Full scan complete — the collision class is bigger: **8 project folders** carr
 All 8 confirmed: `Code.js` is the accidental duplicate in every folder (manifest `source_files` names the canonical files; in several folders Code.js is **byte-identical** to the canonical sibling — sha256 match — proving it's a stale copy from the 63f441e flatten). 
 
 One more critical detail from the scan: after deleting `Code.js`, a few folders (1wmgYPw, 1duQFfTO, 1rLl94jQ9) still have a **second** collision between canonical files (`const creds` declared in both `telegram_webhook_listener.js` and the sales_update files). I'll handle those separately. Opening the cleanup PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#434** opened with the 8 `Code.js` deletions. Now merging it (Gary's "Deploy" authorizes the fix), then I'll check the residual `const creds` collisions in 3 folders that the manifest shows share both files in one project.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -361,6 +363,7 @@ go
 ### 🤖 Autopilot
 
 Checking the handoff registry for this thread's plan, and pulling the merged fix onto the box + verifying which project folders are now clean to deploy:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -370,6 +373,7 @@ Handoff manifest checked — **no row references this GAS-fix thread** (this is 
 **But there's a blocker:** the `git pull` **aborted** ("Please move or remove them before you merge") and the folders **still contain `Code.js`** — the merged deletion hasn't landed in the local checkout. Also notable: `git log --diff-filter=A` earlier showed Code.js was **never tracked locally** (untracked files blocking the pull). And the residual `const creds` collisions in 3 folders are confirmed (still present even after Code.js removal — those are Unit 2).
 
 Let me diagnose the exact git state before touching anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -379,6 +383,7 @@ Handoff manifest checked — **no row tracks this GAS-fix thread** (it's an ad-h
 **Blocker found:** the local checkout still has `Code.js` — the pull aborted on conflicting files, so the merged deletion hasn't landed locally. Since `gas_deploy_project` pushes from the **local folder**, deploying now would re-break the project. Also confirmed: 3 folders (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) still have a residual `const creds` collision *between canonical files* → those need a second PR before deploy. The other 5 are clean.
 
 Diagnosing the exact git blocker:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -386,6 +391,7 @@ Diagnosing the exact git blocker:
 Manifest checked — no row tracks this thread (ad-hoc execution; manifest rows are emoji-reaction/sunmint/tree-QR/media-JSON). Continuing our GAS plan.
 
 **Blocker root-caused:** the pull aborts because a previously-untracked GAS folder (`1o2lzpdTZ…`) is now tracked by a recent origin commit (#433) — git refuses to overwrite the untracked local copy. Everything else is clean (no local edits). Fix: move that folder aside (non-destructive backup), fast-forward merge to land #434's deletions, then verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -567,4 +573,80 @@ Deploy ledger: `deploy_20260829T130346Z` (recurring), `…130423Z` (webhook), `�
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd ~/tokenomics && echo "=== deploy_gas_project.py: identity handling ===" && grep -n "identity\|clasp\|CLASP\|allow-identity\|owner_email\|; cd /opt/truesight_autopilot/context/tokenomics && echo "=== /opt checkout ===" && readlink -f . && git log --oneline -1 && echo "=== folder ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== 1orWgdGck (capital injection): file list + Version files ==="; …(+2 more)
 • `merge pr` → ✅ PR #438 on tokenomics merged successfully (sha: a6f218045ec65e23a13d68d782caba8050f18980). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — executing Unit 3: deploy the 4 fixed projects. First, quick handoff-registry compliance check + pull #438 into the deploy checkout and verify the folders:
+
+
+### 🤖 Autopilot
+
+Manifest checked — no row references this thread (ad-hoc execution; rows are emoji-reaction/sunmint/media-JSON/white-label). And the folder lookup failed because I forgot `cd google_app_scripts` — the merge is fine (HEAD = a6f2180, #438). Re-verifying from the right directory, then deploying:
+
+
+### 🤖 Autopilot
+
+All 4 folders verified clean — exactly one `const creds` each (renames landed), single `Version.gs` (stale `Version.js` gone). Deploying all four now:
+
+
+### 🤖 Autopilot
+
+All 4 deployed clean ✅. Now a final verification pass — full re-scan of the entire `google_app_scripts` tree for both collision classes (duplicate top-level consts + same-basename `.js`/`.gs`), to confirm the fix train closed everything except the known Unit 2b folders:
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — Unit 3 done: all 4 remaining broken projects deployed; full-tree scan reveals broader latent issue
+
+### Deployed this turn (all ✅ clean pushes)
+
+| Project | Result |
+|---|---|
+| `1orWgdGck` — capital injection (stale `Version.js` removed) | ✅ deployed — `deploy_20260829T132015Z` |
+| `1wmgYPwfR` — sales update main + webhook (`creds`→`webhookCreds`) | ✅ deployed — `deploy_20260829T132038Z` |
+| `1duQFfTO0` — managed AGL ledgers + webhook | ✅ deployed — `deploy_20260829T132100Z` |
+| `1rLl94jQ9` — Wix dashboard + web_app (`creds`→`webAppCreds`) | ✅ deployed — `deploy_20260829T132123Z` |
+
+Pre-deploy verification confirmed each folder had exactly **one** `const creds` and a single `Version.gs` (no `Version.js`). All pushes hit the ecosystem change-log ledger.
+
+### ⚠️ Big new finding — the full-tree scan reveals the bug class is broader
+
+Re-scanned **all** of `google_app_scripts/` for both collision classes. The 12 folders I've fixed were only part of it:
+
+- **Class 1 (duplicate top-level `const`/`let` → GAS SyntaxError):** **~11 more folders** flagged — e.g. `15qbfLN3Z` (21 dup consts), `1Og2g8Q0` (23), `1dsWecVwb` (41), `1UrBgqLn` (25), plus several `creds` dups (`1Q5HfGR`, `1QKqUTyl`, `1Y8sJ22l`, `1Jp8qNIB`, `10NKp8uL`).
+- **Class 2 (same-basename `.js`+`.gs` → clasp conflict):** 4 folders confirmed — `14gKJ0VW` (4 pairs: Version/email_agent_drafts/partner_poke_drafts/store_interaction_history_api), `1Jp8qNIB` (Credentials/Version), `1QtK-Ins` (Version), `1UrBgqLn` (Version).
+
+⚠️ **Caveat:** these flagged folders need per-folder verification before touching — some may lack `.clasp.json` (not deployable projects), and each needs its canonical files confirmed. This is a **systematic remediation** effort, not a quick delete.
+
+### Status summary
+- ✅ **Your original failure fixed + deployed**: TDG Monthly Recurring Tokenization (`1LxWu9hOs`) — trigger will auto-backfill Aug+Sep on next run.
+- ✅ 7 other broken projects deployed clean.
+- ⏳ ~11 more Class 1 + 4 Class 2 folders pending verification/fix (Unit 2b+).
+
+### RESUME HERE → next units
+- **Unit 4**: verify the recurring-tokenization trigger fires clean + Ledger rows for Aug/Sep (next scheduled run or manual trigger).
+- **Unit 2b (PR #3)**: per-folder verification of the ~11 Class 1 + 4 Class 2 flagged folders (filter to deployable projects via `.clasp.json`; confirm canonical files) → batch fix in follow-up PRs.
+- **Unit 5 (guardrail PR, truesight_autopilot)**: add duplicate-global + same-basename pre-push checks to `gas_deploy_project` so this class can never be pushed again — the single highest-leverage change.
+
+No payouts moved; catch-up runs via the normal scheduled trigger. All deploy records in `ecosystem_change_logs`.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md (no row references this thread — ad-hoc execution)
+• `ssh run` ×2 → git ff-only to a6f2180 (#438 merged); verified 4 folders clean (1× `const creds`, 1× `Version.gs` each)
+• `gas deploy project` ×4 → 1orWgdGck ✅, 1wmgYPwfR ✅, 1duQFfTO0 ✅, 1rLl94jQ9 ✅
+• `ssh run` ×1 → full-tree scan: 11 folders Class 1 (dup top-level const), 4 folders Class 2 (same-basename .js+.gs)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q 2>&1 | tail -1; echo "=== head ===" && git log --oneline -1 origi; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && for id in 1orWgdGckts55owiYOysR_y4sde52T_eUmrtDGAEkb4YV5DlUfJ0JZC5J 1wm; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== CLASS 1: duplicate top-level const/let across project files (
+• `gas deploy project` ×4 → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132015Z_1orwgdgckts55owiyoysr-y4sde52t-eumrtdgae.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132038Z_1wmgypwfrdxpiboa8oh-c6ndovklf8hajy305n7d.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132100Z_1duqffto0pj0lc4tpvnmmohnos1gvjgzqvxxbsed.md; …(+1 more)
 
