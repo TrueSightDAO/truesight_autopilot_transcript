@@ -909,6 +909,7 @@ The autopilot's GitHub PAT is `TRUESIGHT_DAO_AUTOPILOT` in `.env` — that's the
 ### 🤖 Autopilot
 
 Repo main is fixed (40245 bytes, 18 markers) — the beta site still shows 0 bytes, which is likely Pages rebuild lag (it can take 1–3 min). Let me wait and re-check, plus confirm the monitor page is intact on main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -956,16 +957,19 @@ Converging — here's the full status, including a serious incident I found and 
 ### 🤖 Autopilot
 
 Gary's reporting beta is empty again — let me check the live site right now and compare against main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Beta is **not** empty right now — my check shows it serving the full fixed page. Let me confirm with a cache-buster and check the response headers (your browser may have cached the earlier 0-byte response):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Beta is confirmed healthy from the server side. Let me double-check there isn't a second deploy path (e.g. Cloudflare or another host) that could serve empty, and check the Pages deploy status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -975,6 +979,7 @@ Both beta and prod resolve to `truesightdao.github.io` (GitHub Pages, with Varni
 **What happened:** When beta was serving the empty 0-byte file (after my #22 broke it), Varnish cached that empty response for up to **10 minutes** (`max-age=600`). When Gary opened the site during that window, he got the cached empty page. The cache has since refreshed (my `age: 33` + 40245-byte fetches prove the current cache holds the fixed page), but **Gary's own browser may also have cached the empty page** (browsers cache 200s aggressively).
 
 So: beta is fixed server-side now. If Gary still sees empty, it's a stale browser/CDN cache. Let me verify the cache is truly consistent and prepare a definitive answer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1019,6 +1024,7 @@ it ask me to link my email again...
 Gary's report is the exact bug my fix solves — and it's happening because **prod is still running the old code** (my fix is merged on beta, but the promotion you OK'd never completed; the empty-file repair consumed that turn). Let me confirm and promote now.
 
 First, the safety check for promotion (CNAME divergence — the prod/beta domains differ, so I must not blind-sync):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1026,26 +1032,31 @@ First, the safety check for promotion (CNAME divergence — the prod/beta domain
 Prod confirmed stale: `index.html` = 38042 bytes / **0 markers** (old UX), monitor = 57283 (pre-fix). The bug you're seeing — "asks me to link again after refresh" — is exactly what the old prod code does: it never stores the linked email client-side, so every reload shows the input box. My beta fix stores it (`sunmint_linked_email`) after verification and renders the linked state on load.
 
 You already OK'd promotion last turn — executing now (targeted file writes to `sunmint_prod` main, preserving its CNAME — no blind sync):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Contents API needs the current blob `sha` for overwrites. Let me fetch both files' current shas and retry with them included:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files promoted to prod. Now verifying the live prod site serves the fixed UX (waiting for Pages rebuild + CDN cache refresh):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PROD IS LIVE WITH THE FIX.** Let me do a final integrity check (CNAME intact, raw caught up):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commits confirm both promotions are on prod main (8d6b4608, 0c010264), and the **live site serves the fix**. The raw.githubusercontent.com showing old size is just raw's own cache lag. Let me verify via the authoritative API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1097,56 +1108,67 @@ Also note: the linked-state persists per **browser/device** (the private key liv
 ### 🤖 Autopilot
 
 Gary wants a full E2E on beta: link my email → insert tree → insert monitor record → mark tree invalid (sentinel rights). Let me first understand the tree/monitor/sentinel flows in the code and verify my sentinel status before running anything.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sentinel status confirmed (Sophia Truesight / admin+sophia@truesight.me is on the sentinel roster). Now let me map the exact flows: tree planting (index), monitor record + sentinel invalid-marking (monitor page) — their event names, endpoints, and required fields.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the detailed sections — the sentinel gate, tree planting event, monitor event, and reject event formats:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The flows are mapped. Critical detail: the sentinel gate (`check_digital_signature`) matches my **registered public key** — so the browser must hold Sophia's real keypair (not a fresh one) or the invalid-zone won't unlock. Let me check the key format the site expects, how the tree list loads on the monitor page, and where Sophia's registered keypair lives on this box.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: the autopilot's own RSA signing key is `PRIVATE_KEY` in `.env` (Sophia's registered identity). But the browser site uses **SPKI/PKCS8 base64** keypair in localStorage. I need to know if `PRIVATE_KEY` is that same SPKI/PKCS8 format — and where the public key / registered identity lives. Let me inspect the format (names only, never values) and check `check_digital_signature`'s matching behavior:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sophia's real identity keys are in `.env` (`PRIVATE_KEY` = PKCS8, `PUBLIC_KEY` = SPKI — exactly the format the site uses). And `check_digital_signature?signature=TEST` confirms the endpoint shape. Now I need three things to design the real run: (1) how EMAIL REGISTERED behaves when the key is **already registered** (Sophia's is), (2) the monitor page's tree list source, (3) photo handling in both pages (headless camera constraints).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tree list fetch (line ~563), the submitMonitoring flow (953-975), and the email_registration already-registered path:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Almost there. Let me read the last critical pieces: client email-link handling (skipped path), TREE_INDEX_URLS, submitMonitoring's event text, and the reject event's submit path (navigator.share vs POST):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Flows mapped. Now the last pieces: `TREE_INDEX_URLS` (where the tree list comes from — needed to set geolocation within the 200m gate), `submitMonitoring`'s exact event text + POST mechanics, and `submitEmailEvent`'s handling of the skipped/already-active path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full flow map. Two critical unknowns remain: (1) whether the client persists the linked-state when the key is **already ACTIVE** (Sophia's is — the EMAIL REGISTERED will return `skipped:true`), and (2) the `TREE_INDEX_URLS` (for the 200m proximity gate) + photo-capture fallback. Let me read those, then I'll script the whole E2E in one go:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Flows fully mapped. Critical design decision: to exercise **sentinel rights** (mark tree invalid), the browser must hold **Sophia's real registered keypair** — a fresh test key wouldn't have sentinel rights. The `.env` `PUBLIC_KEY`/`PRIVATE_KEY` are the same SPKI/PKCS8 base64 format the site uses. Let me verify Sophia's registration + sentinel status against the live Edgar first (without exposing key material):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1246,4 +1268,123 @@ Converging — I'm 2 small steps from the full E2E run. Here's the status.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×28 → cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html -o sb_idx.html && curl -sL https://raw.githu; cd /tmp echo "=== index: submitTreePlanting + event ===" grep -n "submitTreePlanting\|TREE\|plant\|EVENT\|submit_contribution\|formData\|spe; cd /tmp echo "=== index.html: submitTreePlanting (850-930) ===" sed -n '850,930p' sb_idx.html echo "=== monitor: sentinel gate + reject (976; …(+24 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming the E2E. Step 1: strip the quote-wrapping from the keys and re-run the email-linking part:
+
+
+### 🤖 Autopilot
+
+Key finding: Sophia's key is **already ACTIVE** in the contributors sheet (`skipped: true, reason: public_key_already_active`) — so the email is linked, no verification email needed. Now I need the exact tree-planting + monitor + reject code paths, and to confirm the sentinel gate unlocks with this key:
+
+
+### 🤖 Autopilot
+
+Two key findings: (1) EMAIL REGISTERED says `skipped: true, public_key_already_active` — Sophia's email IS linked; (2) **but `check_digital_signature` returns `registered: false`** — a discrepancy that would block the sentinel gate. I need to resolve that before the tree/invalid steps. Let me inspect the check endpoint + the sheet row:
+
+
+### 🤖 Autopilot
+
+The server module isn't in that path — let me locate the dao_protocol server code and the check_digital_signature handler:
+
+
+### 🤖 Autopilot
+
+Let me narrow the search — the grep across those dirs is slow. Focus on the app structure:
+
+
+### 🤖 Autopilot
+
+Let me read the check_digital_signature handler in main.py and the sheet module to understand the discrepancy:
+
+
+### 🤖 Autopilot
+
+No match in main.py — the endpoint may live in dispatch.py or edgar_client. Let me search those:
+
+
+### 🤖 Autopilot
+
+The `check_digital_signature` endpoint is called by edgar_client but the server-side implementation is in the **deployed dao_protocol** (which I can't grep locally — it's on the remote box I can't ssh to). The response was `registered: false, "No matching contributor digital signature"` — but EMAIL REGISTERED said `public_key_already_active`. That suggests **the check endpoint reads a different source than the registration** (maybe a GitHub-raw `dao_members.json` cache vs the sheet). Let me verify against the live sheet + check how the sentinel flag is derived:
+
+
+### 🤖 Autopilot
+
+The cache contains Sophia but the live check endpoint says `registered: false`. Let me inspect Sophia's entry in the cache to see what the live backend sees vs what the sheet has:
+
+
+### 🤖 Autopilot
+
+Now I understand the full picture. The cache has **two** Sophia entries: "Sophia" (member, no email, no keys) and "Sophia Truesight" (member+sentinel, has admin+sophia@truesight.me, ACTIVE public key). The `check_digital_signature` endpoint returned `registered: false` for my `.env` key — which means **the `.env` PUBLIC_KEY is NOT the key registered in the sheet** (the registered one starts `MIIBIjAN...CAQEAo0ByUI93...`, mine starts `MIIBIjAN...CAQEAutpNWeD7oBI...`). 
+
+So Sophia has **two identities**: the `.env` key (used by the autopilot for submissions — but not in the sheet) and the registered key (in the sheet, sentinel). For the sentinel gate to unlock on the monitor page, I must use the **registered** key, not the `.env` one. Let me extract the registered key from the cache and check whether its private key is available anywhere on this box:
+
+
+### 🤖 Autopilot
+
+The recursive grep timed out. Let me do a targeted search — just the common key locations:
+
+
+### 🤖 Autopilot
+
+**Critical discovery:** "Sophia Truesight" has **TWO ACTIVE public keys** in the sheet:
+1. `...CAQEAo0ByUI93...` — first/older (registered 2026-06-06)
+2. `...CAQEAutpNWeD7oBI...` — **this is exactly my `.env` key** (the one that just returned `registered: false`)
+
+So the `.env` key IS registered as the second ACTIVE key. The `check_digital_signature` returning `registered: false` for it is a **bug or a mismatch** in how that endpoint looks up keys. But my part-1 EMAIL REGISTERED said `skipped: true, public_key_already_active` — consistent with the sheet having it ACTIVE. Let me test `check_digital_signature` with the **first** registered key to see if the endpoint only matches the first key per contributor:
+
+
+### 🤖 Autopilot
+
+Both ACTIVE keys return `registered: false` — so `check_digital_signature` is looking at something other than what `dao_members.json` shows. Let me find the deployed endpoint code in the dao_protocol repo and check how the monitor page encodes the param:
+
+
+### 🤖 Autopilot
+
+The `check_digital_signature` endpoint returns `registered: false` for keys the sheet/cache shows ACTIVE. Let me find the deployed endpoint source — searching the dao_protocol repo on GitHub and checking the sheet's stored key format:
+
+
+### 🤖 Autopilot
+
+Converging — I've hit the key finding and need to land it cleanly.
+
+## E2E Status: blocked on a **live backend bug** (found it, need a decision)
+
+### ✅ What works (proven this session)
+1. **Email linking — CONFIRMED SUCCESSFUL.** Injected Sophia's real keypair into a headless browser on `beta.sunmint.truesight.me`, submitted `[EMAIL REGISTERED EVENT]` with `admin+sophia@truesight.me` → **`{ok: true, skipped: true, reason: "public_key_already_active"}`**. Her email IS linked (sheet + `dao_members.json` both show her as ACTIVE with that email).
+2. **Keypair format solved:** `.env` keys are raw base64 SPKI/PKCS8 wrapped in single quotes — stripped the quotes, `atob` decode OK.
+
+### 🚨 The blocker: `check_digital_signature` is broken (server-side)
+- The monitor page's **sentinel gate** calls `GET edgar.truesight.me/dao/check_digital_signature?signature=<pubkey>` and only unlocks **MARK INVALID** if `registered: true` + sentinel role.
+- **But it returns `{"registered": false, "error": "No matching contributor digital signature"}` for BOTH of Sophia's ACTIVE keys** — including the exact keys shown ACTIVE in the Contributors Digital Signatures sheet and `dao_members.json` (where "Sophia Truesight" = roles `[member, sentinel]`).
+- I confirmed with **both** of her registered keys — both fail. Gary's keys would presumably also fail (same lookup).
+- The endpoint implementation isn't in the local dao_protocol checkout (main.py/dispatch.py/edgar_client.py don't define it) — it's in the **deployed** dao_protocol box (the one I can't ssh to; it returned FastAPI-style errors earlier). `search_code` also returns 0 hits org-wide (it's not in any indexed repo).
+- **Net effect:** even after linking, the monitor page would never show the MARK INVALID zone for *anyone* — sentinel rights are unreachable through the current endpoint. **The tree-planting + monitoring steps would still work, but the "mark tree invalid" step cannot pass until this is fixed.**
+
+### Why this matters for your ask
+You said "since you are a known sentinel you should have the rights" — you're right that Sophia is a sentinel, but the *endpoint* that grants the UI rights is returning false for every registered key. This is a **real production bug** the E2E just flushed out — worth fixing, not working around.
+
+## RESUME HERE → next turn (needs your direction)
+1. **Fix `check_digital_signature`** — find the deployed handler (on the dao_protocol host or its deploy source), see why it misses keys that the sheet/cache show ACTIVE (likely a normalization/whitespace or lookup-against-a-stale-source issue). Open a PR in `dao_protocol` — **I can't locate the source via search_code (0 hits), so I need either the dao_protocol repo path or ssh access to that box.**
+2. **Then re-run the E2E tail:** tree plant → monitor record → mark invalid (sentinel), each with photo + geolocation, verifying the full chain on beta.
+3. Alternatively, if you want the E2E to proceed *without* the invalid-mark gate, I can run tree-plant + monitor-record now (they don't depend on the broken gate) and mark the invalid step as blocked-by-bug.
+
+**My recommendation:** fix the endpoint first (it's a 5-minute diagnosis once I have the source), then run the complete E2E in one pass — otherwise the headline finding is "sentinel gate is broken in prod."
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → email linking on beta: **PASS** (skipped, key already active); key-format fix applied; `check_digital_signature` tested with both of Sophia's ACTIVE keys → **both return registered:false**; confirmed sheet + cache show her ACTIVE/sentinel; located that the endpoint lives only in deployed dao_protocol (not in any local checkout or GitHub index)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp # strip single quotes from key values sed "s/^PUBLIC_KEY='\(.*\)'$/PUBLIC_KEY=\1/; s/^PRIVATE_KEY='\(.*\)'$/PRIVATE_KEY=\1/" /tmp/so; cd /tmp echo "=== check_digital_signature with Sophia's clean pubkey ===" PUB=$(grep '^PUBLIC_KEY=' /tmp/sophia_keys_clean.env | cut -d= -f2; cd /tmp echo "=== check_digital_signature implementation ===" grep -rn "check_digital_signature" /opt/truesight_autopilot/dao_protocol/trues; …(+9 more)
 
