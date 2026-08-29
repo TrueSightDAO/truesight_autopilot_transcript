@@ -1308,11 +1308,13 @@ Diff is clean and exactly per plan PR3 — mirrors the text go-signal path (hand
 ### 🤖 Autopilot
 
 One more recon call — get the exact (ruff-formatted) appended test block + the main tail anchor for the push hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All content captured. Pushing PR3 via `git_push_changes` — one edit for the adapter (replace the PR1 log-only function with the PR3 resume-wiring version) + one edit appending the tests to the tail anchor:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1320,6 +1322,7 @@ All content captured. Pushing PR3 via `git_push_changes` — one edit for the ad
 PR **#334** opened with the complete PR3 changeset (both edits applied). Now I need to handle the merge question. Per the plan, own-repo merge = human (Gary). But this turn came in via `[AUTO-ADVANCE]`? No — it's Gary's "1" (option 1: build PR3, then one deploy covering PR1–PR3). His "1" authorized building PR3, not explicitly merging it. However, the plan's §5a is "one PR per execution turn, then stop" — and Gary's earlier pattern has been: I open, he says "go", I merge. The safest reading: **open PR3 and stop at the own-repo gate** (Gary merges, like PR1/PR2).
 
 Let me post the progress into the thread and stop with the report.
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1373,6 +1376,7 @@ go
 ### 🤖 Autopilot
 
 Gary's "go" — executing the PR3 unit's remaining steps: (1) merge #334, (2) submit the PR2 contribution (already-presented payload, now explicitly approved), (3) dry-run the PR3 contribution + tick the tracker, then **stop at the deploy gate** (§5c always-stop) with a final explicit ask. Starting with the merge + the contribution CLI's exact flags in parallel.
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1617,4 +1621,122 @@ The current unit — PR3 contribution + tracker tick — is complete. I'm **stop
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR3: emoji react
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" in direct response to my framed Deploy gate ("on your explicit approval ('deploy' / 'go deploy')") = the explicit deploy command. Executing the Deploy unit now — but first, careful recon of what `scripts/deploy.sh` actually does and the current live state (I've never run it; I won't run an unknown script blind).
+
+
+### 🤖 Autopilot
+
+The script is mostly understood, but there are **two things I must verify before running it** — (1) the tail of `deploy.sh` (the systemd restart), and (2) critically: `git reset --hard origin/main && git clean -fd` on the box could wipe untracked runtime state (e.g. `followups/state.json`, `app/data/*.json`, session logs) unless gitignored. Let me check those + the `sophia` host alias (the script SSHes to it — need to confirm it's this box).
+
+
+### 🤖 Autopilot
+
+Deploy recon is mostly clear — the `.gitignore` explicitly protects runtime dirs (`sessions/`, `context/`, vault, etc.) so `git clean -fd` won't wipe state. But two critical checks remain before I touch anything: (1) does `.gitignore` cover `app/data/` (where `_resume_awaiting.json` lives) and `followups/` — else `git clean -fd` nukes them; (2) the deploy.sh tail (systemd restart) + whether `sophia` alias loops back to this box. Let me read the rest of the artifact + verify.
+
+
+### 🤖 Autopilot
+
+The deploy script is an **operator-Mac script** — it SSHes to a `sophia` host alias (not configured on this box) and its `git reset --hard + git clean -fd` would clobber local state (`followups/state.json` = the backlog, `config/nginx/sophia.conf` = box-specific, untracked `artifacts/` + `dao_protocol/` = my working dirs). Running it blind here is wrong. The box **is** the deploy target, so I'll do the equivalent surgical deploy: checkout only the code paths from origin/main, then restart services. First, inspect the risky local diffs + confirm deps/systemd didn't change.
+
+
+### 🤖 Autopilot
+
+Critical finding: the local repo has **uncommitted local modifications** (mixing PRs #325/#326-era local edits in `gas_deploy_project.py`, `e2e_*` scripts, `followups/state.json` backlog, `active_tracks.json`, etc.) **and** origin/main contains other merged PRs beyond my PR1–PR3 (plot_cacao_sourcing_network_map, gas_deploy_project deployment_id, e2e fixes). A full `git reset --hard origin/main` would wipe all local mods — and PR1–PR3 changes are *interleaved* in the same files (telegram_adapter.py) as these local mods.
+
+This is **exactly the §5c always-stop territory** — the safest deploy is NOT a blind reset (data-loss risk to `followups/state.json` backlog + local script fixes) and NOT `scripts/deploy.sh` from here (operator-Mac assumptions). My PR1–PR3 changes are all in `app/` (config, adapter, resume_registry, telegram tools). The surgical path: checkout only my PR files from origin/main, keep everything else. Let me confirm exactly which files PR1–PR3 touched vs. what the local mods are, and verify whether the local mods overlap my PR files.
+
+
+### 🤖 Autopilot
+
+Perfect separation confirmed:
+- **My PR1–PR3 files have ZERO local uncommitted changes** (all clean — the diffs are empty)
+- All local mods are on *other* files (gas_deploy_project, nginx, e2e scripts, followups/state.json backlog, tokenomics submodule, worktrees/vault) — **none overlap my PR files**
+- `origin/main` includes other merged PRs (#327–#330) that also touch `app/tools/gas_deploy_project.py` + e2e scripts — those are the source of the local-mod divergence
+
+So the surgical deploy is safe and correct: checkout **only my 7 PR files** (config.py, resume_registry.py, telegram_adapter.py, telegram_post.py, telegram_topic.py + 3 test files) from origin/main — zero risk to the local backlog/nginx/e2e mods, and it brings PR1–PR3 (plus #329/#330 which touch the same gas_deploy_project file — but those are on origin/main already, and my checkout won't touch that file). Wait — #329/#330 modified `app/tools/gas_deploy_project.py` on origin/main, but the local copy has uncommitted mods there too. My deploy is scoped to MY 7 files only, so gas_deploy_project stays as-is locally (fine — its local mods may predate or match origin). The emoji feature doesn't touch it.
+
+Executing the surgical checkout now:
+
+
+### 🤖 Autopilot
+
+Checkout successful — all PR1–PR3 markers verified live on disk (allowed_updates ×2, resume_registry ×3+4, emoji_go_blocked ×1, message_reaction ×12). The 7 files are backed up in /tmp. Now the local test suite on the deployed tree (hard rule) + syntax check, then restart the Telegram adapter service.
+
+
+### 🤖 Autopilot
+
+**86 passed** on the deployed tree (my 4 test files: resume_registry 8 + adapter 64 + topic 14, all green), compileall rc=0, ruff clean. Now restart the Telegram adapter service (and the main autopilot + vault for consistency) and verify the new build is live:
+
+
+### 🤖 Autopilot
+
+Blocked by the guard — right: I must use the **`deploy_autopilot` tool** (it waits for idle threads before restarting, so it won't sever this conversation). The tool auto-detects local vs remote. Running it now — this is the proper deploy path for the running services, and Gary's "go" authorized the deploy.
+
+
+### 🤖 Autopilot
+
+Deploy correctly **deferred** — thread `tg:-1003919341801:15492` (this very conversation) is mid-turn, and the tool refused to restart so it doesn't sever us. That's the idle-drain guard doing its job. The code files are already on disk (my surgical checkout), so the running service just needs a restart once threads drain. Let me register a watcher to retry the deploy when this thread goes idle, and report the status.
+
+
+### 🤖 Autopilot
+
+State is clear and healthy:
+- **Services all `active`** (nothing severed — the guard protected us)
+- **Live adapter still the old build** (PID 241128, started 10:14 — pre-PR1)
+- **On-disk code is NEW** (message_reaction ×12 — PR1–PR3 ready to load)
+- **Health OK** (v0.2.0, all creds set, 67 governors)
+
+The restart is the only remaining step — and `deploy_autopilot` deferred it because **this thread is mid-turn** (it won't sever the active conversation). Once this turn ends and threads idle, I'll retry the deploy. Let me watch the deploy readiness and wrap up the turn report.
+
+
+### 🤖 Autopilot
+
+## Turn report — Deploy: code staged on disk, restart deferred (idle-drain guard), will retry on idle
+
+Gary's "go" authorized the deploy. I executed the **surgical deploy** (not blind `reset --hard`), and the running-service restart is **deferred until threads idle** — the guard correctly refused to sever this active conversation.
+
+### What I did (safe surgical deploy — NOT a blind reset)
+1. **Verified separation**: my PR1–PR3 files have **zero local uncommitted changes**; all local mods (`followups/state.json` backlog, `gas_deploy_project.py`, `nginx`, e2e scripts) live on *other* files → no overlap risk
+2. **Checked out only my 7 PR files** from origin/main → markers verified on disk (allowed_updates ×2, resume_registry ×7, emoji_go_blocked ×1, message_reaction ×12); backups in `/tmp/pr-deploy-backup-*/`
+3. **Tested the deployed tree**: compileall rc=0 ✓ · ruff clean ✓ · **pytest 86 passed** ✓ (all 4 test files green)
+4. **Health check**: all services `active`; health OK (v0.2.0, creds set, 67 governors); `.req-hash` matches (no dep reinstall needed)
+5. **Restart attempt → correctly blocked by the guard**: `sudo systemctl restart` on the autopilot is blocked (would sever in-flight turns). The proper path — **`deploy_autopilot`** — was invoked, but it **deferred**: thread `tg:-1003919341801:15492` (this conversation) is mid-turn.
+
+### Current live state
+| | |
+|---|---|
+| **On disk** | ✅ PR1–PR3 code (new) — ready to load |
+| **Running adapter** | ⏳ still old build (PID 241128, started 10:14) — restart pending |
+| **Services** | all `active` (nothing severed) |
+| **Deploy readiness** | waiting for threads to idle → retry `deploy_autopilot` |
+
+### RESUME HERE → (after this turn idles)
+1. **Retry `deploy_autopilot`** (auto-detects local; will restart telegram + autopilot + vault once threads are idle) — this loads PR1–PR3 into the live adapter
+2. **Verify live**: log check for `allowed_updates` / reaction handler / new build in `journalctl -u truesight-autopilot-telegram`
+3. Tick "Deployed ☑" in tracker (§4) + merge #838
+4. **UAT §5** (your run): fake "✅ Ready — reply go for it" in a scratch topic → react 👍/❤️/🔥 → Sophia resumes; negatives 👎 / non-allowlisted / non-resume → no resume; text go-signal regression
+5. Then **PR4 (docs)** — `SOPHIA_HANDOFFS.md` + `DEEPSEEK_LOCAL.md`
+
+**Gate honored:** deploy is proceeding only under Gary's explicit "go"; nothing was force-restarted; the running conversation was protected by the idle-drain guard. The one remaining action (restart via `deploy_autopilot`) is parked on thread-idle, not on a gate — I'll retry it as soon as this turn completes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → read scripts/deploy.sh + gitignore (runtime dirs protected); verified no overlap between local mods and my PR files; surgical `git checkout origin/main --` of the 7 PR files; compileall/ruff/pytest (86 passed); service + health checks
+• `deploy_autopilot` ×1 → deferred (busy thread = this conversation) — will retry on idle
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && echo "=== deploy.sh (if present) ===" && cat scripts/deploy.sh 2>/dev/null | head -80; echo "=== systemd unit; cd /opt/truesight_autopilot && echo "=== deploy.sh tail (80-end) ===" && sed -n '80,220p' scripts/deploy.sh 2>/dev/null; echo "=== .gitignor; cd /opt/truesight_autopilot && echo "=== gitignore tail ===" && tail -30 .gitignore; echo "=== app/data + followups ignored? ==="; git check; …(+7 more)
+• `deploy autopilot` → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 
