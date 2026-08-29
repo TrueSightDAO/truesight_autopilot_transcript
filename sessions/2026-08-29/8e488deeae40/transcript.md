@@ -2845,11 +2845,13 @@ Everything is confirmed. I now have the complete wiring map. Let me implement th
 ### 🤖 Autopilot
 
 Need to provide the actual edit. Let me add the growth action branch to `process_qr_code_updates.js`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to include the repo parameter. Let me retry:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3070,4 +3072,97 @@ go
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #442 on tokenomics merged successfully (sha: 7dc97dbbf056cea32d7259e13f85a5830f5182a4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming the deploy unit. Step 1: pull main (avoiding the stale-checkout trap), confirm the fix, push, and create a new deployment:
+
+
+### 🤖 Autopilot
+
+Deployment @35 created with the fix (both greps confirmed 1 match each). Now verify the webhook action returns the proper result object:
+
+
+### 🤖 Autopilot
+
+**Webhook now returns "✅ Tree growth monitoring processed: 0 recorded, 0 skipped, 0 errors"** — the TypeError is fixed. But 0 recorded means my E2E row 11884 wasn't picked up. Let me diagnose why — checking the marker constant, SOURCE_SHEET_URL, and my row's actual content:
+
+
+### 🤖 Autopilot
+
+The marker is correct (`[TREE GROWTH MONITORING EVENT]`) and the tracking tab is `Tree Growth Measurements`. The SOURCE_SHEET_URL grep didn't match — it's likely defined in a shared constants file (the link handler uses it). The webhook returned 0 recorded, 0 skipped, 0 errors — meaning either the source sheet/row wasn't scanned (wrong SOURCE_SHEET_URL) or my row's msgId was already processed. Let me check the constants + the actual row content:
+
+
+### 🤖 Autopilot
+
+The handler scans the right spreadsheet (`1qbZZhf-…`). 0 recorded/skipped/errors means **no row matched the marker** in the sheet the webhook sees. Let me check `SOURCE_SHEET_NAME` and read the actual content of row 11884 to see why it's not matching:
+
+
+### 🤖 Autopilot
+
+The sheet + tabs are confirmed (Telegram Chat Logs + Tree Growth Measurements + SunMint Tree Planting all exist). The webhook processed 0 — so either my row isn't in the sheet the webhook reads, or it doesn't match. Let me read the actual tail of Telegram Chat Logs to see my row 11884 exactly:
+
+
+### 🤖 Autopilot
+
+The message text isn't in column N (index 13) as I assumed — the rows have 20 cols and the actual event text must be in a different column. Let me dump row 11884 fully and check `MESSAGE_COL`'s actual value:
+
+
+### 🤖 Autopilot
+
+**Correction to my earlier read:** row 11882 is my `[TREE PLANTING EVENT]` (col G = event text — the handler's `MESSAGE_COL`), but rows 11883/11884 are **CONTRIBUTION EVENTS** (PR2/PR3), not my monitoring event. The event text lives in **col 7 (G)**, and my earlier attribution of 11884 to the monitoring event was wrong (rows shifted). Let me search the sheet for my actual `[TREE GROWTH MONITORING EVENT]` row:
+
+
+### 🤖 Autopilot
+
+The scan found no `[TREE GROWTH MONITORING EVENT]` row in 11800–11900 — so my monitor submission either landed elsewhere or the client's marker differs. Let me scan the entire column G for the marker + get the true last row:
+
+
+### 🤖 Autopilot
+
+Converging — I need to report an important **correction** to my earlier claims.
+
+## ✅ Webhook @35 verified working
+- `?action=processTreeGrowthMonitoringFromTelegramChatLogs` → **"✅ Tree growth monitoring processed: 0 recorded, 0 skipped, 0 errors"** (TypeError fixed, returns proper object)
+- Link action still works ("0 linked, 0 rejected, 0 errors")
+
+## ⚠️ CRITICAL CORRECTION — my monitoring event was never in the ledger
+
+I full-scanned **all 11884 rows** of Telegram Chat Logs col G for `TREE GROWTH MONITORING`:
+
+**→ 0 hits.** The `[TREE GROWTH MONITORING EVENT]` I believed I submitted during the E2E is **not in the ledger at all**.
+
+**What my earlier "row 11884" read actually was:**
+| Row | Actual content |
+|---|---|
+| 11882 | ✅ `[TREE PLANTING EVENT]` (my E2E planting — REAL, in ledger) |
+| 11883 | `[CONTRIBUTION EVENT]` PR2 (my autopilot work log) |
+| 11884 | `[CONTRIBUTION EVENT]` PR3 (my autopilot work log) — **NOT my monitor event** |
+
+So my earlier "monitor record submitted, respPre OK" claim was **wrong** — the row I pointed at was a contribution event, and the Edgar journal 200 @ 13:50:30 was that contribution, not the TGM event. **The monitor E2E step likely never fired the real submission** (recall the CDN cache fragmentation — the browser got different page variants; the monitor form's submit path may have silently no-op'd, and the "respPre: OK" I read was from a different element/session).
+
+## What this means
+1. **The planting pipeline (row 11882) is real** — the `[TREE PLANTING EVENT]` is in the ledger; the plain-planting handler question stands.
+2. **The monitoring step needs a clean re-run** — a real browser session (cache-busted, verified page variant) where I confirm the signed `[TREE GROWTH MONITORING EVENT]` actually lands in Telegram Chat Logs, THEN the webhook can process it into Tree Growth Measurements.
+3. The webhook fix (#441/#442 + @35) is ready and waiting for a real event to process.
+
+## RESUME HERE → next turn
+1. **Re-run the monitor submission cleanly**: cache-busted beta monitor page (e.g. `?cb=<timestamp>`), inject Sophia's keypair, select/pin my tree (`E2E_SOPHIA_20260829_1` or 469027268), set DBH, **verify the signed event text appears in the response before accepting** → confirm the row lands in Telegram Chat Logs (scan col G for the marker).
+2. **Fire the webhook** (`?action=processTreeGrowthMonitoringFromTelegramChatLogs` @35) → confirm "1 recorded" → verify Tree Growth Measurements tab has the row.
+3. **Plain-planting decision** (cron-restore vs dispatch-port for `[TREE PLANTING EVENT]`) → execute → confirm row 11882 lands in SunMint Tree Planting.
+4. Final green report + §5g close-out.
+
+**Bottom line: the webhook side is fixed and deployed (both actions healthy); the honest state is that my monitor E2E step needs a clean re-run because the signed event never reached the ledger — the planting event (row 11882) is confirmed real and waiting on the plain-planting pipeline decision.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /home/ubuntu/tokenomics && { echo "=== pull main (must reach 7dc97db #442) ===" git pull --ff-only origin main 2>&1 | tail -2 git log --o; echo "=== verify @35: growth action (expect processed/skipped/errors object) ===" curl -sL "https://script.google.com/macros/s/AKfycbxpGtwpI; cd /tmp && { echo "=== TREE_GROWTH_MONITORING_EVENT_MARKER + SOURCE_SHEET in GAS project ===" grep -n "TREE_GROWTH_MONITORING_EVENT_MARKER\s; …(+6 more)
 
