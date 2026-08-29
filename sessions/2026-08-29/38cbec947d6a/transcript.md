@@ -981,6 +981,7 @@ go
 ### 🤖 Autopilot
 
 Gary said "go" — executing the next unit: **live verification of the E2E asset-receipt test**. First, a critical safety check: I must confirm the `WEBHOOK_BASE` deployment ID in the script is actually the right one for the asset-receipt ingest (the inventory E2E uses a different pipeline URL). Let me check clasp deployments for the `1o2lzpd…` project and confirm Edgar env is available.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -988,16 +989,19 @@ Gary said "go" — executing the next unit: **live verification of the E2E asset
 `WEBHOOK_BASE` in the script is **correct** — it matches deployment **@11** ("QA (Test guard + E2E cleanup convention"), the one I repointed with the guard. Good.
 
 Two things to fix before running: (1) the script isn't on the local box yet (git_push_changes pushed to GitHub, not the local checkout), (2) need to confirm EdgarClient creds resolution. Let me check both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout is stale — need to pull #326's script. And EdgarClient needs a `.env` with EMAIL/PUBLIC_KEY/PRIVATE_KEY. Let me sync the checkout and check auth state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script is now on the box, and `/opt/truesight_autopilot/.env` exists (EdgarClient defaults to CWD `.env` — running from `/opt/truesight_autopilot` will pick it up). Let me verify the env has EMAIL/PUBLIC_KEY/PRIVATE_KEY (values redacted) and check the script's CREDS_PATH is correct, then run the E2E live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1008,6 +1012,7 @@ All prerequisites are in place:
 - ✅ GDrive creds: `cypher_defense_gdrive_key.json` exists (the script's default CREDS_PATH)
 
 Running the **live E2E verification** now. It submits a `(Test …)` asset receipt, fires the ingest webhook (@11 with guard), verifies no Currencies rate row, then self-cleans. It touches the live ledger briefly (1 offchain row created then deleted) — Gary's "go" authorizes this.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1021,11 +1026,13 @@ Important: the event **was submitted** to Edgar → it's now in the Telegram Cha
 4. Re-run the fixed script for a clean green
 
 Let me fire the webhook first and check what the ingest did:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `processed: 0` — the row may not have landed in the Telegram Chat Logs sheet yet (Edgar's worker may lag), or it's already processed. Let me check both the ops Telegram Chat Logs and the Asset Receipts audit tab for our marker.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1040,6 +1047,7 @@ So the pipeline ingested it. My script's only failure was the **JSON string-matc
 3. Fix the signature-check bug in the script
 
 Let me check + clean now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1051,16 +1059,19 @@ Let me check + clean now:
 - ✅ **Self-clean worked**: deleted row 4222 → 4221 rows, 0 Currencies hits
 
 The only failure was the script's **signature-check bug** (string match `": "` vs actual `":"`). The live pipeline proved everything works. Now let me fix the script bug (parse JSON properly) and re-run for a clean green — and since the script needs a code fix, I'll open a fix PR. First the fix + local validation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patch applied, compile + lint pass. Formatting needs fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass now. Re-running the **full live E2E** with the fixed script for a clean green:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1079,11 +1090,13 @@ All checks pass now. Re-running the **full live E2E** with the fixed script for 
 The live ledger is now clean — one offchain leg created, one deleted, zero Currencies rows. The audit-tab row is intentionally kept (dedup).
 
 Now I need to push the bugfix (JSON signature check) to the repo — the merged #326 has the buggy string-match. Opening the fix PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix PR opened: **truesight_autopilot#327**. Merging it (Gary's "go" covers this plan's PRs):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1167,21 +1180,25 @@ go
 ### 🤖 Autopilot
 
 Gary said "go" — checking the handoff registry first as directed, then continuing the wrap-up units.
+[2 tool result(s) compacted: read_context_file, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handoff manifest has no row for this work (it's a direct governor task, not a manifest plan) — so I'll continue the wrap-up units from my RESUME HERE: **(1) log the time contribution** for the deploy + E2E phase. Edgar's catalog confirms CONTRIBUTION EVENT = `Type` / `Amount` / `Contributor(s)`.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Time logged (180 min for the deploy + E2E phase). Now the remaining wrap-up: the **optional tool enhancement** — adding `deployment_id` support to the `gas_deploy_project` tool so future deploys of `1o2lzpd…` auto-repoint the live URL (prevents the pinned-version gap recurring). Let me look at how the deploy script and tool wrapper handle this, so I can propose the exact change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool wrapper is `app/tools/gas_deploy_project.py` and the deploy script lives in the **tokenomics** repo (`tokenomics/scripts/deploy_gas_project.py`). Let me check both for deployment_id handling.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1190,21 +1207,25 @@ The full picture is clear:
 - `deploy_gas_project.py` **already supports** `--deployment-id` (repoint logic built in #433) — but the **tool wrapper** (`app/tools/gas_deploy_project.py`) **doesn't expose it** to the model. That's the gap: I had to manually `clasp deploy` because the tool can't pass the flag.
 
 This is a small, clean enhancement to the autopilot's tool surface. Let me read the wrapper and its tests, then implement + validate + open one PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full structure. The enhancement: add a `deployment_id: str = ""` parameter to the tool, append `--deployment-id <id>` when provided, and add a test. Let me implement it locally with a test, run the full validation suite, then push one PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The docstring assertion failed (exact text differs — likely line-wrapping), so no changes were written (the file is untouched — compile passed because it's unchanged). Let me grep the exact docstring text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The docstring line ends with a period after the backtick — my `old_doc` was missing it. Let me re-apply all four patches with the exact text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1338,4 +1359,80 @@ Nothing blocked. The tool+test files are staged on the box at `feat/gas-deploy-d
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
 • `ssh run` ×19 → cd /opt/truesight_autopilot && grep -n "deployment" scripts/gas_deploy_project.py | head -30; echo '===tool wrapper===;'; find . -maxdepth 3; cd /opt/truesight_autopilot && grep -n "deployment\|script_id\|clasp" app/tools/gas_deploy_project.py | head -40; echo '===tokenomics deploy; cd /opt/truesight_autopilot && sed -n '100,175p' app/tools/gas_deploy_project.py; echo '===tests==='; grep -n "def test\|deployment" tests/t; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] [Handoff context — this Telegram topic (thread 15540) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary said "go" — resuming the wrap-up unit. Checking the handoff registry as directed, and pulling the current main-branch content of the two files I need to PR (tool wrapper + test) so my edit hunks match the base exactly.
+
+
+### 🤖 Autopilot
+
+Handoff registry checked — this thread is a **direct governor task**, not a manifest plan (no row for it; the manifest rows are SunMint/white-label/media plans). Continuing the wrap-up: the follow-up PR with the tool param + test. I have the exact main-branch content of both files; the local box already carries the validated patches (781 passed). Pushing the tool+test changes as their own PR via exact hunks:
+
+
+### 🤖 Autopilot
+
+PR **#330** opened with the tool param + test. Both #329 (E2E scripts) and #330 (tool param) are part of this wrap-up unit — merging both now per the standing "go" authorization:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Both PRs merged. Final report for this turn:
+
+---
+
+# ✅ What I did this turn
+
+Gary's "go" → resumed the wrap-up unit from RESUME HERE. The scope-corrected follow-up PR is now **merged**.
+
+## Handoff registry check
+Read `HANDOFF_MANIFEST.md` — this thread is a **direct governor task** (asset-receipt QA guard work), not one of the manifest plan rows (SunMint mobile, tree-QR linking, media JSON, white-label). No plan file to resume from; continued per conversation.
+
+## PRs merged this turn
+
+### ✅ [truesight_autopilot#330](https://github.com/TrueSightDAO/truesight_autopilot/pull/330) — tool param (the real root-cause fix)
+`app/tools/gas_deploy_project.py` + test:
+- New param `deployment_id: str = ""` on `gas_deploy_project()`
+- When set + `push=True` → appends `--deployment-id <id>` to the deploy command (deploy script already supported it since #433 — the tool wrapper just never exposed it)
+- Result JSON + docstring updated
+- New test `test_deployment_id_passed_when_push` (12/12 in file, 781 full suite)
+
+**Why it matters:** this was the actual gap behind the "guard merged but not live" incident — `clasp push` updated `@HEAD` while the pinned anonymous deployment Edgar's webhooks call stayed on old code. Now a deploy can repoint the live URL in one tool call; no manual `clasp deploy` over SSH.
+
+### ✅ [truesight_autopilot#329](https://github.com/TrueSightDAO/truesight_autopilot/pull/329) — E2E scripts
+- `scripts/e2e_asset_receipt_test.py` — the 6-step asset-receipt E2E (submission → webhook → audit OK → QA-guard check → **mandatory self-clean/expense-off** → post-cleanup verify), modeled on the inventory one
+- `scripts/e2e_inventory_movement_test.py` — **fixed the pre-existing SyntaxError** at line 86 (`if "signature_verification": "success" not in body:` — invalid Python that made the file uncompilable; the inventory E2E has been silently broken since it was written). Now uses the same JSON-parse pattern as the asset-receipt script (#327).
+
+## Validation (hard rule, all green)
+- `compileall app scripts tests` ✅
+- `ruff check app scripts tests` ✅
+- Full pytest: **781 passed, 1 skipped** ✅
+- Format-clean on all touched files ✅
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+
+**Optional but recommended — needs Gary's nod:**
+1. **Wire the E2E into a scheduled smoke** — a weekly cron on the autopilot box running `python3 scripts/e2e_asset_receipt_test.py` + `e2e_inventory_movement_test.py` (the inventory one can now actually run for the first time, post-fix). Proves the ingest + guard + self-clean pipeline stays green without anyone remembering to run it. (Small PR to add a `scripts/run_e2e_smokes.sh` + cron line, or just document in the convention doc.)
+2. **Full recap / close-out of the whole thread** — everything from the original $10k phantom-treasury bug is now resolved: cleanup ✅, treasury ✅, convention ✅, guard merged + deployed live ✅, E2E with mandatory self-clean ✅, tool auto-repoint ✅, time logged (120 + 180 min) ✅.
+
+Nothing is blocked. Say "go" and I'll do the cron/smoke wiring, or "done" if you want to close the thread here.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #330 on truesight_autopilot merged successfully (sha: e878cae3e8995676dbc3a8569583f43191889a30). Pull Request successfully merged; ✅ PR #329 on truesight_autopilot merged successfully (sha: 85cc2cce2c1471e3492401c85f261718adb00c16). Pull Request successfully merged
 
