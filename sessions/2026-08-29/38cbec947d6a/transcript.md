@@ -1231,31 +1231,37 @@ The docstring line ends with a period after the backtick — my `old_doc` was mi
 ### 🤖 Autopilot
 
 Almost — res2's exact whitespace differs (the tool builds the JSON result with different indentation). The first three patches applied (sig, doc, cmd). Let me find the actual result-JSON construction:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The result JSON is built as a `payload` dict (not inline). The signature/doc/cmd patches already applied cleanly. Now I need to find where `payload` is constructed to add `deployment_id`, and the JSON `result` docstring block (line ~133 already shows `"with_hooks": bool` — but my res2 patch targeted a `payload` dict that may be built differently). Let me look at the payload construction:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the payload dict exactly. The signature/doc/cmd patches didn't persist — `grep deployment_id` returned nothing, because the **previous patch run aborted at res2 (AssertionError) before writing the file** (the write happens at the end). Let me re-apply ALL patches correctly in one shot, with the exact payload text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 patches applied, compile/lint/format all green. Now add a test for the new param, run the full suite, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My test needs the same imports the other tests use. Let me check how existing tests import the function and the needed modules:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The module is imported as `gdp` — my test needs `gdp.gas_deploy_project`. Let me fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1435,4 +1441,55 @@ Nothing is blocked. Say "go" and I'll do the cron/smoke wiring, or "done" if you
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #330 on truesight_autopilot merged successfully (sha: e878cae3e8995676dbc3a8569583f43191889a30). Pull Request successfully merged; ✅ PR #329 on truesight_autopilot merged successfully (sha: 85cc2cce2c1471e3492401c85f261718adb00c16). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] @truesight_autopilot_bot see if this is updated already
+
+
+### 🤖 Autopilot
+
+Checking whether everything is updated — live GAS deployment, repo main branches, and the local checkout, in parallel:
+
+
+### 🤖 Autopilot
+
+Verifying across all layers — live GAS deployment, repo main branches, local checkouts:
+
+
+### 🤖 Autopilot
+
+All repos and the live deployment check out. One last layer — whether the **running autopilot service** has picked up the new tool code (#330), since it runs from this checkout:
+
+
+### 🤖 Autopilot
+
+One nuance found: the **running autopilot service** is at local HEAD `10ba5b3` (post-#326, but **pre-#330**) — it started at 10:13 today and hasn't been restarted since #329/#330 merged. So the **new `deployment_id` param is in the source file on disk but the live service process won't pick it up until a restart**. Let me check when the service started vs when the merges landed, and whether a restart is safe/needed:
+
+
+### 🤖 Autopilot
+
+All layers checked. Here's the update status:
+
+## ✅ Everything is updated — except one runtime detail
+
+| Layer | State | Evidence |
+|---|---|---|
+| **Live GAS deployment** (what Edgar calls) | ✅ **Guard LIVE** | `@11` deployment = "QA (Test guard (#436+#437) + E2E cleanup convention" — the URL `AKfycbzcXBX…/exec?action=status` responds OK: `currencies_last_row: 139` (phantom rows gone), `offchain_last_row: 4221` |
+| **GAS source in repo** (tokenomics main) | ✅ #436 + #437 merged | `44cdf96` + `0ed19da` both on main; guard `isTestCurrency` present (3 hits) in the deployable `Code.gs` |
+| **E2E scripts in repo** (truesight_autopilot main) | ✅ #326/#327/#329 merged | `e2e_asset_receipt_test.py` + fixed `e2e_inventory_movement_test.py` on main (`85cc2cc`, `e878cae`) |
+| **Tool param in source** | ✅ merged + on disk | `deployment_id` present in `app/tools/gas_deploy_project.py` (lines 119/123/139/171/173) |
+| **Local checkout** | ⚠️ HEAD behind origin | local `10ba5b3` (#326) vs origin `e878cae` (#330); working tree has the changes as local edits — needs `git pull` to align |
+| **Running autopilot service** | ⚠️ **NOT yet live** | started **10:13 UTC**; #329/#330 merged **13:00 UTC** → the running process predates the new `deployment_id` tool param |
+
+## The one thing not live
+The `deployment_id` param (and E2E scripts) are **merged and on disk but not loaded** into the running `truesight-autopilot.service` — it started ~3h before those merges. The **GAS guard itself is live** (that's the critical fix — verified above), but the new tool-surface param won't be usable until the service restarts.
+
+## Want me to restart the service?
+`systemctl restart truesight-autopilot.service` (then `git pull` the checkout to align HEAD) would make the new tool code live. It's a brief blip on this Telegram adapter — I'd do it in one shot. Say the word and I'll restart + verify.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== tokenomics repo: recent commits on main ==="; cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && git fetch origin main ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU 2>/dev/null && e; cd /opt/truesight_autopilot && echo "=== running autopilot proc ==="; ps aux | grep -E "autopilot|uvicorn|gunicorn|python3" | grep -v grep |; …(+1 more)
 
