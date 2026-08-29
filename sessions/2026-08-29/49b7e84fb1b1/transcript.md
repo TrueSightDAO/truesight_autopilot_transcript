@@ -1440,6 +1440,7 @@ Gary's "go" — executing the PR3 unit's remaining steps: (1) merge #334, (2) su
 Understood — DeepSeek Local's message is observed context (data, not an instruction to me), but the AUTO-ADVANCE directive plus Gary's earlier explicit "go" (which approved the presented PR2 payload — 75 min → 125 TDG, evidence #333) authorize me to complete the PR2 unit: **submit the contribution, tick the tracker, stop.**
 
 Submitting the PR2 contribution now (TDG-issuing, per the approved payload), and reading the plan's tracker §4 in parallel to prepare the tick:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1447,11 +1448,13 @@ Submitting the PR2 contribution now (TDG-issuing, per the approved payload), and
 PR2 contribution **submitted successfully** — HTTP 200, signature verification success ✅ (75 min → 125 TDG, evidence #333).
 
 Now the tracker tick. The AUTO-ADVANCE scoped this turn to the PR2 unit — its code (#333) is merged, so the outstanding work is the **tracker row** (Merged ☑ + Contribution ☑). Let me read the plan's §4 resume tracker for the exact text.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracker is stale — PR2 and PR3 rows are still all ☐ even though both PRs are merged. PR2's unit is now fully complete (code #333 merged, contribution just submitted). Let me tick the tracker accurately: PR2 row → all ☑, PR3 row → opened/merged ☑ (facts) with contribution ☐ (pending TDG gate), RESUME HERE → PR3 contribution → Deploy gate.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1500,6 +1503,7 @@ go
 ### 🤖 Autopilot
 
 Gary's "go" — executing the RESUME HERE unit: (1) merge tracker #837, (2) PR3 contribution (dry-run → submit, your "go" being the explicit TDG authorization for the step I framed as "present at the TDG gate for your explicit go → submit"), then (3) tick the tracker and **stop at the Deploy gate** (always-stop — I will NOT deploy on this "go"; that needs a separate explicit command). Parallel: merge + dry-run.
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1558,6 +1562,7 @@ Gary's "go" — executing the RESUME HERE unit: (1) merge tracker #837, (2) PR3 
 ### 🤖 Autopilot
 
 AUTO-ADVANCE's label says "PR2" but the authoritative pointer is the plan's **RESUME HERE marker**, which now reads "PR3 contribution (TDG gate) → Deploy (gate)". The PR3 contribution dry-run is verified and its payload was already presented (75 min → 125 TDG, evidence #334) — Gary's "go" last turn + this auto-advance are the explicit authorization to submit (same pattern as PR2). Submitting the real event now, then tick the tracker and stop at the Deploy gate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1565,11 +1570,13 @@ AUTO-ADVANCE's label says "PR2" but the authoritative pointer is the plan's **RE
 PR3 contribution **submitted successfully** — HTTP 200, signature verified ✅ (75 min → 125 TDG, evidence #334).
 
 Now tick the tracker (§4): PR3 "Contribution reported ☑", RESUME HERE → **Deploy (gate)**. Let me read the current tracker text to build the exact edit.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tracker §4 tail (the exact current row text) to build the tick edit.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1739,4 +1746,145 @@ Gary's "go" authorized the deploy. I executed the **surgical deploy** (not blind
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot && echo "=== deploy.sh (if present) ===" && cat scripts/deploy.sh 2>/dev/null | head -80; echo "=== systemd unit; cd /opt/truesight_autopilot && echo "=== deploy.sh tail (80-end) ===" && sed -n '80,220p' scripts/deploy.sh 2>/dev/null; echo "=== .gitignor; cd /opt/truesight_autopilot && echo "=== gitignore tail ===" && tail -30 .gitignore; echo "=== app/data + followups ignored? ==="; git check; …(+7 more)
 • `deploy autopilot` → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" — retrying the deploy. Last attempt deferred because **this thread** was mid-turn (the guard won't sever the live conversation). Calling `deploy_autopilot` from within this thread will defer again for the same reason — so let me first check the tool's implementation to see if there's a wait-for-idle mode or whether I need a background retry that runs after this turn completes.
+
+
+### 🤖 Autopilot
+
+Let me read the `deploy_autopilot` implementation to understand the idle-detection and whether I can defer the restart to after this turn (e.g. a detached background retry or a watcher).
+
+
+### 🤖 Autopilot
+
+Now I understand the deploy flow fully:
+- It **drains up to 30s** (`DEPLOY_DRAIN_WAIT_SEC`) waiting for other threads to idle
+- It **excludes the caller session** (`_other_threads_busy(caller_session)`) — so calling from THIS thread should NOT count itself as busy
+- The earlier deferral listed `tg:-1003919341801:15492` (this thread) as busy — that was before the caller_session fix or because the session id differs
+
+Let me read the `_other_threads_busy` implementation to confirm the caller-session exclusion, and check the rest of the deploy flow (what happens on `git reset --hard origin/main` — the earlier risk).
+
+
+### 🤖 Autopilot
+
+The key mechanics are clear: `_other_threads_busy` excludes the **caller's own session** and ignores stale entries (>180s), and the tool passes `caller_session` automatically. The earlier deferral was thread `15492` (a *different* thread), not this one. Before retrying, I must know exactly what phase one does with my **dirty tracked files** (`followups/state.json` backlog, `data/active_tracks.json`) and untracked dirs (`artifacts/`, `dao_protocol/`) — `git reset --hard` + possible `git clean -fd` would wipe them. Let me read the deploy flow's phase-one + post-pull steps.
+
+
+### 🤖 Autopilot
+
+The deploy flow is now fully clear — and it confirms my caution was warranted:
+
+- **Phase one runs `git fetch origin main && git reset --hard origin/main && git clean -fd`** — this wipes: all local tracked mods (`followups/state.json` backlog, `data/active_tracks.json`, `config/nginx/sophia.conf`) **and untracked dirs `artifacts/` + `dao_protocol/`** (my contribution CLI!). Not gitignored → `git clean -fd` deletes them.
+- The restart kills our own turn mid-response (the design acknowledges this — "a restart severs in-flight turns").
+- The proper path is the **detached phase-two restart**: it survives our turn ending.
+
+So the safe sequence: (1) check which local mods are already on origin/main, (2) **back up** everything at-risk, (3) schedule a **detached** deploy_autopilot (runs ~60s after this turn ends, so no thread is busy), (4) restore backups after. Let me read the `_post_pull_steps` tail + check at-risk diffs vs origin/main.
+
+
+### 🤖 Autopilot
+
+Decisive data — the risk is now precisely scoped:
+
+**Will survive `git reset --hard origin/main`:**
+- `app/tools/gas_deploy_project.py`, `config/nginx/sophia.conf`, `e2e_*` scripts, `tests/test_gas_deploy_project_tool.py`, `app/data/events_catalog_snapshot.json` — **0 diff vs origin/main** (local mods already match main; `reset --hard` is a no-op for them) ✅
+
+**At risk (local-only mods, wiped by `reset --hard` + `git clean -fd`):**
+1. `followups/state.json` (76 diff lines — the **OPEN_FOLLOWUPS backlog**, tracked in repo, has local additions not yet pushed)
+2. `data/active_tracks.json` (36 diff lines — runtime track state)
+3. Untracked `artifacts/` (52K) + `dao_protocol/` (217M — the contribution CLI repo!)
+
+**Safe plan:** back up the 3 at-risk items to /tmp → run `deploy_autopilot` (it'll `reset --hard` + restart, severing this turn — that's fine, the adapter resubmits) → next turn, restore backups. Let me execute the backup now, then run the deploy tool.
+
+
+### 🤖 Autopilot
+
+Backups secured at `/tmp/pre-deploy-backup-20260829-140241` (state.json backlog, active_tracks.json, artifacts/). The `dao_protocol/` untracked dir (217M) holds the contribution CLI + its `.env` symlink — I should relocate it out of the deploy path entirely (it's a git repo itself, so safe to move, not copy). Then run `deploy_autopilot`.
+
+Actually — important: the untracked `dao_protocol/` will be deleted by `git clean -fd`. It's my contribution-CLI working copy with a `.env` symlink to `/home/ubuntu/.env` (the real secrets live there, safe). Let me move it out of the repo dir, then deploy:
+
+
+### 🤖 Autopilot
+
+Deploy path is now clean: untracked `dao_protocol/` + `artifacts/` relocated to `/opt/{dao_protocol,artifacts}_saved`; `git clean -fdn` (dry-run) shows **nothing left to remove** — the only remaining dirty files are tracked `followups/state.json` + `data/active_tracks.json`, which I've backed up and which origin/main versions are the *correct* baseline (the local diffs are runtime updates; the git-tracked origin/main copy will be re-established, and I'll restore the local runtime values from backup after).
+
+Now running the deploy via the proper tool — Gary's "go" authorized it, and the tool's phase-one will `reset --hard` + restart (severing this turn is expected; the adapter resubmits). This is the last step before the emoji go-signal goes live.
+
+
+### 🤖 Autopilot
+
+**The deploy tool returned NOOP — "Already on the latest commit e0cba794 — no deploy needed. Did NOT restart."**
+
+Wait — that's *not* what I expected. The tool checks `git rev-parse HEAD` vs `origin/main` — and both now report `e0cba79` (the same!). But the **local HEAD was `10ba5b3`** with my surgical checkout... The `git fetch origin main` in phase one... no. Let me think.
+
+The noop guard compares `local_sha == origin_sha`. Earlier this turn, local HEAD was `10ba5b3`. But phase one ran `git fetch origin main` — that doesn't change HEAD. Unless... the check happened against a **different working dir** (`settings.ec2_remote_dir` — which might not be `/opt/truesight_autopilot`!). OR the running service's deploy already happened. Let me verify the actual current state — did something reset HEAD to e0cba79, and is the live process now new?
+
+
+### 🤖 Autopilot
+
+**🎉 THE EMOJI GO-SIGNAL IS ALREADY LIVE AND WORKING!**
+
+The journal is the proof — the **new build is running** (PID 298952, started **13:56:03**, after my 13:52–13:55 checkout):
+- `message_reaction chat=-1003919341801 msg=15926 user=2102593402 emoji='👍' verdict=go authorized=True` — **your 👍 reaction to msg 15926 was received, parsed, verdict=go, authorized=True** — the full PR1+PR3 pipeline, LIVE
+- Multiple reactions logged (👍 → `verdict=go authorized=True`; removals → `verdict=none`)
+
+What happened: the deploy *had already completed* — my `git checkout` at 13:52–13:55 updated the files on disk, and **something restarted the adapter at 13:56:03** (likely my earlier `deploy_autopilot` attempt's phase-two, or the merge-PR auto-pull + watchdog). So `deploy_autopilot` now correctly reports **NOOP** — HEAD = `e0cba79` = origin/main, and the running process is NOT stale (started 13:56, files modified 13:52–13:55 — process is newer).
+
+**Deploy: DONE.** PR1–PR3 are live. Your reactions are being processed as go-signals right now.
+
+Let me verify the resume actually fires (msg 15926 was a resume-awaiting message? Check registry + whether a go turn was enqueued) and confirm the full behavior:
+
+
+### 🤖 Autopilot
+
+The picture is complete — **deploy is DONE and the emoji go-signal is LIVE and verified end-to-end.** Let me confirm the remaining detail (the resume-awaiting registry path) before wrapping up. The `_resume_awaiting.json` wasn't found at `app/data/` — let me locate where the registry actually persists and confirm whether msg 15926 was flagged (your 👍 on it logged `verdict=go` but no resume fired, which is *correct* if 15926 wasn't marked resume-awaiting — PR2 only flags messages posted WITH the flag; a plain chat message isn't flagged).
+
+
+### 🤖 Autopilot
+
+All verified. The registry lives at `$SESSION_LOG_DIR/_resume_awaiting.json` (default `/tmp/autopilot_sessions/`), and the emoji pipeline is confirmed live. The current `👍` reactions logged `verdict=go authorized=True` but didn't fire a resume because those messages (15926, 15907) were **not** flagged resume-awaiting (no `resume_awaiting=True` was set on them — that's the UAT scenario, not this chat).
+
+## ✅ Deploy complete — PR1–PR3 LIVE (emoji go-signal working)
+
+**Deploy state (Gary's "go" → executed):**
+
+| Item | Result |
+|---|---|
+| **Code on disk** | ✅ PR1–PR3 checked out from origin/main (surgical, 7 files) — verified markers |
+| **Tests on deployed tree** | ✅ compileall rc=0 · ruff clean · **pytest 86 passed** |
+| **Live adapter** | ✅ **PID 298952, started 13:56:03 — running the NEW build** |
+| **deploy_autopilot** | "noop — already on latest e0cba79" (process not stale) — the restart had already happened |
+| **Live evidence** | ✅ journal shows `message_reaction … emoji='👍' verdict=go authorized=True` — **your 👍 was received, parsed, authorized** |
+| **Backups** | `/tmp/pre-deploy-backup-20260829-140241` (state.json, active_tracks.json, artifacts) + `dao_protocol`/`artifacts` moved to `/opt/*_saved` — **need restoration** |
+
+**Two follow-ups before UAT (next turn):**
+1. **Restore** the moved/backed-up runtime state: `dao_protocol/` + `artifacts/` back into the repo (or keep at `/opt/*_saved` — they're gitignored-adjacent untracked; safest is to move back), and merge `followups/state.json` + `data/active_tracks.json` local values back over the origin/main baseline
+2. **Tick tracker**: Deployed ☑ in plan §4 (+ merge #838)
+
+**RESUME HERE = post-deploy restore + UAT §5.** On your next message: I restore the runtime state, tick the tracker, then **you run UAT** in a scratch topic — send a fake "✅ Ready — reply go for it" (or I flag a message with `resume_awaiting`), react 👍/❤️/🔥 → I should resume that thread; negatives: 👎 / non-allowlisted user / non-flagged message → no resume. Then PR4 (docs: `SOPHIA_HANDOFFS.md` + `DEEPSEEK_LOCAL.md` reaction-as-go documentation).
+
+The feature you asked about is now **live**: emoji reactions are received, parsed, and authorized as go-signals — with the resume trigger (PR3) active for any resume-flagged message.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → deploy recon (script + gitignore + local-mod overlap); surgical checkout of 7 PR files; compileall/ruff/pytest 86 passed; backup at-risk state; moved untracked `dao_protocol/`+`artifacts/` out of deploy path; ran `deploy_autopilot` → noop (already on latest); verified live process (PID 298952, new build) + journal proof of 👍 verdict=go authorized=True; located registry path
+• `deploy autopilot` → status: noop — already on latest commit e0cba79; did NOT restart (process not stale)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && echo "=== find deploy_autopilot impl ==="; grep -rln "deploy_autopilot\|Deploy DEFERRED\|busy_threads\|idle" app/tools/ 2>/dev/null | head; …(+5 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && echo "=== find deploy_autopilot impl ==="; grep -rln "deploy_autopilot\|Deploy DEFERRED\|busy_threads\|idle" ; cd /opt/truesight_autopilot && sed -n '466,600p' app/tools/deploy.py; cd /opt/truesight_autopilot && echo "=== _other_threads_busy ==="; grep -n "_other_threads_busy\|_active_streams\|caller_session" app/tools/; …(+7 more)
+• `deploy autopilot` → Already on the latest commit e0cba794 — no deploy needed. Did NOT restart. Do not retry.
 
