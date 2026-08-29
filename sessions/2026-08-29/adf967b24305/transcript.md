@@ -1258,46 +1258,55 @@ No further PRs this turn — stopping here per the one-PR-per-turn rule.
 ### 🤖 Autopilot
 
 Let me check what's still outstanding — open PRs, the follow-up backlog, and the items from the last RESUME HERE.
+[2 tool result(s) compacted: list_prs, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #433 is merged. Let me verify the current live state — whether the deployment is still at @10, and whether my own autopilot tool got the repoint support (the #1 follow-up item).
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Main has moved (new PRs #436/#437 merged). Let me verify: (a) the repoint support is in tokenomics main's deploy script, (b) what the live deployment is at, and (c) confirm the autopilot wrapper still lacks it (the outstanding item).
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repoint support is in tokenomics main ✓. The local checkout path differs — let me find where the tokenomics clone + clasp mirror actually lives, and check the autopilot wrapper for repoint support.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The autopilot wrapper **already has** repoint support locally (lines 121–172). My earlier `cd` failed on a typo in the scriptId. Let me verify: (a) live deployment state via clasp, (b) whether the wrapper change is committed in the truesight_autopilot repo or just local drift.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the outstanding item — **the wrapper fix is uncommitted local drift** on branch `fix/httpx-delete-json-lease-close`, not in truesight_autopilot main. Also interesting: the deployment is now **@11** (moved since the escalation — includes #436/#437 QA guard + E2E cleanup). Let me confirm the wrapper's repoint code isn't in main yet, and check the diff + any open PR.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me characterize the uncommitted wrapper drift and check for an open PR on that branch.
+[2 tool result(s) compacted: ssh_run, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Main-branch wrapper already has `deployment_id` support — so the autopilot tooling is in main, and the local drift is just a stale uncommitted copy on a parked branch. One last evidence check — the live URL status (what @11 actually serves) and whether the QA test rows are gone:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live deployment is healthy. One last check — whether the QA test rows got cleaned up (that was an explicit outstanding item):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1429,4 +1438,79 @@ Do you want the **audit-tab history purged** (the 4 QA OK rows + 9 zombie SKIPPE
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && python3 -c " import json d = json.load(open('python_scripts/schema_validation/; cd /opt/truesight_autopilot/context/tokenomics && python3 - <<'EOF' import json, glob for p in glob.glob('**/all_sheets_structure.json', rec; cd /opt/truesight_autopilot/context/tokenomics && python3 - <<'EOF' import json d = json.load(open('python_scripts/schema_validation/all_she; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=14278] @truesight_autopilot_bot figure out how much time you spent on this?
+
+
+### 🤖 Autopilot
+
+Let me compute this from hard evidence — commit timestamps, deploy ledger records, and session activity.
+
+
+### 🤖 Autopilot
+
+Deploy ledger path was wrong. Let me find it and pull the session/turn evidence for time spent.
+
+
+### 🤖 Autopilot
+
+Deploy ledger found at `./ecosystem_change_logs/deploys`. Let me read the records I backfilled (timestamps embedded in filenames) and check the audit tab's timestamps for the test runs.
+
+
+### 🤖 Autopilot
+
+Deploy ledger structure found (`entries/`, `feed/`, `leases/`). Let me read my two backfilled records' full timestamps and compute the session time span from all evidence.
+
+
+### 🤖 Autopilot
+
+Path resolution failed (double-nested). Let me locate the real deploys dir and read my backfilled records' timestamps:
+
+
+### 🤖 Autopilot
+
+The context dir moved. Let me locate the ecosystem_change_logs clone and its deploys folder:
+
+
+### 🤖 Autopilot
+
+Found my two backfilled records. Let me read their full content — they'll have the definitive timestamps and metadata for the deploy work:
+
+
+### 🤖 Autopilot
+
+Here's the honest, evidence-based answer to "how much time did I spend on this?"
+
+## Already logged (the committed figure)
+| Contributor | Logged | When |
+|---|---|---|
+| **Sophia (autopilot)** | **150 min** (2.5 hrs) | 08-27, as [CONTRIBUTION EVENT] — "authoring #411/#427/#431 + full escalation execution (clasp BEFORE/AFTER, @8→@9→@10 redeploy, 2 real test submissions, zombie confirmation)" |
+
+## Evidence-based reconstruction (timestamps from git + deploy ledger + audit tab)
+
+| Work item | Evidence anchor | Span |
+|---|---|---|
+| PR #411 authoring (Amount→Quantity, unit cost) | commit `acbcdb0` @ **08-22 16:38Z** | one focused session |
+| PR #427 authoring (anchored detection + dedup) | commit `f70da7c` @ **08-24 18:58Z** | one focused session |
+| Escalation execution (test subs, @8→@9→@10, proofs) | test #1 @ **12:15:56Z**, test #2 @ **12:21:39Z**, deploy records @ **12:37:57Z / 12:38:01Z** | ~45–60 min dense window, 08-27 |
+| PR #433 authoring (repoint pinned deploys) | commit `fe88c13` @ **12:42:34Z** | same window, tail |
+| Deploy ledger backfill (@9/@10 records) | records `deploy_20260827T123757Z` / `T123801Z` | same window |
+| Follow-up turns (08-29 → today): outstanding-check, cleanup verification, registry discovery, this time investigation | session activity | ~3–5 turns × 10–20 min |
+
+**Deploy ledger records confirm the escalation core:** both backfilled records (`agent: sophia`, timestamps 12:37:57Z/12:38:01Z, `result: success`) — the canonical audit trail of the deploy work.
+
+## Honest totals
+- **Logged:** 150 min (2.5 hrs) — covers #411/#427/#431 authoring + escalation execution through 08-27
+- **Estimated real total:** **~2.5–3.5 hrs** including the post-08-27 follow-up turns (verification, registry backfill, cleanup investigation, today's time-reconstruction)
+- **Not logged:** the post-08-27 follow-up work (~30–60 min)
+
+## Offer
+If you want the ledger to match reality, I can submit a second [CONTRIBUTION EVENT] for the follow-up delta (~60 min, "post-escalation verification, deploy-registry backfill, QA cleanup confirmation, time reconstruction"). Say the number and I'll log it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && echo "===MY AUTHORED COMMITS (asset-receipt work)===" && git log --format='%h ; cd /opt/truesight_autopilot/context/ecosystem_change_logs 2>/dev/null && echo "===DEPLOY LEDGER RECORDS I WROTE===" && ls -la deploys/ 2>/de; cd /opt/truesight_autopilot/context/ecosystem_change_logs 2>/dev/null && echo "===REPO STRUCTURE===" && ls -la; echo "===FIND DEPLOY LEDGER=; …(+8 more)
 
