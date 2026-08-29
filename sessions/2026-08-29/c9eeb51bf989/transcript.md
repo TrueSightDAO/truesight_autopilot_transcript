@@ -411,6 +411,7 @@ Let me pin down exactly what a promotion would carry, and check for a conflicts 
 ### 🤖 Autopilot
 
 I now have a complete, verified picture. Let me read the compare's file list to enumerate exactly what a promotion carries, then I'll present the findings and a decision point to you.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -503,11 +504,13 @@ go
 ### 🤖 Autopilot
 
 Go received — deploying to prod now. Executing `sync_beta_to_prod(sunmint_prod)`: this fork-syncs prod from beta main, carrying #26 (the `/dao/check_digital_signature` 404 fix), #27 (governor/sentinel invalid-zone), #28 (offline photo-blob base64 fix) plus earlier beta improvements. PR #29 is NOT in beta main, so it stays out of this deploy (that's the expected sequencing you approved).
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy executed successfully. Let me verify the promotion actually landed on prod — check the prod repo tip, the live page's fetch URL, and the Pages build:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -615,4 +618,136 @@ Your original instruction was "no merge" on #29, so I'm holding until you say th
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== LIVE beta ROOT: emailLinkedLabel crash line? ==="; curl -s https://beta.sunmint.truesight.me/ | grep -n "emailLinkedLabel" | head;; echo "=== LIVE beta MONITOR: camera-viewport CSS + cap ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -n "camer; cd /tmp && rm -rf sunmint_beta_clone3 && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_clone3 2>&1 | ; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] [Handoff context — this Telegram topic (thread 16178) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Seeing this error 
+Error: Cannot set properties of null (setting 'textContent')
+after sufccessfully linking my email on https://beta.sunmint.truesight.me/
+
+Problem is when I proceed to https://beta.sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487
+
+i am not seeing the mark invalid button
+
+My public key is MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28wHvZfuqIRBrq1nTNBvIl59S2B0WWJSEP4wGuAwMoFOqlHH1ALU/DGgDK/BsVxHfYDmA0NGDkCyJuslWvhh/UBgrjke5/RBNgcmLoCiyEsW0NymuyEiUyzUWu9gQkj4VyyvDxN87L8nSiJWpo86wD/wQyQlZwK7XjMshqfxYxO/QQfybnEV0jURzVW0JWebgldsQk5yOJfS9Sng7eXtUhP8wLBdc5NITgK741T9dWMC6RBesZnFugsVHiutGTRefzCGYOnXlM0Vs6BfUDHZgOXf71rwMKYMbJNX9rN1vfZNsrGV4D4P7o1RTLElN05ewx9ULbZk9Kc8DP8xnnt1mQIDAQAB
+
+
+### 🤖 Autopilot
+
+Two distinct things going on here — let me diagnose both. The email error is the known null-crash (fix sitting unmerged in PR #29). The missing "mark invalid" button needs a look at the governor gate — let me test Edgar's response for your public key and inspect the live beta monitor gate logic.
+
+
+### 🤖 Autopilot
+
+Edgar confirms you're a governor with that key — so the gate *should* show the button. Let me read the exact `maybeShowInvalidZone()` logic and its call sites on the live beta page to find why it's not appearing on the deep-link path:
+
+
+### 🤖 Autopilot
+
+Two separate issues confirmed — one is the known unmerged fix, the other is a **new bug** your UAT just surfaced. Let me verify the deep-link path detail (whether your tree is in the local index) before reporting:
+
+
+### 🤖 Autopilot
+
+Let me see where `loadTreeIndex()` fetches from (it's a dynamic URL):
+
+
+### 🤖 Autopilot
+
+Let me check `TREE_INDEX_URLS` and whether your tree `Edgar_20260819134722_487` resolves through it:
+
+
+### 🤖 Autopilot
+
+Let me check if your tree exists in the index and whether the deep-link found it — this determines which code path you hit:
+
+
+### 🤖 Autopilot
+
+This is the breakthrough — the null-crash isn't just cosmetic, it may be **killing the whole init sequence**. Let me verify whether the monitor page has the same crashing line, and where it sits relative to camera/deep-link init on both pages:
+
+
+### 🤖 Autopilot
+
+Now I have the causal chain for issue 1. For issue 2, I need to check the actual geojson entry for your tree (which code path the deep-link takes) and the `onTreeSelectChange`/`showPhotoSection` definitions:
+
+
+### 🤖 Autopilot
+
+Good — the tree IS in the index and Edgar says your key is governor-registered. So the gate *should* pass. Let me trace the code that decides what's in `localStorage` and how the email-link flow stores the key — that's the missing piece.
+
+
+### 🤖 Autopilot
+
+Now let me read the root page's email-linking flow — that's the key to understanding which public key ends up in localStorage after linking (and why the monitor gate fails):
+
+
+### 🤖 Autopilot
+
+Two candidate root causes for the missing button. Let me read `populateTreeDropdown` and `onTreeSelectChange` — if the dropdown filters by distance, his tree falls into the deep-link **else** branch, which never calls `maybeShowInvalidZone()`.
+
+
+### 🤖 Autopilot
+
+The monitor page's `renderEmailSection` is safe (it has `id="emailLinkedLabel"`), so the crash is root-page-only — but I need to see the root page's onload order and how the email-link flow persists the key, plus what Edgar says about your *other* key (the one from the prod URL earlier):
+
+
+### 🤖 Autopilot
+
+Two separate issues — and I've got a solid causal chain on both. Let me give you the full picture.
+
+## Issue 1: `Cannot set properties of null` + no camera viewport on the root page — **same root cause, fixed by PR #29 (unmerged)**
+
+The root page's `renderEmailSection()` (line 564) contains the **crashing line**:
+```js
+document.getElementById('emailLinkedLabel').textContent = t('emailLinkedLabel');
+```
+The element only has `data-i18n="emailLinkedLabel"` — **no `id`** — so `getElementById` returns `null`. This is **exactly item 2 of PR #29**.
+
+Here's the kicker — the crash is not cosmetic. On the root page, init is a flat sequence with **no try/catch**:
+```js
+setLang(currentLang);
+requestLocation();
+checkVerificationLink();
+renderEmailSection();      // ← THROWS here
+updatePendingBadge();
+flushTreeReportQueue();
+window.addEventListener('online', flushTreeReportQueue);
+startTreeCamera();         // ← never runs
+```
+So `renderEmailSection()` throws on **every page load**, aborting the rest of init → **`startTreeCamera()` never runs → no camera viewport** (your earlier report) — plus the pending badge and offline queue flush never initialize either. The error you saw after linking email is the same throw surfacing from `checkVerificationLink()`'s success path (which calls `renderEmailSection()` inside its try → gets caught → shows an error status even though the link succeeded).
+
+**Fix: merge PR #29** (removes that line + makes camera start lazy). It fixes the crash, the camera viewport, and the misleading post-verify error in one shot.
+
+## Issue 2: missing "MARK INVALID" button on the monitor page
+
+The button is **server-authoritative gated** (PRs #26/#27): `maybeShowInvalidZone()` only shows it if `loadContributorIdentity()` got `is_governor: true` back from Edgar for **the public key in that browser's localStorage**.
+
+I verified your key directly against Edgar:
+- `check_digital_signature` for **both** keys you've shared → `{"registered":true, "contributor_name":"Gary Teh", "is_governor":true}` ✅
+
+So the gate *can* pass — **if** the beta browser's `localStorage.getItem('publicKey')` is one of those registered keys. Your tree (`Edgar_20260819134722_487`) **is** in the index (confirmed in `trees/index.geojson`), so the deep-link match branch runs and calls `maybeShowInvalidZone()`.
+
+**Most likely cause:** the key currently in your beta browser's localStorage is a *different*, unregistered keypair — e.g. you're testing on a different browser/device than the one whose key the DAO registered, or site data was cleared (which regenerates a fresh key).
+
+**Quick check in the beta browser console:**
+```js
+localStorage.getItem('publicKey')
+```
+Compare it to the two keys you pasted. If it differs → that's why the button hides. (Note: clearing storage or unlinking email *regenerates* a key — the new one won't be recognized as your governor key until it's registered with Edgar.)
+
+## Proposed actions
+
+1. **Merge PR #29 now?** It's the fix for the exact crash + camera issue you're UAT'ing — one word and I merge it into beta main, Pages rebuilds (~1–5 min), and you can re-test camera + the null error on beta.
+2. **For the button:** run the `localStorage` check above and tell me what it returns — I'll compare against Edgar's registry. If your beta key isn't registered, I can either get it registered (needs a DAO registry update) or point you to the right browser.
+3. Optional: **file a follow-up** — there's a real UX gap: a governor on a fresh browser/cleared storage has *no way* to prove identity (fresh key = not registered = button hidden). Worth a proper "re-associate governor key via email" flow. I can add it to OPEN_FOLLOWUPS.md.
+
+Which do you want me to execute?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → echo "=== check_digital_signature with Gary's key ==="; curl -sG "https://edgar.truesight.me/dao/check_digital_signature" --data-urlencode "; echo "=== LIVE beta monitor: invalid-zone / mark-invalid gate logic ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | g; echo "=== live beta monitor: maybeShowInvalidZone + loadContributorIdentity + onTreeSelectChange/deep-link ==="; curl -s https://beta.sunmin; …(+16 more)
 
