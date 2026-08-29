@@ -73,3 +73,25 @@ All four show the **same fresh ActiveEnterTimestamp** (`23:29:47 UTC`), which is
 • `deploy autopilot` → Already on the latest commit c55e2cc1 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×4 → cd /home/ubuntu && git -C truesight_autopilot log --oneline -5 2>/dev/null || true; echo '---'; systemctl list-units --type=service --all 't; find /home/ubuntu /opt /srv -maxdepth 3 -name '.git' -type d 2>/dev/null | head -20; echo '==='; ls -d /home/ubuntu/truesight_autopilot 2>/d; cd /opt/truesight_autopilot && git log --oneline -8 2>/dev/null; echo '=== HEAD ==='; git rev-parse HEAD; echo '=== remote ==='; git remote ; …(+1 more)
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16312] [Handoff context — this Telegram topic (thread 16312) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Verified — everything checks out. Here's the state:
+
+**Deploy status:** `deploy_autopilot` returned a no-op — the box had *already* picked up PR #346. I confirmed this is correct, not a stale detectio
+
+
+### 🤖 Autopilot
+
+👍 resume received — and notably, it *worked*: no deadlock, no hang. That's exactly what PR #346 was supposed to fix, so consider it validated in production on the first 👍 since the deploy.
+
+Status: nothing pending. The verification from my last message stands complete:
+
+- **Code:** `/opt/truesight_autopilot` HEAD = `c55e2cc` (PR #346 merge) ✓
+- **Services:** all 4 (truesight-autopilot, -telegram, -watchdog, truesight-vault) restarted at `23:29:47 UTC`, all `active/running` ✓
+- **Emoji-resume path:** just exercised successfully end-to-end — this turn is the proof the self-deadlock is gone ✓
+
+No further action needed. Ready for whatever's next.
+
