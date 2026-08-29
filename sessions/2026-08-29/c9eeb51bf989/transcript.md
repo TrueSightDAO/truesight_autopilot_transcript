@@ -351,36 +351,48 @@ Two of the three diffs are the **intentional CNAME divergence** (prod vs beta do
 ### 🤖 Autopilot
 
 Let me read the tail of the monitor diff (camera CSS hunk) and check the `index.html` divergence to assess whether a fork-sync would conflict:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff confirms beta is ahead of prod on the two HTML files. One nuance to nail down: whether the camera-gesture changes from my PR #29 are already in beta main (the diff shows the deep-link threading IS there), and whether the `.camera-viewport` CSS cap made it in. Let me check PR #29's state and the CSS in beta main directly:
+[2 tool result(s) compacted: list_prs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `go` received. Beta main is already ahead and correct — but before I finalize the promotion plan, I need to resolve one anomaly: PR #29 (my earlier unmerged PR) shows **open**, yet beta main **already contains** its changes (camera CSS cap, lazy start, deep-link threading, `check_digital_signature`). Let me nail down where those changes actually came from, and map the exact prod→beta delta for promotion.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #29 is **open but appears redundant** — beta main already carries all four of its changes. Let me verify that rigorously before acting, and pin down the exact promotion delta:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch ref didn't fetch (needs explicit refspec). Retrying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the actual content diff between main and my PR branch — if it's empty, the PR is a no-op duplicate and should be closed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is NOT empty — which means beta main does **not** actually contain my PR #29 changes, contradicting my earlier grep. I bet my earlier greps hit **uncommitted local edits** left in the clone from turn 1's hunk-verification (I applied the hunks locally to verify, and `git checkout main` kept them). Let me verify against the committed blobs, not the working tree:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -393,6 +405,7 @@ So the current state:
 - **prod main** = behind beta (old `/dao/contributors` URL) and also lacks all the camera fixes.
 
 Let me pin down exactly what a promotion would carry, and check for a conflicts risk:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -560,4 +573,46 @@ Want me to set up a watcher that pings this thread when you're ready, or anythin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && rm -rf sunmint_prod_clone2 && git clone -q --depth 3 https://github.com/TrueSightDAO/sunmint_prod.git sunmint_prod_clone2 2>&1 | ; echo "=== LIVE prod monitor page: fetch URLs ==="; curl -s https://sunmint.truesight.me/monitor-tree-growth/ | grep -oE "dao/(check_digital_; echo "=== nginx sites-enabled ==="; ls /etc/nginx/sites-enabled/ 2>/dev/null; echo "=== grep sunmint in nginx ==="; grep -rln "sunmint" /etc; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] not seeing the camera view port on https://beta.sunmint.truesight.me/
+
+
+### 🤖 Autopilot
+
+Gary, investigating now — let me check exactly what the live beta pages are serving for the camera code.
+
+
+### 🤖 Autopilot
+
+Let me pin down the exact current state — PR #29's status, beta main's HEAD, and the live beta page's cache age plus the camera flow in the served JS:
+
+
+### 🤖 Autopilot
+
+Found it — this is exactly the bug PR #29 fixes, and it's **not live on beta because PR #29 was never merged**. Here's the verified picture:
+
+## What I confirmed
+
+**Beta is serving old code.** Live `beta.sunmint.truesight.me/` headers show `last-modified: 14:30 UTC` — that's beta `main` at **a0b7a57 (#28)**, which predates PR #29 (opened 22:14 UTC). GitHub Pages serves straight from `sunmint_beta/main`, and the PR branch was never merged.
+
+**Live beta root still has both camera bugs:**
+- Line 945: `startTreeCamera(); // ask for camera permission up front so it's ready when needed` — the **eager call outside a user gesture**. Modern mobile browsers block `getUserMedia` that isn't gesture-initiated → the promise rejects → `#treeCameraPreview` (which starts `display:none`) never becomes visible → **no camera viewport**.
+- Line 564: `document.getElementById('emailLinkedLabel').textContent = ...` — the **null-crash line** (element only has `data-i18n`, no `id`). If `renderEmailSection()` throws during init before `startTreeCamera()` runs, the camera never starts even on desktop.
+
+Both are items **1 & 2** of PR #29. The `.camera-viewport` cap (item 3) is also absent on beta's monitor page — same reason: **PR #29 unmerged**.
+
+## So why you're not seeing the viewport
+You're UAT'ing the fix, but the fix isn't on beta yet — the PR sits open at `sunmint_beta#29` waiting for merge. Chicken-and-egg: to UAT items 1 & 4 on beta, the changes have to be in beta `main` first.
+
+## The ask
+Want me to **merge PR #29 into beta main now**? Then Pages rebuilds (~1–5 min), the lazy camera start + null-crash fix go live on `beta.sunmint.truesight.me`, and you can UAT the camera on your phone. After you confirm, one `sync_beta_to_prod` ships it all to prod (prod already has the `/dao/check_digital_signature` fix from the earlier deploy — only the camera changes would be new).
+
+Your original instruction was "no merge" on #29, so I'm holding until you say the word. **Merge it?**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== LIVE beta ROOT: emailLinkedLabel crash line? ==="; curl -s https://beta.sunmint.truesight.me/ | grep -n "emailLinkedLabel" | head;; echo "=== LIVE beta MONITOR: camera-viewport CSS + cap ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -n "camer; cd /tmp && rm -rf sunmint_beta_clone3 && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_clone3 2>&1 | ; …(+1 more)
 
