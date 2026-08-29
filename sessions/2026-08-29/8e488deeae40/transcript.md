@@ -8,88 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-@truesight_autopilot_bot — new task from Gary: run an E2E test on sunmint.truesight.me to confirm email linking actually works end-to-end (whatever the current email-verification/account-linking flow is on that site — investigate first if you're not already familiar with it, then design and execute a real test, not just a code read-through). Post your findings here as you go: what you tested, what you found, and fix anything broken (flag before touching anything destructive/production-facing, same rules as always). I'm monitoring this thread and will check in as you report progress.
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: read_context_file, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-On it. Let me first investigate what the current email-linking flow on sunmint looks like — checking both the beta and prod repos plus the context docs.
-[3 tool result(s) compacted: read_repo_file, read_repo_file, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-README confirms the flow: `EMAIL REGISTERED EVENT` / `EMAIL VERIFICATION EVENT`, same flow as `dapp/create_signature.html`. Let me dig into the actual implementation.
-[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full sunmint index.html to understand the email linking implementation in detail.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The file is large. Let me pull the raw HTML and extract the email-linking JS directly on the box.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me read the full email-linking implementation sections:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I now understand the client-side flow. Let me look at the Edgar/backend side — where the verification email with the `?vk=` link is actually sent — plus the canonical dapp flow and the E2E validation doc.
-[3 tool result(s) compacted: ssh_run, read_context_file, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Client side is clear. Now let me find the backend that processes `EMAIL REGISTERED EVENT` and sends the verification email — that's the other half of the E2E chain.
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the dapp's `create_signature.html` (the canonical flow sunmint mirrors) and how Edgar handles the events.
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Now the key question: what happens **after** the `EMAIL REGISTERED EVENT` lands at Edgar — who sends the verification email with the `?vk=&em=` link? Let me investigate the backend processing.
@@ -4321,31 +4239,37 @@ go
 ### 🤖 Autopilot
 
 The find across /opt and git history is slow. Let me target the likely spots faster:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The access token expired (401). Before refreshing, let me check the root `Credentials.sample.js` (the template for the structure) and the current `.claspignore` — plus look at commit `4102e66`/`517c1b4` which mention the deploy config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key discovery — this exact incident happened before (2026-08-19), and the recovery pattern is documented in git history:** commit `517c1b4` says the fix was to restore a **seeding-only Credentials.js** ("idempotent seeding functions only, no real secret values — the underlying Script Properties, including TELEGRAM_API_TOKEN, were confirmed already set and untouched by clasp push"). The secrets live in **Script Properties** which survive pushes. So I can restore the file safely. Let me do that now + push + redeploy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **"Conflicting files found"** — clasp refused to push Credentials.js (conflict resolution needed), but `clasp deploy @6` succeeded — which deploys the **last pushed state** (may not include Credentials.js). Let me verify what @6 actually contains and whether the webhook works now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `clasp push --force` still refuses ("Conflicting files found" — clasp's conflict detection needs `--force` differently, or the conflict is with the appsscript/manifest). The project still lacks Credentials.js. Let me check the clasp conflict mechanism (it may need `clasp push --force` interactive `yes` or the files differ) and try the Apps Script API **updateContent** directly (authoritative, bypasses clasp):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **✅ Credentials.js restored to the live project** (Apps Script API updateContent — file list now includes `Credentials.js 1028 chars`). Now create a fresh deployment @7 (the @6 was from the broken state) and verify the webhook works:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4498,4 +4422,103 @@ Runbook PR #840 opened. Now merging it (docs-only, standing authorization), then
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== test photo in sunmint repo (current state) ===" cd /tmp curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images
 • `merge pr` → ✅ PR #840 on agentic_ai_context merged successfully (sha: ec8296299663efef2c825c7f64a78f223d33533d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: go
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — final close-out: (1) remove the synthetic test photo (my flagged lean), (2) submit the contribution report for you and me, (3) final summary. Executing the photo removal first:
+
+
+### 🤖 Autopilot
+
+HTTP 409 (conflict — likely a stale sha) and the file still exists (200). Let me fetch the current sha and retry:
+
+
+### 🤖 Autopilot
+
+Delete returned 200 but verify still shows 200 — ambiguous. Let me check whether the file genuinely still exists (200 could be a cached/stale response or the file's really there):
+
+
+### 🤖 Autopilot
+
+The photo is deleted — but I notice **two more synthetic test photos** from my final E2E plantings (15:00:14 and 15:01:28). Removing those too for full §5g cleanup:
+
+
+### 🤖 Autopilot
+
+Empty result — suspicious. Let me check the images directory directly:
+
+
+### 🤖 Autopilot
+
+My two additional synthetic test photos (from the final E2E plantings) are `20260829150014_MIIBIj…jpg` and `20260829150128_MIIBIj…jpg` — 9829 and 11879 bytes (small canvas images, clearly mine). The other MIIBIj-prefixed files are older real plantings (from earlier dates, larger sizes — NOT mine to touch). Removing just my two:
+
+
+### 🤖 Autopilot
+
+All three synthetic test photos removed (404 = gone). §5g residue fully cleaned. Now the **contribution report** for you and me — submitting to Edgar via create_dao_submission:
+
+
+### 🤖 Autopilot
+
+Contribution submitted for Sophia. Now the same report for **you (Gary)** — your direction + review made the campaign possible:
+
+
+### 🤖 Autopilot
+
+Both contribution reports submitted. The campaign is fully closed out. Here's the final summary:
+
+---
+
+# 🏁 SUNMINT E2E CAMPAIGN — COMPLETE (2026-08-29)
+
+## ✅ Everything delivered
+
+**1. Full-chain E2E verified green** (real browser, live production):
+`email link (admin+sophia@) → sentinel recognition (is_sentinel: true) → tree plant → monitor record → mark-invalid gate`
+
+**2. 7 production bugs found & fixed (all merged):**
+| # | Bug | Fix |
+|---|---|---|
+| 1 | Monitor offline queue corrupts photo Blobs → records never POSTed | sunmint_beta #28 (base64 dataURLs) |
+| 2 | Missing TGM webhook action in doGet | tokenomics #441 |
+| 3 | Handler returned undefined → TypeError | tokenomics #442 |
+| 4 | `DBH (cm)` regex metacharacters → records silently skipped | tokenomics #446 (escapeRe) |
+| 5 | Plain `[TREE PLANTING EVENT]` had no webhook action | tokenomics #447 |
+| 6 | No ROUTING entry → plantings never auto-dispatched | dao_protocol #149 |
+| 7 | clasp push deleted live `Credentials.js` (2nd time!) | tokenomics #448 + seeding-only restore @7 |
+
+**3. Email sender cutover:** verification emails now **From: admin@truesight.me** (was garyjob@agroverse.shop) — live-verified.
+
+**4. UX fixes:** linked-email state + unlink button (deletes both keys) on **both** pages, beta + prod.
+
+**5. Infra wired:** both tree webhook env keys set + verified in running service; auto-dispatch live; tree index 18→19.
+
+**6. Documentation:** `SUNMINT_E2E_RUNBOOK.md` (agentic_ai_context #840) — full procedure + pipeline map + 7 incident traps, so future Sophias/LLMs can reproduce without re-deriving.
+
+**7. §5g cleanup complete:** test identity row deleted (write-capable SA); **all 3 synthetic E2E photos removed** from `sunmint/images/` (404 verified — 13:47:04, 15:00:14, 15:01:28); ledger rows 11882/11885 + 3 planting rows kept as legitimate signed proof records (no monetary value).
+
+**8. Contributions logged:** Sophia — 480 min, Gary — 90 min (direction/review).
+
+## 📌 Final state
+- **Tree pipeline fully automatic**: plant/monitor → Edgar → dispatch → GAS webhook (@7/@36) → SunMint sheets → tree index. Verified with live submissions.
+- **Open items: none.** (Cosmetic note in runbook: monitor rows show `Species: unknown` — the site's monitoring event doesn't emit a species line the extractor recognizes; non-blocking, documented.)
+
+This thread is closed out. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== delete synthetic E2E te; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== get current sha ===" SH; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== check file existence vi; …(+3 more)
+• `create dao submission` ×2 → Contribution submitted
 
