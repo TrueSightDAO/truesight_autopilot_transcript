@@ -4771,3 +4771,15 @@ The @-mention, on the other hand, got my full attention. The system's behaving e
 
 Quick inventory check you might appreciate: I can't reach the 3rd-floor printer from here (no IoT/office access), but if you want, I can file "restock toner — 3rd floor printer" in OPEN_FOLLOWUPS.md so it doesn't get lost. Otherwise, gate confirmed working. 👍
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] good to hear, no explicit mention in this one, just a reply to your last message
+
+
+### 🤖 Autopilot
+
+Exactly right — and that's correct behavior, not a glitch. The gate's trigger is **@-mention OR reply-to**, so replying to my message counts as addressing me directly — I respond. Only *neither* (plain unmentioned chatter in a 3+ group) gets the observe-only treatment.
+
+So: reply-to → active response ✅. This very message is the proof — you replied, I answered. Gate's working exactly as specced. 👍
+
