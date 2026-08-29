@@ -528,51 +528,61 @@ So: want me to push it? One word and I'll run the deploy (first push without hoo
 ### 🤖 Autopilot
 
 The repo has the folder, but the **local checkout** on the box (`/opt/truesight_autopilot/context/tokenomics/`) is missing it — likely a stale clone (the merge happened in GitHub, not locally). Let me inspect what's actually on disk and in the repo.
+[2 tool result(s) compacted: ssh_run, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ssh_run failed because I omitted the `host` param. Retrying properly, and also checking the repo's folder structure on GitHub to confirm what should be there.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GitHub repo has the guard in `Code.gs` — the problem is the **local checkout on the box is stale** (missing the `asset_receipt_ingest/` folder). My ssh_run calls were missing the `host` param — fixing that now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout is current (`0ed19da` #436 checked out) and `asset_receipt_ingest/` exists — so the deploy script failed because **`.clasp.json` is missing inside that folder**. Let me verify what's actually in it and whether the GAS scriptId can be derived.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The folder `asset_receipt_ingest/` contains only `Code.gs` — no `.clasp.json` — while every real GAS project folder in this repo is named by its **scriptId**. The deploy tool expects `google_app_scripts/<scriptId>/.clasp.json`. So `asset_receipt_ingest` is a human-readable alias and I need the **actual scriptId** of that GAS project. Let me find the mapping (README / deploy script / Edgar's webhook config).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `asset_receipt_ingest` folder is an alias — the deploy tool needs the real scriptId (folder name = scriptId with `.clasp.json`). Let me find the actual GAS scriptId for this project (webhook URL / clasp_mirrors / config).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the real scriptId: **`1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU`** (identical Code.gs content, 17KB). Let me verify it has `.clasp.json` and do a dry-run deploy on the real project.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the real deployable GAS folder (`1o2lzpd…/`) still has the **OLD Code.gs without the guard** — PR #436 wrote the guard only to the new alias folder `asset_receipt_ingest/`, which is not deployable (no `.clasp.json`). Let me confirm which repo files actually contain the guard on GitHub.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The guard exists **only** in the alias folder `asset_receipt_ingest/` — the **real deployable project** (`1o2lzpd…/`) still has the OLD code without the guard. That's why the deploy failed. Let me check the deploy script's alias/manifest handling and the git history of the alias folder to confirm the intent.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause of the failed deploy found. Let me pin the exact edit region in the real deployable file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -582,11 +592,13 @@ Root cause found — this is important:
 **The guard was never in the deployable file.** PR #436 wrote the guard only to `google_app_scripts/asset_receipt_ingest/Code.gs` (a **human-readable alias/mirror folder** with no `.clasp.json`, hence undeployable). The **real deployable project** — `google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU/` (scriptId `1o2lzpd…`, has `.clasp.json`) — still has the OLD code. The `diff` proved the files are identical **except** the guard is missing from the real one.
 
 So "deploy" failed not because of a stale checkout, but because **the merged change didn't touch the file that actually gets pushed**. Fixing that now: apply the guard to the real deployable folder → merge → deploy.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #437 opened (the fix that makes the guard deployable). Merging it now per Gary's "merge and deploy" go.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -644,16 +656,19 @@ resume
 ### 🤖 Autopilot
 
 Resuming. Let me check the handoff manifest as instructed, and dry-run the deploy with the now-correct scriptId in parallel.
+[2 tool result(s) compacted: read_context_file, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run is clean: project resolves, clasp identity `garyjob@agroverse.shop`, folder has `Code.gs`, no manifest entry (no hooks). Before the real push I need to confirm the **local checkout** actually has PR #437's guard (my git_push edited GitHub; the local clone may still be at `0ed19da`). Verifying + pulling if needed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local checkout is current (`44cdf96` = #437) and the guard is present in the real deployable file (lines 177–185). Executing the live deploy now — first push without hooks (per convention), then re-run with hooks if any exist.
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -666,16 +681,19 @@ Local checkout is current (`44cdf96` = #437) and the guard is present in the rea
 - The `repoint_deployment` logic from #433: this project had a pinned deployment, so let me confirm whether the push also bumped the version/repointed the live `/exec` URL.
 
 One more verification — confirm the live web-app deployment actually serves the new code (the `?action=status` endpoint on the `/exec` URL should respond). Let me check the appsscript.json + whether there's a pinned deployment that needs repointing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy pushed, but I need to verify the **live `/exec` URL actually serves the new code**. The push only updates `@HEAD` — if the webapp deployment is pinned to an old version, Edgar's WebhookTriggerWorker still calls the old code. Let me list deployments and find how Edgar invokes it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push went to `@HEAD`, but I see **pinned deployments**: `@10` (has the #431 fix) and `@3` ("production deployment") — pinned versions don't auto-follow `@HEAD`. I must confirm **which URL Edgar's WebhookTriggerWorker actually calls**. Let me find that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -782,4 +800,146 @@ Both are small; say the word and I'll do them in the next turn.
 **✅ Done this turn — actions taken:**
 • `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T124703Z_1o2lzpdtzbyttfdxzwjoatxznbql959b-o7-no2g.md
 • `ssh run` ×11 → cd /opt/truesight_autopilot/context/tokenomics && git log --oneline -3 && echo '---GUARD IN LOCAL REAL FILE?---' && grep -n "isTestCurrency"; cat /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU/appsscript.json; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && clasp deploym; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] Keep going
+
+
+### 🤖 Autopilot
+
+"Keep going" — continuing with the two wrap-up items: (1) manifest.json so future deploys auto-repoint the live URL, (2) time log for this session's deploy leg. Let me check the manifest schema from an existing project and the contribution format in parallel.
+
+
+### 🤖 Autopilot
+
+Manifest schema captured, and CONTRIBUTION EVENT format confirmed (`Type`, `Amount`, `Contributor(s)`). Let me check how the deploy tool reads `deployment_id` (CLI arg vs manifest) so the manifest I write actually enables auto-repoint.
+
+
+### 🤖 Autopilot
+
+Key finding: the deploy script takes `deployment_id` as a **CLI arg** (`--deployment-id`), **not** from a manifest file. So the manifest.json I add would be documentation-only — it wouldn't make future deploys auto-repoint. The auto-repoint gap persists unless the CLI arg is passed. Let me check the `gas_deploy_project.py` tool wrapper to see whether it accepts a deployment_id param, and whether a `deployments` block in manifest.json is read anywhere.
+
+
+### 🤖 Autopilot
+
+Interesting — there's an `e2e_inventory_movement_test.py` in scripts! Let me check the gas_deploy wrapper for deployment_id support and look at that E2E script (relevant to the E2E convention).
+
+
+### 🤖 Autopilot
+
+Found the key piece: there **is** a checked-in reusable E2E pattern — `scripts/e2e_inventory_movement_test.py` — but **no asset-receipt equivalent**. That's exactly the gap: Gary asked for the cleanup step to be included in the E2E run for asset receipt events, and the right fix is an automated `e2e_asset_receipt_test.py` mirroring the inventory one. Let me read the full inventory E2E script to model it.
+
+
+### 🤖 Autopilot
+
+The inventory E2E pattern is a clean model — and it confirms the right move: since a **checked-in reusable E2E pattern exists** (`e2e_inventory_movement_test.py`), Gary's ask is best fulfilled by an **`e2e_asset_receipt_test.py`** that includes the expense-off/cleanup step, not just a convention note. Let me gather the last facts needed to write it correctly: the ASSET RECEIPT EVENT labels, the ingest GAS action names, and the offchain/Currencies sheet layout.
+
+
+### 🤖 Autopilot
+
+I now have the ASSET RECEIPT EVENT schema (Currency, Amount, Fund Handler + optional Description) and the ingest action (`?action=processAssetReceiptsFromTelegramChatLogs`). There's a **checked-in E2E pattern** (`e2e_inventory_movement_test.py`) but **no asset-receipt equivalent** — that's the real gap for Gary's ask. Let me find the expense-off webhook/action so the E2E script can do the cleanup step properly.
+
+
+### 🤖 Autopilot
+
+The expense-off has **no automated GAS action** — so the E2E test must self-clean directly via gspread (delete the offchain leg it creates; the `(Test` guard already prevents a Currencies rate row). That matches the established `e2e_inventory_movement_test.py` pattern. Let me get the exact main-ledger tab names for the cleanup step, then write the script.
+
+
+### 🤖 Autopilot
+
+Let me check how the ingest writes the offchain row (columns) so the E2E cleanup can locate it precisely.
+
+
+### 🤖 Autopilot
+
+The ingest logic is fully clear, including the guard. Let me see the rest (how the offchain leg is written) to write a precise cleanup, then check the rollup contribution format and the e2e test file in the repo.
+
+
+### 🤖 Autopilot
+
+I have everything I need: the ingest flow, the guard, the offchain row layout (col E = currency), and the checked-in E2E pattern from `e2e_inventory_movement_test.py`. There is **no asset-receipt E2E script** — that's the real gap for Gary's ask. Writing `e2e_asset_receipt_test.py` now, modeled on the inventory one, with the guard check + mandatory self-clean (expense-off) built in.
+
+
+### 🤖 Autopilot
+
+Compile + lint pass; needs formatting. Let me fix formatting, then push the script to the truesight_autopilot repo.
+
+
+### 🤖 Autopilot
+
+Formatting fixed. Let me read the formatted file and run the local test suite from the repo root, then push.
+
+
+### 🤖 Autopilot
+
+Tests: 777 passed, 3 failed — all 3 failures are in `test_events_catalog.py` (network-error simulation tests), completely unrelated to my new script (untouched file, pre-existing). Per the rule, pre-existing failures in untouched files are acceptable. My script is clean (compile ✓, ruff ✓, format ✓).
+
+Now pushing the E2E script to the repo:
+
+
+### 🤖 Autopilot
+
+PR opened: **truesight_autopilot#326**. Now I need to think about whether this E2E test should **run live now** or just be committed. Given Gary's ask ("make sure in the future this step is also included in the E2E test run for asset receipt event") — the deliverable is the script being part of the E2E run going forward. A **live verification run** now would prove it works, and the script self-cleans (no phantom data left). But it's a live-ledger write. Per the standing "go" on this plan + the self-clean design, let me merge the PR, then do a dry-run-style live verification.
+
+Actually — the one-PR-per-turn rule says stop after opening/merging a PR this turn. Let me merge this PR (Gary's "keep going" + standing go authorizes merging), then report and leave the live E2E run as the RESUME step.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+All done this turn. Report:
+
+---
+
+## ✅ What I did this turn
+
+Gary's "keep going" → executed the real fix for "make the cleanup step part of the E2E run for asset receipt events".
+
+### Key discovery
+There **is** a checked-in reusable E2E pattern — `truesight_autopilot/scripts/e2e_inventory_movement_test.py` — but **no asset-receipt equivalent**. So the correct fix was **code, not just a convention note**: an `e2e_asset_receipt_test.py` modeled on the inventory one, with the expense-off self-clean built in as a **mandatory step**.
+
+### Facts gathered to write it correctly
+- **ASSET RECEIPT EVENT** schema: `Currency`, `Amount`, `Fund Handler` (+ optional Description) — verified via Edgar catalog.
+- Ingest action: `?action=processAssetReceiptsFromTelegramChatLogs` on the live deployment `AKfycbzcX…` (@11, guard live).
+- Ingest writes: Currencies rate row (blocked by `(Test` guard) + offchain leg at `offchain transactions` (col E = currency name, col G = `N`), + audit row on ops tab `Asset Receipts`.
+- **No automated expense GAS action exists** → the E2E self-cleans directly via gspread (delete the offchain leg it created), matching the inventory test's approach.
+
+### The new script — `scripts/e2e_asset_receipt_test.py` (6 steps)
+| # | Step | Guards against |
+|---|---|---|
+| 1 | Submit signed `(Test …)` ASSET RECEIPT EVENT via EdgarClient | signature path |
+| 2 | Fire ingest webhook | ingest wiring |
+| 3 | Poll ops `Asset Receipts` audit tab → status `OK` | dedup/processing |
+| 4 | **Verify NO Currencies rate row created** | QA guard regression ($10k inflation) |
+| 5 | **Self-clean (expense-off): delete offchain leg(s)** | phantom inventory |
+| 6 | Verify zero leftovers (no currency row, no offchain leg) | cleanup completeness |
+
+Exit 0 = PASS only if guard held **and** ledger fully self-cleaned. A run that stops before step 5 is a FAIL — exactly what Gary asked for.
+
+### Quality gates (all passed)
+- `compileall` ✓ · `ruff check` ✓ · `ruff format` ✓
+- Full pytest: **777 passed, 3 failed** — all 3 in `test_events_catalog.py` (network-sim tests, pre-existing, untouched files) — acceptable per rule.
+
+### PR
+**✅ [truesight_autopilot#326](https://github.com/TrueSightDAO/truesight_autopilot/pull/326)** — merged (sha `10ba5b32`): "E2E asset-receipt test with mandatory self-clean (expense-off) step".
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+1. **Live verification run** of the E2E: `python3 scripts/e2e_asset_receipt_test.py` on the autopilot box — proves it passes end-to-end against the live pipeline (it self-cleans, so no phantom data). This touches the live ledger briefly (1 test offchain row created then deleted), so it's a small live action — I'll do it and report the PASS/FAIL output.
+2. **Time contribution** for this session (deploy + E2E script work) — log as CONTRIBUTION EVENT.
+3. Note: the manifest.json auto-repoint idea from last turn is **not viable as designed** — `deploy_gas_project.py` takes `deployment_id` as a **CLI arg**, not from manifest.json. I'll flag that as a possible tool enhancement (add `--deployment-id` support to the `gas_deploy_project` tool surface) rather than a doc-only manifest.
+
+Nothing is blocked — just say "keep going" or "resume" and I'll run the live E2E verification next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && for d in */; do if [ -f "$d/manifest.json" ]; then echo "=== $d ==="; c; cd /opt/truesight_autopilot && grep -rn "deployment_id\|deployment-id\|deployments" scripts/gas_deploy_project.py 2>/dev/null | head -30; ec; cd /opt/truesight_autopilot && ls scripts/ 2>/dev/null; echo '===gas_deploy wrapper==='; find . -maxdepth 3 -name 'gas_deploy*' -o -maxdepth; …(+10 more)
+• `merge pr` → ✅ PR #326 on truesight_autopilot merged successfully (sha: 10ba5b32c1a91943714532e8246a4fb8af781445). Pull Request successfully merged
 
