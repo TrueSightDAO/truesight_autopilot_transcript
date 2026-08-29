@@ -3246,11 +3246,13 @@ New failure mode: `"Select a tree from the list above or enter a Tree ID."` — 
 ### 🤖 Autopilot
 
 `getSelectedTree()` returns `select.value` first (dropdown), else the manual input. The dropdown has 18 options (real trees), so my manual ID was ignored. Simplest correct drive: **select an actual tree from the dropdown** (the E2E geolocation is at tree 469027268's coords → it'll be first in the sorted list). Let me re-run selecting the top dropdown option — and the distance gate passes (we're AT that tree's coords):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `responsePre: "OK"` yet **fetchResults is empty** — no POST to Edgar happened at all. That means `flushQueue()` early-returned (its `.then()` sets "OK" unconditionally). Either the record was never queued, or `isOnline()` returned false. Let me read `queueMonitoring` + `isOnline` + `getPending`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3258,16 +3260,19 @@ New failure mode: `"Select a tree from the list above or enter a Tree ID."` — 
 Now I see it: `flushQueue` calls `fetch(EDGAR_SUBMIT_URL, …)` with **no explicit headers** (FormData), and my `window.fetch` wrapper captured **no results** — meaning the `fetch` itself was never called, or the wrapper's promise didn't resolve in my 8s window. But `responsePre: "OK"` + `pending: 0` suggests `flushQueue` DID run and emptied the queue. If fetch had failed, `remaining.push(record)` would have kept pending ≥ 1.
 
 The contradiction (pending 0, fetchResults empty) means **`isOnline()` returned false** → `flushQueue` early-returned → but then pending should be 1... unless `submitMonitoring`'s own flow reset it. Wait — `pending: 0` and `responsePre: "OK"` are set by `submitMonitoring().then()`. Let me look at what actually happened by capturing `isOnline`'s HEAD call + reading the pending key:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No fetch results captured at all (not even `isOnline`'s HEAD) and `pendingKey: null` — so `PENDING_KEY` isn't `'sunmint_pending'`, and the page's fetches aren't hitting my wrapper (likely the page uses a captured fetch reference or the service worker). Let me grab the actual constants:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `PENDING_KEY = 'sunmint_monitor_pending'` (I used the wrong key name). The wrapper not capturing fetches is suspicious though — but the flow ran (`responsePre: OK`). Let me do the final clean run with the correct pending key + full network capture via Playwright's native `page.on('request'/'response')` (more reliable than my in-page wrapper):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3326,36 +3331,43 @@ go
 ### 🤖 Autopilot
 
 "go" — opening the fix PR for the blob-serialization bug. First, let me pull the exact current code from `sunmint_beta` main (queueMonitoring/flushQueue) and check for any existing blob helpers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The main version has the same bug (no blob helper). Now I'll write the fix: base64-encode blobs on queue, decode on flush. Let me read the exact functions to build precise hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The bug is confirmed in main (60348 bytes, same code). The fix: base64-encode blobs in `queueMonitoring`, decode in `flushQueue`, skip broken legacy records. Opening the PR on `sunmint_beta`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #28 opened. Given the earlier empty-file incident, let me verify the PR's diff actually applied correctly (file not empty, both hunks landed):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bash heredoc quoting issue with the embedded python. Let me split it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #28 diff is healthy this time: **1 file, +31/−3, 61664 bytes** (non-empty — the empty-file incident didn't recur), both hunks landed (`closeupDataUrl: await blobToDataURL` present, 6 helper references). Let me do the JS syntax check separately:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JS syntax verified. Merging the fix per standing authorization:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3404,11 +3416,13 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming with the re-run of the monitor E2E against the merged fix. Same script, now expecting the POST to actually fire:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Playwright `response` objects use `request().method()`, not `r.method()`. Quick fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3419,6 +3433,7 @@ Playwright `response` objects use `request().method()`, not `r.method()`. Quick 
 - `pending: []` — the queue **flushed completely** (photos delivered as base64→Blob)
 
 Now the definitive check — the `[TREE GROWTH MONITORING EVENT]` should be **in the Telegram Chat Logs ledger** now. Scanning col G:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3431,11 +3446,13 @@ Now the definitive check — the `[TREE GROWTH MONITORING EVENT]` should be **in
 The full chain now works: monitor form → queue (with base64 blobs) → POST → Edgar → **Telegram Chat Logs** ✅
 
 Now the final step: fire the growth webhook to process row 11885 into **Tree Growth Measurements**:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook still throws the TypeError — because I'm hitting the **@34 URL** (old, pre-#442). The @35 deployment (with the fix) has a different URL. Let me get the current deployment list and hit the right one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3547,4 +3564,70 @@ I've hit the tool-round + one-PR-per-turn boundary — let me converge with a pr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /home/ubuntu/dapp_beta && { source /tmp/sophia_keys_clean.env 2>/dev/null || { echo "KEYS MISSING"; exit 1; } cat > /tmp/e2e_monitor_fixe; cd /tmp && cat > /tmp/scan_growth_ledger.py <<'EOF' import json from google.oauth2 import service_account from googleapiclient.discovery imp; echo "=== fire growth webhook @35 (admin-executed, now with return-object fix) ===" && curl -sL "https://script.google.com/macros/s/AKfycbzM; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming the cleanup. Step 1: close the wrong PR #445 and clean the duplicate line on #446's branch in parallel:
+
+
+### 🤖 Autopilot
+
+PR #445 closed. Now fix the duplicate treeId line on v2 branch via Contents API (remove the second `result.treeId` line), then verify:
+
+
+### 🤖 Autopilot
+
+The intermediate file didn't get written correctly. Let me do it in a single clean Python script:
+
+
+### 🤖 Autopilot
+
+Duplicate removed (commit `58f5ec7`). Now verify the PR #446 diff is clean, then merge it:
+
+
+### 🤖 Autopilot
+
+PR #446 diff is now **clean**: `+2 −1`, `escapeRe` helper + regex escaping, single treeId line intact. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: cleaned up PR mess + merged the TGM regex fix (PR #446)
+
+**Merged:** 🔀 [tokenomics #446 — fix: TGM extractor DBH (cm) label never matches — monitoring records silently skipped](https://github.com/TrueSightDAO/tokenomics/pull/446) (sha `b167e23`)
+
+**The bug it fixes (4th real bug found in the chain):** `extractTreeGrowthMonitoringInfo_()` built its field regex from labels **verbatim** — `DBH (cm)` contains `(`/`)` regex metacharacters, so `- DBH (cm): 12.5` never matched → `dbh: ""` → every monitoring record hit the `!info.dbh` skip → **real monitoring submissions were silently dropped from Tree Growth Measurements** (proven live: webhook "1 skipped", node replication `dbh: ""`).
+
+**The fix (`+2 −1`):** added `escapeRe()` (regex-metacharacter escaping) and applied it to the label in the `grab` regex. All other labels (Tree ID, Latitude, etc.) unaffected.
+
+**Cleanup done this turn:**
+- 🔒 **PR #445 closed** (my first edit accidentally deleted the `result.treeId` line and added no fix — wrong PR, closed via API)
+- 🧹 **Duplicate `treeId` line removed** from the #446 branch (Contents-API commit `58f5ec7`) → verified diff clean (`+2 −1`) → merged
+
+## RESUME HERE → next unit (deploy + final verification)
+
+1. **`clasp push`** merged code to GAS project `1UrBgq…` (pull main first — the stale-checkout trap) → confirm `escapeRe` present → create new deployment (e.g. @36).
+2. **Fire the growth webhook** @36 → expect **"1 recorded"** (row 11885) → confirm the row lands in **Tree Growth Measurements** (the final link in the monitor chain — with a real DBH now extracting).
+3. **Plain-planting decision** (still open): row 11882 `[TREE PLANTING EVENT]` — cron-restore on `1Jp8q…` vs dispatch-port into the `1UrBgq…` webhook → execute → confirm SunMint Tree Planting tab gets the row.
+4. **§5g close-out**: test photo `sunmint/images/20260829134704_…jpg` keep/remove; ledger rows 11882/11885 keep; final green report + thread close-out.
+
+**Bottom line:** the TGM extractor bug is fixed and merged — the monitor chain is now complete in code (queue→POST→ledger→webhook→extract→sheet), pending one deploy + one webhook fire to prove "1 recorded" live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== 1. close PR #445 (wrong; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" cd /tmp && curl -s -H "Authorizat; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" cd /tmp && cat > /tmp/dup_fix.py ; …(+1 more)
+• `merge pr` → ✅ PR #446 on tokenomics merged successfully (sha: b167e231a4092c91075726c70d00ab44ca10d8d5). Pull Request successfully merged
 
