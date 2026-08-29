@@ -102,21 +102,25 @@ I now have the full picture. Let me check existing `send_message` tests in the a
 ### 🤖 Autopilot
 
 Let me read the send_message resume tests and reaction tests section:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the specific resume/send_message test section (lines ~830-990):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Let me check the plan file and current repo state before implementing:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need. Let me check the plan's tail (gates) and set up a clean worktree from origin/main to apply and test the fix:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -130,11 +134,13 @@ I have the complete picture. This is the follow-up fix (thread 15991) to PR1-3 (
 4. Run full local test suite, then open ONE PR (no self-merge — own-repo gate)
 
 Let me apply the edits locally first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All four edits applied. Now add the unit tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -264,4 +270,68 @@ PR #335 is open and clean. The diff is exactly the intended change — 7 files, 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && git diff -- app/resume_registry.py app/telegram_adapter.py app/tools/telegram_post.py app/tools/telegram_topi; cd /tmp && rm -rf pr335_check && git clone -q --depth 20 --branch fix/resume-here-autoflag https://github.com/TrueSightDAO/truesight_autopil; cd /tmp/pr335_check && git rev-parse --abbrev-ref HEAD && git log --oneline -3 && echo "---DIFF STAT vs origin/main---" && git fetch -q orig; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary "go" received. Let me check the handoff manifest for this thread's plan gates and the current PR state before acting (the standing gate for `truesight_autopilot` is "open PRs only, never self-merge" — I want to confirm exactly what this go unlocks):
+
+
+### 🤖 Autopilot
+
+Let me read the referenced plan file to understand what the "go" unlocks at this stage (merge gate? deploy gate?):
+
+
+### 🤖 Autopilot
+
+The plan file isn't where the manifest says. Let me locate it and check what the current "go" unlocks (plan gates: PR4 docs? deploy?):
+
+
+### 🤖 Autopilot
+
+Let me check the local agentic_ai_context clone for the plan:
+
+
+### 🤖 Autopilot
+
+The plan file isn't in the local (stale) checkout. Let me fetch the latest agentic_ai_context and pull the emoji plan to see what PR4 (docs) and the gates are:
+
+
+### 🤖 Autopilot
+
+I've gathered the state. Before I act, let me lay out what I found and the one decision point — I'd rather ask than guess on this one, because it touches a standing gate.
+
+## Status: follow-up fix is done, PR #335 open, NOT merged
+
+- **PR #335** (branch `fix/resume-here-autoflag`, commit `89351e6`) — auto-flags any posted message containing "📌 RESUME HERE" as resume-awaiting, wired into all 3 flag sites + tests. **`merged_at: null` — still open.**
+- Local verification: compileall ✅ · ruff check ✅ · ruff format ✅ · targeted 98 passed · full suite 812 passed (3 pre-existing `test_events_catalog.py` Edgar-network failures, reproduced with changes stashed — unrelated).
+- The handoff for this thread said explicitly: **"Own-repo gate: open PRs only, never self-merge"** and **"Do not self-merge."** That's why I stopped at opening the PR and reported it.
+
+## The decision point (your "go" unlocks which step?)
+
+| Option | What happens | Notes |
+|---|---|---|
+| **A — you merge #335, I deploy** | You merge (or say "merge #335"), then I run `deploy_autopilot` (restart myself on the box with the fix live) + submit the DAO contribution | Respects the own-repo gate literally; deploy is my never-auto step, needs your explicit word |
+| **B — I self-merge on your go** | I merge #335 now per the general rule (go authorizes merge), then pause for your deploy approval | Overrides the handoff's "do not self-merge" — I need you to say it explicitly |
+| **C — continue the original plan's PR4 (docs)** | The emoji-GO plan had a PR4 (docs) unit never done | Separate from this thread's fix |
+
+My read: you reported a bug and want it **live** — so the go most likely means "finish it" (merge + deploy). But the handoff explicitly forbade self-merge, so a bare "go" isn't enough for me to override that on my own.
+
+**Say one of:**
+1. `merge #335` — I merge it, then confirm before deploying.
+2. `merge #335 and deploy` — I merge AND run `deploy_autopilot`, then report.
+3. `I merged it` / `merge it yourself` — whichever matches what you want.
+
+📌 **RESUME HERE = awaiting your one-word merge/deploy instruction for PR #335.** (No new work started — PR is ready, verified, and parked at the merge gate as instructed.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls /opt/truesight_autopilot/context/agentic_ai_context/handoffs/plans/ 2>/dev/null | grep -i emoji; echo "---"; ls /opt/truesight_autopilot/
 
