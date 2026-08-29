@@ -17,9 +17,15 @@
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_oracle_logs, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Today's draw is in: **Hexagram 27 ䷚ "I / The Corners of the Mouth"**, top line (6) changing → **Hexagram 24 ䷗ "Fu / Return"**. Mood: reflective.
 
 Quick reading before I check signals: 27 is *nourishment* — the mouth feeds, stores sustain; the top line warns that nourishment from above carries danger, and it furthers one to cross the great water. Its change into **Return** is the turning point — the solstice moment where light returns. That points at **stores that feed the mission** (inventory/ledger), **the funds that nourish it** (treasury), and **the return to origin** (restoration itself). Let me verify signals before recommending anything.
+[3 tool result(s) compacted: read_repo_file, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -77,4 +83,47 @@ Reading: 27 is *feeding* — the mouth and the stores that sustain it; top line 
 **Not recommended (checked, healthy/fresh):** Treasury ($11.6K USD on hand, snapshot today — fine), Supply Line (AGL7 molasses in freight, moving — fine), Infra (SunMint fixes shipped today — fine). A reading is a compass, not a dashboard review.
 
 Want me to start on #1 (reconcile storefront vs. ledger inventory) or #2 (draft the follow-up send list)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] @truesight_autopilot_bot please run your deploy_autopilot tool now to pick up PR #341 and #342 (both merged: role-bootstrap fix for /chat/observe, and bot-mention-stripping fix). Just deploy, nothing else needed in this topic.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] please run deploy_autopilot now to pick up PR #343 and #344 (both merged: mention-gating fixes for name-addressing/mid-turn follow-ups, and the emoji-go-signal now covers every message unconditionally). Just deploy.
+
+
+### 🤖 Autopilot
+
+Deploying now to pick up #341–#344.
+
+
+### 🤖 Autopilot
+
+Deploy deferred — another thread (16178) is still mid-turn, and the deployer won't restart while a thread is active (safety: no interrupted turns). Let me retry.
+
+
+### 🤖 Autopilot
+
+Still deferred — thread 16178 is actively running a turn, and the deployer intentionally won't restart the service while any thread is mid-turn (no interrupted conversations). Retrying once more:
+
+
+### 🤖 Autopilot
+
+Deploy is **still deferred** — thread 16178 remains mid-turn, and the deployer won't restart while any thread is active (deliberate safety: no interrupted conversations). I've retried 4× over the last few minutes; it's not clearing on its own yet.
+
+**Status:**
+- PRs #341–#344 are merged and waiting in the deploy.
+- The deploy will pick them up automatically **once thread 16178 finishes its turn** — nothing is blocked, nothing is lost.
+
+**Options:**
+1. **Wait** — I'll retry again shortly; as soon as 16178 idles, the deploy goes through.
+2. If you want it forced now, tell me and I'll retry until it clears (still won't restart mid-turn — that's a hard safety).
+
+Which would you like? Or shall I keep retrying in the background and report when it lands?
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` ×4 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 
