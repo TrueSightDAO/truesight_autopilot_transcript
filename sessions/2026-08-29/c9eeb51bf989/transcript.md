@@ -77,56 +77,77 @@ Now let me read the exact code regions in both files.
 ### 🤖 Autopilot
 
 Let me see the remaining sections of monitor-tree-growth/index.html (showPhotoSection, onTreeSelectChange, and the tail of window.onload).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact deep-link tail of window.onload (it was truncated in the earlier read).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check `setLang` (to confirm the deleted line is redundant) and whether node is available for a JS syntax sanity check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have full context on both files. Before pushing, let me verify the exact current text of `startCamera()` (to understand repeated-call behavior) and then apply my hunks locally to confirm they match exactly once each.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have complete context on both files. Let me apply the edits locally first to verify every hunk matches exactly, then sanity-check the JS with node before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying the edit script (parameter ordering issue on my end).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 9 hunks applied exactly once. Now let me sanity-check the JS by extracting the inline script and running `node --check` on it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both JS blocks pass `node --check`. Let me review the final diff and then push via `git_push_changes`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff looks exactly right. Per the local-test rule, let me run the standard suite on the autopilot box before pushing (cheap insurance), then push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JS syntax checks passed (the HTML change doesn't touch autopilot Python code, so the `node --check` on the extracted inline scripts is the meaningful verification here — plus the hunks all matched exactly once). Now pushing the branch + opening the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff verified. Now pushing the branch and opening the PR with the exact hunks I validated.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -274,4 +295,140 @@ Want me to:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/sunmint_beta_clone 2>/dev/null && echo "=== grep contributors in sunmint_beta ===" && grep -rn "dao/contributors\|contributors?publi; echo "=== sunmint_beta_clone exists? ==="; ls -d /tmp/sunmint_beta_clone 2>/dev/null && grep -rin "contributor" /tmp/sunmint_beta_clone --in; echo "=== sunmint_prod root index.html: EDGAR_BASE + fetch + contributors ==="; grep -n "EDGAR_BASE\|contributors\|fetch(" /tmp/sunmint_prod; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] [Handoff context — this Telegram topic (thread 16178) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"Go" received. Executing the plan: verify how far prod lags beta, confirm the live deploy path, and prep the promotion. Beta-first — read-only investigation first, no prod writes.
+
+
+### 🤖 Autopilot
+
+Live pages are served by **GitHub Pages** (`server: GitHub.com`) — so prod serves `sunmint_prod/main` directly, and beta serves `sunmint_beta/main`. That means the fix is purely a **fork sync** (prod is behind). Let me confirm the live beta page already uses the good endpoint and measure the exact delta between the two repos.
+
+
+### 🤖 Autopilot
+
+Prod is served by **GitHub Pages** straight from `sunmint_prod/main` — confirmed. And the compare shows prod's tip (`0c01026` "promote monitor email-linking UX fix from beta", 2026-08-29 12:30Z) is the **merge base**, meaning beta `main` is strictly ahead of prod. Let me read the full compare to see exactly what's in the delta.
+
+
+### 🤖 Autopilot
+
+Prod is served by **GitHub Pages** from `sunmint_prod/main` — and the compare shows prod's tip (`0c01026`, Gary's 12:30Z promotion) is the **merge base**, meaning prod is strictly behind beta (no divergence). Beta main already has the `/dao/check_digital_signature` fix live. Let me enumerate the exact delta so I can present what a promotion would bring, and check the Pages build state.
+
+
+### 🤖 Autopilot
+
+The compare API gave an odd result (likely cross-repo resolution quirk). Let me settle it deterministically — diff the two local clones directly:
+
+
+### 🤖 Autopilot
+
+Two of the three diffs are the **intentional CNAME divergence** (prod vs beta domains) and the `index.html` from the already-promoted UX fix. The important one is `monitor-tree-growth/index.html`. Let me diff it precisely to see exactly what a promotion would carry:
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the monitor diff (camera CSS hunk) and check the `index.html` divergence to assess whether a fork-sync would conflict:
+
+
+### 🤖 Autopilot
+
+The diff confirms beta is ahead of prod on the two HTML files. One nuance to nail down: whether the camera-gesture changes from my PR #29 are already in beta main (the diff shows the deep-link threading IS there), and whether the `.camera-viewport` CSS cap made it in. Let me check PR #29's state and the CSS in beta main directly:
+
+
+### 🤖 Autopilot
+
+`go` received. Beta main is already ahead and correct — but before I finalize the promotion plan, I need to resolve one anomaly: PR #29 (my earlier unmerged PR) shows **open**, yet beta main **already contains** its changes (camera CSS cap, lazy start, deep-link threading, `check_digital_signature`). Let me nail down where those changes actually came from, and map the exact prod→beta delta for promotion.
+
+
+### 🤖 Autopilot
+
+PR #29 is **open but appears redundant** — beta main already carries all four of its changes. Let me verify that rigorously before acting, and pin down the exact promotion delta:
+
+
+### 🤖 Autopilot
+
+The branch ref didn't fetch (needs explicit refspec). Retrying:
+
+
+### 🤖 Autopilot
+
+Let me see the actual content diff between main and my PR branch — if it's empty, the PR is a no-op duplicate and should be closed:
+
+
+### 🤖 Autopilot
+
+The diff is NOT empty — which means beta main does **not** actually contain my PR #29 changes, contradicting my earlier grep. I bet my earlier greps hit **uncommitted local edits** left in the clone from turn 1's hunk-verification (I applied the hunks locally to verify, and `git checkout main` kept them). Let me verify against the committed blobs, not the working tree:
+
+
+### 🤖 Autopilot
+
+Mystery solved — **beta main does NOT contain my PR #29 changes** (my earlier greps were polluted by local working-tree edits from turn 1's hunk-verification; the committed blobs show the OLD eager-camera code). And **beta main DOES already use `check_digital_signature`** (from PR #26, merged 12:37Z — so the `/dao/contributors` 404 is **prod-only**, confirming my original diagnosis).
+
+So the current state:
+- **PR #29 (mine, open, unmerged)** — the four camera-gesture fixes, NOT yet in beta main. Needs your UAT on beta before merge/promote.
+- **beta main** = all merged fixes up through #28, including the `check_digital_signature` fix (#26).
+- **prod main** = behind beta (old `/dao/contributors` URL) and also lacks all the camera fixes.
+
+Let me pin down exactly what a promotion would carry, and check for a conflicts risk:
+
+
+### 🤖 Autopilot
+
+I now have a complete, verified picture. Let me read the compare's file list to enumerate exactly what a promotion carries, then I'll present the findings and a decision point to you.
+
+
+### 🤖 Autopilot
+
+I have everything I need. Here's the full situation and the decision point.
+
+## Summary — what's actually going on
+
+**1. Why the call happens (root cause confirmed)**
+The `monitor-tree-growth` page (not the main page) does two identity lookups on load using `localStorage` RSA public key:
+- `checkSignatureRegistration()` + `loadContributorIdentity()` → both fetch `/dao/contributors?public_key=…`
+
+**2. Does the endpoint exist? — No.** It returns `404 {"detail":"Not Found"}`. Edgar's OpenAPI has no such route; the real route is `/dao/check_digital_signature?signature=…` (which returns `{"registered":false,…}` for an unregistered key — the correct graceful response).
+
+**3. It's a PROD-only bug — beta is already fixed.**
+- **beta main** (live at `beta.sunmint.truesight.me`) already uses `check_digital_signature` — fixed by **PR #26** (merged 12:37Z today).
+- **prod** (`sunmint.truesight.me`) still serves the old `/dao/contributors` URL — **prod is behind beta**. It's GitHub-Pages-served straight from `sunmint_prod/main`, so the fix is a **fork sync beta→prod**.
+
+**4. PR #29 (mine) is still open/unmerged — beta does NOT have it.**
+My earlier greps were polluted by uncommitted local working-tree edits from turn 1's hunk-verification. Verified against committed blobs: beta main does **not** contain the camera-gesture fixes (still eager `startTreeCamera()` on load). The four items are **only on my `fix/tree-camera-mobile-gestures` branch** awaiting your UAT.
+
+## What a prod promotion would carry (beta→prod delta, verified)
+- **PR #26** — `/dao/contributors` → `/dao/check_digital_signature` (the 404 fix)
+- **PR #27** — show invalid zone on manual tree selection for governors/sentinels
+- **PR #28** — offline queue blob→base64 fix (monitor photos were serializing to `{}`)
+- Plus earlier merged items already on beta (email-link UX, renderEmailSection null fix, nav, APK URL, etc.)
+- **CNAME** intentionally differs (prod `sunmint.truesight.me` vs beta `beta.sunmint.truesight.me`) — fork sync must NOT clobber it
+
+**Conflict risk:** `monitor-tree-growth/index.html` has prod-specific content (GOVERNORS array, `loadContributorIdentity`) that overlaps with what beta changed. A straight GitHub fork-sync could conflict on that file. **PR #29 is not yet in beta**, so it will NOT ride along.
+
+## The decision — what do you want me to do?
+
+Given the goals (fix the 404 on prod, and eventually ship the camera fixes), I see these paths:
+
+| Option | What happens | Notes |
+|---|---|---|
+| **A. Targeted prod fix now** | Cherry-pick/apply just the `/dao/contributors`→`check_digital_signature` swap to prod (both call sites), via a prod PR or direct file edit. Does **not** bring the other beta improvements. | Smallest, safest; but prod stays behind beta on everything else. |
+| **B. Full beta→prod promotion** | Sync prod to beta `main` (careful fork-sync preserving prod CNAME), bringing #26–#28 + all beta improvements. | Closes the gap; but needs prod-CNAME preservation and a clean merge. Bigger blast radius. |
+| **C. UAT-first, then promote** | You UAT **PR #29** on beta first (items 1 & 4 camera gestures), I merge it, then do **B** so prod gets everything in one promotion. | Cleanest end-state; matches beta-first policy. |
+
+My recommendation: **C** — it fixes the prod 404 **and** ships the camera fixes together, in one reviewed promotion. But if you want the 404 gone immediately with minimal risk, **A** gets it done now.
+
+One question before I execute anything: **prod currently lags beta significantly — is a full promotion (option B/C) acceptable to you right now, or do you want only the surgical 404 fix (option A)?** I will not touch `sunmint_prod` or merge anything without your explicit direction.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → echo "=== live PROD headers ==="; curl -sI https://sunmint.truesight.me/ | head -20; echo ""; echo "=== live BETA headers ==="; curl -sI htt; echo "=== nginx sunmint configs ==="; grep -rln "sunmint" /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null; echo ""; echo "=== vhost; echo "=== LIVE beta monitor: fetch URLs ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -oE "(EDGAR_BASE}/dao/[a; …(+11 more)
 
