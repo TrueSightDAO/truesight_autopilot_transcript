@@ -713,6 +713,7 @@ Two candidate root causes for the missing button. Let me read `populateTreeDropd
 ### 🤖 Autopilot
 
 The monitor page's `renderEmailSection` is safe (it has `id="emailLinkedLabel"`), so the crash is root-page-only — but I need to see the root page's onload order and how the email-link flow persists the key, plus what Edgar says about your *other* key (the one from the prod URL earlier):
+[3 tool result(s) compacted: ssh_run, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -790,6 +791,7 @@ I am still not seeing an active camera
 Gary — I hear you. The camera still isn't working **because the fix still isn't live**: PR #29 (which contains the exact crash fix + lazy camera start) is still sitting **unmerged**, so beta is still serving the old code where `renderEmailSection()` throws on every load and aborts `startTreeCamera()` before it can run. You can't UAT the fix until it's actually on beta.
 
 Let me verify the live state and merge it now — this is the precondition for your UAT.
+[2 tool result(s) compacted: ssh_run, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1007,4 +1009,59 @@ Want me to merge #30 now?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && rm -rf sunmint_beta_dl && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_dl 2>&1 | tail -2;; cd /tmp/sunmint_beta_dl && echo "=== deep-link block (1177-1200) ===" && sed -n '1177,1200p' monitor-tree-growth/index.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] merge 307
+
+
+### 🤖 Autopilot
+
+Merging #30 now (reading "307" as PR #30 — it's the only open PR on sunmint_beta). Let me confirm then merge:
+
+
+### 🤖 Autopilot
+
+Confirmed — #30 is the only open PR on sunmint_beta. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #30 merged** — the deep-link governor-gate fix is now in beta main.
+
+## What I did this turn
+- **Confirmed** #30 was the only open PR on `sunmint_beta` (guarded your "merge 30" against any ambiguity)
+- **Merged [sunmint_beta#30](https://github.com/TrueSightDAO/sunmint_beta/pull/30)** (squash, sha `d4c9023`) — "fix: show MARK INVALID zone on deep-link fallback path for governors"
+- **What changed:** `monitor-tree-growth/index.html` — the `?tree=` deep-link **fallback** branch (tree id NOT in local index) now calls `maybeShowInvalidZone()` after `showPhotoSection(false)`, so governors see the **MARK INVALID** button on every path (dropdown pick, manual ID, deep-link match, deep-link fallback). One line.
+
+## Current beta main now carries (in order)
+- `dbaf77e` — #29 camera-gesture fixes (lazy camera, viewport cap, null-crash fix)
+- `d4c9023` — #30 deep-link invalid-zone fix
+- plus earlier #26 (check_digital_signature), #27 (gate), #28 (photo blobs)
+
+## RESUME HERE → next unit
+**Unit 3: UAT + promote to prod.** After GitHub Pages rebuilds (~1–5 min), Gary UATs on `beta.sunmint.truesight.me`:
+1. Root page — camera starts on **tap**, no `Cannot set properties of null` error
+2. `monitor-tree-growth/?tree=<unknown-id>` — **MARK INVALID** shows (as governor)
+3. `?tree=<known-id>` (dropdown match) — MARK INVALID also shows
+Then on your "deploy": run `sync_beta_to_prod(sunmint_prod)` to ship #29 + #30 (plus #26–#28) to prod — that also brings the `/dao/check_digital_signature` 404 fix, the governor gate, and the photo-blob fix. (Prod CNAME is preserved by fork-sync; if it conflicts I stop and report.)
+
+## Awaiting you
+- UAT on beta (hard-refresh / incognito to bypass the stale gate cache)
+- Then **"deploy"** for the prod promotion — I won't touch prod until you say so.
+
+———
+**✅ Done this turn — actions taken:**
+• `list prs` → sunmint_beta open PRs: #30 only
+• `merge pr` → ✅ PR #30 on sunmint_beta merged (sha: d4c90236715202675c461dec4d5b0ea1b449d110)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #30 on sunmint_beta merged successfully (sha: d4c90236715202675c461dec4d5b0ea1b449d110). Pull Request successfully merged
 
