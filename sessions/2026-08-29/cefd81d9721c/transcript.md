@@ -26,56 +26,67 @@ Cor oni! LTE QD 4 af oT So Summary of failures for Google Apps Script: TDG - Mon
 ### 🤖 Autopilot
 
 Gary, let me dig into that GAS failure. The OCR is garbled but I can make out the script name (**TDG - Monthly Recurring Tokenization**) and `processRecurringTransactions` failing around 8/28 12:27. Let me find that script and its error.
+[3 tool result(s) compacted: search_context, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context files don't mention it. The GAS projects live in the tokenomics repo under `google_app_scripts/` — let me search there and check the ADVISORY_SNAPSHOT hit.
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Not in the code search index. Let me look at the actual repo structure and the ADVISORY_SNAPSHOT hit.
+[3 tool result(s) compacted: search_code, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ADVISORY_SNAPSHOT hit was incidental. Let me check the local tokenomics checkout (where GAS projects live) and find the script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Many GAS projects. Let me grep the local checkouts for the recurring tokenization code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — GAS project `1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK` contains `tdg_recurring_tokenization_monthly.js`. Let me read the code.
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is long and truncated. Let me pull the rest, especially the `processRecurringTransactions` function where the failure happened.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still truncated — let me get the tail of the file, which should include `processRecurringTransactions`.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is unwieldy. Let me just grep the file directly on the box for the failing function.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the `processRecurringTransactions` function and its helpers in full, plus check the GAS execution logs if accessible.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full script now. The failing function is `processRecurringTransactions` (line 331). The OCR garbled the actual error text — let me re-OCR the screenshot with different settings to extract the exact error message, and check the current state of the Recurring Transactions sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -160,4 +171,69 @@ No irreversible actions taken — this was all read/diagnosis.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → ls ~/tokenomics/google_app_scripts/ 2>/dev/null || find / -maxdepth 4 -type d -name "google_app_scripts" 2>/dev/null | head -5; cd ~/tokenomics/google_app_scripts && grep -rl "processRecurringTransactions" . 2>/dev/null | head; echo "---"; grep -rl "Monthly Recurring"; cd ~/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && grep -n "function " *.js && echo "=== manife; …(+13 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Keep digging
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] @truesight_autopilot_bot keep digging
+
+
+### 🤖 Autopilot
+
+Continuing the dig — the interesting open questions: (1) is `Code.js` safe to delete (does it hold any unique functions), (2) is this the **only** broken GAS project, or do other folders have the same duplicate-global collision class, (3) what's in `Version.gs`/`appsscript.json`. Running all in parallel:
+
+
+### 🤖 Autopilot
+
+The scan just revealed this is **not one broken project — it's a class of breakage**. Let me see the full scan output to enumerate every affected project.
+
+
+### 🤖 Autopilot
+
+The scan surfaced **3 more project folders with the same collision pattern** — but I need to separate true breakage from legal JS. Key distinction: **`var` redeclaration is legal** (last wins), **`const`/`let` redeclaration throws SyntaxError**. Let me verify which of the flagged folders have actual `const` duplicates, and whether the duplicate files are identical (stale copies) or divergent.
+
+
+### 🤖 Autopilot
+
+## Converged findings — this is bigger than one script
+
+I kept digging and found **the same failure class across multiple GAS projects**. Here's the complete picture.
+
+### Confirmed broken (duplicate top-level `const`/`let` → SyntaxError on compile)
+
+| Project (scriptId) | Colliding files | Duplicated global(s) | Verdict |
+|---|---|---|---|
+| **`1LxWu9hOs…5jr5fK`** (TDG - Monthly Recurring Tokenization — **your screenshot**) | `Code.js` + `tdg_recurring_tokenization_monthly.js` | `const CONFIG` | **BROKEN** — `Identifier 'CONFIG' has already been declared`, count 2, 8/28 12:27 |
+| `1wmgYPwfR…7fL_sZ` | `Code.js` + `sales_update_main_dao_offchain_ledger.js` | `creds`, `TELEGRAM_TOKEN`, `SOURCE_SHEET_URL`, `SOURCE_SHEET_NAME`, `DEST_SHEET_URL`, `DEST_SHEET_NAME`, … (17 consts) | **BROKEN** — the two files are **byte-identical duplicates** |
+| `1zKgMwd6K…sNKq0` | `Code.js` + `register_member_digital_signatures_email.js` | `creds`, `CONFIG` | **BROKEN** — same error as yours |
+
+### Benign (no breakage)
+- `1y6JVYwq…Z65Qsz` — `Code.js` + `web_app.js` collide only on **`var`** declarations → `var` redeclaration is legal JS (last wins). Ugly, but **does not throw**. Clean up later, not urgent.
+
+### Root cause (single origin)
+All broken folders gained a **stale `Code.js` duplicate during the 2026-06-16 clasp_mirrors flatten** (`63f441e`). The canonical files are the descriptive ones (per each project's `manifest.json` / source-comment headers). `Code.js` is the accidental double. Since `gas_deploy_project` pushes **every file in the folder**, any push or trigger compile of these projects fails hard.
+
+### Impact on your recurring tokenizations
+Live sheet shows "Most Recent Tokenization Date" = **20260723** on all ~14 rows (warehouses, eodhd, Kiki, etc.) → **the August cycle was skipped** and September is pending. The 8/28 12:27 trigger tried and died at compile.
+
+### Fix plan (next turn — needs your "go")
+1. **tokenomics PR** removing `Code.js` from the 3 broken folders (verify each sibling is canonical first via manifest; the `1wmgYPw` folder needs a closer look since `Code.js` = `sales_update…js` identical + a third `telegram_webhook_listener.js` present).
+2. Deploy each fixed project with `gas_deploy_project(push=true)` (dry-run first).
+3. Manually trigger `processRecurringTransactions` to catch up August + September; verify Ledger rows.
+4. **Guardrail**: add a duplicate-global pre-push check to the GAS deploy tooling (`truesight_autopilot`) so this class of breakage can never be pushed again — I'll open a PR for that too.
+
+**Not yet verified (1 more suspect):** a 4th folder (notarization — `_notarization_telegram_logs.js` / `process_notarization_telegram_logs.js`) showed a partial collision in the scan but got cut off at the artifact boundary — needs one more scan pass to confirm.
+
+### ⚠️ Note on the trigger
+You asked me to keep digging and I did (all read-only). **I have not deployed or changed anything** — the fix requires your "go" since it touches live tokenization payouts.
+
+**RESUME HERE** — next turn: (1) re-run the collision scan capturing the full notarization folder + manifests for the 3 broken folders, (2) on Gary's go, open the tokenomics PR deleting the stale `Code.js` files, (3) dry-run → push deploy → re-run `processRecurringTransactions` catch-up, (4) open the `truesight_autopilot` guardrail PR for duplicate-global detection in `gas_deploy_project`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd ~/tokenomics/google_app_scripts && echo "=== CLASS-OF-BUG SCAN: duplicate top-level globals per project folder ===" && for d in */; do id; cd ~/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== functions in Code.js ===" && grep ; cd ~/tokenomics/google_app_scripts && for id in 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n7dhRzs7BmUBQg7fL_sZ 1zKgMwd6KJFjoWkRH6OobgFvtVzrXVuEKf
 
