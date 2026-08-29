@@ -973,26 +973,31 @@ The deploy tool won't restart (it thinks "already on latest commit"). I'll resta
 ### 🤖 Autopilot
 
 The manual restart is **blocked by the guard** (must use `deploy_autopilot` — which no-ops because disk == remote). This is a deadlock: disk has `3d7d152`, process runs `7539c00`, and the tool only restarts when it detects a version change. Let me inspect the deploy tool's logic to find the sanctioned way to force the restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how `deploy.sh` decides "no deploy needed" — there may be a flag to force restart, or the noop is because it compares a deployed-version marker:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy script itself restarts the telegram adapter at line 289 — but the `deploy_autopilot` **tool** short-circuits with "noop" when the commit matches. Let me check the tool-side noop logic (it likely lives in the tool backend, not deploy.sh):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the tool logic at `app/tools/deploy.py`. Let me read the noop decision block (around 466-530) to understand exactly when it restarts vs noops — the comment at line 482 mentions a "redeploy loop" guard:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool logic explains the noop: `_is_process_stale()` returned "not stale" — but I bet it checks the **main autopilot service** (restarted 14:54:04, after merge) while the **telegram adapter** (started 14:35:52, before merge — the process that handles reactions) is the truly stale one. Let me read `_is_process_stale` and the deploy.sh telegram-restart condition to confirm:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1002,6 +1007,7 @@ The tool logic explains the noop: `_is_process_stale()` returned "not stale" —
 This is a **bug in the staleness check**: it should check the mtime of the files that actually changed, or check the telegram adapter process specifically. The sanctioned fix is a code PR to `deploy.py` (check changed-source mtimes, not just `deploy.py`), but that's a new PR — and I'm being asked to deploy, not write more code.
 
 Given the guardblocks manual restarts, the **cleanest path that doesn't touch prod by hand** is a tiny follow-up PR to `app/tools/deploy.py` — making `_is_process_stale` also stale-check against the files that changed (#336 touched `telegram_adapter.py`, `resume_registry.py`) — then `deploy_autopilot` will correctly detect the stale telegram process and restart it. But that's a new plan unit. Let me first verify my hypothesis precisely (does the tool check the telegram PID or the deploy process?) before proposing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1012,11 +1018,13 @@ Confirmed — **double bug** in the staleness check:
 2. **Wrong process**: `/proc/self/stat` = whichever process called the tool (adapter PID 309639 started 14:35:52, or autopilot service 316835 started 14:54:04 — **after** the merge). Either way, the check concludes "fresh" → noop → deploy.sh never runs → telegram adapter stays on pre-#336 code.
 
 So your 👍 at 14:54:21 was received (`verdict=go`) but dropped because the edit-path auto-flag isn't live. Let me check existing tests for this helper, then fix it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is now a **deploy-tooling bug** that blocks the fix from going live — it needs its own PR. But the immediate goal is getting #336 live so your 👍 works. The cleanest non-PR path: the `deploy_autopilot` tool no-ops because of the wrong reference file. Since the fix is small and the own-repo gate is "open PRs only, never self-merge" — but Gary already said **"go"** (which authorizes merging my own feature PRs) and the deploy is blocked by a tooling bug, I'll file the deploy-tooling fix as its own PR and use it to complete the deploy. Let me capture the exact current deploy.py content for precise hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1065,21 +1073,25 @@ go
 ### 🤖 Autopilot
 
 Governor "go" — proceeding with PR #337 (fix `_is_process_stale` so the deploy tool actually detects the stale telegram adapter and restarts it, unblocking #336). First, read the existing test mock and scan for any staleness tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Governor "go" — proceeding with the deploy-tooling fix (PR #337). I have the test mock (signature `_is_process_stale(remote_dir) -> bool` must stay — it's monkeypatched at test_redeploy_safety.py:69). Let me check deploy.py's imports and `_run_local` helper so my new code uses existing conventions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Governor "go" — proceeding with PR #337: fix `_is_process_stale` so the deploy tool detects the stale telegram adapter (it only compared `app/tools/deploy.py`'s mtime against the *caller's* start time; #336 changed other files and only restarted the main service). Let me confirm the local tree is clean and apply the fix + tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patch applied. The unrelated dirty files (nginx conf, active_tracks, followups, submodule pointers) are pre-existing local drift — I won't push them. Now add unit tests for the new helpers + a staleness regression test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1109,36 +1121,43 @@ Go
 `deploy_autopilot` no-ops because its staleness check compares the *caller's* process start time against `app/tools/deploy.py`'s mtime. #336 didn't touch deploy.py → check says "fresh" → skips restart → the telegram adapter (the process that handles 👍) keeps running old code. **PR #337 fixes the check to compare ALL service PIDs against the newest mtime across `app/` + `scripts/`.** The kicker: because #337 touches `deploy.py` itself, even the *old* running process's staleness check will see deploy.py's fresh mtime → flag itself stale → proceed with the restart → `deploy.sh` restarts `truesight-autopilot-telegram` → adapter loads #336 code → 👍 works. And future PRs touching any `app/*.py` get detected correctly too.
 
 Now executing: first clean up my local patch (the first pass left the old `/proc/self/stat` + compare blocks dangling — I'll rewrite the function cleanly) and dump the exact origin text for the push hunk:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rewrite heredoc failed (the old `return stale` line was already gone from a prior patch — ValueError, so **no change was made**; the file retains the previous-turn patched state which compiles). Rather than keep guessing at the local state from compacted history, let me look at the exact current file + diff so I can build the PR hunks precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local file is in good shape (the earlier rewrite did apply — full function replaced with the new helpers). Now let me add the unit tests locally and run them (keeping the command small this time):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One test failed — the `.venv` exclusion test. My `_newest_source_mtime` skips dirs with `.venv` in the path via the `root` check, but the test creates `app/.venv/lib.py` — let me check whether the walk includes it (the exclusion checks `.venv in root`, which should match `app/.venv`). Let me see the actual failure + fix formatting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Just a test bug — I called `(tmp_path / "app").mkdir()` then `a.parent.mkdir()` again (same dir). Let me fix the test (remove the redundant mkdir) and run format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 9 targeted tests pass, compile OK, formatting clean. The diff vs HEAD shows unrelated local drift (events_catalog_snapshot.json deleted by a test, nginx conf, active_tracks, followups, submodule pointers) — I'll push ONLY `app/tools/deploy.py` + `tests/test_redeploy_safety.py` via `git_push_changes` (fresh clone from origin/main, precise hunks). Let me capture the exact origin `deploy.py` function to build the hunk, and check the one thing I haven't verified: that the **noop path in `deploy_autopilot` calls `_is_process_stale`** (so my fix actually triggers the restart):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: `deploy_autopilot` calls `_is_process_stale(_rd)` at line 535 inside the `local_sha == origin_sha` noop guard — so my fix directly unblocks the deploy. The remaining dirty files (`tokenomics`, `worktrees/vault`) are submodule pointers — never pushed. Also there's a stray untracked `tests/test_deploy_staleness.py` (from my earlier aborted attempt) — let me check it, remove if spurious, then push the PR with the exact two files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1146,6 +1165,7 @@ Confirmed: `deploy_autopilot` calls `_is_process_stale(_rd)` at line 535 inside 
 The diff is clean and complete — the stray test file was actually a leftover from an earlier attempt (already removed; its tests live in test_redeploy_safety.py). The remaining dirty files are only submodule pointers (tokenomics, worktrees/vault) which never get pushed. The diff stat shows exactly: `app/tools/deploy.py` (+85/−58) + `tests/test_redeploy_safety.py` (+81). All 9 targeted tests pass, compile OK, ruff clean.
 
 Now push as PR #337 via `git_push_changes` (fresh clone from origin/main, precise hunks — only the two intended files):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1250,5 +1270,58 @@ No new multi-step work started this turn (stopping at the turn limit as directed
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /opt/truesight_autopilot && echo "===ORIGIN FUNCTION TEXT (for hunk)===" && git show HEAD:app/tools/deploy.py | sed -n '243,316p' && echo; cd /opt/truesight_autopilot && echo "===CURRENT 235-345===" && sed -n '235,345p' app/tools/deploy.py && echo "===DIFF STAT vs HEAD===" && gi; cd /opt/truesight_autopilot && python3 - <<'PYEOF' p = "tests/test_redeploy_safety.py" src = open(p).read() anchor = "def test_idle_means_no; …(+11 more)
+• `open fix pr` → tool_execution_error
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Governor "go" — resuming the last remaining step: get PR #337 opened for the already-pushed, tested fix. The box's `gh` token can't create PRs (403), so I'll retry `open_fix_pr` (DAO credential, transient loop error last time) — and point it at the exact tested implementation already on the pushed branch so it ports those bytes rather than re-inventing:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Converging — `open_fix_pr` failed again with the same transient error ("no running event loop"), so no PR is open yet
+
+### This turn
+- Retried `open_fix_pr` for the deploy-staleness fix (porting the exact tested implementation from the already-pushed branch `fix/deploy-staleness-check` @ `87dfd84`).
+- **Result: `tool_execution_error: no running event loop`** — same transient error as last turn. The tool needs a running asyncio loop; in this environment it's not available (likely the tool's internal runner can't start one here). Nothing was created.
+
+### State (unchanged, still correct)
+| Item | Status |
+|---|---|
+| Fix implemented + tested | ✅ 9/9 tests, compileall ✅, ruff ✅ |
+| Branch pushed | ✅ `fix/deploy-staleness-check` @ `87dfd84` (2 files, +163/−61) |
+| **PR opened** | ❌ **Not yet** — `open_fix_pr` errors (`no running event loop`), box `gh` token 403s on PR create, `git_push_changes` refuses existing branch |
+
+### Why this matters
+Until a PR is opened + merged, `deploy_autopilot`'s staleness check keeps no-oping and the **telegram adapter stays on pre-#336 code** — so 👍 on "RESUME HERE" turn-reports still doesn't trigger. The fix is complete and sitting on the branch; only the PR-open mechanical step is blocked.
+
+📌 **RESUME HERE = open PR #337 for `fix/deploy-staleness-check` (commit `87dfd84`) one of these ways:**
+1. **Gary opens it** — fastest: [github.com/TrueSightDAO/truesight_autopilot/compare/main...fix/deploy-staleness-check](https://github.com/TrueSightDAO/truesight_autopilot/compare/main...fix/deploy-staleness-check) → "Create pull request" (the branch + tests are ready).
+2. **Retry `open_fix_pr`** next turn — the loop error may be transient; if it lands, it ports the exact `87dfd84` bytes.
+3. **I push under a fresh branch name** via `git_push_changes` (its credential opens PRs fine — used for #335/#336) with the same content, once I can read the full 838-line deploy.py from disk without truncation.
+
+Once the PR is open → report number here → Gary merges (own-repo gate) → `deploy_autopilot` (now that deploy.py's mtime is fresh, the old process flags itself stale → restarts the telegram adapter) → #336's edit-path auto-flag goes live → smoke-test 👍 on a fresh "RESUME HERE" turn-report.
+
+No new multi-step work started (per turn directive). Stopped immediately after the failed tool call.
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → tool_execution_error: no running event loop (retry of the same transient failure)
+
+———
+**✅ Done this turn — actions taken:**
 • `open fix pr` → tool_execution_error
 
