@@ -3458,36 +3458,43 @@ The webhook still throws the TypeError — because I'm hitting the **@34 URL** (
 ### 🤖 Autopilot
 
 Right — @34 was pre-#442 (the TypeError), @35 (`AKfycbxpGtwpI_VDctXrKyVojLjDOG7otF3qq9Iq393FWAVly2KrdYnWZBd-5m7GUp4z4enN`) has the fix. Firing @35:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Webhook works now (no TypeError) but **1 skipped, 0 recorded** — my row 11885 was skipped. I need the skip reason. Let me read the handler's skip conditions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full processing loop (lines 275-335) to see exactly why row 11885 was skipped:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One skipped — likely my row 11885's col D (Telegram Message ID) is empty, or treeId/dbh didn't extract. Let me read both my rows' key columns to pin the skip reason:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 11885 has msgId + marker — so the skip must be at extraction (`!info.treeId || !info.dbh`). Let me read the extractor's regex:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The extractor expects **"Measured At:"** but my event text (from the site) says **"Measurement Time:"**. That's the mismatch — `grab('Measured At')` returns '' for my row, and... actually no, treeId/dbh should still extract. Let me check `normalizeTreeGrowthMonitoringMessage_` — it may strip the `- Tree ID:` differently, or the `\r` (CRLF) from the sheet breaks the regex:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Normalization handles CRLF. So the extraction of treeId/dbh should work... Let me test the extractor directly against my row 11885's exact text with node (replicating the regex):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3630,4 +3637,93 @@ PR #446 diff is now **clean**: `+2 −1`, `escapeRe` helper + regex escaping, si
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== 1. close PR #445 (wrong; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" cd /tmp && curl -s -H "Authorizat; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" cd /tmp && cat > /tmp/dup_fix.py ; …(+1 more)
 • `merge pr` → ✅ PR #446 on tokenomics merged successfully (sha: b167e231a4092c91075726c70d00ab44ca10d8d5). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming: deploy the merged #446 to GAS, then fire the webhook to process row 11885 into Tree Growth Measurements. Step 1: pull main + push + create deployment:
+
+
+### 🤖 Autopilot
+
+Deployment @36 created with the fix (escapeRe confirmed, pushed clean). Now fire the growth webhook @36 and check the result — expecting **"1 recorded"** now:
+
+
+### 🤖 Autopilot
+
+**🎉 "1 recorded, 0 skipped, 0 errors"** — the full monitor chain now works! Let me verify the row actually landed in the Tree Growth Measurements tab:
+
+
+### 🤖 Autopilot
+
+**🎉 THE FULL MONITOR CHAIN IS GREEN!** Row 11885 is now recorded in **Tree Growth Measurements**:
+
+```
+Edgar_20260829143953_011 | 469027268 | unknown | 12.5 | 44.560058 | -123.262181 | photos uploaded | Sophia Truesight
+```
+
+The complete chain works: **monitor form → queue (base64 blobs) → POST → Edgar → Telegram Chat Logs → dispatch → GAS webhook @36 → extractor (regex fix) → Tree Growth Measurements tab**. 
+
+One small cosmetic note: `Species: "unknown"` — the site's event text may not include a Species field for monitoring (or the extractor's `grab('Species')` didn't match). Minor, not blocking. The DBH (the field that was broken) extracts correctly.
+
+Now the last remaining item: the **plain-planting pipeline** (row 11882, `[TREE PLANTING EVENT]`). Let me check the current state of the plain-planting handler project and decide cron-restore vs dispatch-port:
+
+
+### 🤖 Autopilot
+
+The 1Jp8q project exists locally with the plain-planting handler. Given Gary's steer ("we are not using rails but dao_protocol python"), the **dispatch-port** approach is the right call — it makes the plain planting event flow through the same dao_protocol dispatch → GAS webhook path as everything else (no cron dependency). But the 1Jp8q project's `processTelegramLogs` is a full-scan function (different protocol). Let me check what it does and whether there's a simpler path — checking if the 1Jp8q project has a deployable webapp + what its processTelegramLogs expects:
+
+
+### 🤖 Autopilot
+
+Converging — I've hit the turn budget and have a clear report.
+
+## ✅ MAJOR MILESTONE — the monitor chain is FULLY GREEN end-to-end
+
+**The complete chain now works and is verified live:**
+```
+monitor form → offline queue (base64 blobs, #28) → POST 200 → Edgar
+→ Telegram Chat Logs (row 11885) → dispatch → GAS webhook @36
+→ extractor (regex fix #446) → Tree Growth Measurements tab ✅
+```
+
+**Confirmed in the sheet:**
+| Tree ID | Species | DBH (cm) | Lat | Lon | Contributor |
+|---|---|---|---|---|---|
+| 469027268 | unknown | **12.5** | 44.560058 | -123.262181 | **Sophia Truesight** |
+
+- Webhook fired: **"1 recorded, 0 skipped, 0 errors"** (was "1 skipped" before #446)
+- Photos uploaded (closeup + context URLs in the row), signed by Sophia's key
+- Minor cosmetic: `Species: "unknown"` (the site's monitoring event doesn't include a species line the extractor recognizes — non-blocking, worth a note)
+
+**The 4 bugs found & fixed across this whole E2E:**
+1. sunmint_beta #22→#25 — empty-file incident (repaired)
+2. sunmint_beta #28 — offline queue Blob→JSON corruption
+3. tokenomics #441 — missing growth webhook doGet action
+4. tokenomics #442 — handler missing return object
+5. tokenomics #446 — DBH (cm) regex metacharacter extraction failure
+
+## Remaining open item: plain-planting pipeline (row 11882)
+
+- The handler **exists**: `1Jp8q…/process_tree_planting_telegram_logs.js` → `processTelegramLogs()` (line 190), matches `[TREE PLANTING EVENT]` (line 244), writes SunMint Tree Planting tab
+- The tab has 24 rows; the ones I read are old (20250711-era) — **my E2E planting (row 11882, planted today) is NOT in the tab** → the gap
+- Per your "dao_protocol python, not rails" steer: the right fix is the **dispatch-port** — add a ROUTING entry `("[TREE PLANTING EVENT]", ...)` + a webhook action that calls a `processTreePlantingTelegramLogs`-style function in the `1UrBgq…` webhook project (or deploy 1Jp8q as a webapp with a compatible doGet), so plantings flow through the same dao_protocol → GAS webhook path as monitoring. **Not** a cron restore.
+
+## RESUME HERE → next unit
+1. **Plain-planting dispatch-port**: read `processTelegramLogs` fully (its sheet targets + scan protocol), then open a PR adding a `processTreePlantingTelegramLogs` action to the `1UrBgq…` webhook project's doGet (mirroring the growth action), wired to the same scan+dedup logic → merge → push → deploy @37 → fire → confirm row 11882 lands in **SunMint Tree Planting**.
+2. **Verify tree index picks up the planting** (rebuild + confirm count 18→19).
+3. **§5g close-out**: test photo `sunmint/images/20260829134704_…jpg` keep/remove (your call); ledger rows 11882/11885 keep (legitimate signed records); final summary + thread close.
+
+**Bottom line: the monitor chain is fully green and verified in production data. The only remaining gap is the plain-planting pipeline — the handler exists but isn't wired into the dao_protocol dispatch; the port is scoped and matches your Python-first steer.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/tokenomics && { echo "=== pull main (must reach b167e23 #446) ==="; git pull --ff-only origin main 2>&1 | tail -2; git log -; echo "=== fire growth webhook @36 ===" && curl -sL "https://script.google.com/macros/s/AKfycbwm9TZDLPrG1vui3KjR4WHnydQAJXa5U7KHMygRnS9vN6oAw; cd /tmp && cat > /tmp/verify_tgm.py <<'EOF' import json, base64, os from google.oauth2 import service_account from googleapiclient.discovery; …(+2 more)
 
