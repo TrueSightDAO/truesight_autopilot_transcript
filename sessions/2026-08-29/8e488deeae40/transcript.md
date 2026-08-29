@@ -4174,6 +4174,7 @@ go
 ### 🤖 Autopilot
 
 The test photo still exists (4771 bytes, sha `86189ea1f7`). Now let me write the runbook — a detailed, followable doc for future Sophias/LLMs covering the whole E2E + the incident traps. I'll place it as `SUNMINT_E2E_RUNBOOK.md` in agentic_ai_context (matching existing naming conventions like `AGROVERSE_CHECKOUT_E2E_POLICY.md`):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4401,4 +4402,22 @@ Here's my honest time tabulation for this campaign (estimates by phase — the s
 - **You: 90 min** — direction, reviews, and go-signals across the campaign.
 
 If you'd rather I log the full 540 (or adjust either figure), say the word and I'll submit an additional/supplemental contribution event — contributions are append-only ledger events, so I'd log the delta as a separate `[CONTRIBUTION EVENT]` rather than editing the first. Otherwise, the 480/90 split stands.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] conversative
+
+
+### 🤖 Autopilot
+
+Understood — keeping it conservative. ✅
+
+**Final contribution split (as submitted, no changes):**
+- **Sophia Truesight** — 480 min (8h) — round-down of the ≈540 min campaign total
+- **Gary Teh** — 90 min — direction/review/go-signals
+
+Both `[CONTRIBUTION EVENT]`s are already confirmed in Edgar ("Contribution submitted"), so nothing further to do — the ledger stands as-is.
+
+Campaign remains fully closed: pipeline green end-to-end, 7 fixes merged, runbook documented, §5g residue cleaned. 🎉
 
