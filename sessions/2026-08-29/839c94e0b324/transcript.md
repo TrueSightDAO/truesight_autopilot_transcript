@@ -75,6 +75,7 @@ The snapshot points to `ecosystem_change_logs/ops_health/current.json` for per-S
 ### 🤖 Autopilot
 
 Signal checks done. One last look at the backlog to make sure my recommendations don't duplicate parked items:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -251,6 +252,38 @@ Recording a contribution for my work this thread — the deploy incident respons
 - **TDG Issued:** 0 (no TDG — it was my own fix, not a paid feature)
 
 Ledger row recorded. Anything else in this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] Also for me too
+
+
+### 🤖 Autopilot
+
+Recording a matching contribution for you, Gary — same incident window:
+
+
+### 🤖 Autopilot
+
+✅ **Contribution reported for you too** — submitted successfully.
+
+**Details:**
+- **Type:** Time (Minutes)
+- **Amount:** 30 min
+- **Contributor:** Gary Teh
+- **Description:** Governor oversight of deploy incident — directed deploy of #341–#344, drove the retry after deferral, reviewed the deadlock diagnosis + #345 fix, approved deployment
+- **TDG Issued:** 0
+
+Both rows are on the ledger now (Sophia + Gary, 30 min each for the same incident window). Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
 ———
 **✅ Done this turn — actions taken:**
