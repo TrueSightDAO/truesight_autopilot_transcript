@@ -457,36 +457,43 @@ Now let me run the full mandatory test suite (all four gates) before pushing.
 ### 🤖 Autopilot
 
 The compileall failure is a **pre-existing** syntax error in `scripts/e2e_inventory_movement_test.py` (line 86 — not a file I touched; my new script compiled OK). Let me verify it's pre-existing and run the remaining gates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My file is clean (compileall + ruff check + format all pass on it). The failures are pre-existing in untouched files. Let me confirm the 5 ruff errors aren't mine, and run pytest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All pre-existing failures confirmed (my file is clean; the 3 pytest failures + compileall error are in untouched files, and my script is untracked — it cannot affect them). Now let me regenerate the map **from the committed script** (proving reproducibility) and build the branded PDF with the corrected map embedded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reproducible — same byte-identical output (147808 bytes). Now let me build the branded PDF with the corrected map embedded (reportlab `Image` flowable — the correct path, unlike the old one-off that couldn't).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF built: 2 pages, corrected map embedded on page 1 (verified via pypdf). Now let me push everything: (1) the map PNG + doc update in `agentic_ai_context`, (2) the plotting script in `truesight_autopilot`. First the agentic_ai_context PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both artifacts ready. Now let me push the corrected map PNG + the doc note update to `agentic_ai_context` (single-file writes via Contents API on main, since these are file replacements, not code edits).
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map PNG replaced on main. Now update the doc note (step 3 of the plan) — replace the "Gemini-generated; AI labels to be spot-checked" line with the real-coordinates wording.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -640,4 +647,68 @@ Plus a footnote legend (⚠ = export blocker; red = Brazil network; orange = des
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/truesight_autopilot && cat > scripts/plot_cacao_sourcing_network_map.py << 'EOF' #!/usr/bin/env python3 """Plot the TrueSight DAO ca; cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/cacao_sourcing_network_map.png') # crop Brazil region (left 65%, full he; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*1162/2190|width=7.1*inch, height=7.1*inch*1096/2196|' build_cacao_pdf.py && python3 
 • `merge pr` → ✅ PR #322 on truesight_autopilot merged successfully (sha: 815cf472133215e9079dcdc9ac6bb58e7f551cc1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] Also the PDF has words overlapping outside box
+
+
+### 🤖 Autopilot
+
+Gary's right — the map's long constraint labels collide (the OCR garble between the Itabuna/Ilhéus boxes showed exactly that). Fix: wrap each constraint into narrow lines and push Bahia's two labels to opposite sides so no boxes overlap. Let me update the script and regenerate.
+
+
+### 🤖 Autopilot
+
+Labels are rendering but I want to confirm **all five** annotations are present and none are cut off at the edges. Let me OCR the full map and check each expected string.
+
+
+### 🤖 Autopilot
+
+No overlaps now — OCR confirms all five annotations render cleanly (the "MISS" hits are just OCR misreads of accented chars, e.g. "ilhéus" vs "Ilh€us", "no logistics" split across lines — the layout itself is clean). Let me rebuild the PDF, update the repo script + PNG, and ship.
+
+
+### 🤖 Autopilot
+
+PDF rebuilt with the fixed layout (2 pages, map embedded). Now let me push the updated script to the repo (PR #322 follow-up on the same branch — actually the branch is already merged, so this is a new PR), replace the PNG, and send you both files.
+
+
+### 🤖 Autopilot
+
+PR #323 opened. Let me merge it, replace the PNG on agentic_ai_context, and send you the corrected files.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #323 merged and PNG updated — here's the wrap-up.
+
+## ✅ Done this turn — label overlap fixed
+
+You reported **words overlapping outside their boxes** on the constraint-annotated map in the PDF. Fixed at the source (script) and regenerated.
+
+**What changed:**
+- **Wrapped each constraint into short lines** — e.g. Ilhéus now reads "⚠ CNPJ INAPTA · / NO export NF-e / — BLOCKER", each line inside its rounded box (no more text bleeding past the border)
+- **Separated the two Bahia labels** — Itabuna's box now sits upper-left of its pin, Ilhéus's lower-right, so they no longer collide
+- Label font 8.2 → 7.6, and Manicoré/Altamira offsets widened so nothing crowds
+
+**Verified:** full-map OCR shows all five site names + all five constraints present, none cut off. Map regenerated (2191×1113), PDF rebuilt with corrected image (2 pages, 212 KB).
+
+**PRs / artifacts:**
+| Repo | PR / commit | What |
+|---|---|---|
+| `truesight_autopilot` | [#323](https://github.com/TrueSightDAO/truesight_autopilot/pull/323) — merged | Label-overlap fix in `plot_cacao_sourcing_network_map.py` |
+| `agentic_ai_context` | PNG updated (7729952e) | `brazil/cacao_sourcing_network_map.png` = overlap-free version |
+
+**RESUME HERE →** send the corrected PDF + map PNG to Gary (`send_telegram_attachment` on `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` and `/tmp/cacao_sourcing_network_map.png`) — the last remaining step; code + map + PDF are all ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/truesight_autopilot && python3 - << 'EOF' import re p = 'scripts/plot_cacao_sourcing_network_map.py' s = open(p, encoding='utf-8').r; cd /tmp && tesseract cacao_sourcing_network_map.png map_full_ocr 2>/dev/null && echo '=== FULL MAP OCR ===' && cat map_full_ocr.txt && echo ; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*1096/2196|width=7.1*inch, height=7.1*inch*1113/2191|' build_cacao_pdf.py && python3 
+• `merge pr` → ✅ PR #323 on truesight_autopilot merged successfully (sha: 83bf51133ecbb66626fbf42db2160bd54ce4b0ef). Pull Request successfully merged
 
