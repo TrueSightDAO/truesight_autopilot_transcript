@@ -1146,11 +1146,13 @@ Gary's go — executing the final unit (Unit 4: verification). Pulling the guard
 ### 🤖 Autopilot
 
 Guardrail live in the deploy checkout (HEAD = #440). Now I need the `SPREADSHEET_ID` from CONFIG to verify the actual ledger state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `SPREADSHEET_ID` = `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU` — the **Main Ledger** (default SA has access). Now verify the current state: the "Most Recent Tokenization Date" column on the Recurring Transactions tab, and whether any Aug/Sep rows have landed in Ledger history:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1210,6 +1212,7 @@ My recommendation: **option 1 or 2** — no code changes needed; the fix is done
 ### 🤖 Autopilot
 
 Gary chose option 2 — trigger the catch-up now. Before firing anything, I need to verify two critical things: (1) whether the script filters by type (I must NOT tokenize the stale "Vault Draw down" rows from March 2025!), and (2) whether I can execute the function programmatically (API deployment) or it's a manual editor click. Running the checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1217,6 +1220,7 @@ Gary chose option 2 — trigger the catch-up now. Before firing anything, I need
 The filter logic is reassuring: `fetchRecurringTransactions` only matches `type === 'Tokenization'` **+ numeric amount** + `Monthly` + valid start date — so the stale Vault Draw down rows (Wix/domains/GS1) and the "Varies"-amount AWS rows are **excluded**. Only the 7 warehouse/eodhd/Kiki rows qualify. No `doGet`/`doPost` → the web deployment is inert; execution must go through the **Apps Script API** (`script.projects.run`), which I can drive with the garyjob clasp credential that owns this script.
 
 Before firing, one last read of `calculateTokenizationDates` + `tokenizedAlready` so I can predict the exact dates/amounts that will land:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1240,11 +1244,13 @@ The logic is fully understood now. Here's exactly what firing the catch-up will 
 **Total: 954.99 TDG provisioned** (1:1 USD→TDG per the hardcoded rubric), plus Column F (Most Recent Tokenization Date) updated to today on all 7 rows.
 
 Gary chose option 2 (trigger now) — executing via the **Apps Script API** (`script.projects.run`) using the garyjob clasp credential that owns this script, since there's no doGet/doPost for a web-app call. One line of intent: **I'm about to run `processRecurringTransactions`, which writes those 7 ledger rows (954.99 TDG) and updates last-check dates.**
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API call **failed at runtime** — `"server error occurred while reading from storage. Error code NOT_FOUND"`. This is a script-storage error (the function did **not** complete, so no ledger writes happened). This smells like the deployed GAS project still holds a **ghost file** (clasp push updates/adds files but historically does **not** delete remote files missing locally — a stale `Code.js` could still be live on the project and the runtime chokes on it). Let me inspect the actual deployed file set via the Apps Script API (read-only) and confirm the ledger is untouched:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1252,6 +1258,7 @@ The API call **failed at runtime** — `"server error occurred while reading fro
 Good news — the deployed file set is **clean**: exactly the 4 expected files (`add_claude_pro_row`, `appsscript`, `tdg_recurring_tokenization_monthly` [17KB, the real one], `Version`), **no ghost `Code.js`**. The `NOT_FOUND` error is therefore **not** a stale-file issue.
 
 Let me verify the ledger is untouched (no partial writes) and check the script's own execution history for the error's origin:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1396,4 +1403,85 @@ I'd recommend **A** — it's the path you originally picked, takes one click, an
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && ls -la run_recurring.py 2>/dev/null && python3 run_recurring.py; cd /tmp && cat > show_content.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHO; cd /tmp && cat > probe.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] can you not update the GAS with a doGet and then deploy and trigger it yourself?
+
+
+### 🤖 Autopilot
+
+Yes — that's the right lever. The REST `:run` path is what's broken (Google container quirk), but a `doGet` web-app deployment uses a **different execution path** — and the exec-probe audit showed these projects' web apps respond fine via HTTP GET. Adding a guarded `doGet` that calls `processRecurringTransactions`, deploying it, and hitting the `/exec` URL myself is exactly how to trigger the catch-up without the editor.
+
+Let me first check the existing `doGet` convention in sibling GAS projects (action-param pattern, key guards) so I follow the house style, and find where to add it in the recurring file:
+
+
+### 🤖 Autopilot
+
+The house style is clear — the `register_member_digital_signatures_telegram.js` doGet (action-gated, ContentService JSON) is the perfect template, and the recurring file has **no existing `doGet`** (confirmed by grep). A web-app `/exec` GET uses a different execution path than the broken REST `:run` — this should get past the `NOT_FOUND` container error.
+
+Adding the doGet to the recurring tokenization file now (PR to tokenomics), following the exact house convention:
+
+
+### 🤖 Autopilot
+
+PR **#443** opened. Let me run the local test suite (per the hard rule before pushing), then merge and deploy:
+
+
+### 🤖 Autopilot
+
+The branch fetch failed (the `-q` swallowed the real error). Let me fetch the PR ref properly and check:
+
+
+### 🤖 Autopilot
+
+Syntax OK; the guardrail call needs a `Path` not a string. Re-running with the right type + the doGet count:
+
+
+### 🤖 Autopilot
+
+All checks pass — guardrail 0 errors, exactly 1 `doGet`, exactly 1 `const CONFIG` (no duplicate). Merging PR #443, then deploying:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — doGet web trigger added for the recurring tokenization catch-up (PR #443 merged)
+
+### The problem
+The REST `:run` API path on the recurring-tokenization project fails with a Google-side container error (`NOT_FOUND` storage read) on **every** function — even pure in-memory ones — across all deployment IDs and a fresh deployment. But sibling projects' **web-app `/exec`** execution path works (exec-probe audit confirmed). So the fix: add a house-style `doGet` to the script, deploy it, and trigger the catch-up via HTTP GET myself.
+
+### What happened this turn
+1. **Scoped the convention** — checked sibling `doGet` implementations (`register_member_digital_signatures_telegram.js` is the perfect action-gated template), confirmed the recurring file had **no existing `doGet`**.
+2. **Opened PR #443** — `feat(recurring): add action-gated doGet web trigger for processRecurringTransactions`:
+   - Added `doGet(e)` to `tdg_recurring_tokenization_monthly.js` — action-gated (`?action=processRecurringTransactions`), ContentService JSON response, try/catch with error surfacing — mirroring the sibling house style. No new top-level consts, no new files.
+   - 🔗 https://github.com/TrueSightDAO/tokenomics/pull/443
+3. **Verified locally before merge** (hard rule):
+   - ✅ `node --check` syntax OK
+   - ✅ Guardrail `validate_project_files` → **0 errors** (the new guardrail from #440 caught nothing new — clean)
+   - ✅ Exactly 1 `doGet`, exactly 1 `const CONFIG` (no duplicate)
+4. **Merged** — PR #443, sha `c74c3d4`. 
+
+### No TDG moved; ledger untouched
+The catch-up execution has **not** run yet — this was purely the code change enabling it.
+
+### RESUME HERE → next unit (deploy + trigger)
+1. **Pull merged #443** into the deploy checkout (`/opt/truesight_autopilot/context/tokenomics`).
+2. **Deploy** the project via `gas_deploy_project(script_id="1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK", push=true)` — this pushes the new `doGet` and I'll capture the web-app deployment URL.
+3. **Trigger** `GET <webapp>/exec?action=processRecurringTransactions` — expect `{"ok": true, "message": "processRecurringTransactions completed"}` (or the error JSON if the container quirk persists on this path).
+4. **Verify** the ledger: 7 rows land (~954.99 TDG, dates 20260804–20260825) + "Most Recent Tokenization Date" advances past 20260723 on the Recurring Transactions sheet.
+5. If the `/exec` path **also** hits `NOT_FOUND` → the last lever is cloning the project to a fresh scriptId (changes identity + re-creates trigger) — I'd confirm with you first since it touches the payout path.
+6. Also: file the `NOT_FOUND` quirk in `OPEN_FOLLOWUPS.md` for cross-session recall.
+
+No payouts moved, no irreversible actions — the merged code is inert until deployed + triggered.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== doGet conventions in sibling projects ===" && grep -rn "funct; cd /opt/truesight_autopilot/context/tokenomics && echo "=== pull PR branch ===" && git fetch origin feat/recurring-tokenization-doget-trigge; cd /opt/truesight_autopilot/context/tokenomics && echo "=== fetch PR ref ===" && git fetch origin pull/443/head:feat/recurring-tokenization-; …(+1 more)
+• `merge pr` → ✅ PR #443 on tokenomics merged successfully (sha: c74c3d4a815fc7f702063d68c1be8fdbe122f93e). Pull Request successfully merged
 
