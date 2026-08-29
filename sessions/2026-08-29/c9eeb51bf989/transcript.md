@@ -345,6 +345,7 @@ The compare API gave an odd result (likely cross-repo resolution quirk). Let me 
 ### 🤖 Autopilot
 
 Two of the three diffs are the **intentional CNAME divergence** (prod vs beta domains) and the `index.html` from the already-promoted UX fix. The important one is `monitor-tree-growth/index.html`. Let me diff it precisely to see exactly what a promotion would carry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -477,4 +478,86 @@ Risk call: all of the above are **low-risk prod bug-fixes** — none of them are
 - **"UAT #29 on beta first, then deploy once"** → you test items 1 & 4 on `beta.sunmint.truesight.me`, I merge #29, then one sync ships **everything** together.
 
 Either works; the second is fewer deploys, the first gets the 404 fixed sooner. Your call — I won't touch prod until you say which.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] [Handoff context — this Telegram topic (thread 16178) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Go received — deploying to prod now. Executing `sync_beta_to_prod(sunmint_prod)`: this fork-syncs prod from beta main, carrying #26 (the `/dao/check_digital_signature` 404 fix), #27 (governor/sentinel invalid-zone), #28 (offline photo-blob base64 fix) plus earlier beta improvements. PR #29 is NOT in beta main, so it stays out of this deploy (that's the expected sequencing you approved).
+
+
+### 🤖 Autopilot
+
+Deploy executed successfully. Let me verify the promotion actually landed on prod — check the prod repo tip, the live page's fetch URL, and the Pages build:
+
+
+### 🤖 Autopilot
+
+Repo is correct. Now confirm the **live** site actually serves the new code (GitHub Pages can lag a few minutes):
+
+
+### 🤖 Autopilot
+
+Deploy landed on the repo (prod tip = merge of beta main). Now confirming the **live** page has picked it up — GitHub Pages rebuilds can lag. Checking the served HTML for the new endpoint:
+
+
+### 🤖 Autopilot
+
+The live page still shows the OLD code (`contributors?public_key`, no `blobToDataURL`) — the repo is updated but GitHub Pages hasn't rebuilt/served it yet. That's the classic Pages deploy lag, but let me check whether Pages is even configured/enabled on this repo, and look at the build status. Also verifying the merge didn't clobber prod CNAME (confirmed `sunmint.truesight.me` in repo). Checking Pages state:
+
+
+### 🤖 Autopilot
+
+The Pages API 404s on **both** sunmint repos — so these repos aren't served by GitHub Pages at all (my earlier `server: GitHub.com` guess was wrong; likely a proxy/CDN). Yet the live page serves content. Let me find the real hosting: check headers on both repos and look for nginx config on the boxes.
+
+
+### 🤖 Autopilot
+
+The live site still serves old code and the Pages API 404s on the repo — need to find how sunmint is actually hosted before concluding. Checking DNS, response headers, and repo metadata:
+
+
+### 🤖 Autopilot
+
+DNS confirms both domains point to `truesightdao.github.io` — so this IS GitHub Pages (org site), and `has_pages: true`. The live server is `GitHub.com` and `last-modified` on the prod page is **22:32:05 GMT** — matching the merge time, so Pages DID rebuild. But the served HTML still shows the OLD `/dao/contributors` URL. That's contradictory. Let me check exactly what the Pages site is serving vs what's in the repo right now, and whether it's pinned to a branch:
+
+
+### 🤖 Autopilot
+
+The Pages cache has now caught up — the live prod page now serves the **new** code with `check_digital_signature`. The deploy is confirmed live. Let me do a final end-to-end verification of the live page state:
+
+
+### 🤖 Autopilot
+
+Deploy is fully verified live (the nonzero exit is just the last `grep -c` returning 0 matches — expected, since PR #29 isn't deployed). Here's the complete confirmation.
+
+## ✅ Deployed to prod — confirmed live
+
+**`sync_beta_to_prod(sunmint_prod)` executed successfully.** Repo: `047cceb` (merge of beta main into prod, 22:31:34Z). Deploy ledger: `deploy_20260829T223134Z_sunmint-prod`.
+
+**Live `sunmint.truesight.me` now serves:**
+- ✅ `/dao/check_digital_signature` — **the 404 fix is live** (was `/dao/contributors?public_key=…` which 404'd). The mystery URL question is fully resolved.
+- ✅ `blobToDataURL` (PR #28) — offline photo-blob corruption fixed on prod
+- ✅ `currentContributorIsGovernor` (PR #26/#27) — server-authoritative governor/sentinel gate now live (was the hardcoded GOVERNORS array that couldn't match the new key format)
+
+**Confirmed NOT deployed (by design):**
+- ⏸️ PR #29 camera-gesture fixes (lazy camera start, viewport cap) — still open on `sunmint_beta`, awaiting your UAT of items 1 & 4 on beta.sunmint.truesight.me
+
+**Serving path confirmed:** both domains CNAME → `truesightdao.github.io` (org Pages). CNAME preserved (prod = `sunmint.truesight.me`). Initial old-content serve was Pages cache lag — resolved within minutes.
+
+## Remaining: PR #29 (your call)
+When you've UAT'd items 1 & 4 on beta:
+1. Say "merge #29" → I merge into beta main
+2. Then "deploy" → one more `sync_beta_to_prod` ships the camera fixes to prod
+
+Want me to set up a watcher that pings this thread when you're ready, or anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf sunmint_prod_clone2 && git clone -q --depth 3 https://github.com/TrueSightDAO/sunmint_prod.git sunmint_prod_clone2 2>&1 | ; echo "=== LIVE prod monitor page: fetch URLs ==="; curl -s https://sunmint.truesight.me/monitor-tree-growth/ | grep -oE "dao/(check_digital_; echo "=== nginx sites-enabled ==="; ls /etc/nginx/sites-enabled/ 2>/dev/null; echo "=== grep sunmint in nginx ==="; grep -rln "sunmint" /etc; …(+3 more)
 
