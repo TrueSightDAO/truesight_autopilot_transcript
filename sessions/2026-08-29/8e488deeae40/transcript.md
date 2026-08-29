@@ -2777,11 +2777,13 @@ go
 ### 🤖 Autopilot
 
 Gary's right — the framing should be dao_protocol (Python), not Rails; the pipeline today is **site → dao_protocol (Python) → Telegram Chat Logs → GAS handlers**. The processing side is what's dead. Proceeding with the fix: check/restore the GAS cron triggers on the two tree GAS projects (admin credential), and verify what's actually wired:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The .clasprc files have a different key structure than my script assumed. Let me check the actual keys (names only — no secret values), then adapt:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2927,4 +2929,89 @@ go
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #441 on tokenomics merged successfully (sha: a69a3048d56047468c9109198e71f8c4d11ba7d5). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming the deploy unit. Step 1: `clasp push` the merged code to GAS project `1UrBgq…` (as admin@, the default clasp credential):
+
+
+### 🤖 Autopilot
+
+The push succeeded but I need to flag a concern: my grep for the growth action in the local mirror returned **empty** before the push — meaning the local checkout may be stale (pre-merge) and I may have just pushed the old code. Let me verify immediately:
+
+
+### 🤖 Autopilot
+
+Critical catch — the local checkout was stale (HEAD `44cdf96`, pre-#441) and **I pushed the old code without the growth action** (local mirror had 0 matches). The push just deployed a version **without** the fix. I need to pull main, then re-push the correct code. Let me fix this immediately:
+
+
+### 🤖 Autopilot
+
+Fixed — the corrected code (with the growth action, 3 matches) is now pushed. Now create a new deployment version as admin and verify the webhook action responds:
+
+
+### 🤖 Autopilot
+
+New deployment created: `AKfycbzMRrDqB-bTbEZnwm3bL3-fBHARvUhEReVBz25BrSsUJC5-Ms1Wez2wpIppMc3b-jVS` @34. Now verify the webhook action responds correctly (expect the "✅ Tree growth monitoring processed" message, not "No valid action specified"):
+
+
+### 🤖 Autopilot
+
+The growth action is now **recognized** (no more "No valid action specified") but errored on the return shape — the handler returns something other than `{processed, skipped, errors}`. Let me check the actual return type:
+
+
+### 🤖 Autopilot
+
+The function returns `undefined` when there are no rows (line 14: `if (lastRow < 2) return;`) — so `result.processed` on undefined throws. Two issues: (1) the early return should return an object, and (2) **there may genuinely be no rows in Tree Growth Measurements** (it was empty). The handler needs a small fix to return a proper object. Let me check the full function body first to fix it correctly:
+
+
+### 🤖 Autopilot
+
+Two clear issues in the handler:
+1. **`if (lastRow < 2) return;`** — returns `undefined` (breaks the webhook's `result.processed` access).
+2. **No return object at all** — even when it runs, it returns `undefined`; the webhook action expects `{processed, skipped, errors}`.
+
+Let me also check: my E2E row 11884 should be in Telegram Chat Logs and match `TREE_GROWTH_MONITORING_EVENT_MARKER` — but the handler found nothing processed (returned early or skipped). I need to fix the handler to (a) return a proper object, and (b) check my row's format. Let me open the fix PR:
+
+
+### 🤖 Autopilot
+
+PR #442 opened. Per the one-PR-per-turn rule, I'll stop here and report.
+
+## ✅ This turn: deployed the growth webhook action + found & fixed a second bug
+
+**Progress:**
+1. **Deployed #441 to GAS** — `clasp push` to project `1UrBgq…` (admin). ⚠️ *Caught a stale-checkout risk*: the first push used the pre-merge local code (0 growth-action matches); I pulled main to `a69a304`, confirmed 3 matches, re-pushed correctly.
+2. **Created deployment @34** (`AKfycbzMRrDqB-…`) as admin.
+3. **Verified live**: the growth action is now **recognized** (no more "No valid action specified"), but returned `❌ Cannot read properties of undefined (reading 'processed')`.
+
+**New bug found (in the handler, not the webhook):** `processTreeGrowthMonitoringFromTelegramChatLogs()` **never returns a value** — early `return;` when `lastRow < 2`, and no return at the end. The doGet action reads `result.processed` → TypeError.
+
+**Fix opened:** 🔀 [tokenomics #442 — fix: processTreeGrowthMonitoringFromTelegramChatLogs must return a result object](https://github.com/TrueSightDAO/tokenomics/pull/442) (commit `8a0b15b`). Returns `{processed, skipped, errors}` in all paths + counts skips/errors per branch.
+
+## RESUME HERE → next unit
+1. **Merge #442** → `clasp push` → redeploy (new version) → verify `?action=processTreeGrowthMonitoringFromTelegramChatLogs` returns "✅ … processed: N recorded, N skipped, N errors".
+2. **Check why row 11884 isn't being processed** — the handler may skip it (marker mismatch, missing treeId/dbh, or tree not found in SunMint tab → need to confirm my E2E monitoring row's format vs `extractTreeGrowthMonitoringInfo_` expectations).
+3. **Set `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING`** in box env → restart service → confirm row 11884 lands in Tree Growth Measurements.
+4. **Plain-planting decision** (`[TREE PLANTING EVENT]` — cron-restore vs dispatch-port) → execute.
+5. **Final green report** + §5g close-out (test photo + ledger rows).
+
+**Bottom line:** the growth-monitoring webhook is now deployed and recognizing the action; the handler's missing return value is fixed in #442 — one merge + redeploy away from a working pipeline.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → clasp push (caught stale checkout → pulled main → re-pushed correct code), clasp deploy @34, live webhook verification (growth action recognized, TypeError on return shape), read handler body
+• `git push` ×1 → **PR #442 opened** (handler return-object fix)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /home/ubuntu/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && { echo "=== confirm merged code i; cd /home/ubuntu/tokenomics && { echo "=== current HEAD + remote ===" git log --oneline -3 2>/dev/null echo "" echo "=== is a69a304 (merged #; cd /home/ubuntu/tokenomics && { echo "=== pull main (fast-forward to a69a304) ===" git pull --ff-only origin main 2>&1 | tail -3 echo "" ech; …(+4 more)
 
