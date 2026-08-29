@@ -789,51 +789,61 @@ Legend-panel layout works — OCR confirms all 5 sites + constraints render clea
 ### 🤖 Autopilot
 
 Ruff wants a reformat, and the heredoc got mangled. Let me fix formatting first, then rebuild the PDF in a cleaner separate step.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script is clean. Now let me write the PDF builder to a file (avoiding the heredoc issue) and rebuild.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The table rows have 4 fields but I unpacked 6. Quick fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF rebuilt (1 page, map + table together — the legend layout is more compact). Now let me push the redesigned script (PR), merge, replace the PNG, and send you the files.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push hit an "invalid write path" error — likely transient or content-related. Let me retry with the same content, and if it fails, fall back to a hunk-based edit.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #324 opened, but only the docstring edit applied — the full rewrite didn't make it into the push (the earlier `writes` call errored). The local file has the complete new content. Let me push the full file onto the same branch via `writes` (same PR, not a new one):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local file has the full new content (8.4 KB). Let me push the complete rewritten file to the same branch (PR #324):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My commit landed on local `main` instead of the feature branch (the clone was on main), and the push failed. Let me fix this cleanly: save the full content, fetch the feature branch, apply the content there, push, and reset local main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch exists on origin (PR #324) but the clone's refspec didn't map it. Let me fetch it properly and rebuild the branch from FETCH_HEAD:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full rewrite pushed to PR #324 (174 insertions, 57 deletions). Let me merge it, replace the PNG, and send you the files.
+[2 tool result(s) compacted: merge_pr, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -992,4 +1002,58 @@ You flagged that Brazil and China looked too far apart (the single world-view ma
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/truesight_autopilot && cat > scripts/plot_cacao_sourcing_network_map.py << 'PYEOF' #!/usr/bin/env python3 """Plot the TrueSight DAO ; cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/cacao_sourcing_network_map.png') w,h = im.size im.crop((0, int(h*0.78), ; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*[0-9]*/[0-9]*|width=7.1*inch, height=7.1*inch*1334/2302|' build_cacao_pdf.py && grep; …(+4 more)
 • `merge pr` → ✅ PR #325 on truesight_autopilot merged successfully (sha: e9e7ce62e9c1f6c2b6c392066298849f469813f8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] [Handoff context — this Telegram topic (thread 15564) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go
+
+
+### 🤖 Autopilot
+
+Checking the handoff registry first, per protocol.
+
+
+### 🤖 Autopilot
+
+The manifest was truncated — let me check whether thread 15564 has a plan entry.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the manifest to check for a thread-15564 entry.
+
+
+### 🤖 Autopilot
+
+The manifest has no row for thread 15564 (it covers SunMint mobile, tree-QR linking, media JSON, white-label — none matching this thread). This thread's work is the cacao map execution I've been running directly with your go-signals. The pending unit from my last report: **send the regenerated PDF + map PNG**. "Go" = proceed with that. Let me verify the files and ship.
+
+
+### 🤖 Autopilot
+
+Files verified — the side-by-side version (map PNG 309 KB, PDF 283 KB). Sending both.
+
+
+### 🤖 Autopilot
+
+Both sent ✅
+
+**What you're looking at now (the "countries far apart" fix):**
+- **Brazil panel (left)** — zoomed to the sourcing region, pins 1–4: Manicoré, Altamira, Itabuna, Ilhéus
+- **China panel (right)** — zoomed to the Pearl River Delta, pin 5: Dongguan
+- **Purple export arrow** bridging the two panels ("Export lane · Brazil → China")
+- Legend strip across the bottom with each site's constraint (Ilhéus ⚠ CNPJ INAPTA blocker in red)
+
+Both countries now sit adjacent and each fills its own panel, so the map reads as one connected network — not two distant dots on a world map.
+
+- **PDF**: `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` (1 page, 283 KB)
+- **PNG**: `/tmp/cacao_sourcing_network_map.png` (2302×1334, 309 KB)
+
+If you'd rather have the Brazil and China panels **further apart with the arrow doing more visual work**, or want the panels **stacked vertically** instead, say the word — one tweak and I'll regenerate.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -la /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf /tmp/cacao_sourcing_network_map.png && file /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf
 
