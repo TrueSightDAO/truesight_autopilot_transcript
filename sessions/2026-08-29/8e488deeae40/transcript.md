@@ -2198,6 +2198,7 @@ The live beta page **has** `invalidZone` (line 171), so my earlier `undefined` m
 ### 🤖 Autopilot
 
 `isGovUser: true` — the sentinel gate **works in the real browser**. But `invalidZoneEl: false` despite curl showing it at line 171 — the browser's DOM is missing it. One decisive check: does the served page in the browser actually contain `invalidZone` (i.e., is the browser getting a different file than curl)?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2243,26 +2244,31 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming. Step 1: diff the live beta monitor page against `sunmint_beta/main` to confirm the version drift (missing `markInvalidBtn`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both main and live beta are 60348 bytes (same size — no drift!), and both have 4 matches. My earlier `htmlHasMarkBtn: false` check may have been wrong (perhaps the string is different — like `markInvalid` without `Btn`, or the button is inside a JS template). Let me check the exact matches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `markInvalidBtn` exists in main (line 172), and the live beta HTML matches main (60348 bytes). But the browser DOM reports the element missing — meaning **JS removed it before my check** (the string appears in script text but no live element). Let me read the `maybeShowInvalidZone` logic at lines 995-1015 and 1135-1150 to see when it's removed vs shown:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The zone div (line 171) exists in the static HTML but is missing from the live DOM — while `invalidZone` strings remain in script text. That means something rewrites/removes the section before my check. One decisive browser dump to see the actual DOM around the tree section and whether the dropdown path calls `maybeShowInvalidZone`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The browser DOM lacks the `invalidZone` div entirely, yet curl fetched it at line 171 — the browser is getting **different content** than curl. Decisive test: dump the browser's raw HTML and compare against curl's:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2270,6 +2276,7 @@ The browser DOM lacks the `invalidZone` div entirely, yet curl fetched it at lin
 **Root cause found:** the browser receives a **59900-byte page without the `invalidZone`/`markInvalidBtn` elements** (older version), while curl gets 60348 bytes with them. The **browser and curl are served different content** — that's a **CDN/browser-cache serving a stale version** (Varnish/Pages cache split by user-agent or edge cache). This is exactly the class of issue Gary hit before ("beta showing empty").
 
 The browser hit a **stale cached copy** (pre-`markInvalidBtn`, likely the same stale version that shipped before my #23/#24 fixes). The fix: **purge/bust the CDN cache** so browsers get the current 60348-byte version. Let me verify which version is truly current on main and check the cache headers the browser gets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2277,6 +2284,7 @@ The browser hit a **stale cached copy** (pre-`markInvalidBtn`, likely the same s
 With the browser UA, curl gets 60348 bytes with `markInvalidBtn` — so the **server is fine**. But Playwright's Chromium got the **59900-byte stale version**. The difference: **Playwright's headless Chrome has a specific UA + an internal HTTP cache**, and the 59900-byte version was served to it from an edge cache slot keyed to that UA (Varnish). This is a **CDN cache-keyed-by-UA stale artifact**.
 
 The definitive test: clear Playwright's cache (fresh context, `bypassCSP`, no cache) and retry — a fresh browser context should get the current version:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2435,4 +2443,133 @@ Converging — I have the definitive answer on the mark-invalid question and the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp echo "=== find the write-capable SA ===" ls -la /opt/truesight_autopilot/config/google/ 2>/dev/null echo "" echo "=== SunMint Tree P; cd /tmp echo "=== markTreeInvalid tail (1020-1100) ===" sed -n '1020,1100p' main_monitor.html; cd /tmp echo "=== Tree Growth Measurements sheet (try SA list + values) ===" cat > check_growth.py <<'EOF' import json from google.oauth2 im; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming with the ingestion-gap fix. First, find the GAS handler that consumes `[TREE PLANTING EVENT]` / `[TREE GROWTH MONITORING EVENT]` from Edgar:
+
+
+### 🤖 Autopilot
+
+Found the handlers: `process_tree_planting_link.js` + `process_tree_growth_monitoring.gs` in GAS project `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v`. Let me read both to see how they consume Edgar events (trigger type, source filter, sheet write):
+
+
+### 🤖 Autopilot
+
+The handlers scan submissions **"from Telegram Chat Logs"** — so the chain is: site → Edgar → (writes to Telegram Chat Logs tab) → GAS handler scans → sheets. The gap is likely that **dao_protocol (the new backend) isn't writing submissions to the Telegram Chat Logs tab the GAS handlers scan**. Let me confirm both sides: the handler's scan entry point, and where dao_protocol actually writes submissions.
+
+
+### 🤖 Autopilot
+
+The GAS handlers scan **Telegram Chat Logs** for events — so the question is whether dao_protocol's `submit_contribution` writes incoming submissions into that tab. Let me check the deployed handler directly:
+
+
+### 🤖 Autopilot
+
+`dao.py:427` logs submissions to **Telegram Chat Logs** (the same tab the GAS handlers scan). So the chain *should* work. The question is what happened to my TREE events specifically. Let me check the actual Telegram Chat Logs tab for my submissions (13:47 + 13:50) and the dispatch table (whether TREE events have a GAS stage):
+
+
+### 🤖 Autopilot
+
+The dispatch table continues — let me see the rest (TREE entries) and check the tail of Telegram Chat Logs for my submissions:
+
+
+### 🤖 Autopilot
+
+**Root cause confirmed.** Two findings:
+
+1. **The dispatch ROUTING table has NO entry for `[TREE PLANTING EVENT]` or `[TREE GROWTH MONITORING EVENT]`** — I saw the table ends around STORE ADD / DONATION MINT; let me confirm the tail, but it's already clear these event types aren't routed to the GAS webhook (`processTreePlantingLinksFromTelegramChatLogs` / `processTreeGrowthMonitoringFromTelegramChatLogs`).
+2. **My submissions are NOT in Telegram Chat Logs at all** — the sheet's last rows are from 2024 (old records); rows 394-401 are Aug 2024. **dao_protocol did NOT log my 13:47/13:50 TREE submissions to Telegram Chat Logs** — the sheet write at `dao.py:427` evidently didn't happen (or went elsewhere).
+
+Both are the same class of gap: **dao_protocol (the new Python backend) doesn't replicate the Rails-era behavior of logging every submission to Telegram Chat Logs + dispatching TREE events.** The GAS handlers (which scan Telegram Chat Logs) never see the events → no tree planting/monitoring records → empty sheets.
+
+Let me confirm both halves — the dispatch tail (TREE absent) and why the Chat Logs append didn't run (the code path at dao.py:427):
+
+
+### 🤖 Autopilot
+
+**Root cause fully confirmed — this is a real production gap:**
+
+1. **`dao.py` DOES log to Telegram Chat Logs** (`telegram_raw_log.add_record(...)` at line ~429) — so my TREE submissions *should* be in the sheet. But the sheet's last rows are 2024. **Either `add_record` failed silently, or it writes to a different sheet than the one I'm reading** (the GAS handlers read `SOURCE_SHEET_URL`; the python `telegram_raw_log` may target a different spreadsheet ID).
+2. **dispatch.py ROUTING has NO `[TREE PLANTING EVENT]` / `[TREE GROWTH MONITORING EVENT]` entries** (the tail grep returned empty) — so even when TREE events reach Chat Logs, **no GAS webhook fires for them** (Rails-era behavior ported incompletely). The GAS handlers exist but are only triggered by their cron (which itself reads the same Chat Logs).
+
+Let me confirm the actual spreadsheet `telegram_raw_log.add_record` writes to vs what the GAS handlers scan:
+
+
+### 🤖 Autopilot
+
+`telegram_raw_log` targets the **same spreadsheet + tab** I read — but my read only covered rows 3–401 (old 2024 data). New appends land at the **bottom** of the sheet, which could be row 4000+. Let me read the actual tail:
+
+
+### 🤖 Autopilot
+
+The grid is 11898 rows — my appends would be at the very bottom. Let me read the actual last rows of the sheet:
+
+
+### 🤖 Autopilot
+
+The `head -40` truncated my view — the sheet's data continues past row 11815 (my today rows are the very last). One clean read of the final rows:
+
+
+### 🤖 Autopilot
+
+My submissions ARE in Telegram Chat Logs — rows 11882 (`[TREE PLANTING EVENT]` 13:47) and 11884 (`[TREE GROWTH MONITORING EVENT]` 13:50, truncated). So `add_record` works. **The gap is the dispatch** — let me read the tail to confirm my monitoring row landed and see the final rows:
+
+
+### 🤖 Autopilot
+
+Let me see the final rows to confirm the monitoring event row:
+
+
+### 🤖 Autopilot
+
+Converging — I have the definitive root cause. Here's the full report.
+
+## 🔍 ROOT CAUSE FOUND: SunMint tree-event ingestion gap
+
+**My E2E events ARE safely in the ledger** (Telegram Chat Logs):
+- Row **11882**: `[TREE PLANTING EVENT]` @ 13:47:07 — signature `success`, column T `TRUE` (sentinel)
+- Row **11884**: `[TREE GROWTH MONITORING EVENT]` @ 13:50:29 — signature `success`
+
+**The break is in the middle of the chain:**
+
+1. ✅ **Site → Edgar → Telegram Chat Logs**: works (`telegram_raw_log.add_record` — my rows prove it).
+2. ❌ **Telegram Chat Logs → GAS handlers**: the handlers exist (`processTreePlantingLinksFromTelegramChatLogs`, `processTreeGrowthMonitoringFromTelegramChatLogs` in GAS project `1UrBgq…`) and scan exactly these rows — **but they never fire**.
+3. ❌ **dispatch.py ROUTING (dao_protocol) has NO entry for `[TREE PLANTING EVENT]` or `[TREE GROWTH MONITORING EVENT]`** — so the Python backend never calls the GAS webhook for tree events (the Rails-era behavior wasn't ported). Only the GAS **cron** fallback could pick them up — and it evidently isn't running/firing, since my rows sat unprocessed for 30+ minutes.
+
+**Net:** tree plantings/monitor records submitted through the live site (beta or prod) go into Telegram Chat Logs but never reach the **SunMint Tree Planting** / **Tree Growth Measurements** sheets → the tree index never grows → trees "disappear." This affects real plantings, not just my test.
+
+## ✅ E2E verdict (everything else)
+
+| Step | Result |
+|---|---|
+| Email link (admin+sophia@) | ✅ linked, key ACTIVE, sentinel TRUE |
+| Sentinel gate | ✅ `isCurrentUserGovernor()===true`, invalid zone logic reachable |
+| Tree plant | ✅ signed submission in ledger (row 11882) + photo uploaded |
+| Monitor record | ✅ signed submission in ledger (row 11884) |
+| Mark invalid | ✅ confirm dialog fires; `markTreeInvalid()` is share-only (no ledger write) — **no real tree was invalidated** |
+
+## Residue (§5g) — flagged
+- Ledger rows 11882/11884: legitimate signed E2E submissions — **keep** (they're the proof; also harmless as Pending rows) unless you want them removed.
+- `sunmint/images/20260829134704_…jpg`: my synthetic planting photo — remove or keep as fixture (your call).
+
+## RESUME HERE → next turn (fix the gap)
+1. **Open a fix in `dao_protocol`** (server repo): add ROUTING entries for `[TREE PLANTING EVENT]` → `processTreePlantingTelegramLogs` + `[TREE GROWTH MONITORING EVENT]` → `processTreeGrowthMonitoringFromTelegramChatLogs` (webhook env keys `DAO_PROTOCOL_WEBHOOK_*`), mirroring the existing patterns.
+2. **Verify GAS cron** on project `1UrBgq…`: check the two handler functions have a time-driven trigger; if missing, add one (via clasp) — that's the fallback path.
+3. **Backfill my two rows** once a path works (run the handler once or wait for cron) → confirm they land in SunMint Tree Planting / Tree Growth Measurements.
+4. Re-run the full chain end-to-end to confirm green; remove the test photo per your call.
+
+**Bottom line:** the user-facing chain works (site → signature → Edgar → ledger), and the only broken segment is the **dao_protocol→GAS dispatch for tree events** — a small, well-understood porting gap with the fix already scoped. My E2E also confirmed the sentinel gate + mark-invalid flow function correctly and no real tree was harmed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== where does dao_protocol write submissions? (grep deployed code) ==; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== find submit_contribution handler in deployed code ===" sudo grep -; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== dispatch.py full table ===" sudo sed -n "1,120p" /home/ubuntu/dao_; …(+6 more)
 
