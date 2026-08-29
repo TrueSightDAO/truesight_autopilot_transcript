@@ -4554,51 +4554,61 @@ I have the complete fix design. Executing: clone dao_protocol, add the `_is_sent
 ### 🤖 Autopilot
 
 The full-suite collection error is a pre-existing issue (`cannot import name 'dedup'`) unrelated to my change — but I must verify that claim rather than assume. Checking whether `dedup` exists and whether this fails on a pristine checkout too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the `dedup` collection error is **pre-existing** (fails identically on pristine main, my change restored cleanly). My patch touches none of that path. Let me run the rest of the suite minus those two broken-at-collection modules, to prove my change doesn't break anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 110 passed, 4 failed — but I must confirm those 4 failures are pre-existing (they're in `post_repackaging_cleanup`, an unrelated module, but the rule says verify). Checking them against pristine main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 failures confirmed **pre-existing** (identical on pristine main — unrelated to my change). My change: **10/10 signature tests pass, 110 passed, zero new failures**. Now pushing the dao_protocol PR (server route + test), then the sunmint_beta page fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The git tool needs explicit edits/writes. Let me push using the actual file contents (read from my patched local clone):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now pushing the dao_protocol PR with explicit edits:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Verifying the diff is clean, then I'll prepare the sunmint_beta page fix (the second half):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #148 is clean (**+33/−3, 2 files**). Now the second half — the sunmint_beta page fix: point `checkSignatureRegistration()`/`loadContributorIdentity()` at the correct endpoint and consume `is_governor`/`is_sentinel` (this also implements your "sentinels get the permission" ask). Let me fetch the current page and apply:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All patches applied cleanly (JS OK, 3× endpoint refs, 3× sentinel refs, **0 GOVERNORS** — the hardcoded list is gone). The nonzero exit was just the final `grep -c GOVERNORS` returning 0 matches (grep exit 1 on no match) — which is exactly what we want. Now pushing the page fix to sunmint_beta via PR (code repo, reviewed flow):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs are open. Verifying the sunmint_beta PR diff is clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4778,4 +4788,75 @@ Say "go" and I'll pull the profile5 keypair + confirm the live `is_sentinel:true
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "=== service units ===" && systemctl list-units --type=service --all 2>/dev/null | grep -iE "dao|edgar|8010|fastapi|uvicorn" ; echo "==; echo "=== ssh config ===" && cat ~/.ssh/config 2>/dev/null | head -60; echo "=== keys ===" && ls -la ~/.ssh/ 2>/dev/null; echo "=== try know; echo "=== try config alias with autopilot key ===" && timeout 8 ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5 dao-pro; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Resuming — pulling the profile5 keypair from the E2E browser session to confirm the live endpoint returns `is_sentinel:true` for Sophia's identity.
+
+
+### 🤖 Autopilot
+
+Keypair extracted from profile5 — this is the key Edgar knows (linked to `tgm-e2e-20260831@truesight.me`, the test email, **not** Sophia's identity). So querying the endpoint with it will confirm the flags mechanism works, but for a **test identity**, not Sophia. The honest check: (1) confirm the live endpoint returns the new flags for a registered key, (2) separately note Sophia's own key isn't in the sheet. Querying:
+
+
+### 🤖 Autopilot
+
+**The live endpoint works** — `registered:true` for the profile5 key, with the new `is_governor`/`is_sentinel` fields present (false/false for this test identity, correct). The flags mechanism is deployed and serving.
+
+One thing to verify for completeness: Sophia's own identity — her `.env` key wasn't in the sheet, but let me check if the profile_sophia session (from the earlier registration attempt) has the key that Edgar knows as Sophia, since that would confirm `is_sentinel:true` for the real sentinel:
+
+
+### 🤖 Autopilot
+
+The profile_sophia session has its own generated keypair (different from `.env`, and not Sophia's registered key — the earlier registration attempt said "already active" for a key, but this local key isn't in the sheet either). Let me test this key against the live endpoint to see if it resolves to Sophia's identity:
+
+
+### 🤖 Autopilot
+
+**CONFIRMED — the decisive result:**
+
+
+
+The live production endpoint now returns **`is_sentinel: true`** for Sophia's real identity. Both fixes are deployed and verified end-to-end. Converging with the full report.
+
+## ✅ Turn complete — sentinel gate verified live in production
+
+**1. Deployed dao_protocol (#148) to production** (your "go"): pulled main → `2f6c717`, restarted `truesight-dao-protocol.service`, port 8010 active.
+
+**2. Live endpoint verified with Sophia's real registered key** (from the profile_sophia session — the key Edgar knows as Sophia):
+- `registered: true` · `contributor_name: "Sophia Truesight"` · `contributor_email: "admin+sophia@truesight.me"` · **`is_governor: false` · `is_sentinel: true`** ✅
+
+**3. Also verified** the flags mechanism with a test identity (profile5 key → `registered:true, is_governor:false, is_sentinel:false` — correct for a non-sentinel).
+
+**What this unblocks:**
+- The monitor page (sunmint_beta#26, merged) now fetches these server-authoritative flags → **sentinels (incl. Sophia) get the Mark-invalid permission** — exactly per your "make sure Sentinel also have that permission"
+- No more `/dao/contributors` 404 — the page uses the correct endpoint
+- The governor/sentinel gate is now driven by the server, not a hardcoded client list
+
+## 📌 RESUME HERE → next units
+1. **Verify the beta page post-rebuild**: Mark-invalid button renders for a sentinel session (profile_sophia with its registered key)
+2. **The invalidation itself**: mark TEST_TREE_E2E invalid with my sentinel identity — noting `markTreeInvalid()` shares a signed REJECT to Telegram (GAS handler picks it up); TEST_TREE_E2E still needs either a SunMint-sheet row or the growth-measurement reject path (flagged gap) for the REJECT to find a target
+3. **Standing**: test-row cleanup, `sunmint_prod` promotion + `prod_repos` config line — separate approvals
+
+Say "go" and I'll run the beta-page sentinel-gate verification (step 1).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → extracted profile5 keypair (publicKey/privateKey/sunmint_linked_email in localStorage) via puppeteer; queried live endpoint (registered:true, flags present, is_sentinel:false for test identity); extracted profile_sophia keypair; queried live endpoint → **Sophia Truesight / admin+sophia@truesight.me / is_sentinel:true** ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/e2e && ls -d profile*; find localStorage; puppeteer dump of profile5 keys (publicKey/privateKey/sunmint_linked_email=tgm-e2e-20260831@); curl live check_digital_signature → registered:true, is_governor:false, is_sentinel:false; puppeteer dump of profile_sophia keys; curl live → **Sophia Truesight / admin+sophia@truesight.me / is_governor:false / is_sentinel:true** ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/e2e && echo "=== profiles ===" && ls -d profile* 2>/dev/null && echo "=== find localStorage db ===" && find profile5 -name "*.locals; cd /tmp/e2e && PK='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvLvVsWPJnJdE9Yu7NPLwkhAX2qFxc3xL8a6x/m/DJaOmthy0d5HKj5kSEhI2GKN+FJK+5vyINM8iF; cd /tmp/e2e && cat > dump_keys_sophia.js << 'EOF' const puppeteer = require('puppeteer-core'); (async () => { const browser = await puppetee; …(+1 more)
 
