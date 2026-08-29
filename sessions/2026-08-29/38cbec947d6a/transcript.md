@@ -288,6 +288,7 @@ Now executing (b) the convention doc and (c) the `(Test` guard PR in parallel �
 ### 🤖 Autopilot
 
 Both PRs are open. Gary's "approve" covers merging — merging both now.
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -358,6 +359,7 @@ The GAS code guard in `tokenomics#436` is merged but **not yet deployed** to the
 ### 🤖 Autopilot
 
 Gary — item 3 was already executed last turn as part of your "approve". Let me do a quick read-only re-verify to confirm the rows are still gone (no re-deletion needed — the destructive edit already happened).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -393,26 +395,31 @@ The `Currencies` tab now flows cleanly from `Propane Tank - 16 oz` → `QR Code 
 ### 🤖 Autopilot
 
 Gary — two tasks: (1) log time spent, (2) make the cleanup/expense-off step a mandatory part of the asset-receipt E2E run going forward. First let me check whether there's an actual checked-in E2E test script for asset receipt that needs the cleanup step added, before I update the convention doc.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No checked-in E2E script exists for asset receipt — the procedure is the convention doc. Let me read the current doc and the OPEN_FOLLOWUPS format (for both the update and the time log).
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No checked-in E2E script exists for asset receipt — the procedure lives in the convention doc. I'll (1) update the convention doc so the expense-off/cleanup step is explicitly PART of the asset-receipt E2E run checklist, and (2) log the time spent as a contribution. Let me get the contribution event format first.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No checked-in E2E script exists — the convention doc is the procedure, so I'll update it to make the expense-off/cleanup an explicit step of the asset-receipt E2E run checklist, and log the time contribution in parallel.
+[2 tool result(s) compacted: git_push_changes, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both done. Let me merge the convention PR (per the standing "go" on this plan) to finish the loop.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -515,6 +522,7 @@ So: want me to push it? One word and I'll run the deploy (first push without hoo
 ### 🤖 Autopilot
 
 "Merge" is already done (tokenomics#436 merged earlier, sha `0ed19da`) — the remaining step is the **deploy**. Executing now: first a dry-run to confirm the project resolves, then the real push.
+[2 tool result(s) compacted: read_repo_file, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -624,4 +632,154 @@ Per convention: first push **without hooks**, verify, then re-run **with hooks**
 • `gas deploy project` → error
 • `ssh run` ×9 → ls -la /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null | head -40; echo '---'; ls /opt/truesight_autopilot/conte; ls -la /opt/truesight_autopilot/context/tokenomics/ 2>/dev/null | head -20; echo '---GAS---'; ls /opt/truesight_autopilot/context/tokenomics; ls /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null; echo '---GIT---'; cd /opt/truesight_autopilot/context/tokeno; …(+6 more)
 • `merge pr` → ✅ PR #437 on tokenomics merged successfully (sha: 44cdf96a3e66beb1f34d961c2ad6dc295be3881a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] [Handoff context — this Telegram topic (thread 15540) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+resume
+
+
+### 🤖 Autopilot
+
+Resuming. Let me check the handoff manifest as instructed, and dry-run the deploy with the now-correct scriptId in parallel.
+
+
+### 🤖 Autopilot
+
+Dry-run is clean: project resolves, clasp identity `garyjob@agroverse.shop`, folder has `Code.gs`, no manifest entry (no hooks). Before the real push I need to confirm the **local checkout** actually has PR #437's guard (my git_push edited GitHub; the local clone may still be at `0ed19da`). Verifying + pulling if needed.
+
+
+### 🤖 Autopilot
+
+Local checkout is current (`44cdf96` = #437) and the guard is present in the real deployable file (lines 177–185). Executing the live deploy now — first push without hooks (per convention), then re-run with hooks if any exist.
+
+
+### 🤖 Autopilot
+
+**Deploy succeeded.** The live GAS project now runs the guarded code:
+
+- `clasp push --force` → **Pushed 2 files** (`appsscript.json`, `Code.gs`) at 12:46:58 PM
+- Deploy ledger entry: `deploy_20260829T124703Z_1o2lzpdtzbyttfdxzwjoatxznbql959b-o7-no2g` ([evidence](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T124703Z_1o2lzpdtzbyttfdxzwjoatxznbql959b-o7-no2g.md))
+- No hooks (no manifest entry — nothing to fire)
+- The `repoint_deployment` logic from #433: this project had a pinned deployment, so let me confirm whether the push also bumped the version/repointed the live `/exec` URL.
+
+One more verification — confirm the live web-app deployment actually serves the new code (the `?action=status` endpoint on the `/exec` URL should respond). Let me check the appsscript.json + whether there's a pinned deployment that needs repointing.
+
+
+### 🤖 Autopilot
+
+Deploy pushed, but I need to verify the **live `/exec` URL actually serves the new code**. The push only updates `@HEAD` — if the webapp deployment is pinned to an old version, Edgar's WebhookTriggerWorker still calls the old code. Let me list deployments and find how Edgar invokes it.
+
+
+### 🤖 Autopilot
+
+The push went to `@HEAD`, but I see **pinned deployments**: `@10` (has the #431 fix) and `@3` ("production deployment") — pinned versions don't auto-follow `@HEAD`. I must confirm **which URL Edgar's WebhookTriggerWorker actually calls**. Let me find that.
+
+
+### 🤖 Autopilot
+
+No local matches. Let me search the dao_protocol repo and GitHub org for how Edgar triggers the asset-receipt webhook.
+
+
+### 🤖 Autopilot
+
+No checked-in URL. The webhook URL Edgar calls must be configured in dao_protocol (the Edgar server) or its env. Let me check the dao_protocol host and repo for the webhook configuration.
+
+
+### 🤖 Autopilot
+
+No SSH access to that host. Let me check the dao_protocol repo for how the webhook is triggered (WebhookTriggerWorker).
+
+
+### 🤖 Autopilot
+
+The webhook URL isn't in any indexed repo (Edgar's config likely lives in its DB/env). Let me directly test the **live web-app endpoints** — `?action=status` on the `@HEAD` deployment and the pinned `@10` deployment — to see which serves the guard and which Edgar likely hits. I can compare behavior by hitting the status endpoint on both.
+
+
+### 🤖 Autopilot
+
+The `@10` deployment is the **live anonymous one** Edgar hits (responded with real JSON status; `currencies_last_row: 139` confirms our cleanup). But it's **pinned to version 10 = pre-guard code** — the guard only lives in `@HEAD`, which is not anonymous (sign-in wall). The deploy script's `repoint_deployment` only runs if a manifest entry has a `deployment_id`, and this run showed "no manifest entry". Let me find the deploy manifest and whether `1o2lzpd…` has a pinned deployment_id configured.
+
+
+### 🤖 Autopilot
+
+There's a `docs/MANIFEST.json` — likely the deploy manifest that maps scriptId → deployment_id. Let me check whether `1o2lzpd…` has an entry with the pinned `deployment_id` (`AKfycbzcX…` = the @10 live URL).
+
+
+### 🤖 Autopilot
+
+This MANIFEST.json is the old clasp_mirrors index (46 projects, 2026-03-29) — doesn't have the `1o2lzpd…` entry or deployment_id. The **per-project `manifest.json`** files in each GAS folder are the ones the deploy script reads (`post_push_hooks`, `deployment_id`). `1o2lzpd…/` has none — that's why hooks were skipped. Let me confirm the deploy script's manifest lookup + check `gen_gas_manifests.py` for how deployment_id is meant to be set.
+
+
+### 🤖 Autopilot
+
+The deploy succeeded and the ledger recorded it — but I've now confirmed a **live-serving gap**: the deployment Edgar actually hits (`AKfycbzcX…` @10, the anonymous one that returned the real JSON status) is **pinned to version 10 = pre-guard**. `clasp push` only updated `@HEAD`, and the @HEAD deployment is behind a sign-in wall (not anonymous). So **the guard is NOT yet live on the URL Edgar calls.**
+
+I need to repoint the pinned deployment to a new version containing the guard. Let me check `find_manifest_for` for the exact manifest key + whether `1o2lzpd…` has any entry, then do `clasp version` + `clasp deploy --deploymentId AKfycbzcX… -V <new>`.
+
+
+### 🤖 Autopilot
+
+`1o2lzpd…/` has **no manifest.json** → the deploy tool can't auto-repoint. The live anonymous deployment Edgar hits (`AKfycbzcX…` @10) is pinned to **pre-guard v10**. I need to create v11 from the pushed @HEAD and repoint the live deployment. Let me also check whether the older "production deployment" @3 is anonymous (another candidate Edgar may call), and create the new version.
+
+
+### 🤖 Autopilot
+
+Version 11 created (contains the guard from @HEAD). The @3 "production deployment" is dead (404). Now repointing the live anonymous deployment (`AKfycbzcX…` @10) to version 11 — this makes the guard actually live on the URL Edgar hits. Gary's "merge and deploy it then" authorizes this.
+
+
+### 🤖 Autopilot
+
+The live deployment is now repointed to **@11 (guard included)**. Verifying end-to-end by hitting the same anonymous URL Edgar uses — it should respond with the same JSON status, confirming the live endpoint is healthy on the new version.
+
+
+### 🤖 Autopilot
+
+Live endpoint healthy on @11. Now let me update the handoff manifest to record the completed asset-receipt guard work, and record a contribution for this session's work. First let me find the manifest row for this work.
+
+
+### 🤖 Autopilot
+
+The deploy is complete and verified live. Here's the full report:
+
+---
+
+## ✅ Deploy complete — the `(Test` guard is NOW LIVE on the pipeline Edgar actually calls
+
+### What happened this turn ("resume")
+1. **Checked handoff manifest** — this work (asset-receipt QA guard) is a direct governor task, not a plan-handoff row; resumed per the conversation's RESUME HERE pointer.
+2. **Dry-run deploy** on the real scriptId → clean (clasp identity `garyjob@agroverse.shop`, folder resolves).
+3. **Verified local checkout** had PR #437's guard (lines 177–185 present, commit `44cdf96`).
+4. **`clasp push --force`** → Pushed `appsscript.json` + `Code.gs` (deploy ledger `deploy_20260829T124703Z…`).
+5. **Found a live-serving gap:** the anonymous deployment Edgar's WebhookTriggerWorker hits (`AKfycbzcX…`) was **pinned to @10 = pre-guard**. `@HEAD` has the guard but sits behind a sign-in wall; the old @3 "production" deployment is dead (404).
+6. **Created version 11** from the pushed code, then **repointed the live deployment `AKfycbzcX…` → @11** (`clasp deploy --deploymentId AKfycbzcX… -V 11 -d "QA (Test guard (#436+#437) + E2E cleanup convention"`).
+7. **Verified live:** the same anonymous `/exec?action=status` URL Edgar uses now returns healthy JSON — `currencies_last_row: 139` (confirms our cleanup), `offchain_last_row: 4221`, no errors.
+
+### The full chain, now closed
+| Step | Status |
+|---|---|
+| Phantom Currencies rows 127/128 deleted | ✅ (earlier) |
+| Treasury $17,899.20 verified | ✅ (earlier) |
+| Convention doc (agentic_ai_context #831 + #833) | ✅ merged |
+| Guard source in tokenomics #436 | ✅ merged |
+| Guard in **deployable** project folder (tokenomics #437) | ✅ merged |
+| **Live GAS deploy @11 + repoint of live URL** | ✅ **done + verified** |
+
+**Bottom line for Gary:** a future `[ASSET RECEIPT EVENT]` whose currency contains `(Test` will now write its offchain leg (so ingest QA still works end-to-end) but will **NOT create a Currencies rate row** — no phantom treasury inflation can recur. Real currencies are unaffected.
+
+---
+
+## RESUME HERE → wrap-up (next turn)
+Remaining housekeeping, no urgency:
+- [ ] Log this session's time as a CONTRIBUTION EVENT (deploy + verification ~45 min) — I logged 120 min earlier for the investigation; this adds the deploy leg.
+- [ ] Optionally add a `manifest.json` (with `deployment_id: AKfycbzcX…`) to `google_app_scripts/1o2lzpd…/` so future deploys of this project auto-repoint the live URL instead of needing the manual `clasp deploy -V` step (would have prevented today's gap).
+
+Both are small; say the word and I'll do them in the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T124703Z_1o2lzpdtzbyttfdxzwjoatxznbql959b-o7-no2g.md
+• `ssh run` ×11 → cd /opt/truesight_autopilot/context/tokenomics && git log --oneline -3 && echo '---GUARD IN LOCAL REAL FILE?---' && grep -n "isTestCurrency"; cat /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU/appsscript.json; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && clasp deploym; …(+8 more)
 
