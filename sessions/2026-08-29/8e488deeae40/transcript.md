@@ -3502,31 +3502,37 @@ Normalization handles CRLF. So the extraction of treeId/dbh should work... Let m
 **Found it!** `dbh: ""` — the regex `- DBH (cm): 12.5` fails. Why? The regex is `-\s+DBH (cm):\s*([^\n]+)` — the **literal `(` in "DBH (cm)"** is a regex group opener, not escaped! `DBH (cm)` in the pattern treats `(cm)` as a capture group (matching "cm"), so the pattern is `DBH cm:` — but the text has `DBH (cm):` → no match → dbh empty → skip.
 
 **This is a real bug in the extractor** (`grab('DBH (cm)')` — the label is used raw in a `RegExp`, and `(`/`)` aren't escaped). Let me open the fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I need to verify that edit. My replace omitted the `result.treeId = grab('Tree ID');` line that was in the search — I may have accidentally deleted it. Let me check the PR diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My edit was **wrong** — it only deleted the `result.treeId` line (the search/replace didn't include the escape fix because the hunk matched the wrong section). The regex-escape fix never got applied, and I deleted a needed line. Let me fix this properly with a correct edit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already has the bad commit pushed. I'll use a **different branch name** for the corrected fix (cleaner than force-pushing over the bad one):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #446 opened with the corrected fix. Let me verify the diff is right this time (escapeRe helper present + treeId line intact):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is almost right — but there's a **duplicate `result.treeId = grab('Tree ID');` line** (my base hunk still contained it while the original search matched the pre-#445 file that... actually it added one extra). Harmless (idempotent) but sloppy. Let me fix the duplicate before merging:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3726,4 +3732,90 @@ monitor form → offline queue (base64 blobs, #28) → POST 200 → Edgar
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /home/ubuntu/tokenomics && { echo "=== pull main (must reach b167e23 #446) ==="; git pull --ff-only origin main 2>&1 | tail -2; git log -; echo "=== fire growth webhook @36 ===" && curl -sL "https://script.google.com/macros/s/AKfycbwm9TZDLPrG1vui3KjR4WHnydQAJXa5U7KHMygRnS9vN6oAw; cd /tmp && cat > /tmp/verify_tgm.py <<'EOF' import json, base64, os from google.oauth2 import service_account from googleapiclient.discovery; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming the plain-planting dispatch-port. First, read the full `processTelegramLogs()` to understand its scan/dedup protocol so I can port it into the webhook project correctly:
+
+
+### 🤖 Autopilot
+
+This is the key insight — let me read the rest of the function to see the empty-fileIds path (web submissions have no Telegram file IDs since the site uploads photos to GitHub directly):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture of the plain-planting handler. The cleanest port: add an `action` branch to the **1Jp8q project's existing doGet** that calls `processTelegramLogs()` (keeping all its helpers local), then wire the dao_protocol ROUTING + env to point at it. Let me check the 1Jp8q deployments and the webhook_trigger contract first:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of 1Jp8q's doGet (the governor gate + how to add an action branch) and the webhook_trigger contract:
+
+
+### 🤖 Autopilot
+
+Now I have the full contract. The plan: add an `action=processTreePlantingTelegramLogs` branch to 1Jp8q's doGet (so the dao_protocol dispatch can trigger it via `?action=`), deploy, then wire the ROUTING + env. Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #447 opened. Let me verify the diff is clean (both branches present, no accidental deletions), then merge per standing authorization:
+
+
+### 🤖 Autopilot
+
+Diff is clean: `+21 −3`, action branch added, `list_new` fallback preserved. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: plain-planting webhook action added + merged (PR #447)
+
+**Merged:** 🔀 [tokenomics #447 — fix: add processTreePlantingTelegramLogs webhook action so dao_protocol dispatch can process [TREE PLANTING EVENT] rows](https://github.com/TrueSightDAO/tokenomics/pull/447) (sha `77476ab`)
+
+**What changed** (`1Jp8q…/process_tree_planting_telegram_logs.js`, `+21 −3`):
+- `doGet(e)` now checks `?action=processTreePlantingTelegramLogs` first → runs the existing `processTelegramLogs()` full-scan (dedup by message ID/file ID → extract lat/lon/species/cost/planting time/photo URL → match contributor by signature → append to **SunMint Tree Planting** tab) → returns `{status, message}`.
+- The existing governor `?list_new=true&governor_key=` read endpoint is preserved (fall-through).
+
+**Why this shape:** per your "we are not using rails but dao_protocol python" steer — the plain `[TREE PLANTING EVENT]` now gets the same **dao_protocol dispatch → GAS webhook `?action=`** treatment as every other event type, instead of relying on a lost cron trigger.
+
+**Verified:** diff clean (`+21 −3`, action branch + fallback both correct), merged to main.
+
+## RESUME HERE → next unit (wire + deploy + final verify)
+
+1. **Pull main + `clasp push`** to GAS project `1Jp8q…` (avoid the stale-checkout trap) → confirm the action branch is present → create a new deployment (e.g. @5).
+2. **Fire the action** `?action=processTreePlantingTelegramLogs` on the new deployment → expect `{"status":"success","message":"✅ Tree planting processed"}` → confirm **row 11882 lands in SunMint Tree Planting** tab (scan for my `[TREE PLANTING EVENT]` / today's timestamp).
+3. **Wire the dao_protocol dispatch** (on the box): add ROUTING entry `("[TREE PLANTING EVENT]", [("TREE_PLANTING_PROCESSING", "processTreePlantingTelegramLogs")], False)` + set `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` env (pointing at the new deployment) → restart `truesight-dao-protocol.service`. This makes **future** plantings flow automatically (my row 11882 may have already been processed by step 2 — dispatch dedups by message ID).
+4. **Verify the tree index picks it up**: trigger `rebuild-tree-index.yml` → confirm 18→19 trees.
+5. **§5g close-out**: test photo `sunmint/images/20260829134704_…jpg` keep/remove (your call); ledger rows 11882/11885 keep; final full summary + thread close.
+
+**Bottom line: the plain-planting handler is now exposed as a webhook action (merged) — one deploy + one env-wire away from completing the last gap in the SunMint tree pipeline.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → read full `processTelegramLogs()` (190-421: scan/dedup/append protocol + empty-fileIds path for site submissions), read 1Jp8q doGet + deployments (HEAD, @4, @2), read webhook_trigger contract (`trigger(url, action)` / `trigger_with_params`), verified PR #447 diff clean
+• `git push` ×1 + `merge pr` ×1 → **PR #447 merged** (sha `77476ab`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs full (190-320) ===" && sed -n '19; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs tail (320-421) ===" && sed -n '320,421p' process; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== 1Jp8q deployments ===" && clasp; …(+2 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs ful; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs tai; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== 1Jp8q deployments ===" ; …(+2 more)
+• `merge pr` → ✅ PR #447 on tokenomics merged successfully (sha: 77476ab56ea3b45969f251750340d96e4ed4cf7e). Pull Request successfully merged
 
