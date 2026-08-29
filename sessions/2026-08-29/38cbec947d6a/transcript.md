@@ -699,36 +699,43 @@ The push went to `@HEAD`, but I see **pinned deployments**: `@10` (has the #431 
 ### 🤖 Autopilot
 
 No local matches. Let me search the dao_protocol repo and GitHub org for how Edgar triggers the asset-receipt webhook.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No checked-in URL. The webhook URL Edgar calls must be configured in dao_protocol (the Edgar server) or its env. Let me check the dao_protocol host and repo for the webhook configuration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No SSH access to that host. Let me check the dao_protocol repo for how the webhook is triggered (WebhookTriggerWorker).
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook URL isn't in any indexed repo (Edgar's config likely lives in its DB/env). Let me directly test the **live web-app endpoints** — `?action=status` on the `@HEAD` deployment and the pinned `@10` deployment — to see which serves the guard and which Edgar likely hits. I can compare behavior by hitting the status endpoint on both.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `@10` deployment is the **live anonymous one** Edgar hits (responded with real JSON status; `currencies_last_row: 139` confirms our cleanup). But it's **pinned to version 10 = pre-guard code** — the guard only lives in `@HEAD`, which is not anonymous (sign-in wall). The deploy script's `repoint_deployment` only runs if a manifest entry has a `deployment_id`, and this run showed "no manifest entry". Let me find the deploy manifest and whether `1o2lzpd…` has a pinned deployment_id configured.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `docs/MANIFEST.json` — likely the deploy manifest that maps scriptId → deployment_id. Let me check whether `1o2lzpd…` has an entry with the pinned `deployment_id` (`AKfycbzcX…` = the @10 live URL).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This MANIFEST.json is the old clasp_mirrors index (46 projects, 2026-03-29) — doesn't have the `1o2lzpd…` entry or deployment_id. The **per-project `manifest.json`** files in each GAS folder are the ones the deploy script reads (`post_push_hooks`, `deployment_id`). `1o2lzpd…/` has none — that's why hooks were skipped. Let me confirm the deploy script's manifest lookup + check `gen_gas_manifests.py` for how deployment_id is meant to be set.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -736,26 +743,31 @@ This MANIFEST.json is the old clasp_mirrors index (46 projects, 2026-03-29) — 
 The deploy succeeded and the ledger recorded it — but I've now confirmed a **live-serving gap**: the deployment Edgar actually hits (`AKfycbzcX…` @10, the anonymous one that returned the real JSON status) is **pinned to version 10 = pre-guard**. `clasp push` only updated `@HEAD`, and the @HEAD deployment is behind a sign-in wall (not anonymous). So **the guard is NOT yet live on the URL Edgar calls.**
 
 I need to repoint the pinned deployment to a new version containing the guard. Let me check `find_manifest_for` for the exact manifest key + whether `1o2lzpd…` has any entry, then do `clasp version` + `clasp deploy --deploymentId AKfycbzcX… -V <new>`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `1o2lzpd…/` has **no manifest.json** → the deploy tool can't auto-repoint. The live anonymous deployment Edgar hits (`AKfycbzcX…` @10) is pinned to **pre-guard v10**. I need to create v11 from the pushed @HEAD and repoint the live deployment. Let me also check whether the older "production deployment" @3 is anonymous (another candidate Edgar may call), and create the new version.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Version 11 created (contains the guard from @HEAD). The @3 "production deployment" is dead (404). Now repointing the live anonymous deployment (`AKfycbzcX…` @10) to version 11 — this makes the guard actually live on the URL Edgar hits. Gary's "merge and deploy it then" authorizes this.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live deployment is now repointed to **@11 (guard included)**. Verifying end-to-end by hitting the same anonymous URL Edgar uses — it should respond with the same JSON status, confirming the live endpoint is healthy on the new version.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live endpoint healthy on @11. Now let me update the handoff manifest to record the completed asset-receipt guard work, and record a contribution for this session's work. First let me find the manifest row for this work.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -810,11 +822,13 @@ Both are small; say the word and I'll do them in the next turn.
 ### 🤖 Autopilot
 
 "Keep going" — continuing with the two wrap-up items: (1) manifest.json so future deploys auto-repoint the live URL, (2) time log for this session's deploy leg. Let me check the manifest schema from an existing project and the contribution format in parallel.
+[2 tool result(s) compacted: ssh_run, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest schema captured, and CONTRIBUTION EVENT format confirmed (`Type`, `Amount`, `Contributor(s)`). Let me check how the deploy tool reads `deployment_id` (CLI arg vs manifest) so the manifest I write actually enables auto-repoint.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -942,4 +956,190 @@ Nothing is blocked — just say "keep going" or "resume" and I'll run the live E
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && for d in */; do if [ -f "$d/manifest.json" ]; then echo "=== $d ==="; c; cd /opt/truesight_autopilot && grep -rn "deployment_id\|deployment-id\|deployments" scripts/gas_deploy_project.py 2>/dev/null | head -30; ec; cd /opt/truesight_autopilot && ls scripts/ 2>/dev/null; echo '===gas_deploy wrapper==='; find . -maxdepth 3 -name 'gas_deploy*' -o -maxdepth; …(+10 more)
 • `merge pr` → ✅ PR #326 on truesight_autopilot merged successfully (sha: 10ba5b32c1a91943714532e8246a4fb8af781445). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] [Handoff context — this Telegram topic (thread 15540) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary said "go" — executing the next unit: **live verification of the E2E asset-receipt test**. First, a critical safety check: I must confirm the `WEBHOOK_BASE` deployment ID in the script is actually the right one for the asset-receipt ingest (the inventory E2E uses a different pipeline URL). Let me check clasp deployments for the `1o2lzpd…` project and confirm Edgar env is available.
+
+
+### 🤖 Autopilot
+
+`WEBHOOK_BASE` in the script is **correct** — it matches deployment **@11** ("QA (Test guard + E2E cleanup convention"), the one I repointed with the guard. Good.
+
+Two things to fix before running: (1) the script isn't on the local box yet (git_push_changes pushed to GitHub, not the local checkout), (2) need to confirm EdgarClient creds resolution. Let me check both.
+
+
+### 🤖 Autopilot
+
+The local checkout is stale — need to pull #326's script. And EdgarClient needs a `.env` with EMAIL/PUBLIC_KEY/PRIVATE_KEY. Let me sync the checkout and check auth state.
+
+
+### 🤖 Autopilot
+
+Script is now on the box, and `/opt/truesight_autopilot/.env` exists (EdgarClient defaults to CWD `.env` — running from `/opt/truesight_autopilot` will pick it up). Let me verify the env has EMAIL/PUBLIC_KEY/PRIVATE_KEY (values redacted) and check the script's CREDS_PATH is correct, then run the E2E live.
+
+
+### 🤖 Autopilot
+
+All prerequisites are in place:
+- ✅ Script on box (`scripts/e2e_asset_receipt_test.py`, 6555 bytes)
+- ✅ EdgarClient creds: EMAIL + PUBLIC_KEY + PRIVATE_KEY all set
+- ✅ GDrive creds: `cypher_defense_gdrive_key.json` exists (the script's default CREDS_PATH)
+
+Running the **live E2E verification** now. It submits a `(Test …)` asset receipt, fires the ingest webhook (@11 with guard), verifies no Currencies rate row, then self-cleans. It touches the live ledger briefly (1 offchain row created then deleted) — Gary's "go" authorizes this.
+
+
+### 🤖 Autopilot
+
+The submission **succeeded** (HTTP 200, `signature_verification: success`) — but my script's check failed because it does a **string match with a space** (`": "`) while the JSON has no space (`":"`). That's a bug in my script's assertion — the actual signed submission worked.
+
+Important: the event **was submitted** to Edgar → it's now in the Telegram Chat Logs, and the ingest webhook hasn't processed it yet. I need to:
+1. Fire the webhook to process the orphaned test event (20260829125356) — proving ingest works
+2. Clean up its offchain leg
+3. Fix the signature-check bug (JSON parse, not string match)
+4. Re-run the fixed script for a clean green
+
+Let me fire the webhook first and check what the ingest did:
+
+
+### 🤖 Autopilot
+
+`processed: 0` — the row may not have landed in the Telegram Chat Logs sheet yet (Edgar's worker may lag), or it's already processed. Let me check both the ops Telegram Chat Logs and the Asset Receipts audit tab for our marker.
+
+
+### 🤖 Autopilot
+
+The full ingest chain **worked end-to-end**:
+- Telegram Chat Logs row `Edgar_20260829125358_001` → Audit tab: `[E2E QA Asset (Test 20260829125356)]`, amount 1, fund handler Sophia Truesight, **offchain row 4222, status OK**
+- The webhook had already processed it (the `processed:0` I saw was the dedup — it was already logged by an earlier webhook fire... actually no, it processed on my fire but the audit shows 12:54:03 which matches. Either way: **status OK**).
+
+So the pipeline ingested it. My script's only failure was the **JSON string-match bug** (`": "` vs `":"`). Now let me:
+1. Verify the **QA guard held** — no Currencies rate row for the marker
+2. Verify the **offchain leg (row 4222)** exists, then self-clean (delete it)
+3. Fix the signature-check bug in the script
+
+Let me check + clean now:
+
+
+### 🤖 Autopilot
+
+**Live verification of the entire mechanism succeeded:**
+
+- ✅ **Guard held**: 0 Currencies rows for the test marker (no phantom rate row — the $10k inflation bug is dead)
+- ✅ **Offchain leg written**: row 4222 (qty 1, `N` revenue) — ingest worked end-to-end
+- ✅ **Self-clean worked**: deleted row 4222 → 4221 rows, 0 Currencies hits
+
+The only failure was the script's **signature-check bug** (string match `": "` vs actual `":"`). The live pipeline proved everything works. Now let me fix the script bug (parse JSON properly) and re-run for a clean green — and since the script needs a code fix, I'll open a fix PR. First the fix + local validation:
+
+
+### 🤖 Autopilot
+
+Patch applied, compile + lint pass. Formatting needs fixing:
+
+
+### 🤖 Autopilot
+
+All checks pass now. Re-running the **full live E2E** with the fixed script for a clean green:
+
+
+### 🤖 Autopilot
+
+**🎉 FULL GREEN — EXIT=0!** The complete E2E passed:
+
+| Step | Result |
+|---|---|
+| 1. Submit signed ASSET RECEIPT EVENT | ✅ `signature_verification: success` |
+| 2. Fire ingest webhook | ✅ (row processed — the sign-in HTML is just the GAS redirect wall; audit proves processing) |
+| 3. Audit tab | ✅ `Edgar_20260829125450_003`, status **OK** |
+| 4. QA guard (no Currencies rate row) | ✅ **PASS** |
+| 5. Self-clean (expense-off) | ✅ deleted 1 offchain row |
+| 6. Post-cleanup verify (0 leftovers) | ✅ **PASS** |
+
+The live ledger is now clean — one offchain leg created, one deleted, zero Currencies rows. The audit-tab row is intentionally kept (dedup).
+
+Now I need to push the bugfix (JSON signature check) to the repo — the merged #326 has the buggy string-match. Opening the fix PR:
+
+
+### 🤖 Autopilot
+
+Fix PR opened: **truesight_autopilot#327**. Merging it (Gary's "go" covers this plan's PRs):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Gary's "go" → **live E2E verification complete, full green**. Report:
+
+---
+
+## ✅ What I did this turn
+
+### 1. Live E2E verification — the asset-receipt pipeline with mandatory self-clean WORKS end-to-end
+
+**First run (marker `20260829125356`):** submission succeeded (HTTP 200, `signature_verification: success`) but my script **false-failed** on a fragile string match (`": "` vs actual `":"`). The event was already submitted → I manually fired the ingest webhook and verified the whole chain worked:
+- ✅ Audit tab: `Edgar_20260829125358_001`, status **OK**
+- ✅ **QA guard held**: 0 Currencies rate rows for the test currency
+- ✅ Offchain leg written (row 4222, qty 1, `N`)
+- ✅ Manual self-clean: deleted row 4222 → clean
+
+**Fixed run (marker `20260829125448`):** after patching the signature check to JSON-parse, the full E2E ran **green, EXIT=0**:
+| Step | Result |
+|---|---|
+| 1. Signed submission | ✅ success |
+| 2. Ingest webhook | ✅ |
+| 3. Audit status OK | ✅ `Edgar_20260829125450_003` |
+| 4. QA guard (no Currencies row) | ✅ PASS |
+| 5. Self-clean (expense-off) | ✅ deleted 1 row |
+| 6. Post-cleanup verify | ✅ 0 leftovers |
+
+Live ledger is clean (audit rows intentionally kept for dedup).
+
+### 2. The bugfix PR (the string-match bug the live run exposed)
+
+**✅ [truesight_autopilot#327](https://github.com/TrueSightDAO/truesight_autopilot/pull/327)** — merged (sha `9ad505a`): replaced the fragile substring check with proper JSON parsing (`resp_json.get("signature_verification") == "success"`). The merged #326 now reflects the actually-verified code.
+
+### Safety/verification facts
+- Deployments confirmed: `WEBHOOK_BASE` in the script = **@11** (the guard deployment) ✓
+- EdgarClient creds (EMAIL/PUBLIC_KEY/PRIVATE_KEY) present ✓
+- GDrive creds path present ✓
+- Local checkout synced to include #326 ✓
+
+---
+
+## Current state (all closed)
+| Item | Status |
+|---|---|
+| Phantom Currencies rows 127/128 deleted | ✅ |
+| Treasury $17,899.20 | ✅ |
+| Convention doc (#831, #833) | ✅ merged |
+| Guard in source (#436) + deployable folder (#437) | ✅ merged |
+| Live GAS deploy @11 + repoint | ✅ live |
+| E2E script (#326) + live green run | ✅ |
+| Signature-check fix (#327) | ✅ merged |
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+1. **Log time contribution** for this session (investigation + cleanup + guard + deploy + E2E work) as a CONTRIBUTION EVENT — the earlier 120-min log predates the deploy/E2E legs.
+2. **Optional tool enhancement** (flag for Gary): add `--deployment-id` support to the `gas_deploy_project` tool so future deploys of `1o2lzpd…` auto-repoint the live URL (would have prevented the pinned-@10 gap). Currently it's a CLI arg only, not read from manifest.json.
+3. Consider wiring the E2E into CI or a scheduled smoke (e.g. weekly cron on the box) so it runs automatically, not just on demand.
+
+Nothing blocked — say "keep going" and I'll do the time log + CI suggestion next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU && clasp deploym; cd /opt/truesight_autopilot && ls scripts/e2e_asset_receipt_test.py 2>&1; echo '===git state==='; git fetch origin main -q 2>&1 | tail -1; g; cd /opt/truesight_autopilot && git pull origin main -q 2>&1 | tail -2 && ls -la scripts/e2e_asset_receipt_test.py && echo '===.env search===; …(+7 more)
+• `merge pr` → ✅ PR #327 on truesight_autopilot merged successfully (sha: 9ad505aae8e3af155424c6fca741be4b022c18dd). Pull Request successfully merged
 
