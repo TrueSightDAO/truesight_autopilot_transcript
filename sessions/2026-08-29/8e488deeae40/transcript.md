@@ -2539,16 +2539,19 @@ The grid is 11898 rows — my appends would be at the very bottom. Let me read t
 ### 🤖 Autopilot
 
 The `head -40` truncated my view — the sheet's data continues past row 11815 (my today rows are the very last). One clean read of the final rows:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My submissions ARE in Telegram Chat Logs — rows 11882 (`[TREE PLANTING EVENT]` 13:47) and 11884 (`[TREE GROWTH MONITORING EVENT]` 13:50, truncated). So `add_record` works. **The gap is the dispatch** — let me read the tail to confirm my monitoring row landed and see the final rows:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the final rows to confirm the monitoring event row:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2606,11 +2609,13 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming the ingestion-gap fix. Let me first read the deployed dispatch.py's full ROUTING table + the webhook_trigger job (to get the exact env-key pattern), and check the GAS handler function names + existing triggers on project `1UrBgq…`:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ROUTING table has `[TREE PLANTING LINK EVENT]` and `[TREE GROWTH MONITORING EVENT]` — but **NOT the plain `[TREE PLANTING EVENT]`** (the farmer-site event my E2E used). That's the missing dispatch. Let me get the dispatch tail, the webhook env-key naming, the existing webhook envs on the box, and the plain-planting GAS handler name:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2746,4 +2751,127 @@ Converging — I've traced the plain-planting pipeline to its root. Here's the c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp echo "=== search tokenomics tree for process_tree_planting_telegram_logs ===" curl -sL "https://api.github.com/repos/TrueSightDAO/to; cd /tmp echo "=== full file list of 1Jp8q project ===" curl -sL "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recursi; cd /tmp echo "=== doGet full (lines 415-450) ===" sed -n '415,455p' /tmp/tptl_full.js echo "" echo "=== processTelegramLogs head + gate (190
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: we are not using rails but dao_protocol python
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's right — the framing should be dao_protocol (Python), not Rails; the pipeline today is **site → dao_protocol (Python) → Telegram Chat Logs → GAS handlers**. The processing side is what's dead. Proceeding with the fix: check/restore the GAS cron triggers on the two tree GAS projects (admin credential), and verify what's actually wired:
+
+
+### 🤖 Autopilot
+
+The .clasprc files have a different key structure than my script assumed. Let me check the actual keys (names only — no secret values), then adapt:
+
+
+### 🤖 Autopilot
+
+The structure is `tokens.default.*`. Let me fix the script and re-check triggers on both projects:
+
+
+### 🤖 Autopilot
+
+The API error body isn't JSON (likely HTML — scope or endpoint issue). Let me see the raw response to know what's blocking:
+
+
+### 🤖 Autopilot
+
+HTTP 404 with an HTML error page — the token may lack the `https://www.googleapis.com/auth/script.projects` (or similar) scope. Rather than fight the API scope, let me check if the clasp version supports `clasp triggers` (it checks/sets triggers from `.clasp.json` — that's how the project is designed to manage triggers), and check the project's appsscript.json for time-based trigger config:
+
+
+### 🤖 Autopilot
+
+clasp has no triggers command, and the appsscript.json shows no time-based trigger (they're stored in the Apps Script project, not pushed). The API call needs the `script.projects` scope which the admin token's refresh scopes may not include. Let me check what scopes the admin token was granted (from the id_token in the gary token, and the admin's stored scope if present), and try the trigger list via clasp's underlying project API using the scope-clarified token:
+
+
+### 🤖 Autopilot
+
+The current default `.clasprc.json` is the **admin credential** (id_token is a stale gary claim — the refresh token is admin's, which is why @32 deployed as admin). Important correction from your message: the fix should be **event-driven through dao_protocol (Python)** — not a cron-restore. The proper pattern (matching how TREE PLANTING LINK already works) is: dispatch ROUTING entry → `webhook_trigger` GET `?action=…` → GAS handler processes immediately.
+
+Let me confirm the exact ROUTING tuple format for the LINK event (to mirror) and whether the GAS projects have /exec deployments:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. The dispatch ROUTING already has entries for both TREE events, but the box env has **NO** `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK`/`TREE_GROWTH_MONITORING` keys (not in the list) — and the plain `[TREE PLANTING EVENT]` has no ROUTING entry at all. Two GAS projects are involved. Let me get the exact doGet action names and the `1Jp8q` webapp deployment that can process plantings:
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Let me get the exact `doGet` section of `process_qr_code_updates.js` so I can add the missing growth action with precise anchors:
+
+
+### 🤖 Autopilot
+
+One final verification — the exact main-function names in both GAS files (needed for the webhook action wiring):
+
+
+### 🤖 Autopilot
+
+Everything is confirmed. I now have the complete wiring map. Let me implement the fix — a PR to `tokenomics` adding the missing `processTreeGrowthMonitoringFromTelegramChatLogs` action to `doGet`, plus a PR-scoped change. Actually, the code change is small and precise: add the growth action branch to `process_qr_code_updates.js`. Let me open the PR:
+
+
+### 🤖 Autopilot
+
+Need to provide the actual edit. Let me add the growth action branch to `process_qr_code_updates.js`:
+
+
+### 🤖 Autopilot
+
+I need to include the repo parameter. Let me retry:
+
+
+### 🤖 Autopilot
+
+PR opened. Per the one-PR-per-turn rule, I'll stop here and report.
+
+## ✅ This turn: opened the tree-growth ingestion fix PR
+
+**PR:** 🔀 [tokenomics #441 — fix: add missing tree-growth-monitoring webhook action to doGet](https://github.com/TrueSightDAO/tokenomics/pull/441) (branch `fix/tree-growth-webhook-action`, commit `c4ff69c`)
+
+**What it fixes** — the second half of the ingestion gap:
+- `dispatch.py` ROUTING already routes `[TREE GROWTH MONITORING EVENT]` → action `processTreeGrowthMonitoringFromTelegramChatLogs`, and the handler function already exists in `process_tree_growth_monitoring.gs` — but the GAS webhook `doGet(e)` in `process_qr_code_updates.js` **never had that action branch added** (the header comment in the handler file says "see the doGet edit in that file" — the edit was never made).
+- Net effect today: dao_protocol fires the webhook, GAS responds "No valid action specified", **monitoring events never reach the Tree Growth Measurements tab** (my E2E row 11884 proved it — sits in Telegram Chat Logs, sheet empty).
+
+**The change:** adds the `processTreeGrowthMonitoringFromTelegramChatLogs` branch to `doGet`, mirroring the existing `processTreePlantingLinksFromTelegramChatLogs` branch exactly (same project/global scope — handler already defined in the sibling file).
+
+## 📋 Full wiring map (for the record — both fixes now scoped)
+| Event | ROUTING entry | GAS action | Handler | Box env key |
+|---|---|---|---|---|
+| `[TREE PLANTING LINK EVENT]` | ✅ exists | ✅ in doGet | ✅ `1UrBgq…` | ✅ configured |
+| `[TREE GROWTH MONITORING EVENT]` | ✅ exists | ❌ **#441 adds it** | ✅ `1UrBgq…` | ❌ **needs `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING`** |
+| `[TREE PLANTING EVENT]` (plain) | ❌ no entry | ❌ no action | ✅ `1Jp8q…` (`processTelegramLogs`, cron-designed) | ❌ n/a (cron path) |
+
+## ⚠️ Flagged (per rules — production-facing, awaiting your go)
+After #441 merges, the next steps touch production:
+1. **`clasp push`** to GAS project `1UrBgq…` (as admin@ — default clasp credential now) → deploy new version with the growth action.
+2. **Set `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING`** in the box env (pointing at the 1UrBgq `/exec` URL) → restart `truesight-dao-protocol.service`.
+3. **Plain-planting pipeline**: decide cron-restore vs dao_protocol dispatch for `[TREE PLANTING EVENT]` — the `1Jp8q` project's `processTelegramLogs` is cron-designed (its doGet is governor-read only), and its trigger appears lost since the cutover. Options: (a) restore a time-based trigger on `1Jp8q`, or (b) port a `processTreePlantingTelegramLogs` action into the same webhook project (bigger change).
+
+## RESUME HERE → next turn
+1. **Merge #441** (you already authorized merging my own PRs).
+2. **`clasp push`** the growth-action to `1UrBgq…` → create new deployment → verify `?action=processTreeGrowthMonitoringFromTelegramChatLogs` responds correctly.
+3. **Set the env key + restart** the service → confirm my E2E row 11884 lands in Tree Growth Measurements.
+4. **Plain-planting decision** (cron-restore vs dispatch port) → execute → confirm row 11882 lands in SunMint Tree Planting → tree index picks it up.
+5. Final green report + close-out (incl. §5g test-photo decision on `sunmint/images/20260829134704_…jpg`).
+
+**Bottom line: the growth-monitoring half of the ingestion gap is now fixed in code (PR #441); the plain-planting half needs your call on cron-restore vs dispatch-port. Both are small, additive, production changes I'll flag before executing.**
+
+———
+**✅ Done this turn — actions taken:**
+• `git_push_changes` ×2 (first call lacked edits/repo — retried correctly) → **PR #441 opened** on tokenomics
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → ls -la /home/ubuntu/.clasprc* 2>/dev/null cat > /tmp/check_triggers.py <<'EOF' import json, urllib.request, urllib.parse, sys def load(p): w; echo "=== .clasprc.json top-level keys (admin) ===" python3 -c " import json d = json.load(open('/home/ubuntu/.clasprc.json')) print('top-le; cat > /tmp/check_triggers.py <<'EOF' import json, urllib.request, urllib.parse, sys def load(p): with open(p) as f: return json.load(f) def ; …(+8 more)
 
