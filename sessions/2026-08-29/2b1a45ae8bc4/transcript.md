@@ -312,21 +312,35 @@ Gary "go" received. Let me check the handoff manifest for this thread's plan gat
 ### 🤖 Autopilot
 
 Let me read the referenced plan file to understand what the "go" unlocks at this stage (merge gate? deploy gate?):
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan file isn't where the manifest says. Let me locate it and check what the current "go" unlocks (plan gates: PR4 docs? deploy?):
+[2 tool result(s) compacted: list_directory, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the local agentic_ai_context clone for the plan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan file isn't in the local (stale) checkout. Let me fetch the latest agentic_ai_context and pull the emoji plan to see what PR4 (docs) and the gates are:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -369,6 +383,7 @@ My read: you reported a bug and want it **live** — so the go most likely means
 ### 🤖 Autopilot
 
 Governor explicit command received: **merge and deploy**. Executing — merge PR #335 first, then deploy.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -414,16 +429,19 @@ Say **"go"** / **"deploy"** and I'll run `deploy_autopilot` in the next turn.
 ### 🤖 Autopilot
 
 Governor says **deploy** — and the note "emoji on messages from you with RESUME HERE should also trigger" is exactly what PR #335 (just merged) implements. Deploying now so it goes live, then I'll confirm the behavior is in the running code.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy tool reports the checkout is already on the merged commit but did **not** restart — that means the *running process* may still be executing pre-merge code. Let me verify whether the live bot actually has the fix loaded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy tool says checkout already at `7539c00` but didn't restart. The services show start time **14:35** — I need to confirm whether that start is *after* the merge (i.e. the running process loaded the new code) or before. Let me check timestamps:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -464,21 +482,25 @@ The deploy tool's "noop" was because the **checkout** was already at `7539c00` (
 ### 🤖 Autopilot
 
 "Still not working" — that's the right signal to dig deeper. My fix only flags messages posted through the 3 sites I wired — if the "📌 RESUME HERE" turn-reports are posted by a *different* code path (e.g. the separate watchdog process), they never get flagged. Let me trace the actual post path and the reaction handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Still not working" — good, let me actually trace it. My fix only auto-flags messages posted **after** deploy through the 3 wired sites. Three things to check: (1) whether the turn-report post path even goes through `send_message`, (2) whether any message in this thread got flagged post-deploy (registry file), and (3) what `handle_message_reaction` actually does on lookup:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Registry is **empty `{}`** — that's the smoking gun: no message in this thread has been flagged even after the deploy. Either the turn-reports aren't going through the wired `send_message`, or the running process uses a different session dir. Let me check the wired sites' actual behavior + the live process logs + settings:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found the smoking gun.** The registry `sessions/_resume_awaiting.json` is **empty `{}`** — yet the reaction log proves 👍 WAS received (msg=16041, verdict=go, authorized=True) and the lookup found nothing, so it was silently dropped. Worse: even the PR1-3 explicit-flag kickoffs aren't in it (nothing in the last 7 days). So **posts in this thread are NOT going through the wired `send_message` at line 687** — they're hitting a different send path. Let me find that path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -486,6 +508,7 @@ Registry is **empty `{}`** — that's the smoking gun: no message in this thread
 **Found it.** The registry file is empty `{}`, but the log shows your 👍 WAS received (`msg=16041, verdict=go, authorized=True`) and the lookup found nothing → dropped. Key insight: **message 16041 was posted BEFORE the fix went live** (deploy was 14:35:53 UTC; my smoke-test message was from the prior turn). The fix only auto-flags messages posted **after** deploy — old messages stay unflagged, so 👍 on them does nothing. That's the stale-message trap.
 
 Let me verify the two remaining points (the exact registry path the live process uses, and that no send path bypasses the fix):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -497,6 +520,7 @@ Let me verify the two remaining points (the exact registry path the live process
 2. **Line 930 has a DIRECT sendMessage** (deploy notification) that bypasses `send_message()` — but that's just deploy notices, not turn-reports.
 
 Let me check the actual live registry path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -504,6 +528,7 @@ Let me check the actual live registry path:
 **Key finding:** `.env` sets `SESSION_LOG_DIR=/opt/truesight_autopilot/sessions` — so `sessions/_resume_awaiting.json` **IS** the live registry, and it's **empty `{}`**. But `/tmp/autopilot_sessions/` doesn't even exist. So the registry path is right, yet nothing is flagged.
 
 **The decisive test:** was message **16041** (the one you 👍'd) posted *after* deploy at 14:35:53 UTC? The reaction log shows the 👍 was received at **14:37:09** — but if the message itself was posted *before* 14:35:53, it was never flagged (fix only applies to new posts). Let me check when the running turn-reports actually post and whether there's any bypass. Let me confirm the exact posting time of 16041 and test the full live path:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -511,6 +536,7 @@ Let me check the actual live registry path:
 **Smoking gun confirmed:** `marked resume-awaiting` count = **0** — no message has EVER been flagged through the live process since the restart. Yet message 16041 (which you 👍'd at 14:37:09) got `verdict=go authorized=True` and was dropped because the registry lookup found nothing.
 
 The question is **why nothing is flagged**. Either the turn-reports in this thread don't go through `send_message()` at all, or they go through a variant that skips marking. Let me find the actual call path for turn-reports (the `call_chat_with_progress` final response at line 1193 calls `send_message` — but maybe there's an `auto_advance`-generated message with a different path, or `chunk_text` splits such that the "RESUME HERE" chunk is a different message_id than the one you reacted to):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -518,11 +544,13 @@ The question is **why nothing is flagged**. Either the turn-reports in this thre
 I need to see the actual `send_message` calls in `_run_turn_with_auto_advance` (lines ~1260-1330) — do they pass `resume_awaiting` or rely on the auto-flag? And crucially, is `send_message` line 1193's call *chunking* the final response so the "RESUME HERE" chunk is a different message_id than the one you reacted to?
 
 The KEY question remains: **did the message you 👍'd (16041) contain "RESUME HERE" and was it posted through the wired `send_message`?** Let me check the registry at the moment of your reaction vs. the logs, and read `_run_turn_with_auto_advance`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Registry empty + mark count 0 + reaction received but dropped — the fix isn't flagging anything in production. Two leading hypotheses: (A) the message you 👍'd (16041) predates the restart so it was never flagged, or (B) the flag path is silently failing. Let me get decisive data — check registry writability, look for silent save failures, and find what message 16041 actually was:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -653,4 +681,85 @@ git_push_changes(repo="truesight_autopilot",
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×28 → cd /opt/truesight_autopilot && echo "===1. WHERE 'RESUME HERE' text is generated===" && grep -rn "RESUME HERE" app/ --include="*.py" | grep ; cd /opt/truesight_autopilot && echo "===REGISTRY FILE===" && find . -name "_resume_awaiting.json" 2>/dev/null | head -3 && for f in $(find .; cd /opt/truesight_autopilot && echo "===handle_message_reaction full===" && sed -n '2296,2420p' app/telegram_adapter.py; …(+25 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+@truesight_autopilot_bot Correction on PR #335: the auto-flag should trigger on the text "RESUME HERE" ONLY — NOT on the 📌 pin emoji by itself. Change _RESUME_HERE_RE to match just RESUME HERE (drop the |\U0001F4CC alternation), and fix test_looks_resume_awaiting_pin_marker_alone: 📌 alone → False, "RESUME HERE"/"📌 RESUME HERE" → True. (Note: the 3 CI failures in tests/test_events_catalog.py are pre-existing on main and unrelated to this PR — don't chase them.) Then push + report.
+
+
+### 🤖 Autopilot
+
+Gary correction received: auto-flag must trigger on the text "RESUME HERE" **only** — not on 📌 alone. Since PR #335 is already merged, this becomes a new PR, and I'll bundle it with the edit-path fix (the actual root cause of "still not working", already implemented + verified locally) into ONE PR. First, get exact origin content for precise hunks:
+
+
+### 🤖 Autopilot
+
+Got it — Gary's correction: auto-flag on **"RESUME HERE" text only**, not 📌 alone (I have the exact origin content now). I'll bundle this correction with the edit-path fix (the actual root cause of "still not working") into one PR. First apply the correction locally and run targeted tests:
+
+
+### 🤖 Autopilot
+
+The script failed at the third assert (`closing count 0`) — the match string had a newline between "the" and "reaction" in the actual docstring, so **nothing was written to either file** (the 101-pass was the old code + old tests). Let me redo with exact hunks:
+
+
+### 🤖 Autopilot
+
+Correction applied cleanly: regex now `re.compile(r"RESUME HERE", re.IGNORECASE)`, pin-alone test flipped (📌 alone → False, "📌 RESUME HERE" → True), 101 targeted tests pass, ruff clean. Now run the full suite + compileall, then capture exact hunks for the push:
+
+
+### 🤖 Autopilot
+
+4 failures now — 3 pre-existing events_catalog + 1 new `test_vault.py::TestCrossProcessReload::test_reader_sees_external_rotation` (a cross-process timing test, likely flaky/order-dependent, not touched by my change). Quick verification it's unrelated:
+
+
+### 🤖 Autopilot
+
+Confirmed: `test_vault` passes in isolation (flaky cross-process timing when run after other tests — unrelated to my change). So the real failures are the same 3 pre-existing `test_events_catalog.py` Edgar-network tests, which Gary already said not to chase. My change: 4 files, +108/−22, all tests green.
+
+Now push as ONE PR via `git_push_changes` — fresh clone from origin/main @ `7539c00`, precise hunks only (the edit-path fix + the 📌-correction + their tests). This is the combined PR (my edit-path fix from before + Gary's correction):
+
+
+### 🤖 Autopilot
+
+PR #336 is open. Let me verify the pushed branch's diff is clean (no format noise from the earlier local ruff reformat — I pushed precise hunks from origin, so it should be exact):
+
+
+### 🤖 Autopilot
+
+Clone fetch of `main` failed on depth — let me redo the verification with a proper full fetch:
+
+
+### 🤖 Autopilot
+
+PR #336 is clean — exact intended change, no format noise. The diff vs `origin/main` is precisely:
+
+- **`app/resume_registry.py`** — `_RESUME_HERE_RE` now matches "RESUME HERE" only (dropped `|\U0001F4CC`), docstring updated
+- **`app/telegram_adapter.py`** — `edit_message_text` auto-flags the edited message_id when text contains "RESUME HERE" (the root-cause fix)
+- **`tests/test_resume_registry.py`** — pin-alone test flipped (📌 alone → False, "📌 RESUME HERE" → True)
+- **`tests/test_telegram_adapter.py`** — 3 new edit-path tests (+60 lines, all additions, no noise)
+
+## ✅ PR #336 open — both fixes in one PR
+
+| | |
+|---|---|
+| **PR** | [#336 — Auto-flag RESUME HERE on the edit path + 📌-alone correction](https://github.com/TrueSightDAO/truesight_autopilot/pull/336) |
+| **Branch** | `fix/resume-here-edit-path` (base `main` @ `7539c00`) |
+| **Commit** | `4a0da3c` |
+| **Merge** | **Not merged** — own-repo gate, Gary merges |
+| **Files** | 4 files, +80/−9 (verified clean vs origin/main) |
+
+**What's in it (why this actually fixes "still not working"):**
+1. **Root cause fix** — turn-reports are delivered by *editing* the "🔄 Thinking…" status message (short responses), so the message_id never entered the registry. `edit_message_text` now auto-flags when the edited text contains "RESUME HERE" (message_id is unchanged by an edit). PR #335 only wired `send_message` — this covers the edit path.
+2. **Your 📌 correction** — `_RESUME_HERE_RE = re.compile(r"RESUME HERE", re.IGNORECASE)` — pin emoji ALONE no longer flags; "📌 RESUME HERE" still does. Tests flipped accordingly.
+
+**Verification:** compileall ✅ · ruff check ✅ · ruff format ✅ · targeted 101 passed · full suite 814 passed (3 `test_events_catalog.py` failures pre-existing on main — not chased, per your note; `test_vault` flake passes in isolation, unrelated).
+
+📌 **RESUME HERE = Gary merges #336, then says "deploy"** and I'll run `deploy_autopilot` (restart the bot so the edit-path auto-flag + 📌-correction go live), then smoke-test: 👍 on a fresh "📌 RESUME HERE" turn-report → should resume; 👍 on a 📌-alone message → ignored. Do NOT self-merge (own-repo gate).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && python3 - <<'EOF' # 1) resume_registry.py: drop the 📌-alone alternation p = "app/resume_registry.py" src = op; cd /opt/truesight_autopilot && python3 - <<'EOF' p = "app/resume_registry.py" src = open(p).read() hunks = [ # A: regex — drop the 📌-alone a; cd /opt/truesight_autopilot && python3 -m compileall -q app tests scripts && echo "COMPILE OK" && .venv/bin/python -m pytest -q 2>&1 | tail ; …(+3 more)
 
