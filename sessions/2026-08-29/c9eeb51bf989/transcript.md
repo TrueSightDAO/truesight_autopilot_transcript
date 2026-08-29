@@ -659,6 +659,7 @@ Edgar confirms you're a governor with that key — so the gate *should* show the
 ### 🤖 Autopilot
 
 Two separate issues confirmed — one is the known unmerged fix, the other is a **new bug** your UAT just surfaced. Let me verify the deep-link path detail (whether your tree is in the local index) before reporting:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -804,4 +805,98 @@ The merge is clean (PR branch was based on current main; no conflicts expected).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== LIVE beta root: crash line still present? ==="; curl -s https://beta.sunmint.truesight.me/ | grep -c "emailLinkedLabel').textConte
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] I verify this is the exact key in my localstorage. 
+
+This is the response I am getting
+
+{
+    "registered": true,
+    "contributor_name": "Gary Teh",
+    "contributor_email": "garyjob@gmail.com",
+    "is_governor": true,
+    "is_sentinel": false
+}
+
+The button is not showing up anywhere on my screen after I selected a tree.
+
+
+### 🤖 Autopilot
+
+Gary, thanks — that's the key data point. If Edgar confirms `is_governor: true` for the exact key in your localStorage, then the gate *data* is right and the bug is in the page's code path. Let me read `maybeShowInvalidZone()` and `loadContributorIdentity()` on the live beta page to find why the button never renders.
+
+
+### 🤖 Autopilot
+
+Now let me read the full logic — `loadContributorIdentity`, `maybeShowInvalidZone`, and the deep-link init path:
+
+
+### 🤖 Autopilot
+
+Found it — the deep-link path never calls `maybeShowInvalidZone()` in the fallback branch. Let me see the last lines of that fallback to confirm there's no later call:
+
+
+### 🤖 Autopilot
+
+Two threads to nail down: (A) the root-page camera (blocked on PR #29, unmerged) and (B) the monitor button — the gate code *looks* correct, so something in the browser must differ from curl. Let me test the browser-critical parts: Edgar's CORS headers, the `EDGAR_BASE` value on the beta page, and whether all four tree-index URLs are actually reachable from a browser.
+
+
+### 🤖 Autopilot
+
+Let me verify the exact behavior of the two calls in a headless-browser-like way and check whether the **root page's** email-link flow might be overwriting the monitor page's localStorage key (same origin → shared storage). Also check `checkVerificationLink` (the `vk`/`em` path) and the exact render order:
+
+
+### 🤖 Autopilot
+
+Gary — I've traced both issues to their roots, and they're **two separate things**. Here's the exact state:
+
+## Issue 1: No active camera on beta root — blocked on PR #29 (still unmerged)
+
+Confirmed live just now: the **crash line is still on the beta root page**, and it fires on **every page load**:
+
+```js
+renderEmailSection();   // ← throws: emailLinkedLabel has data-i18n but NO id
+updatePendingBadge();
+flushTreeReportQueue();
+startTreeCamera();      // ← never reached because the line above threw
+```
+
+The root init has no try/catch, so the null-crash **aborts the whole init tail** — including `startTreeCamera()`. That's why you see no camera, no matter what you do. This is exactly **item 2 of PR #29**, and the lazy gesture-safe start is **item 1**.
+
+**Nothing I do short of merging #29 puts the fix on beta** — Pages serves only `main`, never PR branches. You originally said "no merge," so I'm holding. To unblock your UAT:
+
+> **Say "merge #29"** → I merge → Pages rebuilds (~5 min) → beta root stops crashing and the camera **starts when you tap the capture button** (that's the intended behavior — no more auto-camera on load, which mobile browsers block anyway).
+
+## Issue 2: Missing MARK INVALID button on monitor — the gate data is correct, so it's either cache or a code gap
+
+I verified the live beta monitor code end-to-end:
+- ✅ Edgar returns `is_governor: true` for your exact localStorage key (you confirmed)
+- ✅ The gate code on beta is the server-authoritative version (`currentContributorIsGovernor`) and `maybeShowInvalidZone()` **is called** on dropdown selection, manual ID typing, and deep-link *match* branches
+
+Two remaining explanations:
+
+**A. Stale browser cache (most likely).** Beta was updated today (~12:37Z) to the new gate. If your browser is serving a cached pre-#27 page, it still uses the **old hardcoded GOVERNORS array**, which doesn't match your key format → button hidden. **Fix: hard-refresh (Ctrl/Cmd+Shift+R) or test in an incognito window.**
+
+**B. Real code gap (only on the deep-link fallback).** If `treeIndex` fails to load in your browser (e.g., raw.githubusercontent blocked/slow on your network), the `?tree=` fallback branch runs — and it **never calls `maybeShowInvalidZone()`**. Verified in the live code: the fallback shows the photo section but skips the governor gate. That's a genuine bug worth a tiny fix PR (one line).
+
+**To disambiguate in 30 seconds**, on the monitor page open DevTools console and run:
+```js
+localStorage.getItem('publicKey') === localStorage.getItem('publicKey')  // sanity
+// then after load:
+typeof currentContributorIsGovernor  // expect 'boolean'
+fetch('https://edgar.truesight.me/dao/check_digital_signature?signature=' + encodeURIComponent(localStorage.getItem('publicKey'))).then(r=>r.json()).then(console.log)
+```
+
+## My proposed next steps (your go on each)
+1. **"merge #29"** → camera + crash fix live on beta, you UAT items 1 & 4
+2. **Fix the deep-link fallback gap** → one-line PR on `sunmint_beta` (add `maybeShowInvalidZone()` to the fallback branch) so governors always see the button even when the tree index fails to load
+
+Say the word on either (or both) and I'll execute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "=== live beta monitor: maybeShowInvalidZone + loadContributorIdentity + currentContributorIsGovernor ==="; curl -s https://beta.sunmin; echo "=== maybeShowInvalidZone + loadContributorIdentity + isGovernor (1000-1035) ==="; curl -s https://beta.sunmint.truesight.me/monitor-tr; echo "=== deep-link fallback tail (1190-1215) ==="; curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | sed -n '1190,1215p'; …(+4 more)
 
