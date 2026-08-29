@@ -1290,16 +1290,19 @@ compileall ✓, ruff check ✓, **64 adapter tests pass** (incl. my 6 new PR3 te
 ### 🤖 Autopilot
 
 Test side-effects again (`app/data/events_catalog_snapshot.json` deleted, `followups/state.json` modified by the catalog tests) — reverting them so the PR contains exactly the 2 intended files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Exactly the 2 intended files. Now the final diff review of the adapter change before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is clean and exactly per plan PR3 — mirrors the text go-signal path (handoff prefix + Telegram context + per-thread lock + `_run_turn_with_auto_advance`), consumes the registry entry, and handles the negative cases. Now push via `git_push_changes` (single edit hunk for the adapter + a write for the test-file append). Let me capture the exact hunks from the worktree diff to pass as edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1538,5 +1541,80 @@ Gary's "go" — executing the RESUME HERE unit: (1) merge tracker #837, (2) PR3 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #837 on agentic_ai_context merged successfully (sha: 466ab18ca2e2f6ecff621277102027874a5a6abf). Pull Request successfully merged
+• `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR3: emoji react
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[AUTO-ADVANCE] Execute only the next unit (PR2) — the one the RESUME HERE marker in plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+AUTO-ADVANCE's label says "PR2" but the authoritative pointer is the plan's **RESUME HERE marker**, which now reads "PR3 contribution (TDG gate) → Deploy (gate)". The PR3 contribution dry-run is verified and its payload was already presented (75 min → 125 TDG, evidence #334) — Gary's "go" last turn + this auto-advance are the explicit authorization to submit (same pattern as PR2). Submitting the real event now, then tick the tracker and stop at the Deploy gate.
+
+
+### 🤖 Autopilot
+
+PR3 contribution **submitted successfully** — HTTP 200, signature verified ✅ (75 min → 125 TDG, evidence #334).
+
+Now tick the tracker (§4): PR3 "Contribution reported ☑", RESUME HERE → **Deploy (gate)**. Let me read the current tracker text to build the exact edit.
+
+
+### 🤖 Autopilot
+
+Let me read the tracker §4 tail (the exact current row text) to build the tick edit.
+
+
+### 🤖 Autopilot
+
+I have the exact tracker. Now tick PR3 "Contribution reported ☑" and move RESUME HERE to **Deploy (gate)** via a tracker PR:
+
+
+### 🤖 Autopilot
+
+Tracker PR **#838** opened (PR3 contribution ☑; RESUME HERE → Deploy gate).
+
+The current unit — PR3 contribution + tracker tick — is complete. I'm **stopping here at the Deploy gate** (§5c always-stop): PR1–PR3 are all merged and their contributions reported, so the next step (deploy) requires Gary's explicit approval. I will NOT run `scripts/deploy.sh` or restart systemd on the auto-advance.
+
+## Turn report — PR3 unit complete ✅ (stopped at Deploy gate)
+
+| Item | Result |
+|---|---|
+| **PR3 contribution** | ✅ Submitted via `report_ai_agent_contribution` — `[CONTRIBUTION EVENT]` **Time 75 min → TDG 125.00**, Sophia Truesight, evidence #334 → **HTTP 200, signature verified** |
+| **[#838](https://github.com/TrueSightDAO/agentic_ai_context/pull/838)** | ✅ Tracker PR opened — PR3 row fully ☑, RESUME HERE → Deploy (gate) |
+
+### Plan state
+| Unit | Opened | Merged | Contribution | Deployed |
+|---|---|---|---|---|
+| PR1 | ☑ #331 | ☑ | ☑ 100 TDG | — |
+| PR2 | ☑ #333 | ☑ | ☑ 125 TDG | — |
+| PR3 | ☑ #334 | ☑ | ☑ **125 TDG — done this turn** | — |
+| PR4 (docs) | ☐ | ☐ | ☐ | — |
+| **Deploy (gate)** | — | — | — | ⏸️ **always-stop — needs YOUR explicit approval** |
+| UAT (gate) | — | — | — | ⏸️ after deploy |
+
+**Gate honored:** all three feature PRs (PR1–PR3) are merged + contributions reported, so the plan's own gate now applies — **deploy is always-stop and needs your explicit command**. I did not deploy.
+
+---
+
+**RESUME HERE = Deploy (gate).** On your explicit approval ("deploy" / "go deploy"):
+1. Run `scripts/deploy.sh` on the autopilot box + systemd restart of the Telegram adapter (covering PR1–PR3) — this makes the emoji go-signal actually live.
+2. Verify the live adapter reports the new build (log check for `allowed_updates` / reaction handler).
+3. Tick "Deployed ☑" in the tracker.
+4. Then **UAT §5** (your run, on a scratch topic): fake "✅ Ready — reply go for it" → react 👍/❤️/🔥 → Sophia resumes; negatives 👎 / non-allowlisted / non-resume message → no resume; text go-signal regression.
+
+**Also pending:** merge #838 (tracker bookkeeping — needs your go or the next auto-advance), then **PR4 (docs)** — `SOPHIA_HANDOFFS.md` + `DEEPSEEK_LOCAL.md` reaction-as-go documentation.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → submitted PR3 contribution (HTTP 200, signature verified, 75min→125 TDG, evidence #334)
+• `read_repo_file` → plan §4 tracker current text
+• `git_push_changes` → tracker PR #838 (PR3 contribution ☑, RESUME HERE → Deploy gate)
+
+———
+**✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR3: emoji react
 
