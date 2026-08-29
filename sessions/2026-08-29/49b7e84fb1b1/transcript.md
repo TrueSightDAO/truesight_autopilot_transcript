@@ -1266,21 +1266,25 @@ All anchors confirmed — `handle_message_reaction` is log-only (PR1), `_run_tur
 ### 🤖 Autopilot
 
 Adapter patched. Now add the PR3 unit tests (go-reaction resumes, 👎 doesn't, non-resume message ignored, non-allowed reactor ignored, unusable thread, no-identity) to `tests/test_telegram_adapter.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tests appended and parse. Now the local test suite (hard rule) — compileall → ruff check → ruff format --check → pytest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 compileall ✓, ruff check ✓, **64 adapter tests pass** (incl. my 6 new PR3 tests). Only ruff format flags the two touched files — my appended blocks need formatting (the PR1/PR2 files were ruff-formatted before). Let me auto-format just those two files, then re-verify + run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **806 passed** (64 adapter tests incl. my 6 new PR3 tests). The 3 `test_events_catalog.py` failures are the same **pre-existing** httpx-monkeypatch issue I confirmed on clean origin/main back during PR1 (they fail without my changes — unrelated to PR3). Let me confirm the worktree diff is exactly my PR3 change (adapter + tests only) before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1477,4 +1481,62 @@ The PR2 unit is now fully done. Per the auto-advance ("execute only the next uni
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR2: resume-awai
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" — executing the RESUME HERE unit: (1) merge tracker #837, (2) PR3 contribution (dry-run → submit, your "go" being the explicit TDG authorization for the step I framed as "present at the TDG gate for your explicit go → submit"), then (3) tick the tracker and **stop at the Deploy gate** (always-stop — I will NOT deploy on this "go"; that needs a separate explicit command). Parallel: merge + dry-run.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — tracker #837 merged; PR3 contribution dry-run verified (stopped per one-PR-per-turn rule)
+
+| PR | Repo | Result |
+|---|---|---|
+| **[#837](https://github.com/TrueSightDAO/agentic_ai_context/pull/837)** — tracker: PR2 contribution reported, PR3 merged | `agentic_ai_context` | ✅ Merged (sha `466ab18`) |
+
+**What changed:** `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md` §4 tracker now reflects reality — PR2 row fully ☑ (opened #333 / merged / contribution 75min→125 TDG), PR3 row ☑ opened #334 / ☑ merged (contribution ☐), RESUME HERE → PR3 contribution → Deploy gate.
+
+**PR3 contribution — dry-run verified ✅ (not yet submitted):**
+- Payload: `[CONTRIBUTION EVENT]` · **Time 75 min → TDG 125.00** · Contributor **Sophia Truesight** · Evidence **#334** · Signature + Request Transaction ID generated (dry-run only, nothing posted)
+- The real submission is the *only* remaining step of this unit — your "go" covered it (same pattern as PR2: dry-run → present → "go" → submit). But per the one-PR-per-turn rule I'm stopping before the submit.
+
+### Plan state
+| Unit | Opened | Merged | Contribution |
+|---|---|---|---|
+| PR1 | ☑ #331 | ☑ | ☑ 100 TDG |
+| PR2 | ☑ #333 | ☑ | ☑ 125 TDG |
+| PR3 | ☑ #334 | ☑ | ⏸️ **dry-run ready — submit pending (next step)** |
+| PR4 | ☐ | ☐ | ☐ |
+| **Deploy** | ⏸️ **§5c always-stop — needs your explicit approval** | | |
+| UAT | ⏸️ after deploy | | |
+
+**Gates honored:** nothing deployed; PR3 TDG submission held at the turn boundary (not yet posted).
+
+---
+
+**RESUME HERE →** submit the PR3 contribution (dry-run already verified; payload approved by your "go") → tick PR3 "Contribution reported ☑" via tracker PR → **then STOP at the Deploy gate** and ask for your explicit deploy approval (`scripts/deploy.sh` + systemd restart covering PR1–PR3 → emoji go-signal live → UAT §5).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #837 on agentic_ai_context merged successfully (sha: 466ab18ca2e2f6ecff621277102027874a5a6abf)
+• `ssh run` → PR3 contribution `--dry-run` → payload verified (Time 75 min → TDG 125.00, evidence #334, signature + txn ID generated; nothing posted)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #837 on agentic_ai_context merged successfully (sha: 466ab18ca2e2f6ecff621277102027874a5a6abf). Pull Request successfully merged
+• `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR3: emoji react
 
