@@ -31,6 +31,12 @@ Quick reading before I check signals: 27 is *nourishment* — the mouth feeds, s
 ### 🤖 Autopilot
 
 Treasury cache is fresh (generated today 21:48Z), and the store inventory signal is striking. Let me check the advisory snapshot / goal progress and pulse for origin events before I recommend.
+[3 tool result(s) compacted: search_code, search_code, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -126,4 +132,37 @@ Which would you like? Or shall I keep retrying in the background and report when
 ———
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` ×4 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] retry the deploy now — the other thread that deferred it should be clear.
+
+
+### 🤖 Autopilot
+
+Deploy attempt **errored** this time (phase-two subprocess killed, exit -15 / SIGTERM) — git_pull succeeded but the install/restart phase was terminated mid-run. Let me diagnose before retrying: check whether the running service already has the new code, and whether another deploy collided.
+
+
+### 🤖 Autopilot
+
+The repo on the box is already at `2f2d36d` (= origin/main, includes #341–#344 — git_pull succeeded). But the systemd unit `truesight-autopilot.service` is stuck in **`deactivating (stop-sigterm restart)`** — the phase-two restart got SIGTERM'd (exit -15) mid-stop, and the old processes (started 22:09) are still alive. Let me look at the unit state and journal to see what's hanging before I touch anything.
+
+
+### 🤖 Autopilot
+
+**Status — deploy interrupted mid-restart, new code is safe on disk, service is coming back up now.**
+
+Here's exactly what happened:
+
+- **git_pull succeeded** — the box is at `2f2d36d` = `origin/main`, which **includes #341, #342, #343, #344** (all four are in the local repo, confirmed via `git log`).
+- **Phase-two restart got SIGTERM'd (exit -15)** — the deployer's restart subprocess was killed mid-stop. The systemd unit `truesight-autopilot.service` is in `deactivating (stop-sigterm)` since 22:34:32, i.e. systemd is gracefully stopping the old process (PID 332143, started 22:09) and **will restart it automatically** (unit has `Restart` configured, `TimeoutStopUSec=1min 30s` → force-kill + restart if it lingers).
+- **Why it's lingering:** the graceful stop is waiting on in-flight turns — my own diagnostic calls were being served by that same process, which keeps the shutdown from completing. That's the self-deploy deadlock; systemd resolves it by force-kill after 90s, then restarts with the new code.
+
+**Bottom line:** no action needed from you. The old process gets replaced by the new one momentarily, and the fresh process runs #341–#344. This current turn may be cut off by the restart — if so, that's expected, not an error. If you want belt-and-braces confirmation once it's back, just ping me (or react 👍) and I'll verify the running version and report.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → https://github.com/TrueSightDAO/dao_client.git
+• `ssh run` ×4 → cd /opt/truesight_autopilot && git log --oneline -8 && echo "---BRANCH/STATUS---" && git status -sb && echo "---HEAD vs origin---" && git re; ps aux | grep -iE "deploy|uvicorn|telegram_adapter" | grep -v grep; echo "---SYSTEMD---"; systemctl list-units --type=service | grep -iE "tr; systemctl status truesight-autopilot.service --no-pager -l | head -40; echo "===SHOW==="; systemctl show truesight-autopilot.service -p Main; …(+1 more)
 
