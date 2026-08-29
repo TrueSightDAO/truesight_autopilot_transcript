@@ -4803,3 +4803,19 @@ The OCR pass came back empty (0.0% confidence — no text in the image), so it's
 
 If you want me to actually *see* it, tell me what to look for — or if it's one of the visual-reference types I can describe (a place, a product, a scene), I can take a closer pass. Otherwise: gate test confirmed — **photo bypasses the mention gate entirely**, and I'm here when you need me. 📸
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=780] Hey, do you think you're able to listen and respond to this, so yeah? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — I can hear you. 👂
+
+The voice message came through, got transcribed, and I'm responding to it right now — you asked if I can listen and respond, and here's the proof: *I'm answering you.*
+
+How it works on my end: your voice note → speech-to-text transcription → I process the text → my reply is synthesized back into a voice note for you. So the whole loop is voice-to-voice, even though my "ears" are actually reading the transcription.
+
+What would you like to talk about? I'm listening. 🎧
+
