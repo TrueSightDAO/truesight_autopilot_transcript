@@ -554,11 +554,13 @@ The canonical route for reporting contributions is the **dao_client CLI** (OPERA
 Key finding: **dao_protocol main also has only the 4 rubric types** — "AI Agent (software & documentation)" is NOT a valid `--type` even on main. The convention doc lists it as a rubric entry, but the code doesn't accept it (docs drift). The valid types are `Time (Minutes)`, `USD`, `USDT sent`, `USDT received`.
 
 So for PR1's contribution, I should use **`Time (Minutes)`** (AI agent software work = time) — but with what amount? Let me check how prior AI-agent contributions were filed (e.g. the ADVISORY_SNAPSHOT examples and any prior Sophia entries) to match convention.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check main's `report_ai_agent_contribution.py` directly (the local clone is stale) — maybe the AI-agent type lives in that module's own choices.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -566,6 +568,7 @@ Let me check main's `report_ai_agent_contribution.py` directly (the local clone 
 Even main's module uses the same 4 rubric types — "AI Agent (software & documentation)" is doc drift; the real accepted type for agent software work is **Time (Minutes)**. Time type requires >0 minutes, and filing it **issues TDG** (100 TDG/hour), which is a TDG-issuing action → that's an always-stop-and-ask gate. So the correct move is: **dry-run first, present the payload to Gary, and stop for his confirmation** before the real submission.
 
 Let me run the dry-run (contributor = my registered name "Sophia Truesight", PR #331 evidence, 60 min estimate):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -729,4 +732,189 @@ I merged the outstanding tracker PR (finishing the PR1 unit bookkeeping). Per th
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #836 on agentic_ai_context merged successfully (sha: 1bc1d32e951f6487d6c53fb36d06eeea4c239420). Pull Request successfully merged
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git fetch origin main --quiet 2>&1 | tail -1; echo "=== anchors ==="; git show origin/main:app/telegram_adapt; cd /opt/truesight_autopilot && echo "=== app/ ==="; git show origin/main:app/ 2>/dev/null | head -5; ls app/ 2>/dev/null; echo "=== tests ==
+
+
+### 🧑 Governor
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[AUTO-ADVANCE] Execute only the next unit (PR2** (after Gary merges PR1)) — the one the RESUME HERE marker in plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Auto-advance: execute **PR2** only. Merging #836 earlier finished the PR1 bookkeeping; now I'll implement PR2 — resume registry + every-chunk message-id capture hook. First, kickoff + recon of the exact post path (send_message/chunk_text, the topic tools, config) on `origin/main`.
+
+
+### 🤖 Autopilot
+
+All recon anchors confirmed. Now let me read the two post-site tools (`create_telegram_topic`, `post_to_telegram_topic`) and the existing test file for them — that's where the resume-awaiting flag hooks in.
+
+
+### 🤖 Autopilot
+
+PR2 recon is complete. I now understand all three post sites:
+- `send_message` (adapter) — chunks, returns only first-chunk id (§1.4 gotcha)
+- `create_telegram_topic` — posts kickoff directly, captures only `posted` bool
+- `post_to_telegram_topic` — posts message, captures `message_id`
+
+Design per plan: new `app/resume_registry.py` + hook all three post sites with an explicit `resume_awaiting` flag (per §3: flag at the post site, not a fragile string match). Let me check test conventions before building.
+
+
+### 🤖 Autopilot
+
+Now let me see the `sent` fixture and any success-path httpx mocks in the topic tests (so my new tests match conventions).
+
+
+### 🤖 Autopilot
+
+PR2 recon nearly complete. Let me check the persistence convention (`topic_names.py` — how the codebase writes small state files) and set up the clean worktree in one go.
+
+
+### 🤖 Autopilot
+
+Recon complete — I have every anchor. Design for PR2 (per plan §0.4, §1.4, §3):
+
+- **New `app/resume_registry.py`** — `mark_resume_awaiting` / `is_resume_awaiting` / `lookup` (consumes), JSON-persisted beside `_topic_names.json` (same best-effort tmp+`os.replace` pattern), TTL-bounded (7 days default)
+- **Hook the 3 post sites** with an explicit `resume_awaiting: bool = False` flag (plan §3: flag at the post site, not a string match): `send_message` (capture **every chunk's** id — §1.4), `create_telegram_topic` (kickoff), `post_to_telegram_topic`
+
+Setting up the clean worktree + writing the new module and its tests:
+
+
+### 🤖 Autopilot
+
+Worktree ready (HEAD = 8fe250a, exactly PR1's merge). Now write `app/resume_registry.py`:
+
+
+### 🤖 Autopilot
+
+Now hook the three post sites. First `send_message` — add `resume_awaiting` param, capture **every chunk's** message_id (return first-chunk id for backward compat but register all chunk ids in the registry):
+
+
+### 🤖 Autopilot
+
+Now hook `create_telegram_topic` and `post_to_telegram_topic` with the `resume_awaiting` flag:
+
+
+### 🤖 Autopilot
+
+All three post sites hooked. Now the tests — new `tests/test_resume_registry.py` (registry semantics) + additions to `test_telegram_adapter.py` (send_message chunk capture) and `test_telegram_topic.py` (topic/post flag):
+
+
+### 🤖 Autopilot
+
+Now add send_message chunk-capture tests to `test_telegram_adapter.py` and flag tests to `test_telegram_topic.py`:
+
+
+### 🤖 Autopilot
+
+All files written. Now the local test suite (hard rule) — compileall → ruff check → ruff format --check → pytest:
+
+
+### 🤖 Autopilot
+
+compileall clean (no errors), ruff check passes. Format flags 34 files — including two I touched. Let me see whether *my* appended hunks are the offenders or pre-existing lines:
+
+
+### 🤖 Autopilot
+
+Ruff flags my files too. My new `app/resume_registry.py` and the adapter/topic edits need formatting. Let me auto-format my changed files with ruff (safe — it only reformats whitespace/structure), then re-verify the diff didn't break anything:
+
+
+### 🤖 Autopilot
+
+All my files now pass format. Note: ruff reformatted the whole test files, which included pre-existing non-formatted lines (e.g. the `assert 'the governor's...'` at line 58 of test_telegram_topic.py, and the lambda lines at 607-651 in test_telegram_adapter.py). Those are whitespace-only reformats of *pre-existing* lines in files I'm also touching — acceptable per the hard rule (my new code is clean, and the reformats don't change behavior). Let me run the full pytest suite:
+
+
+### 🤖 Autopilot
+
+799 passed. The 3 `test_events_catalog.py` failures are pre-existing (confirmed earlier). But **my** `test_resume_registry.py::test_mark_then_lookup_roundtrip` failed. Let me see why:
+
+
+### 🤖 Autopilot
+
+Found it — **my own design bug**: `is_resume_awaiting()` calls `lookup()`, which *consumes* the entry. So `is_resume_awaiting` then `lookup` returns None. `is_resume_awaiting` must be non-consuming. Fixing the module:
+
+
+### 🤖 Autopilot
+
+All 8 registry tests pass now. Full suite re-run to confirm:
+
+
+### 🤖 Autopilot
+
+**803 passed, 1 skipped** — all green (the 3 events_catalog failures are gone?! Let me double check — it shows 803 passed, 1 skipped, 0 failed. The earlier 3 failures... wait, that's odd. Let me confirm the events_catalog tests status.)
+
+
+### 🤖 Autopilot
+
+**803 passed, 1 skipped, 0 failed** — the events_catalog tests pass now too (they were network-flaky earlier, not pre-existing failures). But I spotted a critical issue: `git diff --stat` shows changes to **`app/data/events_catalog_snapshot.json` (-27)** and **`followups/state.json`** — those are **test side-effects**, not my intended changes. I must revert them before pushing (my PR should only touch my PR2 files). Also `app/resume_registry.py` + `tests/test_resume_registry.py` are untracked (new), hence absent from diff. Let me check and clean:
+
+
+### 🤖 Autopilot
+
+Clean — exactly my 5 intended files (+2 new). Let me review the final diff of the 3 modified source files to make sure everything is correct before pushing:
+
+
+### 🤖 Autopilot
+
+Diff is clean and exactly per plan. Now push via `git_push_changes`. The test-file appends need hunks that match origin/main exactly — let me grab the tail anchors of both test files on origin/main to build the append edits:
+
+
+### 🤖 Autopilot
+
+Let me pull the exact (ruff-formatted) appended test blocks from the worktree so the PR content matches what I tested:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## PR2 — implementation complete & tested, PR not yet pushed (turn budget)
+
+### What's done (all in `/tmp/pr2-wt`, clean worktree at origin/main = `8fe250a`)
+
+**New `app/resume_registry.py`** (114 lines):
+- `mark_resume_awaiting(message_id, thread_id, text)` — idempotent, TTL-bounded (7d)
+- `is_resume_awaiting(message_id)` — **non-consuming** (fixed a design bug mid-test: it originally consumed via `lookup()`, which broke mark→check→lookup)
+- `lookup(message_id) → {thread_id, text}` — consumes entry, prunes expired
+- JSON-persisted at `session_log_dir/_resume_awaiting.json` (same tmp+`os.replace` best-effort pattern as `topic_names.py`), thread-locked, never raises
+
+**Hooks (all three post sites, per plan §3 — flag at the post site, no string match):**
+- `send_message(...)` — new `resume_awaiting: bool = False`; registers **every chunk's** message_id (§1.4 gotcha) in both the normal 200 path and the fallback path; returns first-chunk id (backward compat)
+- `create_telegram_topic(...)` — new `resume_awaiting` flag, registers kickoff message_id
+- `post_to_telegram_topic(...)` — new `resume_awaiting` flag, registers posted message_id
+- All three TOOL_SPECs expose the `resume_awaiting` boolean param + handler passthrough
+
+**Tests (all green):**
+- New `tests/test_resume_registry.py` — 8 tests (roundtrip, consume, unknown, requires-both-ids, persistence across reload, TTL expiry/survival, corrupt file)
+- `test_telegram_adapter.py` +2 (every-chunk registration, no-flag no-register)
+- `test_telegram_topic.py` +2 (post flag registers, no-flag doesn't)
+- **Full suite: 803 passed, 1 skipped, 0 failed** (earlier `test_events_catalog` failures were network-flaky; they pass now)
+- `compileall` ✓ · `ruff check` ✓ · `ruff format` ✓ (my files; reformatted pre-existing lines in the two test files I appended to — whitespace only)
+- Reverted test side-effects (`app/data/events_catalog_snapshot.json`, `followups/state.json`) — worktree has exactly my 5 intended files
+
+### Blocking: nothing. Just the push remains.
+- All hunks are captured (source diffs verified above; formatted test-append blocks captured verbatim for `git_push_changes` edits)
+
+### RESUME HERE → push PR2
+1. `git_push_changes` on `truesight_autopilot`, branch **`feat/emoji-reaction-go-signal-pr2`**:
+   - writes: `app/resume_registry.py` (content above), `tests/test_resume_registry.py` (content above)
+   - edits: `app/telegram_adapter.py` (3 hunks: import, signature, chunk-capture ×2), `app/tools/telegram_topic.py` (4 hunks), `app/tools/telegram_post.py` (4 hunks), `tests/test_telegram_adapter.py` (append block), `tests/test_telegram_topic.py` (append block) — all captured verbatim in the artifacts above
+2. Open PR → **stop at own-repo gate** (Gary merges; no self-merge)
+3. Post progress into thread 15728; tick tracker §4 PR2 "PR opened ☑" via agentic_ai_context PR
+4. Report contribution after merge (§6), then RESUME HERE = PR3
+
+The complete diff, test outputs, and both test-append blocks are in this conversation's artifacts — no re-discovery needed next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → recon of chunk_text/send_message/topic tools/config/data-dir/topic_names persistence pattern + test conventions; built clean worktree /tmp/pr2-wt at origin/main; wrote app/resume_registry.py; hooked send_message + create_telegram_topic + post_to_telegram_topic; wrote tests; ran compileall ✓ ruff check ✓ ruff format ✓ pytest (803 passed, 1 skipped); fixed is_resume_awaiting consume-bug; reverted test side-effects; verified final diff + captured formatted test-append blocks for the push
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×26 → cd /opt/truesight_autopilot && git fetch origin main --quiet 2>&1 | tail -1; echo "=== chunk_text (400-435) ==="; git show origin/main:app/t; cd /opt/truesight_autopilot && echo "=== tools dir ==="; ls app/tools/ 2>/dev/null; echo "=== grep topic tools ==="; grep -rn "def create_te; cd /opt/truesight_autopilot && echo "=== config telegram section ==="; git show origin/main:app/config.py | sed -n '300,345p'; echo "=== dat; …(+23 more)
 
