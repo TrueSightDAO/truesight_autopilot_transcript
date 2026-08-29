@@ -239,6 +239,7 @@ Approved — executing (a) cleanup, (b) convention doc, (c) `(Test` guard. First
 ### 🤖 Autopilot
 
 The artifact tail was empty — let me directly find the phantom QA rows in the live Currencies tab.
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,26 +250,31 @@ Found the exact phantom rows in the live ledger:
 - **Row 128**: `QA Verification Sticker 4x3cm Round2 (Test 20260827b)` = 0.0581
 
 Now let me check the write path (gspread/SA creds on the box) and the GAS scriptId for the guard deploy.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 gspread is available on the box. Let me find the service account credentials used to write to the main ledger, and check for the GAS scriptId in the tokenomics repo.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the Google credentials at `/home/ubuntu/creds/google_credentials.json`. Let me check the GAS project structure (scriptId) and verify the SA has write access to the main ledger via gspread.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me use the modern google-auth approach for gspread (v6 uses google-auth, not oauth2client).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Write access confirmed. Executing (a) — deleting the two phantom rows (127, 128) from the live Currencies tab, then verifying.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -465,4 +471,37 @@ Context for why this was the right fix: there is **no checked-in E2E script** fo
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
 • `merge pr` → ✅ PR #833 on agentic_ai_context merged successfully (sha: 0c2a20a8f5ebb3459aaf56178d08790e2fcdd5ac). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: @sophia what is this for?
+
+guard to the live Apps Script project — gas_deploy_project(script_id=<asset_receipt_ingest>, push=true). First push without hooks, confirm, then re-run with hooks. Won't deploy without your explicit go since it touches the live ingest pipeline.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] @truesight_autopilot_bot you read my previous question?
+
+
+### 🤖 Autopilot
+
+Yes — I read your previous question and acted on both parts. Recap of that:
+
+1. **Report time spent** → logged a 120-min CONTRIBUTION EVENT to Edgar (Sophia Truesight, autopilot, TDG 0) covering the investigation + cleanup + doc + guard work.
+2. **Make cleanup part of the E2E run** → merged agentic_ai_context#833: the expense-off + Currencies-row-deletion + treasury-reverify steps are now mandatory numbered steps (4–7) of every asset-receipt E2E run checklist.
+
+Now — what the pending deploy step is **for**:
+
+**The `(Test` guard is merged in GitHub but not yet live.** Here's the chain:
+
+- The bug happened in the **live Google Apps Script** pipeline `asset_receipt_ingest` — the GAS that reads Telegram chat logs, processes `[ASSET RECEIPT EVENT]`s, and writes Currencies rows + offchain legs to the main ledger.
+- I fixed it by editing the source in the **tokenomics repo** (`Code.gs`) and merged it (tokenomics#436).
+- But **merging the repo code ≠ the live pipeline running it.** The live GAS project runs whatever was last pushed to it via `clasp push`. Until that push happens, the guard is dormant — a future `(Test` receipt would still create a Currencies rate row and could re-inflate treasury.
+
+So the deploy step is: `gas_deploy_project(script_id=<asset_receipt_ingest>, push=true)` — push the merged Code.gs to the live GAS project so the guard actually takes effect. It's a **dry-run by default**; `push=true` is what makes the change real.
+
+**Why I'm waiting for your explicit go:** it changes the behavior of the live ingest pipeline (the same pipeline that processes real farmer/partner receipts). It's a production-adjacent action — small and safe, but I don't deploy to live without your word.
+
+So: want me to push it? One word and I'll run the deploy (first push without hooks, verify, then re-run with hooks per convention).
 
