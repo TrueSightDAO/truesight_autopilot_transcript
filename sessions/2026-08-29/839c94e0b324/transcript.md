@@ -306,3 +306,48 @@ Both rows are on the ledger now (Sophia + Gary, 30 min each for the same inciden
 
 test
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] [Handoff context — this Telegram topic (thread 16196) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 📥 Got it — I'm still finishing the previous task in this topic. I've added this to the queue and will get to it right after.
+
+
+### 🤖 Autopilot
+
+The 👍 go-signal resumes the pending task in this topic — deploy #345 and verify all 4 services restarted together. The deploy tool returned **NOOP** (already at `c55e2cc1`, no restart). Since #345's whole point is that the *other three* services must also be on fresh code, let me verify what's actually running before believing the noop.
+
+
+### 🤖 Autopilot
+
+✅ **Deploy verified — #345 is live and this time it worked as intended.**
+
+**The proof (all 4 services, same fresh timestamp):**
+
+| Service | MainPID | ActiveEnterTimestamp | State |
+|---|---|---|---|
+| truesight-autopilot | 344122 | **23:29:47 UTC** | active (running) |
+| truesight-autopilot-telegram | 344123 | **23:29:47 UTC** | active (running) |
+| truesight-autopilot-watchdog | 344107 | **23:29:47 UTC** | active (running) |
+| truesight-vault | 344125 | **23:29:47 UTC** | active (running) |
+
+All four restarted at **exactly the same instant (23:29:47)** — same second, fresh MainPIDs. That's the #345 fix doing its job: previously the brain restarted itself *first* and the other three got stuck on old code; now the ordering is correct and the whole stack moves together.
+
+Also picked up en route: **#346** (*"fix: emoji-reaction resume self-deadlocked every time, silently, forever"*) is on the box at `c55e2cc` — which is precisely why this very turn (a 👍-resume) didn't hang. Nice symmetry: the emoji-resume deadlock fix got deployed and then immediately proven by the emoji-resume that deployed it.
+
+**Repo state:** HEAD = `c55e2cc` = origin/main. No deploy needed (tool returned NOOP — correctly, since a prior deploy already landed it).
+
+Done — this topic is closed out. Anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md
+• `deploy autopilot` → noop — Already on the latest commit c55e2cc1 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` → cd /opt/truesight_autopilot && git log --oneline -6 && echo "===HEAD===" && git rev-parse HEAD && echo "===4 SERVICES: ActiveEnterTimestamp + SubState===" && for s in truesight-autopilot truesight-autopilot-telegram truesight-autopilot-watchdog truesight-vault; do echo "--- $s ---"; systemctl show $s -p ActiveState -p SubState -p ActiveEnterTimestamp -p ExecMainStartTimestamp -p MainPID --no-pager; done
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → Already on the latest commit c55e2cc1 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` → cd /opt/truesight_autopilot && git log --oneline -6 && echo "===HEAD===" && git rev-parse HEAD && echo "===4 SERVICES: ActiveEnterTimestamp
+
