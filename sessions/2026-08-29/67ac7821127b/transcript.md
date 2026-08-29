@@ -433,21 +433,25 @@ Map generated (148 KB). Let me visually verify it before shipping.
 ### 🤖 Autopilot
 
 Map rendered at 2190×1162. Now let me do a quick pixel sanity check (pins present, not blank), write the self-contained reproducible script, and build the branded PDF with the corrected map embedded — all in one step.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map verified: red pins (Brazil sites), orange pin (China), green Brazil landmass — all present. Now let me make this reproducible: I'll add the plotting script to `truesight_autopilot/scripts/` and run the mandatory local test suite on it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lint passes but formatting needs a fix. Let me apply ruff format and re-verify, then run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me run the full mandatory test suite (all four gates) before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -561,4 +565,79 @@ If any pin still looks off vs reality (e.g. you want the Manicoré pin at the in
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf /tmp/cacao_sourcing_network_map.png && file /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] The new map doesn't say much about the constrains of each location in brazil
+
+
+### 🤖 Autopilot
+
+Gary wants the map itself to carry the constraints per location (so the map tells the story, not just the table). I'll update the plotting script to annotate each pin with its role **and** constraint, regenerate the map + PDF, and ship both.
+
+Plan:
+1. Update `plot_cacao_sourcing_network_map.py` → per-pin constraint annotations (Manicoré: infra unknown · Altamira: beans-only/no conversion · Itabuna: members-only/no warehousing · Ilhéus: ⚠ CNPJ INAPTA blocker · Dongguan: SKU spec pending) + a blocker ring on Ilhéus + legend
+2. Regenerate map + rebuild PDF, verify
+3. PR → merge script, replace PNG on agentic_ai_context, send you the files
+
+Let me rewrite and run the script:
+
+
+### 🤖 Autopilot
+
+Map regenerated with constraint annotations (218 KB). Let me verify the text rendered correctly via OCR, then rebuild the PDF.
+
+
+### 🤖 Autopilot
+
+OCR confirms all constraint annotations render correctly on the map (Altamira "beans only · NO conversion · needs CN-side warehouse", Manicoré "no logistics/freight infra known", Itabuna, Ilhéus "⚠ CNPJ INAPTA · NO export NF-e — BLOCKER"). Now rebuild the PDF with the new map (aspect ratio changed to 2196×1096):
+
+
+### 🤖 Autopilot
+
+PDF rebuilt with the constraint-annotated map (2 pages, image embedded). Now let me push the updated script (PR) and replace the PNG on agentic_ai_context. First the PR for the script:
+
+
+### 🤖 Autopilot
+
+PR #322 opened. Let me merge it and replace the PNG on agentic_ai_context main.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #322 merged and the map PNG updated on `agentic_ai_context` main. Here's the wrap-up.
+
+## ✅ Done this turn — map now shows each location's constraint
+
+You asked the **map itself** to carry the constraints per Brazil location (not just the table). Done.
+
+**What changed on the map** (each pin now annotates role + constraint):
+- **Manicoré (AM)** — exploratory source · no logistics / fermentation / freight infra known
+- **Altamira (PA)** — beans supplier (CEPOTX) · beans only · NO conversion · needs CN-side warehouse
+- **Itabuna (BA)** — conversion + export (Coopercabruca) · members-only · NO warehousing · exact spec upfront
+- **Ilhéus (BA)** — exporter / warehouse (Black King) · **⚠ CNPJ INAPTA · NO export NF-e — BLOCKER** (highlighted with a red dashed ring)
+- **Dongguan (CN)** — destination market · SKU spec pending
+
+Plus a footnote legend (⚠ = export blocker; red = Brazil network; orange = destination).
+
+**PRs / artifacts:**
+| Repo | PR / commit | What |
+|---|---|---|
+| `truesight_autopilot` | [#322](https://github.com/TrueSightDAO/truesight_autopilot/pull/322) — merged | Script extended with per-site constraint annotations + blocker ring + legend |
+| `agentic_ai_context` | PNG replaced on main (57acc570) | `brazil/cacao_sourcing_network_map.png` now the constraint-annotated version |
+
+**Verified:** map regenerated (2196×1096), annotations confirmed rendering via OCR; PDF rebuilt (2 pages, new map embedded, 208 KB).
+
+**RESUME HERE →** send the updated PDF + map PNG to Gary in this chat (`send_telegram_attachment` on `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` and `/tmp/cacao_sourcing_network_map.png`) — that's the only remaining step; everything else is merged and live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/truesight_autopilot && cat > scripts/plot_cacao_sourcing_network_map.py << 'EOF' #!/usr/bin/env python3 """Plot the TrueSight DAO ca; cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/cacao_sourcing_network_map.png') # crop Brazil region (left 65%, full he; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*1162/2190|width=7.1*inch, height=7.1*inch*1096/2196|' build_cacao_pdf.py && python3 
+• `merge pr` → ✅ PR #322 on truesight_autopilot merged successfully (sha: 815cf472133215e9079dcdc9ac6bb58e7f551cc1). Pull Request successfully merged
 
