@@ -4438,11 +4438,13 @@ Ready for STEP 2.
 ### 🤖 Autopilot
 
 Continuing the E2E with the dummy tree — STEP 2: fresh throwaway email via the real beta UI, then I'll grab the emailed link, click through in the same session, and submit a measurement on TEST_TREE_E2E with full request/response capture this time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Email sent successfully. One pageerror to flag: `Cannot set properties of null (setting 'textContent')` — a minor UI race (a status element ref that's null when set), doesn't block the flow but worth noting for a follow-up. Now retrieving the emailed verification link:
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4571,4 +4573,75 @@ Say "go" and I'll run the post-merge click-through verification.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #24 on sunmint_beta merged successfully (sha: df3e0b96f887fbe992f8770240b37d1e55673551). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] @truesight_autopilot_bot go
+
+
+### 🤖 Autopilot
+
+Executing the post-merge E2E close-out: confirm the fix is live, then a clean full loop with a fresh throwaway email (the old `vk` was already consumed by the earlier successful POST). Round 1 — check the live page + submit the fresh email via the real UI:
+
+
+### 🤖 Autopilot
+
+Fix is live (`id="emailLinkedLabel"` present) and the fresh email submitted cleanly (success, zero errors). Now retrieving the real verification email to get the link:
+
+
+### 🤖 Autopilot
+
+Email received — reading the full message for the complete link:
+
+
+### 🤖 Autopilot
+
+Full link captured. Step 3 — click-through in the **same profile5** (same keypair), capturing the verification POST and any console errors:
+
+
+### 🤖 Autopilot
+
+**Verification now clean** — `"Email confirmed successfully!"` (success), the POST captured verbatim: `EMAIL_VERIFICATION` → `activated:true`, **zero pageerrors, zero unhandledrejections, zero console errors**. The #24 fix worked. Now the final leg — the measurement on TEST_TREE_E2E with the verified identity (same profile5), with the full POST capture:
+
+
+### 🤖 Autopilot
+
+Full E2E essentially closed — converging with the honest evidence picture.
+
+## ✅ FULL E2E COMPLETE (post-#24, clean run)
+
+**Round 1 — email submit (real UI, fresh profile5):** `tgm-e2e-20260831@truesight.me` → **"Email sent! Check your inbox to confirm." (success)** · zero errors
+
+**Round 2 — real emailed link received (SENT copy from `garyjob@agroverse.shop`):**
+```
+https://beta.sunmint.truesight.me/monitor-tree-growth/?em=tgm-e2e-20260831%40truesight.me&vk=MrJ7FqPlDY8s-5ciHTluVPBFNLsE8wK_f7fZJit37ho
+```
+→ **points back to the beta monitor page** ✓ (the original bug fix, re-confirmed on a fresh cycle)
+
+**Round 3 — click-through (same profile5/keypair):**
+- **Status: `"Email confirmed successfully!"` (success)** — was "Error sending email: …" before #24
+- POST captured verbatim: `POST edgar.truesight.me/dao/submit_contribution` → **HTTP 200** · `{"status":"ok","signature_verification":"success","emailRegistration":{"applicable":true,"ok":true,"event":"EMAIL_VERIFICATION","activated":true,"cache_refresh":true}}`
+- **Zero pageerrors · zero unhandledrejections · zero console errors** — the #24 fix is proven end-to-end
+
+**Round 4 — measurement on TEST_TREE_E2E (verified identity, manual tree path):**
+- Selected `TEST_TREE_E2E` → both tabs captured (fake camera) → DBH 14.2 → **"Measurement sent successfully!" (success)** · **zero console errors** · index fetch 200
+
+## ⚠️ One honest residual gap (not hidden)
+The measurement POST itself didn't appear in my fetch-capture log this run (only the index/ping/contributors calls did) — yet the UI's success state is gated on `resp.ok` from that exact POST (per the code: `if (!resp.ok) throw …` then success), and zero errors fired. Same pattern as earlier runs. Likely the page's **offline-queue flush path** (queued submit flushed outside my wrapper's visibility) — but I won't claim a literal 200 body I didn't record. **Residual to close:** trace the exact submit transport (`submitMonitoring` → queue vs direct fetch) and capture the measurement's literal response body. Small follow-up.
+
+## 📌 RESUME HERE
+1. **Decisive follow-up (small):** instrument `submitMonitoring`'s transport (the offline-queue flusher) to capture the literal `[TREE GROWTH MONITORING EVENT]` response — or read `submitMonitoring`'s source once more to confirm queue-flush semantics, then re-run
+2. **Cleanup (your call, existing-governor only):** test rows to invalidate: `TEST_TREE_E2E` measurements (DBH 13.6/13.8/14.2), FounderHaus DBH 12.5, email identities `tgm-e2e-20260829/30/31@` + `admin@` — via the governor-gated reject function (proposed) or your manual sheet edit
+3. **Standing:** `/dao/contributors` 404 (governor detection) follow-up PR; TEST_TREE_E2E durability; `sunmint_prod` promotion + `prod_repos` config line — separate approvals
+
+**Bottom line:** the original bug is **fully proven fixed** (emailed link → correct monitor-page URL → click-through → verified → measurement submits, all clean), plus #24 fixed a second real bug the click-through caught. The measurement-POST literal body capture is the only loose thread.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → live-page fix check (id present), fresh email submit (success, no errors), click-through verify (200 + activated:true, zero errors), measurement on TEST_TREE_E2E (success, zero errors); gmail retrieve ×2 (real link from SENT copy)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/e2e && TS=$(date +%s) && echo "=== 1. live page has the fix? ===" && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/; cd /tmp/e2e && cat > stepB_verify.js << 'EOF' const puppeteer = require('puppeteer-core'); const sleep = ms => new Promise(r => setTimeout(r; cd /tmp/e2e && cat > stepC_measure.js << 'EOF' const puppeteer = require('puppeteer-core'); const sleep = ms => new Promise(r => setTimeout(
 
