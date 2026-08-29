@@ -769,6 +769,7 @@ Let me know if any pin or label still needs adjusting — or if you'd like the m
 ### 🤖 Autopilot
 
 Let me diagnose the exact overlap numerically — I'll compute each annotation box's rendered extent and report which pairs collide, rather than guessing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -776,11 +777,13 @@ Let me diagnose the exact overlap numerically — I'll compute each annotation b
 All boxes report identical coords — my measurement method was flawed (bbox measured before render). But the real issue is clear from the earlier OCR: **Itabuna's constraint text ran into Ilhéus's label** — those two pins are only ~25 km apart in reality, so side-by-side label boxes will always collide. The robust fix is to stop placing text boxes on the map at all: **numbered pins + a legend panel** (professional cartographic style — overlap becomes impossible by construction).
 
 Let me rewrite the script with a two-panel layout (map left, legend right) and regenerate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Legend-panel layout works — OCR confirms all 5 sites + constraints render cleanly in the legend, map panel shows just numbered pins. No on-map text boxes = no overlap possible. Now let me lint the script, rebuild the PDF, and ship.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -893,4 +896,100 @@ Both sent ✅
 - Real coordinates throughout; reproducible via `scripts/plot_cacao_sourcing_network_map.py` (PR #324)
 
 Let me know if the legend layout or pin placement needs any tweak.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] I dont think the two countries should be that far apart in the map image...
+
+
+### 🤖 Autopilot
+
+Good catch — the current map is a single world view, so Brazil (far west) and China (far east) sit on opposite edges with a huge ocean gap between them. I'll redesign to **two adjacent panels — Brazil zoomed on the left, China zoomed on the right — bridged by the export arrow**, so the countries sit side by side and each one fills its panel. Then regenerate map + PDF and ship.
+
+
+### 🤖 Autopilot
+
+Map generated (2302×1334, side-by-side panels). The OCR only caught panel titles — let me verify the legend text rendered (bottom strip) before rebuilding the PDF.
+
+
+### 🤖 Autopilot
+
+Legend renders correctly — all 5 sites + constraints present (OCR garble is just accented-char misreads). Now let me rebuild the PDF with the new map aspect ratio and verify:
+
+
+### 🤖 Autopilot
+
+PDF rebuilt (side-by-side layout). Now let me push the updated script to the repo and replace the map PNG:
+
+
+### 🤖 Autopilot
+
+Same "invalid write path" error as before with the full-content `writes`. The reliable path is: docstring edit via `edits` (which worked last time), then push the full content via git on the branch. Let me do the docstring edit to open the PR, then push the full file.
+
+
+### 🤖 Autopilot
+
+PR #325 opened with the docstring change. Now let me push the full side-by-side content onto that branch (my local file already has the complete rewrite):
+
+
+### 🤖 Autopilot
+
+The commit landed on the wrong branch (checkout aborted). Let me inspect the git state and fix the branch properly:
+
+
+### 🤖 Autopilot
+
+The clone is on the old merged branch `fix/cacao-map-legend-layout`, and my commit landed there. Let me move the full content onto the correct branch `fix/cacao-map-side-by-side`:
+
+
+### 🤖 Autopilot
+
+The local branch doesn't exist yet — only the remote-tracking one. Let me create it from origin and push:
+
+
+### 🤖 Autopilot
+
+Full side-by-side rewrite pushed to PR #325. Let me merge it and replace the map PNG on `agentic_ai_context`:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #325 merged and the map PNG updated — here's the wrap-up.
+
+## ✅ Done this turn — countries no longer far apart
+
+You flagged that Brazil and China looked too far apart (the single world-view map put them on opposite edges). Fixed by redesigning to **two adjacent, zoomed panels**:
+
+- **Left panel — Brazil** (pins 1–4: Manicoré, Altamira, Itabuna, Ilhéus), real country outline, zoomed to the sourcing region
+- **Right panel — China** (pin 5: Dongguan), real outline, zoomed to the Pearl River Delta
+- **Purple export arrow** bridges the two panels: "Export lane · Brazil → China"
+- Bottom **legend strip**: pin number → site → role → constraint (blocker red, ⚠ note) — no on-map text boxes, so zero overlap
+- All pins at real coordinates; reproducible script
+
+**Verified:** OCR confirms both panel titles + all legend entries; map output 2302×1334; PDF rebuilt (1 page, map embedded, 283 KB).
+
+**PRs / artifacts:**
+| Repo | PR / commit | What |
+|---|---|---|
+| `truesight_autopilot` | [#325](https://github.com/TrueSightDAO/truesight_autopilot/pull/325) — merged | Side-by-side Brazil\|China redesign of `plot_cacao_sourcing_network_map.py` |
+| `agentic_ai_context` | PNG updated (f5d6e6d3) | `brazil/cacao_sourcing_network_map.png` = side-by-side version |
+
+**RESUME HERE →** send the regenerated PDF + map PNG to Gary (`send_telegram_attachment` on `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` and `/tmp/cacao_sourcing_network_map.png`) — the only remaining step; everything else is merged and live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → wrote side-by-side script (full rewrite, 8481 chars) + ruff format + compileall + ruff check + generated map (2302×1334) + OCR'd panels/legend + rebuilt PDF with 1334/2302 aspect; pushed full content to PR #325 via git
+• `merge pr` → ✅ PR #325 on truesight_autopilot merged successfully (sha: e9e7ce62e9c1f6c2b6c392066298849f469813f8)
+• `upload_file` → agentic_ai_context brazil/cacao_sourcing_network_map.png updated (f5d6e6d3)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/truesight_autopilot && cat > scripts/plot_cacao_sourcing_network_map.py << 'PYEOF' #!/usr/bin/env python3 """Plot the TrueSight DAO ; cd /tmp && python3 -c " from PIL import Image im = Image.open('/tmp/cacao_sourcing_network_map.png') w,h = im.size im.crop((0, int(h*0.78), ; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*[0-9]*/[0-9]*|width=7.1*inch, height=7.1*inch*1334/2302|' build_cacao_pdf.py && grep; …(+4 more)
+• `merge pr` → ✅ PR #325 on truesight_autopilot merged successfully (sha: e9e7ce62e9c1f6c2b6c392066298849f469813f8). Pull Request successfully merged
 
