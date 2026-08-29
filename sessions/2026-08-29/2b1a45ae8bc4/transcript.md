@@ -146,21 +146,30 @@ All four edits applied. Now add the unit tests:
 ### 🤖 Autopilot
 
 Now run the full local test suite (hard rule before pushing):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 812 passed, 3 failed — all in `test_events_catalog.py` (Edgar event-catalog HTTP error paths, unrelated to my change). Let me verify those failures are pre-existing (network-dependent) and check formatting on only my touched files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 3 failures are pre-existing (fail identically with my changes stashed — they're Edgar-network-dependent tests). But I notice `app/data/events_catalog_snapshot.json` shows as deleted — likely the events-catalog tests removed it. Let me restore it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean now — only my 6 intended files modified. Now check formatting on only my touched files, and run the specific test files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -171,6 +180,7 @@ Clean now — only my 6 intended files modified. Now check formatting on only my
 ### 🤖 Autopilot
 
 Converging now per turn-limit directive. One final bounded call to fix formatting on my two test files and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -222,11 +232,13 @@ go
 ### 🤖 Autopilot
 
 Governor go-signal received — resuming in thread 15991. The local implementation is complete and verified; the remaining step is pushing + opening the PR. Let me capture the exact local diff to construct the push hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go-signal received — resuming. I need the full diff to construct precise push hunks. Let me read the complete diff artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -334,4 +346,43 @@ My read: you reported a bug and want it **live** — so the go most likely means
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls /opt/truesight_autopilot/context/agentic_ai_context/handoffs/plans/ 2>/dev/null | grep -i emoji; echo "---"; ls /opt/truesight_autopilot/
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] merge and deploy
+
+
+### 🤖 Autopilot
+
+Governor explicit command received: **merge and deploy**. Executing — merge PR #335 first, then deploy.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #335 merged** (commit `7539c00`, squash onto `main`).
+
+## What I did this turn
+
+- **Merged** [PR #335 — Auto-flag RESUME HERE posts as resume-awaiting (emoji GO parity)](https://github.com/TrueSightDAO/truesight_autopilot/pull/335) via squash merge (`7539c002d5af7e09cdaa8c65255610ca366f31c4`), per your explicit "merge and deploy" go.
+- Change set (7 files, +138/−4): `app/resume_registry.py` (`looks_resume_awaiting()` helper matching "RESUME HERE" / 📌), `app/telegram_adapter.py` (both `send_message` flag sites), `app/tools/telegram_post.py`, `app/tools/telegram_topic.py`, + unit tests in 3 files. Verified locally: compileall ✅, ruff ✅, 98 targeted tests pass (full suite 812 pass, 3 pre-existing Edgar-network failures unrelated).
+- **Own-repo gate honored**: opened PR only, never self-merged — this merge was by your explicit command.
+
+## Stopping per one-PR-per-turn rule
+
+📌 **RESUME HERE = run the deploy** (you already said "merge and deploy"; merge is done):
+1. `deploy_autopilot` — pulls main @ `7539c00` onto this box and restarts the bot so the 👍-on-RESUME-HERE fix goes live.
+2. Smoke-test: 👍 on a "📌 RESUME HERE" turn-report → should resume; plain message 👍 → ignored.
+3. Submit DAO [CONTRIBUTION EVENT] for the fix once live (after your confirm).
+
+Say **"go"** / **"deploy"** and I'll run `deploy_autopilot` in the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #335 on truesight_autopilot merged successfully (sha: 7539c002d5af7e09cdaa8c65255610ca366f31c4). Pull Request successfully merged
 
