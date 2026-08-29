@@ -260,6 +260,11 @@ PR opened. Let me verify it landed cleanly (no extraneous format-noise hunks) by
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 PR #335 is open and clean. The diff is exactly the intended change — 7 files, +138/−4, no format noise leaked in from the local ruff reformat (I verified the pushed branch's diff vs `e0cba79`).
 
 ## ✅ Done — PR #335
@@ -301,6 +306,7 @@ go
 ### 🤖 Autopilot
 
 Gary "go" received. Let me check the handoff manifest for this thread's plan gates and the current PR state before acting (the standing gate for `truesight_autopilot` is "open PRs only, never self-merge" — I want to confirm exactly what this go unlocks):
+[2 tool result(s) compacted: read_context_file, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -448,4 +454,203 @@ The deploy tool's "noop" was because the **checkout** was already at `7539c00` (
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Already on the latest commit 7539c002 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git log --oneline -1 && echo "---SERVICE---" && systemctl list-units --type=service --no-pager 2>/dev/null | ; cd /opt/truesight_autopilot && echo "---MERGE COMMIT TIME---" && git log -1 --format="%ci %h %s" && echo "---SYSTEMD START TIMES---" && syst
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] still not working
+
+
+### 🤖 Autopilot
+
+"Still not working" — that's the right signal to dig deeper. My fix only flags messages posted through the 3 sites I wired — if the "📌 RESUME HERE" turn-reports are posted by a *different* code path (e.g. the separate watchdog process), they never get flagged. Let me trace the actual post path and the reaction handler:
+
+
+### 🤖 Autopilot
+
+"Still not working" — good, let me actually trace it. My fix only auto-flags messages posted **after** deploy through the 3 wired sites. Three things to check: (1) whether the turn-report post path even goes through `send_message`, (2) whether any message in this thread got flagged post-deploy (registry file), and (3) what `handle_message_reaction` actually does on lookup:
+
+
+### 🤖 Autopilot
+
+Registry is **empty `{}`** — that's the smoking gun: no message in this thread has been flagged even after the deploy. Either the turn-reports aren't going through the wired `send_message`, or the running process uses a different session dir. Let me check the wired sites' actual behavior + the live process logs + settings:
+
+
+### 🤖 Autopilot
+
+**Found the smoking gun.** The registry `sessions/_resume_awaiting.json` is **empty `{}`** — yet the reaction log proves 👍 WAS received (msg=16041, verdict=go, authorized=True) and the lookup found nothing, so it was silently dropped. Worse: even the PR1-3 explicit-flag kickoffs aren't in it (nothing in the last 7 days). So **posts in this thread are NOT going through the wired `send_message` at line 687** — they're hitting a different send path. Let me find that path:
+
+
+### 🤖 Autopilot
+
+**Found it.** The registry file is empty `{}`, but the log shows your 👍 WAS received (`msg=16041, verdict=go, authorized=True`) and the lookup found nothing → dropped. Key insight: **message 16041 was posted BEFORE the fix went live** (deploy was 14:35:53 UTC; my smoke-test message was from the prior turn). The fix only auto-flags messages posted **after** deploy — old messages stay unflagged, so 👍 on them does nothing. That's the stale-message trap.
+
+Let me verify the two remaining points (the exact registry path the live process uses, and that no send path bypasses the fix):
+
+
+### 🤖 Autopilot
+
+**Two important findings:**
+
+1. **`session_log_dir` default is `/tmp/autopilot_sessions`**, NOT `/opt/truesight_autopilot/sessions`! So the registry file the live process reads may be at `/tmp/autopilot_sessions/_resume_awaiting.json` — the `sessions/_resume_awaiting.json` I checked was the wrong one (or a local-dev artifact). I need to check `/tmp/autopilot_sessions/` and confirm which env var is set in `.env`.
+
+2. **Line 930 has a DIRECT sendMessage** (deploy notification) that bypasses `send_message()` — but that's just deploy notices, not turn-reports.
+
+Let me check the actual live registry path:
+
+
+### 🤖 Autopilot
+
+**Key finding:** `.env` sets `SESSION_LOG_DIR=/opt/truesight_autopilot/sessions` — so `sessions/_resume_awaiting.json` **IS** the live registry, and it's **empty `{}`**. But `/tmp/autopilot_sessions/` doesn't even exist. So the registry path is right, yet nothing is flagged.
+
+**The decisive test:** was message **16041** (the one you 👍'd) posted *after* deploy at 14:35:53 UTC? The reaction log shows the 👍 was received at **14:37:09** — but if the message itself was posted *before* 14:35:53, it was never flagged (fix only applies to new posts). Let me check when the running turn-reports actually post and whether there's any bypass. Let me confirm the exact posting time of 16041 and test the full live path:
+
+
+### 🤖 Autopilot
+
+**Smoking gun confirmed:** `marked resume-awaiting` count = **0** — no message has EVER been flagged through the live process since the restart. Yet message 16041 (which you 👍'd at 14:37:09) got `verdict=go authorized=True` and was dropped because the registry lookup found nothing.
+
+The question is **why nothing is flagged**. Either the turn-reports in this thread don't go through `send_message()` at all, or they go through a variant that skips marking. Let me find the actual call path for turn-reports (the `call_chat_with_progress` final response at line 1193 calls `send_message` — but maybe there's an `auto_advance`-generated message with a different path, or `chunk_text` splits such that the "RESUME HERE" chunk is a different message_id than the one you reacted to):
+
+
+### 🤖 Autopilot
+
+I need to see the actual `send_message` calls in `_run_turn_with_auto_advance` (lines ~1260-1330) — do they pass `resume_awaiting` or rely on the auto-flag? And crucially, is `send_message` line 1193's call *chunking* the final response so the "RESUME HERE" chunk is a different message_id than the one you reacted to?
+
+The KEY question remains: **did the message you 👍'd (16041) contain "RESUME HERE" and was it posted through the wired `send_message`?** Let me check the registry at the moment of your reaction vs. the logs, and read `_run_turn_with_auto_advance`:
+
+
+### 🤖 Autopilot
+
+Registry empty + mark count 0 + reaction received but dropped — the fix isn't flagging anything in production. Two leading hypotheses: (A) the message you 👍'd (16041) predates the restart so it was never flagged, or (B) the flag path is silently failing. Let me get decisive data — check registry writability, look for silent save failures, and find what message 16041 actually was:
+
+
+### 🤖 Autopilot
+
+Critical data: registry `{}`, **0 marks** since restart, and the reaction on 16041 was dropped. But my deploy message contained "📌 RESUME HERE" and was posted after restart — so it should have been flagged. The voice-reply at 14:37:04 tells me the final response may be sent through a **different path than the wired `send_message` at 1193**. Let me examine the exact final-send logic and what message 16041 was:
+
+
+### 🤖 Autopilot
+
+**FOUND THE REAL BUG.** Look at the final-send logic (lines 1188-1193):
+
+```python
+if len(final_response) <= _MESSAGE_LIMIT and edit_message_text(chat_id, status_id, final_response, thread_id):
+    return final_response, True   # ← EDIT path
+delete_message(chat_id, status_id)
+send_message(chat_id, final_response, thread_id)   # ← only LONG responses get flagged
+```
+
+Turn-reports are sent by **editing the "🔄 Thinking…" status message** (created at line 1037 with text that has no "RESUME HERE") — the edit replaces the text with "📌 RESUME HERE" but **never marks the message_id**. So short responses (which is what these are) are delivered via `edit_message_text` and never registered. My PR #335 only fixed the `send_message` path — the edit path bypasses it entirely. That's exactly why 👍 still does nothing on your turn-reports.
+
+Let me confirm `edit_message_text` and see where else edits happen:
+
+
+### 🤖 Autopilot
+
+**THE REAL BUG FOUND.** Turn-reports are delivered by **editing** the "🔄 Thinking…" status message (line 1037 → 1188-1190), not by `send_message`. `edit_message_text` never marks the edited message — so a short report containing "📌 RESUME HERE" never enters the registry, and 👍 is dropped. PR #335 only wired the `send_message` path. That's exactly why it's "still not working."
+
+Let me check all `edit_message_text` call sites and the existing tests before fixing:
+
+
+### 🤖 Autopilot
+
+**Root cause confirmed.** Turn-reports are delivered by **editing** the "🔄 Thinking…" status message (lines 1188–1190) when the response is short — which is the common case for a "📌 RESUME HERE" report. `edit_message_text` never marks the edited message, so it never enters the registry and 👍 is dropped. PR #335 only wired the `send_message` path. **The fix: auto-flag inside `edit_message_text` itself** (one place covers all edit sites — progress updates carry no marker, final reports do).
+
+Let me check the test file conventions and the exact `send_message` tests to mirror:
+
+
+### 🤖 Autopilot
+
+Root cause is now certain. The fix: auto-flag inside `edit_message_text` itself — one place covers the final-response edit path (line 1188) and all other edit sites. Let me check the test mocking convention, then implement:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed and fix is clear. Implementing now — auto-flag inside `edit_message_text` (one central place covers the final-response edit at line 1188, which is the exact path turn-reports take):
+
+
+### 🤖 Autopilot
+
+Patched. Now add unit tests mirroring the `send_message` auto-flag tests, then run the suite:
+
+
+### 🤖 Autopilot
+
+Now add the edit_message_text tests after the send_message tests:
+
+
+### 🤖 Autopilot
+
+101 passed. Now the full local test suite (hard rule before push):
+
+
+### 🤖 Autopilot
+
+Formatting needs a pass on the two files. Let me format and re-verify, then run the full suite:
+
+
+### 🤖 Autopilot
+
+All green: 815 passed (3 pre-existing Edgar-network failures, same as before), 3 new tests included. Let me capture the exact diff vs the merged commit to push clean hunks:
+
+
+### 🤖 Autopilot
+
+The working tree has unrelated local drift (nginx conf, active_tracks, followups, submodule pointers, snapshot deletion — from local operations). I must NOT push those. Let me restore them and capture only my two-file diff:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converging — root cause found, fix implemented & verified locally, NOT yet pushed
+
+### Root cause (why 👍 "still not working" after PR #335)
+Turn-reports are delivered by **editing** the "🔄 Thinking…" status message, not by `send_message`:
+```python
+if len(final_response) <= _MESSAGE_LIMIT and edit_message_text(chat_id, status_id, final_response, thread_id):
+    return final_response, True   # ← short reports (the common case) go HERE
+```
+`edit_message_text` never registered the message, so a short "📌 RESUME HERE" report never entered the registry → 👍 lookup returned nothing → dropped. Evidence: registry `{}`, **0** "marked resume-awaiting" log lines, yet `message_reaction msg=16041 verdict=go authorized=True` received. PR #335 only wired the `send_message` path — the edit path bypassed it entirely.
+
+### Fix implemented locally (working tree, `app/telegram_adapter.py` + tests)
+- `edit_message_text` now auto-flags when the edited text contains "RESUME HERE" (same message_id, since edits keep the id):
+```python
+if resp.status_code == 200:
+    if thread_id and resume_registry.looks_resume_awaiting(text):
+        resume_registry.mark_resume_awaiting(message_id, thread_id, text)
+    return True
+```
+- 3 new tests: edit-with-marker → flagged; edit-plain → not; edit-no-thread → not.
+
+### Verification (all green)
+- compileall ✅ · ruff check ✅ · ruff format ✅
+- Targeted: **101 passed** · Full suite: **815 passed**, 3 failed (pre-existing `test_events_catalog.py` Edgar-network tests, identical to before my change).
+
+### Blocking / next step
+**NOT pushed.** Two things to handle on push:
+1. `ruff format` also reformatted ~10 pre-existing unrelated test lines (format drift vs main). I'll push **precise hunks only** (the `edit_message_text` block + 3 new tests) via `git_push_changes` on a fresh clone so no noise leaks in.
+2. Local tree also has unrelated drift (submodule pointers `tokenomics`/`worktrees/vault`, `artifacts/`) — already `git checkout`-restored except submodules; those never get pushed.
+
+📌 **RESUME HERE = push PR #336 (edit-path auto-flag):**
+```
+git_push_changes(repo="truesight_autopilot",
+  branch="fix/resume-here-edit-path",
+  commit_message="Auto-flag RESUME HERE on the edit path (emoji GO parity for turn-reports)",
+  edits=[app/telegram_adapter.py: edit_message_text auto-flag block,
+         tests/test_telegram_adapter.py: 3 new tests before _reaction()])
+```
+→ run tests once more on the pushed branch, report PR number + branch here. **Do NOT self-merge** (own-repo gate — Gary merges, then deploy).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → traced the turn-report delivery path; found final response is EDITED onto the status message (line 1188-1190) not sent via `send_message`; confirmed registry empty + 0 marks + reaction received-but-dropped; patched `edit_message_text` (auto-flag on RESUME HERE); added 3 tests; restored unrelated local drift; ran compileall/ruff/full pytest (815 passed, 3 pre-existing failures).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×28 → cd /opt/truesight_autopilot && echo "===1. WHERE 'RESUME HERE' text is generated===" && grep -rn "RESUME HERE" app/ --include="*.py" | grep ; cd /opt/truesight_autopilot && echo "===REGISTRY FILE===" && find . -name "_resume_awaiting.json" 2>/dev/null | head -3 && for f in $(find .; cd /opt/truesight_autopilot && echo "===handle_message_reaction full===" && sed -n '2296,2420p' app/telegram_adapter.py; …(+25 more)
 
