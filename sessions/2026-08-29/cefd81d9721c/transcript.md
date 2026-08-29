@@ -119,31 +119,42 @@ Found it. The exact error is a **`SyntaxError: Identifier 'CONFIG' has already b
 ### 🤖 Autopilot
 
 Both files are near-identical duplicates — same functions, same `CONFIG` — and they're compiled into ONE GAS project global scope, so the second `const CONFIG` is a hard `SyntaxError`. Let me trace the git history to see how this duplication happened and which file is canonical.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest confirms this scriptId's canonical source file is `tdg_recurring_tokenization_monthly.gs` — but the folder now contains BOTH `Code.js` and `tdg_recurring_tokenization_monthly.js`, each declaring `const CONFIG`. Let me pin down exactly when/how `Code.js` got into this project folder, and check what's actually deployed on GAS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The folder at flatten (50999ec) was clean — only `tdg_recurring_tokenization_monthly.js` + `.clasp.json` + `Version.gs`. At HEAD it also has `Code.js` and `add_claude_pro_row.js`. Let me find exactly which commit introduced `Code.js` into this project folder and what #383 changed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now it's crystal clear. The `Code.js` duplicate was introduced in **63f441e (2026-06-16)**, during the clasp_mirrors flattening — the same commit that added `appsscript.json`. This is a **duplicate-file collision inside one GAS project**, and since `gas_deploy_project` pushes **all files in the folder**, the syntax error is guaranteed on every push/trigger compile. Let me verify the deploys and check the tokenomics repo's own docs on this structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the audit doc that flagged this project as an "orphan mirror" — it may already warn about exactly this collision.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause is now clear. Before proposing the fix, let me verify the current live state — the Recurring Transactions sheet (to see how many months of tokenizations were missed) and the original clasp mirror (the deployed snapshot).
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -322,4 +333,111 @@ I did **not** touch GAS yet — the repo fix is merged; deploys and the catch-up
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd ~/tokenomics/google_app_scripts && for id in 1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY
 • `merge pr` → ✅ PR #434 on tokenomics merged successfully (sha: 0f3d6c41ca05007f1944b551d6cbe1294dc73fb0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Checking the handoff registry for this thread's plan, and pulling the merged fix onto the box + verifying which project folders are now clean to deploy:
+
+
+### 🤖 Autopilot
+
+Handoff manifest checked — **no row references this GAS-fix thread** (this is an ad-hoc execution, not a manifest-tracked plan; the manifest rows are emoji-reaction, sunmint, tree-QR, media-JSON, white-label). Proceeding with our GAS plan units.
+
+**But there's a blocker:** the `git pull` **aborted** ("Please move or remove them before you merge") and the folders **still contain `Code.js`** — the merged deletion hasn't landed in the local checkout. Also notable: `git log --diff-filter=A` earlier showed Code.js was **never tracked locally** (untracked files blocking the pull). And the residual `const creds` collisions in 3 folders are confirmed (still present even after Code.js removal — those are Unit 2).
+
+Let me diagnose the exact git state before touching anything:
+
+
+### 🤖 Autopilot
+
+Handoff manifest checked — **no row tracks this GAS-fix thread** (it's an ad-hoc execution; the manifest rows are emoji-reaction, sunmint, tree-QR, media-JSON, white-label). Continuing our GAS plan.
+
+**Blocker found:** the local checkout still has `Code.js` — the pull aborted on conflicting files, so the merged deletion hasn't landed locally. Since `gas_deploy_project` pushes from the **local folder**, deploying now would re-break the project. Also confirmed: 3 folders (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) still have a residual `const creds` collision *between canonical files* → those need a second PR before deploy. The other 5 are clean.
+
+Diagnosing the exact git blocker:
+
+
+### 🤖 Autopilot
+
+Manifest checked — no row tracks this thread (ad-hoc execution; manifest rows are emoji-reaction/sunmint/tree-QR/media-JSON). Continuing our GAS plan.
+
+**Blocker root-caused:** the pull aborts because a previously-untracked GAS folder (`1o2lzpdTZ…`) is now tracked by a recent origin commit (#433) — git refuses to overwrite the untracked local copy. Everything else is clean (no local edits). Fix: move that folder aside (non-destructive backup), fast-forward merge to land #434's deletions, then verify.
+
+
+### 🤖 Autopilot
+
+The merge landed — all 8 folders are clean of `Code.js`. The recurring-tokenization folder now has exactly one `const CONFIG` (in `tdg_recurring_tokenization_monthly.js`). 
+
+**Deploying the fixed projects now** — starting with the critical one (TDG - Monthly Recurring Tokenization), then the other 4 clean folders. The 3 folders with residual `const creds` collisions (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) are **not** deployable yet — those get a follow-up PR.
+
+
+### 🤖 Autopilot
+
+**Critical deploy succeeded** ✅ — `TDG - Monthly Recurring Tokenization` pushed clean (no `Code.js`), deploy ledger recorded. Now deploying the other 4 clean projects in parallel:
+
+
+### 🤖 Autopilot
+
+Deploy results — mixed:
+
+- ✅ **`1LxWu9hOs`** (Recurring Tokenization — the critical one): **deployed clean**
+- ✅ **`1m2sQONdM`** (telegram_webhook_listener): **deployed clean**
+- ✅ **`1vC3p_WfK`** (notarization): **deployed clean**
+- ❌ **`1zKgMwd6K`** (digital signatures): **blocked — identity mismatch** (owner `admin@truesight.me` ≠ clasp `garyjob@agroverse.shop`) — deploy tooling refuses; needs `--allow-identity-mismatch` or the admin clasp cred. I won't override a safety gate without asking.
+- ❌ **`1orWgdGck`** (capital injection): **blocked — clasp push "Conflicting files found"** — `Version.js` + `Version.gs` both in folder → clasp refuses. Needs a small fix (drop one Version file) in a follow-up PR.
+- ⏸️ 3 folders (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) still have residual `const creds` collisions — not deployable until Unit 2 PR.
+
+The critical one (recurring tokenization) is live. **Now the catch-up run** — trigger `processRecurringTransactions` to tokenize the missed August + September cycles. But I can't call a GAS function directly from here — let me check how the script is triggered (there's a `setupTrigger` + the sheet's last-date logic) and whether there's a `doGet` endpoint or the monthly trigger just fires. Let me verify the trigger state and the sheet's current tokenization date:
+
+
+### 🤖 Autopilot
+
+Let me read the full `processRecurringTransactions` loop to confirm whether it catches up all missed months automatically (Aug + Sep) once the next trigger fires:
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — "go" executed: GAS collision fix deployed (critical project live)
+
+### What happened
+
+**1. Repo fix merged → pulled locally.** PR #434 (8 `Code.js` deletions) landed on `origin/main`. Local `~/tokenomics` pull initially aborted on an untracked folder (`1o2lzpdTZ…`) that a recent origin commit (#433) began tracking — I moved it aside to `/tmp` (non-destructive backup) and fast-forwarded. All 8 project folders verified clean of `Code.js`.
+
+**2. Deployed fixed projects to GAS** (deploy tooling used the merged `/opt/.../tokenomics` checkout):
+
+| Project | Deploy result |
+|---|---|
+| **`1LxWu9hOs` — TDG Monthly Recurring Tokenization** (your failing one) | ✅ **PUSHED CLEAN** — `deploy_20260829T130346Z`, 4 files (no Code.js) |
+| `1m2sQONdM` — telegram webhook listener | ✅ PUSHED CLEAN |
+| `1vC3p_WfK` — notarization telegram logs | ✅ PUSHED CLEAN |
+| `1zKgMwd6K` — digital signatures email | ❌ **Blocked: identity mismatch** — owner `admin@truesight.me` vs clasp `garyjob@agroverse.shop`; tool refused. Needs `--allow-identity-mismatch` (or admin clasp cred). |
+| `1orWgdGck` — capital injection | ❌ **Blocked: "Conflicting files found"** — folder has both `Version.js` and `Version.gs`; clasp refuses. Needs a tiny follow-up PR (drop one). |
+| `1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9` | ⏸️ Not deployable yet — residual `const creds` collision between canonical files (Unit 2) |
+
+**3. Catch-up confirmed automatic.** Read `processRecurringTransactions` + `calculateTokenizationDates`: the loop generates **all** tokenization dates from month-after-lastCheck up to *now* (`new Date()`), skips already-tokenized ones (`tokenizedAlready` checks Ledger history), so the **next trigger run auto-backfills August + September** — idempotent, no manual catch-up needed. (Note: `CONFIG.CURRENT_DATE: '2025-06-29'` is hardcoded but unused by the date loop — it computes from live date.)
+
+### ⚠️ Two decisions needed from you
+1. **`1zKgMwd6K` (digital signatures)**: deploy with `--allow-identity-mismatch`, or leave to whoever owns the `admin@truesight.me` clasp? I won't override the safety gate unilaterally.
+2. **`1orWgdGck` (capital injection)**: OK to open a tiny PR removing the duplicate `Version.js` (keep `Version.gs`)?
+
+### RESUME HERE → next units
+- **Unit 2 (PR #2)**: fix residual `const creds` collisions in `1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9` (rename one side's `creds`), + drop duplicate `Version.js` in `1orWgdGck` — then deploy all four.
+- **Unit 3**: after `1zKgMwd6K` decision → deploy it.
+- **Unit 4**: verify the monthly trigger fires clean next cycle (or trigger manually via Apps Script editor — no doGet exists) and confirm Aug/Sep rows land in Ledger history.
+- **Unit 5 (guardrail PR, truesight_autopilot)**: duplicate-global pre-push check in `gas_deploy_project` so this class of breakage is caught before push.
+
+Deploy ledger entries: `deploy_20260829T130346Z` (recurring), `…130423Z` (webhook), `…130512Z` (notarization). No irreversible/payout actions taken — tokenization catch-up happens via the normal scheduled trigger.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd ~/tokenomics && git pull --ff-only origin main 2>&1 | tail -3 && echo "=== verify recurring-tokenization folder clean ===" && cd google_a; cd ~/tokenomics && echo "=== branch/head ===" && git branch --show-current && git log --oneline -3 && echo "=== is merged commit present loc; cd ~/tokenomics && git fetch origin main 2>&1 | tail -1 && echo "=== commits we're missing ===" && git log --oneline HEAD..origin/main && ec; …(+3 more)
+• `gas deploy project` ×5 → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130346Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130409Z_1zkgmwd6kjfjowkrh6oobgfvtvzrxvuekfxvbgix.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130428Z_1m2sqondmgw6hbxivp0h0jjj1ayrylsrrlhb2mip.md; …(+2 more)
 
